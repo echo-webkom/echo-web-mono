@@ -23,6 +23,7 @@ importers:
       autoprefixer: ^10.4.7
       eslint: ^8.30.0
       eslint-config-next: 13.1.6
+      framer-motion: ^9.0.2
       next: 13.1.6
       next-auth: ^4.19.0
       postcss: ^8.4.14
@@ -43,6 +44,7 @@ importers:
       '@trpc/next': 10.11.0_rid2hrxunbm3ffp2k2uj3yfmiq
       '@trpc/react-query': 10.11.0_cpeqqrckfgr33xypfmr4g7wgmq
       '@trpc/server': 10.11.0
+      framer-motion: 9.0.2_biqbaboplfbrettd7655fr4n2y
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       next-auth: 4.19.2_3vryta7zmbcsw4rrqf4axjqggm
       react: 18.2.0
