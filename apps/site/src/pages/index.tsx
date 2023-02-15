@@ -2,16 +2,37 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "../components/Layout";
+import { motion } from "framer-motion";
 
 const Home: NextPage = () => {
   return (
     <Layout>
       <div className="">
         <div className="px-16 pt-52">
-          <h1 className="text-7xl font-extrabold text-echo-black">echo</h1>
-          <h3 className="font-thin">linjeforeningen for informatikk</h3>
+          <div className="overflow-hidden">
+            <motion.h1
+              initial={{ y: "120%" }}
+              animate={{ y: "0%" }}
+              transition={{ delay: 0.25, duration: 0.75 }}
+              className="text-7xl font-extrabold text-echo-black"
+            >
+              echo
+            </motion.h1>
+          </div>
+          <motion.h3
+            initial={{
+              opacity: "0%",
+              fontSize: "12px",
+              transformOrigin: "center",
+            }}
+            animate={{ opacity: "100%", fontSize: "16px" }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="font-thin"
+          >
+            linjeforeningen for informatikk
+          </motion.h3>
         </div>
-        <div className="flex gap-4 py-8 px-12">
+        <div className="flex gap-4 overflow-hidden py-8 px-12">
           <Link
             href={"/for-studenter/bedpres"}
             className="w-[12rem] rounded-full bg-echo-blue-dark px-10 py-2 text-center font-bold text-white 

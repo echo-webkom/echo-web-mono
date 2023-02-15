@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import MenuIcon from "./MenuIcon";
-import { motion } from "framer-motion";
+import { motion, useCycle, Variants } from "framer-motion";
 
 import logo from "../../public/echo-logo-black.svg";
 
@@ -37,10 +37,27 @@ const links = [
   },
 ];
 
+const sidebarVariants: Variants = {
+  open: {
+    clipPath: `circle(1000px at 40px 40px)`,
+    transition: {
+      duration: 0.4,
+    },
+  },
+  closed: {
+    clipPath: `circle(30px at 40px 40px)`,
+    transition: {
+      duration: 0.4,
+      delay: 0.4,
+    },
+  },
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { pathname } = useRouter();
   const { data: userSession } = useSession();
+  const [open, toggleOpen] = useCycle(false, true);
 
   useEffect(() => {
     if (isOpen) {
@@ -55,7 +72,11 @@ const Navbar = () => {
   }, [pathname]);
 
   return (
-    <div className={`${isOpen && "min-h-screen"} bg-neutral-200 shadow-md`}>
+    <div
+      className={`${
+        isOpen && "min-h-screen"
+      } border-b-2 border-echo-black bg-neutral-200`}
+    >
       <header className="mx-auto flex w-full max-w-6xl items-center px-5 py-5 md:py-5">
         <div className="flex">
           <Link href={"/"}>
