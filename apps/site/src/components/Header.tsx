@@ -3,10 +3,10 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import MenuIcon from "./MenuIcon";
 import { motion, useCycle, Variants } from "framer-motion";
-
 import logo from "../../public/echo-logo-black.svg";
+import { MenuToggle } from "./NavigationMenu/MenuToggle";
+import { Navigation } from "./NavigationMenu/Navigation";
 
 const links = [
   {
@@ -36,6 +36,50 @@ const links = [
     session: true,
   },
 ];
+interface Props {
+  toggle: () => void;
+}
+
+const Path = (props: any) => (
+  <motion.path
+    fill="transparent"
+    strokeWidth="3"
+    stroke="hsl(0, 0%, 18%)"
+    strokeLinecap="round"
+    {...props}
+  />
+);
+
+const variants = {
+  open: {
+    opacity: 1,
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+  },
+  closed: {
+    opacity: 0,
+    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  },
+};
+
+const dropDownMenu = {
+  open: {
+    clipPath: `circle(${1000 * 2 + 200}px at 40px 40px)`,
+    transition: {
+      type: "spring",
+      stiffness: 20,
+      restDelta: 2,
+    },
+  },
+  closed: {
+    clipPath: "circle(30px at 40px 40px)",
+    transition: {
+      delay: 0.5,
+      type: "spring",
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+};
 
 const sidebarVariants: Variants = {
   open: {
@@ -75,7 +119,7 @@ const Navbar = () => {
     <div
       className={`${
         isOpen && "min-h-screen"
-      } border-b-2 border-echo-black bg-neutral-200`}
+      } z-10 border-b border-echo-black bg-neutral-200`}
     >
       <header className="mx-auto flex w-full max-w-6xl items-center px-5 py-5 md:py-5">
         <div className="flex">
@@ -85,8 +129,13 @@ const Navbar = () => {
         </div>
         <div className="flex-1" />
         <nav>
-          <div className="block md:hidden" onClick={() => setIsOpen((e) => !e)}>
-            <MenuIcon open={isOpen} />
+          {/* <div className="block md:hidden" onClick={() => setIsOpen((e) => !e)}> */}
+          <div className="block md:hidden">
+            <motion.nav initial={false} animate={open ? "open" : "closed"}>
+              <motion.div variants={dropDownMenu} className="bg-green-200" />
+              <Navigation links={links} />
+              <MenuToggle toggle={() => toggleOpen()} />
+            </motion.nav>
           </div>
 
           <div className="hidden md:block">
@@ -115,12 +164,12 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
-      {isOpen && (
+      {/* {isOpen && (
         <motion.div
           initial={{ translateY: "-100%" }}
           animate={{ translateY: "0%" }}
           exit={{ translateY: "-100%" }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 5 }}
         >
           <ul className="flex flex-col">
             {links.map(({ href, label, session }) => {
@@ -145,7 +194,7 @@ const Navbar = () => {
             })}
           </ul>
         </motion.div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { motion } from "framer-motion";
@@ -13,7 +12,7 @@ const Home: NextPage = () => {
             <motion.h1
               initial={{ y: "120%" }}
               animate={{ y: "0%" }}
-              transition={{ delay: 0.25, duration: 0.75 }}
+              transition={{ duration: 0.75 }}
               className="text-7xl font-extrabold text-echo-black"
             >
               echo
@@ -26,7 +25,7 @@ const Home: NextPage = () => {
               transformOrigin: "center",
             }}
             animate={{ opacity: "100%", fontSize: "16px" }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ duration: 0.5 }}
             className="font-thin"
           >
             linjeforeningen for informatikk
