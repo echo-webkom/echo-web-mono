@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { motion, useCycle, Variants } from "framer-motion";
+import { motion, useCycle } from "framer-motion";
 import logo from "../../public/echo-logo-black.svg";
 import { MenuToggle } from "./NavigationMenu/MenuToggle";
 import { Navigation } from "./NavigationMenu/Navigation";
@@ -36,9 +36,6 @@ const links = [
     session: true,
   },
 ];
-interface Props {
-  toggle: () => void;
-}
 
 const Path = (props: any) => (
   <motion.path
@@ -49,17 +46,6 @@ const Path = (props: any) => (
     {...props}
   />
 );
-
-const variants = {
-  open: {
-    opacity: 1,
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    opacity: 0,
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-};
 
 const dropDownMenu = {
   open: {
@@ -77,22 +63,6 @@ const dropDownMenu = {
       type: "spring",
       stiffness: 400,
       damping: 40,
-    },
-  },
-};
-
-const sidebarVariants: Variants = {
-  open: {
-    clipPath: `circle(1000px at 40px 40px)`,
-    transition: {
-      duration: 0.4,
-    },
-  },
-  closed: {
-    clipPath: `circle(30px at 40px 40px)`,
-    transition: {
-      duration: 0.4,
-      delay: 0.4,
     },
   },
 };
@@ -129,11 +99,10 @@ const Navbar = () => {
         </div>
         <div className="flex-1" />
         <nav>
-          {/* <div className="block md:hidden" onClick={() => setIsOpen((e) => !e)}> */}
           <div className="block md:hidden">
             <motion.nav initial={false} animate={open ? "open" : "closed"}>
-              <motion.div variants={dropDownMenu} className="bg-green-200" />
-              <Navigation links={links} />
+              <motion.div variants={dropDownMenu} />
+              <Navigation links={links} toggle={() => toggleOpen()} />
               <MenuToggle toggle={() => toggleOpen()} />
             </motion.nav>
           </div>
@@ -164,37 +133,6 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
-      {/* {isOpen && (
-        <motion.div
-          initial={{ translateY: "-100%" }}
-          animate={{ translateY: "0%" }}
-          exit={{ translateY: "-100%" }}
-          transition={{ duration: 5 }}
-        >
-          <ul className="flex flex-col">
-            {links.map(({ href, label, session }) => {
-              const isActive = pathname === href;
-
-              if (session === !userSession) {
-                return null;
-              }
-
-              return (
-                <li key={`${href}${label}`}>
-                  <Link
-                    className={`rounded-xl px-3 py-2 transition-colors hover:bg-neutral-200 ${
-                      isActive && "font-bold"
-                    }`}
-                    href={href}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </motion.div>
-      )} */}
     </div>
   );
 };

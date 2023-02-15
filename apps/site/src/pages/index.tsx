@@ -21,27 +21,25 @@ const Home: NextPage = () => {
           <motion.h3
             initial={{
               opacity: "0%",
-              fontSize: "12px",
-              transformOrigin: "center",
             }}
-            animate={{ opacity: "100%", fontSize: "16px" }}
-            transition={{ duration: 0.5 }}
+            animate={{ opacity: "100%" }}
+            transition={{ duration: 0.75 }}
             className="font-thin"
           >
             linjeforeningen for informatikk
           </motion.h3>
         </div>
-        <div className="flex gap-4 overflow-hidden py-8 px-12">
+        <div className="flex flex-col items-center gap-4 overflow-hidden py-8 px-16">
           <Link
             href={"/for-studenter/bedpres"}
-            className="w-[12rem] rounded-full bg-echo-blue-dark px-10 py-2 text-center font-bold text-white 
+            className="w-80 rounded-full bg-echo-blue-dark px-10 py-2 text-center font-bold text-white 
                             transition-all duration-300 hover:bg-echo-blue-light"
           >
-            Bedpresser
+            Bedriftspresentasjoner
           </Link>
           <Link
             href={"/for-studenter/arrangementer"}
-            className="w-[12rem] rounded-full border-2 border-echo-black bg-echo-yellow-dark px-10 
+            className="w-80 rounded-full border-2 border-echo-black bg-echo-yellow-dark px-10 
                             py-2 text-center font-bold text-echo-black transition-all duration-300 hover:bg-echo-yellow-light"
           >
             Arrangementer
