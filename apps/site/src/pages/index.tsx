@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col items-center gap-4 overflow-hidden py-8 px-16">
           {" "}
           <Link
-            href={"/for-studenter/bedpres"}
+            href={"/for-studenter/bedriftspresentasjoner"}
             className="w-80 rounded-full bg-echo-blue-dark px-10 py-2 text-center font-bold text-white 
                             transition-all duration-300 hover:bg-echo-blue-light"
           >
