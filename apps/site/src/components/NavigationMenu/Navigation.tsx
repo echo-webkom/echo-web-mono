@@ -24,7 +24,7 @@ const variants = {
   closed: {
     opacity: 0,
     x: "-100%",
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: { duration: 0.33, staggerChildren: 0.05, staggerDirection: -1 },
   },
 };
 

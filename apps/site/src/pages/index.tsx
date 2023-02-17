@@ -30,6 +30,7 @@ const Home: NextPage = () => {
           </motion.h3>
         </div>
         <div className="flex flex-col items-center gap-4 overflow-hidden py-8 px-16">
+          {" "}
           <Link
             href={"/for-studenter/bedpres"}
             className="w-80 rounded-full bg-echo-blue-dark px-10 py-2 text-center font-bold text-white 

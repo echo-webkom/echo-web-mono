@@ -6,8 +6,8 @@ module.exports = {
       colors: {
         echo: {
           blue: {
-            dark: "#0396A6",
-            light: "#A9D4D9",
+            dark: "#008FA3",
+            light: "#53ADBD",
           },
           yellow: {
             dark: "#F2B705",

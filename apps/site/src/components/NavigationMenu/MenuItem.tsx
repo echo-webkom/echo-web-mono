@@ -33,7 +33,6 @@ export const MenuItem = ({ link, isActive }: Props) => {
   return (
     <motion.li
       variants={variants}
-      // whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.99 }}
       className="flex flex-col"
     >
