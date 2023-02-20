@@ -3,6 +3,5 @@
 ## How to run frontend
 
 ```sh
-pnpm --filter site dev
+pnpm dev
 ```
-

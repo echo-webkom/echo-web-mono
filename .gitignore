@@ -1,5 +1,16 @@
+# Editors
 .code/
 .idea/
+
+# Package manager
 node_modules/
-.DS_Store
+
+# Env
 .env*
+!.env.example
+
+# Turborepo
+.turbo
+
+# Mac
+.DS_Store

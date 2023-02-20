@@ -1,0 +1,43 @@
+{
+  "name": "@echo-webkom/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm with-env next build",
+    "dev": "pnpm with-env next dev",
+    "lint": "SKIP_ENV_VALIDATION=1 next lint",
+    "start": "next start",
+    "clean": "rm -rf .next .turbo node_modules",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@echo-webkom/api": "0.1.0",
+    "@echo-webkom/auth": "0.1.0",
+    "@echo-webkom/db": "0.1.0",
+    "@echo-webkom/tailwind-config": "0.1.0",
+    "@tanstack/react-query": "^4.23.0",
+    "@trpc/client": "^10.9.0",
+    "@trpc/next": "^10.9.0",
+    "@trpc/react-query": "^10.9.0",
+    "@trpc/server": "^10.9.0",
+    "framer-motion": "^9.0.4",
+    "next": "^13.1.6",
+    "next-auth": "^4.19.0",
+    "next-sanity": "^4.1.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zod": "^3.20.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "autoprefixer": "^10.4.13",
+    "dotenv-cli": "^7.0.0",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "^13.1.6",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.5"
+  }
+}
