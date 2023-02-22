@@ -1,6 +1,5 @@
 import {PrismaAdapter} from "@next-auth/prisma-adapter";
 import {type DefaultSession, type NextAuthOptions} from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import {prisma} from "@echo-webkom/db";
 
 /**
@@ -13,15 +12,8 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
     } & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
 
 /**
@@ -34,25 +26,34 @@ export const authOptions: NextAuthOptions = {
     session({session, user}) {
       if (session.user) {
         session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
     },
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID as string,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
-    }),
-    /**
-     * ...add more providers here
-     *
-     * Most other providers require a bit more work than the Discord provider.
-     * For example, the GitHub provider requires you to add the
-     * `refresh_token_expires_in` field to the Account model. Refer to the
-     * NextAuth.js docs for the provider you want to use. Example:
-     * @see https://next-auth.js.org/providers/github
-     **/
+    {
+      id: "feide",
+      name: "Feide",
+      type: "oauth",
+      wellKnown: "https://auth.dataporten.no/.well-known/openid-configuration",
+      authorization: {
+        params: {
+          scope:
+            "email userinfo-name profile userid openid groups-edu groups-org groups-other",
+        },
+      },
+      clientId: process.env.FEIDE_CLIENT_ID,
+      clientSecret: process.env.FEIDE_CLIENT_SECRET,
+      idToken: true,
+      profile: (profile) => {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
+    },
   ],
 };

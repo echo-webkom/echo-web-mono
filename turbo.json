@@ -1,59 +1,59 @@
 {
-    "$schema": "https://turborepo.org/schema.json",
-    "pipeline": {
-        "db:generate": {
-            "inputs": [
-                "prisma/schema.prisma"
-            ],
-            "cache": false
-        },
-        "db:push": {
-            "inputs": [
-                "prisma/schema.prisma"
-            ],
-            "cache": false
-        },
-        "dev": {
-            "persistent": true,
-            "cache": false
-        },
-        "build": {
-            "dependsOn": [
-                "^build",
-                "^db:generate"
-            ],
-            "outputs": [
-                ".next/**",
-                ".sanity/**"
-            ]
-        },
-        "start": {
-            "dependsOn": [
-                "^build"
-            ],
-            "persistent": true,
-            "cache": false
-        },
-        "lint": {},
-        "clean": {
-            "cache": false
-        },
-        "//#clean": {
-            "cache": false
-        },
-        "format": {}
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "db:generate": {
+      "inputs": [
+        "prisma/schema.prisma"
+      ],
+      "cache": false
     },
-    "globalEnv": [
-        "DATABASE_URL",
-        "NEXTAUTH_SECRET",
-        "NEXTAUTH_URL",
-        "NODE_ENV",
-        "DISCORD_CLIENT_ID",
-        "DISCORD_CLIENT_SECRET",
-        "NEXT_PUBLIC_SANITY_DATASET",
-        "VERCEL_URL",
-        "SKIP_ENV_VALIDATION",
-        "VERCEL",
-        "PORT"
-    ]
+    "db:push": {
+      "inputs": [
+        "prisma/schema.prisma"
+      ],
+      "cache": false
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "build": {
+      "dependsOn": [
+        "^build",
+        "^db:generate"
+      ],
+      "outputs": [
+        ".next/**",
+        ".sanity/**"
+      ]
+    },
+    "start": {
+      "dependsOn": [
+        "^build"
+      ],
+      "persistent": true,
+      "cache": false
+    },
+    "lint": {},
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    },
+    "format": {}
+  },
+  "globalEnv": [
+    "DATABASE_URL",
+    "NEXTAUTH_SECRET",
+    "NEXTAUTH_URL",
+    "NODE_ENV",
+    "FEIDE_CLIENT_ID",
+    "FEIDE_CLIENT_SECRET",
+    "NEXT_PUBLIC_SANITY_DATASET",
+    "VERCEL_URL",
+    "SKIP_ENV_VALIDATION",
+    "VERCEL",
+    "PORT"
+  ]
 }
