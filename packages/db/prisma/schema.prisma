@@ -11,12 +11,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Post {
-  id      String @id @default(cuid())
-  title   String
-  content String
-}
-
 // NextAuth.js Models
 // NOTE: When using postgresql, mysql or sqlserver,
 // uncomment the @db.Text annotations below
@@ -56,8 +50,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  company       String?
   accounts      Account[]
   sessions      Session[]
+  role          Role      @default(MEMBER)
 }
 
 model VerificationToken {
@@ -66,4 +62,10 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  COMPANY
+  MEMBER
 }

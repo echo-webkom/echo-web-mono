@@ -4,37 +4,11 @@ import {useState, useEffect} from "react";
 import {useRouter} from "next/router";
 import {useSession} from "next-auth/react";
 import {motion, useCycle} from "framer-motion";
+import {SunIcon, MoonIcon} from "@radix-ui/react-icons";
+import {ROUTES} from "@/constants/routes";
 import {MenuToggle} from "./navigation/MenuToggle";
 import {Navigation} from "./navigation/Navigation";
-
-const links = [
-  {
-    href: "/",
-    label: "Hjem",
-  },
-  {
-    href: "/about",
-    label: "Om echo",
-  },
-  {
-    href: "/for-studenter",
-    label: "For studenter",
-  },
-  {
-    href: "/for-bedrifter",
-    label: "For bedrifter",
-  },
-  {
-    href: "/auth/signin",
-    label: "Logg inn",
-    session: false,
-  },
-  {
-    href: "/auth/signout",
-    label: "Logg ut",
-    session: true,
-  },
-];
+import {useThemeStore} from "@/stores/use-theme-store";
 
 const dropDownMenu = {
   open: {
@@ -56,11 +30,14 @@ const dropDownMenu = {
   },
 };
 
-const Navbar = () => {
+export const Header = () => {
   const [isOpen, setIsOpen] = useState(true);
   const {pathname} = useRouter();
   const {data: userSession} = useSession();
   const [open, toggleOpen] = useCycle(false, true);
+
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const theme = useThemeStore((state) => state.theme);
 
   const logo = "/echo-logo-black.svg";
 
@@ -80,7 +57,7 @@ const Navbar = () => {
     <div
       className={`${
         isOpen ? "min-h-screen" : ""
-      } border-echo-black z-10 border-b bg-neutral-200`}
+      } border-echo-black bg-neutral-200 z-10 border-b`}
     >
       <header className="mx-auto flex w-full max-w-6xl items-center px-5 py-5 md:py-5">
         <div className="flex">
@@ -93,14 +70,14 @@ const Navbar = () => {
           <div className="block md:hidden">
             <motion.nav initial={false} animate={open ? "open" : "closed"}>
               <motion.div variants={dropDownMenu} />
-              <Navigation links={links} toggle={() => toggleOpen()} />
+              <Navigation links={ROUTES} toggle={() => toggleOpen()} />
               <MenuToggle toggle={() => toggleOpen()} />
             </motion.nav>
           </div>
 
           <div className="hidden md:block">
             <ul className="flex">
-              {links.map(({href, label, session}) => {
+              {ROUTES.map(({href, label, session}) => {
                 const isActive = pathname === href;
 
                 if (session === !userSession) {
@@ -110,7 +87,7 @@ const Navbar = () => {
                 return (
                   <li key={`${href}${label}`}>
                     <Link
-                      className={`rounded-xl px-3 py-2 transition-colors hover:bg-neutral-200 ${
+                      className={`hover:bg-neutral-200 rounded-xl px-3 py-2 transition-colors ${
                         isActive ? "font-bold underline" : ""
                       }`}
                       href={href}
@@ -123,9 +100,10 @@ const Navbar = () => {
             </ul>
           </div>
         </nav>
+        <button onClick={toggleTheme}>
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
       </header>
     </div>
   );
 };
-
-export default Navbar;

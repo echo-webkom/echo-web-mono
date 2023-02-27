@@ -84,7 +84,7 @@ interface Props {
   open: boolean;
 }
 
-const MenuIcon = ({open}: Props) => {
+export const MenuIcon = ({open}: Props) => {
   return (
     <AnimatePresence>
       <div className="flex flex-col items-end gap-1 overflow-hidden hover:cursor-pointer">
@@ -97,13 +97,13 @@ const MenuIcon = ({open}: Props) => {
             className="flex flex-col items-end"
           >
             <motion.div variants={openItem} className="mb-1">
-              <div className="h-1 w-5 rounded-full bg-gray-800" />
+              <div className="bg-gray-800 h-1 w-5 rounded-full" />
             </motion.div>
             <motion.div variants={openItem} className="mb-1">
-              <div className="h-1 w-4 rounded-full bg-gray-800" />
+              <div className="bg-gray-800 h-1 w-4 rounded-full" />
             </motion.div>
             <motion.div variants={openItem} className="mb-1">
-              <div className="h-1 w-3 rounded-full bg-gray-800" />
+              <div className="bg-gray-800 h-1 w-3 rounded-full" />
             </motion.div>
           </motion.div>
         ) : (
@@ -114,10 +114,10 @@ const MenuIcon = ({open}: Props) => {
             className="flex flex-col items-end"
           >
             <motion.div variants={closedItem1} className="mb-1">
-              <div className="h-1 w-5 rounded-full bg-gray-800" />
+              <div className="bg-gray-800 h-1 w-5 rounded-full" />
             </motion.div>
             <motion.div variants={closedItem2} className="mb-1">
-              <div className="h-1 w-5 rounded-full bg-gray-800" />
+              <div className="bg-gray-800 h-1 w-5 rounded-full" />
             </motion.div>
           </motion.div>
         )}
@@ -125,5 +125,3 @@ const MenuIcon = ({open}: Props) => {
     </AnimatePresence>
   );
 };
-
-export default MenuIcon;

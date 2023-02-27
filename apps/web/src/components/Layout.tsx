@@ -1,14 +1,13 @@
 import {ReactNode} from "react";
-import Footer from "./Footer";
-import Header from "./Header";
+import {Header, Footer} from "@/components";
 
 interface Props {
   children: ReactNode;
 }
 
-const Layout = ({children}: Props) => {
+export const Layout = ({children}: Props) => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-navy">
       <Header />
       <main>{children}</main>
       <div className="flex flex-grow" />
@@ -16,5 +15,3 @@ const Layout = ({children}: Props) => {
     </div>
   );
 };
-
-export default Layout;
