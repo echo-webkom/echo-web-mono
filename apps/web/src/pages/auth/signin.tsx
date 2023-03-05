@@ -1,7 +1,7 @@
 import type {Provider} from "next-auth/providers";
 import {getProviders, signIn} from "next-auth/react";
 
-import {Layout} from "@/components";
+import {Layout, Button} from "@/components";
 
 type Props = {
   providers: Array<Provider>;
@@ -16,9 +16,9 @@ const LoginPage = ({providers}: Props) => {
       <div className="flex flex-col justify-center gap-3">
         {Object.values(providers).map((provider) => (
           <div className="mx-auto" key={provider.name}>
-            <button onClick={() => void signIn(provider.id)}>
+            <Button onClick={() => void signIn(provider.id)}>
               Logg inn med {provider.name}
-            </button>
+            </Button>
           </div>
         ))}
       </div>

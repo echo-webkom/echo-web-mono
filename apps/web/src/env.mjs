@@ -14,7 +14,7 @@ const server = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  NEXT_PUBLIC_SANITY_DATASET: z.string(),
+  NEXT_PUBLIC_SANITY_DATASET: z.string().optional(),
 });
 
 /**
@@ -24,7 +24,6 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
-
   NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
 };
 

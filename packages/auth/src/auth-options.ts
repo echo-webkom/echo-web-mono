@@ -44,6 +44,8 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.FEIDE_CLIENT_ID,
       clientSecret: process.env.FEIDE_CLIENT_SECRET,
       idToken: true,
+      // TODO: Remove all eslint-disable comments when we have a better solution
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       profile: (profile: any) => {
         return {
           /* eslint-disable @typescript-eslint/no-unsafe-assignment */

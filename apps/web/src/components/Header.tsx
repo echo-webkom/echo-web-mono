@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useRouter} from "next/router";
+
 import {DesktopNavigation} from "./Navigation";
 import {HeaderLogo} from "./HeaderLogo";
 
@@ -20,7 +21,7 @@ export const Header = () => {
   }, [pathname]);
 
   return (
-    <div className={`${isOpen ? "min-h-screen" : ""} border-b`}>
+    <div className={`${isOpen ? "min-h-screen" : ""}`}>
       <header className="mx-auto flex w-full max-w-7xl py-3 px-3">
         <HeaderLogo />
         <DesktopNavigation className="mt-auto" />
