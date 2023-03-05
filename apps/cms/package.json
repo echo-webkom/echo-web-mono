@@ -22,7 +22,7 @@
     "react-is": "18.2.0",
     "sanity": "3.5.1",
     "sanity-plugin-color-picker": "1.0.3",
-    "sanity-plugin-markdown": "4.0.0",
+    "sanity-plugin-markdown": "4.1.0",
     "sanity-plugin-media": "2.0.5",
     "slugify": "1.6.5",
     "styled-components": "5.3.6"
