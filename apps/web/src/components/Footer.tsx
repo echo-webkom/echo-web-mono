@@ -2,23 +2,13 @@ import Link from "next/link";
 
 import {footerRoutes} from "@/lib/routes";
 import Image from "next/image";
-
-const poweredBy = [
-  {
-    label: "Vercel",
-    href: "https://vercel.com/?utm_source=echo-webkom&utm_campaign=oss",
-    imageSrc: "/svg/vercel-logotype-dark.svg",
-  },
-  {
-    label: "Sanity",
-    href: "https://www.sanity.io/",
-    imageSrc: "/svg/sanity-logo.svg",
-  },
-];
+import classNames from "classnames";
+import {getHoverShadow, sponsors} from "@/lib/sponsors";
 
 export const Footer = () => {
   return (
     <div>
+      {/* Footer wave */}
       <svg
         id="svg"
         viewBox="0 0 1440 390"
@@ -35,12 +25,14 @@ export const Footer = () => {
           className="path-0 transition-all delay-150 duration-300 ease-in-out"
         ></path>
       </svg>
+
+      {/* Footer */}
       <footer className="bg-echo-yellow2 px-10 py-10">
         <div className="mx-auto w-full max-w-6xl">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-5">
+          <div className="flex flex-wrap gap-10 sm:gap-20">
             {footerRoutes.map((route) => (
               <div key={route.label}>
-                <h3 className="mb-2 text-xl font-bold">{route.label}</h3>
+                <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
                 <ul className="space-y-1">
                   {route.sublinks.map(({label, href}) => (
                     <li key={label}>
@@ -58,7 +50,7 @@ export const Footer = () => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-2 text-xl font-bold">💘 Hovedsponsor</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">💘 Hovedsponsor</h3>
               <Link href="https://bekk.no">
                 <Image
                   src="/images/bekk.png"
@@ -72,20 +64,28 @@ export const Footer = () => {
 
             {/* Other sponsors */}
             <div>
-              <h3 className="mb-2 text-xl font-bold">🔧 Powered by</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
               <ul className="space-y-5">
-                {poweredBy.map(({label, href, imageSrc}) => (
-                  <li key={label}>
-                    <Link href={href}>
-                      <Image
-                        src={imageSrc}
-                        height={125}
-                        width={125}
-                        alt={`${label} logo`}
-                      />
-                    </Link>
-                  </li>
-                ))}
+                {sponsors.map(({label, href, imageSrc}) => {
+                  const shadowColor = getHoverShadow(label);
+
+                  return (
+                    <li key={label}>
+                      <Link href={href}>
+                        <Image
+                          src={imageSrc}
+                          className={classNames(
+                            "rounded-lg bg-white px-5 py-3 shadow-md transition-shadow duration-300 ease-in-out",
+                            shadowColor,
+                          )}
+                          height={150}
+                          width={150}
+                          alt={`${label} logo`}
+                        />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
