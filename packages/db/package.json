@@ -10,6 +10,8 @@
     "db:generate": "pnpm with-env prisma generate",
     "db:push": "pnpm with-env prisma db push --skip-generate",
     "dev": "pnpm with-env prisma studio --port 4444 --browser none",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {

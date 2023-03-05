@@ -4,6 +4,7 @@ services:
   db:
     image: mysql:8.0
     restart: always
+    container_name: echo-web-db
     environment:
       MYSQL_DATABASE: "new-echo-web-database"
       MYSQL_USER: "admin"
