@@ -1,65 +1,62 @@
-import {defineField, defineType} from "sanity";
+import slugify from 'slugify';
+import { EnvelopeIcon } from '@sanity/icons';
+import { defineField } from 'sanity';
 
-export default defineType({
-  name: "post",
-  title: "Post",
-  type: "document",
-  fields: [
-    defineField({
-      name: "title",
-      title: "Title",
-      type: "string",
-    }),
-    defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: {
-        source: "title",
-        maxLength: 96,
-      },
-    }),
-    defineField({
-      name: "author",
-      title: "Author",
-      type: "reference",
-      to: {type: "author"},
-    }),
-    defineField({
-      name: "mainImage",
-      title: "Main image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: "categories",
-      title: "Categories",
-      type: "array",
-      of: [{type: "reference", to: {type: "category"}}],
-    }),
-    defineField({
-      name: "publishedAt",
-      title: "Published at",
-      type: "datetime",
-    }),
-    defineField({
-      name: "body",
-      title: "Body",
-      type: "blockContent",
-    }),
-  ],
-
-  preview: {
-    select: {
-      title: "title",
-      author: "author.name",
-      media: "mainImage",
+export default {
+    name: 'post',
+    title: 'Innlegg',
+    type: 'document',
+    icon: EnvelopeIcon,
+    preview: {
+        select: {
+            title: 'title.no',
+            subtitle: 'author.name',
+        },
     },
-    prepare(selection) {
-      const {author} = selection;
-      return {...selection, subtitle: author && `by ${author}`};
-    },
-  },
-});
+    fields: [
+        defineField({
+            name: 'publishedOnce',
+            type: 'boolean',
+            hidden: true,
+        }),
+        defineField({
+            name: 'title',
+            title: 'Tittel',
+            validation: (Rule) => Rule.required(),
+            type: 'localeString',
+        }),
+        defineField({
+            name: 'slug',
+            title: 'Slug (lenke)',
+            validation: (Rule) => Rule.required(),
+            description: 'Unik identifikator for innlegget. Bruk "Generate"-knappen! Ikke skriv inn på egenhånd!',
+            type: 'slug',
+            options: {
+                source: 'title',
+                slugify: (input: string) => slugify(input, { remove: /[*+~.()'"!:@]/g, lower: true, strict: true }),
+            },
+        }),
+        defineField({
+            name: 'body',
+            title: 'Brødtekst',
+            validation: (Rule) => Rule.required(),
+            type: 'localeMarkdown',
+        }),
+        defineField({
+            name: 'author',
+            title: 'Forfatter',
+            validation: (Rule) => Rule.required(),
+            type: 'reference',
+            to: [
+                {
+                    type: 'author',
+                },
+            ],
+        }),
+        defineField({
+            name: 'thumbnail',
+            title: 'Miniatyrbilde',
+            type: 'image',
+        }),
+    ],
+};
