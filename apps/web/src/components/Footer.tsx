@@ -1,54 +1,33 @@
 import Link from "next/link";
 
-const links = [
+import {footerRoutes} from "@/lib/routes";
+import Image from "next/image";
+
+const poweredBy = [
   {
-    section: "Kontakt oss",
-    links: [
-      {
-        label: "echo@uib.no",
-        href: "mailto:echo@uib.no",
-      },
-      {
-        label: "Thormøhlens gate 55 5006 BERGEN",
-        href: "https://goo.gl/maps/adUsBsoZh3QqNvA36",
-      },
-      {
-        label: "Organisasjonsnummer: 998 995 035",
-        href: "https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035",
-      },
-    ],
+    label: "Vercel",
+    href: "https://vercel.com/?utm_source=echo-webkom&utm_campaign=oss",
+    imageSrc: "/svg/vercel-logotype-dark.svg",
   },
   {
-    section: "Følg oss",
-    links: [
-      {
-        label: "Facebook",
-        href: "https://www.facebook.com/echo.uib",
-      },
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/echo.uib/",
-      },
-      {
-        label: "GitHub",
-        href: "https://www.linkedin.com/company/echo-uib/",
-      },
-    ],
+    label: "Sanity",
+    href: "https://www.sanity.io/",
+    imageSrc: "/svg/sanity-logo.svg",
   },
 ];
 
 export const Footer = () => {
   return (
-    <footer className="border-t">
-      <div className="mx-auto w-full max-w-6xl px-5 py-5">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {links.map(({section, links}) => (
-            <div key={section}>
-              <h3 className="mb-2 text-lg font-bold">{section}</h3>
+    <footer className="border-t px-5 py-10">
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-5">
+          {footerRoutes.map((route) => (
+            <div key={route.label}>
+              <h3 className="mb-2 text-xl font-bold">{route.label}</h3>
               <ul>
-                {links.map(({label, href}) => (
+                {route.sublinks.map(({label, href}) => (
                   <li key={label}>
-                    <Link className="hover:underline" href={href}>
+                    <Link className="text-black/80 hover:underline" href={href}>
                       {label}
                     </Link>
                   </li>
@@ -56,6 +35,39 @@ export const Footer = () => {
               </ul>
             </div>
           ))}
+
+          {/* Main sponsor */}
+          <div>
+            <h3 className="mb-2 text-xl font-bold">💘 Hovedsponsor</h3>
+            <Link href="https://bekk.no">
+              <Image
+                src="/images/bekk.png"
+                className="invert"
+                height={250}
+                width={250}
+                alt="Bekk logo"
+              />
+            </Link>
+          </div>
+
+          {/* Other sponsors */}
+          <div>
+            <h3 className="mb-2 text-xl font-bold">🔧 Powered by</h3>
+            <ul className="space-y-5">
+              {poweredBy.map(({label, href, imageSrc}) => (
+                <li key={label}>
+                  <Link href={href}>
+                    <Image
+                      src={imageSrc}
+                      height={125}
+                      width={125}
+                      alt={`${label} logo`}
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

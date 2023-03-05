@@ -4,15 +4,15 @@ export type Route = {
   session?: boolean;
 };
 
-export type Section = {
+export type RouteSection = {
   label: string;
   sublinks: Array<Route>;
   session?: boolean;
 };
 
-export type NavItem = Route | Section;
+export type NavItem = Route | RouteSection;
 
-export const routes: Array<NavItem> = [
+export const headerRoutes: Array<NavItem> = [
   {
     label: "Hjem",
     href: "/",
@@ -105,5 +105,46 @@ export const routes: Array<NavItem> = [
     href: "/auth/signout",
     label: "Logg ut",
     session: true,
+  },
+];
+
+export const footerRoutes: Array<RouteSection> = [
+  {
+    label: "📞 Kontakt oss",
+    sublinks: [
+      {
+        label: "echo@uib.no",
+        href: "mailto:echo@uib.no",
+      },
+      {
+        label: "Thormøhlens gate 55 5006 BERGEN",
+        href: "https://goo.gl/maps/adUsBsoZh3QqNvA36",
+      },
+      {
+        label: "Organisasjonsnummer: 998 995 035",
+        href: "https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035",
+      },
+      {
+        label: "Opplevd noe kjipt? Si ifra!",
+        href: "/for-studenter/si-ifra",
+      },
+    ],
+  },
+  {
+    label: "💻 Følg oss",
+    sublinks: [
+      {
+        label: "Facebook",
+        href: "https://www.facebook.com/echo.uib",
+      },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/echo.uib/",
+      },
+      {
+        label: "GitHub",
+        href: "https://www.linkedin.com/company/echo-uib/",
+      },
+    ],
   },
 ];

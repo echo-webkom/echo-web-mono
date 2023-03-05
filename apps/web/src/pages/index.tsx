@@ -5,11 +5,7 @@ const HomePage: NextPage = () => {
   return (
     <Layout>
       <div className="container mx-auto">
-        <h1 className="font-mono text-5xl">Velkommen til echo</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa,
-          commodi.
-        </p>
+        <h1 className="text-3xl font-bold">Hello world!</h1>
       </div>
     </Layout>
   );

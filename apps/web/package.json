@@ -17,6 +17,7 @@
     "@echo-webkom/tailwind-config": "0.1.0",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
+    "@next/font": "^13.2.3",
     "@radix-ui/react-icons": "^1.2.0",
     "@radix-ui/react-navigation-menu": "^1.1.1",
     "@tanstack/react-query": "^4.23.0",

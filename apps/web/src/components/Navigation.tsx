@@ -1,7 +1,7 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import {CaretDownIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
-import {NavItem, routes} from "@/lib/routes";
+import {NavItem, headerRoutes} from "@/lib/routes";
 import {useSession} from "next-auth/react";
 import classNames from "classnames";
 
@@ -20,7 +20,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
       )}
     >
       <NavigationMenu.List className="center m-0 flex list-none rounded-[6px]">
-        {routes.map((route: NavItem) => {
+        {headerRoutes.map((route: NavItem) => {
           if (route.session === !userSession) {
             return null;
           }

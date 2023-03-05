@@ -1,4 +1,5 @@
 const plugin = require("tailwindcss/plugin");
+const { fontFamily } = require('tailwindcss/defaultTheme');
 const {blackA, mauve, violet, indigo, purple} = require("@radix-ui/colors");
 
 /** @type {import('tailwindcss').Config} */
@@ -6,6 +7,11 @@ module.exports = {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
+    fontFamily: {
+      primary: ["var(--inter-font)", ...fontFamily.sans],
+      sans: ["var(--inter-font)", ...fontFamily.sans],
+      mono: ["var(--ibm-font)", ...fontFamily.mono],
+    },
     extend: {
       colors: {
         // Custom colors
