@@ -97,13 +97,13 @@ export const MenuIcon = ({open}: Props) => {
             className="flex flex-col items-end"
           >
             <motion.div variants={openItem} className="mb-1">
-              <div className="bg-gray-800 h-1 w-5 rounded-full" />
+              <div className="h-1 w-5 rounded-full bg-gray-800" />
             </motion.div>
             <motion.div variants={openItem} className="mb-1">
-              <div className="bg-gray-800 h-1 w-4 rounded-full" />
+              <div className="h-1 w-4 rounded-full bg-gray-800" />
             </motion.div>
             <motion.div variants={openItem} className="mb-1">
-              <div className="bg-gray-800 h-1 w-3 rounded-full" />
+              <div className="h-1 w-3 rounded-full bg-gray-800" />
             </motion.div>
           </motion.div>
         ) : (
@@ -114,10 +114,10 @@ export const MenuIcon = ({open}: Props) => {
             className="flex flex-col items-end"
           >
             <motion.div variants={closedItem1} className="mb-1">
-              <div className="bg-gray-800 h-1 w-5 rounded-full" />
+              <div className="h-1 w-5 rounded-full bg-gray-800" />
             </motion.div>
             <motion.div variants={closedItem2} className="mb-1">
-              <div className="bg-gray-800 h-1 w-5 rounded-full" />
+              <div className="h-1 w-5 rounded-full bg-gray-800" />
             </motion.div>
           </motion.div>
         )}

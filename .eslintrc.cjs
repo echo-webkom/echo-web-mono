@@ -1,5 +1,10 @@
 module.exports = {
   extends: ["eslint:recommended", "turbo", "prettier"],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
   env: {
     es6: true,
   },
@@ -14,6 +19,7 @@ module.exports = {
       extends: [
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:react/recommended",
       ],
       files: ["**/*.ts", "**/*.tsx"],
       parserOptions: {
@@ -33,6 +39,15 @@ module.exports = {
             varsIgnorePattern: "^_",
             caughtErrorsIgnorePattern: "^_",
           },
+        ],
+        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+        "@typescript-eslint/no-unnecessary-condition": "error",
+        "@typescript-eslint/no-throw-literal": "error",
+        "no-console": "error",
+        curly: "error",
+        "react/jsx-curly-brace-presence": [
+          "error",
+          {props: "never", children: "never", propElementValues: "always"},
         ],
       },
     },

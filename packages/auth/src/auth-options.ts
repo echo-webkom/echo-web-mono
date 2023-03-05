@@ -1,5 +1,5 @@
 import {PrismaAdapter} from "@next-auth/prisma-adapter";
-import {type DefaultSession, type NextAuthOptions} from "next-auth";
+import type {DefaultSession, NextAuthOptions} from "next-auth";
 import {prisma} from "@echo-webkom/db";
 
 /**
@@ -24,9 +24,7 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({session, user}) {
-      if (session.user) {
-        session.user.id = user.id;
-      }
+      session.user.id = user.id;
       return session;
     },
   },
@@ -46,12 +44,16 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.FEIDE_CLIENT_ID,
       clientSecret: process.env.FEIDE_CLIENT_SECRET,
       idToken: true,
-      profile: (profile) => {
+      profile: (profile: any) => {
         return {
+          /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+          /* eslint-disable @typescript-eslint/no-unsafe-member-access */
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+          /* eslint-enable @typescript-eslint/no-unsafe-member-access */
         };
       },
     },

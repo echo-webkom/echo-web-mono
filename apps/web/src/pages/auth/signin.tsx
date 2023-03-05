@@ -1,16 +1,13 @@
-import {Layout} from "@/components";
 import type {Provider} from "next-auth/providers";
-import {getProviders, signIn, useSession} from "next-auth/react";
+import {getProviders, signIn} from "next-auth/react";
+
+import {Layout} from "@/components";
 
 type Props = {
   providers: Array<Provider>;
 };
 
 const LoginPage = ({providers}: Props) => {
-  const {data} = useSession();
-
-  console.log(data);
-
   return (
     <Layout>
       <h1 className="mb-10 text-center text-3xl font-bold">

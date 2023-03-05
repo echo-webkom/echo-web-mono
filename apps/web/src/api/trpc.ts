@@ -5,13 +5,17 @@ import type {AppRouter} from "@echo-webkom/api";
 import {transformer} from "@echo-webkom/api/transformer";
 
 const getBaseUrl = () => {
-  if (typeof window !== "undefined") return "";
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  if (typeof window !== "undefined") {
+    return "";
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
 
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
-export const api = createTRPCNext<AppRouter>({
+export const trpc = createTRPCNext<AppRouter>({
   config() {
     return {
       transformer,
