@@ -15,7 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "postinstall": "pnpm db:generate",
-    "prepare": "husky intall"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@manypkg/cli": "0.20.0",
