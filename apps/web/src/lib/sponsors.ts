@@ -28,11 +28,7 @@ export const sponsors = createSponsorArray(
   },
 );
 
-export const getHoverShadow = (label: Label) => {
-  switch (label) {
-    case "Vercel":
-      return "hover:shadow-black";
-    case "Sanity":
-      return "hover:shadow-[#f03e2f]";
-  }
+export const hoverShadow: Record<Label, string> = {
+  Vercel: "hover:shadow-black",
+  Sanity: "hover:shadow-[#f03e2f]",
 };

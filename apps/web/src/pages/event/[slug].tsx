@@ -30,12 +30,15 @@ const EventPage = ({event}: Props) => {
         </div>
 
         {/* Breadcrums */}
-        <div className="flex items-center gap-2">
-          <span className="text-black/70 hover:text-black hover:underline">
-            <Link href="/arrg">Arrangementer</Link>
-          </span>
-          <span className="text-black/70">{">>"}</span>
-          <span className="underline">{event.title}</span>
+        <div>
+          <Link className="hover:underline" href="/">
+            Hjem
+          </Link>{" "}
+          {">"}{" "}
+          <Link className="hover:underline" href="/">
+            Bedriftspresentasjoner
+          </Link>{" "}
+          {">"} <span className="underline">{event.title}</span>
         </div>
 
         <Markdown content={event.body.no} />
