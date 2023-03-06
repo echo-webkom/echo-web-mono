@@ -21,7 +21,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
       )}
     >
       {/* Navigation routes */}
-      <NavigationMenu.List className="center m-0 flex list-none rounded-[6px]">
+      <NavigationMenu.List className="center m-0 flex list-none rounded-md">
         {headerRoutes.map((route: NavItem) => {
           if (route.session === !userSession) {
             return null;
@@ -29,21 +29,21 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
 
           return "sublinks" in route ? (
             <NavigationMenu.Item key={route.label}>
-              <NavigationMenu.Trigger className="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none hover:bg-black/5 focus:shadow-[0_0_0_2px]">
+              <NavigationMenu.Trigger className="text-md group flex select-none items-center justify-between gap-1 rounded-md px-3 py-2 font-medium leading-none outline-none hover:bg-black/5 focus:shadow-[0_0_0_2px] focus:shadow-echo-blue2">
                 {route.label}
                 <CaretDownIcon
-                  className="relative top-[1px]  transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                  className="relative top-[1px] transition-transform duration-150 ease-in group-data-[state=open]:-rotate-180"
                   aria-hidden
                 />
               </NavigationMenu.Trigger>
 
               <NavigationMenu.Content className="absolute top-0 left-0 w-full shadow-black/10 data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight sm:w-auto">
-                <ul className="one m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[500px] sm:grid-cols-[0.75fr_1fr]">
+                <ul className="one m-0 grid list-none gap-x-[10px] p-6 sm:w-[500px] sm:grid-cols-[0.75fr_1fr]">
                   {route.sublinks.map((sublink) => (
                     <li key={sublink.label}>
                       <NavigationMenu.Link
                         asChild
-                        className="block select-none rounded-[6px] p-3 text-[15px] leading-none no-underline outline-none transition-colors hover:bg-black/5 focus:shadow-[0_0_0_2px]"
+                        className="text-md group flex select-none items-center justify-between gap-1 rounded-md px-3 py-3 font-medium leading-none outline-none hover:bg-black/5 focus:shadow-[0_0_0_2px] focus:shadow-echo-blue2"
                       >
                         <Link href={sublink.href}>{sublink.label}</Link>
                       </NavigationMenu.Link>
@@ -55,7 +55,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
           ) : (
             <NavigationMenu.Item key={route.label}>
               <NavigationMenu.Link
-                className="block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none hover:bg-black/5 focus:shadow-[0_0_0_2px]"
+                className="text-md group flex select-none items-center justify-between gap-1 rounded-md px-3 py-2 font-medium leading-none outline-none hover:bg-black/5 focus:shadow-[0_0_0_2px] focus:shadow-echo-blue2"
                 href={route.href}
               >
                 {route.label}

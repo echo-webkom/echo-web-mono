@@ -48,6 +48,11 @@ export const headerRoutes: Array<NavItem> = [
         isExternal: false,
       },
       {
+        href: "/job",
+        label: "Stillingsannonser",
+        isExternal: false,
+      },
+      {
         href: "/for-studenter/masterinfo",
         label: "Masterinfo",
         isExternal: false,

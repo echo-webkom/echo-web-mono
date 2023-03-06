@@ -4,7 +4,7 @@ import classNames from "classnames";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
 import {footerRoutes} from "@/lib/routes";
-import {getHoverShadow, sponsors} from "@/lib/sponsors";
+import {hoverShadow, sponsors} from "@/lib/sponsors";
 import {useSession} from "next-auth/react";
 
 interface FooterProps {
@@ -94,7 +94,7 @@ export const Footer = ({className}: FooterProps) => {
               <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
               <ul className="space-y-5">
                 {sponsors.map(({label, href, imageSrc}) => {
-                  const shadowColor = getHoverShadow(label);
+                  const shadowColor = hoverShadow[label];
 
                   return (
                     <li key={label}>
