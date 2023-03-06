@@ -20,6 +20,11 @@ export const headerRoutes: Array<NavItem> = [
     isExternal: false,
   },
   {
+    label: "Arrangementer",
+    href: "/arrangementer",
+    isExternal: false,
+  },
+  {
     label: "For studenter",
     sublinks: [
       {

@@ -1,14 +1,18 @@
 import Link from "next/link";
-
-import {footerRoutes} from "@/lib/routes";
 import Image from "next/image";
 import classNames from "classnames";
-import {getHoverShadow, sponsors} from "@/lib/sponsors";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
-export const Footer = () => {
+import {footerRoutes} from "@/lib/routes";
+import {getHoverShadow, sponsors} from "@/lib/sponsors";
+
+interface FooterProps {
+  className?: string;
+}
+
+export const Footer = ({className}: FooterProps) => {
   return (
-    <div>
+    <div className={classNames(className)}>
       {/* Footer wave */}
       <svg
         id="svg"

@@ -27,8 +27,7 @@ export const Layout = ({children}: Props) => {
         <WebsiteBanner banner={banner} />
         <Header />
         <main className="my-10">{children}</main>
-        <div className="flex flex-grow" />
-        <Footer />
+        <Footer className="mt-auto" />
       </div>
     </>
   );
