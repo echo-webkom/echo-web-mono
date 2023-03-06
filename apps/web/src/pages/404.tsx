@@ -19,7 +19,7 @@ const FourOhFour = () => {
           Beklager, finner ikke siden du ser etter.
         </p>
         <Link
-          href={"/"}
+          href="/"
           className="text-center font-mono text-blue-500 underline hover:no-underline"
         >
           Ta meg til forsiden
