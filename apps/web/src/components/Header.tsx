@@ -22,7 +22,7 @@ export const Header = () => {
 
   return (
     <div className={`${isOpen ? "min-h-screen" : ""}`}>
-      <header className="mx-auto flex w-full max-w-7xl py-3 px-3">
+      <header className="container mx-auto flex py-3 px-3">
         <HeaderLogo />
         <DesktopNavigation className="mt-auto" />
       </header>

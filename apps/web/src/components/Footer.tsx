@@ -5,12 +5,15 @@ import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
 import {footerRoutes} from "@/lib/routes";
 import {getHoverShadow, sponsors} from "@/lib/sponsors";
+import {useSession} from "next-auth/react";
 
 interface FooterProps {
   className?: string;
 }
 
 export const Footer = ({className}: FooterProps) => {
+  const {data: userSession} = useSession();
+
   return (
     <div className={classNames(className)}>
       {/* Footer wave */}
@@ -35,34 +38,40 @@ export const Footer = ({className}: FooterProps) => {
       <footer className="bg-echo-yellow2 px-10 py-10">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
-            {footerRoutes.map((route) => (
-              <div key={route.label}>
-                <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
-                <ul className="space-y-1">
-                  {route.sublinks.map(({label, href, isExternal}) => (
-                    <li key={label}>
-                      <Link
-                        className="flex items-center gap-2 text-black/80 hover:underline"
-                        href={href}
-                        {...(isExternal && {
-                          target: "_blank",
-                          rel: "noreferrer",
-                        })}
-                      >
-                        {label}
+            {footerRoutes.map((route) => {
+              if (route.session === !userSession) {
+                return null;
+              }
 
-                        {/* Add external link icon */}
-                        {isExternal && (
-                          <span>
-                            <ExternalLinkIcon />
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+              return (
+                <div key={route.label}>
+                  <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
+                  <ul className="space-y-1">
+                    {route.sublinks.map(({label, href, isExternal}) => (
+                      <li key={label}>
+                        <Link
+                          className="flex items-center gap-2 text-black/80 hover:underline"
+                          href={href}
+                          {...(isExternal && {
+                            target: "_blank",
+                            rel: "noreferrer",
+                          })}
+                        >
+                          {label}
+
+                          {/* Add external link icon */}
+                          {isExternal && (
+                            <span>
+                              <ExternalLinkIcon />
+                            </span>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
 
             {/* Main sponsor */}
             <div>

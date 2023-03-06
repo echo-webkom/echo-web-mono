@@ -2,14 +2,16 @@ import Link from "next/link";
 import {useState} from "react";
 import * as Switch from "@radix-ui/react-switch";
 
-import {Layout} from "@/components";
+import {Button, Layout} from "@/components";
 import {fetchEventPreviews} from "@/api";
+import {signOut, useSession} from "next-auth/react";
 
 interface Props {
   eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
 }
 
 const HomePage = ({eventPreviews}: Props) => {
+  const {data: userSession} = useSession();
   const [checked, setChecked] = useState(true);
 
   return (
@@ -25,6 +27,8 @@ const HomePage = ({eventPreviews}: Props) => {
             <Switch.Thumb className="block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] shadow-blackA7 transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
           </Switch.Root>
         </div>
+
+        {userSession && <Button onClick={() => void signOut()}>Logg ut</Button>}
 
         {checked && (
           <>

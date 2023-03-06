@@ -1,6 +1,7 @@
 import {fetchEventBySlug} from "@/api";
-import {Layout, Markdown} from "@/components";
+import {Button, Layout, Markdown} from "@/components";
 import {GetServerSideProps} from "next";
+import Link from "next/link";
 
 interface Props {
   event: Awaited<ReturnType<typeof fetchEventBySlug>>;
@@ -14,7 +15,29 @@ const EventPage = ({event}: Props) => {
   return (
     <Layout>
       <div className="container mx-auto px-3">
-        <h1>{event.title}</h1>
+        <div className="mb-5 flex flex-col gap-3 border-b border-t py-3">
+          <div className="flex w-full items-center">
+            <div>
+              <p>
+                <span className="font-bold">Påmeldte:</span> 30/80
+              </p>
+            </div>
+            <div className="flex-grow" />
+            <div>
+              <Button>Meld deg på</Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Breadcrums */}
+        <div className="flex items-center gap-2">
+          <span className="text-black/70 hover:text-black hover:underline">
+            <Link href="/arrg">Arrangementer</Link>
+          </span>
+          <span className="text-black/70">{">>"}</span>
+          <span className="underline">{event.title}</span>
+        </div>
+
         <Markdown content={event.body.no} />
       </div>
     </Layout>
