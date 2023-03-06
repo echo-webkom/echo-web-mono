@@ -1,4 +1,5 @@
 import {type Banner} from "@/api/banner/schemas";
+import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
 
 interface BannerProps {
@@ -10,22 +11,27 @@ export const WebsiteBanner = ({banner}: BannerProps) => {
     return null;
   }
 
-  const externalProps = banner.isExternal
-    ? {
-        target: "_blank",
-        rel: "noopener noreferrer",
-      }
-    : {};
-
   return (
-    <div className="bg-echo-blue2 py-5 px-5 text-center text-lg font-bold">
+    <div className="bg-echo-blue2 py-5 px-5 text-lg font-bold">
       {banner.linkTo ? (
         <Link
           href={banner.linkTo}
-          className="hover:underline"
-          {...externalProps}
+          className="mx-auto flex w-fit items-center gap-2 hover:underline"
+          {...(banner.isExternal && {
+            target: "_blank",
+            rel: "noreferrer",
+          })}
         >
+          <span>🔊</span>
+
           {banner.text}
+
+          {/* Add external link icon */}
+          {banner.isExternal && (
+            <span>
+              <ExternalLinkIcon />
+            </span>
+          )}
         </Link>
       ) : (
         banner.text
