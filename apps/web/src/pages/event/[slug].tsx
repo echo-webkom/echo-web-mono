@@ -13,7 +13,7 @@ const EventPage = ({event}: Props) => {
 
   return (
     <Layout>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-3">
         <h1>{event.title}</h1>
         <Markdown content={event.body.no} />
       </div>

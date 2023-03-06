@@ -12,7 +12,7 @@ export const WebsiteBanner = ({banner}: BannerProps) => {
   }
 
   return (
-    <div className="bg-echo-blue2 py-5 px-5 text-lg font-bold">
+    <div className="text-md bg-echo-blue2 py-5 px-5 font-bold md:text-lg">
       {banner.linkTo ? (
         <Link
           href={banner.linkTo}
