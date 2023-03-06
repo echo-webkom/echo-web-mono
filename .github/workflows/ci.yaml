@@ -52,4 +52,4 @@ jobs:
         run: pnpm db:generate
 
       - name: Build, lint and type-check
-        run: pnpm lint type-check
+        run: pnpm build lint type-check

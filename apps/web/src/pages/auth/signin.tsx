@@ -1,5 +1,6 @@
 import type {Provider} from "next-auth/providers";
 import {getProviders, signIn} from "next-auth/react";
+import {GetServerSideProps} from "next";
 
 import {Layout, Button} from "@/components";
 
@@ -26,7 +27,7 @@ const LoginPage = ({providers}: Props) => {
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const providers = await getProviders();
 
   return {
