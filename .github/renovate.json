@@ -4,6 +4,9 @@
     "config:base",
     ":semanticCommitScopeDisabled"
   ],
+  "commitMessagePrefix": "renovate:",
+  "commitMessageAction": "update",
+  "rangeStrategy": "pin",
   "packageRules": [
     {
       "matchPackagePatterns": [
@@ -13,5 +16,5 @@
     }
   ],
   "prConcurrentLimit": 5,
-  "stabilityDays": 2
+  "stabilityDays": 3
 }

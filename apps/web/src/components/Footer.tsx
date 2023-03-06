@@ -4,6 +4,7 @@ import {footerRoutes} from "@/lib/routes";
 import Image from "next/image";
 import classNames from "classnames";
 import {getHoverShadow, sponsors} from "@/lib/sponsors";
+import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
 export const Footer = () => {
   return (
@@ -34,13 +35,24 @@ export const Footer = () => {
               <div key={route.label}>
                 <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
                 <ul className="space-y-1">
-                  {route.sublinks.map(({label, href}) => (
+                  {route.sublinks.map(({label, href, isExternal}) => (
                     <li key={label}>
                       <Link
-                        className="text-black/80 hover:underline"
+                        className="flex items-center gap-2 text-black/80 hover:underline"
                         href={href}
+                        {...(isExternal && {
+                          target: "_blank",
+                          rel: "noreferrer",
+                        })}
                       >
                         {label}
+
+                        {/* Add external link icon */}
+                        {isExternal && (
+                          <span>
+                            <ExternalLinkIcon />
+                          </span>
+                        )}
                       </Link>
                     </li>
                   ))}
@@ -50,7 +62,9 @@ export const Footer = () => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-4 py-2 text-xl font-bold">💘 Hovedsponsor</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">
+                💘 Hovedsamarbeidspartner
+              </h3>
               <Link href="https://bekk.no">
                 <Image
                   src="/images/bekk.png"
