@@ -65,7 +65,7 @@ export const Footer = () => {
               <h3 className="mb-4 py-2 text-xl font-bold">
                 💘 Hovedsamarbeidspartner
               </h3>
-              <Link href="https://bekk.no">
+              <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
                   src="/images/bekk.png"
                   className="invert"
@@ -85,7 +85,7 @@ export const Footer = () => {
 
                   return (
                     <li key={label}>
-                      <Link href={href}>
+                      <Link href={href} target="_blank" rel="noreferrer">
                         <Image
                           src={imageSrc}
                           className={classNames(
