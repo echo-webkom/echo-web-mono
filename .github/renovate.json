@@ -5,6 +5,7 @@
     ":semanticCommitScopeDisabled"
   ],
   "commitMessagePrefix": "renovate:",
+  "commitMessageAction": "update",
   "rangeStrategy": "pin",
   "packageRules": [
     {

@@ -44,7 +44,7 @@ importers:
       react-is: 18.2.0
       sanity: 3.5.1
       sanity-plugin-color-picker: 1.0.3
-      sanity-plugin-markdown: 4.0.0
+      sanity-plugin-markdown: 4.1.0
       sanity-plugin-media: 2.0.5
       slugify: 1.6.5
       styled-components: 5.3.8
@@ -60,8 +60,8 @@ importers:
       react-is: 18.2.0
       sanity: 3.5.1_lfoodr2hdmy7hzfgwjnbclkduy
       sanity-plugin-color-picker: 1.0.3_v2m5e27vhdewzwhryxwfaorcca
-      sanity-plugin-markdown: 4.0.0_oygagl45a5nf4trk2n35n2443a
-      sanity-plugin-media: 2.0.5_wfchxdlixo6wywmmb5uyeibll4
+      sanity-plugin-markdown: 4.1.0_u7kfkal2n6lulntgdi6eytir6e
+      sanity-plugin-media: 2.0.5_iewqn4j6m43xoxay3euodldnpi
       slugify: 1.6.5
       styled-components: 5.3.8_7i5myeigehqah43i5u7wbekgba
     devDependencies:
@@ -141,7 +141,7 @@ importers:
     devDependencies:
       '@types/node': 18.14.6
       '@types/react': 18.0.28
-      '@types/react-dom': 18.0.10
+      '@types/react-dom': 18.0.11
       autoprefixer: 10.4.13_postcss@8.4.21
       dotenv-cli: 7.0.0
       eslint: 8.35.0
@@ -3315,8 +3315,8 @@ packages:
       '@types/react': 18.0.28
     dev: false
 
-  /@types/react-dom/18.0.10:
-    resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
+  /@types/react-dom/18.0.11:
+    resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
       '@types/react': 18.0.28
     dev: true
@@ -8414,8 +8414,8 @@ packages:
       - react-dom
     dev: false
 
-  /sanity-plugin-markdown/4.0.0_oygagl45a5nf4trk2n35n2443a:
-    resolution: {integrity: sha512-SZkMjUTXuACth7FxSxTmy917EpkfZH7zJpukSb6TKsTMrjvY9BhWz3jpf2Kqas/ipDHaTnYTto11X00YAKw5gw==}
+  /sanity-plugin-markdown/4.1.0_u7kfkal2n6lulntgdi6eytir6e:
+    resolution: {integrity: sha512-GYJOeYbvjZ2BOCYrK3Dyp+zQ+5FIHsjrFYHw+aIZw7E47VyW6tfsmW5wOfTR+YG/Dv2n+5h5+sPIMUUNXSDTJA==}
     engines: {node: '>=14'}
     peerDependencies:
       easymde: ^2
