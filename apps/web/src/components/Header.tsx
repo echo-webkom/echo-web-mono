@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {useRouter} from "next/router";
-
-import {DesktopNavigation} from "./Navigation";
+import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
+import {DesktopNavigation, MobileNavigation} from "./Navigation";
 import {HeaderLogo} from "./HeaderLogo";
 
 export const Header = () => {
@@ -9,23 +9,28 @@ export const Header = () => {
   const {pathname} = useRouter();
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
   return (
-    <div className={`${isOpen ? "min-h-screen" : ""}`}>
-      <header className="container mx-auto flex py-3 px-3">
+    <div className="relative">
+      <header className="container mx-auto flex py-3 px-5">
         <HeaderLogo />
-        <DesktopNavigation className="mt-auto" />
+        <DesktopNavigation className="mt-auto hidden lg:block" />
+        <button
+          className="mt-auto mb-5 ml-auto block lg:hidden"
+          onClick={() => setIsOpen((b) => !b)}
+        >
+          {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
+          {isOpen && <Cross2Icon className="h-6 w-6" />}
+        </button>
       </header>
+      <hr />
+      {isOpen && (
+        <div className="absolute z-10 mx-auto w-full px-1 py-3 sm:px-3">
+          <MobileNavigation />
+        </div>
+      )}
     </div>
   );
 };

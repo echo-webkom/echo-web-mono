@@ -1,6 +1,6 @@
-import {type Banner} from "@/api/banner/schemas";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
+import {type Banner} from "@/api/banner/schemas";
 
 interface BannerProps {
   banner: Banner | null;

@@ -1,7 +1,7 @@
 import {type AppType} from "next/app";
 import {type Session} from "next-auth";
 import {SessionProvider} from "next-auth/react";
-import {Inter, IBM_Plex_Mono} from "@next/font/google";
+import {Inter, IBM_Plex_Mono} from "next/font/google";
 
 import {trpc} from "@/api/trpc";
 

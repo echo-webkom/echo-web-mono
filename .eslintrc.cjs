@@ -21,7 +21,15 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:react/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
       ],
+      settings: {
+        "import/resolver": {
+          typescript: true,
+          node: true,
+        },
+      },
       files: ["**/*.ts", "**/*.tsx"],
       parserOptions: {
         ecmaVersion: "latest",
@@ -44,6 +52,14 @@ module.exports = {
         "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
         "@typescript-eslint/no-unnecessary-condition": "error",
         "@typescript-eslint/no-throw-literal": "error",
+        eqeqeq: "error",
+        "@typescript-eslint/consistent-type-exports": [
+          "error",
+          {
+            fixMixedExportsWithInlineTypeSpecifier: true,
+          },
+        ],
+        "import/order": "error",
         "no-console": "error",
         curly: "error",
         "react/jsx-curly-brace-presence": [
