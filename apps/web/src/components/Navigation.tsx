@@ -1,10 +1,12 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import {CaretDownIcon} from "@radix-ui/react-icons";
+import {CaretDownIcon, ChevronDownIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
 import {useSession} from "next-auth/react";
 import classNames from "classnames";
+import * as Accordion from "@radix-ui/react-accordion";
+import React from "react";
 
-import {NavItem, headerRoutes} from "@/lib/routes";
+import {headerRoutes} from "@/lib/routes";
 
 interface DesktopNavigationProps {
   className?: string;
@@ -16,13 +18,13 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
   return (
     <NavigationMenu.Root
       className={classNames(
-        "justify-right relative z-[1] ml-auto flex",
+        "justify-right relative z-10 ml-auto flex",
         className,
       )}
     >
       {/* Navigation routes */}
       <NavigationMenu.List className="center m-0 flex list-none rounded-md">
-        {headerRoutes.map((route: NavItem) => {
+        {headerRoutes.map((route) => {
           if (route.session === !userSession) {
             return null;
           }
@@ -74,5 +76,64 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
         <NavigationMenu.Viewport className="relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] border bg-white shadow-sm transition-[width,_height] duration-300 data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut sm:w-[var(--radix-navigation-menu-viewport-width)]" />
       </div>
     </NavigationMenu.Root>
+  );
+};
+
+export const MobileNavigation = () => {
+  const {data: userSession} = useSession();
+
+  return (
+    <Accordion.Root
+      type="multiple"
+      className="block space-y-1 rounded-md border bg-white p-5 shadow-md lg:hidden"
+    >
+      {headerRoutes.map((route) => {
+        if (route.session === !userSession) {
+          return null;
+        }
+
+        return "sublinks" in route ? (
+          <Accordion.Item key={route.label} value={route.label}>
+            <Accordion.Header className="flex">
+              <Accordion.Trigger
+                className={classNames(
+                  "group flex w-full flex-1 items-center justify-between rounded-md bg-white px-4 py-2 text-lg font-medium text-gray-700 outline-none hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+                )}
+              >
+                {route.label}
+                <ChevronDownIcon
+                  className="text-black transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180"
+                  aria-hidden
+                />
+              </Accordion.Trigger>
+            </Accordion.Header>
+
+            <Accordion.Content className="text-md px-4 py-1 text-gray-500">
+              <ul className="flex flex-col gap-2">
+                {route.sublinks.map((sublink) => (
+                  <li key={sublink.label}>
+                    <Link
+                      href={sublink.href}
+                      className="block w-full rounded-md px-2 py-1 hover:bg-gray-50 hover:underline"
+                    >
+                      {sublink.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Accordion.Content>
+          </Accordion.Item>
+        ) : (
+          <Accordion.Item key={route.label} value={route.label}>
+            <Link
+              href={route.href}
+              className="flex w-full items-center justify-between rounded-md px-4 py-2 text-lg font-medium text-gray-700 hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+            >
+              {route.label}
+            </Link>
+          </Accordion.Item>
+        );
+      })}
+    </Accordion.Root>
   );
 };

@@ -65,6 +65,10 @@ export const eventPreviewSchema = z.object({
   _createdAt: z.string(),
   title: z.string(),
   slug: z.string(),
+  body: z.object({
+    no: z.string(),
+    en: z.string().optional(),
+  }),
   date: z.string(),
   registrationDate: z.string().nullable(),
   logoUrl: z.string().nullable(),

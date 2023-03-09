@@ -1,8 +1,8 @@
-import {ErrorMessage} from "@/utils/error";
-import {slugSchema} from "@/utils/slug";
 import {groq} from "next-sanity";
 import {sanityClient} from "../sanity.client";
 import {StaticInfo, staticInfoSchema} from "./schemas";
+import {slugSchema} from "@/utils/slug";
+import {ErrorMessage} from "@/utils/error";
 
 export * from "./schemas";
 

@@ -131,6 +131,12 @@ export const headerRoutes: Array<NavItem> = [
     isExternal: false,
   },
   {
+    href: "/profile",
+    label: "Profil",
+    session: true,
+    isExternal: false,
+  },
+  {
     href: "/auth/signout",
     label: "Logg ut",
     session: true,

@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": ["**/.env"],
   "pipeline": {
     "db:generate": {
       "inputs": ["prisma/schema.prisma"],
@@ -9,7 +10,14 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
+    "docker:up": {
+      "cache": false
+    },
+    "docker:down": {
+      "cache": false
+    },
     "dev": {
+      "dependsOn": ["^db:generate", "^docker:up"],
       "persistent": true,
       "cache": false
     },

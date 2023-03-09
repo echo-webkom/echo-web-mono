@@ -1,3 +1,4 @@
+import {GetStaticPaths, GetStaticProps} from "next";
 import {
   fetchStaticInfoBySlug,
   fetchStaticInfoPaths,
@@ -5,7 +6,6 @@ import {
 } from "@/api/static-info";
 import {Layout, Markdown} from "@/components";
 import {isErrorMessage} from "@/utils/error";
-import {GetStaticPaths, GetStaticProps} from "next";
 
 interface Props {
   page: StaticInfo;

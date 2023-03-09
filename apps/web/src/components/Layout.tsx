@@ -1,7 +1,6 @@
 import {ReactNode, useEffect, useState} from "react";
-
-import {Header, Footer} from "@/components";
 import {WebsiteBanner} from "./Banner";
+import {Header, Footer} from "@/components";
 import {fetchBanner} from "@/api/banner";
 
 interface Props {

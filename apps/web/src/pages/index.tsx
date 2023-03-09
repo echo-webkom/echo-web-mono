@@ -1,63 +1,123 @@
+import Image from "next/image";
 import Link from "next/link";
-import {useState} from "react";
-import * as Switch from "@radix-ui/react-switch";
-
-import {Button, Layout} from "@/components";
+import removeMd from "remove-markdown";
 import {fetchEventPreviews} from "@/api";
-import {signOut, useSession} from "next-auth/react";
+import {Button, Layout} from "@/components";
+import {fetchPosts} from "@/api/posts";
+import {isErrorMessage} from "@/utils/error";
 
 interface Props {
   eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
+  bedpresPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
+  posts: Awaited<ReturnType<typeof fetchPosts>>;
 }
 
-const HomePage = ({eventPreviews}: Props) => {
-  const {data: userSession} = useSession();
-  const [checked, setChecked] = useState(true);
-
+const HomePage = ({eventPreviews, bedpresPreviews, posts}: Props) => {
   return (
     <Layout>
-      <div className="container mx-auto">
-        <div className="flex gap-3">
-          <span>Vis bedpresser:</span>{" "}
-          <Switch.Root
-            onCheckedChange={(b) => setChecked(b)}
-            defaultChecked={checked}
-            className="relative h-[25px] w-[42px] cursor-default rounded-full bg-gray-200 outline-none focus:shadow-[0_0_0_2px] focus:shadow-blue-400 data-[state=checked]:bg-echo-yellow"
-          >
-            <Switch.Thumb className="block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] shadow-blackA7 transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
-          </Switch.Root>
+      {/* Welcome */}
+      <div className="relative mt-10 mb-40 p-20">
+        <Image src="/hero.jpg" alt="hero image" fill className="blur" />
+
+        <div className="z-[1] mx-auto max-w-3xl">
+          <div className="flex flex-col gap-10 py-10">
+            <div className="z-[1] flex flex-col gap-3 text-center">
+              <h2 className="text-3xl">Hei, og velkommen til</h2>
+              <h2 className="text-4xl font-bold">
+                echo - Linjeforeningen for informatikk
+              </h2>
+            </div>
+            <div className="mx-auto flex w-full flex-col gap-8 md:flex-row">
+              <Button intent="primary" size="large" fullWidth>
+                Arrangementer
+              </Button>
+              <Button intent="secondary" size="large" fullWidth>
+                For bedrifter
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Events */}
+      <div className="flex flex-col gap-20">
+        <div className="container mx-auto px-3">
+          <h2 className="mb-5 text-2xl font-bold">Kommende arrangementer</h2>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {eventPreviews.map((event) => (
+              <Link
+                href={`/event/${event.slug}`}
+                key={event.slug}
+                className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
+              >
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-bold">{event.title}</h3>
+                  <hr />
+                  <p className="text-gray-500">{removeMd(event.body.no)}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
-        {userSession && <Button onClick={() => void signOut()}>Logg ut</Button>}
+        <div className="container mx-auto px-3">
+          <h2 className="mb-5 text-2xl font-bold">
+            Kommende bedriftspresentasjoner
+          </h2>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {bedpresPreviews.map((event) => (
+              <Link
+                href={`/event/${event.slug}`}
+                key={event.slug}
+                className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
+              >
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-bold">{event.title}</h3>
+                  <hr />
+                  <p className="text-gray-500">{removeMd(event.body.no)}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
 
-        {checked && (
-          <>
-            <h2 className="text-3xl font-bold">Bedpresser</h2>
-            <ul className="flex flex-col gap-3">
-              {eventPreviews.map((event) => (
-                <li key={event._id}>
-                  <div className="rounded-md bg-black/5 p-5">
-                    <h3 className="text-xl font-bold">{event.title}</h3>
-                    <Link className="underline" href={`/event/${event.slug}`}>
-                      Les mer!
-                    </Link>
+        <div className="container mx-auto px-3">
+          <h2 className="mb-5 text-2xl font-bold">Siste innlegg</h2>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {isErrorMessage(posts) && <p>Kunne ikke hente innlegg</p>}
+            {!isErrorMessage(posts) &&
+              posts.map((post) => (
+                <Link
+                  href={`/post/${post.slug}`}
+                  key={post.slug}
+                  className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
+                >
+                  <div className="flex flex-col gap-3">
+                    <h3 className="text-xl font-bold">{post.title.no}</h3>
+                    <hr />
+                    <p className="text-gray-500">
+                      {removeMd(post.body.no).slice(0, 250)}...
+                    </p>
                   </div>
-                </li>
+                </Link>
               ))}
-            </ul>
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </Layout>
   );
 };
 
 export const getServerSideProps = async () => {
-  const eventPreviews = await fetchEventPreviews("BEDPRES", 30);
+  const bedpresPreviews = await fetchEventPreviews("BEDPRES", 3);
+  const eventPreviews = await fetchEventPreviews("EVENT", 3);
+  const posts = await fetchPosts(3);
 
   return {
     props: {
+      bedpresPreviews,
       eventPreviews,
+      posts,
     },
   };
 };

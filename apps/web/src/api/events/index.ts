@@ -32,6 +32,7 @@ export const fetchEventPreviews = async (
           _createdAt,
           title,
           "slug": slug.current,
+          body,
           date,
           registrationDate,
           logoUrl,

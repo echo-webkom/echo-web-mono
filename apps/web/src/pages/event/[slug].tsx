@@ -1,7 +1,7 @@
-import {fetchEventBySlug} from "@/api";
-import {Button, Layout, Markdown} from "@/components";
 import {GetServerSideProps} from "next";
 import Link from "next/link";
+import {fetchEventBySlug} from "@/api";
+import {Button, Layout, Markdown} from "@/components";
 
 interface Props {
   event: Awaited<ReturnType<typeof fetchEventBySlug>>;
