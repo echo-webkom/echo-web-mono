@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
-import {sanityClient} from "../sanity.client";
-import {Post, postSchema} from "./schemas";
-import {slugSchema} from "@/utils/slug";
-import {ErrorMessage} from "@/utils/error";
+import { groq } from "next-sanity";
+import { sanityClient } from "../sanity.client";
+import { Post, postSchema } from "./schemas";
+import { slugSchema } from "@/utils/slug";
+import { ErrorMessage } from "@/utils/error";
 
 export * from "./schemas";
 
@@ -30,7 +30,7 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
  * @param n how many posts to retrieve
  */
 export const fetchPosts = async (
-  n: number,
+  n: number
 ): Promise<Array<Post> | ErrorMessage> => {
   try {
     const limit = n === 0 ? `` : `[0...${n}]`;
@@ -54,7 +54,7 @@ export const fetchPosts = async (
     return postSchema.array().parse(result);
   } catch (error) {
     console.log(error); // eslint-disable-line
-    return {message: JSON.stringify(error)};
+    return { message: JSON.stringify(error) };
   }
 };
 
@@ -63,7 +63,7 @@ export const fetchPosts = async (
  * @param slug the slug of the desired post.
  */
 export const fetchPostBySlug = async (
-  slug: string,
+  slug: string
 ): Promise<Post | ErrorMessage> => {
   try {
     const query = groq`
@@ -85,6 +85,6 @@ export const fetchPostBySlug = async (
     return postSchema.parse(result);
   } catch (error) {
     console.log(error); // eslint-disable-line
-    return {message: JSON.stringify(error)};
+    return { message: JSON.stringify(error) };
   }
 };

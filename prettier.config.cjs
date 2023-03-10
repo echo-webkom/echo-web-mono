@@ -1,7 +1,7 @@
 /** @type {import("prettier").Config} */
 module.exports = {
   arrowParens: "always",
-  printWidth: 80,
+  printWidth: 100,
   singleQuote: false,
   jsxSingleQuote: false,
   bracketSpacing: false,
@@ -9,5 +9,5 @@ module.exports = {
   trailingComma: "all",
   tabWidth: 2,
   plugins: [require.resolve("prettier-plugin-tailwindcss")],
-  tailwindConfig: "./packages/config/tailwind/index.cjs",
+  tailwindConfig: "./apps/web/tailwind.config.cjs",
 };

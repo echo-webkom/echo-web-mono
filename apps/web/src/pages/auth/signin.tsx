@@ -1,14 +1,14 @@
-import type {Provider} from "next-auth/providers";
-import {getProviders, signIn} from "next-auth/react";
-import {GetServerSideProps} from "next";
+import type { Provider } from "next-auth/providers";
+import { getProviders, signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
 
-import {Layout, Button} from "@/components";
+import { Layout, Button } from "@/components";
 
 type Props = {
   providers: Array<Provider>;
 };
 
-const LoginPage = ({providers}: Props) => {
+const LoginPage = ({ providers }: Props) => {
   return (
     <Layout>
       <h1 className="mb-10 text-center text-3xl font-bold">
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const providers = await getProviders();
 
   return {
-    props: {providers},
+    props: { providers },
   };
 };
 

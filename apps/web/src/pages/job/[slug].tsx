@@ -1,10 +1,10 @@
-import {format} from "date-fns";
-import {GetStaticPaths, GetStaticProps} from "next";
+import { format } from "date-fns";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {isErrorMessage} from "@/utils/error";
-import {Layout, Markdown} from "@/components";
-import {fetchJobAdBySlug, fetchJobAdPaths, JobAd} from "@/api/job-ads";
+import { isErrorMessage } from "@/utils/error";
+import { Layout, Markdown } from "@/components";
+import { fetchJobAdBySlug, fetchJobAdPaths, JobAd } from "@/api/job-ads";
 
 interface Props {
   jobAd: JobAd;
@@ -17,7 +17,7 @@ const jobTypeToString: Record<JobAd["jobType"], string> = {
   summerjob: "Sommerjobb",
 };
 
-const JobAdPage = ({jobAd}: Props) => {
+const JobAdPage = ({ jobAd }: Props) => {
   return (
     <>
       <Head>
@@ -100,7 +100,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await fetchJobAdPaths();
 
   return {
-    paths: slugs.map((slug) => ({params: {slug}})),
+    paths: slugs.map((slug) => ({ params: { slug } })),
     fallback: false,
   };
 };

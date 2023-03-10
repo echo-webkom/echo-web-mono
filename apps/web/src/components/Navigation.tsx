@@ -1,25 +1,23 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import {CaretDownIcon, ChevronDownIcon} from "@radix-ui/react-icons";
+import { CaretDownIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import classNames from "classnames";
 import * as Accordion from "@radix-ui/react-accordion";
-import React from "react";
-
-import {headerRoutes} from "@/lib/routes";
+import { headerRoutes } from "@/lib/routes";
 
 interface DesktopNavigationProps {
   className?: string;
 }
 
-export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
-  const {data: userSession} = useSession();
+export const DesktopNavigation = ({ className }: DesktopNavigationProps) => {
+  const { data: userSession } = useSession();
 
   return (
     <NavigationMenu.Root
       className={classNames(
         "justify-right relative z-10 ml-auto flex",
-        className,
+        className
       )}
     >
       {/* Navigation routes */}
@@ -80,7 +78,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
 };
 
 export const MobileNavigation = () => {
-  const {data: userSession} = useSession();
+  const { data: userSession } = useSession();
 
   return (
     <Accordion.Root
@@ -97,7 +95,7 @@ export const MobileNavigation = () => {
             <Accordion.Header className="flex">
               <Accordion.Trigger
                 className={classNames(
-                  "group flex w-full flex-1 items-center justify-between rounded-md bg-white px-4 py-2 text-lg font-medium text-gray-700 outline-none hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+                  "group flex w-full flex-1 items-center justify-between rounded-md bg-white px-4 py-2 text-lg font-medium text-gray-700 outline-none hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
                 )}
               >
                 {route.label}

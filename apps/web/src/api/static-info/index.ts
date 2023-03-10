@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
-import {sanityClient} from "../sanity.client";
-import {StaticInfo, staticInfoSchema} from "./schemas";
-import {slugSchema} from "@/utils/slug";
-import {ErrorMessage} from "@/utils/error";
+import { groq } from "next-sanity";
+import { sanityClient } from "../sanity.client";
+import { StaticInfo, staticInfoSchema } from "./schemas";
+import { slugSchema } from "@/utils/slug";
+import { ErrorMessage } from "@/utils/error";
 
 export * from "./schemas";
 
@@ -22,7 +22,7 @@ export const fetchStaticInfoPaths = async (): Promise<Array<string>> => {
 };
 
 export const fetchStaticInfoBySlug = async (
-  slug: string,
+  slug: string
 ): Promise<StaticInfo | ErrorMessage> => {
   try {
     const query = groq`

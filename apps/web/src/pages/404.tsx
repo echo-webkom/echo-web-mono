@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import {Layout} from "@/components";
+import { Layout } from "@/components";
 
 const FourOhFour = () => {
   return (

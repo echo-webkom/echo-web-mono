@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import {useRouter} from "next/router";
-import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
-import {DesktopNavigation, MobileNavigation} from "./Navigation";
-import {HeaderLogo} from "./HeaderLogo";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { DesktopNavigation, MobileNavigation } from "./Navigation";
+import { HeaderLogo } from "./HeaderLogo";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {pathname} = useRouter();
+  const { pathname } = useRouter();
 
   useEffect(() => {
     setIsOpen(false);
