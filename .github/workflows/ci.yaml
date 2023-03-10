@@ -10,10 +10,10 @@ jobs:
   build-lint:
     name: Build and lint
     env:
-      NODE_ENV: "test"
       DATABASE_URL: file:./db.sqlite
       FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
       FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
     # TODO: Add remote caching
     # To use Remote Caching, uncomment the next lines and follow the steps below.
