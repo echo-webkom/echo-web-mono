@@ -1,17 +1,17 @@
-import {GetStaticPaths, GetStaticProps} from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import {
   fetchStaticInfoBySlug,
   fetchStaticInfoPaths,
   StaticInfo,
 } from "@/api/static-info";
-import {Layout, Markdown} from "@/components";
-import {isErrorMessage} from "@/utils/error";
+import { Layout, Markdown } from "@/components";
+import { isErrorMessage } from "@/utils/error";
 
 interface Props {
   page: StaticInfo;
 }
 
-const StaticPage = ({page}: Props) => {
+const StaticPage = ({ page }: Props) => {
   return (
     <Layout>
       <div className="container mx-auto">
@@ -27,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await fetchStaticInfoPaths();
 
   return {
-    paths: slugs.map((slug) => ({params: {slug}})),
+    paths: slugs.map((slug) => ({ params: { slug } })),
     fallback: false,
   };
 };

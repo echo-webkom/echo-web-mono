@@ -1,17 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames";
-import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import {useSession} from "next-auth/react";
-import {footerRoutes} from "@/lib/routes";
-import {hoverShadow, sponsors} from "@/lib/sponsors";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { useSession } from "next-auth/react";
+import { footerRoutes } from "@/lib/routes";
+import { hoverShadow, sponsors } from "@/lib/sponsors";
 
 interface FooterProps {
   className?: string;
 }
 
-export const Footer = ({className}: FooterProps) => {
-  const {data: userSession} = useSession();
+export const Footer = ({ className }: FooterProps) => {
+  const { data: userSession } = useSession();
 
   return (
     <div className={classNames(className)}>
@@ -46,7 +46,7 @@ export const Footer = ({className}: FooterProps) => {
                 <div key={route.label}>
                   <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
                   <ul className="space-y-1">
-                    {route.sublinks.map(({label, href, isExternal}) => (
+                    {route.sublinks.map(({ label, href, isExternal }) => (
                       <li key={label}>
                         <Link
                           className="flex items-center gap-2 text-black/80 hover:underline"
@@ -92,7 +92,7 @@ export const Footer = ({className}: FooterProps) => {
             <div>
               <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
               <ul className="space-y-5">
-                {sponsors.map(({label, href, imageSrc}) => {
+                {sponsors.map(({ label, href, imageSrc }) => {
                   const shadowColor = hoverShadow[label];
 
                   return (
@@ -102,7 +102,7 @@ export const Footer = ({className}: FooterProps) => {
                           src={imageSrc}
                           className={classNames(
                             "rounded-lg bg-white px-5 py-3 shadow-md transition-shadow duration-300 ease-in-out",
-                            shadowColor,
+                            shadowColor
                           )}
                           height={150}
                           width={150}

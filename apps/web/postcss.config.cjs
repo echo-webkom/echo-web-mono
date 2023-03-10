@@ -1,2 +1,8 @@
-// @ts-ignore
-module.exports = require("@echo-webkom/tailwind-config/postcss");
+const config = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+
+module.exports = config;

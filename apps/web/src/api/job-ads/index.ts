@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
-import {sanityClient} from "../sanity.client";
-import {JobAd, jobAdSchema} from "./schemas";
-import {slugSchema} from "@/utils/slug";
-import {ErrorMessage} from "@/utils/error";
+import { groq } from "next-sanity";
+import { sanityClient } from "../sanity.client";
+import { JobAd, jobAdSchema } from "./schemas";
+import { slugSchema } from "@/utils/slug";
+import { ErrorMessage } from "@/utils/error";
 
 export * from "./schemas";
 
@@ -66,7 +66,7 @@ export const fetchJobAds = async (n: number): Promise<Array<JobAd>> => {
  * @returns Job ad or an error message
  */
 export const fetchJobAdBySlug = async (
-  slug: string,
+  slug: string
 ): Promise<JobAd | ErrorMessage> => {
   try {
     const query = groq`

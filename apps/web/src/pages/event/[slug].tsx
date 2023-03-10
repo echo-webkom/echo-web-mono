@@ -1,13 +1,13 @@
-import {GetServerSideProps} from "next";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
-import {fetchEventBySlug} from "@/api";
-import {Button, Layout, Markdown} from "@/components";
+import { fetchEventBySlug } from "@/api/events";
+import { Button, Layout, Markdown } from "@/components";
 
 interface Props {
   event: Awaited<ReturnType<typeof fetchEventBySlug>>;
 }
 
-const EventPage = ({event}: Props) => {
+const EventPage = ({ event }: Props) => {
   if (!event) {
     return <div>404</div>;
   }

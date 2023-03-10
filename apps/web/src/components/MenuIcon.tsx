@@ -1,4 +1,4 @@
-import {AnimatePresence, motion} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const openContainer = {
   hidden: {
@@ -84,7 +84,7 @@ interface Props {
   open: boolean;
 }
 
-export const MenuIcon = ({open}: Props) => {
+export const MenuIcon = ({ open }: Props) => {
   return (
     <AnimatePresence>
       <div className="flex flex-col items-end gap-1 overflow-hidden hover:cursor-pointer">

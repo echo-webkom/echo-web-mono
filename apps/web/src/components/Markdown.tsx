@@ -13,12 +13,12 @@ interface MarkdownProps {
  * @param content The markdown content to render
  * @returns Markdown mapped to HTML
  */
-export const Markdown = ({content}: MarkdownProps) => {
+export const Markdown = ({ content }: MarkdownProps) => {
   return (
     <ReactMarkdown
       className="prose md:prose-xl"
       components={{
-        a: ({children, href}) => {
+        a: ({ children, href }) => {
           // TODO: Add external link icon and behavior
           return (
             <Link
@@ -29,7 +29,7 @@ export const Markdown = ({content}: MarkdownProps) => {
             </Link>
           );
         },
-        img: ({src, alt}) => {
+        img: ({ src, alt }) => {
           return (
             <Image
               src={src ?? ""}

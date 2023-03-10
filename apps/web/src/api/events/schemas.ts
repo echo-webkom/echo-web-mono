@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 export const eventTypeSchema = z.enum(["BEDPRES", "EVENT"]);
 export type EventType = z.infer<typeof eventTypeSchema>;

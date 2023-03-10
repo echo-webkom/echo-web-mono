@@ -1,13 +1,13 @@
-import {ReactNode, useEffect, useState} from "react";
-import {WebsiteBanner} from "./Banner";
-import {Header, Footer} from "@/components";
-import {fetchBanner} from "@/api/banner";
+import { ReactNode, useEffect, useState } from "react";
+import { WebsiteBanner } from "./Banner";
+import { Header, Footer } from "@/components";
+import { fetchBanner } from "@/api/banner";
 
 interface Props {
   children: ReactNode;
 }
 
-export const Layout = ({children}: Props) => {
+export const Layout = ({ children }: Props) => {
   const [banner, setBanner] =
     useState<Awaited<ReturnType<typeof fetchBanner>>>(null);
 

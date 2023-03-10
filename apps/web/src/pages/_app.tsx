@@ -1,9 +1,9 @@
-import {type AppType} from "next/app";
-import {type Session} from "next-auth";
-import {SessionProvider} from "next-auth/react";
-import {Inter, IBM_Plex_Mono} from "next/font/google";
+import { type AppType } from "next/app";
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 
-import {trpc} from "@/api/trpc";
+import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
 
@@ -15,9 +15,9 @@ const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
 });
 
-const MyApp: AppType<{session: Session | null}> = ({
+const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: {session, ...pageProps},
+  pageProps: { session, ...pageProps },
 }) => {
   return (
     <>
@@ -36,4 +36,4 @@ const MyApp: AppType<{session: Session | null}> = ({
   );
 };
 
-export default trpc.withTRPC(MyApp);
+export default api.withTRPC(MyApp);

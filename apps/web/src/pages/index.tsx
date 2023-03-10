@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import removeMd from "remove-markdown";
-import {fetchEventPreviews} from "@/api";
-import {Button, Layout} from "@/components";
-import {fetchPosts} from "@/api/posts";
-import {isErrorMessage} from "@/utils/error";
+import { fetchEventPreviews } from "@/api/events";
+import { Button, Layout } from "@/components";
+import { fetchPosts } from "@/api/posts";
+import { isErrorMessage } from "@/utils/error";
 
 interface Props {
   eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
@@ -12,7 +12,7 @@ interface Props {
   posts: Awaited<ReturnType<typeof fetchPosts>>;
 }
 
-const HomePage = ({eventPreviews, bedpresPreviews, posts}: Props) => {
+const HomePage = ({ eventPreviews, bedpresPreviews, posts }: Props) => {
   return (
     <Layout>
       {/* Welcome */}

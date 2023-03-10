@@ -1,15 +1,15 @@
-import {GetStaticProps} from "next";
+import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {fetchJobAds, JobAd} from "@/api/job-ads";
-import {Layout} from "@/components";
-import {urlFor} from "@/utils/image-builder";
+import { fetchJobAds, JobAd } from "@/api/job-ads";
+import { Layout } from "@/components";
+import { urlFor } from "@/utils/image-builder";
 
 interface Props {
   jobs: Array<JobAd>;
 }
 
-const JobAdsOverviewPage = ({jobs}: Props) => {
+const JobAdsOverviewPage = ({ jobs }: Props) => {
   return (
     <Layout>
       <div className="container mx-auto px-3">
