@@ -77,7 +77,7 @@ importers:
       react-markdown: 8.0.5
       remark-gfm: 3.0.1
       remove-markdown: 0.5.0
-      superjson: 1.9.1
+      superjson: 1.12.2
       tailwindcss: 3.2.7
       tsconfig: 0.0.0
       typescript: 4.9.5
@@ -111,7 +111,7 @@ importers:
       react-markdown: 8.0.5_pmekkgnqduwlme35zpnqhenc34
       remark-gfm: 3.0.1
       remove-markdown: 0.5.0
-      superjson: 1.9.1
+      superjson: 1.12.2
       zod: 3.21.4
     devDependencies:
       '@types/eslint': 8.21.1
@@ -7347,8 +7347,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /superjson/1.9.1:
-    resolution: {integrity: sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==}
+  /superjson/1.12.2:
+    resolution: {integrity: sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==}
     engines: {node: '>=10'}
     dependencies:
       copy-anything: 3.0.3
