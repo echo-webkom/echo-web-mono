@@ -64,7 +64,7 @@ importers:
       eslint: 8.35.0
       eslint-config-custom: 0.0.0
       eslint-config-next: 13.2.4
-      framer-motion: 10.0.2
+      framer-motion: 10.2.3
       next: 13.2.4
       next-auth: 4.20.1
       next-sanity: 4.1.5
@@ -102,7 +102,7 @@ importers:
       class-variance-authority: 0.4.0_typescript@4.9.5
       classnames: 2.3.2
       date-fns: 2.29.3
-      framer-motion: 10.0.2_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 10.2.3_biqbaboplfbrettd7655fr4n2y
       next: 13.2.4_pjwopsidmaokadturxaafygjp4
       next-auth: 4.20.1_ld2jel3hspngo3u5lti2kgl2sq
       next-sanity: 4.1.5_oyk3wwzjpzhbac2ogh423ykh5e
@@ -3849,11 +3849,16 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
-  /framer-motion/10.0.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-1k8y1e6DMRQ/r6or4TBxRhE1cXlDE5bm+SFeWLeh7ng0sfSbpROC2Qd1OEHq6lLXNARar/KKoj/EQ6eIvn60Uw==}
+  /framer-motion/10.2.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-+TBxfia8Ym/lYSvTAhome7LYFIR8fKhImuln5zcp9D8nFI2wNSDdBRtK5WoWTyjHXJ7efv5xv376Ma85zHhtUg==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
