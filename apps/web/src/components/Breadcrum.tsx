@@ -9,21 +9,18 @@ interface BreadcrumProps {
   className?: string;
 }
 
-export const Breadcrum = ({ className, links }: BreadcrumProps) => {
+export const Breadcrum = ({className, links}: BreadcrumProps) => {
   return (
     <div className={classNames(className)}>
       {links.map((link, index) => (
         <span key={index}>
           <Link
-            className={classNames(
-              "hover:underline",
-              index === links.length - 1 && "underline"
-            )}
+            className={classNames("hover:underline", index === links.length - 1 && "underline")}
             href={link.href}
           >
             {link.label}
           </Link>
-          {index !== links.length - 1 && " > "}
+          {index !== links.length - 1 && " / "}
         </span>
       ))}
     </div>

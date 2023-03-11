@@ -1,16 +1,8 @@
-import {
-  isFriday,
-  isThursday,
-  getDate,
-  getHours,
-  getMonth,
-  getWeek,
-  isMonday,
-} from "date-fns";
-import { nb } from "date-fns/locale";
+import {isFriday, isThursday, getDate, getHours, getMonth, getWeek, isMonday} from "date-fns";
+import {nb} from "date-fns/locale";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 const randomHeaderMessage = () => {
   const now = new Date();
@@ -40,7 +32,7 @@ const randomHeaderMessage = () => {
     }
 
     // Week-based messages
-    const currentWeek = getWeek(now, { locale: nb });
+    const currentWeek = getWeek(now, {locale: nb});
     if (currentWeek === 34 || currentWeek === 35) {
       return [...baseMessages, "Velkommen (tilbake)!", "New semester, new me?"];
     }
@@ -89,8 +81,8 @@ export const HeaderLogo = () => {
   const logo = "/images/android-chrome-512x512.png";
 
   return (
-    <Link href="/">
-      <div className="relative h-24 w-24">
+    <Link href="/" className="flex items-center gap-5">
+      <div className="relative h-20 w-20 md:h-24 md:w-24">
         <Image src={logo} alt="logo" fill />
       </div>
     </Link>

@@ -1,12 +1,8 @@
-import { groq } from "next-sanity";
-import { sanityClient } from "../sanity.client";
-import {
-  type StudentGroup,
-  studentGroupSchema,
-  type StudentGroupType,
-} from "./schemas";
-import { slugSchema } from "@/utils/slug";
-import { type ErrorMessage } from "@/utils/error";
+import {groq} from "next-sanity";
+import {sanityClient} from "../sanity.client";
+import {type StudentGroup, studentGroupSchema, type StudentGroupType} from "./schemas";
+import {slugSchema} from "@/utils/slug";
+import {type ErrorMessage} from "@/utils/error";
 
 export * from "./schemas";
 
@@ -29,7 +25,7 @@ export const fetchStudentGroupPaths = async (): Promise<Array<string>> => {
 };
 
 export const fetchStudentGroupPathsByType = async (
-  type: StudentGroupType
+  type: StudentGroupType,
 ): Promise<Array<string>> => {
   try {
     const query = groq`*[_type == "studentGroup" && groupType == $type && !(_id in path('drafts.**'))]{ "slug": slug.current }`;
@@ -49,7 +45,7 @@ export const fetchStudentGroupPathsByType = async (
 };
 
 export const fetchStudentGroupsByType = async (
-  type: StudentGroupType
+  type: StudentGroupType,
 ): Promise<Array<StudentGroup> | ErrorMessage> => {
   try {
     const query = groq`
@@ -82,7 +78,7 @@ export const fetchStudentGroupsByType = async (
 };
 
 export const fetchStudentGroupBySlug = async (
-  slug: string
+  slug: string,
 ): Promise<StudentGroup | ErrorMessage> => {
   try {
     const query = groq`

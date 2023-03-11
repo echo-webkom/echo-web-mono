@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import {cva, type VariantProps} from "class-variance-authority";
 
 const button = cva(
   "rounded-md text-black font-bold outline-none focus:ring-2 ring-offset-2 transform active:scale-95 transition-transform shadow-md",
@@ -26,24 +26,13 @@ const button = cva(
       size: "medium",
       fullWidth: false,
     },
-  }
+  },
 );
 
 export interface ButtonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {}
 
-export const Button: React.FC<ButtonProps> = ({
-  className,
-  intent,
-  size,
-  fullWidth,
-  ...props
-}) => {
-  return (
-    <button
-      className={button({ className, intent, size, fullWidth })}
-      {...props}
-    />
-  );
+export const Button: React.FC<ButtonProps> = ({className, intent, size, fullWidth, ...props}) => {
+  return <button className={button({className, intent, size, fullWidth})} {...props} />;
 };

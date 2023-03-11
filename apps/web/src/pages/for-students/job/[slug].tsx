@@ -1,10 +1,10 @@
-import { format } from "date-fns";
-import { type GetStaticPaths, type GetStaticProps } from "next";
+import {format} from "date-fns";
+import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { isErrorMessage } from "@/utils/error";
-import { Breadcrum, Layout, Markdown } from "@/components";
-import { fetchJobAdBySlug, fetchJobAdPaths, type JobAd } from "@/api/job-ads";
+import {isErrorMessage} from "@/utils/error";
+import {Breadcrum, Layout, Markdown} from "@/components";
+import {fetchJobAdBySlug, fetchJobAdPaths, type JobAd} from "@/api/job-ads";
 
 interface Props {
   jobAd: JobAd;
@@ -17,7 +17,7 @@ const jobTypeToString: Record<JobAd["jobType"], string> = {
   summerjob: "Sommerjobb",
 };
 
-const JobAdPage = ({ jobAd }: Props) => {
+const JobAdPage = ({jobAd}: Props) => {
   return (
     <>
       <Head>
@@ -28,18 +28,16 @@ const JobAdPage = ({ jobAd }: Props) => {
         <div className="container mx-auto px-5">
           <Breadcrum
             links={[
-              { href: "/", label: "Hjem" },
-              { href: "/job", label: "Jobb" },
-              { href: `/job/${jobAd.slug}`, label: jobAd.title },
+              {href: "/", label: "Hjem"},
+              {href: "/job", label: "Jobb"},
+              {href: `/job/${jobAd.slug}`, label: jobAd.title},
             ]}
           />
 
           {/* Job ad */}
           <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">
             <div>
-              <p>
-                Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}
-              </p>
+              <p>Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}</p>
               {/* TODO: Ugly hack to get markdown to work. Fix this. */}
               <Markdown content={`# ${jobAd.title} \n ${jobAd.body}`} />
             </div>
@@ -52,9 +50,7 @@ const JobAdPage = ({ jobAd }: Props) => {
               </div>
               <div>
                 <p className="font-sm text-gray-600">Årstrinn:</p>
-                <p className="text-3xl font-bold">
-                  [{jobAd.degreeYears.toString()}]
-                </p>
+                <p className="text-3xl font-bold">[{jobAd.degreeYears.toString()}]</p>
               </div>
               <div>
                 <p className="font-sm text-gray-600">Frist:</p>
@@ -64,15 +60,11 @@ const JobAdPage = ({ jobAd }: Props) => {
               </div>
               <div>
                 <p className="font-sm text-gray-600">Steder:</p>
-                <p className="text-3xl font-bold">
-                  [{jobAd.locations.toString()}]
-                </p>
+                <p className="text-3xl font-bold">[{jobAd.locations.toString()}]</p>
               </div>
               <div>
                 <p className="font-sm text-gray-600">Jobbtype:</p>
-                <p className="text-3xl font-bold">
-                  {jobTypeToString[jobAd.jobType]}
-                </p>
+                <p className="text-3xl font-bold">{jobTypeToString[jobAd.jobType]}</p>
               </div>
               <div className="mt-5 flex flex-col text-center">
                 <Link
@@ -96,7 +88,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await fetchJobAdPaths();
 
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
+    paths: slugs.map((slug) => ({params: {slug}})),
     fallback: false,
   };
 };

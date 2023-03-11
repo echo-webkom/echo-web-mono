@@ -1,6 +1,6 @@
-import { groq } from "next-sanity";
-import { sanityClient } from "../sanity.client";
-import { type Banner, bannerSchema } from "./schemas";
+import {groq} from "next-sanity";
+import {sanityClient} from "../sanity.client";
+import {type Banner, bannerSchema} from "./schemas";
 
 /**
  * Fetches the banner

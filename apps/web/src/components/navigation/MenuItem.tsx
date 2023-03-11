@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import Link from "next/link";
 
 interface Props {
@@ -17,25 +17,21 @@ const variants = {
     y: 0,
     opacity: 1,
     transition: {
-      y: { stiffness: 1000, velocity: -100 },
+      y: {stiffness: 1000, velocity: -100},
     },
   },
   closed: {
     y: 50,
     opacity: 0,
     transition: {
-      y: { stiffness: 1000 },
+      y: {stiffness: 1000},
     },
   },
 };
 
-export const MenuItem = ({ link, isActive }: Props) => {
+export const MenuItem = ({link, isActive}: Props) => {
   return (
-    <motion.li
-      variants={variants}
-      whileTap={{ scale: 0.99 }}
-      className="flex flex-col"
-    >
+    <motion.li variants={variants} whileTap={{scale: 0.99}} className="flex flex-col">
       <Link
         className={`px-6 py-4 transition-colors hover:bg-gray-300 ${
           isActive ? "font-semibold" : "font-thin"

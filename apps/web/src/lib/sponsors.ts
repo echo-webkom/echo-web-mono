@@ -4,10 +4,7 @@ type Sponsor = {
   imageSrc: string;
 };
 
-const createSponsorArray = <
-  T extends readonly Sponsor[] & Array<{ label: V }>,
-  V extends string
->(
+const createSponsorArray = <T extends readonly Sponsor[] & Array<{label: V}>, V extends string>(
   ...args: T
 ) => {
   return args;
@@ -25,7 +22,7 @@ export const sponsors = createSponsorArray(
     label: "Sanity",
     href: "https://www.sanity.io/",
     imageSrc: "/svg/sanity-logo.svg",
-  }
+  },
 );
 
 export const hoverShadow: Record<Label, string> = {

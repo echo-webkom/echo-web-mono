@@ -1,30 +1,27 @@
-import { type GetStaticPaths, type GetStaticProps } from "next";
+import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import {
-  fetchStaticInfoBySlug,
-  fetchStaticInfoPaths,
-  type StaticInfo,
-} from "@/api/static-info";
-import { Breadcrum, Layout, Markdown } from "@/components";
-import { isErrorMessage } from "@/utils/error";
+import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
+import {Breadcrum, Layout, Markdown} from "@/components";
+import {isErrorMessage} from "@/utils/error";
+import {capitalize} from "@/utils/string";
 
 interface Props {
   page: StaticInfo;
 }
 
-const StaticPage = ({ page }: Props) => {
+const StaticPage = ({page}: Props) => {
   return (
     <>
       <Head>
-        <title>{page.name}</title>
+        <title>{capitalize(page.name)}</title>
       </Head>
       <Layout>
         <div className="container mx-auto">
           <Breadcrum
             links={[
-              { href: "/", label: "Hjem" },
-              { href: "/static", label: "Statisk" },
-              { href: `/static/${page.slug}`, label: page.name },
+              {href: "/", label: "Hjem"},
+              {href: "/static", label: "Statisk"},
+              {href: `/static/${page.slug}`, label: capitalize(page.name)},
             ]}
           />
 
@@ -41,7 +38,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await fetchStaticInfoPaths();
 
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
+    paths: slugs.map((slug) => ({params: {slug}})),
     fallback: false,
   };
 };

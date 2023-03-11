@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { Layout } from "@/components";
+import {Layout} from "@/components";
 
 const FourOhFour = () => {
   return (
@@ -15,13 +15,8 @@ const FourOhFour = () => {
           width="600"
           className="rounded-md"
         />
-        <p className="font-mono text-xl">
-          Beklager, finner ikke siden du ser etter.
-        </p>
-        <Link
-          href="/"
-          className="text-center font-mono text-blue-500 underline hover:no-underline"
-        >
+        <p className="font-mono text-xl">Beklager, finner ikke siden du ser etter.</p>
+        <Link href="/" className="text-center font-mono text-blue-500 underline hover:no-underline">
           Ta meg til forsiden
         </Link>
       </div>

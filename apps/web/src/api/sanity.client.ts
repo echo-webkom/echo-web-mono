@@ -1,5 +1,5 @@
-import { createClient } from "next-sanity";
-import { env } from "@/env.mjs";
+import {createClient} from "next-sanity";
+import {env} from "@/env.mjs";
 
 export const sanityClient = createClient({
   projectId: "pgq2pd26",

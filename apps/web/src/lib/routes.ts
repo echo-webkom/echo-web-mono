@@ -1,7 +1,7 @@
 export type Route = {
   label: string;
   href: string;
-  isExternal: boolean;
+  isExternal?: boolean;
   session?: boolean;
 };
 
@@ -17,12 +17,10 @@ export const headerRoutes: Array<NavItem> = [
   {
     label: "Hjem",
     href: "/",
-    isExternal: false,
   },
   {
     label: "Arrangementer",
     href: "/arrangementer",
-    isExternal: false,
   },
   {
     label: "For studenter",
@@ -30,52 +28,46 @@ export const headerRoutes: Array<NavItem> = [
       {
         href: "/for-students/board",
         label: "Hovedstyret",
-        isExternal: false,
       },
       {
         href: "/for-students/subgroup",
         label: "Undergrupper",
-        isExternal: false,
       },
       {
         href: "/for-students/suborg",
         label: "Underorganisasjoner",
-        isExternal: false,
       },
       {
         href: "/for-students/intgroup",
         label: "Interessegrupper",
-        isExternal: false,
       },
       {
         href: "/for-students/job",
         label: "Stillingsannonser",
-        isExternal: false,
+      },
+      {
+        href: "/for-students/post",
+        label: "Innlegg",
       },
       {
         href: "/static/masterinfo",
         label: "Masterinfo",
-        isExternal: false,
       },
       {
         href: "/static/oekonomisk-stoette",
         label: "Økonomisk støtte",
-        isExternal: false,
       },
       {
         href: "/static/anonyme-tilbakemeldinger",
         label: "Tilbakemeldinger",
-        isExternal: false,
       },
       {
         href: "/static/utlegg",
         label: "Utlegg",
-        isExternal: false,
       },
       {
         href: "/static/si-ifra",
         label: "Si ifra",
-        isExternal: false,
       },
     ],
   },
@@ -85,12 +77,10 @@ export const headerRoutes: Array<NavItem> = [
       {
         href: "/static/bedriftspresentasjon",
         label: "Bedriftspresentasjon",
-        isExternal: false,
       },
       {
         href: "/static/stillingsutlysninger",
         label: "Stillingsutlysninger",
-        isExternal: false,
       },
     ],
   },
@@ -100,27 +90,22 @@ export const headerRoutes: Array<NavItem> = [
       {
         href: "/static/om-oss",
         label: "Hvem er vi",
-        isExternal: false,
       },
       {
         href: "/static/instituttraadet",
         label: "Instituttrådet",
-        isExternal: false,
       },
       {
         href: "/static/vedtekter",
         label: "Vedtekter",
-        isExternal: false,
       },
       {
         href: "/static/møtereferat",
         label: "Møtereferat",
-        isExternal: false,
       },
       {
         href: "/static/bekk",
         label: "Bekk",
-        isExternal: false,
       },
     ],
   },
@@ -128,19 +113,16 @@ export const headerRoutes: Array<NavItem> = [
     href: "/auth/signin",
     label: "Logg inn",
     session: false,
-    isExternal: false,
   },
   {
     href: "/profile",
     label: "Profil",
     session: true,
-    isExternal: false,
   },
   {
     href: "/auth/signout",
     label: "Logg ut",
     session: true,
-    isExternal: false,
   },
 ];
 

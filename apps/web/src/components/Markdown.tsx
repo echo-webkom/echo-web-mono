@@ -13,23 +13,23 @@ interface MarkdownProps {
  * @param content The markdown content to render
  * @returns Markdown mapped to HTML
  */
-export const Markdown = ({ content }: MarkdownProps) => {
+export const Markdown = ({content}: MarkdownProps) => {
   return (
     <ReactMarkdown
       className="prose md:prose-xl"
       components={{
-        a: ({ children, href }) => {
+        a: ({children, href}) => {
           // TODO: Add external link icon and behavior
           return (
             <Link
-              className="transition-colors duration-200 hover:text-blue-500"
+              className="transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
               href={href ?? ""}
             >
               {children}
             </Link>
           );
         },
-        img: ({ src, alt }) => {
+        img: ({src, alt}) => {
           return (
             <Image
               src={src ?? ""}

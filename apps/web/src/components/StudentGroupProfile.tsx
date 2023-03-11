@@ -4,11 +4,7 @@ export interface StudentGroupProfileProps {
   role: string;
 }
 
-export const StudentGroupProfile = ({
-  name,
-  imageUrl,
-  role,
-}: StudentGroupProfileProps) => {
+export const StudentGroupProfile = ({name, imageUrl, role}: StudentGroupProfileProps) => {
   const _imageUrl = imageUrl;
 
   return (

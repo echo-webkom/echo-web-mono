@@ -1,5 +1,5 @@
-import { groq } from "next-sanity";
-import { sanityClient } from "../sanity.client";
+import {groq} from "next-sanity";
+import {sanityClient} from "../sanity.client";
 import {
   type EventType,
   type EventPreview,
@@ -20,7 +20,7 @@ export * from "./schemas";
  */
 export const fetchEventPreviews = async (
   type: EventType,
-  n: number
+  n: number,
 ): Promise<Array<EventPreview>> => {
   try {
     const query = groq`

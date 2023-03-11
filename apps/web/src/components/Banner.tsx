@@ -1,12 +1,12 @@
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
-import { type Banner } from "@/api/banner/schemas";
+import {type Banner} from "@/api/banner/schemas";
 
 interface BannerProps {
   banner: Banner | null;
 }
 
-export const WebsiteBanner = ({ banner }: BannerProps) => {
+export const WebsiteBanner = ({banner}: BannerProps) => {
   if (!banner) {
     return null;
   }

@@ -1,6 +1,6 @@
 const plugin = require("tailwindcss/plugin");
-const { fontFamily } = require("tailwindcss/defaultTheme");
-const { blackA, mauve, violet, indigo, purple } = require("@radix-ui/colors");
+const {fontFamily} = require("tailwindcss/defaultTheme");
+const {blackA, mauve, violet, indigo, purple} = require("@radix-ui/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -11,6 +11,7 @@ module.exports = {
       primary: ["var(--inter-font)", ...fontFamily.sans],
       sans: ["var(--inter-font)", ...fontFamily.sans],
       mono: ["var(--ibm-font)", ...fontFamily.mono],
+      display: ["var(--inter-display-font)", ...fontFamily.sans],
     },
     extend: {
       colors: {
@@ -34,36 +35,36 @@ module.exports = {
       },
       keyframes: {
         enterFromRight: {
-          from: { opacity: 0, transform: "translateX(200px)" },
-          to: { opacity: 1, transform: "translateX(0)" },
+          from: {opacity: 0, transform: "translateX(200px)"},
+          to: {opacity: 1, transform: "translateX(0)"},
         },
         enterFromLeft: {
-          from: { opacity: 0, transform: "translateX(-200px)" },
-          to: { opacity: 1, transform: "translateX(0)" },
+          from: {opacity: 0, transform: "translateX(-200px)"},
+          to: {opacity: 1, transform: "translateX(0)"},
         },
         exitToRight: {
-          from: { opacity: 1, transform: "translateX(0)" },
-          to: { opacity: 0, transform: "translateX(200px)" },
+          from: {opacity: 1, transform: "translateX(0)"},
+          to: {opacity: 0, transform: "translateX(200px)"},
         },
         exitToLeft: {
-          from: { opacity: 1, transform: "translateX(0)" },
-          to: { opacity: 0, transform: "translateX(-200px)" },
+          from: {opacity: 1, transform: "translateX(0)"},
+          to: {opacity: 0, transform: "translateX(-200px)"},
         },
         scaleIn: {
-          from: { opacity: 0, transform: "rotateX(-10deg) scale(0.9)" },
-          to: { opacity: 1, transform: "rotateX(0deg) scale(1)" },
+          from: {opacity: 0, transform: "rotateX(-10deg) scale(0.9)"},
+          to: {opacity: 1, transform: "rotateX(0deg) scale(1)"},
         },
         scaleOut: {
-          from: { opacity: 1, transform: "rotateX(0deg) scale(1)" },
-          to: { opacity: 0, transform: "rotateX(-10deg) scale(0.95)" },
+          from: {opacity: 1, transform: "rotateX(0deg) scale(1)"},
+          to: {opacity: 0, transform: "rotateX(-10deg) scale(0.95)"},
         },
         fadeIn: {
-          from: { opacity: 0 },
-          to: { opacity: 1 },
+          from: {opacity: 0},
+          to: {opacity: 1},
         },
         fadeOut: {
-          from: { opacity: 1 },
-          to: { opacity: 0 },
+          from: {opacity: 1},
+          to: {opacity: 0},
         },
       },
       animation: {
@@ -81,7 +82,7 @@ module.exports = {
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
-    plugin(({ matchUtilities }) => {
+    plugin(({matchUtilities}) => {
       matchUtilities({
         perspective: (value) => ({
           perspective: value,
