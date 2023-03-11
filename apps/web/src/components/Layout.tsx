@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { WebsiteBanner } from "./Banner";
 import { Header, Footer } from "@/components";
 import { fetchBanner } from "@/api/banner";

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
   fetchStudentGroupsByType,
-  StudentGroup,
-  StudentGroupType,
+  type StudentGroup,
+  type StudentGroupType,
 } from "@/api/student-group";
 import { Layout } from "@/components";
 import { isErrorMessage } from "@/utils/error";

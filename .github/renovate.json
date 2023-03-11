@@ -6,7 +6,7 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@echo-webkom/"],
+      "matchPackagePatterns": ["^@echo-webkom/", "eslint-config-custom", "tsconfig"],
       "enabled": false
     }
   ],
