@@ -1,8 +1,8 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { type GetStaticPaths, type GetStaticProps } from "next";
 import Head from "next/head";
 import { Breadcrum, Layout, Markdown } from "@/components";
 import { isErrorMessage } from "@/utils/error";
-import { fetchPostBySlug, fetchPostPaths, Post } from "@/api/posts";
+import { fetchPostBySlug, fetchPostPaths, type Post } from "@/api/posts";
 
 interface Props {
   post: Post;

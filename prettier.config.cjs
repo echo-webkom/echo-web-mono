@@ -4,7 +4,7 @@ module.exports = {
   printWidth: 100,
   singleQuote: false,
   jsxSingleQuote: false,
-  bracketSpacing: false,
+  bracketSpacing: false, // FIXME: Doesn't work :(
   semi: true,
   trailingComma: "all",
   tabWidth: 2,

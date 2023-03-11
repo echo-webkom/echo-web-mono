@@ -18,5 +18,7 @@ const config = {
     locales: ["no"],
     defaultLocale: "no",
   },
+
+  eslint: { ignoreDuringBuilds: !!process.env.CI },
 };
 export default config;

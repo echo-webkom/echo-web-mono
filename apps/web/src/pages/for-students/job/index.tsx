@@ -1,7 +1,7 @@
-import { GetStaticProps } from "next";
+import { type GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { fetchJobAds, JobAd } from "@/api/job-ads";
+import { fetchJobAds, type JobAd } from "@/api/job-ads";
 import { Layout } from "@/components";
 import { urlFor } from "@/utils/image-builder";
 

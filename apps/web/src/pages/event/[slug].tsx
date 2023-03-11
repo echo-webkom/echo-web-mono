@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { type GetServerSideProps } from "next";
 import { fetchEventBySlug } from "@/api/events";
 import { Breadcrum, Button, Layout, Markdown } from "@/components";
 

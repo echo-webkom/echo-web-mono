@@ -1,18 +1,18 @@
 module.exports = {
   root: true,
   extends: [
-    "eslint:recommended",
+    "next",
     "turbo",
-    "prettier",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier",
   ],
   parser: "@typescript-eslint/parser",
   env: {
     es6: true,
   },
-  plugins: ["@typescript-eslint", "import"],
+  plugins: ["@typescript-eslint"],
   parserOptions: {
     ecmaVersion: "latest",
     babelOptions: {
@@ -20,6 +20,7 @@ module.exports = {
     },
   },
   rules: {
+    "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -28,7 +29,12 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
-    "import/order": "error",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {prefer: "type-imports", fixStyle: "inline-type-imports"},
+    ],
     "no-console": ["error", {allow: ["warn", "error"]}],
   },
+  ignorePatterns: ["**/*.config.js", "**/*.config.cjs"],
 };

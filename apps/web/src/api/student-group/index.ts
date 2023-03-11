@@ -1,8 +1,12 @@
 import { groq } from "next-sanity";
 import { sanityClient } from "../sanity.client";
-import { StudentGroup, studentGroupSchema, StudentGroupType } from "./schemas";
+import {
+  type StudentGroup,
+  studentGroupSchema,
+  type StudentGroupType,
+} from "./schemas";
 import { slugSchema } from "@/utils/slug";
-import { ErrorMessage } from "@/utils/error";
+import { type ErrorMessage } from "@/utils/error";
 
 export * from "./schemas";
 

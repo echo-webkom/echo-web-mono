@@ -1,11 +1,11 @@
 import { groq } from "next-sanity";
 import { sanityClient } from "../sanity.client";
 import {
-  EventType,
-  EventPreview,
+  type EventType,
+  type EventPreview,
   eventPreviewSchema,
   eventSchema,
-  Event,
+  type Event,
 } from "./schemas";
 
 export * from "./schemas";

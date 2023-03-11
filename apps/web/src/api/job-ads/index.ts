@@ -1,8 +1,8 @@
 import { groq } from "next-sanity";
 import { sanityClient } from "../sanity.client";
-import { JobAd, jobAdSchema } from "./schemas";
+import { type JobAd, jobAdSchema } from "./schemas";
 import { slugSchema } from "@/utils/slug";
-import { ErrorMessage } from "@/utils/error";
+import { type ErrorMessage } from "@/utils/error";
 
 export * from "./schemas";
 
