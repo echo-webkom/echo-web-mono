@@ -1,35 +1,31 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import {
-  fetchStaticInfoBySlug,
-  fetchStaticInfoPaths,
-  StaticInfo,
-} from "@/api/static-info";
 import { Breadcrum, Layout, Markdown } from "@/components";
 import { isErrorMessage } from "@/utils/error";
+import { fetchPostBySlug, fetchPostPaths, Post } from "@/api/posts";
 
 interface Props {
-  page: StaticInfo;
+  post: Post;
 }
 
-const StaticPage = ({ page }: Props) => {
+const PostPage = ({ post }: Props) => {
   return (
     <>
       <Head>
-        <title>{page.name}</title>
+        <title>En tittel</title>
       </Head>
       <Layout>
         <div className="container mx-auto">
           <Breadcrum
             links={[
               { href: "/", label: "Hjem" },
-              { href: "/static", label: "Statisk" },
-              { href: `/static/${page.slug}`, label: page.name },
+              { href: "/posts", label: "Innlegg" },
+              { href: `/posts/${post.slug}`, label: post.title.no },
             ]}
           />
 
           <article className="prose md:prose-xl">
-            <Markdown content={page.info} />
+            <Markdown content={post.body.no} />
           </article>
         </div>
       </Layout>
@@ -38,7 +34,7 @@ const StaticPage = ({ page }: Props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await fetchStaticInfoPaths();
+  const slugs = await fetchPostPaths();
 
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
@@ -49,9 +45,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const slug = ctx.params?.slug as string;
 
-  const page = await fetchStaticInfoBySlug(slug);
+  const post = await fetchPostBySlug(slug);
 
-  if (isErrorMessage(page)) {
+  if (isErrorMessage(post)) {
     return {
       notFound: true,
     };
@@ -59,9 +55,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   return {
     props: {
-      page,
+      post,
     },
   };
 };
 
-export default StaticPage;
+export default PostPage;
