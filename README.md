@@ -6,7 +6,7 @@
   </a>
 
   <a href="https://vercel.com/?utm_source=echo-webkom&utm_campaign=oss" target="_blank" rel="noopener">
-    <img src="assets/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
+    <img src=".github/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
   </a>
 </div>
 
@@ -26,6 +26,8 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 ## Hvordan kjøre?
 
+Først forventer vi at du har installert alle "dependencies" og lagt til `.env` slik det er vist under.
+
 1. Last ned "dependencies"
 
    ```sh
@@ -38,17 +40,29 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
    cp .env.example .env
    ```
 
-3. Kjøre alle appene
+### Nettsiden og CMS
 
-   ```sh
-   pnpm dev
-   ```
+> **Note**
+> Sanity er enda ikke lagt til
+
+```sh
+pnpm dev
+```
 
 Nettsiden skal kjøre på [localhost:3000](http://localhost:3000/)
 
+> **Note**
+> Sanity er enda ikke lagt til
+
 Sanity skal kjøre på [localhost:4000](http://localhost:4000/)
 
-Prisma Studio skal kjøre på [lolcahost:4444](http://localhost:4444/)
+### Prisma Studio
+
+```sh
+pnpm db:studio
+```
+
+Prisma Studio skal kjøre på [localhost:4444](http://localhost:4444/)
 
 ## Lese mer
 
