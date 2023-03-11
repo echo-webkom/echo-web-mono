@@ -1,17 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
-    ":semanticCommitScopeDisabled"
-  ],
+  "extends": ["config:base", ":semanticCommitScopeDisabled"],
   "commitMessagePrefix": "renovate:",
   "commitMessageAction": "update",
-  "rangeStrategy": "pin",
+  "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "^@echo-webkom/"
-      ],
+      "matchPackagePatterns": ["^@echo-webkom/"],
       "enabled": false
     }
   ],

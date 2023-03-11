@@ -10,6 +10,9 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
+    "db:studio": {
+      "persistent": true
+    },
     "docker:up": {
       "cache": false
     },
