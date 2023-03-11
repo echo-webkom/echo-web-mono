@@ -18,3 +18,11 @@ export const studentGroupSchema = z.object({
     .transform((m) => m ?? []),
 });
 export type StudentGroup = z.infer<typeof studentGroupSchema>;
+
+export const studentGroupTypeSchema = z.enum([
+  "board",
+  "suborg",
+  "subgroup",
+  "intgroup",
+]);
+export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;

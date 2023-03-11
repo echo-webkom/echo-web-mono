@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { isErrorMessage } from "@/utils/error";
-import { Layout, Markdown } from "@/components";
+import { Breadcrum, Layout, Markdown } from "@/components";
 import { fetchJobAdBySlug, fetchJobAdPaths, JobAd } from "@/api/job-ads";
 
 interface Props {
@@ -26,17 +26,13 @@ const JobAdPage = ({ jobAd }: Props) => {
 
       <Layout>
         <div className="container mx-auto px-5">
-          {/* Breadcrums */}
-          <div>
-            <Link className="hover:underline" href="/">
-              Hjem
-            </Link>{" "}
-            {">"}{" "}
-            <Link className="hover:underline" href="/job">
-              Stillingsannonser
-            </Link>{" "}
-            {">"} <span className="underline">{jobAd.title}</span>
-          </div>
+          <Breadcrum
+            links={[
+              { href: "/", label: "Hjem" },
+              { href: "/job", label: "Jobb" },
+              { href: `/job/${jobAd.slug}`, label: jobAd.title },
+            ]}
+          />
 
           {/* Job ad */}
           <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">

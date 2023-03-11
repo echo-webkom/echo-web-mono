@@ -44,7 +44,7 @@ export const fetchPosts = async (
                   body.no != null => {"no": body.no, "en": null},
                   body
                 ),
-              author -> {name},
+              "author": author->name,
               _createdAt,
           }${limit}
       `;
@@ -67,7 +67,7 @@ export const fetchPostBySlug = async (
 ): Promise<Post | ErrorMessage> => {
   try {
     const query = groq`
-          *[_type == "post" && slug.current == "${slug}" && !(_id in path('drafts.**'))] {
+          *[_type == "post" && slug.current == $slug && !(_id in path('drafts.**'))] {
               title,
               "slug": slug.current,
               "body": select(
@@ -75,16 +75,19 @@ export const fetchPostBySlug = async (
                   body.no != null => {"no": body.no, "en": null},
                   body
                 ),
-              author -> {name},
+              "author": author->name,
               _createdAt,
           }[0]
         `;
 
-    const result = await sanityClient.fetch<Post>(query);
+    const params = {
+      slug,
+    };
+
+    const result = await sanityClient.fetch<Post>(query, params);
 
     return postSchema.parse(result);
-  } catch (error) {
-    console.log(error); // eslint-disable-line
-    return { message: JSON.stringify(error) };
+  } catch {
+    return { message: "Failed to fetch post" };
   }
 };

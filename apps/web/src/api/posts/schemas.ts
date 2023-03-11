@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const postSchema = z.object({
+  _createdAt: z.string(),
   title: z.object({
     no: z.string(),
     en: z.string().nullable().optional(),
@@ -10,11 +11,6 @@ export const postSchema = z.object({
     no: z.string(),
     en: z.string().nullable().optional(),
   }),
-  author: z
-    .object({
-      name: z.string(),
-    })
-    .transform((a) => a.name),
-  _createdAt: z.string(),
+  author: z.string(),
 });
 export type Post = z.infer<typeof postSchema>;

@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { fetchEventBySlug } from "@/api/events";
-import { Button, Layout, Markdown } from "@/components";
+import { Breadcrum, Button, Layout, Markdown } from "@/components";
 
 interface Props {
   event: Awaited<ReturnType<typeof fetchEventBySlug>>;
@@ -29,17 +28,13 @@ const EventPage = ({ event }: Props) => {
           </div>
         </div>
 
-        {/* Breadcrums */}
-        <div>
-          <Link className="hover:underline" href="/">
-            Hjem
-          </Link>{" "}
-          {">"}{" "}
-          <Link className="hover:underline" href="/">
-            Bedriftspresentasjoner
-          </Link>{" "}
-          {">"} <span className="underline">{event.title}</span>
-        </div>
+        <Breadcrum
+          links={[
+            { href: "/", label: "Hjem" },
+            { href: "/events", label: "Arrangementer" },
+            { href: `/events/${event.slug}`, label: event.title },
+          ]}
+        />
 
         <Markdown content={event.body.no} />
       </div>

@@ -28,52 +28,52 @@ export const headerRoutes: Array<NavItem> = [
     label: "For studenter",
     sublinks: [
       {
-        href: "/for-studenter/hovedstyret",
+        href: "/for-students/board",
         label: "Hovedstyret",
         isExternal: false,
       },
       {
-        href: "/for-studenter/undergrupper",
+        href: "/for-students/subgroup",
         label: "Undergrupper",
         isExternal: false,
       },
       {
-        href: "/for-studenter/underorganisasjoner",
+        href: "/for-students/suborg",
         label: "Underorganisasjoner",
         isExternal: false,
       },
       {
-        href: "/for-studenter/interessegrupper",
+        href: "/for-students/intgroup",
         label: "Interessegrupper",
         isExternal: false,
       },
       {
-        href: "/job",
+        href: "/for-students/job",
         label: "Stillingsannonser",
         isExternal: false,
       },
       {
-        href: "/for-studenter/masterinfo",
+        href: "/static/masterinfo",
         label: "Masterinfo",
         isExternal: false,
       },
       {
-        href: "/for-studenter/okonomisk-stotte",
+        href: "/static/oekonomisk-stoette",
         label: "Økonomisk støtte",
         isExternal: false,
       },
       {
-        href: "/for-studenter/tilbakemeldinger",
+        href: "/static/anonyme-tilbakemeldinger",
         label: "Tilbakemeldinger",
         isExternal: false,
       },
       {
-        href: "/for-studenter/utlegg",
+        href: "/static/utlegg",
         label: "Utlegg",
         isExternal: false,
       },
       {
-        href: "/for-studenter/si-ifra",
+        href: "/static/si-ifra",
         label: "Si ifra",
         isExternal: false,
       },
@@ -83,13 +83,13 @@ export const headerRoutes: Array<NavItem> = [
     label: "For bedrifter",
     sublinks: [
       {
-        href: "/for-bedrifter/bedriftspresentasjon",
+        href: "/static/bedriftspresentasjon",
         label: "Bedriftspresentasjon",
         isExternal: false,
       },
       {
-        href: "/for-bedrifter/stillingsannonser",
-        label: "Stillingsannonser",
+        href: "/static/stillingsutlysninger",
+        label: "Stillingsutlysninger",
         isExternal: false,
       },
     ],
@@ -98,27 +98,27 @@ export const headerRoutes: Array<NavItem> = [
     label: "Om echo",
     sublinks: [
       {
-        href: "/for-studenter/hvem-er-vi",
+        href: "/static/om-oss",
         label: "Hvem er vi",
         isExternal: false,
       },
       {
-        href: "/for-studenter/instituttrådet",
+        href: "/static/instituttraadet",
         label: "Instituttrådet",
         isExternal: false,
       },
       {
-        href: "/for-studenter/vedtekter",
+        href: "/static/vedtekter",
         label: "Vedtekter",
         isExternal: false,
       },
       {
-        href: "/for-studenter/møtereferat",
+        href: "/static/møtereferat",
         label: "Møtereferat",
         isExternal: false,
       },
       {
-        href: "/for-studenter/bekk",
+        href: "/static/bekk",
         label: "Bekk",
         isExternal: false,
       },
