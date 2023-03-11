@@ -39,7 +39,7 @@ importers:
       '@radix-ui/react-accordion': 1.1.1
       '@radix-ui/react-icons': 1.2.0
       '@radix-ui/react-navigation-menu': 1.1.1
-      '@radix-ui/react-switch': 1.0.1
+      '@radix-ui/react-switch': 1.0.2
       '@sanity/image-url': 1.0.2
       '@tailwindcss/forms': 0.5.3
       '@tailwindcss/typography': 0.5.9
@@ -85,7 +85,7 @@ importers:
       '@radix-ui/react-accordion': 1.1.1_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-icons': 1.2.0_react@18.2.0
       '@radix-ui/react-navigation-menu': 1.1.1_biqbaboplfbrettd7655fr4n2y
-      '@radix-ui/react-switch': 1.0.1_biqbaboplfbrettd7655fr4n2y
+      '@radix-ui/react-switch': 1.0.2_biqbaboplfbrettd7655fr4n2y
       '@sanity/image-url': 1.0.2
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
       '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
@@ -1329,8 +1329,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@radix-ui/react-switch/1.0.1_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-tTxGluMtwrc5ffgAiOSMrYIx0r3vSTcgM4Vl8rqfpXcHt6ryB9B0OlFKUOiDpKASXlhvzfHf4Y0AYKJdpzjL8w==}
+  /@radix-ui/react-switch/1.0.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-BcG/LKehxt36NXG0wPnoCitIfSMtU9Xo7BmythYA1PAMLtsMvW7kALfBzmduQoHTWcKr0AVcFyh0gChBUp9TiQ==}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
@@ -1339,7 +1339,7 @@ packages:
       '@radix-ui/primitive': 1.0.0
       '@radix-ui/react-compose-refs': 1.0.0_react@18.2.0
       '@radix-ui/react-context': 1.0.0_react@18.2.0
-      '@radix-ui/react-primitive': 1.0.1_biqbaboplfbrettd7655fr4n2y
+      '@radix-ui/react-primitive': 1.0.2_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-use-controllable-state': 1.0.0_react@18.2.0
       '@radix-ui/react-use-previous': 1.0.0_react@18.2.0
       '@radix-ui/react-use-size': 1.0.0_react@18.2.0
