@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import removeMd from "remove-markdown";
-import { fetchEventPreviews } from "@/api/events";
-import { Button, Layout } from "@/components";
-import { fetchPosts } from "@/api/posts";
-import { isErrorMessage } from "@/utils/error";
+import {fetchEventPreviews} from "@/api/events";
+import {Button, Layout} from "@/components";
+import {fetchPosts} from "@/api/posts";
+import {isErrorMessage} from "@/utils/error";
 
 interface Props {
   eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
@@ -12,7 +12,7 @@ interface Props {
   posts: Awaited<ReturnType<typeof fetchPosts>>;
 }
 
-const HomePage = ({ eventPreviews, bedpresPreviews, posts }: Props) => {
+const HomePage = ({eventPreviews, bedpresPreviews, posts}: Props) => {
   return (
     <Layout>
       {/* Welcome */}
@@ -23,9 +23,7 @@ const HomePage = ({ eventPreviews, bedpresPreviews, posts }: Props) => {
           <div className="flex flex-col gap-10 py-10">
             <div className="z-[1] flex flex-col gap-3 text-center">
               <h2 className="text-3xl">Hei, og velkommen til</h2>
-              <h2 className="text-4xl font-bold">
-                echo - Linjeforeningen for informatikk
-              </h2>
+              <h2 className="text-4xl font-bold">echo - Linjeforeningen for informatikk</h2>
             </div>
             <div className="mx-auto flex w-full flex-col gap-8 md:flex-row">
               <Button intent="primary" size="large" fullWidth>
@@ -61,9 +59,7 @@ const HomePage = ({ eventPreviews, bedpresPreviews, posts }: Props) => {
         </div>
 
         <div className="container mx-auto px-3">
-          <h2 className="mb-5 text-2xl font-bold">
-            Kommende bedriftspresentasjoner
-          </h2>
+          <h2 className="mb-5 text-2xl font-bold">Kommende bedriftspresentasjoner</h2>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
             {bedpresPreviews.map((event) => (
               <Link
@@ -95,9 +91,7 @@ const HomePage = ({ eventPreviews, bedpresPreviews, posts }: Props) => {
                   <div className="flex flex-col gap-3">
                     <h3 className="text-xl font-bold">{post.title.no}</h3>
                     <hr />
-                    <p className="text-gray-500">
-                      {removeMd(post.body.no).slice(0, 250)}...
-                    </p>
+                    <p className="text-gray-500">{removeMd(post.body.no).slice(0, 250)}...</p>
                   </div>
                 </Link>
               ))}

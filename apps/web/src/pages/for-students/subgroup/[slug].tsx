@@ -1,8 +1,8 @@
-import { type GetStaticPaths, type GetStaticProps } from "next";
+import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { Breadcrum, Layout, Markdown } from "@/components";
-import { isErrorMessage } from "@/utils/error";
+import {Breadcrum, Layout, Markdown} from "@/components";
+import {isErrorMessage} from "@/utils/error";
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupPathsByType,
@@ -17,7 +17,7 @@ interface Props {
   group: StudentGroup;
 }
 
-const SubGroupPage = ({ group }: Props) => {
+const SubGroupPage = ({group}: Props) => {
   return (
     <>
       <Head>
@@ -29,8 +29,14 @@ const SubGroupPage = ({ group }: Props) => {
         <div className="container mx-auto">
           <Breadcrum
             links={[
-              { href: "/", label: "Hjem" },
-              { href: `/for-students/${GROUP_TYPE}`, label: TITLE },
+              {
+                href: "/",
+                label: "Hjem",
+              },
+              {
+                href: `/for-students/${GROUP_TYPE}`,
+                label: TITLE,
+              },
               {
                 href: `/for-students/${GROUP_TYPE}/${group.slug}`,
                 label: group.name,
@@ -40,12 +46,7 @@ const SubGroupPage = ({ group }: Props) => {
 
           {/* TODO: Render group image */}
           {group.imageUrl && (
-            <Image
-              alt={`${group.name} bilde`}
-              src={group.imageUrl}
-              height={500}
-              width={500}
-            />
+            <Image alt={`${group.name} bilde`} src={group.imageUrl} height={500} width={500} />
           )}
 
           <article className="prose md:prose-xl">
@@ -63,7 +64,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await fetchStudentGroupPathsByType(GROUP_TYPE);
 
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
+    paths: slugs.map((slug) => ({params: {slug}})),
     fallback: false,
   };
 };

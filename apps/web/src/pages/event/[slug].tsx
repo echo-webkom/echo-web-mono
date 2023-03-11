@@ -1,12 +1,12 @@
-import { type GetServerSideProps } from "next";
-import { fetchEventBySlug } from "@/api/events";
-import { Breadcrum, Button, Layout, Markdown } from "@/components";
+import {type GetServerSideProps} from "next";
+import {fetchEventBySlug} from "@/api/events";
+import {Breadcrum, Button, Layout, Markdown} from "@/components";
 
 interface Props {
   event: Awaited<ReturnType<typeof fetchEventBySlug>>;
 }
 
-const EventPage = ({ event }: Props) => {
+const EventPage = ({event}: Props) => {
   if (!event) {
     return <div>404</div>;
   }
@@ -30,9 +30,9 @@ const EventPage = ({ event }: Props) => {
 
         <Breadcrum
           links={[
-            { href: "/", label: "Hjem" },
-            { href: "/events", label: "Arrangementer" },
-            { href: `/events/${event.slug}`, label: event.title },
+            {href: "/", label: "Hjem"},
+            {href: "/events", label: "Arrangementer"},
+            {href: `/events/${event.slug}`, label: event.title},
           ]}
         />
 

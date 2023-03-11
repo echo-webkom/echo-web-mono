@@ -1,8 +1,8 @@
-import { groq } from "next-sanity";
-import { sanityClient } from "../sanity.client";
-import { type Post, postSchema } from "./schemas";
-import { slugSchema } from "@/utils/slug";
-import { type ErrorMessage } from "@/utils/error";
+import {groq} from "next-sanity";
+import {sanityClient} from "../sanity.client";
+import {type Post, postSchema} from "./schemas";
+import {slugSchema} from "@/utils/slug";
+import {type ErrorMessage} from "@/utils/error";
 
 export * from "./schemas";
 
@@ -29,14 +29,14 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
  * Get the n last published posts.
  * @param n how many posts to retrieve
  */
-export const fetchPosts = async (
-  n: number
-): Promise<Array<Post> | ErrorMessage> => {
+export const fetchPosts = async (n: number | "all"): Promise<Array<Post> | ErrorMessage> => {
   try {
-    const limit = n === 0 ? `` : `[0...${n}]`;
+    const limit = n === "all" ? "" : `[0...${n}]`;
 
     const query = groq`
           *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {
+              _id,
+              _createdAt,
               title,
               "slug": slug.current,
               "body": select(
@@ -45,7 +45,6 @@ export const fetchPosts = async (
                   body
                 ),
               "author": author->name,
-              _createdAt,
           }${limit}
       `;
 
@@ -54,7 +53,7 @@ export const fetchPosts = async (
     return postSchema.array().parse(result);
   } catch (error) {
     console.log(error); // eslint-disable-line
-    return { message: JSON.stringify(error) };
+    return {message: JSON.stringify(error)};
   }
 };
 
@@ -62,12 +61,12 @@ export const fetchPosts = async (
  * Get a post by its slug.
  * @param slug the slug of the desired post.
  */
-export const fetchPostBySlug = async (
-  slug: string
-): Promise<Post | ErrorMessage> => {
+export const fetchPostBySlug = async (slug: string): Promise<Post | ErrorMessage> => {
   try {
     const query = groq`
           *[_type == "post" && slug.current == $slug && !(_id in path('drafts.**'))] {
+              _id,
+              _createdAt,
               title,
               "slug": slug.current,
               "body": select(
@@ -76,7 +75,6 @@ export const fetchPostBySlug = async (
                   body
                 ),
               "author": author->name,
-              _createdAt,
           }[0]
         `;
 
@@ -88,6 +86,6 @@ export const fetchPostBySlug = async (
 
     return postSchema.parse(result);
   } catch {
-    return { message: "Failed to fetch post" };
+    return {message: "Failed to fetch post"};
   }
 };

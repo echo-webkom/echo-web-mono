@@ -15,10 +15,10 @@ const config = {
   },
 
   i18n: {
-    locales: ["no"],
+    locales: ["no", "en"],
     defaultLocale: "no",
   },
 
-  eslint: { ignoreDuringBuilds: !!process.env.CI },
+  eslint: {ignoreDuringBuilds: !!process.env.CI},
 };
 export default config;

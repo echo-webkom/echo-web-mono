@@ -1,6 +1,7 @@
-import { z } from "zod";
+import {z} from "zod";
 
 export const postSchema = z.object({
+  _id: z.string(),
   _createdAt: z.string(),
   title: z.object({
     no: z.string(),

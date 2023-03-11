@@ -1,12 +1,8 @@
-import { type GetServerSidePropsContext } from "next";
-import {
-  getServerSession,
-  type NextAuthOptions,
-  type DefaultSession,
-} from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "@/env.mjs";
-import { prisma } from "@/server/db";
+import {type GetServerSidePropsContext} from "next";
+import {getServerSession, type NextAuthOptions, type DefaultSession} from "next-auth";
+import {PrismaAdapter} from "@next-auth/prisma-adapter";
+import {env} from "@/env.mjs";
+import {prisma} from "@/server/db";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -36,7 +32,7 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
+    session({session, user}) {
       if (session.user) {
         session.user.id = user.id;
         // session.user.role = user.role; <-- put other properties on the session here
@@ -53,8 +49,7 @@ export const authOptions: NextAuthOptions = {
       wellKnown: "https://auth.dataporten.no/.well-known/openid-configuration",
       authorization: {
         params: {
-          scope:
-            "email userinfo-name profile userid openid groups-edu groups-org groups-other",
+          scope: "email userinfo-name profile userid openid groups-edu groups-org groups-other",
         },
       },
       clientId: env.FEIDE_CLIENT_ID,

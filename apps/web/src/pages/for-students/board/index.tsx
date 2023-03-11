@@ -4,8 +4,8 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import { Layout } from "@/components";
-import { isErrorMessage } from "@/utils/error";
+import {Layout} from "@/components";
+import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "board";
 const TITLE = "Hovedstyret";
@@ -14,7 +14,7 @@ interface Props {
   groups: Array<StudentGroup>;
 }
 
-const SubGroupsPage = ({ groups }: Props) => {
+const SubGroupsPage = ({groups}: Props) => {
   return (
     <>
       <Layout>
@@ -24,9 +24,7 @@ const SubGroupsPage = ({ groups }: Props) => {
           <ul className="flex flex-col gap-3">
             {groups.map((group) => (
               <li key={group.slug}>
-                <Link href={`/for-students/${GROUP_TYPE}/${group.slug}`}>
-                  Les om, {group.name}
-                </Link>
+                <Link href={`/for-students/${GROUP_TYPE}/${group.slug}`}>Les om, {group.name}</Link>
               </li>
             ))}
           </ul>
