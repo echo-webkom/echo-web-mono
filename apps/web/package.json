@@ -12,7 +12,7 @@
     "type-check": "tsc --noEmit",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:push": "prisma db push"
+    "db:push": "pnpm with-env prisma db push"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "1.0.5",

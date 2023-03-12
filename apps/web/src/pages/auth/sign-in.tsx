@@ -1,7 +1,6 @@
 import type {Provider} from "next-auth/providers";
-import {getProviders, signIn} from "next-auth/react";
+import {getProviders, getSession, signIn} from "next-auth/react";
 import {type GetServerSideProps} from "next";
-
 import {Layout, Button} from "@/components";
 
 type Props = {
@@ -15,7 +14,15 @@ const LoginPage = ({providers}: Props) => {
       <div className="flex flex-col justify-center gap-3">
         {Object.values(providers).map((provider) => (
           <div className="mx-auto" key={provider.name}>
-            <Button onClick={() => void signIn(provider.id)}>Logg inn med {provider.name}</Button>
+            <Button
+              onClick={() =>
+                void signIn(provider.id, {
+                  callbackUrl: "/profile",
+                })
+              }
+            >
+              Logg inn med {provider.name}
+            </Button>
           </div>
         ))}
       </div>
@@ -23,11 +30,24 @@ const LoginPage = ({providers}: Props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const providers = await getProviders();
+  const session = await getSession(ctx);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/profile",
+        permanent: false,
+      },
+    };
+  }
 
   return {
-    props: {providers},
+    props: {
+      session,
+      providers,
+    },
   };
 };
 
