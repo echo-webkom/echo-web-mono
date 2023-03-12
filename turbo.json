@@ -20,7 +20,6 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^db:generate", "^docker:up"],
       "persistent": true,
       "cache": false
     },

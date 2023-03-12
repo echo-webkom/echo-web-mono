@@ -110,7 +110,7 @@ export const headerRoutes: Array<NavItem> = [
     ],
   },
   {
-    href: "/auth/signin",
+    href: "/auth/sign-in",
     label: "Logg inn",
     session: false,
   },
@@ -120,7 +120,7 @@ export const headerRoutes: Array<NavItem> = [
     session: true,
   },
   {
-    href: "/auth/signout",
+    href: "/auth/sign-out",
     label: "Logg ut",
     session: true,
   },

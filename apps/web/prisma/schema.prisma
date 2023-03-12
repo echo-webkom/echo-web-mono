@@ -40,17 +40,6 @@ model Session {
   @@index([userId])
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  role          Role      @default(USER)
-}
-
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -59,7 +48,44 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model User {
+  id               String         @id @default(cuid())
+  name             String?
+  email            String?        @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  alternativeEmail String?
+  role             Role           @default(USER)
+  degree           Degree?
+  year             Int?
+  studentGroups    StudentGroup[]
+}
+
+model StudentGroup {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
+}
+
 enum Role {
   USER
+  COMPANY
   ADMIN
+}
+
+enum Degree {
+  DTEK
+  DSIK
+  DVIT
+  BINF
+  IMO
+  IKT
+  KOGNI
+  INF
+  PROG
+  ARMNINF
+  POST
+  MISC
 }

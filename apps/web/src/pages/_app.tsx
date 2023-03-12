@@ -7,6 +7,7 @@ import {api} from "@/utils/api";
 
 import "@/styles/globals.css";
 
+/* eslint-disable camelcase */
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -19,6 +20,7 @@ const ibmPlexMonoDisplay = IBM_Plex_Mono({
   weight: "700",
   subsets: ["latin"],
 });
+/* eslint-enable camelcase */
 
 const MyApp: AppType<{session: Session | null}> = ({
   Component,
