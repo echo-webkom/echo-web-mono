@@ -50,7 +50,7 @@ const BoardPage = ({group}: Props) => {
           )}
 
           <article className="prose md:prose-xl">
-            <Markdown content={group.info} />
+            <Markdown content={group.info ?? ""} />
           </article>
 
           {/* TODO: Render group members */}
