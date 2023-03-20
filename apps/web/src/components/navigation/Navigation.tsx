@@ -1,7 +1,8 @@
-import {motion} from "framer-motion";
-import {useRouter} from "next/router";
-import {useSession} from "next-auth/react";
 import type Link from "next/link";
+import {useRouter} from "next/router";
+import {motion} from "framer-motion";
+import {useSession} from "next-auth/react";
+
 import {MenuItem} from "./MenuItem";
 
 interface Props {

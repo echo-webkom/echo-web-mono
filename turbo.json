@@ -46,16 +46,17 @@
     "format": {}
   },
   "globalEnv": [
+    "CI",
+    "NODE_ENV",
     "DATABASE_URL",
     "NEXTAUTH_SECRET",
     "NEXTAUTH_URL",
-    "NODE_ENV",
     "FEIDE_CLIENT_ID",
     "FEIDE_CLIENT_SECRET",
     "NEXT_PUBLIC_SANITY_DATASET",
-    "VERCEL_URL",
     "SKIP_ENV_VALIDATION",
     "VERCEL",
+    "VERCEL_URL",
     "PORT"
   ]
 }

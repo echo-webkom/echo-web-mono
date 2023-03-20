@@ -15,6 +15,10 @@ node_modules/
 # Turborepo
 .turbo
 
+# Next.js
+.next/
+next-env.d.ts
+
 # Mac
 .DS_Store
 

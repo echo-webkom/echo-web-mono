@@ -17,7 +17,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
         <ul className="flex flex-col gap-10">
           {jobs.map((job) => (
             <li key={job.slug}>
-              <Link href={`/job/${job.slug}`}>
+              <Link href={`/for-students/job/${job.slug}`}>
                 <div className="flex flex-col gap-3 overflow-hidden rounded-md border bg-slate-200 md:flex-row">
                   <div>
                     <Image

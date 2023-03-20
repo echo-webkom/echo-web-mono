@@ -1,10 +1,10 @@
-import {format} from "date-fns";
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {isErrorMessage} from "@/utils/error";
-import {Breadcrum, Layout, Markdown} from "@/components";
 import {fetchJobAdBySlug, fetchJobAdPaths, type JobAd} from "@/api/job-ads";
+import {Breadcrum, Layout, Markdown} from "@/components";
+import {isErrorMessage} from "@/utils/error";
+import {format} from "date-fns";
 
 interface Props {
   jobAd: JobAd;
@@ -43,7 +43,7 @@ const JobAdPage = ({jobAd}: Props) => {
             </div>
 
             {/* Floater */}
-            <div className="my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-sm shadow-black 2xl:my-0 2xl:w-[500px]">
+            <div className="sticky top-5 my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-sm shadow-black 2xl:my-0 2xl:w-[500px]">
               <div>
                 <p className="font-sm text-gray-600">Selskap:</p>
                 <p className="text-3xl font-bold">{jobAd.companyName}</p>
