@@ -64,6 +64,18 @@ pnpm db:studio
 
 Prisma Studio skal kjøre på [localhost:4444](http://localhost:4444/)
 
+### Planetscale
+
+1. Last ned `pscale` cli.
+2. Logg inn i CLIen `pscale auth login`
+3. Lag en ny branch `pscale branch create echo-web-db <NAVN-PÅ-BRANACH>`
+4. Vent i noen sekunder på at den laget
+5. Koble deg på `pscale branch connect echo-web-db <NAVN-PÅ-BRANCH>`
+6. Endre `DATABASE_URL` i `.env` til `DATABASE_URL=mysql://root@127.0.0.1:3306/echo-web-db`
+7. Gjør endringene dine i `prisma.schema`
+8. Generer `@prisma/client` - `pnpm db:generate`
+9. Push endringene til databasen - `pnpm db:push`
+
 ## Lese mer
 
 [Du kan lese mer på vår wiki!](https://github.com/echo-webkom/new-echo-web-monorepo/wiki)

@@ -1,7 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Default",
   "compilerOptions": {
+    "strict": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "composite": false,
     "declaration": true,
     "declarationMap": true,
@@ -14,7 +15,14 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true
+    "incremental": true,
+    "jsx": "preserve",
+    "module": "esnext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "rootDirs": ["apps/*"]
   },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
   "exclude": ["node_modules"]
 }

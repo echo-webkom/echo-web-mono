@@ -20,33 +20,33 @@ const ProfilePage = () => {
           <div className="flex flex-col gap-3">
             <div>
               <p className="text-lg text-neutral-500">Navn:</p>
-              <p className="text-xl font-bold">{session.user.name}</p>
+              <p className="text-xl font-bold">{session?.user.name}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">E-post:</p>
-              <p className="text-xl font-bold">{session.user.email}</p>
+              <p className="text-xl font-bold">{session?.user.email}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">Alternativ e-post:</p>
-              <p className="text-xl font-bold">{session.user.alternativeEmail ?? "Ingen"}</p>
+              <p className="text-xl font-bold">{session?.user.alternativeEmail ?? "Ingen"}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">Studieretning:</p>
-              <p className="text-xl font-bold">{session.user.degree ?? "Ingen"}</p>
+              <p className="text-xl font-bold">{session?.user.degree ?? "Ingen"}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">Årstrinn:</p>
-              <p className="text-xl font-bold">{session.user.year ?? "Ingen"}</p>
+              <p className="text-xl font-bold">{session?.user.year ?? "Ingen"}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">Studentgruppe:</p>
               <p className="text-xl font-bold">
-                {session.user.studenteGroups ? session.user.studenteGroups.toString() : "Ingen"}
+                {session?.user.studenteGroups ? session.user.studenteGroups.toString() : "Ingen"}
               </p>
             </div>
           </div>
 
-          {session.user.role === Role.ADMIN && (
+          {session?.user.role === Role.ADMIN && (
             <div>
               <Link href="/dashboard">Til dashboard</Link>
             </div>

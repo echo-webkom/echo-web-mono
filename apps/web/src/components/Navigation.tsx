@@ -18,7 +18,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
       className={classNames("justify-right relative z-10 ml-auto flex", className)}
     >
       {/* Navigation routes */}
-      <NavigationMenu.List className="center m-0 flex list-none rounded-md">
+      <NavigationMenu.List className="center m-0 flex list-none gap-1 rounded-md">
         {headerRoutes.map((route) => {
           if (route.session === !userSession) {
             return null;
@@ -60,9 +60,10 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
             </NavigationMenu.Item>
           );
         })}
+
         {/* Popover indicator (arrow). Shows below `NavigationMenu.Trigger` */}
         <NavigationMenu.Indicator className="top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease] data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut">
-          <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
+          <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] border bg-white" />
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
 
