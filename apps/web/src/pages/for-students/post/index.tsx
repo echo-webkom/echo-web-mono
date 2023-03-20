@@ -1,8 +1,8 @@
+import {type GetStaticProps} from "next";
+import Link from "next/link";
 import {fetchPosts, type Post} from "@/api/posts";
 import {Layout} from "@/components";
 import {isErrorMessage} from "@/utils/error";
-import {type GetStaticProps} from "next";
-import Link from "next/link";
 import removeMd from "remove-markdown";
 
 interface Props {

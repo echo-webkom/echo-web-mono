@@ -1,10 +1,10 @@
-import {Layout} from "@/components";
-import {getServerAuthSession} from "@/server/auth";
 import type {GetServerSideProps} from "next";
-import {useSession} from "next-auth/react";
 import Head from "next/head";
-import {Role} from "@prisma/client";
 import Link from "next/link";
+import {Layout} from "@/components";
+import {getServerSession} from "@echo-webkom/auth";
+import {Role} from "@prisma/client";
+import {useSession} from "next-auth/react";
 
 const ProfilePage = () => {
   const {data: session} = useSession();
@@ -58,7 +58,7 @@ const ProfilePage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getServerAuthSession(ctx);
+  const session = await getServerSession(ctx);
 
   if (!session) {
     return {

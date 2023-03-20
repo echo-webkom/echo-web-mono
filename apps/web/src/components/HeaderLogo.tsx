@@ -1,8 +1,8 @@
-import {isFriday, isThursday, getDate, getHours, getMonth, getWeek, isMonday} from "date-fns";
-import {nb} from "date-fns/locale";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday} from "date-fns";
+import {nb} from "date-fns/locale";
 
 const randomHeaderMessage = () => {
   const now = new Date();

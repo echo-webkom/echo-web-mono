@@ -1,11 +1,11 @@
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import removeMd from "remove-markdown";
 import {fetchEventPreviews} from "@/api/events";
-import {Button, Layout} from "@/components";
 import {fetchPosts} from "@/api/posts";
+import {Button, Layout} from "@/components";
 import {isErrorMessage} from "@/utils/error";
-import Head from "next/head";
+import removeMd from "remove-markdown";
 
 interface Props {
   eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;

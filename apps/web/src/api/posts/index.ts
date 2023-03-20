@@ -1,8 +1,9 @@
-import {groq} from "next-sanity";
-import {sanityClient} from "../sanity.client";
-import {type Post, postSchema} from "./schemas";
-import {slugSchema} from "@/utils/slug";
 import {type ErrorMessage} from "@/utils/error";
+import {slugSchema} from "@/utils/slug";
+import {groq} from "next-sanity";
+
+import {sanityClient} from "../sanity.client";
+import {postSchema, type Post} from "./schemas";
 
 export * from "./schemas";
 
@@ -20,7 +21,7 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
       .parse(result)
       .map((nestedSlug) => nestedSlug.slug);
   } catch (error) {
-    console.log(error); // eslint-disable-line
+    console.log(error);
     return [];
   }
 };
@@ -52,7 +53,7 @@ export const fetchPosts = async (n: number | "all"): Promise<Array<Post> | Error
 
     return postSchema.array().parse(result);
   } catch (error) {
-    console.log(error); // eslint-disable-line
+    console.log(error);
     return {message: JSON.stringify(error)};
   }
 };

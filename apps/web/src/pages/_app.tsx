@@ -1,9 +1,8 @@
 import {type AppType} from "next/app";
+import {IBM_Plex_Mono, Inter} from "next/font/google";
+import {api} from "@/utils/api";
 import {type Session} from "next-auth";
 import {SessionProvider} from "next-auth/react";
-import {Inter, IBM_Plex_Mono} from "next/font/google";
-
-import {api} from "@/utils/api";
 
 import "@/styles/globals.css";
 

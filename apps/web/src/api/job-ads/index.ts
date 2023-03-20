@@ -1,8 +1,9 @@
-import {groq} from "next-sanity";
-import {sanityClient} from "../sanity.client";
-import {type JobAd, jobAdSchema} from "./schemas";
-import {slugSchema} from "@/utils/slug";
 import {type ErrorMessage} from "@/utils/error";
+import {slugSchema} from "@/utils/slug";
+import {groq} from "next-sanity";
+
+import {sanityClient} from "../sanity.client";
+import {jobAdSchema, type JobAd} from "./schemas";
 
 export * from "./schemas";
 

@@ -10,15 +10,18 @@
 const config = {
   reactStrictMode: true,
 
+  transpilePackages: ["@echo-webkom/api", "@echo-webkom/auth", "@echo-webkom/db"],
+
   images: {
     domains: ["cdn.sanity.io"],
   },
 
-  i18n: {
-    locales: ["no", "en"],
-    defaultLocale: "no",
-  },
+  // i18n: {
+  //   locales: ["no", "en"],
+  //   defaultLocale: "no",
+  // },
 
   eslint: {ignoreDuringBuilds: !!process.env.CI},
+  typescript: {ignoreBuildErrors: !!process.env.CI},
 };
 export default config;

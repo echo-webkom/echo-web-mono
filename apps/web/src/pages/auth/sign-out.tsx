@@ -1,7 +1,7 @@
-import {signOut} from "next-auth/react";
-import {Layout, Button} from "@/components";
 import type {GetServerSideProps} from "next";
-import {getServerAuthSession} from "@/server/auth";
+import {Button, Layout} from "@/components";
+import {getServerSession} from "@echo-webkom/auth";
+import {signOut} from "next-auth/react";
 
 const LoginPage = () => {
   return (
@@ -24,7 +24,7 @@ const LoginPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getServerAuthSession(ctx);
+  const session = await getServerSession(ctx);
 
   if (!session) {
     return {

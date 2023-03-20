@@ -1,14 +1,14 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Image from "next/image";
-import {Breadcrum, Layout, Markdown} from "@/components";
-import {isErrorMessage} from "@/utils/error";
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupPathsByType,
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
+import {Breadcrum, Layout, Markdown} from "@/components";
+import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "suborg";
 const TITLE = "Underorganisasjoner";
