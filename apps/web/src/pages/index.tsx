@@ -27,7 +27,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
       </Head>
 
       <Layout>
-        <div className="container mx-auto flex flex-col">
+        <div className="container mx-auto flex flex-col px-3">
           <section className="my-20 flex flex-col gap-5 text-center">
             <h2 className="text-2xl">Hei, og velkommen til</h2>
             <h2 className="text-5xl font-bold">echo - Linjeforeningen for informatikk</h2>
@@ -45,15 +45,15 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
         <div className="container mx-auto grid grid-cols-1 gap-y-10 gap-x-5 px-3 lg:grid-cols-2">
           {/* Events  */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <h2 className="mx-auto text-3xl font-semibold">Kommende arrangementer</h2>
+            <h2 className="text-center text-3xl font-semibold">Kommende arrangementer</h2>
             <hr />
             <ul className="flex flex-col gap-5 divide-y">
               {eventPreviews.map((event) => (
                 <li key={event._id}>
                   <Link href={`/event/${event.slug}`}>
-                    <div className="flex h-40 gap-5 p-5 hover:bg-neutral-100">
-                      <div className="flex w-full flex-col gap-1">
-                        <h3 className="text-2xl font-semibold">{event.title}</h3>
+                    <div className="flex h-full gap-5 p-5 hover:bg-neutral-100">
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
+                        <h3 className="truncate text-2xl font-semibold">{event.title}</h3>
                         <ul>
                           <li>
                             <span className="font-semibold">Gruppe:</span>{" "}
@@ -82,22 +82,22 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
 
           {/* Bedpresses */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <h2 className="mx-auto text-3xl font-semibold">Kommende bedriftspresentasjoner</h2>
+            <h2 className="text-center text-3xl font-semibold">Kommende bedriftspresentasjoner</h2>
             <hr />
             <ul className="flex flex-col gap-5 divide-y">
               {bedpresPreviews.map((bedpres) => (
                 <li key={bedpres._id}>
                   <Link href={`/event/${bedpres.slug}`}>
-                    <div className="flex h-40 gap-5 p-5 hover:bg-neutral-100">
+                    <div className="flex h-full gap-5 p-5 hover:bg-neutral-100">
                       {bedpres.logoUrl && (
                         <div className="flex items-center">
-                          <div className="relative h-28 w-28 overflow-hidden rounded-full border bg-[#FFF]">
+                          <div className="relative h-20 w-20 overflow-hidden rounded-full border bg-[#FFF] md:h-28 md:w-28">
                             <Image src={bedpres.logoUrl} alt={`${bedpres.title} logo`} fill />
                           </div>
                         </div>
                       )}
-                      <div className="flex w-full flex-col gap-1">
-                        <h3 className="text-2xl font-semibold">{bedpres.title}</h3>
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
+                        <h3 className="truncate text-2xl font-semibold">{bedpres.title}</h3>
                         <ul>
                           <li>
                             <span className="font-semibold">Dato:</span>{" "}
@@ -122,20 +122,16 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
 
           {/* Posts */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="mx-auto text-3xl font-semibold">Siste nytt</h2>
+            <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {posts.map((post) => (
                 <li key={post._id}>
                   <Link href={`/for-students/post/${post.slug}`}>
                     <div className="flex h-auto flex-col gap-5 p-5 hover:bg-neutral-100">
-                      <h3 className="text-2xl font-semibold">{post.title.no}</h3>
+                      <h3 className="truncate text-2xl font-semibold">{post.title.no}</h3>
                       <hr />
-                      <p className="italic">
-                        {removeMd(post.body.no).length > 100
-                          ? '"' + removeMd(post.body.no).substring(0, 300) + "..." + '"'
-                          : '"' + removeMd(post.body.no) + '"'}
-                      </p>
+                      <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
                     </div>
                   </Link>
                 </li>
@@ -145,7 +141,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
 
           {/* Job ads */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="mx-auto text-3xl font-semibold">Jobbannonser</h2>
+            <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {jobAds.map((jobAd) => (
@@ -153,14 +149,14 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                   <Link href={`/for-students/job/${jobAd.slug}`}>
                     <div className="flex h-full flex-row items-center gap-5 p-5 hover:bg-neutral-100">
                       {jobAd.logoUrl && (
-                        <div>
+                        <div className="hidden md:block">
                           <div className="relative h-32 w-32 overflow-hidden rounded-full border bg-[#FFF]">
                             <Image src={jobAd.logoUrl} alt={`${jobAd.companyName} logo`} fill />
                           </div>
                         </div>
                       )}
-                      <div className="flex w-full flex-col gap-1">
-                        <h3 className="text-2xl font-semibold">{jobAd.title}</h3>
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
+                        <h3 className="truncate text-2xl font-semibold">{jobAd.title}</h3>
                         <hr />
                         <ul>
                           <li>
@@ -202,12 +198,13 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
 
 const EVENT_COUNT = 5;
 const POST_COUNT = 4;
+const JOB_COUNT = 3;
 
 export const getServerSideProps = async () => {
   const bedpresPreviews = await fetchComingEventPreviews("BEDPRES", EVENT_COUNT);
   const eventPreviews = await fetchComingEventPreviews("EVENT", EVENT_COUNT);
   const posts = await fetchPosts(POST_COUNT);
-  const jobAds = await fetchJobAds(3);
+  const jobAds = await fetchJobAds(JOB_COUNT);
 
   return {
     props: {
