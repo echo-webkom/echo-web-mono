@@ -7,7 +7,9 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import {Breadcrum, Layout, Markdown} from "@/components";
+import {Breadcrum} from "@/components/breadcrums";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "board";

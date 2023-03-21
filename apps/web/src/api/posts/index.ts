@@ -20,8 +20,7 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
       .array()
       .parse(result)
       .map((nestedSlug) => nestedSlug.slug);
-  } catch (error) {
-    console.log(error);
+  } catch {
     return [];
   }
 };
@@ -30,7 +29,7 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
  * Get the n last published posts.
  * @param n how many posts to retrieve
  */
-export const fetchPosts = async (n: number | "all"): Promise<Array<Post> | ErrorMessage> => {
+export const fetchPosts = async (n: number | "all"): Promise<Array<Post>> => {
   try {
     const limit = n === "all" ? "" : `[0...${n}]`;
 
@@ -52,9 +51,8 @@ export const fetchPosts = async (n: number | "all"): Promise<Array<Post> | Error
     const result = await sanityClient.fetch<Array<Post>>(query);
 
     return postSchema.array().parse(result);
-  } catch (error) {
-    console.log(error);
-    return {message: JSON.stringify(error)};
+  } catch {
+    return [];
   }
 };
 

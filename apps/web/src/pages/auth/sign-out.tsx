@@ -1,5 +1,6 @@
 import type {GetServerSideProps} from "next";
-import {Button, Layout} from "@/components";
+import {Button} from "@/components/button";
+import {Layout} from "@/components/layout";
 import {getServerSession} from "@echo-webkom/auth";
 import {signOut} from "next-auth/react";
 

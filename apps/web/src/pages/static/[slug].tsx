@@ -1,7 +1,9 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
-import {Breadcrum, Layout, Markdown} from "@/components";
+import {Breadcrum} from "@/components/breadcrums";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 

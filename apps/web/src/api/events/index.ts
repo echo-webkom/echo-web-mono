@@ -12,14 +12,13 @@ import {
 export * from "./schemas";
 
 /**
- * Fetch a preview of the latest events
- * TODO: Add support for fetching all types
+ * Fetch a preview of the coming events
  *
  * @param type Type of event to fetch
  * @param n Amount of events to fetch
  * @returns A list of event previews
  */
-export const fetchEventPreviews = async (
+export const fetchComingEventPreviews = async (
   type: EventType,
   n: number,
 ): Promise<Array<EventPreview>> => {
@@ -27,8 +26,9 @@ export const fetchEventPreviews = async (
     const query = groq`
       *[_type == "happening"
         && happeningType == $type
-        && !(_id in path('drafts.**'))]
-        | order(date desc) {
+        && !(_id in path('drafts.**'))
+        && date >= now()]
+        | order(date asc) {
           _id,
           _createdAt,
           title,
@@ -36,7 +36,8 @@ export const fetchEventPreviews = async (
           body,
           date,
           registrationDate,
-          logoUrl,
+          studentGroupName,
+          "logoUrl": logo.asset -> url,
           happeningType,
           spotRanges[] -> {
             minDegreeYear,

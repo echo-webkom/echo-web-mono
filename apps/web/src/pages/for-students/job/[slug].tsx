@@ -1,21 +1,16 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchJobAdBySlug, fetchJobAdPaths, type JobAd} from "@/api/job-ads";
-import {Breadcrum, Layout, Markdown} from "@/components";
+import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
+import {Breadcrum} from "@/components/breadcrums";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {format} from "date-fns";
 
 interface Props {
   jobAd: JobAd;
 }
-
-const jobTypeToString: Record<JobAd["jobType"], string> = {
-  fulltime: "Fulltid",
-  parttime: "Deltid",
-  internship: "Internship",
-  summerjob: "Sommerjobb",
-};
 
 const JobAdPage = ({jobAd}: Props) => {
   return (

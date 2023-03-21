@@ -1,7 +1,7 @@
 import type {GetServerSideProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {Layout} from "@/components";
+import {Layout} from "@/components/layout";
 import {getServerSession} from "@echo-webkom/auth";
 import {Role} from "@prisma/client";
 import {useSession} from "next-auth/react";

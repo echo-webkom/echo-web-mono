@@ -7,12 +7,6 @@ interface MarkdownProps {
   content: string;
 }
 
-/**
- * Renders markdown content
- *
- * @param content The markdown content to render
- * @returns Markdown mapped to HTML
- */
 export const Markdown = ({content}: MarkdownProps) => {
   return (
     <ReactMarkdown

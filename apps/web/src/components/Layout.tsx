@@ -1,8 +1,9 @@
 import {useEffect, useState, type ReactNode} from "react";
 import {fetchBanner} from "@/api/banner";
-import {Footer, Header} from "@/components";
 
-import {WebsiteBanner} from "./Banner";
+import {WebsiteBanner} from "./banner";
+import {Footer} from "./footer";
+import {Header} from "./header";
 
 interface Props {
   children: ReactNode;
