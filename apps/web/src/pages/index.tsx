@@ -4,8 +4,10 @@ import Link from "next/link";
 import {fetchComingEventPreviews} from "@/api/events";
 import {fetchJobAds, jobTypeToString} from "@/api/job-ads";
 import {fetchPosts} from "@/api/posts";
-import {Button} from "@/components/button";
+import {fetchStudentGroupBySlug} from "@/api/student-group";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import {Layout} from "@/components/layout";
+import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 import classNames from "classnames";
 import {format} from "date-fns";
@@ -17,9 +19,10 @@ type Props = {
   bedpresPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
   posts: Awaited<ReturnType<typeof fetchPosts>>;
   jobAds: Awaited<ReturnType<typeof fetchJobAds>>;
+  board: Awaited<ReturnType<typeof fetchStudentGroupBySlug>>;
 };
 
-const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAds}) => {
+const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAds, board}) => {
   return (
     <>
       <Head>
@@ -27,21 +30,6 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
       </Head>
 
       <Layout>
-        <div className="container mx-auto flex flex-col px-3">
-          <section className="my-20 flex flex-col gap-5 text-center">
-            <h2 className="text-2xl">Hei, og velkommen til</h2>
-            <h2 className="text-5xl font-bold">echo - Linjeforeningen for informatikk</h2>
-            <div className="mx-auto my-10 flex w-full max-w-2xl flex-col gap-8 md:flex-row">
-              <Button intent="primary" size="large" fullWidth>
-                Arrangementer
-              </Button>
-              <Button intent="secondary" size="large" fullWidth>
-                For bedrifter
-              </Button>
-            </div>
-          </section>
-        </div>
-
         <div className="container mx-auto grid grid-cols-1 gap-y-10 gap-x-5 px-3 lg:grid-cols-2">
           {/* Events  */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
@@ -190,6 +178,38 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
               ))}
             </ul>
           </section>
+
+          {/* Board */}
+          {!isErrorMessage(board) && (
+            <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+              <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              <hr />
+              <ul className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+                {board.members.map((member) => (
+                  <li key={member.profile.name}>
+                    <div className="flex h-full flex-col items-center gap-5 p-5">
+                      <Avatar className="border">
+                        <AvatarImage
+                          src={member.profile.imageUrl ?? ""}
+                          alt={`${member.profile.name} profilbilde`}
+                        />
+                        <AvatarFallback>
+                          {member.profile.name
+                            .split(" ")
+                            .map((name) => name[0])
+                            .slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center">
+                        <h3 className="truncate text-2xl font-semibold">{member.profile.name}</h3>
+                        <p>{member.role}</p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
       </Layout>
     </>
@@ -205,6 +225,7 @@ export const getServerSideProps = async () => {
   const eventPreviews = await fetchComingEventPreviews("EVENT", EVENT_COUNT);
   const posts = await fetchPosts(POST_COUNT);
   const jobAds = await fetchJobAds(JOB_COUNT);
+  const board = await fetchStudentGroupBySlug("2023-2024");
 
   return {
     props: {
@@ -212,6 +233,7 @@ export const getServerSideProps = async () => {
       eventPreviews,
       posts,
       jobAds,
+      board,
     },
   };
 };
