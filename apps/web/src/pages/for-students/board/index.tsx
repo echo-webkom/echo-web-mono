@@ -4,7 +4,7 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import {Layout} from "@/components";
+import {Layout} from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "board";

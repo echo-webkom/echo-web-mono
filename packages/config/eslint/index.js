@@ -8,7 +8,13 @@ const config = {
     "prettier",
   ],
   rules: {
+    eqeqeq: "error",
+    "no-console": "warn",
+    "eol-last": "error",
+    "no-trailing-spaces": "error",
     "@next/next/no-html-link-for-pages": "off",
+    "@typescript-eslint/prefer-optional-chain": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",

@@ -1,19 +1,26 @@
 import {type GetServerSideProps} from "next";
-import {fetchEventBySlug} from "@/api/events";
-import {Breadcrum, Button, Layout, Markdown} from "@/components";
+import {fetchEventBySlug, type Event} from "@/api/events";
+import {Breadcrum} from "@/components/breadcrums";
+import {Button} from "@/components/button";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 
 interface Props {
-  event: Awaited<ReturnType<typeof fetchEventBySlug>>;
+  event: Event;
 }
 
 const EventPage = ({event}: Props) => {
-  if (!event) {
-    return <div>404</div>;
-  }
-
   return (
     <Layout>
-      <div className="container mx-auto px-3">
+      <div className="container mx-auto flex flex-col gap-5 px-3">
+        <Breadcrum
+          links={[
+            {href: "/", label: "Hjem"},
+            {href: "/events", label: "Arrangementer"},
+            {href: `/events/${event.slug}`, label: event.title},
+          ]}
+        />
+
         <div className="mb-5 flex flex-col gap-3 border-b border-t py-3">
           <div className="flex w-full items-center">
             <div>
@@ -28,15 +35,10 @@ const EventPage = ({event}: Props) => {
           </div>
         </div>
 
-        <Breadcrum
-          links={[
-            {href: "/", label: "Hjem"},
-            {href: "/events", label: "Arrangementer"},
-            {href: `/events/${event.slug}`, label: event.title},
-          ]}
-        />
-
-        <Markdown content={event.body.no} />
+        <article className="prose md:prose-xl">
+          <h1>{event.title}</h1>
+          <Markdown content={event.body.no} />
+        </article>
       </div>
     </Layout>
   );
@@ -46,6 +48,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const slug = ctx.params?.slug as string;
 
   const event = await fetchEventBySlug(slug);
+
+  if (!event) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

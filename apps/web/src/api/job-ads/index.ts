@@ -3,9 +3,16 @@ import {slugSchema} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
-import {jobAdSchema, type JobAd} from "./schemas";
+import {jobAdSchema, type JobAd, type JobType} from "./schemas";
 
 export * from "./schemas";
+
+export const jobTypeToString: Record<JobType, string> = {
+  fulltime: "Fulltid",
+  parttime: "Deltid",
+  internship: "Internship",
+  summerjob: "Sommerjobb",
+};
 
 /**
  * @returns Array of slugs for all job ads
@@ -35,6 +42,7 @@ export const fetchJobAds = async (n: number): Promise<Array<JobAd>> => {
           && !(_id in path('drafts.**'))]
           | order(_createdAt desc) [0..$n]
         {
+          _id,
           "slug": slug.current,
           body,
           companyName,
@@ -71,6 +79,7 @@ export const fetchJobAdBySlug = async (slug: string): Promise<JobAd | ErrorMessa
     const query = groq`
           *[_type == "jobAdvert" && slug.current == "${slug}"
             && !(_id in path('drafts.**'))] {
+              _id,
               "slug": slug.current,
               body,
               companyName,

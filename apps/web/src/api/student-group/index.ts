@@ -50,19 +50,22 @@ export const fetchStudentGroupsByType = async (
 ): Promise<Array<StudentGroup> | ErrorMessage> => {
   try {
     const query = groq`
-          *[_type == "studentGroup" && groupType == $type && !(_id in path('drafts.**'))] | order(name) {
-              name,
-              "slug": slug.current,
-              info,
-              "imageUrl": grpPicture.asset -> url,
-              "members": members[] {
-                  role,
-                  "profile": profile -> {
-                      name,
-                      "imageUrl": picture.asset -> url
-                  }
-              }
-          }
+        *[_type == "studentGroup"
+        && groupType == $type
+        && !(_id in path('drafts.**'))]
+        | order(name) {
+            name,
+            "slug": slug.current,
+            info,
+            "imageUrl": grpPicture.asset -> url,
+            "members": members[] {
+                role,
+                "profile": profile -> {
+                    name,
+                    "imageUrl": picture.asset -> url
+                }
+            }
+        }
       `;
     const params = {
       type,

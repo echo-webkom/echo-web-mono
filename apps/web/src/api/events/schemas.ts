@@ -73,6 +73,7 @@ export const eventPreviewSchema = z.object({
   registrationDate: z.string().nullable(),
   logoUrl: z.string().nullable(),
   happeningType: eventTypeSchema,
+  studentGroupName: z.string(),
   spotRange: z
     .array(spotRangeSchema)
     .nullable()

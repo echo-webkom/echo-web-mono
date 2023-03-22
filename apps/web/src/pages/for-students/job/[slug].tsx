@@ -1,21 +1,16 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchJobAdBySlug, fetchJobAdPaths, type JobAd} from "@/api/job-ads";
-import {Breadcrum, Layout, Markdown} from "@/components";
+import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
+import {Breadcrum} from "@/components/breadcrums";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {format} from "date-fns";
 
 interface Props {
   jobAd: JobAd;
 }
-
-const jobTypeToString: Record<JobAd["jobType"], string> = {
-  fulltime: "Fulltid",
-  parttime: "Deltid",
-  internship: "Internship",
-  summerjob: "Sommerjobb",
-};
 
 const JobAdPage = ({jobAd}: Props) => {
   return (
@@ -38,8 +33,10 @@ const JobAdPage = ({jobAd}: Props) => {
           <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">
             <div>
               <p>Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}</p>
-              {/* TODO: Ugly hack to get markdown to work. Fix this. */}
-              <Markdown content={`# ${jobAd.title} \n ${jobAd.body}`} />
+              <div className="prose md:prose-xl">
+                <h1>{jobAd.title}</h1>
+                <Markdown content={jobAd.body} />
+              </div>
             </div>
 
             {/* Floater */}

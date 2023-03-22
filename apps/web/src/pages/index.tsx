@@ -1,123 +1,206 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import {fetchEventPreviews} from "@/api/events";
+import {fetchComingEventPreviews} from "@/api/events";
+import {fetchJobAds, jobTypeToString} from "@/api/job-ads";
 import {fetchPosts} from "@/api/posts";
-import {Button, Layout} from "@/components";
+import {fetchStudentGroupBySlug} from "@/api/student-group";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
+import {EventPreviewBox} from "@/components/event-preview";
+import {Layout} from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
+import classNames from "classnames";
+import {format} from "date-fns";
+import nb from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
-interface Props {
-  eventPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
-  bedpresPreviews: Awaited<ReturnType<typeof fetchEventPreviews>>;
+type Props = {
+  eventPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
+  bedpresPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
   posts: Awaited<ReturnType<typeof fetchPosts>>;
-}
+  jobAds: Awaited<ReturnType<typeof fetchJobAds>>;
+  board: Awaited<ReturnType<typeof fetchStudentGroupBySlug>>;
+};
 
-const HomePage = ({eventPreviews, bedpresPreviews, posts}: Props) => {
+const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAds, board}) => {
   return (
     <>
       <Head>
         <title>echo - Linjeforeningen for informatikk</title>
       </Head>
+
       <Layout>
-        {/* Welcome */}
-        <div className="relative mt-10 mb-40 p-20">
-          <Image src="/hero.jpg" alt="hero image" fill className="blur" />
-
-          <div className="z-[1] mx-auto max-w-3xl">
-            <div className="flex flex-col gap-10 py-10">
-              <div className="z-[1] flex flex-col gap-3 text-center">
-                <h2 className="text-3xl">Hei, og velkommen til</h2>
-                <h2 className="text-4xl font-bold">echo - Linjeforeningen for informatikk</h2>
-              </div>
-              <div className="mx-auto flex w-full flex-col gap-8 md:flex-row">
-                <Button intent="primary" size="large" fullWidth>
-                  Arrangementer
-                </Button>
-                <Button intent="secondary" size="large" fullWidth>
-                  For bedrifter
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Events */}
-        <div className="flex flex-col gap-20">
-          <div className="container mx-auto px-3">
-            <h2 className="mb-5 text-2xl font-bold">Kommende arrangementer</h2>
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+        <div className="container mx-auto grid grid-cols-1 gap-y-10 gap-x-5 px-3 lg:grid-cols-2">
+          {/* Events  */}
+          <section className="flex flex-col gap-5 rounded-md border p-5">
+            <h2 className="text-center text-3xl font-semibold">Kommende arrangementer</h2>
+            <hr />
+            <ul className="flex h-full flex-col items-stretch divide-y">
               {eventPreviews.map((event) => (
-                <Link
-                  href={`/event/${event.slug}`}
-                  key={event.slug}
-                  className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
-                >
-                  <div className="flex flex-col gap-3">
-                    <h3 className="text-xl font-bold">{event.title}</h3>
-                    <hr />
-                    <p className="text-gray-500">{removeMd(event.body.no)}</p>
-                  </div>
-                </Link>
+                <li key={event._id}>
+                  <EventPreviewBox event={event} />
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </section>
 
-          <div className="container mx-auto px-3">
-            <h2 className="mb-5 text-2xl font-bold">Kommende bedriftspresentasjoner</h2>
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-              {bedpresPreviews.map((event) => (
-                <Link
-                  href={`/event/${event.slug}`}
-                  key={event.slug}
-                  className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
-                >
-                  <div className="flex flex-col gap-3">
-                    <h3 className="text-xl font-bold">{event.title}</h3>
-                    <hr />
-                    <p className="text-gray-500">{removeMd(event.body.no)}</p>
-                  </div>
-                </Link>
+          {/* Bedpresses */}
+          <section className="flex flex-col gap-5 rounded-md border p-5">
+            <h2 className="text-center text-3xl font-semibold">Kommende bedriftspresentasjoner</h2>
+            <hr />
+            <ul className="flex h-full flex-col justify-between divide-y">
+              {bedpresPreviews.map((bedpres) => (
+                <li key={bedpres._id}>
+                  <EventPreviewBox event={bedpres} />
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </section>
 
-          <div className="container mx-auto px-3">
-            <h2 className="mb-5 text-2xl font-bold">Siste innlegg</h2>
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-              {isErrorMessage(posts) && <p>Kunne ikke hente innlegg</p>}
-              {!isErrorMessage(posts) &&
-                posts.map((post) => (
-                  <Link
-                    href={`/post/${post.slug}`}
-                    key={post.slug}
-                    className="flex h-auto flex-col gap-3 rounded-md border border-gray-200 p-5 hover:ring focus:ring"
-                  >
-                    <div className="flex flex-col gap-3">
-                      <h3 className="text-xl font-bold">{post.title.no}</h3>
-                      <hr />
-                      <p className="text-gray-500">{removeMd(post.body.no).slice(0, 250)}...</p>
+          {/* Posts */}
+          <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+            <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
+            <hr />
+            <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+              {posts.map((post) => {
+                const daysSincePublished =
+                  new Date().getDate() - new Date(post._createdAt).getDate();
+
+                return (
+                  <li key={post._id}>
+                    <Link href={`/for-students/post/${post.slug}`}>
+                      <div className="relative flex h-auto flex-col gap-1 p-5 hover:bg-neutral-100">
+                        {daysSincePublished < 3 && (
+                          <p className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm">
+                            Nytt innlegg!
+                          </p>
+                        )}
+                        <h3 className="flex gap-2 text-2xl font-semibold line-clamp-2">
+                          {post.title.no}
+                        </h3>
+                        <p>
+                          Publisert:{" "}
+                          {format(new Date(post._createdAt), "d. MMMM yyyy", {
+                            locale: nb,
+                          })}
+                        </p>
+                        <hr />
+                        <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          {/* Job ads */}
+          <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+            <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+            <hr />
+            <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+              {jobAds.map((jobAd) => (
+                <li key={jobAd._id}>
+                  <Link href={`/for-students/job/${jobAd.slug}`}>
+                    <div className="flex h-full flex-row items-center gap-5 p-5 hover:bg-neutral-100">
+                      {jobAd.logoUrl && (
+                        <div className="hidden md:block">
+                          <div className="relative h-32 w-32 overflow-hidden rounded-full border bg-[#FFF]">
+                            <Image src={jobAd.logoUrl} alt={`${jobAd.companyName} logo`} fill />
+                          </div>
+                        </div>
+                      )}
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
+                        <h3 className="truncate text-2xl font-semibold">{jobAd.title}</h3>
+                        <hr />
+                        <ul>
+                          <li>
+                            <span className="font-semibold">Bedrift:</span> {jobAd.companyName}
+                          </li>
+                          <li>
+                            <span className="font-semibold">Sted:</span>{" "}
+                            {jobAd.locations.join(", ")}
+                          </li>
+                          <li>
+                            <span
+                              className={classNames("font-semibold", {
+                                "text-red-500": new Date(jobAd.deadline) < new Date(),
+                              })}
+                            >
+                              Søknadsfrist:
+                            </span>{" "}
+                            {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
+                              locale: nb,
+                            })}
+                          </li>
+                          <li>
+                            <span className="font-semibold">Stillingstype:</span>{" "}
+                            {jobTypeToString[jobAd.jobType]}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Board */}
+          {!isErrorMessage(board) && (
+            <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+              <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              <hr />
+              <ul className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+                {board.members.map((member) => (
+                  <li key={member.profile.name}>
+                    <div className="flex h-full flex-col items-center gap-5 p-5">
+                      <Avatar className="border">
+                        <AvatarImage
+                          src={member.profile.imageUrl ?? ""}
+                          alt={`${member.profile.name} profilbilde`}
+                        />
+                        <AvatarFallback className="text-xl">
+                          {member.profile.name
+                            .split(" ")
+                            .map((name) => name[0])
+                            .slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center">
+                        <h3 className="truncate text-2xl font-semibold">{member.profile.name}</h3>
+                        <p>{member.role}</p>
+                      </div>
+                    </div>
+                  </li>
                 ))}
-            </div>
-          </div>
+              </ul>
+            </section>
+          )}
         </div>
       </Layout>
     </>
   );
 };
 
+const EVENT_COUNT = 5;
+const POST_COUNT = 4;
+const JOB_COUNT = 3;
+
 export const getServerSideProps = async () => {
-  const bedpresPreviews = await fetchEventPreviews("BEDPRES", 3);
-  const eventPreviews = await fetchEventPreviews("EVENT", 3);
-  const posts = await fetchPosts(3);
+  const bedpresPreviews = await fetchComingEventPreviews("BEDPRES", EVENT_COUNT);
+  const eventPreviews = await fetchComingEventPreviews("EVENT", EVENT_COUNT);
+  const posts = await fetchPosts(POST_COUNT);
+  const jobAds = await fetchJobAds(JOB_COUNT);
+  const board = await fetchStudentGroupBySlug("2023-2024");
 
   return {
     props: {
       bedpresPreviews,
       eventPreviews,
       posts,
+      jobAds,
+      board,
     },
   };
 };

@@ -1,9 +1,13 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
-import {Breadcrum, Layout, Markdown} from "@/components";
+import {Breadcrum} from "@/components/breadcrums";
+import {Layout} from "@/components/layout";
+import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
+import {format} from "date-fns";
+import nb from "date-fns/locale/nb";
 
 interface Props {
   post: Post;
@@ -27,6 +31,13 @@ const PostPage = ({post}: Props) => {
               {href: `/for-students/post/${post.slug}`, label: post.title.no},
             ]}
           />
+
+          <p className="text-gray-500">
+            Publisert:
+            {format(new Date(post._createdAt), "d. MMMM yyyy", {
+              locale: nb,
+            })}
+          </p>
 
           <article className="prose md:prose-xl">
             <h1>{post.title.no}</h1>
