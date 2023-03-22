@@ -10,7 +10,6 @@ interface MarkdownProps {
 export const Markdown = ({content}: MarkdownProps) => {
   return (
     <ReactMarkdown
-      className="prose md:prose-xl"
       components={{
         a: ({children, href}) => {
           // TODO: Add external link icon and behavior

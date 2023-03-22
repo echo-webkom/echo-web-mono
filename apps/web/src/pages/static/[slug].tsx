@@ -28,6 +28,7 @@ const StaticPage = ({page}: Props) => {
           />
 
           <article className="prose md:prose-xl">
+            <h1>{capitalize(page.name)}</h1>
             <Markdown content={page.info} />
           </article>
         </div>

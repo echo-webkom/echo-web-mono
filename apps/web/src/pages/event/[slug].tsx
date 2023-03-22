@@ -35,7 +35,10 @@ const EventPage = ({event}: Props) => {
           </div>
         </div>
 
-        <Markdown content={event.body.no} />
+        <article className="prose md:prose-xl">
+          <h1>{event.title}</h1>
+          <Markdown content={event.body.no} />
+        </article>
       </div>
     </Layout>
   );

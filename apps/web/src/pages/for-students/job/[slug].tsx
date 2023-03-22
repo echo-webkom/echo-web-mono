@@ -33,8 +33,10 @@ const JobAdPage = ({jobAd}: Props) => {
           <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">
             <div>
               <p>Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}</p>
-              {/* TODO: Ugly hack to get markdown to work. Fix this. */}
-              <Markdown content={`# ${jobAd.title} \n ${jobAd.body}`} />
+              <div className="prose md:prose-xl">
+                <h1>{jobAd.title}</h1>
+                <Markdown content={jobAd.body} />
+              </div>
             </div>
 
             {/* Floater */}
