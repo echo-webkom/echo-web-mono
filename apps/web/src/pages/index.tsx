@@ -69,7 +69,13 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                 return (
                   <li key={post._id}>
                     <Link href={`/for-students/post/${post.slug}`}>
-                      <div className="relative flex h-auto flex-col gap-1 p-5 hover:bg-neutral-100">
+                      <div
+                        className={classNames(
+                          "relative flex h-auto flex-col gap-1 rounded-lg p-5",
+                          "hover:bg-neutral-100",
+                          "transition-colors duration-200 ease-in-out",
+                        )}
+                      >
                         {daysSincePublished < 3 && (
                           <p className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm">
                             Nytt innlegg!
@@ -102,7 +108,13 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
               {jobAds.map((jobAd) => (
                 <li key={jobAd._id}>
                   <Link href={`/for-students/job/${jobAd.slug}`}>
-                    <div className="flex h-full flex-row items-center gap-5 p-5 hover:bg-neutral-100">
+                    <div
+                      className={classNames(
+                        "flex h-full flex-row items-center gap-5 rounded-lg p-5",
+                        "hover:bg-neutral-100",
+                        "transition-colors duration-200 ease-in-out",
+                      )}
+                    >
                       {jobAd.logoUrl && (
                         <div className="hidden md:block">
                           <div className="relative h-32 w-32 overflow-hidden rounded-full border bg-[#FFF]">
@@ -154,7 +166,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
               <ul className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
                 {board.members.map((member) => (
                   <li key={member.profile.name}>
-                    <div className="flex h-full flex-col items-center gap-5 p-5">
+                    <div className="group flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="border">
                         <AvatarImage
                           src={member.profile.imageUrl ?? ""}
@@ -167,7 +179,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                             .slice(0, 2)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center">
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center group-hover:hidden">
                         <h3 className="truncate text-2xl font-semibold">{member.profile.name}</h3>
                         <p>{member.role}</p>
                       </div>
