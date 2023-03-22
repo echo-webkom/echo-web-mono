@@ -6,9 +6,9 @@ import {fetchJobAds, jobTypeToString} from "@/api/job-ads";
 import {fetchPosts} from "@/api/posts";
 import {fetchStudentGroupBySlug} from "@/api/student-group";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
+import {EventPreviewBox} from "@/components/event-preview";
 import {Layout} from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
-import {capitalize} from "@/utils/string";
 import classNames from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
@@ -35,34 +35,10 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
           <section className="flex flex-col gap-5 rounded-md border p-5">
             <h2 className="text-center text-3xl font-semibold">Kommende arrangementer</h2>
             <hr />
-            <ul className="flex flex-col gap-5 divide-y">
+            <ul className="flex h-full flex-col items-stretch divide-y">
               {eventPreviews.map((event) => (
                 <li key={event._id}>
-                  <Link href={`/event/${event.slug}`}>
-                    <div className="flex h-full gap-5 p-5 hover:bg-neutral-100">
-                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
-                        <h3 className="truncate text-2xl font-semibold">{event.title}</h3>
-                        <ul>
-                          <li>
-                            <span className="font-semibold">Gruppe:</span>{" "}
-                            {capitalize(event.studentGroupName)}
-                          </li>
-                          <li>
-                            <span className="font-semibold">Dato:</span>{" "}
-                            {format(new Date(event.date), "d. MMMM yyyy", {locale: nb})}
-                          </li>
-                          {event.registrationDate && (
-                            <li>
-                              <span className="font-semibold">Påmelding:</span>{" "}
-                              {format(new Date(event.registrationDate), "d. MMMM yyyy", {
-                                locale: nb,
-                              })}
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-                  </Link>
+                  <EventPreviewBox event={event} />
                 </li>
               ))}
             </ul>
@@ -72,37 +48,10 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
           <section className="flex flex-col gap-5 rounded-md border p-5">
             <h2 className="text-center text-3xl font-semibold">Kommende bedriftspresentasjoner</h2>
             <hr />
-            <ul className="flex flex-col gap-5 divide-y">
+            <ul className="flex h-full flex-col justify-between divide-y">
               {bedpresPreviews.map((bedpres) => (
                 <li key={bedpres._id}>
-                  <Link href={`/event/${bedpres.slug}`}>
-                    <div className="flex h-full gap-5 p-5 hover:bg-neutral-100">
-                      {bedpres.logoUrl && (
-                        <div className="flex items-center">
-                          <div className="relative h-20 w-20 overflow-hidden rounded-full border bg-[#FFF] md:h-28 md:w-28">
-                            <Image src={bedpres.logoUrl} alt={`${bedpres.title} logo`} fill />
-                          </div>
-                        </div>
-                      )}
-                      <div className="flex w-full flex-col gap-1 overflow-x-hidden">
-                        <h3 className="truncate text-2xl font-semibold">{bedpres.title}</h3>
-                        <ul>
-                          <li>
-                            <span className="font-semibold">Dato:</span>{" "}
-                            {format(new Date(bedpres.date), "d. MMMM yyyy", {locale: nb})}
-                          </li>
-                          {bedpres.registrationDate && (
-                            <li>
-                              <span className="font-semibold">Påmelding:</span>{" "}
-                              {format(new Date(bedpres.registrationDate), "d. MMMM yyyy", {
-                                locale: nb,
-                              })}
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-                  </Link>
+                  <EventPreviewBox event={bedpres} />
                 </li>
               ))}
             </ul>
@@ -113,17 +62,35 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
             <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-              {posts.map((post) => (
-                <li key={post._id}>
-                  <Link href={`/for-students/post/${post.slug}`}>
-                    <div className="flex h-auto flex-col gap-5 p-5 hover:bg-neutral-100">
-                      <h3 className="truncate text-2xl font-semibold">{post.title.no}</h3>
-                      <hr />
-                      <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
+              {posts.map((post) => {
+                const daysSincePublished =
+                  new Date().getDate() - new Date(post._createdAt).getDate();
+
+                return (
+                  <li key={post._id}>
+                    <Link href={`/for-students/post/${post.slug}`}>
+                      <div className="relative flex h-auto flex-col gap-1 p-5 hover:bg-neutral-100">
+                        {daysSincePublished < 3 && (
+                          <p className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm">
+                            Nytt innlegg!
+                          </p>
+                        )}
+                        <h3 className="flex gap-2 text-2xl font-semibold line-clamp-2">
+                          {post.title.no}
+                        </h3>
+                        <p>
+                          Publisert:{" "}
+                          {format(new Date(post._createdAt), "d. MMMM yyyy", {
+                            locale: nb,
+                          })}
+                        </p>
+                        <hr />
+                        <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </section>
 
@@ -193,7 +160,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                           src={member.profile.imageUrl ?? ""}
                           alt={`${member.profile.name} profilbilde`}
                         />
-                        <AvatarFallback>
+                        <AvatarFallback className="text-xl">
                           {member.profile.name
                             .split(" ")
                             .map((name) => name[0])
