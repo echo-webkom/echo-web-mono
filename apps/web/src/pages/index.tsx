@@ -166,7 +166,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
               <ul className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
                 {board.members.map((member) => (
                   <li key={member.profile.name}>
-                    <div className="group flex h-full flex-col items-center gap-5 p-5">
+                    <div className="flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="border">
                         <AvatarImage
                           src={member.profile.imageUrl ?? ""}
@@ -179,7 +179,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                             .slice(0, 2)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center group-hover:hidden">
+                      <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center">
                         <h3 className="truncate text-2xl font-semibold">{member.profile.name}</h3>
                         <p>{member.role}</p>
                       </div>
