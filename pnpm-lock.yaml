@@ -14,22 +14,22 @@ importers:
       eslint-config-custom: 0.0.0
       husky: 8.0.3
       lint-staged: 13.2.0
-      prettier: 2.8.5
+      prettier: 2.8.6
       prettier-plugin-organize-imports: 3.2.2
       prettier-plugin-tailwindcss: 0.2.5
       turbo: 1.8.5
       typescript: ^5.0.0
     dependencies:
-      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.5
+      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.6
       '@manypkg/cli': 0.20.0
       '@types/node': 18.14.6
       eslint: 8.36.0
       eslint-config-custom: link:packages/config/eslint
       husky: 8.0.3
       lint-staged: 13.2.0
-      prettier: 2.8.5
-      prettier-plugin-organize-imports: 3.2.2_u62bozaieo4oxvumpidncoeguq
-      prettier-plugin-tailwindcss: 0.2.5_t7cghibiovjcrylednls6nx2tu
+      prettier: 2.8.6
+      prettier-plugin-organize-imports: 3.2.2_tcllvk4eo3otqqvuorc2duftpy
+      prettier-plugin-tailwindcss: 0.2.5_cpbiqssswcgd27i5fpdcxefz4e
       turbo: 1.8.5
       typescript: 5.0.2
 
@@ -837,7 +837,7 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
-  /@ianvs/prettier-plugin-sort-imports/3.7.1_prettier@2.8.5:
+  /@ianvs/prettier-plugin-sort-imports/3.7.1_prettier@2.8.6:
     resolution: {integrity: sha512-XDnBUUruJY9KgNd7T2ZHnVPWo5B9NzVDCLEMm7HjXTA3rTtMg5Q46gYRjLvampDXSmN8+icu54aRE3IIT8U+1w==}
     peerDependencies:
       '@vue/compiler-sfc': '>=3.0.0'
@@ -854,7 +854,7 @@ packages:
       javascript-natural-sort: 0.7.1
       lodash.clone: 4.5.0
       lodash.isequal: 4.5.0
-      prettier: 2.8.5
+      prettier: 2.8.6
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -6379,7 +6379,7 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /prettier-plugin-organize-imports/3.2.2_u62bozaieo4oxvumpidncoeguq:
+  /prettier-plugin-organize-imports/3.2.2_tcllvk4eo3otqqvuorc2duftpy:
     resolution: {integrity: sha512-e97lE6odGSiHonHJMTYC0q0iLXQyw0u5z/PJpvP/3vRy6/Zi9kLBwFAbEGjDzIowpjQv8b+J04PDamoUSQbzGA==}
     peerDependencies:
       '@volar/vue-language-plugin-pug': ^1.0.4
@@ -6392,11 +6392,11 @@ packages:
       '@volar/vue-typescript':
         optional: true
     dependencies:
-      prettier: 2.8.5
+      prettier: 2.8.6
       typescript: 5.0.2
     dev: false
 
-  /prettier-plugin-tailwindcss/0.2.5_t7cghibiovjcrylednls6nx2tu:
+  /prettier-plugin-tailwindcss/0.2.5_cpbiqssswcgd27i5fpdcxefz4e:
     resolution: {integrity: sha512-vZ/iKieyCx0WTxHbkf5E1rBlv/ybFk8WTT4hL5W2jlVxum2Zbe0jMUpuQdDrpa4z2vnPiJ5KIWCqL/kd16fKYg==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
@@ -6448,13 +6448,13 @@ packages:
       prettier-plugin-twig-melody:
         optional: true
     dependencies:
-      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.5
-      prettier: 2.8.5
-      prettier-plugin-organize-imports: 3.2.2_u62bozaieo4oxvumpidncoeguq
+      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.6
+      prettier: 2.8.6
+      prettier-plugin-organize-imports: 3.2.2_tcllvk4eo3otqqvuorc2duftpy
     dev: false
 
-  /prettier/2.8.5:
-    resolution: {integrity: sha512-3gzuxrHbKUePRBB4ZeU08VNkUcqEHaUaouNt0m7LGP4Hti/NuB07C7PPTM/LkWqXoJYJn2McEo5+kxPNrtQkLQ==}
+  /prettier/2.8.6:
+    resolution: {integrity: sha512-mtuzdiBbHwPEgl7NxWlqOkithPyp4VN93V7VeHVWBF+ad3I5avc0RVDT4oImXQy9H/AqxA2NSQH8pSxHW6FYbQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: false
