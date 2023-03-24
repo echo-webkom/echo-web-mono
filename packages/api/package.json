@@ -13,8 +13,8 @@
   "dependencies": {
     "@echo-webkom/auth": "0.1.0",
     "@echo-webkom/db": "0.1.0",
-    "@trpc/client": "^10.17.0",
-    "@trpc/server": "^10.17.0",
+    "@trpc/client": "^10.18.0",
+    "@trpc/server": "^10.18.0",
     "superjson": "1.9.1",
     "zod": "^3.21.4"
   },
