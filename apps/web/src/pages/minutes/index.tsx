@@ -29,7 +29,7 @@ const MinutesPage = ({minutes}: Props) => {
                       .map((minute) => (
                         <li key={minute.date.toDateString()} className="text-base">
                           <Link
-                            href={`/minutes/${minute.title}`}
+                            href={`/minutes/${minute._id}`}
                             className="flex items-center hover:underline"
                           >
                             {minute.date.toLocaleString("nb-NO", {

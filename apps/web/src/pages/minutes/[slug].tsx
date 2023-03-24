@@ -14,7 +14,6 @@ interface Props {
 const MinutePage = ({minute}: Props) => {
   return (
     <>
-      <h1>Hello!</h1>
       <Head>
         <title>
           {TITLE} -{minute.date}
@@ -41,6 +40,7 @@ const MinutePage = ({minute}: Props) => {
 
           <article className="prose md:prose-xl">
             <h1>{minute.title}</h1>
+            <iframe title={minute.title} src={minute.document} />
           </article>
         </div>
       </Layout>
