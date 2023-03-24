@@ -1,5 +1,5 @@
 import {type ErrorMessage} from "@/utils/error";
-import {slugSchema} from "@/utils/slug";
+import {slugSchema, type Slug} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
@@ -36,15 +36,17 @@ export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
 
 export const fetchMinutesPaths = async (): Promise<Array<string>> => {
   try {
-    const query = groq`*[_type == "meetingMinute" && !(_id in path('drafts.**'))]{ _id }`;
+    const query = groq`*[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
+      "slug": _id
+    }`;
 
-    const result = await sanityClient.fetch<Array<Minute>>(query);
+    const result = await sanityClient.fetch<Array<Slug>>(query);
 
     return slugSchema
       .array()
       .parse(result)
       .map((nestedSlug) => nestedSlug.slug);
-  } catch (error) {
+  } catch {
     return [];
   }
 };
@@ -52,18 +54,19 @@ export const fetchMinutesPaths = async (): Promise<Array<string>> => {
 export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMessage> => {
   try {
     const query = groq`
-    *[_type == "meetingMinute" && _id == $slug && !(_id in path('drafts.**'))] {
-      _id,
-      allmote,
-      date,
-      title,
-      document {
-        asset -> {
-          url
+      *[_type == "meetingMinute" && _id == $slug && !(_id in path('drafts.**'))] {
+        _id,
+        allmote,
+        date,
+        title,
+        document {
+          asset -> {
+            url
+          }
         }
-      }
-    }
+      }[0]
     `;
+
     const params = {
       slug,
     };
@@ -72,7 +75,6 @@ export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMes
 
     return minuteSchema.parse(result);
   } catch (error) {
-    console.log(error); // eslint-disable-line
     return {message: JSON.stringify(error)};
   }
 };
