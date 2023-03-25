@@ -6,11 +6,11 @@ import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import classNames from "classnames";
 import {useSession} from "next-auth/react";
 
-interface FooterProps {
+type FooterProps = {
   className?: string;
-}
+};
 
-export const Footer = ({className}: FooterProps) => {
+const Footer = ({className}: FooterProps) => {
   const {data: userSession} = useSession();
 
   return (
@@ -118,3 +118,5 @@ export const Footer = ({className}: FooterProps) => {
     </div>
   );
 };
+
+export default Footer;

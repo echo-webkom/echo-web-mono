@@ -3,8 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
 import Breadcrumbs from "@/components/breadcrumbs";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {format} from "date-fns";
 

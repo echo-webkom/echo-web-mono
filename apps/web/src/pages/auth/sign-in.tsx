@@ -1,6 +1,6 @@
 import {type GetServerSideProps} from "next";
-import {Button} from "@/components/button";
-import {Layout} from "@/components/layout";
+import Button from "@/components/button";
+import Layout from "@/components/layout";
 import type {Provider} from "next-auth/providers";
 import {getProviders, getSession, signIn} from "next-auth/react";
 

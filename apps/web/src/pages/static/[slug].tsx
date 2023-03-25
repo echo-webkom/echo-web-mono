@@ -2,8 +2,8 @@ import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
 import Breadcrumbs from "@/components/breadcrumbs";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 
@@ -11,7 +11,7 @@ type Props = {
   page: StaticInfo;
 };
 
-const StaticPage: React.FC<Props> = ({page}) => {
+const StaticPage = ({page}: Props) => {
   return (
     <>
       <Head>

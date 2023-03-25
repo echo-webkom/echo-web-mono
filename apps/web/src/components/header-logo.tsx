@@ -66,7 +66,7 @@ const randomHeaderMessage = () => {
   return stdMessages()[Math.floor(Math.random() * stdMessages().length)];
 };
 
-export const HeaderLogo = () => {
+const HeaderLogo = () => {
   const [_headerMessage, setHeaderMessage] = useState("");
 
   useEffect(() => {
@@ -88,3 +88,5 @@ export const HeaderLogo = () => {
     </Link>
   );
 };
+
+export default HeaderLogo;

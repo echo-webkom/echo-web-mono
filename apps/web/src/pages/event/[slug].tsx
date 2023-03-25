@@ -1,9 +1,9 @@
 import {type GetServerSideProps} from "next";
 import {fetchEventBySlug, type Event} from "@/api/events";
 import Breadcrumbs from "@/components/breadcrumbs";
-import {Button} from "@/components/button";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Button from "@/components/button";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 
 interface Props {
   event: Event;

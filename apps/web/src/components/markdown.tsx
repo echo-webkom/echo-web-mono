@@ -3,11 +3,11 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-interface MarkdownProps {
+type MarkdownProps = {
   content: string;
-}
+};
 
-export const Markdown = ({content}: MarkdownProps) => {
+const Markdown = ({content}: MarkdownProps) => {
   return (
     <ReactMarkdown
       components={{
@@ -40,3 +40,5 @@ export const Markdown = ({content}: MarkdownProps) => {
     </ReactMarkdown>
   );
 };
+
+export default Markdown;

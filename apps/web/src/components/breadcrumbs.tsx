@@ -4,10 +4,10 @@ import classNames from "classnames";
 
 type BreadcrumbsRootProps = {
   className?: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
 };
 
-const BreadcrumbsRoot: React.FC<BreadcrumbsRootProps> = ({className, children}) => {
+const BreadcrumbsRoot = ({className, children}: BreadcrumbsRootProps) => {
   const childrenArray = React.Children.toArray(children);
 
   return (
@@ -42,7 +42,7 @@ type BreadcrumbsItemProps = {
   children: React.ReactNode;
 };
 
-const BreadcrumbsItem: React.FC<BreadcrumbsItemProps> = ({className, to, children}) => {
+const BreadcrumbsItem = ({className, to, children}: BreadcrumbsItemProps) => {
   if (to) {
     return (
       <Link className={classNames("hover:underline", className)} href={to}>

@@ -1,16 +1,17 @@
 import {useEffect, useState, type ReactNode} from "react";
 import {fetchBanner} from "@/api/banner";
+import {type Banner} from "@/api/banner/schemas";
 
-import {WebsiteBanner} from "./banner";
-import {Footer} from "./footer";
-import {Header} from "./header";
+import WebsiteBanner from "./banner";
+import Footer from "./footer";
+import Header from "./header";
 
-interface Props {
+type LayoutProps = {
   children: ReactNode;
-}
+};
 
-export const Layout = ({children}: Props) => {
-  const [banner, setBanner] = useState<Awaited<ReturnType<typeof fetchBanner>>>(null);
+const Layout = ({children}: LayoutProps) => {
+  const [banner, setBanner] = useState<Banner | null>(null);
 
   useEffect(() => {
     const setBannerMessage = async () => {
@@ -32,3 +33,5 @@ export const Layout = ({children}: Props) => {
     </>
   );
 };
+
+export default Layout;

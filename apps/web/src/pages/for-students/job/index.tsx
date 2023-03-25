@@ -2,7 +2,7 @@ import {type GetStaticProps} from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {fetchJobAds, type JobAd} from "@/api/job-ads";
-import {Layout} from "@/components/layout";
+import Layout from "@/components/layout";
 import {urlFor} from "@/utils/image-builder";
 
 interface Props {

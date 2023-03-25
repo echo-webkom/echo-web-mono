@@ -8,8 +8,8 @@ import {
   type StudentGroupType,
 } from "@/api/student-group";
 import Breadcrumbs from "@/components/breadcrumbs";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "intgroup";
