@@ -1,7 +1,8 @@
 import type {GetServerSideProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {Layout} from "@/components/layout";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
 import {getServerSession} from "@echo-webkom/auth";
 import {Role} from "@prisma/client";
 import {useSession} from "next-auth/react";
@@ -15,7 +16,7 @@ const ProfilePage = () => {
         <title>Profil</title>
       </Head>
       <Layout>
-        <div className="container mx-auto px-3">
+        <Container>
           <h1 className="mb-3 text-4xl font-bold md:text-6xl">Din profil</h1>
           <div className="flex flex-col gap-3">
             <div>
@@ -51,7 +52,7 @@ const ProfilePage = () => {
               <Link href="/dashboard">Til dashboard</Link>
             </div>
           )}
-        </div>
+        </Container>
       </Layout>
     </>
   );

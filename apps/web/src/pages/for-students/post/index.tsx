@@ -1,7 +1,8 @@
 import {type GetStaticProps} from "next";
 import Link from "next/link";
 import {fetchPosts, type Post} from "@/api/posts";
-import {Layout} from "@/components/layout";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
 import removeMd from "remove-markdown";
 
@@ -12,7 +13,7 @@ interface Props {
 const PostsPage = ({posts}: Props) => {
   return (
     <Layout>
-      <div className="container mx-auto px-3">
+      <Container>
         <h1 className="mb-3 text-4xl font-bold md:text-6xl">Innlegg</h1>
 
         <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2">
@@ -32,7 +33,7 @@ const PostsPage = ({posts}: Props) => {
             </li>
           ))}
         </ul>
-      </div>
+      </Container>
     </Layout>
   );
 };

@@ -7,9 +7,10 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import {Breadcrum} from "@/components/breadcrums";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "board";
@@ -28,23 +29,12 @@ const BoardPage = ({group}: Props) => {
         </title>
       </Head>
       <Layout>
-        <div className="container mx-auto">
-          <Breadcrum
-            links={[
-              {
-                href: "/",
-                label: "Hjem",
-              },
-              {
-                href: `/for-students/${GROUP_TYPE}`,
-                label: TITLE,
-              },
-              {
-                href: `/for-students/${GROUP_TYPE}/${group.slug}`,
-                label: group.name,
-              },
-            ]}
-          />
+        <Container>
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item to={`/for-students/${GROUP_TYPE}`}>{TITLE}</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{group.name}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           {/* TODO: Render group image */}
           {group.imageUrl && (
@@ -57,7 +47,7 @@ const BoardPage = ({group}: Props) => {
           </article>
 
           {/* TODO: Render group members */}
-        </div>
+        </Container>
       </Layout>
     </>
   );

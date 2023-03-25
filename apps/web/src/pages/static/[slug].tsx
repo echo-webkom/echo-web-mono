@@ -1,15 +1,16 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
-import {Breadcrum} from "@/components/breadcrums";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 
-interface Props {
+type Props = {
   page: StaticInfo;
-}
+};
 
 const StaticPage = ({page}: Props) => {
   return (
@@ -18,20 +19,16 @@ const StaticPage = ({page}: Props) => {
         <title>{capitalize(page.name)}</title>
       </Head>
       <Layout>
-        <div className="container mx-auto">
-          <Breadcrum
-            links={[
-              {href: "/", label: "Hjem"},
-              {href: "/static", label: "Statisk"},
-              {href: `/static/${page.slug}`, label: capitalize(page.name)},
-            ]}
-          />
+        <Container>
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{capitalize(page.name)}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           <article className="prose md:prose-xl">
-            <h1>{capitalize(page.name)}</h1>
             <Markdown content={page.info} />
           </article>
-        </div>
+        </Container>
       </Layout>
     </>
   );

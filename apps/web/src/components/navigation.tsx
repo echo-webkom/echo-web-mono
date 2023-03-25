@@ -6,9 +6,9 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import classNames from "classnames";
 import {useSession} from "next-auth/react";
 
-interface DesktopNavigationProps {
+type DesktopNavigationProps = {
   className?: string;
-}
+};
 
 export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
   const {data: userSession} = useSession();

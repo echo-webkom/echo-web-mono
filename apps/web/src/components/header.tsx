@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 
-import {HeaderLogo} from "./header-logo";
+import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";
 
-export const Header = () => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {pathname} = useRouter();
 
@@ -19,6 +19,7 @@ export const Header = () => {
         <HeaderLogo />
         <DesktopNavigation className="mt-auto hidden lg:block" />
         <button
+          type="button"
           className="mt-auto mb-5 ml-auto block lg:hidden"
           onClick={() => setIsOpen((b) => !b)}
         >
@@ -35,3 +36,5 @@ export const Header = () => {
     </div>
   );
 };
+
+export default Header;

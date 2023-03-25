@@ -2,11 +2,11 @@ import Link from "next/link";
 import {type Banner} from "@/api/banner/schemas";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
-interface BannerProps {
+type BannerProps = {
   banner: Banner | null;
-}
+};
 
-export const WebsiteBanner = ({banner}: BannerProps) => {
+const WebsiteBanner = ({banner}: BannerProps) => {
   if (!banner) {
     return null;
   }
@@ -40,3 +40,5 @@ export const WebsiteBanner = ({banner}: BannerProps) => {
     </div>
   );
 };
+
+export default WebsiteBanner;

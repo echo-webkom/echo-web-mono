@@ -1,9 +1,10 @@
 import {type GetServerSideProps} from "next";
 import {fetchEventBySlug, type Event} from "@/api/events";
-import {Breadcrum} from "@/components/breadcrums";
-import {Button} from "@/components/button";
-import {Layout} from "@/components/layout";
-import {Markdown} from "@/components/markdown";
+import Breadcrumbs from "@/components/breadcrumbs";
+import Button from "@/components/button";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
+import Markdown from "@/components/markdown";
 
 interface Props {
   event: Event;
@@ -12,14 +13,12 @@ interface Props {
 const EventPage = ({event}: Props) => {
   return (
     <Layout>
-      <div className="container mx-auto flex flex-col gap-5 px-3">
-        <Breadcrum
-          links={[
-            {href: "/", label: "Hjem"},
-            {href: "/events", label: "Arrangementer"},
-            {href: `/events/${event.slug}`, label: event.title},
-          ]}
-        />
+      <Container>
+        <Breadcrumbs>
+          <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+          <Breadcrumbs.Item to="/events">Arrangementer</Breadcrumbs.Item>
+          <Breadcrumbs.Item>{event.title}</Breadcrumbs.Item>
+        </Breadcrumbs>
 
         <div className="mb-5 flex flex-col gap-3 border-b border-t py-3">
           <div className="flex w-full items-center">
@@ -39,7 +38,7 @@ const EventPage = ({event}: Props) => {
           <h1>{event.title}</h1>
           <Markdown content={event.body.no} />
         </article>
-      </div>
+      </Container>
     </Layout>
   );
 };

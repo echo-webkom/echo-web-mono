@@ -4,7 +4,8 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import {Layout} from "@/components/layout";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
 
 const GROUP_TYPE: StudentGroupType = "board";
@@ -18,7 +19,7 @@ const SubGroupsPage = ({groups}: Props) => {
   return (
     <>
       <Layout>
-        <div className="container mx-auto px-3">
+        <Container>
           <h1 className="mb-5 text-4xl font-bold md:text-6xl">{TITLE}</h1>
 
           <ul className="flex flex-col gap-3">
@@ -28,7 +29,7 @@ const SubGroupsPage = ({groups}: Props) => {
               </li>
             ))}
           </ul>
-        </div>
+        </Container>
       </Layout>
     </>
   );

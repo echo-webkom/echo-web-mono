@@ -27,7 +27,7 @@ type EventPreviewProps = {
   event: EventPreview;
 };
 
-export const EventPreviewBox: React.FC<EventPreviewProps> = ({event}) => {
+const EventPreviewBox = ({event}: EventPreviewProps) => {
   return (
     <Link href={`/event/${event.slug}`}>
       <div
@@ -71,3 +71,5 @@ export const EventPreviewBox: React.FC<EventPreviewProps> = ({event}) => {
     </Link>
   );
 };
+
+export default EventPreviewBox;
