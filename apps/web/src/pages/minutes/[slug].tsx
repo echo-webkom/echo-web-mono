@@ -16,7 +16,7 @@ const MinutePage = ({minute}: Props) => {
     <>
       <Head>
         <title>
-          {TITLE} -{minute.date}
+          {TITLE} - {minute.date}
         </title>
       </Head>
       <Layout>
@@ -40,7 +40,7 @@ const MinutePage = ({minute}: Props) => {
 
           <article className="prose md:prose-xl">
             <h1>{minute.title}</h1>
-            <iframe title={minute.title} src={minute.document} />
+            <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
           </article>
         </div>
       </Layout>

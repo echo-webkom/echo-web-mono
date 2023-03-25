@@ -27,7 +27,7 @@ const MinutesPage = ({minutes}: Props) => {
                     {newMinutes
                       .filter((minute) => minute.date.getFullYear() === year)
                       .map((minute) => (
-                        <li key={minute.date.toDateString()} className="text-base">
+                        <li key={minute.date.toDateString()} className="flex gap-3 text-base">
                           <Link
                             href={`/minutes/${minute._id}`}
                             className="flex items-center hover:underline"
@@ -38,6 +38,13 @@ const MinutesPage = ({minutes}: Props) => {
                               day: "numeric",
                             })}
                           </Link>
+                          <div>
+                            {minute.allmote && (
+                              <p className="w-fit rounded-lg bg-[#a4ced9] px-2 py-1 text-sm">
+                                Allmøte
+                              </p>
+                            )}
+                          </div>
                         </li>
                       ))}
                   </ul>
