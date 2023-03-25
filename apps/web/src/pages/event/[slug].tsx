@@ -2,6 +2,7 @@ import {type GetServerSideProps} from "next";
 import {fetchEventBySlug, type Event} from "@/api/events";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Button from "@/components/button";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 
@@ -12,7 +13,7 @@ interface Props {
 const EventPage = ({event}: Props) => {
   return (
     <Layout>
-      <div className="container mx-auto flex flex-col gap-5 px-3">
+      <Container>
         <Breadcrumbs>
           <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
           <Breadcrumbs.Item to="/events">Arrangementer</Breadcrumbs.Item>
@@ -37,7 +38,7 @@ const EventPage = ({event}: Props) => {
           <h1>{event.title}</h1>
           <Markdown content={event.body.no} />
         </article>
-      </div>
+      </Container>
     </Layout>
   );
 };

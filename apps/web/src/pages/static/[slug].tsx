@@ -2,6 +2,7 @@ import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
 import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -18,7 +19,7 @@ const StaticPage = ({page}: Props) => {
         <title>{capitalize(page.name)}</title>
       </Head>
       <Layout>
-        <div className="container mx-auto">
+        <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
             <Breadcrumbs.Item>{capitalize(page.name)}</Breadcrumbs.Item>
@@ -27,7 +28,7 @@ const StaticPage = ({page}: Props) => {
           <article className="prose md:prose-xl">
             <Markdown content={page.info} />
           </article>
-        </div>
+        </Container>
       </Layout>
     </>
   );

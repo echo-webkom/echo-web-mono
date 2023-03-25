@@ -2,6 +2,7 @@ import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
 import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -22,7 +23,7 @@ const PostPage = ({post}: Props) => {
         <title>{seoTitle}</title>
       </Head>
       <Layout>
-        <div className="container mx-auto px-3">
+        <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
             <Breadcrumbs.Item to={`/for-students/post`}>Innlegg</Breadcrumbs.Item>
@@ -40,7 +41,7 @@ const PostPage = ({post}: Props) => {
             <h1>{post.title.no}</h1>
             <Markdown content={post.body.no} />
           </article>
-        </div>
+        </Container>
       </Layout>
     </>
   );

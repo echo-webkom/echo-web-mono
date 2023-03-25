@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
 import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -20,7 +21,7 @@ const JobAdPage = ({jobAd}: Props) => {
       </Head>
 
       <Layout>
-        <div className="container mx-auto px-5">
+        <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
             <Breadcrumbs.Item to="/for-students/job">Jobbannonser</Breadcrumbs.Item>
@@ -73,7 +74,7 @@ const JobAdPage = ({jobAd}: Props) => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </Layout>
     </>
   );

@@ -2,6 +2,7 @@ import {type GetStaticProps} from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {fetchJobAds, type JobAd} from "@/api/job-ads";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import {urlFor} from "@/utils/image-builder";
 
@@ -12,7 +13,7 @@ interface Props {
 const JobAdsOverviewPage = ({jobs}: Props) => {
   return (
     <Layout>
-      <div className="container mx-auto px-3">
+      <Container>
         <h1 className="mb-3 text-4xl font-bold">Stillingsannonser</h1>
         <ul className="flex flex-col gap-10">
           {jobs.map((job) => (
@@ -37,7 +38,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
             </li>
           ))}
         </ul>
-      </div>
+      </Container>
     </Layout>
   );
 };

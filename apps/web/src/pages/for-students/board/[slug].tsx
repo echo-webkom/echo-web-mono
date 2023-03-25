@@ -8,6 +8,7 @@ import {
   type StudentGroupType,
 } from "@/api/student-group";
 import Breadcrumbs from "@/components/breadcrumbs";
+import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -28,7 +29,7 @@ const BoardPage = ({group}: Props) => {
         </title>
       </Head>
       <Layout>
-        <div className="container mx-auto">
+        <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
             <Breadcrumbs.Item to={`/for-students/${GROUP_TYPE}`}>{TITLE}</Breadcrumbs.Item>
@@ -46,7 +47,7 @@ const BoardPage = ({group}: Props) => {
           </article>
 
           {/* TODO: Render group members */}
-        </div>
+        </Container>
       </Layout>
     </>
   );
