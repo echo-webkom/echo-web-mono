@@ -2,7 +2,7 @@ import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
 import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
-import {Breadcrum} from "@/components/breadcrums";
+import Breadcrumbs from "@/components/breadcrumbs";
 import {Layout} from "@/components/layout";
 import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -21,13 +21,11 @@ const JobAdPage = ({jobAd}: Props) => {
 
       <Layout>
         <div className="container mx-auto px-5">
-          <Breadcrum
-            links={[
-              {href: "/", label: "Hjem"},
-              {href: "/job", label: "Jobb"},
-              {href: `/job/${jobAd.slug}`, label: jobAd.title},
-            ]}
-          />
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item to="/for-students/job">Jobbannonser</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{jobAd.title}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           {/* Job ad */}
           <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">

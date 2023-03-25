@@ -1,7 +1,7 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
-import {Breadcrum} from "@/components/breadcrums";
+import Breadcrumbs from "@/components/breadcrumbs";
 import {Layout} from "@/components/layout";
 import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -23,14 +23,11 @@ const PostPage = ({post}: Props) => {
       </Head>
       <Layout>
         <div className="container mx-auto px-3">
-          <Breadcrum
-            className="mb-3"
-            links={[
-              {href: "/", label: "Hjem"},
-              {href: "/for-students/post", label: "Innlegg"},
-              {href: `/for-students/post/${post.slug}`, label: post.title.no},
-            ]}
-          />
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item to={`/for-students/post`}>Innlegg</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{post.title.no}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           <p className="text-gray-500">
             Publisert:

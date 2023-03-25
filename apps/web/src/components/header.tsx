@@ -19,6 +19,7 @@ export const Header = () => {
         <HeaderLogo />
         <DesktopNavigation className="mt-auto hidden lg:block" />
         <button
+          type="button"
           className="mt-auto mb-5 ml-auto block lg:hidden"
           onClick={() => setIsOpen((b) => !b)}
         >

@@ -7,7 +7,7 @@ import {
   type StudentGroup,
   type StudentGroupType,
 } from "@/api/student-group";
-import {Breadcrum} from "@/components/breadcrums";
+import Breadcrumbs from "@/components/breadcrumbs";
 import {Layout} from "@/components/layout";
 import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -29,22 +29,11 @@ const SubGroupPage = ({group}: Props) => {
       </Head>
       <Layout>
         <div className="container mx-auto">
-          <Breadcrum
-            links={[
-              {
-                href: "/",
-                label: "Hjem",
-              },
-              {
-                href: `/for-students/${GROUP_TYPE}`,
-                label: TITLE,
-              },
-              {
-                href: `/for-students/${GROUP_TYPE}/${group.slug}`,
-                label: group.name,
-              },
-            ]}
-          />
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item to={`/for-students/${GROUP_TYPE}`}>{TITLE}</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{group.name}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           {/* TODO: Render group image */}
           {group.imageUrl && (

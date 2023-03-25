@@ -1,7 +1,7 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
-import {Breadcrum} from "@/components/breadcrums";
+import Breadcrumbs from "@/components/breadcrumbs";
 import {Layout} from "@/components/layout";
 import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
@@ -19,13 +19,10 @@ const StaticPage: React.FC<Props> = ({page}) => {
       </Head>
       <Layout>
         <div className="container mx-auto">
-          <Breadcrum
-            links={[
-              {href: "/", label: "Hjem"},
-              {href: "/static", label: "Statisk"},
-              {href: `/static/${page.slug}`, label: capitalize(page.name)},
-            ]}
-          />
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{capitalize(page.name)}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
           <article className="prose md:prose-xl">
             <Markdown content={page.info} />
