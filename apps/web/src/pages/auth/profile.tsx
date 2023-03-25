@@ -47,7 +47,7 @@ const ProfilePage = () => {
         <title>Profil</title>
       </Head>
       <Layout>
-        <div className="container mx-auto px-3">
+        <div className="mx-auto max-w-3xl px-3">
           <h1 className="mb-3 text-4xl font-bold md:text-6xl">Din profil</h1>
           <div className="flex flex-col gap-3">
             <div>
@@ -60,9 +60,7 @@ const ProfilePage = () => {
             </div>
             <div>
               <p className="text-lg text-neutral-500">Studentgruppe:</p>
-              <p className="text-xl font-bold">
-                {session?.user.studenteGroups ? session.user.studenteGroups.toString() : "Ingen"}
-              </p>
+              <p className="text-xl font-bold">INGEN</p>
             </div>
           </div>
           <hr className="my-4" />
@@ -121,7 +119,9 @@ const ProfilePage = () => {
 
           {session?.user.role === Role.ADMIN && (
             <div>
-              <Link href="/dashboard">Til dashboard</Link>
+              <Link className="rounded bg-echo-blue2 px-3 py-1" href="/dashboard">
+                Til dashboard
+              </Link>
             </div>
           )}
         </div>

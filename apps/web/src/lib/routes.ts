@@ -157,17 +157,17 @@ export const footerRoutes: Array<RouteSection> = [
     sublinks: [
       {
         label: "Facebook",
-        href: "https://www.facebook.com/echo.uib",
+        href: "https://www.facebook.com/groups/informatikk",
         isExternal: true,
       },
       {
         label: "Instagram",
-        href: "https://www.instagram.com/echo.uib/",
+        href: "https://www.instagram.com/echo_uib/",
         isExternal: true,
       },
       {
         label: "GitHub",
-        href: "https://www.linkedin.com/company/echo-uib/",
+        href: "https://github.com/echo-webkom/new-echo-web-monorepo",
         isExternal: true,
       },
     ],
