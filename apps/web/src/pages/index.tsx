@@ -200,11 +200,13 @@ const POST_COUNT = 4;
 const JOB_COUNT = 3;
 
 export const getServerSideProps = async () => {
-  const bedpresPreviews = await fetchComingEventPreviews("BEDPRES", EVENT_COUNT);
-  const eventPreviews = await fetchComingEventPreviews("EVENT", EVENT_COUNT);
-  const posts = await fetchPosts(POST_COUNT);
-  const jobAds = await fetchJobAds(JOB_COUNT);
-  const board = await fetchStudentGroupBySlug("2023-2024");
+  const [bedpresPreviews, eventPreviews, posts, jobAds, board] = await Promise.all([
+    fetchComingEventPreviews("BEDPRES", EVENT_COUNT),
+    fetchComingEventPreviews("EVENT", EVENT_COUNT),
+    fetchPosts(POST_COUNT),
+    fetchJobAds(JOB_COUNT),
+    fetchStudentGroupBySlug("2023-2024"),
+  ]);
 
   return {
     props: {

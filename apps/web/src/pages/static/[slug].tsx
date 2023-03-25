@@ -7,11 +7,11 @@ import {Markdown} from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 
-interface Props {
+type Props = {
   page: StaticInfo;
-}
+};
 
-const StaticPage = ({page}: Props) => {
+const StaticPage: React.FC<Props> = ({page}) => {
   return (
     <>
       <Head>
@@ -28,7 +28,6 @@ const StaticPage = ({page}: Props) => {
           />
 
           <article className="prose md:prose-xl">
-            <h1>{capitalize(page.name)}</h1>
             <Markdown content={page.info} />
           </article>
         </div>
