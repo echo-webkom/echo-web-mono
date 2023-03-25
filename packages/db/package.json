@@ -8,6 +8,8 @@
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "pnpm with-env prisma generate",
     "db:push": "pnpm with-env prisma db push --skip-generate",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
     "with-env": "dotenv -e ../../.env --"
   },

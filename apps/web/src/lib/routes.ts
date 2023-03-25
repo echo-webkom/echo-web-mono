@@ -115,7 +115,7 @@ export const headerRoutes: Array<NavItem> = [
     session: false,
   },
   {
-    href: "/profile",
+    href: "/auth/profile",
     label: "Profil",
     session: true,
   },
