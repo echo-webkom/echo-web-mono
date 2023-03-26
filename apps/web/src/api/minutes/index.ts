@@ -18,11 +18,7 @@ export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
                     allmote,
                     date,
                     title,
-                    document {
-                        asset -> {
-                            url
-                        }
-                    }
+                    "document": document.asset -> url
                 }`;
 
     const result = await sanityClient.fetch<Array<Minute>>(query);
@@ -59,11 +55,7 @@ export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMes
         allmote,
         date,
         title,
-        document {
-          asset -> {
-            url
-          }
-        }
+        "document": document.asset -> url
       }[0]
     `;
 
