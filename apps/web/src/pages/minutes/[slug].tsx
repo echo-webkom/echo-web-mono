@@ -2,6 +2,7 @@ import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
 import {Breadcrum} from "@/components/breadcrums";
+import {Button} from "@/components/button";
 import {Layout} from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
 
@@ -38,10 +39,11 @@ const MinutePage = ({minute}: Props) => {
             ]}
           />
 
-          <article className="prose md:prose-xl">
-            <h1>{minute.title}</h1>
-            <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
-          </article>
+          <div className="flex justify-between pb-4">
+            <h1 className="text-3xl font-bold">{minute.title}</h1>
+            <Button /*TODO: Add download logic */>Last ned</Button>
+          </div>
+          <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
         </div>
       </Layout>
     </>
