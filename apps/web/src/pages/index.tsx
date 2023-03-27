@@ -12,6 +12,7 @@ import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
+import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
 
 type Props = {
@@ -23,6 +24,21 @@ type Props = {
 };
 
 const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAds, board}) => {
+  const container = {
+    hidden: {opacity: 0},
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.25,
+      },
+    },
+  };
+  const avatarImageVariants = {
+    hidden: {y: "100%"},
+    show: {y: "0%"},
+  };
+
   return (
     <>
       <Head>
@@ -30,12 +46,23 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
       </Head>
 
       <Layout>
-        <div className="container mx-auto grid grid-cols-1 gap-y-10 gap-x-5 px-3 lg:grid-cols-2">
+        <div className="container mx-auto grid grid-cols-1 gap-y-12 gap-x-5 px-3 lg:grid-cols-2">
           {/* Events  */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <h2 className="text-center text-3xl font-semibold">Kommende arrangementer</h2>
+            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+              <motion.h2
+                initial={{y: "100%"}}
+                animate={{y: "0%"}}
+                transition={{
+                  duration: 0.25,
+                }}
+                className="text-center text-3xl font-semibold"
+              >
+                Arrangementer
+              </motion.h2>
+            </Link>
             <hr />
-            <ul className="flex h-full flex-col items-stretch divide-y">
+            <ul className="flex h-full flex-col items-stretch divide-y overflow-hidden">
               {eventPreviews.map((event) => (
                 <li key={event._id}>
                   <EventPreviewBox event={event} />
@@ -46,7 +73,18 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
 
           {/* Bedpresses */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <h2 className="text-center text-3xl font-semibold">Kommende bedriftspresentasjoner</h2>
+            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+              <motion.h2
+                initial={{y: "100%"}}
+                animate={{y: "0%"}}
+                transition={{
+                  duration: 0.25,
+                }}
+                className="text-center text-3xl font-semibold"
+              >
+                Bedriftspresentasjoner
+              </motion.h2>
+            </Link>
             <hr />
             <ul className="flex h-full flex-col justify-between divide-y">
               {bedpresPreviews.map((bedpres) => (
@@ -136,7 +174,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                           <li>
                             <span
                               className={cn("font-semibold", {
-                                "text-red-500": new Date(jobAd.deadline) < new Date(),
+                                "line-through": new Date(jobAd.deadline) < new Date(),
                               })}
                             >
                               Søknadsfrist:
@@ -163,15 +201,22 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
             <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
               <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
               <hr />
-              <ul className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+              <motion.ul
+                variants={container}
+                initial="hidden"
+                whileInView="show"
+                className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
+              >
                 {board.members.map((member) => (
                   <li key={member.profile.name}>
                     <div className="flex h-full flex-col items-center gap-5 p-5">
-                      <Avatar className="border">
-                        <AvatarImage
-                          src={member.profile.imageUrl ?? ""}
-                          alt={`${member.profile.name} profilbilde`}
-                        />
+                      <Avatar className="overflow-hidden border">
+                        <motion.div variants={avatarImageVariants}>
+                          <AvatarImage
+                            src={member.profile.imageUrl ?? ""}
+                            alt={`${member.profile.name} profilbilde`}
+                          />
+                        </motion.div>
                         <AvatarFallback className="text-xl">
                           {member.profile.name
                             .split(" ")
@@ -186,7 +231,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                     </div>
                   </li>
                 ))}
-              </ul>
+              </motion.ul>
             </section>
           )}
         </div>

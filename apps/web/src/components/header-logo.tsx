@@ -4,6 +4,7 @@ import Link from "next/link";
 import cn from "classnames";
 import {getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday} from "date-fns";
 import {nb} from "date-fns/locale";
+import {motion} from "framer-motion";
 
 const randomHeaderMessage = () => {
   const now = new Date();
@@ -69,9 +70,10 @@ const randomHeaderMessage = () => {
 
 type HeaderLogoProps = {
   className?: string;
+  isShrunk: boolean;
 };
 
-const HeaderLogo = ({className}: HeaderLogoProps) => {
+const HeaderLogo = ({className, isShrunk}: HeaderLogoProps) => {
   const [_headerMessage, setHeaderMessage] = useState("");
 
   useEffect(() => {
@@ -88,9 +90,15 @@ const HeaderLogo = ({className}: HeaderLogoProps) => {
   return (
     <div className={cn(className)}>
       <Link href="/" className="flex items-center gap-5">
-        <div className="relative h-20 w-20 md:h-24 md:w-24">
+        <motion.div
+          style={{
+            height: isShrunk ? 50 : 100,
+            width: isShrunk ? 50 : 100,
+          }}
+          className="relative h-20 w-20 origin-right transition-all duration-300 ease-in-out md:h-24 md:w-24"
+        >
           <Image src={logo} alt="logo" fill />
-        </div>
+        </motion.div>
       </Link>
     </div>
   );
