@@ -3,7 +3,7 @@ import Link from "next/link";
 import {footerRoutes} from "@/lib/routes";
 import {hoverShadow, sponsors} from "@/lib/sponsors";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import classNames from "classnames";
+import cn from "classnames";
 import {useSession} from "next-auth/react";
 
 type FooterProps = {
@@ -14,13 +14,13 @@ const Footer = ({className}: FooterProps) => {
   const {data: userSession} = useSession();
 
   return (
-    <div className={classNames(className)}>
+    <div className={cn(className)}>
       {/* Footer wave */}
       <svg
         id="svg"
         viewBox="0 0 1440 390"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-40 w-full transition delay-150 duration-300 ease-in-out"
+        className="h-40 w-full min-w-[1000px] transition delay-150 duration-300 ease-in-out"
         preserveAspectRatio="none"
       >
         <path
@@ -98,7 +98,7 @@ const Footer = ({className}: FooterProps) => {
                       <Link href={href} target="_blank" rel="noreferrer">
                         <Image
                           src={imageSrc}
-                          className={classNames(
+                          className={cn(
                             "rounded-lg bg-white px-5 py-3 shadow-md transition-shadow duration-300 ease-in-out",
                             shadowColor,
                           )}

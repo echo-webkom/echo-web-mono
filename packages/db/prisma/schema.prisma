@@ -59,7 +59,7 @@ model User {
   alternativeEmail String?
   role             Role           @default(USER)
   degree           Degree?
-  year             Int?
+  year             Year?
   studentGroups    StudentGroup[]
 }
 
@@ -76,16 +76,26 @@ enum Role {
 }
 
 enum Degree {
+  // Bachelor
   DTEK
   DSIK
   DVIT
   BINF
   IMO
-  IKT
-  KOGNI
+  // Master
   INF
   PROG
+  DSC
+  // Misc
   ARMNINF
   POST
   MISC
+}
+
+enum Year {
+  FIRST
+  SECOND
+  THIRD
+  FOURTH
+  FIFTH
 }

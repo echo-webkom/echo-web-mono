@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <div className="relative">
-      <header className="container mx-auto flex py-3 px-5">
+      <header className="z-40 mx-auto flex w-full max-w-7xl py-3 px-5">
         <HeaderLogo />
         <DesktopNavigation className="mt-auto hidden lg:block" />
         <button

@@ -40,7 +40,7 @@ export const fetchJobAds = async (n: number): Promise<Array<JobAd>> => {
     const query = groq`
         *[_type == "jobAdvert"
           && !(_id in path('drafts.**'))]
-          | order(_createdAt desc) [0..$n]
+          | order(_createdAt desc) [0...$n]
         {
           _id,
           "slug": slug.current,

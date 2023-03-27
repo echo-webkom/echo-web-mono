@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
+import cn from "classnames";
 import {getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday} from "date-fns";
 import {nb} from "date-fns/locale";
 
@@ -66,7 +67,11 @@ const randomHeaderMessage = () => {
   return stdMessages()[Math.floor(Math.random() * stdMessages().length)];
 };
 
-const HeaderLogo = () => {
+type HeaderLogoProps = {
+  className?: string;
+};
+
+const HeaderLogo = ({className}: HeaderLogoProps) => {
   const [_headerMessage, setHeaderMessage] = useState("");
 
   useEffect(() => {
@@ -81,11 +86,13 @@ const HeaderLogo = () => {
   const logo = "/images/android-chrome-512x512.png";
 
   return (
-    <Link href="/" className="flex items-center gap-5">
-      <div className="relative h-20 w-20 md:h-24 md:w-24">
-        <Image src={logo} alt="logo" fill />
-      </div>
-    </Link>
+    <div className={cn(className)}>
+      <Link href="/" className="flex items-center gap-5">
+        <div className="relative h-20 w-20 md:h-24 md:w-24">
+          <Image src={logo} alt="logo" fill />
+        </div>
+      </Link>
+    </div>
   );
 };
 

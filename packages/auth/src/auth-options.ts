@@ -1,6 +1,6 @@
-import {prisma, type Degree, type Role, type StudentGroup} from "@echo-webkom/db";
+import {prisma, type Degree, type Role, type Year} from "@echo-webkom/db";
 import {PrismaAdapter} from "@next-auth/prisma-adapter";
-import {type DefaultSession, type NextAuthOptions, type User} from "next-auth";
+import type {DefaultSession, NextAuthOptions, User} from "next-auth";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,11 +15,10 @@ declare module "next-auth" {
 
   interface User {
     id: string;
-    alternativeEmail: string | null;
+    alternativeEmail?: string;
     role: Role;
-    degree: Degree | null;
-    year: number | null;
-    studenteGroups: Array<StudentGroup>;
+    degree?: Degree;
+    year?: Year;
   }
 }
 
@@ -34,6 +33,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role;
+        session.user.degree = user.degree;
+        session.user.year = user.year;
       }
       return session;
     },
@@ -71,7 +72,6 @@ export const authOptions: NextAuthOptions = {
           role: profile.role,
           degree: profile.degree,
           year: profile.year,
-          studenteGroups: profile.studenteGroups,
         };
       },
     },

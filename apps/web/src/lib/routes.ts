@@ -20,7 +20,7 @@ export const headerRoutes: Array<NavItem> = [
   },
   {
     label: "Arrangementer",
-    href: "/arrangementer",
+    href: "/event",
   },
   {
     label: "For studenter",
@@ -50,23 +50,23 @@ export const headerRoutes: Array<NavItem> = [
         label: "Innlegg",
       },
       {
-        href: "/static/masterinfo",
+        href: "/masterinfo",
         label: "Masterinfo",
       },
       {
-        href: "/static/oekonomisk-stoette",
+        href: "/oekonomisk-stoette",
         label: "Økonomisk støtte",
       },
       {
-        href: "/static/anonyme-tilbakemeldinger",
+        href: "/anonyme-tilbakemeldinger",
         label: "Tilbakemeldinger",
       },
       {
-        href: "/static/utlegg",
+        href: "/utlegg",
         label: "Utlegg",
       },
       {
-        href: "/static/si-ifra",
+        href: "/si-ifra",
         label: "Si ifra",
       },
     ],
@@ -75,11 +75,11 @@ export const headerRoutes: Array<NavItem> = [
     label: "For bedrifter",
     sublinks: [
       {
-        href: "/static/bedriftspresentasjon",
+        href: "/bedriftspresentasjon",
         label: "Bedriftspresentasjon",
       },
       {
-        href: "/static/stillingsutlysninger",
+        href: "/stillingsutlysninger",
         label: "Stillingsutlysninger",
       },
     ],
@@ -88,23 +88,23 @@ export const headerRoutes: Array<NavItem> = [
     label: "Om echo",
     sublinks: [
       {
-        href: "/static/om-oss",
+        href: "/om-oss",
         label: "Hvem er vi",
       },
       {
-        href: "/static/instituttraadet",
+        href: "/instituttraadet",
         label: "Instituttrådet",
       },
       {
-        href: "/static/vedtekter",
+        href: "/vedtekter",
         label: "Vedtekter",
       },
       {
-        href: "/static/møtereferat",
+        href: "/møtereferat",
         label: "Møtereferat",
       },
       {
-        href: "/static/bekk",
+        href: "/bekk",
         label: "Bekk",
       },
     ],
@@ -115,7 +115,7 @@ export const headerRoutes: Array<NavItem> = [
     session: false,
   },
   {
-    href: "/profile",
+    href: "/auth/profile",
     label: "Profil",
     session: true,
   },
@@ -157,17 +157,17 @@ export const footerRoutes: Array<RouteSection> = [
     sublinks: [
       {
         label: "Facebook",
-        href: "https://www.facebook.com/echo.uib",
+        href: "https://www.facebook.com/groups/informatikk",
         isExternal: true,
       },
       {
         label: "Instagram",
-        href: "https://www.instagram.com/echo.uib/",
+        href: "https://www.instagram.com/echo_uib/",
         isExternal: true,
       },
       {
         label: "GitHub",
-        href: "https://www.linkedin.com/company/echo-uib/",
+        href: "https://github.com/echo-webkom/new-echo-web-monorepo",
         isExternal: true,
       },
     ],
