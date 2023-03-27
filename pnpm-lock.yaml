@@ -7,7 +7,7 @@ importers:
 
   .:
     specifiers:
-      '@ianvs/prettier-plugin-sort-imports': ^3.7.1
+      '@ianvs/prettier-plugin-sort-imports': ^3.7.2
       '@manypkg/cli': 0.20.0
       '@types/node': 18.14.6
       eslint: ^8.36.0
@@ -20,7 +20,7 @@ importers:
       turbo: 1.8.5
       typescript: ^5.0.0
     dependencies:
-      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.6
+      '@ianvs/prettier-plugin-sort-imports': 3.7.2_prettier@2.8.6
       '@manypkg/cli': 0.20.0
       '@types/node': 18.14.6
       eslint: 8.36.0
@@ -29,7 +29,7 @@ importers:
       lint-staged: 13.2.0
       prettier: 2.8.6
       prettier-plugin-organize-imports: 3.2.2_tcllvk4eo3otqqvuorc2duftpy
-      prettier-plugin-tailwindcss: 0.2.5_cpbiqssswcgd27i5fpdcxefz4e
+      prettier-plugin-tailwindcss: 0.2.5_qrxedhfy3pdb2kznqyqc6oxjgy
       turbo: 1.8.5
       typescript: 5.0.2
 
@@ -875,8 +875,8 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
-  /@ianvs/prettier-plugin-sort-imports/3.7.1_prettier@2.8.6:
-    resolution: {integrity: sha512-XDnBUUruJY9KgNd7T2ZHnVPWo5B9NzVDCLEMm7HjXTA3rTtMg5Q46gYRjLvampDXSmN8+icu54aRE3IIT8U+1w==}
+  /@ianvs/prettier-plugin-sort-imports/3.7.2_prettier@2.8.6:
+    resolution: {integrity: sha512-bVckKToJM8XV2wTOG1VpeXrSmfAG49esVrikbxeFbY51RJdNke9AdMANJtGuACB59uo+pGlz0wBdWFrRzWyO1A==}
     peerDependencies:
       '@vue/compiler-sfc': '>=3.0.0'
       prettier: 2.x
@@ -6578,7 +6578,7 @@ packages:
       typescript: 5.0.2
     dev: false
 
-  /prettier-plugin-tailwindcss/0.2.5_cpbiqssswcgd27i5fpdcxefz4e:
+  /prettier-plugin-tailwindcss/0.2.5_qrxedhfy3pdb2kznqyqc6oxjgy:
     resolution: {integrity: sha512-vZ/iKieyCx0WTxHbkf5E1rBlv/ybFk8WTT4hL5W2jlVxum2Zbe0jMUpuQdDrpa4z2vnPiJ5KIWCqL/kd16fKYg==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
@@ -6630,7 +6630,7 @@ packages:
       prettier-plugin-twig-melody:
         optional: true
     dependencies:
-      '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.6
+      '@ianvs/prettier-plugin-sort-imports': 3.7.2_prettier@2.8.6
       prettier: 2.8.6
       prettier-plugin-organize-imports: 3.2.2_tcllvk4eo3otqqvuorc2duftpy
     dev: false
