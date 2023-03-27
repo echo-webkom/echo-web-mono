@@ -1,7 +1,9 @@
+import Head from "next/head";
 import Link from "next/link";
 import {fetchMinutes, type Minute} from "@/api/minutes";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/accordion";
-import {Layout} from "@/components/layout";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
 
 const TITLE = "Møtereferater";
@@ -13,10 +15,14 @@ interface Props {
 const MinutesPage = ({minutes}: Props) => {
   const newMinutes = minutes.map((obj) => ({...obj, date: new Date(obj.date)}));
   const years = [...new Set(newMinutes.map((e) => e.date.getFullYear()))];
+
   return (
     <>
+      <Head>
+        <title>{TITLE}</title>
+      </Head>
       <Layout>
-        <div className="container mx-auto px-3">
+        <Container>
           <h1 className="mb-5 text-4xl font-bold md:text-6xl">{TITLE}</h1>
           {years.map((year) => (
             <Accordion type="single" collapsible key={year} className="text-2xl">
@@ -52,7 +58,7 @@ const MinutesPage = ({minutes}: Props) => {
               </AccordionItem>
             </Accordion>
           ))}
-        </div>
+        </Container>
       </Layout>
     </>
   );
