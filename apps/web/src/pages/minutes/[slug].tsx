@@ -16,7 +16,7 @@ const MinutePage = ({minute}: Props) => {
   return (
     <>
       <Head>
-        <title>{`${minute.title} - ${format(new Date(minute.date), "dd.MM.yyyy")})}`}</title>
+        <title>{`Møtereferat - ${format(new Date(minute.date), "dd.MM.yyyy")}`}</title>
       </Head>
       <Layout>
         <Container>
