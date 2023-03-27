@@ -100,7 +100,7 @@ export const headerRoutes: Array<NavItem> = [
         label: "Vedtekter",
       },
       {
-        href: "/møtereferat",
+        href: "/minutes",
         label: "Møtereferat",
       },
       {

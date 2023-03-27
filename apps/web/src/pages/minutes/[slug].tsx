@@ -1,12 +1,12 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
-import {Breadcrum} from "@/components/breadcrums";
-import {Button} from "@/components/button";
-import {Layout} from "@/components/layout";
+import Breadcrumbs from "@/components/breadcrumbs";
+import {ButtonLink} from "@/components/button";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
-
-const TITLE = "Møtereferater";
+import {format} from "date-fns";
 
 interface Props {
   minute: Minute;
@@ -16,35 +16,22 @@ const MinutePage = ({minute}: Props) => {
   return (
     <>
       <Head>
-        <title>
-          {TITLE} - {minute.date}
-        </title>
+        <title>{`${minute.title} - ${format(new Date(minute.date), "dd.MM.yyyy")})}`}</title>
       </Head>
       <Layout>
-        <div className="container mx-auto">
-          <Breadcrum
-            links={[
-              {
-                href: "/",
-                label: "Hjem",
-              },
-              {
-                href: "/minutes/",
-                label: TITLE,
-              },
-              {
-                href: `/minutes/${minute._id}`,
-                label: minute.title,
-              },
-            ]}
-          />
+        <Container>
+          <Breadcrumbs>
+            <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
+            <Breadcrumbs.Item to="/minutes">Møtereferater</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{minute.title}</Breadcrumbs.Item>
+          </Breadcrumbs>
 
-          <div className="flex justify-between pb-4">
+          <div className="flex flex-col justify-between gap-5 md:flex-row">
             <h1 className="text-3xl font-bold">{minute.title}</h1>
-            <Button /*TODO: Add download logic */>Last ned</Button>
+            <ButtonLink href={minute.document}>Last ned</ButtonLink>
           </div>
           <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
-        </div>
+        </Container>
       </Layout>
     </>
   );
