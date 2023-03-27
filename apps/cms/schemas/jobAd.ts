@@ -21,6 +21,18 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'company',
+      title: 'Company',
+      type: 'reference',
+      to: {type: 'company'},
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'reference',
+      to: {type: 'location'},
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'blockContent',

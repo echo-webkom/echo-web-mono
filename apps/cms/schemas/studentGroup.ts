@@ -34,6 +34,12 @@ export default defineType({
         hotspot: true,
       },
     }),
+    defineField({
+      name: 'members',
+      title: 'Members',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'profile'}}],
+    }),
   ],
   preview: {
     select: {
