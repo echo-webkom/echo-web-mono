@@ -2,26 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {type EventPreview} from "@/api/events";
 import {capitalize} from "@/utils/string";
-import classNames from "classnames";
+import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
-
-const groupToColor = (group: string) => {
-  switch (group) {
-    case "makerspace":
-      return "border-yellow-500";
-    case "hovedstyret":
-      return "border-echo-blue";
-    case "tilde":
-      return "border-green-500";
-    case "gnist":
-      return "border-red-500";
-    case "bedkom":
-      return "border-transparent";
-    default:
-      return "border-gray-500";
-  }
-};
 
 type EventPreviewProps = {
   event: EventPreview;
@@ -30,19 +13,11 @@ type EventPreviewProps = {
 const EventPreviewBox = ({event}: EventPreviewProps) => {
   return (
     <Link href={`/event/${event.slug}`}>
-      <div
-        className={classNames(
-          "flex h-full items-center gap-5 border-l-4 p-5",
-          "hover:bg-neutral-100",
-          groupToColor(event.studentGroupName),
-        )}
-      >
+      <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-neutral-100")}>
         {/* Image */}
         {event.logoUrl && (
-          <div className="relative flex h-20 w-20 shrink-0 overflow-hidden rounded-full">
-            <div className="aspect-square h-full w-full">
-              <Image src={event.logoUrl} alt={event.title} fill />
-            </div>
+          <div className="relative flex h-20 w-20 shrink-0 overflow-hidden rounded-full border">
+            <Image src={event.logoUrl} alt={event.title} height={500} width={500} />
           </div>
         )}
 

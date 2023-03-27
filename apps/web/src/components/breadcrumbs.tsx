@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import classNames from "classnames";
+import cn from "classnames";
 
 type BreadcrumbsRootProps = {
   className?: string;
@@ -11,7 +11,7 @@ const BreadcrumbsRoot = ({className, children}: BreadcrumbsRootProps) => {
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div className={classNames("my-2", className)}>
+    <div className={cn("my-2", className)}>
       {childrenArray.map((child, index) => {
         // Don't render anything if the child is not a Breadcrumbs.Item
         if (!React.isValidElement(child) || child.type !== BreadcrumbsItem) {
@@ -45,13 +45,13 @@ type BreadcrumbsItemProps = {
 const BreadcrumbsItem = ({className, to, children}: BreadcrumbsItemProps) => {
   if (to) {
     return (
-      <Link className={classNames("hover:underline", className)} href={to}>
+      <Link className={cn("hover:underline", className)} href={to}>
         {children}
       </Link>
     );
   }
 
-  return <span className={classNames("underline", className)}>{children}</span>;
+  return <span className={cn("underline", className)}>{children}</span>;
 };
 BreadcrumbsItem.displayName = "Breadcrumbs.Item";
 

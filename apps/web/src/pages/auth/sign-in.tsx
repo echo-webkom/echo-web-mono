@@ -21,7 +21,7 @@ const LoginPage = ({providers}: Props) => {
               <Button
                 onClick={() =>
                   void signIn(provider.id, {
-                    callbackUrl: "/profile",
+                    callbackUrl: "/auth/profile",
                   })
                 }
               >

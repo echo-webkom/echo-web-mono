@@ -1,7 +1,8 @@
+import Link, {type LinkProps} from "next/link";
 import {cva, type VariantProps} from "class-variance-authority";
 
-const button = cva(
-  "rounded-md text-black font-bold outline-none focus:ring-2 ring-offset-2 transform active:scale-95 transition-transform shadow-md",
+const buttonVariants = cva(
+  "rounded-md text-black font-bold outline-none focus:ring-2 ring-offset-2 transform active:scale-95 transition-transform",
   {
     variants: {
       intent: {
@@ -20,21 +21,42 @@ const button = cva(
         true: "w-full",
         false: "w-fit",
       },
+      disabled: {
+        true: "opacity-50 cursor-not-allowed",
+        false: "opacity-100 cursor-pointer",
+      },
     },
     defaultVariants: {
       intent: "primary",
       size: "medium",
       fullWidth: false,
+      disabled: false,
     },
   },
 );
 
-export interface ButtonProps
+interface ButtonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof button> {}
+    VariantProps<typeof buttonVariants> {}
 
-const Button = ({className, intent, size, fullWidth, ...props}: ButtonProps) => {
-  return <button className={button({className, intent, size, fullWidth})} {...props} />;
+const Button = ({className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
+  return (
+    <button
+      className={buttonVariants({className, intent, size, fullWidth, disabled})}
+      disabled={disabled ?? false}
+      {...props}
+    />
+  );
+};
+
+interface ButtonLinkProps extends LinkProps, VariantProps<typeof buttonVariants> {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const ButtonLink = ({className, intent, size, fullWidth, ...props}: ButtonLinkProps) => {
+  return <Link className={buttonVariants({className, intent, size, fullWidth})} {...props} />;
 };
 
 export default Button;
+export {ButtonLink};

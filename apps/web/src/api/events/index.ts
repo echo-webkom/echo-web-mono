@@ -28,7 +28,8 @@ export const fetchComingEventPreviews = async (
         && happeningType == $type
         && !(_id in path('drafts.**'))
         && date >= now()]
-        | order(date asc) {
+        | order(date asc)
+        [0..$n] {
           _id,
           _createdAt,
           title,
@@ -44,12 +45,12 @@ export const fetchComingEventPreviews = async (
             maxDegreeYear,
             spots
           }
-      }[0...$n]
+      }
     `;
 
     const params = {
       type,
-      n,
+      n: n > 0 ? n : -1,
     };
 
     const res = await sanityClient.fetch<Array<EventPreview>>(query, params);

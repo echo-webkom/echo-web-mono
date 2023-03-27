@@ -32,6 +32,10 @@ const MyApp: AppType<{session: Session | null}> = ({
             --ibm-font: ${ibmPlexMono.style.fontFamily};
             --inter-display-font: ${ibmPlexMonoDisplay.style.fontFamily};
           }
+
+          body {
+            overflow-x: hidden;
+          }
         `}
       </style>
       <SessionProvider session={session}>

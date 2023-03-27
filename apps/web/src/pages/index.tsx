@@ -9,7 +9,7 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import EventPreviewBox from "@/components/event-preview";
 import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
-import classNames from "classnames";
+import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
@@ -70,7 +70,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                   <li key={post._id}>
                     <Link href={`/for-students/post/${post.slug}`}>
                       <div
-                        className={classNames(
+                        className={cn(
                           "relative flex h-auto flex-col gap-1 rounded-lg p-5",
                           "hover:bg-neutral-100",
                           "transition-colors duration-200 ease-in-out",
@@ -109,7 +109,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                 <li key={jobAd._id}>
                   <Link href={`/for-students/job/${jobAd.slug}`}>
                     <div
-                      className={classNames(
+                      className={cn(
                         "flex h-full flex-row items-center gap-5 rounded-lg p-5",
                         "hover:bg-neutral-100",
                         "transition-colors duration-200 ease-in-out",
@@ -135,7 +135,7 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
                           </li>
                           <li>
                             <span
-                              className={classNames("font-semibold", {
+                              className={cn("font-semibold", {
                                 "text-red-500": new Date(jobAd.deadline) < new Date(),
                               })}
                             >
@@ -195,9 +195,9 @@ const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAd
   );
 };
 
-const EVENT_COUNT = 5;
+const EVENT_COUNT = 4;
 const POST_COUNT = 4;
-const JOB_COUNT = 3;
+const JOB_COUNT = 4;
 
 export const getServerSideProps = async () => {
   const [bedpresPreviews, eventPreviews, posts, jobAds, board] = await Promise.all([
