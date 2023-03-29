@@ -1,11 +1,11 @@
-import {EarthGlobeIcon} from "@sanity/icons";
+import {PinIcon} from "@sanity/icons";
 import {defineField, defineType} from "sanity";
 
 export default defineType({
   name: "location",
   title: "Sted",
   type: "document",
-  icon: EarthGlobeIcon,
+  icon: PinIcon,
   fields: [
     defineField({
       name: "name",

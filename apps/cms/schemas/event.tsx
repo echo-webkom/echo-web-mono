@@ -1,75 +1,41 @@
-import {ComponentIcon, PresentationIcon} from "@sanity/icons";
+import {ComponentIcon, OkHandIcon} from "@sanity/icons";
 import {defineField, defineType} from "sanity";
 
 export default defineType({
-  name: "bedpres",
-  title: "Bedriftspresentasjon",
+  name: "event",
+  title: "Arrangement",
   type: "document",
-  icon: PresentationIcon,
-  groups: [
-    {
-      name: "general",
-      title: "Generelt",
-    },
-    {
-      name: "dates",
-      title: "Datoer",
-    },
-  ],
+  icon: OkHandIcon,
+  groups: [{name: "dates", title: "Datoer"}],
   fields: [
     defineField({
       name: "title",
       title: "Tittel",
-      group: "general",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
       title: "Slug",
-      group: "general",
       type: "slug",
       options: {
         source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "company",
-      title: "Selskap",
-      group: "general",
-      type: "reference",
-      to: {type: "company"},
-    }),
-    defineField({
-      name: "location",
-      title: "Sted",
-      group: "general",
-      type: "reference",
-      to: {type: "location"},
-    }),
-    defineField({
-      name: "date",
-      title: "Dato",
-      description: "Dato for bedriftspresentasjonen",
-      group: "dates",
-      type: "date",
-    }),
-    defineField({
-      name: "registrationDate",
-      title: "Påmeldingsdato",
-      description: "Påmeldingsdato for bedriftspresentasjonen",
-      group: "dates",
-      type: "date",
-      validation: (Rule) => Rule.required().max(Rule.valueOfField("registrationDeadline")),
-    }),
-    defineField({
-      name: "registrationDeadline",
-      title: "Påmeldingsfrist",
-      description: "Påmeldingsfrist for bedriftspresentasjonen",
-      group: "dates",
-      type: "date",
-      validation: (Rule) =>
-        Rule.required().min(Rule.valueOfField("registrationDate")).max(Rule.valueOfField("date")),
+      name: "organizer",
+      title: "Arrangør",
+      description:
+        "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden.",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: {type: "studentGroup"},
+        },
+      ],
     }),
     defineField({
       name: "contacts",
@@ -104,6 +70,36 @@ export default defineType({
           },
         },
       ],
+    }),
+    defineField({
+      name: "date",
+      title: "Dato",
+      description: "Dato for bedriftspresentasjonen",
+      group: "dates",
+      type: "date",
+    }),
+    defineField({
+      name: "registrationDate",
+      title: "Påmeldingsdato",
+      description: "Påmeldingsdato for bedriftspresentasjonen",
+      group: "dates",
+      type: "date",
+      validation: (Rule) => Rule.required().max(Rule.valueOfField("registrationDeadline")),
+    }),
+    defineField({
+      name: "registrationDeadline",
+      title: "Påmeldingsfrist",
+      description: "Påmeldingsfrist for bedriftspresentasjonen",
+      group: "dates",
+      type: "date",
+      validation: (Rule) =>
+        Rule.required().min(Rule.valueOfField("registrationDate")).max(Rule.valueOfField("date")),
+    }),
+    defineField({
+      name: "location",
+      title: "Sted",
+      type: "reference",
+      to: {type: "location"},
     }),
     defineField({
       name: "spotRanges",

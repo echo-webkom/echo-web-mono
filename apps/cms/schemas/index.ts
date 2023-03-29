@@ -1,6 +1,7 @@
 import bedpres from "./bedpres";
 import blockContent from "./blockContent";
 import company from "./company";
+import event from "./event";
 import job from "./jobAd";
 import location from "./location";
 import post from "./post";
@@ -11,6 +12,7 @@ export const schemaTypes = [
   post,
   blockContent,
   company,
+  event,
   location,
   profile,
   bedpres,
