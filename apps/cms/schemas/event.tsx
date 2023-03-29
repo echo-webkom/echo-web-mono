@@ -152,7 +152,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "blockContent",
+      type: "markdown",
     }),
   ],
 });

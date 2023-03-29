@@ -45,6 +45,7 @@ importers:
       react-dom: 18.2.0
       react-is: ^18.2.0
       sanity: ^3.0.0
+      sanity-plugin-markdown: ^4.1.0
       sanity-plugin-media: ^2.0.5
       slugify: ^1.6.6
       styled-components: ^5.2.0
@@ -56,6 +57,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-is: 18.2.0
       sanity: 3.5.1_k33qsrusaoabz5orib3nwbbtoi
+      sanity-plugin-markdown: 4.1.0_oygagl45a5nf4trk2n35n2443a
       sanity-plugin-media: 2.0.5_5tso2kvcvl2y3pviyj46yg3haq
       slugify: 1.6.6
       styled-components: 5.3.8_7i5myeigehqah43i5u7wbekgba
@@ -4580,6 +4582,12 @@ packages:
       }
     dev: false
 
+  /@types/codemirror/5.60.7:
+    resolution: {integrity: sha512-QXIC+RPzt/1BGSuD6iFn6UMC9TDp+9hkOANYNPVsjjrDdzKphfRkwQDKGp2YaC54Yhz0g6P5uYTCCibZZEiMAA==}
+    dependencies:
+      '@types/tern': 0.23.4
+    dev: false
+
   /@types/debug/4.1.7:
     resolution:
       {
@@ -4682,6 +4690,10 @@ packages:
       {
         integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==,
       }
+    dev: false
+
+  /@types/marked/4.0.8:
+    resolution: {integrity: sha512-HVNzMT5QlWCOdeuBsgXP8EZzKUf0+AXzN+sLmjvaB3ZlLqO+e4u0uXrdw9ub69wBKFs+c6/pA4r9sy6cCDvImw==}
     dev: false
 
   /@types/mdast/3.0.10:
@@ -4857,6 +4869,12 @@ packages:
       "@types/react": 18.0.29
       csstype: 3.1.1
     dev: true
+
+  /@types/tern/0.23.4:
+    resolution: {integrity: sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==}
+    dependencies:
+      '@types/estree': 1.0.0
+    dev: false
 
   /@types/unist/2.0.6:
     resolution:
@@ -5924,6 +5942,16 @@ packages:
       mimic-response: 1.0.1
     dev: false
 
+  /codemirror-spell-checker/1.1.2:
+    resolution: {integrity: sha512-2Tl6n0v+GJRsC9K3MLCdLaMOmvWL0uukajNJseorZJsslaxZyZMgENocPU8R0DyoTAiKsyqiemSOZo7kjGV0LQ==}
+    dependencies:
+      typo-js: 1.2.2
+    dev: false
+
+  /codemirror/5.65.12:
+    resolution: {integrity: sha512-z2jlHBocElRnPYysN2HAuhXbO3DNB0bcSKmNz3hcWR2Js2Dkhc1bEOxG93Z3DeUrnm+qx56XOY5wQmbP5KY0sw==}
+    dev: false
+
   /codemirror/6.0.1_@lezer+common@1.0.2:
     resolution:
       {
@@ -6738,6 +6766,16 @@ packages:
       {
         integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==,
       }
+    dev: false
+
+  /easymde/2.18.0:
+    resolution: {integrity: sha512-IxVVUxNWIoXLeqtBU4BLc+eS/ScYhT1Dcb6yF5Wchoj1iXAV+TIIDWx+NCaZhY7RcSHqDPKllbYq7nwGKILnoA==}
+    dependencies:
+      '@types/codemirror': 5.60.7
+      '@types/marked': 4.0.8
+      codemirror: 5.65.12
+      codemirror-spell-checker: 1.1.2
+      marked: 4.3.0
     dev: false
 
   /electron-to-chromium/1.4.295:
@@ -9424,6 +9462,12 @@ packages:
       }
     dev: false
 
+  /marked/4.3.0:
+    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
+
   /md5-o-matic/0.1.1:
     resolution:
       {
@@ -11632,6 +11676,19 @@ packages:
       - "@types/react"
     dev: false
 
+  /react-simplemde-editor/5.2.0_krhfp6bid7kgajqtgldm7tc45a:
+    resolution: {integrity: sha512-GkTg1MlQHVK2Rks++7sjuQr/GVS/xm6y+HchZ4GPBWrhcgLieh4CjK04GTKbsfYorSRYKa0n37rtNSJmOzEDkQ==}
+    peerDependencies:
+      easymde: '>= 2.0.0 < 3.0.0'
+      react: '>=16.8.2'
+      react-dom: '>=16.8.2'
+    dependencies:
+      '@types/codemirror': 5.60.7
+      easymde: 2.18.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-ssr-prepass/1.5.0_react@18.2.0:
     resolution:
       {
@@ -12205,6 +12262,27 @@ packages:
     engines: { node: ">=10" }
     dependencies:
       diff-match-patch: 1.0.5
+    dev: false
+
+  /sanity-plugin-markdown/4.1.0_oygagl45a5nf4trk2n35n2443a:
+    resolution: {integrity: sha512-GYJOeYbvjZ2BOCYrK3Dyp+zQ+5FIHsjrFYHw+aIZw7E47VyW6tfsmW5wOfTR+YG/Dv2n+5h5+sPIMUUNXSDTJA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      easymde: ^2
+      react: ^18
+      sanity: ^3
+      styled-components: ^5.2
+    dependencies:
+      '@sanity/incompatible-plugin': 1.0.4_biqbaboplfbrettd7655fr4n2y
+      '@sanity/ui': 1.3.0_twebgoqjkqellgizumyhahsaxe
+      easymde: 2.18.0
+      react: 18.2.0
+      react-simplemde-editor: 5.2.0_krhfp6bid7kgajqtgldm7tc45a
+      sanity: 3.5.1_k33qsrusaoabz5orib3nwbbtoi
+      styled-components: 5.3.8_7i5myeigehqah43i5u7wbekgba
+    transitivePeerDependencies:
+      - react-dom
+      - react-is
     dev: false
 
   /sanity-plugin-media/2.0.5_5tso2kvcvl2y3pviyj46yg3haq:
@@ -13634,6 +13712,10 @@ packages:
       }
     engines: { node: ">=12.20" }
     hasBin: true
+
+  /typo-js/1.2.2:
+    resolution: {integrity: sha512-C7pYBQK17EjSg8tVNY91KHdUt5Nf6FMJ+c3js076quPmBML57PmNMzAcIq/2kf/hSYtFABNDIYNYlJRl5BJhGw==}
+    dev: false
 
   /unbox-primitive/1.0.2:
     resolution:

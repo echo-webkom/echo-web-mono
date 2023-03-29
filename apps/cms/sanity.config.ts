@@ -1,13 +1,14 @@
 import {RobotIcon, RocketIcon, TerminalIcon} from "@sanity/icons";
 import {visionTool} from "@sanity/vision";
 import {defineConfig, type Config} from "sanity";
+import {markdownSchema} from "sanity-plugin-markdown";
 import {media} from "sanity-plugin-media";
 import {deskTool} from "sanity/desk";
 
 import {schemaTypes} from "./schemas";
 
 const defaultConfig = {
-  plugins: [deskTool(), visionTool(), media()],
+  plugins: [deskTool(), visionTool(), media(), markdownSchema()],
   schema: {types: schemaTypes},
   projectId: "nnumy1ga",
 };
