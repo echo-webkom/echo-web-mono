@@ -4,7 +4,6 @@ import Link from "next/link";
 import cn from "classnames";
 import {getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday} from "date-fns";
 import {nb} from "date-fns/locale";
-import {motion} from "framer-motion";
 
 const randomHeaderMessage = () => {
   const now = new Date();
@@ -68,12 +67,11 @@ const randomHeaderMessage = () => {
   return stdMessages()[Math.floor(Math.random() * stdMessages().length)];
 };
 
-type HeaderLogoProps = {
+type Props = {
   className?: string;
-  isShrunk: boolean;
 };
 
-const HeaderLogo = ({className, isShrunk}: HeaderLogoProps) => {
+const HeaderLogo = ({className}: Props) => {
   const [_headerMessage, setHeaderMessage] = useState("");
 
   useEffect(() => {
@@ -88,17 +86,9 @@ const HeaderLogo = ({className, isShrunk}: HeaderLogoProps) => {
   const logo = "/images/android-chrome-512x512.png";
 
   return (
-    <div className={cn(className)}>
-      <Link href="/" className="flex items-center gap-5">
-        <motion.div
-          style={{
-            height: isShrunk ? 50 : 100,
-            width: isShrunk ? 50 : 100,
-          }}
-          className="relative h-20 w-20 origin-right transition-all duration-300 ease-in-out md:h-24 md:w-24"
-        >
-          <Image src={logo} alt="logo" fill />
-        </motion.div>
+    <div className={cn("relative aspect-square h-full w-full", className)}>
+      <Link href="/">
+        <Image src={logo} alt="logo" fill />
       </Link>
     </div>
   );

@@ -15,6 +15,21 @@ import nb from "date-fns/locale/nb";
 import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
 
+const container = {
+  hidden: {opacity: 0},
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.25,
+    },
+  },
+};
+const avatarImageVariants = {
+  hidden: {y: "100%"},
+  show: {y: "0%"},
+};
+
 type Props = {
   eventPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
   bedpresPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
@@ -23,22 +38,7 @@ type Props = {
   board: Awaited<ReturnType<typeof fetchStudentGroupBySlug>>;
 };
 
-const HomePage: React.FC<Props> = ({eventPreviews, bedpresPreviews, posts, jobAds, board}) => {
-  const container = {
-    hidden: {opacity: 0},
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.25,
-      },
-    },
-  };
-  const avatarImageVariants = {
-    hidden: {y: "100%"},
-    show: {y: "0%"},
-  };
-
+const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props) => {
   return (
     <>
       <Head>
