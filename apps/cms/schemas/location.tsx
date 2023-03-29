@@ -1,0 +1,27 @@
+import {EarthGlobeIcon} from "@sanity/icons";
+import {defineField, defineType} from "sanity";
+
+export default defineType({
+  name: "location",
+  title: "Sted",
+  type: "document",
+  icon: EarthGlobeIcon,
+  fields: [
+    defineField({
+      name: "name",
+      title: "Navn / Addresse",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "maplink",
+      title: "Lenke til kart",
+      type: "string",
+    }),
+  ],
+  preview: {
+    select: {
+      title: "name",
+    },
+  },
+});

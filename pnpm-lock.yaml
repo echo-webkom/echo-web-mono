@@ -34,24 +34,28 @@ importers:
 
   apps/cms:
     specifiers:
-      "@sanity/eslint-config-studio": ^2.0.1
-      "@sanity/vision": ^3.0.0
-      "@types/react": 18.0.29
-      "@types/styled-components": ^5.1.26
+      '@sanity/eslint-config-studio': ^2.0.1
+      '@sanity/icons': ^2.2.2
+      '@sanity/vision': ^3.0.0
+      '@types/react': 18.0.29
+      '@types/styled-components': ^5.1.26
       eslint: ^8.36.0
       prettier: 2.8.7
       react: 18.2.0
       react-dom: 18.2.0
       react-is: ^18.2.0
       sanity: ^3.0.0
+      slugify: ^1.6.6
       styled-components: ^5.2.0
       typescript: ^5.0.0
     dependencies:
-      "@sanity/vision": 3.8.0_26idtpd4nozja4fdthxj3urb5y
+      '@sanity/icons': 2.2.2_react@18.2.0
+      '@sanity/vision': 3.8.0_26idtpd4nozja4fdthxj3urb5y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-is: 18.2.0
       sanity: 3.5.1_k33qsrusaoabz5orib3nwbbtoi
+      slugify: 1.6.6
       styled-components: 5.3.8_7i5myeigehqah43i5u7wbekgba
     devDependencies:
       "@sanity/eslint-config-studio": 2.0.1_j4766f7ecgqbon3u7zlxn5zszu
@@ -12173,6 +12177,11 @@ packages:
     dependencies:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 4.0.0
+    dev: false
+
+  /slugify/1.6.6:
+    resolution: {integrity: sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==}
+    engines: {node: '>=8.0.0'}
     dev: false
 
   /source-map-js/1.0.2:
