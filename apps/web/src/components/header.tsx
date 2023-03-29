@@ -1,65 +1,86 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {fetchBanner} from "@/api/banner";
+import {type Banner} from "@/api/banner/schemas";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
+import classNames from "classnames";
+import {motion} from "framer-motion";
 
+import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [banner, setBanner] = useState<Banner | null>(null);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const {pathname} = useRouter();
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
-  const [isShrunk, setShrunk] = useState(false);
   useEffect(() => {
-    const handleShrink = () => {
-      setShrunk((isShrunk) => {
-        if (
-          !isShrunk &&
-          (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)
-        ) {
+    const handleScroll = () => {
+      setHasScrolled((current) => {
+        if (!current && (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)) {
           return true;
         }
 
-        if (isShrunk && document.body.scrollTop < 5 && document.documentElement.scrollTop < 5) {
+        if (current && document.body.scrollTop < 5 && document.documentElement.scrollTop < 5) {
           return false;
         }
 
-        return isShrunk;
+        return current;
       });
     };
-    window.addEventListener("scroll", handleShrink);
-    return () => window.removeEventListener("scroll", handleShrink);
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const setBannerMessage = async () => {
+      const banner = await fetchBanner();
+      setBanner(banner);
+    };
+
+    void setBannerMessage();
   }, []);
 
   return (
-    <div className="relative mb-20">
-      <header
-        style={{height: isShrunk ? 50 : 100}}
-        className="fixed top-0 z-40 mx-auto flex w-full max-w-7xl bg-white py-3 px-5 transition-all duration-300 ease-in-out"
+    <div className="sticky top-0 z-30 w-full bg-white">
+      <WebsiteBanner banner={banner} />
+      <motion.header
+        style={{
+          height: hasScrolled ? 60 : 100,
+        }}
+        className="mx-auto flex w-full max-w-7xl bg-white py-3 px-5 transition-all duration-150 ease-in-out"
       >
-        <HeaderLogo isShrunk={isShrunk} />
-        {/* <Link href="/" className="flex items-center gap-5">
-          <div
-            style={headerAnimations}
-            className="relative h-20 w-20 origin-right transition-all duration-300 ease-in-out md:h-24 md:w-24"
-          >
-            <Image src={logo} alt="logo" fill />
-          </div>
-        </Link> */}
+        <motion.div
+          style={{
+            opacity: hasScrolled ? 0 : 1,
+          }}
+          className="h-20 w-20 transition-opacity duration-100"
+        >
+          <HeaderLogo />
+        </motion.div>
         <DesktopNavigation className="mt-auto hidden lg:block" />
         <button
           type="button"
-          className="mt-auto mb-5 ml-auto block lg:hidden"
-          onClick={() => setIsOpen((b) => !b)}
+          className={classNames("ml-auto block lg:hidden", {
+            "my-auto": hasScrolled,
+            "mt-auto mb-3": !hasScrolled,
+          })}
+          onClick={() => setIsOpen((current) => !current)}
         >
           {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
           {isOpen && <Cross2Icon className="h-6 w-6" />}
         </button>
-      </header>
+      </motion.header>
       <hr />
       {isOpen && (
         <div className="absolute z-10 mx-auto w-full px-1 py-3 sm:px-3">

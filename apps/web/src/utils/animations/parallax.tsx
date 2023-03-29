@@ -3,13 +3,13 @@ import {motion, useScroll} from "framer-motion";
 
 import {useParallax} from "./helpers";
 
-interface ParallaxProps {
+type ParallaxProps = {
   slowElement: ReactNode;
   fastElement: ReactNode;
   speed?: number;
-}
+};
 
-export const Parallax: React.FC<ParallaxProps> = ({slowElement, fastElement, speed}) => {
+export const Parallax = ({slowElement, fastElement, speed}: ParallaxProps) => {
   const target = useRef(null);
   const {scrollYProgress} = useScroll({target});
   const y = useParallax(scrollYProgress, speed ? speed : 300);

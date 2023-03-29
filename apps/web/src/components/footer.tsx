@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {footerRoutes} from "@/lib/routes";
-import {hoverShadow, sponsors} from "@/lib/sponsors";
+import {sponsors} from "@/lib/sponsors";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import cn from "classnames";
 import {useSession} from "next-auth/react";
@@ -20,7 +20,7 @@ const Footer = ({className}: FooterProps) => {
         id="svg"
         viewBox="0 0 1440 390"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-40 w-full min-w-[1000px] transition delay-150 duration-300 ease-in-out"
+        className="h-40 w-full transition delay-150 duration-300 ease-in-out"
         preserveAspectRatio="none"
       >
         <path
@@ -90,26 +90,13 @@ const Footer = ({className}: FooterProps) => {
             <div>
               <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
               <ul className="space-y-5">
-                {sponsors.map(({label, href, imageSrc}) => {
-                  const shadowColor = hoverShadow[label];
-
-                  return (
-                    <li key={label}>
-                      <Link href={href} target="_blank" rel="noreferrer">
-                        <Image
-                          src={imageSrc}
-                          className={cn(
-                            "rounded-lg bg-white px-5 py-3 shadow-md transition-shadow duration-300 ease-in-out",
-                            shadowColor,
-                          )}
-                          height={150}
-                          width={150}
-                          alt={`${label} logo`}
-                        />
-                      </Link>
-                    </li>
-                  );
-                })}
+                {sponsors.map(({label, href, imageSrc}) => (
+                  <li key={label}>
+                    <Link href={href} target="_blank" rel="noreferrer">
+                      <Image src={imageSrc} height={150} width={150} alt={`${label} logo`} />
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
