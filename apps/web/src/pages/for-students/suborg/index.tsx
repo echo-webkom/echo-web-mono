@@ -7,6 +7,7 @@ import {
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
+import {motion} from "framer-motion";
 
 const GROUP_TYPE: StudentGroupType = "suborg";
 const TITLE = "Underorganisasjoner";
@@ -24,9 +25,22 @@ const SubOrgsPage = ({groups}: Props) => {
 
           <ul className="flex flex-col gap-3">
             {groups.map((group) => (
-              <li key={group.slug}>
-                <Link href={`/for-students/${GROUP_TYPE}/${group.slug}`}>Les om, {group.name}</Link>
-              </li>
+              <div className="overflow-hidden" key={group.slug}>
+                <motion.li
+                  initial={{y: "150%"}}
+                  animate={{y: "0%"}}
+                  transition={{
+                    type: "spring",
+                    stiffness: 250,
+                    damping: 20,
+                    duration: 1.5,
+                  }}
+                >
+                  <Link href={`/for-students/${GROUP_TYPE}/${group.slug}`}>
+                    Les om, {group.name}
+                  </Link>
+                </motion.li>
+              </div>
             ))}
           </ul>
         </Container>

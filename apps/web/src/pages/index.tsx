@@ -8,27 +8,13 @@ import {fetchStudentGroupBySlug} from "@/api/student-group";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import EventPreviewBox from "@/components/event-preview";
 import Layout from "@/components/layout";
+import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
-
-const container = {
-  hidden: {opacity: 0},
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.25,
-    },
-  },
-};
-const avatarImageVariants = {
-  hidden: {y: "100%"},
-  show: {y: "0%"},
-};
 
 type Props = {
   eventPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
@@ -208,7 +194,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
               </Link>
               <hr />
               <motion.ul
-                variants={container}
+                variants={staggeredListContainer}
                 initial="hidden"
                 whileInView="show"
                 className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
@@ -217,7 +203,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                   <li key={member.profile.name}>
                     <div className="flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="overflow-hidden border">
-                        <motion.div variants={avatarImageVariants}>
+                        <motion.div variants={verticalStaggeredChildren}>
                           <AvatarImage
                             src={member.profile.imageUrl ?? ""}
                             alt={`${member.profile.name} profilbilde`}
