@@ -97,7 +97,9 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Posts */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
+            <Link href={"/for-students/post"}>
+              <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
+            </Link>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {posts.map((post) => {
@@ -140,7 +142,9 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Job ads */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+            <Link href={"/for-students/job"}>
+              <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+            </Link>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {jobAds.map((jobAd) => (
@@ -199,7 +203,9 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
           {/* Board */}
           {!isErrorMessage(board) && (
             <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-              <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              <Link href={"/for-students/board"}>
+                <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              </Link>
               <hr />
               <motion.ul
                 variants={container}
