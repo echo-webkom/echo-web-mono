@@ -20,7 +20,7 @@ const EventPage = ({event}: Props) => {
           <Breadcrumbs.Item>{event.title}</Breadcrumbs.Item>
         </Breadcrumbs>
 
-        <div className="mb-5 flex flex-col gap-3 border-b border-t py-3">
+        <div className="sticky top-14 mb-5 flex flex-col gap-3 border-b border-t bg-white py-3">
           <div className="flex w-full items-center">
             <div>
               <p>
