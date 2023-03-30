@@ -1,3 +1,4 @@
+import banner from "./banner";
 import bedpres from "./bedpres";
 import company from "./company";
 import event from "./event";
@@ -17,5 +18,6 @@ export const schemaTypes = [
   profile,
   bedpres,
   job,
+  banner,
   studentgroup,
 ];
