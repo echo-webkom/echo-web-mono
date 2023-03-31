@@ -10,14 +10,14 @@ export default defineType({
     defineField({
       name: "title",
       title: "Tittel",
-      type: "string",
+      type: "localeString",
     }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
       options: {
-        source: "title",
+        source: "title.no",
         maxLength: 96,
       },
     }),
@@ -38,7 +38,14 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "markdown",
+      type: "localeMarkdown",
     }),
   ],
+
+  preview: {
+    select: {
+      title: "title.no",
+      media: "image",
+    },
+  },
 });

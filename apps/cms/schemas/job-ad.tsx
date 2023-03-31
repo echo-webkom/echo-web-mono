@@ -9,11 +9,11 @@ const JOB_TYPES = [
 ];
 
 const YEARS = [
-  {title: "1. året", value: "firstYear"},
-  {title: "2. året", value: "secondYear"},
-  {title: "3. året", value: "thirdYear"},
-  {title: "4. året", value: "fourthYear"},
-  {title: "5. året", value: "fifthYear"},
+  {title: "1. året", value: "FIRST"},
+  {title: "2. året", value: "SECOND"},
+  {title: "3. året", value: "THIRD"},
+  {title: "4. året", value: "FOURTH"},
+  {title: "5. året", value: "FIFTH"},
 ];
 
 export default defineType({
@@ -83,6 +83,7 @@ export default defineType({
           name: year.value,
           title: year.title,
           type: "boolean",
+          initialValue: false,
           options: {
             layout: "checkbox",
           },
@@ -92,7 +93,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "markdown",
+      type: "localeMarkdown",
       validation: (Rule) => Rule.required(),
     }),
   ],

@@ -42,7 +42,7 @@ export default defineType({
     defineField({
       name: "description",
       title: "Beskrivelse",
-      type: "markdown",
+      type: "localeMarkdown",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

@@ -22,6 +22,7 @@ export default defineType({
       title: "Tittel",
       group: "general",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
@@ -32,6 +33,7 @@ export default defineType({
         source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "company",
@@ -39,6 +41,7 @@ export default defineType({
       group: "general",
       type: "reference",
       to: {type: "company"},
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "location",
@@ -53,6 +56,7 @@ export default defineType({
       description: "Dato for bedriftspresentasjonen",
       group: "dates",
       type: "date",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "registrationDate",
@@ -115,7 +119,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "markdown",
+      type: "localeMarkdown",
     }),
   ],
 });

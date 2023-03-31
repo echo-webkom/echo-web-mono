@@ -5,6 +5,7 @@ import event from "./event";
 import job from "./job-ad";
 import location from "./location";
 import contactProfile from "./objects/contact-profile";
+import {localeMarkdown, localeString} from "./objects/locale";
 import question from "./objects/question";
 import spotRange from "./objects/spot-range";
 import post from "./post";
@@ -26,4 +27,6 @@ export const schemaTypes = [
   spotRange,
   contactProfile,
   question,
+  localeString,
+  localeMarkdown,
 ];

@@ -43,7 +43,7 @@ export default defineField({
       title: "Brødtekst",
       description:
         "Innholdet på siden. Ikke bruk overskrifter her. Vi bruker h1-overskrifter fra tittelen. Bruker heller h2 (##).",
-      type: "markdown",
+      type: "localeMarkdown",
     }),
   ],
   preview: {
