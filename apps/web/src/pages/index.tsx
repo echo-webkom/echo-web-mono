@@ -35,7 +35,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
         <div className="container mx-auto grid grid-cols-1 gap-y-12 gap-x-5 px-3 lg:grid-cols-2">
           {/* Events  */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+            <Link href="/event" className="min-h-[2.5rem] overflow-hidden">
               <motion.h2
                 initial={{y: "100%"}}
                 animate={{y: "0%"}}
@@ -59,7 +59,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Bedpresses */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+            <Link href="/event" className="min-h-[2.5rem] overflow-hidden">
               <motion.h2
                 initial={{y: "100%"}}
                 animate={{y: "0%"}}
@@ -83,7 +83,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Posts */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <Link href={"/for-students/post"}>
+            <Link href="/for-students/post">
               <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
             </Link>
             <hr />
@@ -128,7 +128,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Job ads */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <Link href={"/for-students/job"}>
+            <Link href="/for-students/job">
               <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
             </Link>
             <hr />
@@ -189,7 +189,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
           {/* Board */}
           {!isErrorMessage(board) && (
             <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-              <Link href={"/for-students/board"}>
+              <Link href="/for-students/board">
                 <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
               </Link>
               <hr />
@@ -197,6 +197,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                 variants={staggeredListContainer}
                 initial="hidden"
                 whileInView="show"
+                viewport={{once: true}}
                 className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
               >
                 {board.members.map((member) => (
