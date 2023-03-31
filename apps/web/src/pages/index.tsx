@@ -8,27 +8,13 @@ import {fetchStudentGroupBySlug} from "@/api/student-group";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import EventPreviewBox from "@/components/event-preview";
 import Layout from "@/components/layout";
+import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
-
-const container = {
-  hidden: {opacity: 0},
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.25,
-    },
-  },
-};
-const avatarImageVariants = {
-  hidden: {y: "100%"},
-  show: {y: "0%"},
-};
 
 type Props = {
   eventPreviews: Awaited<ReturnType<typeof fetchComingEventPreviews>>;
@@ -49,7 +35,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
         <div className="container mx-auto grid grid-cols-1 gap-y-12 gap-x-5 px-3 lg:grid-cols-2">
           {/* Events  */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+            <Link href="/event" className="min-h-[2.5rem] overflow-hidden">
               <motion.h2
                 initial={{y: "100%"}}
                 animate={{y: "0%"}}
@@ -73,7 +59,7 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Bedpresses */}
           <section className="flex flex-col gap-5 rounded-md border p-5">
-            <Link href={"/event"} className="min-h-[2.5rem] overflow-hidden">
+            <Link href="/event" className="min-h-[2.5rem] overflow-hidden">
               <motion.h2
                 initial={{y: "100%"}}
                 animate={{y: "0%"}}
@@ -97,7 +83,9 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Posts */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
+            <Link href="/for-students/post">
+              <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
+            </Link>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {posts.map((post) => {
@@ -140,7 +128,9 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
 
           {/* Job ads */}
           <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-            <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+            <Link href="/for-students/job">
+              <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+            </Link>
             <hr />
             <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
               {jobAds.map((jobAd) => (
@@ -199,19 +189,22 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
           {/* Board */}
           {!isErrorMessage(board) && (
             <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-              <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              <Link href="/for-students/board">
+                <h2 className="text-center text-3xl font-semibold">Hovedstyret</h2>
+              </Link>
               <hr />
               <motion.ul
-                variants={container}
+                variants={staggeredListContainer}
                 initial="hidden"
                 whileInView="show"
+                viewport={{once: true}}
                 className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
               >
                 {board.members.map((member) => (
                   <li key={member.profile.name}>
                     <div className="flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="overflow-hidden border">
-                        <motion.div variants={avatarImageVariants}>
+                        <motion.div variants={verticalStaggeredChildren}>
                           <AvatarImage
                             src={member.profile.imageUrl ?? ""}
                             alt={`${member.profile.name} profilbilde`}

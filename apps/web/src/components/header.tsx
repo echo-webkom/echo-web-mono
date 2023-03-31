@@ -30,7 +30,6 @@ const Header = () => {
         if (current && document.body.scrollTop < 5 && document.documentElement.scrollTop < 5) {
           return false;
         }
-
         return current;
       });
     };
@@ -62,9 +61,10 @@ const Header = () => {
       >
         <motion.div
           style={{
-            opacity: hasScrolled ? 0 : 1,
+            height: hasScrolled ? 40 : 75,
+            width: hasScrolled ? 40 : 75,
           }}
-          className="h-20 w-20 transition-opacity duration-100"
+          className="h-20 w-20 transition-all duration-150 ease-in-out"
         >
           <HeaderLogo />
         </motion.div>
