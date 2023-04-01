@@ -96,7 +96,17 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
           </section>
 
           {/* Posts */}
-          <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+          <motion.section
+            initial={{x: "-15%", opacity: 0}}
+            whileInView={{x: "0%", opacity: 1}}
+            viewport={{once: true}}
+            transition={{
+              type: "tween",
+              ease: "easeInOut",
+              duration: 0.5,
+            }}
+            className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2"
+          >
             <Link href="/for-students/post">
               <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
             </Link>
@@ -107,9 +117,20 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                   new Date().getDate() - new Date(post._createdAt).getDate();
 
                 return (
-                  <li key={post._id}>
+                  <motion.li
+                    initial="hidden"
+                    whileInView="show"
+                    transition={{
+                      delay: 2,
+                    }}
+                    variants={staggeredListContainer}
+                    viewport={{once: true}}
+                    key={post._id}
+                    className="overflow-hidden"
+                  >
                     <Link href={`/for-students/post/${post.slug}`}>
-                      <div
+                      <motion.div
+                        variants={opacityStaggeredChildren}
                         className={cn(
                           "relative flex h-auto flex-col gap-1 rounded-lg p-5",
                           "hover:bg-neutral-100",
@@ -117,9 +138,21 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                         )}
                       >
                         {daysSincePublished < 3 && (
-                          <p className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm">
-                            Nytt innlegg!
-                          </p>
+                          <div className="overflow-hidden">
+                            <motion.p
+                              initial={{y: "100%"}}
+                              whileInView={{y: "0%"}}
+                              viewport={{once: true}}
+                              transition={{
+                                delay: 0.25,
+                                type: "tween",
+                                ease: "easeInOut",
+                              }}
+                              className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm"
+                            >
+                              Nytt innlegg!
+                            </motion.p>
+                          </div>
                         )}
                         <h3 className="flex gap-2 text-2xl font-semibold line-clamp-2">
                           {post.title.no}
@@ -132,23 +165,39 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                         </p>
                         <hr />
                         <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
-                      </div>
+                      </motion.div>
                     </Link>
-                  </li>
+                  </motion.li>
                 );
               })}
             </ul>
-          </section>
+          </motion.section>
 
           {/* Job ads */}
-          <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+          <motion.section
+            initial={{x: "-15%", opacity: 0}}
+            whileInView={{x: "0%", opacity: 1}}
+            viewport={{once: true}}
+            transition={{
+              type: "tween",
+              ease: "easeInOut",
+              duration: 0.5,
+            }}
+            className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2"
+          >
             <Link href="/for-students/job">
               <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
             </Link>
             <hr />
-            <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+            <motion.ul
+              initial="hidden"
+              whileInView="show"
+              viewport={{once: true}}
+              variants={staggeredListContainer}
+              className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2"
+            >
               {jobAds.map((jobAd) => (
-                <li key={jobAd._id}>
+                <motion.li variants={opacityStaggeredChildren} key={jobAd._id}>
                   <Link href={`/for-students/job/${jobAd.slug}`}>
                     <div
                       className={cn(
@@ -183,9 +232,13 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                             >
                               Søknadsfrist:
                             </span>{" "}
-                            {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
-                              locale: nb,
-                            })}
+                            {new Date(jobAd.deadline) < new Date() ? (
+                              <span className="text-red-500">Utløpt</span>
+                            ) : (
+                              format(new Date(jobAd.deadline), "d. MMMM yyyy", {
+                                locale: nb,
+                              })
+                            )}
                           </li>
                           <li>
                             <span className="font-semibold">Stillingstype:</span>{" "}
@@ -195,10 +248,10 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                       </div>
                     </div>
                   </Link>
-                </li>
+                </motion.li>
               ))}
-            </ul>
-          </section>
+            </motion.ul>
+          </motion.section>
 
           {/* Board */}
           {!isErrorMessage(board) && (
@@ -218,7 +271,13 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
                   <li key={member.profile.name}>
                     <div className="flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="overflow-hidden border">
-                        <motion.div variants={verticalStaggeredChildren}>
+                        <motion.div
+                          variants={verticalStaggeredChildren}
+                          whileHover={{
+                            scale: 1.1,
+                            transition: {duration: 0.3},
+                          }}
+                        >
                           <AvatarImage
                             src={member.profile.imageUrl ?? ""}
                             alt={`${member.profile.name} profilbilde`}
