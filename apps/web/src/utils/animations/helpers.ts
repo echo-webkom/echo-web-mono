@@ -26,3 +26,7 @@ export const verticalStaggeredChildren = {
   hidden: {y: "100%"},
   show: {y: "0%"},
 };
+export const opacityStaggeredChildren = {
+  hidden: {opacity: "0%"},
+  show: {opacity: "100%"},
+};

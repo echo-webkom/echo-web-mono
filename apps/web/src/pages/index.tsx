@@ -8,7 +8,11 @@ import {fetchStudentGroupBySlug} from "@/api/student-group";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import EventPreviewBox from "@/components/event-preview";
 import Layout from "@/components/layout";
-import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
+import {
+  opacityStaggeredChildren,
+  staggeredListContainer,
+  verticalStaggeredChildren,
+} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
@@ -48,13 +52,18 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
               </motion.h2>
             </Link>
             <hr />
-            <ul className="flex h-full flex-col items-stretch divide-y overflow-hidden">
+            <motion.ul
+              initial="hidden"
+              animate="show"
+              variants={staggeredListContainer}
+              className="flex h-full flex-col items-stretch divide-y overflow-hidden"
+            >
               {eventPreviews.map((event) => (
-                <li key={event._id}>
+                <motion.li variants={opacityStaggeredChildren} key={event._id}>
                   <EventPreviewBox event={event} />
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </section>
 
           {/* Bedpresses */}
@@ -72,13 +81,18 @@ const HomePage = ({eventPreviews, bedpresPreviews, posts, jobAds, board}: Props)
               </motion.h2>
             </Link>
             <hr />
-            <ul className="flex h-full flex-col justify-between divide-y">
+            <motion.ul
+              initial="hidden"
+              animate="show"
+              variants={staggeredListContainer}
+              className="flex h-full flex-col justify-between divide-y"
+            >
               {bedpresPreviews.map((bedpres) => (
-                <li key={bedpres._id}>
+                <motion.li variants={opacityStaggeredChildren} key={bedpres._id}>
                   <EventPreviewBox event={bedpres} />
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </section>
 
           {/* Posts */}

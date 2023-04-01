@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {type GetServerSideProps} from "next";
 import {fetchEventBySlug, type Event} from "@/api/events";
 import Breadcrumbs from "@/components/breadcrumbs";
@@ -5,12 +6,14 @@ import Button from "@/components/button";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import CheckIcon from "@/utils/animations/check-icon";
 
 interface Props {
   event: Event;
 }
 
 const EventPage = ({event}: Props) => {
+  const [registered, setRegistered] = useState(false);
   return (
     <Layout>
       <Container>
@@ -29,7 +32,13 @@ const EventPage = ({event}: Props) => {
             </div>
             <div className="flex-grow" />
             <div>
-              <Button>Meld deg på</Button>
+              <Button
+                size={"medium"}
+                className="flex w-36 justify-center"
+                onClick={() => setRegistered(!registered)}
+              >
+                {registered ? <CheckIcon /> : "Meld deg på"}
+              </Button>
             </div>
           </div>
         </div>
