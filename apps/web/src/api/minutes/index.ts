@@ -1,8 +1,8 @@
 import {type ErrorMessage} from "@/utils/error";
-import {slugSchema, type Slug} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
+import {slugSchema, type Slug} from "../utils/slug";
 import {minuteSchema, type Minute} from "./schema";
 
 export * from "./schema";
@@ -13,13 +13,14 @@ export * from "./schema";
 export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
   try {
     const query = groq`
-                *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
-                    _id,
-                    allmote,
-                    date,
-                    title,
-                    "document": document.asset -> url
-                }`;
+*[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
+  _id,
+  isAllMeeting,
+  date,
+  title,
+  "document": document.asset->url
+}
+    `;
 
     const result = await sanityClient.fetch<Array<Minute>>(query);
 
@@ -32,9 +33,11 @@ export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
 
 export const fetchMinutesPaths = async (): Promise<Array<string>> => {
   try {
-    const query = groq`*[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
-      "slug": _id
-    }`;
+    const query = groq`
+*[_type == "meetingMinute" && !(_id in path('drafts.**'))] {
+  "slug": _id
+}
+    `;
 
     const result = await sanityClient.fetch<Array<Slug>>(query);
 
@@ -50,13 +53,13 @@ export const fetchMinutesPaths = async (): Promise<Array<string>> => {
 export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMessage> => {
   try {
     const query = groq`
-      *[_type == "meetingMinute" && _id == $slug && !(_id in path('drafts.**'))] {
-        _id,
-        allmote,
-        date,
-        title,
-        "document": document.asset -> url
-      }[0]
+*[_type == "meetingMinute" && _id == $slug && !(_id in path('drafts.**'))] {
+  _id,
+  isAllMeeting,
+  date,
+  title,
+  "document": document.asset->url
+}[0]
     `;
 
     const params = {

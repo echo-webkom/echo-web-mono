@@ -10,7 +10,7 @@ export default defineType({
       name: "minDegreeYear",
       title: "Minste trinn",
       type: "number",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(1).max(5),
     }),
     defineField({
       name: "maxDegreeYear",

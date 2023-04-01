@@ -22,7 +22,7 @@ export default defineType({
     defineField({
       name: "socials",
       title: "Kontaktinformasjon",
-      type: "document",
+      type: "object",
       fields: [
         defineField({
           name: "email",

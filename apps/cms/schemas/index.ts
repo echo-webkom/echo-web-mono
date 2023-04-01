@@ -4,6 +4,7 @@ import company from "./company";
 import event from "./event";
 import job from "./job-ad";
 import location from "./location";
+import meetingMinute from "./meeting-minute";
 import contactProfile from "./objects/contact-profile";
 import {localeMarkdown, localeString} from "./objects/locale";
 import question from "./objects/question";
@@ -24,6 +25,7 @@ export const schemaTypes = [
   location,
   banner,
   studentgroup,
+  meetingMinute,
   spotRange,
   contactProfile,
   question,

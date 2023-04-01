@@ -1,11 +1,10 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import Image from "next/image";
 import {
   fetchStudentGroupBySlug,
-  fetchStudentGroupPathsByType,
+  fetchStudentGroupPaths,
+  studentGroupTypeName,
   type StudentGroup,
-  type StudentGroupType,
 } from "@/api/student-group";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
@@ -13,37 +12,31 @@ import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
 
-const GROUP_TYPE: StudentGroupType = "suborg";
-const TITLE = "Underorganisasjoner";
-
-interface Props {
+type Props = {
   group: StudentGroup;
-}
+};
 
 const SubGroupPage = ({group}: Props) => {
+  const title = studentGroupTypeName[group.groupType];
+
   return (
     <>
       <Head>
-        <title>
-          {TITLE} - {group.name}
-        </title>
+        <title>{`${title} - ${group.name}`}</title>
       </Head>
       <Layout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
-            <Breadcrumbs.Item to={`/for-students/${GROUP_TYPE}`}>{TITLE}</Breadcrumbs.Item>
+            <Breadcrumbs.Item to={`/for-students/${group.groupType}`}>{title}</Breadcrumbs.Item>
             <Breadcrumbs.Item>{group.name}</Breadcrumbs.Item>
           </Breadcrumbs>
 
           {/* TODO: Render group image */}
-          {group.imageUrl && (
-            <Image alt={`${group.name} bilde`} src={group.imageUrl} height={500} width={500} />
-          )}
 
           <article className="prose md:prose-xl">
             <h1>{group.name}</h1>
-            <Markdown content={group.info ?? ""} />
+            <Markdown content={group.description?.no ?? ""} />
           </article>
 
           {/* TODO: Render group members */}
@@ -54,7 +47,7 @@ const SubGroupPage = ({group}: Props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await fetchStudentGroupPathsByType(GROUP_TYPE);
+  const slugs = await fetchStudentGroupPaths();
 
   return {
     paths: slugs.map((slug) => ({params: {slug}})),

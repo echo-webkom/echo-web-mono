@@ -36,12 +36,13 @@ export default defineType({
           to: {type: "studentGroup"},
         },
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "contacts",
       title: "Kontaktpersoner",
       description:
-        "Hvem som skal kontaktes for påmelding/avmelding og annen informasjon om bedriftspresentasjonen.",
+        "Hvem som skal kontaktes for påmelding/avmelding og annen informasjon om arrangementet.",
       type: "array",
       of: [
         defineArrayMember({
@@ -54,24 +55,25 @@ export default defineType({
     defineField({
       name: "date",
       title: "Dato",
-      description: "Dato for bedriftspresentasjonen",
+      description: "Dato og tid for arrangementet.",
       group: "dates",
-      type: "date",
+      type: "datetime",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "registrationDate",
       title: "Påmeldingsdato",
-      description: "Påmeldingsdato for bedriftspresentasjonen",
+      description: "Dato og tid for påmelding til arrangementet.",
       group: "dates",
-      type: "date",
+      type: "datetime",
       validation: (Rule) => Rule.required().max(Rule.valueOfField("registrationDeadline")),
     }),
     defineField({
       name: "registrationDeadline",
       title: "Påmeldingsfrist",
-      description: "Påmeldingsfrist for bedriftspresentasjonen",
+      description: "Dato og tid for påmelding til arrangementet.",
       group: "dates",
-      type: "date",
+      type: "datetime",
       validation: (Rule) =>
         Rule.required().min(Rule.valueOfField("registrationDate")).max(Rule.valueOfField("date")),
     }),

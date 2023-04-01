@@ -31,7 +31,7 @@ const PostPage = ({post}: Props) => {
           </Breadcrumbs>
 
           <p className="text-gray-500">
-            Publisert:
+            Publisert:{" "}
             {format(new Date(post._createdAt), "d. MMMM yyyy", {
               locale: nb,
             })}

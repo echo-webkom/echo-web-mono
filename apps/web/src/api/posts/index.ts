@@ -1,8 +1,8 @@
 import {type ErrorMessage} from "@/utils/error";
-import {slugSchema} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
+import {slugSchema} from "../utils/slug";
 import {postSchema, type Post} from "./schemas";
 
 export * from "./schemas";
@@ -29,53 +29,71 @@ export const fetchPostPaths = async (): Promise<Array<string>> => {
  * Get the n last published posts.
  * @param n how many posts to retrieve
  */
-export const fetchPosts = async (n: number | "all"): Promise<Array<Post>> => {
+export const fetchPosts = async (n: number): Promise<Array<Post> | ErrorMessage> => {
   try {
-    const limit = n === "all" ? "" : `[0...${n}]`;
-
     const query = groq`
-          *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {
-              _id,
-              _createdAt,
-              title,
-              "slug": slug.current,
-              "body": select(
-                  body.en != null => {"no": body.no, "en": body.en},
-                  body.no != null => {"no": body.no, "en": null},
-                  body
-                ),
-              "author": author->name,
-          }${limit}
+*[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {
+  _id,
+  _createdAt,
+  _updatedAt,
+  "title": title {
+    no,
+    en,
+  },
+  "slug": slug.current,
+  "authors": authors[]->{
+    _id,
+    name,
+  },
+  "imageUrl": image.asset->url,
+  "body": body {
+    no,
+    en,
+  }
+}
       `;
 
-    const result = await sanityClient.fetch<Array<Post>>(query);
+    const params = {
+      n,
+    };
+
+    const result = await sanityClient.fetch<Array<Post>>(query, params);
 
     return postSchema.array().parse(result);
-  } catch {
-    return [];
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Failed to fetch posts.",
+    };
   }
 };
 
-/**
- * Get a post by its slug.
- * @param slug the slug of the desired post.
- */
 export const fetchPostBySlug = async (slug: string): Promise<Post | ErrorMessage> => {
   try {
     const query = groq`
-          *[_type == "post" && slug.current == $slug && !(_id in path('drafts.**'))] {
-              _id,
-              _createdAt,
-              title,
-              "slug": slug.current,
-              "body": select(
-                  body.en != null => {"no": body.no, "en": body.en},
-                  body.no != null => {"no": body.no, "en": null},
-                  body
-                ),
-              "author": author->name,
-          }[0]
-        `;
+*[_type == "post"
+  && slug.current == $slug
+  && !(_id in path('drafts.**'))]
+  | order(_createdAt desc) {
+  _id,
+  _createdAt,
+  _updatedAt,
+  "title": title {
+    no,
+    en,
+  },
+  "slug": slug.current,
+  "authors": authors[]->{
+    _id,
+    name,
+  },
+  "imageUrl": image.asset->url,
+  "body": body {
+    no,
+    en,
+  }
+}[0]
+      `;
 
     const params = {
       slug,
@@ -84,7 +102,10 @@ export const fetchPostBySlug = async (slug: string): Promise<Post | ErrorMessage
     const result = await sanityClient.fetch<Post>(query, params);
 
     return postSchema.parse(result);
-  } catch {
-    return {message: "Failed to fetch post"};
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Failed to fetch posts.",
+    };
   }
 };

@@ -1,24 +1,29 @@
 import {z} from "zod";
 
 import {profileSchema} from "../profile/schemas";
+import {localeMarkdownSchema} from "../utils/locale";
+
+export const studentGroupTypes = ["board", "suborg", "subgroup", "intgroup"] as const;
+
+export const studentGroupTypeSchema = z.enum(studentGroupTypes);
+export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;
 
 export const memberSchema = z.object({
   role: z.string(),
-  profile: profileSchema,
+  profile: profileSchema.pick({_id: true, name: true, imageUrl: true, socials: true}),
 });
+
 export type Member = z.infer<typeof memberSchema>;
 
 export const studentGroupSchema = z.object({
+  _id: z.string(),
+  _createdAt: z.string(),
+  _updatedAt: z.string(),
   name: z.string(),
   slug: z.string(),
-  info: z.string().nullable(),
+  description: localeMarkdownSchema.nullable(),
+  groupType: studentGroupTypeSchema,
   imageUrl: z.string().nullable(),
-  members: z
-    .array(memberSchema)
-    .nullable()
-    .transform((m) => m ?? []),
+  members: memberSchema.array().nullable(),
 });
 export type StudentGroup = z.infer<typeof studentGroupSchema>;
-
-export const studentGroupTypeSchema = z.enum(["board", "suborg", "subgroup", "intgroup"]);
-export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;

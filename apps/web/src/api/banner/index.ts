@@ -11,18 +11,23 @@ import {bannerSchema, type Banner} from "./schemas";
 export const fetchBanner = async (): Promise<Banner | null> => {
   try {
     const query = groq`
-      *[_type == "banner" && !(_id in path('drafts.**'))] {
-        color,
-        textColor,
-        text,
-        linkTo,
-        isExternal
-      }[0]
+*[_type == "banner" && !(_id in path('drafts.**'))] {
+  title,
+  subtitle,
+  expiresAt,
+  link
+}[0]
     `;
 
     const res = await sanityClient.fetch<Banner>(query);
 
-    return bannerSchema.parse(res);
+    const banner = bannerSchema.parse(res);
+
+    if (banner.expiresAt && new Date(banner.expiresAt) < new Date()) {
+      return null;
+    }
+
+    return banner;
   } catch {
     return null;
   }

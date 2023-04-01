@@ -12,31 +12,23 @@ const WebsiteBanner = ({banner}: BannerProps) => {
   }
 
   return (
-    <div className="text-md bg-echo-blue2 py-5 px-5 text-center font-bold md:text-lg">
-      <p>
-        <span>🔊</span>{" "}
-        {banner.linkTo ? (
-          <Link
-            href={banner.linkTo}
-            className="mx-auto flex w-fit items-center gap-2 hover:underline"
-            {...(banner.isExternal && {
-              target: "_blank",
-              rel: "noreferrer",
-            })}
-          >
-            {banner.text}
+    <div className="text-md flex justify-center bg-echo-blue2 py-5 px-5 font-bold md:text-lg">
+      {banner.link ? (
+        <Link
+          href={banner.link}
+          className="mx-auto flex w-fit items-center gap-2 hover:underline"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {banner.title}
 
-            {/* Add external link icon */}
-            {banner.isExternal && (
-              <span>
-                <ExternalLinkIcon />
-              </span>
-            )}
-          </Link>
-        ) : (
-          banner.text
-        )}
-      </p>
+          <span>
+            <ExternalLinkIcon />
+          </span>
+        </Link>
+      ) : (
+        banner.title
+      )}
     </div>
   );
 };

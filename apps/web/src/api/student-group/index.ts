@@ -1,11 +1,18 @@
 import {type ErrorMessage} from "@/utils/error";
-import {slugSchema} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
+import {slugSchema} from "../utils/slug";
 import {studentGroupSchema, type StudentGroup, type StudentGroupType} from "./schemas";
 
 export * from "./schemas";
+
+export const studentGroupTypeName: Record<StudentGroupType, string> = {
+  board: "Hovedstyret",
+  subgroup: "Undergrupper",
+  intgroup: "Interessegrupper",
+  suborg: "Underorganisasjoner",
+};
 
 /**
  *
@@ -47,36 +54,48 @@ export const fetchStudentGroupPathsByType = async (
 
 export const fetchStudentGroupsByType = async (
   type: StudentGroupType,
+  n: number,
 ): Promise<Array<StudentGroup> | ErrorMessage> => {
   try {
     const query = groq`
-        *[_type == "studentGroup"
-        && groupType == $type
-        && !(_id in path('drafts.**'))]
-        | order(name) {
-            name,
-            "slug": slug.current,
-            info,
-            "imageUrl": grpPicture.asset -> url,
-            "members": members[] {
-                role,
-                "profile": profile -> {
-                    name,
-                    "imageUrl": picture.asset -> url
-                }
-            }
-        }
+*[_type == "studentGroup"
+  && groupType == $type
+  && !(_id in path('drafts.**'))] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  name,
+  groupType,
+  "slug": slug.current,
+  "description": description {
+    no,
+    en,
+  },
+  "imageUrl": image.assets->url,
+  "members": members[] {
+    role,
+    "profile": profile->{
+      _id,
+      name,
+      "imageUrl": image.asset->url,
+      socials,
+    },
+  },
+}[0..$n]
       `;
+
     const params = {
       type,
+      n,
     };
 
-    const result = await sanityClient.fetch<Array<StudentGroup>>(query, params);
+    const res = await sanityClient.fetch<Array<StudentGroup>>(query, params);
 
-    return studentGroupSchema.array().parse(result);
+    return studentGroupSchema.array().parse(res);
   } catch (error) {
+    console.error(error);
     return {
-      message: JSON.stringify(error),
+      message: "Failed to fetch student groups",
     };
   }
 };
@@ -86,20 +105,32 @@ export const fetchStudentGroupBySlug = async (
 ): Promise<StudentGroup | ErrorMessage> => {
   try {
     const query = groq`
-          *[_type == "studentGroup" && slug.current == $slug && !(_id in path('drafts.**'))] | order(name) {
-              name,
-              "slug": slug.current,
-              info,
-              "imageUrl": grpPicture.asset -> url,
-              "members": members[] {
-                  role,
-                  "profile": profile -> {
-                      name,
-                      "imageUrl": picture.asset -> url
-                  }
-              }
-          }[0]
-      `;
+*[_type == "studentGroup"
+  && slug.current == $slug
+  && !(_id in path('drafts.**'))] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  name,
+  groupType,
+  "slug": slug.current,
+  "description": description {
+    no,
+    en,
+  },
+  "imageUrl": image.assets->url,
+  "members": members[] {
+    role,
+    "profile": profile->{
+      _id,
+      name,
+      "imageUrl": image.asset->url,
+      socials,
+    },
+  },
+}[0]
+    `;
+
     const params = {
       slug,
     };

@@ -1,9 +1,11 @@
 import {type GetStaticProps} from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import {fetchJobAds, type JobAd} from "@/api/job-ads";
+import {fetchJobAds, type JobAd} from "@/api/job-ad";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
+import {isErrorMessage} from "@/utils/error";
 import {urlFor} from "@/utils/image-builder";
 
 interface Props {
@@ -12,39 +14,50 @@ interface Props {
 
 const JobAdsOverviewPage = ({jobs}: Props) => {
   return (
-    <Layout>
-      <Container>
-        <h1 className="mb-3 text-4xl font-bold">Stillingsannonser</h1>
-        <ul className="flex flex-col gap-10">
-          {jobs.map((job) => (
-            <li key={job.slug}>
-              <Link href={`/for-students/job/${job.slug}`}>
-                <div className="flex flex-col gap-3 overflow-hidden rounded-md border bg-slate-200 md:flex-row">
-                  <div>
-                    <Image
-                      src={urlFor(job.logoUrl).width(600).height(350).url()}
-                      alt={`${job.companyName} ad`}
-                      width={600}
-                      height={350}
-                    />
-                  </div>
+    <>
+      <Head>
+        <title>Stillingsannonser</title>
+      </Head>
+      <Layout>
+        <Container>
+          <h1 className="mb-3 text-4xl font-bold">Stillingsannonser</h1>
+          <ul className="flex flex-col gap-10">
+            {jobs.map((job) => (
+              <li key={job.slug}>
+                <Link href={`/for-students/job/${job.slug}`}>
+                  <div className="flex flex-col gap-3 overflow-hidden rounded-md border bg-slate-200 md:flex-row">
+                    <div>
+                      <Image
+                        src={urlFor(job.company.imageUrl).width(600).height(350).url()}
+                        alt={`${job.company.name} logo`}
+                        width={600}
+                        height={350}
+                      />
+                    </div>
 
-                  <div className="flex flex-col py-5 px-3">
-                    <h2 className="text-xl font-bold">{job.title}</h2>
-                    <p>{job.companyName}</p>
+                    <div className="flex flex-col py-5 px-3">
+                      <h2 className="text-xl font-bold">{job.title}</h2>
+                      <p>{job.company.name}</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </Layout>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Layout>
+    </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const jobs = await fetchJobAds(10);
+  const jobs = await fetchJobAds(-1);
+
+  if (isErrorMessage(jobs)) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

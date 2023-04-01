@@ -1,15 +1,15 @@
 import {type ErrorMessage} from "@/utils/error";
-import {slugSchema} from "@/utils/slug";
 import {groq} from "next-sanity";
 
 import {sanityClient} from "../sanity.client";
+import {slugSchema} from "../utils/slug";
 import {staticInfoSchema, type StaticInfo} from "./schemas";
 
 export * from "./schemas";
 
 export const fetchStaticInfoPaths = async (): Promise<Array<string>> => {
   try {
-    const query = groq`*[_type == "staticInfo"]{ "slug": slug.current }`;
+    const query = groq`*[_type == "static"]{ "slug": slug.current }`;
 
     const result = await sanityClient.fetch<Array<string>>(query);
 
@@ -25,14 +25,17 @@ export const fetchStaticInfoPaths = async (): Promise<Array<string>> => {
 export const fetchStaticInfoBySlug = async (slug: string): Promise<StaticInfo | ErrorMessage> => {
   try {
     const query = groq`
-        *[_type == "staticInfo"
-          && slug.current == $slug
-          && !(_id in path('drafts.**'))]
-          | order(name) {
-            name,
-            "slug": slug.current,
-            info,
-        }[0]
+*[_type == "static"
+  && slug.current == $slug
+  && !(_id in path('drafts.**'))] {
+  title,
+  "slug": slug.current,
+  pageType,
+  "body": body {
+    no,
+    en,
+  },
+}[0]
       `;
 
     const params = {

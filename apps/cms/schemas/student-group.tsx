@@ -28,6 +28,7 @@ export default defineType({
         source: "name",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "groupType",
@@ -38,6 +39,34 @@ export default defineType({
         layout: "dropdown",
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "socials",
+      title: "Sosiale medier",
+      description: "Legg til lenker til sosiale medier",
+      type: "object",
+      fields: [
+        defineField({
+          name: "email",
+          title: "E-post",
+          type: "email",
+        }),
+        defineField({
+          name: "facebook",
+          title: "Facebook",
+          type: "url",
+        }),
+        defineField({
+          name: "instagram",
+          title: "Instagram",
+          type: "url",
+        }),
+        defineField({
+          name: "linkedin",
+          title: "LinkedIn",
+          type: "url",
+        }),
+      ],
     }),
     defineField({
       name: "description",
@@ -87,8 +116,19 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: "name",
-      media: "image",
+      name: "name",
+      groupType: "groupType",
+      image: "image",
+    },
+
+    prepare({name, groupType, image}) {
+      return {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        title: name,
+        subtitle: GROUP_TYPES.find((t) => t.value === groupType)?.title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        media: image,
+      };
     },
   },
 });

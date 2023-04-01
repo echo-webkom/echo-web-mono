@@ -54,7 +54,7 @@ export const headerRoutes: Array<NavItem> = [
         label: "Masterinfo",
       },
       {
-        href: "/oekonomisk-stoette",
+        href: "/okonomisk-stotte",
         label: "Økonomisk støtte",
       },
       {
@@ -88,11 +88,11 @@ export const headerRoutes: Array<NavItem> = [
     label: "Om echo",
     sublinks: [
       {
-        href: "/om-oss",
+        href: "/om-echo",
         label: "Hvem er vi",
       },
       {
-        href: "/instituttraadet",
+        href: "/instituttradet",
         label: "Instituttrådet",
       },
       {

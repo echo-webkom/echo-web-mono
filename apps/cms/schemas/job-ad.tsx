@@ -63,7 +63,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "advertLink",
+      name: "link",
       title: "Lenke til søknad",
       type: "url",
       validation: (Rule) => Rule.required(),
