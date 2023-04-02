@@ -81,6 +81,12 @@ export const fetchStudentGroupsByType = async (
       socials,
     },
   },
+  "socials": socials {
+    facebook,
+    instagram,
+    linkedin,
+    email,
+  },
 }[0..$n]
       `;
 
@@ -127,6 +133,12 @@ export const fetchStudentGroupBySlug = async (
       "imageUrl": image.asset->url,
       socials,
     },
+  },
+  "socials": socials {
+    facebook,
+    instagram,
+    linkedin,
+    email,
   },
 }[0]
     `;

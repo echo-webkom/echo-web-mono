@@ -1,5 +1,12 @@
 import {PresentationIcon} from "@sanity/icons";
-import {defineArrayMember, defineField, defineType} from "sanity";
+import {
+  defineArrayMember,
+  defineField,
+  defineType,
+  type SlugSchemaType,
+  type SlugSourceContext,
+} from "sanity";
+import slugify from "slugify";
 
 export default defineType({
   name: "bedpres",
@@ -29,11 +36,19 @@ export default defineType({
       title: "Slug",
       group: "general",
       type: "slug",
+      validation: (Rule) => Rule.required(),
       options: {
         source: "title",
-        maxLength: 96,
+        slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
+          const slug = slugify(input, {remove: /[*+~.()'"!:@]/g, lower: true, strict: true});
+          const query = 'count(*[_type == "bedpres" && slug.current == $slug]{_id})';
+          const params = {slug};
+          const {getClient} = context;
+
+          const count: number = await getClient({apiVersion: "2021-04-10"}).fetch(query, params);
+          return count > 0 ? `${slug}-${count + 1}` : slug;
+        },
       },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "company",

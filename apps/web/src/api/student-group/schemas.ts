@@ -25,5 +25,13 @@ export const studentGroupSchema = z.object({
   groupType: studentGroupTypeSchema,
   imageUrl: z.string().nullable(),
   members: memberSchema.array().nullable(),
+  socials: z
+    .object({
+      facebook: z.string().nullable(),
+      instagram: z.string().nullable(),
+      linkedin: z.string().nullable(),
+      email: z.string().nullable(),
+    })
+    .nullable(),
 });
 export type StudentGroup = z.infer<typeof studentGroupSchema>;

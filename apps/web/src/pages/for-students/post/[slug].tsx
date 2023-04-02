@@ -39,6 +39,7 @@ const PostPage = ({post}: Props) => {
 
           <article className="prose md:prose-xl">
             <h1>{post.title.no}</h1>
+            <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
             <Markdown content={post.body.no} />
           </article>
         </Container>

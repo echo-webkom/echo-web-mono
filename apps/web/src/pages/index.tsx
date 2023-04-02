@@ -166,7 +166,7 @@ const HomePage = ({
                 className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
               >
                 {board[0].members.map((member) => (
-                  <li key={member.profile.name}>
+                  <li key={member.profile._id}>
                     <div className="flex h-full flex-col items-center gap-5 p-5">
                       <Avatar className="overflow-hidden border">
                         <motion.div variants={verticalStaggeredChildren}>
@@ -199,11 +199,13 @@ const HomePage = ({
 };
 
 export const getServerSideProps = async () => {
-  const events = await fetchComingEvents(5);
-  const bedpresses = await fetchUpcomingBedpresses(5);
-  const posts = await fetchPosts(5);
-  const jobAds = await fetchJobAds(5);
-  const board = await fetchStudentGroupsByType("board", 1);
+  const [events, bedpresses, posts, jobAds, board] = await Promise.all([
+    fetchComingEvents(5),
+    fetchUpcomingBedpresses(5),
+    fetchPosts(5),
+    fetchJobAds(5),
+    fetchStudentGroupsByType("board", 1),
+  ]);
 
   return {
     props: {
