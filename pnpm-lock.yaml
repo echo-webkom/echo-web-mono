@@ -66,7 +66,7 @@ importers:
       framer-motion: 10.10.0
       next: 13.2.4
       next-auth: ^4.20.1
-      next-sanity: 4.1.5
+      next-sanity: 4.1.6
       postcss: ^8.4.21
       react: 18.2.0
       react-dom: 18.2.0
@@ -103,7 +103,7 @@ importers:
       framer-motion: 10.10.0_biqbaboplfbrettd7655fr4n2y
       next: 13.2.4_pjwopsidmaokadturxaafygjp4
       next-auth: 4.20.1_ld2jel3hspngo3u5lti2kgl2sq
-      next-sanity: 4.1.5_oyk3wwzjpzhbac2ogh423ykh5e
+      next-sanity: 4.1.6_oyk3wwzjpzhbac2ogh423ykh5e
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.8_react@18.2.0
@@ -1776,6 +1776,15 @@ packages:
       eventsource: 2.0.2
     dev: false
 
+  /@sanity/eventsource/5.0.0:
+    resolution: {integrity: sha512-0ewT+BDzfiamHwitUfRcwsl/RREHjWv6VNZvQ8Q4OnnNKXfEEGXbWmqzof0okOTkp4XELgyliht4Qj28o9AU2g==}
+    dependencies:
+      '@types/event-source-polyfill': 1.0.1
+      '@types/eventsource': 1.1.11
+      event-source-polyfill: 1.0.31
+      eventsource: 2.0.2
+    dev: false
+
   /@sanity/export/3.5.1:
     resolution: {integrity: sha512-aTjkYTzKKfr36tjbPQHSIpZ4Z3Y081sIR/bmeBJySdQv8WbnDGhPBE0dGOeIiJOde4rJVI15aETQUgsUo0aBXQ==}
     engines: {node: '>=14.18.0'}
@@ -1796,12 +1805,12 @@ packages:
     resolution: {integrity: sha512-wtMYcV5GIDIhVyF/jjmdwq1GdlK07dRL40XMns73VbrFI7FteRltxv48bhYVZPcLkRXb0SHjpDS/icj9/yzbVA==}
     dev: false
 
-  /@sanity/groq-store/2.0.8:
-    resolution: {integrity: sha512-k/fgsSHGPiCCnIGMRv0SOPWl2k2q2o1GJEgumnvyr0LwEgfymX05qoHmtT66nvfUpcnL5Qf3KOBWO3PAwYK4og==}
+  /@sanity/groq-store/2.1.0:
+    resolution: {integrity: sha512-GYWtsi0TyTOXiFbGmlPccKE/UsFom9byU8DpPsshNpD0z2MNy19/L0lAaV5/JdUgb8uu84sEKYMPumkRG94lhw==}
     engines: {node: '>=14.18'}
     dependencies:
+      '@sanity/eventsource': 5.0.0
       '@sanity/types': 3.5.1
-      eventsource: 2.0.2
       fast-deep-equal: 3.1.3
       groq: 3.6.0
       groq-js: 1.1.8
@@ -1901,15 +1910,14 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit/1.3.6_react@18.2.0:
-    resolution: {integrity: sha512-HesnsdaV0UblCkVeX7cZrWVf54x6inkaOeIMjqNTUJTCVYA/uTXgDhNAPEpAYg1ckKWTwLrN9MU9bhrmdRYIcA==}
+  /@sanity/preview-kit/1.3.8_react@18.2.0:
+    resolution: {integrity: sha512-4w0y7KXMcwQLhpjH+AS0a/vdsuzpnP+Kb8EbCs446F8gTm7xGpNyLOIgyi10UDO+FINXlnvhST2QRQDHkWP0+w==}
     engines: {node: '>=14'}
     peerDependencies:
       react: ^18
     dependencies:
-      '@sanity/groq-store': 2.0.8
-      '@types/event-source-polyfill': 1.0.1
-      event-source-polyfill: 1.0.31
+      '@sanity/eventsource': 5.0.0
+      '@sanity/groq-store': 2.1.0
       react: 18.2.0
       suspend-react: 0.0.9_react@18.2.0
     transitivePeerDependencies:
@@ -2176,6 +2184,10 @@ packages:
 
   /@types/event-source-polyfill/1.0.1:
     resolution: {integrity: sha512-dls8b0lUgJ/miRApF0efboQ9QZnAm7ofTO6P1ILu8bRPxUFKDxVwFf8+TeuuErmNui6blpltyr7+eV72dbQXlQ==}
+    dev: false
+
+  /@types/eventsource/1.1.11:
+    resolution: {integrity: sha512-L7wLDZlWm5mROzv87W0ofIYeQP5K2UhoFnnUyEWLKM6UBb0ZNRgAqp98qE5DkgfBXdWfc2kYmw9KZm4NLjRbsw==}
     dev: false
 
   /@types/glob/7.2.0:
@@ -5907,21 +5919,21 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-sanity/4.1.5_oyk3wwzjpzhbac2ogh423ykh5e:
-    resolution: {integrity: sha512-zas+jhDbnSY5V+tG0PLGGgUCzQFmKMInRALiXykfYzDHPjm6xAFO49WTy1ZGkGc7AzKbNdwp8LEXOKEnDbp15w==}
+  /next-sanity/4.1.6_oyk3wwzjpzhbac2ogh423ykh5e:
+    resolution: {integrity: sha512-0vnmVGEvJECW9lyLPXqs4/VrhhNSZV4w0IwKmGPiAcavzY3sp8c7kKHzEu0uvTBCi3HBMrQpwRcv7mQMFvJVpw==}
     engines: {node: '>=16'}
     peerDependencies:
-      '@sanity/icons': ^2
-      '@sanity/types': ^3
-      '@sanity/ui': ^1
-      next: ^13
-      react: ^18
-      sanity: ^3
+      '@sanity/icons': '2'
+      '@sanity/types': '3'
+      '@sanity/ui': '1'
+      next: '13'
+      react: '18'
+      sanity: '3'
       styled-components: ^5.2
     dependencies:
       '@sanity/client': 5.2.1
       '@sanity/icons': 2.2.2_react@18.2.0
-      '@sanity/preview-kit': 1.3.6_react@18.2.0
+      '@sanity/preview-kit': 1.3.8_react@18.2.0
       '@sanity/types': 3.5.1
       '@sanity/ui': 1.2.2_twebgoqjkqellgizumyhahsaxe
       '@sanity/webhook': 2.0.0
