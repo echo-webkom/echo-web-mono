@@ -24,3 +24,5 @@ next-env.d.ts
 
 # Sanity
 .sanity
+.dist
+dist
