@@ -41,7 +41,7 @@
     "next-sanity": "4.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.43.8",
+    "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-markdown": "8.0.6",
     "remark-gfm": "3.0.1",

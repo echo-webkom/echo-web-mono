@@ -112,7 +112,7 @@ importers:
         version: link:../../packages/config/tailwind
       '@hookform/resolvers':
         specifier: ^3.0.0
-        version: 3.0.0(react-hook-form@7.43.8)
+        version: 3.0.0(react-hook-form@7.43.9)
       '@next/bundle-analyzer':
         specifier: ^13.2.4
         version: 13.2.4
@@ -183,8 +183,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-hook-form:
-        specifier: ^7.43.8
-        version: 7.43.8(react@18.2.0)
+        specifier: ^7.43.9
+        version: 7.43.9(react@18.2.0)
       react-icons:
         specifier: ^4.8.0
         version: 4.8.0(react@18.2.0)
@@ -2237,12 +2237,12 @@ packages:
       react-hook-form: 6.15.8(react@18.2.0)
     dev: false
 
-  /@hookform/resolvers@3.0.0(react-hook-form@7.43.8):
+  /@hookform/resolvers@3.0.0(react-hook-form@7.43.9):
     resolution: {integrity: sha512-SQPefakODpyq25b/phHXDKCdRrEfPcCXV7B4nAa139wE1DxufYbbNAjeo0T04ZXBokRxZ+wD8iA1kkVMa3QwjQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.43.8(react@18.2.0)
+      react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.8:
@@ -8604,8 +8604,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-hook-form@7.43.8(react@18.2.0):
-    resolution: {integrity: sha512-BQm+Ge5KjTk1EchDBRhdP8Pkb7MArO2jFF+UWYr3rtvh6197khi22uloLqlWeuY02ItlCzPunPsFt1/q9wQKnw==}
+  /react-hook-form@7.43.9(react@18.2.0):
+    resolution: {integrity: sha512-AUDN3Pz2NSeoxQ7Hs6OhQhDr6gtF9YRuutGDwPQqhSUAHJSgGl2VeY3qN19MG0SucpjgDiuMJ4iC5T5uB+eaNQ==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
