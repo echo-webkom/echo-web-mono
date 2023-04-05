@@ -1,7 +1,7 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ads";
+import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ad";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
@@ -29,49 +29,46 @@ const JobAdPage = ({jobAd}: Props) => {
           </Breadcrumbs>
 
           {/* Job ad */}
-          <div className="my-5 flex flex-col-reverse justify-between 2xl:flex-row">
-            <div>
-              <p>Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}</p>
-              <div className="prose md:prose-xl">
-                <h1>{jobAd.title}</h1>
-                <Markdown content={jobAd.body} />
-              </div>
-            </div>
+          <p>Publisert: {format(new Date(jobAd._createdAt), "yyyy/MM/dd")}</p>
 
-            {/* Floater */}
-            <div className="sticky top-5 my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-sm shadow-black 2xl:my-0 2xl:w-[500px]">
-              <div>
-                <p className="font-sm text-gray-600">Selskap:</p>
-                <p className="text-3xl font-bold">{jobAd.companyName}</p>
-              </div>
-              <div>
-                <p className="font-sm text-gray-600">Årstrinn:</p>
-                <p className="text-3xl font-bold">[{jobAd.degreeYears.toString()}]</p>
-              </div>
-              <div>
-                <p className="font-sm text-gray-600">Frist:</p>
-                <p className="text-3xl font-bold">
-                  {format(new Date(jobAd.deadline), "yyyy/MM/dd")}
-                </p>
-              </div>
-              <div>
-                <p className="font-sm text-gray-600">Steder:</p>
-                <p className="text-3xl font-bold">[{jobAd.locations.toString()}]</p>
-              </div>
-              <div>
-                <p className="font-sm text-gray-600">Jobbtype:</p>
-                <p className="text-3xl font-bold">{jobTypeToString[jobAd.jobType]}</p>
-              </div>
-              <div className="mt-5 flex flex-col text-center">
-                <Link
-                  className="w-full rounded-md bg-echo-yellow px-3 py-3 font-bold"
-                  href={jobAd.advertLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Til søknad
-                </Link>
-              </div>
+          <div className="prose md:prose-xl">
+            <h1>{jobAd.title}</h1>
+            <Markdown content={jobAd.body.no} />
+          </div>
+
+          {/* Floater */}
+          <div className="my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-sm shadow-black 2xl:my-0 2xl:w-[500px]">
+            <div>
+              <p className="font-sm text-gray-600">Selskap:</p>
+              <p className="text-3xl font-bold">{jobAd.company.name}</p>
+            </div>
+            <div>
+              <p className="font-sm text-gray-600">Årstrinn:</p>
+              <p className="text-3xl font-bold">[{jobAd.degreeYears.toString()}]</p>
+            </div>
+            <div>
+              <p className="font-sm text-gray-600">Frist:</p>
+              <p className="text-3xl font-bold">{format(new Date(jobAd.deadline), "yyyy/MM/dd")}</p>
+            </div>
+            <div>
+              <p className="font-sm text-gray-600">Steder:</p>
+              <p className="text-3xl font-bold">
+                [{jobAd.locations.map((location) => location.name).toString()}]
+              </p>
+            </div>
+            <div>
+              <p className="font-sm text-gray-600">Jobbtype:</p>
+              <p className="text-3xl font-bold">{jobTypeToString[jobAd.jobType]}</p>
+            </div>
+            <div className="mt-5 flex flex-col text-center">
+              <Link
+                className="w-full rounded-md bg-echo-yellow px-3 py-3 font-bold"
+                href={jobAd.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Til søknad
+              </Link>
             </div>
           </div>
         </Container>

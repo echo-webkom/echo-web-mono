@@ -39,7 +39,7 @@ const PostsPage = ({posts}: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = await fetchPosts("all");
+  const posts = await fetchPosts(-1);
 
   if (isErrorMessage(posts)) {
     return {

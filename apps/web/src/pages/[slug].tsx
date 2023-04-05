@@ -6,7 +6,6 @@ import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
-import {capitalize} from "@/utils/string";
 
 type Props = {
   page: StaticInfo;
@@ -16,17 +15,18 @@ const StaticPage = ({page}: Props) => {
   return (
     <>
       <Head>
-        <title>{capitalize(page.name)}</title>
+        <title>{page.title}</title>
       </Head>
       <Layout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
-            <Breadcrumbs.Item>{capitalize(page.name)}</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{page.title}</Breadcrumbs.Item>
           </Breadcrumbs>
 
           <article className="prose md:prose-xl">
-            <Markdown content={page.info} />
+            <h1>{page.title}</h1>
+            <Markdown content={page.body.no} />
           </article>
         </Container>
       </Layout>

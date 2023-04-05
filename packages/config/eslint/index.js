@@ -9,7 +9,7 @@ const config = {
   ],
   rules: {
     eqeqeq: "error",
-    "no-console": "warn",
+    "no-console": ["warn", {allow: ["warn", "error"]}],
     "eol-last": "error",
     "no-trailing-spaces": "error",
     "@next/next/no-html-link-for-pages": "off",

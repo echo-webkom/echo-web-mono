@@ -1,4 +1,4 @@
-// @ts-check
+import NextBundleAnalyzer from "@next/bundle-analyzer";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
@@ -24,4 +24,10 @@ const config = {
   eslint: {ignoreDuringBuilds: !!process.env.CI},
   typescript: {ignoreBuildErrors: !!process.env.CI},
 };
-export default config;
+
+const withBundleAnalyzer = NextBundleAnalyzer({
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer(config);

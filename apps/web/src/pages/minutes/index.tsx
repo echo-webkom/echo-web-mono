@@ -45,7 +45,7 @@ const MinutesPage = ({minutes}: Props) => {
                             })}
                           </Link>
                           <div>
-                            {minute.allmote && (
+                            {minute.isAllMeeting && (
                               <p className="w-fit rounded-lg bg-[#a4ced9] px-2 py-1 text-sm">
                                 Allmøte
                               </p>

@@ -30,6 +30,7 @@ const MinutePage = ({minute}: Props) => {
             <h1 className="text-3xl font-bold">{minute.title}</h1>
             <ButtonLink href={minute.document}>Last ned</ButtonLink>
           </div>
+
           <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
         </Container>
       </Layout>

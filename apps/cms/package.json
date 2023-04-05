@@ -1,0 +1,36 @@
+{
+  "name": "@echo-webkom/cms",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/icons": "^2.2.2",
+    "@sanity/vision": "^3.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-is": "^18.2.0",
+    "sanity": "^3.0.0",
+    "sanity-plugin-markdown": "^4.1.0",
+    "sanity-plugin-media": "^2.0.5",
+    "slugify": "^1.6.6",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^2.0.1",
+    "@types/react": "18.0.31",
+    "@types/styled-components": "^5.1.26",
+    "eslint": "^8.36.0",
+    "prettier": "2.8.7",
+    "typescript": "^5.0.0"
+  }
+}
