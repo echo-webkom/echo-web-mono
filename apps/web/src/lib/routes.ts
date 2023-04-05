@@ -147,7 +147,7 @@ export const footerRoutes: Array<RouteSection> = [
       },
       {
         label: "Opplevd noe kjipt? Si ifra!",
-        href: "/for-studenter/si-ifra",
+        href: "/si-ifra",
         isExternal: false,
       },
     ],
