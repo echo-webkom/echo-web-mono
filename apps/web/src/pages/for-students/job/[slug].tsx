@@ -1,13 +1,14 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ad";
+import {format} from "date-fns";
+
+import {isErrorMessage} from "@/utils/error";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
-import {isErrorMessage} from "@/utils/error";
-import {format} from "date-fns";
+import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ad";
 
 interface Props {
   jobAd: JobAd;

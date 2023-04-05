@@ -1,9 +1,10 @@
 import {type GetServerSideProps} from "next";
+import type {Provider} from "next-auth/providers";
+import {getProviders, getSession, signIn} from "next-auth/react";
+
 import Button from "@/components/button";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
-import type {Provider} from "next-auth/providers";
-import {getProviders, getSession, signIn} from "next-auth/react";
 
 type Props = {
   // TODO: Fix this type. Not the actual type, LOL.

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import {type Event} from "@/api/event";
-import {capitalize} from "@/utils/string";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
+
+import {capitalize} from "@/utils/string";
+import {type Event} from "@/api/event";
 
 type EventPreviewProps = {
   event: Event;

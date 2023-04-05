@@ -1,14 +1,15 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
+import {format} from "date-fns";
+import nb from "date-fns/locale/nb";
+
+import {isErrorMessage} from "@/utils/error";
+import {capitalize} from "@/utils/string";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
-import {isErrorMessage} from "@/utils/error";
-import {capitalize} from "@/utils/string";
-import {format} from "date-fns";
-import nb from "date-fns/locale/nb";
+import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
 
 interface Props {
   post: Post;

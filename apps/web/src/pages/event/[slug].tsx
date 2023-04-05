@@ -1,10 +1,11 @@
 import {type GetServerSideProps} from "next";
-import {fetchEventBySlug, type Event} from "@/api/event";
+
+import {isErrorMessage} from "@/utils/error";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
-import {isErrorMessage} from "@/utils/error";
+import {fetchEventBySlug, type Event} from "@/api/event";
 
 interface Props {
   event: Event;

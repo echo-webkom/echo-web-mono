@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {fetchBanner} from "@/api/banner";
-import {type Banner} from "@/api/banner/schemas";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 import classNames from "classnames";
 import {motion} from "framer-motion";
 
+import {fetchBanner} from "@/api/banner";
+import {type Banner} from "@/api/banner/schemas";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";

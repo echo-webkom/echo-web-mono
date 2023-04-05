@@ -1,12 +1,13 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
+import {format} from "date-fns";
+
+import {isErrorMessage} from "@/utils/error";
 import Breadcrumbs from "@/components/breadcrumbs";
 import {ButtonLink} from "@/components/button";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
-import {isErrorMessage} from "@/utils/error";
-import {format} from "date-fns";
+import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
 
 interface Props {
   minute: Minute;

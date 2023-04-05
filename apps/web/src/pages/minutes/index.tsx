@@ -1,10 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
-import {fetchMinutes, type Minute} from "@/api/minutes";
+
+import {isErrorMessage} from "@/utils/error";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/accordion";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
-import {isErrorMessage} from "@/utils/error";
+import {fetchMinutes, type Minute} from "@/api/minutes";
 
 const TITLE = "Møtereferater";
 

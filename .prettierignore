@@ -1,5 +1,6 @@
-node_moduels/
+node_modules/
 .next/
 .sanity/
 .dist/
+dist/
 .turbo/

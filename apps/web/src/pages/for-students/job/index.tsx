@@ -2,11 +2,12 @@ import {type GetStaticProps} from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import {fetchJobAds, type JobAd} from "@/api/job-ad";
-import Container from "@/components/container";
-import Layout from "@/components/layout";
+
 import {isErrorMessage} from "@/utils/error";
 import {urlFor} from "@/utils/image-builder";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
+import {fetchJobAds, type JobAd} from "@/api/job-ad";
 
 interface Props {
   jobs: Array<JobAd>;

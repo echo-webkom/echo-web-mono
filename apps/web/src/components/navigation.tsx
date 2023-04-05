@@ -1,10 +1,11 @@
 import Link from "next/link";
-import {headerRoutes} from "@/lib/routes";
 import * as Accordion from "@radix-ui/react-accordion";
 import {CaretDownIcon, ChevronDownIcon} from "@radix-ui/react-icons";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import cn from "classnames";
 import {useSession} from "next-auth/react";
+
+import {headerRoutes} from "@/lib/routes";
 
 type DesktopNavigationProps = {
   className?: string;

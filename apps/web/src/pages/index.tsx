@@ -1,23 +1,24 @@
 import {type InferGetServerSidePropsType} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchUpcomingBedpresses} from "@/api/bedpres";
-import {fetchComingEvents} from "@/api/event";
-import {fetchJobAds} from "@/api/job-ad";
-import {fetchPosts} from "@/api/posts";
-import {fetchStudentGroupsByType} from "@/api/student-group";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
-import BedpresPreviewBox from "@/components/bedpres-preview";
-import EventPreviewBox from "@/components/event-preview";
-import JobAdPreview from "@/components/jobad-preview";
-import Layout from "@/components/layout";
-import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
-import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
 import {nb} from "date-fns/locale";
 import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
+
+import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
+import {isErrorMessage} from "@/utils/error";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
+import BedpresPreviewBox from "@/components/bedpres-preview";
+import EventPreviewBox from "@/components/event-preview";
+import JobAdPreview from "@/components/jobad-preview";
+import Layout from "@/components/layout";
+import {fetchUpcomingBedpresses} from "@/api/bedpres";
+import {fetchComingEvents} from "@/api/event";
+import {fetchJobAds} from "@/api/job-ad";
+import {fetchPosts} from "@/api/posts";
+import {fetchStudentGroupsByType} from "@/api/student-group";
 
 const HomePage = ({
   events,

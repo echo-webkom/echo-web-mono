@@ -1,11 +1,12 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
+
+import {isErrorMessage} from "@/utils/error";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
-import {isErrorMessage} from "@/utils/error";
+import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/api/static-info";
 
 type Props = {
   page: StaticInfo;
