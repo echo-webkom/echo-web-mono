@@ -26,6 +26,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
     "@manypkg/cli": "0.20.0",
     "@types/node": "18.14.6",
+    "@types/prettier": "^2.7.2",
     "eslint": "^8.37.0",
     "eslint-config-custom": "0.0.0",
     "husky": "8.0.3",

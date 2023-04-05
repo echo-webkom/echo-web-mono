@@ -1,5 +1,6 @@
-import {Degree, Year} from "@echo-webkom/db";
 import {z} from "zod";
+
+import {Degree, Year} from "@echo-webkom/db";
 
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "../trpc";
 
@@ -15,10 +16,11 @@ export const authRouter = createTRPCRouter({
           .string()
           .email()
           .nullable()
+          .optional()
           .or(z.literal(""))
-          .transform((v) => (v === "" ? null : v)),
-        degree: z.nativeEnum(Degree).nullable(),
-        year: z.nativeEnum(Year).nullable(),
+          .transform((email) => (email === "" ? null : email)),
+        degree: z.nativeEnum(Degree).nullable().optional(),
+        year: z.nativeEnum(Year).nullable().optional(),
       }),
     )
     .mutation(async ({ctx, input}) => {
