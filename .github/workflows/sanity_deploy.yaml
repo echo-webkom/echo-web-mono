@@ -1,25 +1,19 @@
-name: CI
-
+name: Deploy to Sanity Studio
 on:
   push:
     branches: ["main"]
-  pull_request:
-    types: [opened, synchronize]
+    paths: ["apps/cms/**"]
 
 jobs:
-  build-lint:
-    name: Build and lint
+  sanity_deploy:
+    name: "Deploy Sanity Studio"
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: file:./db.sqlite
-      FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
-      FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
-      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+      SANITY_STUDIO_API_DATASET: production
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup pnpm
@@ -46,8 +40,7 @@ jobs:
       - name: Install deps (with cache)
         run: pnpm install
 
-      - name: Generate Prisma Client
-        run: pnpm db:generate
-
-      - name: Build, lint and type-check
-        run: pnpm build lint type-check
+      - name: Deploy to Sanity
+        run: |
+          cd apps/cms
+          pnpm sanity deploy
