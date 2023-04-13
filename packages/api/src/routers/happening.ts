@@ -2,7 +2,6 @@ import {TRPCError} from "@trpc/server";
 import {z} from "zod";
 
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "../trpc";
-import {userIsAlreadyRegistered} from "../utils/happening";
 
 export const happeningRouter = createTRPCRouter({
   register: protectedProcedure
@@ -12,42 +11,97 @@ export const happeningRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ctx, input}) => {
-      const registration = await ctx.prisma.registration.upsert({
+      const event = await ctx.prisma.happening.findUnique({
         where: {
-          userId_happeningSlug: {
-            happeningSlug: input.slug,
-            userId: ctx.session.user.id,
-          },
-        },
-        update: {
-          status: "REGISTERED",
-        },
-        create: {
-          happeningSlug: input.slug,
-          userId: ctx.session.user.id,
-          status: "REGISTERED",
+          slug: input.slug,
         },
       });
+      if (!event) {
+        throw new TRPCError({message: "Happening not found", code: "NOT_FOUND"});
+      }
 
-      return registration.status;
-    }),
-
-  unregister: protectedProcedure
-    .input(z.object({slug: z.string()}))
-    .mutation(async ({ctx, input}) => {
-      const isAlreadyRegistered = await userIsAlreadyRegistered(
-        ctx.prisma,
-        input.slug,
-        ctx.session.user.id,
-      );
-
-      if (!isAlreadyRegistered) {
+      if (!event.registrationStart || !event.registrationEnd) {
         throw new TRPCError({
-          message: "Not registered",
+          message: "Registration is not open",
           code: "NOT_FOUND",
         });
       }
 
+      if (event.registrationEnd < new Date()) {
+        throw new TRPCError({
+          message: "Registration deadline has passed",
+          code: "NOT_FOUND",
+        });
+      }
+
+      if (event.registrationStart > new Date()) {
+        throw new TRPCError({
+          message: "Registration has not started yet",
+          code: "NOT_FOUND",
+        });
+      }
+
+      const range = await ctx.prisma.spotRange.findFirst({
+        where: {
+          happeningSlug: input.slug,
+          maxDegreeYear: {
+            gte: ctx.session.user.year,
+          },
+          minDegreeYear: {
+            lte: ctx.session.user.year,
+          },
+        },
+      });
+      if (!range) {
+        throw new TRPCError({
+          message: "No spots available for your degree",
+          code: "NOT_FOUND",
+        });
+      }
+
+      return await ctx.prisma.$transaction(async (prisma) => {
+        const registrationCount = await prisma.happening.count({
+          where: {
+            slug: input.slug,
+            registrations: {
+              some: {
+                status: "REGISTERED",
+              },
+            },
+            spotRanges: {
+              some: {
+                id: range.id,
+              },
+            },
+          },
+        });
+
+        const registrationStatus = registrationCount < range.spots ? "REGISTERED" : "WAITLISTED";
+
+        const registration = await prisma.registration.upsert({
+          where: {
+            userId_happeningSlug: {
+              happeningSlug: input.slug,
+              userId: ctx.session.user.id,
+            },
+          },
+          update: {
+            status: registrationStatus,
+          },
+          create: {
+            status: registrationStatus,
+            happeningSlug: input.slug,
+            userId: ctx.session.user.id,
+          },
+        });
+
+        return registration.status;
+      });
+    }),
+
+  deregister: protectedProcedure
+    .input(z.object({slug: z.string()}))
+    .mutation(async ({ctx, input}) => {
       const registration = await ctx.prisma.registration.update({
         where: {
           userId_happeningSlug: {
@@ -103,7 +157,7 @@ export const happeningRouter = createTRPCRouter({
       return {
         ...happening,
         totalSpots: happening.spotRanges.reduce((acc, range) => acc + range.spots, 0),
-        registeredCount: registeredCount ?? 0,
+        registeredCount,
         isAlreadyRegistered,
       };
     }),

@@ -36,6 +36,13 @@ export const authRouter = createTRPCRouter({
       where: {
         id: ctx.session.user.id,
       },
+      include: {
+        Registration: {
+          include: {
+            happening: true,
+          },
+        },
+      },
     });
   }),
 });

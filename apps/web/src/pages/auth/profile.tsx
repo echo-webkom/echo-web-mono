@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import {type GetServerSideProps} from "next/types";
 
 import {getServerSession} from "@echo-webkom/auth";
@@ -37,6 +38,28 @@ const ProfilePage = () => {
               <p className="text-lg text-neutral-500">E-post:</p>
               <p className="text-xl font-bold">{user.data?.email}</p>
             </div>
+          </div>
+
+          <hr className="my-4" />
+
+          <h2 className="text-2xl font-bold">Dine arrangementer</h2>
+
+          <div className="flex flex-col gap-3">
+            {user.data?.Registration.map((registration) => (
+              <div className="flex flex-col gap-2" key={registration.happeningSlug}>
+                <div className="flex items-center justify-between">
+                  <Link
+                    href={`${registration.happening.type === "BEDPRES" ? "/bedpres" : "/event"}/${
+                      registration.happening.slug
+                    }`}
+                    className="text-lg font-bold hover:underline"
+                  >
+                    {registration.happening.slug}
+                  </Link>
+                  <p>{registration.status}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
           <hr className="my-4" />
