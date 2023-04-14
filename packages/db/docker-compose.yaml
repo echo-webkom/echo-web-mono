@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:14.7
     restart: always
     container_name: echo-web-db
     environment:

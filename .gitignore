@@ -34,3 +34,7 @@ playwright/.cache/
 .sanity
 .dist
 dist
+
+# Terraform
+**/.terraform/*
+**/terraform.tfvars
