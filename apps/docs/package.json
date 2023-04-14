@@ -31,7 +31,7 @@
     "@tsconfig/docusaurus": "^1.0.7",
     "@types/react": "18.0.34",
     "@types/react-dom": "18.0.11",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   },
   "browserslist": {
     "production": [
