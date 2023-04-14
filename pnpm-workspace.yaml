@@ -1,6 +1,7 @@
 packages:
   - apps/web
   - apps/cms
+  - apps/docs
   - packages/api
   - packages/auth
   - packages/db

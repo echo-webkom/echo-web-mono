@@ -7,6 +7,7 @@ const config = {
     ecmaVersion: "latest",
     tsconfigRootDir: __dirname,
     project: ["./tsconfig.json", "./apps/*/tsconfig.json", "./packages/*/tsconfig.json"],
+    jsx: true,
   },
   settings: {
     next: {
