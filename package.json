@@ -38,8 +38,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
-      "pnpm lint --fix",
-      "pnpm format"
+      "pnpm lint",
+      "pnpm format:check"
     ]
   },
   "pnpm": {

@@ -9,6 +9,7 @@
     "start": "next start",
     "clean": "rm -rf .next .turbo node_modules",
     "analyze": "ANALYZE=true pnpm build",
+    "test:e2e": "playwright test",
     "with-env": "dotenv -e ../../.env --",
     "type-check": "tsc --noEmit"
   },
@@ -50,6 +51,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.32.3",
     "@types/node": "18.14.6",
     "@types/react": "18.0.34",
     "@types/react-dom": "18.0.11",

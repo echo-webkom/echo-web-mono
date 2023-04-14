@@ -33,6 +33,11 @@
       "persistent": true,
       "cache": false
     },
+    "test:e2e": {
+      "dependsOn": ["^dev", "^db:generate"],
+      "cache": false,
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
     "lint": {},
     "type-check": {
       "dependsOn": ["^db:generate"],
@@ -55,6 +60,8 @@
     "FEIDE_CLIENT_ID",
     "FEIDE_CLIENT_SECRET",
     "NEXT_PUBLIC_SANITY_DATASET",
+    "PLAYWRIGHT_TEST_BASE_URL",
+    "PLAYWRIGHT_HEADLESS",
     "SKIP_ENV_VALIDATION",
     "VERCEL",
     "VERCEL_URL",
