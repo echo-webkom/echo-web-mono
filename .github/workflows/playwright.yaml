@@ -47,11 +47,11 @@ jobs:
         run: pnpm --filter=web test:install
 
       - name: Run Playwright tests
-        run: pnpm --filter=web test:e2e
+        run: pnpm test:e2e
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: apps/web/playwright-report
-          path: apps/web/playwright-report/
+          name: tests/playwright-report
+          path: tests/playwright-report
           retention-days: 30

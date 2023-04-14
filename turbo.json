@@ -33,10 +33,13 @@
       "persistent": true,
       "cache": false
     },
+    "test:dev": {
+      "persistent": true,
+      "cache": false
+    },
     "test:e2e": {
-      "dependsOn": ["^dev", "^db:generate"],
-      "cache": false,
-      "outputs": ["playwright-report/**", "test-results/**"]
+      "persistent": true,
+      "cache": false
     },
     "lint": {},
     "type-check": {
