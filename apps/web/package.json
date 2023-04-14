@@ -32,7 +32,7 @@
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "@types/remove-markdown": "0.3.1",
-    "class-variance-authority": "0.5.1",
+    "class-variance-authority": "0.5.2",
     "classnames": "2.3.2",
     "date-fns": "2.29.3",
     "framer-motion": "10.10.0",
