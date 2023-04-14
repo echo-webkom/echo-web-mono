@@ -34,7 +34,7 @@
     "prettier-plugin-organize-imports": "3.2.2",
     "prettier-plugin-tailwindcss": "0.2.7",
     "turbo": "1.8.8",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
