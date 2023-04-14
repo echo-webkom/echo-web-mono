@@ -8,6 +8,13 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    name: Playwright Tests
+    env:
+      DATABASE_URL: file:./db.sqlite
+      FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+      FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -34,7 +41,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install deps (with cache)
-        run: pnpm --filter=web install
+        run: pnpm install
 
       - name: Install Playwright Browsers
         run: pnpm --filter=web test:install
