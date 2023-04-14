@@ -44,7 +44,7 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright Browsers
-        run: pnpm --filter=web test:install
+        run: pnpm --filter=tests test:install
 
       - name: Run Playwright tests
         run: pnpm test:e2e
