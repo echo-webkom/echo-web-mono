@@ -37,7 +37,7 @@
     "date-fns": "2.29.3",
     "framer-motion": "10.10.0",
     "next": "13.2.4",
-    "next-auth": "^4.21.0",
+    "next-auth": "^4.22.0",
     "next-sanity": "4.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
