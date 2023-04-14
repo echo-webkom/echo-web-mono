@@ -10,6 +10,7 @@
     "clean": "rm -rf .next .turbo node_modules",
     "analyze": "ANALYZE=true pnpm build",
     "test:e2e": "playwright test",
+    "test:install": "playwright install --with-deps",
     "with-env": "dotenv -e ../../.env --",
     "type-check": "tsc --noEmit"
   },

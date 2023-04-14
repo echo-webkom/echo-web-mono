@@ -34,17 +34,17 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install deps (with cache)
-        run: pnpm install
+        run: pnpm --filter=web install
 
       - name: Install Playwright Browsers
-        run: pnpm playwright install --with-deps
+        run: pnpm --filter=web test:install
 
       - name: Run Playwright tests
-        run: pnpm test:e2e
+        run: pnpm --filter=web test:e2e
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: apps/web/playwright-report
+          path: apps/web/playwright-report/
           retention-days: 30
