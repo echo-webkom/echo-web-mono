@@ -29,7 +29,7 @@ const HomePage = ({
   return (
     <>
       <Head>
-        <title>echo - Linjeforeningen for informatikk</title>
+        <title>echo – Linjeforeningen for informatikk</title>
       </Head>
 
       <Layout>

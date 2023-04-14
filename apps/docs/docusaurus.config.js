@@ -76,7 +76,7 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "echo - Linjeforeningen for informatikk",
+            title: "echo – Linjeforeningen for informatikk",
             items: [
               {
                 label: "Nettside",
