@@ -8,7 +8,10 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "deploy-graphql": "sanity graphql deploy"
+    "deploy-graphql": "sanity graphql deploy",
+    "todo:lint": "eslint '**/*.{js,ts,jsx,tsx}'",
+    "todo:lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
+    "todo:type-check": "tsc --noEmit"
   },
   "keywords": [
     "sanity"

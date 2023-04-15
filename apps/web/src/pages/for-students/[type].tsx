@@ -1,6 +1,9 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
+import {ArrowRightIcon} from "@radix-ui/react-icons";
+import removeMd from "remove-markdown";
+
 import {
   fetchStudentGroupsByType,
   studentGroupTypeName,
@@ -9,10 +12,8 @@ import {
   type StudentGroupType,
 } from "@/api/student-group";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
-import removeMd from "remove-markdown";
 
 type Props = {
   groups: Array<StudentGroup>;
@@ -34,7 +35,7 @@ const SubGroupPage = ({groups, type}: Props) => {
                 <Link href={`/for-students/group/${group.slug}`}>
                   <div className="group rounded bg-slate-100 p-5 transition-all duration-200 hover:shadow">
                     <h2 className="mb-3 text-2xl font-bold">{group.name}</h2>
-                    <p className="text-slate-500 line-clamp-3">
+                    <p className="line-clamp-3 text-slate-500">
                       {removeMd(group.description?.no ?? "")}
                     </p>
                     <p className="flex items-center gap-1">

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import {type Bedpres} from "@/api/bedpres";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
+
+import {type Bedpres} from "@/api/bedpres";
 
 type BedpresPreviewProps = {
   bedpres: Bedpres;
@@ -19,7 +20,7 @@ const BedpresPreviewBox = ({bedpres}: BedpresPreviewProps) => {
           </div>
         </div>
         <div className="overflow-x-hidden">
-          <h3 className="text-2xl font-semibold line-clamp-1">{bedpres.title}</h3>
+          <h3 className="line-clamp-1 text-2xl font-semibold">{bedpres.title}</h3>
           <ul>
             {bedpres.date && (
               <li>
@@ -29,8 +30,8 @@ const BedpresPreviewBox = ({bedpres}: BedpresPreviewProps) => {
             )}
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
-              {bedpres.registrationDate
-                ? format(new Date(bedpres.registrationDate), "d. MMMM yyyy", {
+              {bedpres.registrationStart
+                ? format(new Date(bedpres.registrationStart), "d. MMMM yyyy", {
                     locale: nb,
                   })
                 : "Påmelding åpner snart"}

@@ -11,6 +11,7 @@ const buttonVariants = cva(
         danger: "bg-red-500 hover:bg-red-400",
         careful: "bg-yellow-500 hover:bg-yellow-400",
         good: "bg-green-500 hover:bg-green-400",
+        ghost: "bg-transparent hover:underline",
       },
       size: {
         small: ["text-sm", "py-1", "px-2"],
@@ -37,13 +38,16 @@ const buttonVariants = cva(
 
 interface ButtonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+}
 
-const Button = ({className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
+const Button = ({type, className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
   return (
     <button
       className={buttonVariants({className, intent, size, fullWidth, disabled})}
       disabled={disabled ?? false}
+      type={type ?? "button"}
       {...props}
     />
   );

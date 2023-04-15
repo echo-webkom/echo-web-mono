@@ -1,4 +1,4 @@
-import {type Degree, type Year} from "@echo-webkom/db";
+import {type Degree} from "@echo-webkom/db";
 
 export const degreeToString: Record<Degree, string> = {
   DTEK: "Datateknologi",
@@ -14,10 +14,10 @@ export const degreeToString: Record<Degree, string> = {
   PROG: "Programvareutvikling",
 };
 
-export const yearToString: Record<Year, string> = {
-  FIRST: "1. året",
-  SECOND: "2. året",
-  THIRD: "3. året",
-  FOURTH: "4. året",
-  FIFTH: "5. året",
+export const yearToString: Record<number, string> = {
+  1: "1. året",
+  2: "2. året",
+  3: "3. året",
+  4: "4. året",
+  5: "5. året",
 };

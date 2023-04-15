@@ -1,7 +1,8 @@
 import Image from "next/image";
-import {ButtonLink} from "@/components/button";
+
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import {ButtonLink} from "@/components/ui/button";
+import Layout from "@/layouts/layout";
 
 const FourOhFour = () => {
   return (
