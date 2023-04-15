@@ -1,10 +1,10 @@
 import Head from "next/head";
 
 import {studentGroupTypeName, type StudentGroup} from "@/api/student-group";
-import Breadcrumbs from "./breadcrumbs";
+import Layout from "../layouts/layout";
 import Container from "./container";
-import Layout from "./layout";
 import Markdown from "./markdown";
+import Breadcrumbs from "./ui/breadcrumbs";
 
 type StudentGroupPageProps = {
   group: StudentGroup;

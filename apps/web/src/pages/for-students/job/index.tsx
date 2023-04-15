@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import {fetchJobAds, type JobAd} from "@/api/job-ad";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 import {urlFor} from "@/utils/image-builder";
 

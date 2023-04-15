@@ -2,11 +2,11 @@ import {type GetServerSideProps} from "next";
 import Head from "next/head";
 
 import {fetchEventBySlug, type Event} from "@/api/event";
-import Breadcrumbs from "@/components/breadcrumbs";
-import Button from "@/components/button";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import Button from "@/components/ui/button";
+import Layout from "@/layouts/layout";
 import {api} from "@/utils/api";
 import {norwegianDateString} from "@/utils/date";
 import {isErrorMessage} from "@/utils/error";

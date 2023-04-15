@@ -12,11 +12,11 @@ import {fetchComingEvents} from "@/api/event";
 import {fetchJobAds} from "@/api/job-ad";
 import {fetchPosts} from "@/api/posts";
 import {fetchStudentGroupsByType} from "@/api/student-group";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import BedpresPreviewBox from "@/components/bedpres-preview";
 import EventPreviewBox from "@/components/event-preview";
 import JobAdPreview from "@/components/jobad-preview";
-import Layout from "@/components/layout";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import Layout from "@/layouts/layout";
 import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
 
@@ -105,7 +105,7 @@ const HomePage = ({
                           "transition-colors duration-200 ease-in-out",
                         )}
                       >
-                        <h3 className="flex gap-2 text-2xl font-semibold line-clamp-2">
+                        <h3 className="line-clamp-2 flex gap-2 text-2xl font-semibold">
                           {post.title.no}
                         </h3>
                         <p>
@@ -115,7 +115,7 @@ const HomePage = ({
                           })}
                         </p>
                         <hr />
-                        <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
+                        <p className="line-clamp-4 italic">{removeMd(post.body.no)}</p>
                         <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
                       </div>
                     </Link>

@@ -4,10 +4,10 @@ import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 
 import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
-import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 

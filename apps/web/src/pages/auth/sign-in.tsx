@@ -1,9 +1,9 @@
 import {type GetServerSideProps} from "next";
 import {getProviders, getSession, signIn} from "next-auth/react";
 
-import Button from "@/components/button";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import Button from "@/components/ui/button";
+import Layout from "@/layouts/layout";
 
 type Props = {
   providers: Awaited<ReturnType<typeof getProviders>>;

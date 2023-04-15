@@ -34,6 +34,14 @@ module.exports = {
         ...indigo,
       },
       keyframes: {
+        "accordion-down": {
+          from: {height: 0},
+          to: {height: "var(--radix-accordion-content-height)"},
+        },
+        "accordion-up": {
+          from: {height: "var(--radix-accordion-content-height)"},
+          to: {height: 0},
+        },
         enterFromRight: {
           from: {opacity: 0, transform: "translateX(200px)"},
           to: {opacity: 1, transform: "translateX(0)"},
@@ -76,13 +84,15 @@ module.exports = {
         enterFromRight: "enterFromRight 250ms ease",
         exitToLeft: "exitToLeft 250ms ease",
         exitToRight: "exitToRight 250ms ease",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
-    require("@tailwindcss/line-clamp"),
+    require("tailwindcss-animate"),
     plugin(({matchUtilities}) => {
       matchUtilities({
         perspective: (value) => ({

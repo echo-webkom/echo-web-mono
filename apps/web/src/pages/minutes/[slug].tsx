@@ -3,10 +3,10 @@ import Head from "next/head";
 import {format} from "date-fns";
 
 import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
-import Breadcrumbs from "@/components/breadcrumbs";
-import {ButtonLink} from "@/components/button";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import {ButtonLink} from "@/components/ui/button";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {

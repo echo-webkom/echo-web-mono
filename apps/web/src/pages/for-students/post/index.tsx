@@ -4,7 +4,7 @@ import removeMd from "remove-markdown";
 
 import {fetchPosts, type Post} from "@/api/posts";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {

@@ -15,7 +15,7 @@ const EventPreviewBox = ({event}: EventPreviewProps) => {
     <Link href={`/event/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-neutral-100")}>
         <div className="overflow-x-hidden">
-          <h3 className="text-2xl font-semibold line-clamp-1">{event.title}</h3>
+          <h3 className="line-clamp-1 text-2xl font-semibold">{event.title}</h3>
           <ul>
             <li>
               <span className="font-semibold">Gruppe:</span>{" "}

@@ -20,7 +20,7 @@ const BedpresPreviewBox = ({bedpres}: BedpresPreviewProps) => {
           </div>
         </div>
         <div className="overflow-x-hidden">
-          <h3 className="text-2xl font-semibold line-clamp-1">{bedpres.title}</h3>
+          <h3 className="line-clamp-1 text-2xl font-semibold">{bedpres.title}</h3>
           <ul>
             {bedpres.date && (
               <li>

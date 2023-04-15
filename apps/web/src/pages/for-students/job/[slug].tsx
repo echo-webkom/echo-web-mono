@@ -4,10 +4,10 @@ import Link from "next/link";
 import {format} from "date-fns";
 
 import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ad";
-import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {

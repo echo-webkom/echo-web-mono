@@ -1,10 +1,10 @@
 import {type GetServerSideProps} from "next";
 
 import {fetchBedpresBySlug, type Bedpres} from "@/api/bedpres";
-import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 
 type Props = {

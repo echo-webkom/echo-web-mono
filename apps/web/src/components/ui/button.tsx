@@ -11,6 +11,7 @@ const buttonVariants = cva(
         danger: "bg-red-500 hover:bg-red-400",
         careful: "bg-yellow-500 hover:bg-yellow-400",
         good: "bg-green-500 hover:bg-green-400",
+        ghost: "bg-transparent hover:underline",
       },
       size: {
         small: ["text-sm", "py-1", "px-2"],

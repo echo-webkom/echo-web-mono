@@ -3,8 +3,8 @@ import {Controller, useForm} from "react-hook-form";
 import {type Degree, type User} from "@echo-webkom/db/types";
 
 import {api} from "@/utils/api";
-import Button from "./button";
-import {Input} from "./input";
+import Button from "./ui/button";
+import {Input} from "./ui/input";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from "./ui/select";
 
 // TODO: Add client side form validation?
 type FormValues = {

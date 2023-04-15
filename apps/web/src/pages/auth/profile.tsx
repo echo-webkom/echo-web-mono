@@ -5,8 +5,8 @@ import {type GetServerSideProps} from "next/types";
 import {getServerSession} from "@echo-webkom/auth";
 
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import UserForm from "@/components/user-form";
+import Layout from "@/layouts/layout";
 import {api} from "@/utils/api";
 
 const ProfilePage = () => {
