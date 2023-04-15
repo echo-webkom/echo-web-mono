@@ -1,4 +1,5 @@
 import {type GetServerSideProps} from "next";
+
 import {fetchBedpresBySlug, type Bedpres} from "@/api/bedpres";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";

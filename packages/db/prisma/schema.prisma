@@ -59,8 +59,9 @@ model User {
   alternativeEmail String?
   role             Role           @default(USER)
   degree           Degree?
-  year             Year?
+  year             Int?
   studentGroups    StudentGroup[]
+  Registration     Registration[]
 }
 
 model StudentGroup {
@@ -92,10 +93,48 @@ enum Degree {
   MISC
 }
 
-enum Year {
-  FIRST
-  SECOND
-  THIRD
-  FOURTH
-  FIFTH
+enum HappeningType {
+  BEDPRES
+  EVENT
+}
+
+model SpotRange {
+  id            String     @id @default(cuid())
+  minDegreeYear Int
+  maxDegreeYear Int
+  spots         Int
+  Happening     Happening? @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
+  happeningSlug String?
+
+  @@index([happeningSlug])
+}
+
+enum RegistrationStatus {
+  REGISTERED
+  WAITLISTED
+  DEREGISTERED
+}
+
+model Registration {
+  userId        String
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  happeningSlug String
+  happening     Happening          @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade)
+  status        RegistrationStatus
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([userId, happeningSlug])
+  @@index([happeningSlug])
+  @@index([userId])
+}
+
+model Happening {
+  slug              String         @id @unique
+  type              HappeningType
+  spotRanges        SpotRange[]
+  registrations     Registration[]
+  date              DateTime?
+  registrationStart DateTime?
+  registrationEnd   DateTime?
 }

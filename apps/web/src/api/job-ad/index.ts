@@ -1,6 +1,6 @@
-import {type ErrorMessage} from "@/utils/error";
 import {groq} from "next-sanity";
 
+import {type ErrorMessage} from "@/utils/error";
 import {sanityClient} from "../sanity.client";
 import {slugSchema} from "../utils/slug";
 import {jobAdSchema, type JobAd, type JobType} from "./schemas";

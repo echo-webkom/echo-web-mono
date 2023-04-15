@@ -1,10 +1,11 @@
 import Link from "next/link";
-import {headerRoutes} from "@/lib/routes";
 import * as Accordion from "@radix-ui/react-accordion";
 import {CaretDownIcon, ChevronDownIcon} from "@radix-ui/react-icons";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import cn from "classnames";
 import {useSession} from "next-auth/react";
+
+import {headerRoutes} from "@/lib/routes";
 
 type DesktopNavigationProps = {
   className?: string;
@@ -32,7 +33,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
                 />
               </NavigationMenu.Trigger>
 
-              <NavigationMenu.Content className="absolute top-0 left-0 w-full shadow-black/10 data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight sm:w-auto">
+              <NavigationMenu.Content className="absolute left-0 top-0 w-full shadow-black/10 data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft sm:w-auto">
                 <ul className="one m-0 grid list-none gap-x-[10px] p-6 sm:w-[500px] sm:grid-cols-[0.75fr_1fr]">
                   {route.sublinks.map((sublink) => (
                     <li key={sublink.label}>
@@ -60,14 +61,14 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
         })}
 
         {/* Popover indicator (arrow). Shows below `NavigationMenu.Trigger` */}
-        <NavigationMenu.Indicator className="top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease] data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut">
+        <NavigationMenu.Indicator className="top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease] data-[state=hidden]:animate-fadeOut data-[state=visible]:animate-fadeIn">
           <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] border bg-white" />
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
 
       {/* Popover content */}
-      <div className="absolute top-full left-0 flex w-full justify-center perspective-[2000px]">
-        <NavigationMenu.Viewport className="relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] border bg-white shadow-sm transition-[width,_height] duration-300 data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut sm:w-[var(--radix-navigation-menu-viewport-width)]" />
+      <div className="absolute left-0 top-full flex w-full justify-center perspective-[2000px]">
+        <NavigationMenu.Viewport className="relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] border bg-white shadow-sm transition-[width,_height] duration-300 data-[state=closed]:animate-scaleOut data-[state=open]:animate-scaleIn sm:w-[var(--radix-navigation-menu-viewport-width)]" />
       </div>
     </NavigationMenu.Root>
   );
@@ -91,7 +92,7 @@ export const MobileNavigation = () => {
             <Accordion.Header className="flex">
               <Accordion.Trigger
                 className={cn(
-                  "group flex w-full flex-1 items-center justify-between rounded-md bg-white px-4 py-2 text-lg font-medium text-gray-700 outline-none hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+                  "group flex w-full flex-1 items-center justify-between rounded-md bg-white px-4 py-2 text-lg font-medium text-gray-700 outline-none hover:bg-gray-50 hover:bg-neutral-500/10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
                 )}
               >
                 {route.label}
@@ -121,7 +122,7 @@ export const MobileNavigation = () => {
           <Accordion.Item key={route.label} value={route.label}>
             <Link
               href={route.href}
-              className="flex w-full items-center justify-between rounded-md px-4 py-2 text-lg font-medium text-gray-700 hover:bg-neutral-500/10 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+              className="flex w-full items-center justify-between rounded-md px-4 py-2 text-lg font-medium text-gray-700 hover:bg-gray-50 hover:bg-neutral-500/10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
             >
               {route.label}
             </Link>

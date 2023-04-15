@@ -1,6 +1,10 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
+import {Avatar} from "@radix-ui/react-avatar";
+import {AiOutlineInstagram, AiOutlineLinkedin} from "react-icons/ai";
+import {MdOutlineFacebook, MdOutlineMail} from "react-icons/md";
+
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupPaths,
@@ -13,9 +17,6 @@ import Container from "@/components/container";
 import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
 import {isErrorMessage} from "@/utils/error";
-import {Avatar} from "@radix-ui/react-avatar";
-import {AiOutlineInstagram, AiOutlineLinkedin} from "react-icons/ai";
-import {MdOutlineFacebook, MdOutlineMail} from "react-icons/md";
 
 type Props = {
   group: StudentGroup;

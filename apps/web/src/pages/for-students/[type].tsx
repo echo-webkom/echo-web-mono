@@ -1,6 +1,9 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
 import Link from "next/link";
+import {ArrowRightIcon} from "@radix-ui/react-icons";
+import removeMd from "remove-markdown";
+
 import {
   fetchStudentGroupsByType,
   studentGroupTypeName,
@@ -11,8 +14,6 @@ import {
 import Container from "@/components/container";
 import Layout from "@/components/layout";
 import {isErrorMessage} from "@/utils/error";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
-import removeMd from "remove-markdown";
 
 type Props = {
   groups: Array<StudentGroup>;

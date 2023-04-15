@@ -2,6 +2,7 @@ import {type GetStaticProps} from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+
 import {fetchJobAds, type JobAd} from "@/api/job-ad";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
@@ -35,7 +36,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
                       />
                     </div>
 
-                    <div className="flex flex-col py-5 px-3">
+                    <div className="flex flex-col px-3 py-5">
                       <h2 className="text-xl font-bold">{job.title}</h2>
                       <p>{job.company.name}</p>
                     </div>

@@ -1,6 +1,6 @@
 import Head from "next/head";
-import {studentGroupTypeName, type StudentGroup} from "@/api/student-group";
 
+import {studentGroupTypeName, type StudentGroup} from "@/api/student-group";
 import Breadcrumbs from "./breadcrumbs";
 import Container from "./container";
 import Layout from "./layout";

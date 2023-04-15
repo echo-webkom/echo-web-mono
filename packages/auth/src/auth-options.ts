@@ -1,6 +1,7 @@
-import {prisma, type Degree, type Role, type Year} from "@echo-webkom/db";
 import {PrismaAdapter} from "@next-auth/prisma-adapter";
 import type {DefaultSession, NextAuthOptions, User} from "next-auth";
+
+import {prisma, type Degree, type Role} from "@echo-webkom/db";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -18,7 +19,7 @@ declare module "next-auth" {
     alternativeEmail?: string;
     role: Role;
     degree?: Degree;
-    year?: Year;
+    year?: number;
   }
 }
 

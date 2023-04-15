@@ -1,9 +1,11 @@
 import type {GetServerSideProps} from "next";
+import {signOut} from "next-auth/react";
+
+import {getServerSession} from "@echo-webkom/auth";
+
 import Button from "@/components/button";
 import Container from "@/components/container";
 import Layout from "@/components/layout";
-import {getServerSession} from "@echo-webkom/auth";
-import {signOut} from "next-auth/react";
 
 const LoginPage = () => {
   return (

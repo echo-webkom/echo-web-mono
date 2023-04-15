@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import {type Bedpres} from "@/api/bedpres";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
+
+import {type Bedpres} from "@/api/bedpres";
 
 type BedpresPreviewProps = {
   bedpres: Bedpres;
@@ -29,8 +30,8 @@ const BedpresPreviewBox = ({bedpres}: BedpresPreviewProps) => {
             )}
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
-              {bedpres.registrationDate
-                ? format(new Date(bedpres.registrationDate), "d. MMMM yyyy", {
+              {bedpres.registrationStart
+                ? format(new Date(bedpres.registrationStart), "d. MMMM yyyy", {
                     locale: nb,
                   })
                 : "Påmelding åpner snart"}

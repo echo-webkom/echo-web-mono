@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+
 import {fetchMinutes, type Minute} from "@/api/minutes";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/accordion";
 import Container from "@/components/container";

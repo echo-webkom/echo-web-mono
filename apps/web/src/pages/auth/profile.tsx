@@ -1,6 +1,9 @@
 import Head from "next/head";
 import {type GetServerSideProps} from "next/types";
-import Button, {ButtonLink} from "@/components/button";
+
+import {getServerSession} from "@echo-webkom/auth";
+
+import Button from "@/components/button";
 import Container from "@/components/container";
 import {Input} from "@/components/input";
 import Layout from "@/components/layout";
@@ -13,13 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-import {getServerSession} from "@echo-webkom/auth";
-import {useSession} from "next-auth/react";
+import {api} from "@/utils/api";
 
 const ProfilePage = () => {
-  const {data: session} = useSession({
-    required: true,
-  });
+  const user = api.auth.me.useQuery();
 
   return (
     <>
@@ -31,19 +31,19 @@ const ProfilePage = () => {
           <div className="flex flex-col gap-3">
             <div>
               <p className="text-lg text-neutral-500">Navn:</p>
-              <p className="text-xl font-bold">{session?.user.name}</p>
+              <p className="text-xl font-bold">{user.data?.name}</p>
             </div>
             <div>
               <p className="text-lg text-neutral-500">E-post:</p>
-              <p className="text-xl font-bold">{session?.user.email}</p>
+              <p className="text-xl font-bold">{user.data?.email}</p>
             </div>
           </div>
+
           <hr className="my-4" />
 
           <form className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-              <Input placeholder="E-post" />
-              <p className="text-sm text-slate-500">E-post du vil vi skal ende til.</p>
+              <Input placeholder="Alternativ e-post" />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -52,17 +52,11 @@ const ProfilePage = () => {
                   <SelectValue placeholder="Velg årstrinn" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Bachelor</SelectLabel>
-                    <SelectItem value="FIRST">1. trinn</SelectItem>
-                    <SelectItem value="SECOND">2. trinn</SelectItem>
-                    <SelectItem value="THIRD">3. trinn</SelectItem>
-                  </SelectGroup>
-                  <SelectGroup>
-                    <SelectLabel>Master</SelectLabel>
-                    <SelectItem value="FOURTH">4. trinn</SelectItem>
-                    <SelectItem value="FIFTH">5. trinn</SelectItem>
-                  </SelectGroup>
+                  <SelectItem value="1">1. trinn</SelectItem>
+                  <SelectItem value="2">2. trinn</SelectItem>
+                  <SelectItem value="3">3. trinn</SelectItem>
+                  <SelectItem value="4">4. trinn</SelectItem>
+                  <SelectItem value="5">5. trinn</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -96,12 +90,10 @@ const ProfilePage = () => {
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex gap-3">
+              <Button>Lagre</Button>
+            </div>
           </form>
-
-          <div className="flex gap-3">
-            <Button>Lagre</Button>
-            {session?.user.role === "ADMIN" && <ButtonLink href="/">Dashboard</ButtonLink>}
-          </div>
         </Container>
       </Layout>
     </>

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import {type Event} from "@/api/event";
-import {capitalize} from "@/utils/string";
 import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
+
+import {type Event} from "@/api/event";
+import {capitalize} from "@/utils/string";
 
 type EventPreviewProps = {
   event: Event;
@@ -28,8 +29,8 @@ const EventPreviewBox = ({event}: EventPreviewProps) => {
             )}
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
-              {event.registrationDate
-                ? format(new Date(event.registrationDate), "d. MMMM yyyy", {
+              {event.registrationStart
+                ? format(new Date(event.registrationStart), "d. MMMM yyyy", {
                     locale: nb,
                   })
                 : "Påmelding åpner snart"}

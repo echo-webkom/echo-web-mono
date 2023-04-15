@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {fetchBanner} from "@/api/banner";
-import {type Banner} from "@/api/banner/schemas";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 import classNames from "classnames";
 import {motion} from "framer-motion";
 
+import {fetchBanner} from "@/api/banner";
+import {type Banner} from "@/api/banner/schemas";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";
@@ -57,7 +57,7 @@ const Header = () => {
         style={{
           height: hasScrolled ? 60 : 100,
         }}
-        className="mx-auto flex w-full max-w-7xl bg-white py-3 px-5 transition-all duration-150 ease-in-out"
+        className="mx-auto flex w-full max-w-7xl bg-white px-5 py-3 transition-all duration-150 ease-in-out"
       >
         <motion.div
           style={{
@@ -73,7 +73,7 @@ const Header = () => {
           type="button"
           className={classNames("ml-auto block lg:hidden", {
             "my-auto": hasScrolled,
-            "mt-auto mb-3": !hasScrolled,
+            "mb-3 mt-auto": !hasScrolled,
           })}
           onClick={() => setIsOpen((current) => !current)}
         >
