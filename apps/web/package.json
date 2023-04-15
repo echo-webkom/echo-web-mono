@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "pnpm with-env next build",
-    "dev": "pnpm with-env next dev",
+    "build": "pnpm run with-env next build",
+    "dev": "pnpm run with-env next dev",
     "lint": "SKIP_ENV_VALIDATION=1 next lint",
-    "start": "next start",
+    "start": "pnpm run with-env next start",
     "clean": "rm -rf .next .turbo node_modules",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",

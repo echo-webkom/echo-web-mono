@@ -34,12 +34,10 @@
       "cache": false
     },
     "test:dev": {
-      "persistent": true,
       "cache": false
     },
     "test:e2e": {
-      "persistent": true,
-      "cache": false
+      "dependsOn": ["^build"]
     },
     "lint": {},
     "type-check": {

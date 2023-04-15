@@ -1,12 +1,13 @@
-name: Playwright Tests
+name: Playwright
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     name: Playwright Tests
     env:
@@ -14,40 +15,19 @@ jobs:
       FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
       FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2.2.4
-
-      - name: Setup Node 16
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: pnpm
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install deps (with cache)
-        run: pnpm install
-
-      - name: Install Playwright Browsers
-        run: pnpm --filter=tests test:install
-
-      - name: Run Playwright tests
-        run: pnpm test:e2e
+      - run: pnpm --filter=tests run test:install
+      - run: pnpm run test:e2e
 
       - uses: actions/upload-artifact@v3
         if: always()
