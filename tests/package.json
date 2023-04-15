@@ -1,0 +1,13 @@
+{
+  "name": "@echo-webkom/tests",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test:dev": "playwright test",
+    "test:install": "playwright install --with-deps"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.32.3"
+  }
+}

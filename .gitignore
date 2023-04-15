@@ -22,6 +22,12 @@ next-env.d.ts
 # Mac
 .DS_Store
 
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+
 # Sanity
 .sanity
 .dist

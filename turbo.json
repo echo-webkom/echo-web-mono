@@ -33,6 +33,12 @@
       "persistent": true,
       "cache": false
     },
+    "test:dev": {
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"]
+    },
     "lint": {},
     "type-check": {
       "dependsOn": ["^db:generate"],

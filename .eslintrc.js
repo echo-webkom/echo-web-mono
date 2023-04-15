@@ -6,7 +6,12 @@ const config = {
   parserOptions: {
     ecmaVersion: "latest",
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json", "./apps/*/tsconfig.json", "./packages/*/tsconfig.json"],
+    project: [
+      "./tsconfig.json",
+      "./apps/*/tsconfig.json",
+      "./packages/*/tsconfig.json",
+      "./tests/tsconfig.json",
+    ],
     jsx: true,
   },
   settings: {

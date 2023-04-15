@@ -1,15 +1,15 @@
-name: CI
+name: Playwright
 
 on:
   push:
     branches: [main]
   pull_request:
-    types: [opened, synchronize]
+    branches: [main]
 
 jobs:
-  build-lint:
+  test:
     runs-on: ubuntu-latest
-    name: Build and lint
+    name: Playwright Tests
     env:
       DATABASE_URL: file:./db.sqlite
       FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
@@ -27,5 +27,13 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --prefer-offline --frozen-lockfile
-      - run: pnpm run db:generate
-      - run: pnpm run build lint type-check
+      - run: pnpm --filter=tests run test:install
+      - run: pnpm --filter=web run build
+      - run: pnpm run test:e2e
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: tests/playwright-report/
+          retention-days: 30
