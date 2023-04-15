@@ -47,7 +47,7 @@
     "typescript": "^5.0.4"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,mjs,cjs,yaml}": [
+    "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
       "pnpm lint",
       "pnpm format:check"
     ]
