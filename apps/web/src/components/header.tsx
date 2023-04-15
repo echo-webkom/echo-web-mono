@@ -57,7 +57,7 @@ const Header = () => {
         style={{
           height: hasScrolled ? 60 : 100,
         }}
-        className="mx-auto flex w-full max-w-7xl bg-white px-5 py-3 transition-all duration-150 ease-in-out"
+        className="mx-auto flex w-full max-w-7xl bg-white py-3 px-5 transition-all duration-150 ease-in-out"
       >
         <motion.div
           style={{
@@ -73,7 +73,7 @@ const Header = () => {
           type="button"
           className={classNames("ml-auto block lg:hidden", {
             "my-auto": hasScrolled,
-            "mb-3 mt-auto": !hasScrolled,
+            "mt-auto mb-3": !hasScrolled,
           })}
           onClick={() => setIsOpen((current) => !current)}
         >
