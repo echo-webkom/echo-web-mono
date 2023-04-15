@@ -26,6 +26,7 @@ jobs:
           node-version: 16
           cache: pnpm
 
+      - run: pnpm install --prefer-offline --frozen-lockfile
       - run: pnpm --filter=tests run test:install
       - run: pnpm run test:e2e
 

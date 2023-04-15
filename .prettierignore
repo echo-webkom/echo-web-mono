@@ -1,7 +1,15 @@
+# Deps
 node_modules/
+
+# Frameworks
 .next/
 .sanity/
 .docusaurus/
-.dist/
+
+# Builds
 dist/
+build/
+
+# Misc
 .turbo/
+
