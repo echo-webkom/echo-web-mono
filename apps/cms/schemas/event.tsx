@@ -30,13 +30,17 @@ export default defineType({
         source: "title",
         slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
           const slug = slugify(input, {remove: /[*+~.()'"!:@]/g, lower: true, strict: true});
-          const query = 'count(*[_type == "event" && slug.current == $slug]{_id})';
+          const query =
+            'count(*[_type == "bedpres" || _type == "event" && slug.current == $slug]{_id})';
           const params = {slug};
           const {getClient} = context;
 
           const count: number = await getClient({apiVersion: "2021-04-10"}).fetch(query, params);
           return count > 0 ? `${slug}-${count + 1}` : slug;
         },
+      },
+      readOnly: ({currentUser}) => {
+        return !!currentUser?.roles.find((role) => role.name === "admin");
       },
     }),
     defineField({
@@ -66,31 +70,13 @@ export default defineType({
           type: "contactProfile",
         }),
       ],
-    }),
-    defineField({
-      name: "date",
-      title: "Dato",
-      description: "Dato og tid for arrangementet.",
-      group: "dates",
-      type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "registrationDate",
-      title: "Påmeldingsdato",
-      description: "Dato og tid for påmelding til arrangementet.",
-      group: "dates",
-      type: "datetime",
-      validation: (Rule) => Rule.required().max(Rule.valueOfField("registrationDeadline")),
-    }),
-    defineField({
-      name: "registrationDeadline",
-      title: "Påmeldingsfrist",
-      description: "Dato og tid for påmelding til arrangementet.",
-      group: "dates",
-      type: "datetime",
-      validation: (Rule) =>
-        Rule.required().min(Rule.valueOfField("registrationDate")).max(Rule.valueOfField("date")),
+      name: "dates",
+      title: "Datoer",
+      type: "registrationDates",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "location",

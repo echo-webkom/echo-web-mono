@@ -1,0 +1,90 @@
+# Dokumenter
+
+Dokumenter i Sanity er JSON-objekter som inneholder data. Vi bruker dokumenter til å lagre data som vi trenger i frontend-koden vår.
+
+## Opprette dokumenter
+
+For å opprette et dokument, må du først definere en dokumenttype. Dette gjøres ved å opprette en ny fil i `schemas`-mappen, og navngi den med `camelCase`.
+
+Her bruker vi hjelpe funksjonene `defineType` og `defineField` fra `sanity`-pakken for å definere dokumenttypen vår. Dette gjør at vi får auto-complete og type-sikkerhet når vi skriver dokumenttypen vår.
+
+```tsx
+// schemas/post.ts
+import {defineField, defineType} from "sanity";
+
+export default defineType({
+  title: "Post",
+  name: "post",
+  type: "document",
+  fields: [
+    defineField({
+      title: "Tittel",
+      name: "title",
+      type: "string",
+    }),
+    defineField({
+      title: "Innhold",
+      name: "body",
+      type: "string",
+    }),
+  ],
+});
+```
+
+Dette vil opprette en ny dokumenttype som heter `post`. Denne dokumenttypen vil ha to felter: `title` og `body`.
+
+## Referere til dokumenter
+
+For å referere til et dokument, kan du bruke `reference`-typen. Dette gjøres ved å definere et felt som har `reference`-typen, og referere til dokumenttypen du ønsker å referere til.
+
+```tsx
+// schemas/author.ts
+import {defineField, defineType} from "sanity";
+
+export default defineType({
+  title: "Forfatter",
+  name: "author",
+  type: "document",
+  fields: [
+    defineField({
+      title: "Navn",
+      name: "name",
+      type: "string",
+    }),
+    defineField({
+      title: "E-post",
+      name: "email",
+      type: "string",
+    }),
+  ],
+});
+```
+
+```tsx
+// schemas/post.ts
+import {defineField, defineType} from "sanity";
+
+export default defineType({
+  title: "Post",
+  name: "post",
+  type: "document",
+  fields: [
+    defineField({
+      title: "Tittel",
+      name: "title",
+      type: "string",
+    }),
+    defineField({
+      title: "Innhold",
+      name: "body",
+      type: "string",
+    }),
+    defineField({
+      title: "Forfatter",
+      name: "author",
+      type: "reference",
+      to: [{type: "author"}],
+    }),
+  ],
+});
+```

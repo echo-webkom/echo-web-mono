@@ -8,6 +8,7 @@ import meetingMinute from "./meeting-minute";
 import contactProfile from "./objects/contact-profile";
 import {localeMarkdown, localeString} from "./objects/locale";
 import question from "./objects/question";
+import registrationDates from "./objects/registration-dates";
 import spotRange from "./objects/spot-range";
 import post from "./post";
 import profile from "./profile";
@@ -31,4 +32,5 @@ export const schemaTypes = [
   question,
   localeString,
   localeMarkdown,
+  registrationDates,
 ];

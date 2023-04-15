@@ -1,5 +1,6 @@
-import {Degree, Year} from "@echo-webkom/db";
 import {z} from "zod";
+
+import {Degree} from "@echo-webkom/db";
 
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "../trpc";
 
@@ -17,8 +18,8 @@ export const authRouter = createTRPCRouter({
           .nullable()
           .or(z.literal(""))
           .transform((v) => (v === "" ? null : v)),
-        degree: z.nativeEnum(Degree).nullable(),
-        year: z.nativeEnum(Year).nullable(),
+        degree: z.nativeEnum(Degree).nullable().optional(),
+        year: z.number().min(1).max(5).nullable().optional(),
       }),
     )
     .mutation(async ({ctx, input}) => {
@@ -34,6 +35,13 @@ export const authRouter = createTRPCRouter({
     return ctx.prisma.user.findUnique({
       where: {
         id: ctx.session.user.id,
+      },
+      include: {
+        Registration: {
+          include: {
+            happening: true,
+          },
+        },
       },
     });
   }),

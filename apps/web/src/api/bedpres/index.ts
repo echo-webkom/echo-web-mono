@@ -1,6 +1,6 @@
-import {type ErrorMessage} from "@/utils/error";
 import {groq} from "next-sanity";
 
+import {type ErrorMessage} from "@/utils/error";
 import {sanityClient} from "../sanity.client";
 import {bedpresSchema, type Bedpres} from "./schemas";
 
@@ -13,7 +13,7 @@ export const fetchUpcomingBedpresses = async (
     const query = groq`
 *[_type == "bedpres"
   && !(_id in path('drafts.**'))
-  && date >= now()]
+  && dates.date >= now()]
   | order(date asc)
   [0..$n] {
   _id,
@@ -34,9 +34,9 @@ export const fetchUpcomingBedpresses = async (
       name,
     },
   },
-  date,
-  registrationDate,
-  registrationDeadline,
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
   "location": location->{
     name,
   },
@@ -97,9 +97,9 @@ export const fetchBedpresBySlug = async (slug: string): Promise<Bedpres | ErrorM
       name,
     },
   },
-  date,
-  registrationDate,
-  registrationDeadline,
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
   "location": location->{
     name,
   },
@@ -128,6 +128,64 @@ export const fetchBedpresBySlug = async (slug: string): Promise<Bedpres | ErrorM
     const res = await sanityClient.fetch<Bedpres>(query, params);
 
     return bedpresSchema.parse(res);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Could not fetch bedpres.",
+    };
+  }
+};
+
+export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessage> => {
+  try {
+    const query = groq`
+*[_type == "bedpres"
+  && !(_id in path('drafts.**'))] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  "company": company->{
+    _id,
+    name,
+    website,
+    "imageUrl": image.asset->url,
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
+  "location": location->{
+    name,
+  },
+  "spotRanges": spotRanges[] {
+    spots,
+    minDegreeYear,
+    maxDegreeYear,
+  },
+  "additionalQuestions": additionalQuestions[] {
+    title,
+    required,
+    type,
+    options,
+  },
+  "body": body {
+    no,
+    en,
+  }
+}
+    `;
+
+    const res = await sanityClient.fetch<Bedpres>(query);
+
+    return bedpresSchema.array().parse(res);
   } catch (error) {
     console.error(error);
     return {

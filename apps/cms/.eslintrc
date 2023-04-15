@@ -1,3 +1,0 @@
-{
-  "extends": ["custom", "@sanity/eslint-config-studio"]
-}

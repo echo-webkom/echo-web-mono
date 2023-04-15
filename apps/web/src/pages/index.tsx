@@ -1,23 +1,24 @@
 import {type InferGetServerSidePropsType} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import {fetchUpcomingBedpresses} from "@/api/bedpres";
-import {fetchComingEvents} from "@/api/event";
-import {fetchJobAds} from "@/api/job-ad";
-import {fetchPosts} from "@/api/posts";
-import {fetchStudentGroupsByType} from "@/api/student-group";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
-import BedpresPreviewBox from "@/components/bedpres-preview";
-import EventPreviewBox from "@/components/event-preview";
-import JobAdPreview from "@/components/jobad-preview";
-import Layout from "@/components/layout";
-import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
-import {isErrorMessage} from "@/utils/error";
 import cn from "classnames";
 import {format} from "date-fns";
 import {nb} from "date-fns/locale";
 import {motion} from "framer-motion";
 import removeMd from "remove-markdown";
+
+import {fetchUpcomingBedpresses} from "@/api/bedpres";
+import {fetchComingEvents} from "@/api/event";
+import {fetchJobAds} from "@/api/job-ad";
+import {fetchPosts} from "@/api/posts";
+import {fetchStudentGroupsByType} from "@/api/student-group";
+import BedpresPreviewBox from "@/components/bedpres-preview";
+import EventPreviewBox from "@/components/event-preview";
+import JobAdPreview from "@/components/jobad-preview";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import Layout from "@/layouts/layout";
+import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
+import {isErrorMessage} from "@/utils/error";
 
 const HomePage = ({
   events,
@@ -33,7 +34,7 @@ const HomePage = ({
       </Head>
 
       <Layout>
-        <div className="container mx-auto grid grid-cols-1 gap-y-12 gap-x-5 px-3 lg:grid-cols-2">
+        <div className="container mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
           {/* Events  */}
           {!isErrorMessage(events) && (
             <section className="flex flex-col gap-5 rounded-md border p-5">
@@ -94,42 +95,32 @@ const HomePage = ({
               </Link>
               <hr />
               <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-                {posts.map((post) => {
-                  const daysSincePublished =
-                    new Date().getDate() - new Date(post._createdAt).getDate();
-
-                  return (
-                    <li key={post._id}>
-                      <Link href={`/for-students/post/${post.slug}`}>
-                        <div
-                          className={cn(
-                            "relative flex h-auto flex-col gap-1 rounded-lg p-5",
-                            "hover:bg-neutral-100",
-                            "transition-colors duration-200 ease-in-out",
-                          )}
-                        >
-                          {daysSincePublished < 3 && (
-                            <p className="w-fit rounded-lg bg-red-300 px-2 py-1 text-sm">
-                              Nytt innlegg!
-                            </p>
-                          )}
-                          <h3 className="flex gap-2 text-2xl font-semibold line-clamp-2">
-                            {post.title.no}
-                          </h3>
-                          <p>
-                            Publisert:{" "}
-                            {format(new Date(post._createdAt), "d. MMMM yyyy", {
-                              locale: nb,
-                            })}
-                          </p>
-                          <hr />
-                          <p className="italic line-clamp-4">{removeMd(post.body.no)}</p>
-                          <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
-                        </div>
-                      </Link>
-                    </li>
-                  );
-                })}
+                {posts.map((post) => (
+                  <li key={post._id}>
+                    <Link href={`/for-students/post/${post.slug}`}>
+                      <div
+                        className={cn(
+                          "relative flex h-auto flex-col gap-1 rounded-lg p-5",
+                          "hover:bg-neutral-100",
+                          "transition-colors duration-200 ease-in-out",
+                        )}
+                      >
+                        <h3 className="line-clamp-2 flex gap-2 text-2xl font-semibold">
+                          {post.title.no}
+                        </h3>
+                        <p>
+                          Publisert:{" "}
+                          {format(new Date(post._createdAt), "d. MMMM yyyy", {
+                            locale: nb,
+                          })}
+                        </p>
+                        <hr />
+                        <p className="line-clamp-4 italic">{removeMd(post.body.no)}</p>
+                        <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </section>
           )}
