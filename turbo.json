@@ -1,6 +1,7 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalDependencies": ["**/.env"],
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["NODE_ENV"],
   "pipeline": {
     "db:generate": {
       "inputs": ["prisma/schema.prisma"],
@@ -51,19 +52,5 @@
       "cache": false
     },
     "format": {}
-  },
-  "globalEnv": [
-    "CI",
-    "NODE_ENV",
-    "DATABASE_URL",
-    "NEXTAUTH_SECRET",
-    "NEXTAUTH_URL",
-    "FEIDE_CLIENT_ID",
-    "FEIDE_CLIENT_SECRET",
-    "NEXT_PUBLIC_SANITY_DATASET",
-    "SKIP_ENV_VALIDATION",
-    "VERCEL",
-    "VERCEL_URL",
-    "PORT"
-  ]
+  }
 }
