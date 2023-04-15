@@ -26,7 +26,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "type-check": "turbo run type-check",
     "test:dev": "turbo run test:dev",
-    "test:e2e": "start-server-and-test 'pnpm run start' http://localhost:3000 'pnpm run test:dev'",
+    "test:e2e": "start-server-and-test 'pnpm --filter=web run start' http://localhost:3000 'pnpm run test:dev'",
     "postinstall": "pnpm run db:generate",
     "prepare": "husky install"
   },

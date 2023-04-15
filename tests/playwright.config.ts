@@ -14,7 +14,8 @@ export default defineConfig({
 
   use: {
     trace: "on-first-retry",
-    headless: !!process.env.CI || !!process.env.PLAYWRIGHT_HEADLESS,
+    headless: !!process.env.CI,
+    baseURL: "http://localhost:3000",
   },
 
   projects: [
@@ -44,9 +45,4 @@ export default defineConfig({
       use: {...devices["iPhone 12"]},
     },
   ],
-
-  // webServer: {
-  //   command: "pnpm dev",
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
