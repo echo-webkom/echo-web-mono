@@ -37,13 +37,16 @@ const buttonVariants = cva(
 
 interface ButtonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+}
 
-const Button = ({className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
+const Button = ({type, className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
   return (
     <button
       className={buttonVariants({className, intent, size, fullWidth, disabled})}
       disabled={disabled ?? false}
+      type={type ?? "button"}
       {...props}
     />
   );

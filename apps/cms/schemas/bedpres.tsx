@@ -115,6 +115,7 @@ export default defineType({
           type: "question",
         }),
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "body",

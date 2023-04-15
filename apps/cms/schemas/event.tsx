@@ -70,6 +70,7 @@ export default defineType({
           type: "contactProfile",
         }),
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "dates",
