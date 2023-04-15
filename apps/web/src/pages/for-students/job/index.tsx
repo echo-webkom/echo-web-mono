@@ -35,7 +35,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
                       />
                     </div>
 
-                    <div className="flex flex-col px-3 py-5">
+                    <div className="flex flex-col py-5 px-3">
                       <h2 className="text-xl font-bold">{job.title}</h2>
                       <p>{job.company.name}</p>
                     </div>
