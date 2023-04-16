@@ -41,7 +41,7 @@ const SubGroupPage = ({group}: Props) => {
             <Breadcrumbs.Item>{group.name}</Breadcrumbs.Item>
           </Breadcrumbs>
 
-          <h1 className="text-6xl font-bold">{group.name}</h1>
+          <h1 className="text-4xl font-bold md:text-6xl">{group.name}</h1>
 
           {group.image && (
             <div className="my-5 overflow-hidden rounded-xl border-4 border-black">
