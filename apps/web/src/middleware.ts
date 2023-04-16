@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
     if (!authValue) {
       return NextResponse.redirect("/");
     }
-    const [user, password] = window.atob(authValue).split(":");
+    const [user, password] = Buffer.from(authValue, "base64").toString().split(":");
 
     if (user?.toLowerCase() === "admin" && password === process.env.ADMIN_KEY) {
       return NextResponse.next();
@@ -20,5 +20,5 @@ export function middleware(req: NextRequest) {
   }
   url.pathname = "/";
 
-  return NextResponse.rewrite(url);
+  return NextResponse.redirect(url);
 }
