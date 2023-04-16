@@ -265,8 +265,8 @@ importers:
         specifier: 0.5.0
         version: 0.5.0
       superjson:
-        specifier: 1.9.1
-        version: 1.9.1
+        specifier: 1.12.2
+        version: 1.12.2
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -317,8 +317,8 @@ importers:
         specifier: ^10.20.0
         version: 10.20.0
       superjson:
-        specifier: 1.9.1
-        version: 1.9.1
+        specifier: 1.12.2
+        version: 1.12.2
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -14350,8 +14350,8 @@ packages:
       pirates: 4.0.5
       ts-interface-checker: 0.1.13
 
-  /superjson@1.9.1:
-    resolution: {integrity: sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==}
+  /superjson@1.12.2:
+    resolution: {integrity: sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==}
     engines: {node: '>=10'}
     dependencies:
       copy-anything: 3.0.3
