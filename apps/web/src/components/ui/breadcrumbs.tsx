@@ -2,16 +2,23 @@ import React from "react";
 import Link from "next/link";
 import cn from "classnames";
 
+const DefaultSeparator = () => <span className="text-gray-400">/</span>;
+
 type BreadcrumbsRootProps = {
+  separator?: React.ReactNode;
   className?: string;
   children: React.ReactNode;
 };
 
-const BreadcrumbsRoot = ({className, children}: BreadcrumbsRootProps) => {
+const BreadcrumbsRoot = ({
+  separator = <DefaultSeparator />,
+  className,
+  children,
+}: BreadcrumbsRootProps) => {
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div className={cn("my-2", className)}>
+    <div className={cn("my-2 flex items-center gap-2", className)}>
       {childrenArray.map((child, index) => {
         // Don't render anything if the child is not a Breadcrumbs.Item
         if (!React.isValidElement(child) || child.type !== BreadcrumbsItem) {
@@ -27,7 +34,7 @@ const BreadcrumbsRoot = ({className, children}: BreadcrumbsRootProps) => {
         return (
           <React.Fragment key={index}>
             {child}
-            <span className="mx-2 text-gray-400">/</span>
+            {separator}
           </React.Fragment>
         );
       })}
