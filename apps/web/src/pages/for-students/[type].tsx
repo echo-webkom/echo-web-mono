@@ -29,16 +29,16 @@ const SubGroupPage = ({groups, type}: Props) => {
       <Layout>
         <Container>
           <h1 className="mb-4 text-4xl font-bold">{studentGroupTypeName[type]}</h1>
-          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {groups.map((group) => (
               <li key={group._id}>
                 <Link href={`/for-students/group/${group.slug}`}>
-                  <div className="group rounded bg-slate-100 p-5 transition-all duration-200 hover:shadow">
-                    <h2 className="mb-3 text-2xl font-bold">{group.name}</h2>
-                    <p className="line-clamp-3 text-slate-500">
+                  <div className="group flex flex-col gap-3 rounded-lg border p-5">
+                    <h2 className="text-2xl font-bold">{group.name}</h2>
+                    <p className="line-clamp-3 text-slate-700">
                       {removeMd(group.description?.no ?? "")}
                     </p>
-                    <p className="flex items-center gap-1">
+                    <p className="flex items-center gap-1 group-hover:underline">
                       Les mer
                       <span className="transition-all duration-150 group-hover:pl-1">
                         <ArrowRightIcon />

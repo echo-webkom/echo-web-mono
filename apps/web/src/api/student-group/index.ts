@@ -71,7 +71,7 @@ export const fetchStudentGroupsByType = async (
     no,
     en,
   },
-  "imageUrl": image.assets->url,
+  image,
   "members": members[] {
     role,
     "profile": profile->{
@@ -124,7 +124,7 @@ export const fetchStudentGroupBySlug = async (
     no,
     en,
   },
-  "imageUrl": image.assets->url,
+  image,
   "members": members[] {
     role,
     "profile": profile->{

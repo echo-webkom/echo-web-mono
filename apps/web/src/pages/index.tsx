@@ -13,6 +13,7 @@ import {fetchJobAds} from "@/api/job-ad";
 import {fetchPosts} from "@/api/posts";
 import {fetchStudentGroupsByType} from "@/api/student-group";
 import BedpresPreviewBox from "@/components/bedpres-preview";
+import Container from "@/components/container";
 import EventPreviewBox from "@/components/event-preview";
 import JobAdPreview from "@/components/jobad-preview";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
@@ -34,7 +35,7 @@ const HomePage = ({
       </Head>
 
       <Layout>
-        <div className="container mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
+        <Container className="mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
           {/* Events  */}
           {!isErrorMessage(events) && (
             <section className="flex flex-col gap-5 rounded-md border p-5">
@@ -183,7 +184,7 @@ const HomePage = ({
               </motion.ul>
             </section>
           )}
-        </div>
+        </Container>
       </Layout>
     </>
   );

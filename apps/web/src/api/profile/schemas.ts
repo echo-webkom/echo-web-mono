@@ -4,10 +4,12 @@ export const profileSchema = z.object({
   _id: z.string(),
   name: z.string(),
   imageUrl: z.string().nullable(),
-  socials: z.object({
-    email: z.string().optional(),
-    linkedin: z.string().optional(),
-  }),
+  socials: z
+    .object({
+      email: z.string().optional(),
+      linkedin: z.string().optional(),
+    })
+    .nullable(),
 });
 export type Profile = z.infer<typeof profileSchema>;
 
