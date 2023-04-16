@@ -43,7 +43,7 @@
     "prettier-plugin-organize-imports": "3.2.2",
     "prettier-plugin-tailwindcss": "0.2.7",
     "start-server-and-test": "^2.0.0",
-    "turbo": "1.8.8",
+    "turbo": "1.9.1",
     "typescript": "^5.0.4"
   },
   "lint-staged": {
