@@ -48,6 +48,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Install system dependencies
         run: pnpm --filter=tests run test:install
 
