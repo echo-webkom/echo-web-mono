@@ -1,7 +1,7 @@
 import {NextResponse, type NextRequest} from "next/server";
 
 export const config = {
-  matcher: ["/", "/api/sanity", "/api/basicauth"],
+  matcher: ["/api/sanity"],
 };
 export function middleware(req: NextRequest) {
   const basicAuth = req.headers.get("authorization");
@@ -10,7 +10,7 @@ export function middleware(req: NextRequest) {
   if (basicAuth) {
     const authValue = basicAuth.split(" ")[1];
     if (!authValue) {
-      return NextResponse.redirect("/api/auth");
+      return NextResponse.redirect("/");
     }
     const [user, password] = window.atob(authValue).split(":");
 
@@ -18,7 +18,7 @@ export function middleware(req: NextRequest) {
       return NextResponse.next();
     }
   }
-  url.pathname = "/api/auth";
+  url.pathname = "/";
 
   return NextResponse.rewrite(url);
 }

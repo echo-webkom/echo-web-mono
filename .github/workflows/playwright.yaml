@@ -10,6 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Playwright Tests
+    timeout-minutes: 60
     env:
       DATABASE_URL: file:./db.sqlite
       FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
