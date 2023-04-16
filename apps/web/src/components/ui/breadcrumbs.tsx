@@ -18,7 +18,7 @@ const BreadcrumbsRoot = ({
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div className={cn("my-2 flex items-center gap-2", className)}>
+    <div className={cn("my-2 flex items-center gap-2 text-sm md:text-base", className)}>
       {childrenArray.map((child, index) => {
         // Don't render anything if the child is not a Breadcrumbs.Item
         if (!React.isValidElement(child) || child.type !== BreadcrumbsItem) {
