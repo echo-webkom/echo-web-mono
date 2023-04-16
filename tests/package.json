@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "test:dev": "playwright test",
-    "test:install": "playwright install --with-deps"
+    "test:install": "playwright install --with-deps",
+    "test:report": "playwright show-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.32.3"
