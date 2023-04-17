@@ -30,7 +30,11 @@ const CoolComponent = () => {
       // Fetch data
     };
     void fetchData();
+<<<<<<< HEAD
     // dependencies array [] er tom som betyr at dataen hentes på page load
+=======
+    // dependencies array [] er tom som betyr at dataen hentes på component mount
+>>>>>>> e1c20ae (add frontend docs)
   }, []);
 
   return (

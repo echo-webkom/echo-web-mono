@@ -35,7 +35,11 @@ const HomePage = ({
       </Head>
 
       <Layout>
+<<<<<<< HEAD
         <Container className="mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
+=======
+        <div className="container mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
+>>>>>>> e1c20ae (add frontend docs)
           {/* Events  */}
           {!isErrorMessage(events) && (
             <section className="flex flex-col gap-5 rounded-md border p-5">
