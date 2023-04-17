@@ -4,7 +4,7 @@ Dokumenter i Sanity er JSON-objekter som inneholder data. Vi bruker dokumenter t
 
 ## Opprette dokumenter
 
-For å opprette et dokument, må du først definere en dokumenttype. Dette gjøres ved å opprette en ny fil i `schemas`-mappen, og navngi den med `camelCase`.
+For å opprette et dokument, må du først definere en dokumenttype. Dette gjøres ved å opprette en ny fil i `schemas`-mappen, og navngi den med `kebab-case`.
 
 Her bruker vi hjelpe funksjonene `defineType` og `defineField` fra `sanity`-pakken for å definere dokumenttypen vår. Dette gjør at vi får auto-complete og type-sikkerhet når vi skriver dokumenttypen vår.
 
