@@ -67,6 +67,8 @@ export default defineType({
           type: "url",
         }),
       ],
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      hidden: ({parent}) => parent.groupType === "board",
     }),
     defineField({
       name: "description",
@@ -105,7 +107,7 @@ export default defineType({
           ],
           preview: {
             select: {
-              media: "profile.picture",
+              media: "profile.image",
               title: "profile.name",
               subtitle: "role",
             },
