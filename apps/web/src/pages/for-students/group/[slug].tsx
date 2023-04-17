@@ -1,21 +1,25 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
+import {motion} from "framer-motion";
+import {AiOutlineInstagram, AiOutlineLinkedin} from "react-icons/ai";
+import {MdOutlineFacebook, MdOutlineMail} from "react-icons/md";
+
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupPaths,
   studentGroupTypeName,
   type StudentGroup,
 } from "@/api/student-group";
-import {AvatarFallback, AvatarImage} from "@/components/avatar";
-import Breadcrumbs from "@/components/breadcrumbs";
 import Container from "@/components/container";
-import Layout from "@/components/layout";
 import Markdown from "@/components/markdown";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import Layout from "@/layouts/layout";
+import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
-import {Avatar} from "@radix-ui/react-avatar";
-import {AiOutlineInstagram, AiOutlineLinkedin} from "react-icons/ai";
-import {MdOutlineFacebook, MdOutlineMail} from "react-icons/md";
+import {urlFor} from "@/utils/image-builder";
 
 type Props = {
   group: StudentGroup;
@@ -37,11 +41,17 @@ const SubGroupPage = ({group}: Props) => {
             <Breadcrumbs.Item>{group.name}</Breadcrumbs.Item>
           </Breadcrumbs>
 
-          {/* TODO: Render group image */}
+          <h1 className="text-4xl font-bold md:text-6xl">{group.name}</h1>
+
+          {group.image && (
+            <div className="my-5 overflow-hidden rounded-xl border-4 border-black">
+              <div className="relative aspect-video h-full w-full">
+                <Image src={urlFor(group.image).url()} alt={`${group.name} photo`} fill />
+              </div>
+            </div>
+          )}
 
           <article className="prose md:prose-xl">
-            <h1>{group.name}</h1>
-
             <Markdown content={group.description?.no ?? ""} />
           </article>
 
@@ -90,16 +100,23 @@ const SubGroupPage = ({group}: Props) => {
               <div className="prose md:prose-xl">
                 <h2>Medlemmer</h2>
               </div>
-              <ul>
+              <motion.ul
+                variants={staggeredListContainer}
+                initial="hidden"
+                whileInView="show"
+                viewport={{once: true}}
+                className="grid grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2 lg:grid-cols-3"
+              >
                 {group.members.map((member) => (
                   <li key={member.profile._id}>
-                    <div className="flex flex-col items-center gap-5 p-5">
-                      <Avatar className="overflow-hidden">
-                        <AvatarImage
-                          src={member.profile.imageUrl ?? ""}
-                          alt={`${member.profile.name} profilbilde`}
-                          className="h-24 w-24"
-                        />
+                    <div className="flex h-full flex-col items-center gap-5 p-5">
+                      <Avatar className="overflow-hidden border">
+                        <motion.div variants={verticalStaggeredChildren}>
+                          <AvatarImage
+                            src={member.profile.imageUrl ?? ""}
+                            alt={`${member.profile.name} profilbilde`}
+                          />
+                        </motion.div>
                         <AvatarFallback className="text-xl">
                           {member.profile.name
                             .split(" ")
@@ -110,11 +127,31 @@ const SubGroupPage = ({group}: Props) => {
                       <div className="flex w-full flex-col gap-1 overflow-x-hidden text-center">
                         <h3 className="truncate text-2xl font-semibold">{member.profile.name}</h3>
                         <p>{member.role}</p>
+                        <div className="mx-auto flex w-fit items-center">
+                          {member.profile.socials?.email && (
+                            <Link href={"mailto:" + member.profile.socials.email}>
+                              <span className="sr-only">E-post</span>
+                              <MdOutlineMail
+                                title="E-post"
+                                className="h-7 w-7 rounded p-1 hover:bg-slate-200"
+                              />
+                            </Link>
+                          )}
+                          {member.profile.socials?.linkedin && (
+                            <Link href={member.profile.socials.linkedin}>
+                              <span className="sr-only">LinkedIn</span>
+                              <AiOutlineLinkedin
+                                title="LinkedIn"
+                                className="h-7 w-7 rounded p-1 hover:bg-slate-200"
+                              />
+                            </Link>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
           )}
         </Container>

@@ -1,6 +1,7 @@
 import {z} from "zod";
 
 import {profileSchema} from "../profile/schemas";
+import {imageSchema} from "../utils/image";
 import {localeMarkdownSchema} from "../utils/locale";
 
 export const studentGroupTypes = ["board", "suborg", "subgroup", "intgroup"] as const;
@@ -23,7 +24,7 @@ export const studentGroupSchema = z.object({
   slug: z.string(),
   description: localeMarkdownSchema.nullable(),
   groupType: studentGroupTypeSchema,
-  imageUrl: z.string().nullable(),
+  image: imageSchema.nullable(),
   members: memberSchema.array().nullable(),
   socials: z
     .object({

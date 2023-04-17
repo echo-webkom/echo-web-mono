@@ -28,11 +28,39 @@ export default defineType({
           name: "email",
           title: "E-post",
           type: "string",
+          validation: (Rule) =>
+            Rule.custom((url) => {
+              if (!url) {
+                return true;
+              }
+
+              const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+              if (url && emailRegex.test(url)) {
+                return true;
+              }
+
+              return "Må være en gyldig e-postadresse";
+            }),
         }),
         defineField({
           name: "linkedin",
           title: "LinkedIn",
+          description:
+            "URL til LinkedIn-profilen. Eksempel: https://www.linkedin.com/in/{profilnavn}",
           type: "url",
+          validation: (Rule) =>
+            Rule.custom((url) => {
+              if (!url) {
+                return true;
+              }
+
+              const linkedinRegex = /^https?:\/\/(www\.)?linkedin\.com\/in\/.+/;
+              if (url && linkedinRegex.test(url)) {
+                return true;
+              }
+
+              return "Må være en gyldig LinkedIn-profil";
+            }),
         }),
       ],
     }),
@@ -40,7 +68,7 @@ export default defineType({
   preview: {
     select: {
       title: "name",
-      media: "image",
+      media: "picture",
     },
   },
 });

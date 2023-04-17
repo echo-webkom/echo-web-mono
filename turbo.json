@@ -33,6 +33,12 @@
       "persistent": true,
       "cache": false
     },
+    "test:dev": {
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"]
+    },
     "lint": {},
     "type-check": {
       "dependsOn": ["^db:generate"],
@@ -54,6 +60,7 @@
     "NEXTAUTH_URL",
     "FEIDE_CLIENT_ID",
     "FEIDE_CLIENT_SECRET",
+    "ADMIN_KEY",
     "NEXT_PUBLIC_SANITY_DATASET",
     "SKIP_ENV_VALIDATION",
     "VERCEL",

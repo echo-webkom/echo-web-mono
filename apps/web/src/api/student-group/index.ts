@@ -1,6 +1,6 @@
-import {type ErrorMessage} from "@/utils/error";
 import {groq} from "next-sanity";
 
+import {type ErrorMessage} from "@/utils/error";
 import {sanityClient} from "../sanity.client";
 import {slugSchema} from "../utils/slug";
 import {studentGroupSchema, type StudentGroup, type StudentGroupType} from "./schemas";
@@ -71,7 +71,7 @@ export const fetchStudentGroupsByType = async (
     no,
     en,
   },
-  "imageUrl": image.assets->url,
+  image,
   "members": members[] {
     role,
     "profile": profile->{
@@ -124,7 +124,7 @@ export const fetchStudentGroupBySlug = async (
     no,
     en,
   },
-  "imageUrl": image.assets->url,
+  image,
   "members": members[] {
     role,
     "profile": profile->{

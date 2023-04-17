@@ -21,6 +21,7 @@ const server = z.object({
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   FEIDE_CLIENT_ID: z.string(),
   FEIDE_CLIENT_SECRET: z.string(),
+  ADMIN_KEY: z.string().optional(),
 });
 
 /**
@@ -45,6 +46,7 @@ const processEnv = {
   FEIDE_CLIENT_ID: process.env.FEIDE_CLIENT_ID,
   FEIDE_CLIENT_SECRET: process.env.FEIDE_CLIENT_SECRET,
   // NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  ADMIN_KEY: process.env.ADMIN_KEY,
 };
 
 // Don't touch the part below

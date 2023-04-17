@@ -41,13 +41,17 @@ export default defineType({
         source: "title",
         slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
           const slug = slugify(input, {remove: /[*+~.()'"!:@]/g, lower: true, strict: true});
-          const query = 'count(*[_type == "bedpres" && slug.current == $slug]{_id})';
+          const query =
+            'count(*[_type == "bedpres" || _type == "event" && slug.current == $slug]{_id})';
           const params = {slug};
           const {getClient} = context;
 
           const count: number = await getClient({apiVersion: "2021-04-10"}).fetch(query, params);
           return count > 0 ? `${slug}-${count + 1}` : slug;
         },
+      },
+      readOnly: ({currentUser}) => {
+        return !!currentUser?.roles.find((role) => role.name === "admin");
       },
     }),
     defineField({
@@ -66,29 +70,10 @@ export default defineType({
       to: {type: "location"},
     }),
     defineField({
-      name: "date",
-      title: "Dato",
-      description: "Dato og tid for bedriftspresentasjonen",
-      group: "dates",
-      type: "datetime",
+      name: "dates",
+      title: "Datoer",
+      type: "registrationDates",
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "registrationDate",
-      title: "Påmeldingsdato",
-      description: "Dato og tid for påmelding til bedriftspresentasjonen",
-      group: "dates",
-      type: "datetime",
-      validation: (Rule) => Rule.required().max(Rule.valueOfField("registrationDeadline")),
-    }),
-    defineField({
-      name: "registrationDeadline",
-      title: "Påmeldingsfrist",
-      description: "Dato og tid for påmeldingsfrist til bedriftspresentasjonen",
-      group: "dates",
-      type: "datetime",
-      validation: (Rule) =>
-        Rule.required().min(Rule.valueOfField("registrationDate")).max(Rule.valueOfField("date")),
     }),
     defineField({
       name: "contacts",
@@ -130,6 +115,7 @@ export default defineType({
           type: "question",
         }),
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "body",

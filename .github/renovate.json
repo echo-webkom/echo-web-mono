@@ -1,8 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":semanticCommitScopeDisabled"],
-  "commitMessagePrefix": "renovate:",
-  "commitMessageAction": "update",
+  "extends": ["config:base", ":semanticCommitScopeDisabled", ":semanticCommitsDisabled"],
+  "labels": ["dependencies :handshake:"],
+  "commitMessageAction": "Update",
   "rangeStrategy": "bump",
   "packageRules": [
     {

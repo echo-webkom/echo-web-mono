@@ -3,43 +3,53 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/config/*",
+    "tests"
+  ],
   "scripts": {
-    "build": "turbo build",
-    "start": "turbo start",
-    "dev": "turbo dev --parallel",
+    "build": "turbo run build --parallel",
+    "dev": "turbo run dev --parallel",
+    "start": "turbo run start --parallel",
     "clean": "rm -rf node_modules",
-    "clean:workspaces": "turbo clean",
-    "db:generate": "turbo db:generate",
+    "clean:workspaces": "turbo run clean",
+    "db:generate": "turbo run db:generate",
     "db:push": "turbo db:push db:generate",
-    "db:studio": "turbo db:studio",
-    "docker:up": "turbo docker:up",
-    "docker:down": "turbo docker:down",
-    "lint": "turbo lint && manypkg check",
+    "db:studio": "turbo run db:studio",
+    "docker:up": "turbo run docker:up",
+    "docker:down": "turbo run docker:down",
+    "lint": "turbo run lint && manypkg check",
     "lint:fix": "turbo lint -- --fix && manypkg fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
-    "type-check": "turbo type-check",
-    "postinstall": "pnpm db:generate",
+    "type-check": "turbo run type-check",
+    "test:dev": "turbo run test:dev",
+    "test:e2e": "start-server-and-test 'pnpm --filter=web run start' http://localhost:3000 'pnpm run test:dev'",
+    "postinstall": "pnpm run db:generate",
     "prepare": "husky install"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
     "@manypkg/cli": "0.20.0",
     "@types/node": "18.14.6",
-    "eslint": "^8.37.0",
+    "@types/prettier": "^2.7.2",
+    "eslint": "^8.38.0",
     "eslint-config-custom": "0.0.0",
     "husky": "8.0.3",
-    "lint-staged": "13.2.0",
+    "lint-staged": "13.2.1",
     "prettier": "2.8.7",
     "prettier-plugin-organize-imports": "3.2.2",
-    "prettier-plugin-tailwindcss": "0.2.6",
-    "turbo": "1.8.8",
-    "typescript": "^5.0.3"
+    "prettier-plugin-tailwindcss": "0.2.7",
+    "start-server-and-test": "^2.0.0",
+    "turbo": "1.9.1",
+    "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
-      "pnpm lint --fix",
-      "pnpm format"
+      "pnpm lint",
+      "pnpm format:check"
     ]
   },
   "pnpm": {
@@ -47,5 +57,5 @@
       "next@latest": "13.0.6"
     }
   },
-  "packageManager": "pnpm@7.30.5"
+  "packageManager": "pnpm@8.2.0"
 }

@@ -8,13 +8,16 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "deploy-graphql": "sanity graphql deploy"
+    "deploy-graphql": "sanity graphql deploy",
+    "todo:lint": "eslint '**/*.{js,ts,jsx,tsx}'",
+    "todo:lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
+    "todo:type-check": "tsc --noEmit"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
-    "@sanity/icons": "^2.2.2",
+    "@sanity/icons": "^2.3.1",
     "@sanity/vision": "^3.8.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -27,10 +30,10 @@
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^2.0.1",
-    "@types/react": "18.0.34",
+    "@types/react": "18.0.35",
     "@types/styled-components": "^5.1.26",
-    "eslint": "^8.37.0",
+    "eslint": "^8.38.0",
     "prettier": "2.8.7",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }

@@ -1,10 +1,11 @@
 import {type AppType} from "next/app";
 import {IBM_Plex_Mono, Inter} from "next/font/google";
-import {api} from "@/utils/api";
 import {type Session} from "next-auth";
 import {SessionProvider} from "next-auth/react";
 
+import {api} from "@/utils/api";
 import "@/styles/globals.css";
+import {Toaster} from "@/components/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ const MyApp: AppType<{session: Session | null}> = ({
           }
         `}
       </style>
+      <Toaster />
       <SessionProvider session={session}>
         <Component {...pageProps} />
       </SessionProvider>
