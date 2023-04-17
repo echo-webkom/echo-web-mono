@@ -26,21 +26,21 @@ Du kan også definere parametere for spørringen din. Dette gjøres ved å bruke
 
 For å gjøre disse spørringene i frontend-koden våres bruker vi `createClient`-funksjonen fra `next-sanity`-pakken for å opprette en klient som kan brukes til å spørre data fra Sanity.
 
-```tsx
+```tsx title="apps/web/src/lib/sanity.client.ts"
 import {createClient} from "next-sanity";
 
-const client = createClient({
+const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   useCdn: process.env.NODE_ENV === "production",
 });
 
-export default client;
+export default sanityClient;
 ```
 
 Når vi har en klient, kan vi bruke `fetch`-funksjonen til å spørre data fra Sanity.
 
-```tsx
+```tsx title="apps/web/src/lib/post.ts"
 import client from "@/utils/sanity/client";
 
 const posts = await client.fetch(`*[_type == "post"]`);
@@ -50,7 +50,7 @@ const posts = await client.fetch(`*[_type == "post"]`);
 
 For å spørre data med parametere, kan vi bruke `fetch`-funksjonen til å spørre data fra Sanity.
 
-```tsx
+```tsx title="apps/web/src/lib/post.ts"
 import client from "@/utils/sanity/client";
 
 const posts = await client.fetch(`*[_type == $type]`, {
@@ -75,7 +75,7 @@ Denne spørringen vil returnere alle dokumenter av typen `post`, og inkludere fo
 
 Et praktisk eksempel vil være å spørre om alle innlegg og inkludere forfatterens navn og e-postadresse.
 
-```tsx
+```tsx title="apps/web/src/lib/post.ts"
 import client from "@/utils/sanity/client";
 
 const posts = await client.fetch(

@@ -8,7 +8,7 @@ Vi bruker routers til å organisere tjenestene våre. Hver router kan ha sine eg
 
 Et eksempel på en tjeneste som returnerer "Hei, [Ditt navn]!" kan se slik ut:
 
-```tsx
+```tsx title="packages/api/src/routers/string.ts"
 import {z} from "zod";
 
 import {createTRPCRouter, publicProcedure} from "../trpc";
@@ -24,7 +24,7 @@ tRPC genererer deretter klientkoden din automatisk, slik at du kan kommunisere m
 
 Dette vil se slik ut i klienten (frontend):
 
-```tsx
+```tsx title="packages/web/src/pages/profile.tsx"
 import {api} from "@/utils/api";
 
 const ProfilePage = () => {
