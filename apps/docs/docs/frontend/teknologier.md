@@ -21,7 +21,7 @@ type Post = {
 };
 
 const CoolComponent = () => {
-  // useState er en nyttig React hook
+  // useState er React sin måte å behandle forskjellige tilstander
   const [posts, setPosts] = useState<Post[]>([]);
 
   // useEffect er en nyttig React hook
