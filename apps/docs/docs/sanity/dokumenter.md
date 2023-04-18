@@ -8,8 +8,7 @@ For å opprette et dokument, må du først definere en dokumenttype. Dette gjør
 
 Her bruker vi hjelpe funksjonene `defineType` og `defineField` fra `sanity`-pakken for å definere dokumenttypen vår. Dette gjør at vi får auto-complete og type-sikkerhet når vi skriver dokumenttypen vår.
 
-```tsx
-// schemas/post.ts
+```tsx title="apps/cms/schemas/post.ts"
 import {defineField, defineType} from "sanity";
 
 export default defineType({
@@ -37,8 +36,7 @@ Dette vil opprette en ny dokumenttype som heter `post`. Denne dokumenttypen vil 
 
 For å referere til et dokument, kan du bruke `reference`-typen. Dette gjøres ved å definere et felt som har `reference`-typen, og referere til dokumenttypen du ønsker å referere til.
 
-```tsx
-// schemas/author.ts
+```tsx title="apps/cms/schemas/author.ts"
 import {defineField, defineType} from "sanity";
 
 export default defineType({
@@ -60,8 +58,7 @@ export default defineType({
 });
 ```
 
-```tsx
-// schemas/post.ts
+```tsx title="apps/cms/schemas/post.ts"
 import {defineField, defineType} from "sanity";
 
 export default defineType({

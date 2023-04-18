@@ -8,6 +8,7 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
+    "clean": "rm -rf node_modules .sanity dist",
     "deploy-graphql": "sanity graphql deploy",
     "todo:lint": "eslint '**/*.{js,ts,jsx,tsx}'",
     "todo:lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
