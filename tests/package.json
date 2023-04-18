@@ -6,7 +6,8 @@
   "scripts": {
     "test:dev": "playwright test",
     "test:install": "playwright install --with-deps",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "clean": "rm -rf node_modules playwright-report test-results"
   },
   "devDependencies": {
     "@playwright/test": "^1.32.3"
