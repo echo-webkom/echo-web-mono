@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Vår backend
 
-Backend er den delen av nettsiden som kan være litt forrvirende og vanskelig å jobbe med. Siden vi bruker NextJS så er den delt opp i flere deler.
+Backend er den delen av nettsiden som kan være litt forrvirende og vanskelig å jobbe med. Siden vi bruker NextJS er den delt opp i flere deler.
 
 Man finner backenden i `apps/web`, `packages/db`, `packages/api` og `packages/auth`. Her er en kort forklaring på hva de forskjellige delene gjør.
 

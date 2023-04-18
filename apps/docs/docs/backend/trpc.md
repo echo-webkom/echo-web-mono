@@ -1,6 +1,6 @@
 # tRPC
 
-tRPC (typed-rpc) er et rammeverk for å utvikle RPC (Remote Procedure Call)-tjenester som er type-safe. tRPC lar deg definere API-grensesnittet ditt med `zod`, som gjør det enkelt å definere og validere input og output for hver tjeneste.
+tRPC (typed-rpc) er et rammeverk for å utvikle RPC (Remote Procedure Call)-tjenester. Med tRPC kan du kjøre funksjoner på backenden og hente dataen til frontenden type-safe. Du kan definere API-grensesnittet ditt med `zod`, som gjør det enkelt å definere og validere input og output for hver tjeneste.
 
 For å bruke tRPC, må du definere tjenestene dine ved hjelp av tRPC API-grensesnittet. Dette gjøres ved å definere queries og mutations, og angi hva slags input og output hver tjeneste forventer.
 
@@ -28,7 +28,7 @@ Dette vil se slik ut i klienten (frontend):
 import {api} from "@/utils/api";
 
 const ProfilePage = () => {
-  const user = api.auth.me.useQuery({
+  const user = api.auth.hello.useQuery({
     name: "Ola Nordmann",
   });
 
