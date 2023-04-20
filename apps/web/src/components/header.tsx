@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
-import classNames from "classnames";
 import {motion} from "framer-motion";
 
 import {fetchBanner} from "@/api/banner";
 import {type Banner} from "@/api/banner/schemas";
+import {cn} from "@/utils/cn";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";
@@ -51,13 +51,13 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="sticky top-0 z-30 w-full bg-white">
+    <div className="sticky top-0 z-30 w-full bg-background">
       <WebsiteBanner banner={banner} />
       <motion.header
         style={{
           height: hasScrolled ? 60 : 100,
         }}
-        className="mx-auto flex w-full max-w-7xl bg-white px-5 py-3 transition-all duration-150 ease-in-out"
+        className="mx-auto flex w-full max-w-7xl bg-inherit px-5 py-3 transition-all duration-150 ease-in-out"
       >
         <motion.div
           style={{
@@ -71,7 +71,7 @@ const Header = () => {
         <DesktopNavigation className="mt-auto hidden lg:block" />
         <button
           type="button"
-          className={classNames("ml-auto block lg:hidden", {
+          className={cn("ml-auto block lg:hidden", {
             "my-auto": hasScrolled,
             "mb-3 mt-auto": !hasScrolled,
           })}

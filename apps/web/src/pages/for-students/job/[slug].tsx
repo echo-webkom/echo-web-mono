@@ -63,7 +63,7 @@ const JobAdPage = ({jobAd}: Props) => {
             </div>
             <div className="mt-5 flex flex-col text-center">
               <Link
-                className="w-full rounded-md bg-echo-yellow px-3 py-3 font-bold"
+                className="bg-echo-yellow w-full rounded-md px-3 py-3 font-bold"
                 href={jobAd.link}
                 target="_blank"
                 rel="noopener noreferrer"
