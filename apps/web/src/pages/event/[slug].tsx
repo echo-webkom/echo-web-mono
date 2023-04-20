@@ -172,7 +172,10 @@ const EventPage = ({event}: Props) => {
                           </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
-                          <Input {...deregisterMethods.register("reason")} type="text" />
+                          <Input
+                            {...deregisterMethods.register("reason", {required: true})}
+                            type="text"
+                          />
                         </div>
                         <DialogFooter>
                           <Button type="submit">Send inn</Button>
@@ -229,7 +232,9 @@ const EventPage = ({event}: Props) => {
                                     />
                                   ) : (
                                     <Input
-                                      {...registerMethods.register(question.title)}
+                                      {...registerMethods.register(question.title, {
+                                        required: question.required,
+                                      })}
                                       type="text"
                                     />
                                   )}
