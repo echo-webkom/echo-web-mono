@@ -1,6 +1,6 @@
-const {fontFamily} = require("tailwindcss/defaultTheme");
+import {type Config} from "tailwindcss";
+import {fontFamily} from "tailwindcss/defaultTheme";
 
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
@@ -72,4 +72,4 @@ module.exports = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
   ],
-};
+} satisfies Config;

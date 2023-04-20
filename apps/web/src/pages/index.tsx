@@ -1,7 +1,6 @@
 import {type InferGetServerSidePropsType} from "next";
 import Head from "next/head";
 import Link from "next/link";
-import cn from "classnames";
 import {format} from "date-fns";
 import {nb} from "date-fns/locale";
 import {motion} from "framer-motion";
@@ -19,6 +18,7 @@ import JobAdPreview from "@/components/jobad-preview";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Layout from "@/layouts/layout";
 import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
+import {cn} from "@/utils/cn";
 import {isErrorMessage} from "@/utils/error";
 
 const HomePage = ({

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import cn from "classnames";
 import {useSession} from "next-auth/react";
 
 import {footerRoutes} from "@/lib/routes";
 import {sponsors} from "@/lib/sponsors";
+import {cn} from "@/utils/cn";
 
 type FooterProps = {
   className?: string;

@@ -10,6 +10,7 @@ const config = {
       "./tsconfig.json",
       "./apps/*/tsconfig.json",
       "./packages/*/tsconfig.json",
+      "./packages/config/*/tsconfig.json",
       "./tests/tsconfig.json",
     ],
     jsx: true,
