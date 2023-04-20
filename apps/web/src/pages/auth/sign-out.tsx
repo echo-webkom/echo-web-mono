@@ -4,7 +4,7 @@ import {signOut} from "next-auth/react";
 import {getServerSession} from "@echo-webkom/auth";
 
 import Container from "@/components/container";
-import Button from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import Layout from "@/layouts/layout";
 
 const LoginPage = () => {

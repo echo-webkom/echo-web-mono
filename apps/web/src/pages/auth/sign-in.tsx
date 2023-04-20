@@ -2,7 +2,7 @@ import {type GetServerSideProps} from "next";
 import {getProviders, getSession, signIn} from "next-auth/react";
 
 import Container from "@/components/container";
-import Button from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import Layout from "@/layouts/layout";
 
 type Props = {
