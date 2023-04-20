@@ -10,7 +10,7 @@ Git er et distribuert versjonskontrollsystem som brukes til å administrere kode
 
 ## VSCode
 
-Visual Studio Code er en kraftig og svært tilpasningsdyktig kodeeditor som brukes til å utvikle programvare. VSCode har innebygd støtte for mange forskjellige programmeringsspråk og kan utvides med en rekke utvidelser som gir ekstra funksjonalitet $-$ i tillegg til extentions for feilsøking og debugging, integrasjon med Git og en rekke andre utviklerverktøy.
+Med mindre du er en literal god som har brukt flerfoldige timer på oppsett av [neovim](https://neovim.io/), passer VSCode for deg. Visual Studio Code er en kraftig og svært tilpasningsdyktig kodeeditor som brukes til å utvikle programvare. VSCode har innebygd støtte for mange forskjellige programmeringsspråk og kan utvides med en rekke utvidelser som gir ekstra funksjonalitet $-$ i tillegg til extentions for feilsøking og debugging, integrasjon med Git og en rekke andre utviklerverktøy.
 
 ## Docker
 
