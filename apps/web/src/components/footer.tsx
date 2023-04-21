@@ -29,12 +29,12 @@ const Footer = ({className}: FooterProps) => {
           stroke="none"
           strokeWidth="0"
           fillOpacity="1"
-          className="path-0 bg-secondary fill-secondary transition-all duration-300 delay-150 ease-in-out"
+          className="path-0 bg-wave fill-wave transition-all duration-300 delay-150 ease-in-out"
         ></path>
       </svg>
 
       {/* Footer */}
-      <footer className="bg-secondary px-10 py-10">
+      <footer className="bg-wave px-10 py-10">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
             {footerRoutes.map((route) => {

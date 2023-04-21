@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-#53adbd
-#008fa3
-
-#ffeabb
-#fed879
-*/
-
 @layer base {
   :root {
     --background: #f9fafb;
@@ -30,14 +22,27 @@
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
 
-    --secondary: #ffeabb;
+    --secondary: #fed879;
     --secondary-foreground: #171923;
 
     --accent: #f1f5f9;
     --accent-foreground: #0f172a;
 
-    --destructive: #ff0000;
+    --success: #48bb78;
+    --success-foreground: #f9fafb;
+
+    --destructive: #e53e3e;
     --destructive-foreground: #f9fafb;
+
+    --warning: #f6ad55;
+    --warning-foreground: #171923;
+
+    --info: #3182ce;
+    --info-foreground: #f9fafb;
+
+    --banner: #53adbd;
+
+    --wave: #ffeabb;
 
     --ring: #94a3b8;
 
