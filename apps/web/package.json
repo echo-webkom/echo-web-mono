@@ -43,7 +43,7 @@
     "framer-motion": "10.12.4",
     "next": "13.3.0",
     "next-auth": "^4.22.1",
-    "next-sanity": "4.1.6",
+    "next-sanity": "4.1.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
