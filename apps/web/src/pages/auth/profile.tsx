@@ -5,6 +5,7 @@ import {type GetServerSideProps} from "next/types";
 import {getServerSession} from "@echo-webkom/auth";
 
 import Container from "@/components/container";
+import LoadingComponent from "@/components/page-loader";
 import UserForm from "@/components/user-form";
 import Layout from "@/layouts/layout";
 import {api} from "@/utils/api";
@@ -57,7 +58,7 @@ const ProfilePage = () => {
           {user.data ? (
             <UserForm user={user.data} refetchUser={() => user.refetch} />
           ) : (
-            <p className="text-center text-lg text-neutral-500">Laster inn...</p>
+            <LoadingComponent />
           )}
         </Container>
       </Layout>
