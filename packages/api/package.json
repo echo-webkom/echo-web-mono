@@ -13,13 +13,13 @@
   "dependencies": {
     "@echo-webkom/auth": "0.1.0",
     "@echo-webkom/db": "0.1.0",
-    "@trpc/client": "^10.20.0",
-    "@trpc/server": "^10.20.0",
-    "superjson": "1.12.2",
+    "@trpc/client": "^10.21.1",
+    "@trpc/server": "^10.21.1",
+    "superjson": "1.12.3",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "eslint": "^8.38.0",
+    "eslint": "^8.39.0",
     "eslint-config-custom": "0.0.0",
     "typescript": "^5.0.4"
   }
