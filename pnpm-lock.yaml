@@ -4942,7 +4942,7 @@ packages:
     dependencies:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.3.1(postcss@8.4.23)
-    dev: true
+    dev: false
 
   /@tailwindcss/typography@0.5.9(tailwindcss@3.3.1):
     resolution: {integrity: sha512-t8Sg3DyynFysV9f4JDOVISGsjazNb48AeIYQwcL+Bsq5uf4RYL75C1giZ43KISjeDGBaTN3Kxh7Xj/vRSMJUUg==}
@@ -4954,7 +4954,7 @@ packages:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.3.1(postcss@8.4.23)
-    dev: true
+    dev: false
 
   /@tanem/react-nprogress@5.0.33(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-FjzTSuXuw6+lPguiV4cshT7L2K2JLPqwFT29fuFuusRs+Ps0IlkqycYiY6Dg99GuamBWWm0b1pRiSggXmTj3lQ==}
