@@ -6,6 +6,7 @@ import {useSession} from "next-auth/react";
 
 import {headerRoutes} from "@/lib/routes";
 import {cn} from "@/utils/cn";
+import {Button} from "./ui/button";
 
 type DesktopNavigationProps = {
   className?: string;
@@ -74,7 +75,7 @@ export const DesktopNavigation = ({className}: DesktopNavigationProps) => {
 };
 
 export const MobileNavigation = () => {
-  const {data: userSession} = useSession();
+  const {data: session} = useSession();
 
   return (
     <Accordion.Root
@@ -82,7 +83,7 @@ export const MobileNavigation = () => {
       className="block space-y-1 rounded-md border bg-background p-5 shadow-md lg:hidden"
     >
       {headerRoutes.map((route) => {
-        if (route.session === !userSession) {
+        if (route.session === !session) {
           return null;
         }
 
@@ -128,6 +129,10 @@ export const MobileNavigation = () => {
           </Accordion.Item>
         );
       })}
+
+      <Button fullWidth variant="secondary">
+        Logg ut
+      </Button>
     </Accordion.Root>
   );
 };

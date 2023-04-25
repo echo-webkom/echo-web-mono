@@ -17,33 +17,35 @@ import {isErrorMessage} from "@/utils/error";
 
 type Props = {
   groups: Array<StudentGroup>;
-  type: StudentGroupType;
+  groupType: StudentGroupType;
 };
 
-const SubGroupPage = ({groups, type}: Props) => {
+const SubGroupPage = ({groups, groupType}: Props) => {
   return (
     <>
       <Head>
-        <title>{studentGroupTypeName[type]}</title>
+        <title>{studentGroupTypeName[groupType]}</title>
       </Head>
       <Layout>
         <Container>
-          <h1 className="mb-4 text-4xl font-bold">{studentGroupTypeName[type]}</h1>
+          <h1 className="mb-4 text-4xl font-bold">{studentGroupTypeName[groupType]}</h1>
           <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {groups.map((group) => (
               <li key={group._id}>
                 <Link href={`/for-students/group/${group.slug}`}>
-                  <div className="group flex flex-col gap-3 rounded-lg border p-5">
-                    <h2 className="text-2xl font-bold">{group.name}</h2>
-                    <p className="line-clamp-3 text-slate-700">
-                      {removeMd(group.description?.no ?? "")}
-                    </p>
-                    <p className="flex items-center gap-1 group-hover:underline">
-                      Les mer
-                      <span className="transition-all duration-150 group-hover:pl-1">
-                        <ArrowRightIcon />
-                      </span>
-                    </p>
+                  <div className="group">
+                    <div className="relative flex flex-col gap-3 rounded-lg border p-5 shadow-lg">
+                      <h2 className="text-2xl font-bold">{group.name}</h2>
+                      <p className="line-clamp-3 text-slate-700">
+                        {removeMd(group.description?.no ?? "")}
+                      </p>
+                      <p className="flex items-center gap-1 group-hover:underline">
+                        Les mer
+                        <span className="transition-all duration-150 group-hover:pl-1">
+                          <ArrowRightIcon />
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 </Link>
               </li>
@@ -56,18 +58,18 @@ const SubGroupPage = ({groups, type}: Props) => {
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
-  const types = studentGroupTypes;
+  const groupTypes = studentGroupTypes;
 
   return {
-    paths: types.map((type) => ({params: {type}})),
+    paths: groupTypes.map((groupType) => ({params: {groupType}})),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const type = ctx.params?.type as StudentGroupType;
+  const groupType = ctx.params?.groupType as StudentGroupType;
 
-  const groups = await fetchStudentGroupsByType(type, -1);
+  const groups = await fetchStudentGroupsByType(groupType, -1);
 
   if (isErrorMessage(groups)) {
     return {
@@ -78,7 +80,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       groups,
-      type,
+      groupType,
     },
   };
 };
