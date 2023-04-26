@@ -3,9 +3,11 @@
   "globalDependencies": ["**/.env"],
   "pipeline": {
     "db:generate": {
+      "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
     "db:push": {
+      "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
     "docker:up": {
@@ -17,12 +19,11 @@
     },
     "dev": {
       "dependsOn": ["^db:generate"],
-      "outputs": [".next/**", ".sanity/**", ".docusaurus/**"],
       "persistent": true,
       "cache": false
     },
     "build": {
-      "dependsOn": ["^db:generate"],
+      "dependsOn": ["^build", "^db:generate"],
       "outputs": [".next/**", ".sanity/**", ".docusaurus/**"]
     },
     "start": {
