@@ -23,7 +23,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^buld", "^db:generate"],
+      "dependsOn": ["^build", "^db:generate"],
       "outputs": [".next/**", ".sanity/**", ".docusaurus/**"]
     },
     "start": {
