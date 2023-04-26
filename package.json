@@ -10,13 +10,13 @@
     "tests"
   ],
   "scripts": {
-    "build": "turbo run build --parallel",
-    "dev": "turbo run dev --parallel",
-    "start": "turbo run start --parallel",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
     "clean": "rm -rf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:generate": "turbo run db:generate",
-    "db:push": "turbo db:push db:generate",
+    "db:push": "turbo run db:push db:generate",
     "docker:up": "turbo run docker:up",
     "docker:down": "turbo run docker:down",
     "lint": "turbo run lint && manypkg check",
