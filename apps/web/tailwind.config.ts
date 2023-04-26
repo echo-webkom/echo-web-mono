@@ -1,8 +1,8 @@
-/** @type {import("tailwindcss").Config} */
+import {type Config} from "tailwindcss";
+
 const config = {
   content: ["./src/**/*.tsx"],
-  // @ts-ignore
   presets: [require("@echo-webkom/tailwind-config")],
-};
+} satisfies Config;
 
 module.exports = config;

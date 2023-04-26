@@ -1,9 +1,9 @@
 import Link from "next/link";
-import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 
 import {type Event} from "@/api/event";
+import {cn} from "@/utils/cn";
 import {capitalize} from "@/utils/string";
 
 type EventPreviewProps = {

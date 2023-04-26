@@ -5,7 +5,7 @@ import {MdOutlineFeedback} from "react-icons/md";
 import {z} from "zod";
 
 import {api} from "@/utils/api";
-import Button from "./ui/button";
+import {Button} from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,9 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import {Input} from "./ui/input";
-import {Label} from "./ui/label";
-import {Textarea} from "./ui/textarea";
+import Input from "./ui/input";
+import Label from "./ui/label";
+import Textarea from "./ui/textarea";
 
 const feedbackSchema = z.object({
   email: z.string().email().or(z.literal("")).optional(),
@@ -62,9 +62,9 @@ const Feedback = () => {
       <DialogTrigger asChild>
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-0 right-0 m-5 h-10 w-10 rounded-full bg-echo-blue shadow-md hover:bg-echo-blue2 focus:ring focus:ring-echo-blue2 focus:ring-offset-2 active:scale-95"
+          className="fixed bottom-0 right-0 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
         >
-          <MdOutlineFeedback className="mx-auto mt-auto h-5 w-5 text-white" />
+          <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
         </button>
       </DialogTrigger>
       <DialogContent>
@@ -111,9 +111,7 @@ const Feedback = () => {
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <Label required htmlFor="message">
-                Tilbakemelding
-              </Label>
+              <Label htmlFor="message">Tilbakemelding</Label>
               <Textarea
                 {...methods.register("message")}
                 id="message"
@@ -132,13 +130,14 @@ const Feedback = () => {
             kontakter deg om tilbakemeldingen.
           </small>
           <DialogFooter className="mt-3 flex flex-col gap-2">
-            <Button className="w-full sm:w-auto" type="reset" intent="ghost">
-              Nullstill
-            </Button>
-            <Button className="w-full sm:w-auto" onClick={() => setIsOpen(false)}>
+            <Button
+              className="w-full sm:w-auto"
+              variant="secondary"
+              onClick={() => setIsOpen(false)}
+            >
               Avbryt
             </Button>
-            <Button className="w-full sm:w-auto" type="submit" intent="secondary">
+            <Button className="w-full sm:w-auto" type="submit">
               Send
             </Button>
           </DialogFooter>

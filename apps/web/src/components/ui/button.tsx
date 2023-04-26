@@ -1,66 +1,73 @@
+import * as React from "react";
 import Link, {type LinkProps} from "next/link";
 import {cva, type VariantProps} from "class-variance-authority";
 
+import {cn} from "@/utils/cn";
+
 const buttonVariants = cva(
-  "rounded-md text-black font-bold outline-none focus:ring-2 ring-offset-2 transform active:scale-95 transition-transform",
+  "inline-flex items-center font-semibold justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
   {
     variants: {
-      intent: {
-        primary: "bg-echo-yellow hover:bg-echo-yellow/80",
-        secondary: "bg-echo-blue hover:bg-echo-blue/80 text-white",
-        danger: "bg-red-500 hover:bg-red-400",
-        careful: "bg-yellow-500 hover:bg-yellow-400",
-        good: "bg-green-500 hover:bg-green-400",
-        ghost: "bg-transparent hover:underline",
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary",
       },
       size: {
-        small: ["text-sm", "py-1", "px-2"],
-        medium: ["text-base", "py-2", "px-4"],
-        large: ["text-lg", "py-3", "px-6"],
+        default: "h-10 py-2 px-4",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
       },
       fullWidth: {
         true: "w-full",
-        false: "w-fit",
-      },
-      disabled: {
-        true: "opacity-50 cursor-not-allowed",
-        false: "opacity-100 cursor-pointer",
+        false: "w-auto",
       },
     },
     defaultVariants: {
-      intent: "primary",
-      size: "medium",
-      fullWidth: false,
-      disabled: false,
+      variant: "default",
+      size: "default",
     },
   },
 );
 
-interface ButtonProps
-  extends React.HTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
-}
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
 
-const Button = ({type, className, intent, size, fullWidth, disabled, ...props}: ButtonProps) => {
-  return (
-    <button
-      className={buttonVariants({className, intent, size, fullWidth, disabled})}
-      disabled={disabled ?? false}
-      type={type ?? "button"}
-      {...props}
-    />
-  );
-};
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({className, variant, size, fullWidth, ...props}, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({variant, size, fullWidth, className}))}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
+);
+Button.displayName = "Button";
 
 interface ButtonLinkProps extends LinkProps, VariantProps<typeof buttonVariants> {
   className?: string;
   children: React.ReactNode;
 }
 
-const ButtonLink = ({className, intent, size, fullWidth, ...props}: ButtonLinkProps) => {
-  return <Link className={buttonVariants({className, intent, size, fullWidth})} {...props} />;
-};
+const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
+  ({className, variant, size, fullWidth, children, ...props}, ref) => {
+    return (
+      <Link
+        ref={ref}
+        className={cn(buttonVariants({variant, size, fullWidth, className}))}
+        {...props}
+      >
+        {children}
+      </Link>
+    );
+  },
+);
+ButtonLink.displayName = "ButtonLink";
 
-export default Button;
-export {ButtonLink};
+export {Button, ButtonLink};

@@ -6,6 +6,7 @@ import {getServerSession} from "@echo-webkom/auth";
 
 import Container from "@/components/container";
 import LoadingComponent from "@/components/page-loader";
+import {ButtonLink} from "@/components/ui/button";
 import UserForm from "@/components/user-form";
 import Layout from "@/layouts/layout";
 import {api} from "@/utils/api";
@@ -22,11 +23,11 @@ const ProfilePage = () => {
         <Container className="max-w-xl">
           <div className="flex flex-col gap-3">
             <div>
-              <p className="text-lg text-neutral-500">Navn:</p>
+              <p className="text-lg text-muted-foreground">Navn:</p>
               <p className="text-xl font-bold">{user.data?.name}</p>
             </div>
             <div>
-              <p className="text-lg text-neutral-500">E-post:</p>
+              <p className="text-lg text-muted-foreground">E-post:</p>
               <p className="text-xl font-bold">{user.data?.email}</p>
             </div>
           </div>
@@ -36,6 +37,11 @@ const ProfilePage = () => {
           <h2 className="text-2xl font-bold">Dine arrangementer</h2>
 
           <div className="flex flex-col gap-3">
+            {user.data?.Registration.length === 0 && (
+              <p className="text-lg text-muted-foreground">
+                Du er ikke påmeldt noen arrangementer.
+              </p>
+            )}
             {user.data?.Registration.map((registration) => (
               <div className="flex flex-col gap-2" key={registration.happeningSlug}>
                 <div className="flex items-center justify-between">
@@ -59,6 +65,12 @@ const ProfilePage = () => {
             <UserForm user={user.data} refetchUser={() => user.refetch} />
           ) : (
             <LoadingComponent />
+          )}
+
+          {user.data?.role === "ADMIN" && (
+            <ButtonLink href="/admin" variant="link">
+              Til admin dashboard
+            </ButtonLink>
           )}
         </Container>
       </Layout>

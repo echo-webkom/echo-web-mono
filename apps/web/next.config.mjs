@@ -10,7 +10,12 @@ import NextBundleAnalyzer from "@next/bundle-analyzer";
 const config = {
   reactStrictMode: true,
 
-  transpilePackages: ["@echo-webkom/api", "@echo-webkom/auth", "@echo-webkom/db"],
+  transpilePackages: [
+    "@echo-webkom/api",
+    "@echo-webkom/auth",
+    "@echo-webkom/db",
+    "@echo-webkom/tailwind-config",
+  ],
 
   images: {
     domains: ["cdn.sanity.io"],

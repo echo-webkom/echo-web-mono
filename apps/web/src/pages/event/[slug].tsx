@@ -5,7 +5,7 @@ import {fetchEventBySlug, type Event} from "@/api/event";
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
-import Button from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import Layout from "@/layouts/layout";
 import {api} from "@/utils/api";
 import {norwegianDateString} from "@/utils/date";

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import cn from "classnames";
+
+import {cn} from "@/utils/cn";
 
 const DefaultSeparator = () => <span className="text-gray-400">/</span>;
 

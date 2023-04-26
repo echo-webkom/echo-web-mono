@@ -17,7 +17,7 @@ const FourOhFour = () => {
           width="600"
           className="mx-auto rounded-md"
         />
-        <ButtonLink fullWidth href="/">
+        <ButtonLink variant="secondary" fullWidth href="/">
           Ta meg til forsiden
         </ButtonLink>
       </Container>

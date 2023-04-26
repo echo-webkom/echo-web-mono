@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import cn from "classnames";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 
 import {jobTypeToString, type JobAd} from "@/api/job-ad";
+import {cn} from "@/utils/cn";
 
 type JobAdPreviewProps = {
   jobAd: JobAd;

@@ -1,5 +1,6 @@
 import * as React from "react";
-import cn from "classnames";
+
+import {cn} from "@/utils/cn";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -18,4 +19,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({className, ...pro
 });
 Input.displayName = "Input";
 
-export {Input};
+export default Input;

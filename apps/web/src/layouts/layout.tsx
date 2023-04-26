@@ -11,7 +11,7 @@ type LayoutProps = {
 const Layout = ({children}: LayoutProps) => {
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-white">
+      <div className="flex min-h-screen flex-col">
         <Header />
         <main className="my-10">{children}</main>
         <Feedback />

@@ -3,8 +3,8 @@ import {Controller, useForm} from "react-hook-form";
 import {type Degree, type User} from "@echo-webkom/db/types";
 
 import {api} from "@/utils/api";
-import Button from "./ui/button";
-import {Input} from "./ui/input";
+import {Button} from "./ui/button";
+import Input from "./ui/input";
 import {
   Select,
   SelectContent,

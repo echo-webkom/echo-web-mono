@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import cn from "classnames";
 import {getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday} from "date-fns";
 import {nb} from "date-fns/locale";
+
+import {cn} from "@/utils/cn";
 
 const randomHeaderMessage = () => {
   const now = new Date();
