@@ -6,7 +6,6 @@ import job from "./job-ad";
 import location from "./location";
 import meetingMinute from "./meeting-minute";
 import contactProfile from "./objects/contact-profile";
-import {localeMarkdown, localeString} from "./objects/locale";
 import question from "./objects/question";
 import registrationDates from "./objects/registration-dates";
 import spotRange from "./objects/spot-range";
@@ -30,7 +29,5 @@ export const schemaTypes = [
   spotRange,
   contactProfile,
   question,
-  localeString,
-  localeMarkdown,
   registrationDates,
 ];

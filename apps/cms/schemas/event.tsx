@@ -114,7 +114,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "localeMarkdown",
+      type: "markdown",
     }),
   ],
 });

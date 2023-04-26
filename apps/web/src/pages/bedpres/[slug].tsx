@@ -23,7 +23,7 @@ const BedpresPage = ({bedpres}: Props) => {
 
         <article className="prose md:prose-xl">
           <h1>{bedpres.title}</h1>
-          <Markdown content={bedpres.body?.no ?? ""} />
+          <Markdown content={bedpres.body ?? ""} />
         </article>
       </Container>
     </Layout>

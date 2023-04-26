@@ -36,20 +36,14 @@ export const fetchPosts = async (n: number): Promise<Array<Post> | ErrorMessage>
   _id,
   _createdAt,
   _updatedAt,
-  "title": title {
-    no,
-    en,
-  },
+  title,
   "slug": slug.current,
   "authors": authors[]->{
     _id,
     name,
   },
   "imageUrl": image.asset->url,
-  "body": body {
-    no,
-    en,
-  }
+  body
 }
       `;
 
@@ -78,20 +72,14 @@ export const fetchPostBySlug = async (slug: string): Promise<Post | ErrorMessage
   _id,
   _createdAt,
   _updatedAt,
-  "title": title {
-    no,
-    en,
-  },
+  title,
   "slug": slug.current,
   "authors": authors[]->{
     _id,
     name,
   },
   "imageUrl": image.asset->url,
-  "body": body {
-    no,
-    en,
-  }
+  body
 }[0]
       `;
 

@@ -32,7 +32,7 @@ const StudentGroupPage = ({group}: StudentGroupPageProps) => {
 
           <article className="prose md:prose-xl">
             <h1>{group.name}</h1>
-            <Markdown content={group.description?.no ?? ""} />
+            <Markdown content={group.description ?? ""} />
           </article>
 
           {/* TODO: Render group members */}

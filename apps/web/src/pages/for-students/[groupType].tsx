@@ -37,7 +37,7 @@ const SubGroupPage = ({groups, groupType}: Props) => {
                     <div className="relative flex flex-col gap-3 rounded-lg border p-5 shadow-lg">
                       <h2 className="text-2xl font-bold">{group.name}</h2>
                       <p className="line-clamp-3 text-slate-700">
-                        {removeMd(group.description?.no ?? "")}
+                        {removeMd(group.description ?? "")}
                       </p>
                       <p className="flex items-center gap-1 group-hover:underline">
                         Les mer

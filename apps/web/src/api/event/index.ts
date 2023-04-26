@@ -76,10 +76,7 @@ export const fetchComingEvents = async (n: number): Promise<Array<Event> | Error
     type,
     options,
   },
-  "body": body {
-    no,
-    en,
-  }
+  body
 }
     `;
 
@@ -138,10 +135,7 @@ export const fetchEventBySlug = async (slug: string): Promise<Event | ErrorMessa
     type,
     options,
   },
-  "body": body {
-    no,
-    en,
-  }
+  body
 }[0]
     `;
 
@@ -199,10 +193,7 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
     type,
     options,
   },
-  "body": body {
-    no,
-    en,
-  }
+  body
 }
     `;
 

@@ -31,10 +31,7 @@ export const fetchStaticInfoBySlug = async (slug: string): Promise<StaticInfo | 
   title,
   "slug": slug.current,
   pageType,
-  "body": body {
-    no,
-    en,
-  },
+  body
 }[0]
       `;
 

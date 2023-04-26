@@ -16,7 +16,7 @@ interface Props {
 }
 
 const PostPage = ({post}: Props) => {
-  const seoTitle = `Innlegg - ${capitalize(post.title.no)}`;
+  const seoTitle = `Innlegg - ${capitalize(post.title)}`;
 
   return (
     <>
@@ -28,7 +28,7 @@ const PostPage = ({post}: Props) => {
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
             <Breadcrumbs.Item to={`/for-students/post`}>Innlegg</Breadcrumbs.Item>
-            <Breadcrumbs.Item>{post.title.no}</Breadcrumbs.Item>
+            <Breadcrumbs.Item>{post.title}</Breadcrumbs.Item>
           </Breadcrumbs>
 
           <p className="text-gray-500">
@@ -39,9 +39,9 @@ const PostPage = ({post}: Props) => {
           </p>
 
           <article className="prose md:prose-xl">
-            <h1>{post.title.no}</h1>
+            <h1>{post.title}</h1>
             <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
-            <Markdown content={post.body.no} />
+            <Markdown content={post.body} />
           </article>
         </Container>
       </Layout>

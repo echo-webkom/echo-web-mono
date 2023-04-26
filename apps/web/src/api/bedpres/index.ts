@@ -51,10 +51,7 @@ export const fetchUpcomingBedpresses = async (
     type,
     options,
   },
-  "body": body {
-    no,
-    en,
-  }
+  body
 }
     `;
 

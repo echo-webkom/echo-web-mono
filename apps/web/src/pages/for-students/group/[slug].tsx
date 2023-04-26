@@ -52,7 +52,7 @@ const SubGroupPage = ({group}: Props) => {
           )}
 
           <article className="prose md:prose-xl">
-            <Markdown content={group.description?.no ?? ""} />
+            <Markdown content={group.description ?? ""} />
           </article>
 
           <div className="mx-auto my-5 flex items-center gap-2">

@@ -107,7 +107,7 @@ const HomePage = ({
                         )}
                       >
                         <h3 className="line-clamp-2 flex gap-2 text-2xl font-semibold">
-                          {post.title.no}
+                          {post.title}
                         </h3>
                         <p>
                           Publisert:{" "}
@@ -116,7 +116,7 @@ const HomePage = ({
                           })}
                         </p>
                         <hr />
-                        <p className="line-clamp-4 italic">{removeMd(post.body.no)}</p>
+                        <p className="line-clamp-4 italic">{removeMd(post.body)}</p>
                         <p>Skrevet av: {post.authors.map((author) => author.name).join(", ")}</p>
                       </div>
                     </Link>

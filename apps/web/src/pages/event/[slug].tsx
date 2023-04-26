@@ -121,7 +121,7 @@ const EventPage = ({event}: Props) => {
 
             <article className="prose md:prose-xl lg:col-span-3">
               <h1>{event.title}</h1>
-              <Markdown content={event.body?.no ?? ""} />
+              <Markdown content={event.body ?? ""} />
             </article>
           </div>
         </Container>
