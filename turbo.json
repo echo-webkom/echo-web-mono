@@ -19,12 +19,11 @@
     },
     "dev": {
       "dependsOn": ["^db:generate"],
-      "outputs": [".next/**", ".sanity/**", ".docusaurus/**"],
       "persistent": true,
       "cache": false
     },
     "build": {
-      "dependsOn": ["^db:generate"],
+      "dependsOn": ["^buld", "^db:generate"],
       "outputs": [".next/**", ".sanity/**", ".docusaurus/**"]
     },
     "start": {
