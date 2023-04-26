@@ -21,9 +21,9 @@ const PostsPage = ({posts}: Props) => {
           {posts.map((post) => (
             <li key={post._id}>
               <div className="flex h-full flex-col rounded-md border p-5">
-                <h2 className="break-words text-3xl font-bold">{post.title.no}</h2>
+                <h2 className="break-words text-3xl font-bold">{post.title}</h2>
                 <hr className="my-1" />
-                <article className="my-3">{removeMd(post.body.no).slice(0, 300)}...</article>
+                <article className="my-3">{removeMd(post.body).slice(0, 300)}...</article>
                 <Link
                   href={`/for-students/post/${post.slug}`}
                   className="mt-auto flex-shrink font-bold text-blue-500 hover:underline"

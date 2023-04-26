@@ -2,7 +2,6 @@ import {z} from "zod";
 
 import {companySchema} from "../company";
 import {locationSchema} from "../location";
-import {localeMarkdownSchema} from "../utils/locale";
 
 export const degreeYearsSchema = z.object({
   FIRST: z.boolean().transform((v) => (v ? 1 : false)),
@@ -27,6 +26,6 @@ export const jobAdSchema = z.object({
   link: z.string(),
   deadline: z.string(),
   degreeYears: degreeYearsSchema.transform((v) => Object.values(v).filter(Boolean)),
-  body: localeMarkdownSchema,
+  body: z.string(),
 });
 export type JobAd = z.infer<typeof jobAdSchema>;

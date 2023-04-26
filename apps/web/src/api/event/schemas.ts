@@ -3,7 +3,6 @@ import {z} from "zod";
 import {locationSchema} from "../location";
 import {contactProfileSchema} from "../profile/schemas";
 import {studentGroupSchema} from "../student-group";
-import {localeMarkdownSchema} from "../utils/locale";
 import {questionSchema} from "../utils/question";
 import {spotRangeSchema} from "../utils/spot-range";
 
@@ -21,7 +20,7 @@ export const eventSchema = z.object({
   location: locationSchema.pick({name: true}).nullable(),
   spotRanges: spotRangeSchema.array().nullable(),
   additionalQuestions: questionSchema.array().nullable(),
-  body: localeMarkdownSchema.nullable(),
+  body: z.string().nullable(),
 });
 
 export type Event = z.infer<typeof eventSchema>;

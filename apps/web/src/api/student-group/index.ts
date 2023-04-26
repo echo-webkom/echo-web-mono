@@ -67,10 +67,7 @@ export const fetchStudentGroupsByType = async (
   name,
   groupType,
   "slug": slug.current,
-  "description": description {
-    no,
-    en,
-  },
+  description,
   image,
   "members": members[] {
     role,
@@ -120,10 +117,7 @@ export const fetchStudentGroupBySlug = async (
   name,
   groupType,
   "slug": slug.current,
-  "description": description {
-    no,
-    en,
-  },
+  description,
   image,
   "members": members[] {
     role,

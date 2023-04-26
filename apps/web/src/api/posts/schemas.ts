@@ -1,12 +1,10 @@
 import {z} from "zod";
 
-import {localeMarkdownSchema, localeStringSchema} from "../utils/locale";
-
 export const postSchema = z.object({
   _id: z.string(),
   _createdAt: z.string(),
   _updatedAt: z.string(),
-  title: localeStringSchema,
+  title: z.string(),
   slug: z.string(),
   authors: z
     .object({
@@ -15,6 +13,6 @@ export const postSchema = z.object({
     })
     .array(),
   imageUrl: z.string().nullable(),
-  body: localeMarkdownSchema,
+  body: z.string(),
 });
 export type Post = z.infer<typeof postSchema>;

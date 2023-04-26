@@ -27,7 +27,7 @@ const StaticPage = ({page}: Props) => {
 
           <article className="prose md:prose-xl">
             <h1>{page.title}</h1>
-            <Markdown content={page.body.no} />
+            <Markdown content={page.body} />
           </article>
         </Container>
       </Layout>

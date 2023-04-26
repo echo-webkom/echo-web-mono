@@ -3,7 +3,6 @@ import {z} from "zod";
 import {companySchema} from "../company";
 import {locationSchema} from "../location";
 import {contactProfileSchema} from "../profile/schemas";
-import {localeMarkdownSchema} from "../utils/locale";
 import {questionSchema} from "../utils/question";
 import {spotRangeSchema} from "../utils/spot-range";
 
@@ -21,6 +20,6 @@ export const bedpresSchema = z.object({
   location: locationSchema.pick({name: true}).nullable(),
   spotRanges: spotRangeSchema.array().nullable(),
   additionalQuestions: questionSchema.array().nullable(),
-  body: localeMarkdownSchema.nullable(),
+  body: z.string().nullable(),
 });
 export type Bedpres = z.infer<typeof bedpresSchema>;

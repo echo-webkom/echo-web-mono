@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: "title",
       title: "Tittel",
-      type: "localeString",
+      type: "string",
     }),
     defineField({
       name: "slug",
@@ -38,7 +38,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "localeMarkdown",
+      type: "markdown",
     }),
   ],
 

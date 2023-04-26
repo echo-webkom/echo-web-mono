@@ -93,7 +93,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Brødtekst",
-      type: "localeMarkdown",
+      type: "markdown",
       validation: (Rule) => Rule.required(),
     }),
   ],

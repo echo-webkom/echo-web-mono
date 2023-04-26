@@ -34,7 +34,7 @@ const JobAdPage = ({jobAd}: Props) => {
 
           <div className="prose md:prose-xl">
             <h1>{jobAd.title}</h1>
-            <Markdown content={jobAd.body.no} />
+            <Markdown content={jobAd.body} />
           </div>
 
           {/* Floater */}

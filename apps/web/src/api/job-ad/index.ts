@@ -60,10 +60,7 @@ export const fetchJobAds = async (n: number): Promise<Array<JobAd> | ErrorMessag
   link,
   deadline,
   degreeYears,
-  "body": body {
-    no,
-    en,
-  }
+  body
 }[0..$n]
       `;
 
@@ -106,10 +103,7 @@ export const fetchJobAdBySlug = async (slug: string): Promise<JobAd | ErrorMessa
   link,
   deadline,
   degreeYears,
-  "body": body {
-    no,
-    en,
-  }
+  body
 }[0]
       `;
 
