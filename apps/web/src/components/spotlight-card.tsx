@@ -17,6 +17,7 @@ const SpotlightCard = ({hoverColor = "#fed879", children}: SpotlightCardProps) =
     mouseY.set(clientY - top);
   }
 
+  // TODO: Use variables for the colors
   return (
     <div className="group relative rounded-xl border shadow-2xl" onMouseMove={handleMouseMove}>
       <motion.div
