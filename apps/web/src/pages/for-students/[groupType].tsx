@@ -12,6 +12,7 @@ import {
   type StudentGroupType,
 } from "@/api/student-group";
 import Container from "@/components/container";
+import SpotlightCard from "@/components/spotlight-card";
 import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
@@ -33,8 +34,8 @@ const SubGroupPage = ({groups, groupType}: Props) => {
             {groups.map((group) => (
               <li key={group._id}>
                 <Link href={`/for-students/group/${group.slug}`}>
-                  <div className="group">
-                    <div className="relative flex flex-col gap-3 rounded-lg border p-5 shadow-lg">
+                  <SpotlightCard>
+                    <div className="flex flex-col gap-3 p-5">
                       <h2 className="text-2xl font-bold">{group.name}</h2>
                       <p className="line-clamp-3 text-slate-700">
                         {removeMd(group.description ?? "")}
@@ -46,7 +47,7 @@ const SubGroupPage = ({groups, groupType}: Props) => {
                         </span>
                       </p>
                     </div>
-                  </div>
+                  </SpotlightCard>
                 </Link>
               </li>
             ))}
