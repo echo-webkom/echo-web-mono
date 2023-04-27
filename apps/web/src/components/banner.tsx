@@ -1,13 +1,13 @@
 import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
-import {type Banner} from "@/api/banner/schemas";
+import {type Banner} from "@/api/settings/schemas";
 
-type BannerProps = {
+type WebsiteBannerProps = {
   banner: Banner | null;
 };
 
-const WebsiteBanner = ({banner}: BannerProps) => {
+const WebsiteBanner = ({banner}: WebsiteBannerProps) => {
   if (!banner) {
     return null;
   }
@@ -28,7 +28,7 @@ const WebsiteBanner = ({banner}: BannerProps) => {
           </span>
         </Link>
       ) : (
-        banner.title
+        <h3>{banner.title}</h3>
       )}
     </div>
   );
