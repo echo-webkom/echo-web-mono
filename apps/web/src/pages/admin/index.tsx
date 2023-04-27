@@ -1,9 +1,7 @@
-import {type GetServerSideProps} from "next";
 import Head from "next/head";
 
-import {getServerSession} from "@echo-webkom/auth";
-
 import AdminLayout from "@/layouts/admin";
+import {withAdminCheck} from "@/lib/checks/with-admin-auth";
 
 const AdminPage = () => {
   return (
@@ -19,23 +17,10 @@ const AdminPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getServerSession(ctx);
-
-  if (session?.user.role !== "ADMIN") {
-    return {
-      redirect: {
-        destination: "/auth/sign-in",
-        permanent: false,
-      },
-    };
-  }
-
+export const getServerSideProps = withAdminCheck(() => {
   return {
-    props: {
-      session,
-    },
+    props: {},
   };
-};
+});
 
 export default AdminPage;

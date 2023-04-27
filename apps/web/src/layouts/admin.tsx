@@ -24,7 +24,7 @@ const AdminLayout = ({children}: AdminLayoutProps) => {
       <div className="flex min-h-screen flex-col">
         <Header />
         <div className="flex">
-          <aside className="left-0 top-0 z-40 w-64 -translate-x-full border-r transition-transform sm:translate-x-0">
+          <aside className="sm:max-w-24 left-0 top-0 z-40 w-0 -translate-x-full border-r transition-transform sm:w-full sm:translate-x-0">
             <div className="h-full overflow-y-auto bg-gray-50 px-3 py-4">
               <ul className="flex flex-col gap-3">
                 {adminRoutes.map((route) => (
