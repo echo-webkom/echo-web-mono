@@ -12,7 +12,7 @@ export const bedpresSchema = z.object({
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  company: companySchema.pick({_id: true, name: true, imageUrl: true, website: true}),
+  company: companySchema.pick({_id: true, name: true, image: true, website: true}),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   registrationStart: z.string().nullable(),

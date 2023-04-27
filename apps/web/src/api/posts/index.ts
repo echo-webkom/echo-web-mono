@@ -42,7 +42,7 @@ export const fetchPosts = async (n: number): Promise<Array<Post> | ErrorMessage>
     _id,
     name,
   },
-  "imageUrl": image.asset->url,
+  image,
   body
 }
       `;
@@ -78,7 +78,7 @@ export const fetchPostBySlug = async (slug: string): Promise<Post | ErrorMessage
     _id,
     name,
   },
-  "imageUrl": image.asset->url,
+  image,
   body
 }[0]
       `;

@@ -1,12 +1,12 @@
 import {type GetStaticPaths, type GetStaticProps} from "next";
 import Head from "next/head";
-import Link from "next/link";
 import {format} from "date-fns";
 
 import {fetchJobAdBySlug, fetchJobAdPaths, jobTypeToString, type JobAd} from "@/api/job-ad";
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
+import {ButtonLink} from "@/components/ui/button";
 import Layout from "@/layouts/layout";
 import {isErrorMessage} from "@/utils/error";
 
@@ -38,7 +38,7 @@ const JobAdPage = ({jobAd}: Props) => {
           </div>
 
           {/* Floater */}
-          <div className="my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-sm shadow-black 2xl:my-0 2xl:w-[500px]">
+          <div className="my-5 flex h-fit w-full flex-col gap-5 rounded-lg border bg-[#fff] px-5 py-5 shadow-2xl 2xl:my-0 2xl:w-[500px]">
             <div>
               <p className="font-sm text-gray-600">Selskap:</p>
               <p className="text-3xl font-bold">{jobAd.company.name}</p>
@@ -62,14 +62,9 @@ const JobAdPage = ({jobAd}: Props) => {
               <p className="text-3xl font-bold">{jobTypeToString[jobAd.jobType]}</p>
             </div>
             <div className="mt-5 flex flex-col text-center">
-              <Link
-                className="bg-echo-yellow w-full rounded-md px-3 py-3 font-bold"
-                href={jobAd.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <ButtonLink variant="secondary" href={jobAd.link} isExternal>
                 Til søknad
-              </Link>
+              </ButtonLink>
             </div>
           </div>
         </Container>

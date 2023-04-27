@@ -5,7 +5,7 @@ import Layout from "@/layouts/layout";
 const WebkomPage = () => {
   return (
     <Layout>
-      <div className="text-center text-lg">
+      <div className="px-3 text-center text-lg">
         <Image
           className="mx-auto"
           src="/images/webkom.png"

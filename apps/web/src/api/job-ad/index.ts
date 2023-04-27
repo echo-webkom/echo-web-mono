@@ -7,6 +7,7 @@ import {jobAdSchema, type JobAd, type JobType} from "./schemas";
 
 export * from "./schemas";
 
+// TODO: Move to @/lib
 export const jobTypeToString: Record<JobType, string> = {
   fulltime: "Fulltid",
   parttime: "Deltid",
@@ -50,7 +51,7 @@ export const fetchJobAds = async (n: number): Promise<Array<JobAd> | ErrorMessag
     _id,
     name,
     website,
-    "imageUrl": image.asset->url,
+    image,
   },
   "locations": locations[]->{
     _id,
@@ -93,7 +94,7 @@ export const fetchJobAdBySlug = async (slug: string): Promise<JobAd | ErrorMessa
     _id,
     name,
     website,
-    "imageUrl": image.asset->url,
+    image,
   },
   "locations": locations[]->{
     _id,

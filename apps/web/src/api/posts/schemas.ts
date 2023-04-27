@@ -1,5 +1,7 @@
 import {z} from "zod";
 
+import {imageSchema} from "../utils/image";
+
 export const postSchema = z.object({
   _id: z.string(),
   _createdAt: z.string(),
@@ -12,7 +14,7 @@ export const postSchema = z.object({
       name: z.string(),
     })
     .array(),
-  imageUrl: z.string().nullable(),
+  image: imageSchema.nullable(),
   body: z.string(),
 });
 export type Post = z.infer<typeof postSchema>;
