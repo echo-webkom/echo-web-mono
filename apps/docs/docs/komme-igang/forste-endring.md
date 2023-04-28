@@ -86,14 +86,14 @@ Du kan bruke `git status` for å se hvilke filer som er endret, og hvilke filer 
 
 ## Push endringene dine
 
-Når du har commited endringene dine, må du pushe dem til GitHub. Dette gjør du ved å bruke kommandoen `git push`. Denne kommandoen tar inn to argumenter, navnet på remote og navnet på branchen du vil pushe til. For å pushe til `main` branchen på `origin` remote kan du bruke kommandoen `git push origin main`.
+Når du har commited endringene dine, må du pushe dem til GitHub. Dette gjør du ved å bruke kommandoen `git push`. Denne kommandoen tar inn to argumenter, navnet på remote og navnet på branchen du vil pushe til. For å pushe til `main` branchen på `origin` remote kan du bruke kommandoen `git push origin main`. I vårt tilfelle vil vi pushe til branchen `andreas/make-title-bigger` på `origin` remote, så vi kan bruke kommandoen `git push origin andreas/make-title-bigger`. Første gang du pusher til en branch må du bruke kommandoen `git push --set-upstream origin <branch-navn>`. Du kan også bruke kommandoen `git push -u origin <branch-navn>`, som er en forkortelse for kommandoen før.
 
 :::note Merk
 `origin` er i dette tilfellet GitHub repositoryet.
 :::
 
 ```sh title="Terminal"
-git push origin main
+git push -u origin andreas/make-title-bigger
 ```
 
 ## Lage en PR
