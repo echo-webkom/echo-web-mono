@@ -10,7 +10,7 @@ export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;
 
 export const memberSchema = z.object({
   role: z.string(),
-  profile: profileSchema.pick({_id: true, name: true, imageUrl: true, socials: true}),
+  profile: profileSchema.pick({_id: true, name: true, image: true, socials: true}),
 });
 
 export type Member = z.infer<typeof memberSchema>;

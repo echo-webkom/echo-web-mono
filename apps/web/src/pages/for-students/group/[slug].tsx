@@ -113,7 +113,7 @@ const SubGroupPage = ({group}: Props) => {
                       <Avatar className="overflow-hidden border">
                         <motion.div variants={verticalStaggeredChildren}>
                           <AvatarImage
-                            src={member.profile.imageUrl ?? ""}
+                            src={member.profile.image ? urlFor(member.profile.image).url() : ""}
                             alt={`${member.profile.name} profilbilde`}
                           />
                         </motion.div>

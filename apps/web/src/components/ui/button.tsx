@@ -53,14 +53,16 @@ Button.displayName = "Button";
 interface ButtonLinkProps extends LinkProps, VariantProps<typeof buttonVariants> {
   className?: string;
   children: React.ReactNode;
+  isExternal?: boolean;
 }
 
 const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({className, variant, size, fullWidth, children, ...props}, ref) => {
+  ({className, variant, size, fullWidth, children, isExternal = false, ...props}, ref) => {
     return (
       <Link
         ref={ref}
         className={cn(buttonVariants({variant, size, fullWidth, className}))}
+        {...(isExternal ? {target: "_blank", rel: "noopener noreferrer"} : {})}
         {...props}
       >
         {children}

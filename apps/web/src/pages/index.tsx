@@ -20,6 +20,7 @@ import Layout from "@/layouts/layout";
 import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {cn} from "@/utils/cn";
 import {isErrorMessage} from "@/utils/error";
+import {urlFor} from "@/utils/image-builder";
 
 const HomePage = ({
   events,
@@ -163,7 +164,7 @@ const HomePage = ({
                       <Avatar className="overflow-hidden border">
                         <motion.div variants={verticalStaggeredChildren}>
                           <AvatarImage
-                            src={member.profile.imageUrl ?? ""}
+                            src={member.profile.image ? urlFor(member.profile.image).url() : ""}
                             alt={`${member.profile.name} profilbilde`}
                           />
                         </motion.div>

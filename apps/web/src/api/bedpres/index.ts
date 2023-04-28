@@ -25,7 +25,7 @@ export const fetchUpcomingBedpresses = async (
     _id,
     name,
     website,
-    "imageUrl": image.asset->url,
+    image,
   },
   "contacts": contacts[] {
     email,
@@ -85,7 +85,7 @@ export const fetchBedpresBySlug = async (slug: string): Promise<Bedpres | ErrorM
     _id,
     name,
     website,
-    "imageUrl": image.asset->url,
+    image,
   },
   "contacts": contacts[] {
     email,
@@ -147,7 +147,7 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
     _id,
     name,
     website,
-    "imageUrl": image.asset->url,
+    image,
   },
   "contacts": contacts[] {
     email,
