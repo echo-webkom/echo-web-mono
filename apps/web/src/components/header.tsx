@@ -3,8 +3,8 @@ import {useRouter} from "next/router";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 import {signIn, signOut, useSession} from "next-auth/react";
 
-import {fetchBanner} from "@/api/banner";
-import {type Banner} from "@/api/banner/schemas";
+import {fetchBanner} from "@/api/settings";
+import {type Banner} from "@/api/settings/schemas";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
 import {DesktopNavigation, MobileNavigation} from "./navigation";
