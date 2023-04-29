@@ -28,19 +28,37 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 Først forventer vi at du har installert alle "dependencies" og lagt til `.env` slik det er vist under.
 
-1. Last ned "dependencies"
-
-   ```sh
-   pnpm install
-   ```
-
-2. Kopier `.env.example` til `.env`
+1. Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.
 
    ```sh
    cp .env.example .env
    ```
 
-3. Start utviklingsmiljøet
+2. Last ned "dependencies"
+
+   ```sh
+   pnpm install
+   ```
+
+3. Start databasen
+
+   ```sh
+   pnpm docker:up
+   ```
+
+4. Generer prisma typer
+
+   ```sh
+   pnpm db:generate
+   ```
+
+5. Initialiser databasen
+
+   ```sh
+   pnpm db:push
+   ```
+
+6. Start utviklingsmiljøet
 
    ```sh
     pnpm dev
