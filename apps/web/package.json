@@ -37,7 +37,7 @@
     "@trpc/react-query": "^10.21.1",
     "@trpc/server": "^10.21.1",
     "@types/remove-markdown": "0.3.1",
-    "class-variance-authority": "0.5.2",
+    "class-variance-authority": "0.5.3",
     "clsx": "^1.2.1",
     "date-fns": "2.29.3",
     "framer-motion": "10.12.4",
