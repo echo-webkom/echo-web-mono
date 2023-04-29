@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {Tooltip} from "@radix-ui/react-tooltip";
 import {useForm} from "react-hook-form";
 import {MdOutlineFeedback} from "react-icons/md";
 import {z} from "zod";
@@ -18,6 +19,7 @@ import {
 import Input from "./ui/input";
 import Label from "./ui/label";
 import Textarea from "./ui/textarea";
+import {TooltipContent, TooltipProvider, TooltipTrigger} from "./ui/tooltip";
 
 const feedbackSchema = z.object({
   email: z.string().email().or(z.literal("")).optional(),
@@ -60,12 +62,21 @@ const Feedback = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-0 right-0 z-30 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
-        >
-          <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => setIsOpen(true)}
+                className="fixed bottom-0 right-0 z-30 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
+              >
+                <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Send tilbakemelding</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
