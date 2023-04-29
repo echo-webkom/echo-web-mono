@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 
 const WebkomPage = () => {
   return (
-    <Layout>
-      <div className="px-3 text-center text-lg">
+    <DefaultLayout>
+      <div className="text-center text-lg">
         <Image
           className="mx-auto"
           src="/images/webkom.png"
@@ -41,7 +41,7 @@ const WebkomPage = () => {
           </ul>
         </div>
       </div>
-    </Layout>
+    </DefaultLayout>
   );
 };
 
