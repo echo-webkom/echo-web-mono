@@ -5,6 +5,7 @@ import nb from "date-fns/locale/nb";
 
 import {jobTypeToString, type JobAd} from "@/api/job-ad";
 import {cn} from "@/utils/cn";
+import {urlFor} from "@/utils/image-builder";
 
 type JobAdPreviewProps = {
   jobAd: JobAd;
@@ -22,7 +23,11 @@ const JobAdPreview = ({jobAd}: JobAdPreviewProps) => {
       >
         <div className="hidden md:block">
           <div className="relative h-32 w-32 overflow-hidden rounded-full border bg-[#FFF]">
-            <Image src={jobAd.company.imageUrl} alt={`${jobAd.company.name} logo`} fill />
+            <Image
+              src={urlFor(jobAd.company.image).url()}
+              alt={`${jobAd.company.name} logo`}
+              fill
+            />
           </div>
         </div>
         <div className="flex w-full flex-col gap-1 overflow-x-hidden">

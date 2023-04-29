@@ -5,6 +5,7 @@ import nb from "date-fns/locale/nb";
 
 import {type Bedpres} from "@/api/bedpres";
 import {cn} from "@/utils/cn";
+import {urlFor} from "@/utils/image-builder";
 
 type BedpresPreviewProps = {
   bedpres: Bedpres;
@@ -16,7 +17,11 @@ const BedpresPreviewBox = ({bedpres}: BedpresPreviewProps) => {
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-neutral-100")}>
         <div className="overflow-hidden rounded-full border">
           <div className="relative aspect-square h-20 w-20">
-            <Image src={bedpres.company.imageUrl} alt={`${bedpres.company.name} logo`} fill />
+            <Image
+              src={urlFor(bedpres.company.image).url()}
+              alt={`${bedpres.company.name} logo`}
+              fill
+            />
           </div>
         </div>
         <div className="overflow-x-hidden">

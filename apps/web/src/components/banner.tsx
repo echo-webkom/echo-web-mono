@@ -1,19 +1,19 @@
 import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
-import {type Banner} from "@/api/banner/schemas";
+import {type Banner} from "@/api/settings/schemas";
 
-type BannerProps = {
+type WebsiteBannerProps = {
   banner: Banner | null;
 };
 
-const WebsiteBanner = ({banner}: BannerProps) => {
+const WebsiteBanner = ({banner}: WebsiteBannerProps) => {
   if (!banner) {
     return null;
   }
 
   return (
-    <div className="text-md flex justify-center bg-banner px-5 py-3 font-bold md:text-lg">
+    <div className="text-md z-30 flex justify-center bg-banner px-5 py-3 font-bold md:text-lg">
       {banner.link ? (
         <Link
           href={banner.link}
@@ -28,7 +28,7 @@ const WebsiteBanner = ({banner}: BannerProps) => {
           </span>
         </Link>
       ) : (
-        banner.title
+        <h3>{banner.title}</h3>
       )}
     </div>
   );

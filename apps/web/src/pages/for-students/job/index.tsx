@@ -29,7 +29,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
                   <div className="flex flex-col gap-3 overflow-hidden rounded-md border bg-slate-200 md:flex-row">
                     <div>
                       <Image
-                        src={urlFor(job.company.imageUrl).width(600).height(350).url()}
+                        src={urlFor(job.company.image).width(600).height(350).url()}
                         alt={`${job.company.name} logo`}
                         width={600}
                         height={350}

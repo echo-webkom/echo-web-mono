@@ -1,9 +1,11 @@
 import {z} from "zod";
 
+import {imageSchema} from "../utils/image";
+
 export const profileSchema = z.object({
   _id: z.string(),
   name: z.string(),
-  imageUrl: z.string().nullable(),
+  image: imageSchema.nullable(),
   socials: z
     .object({
       email: z.string().optional(),

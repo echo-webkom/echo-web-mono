@@ -1,19 +1,28 @@
 import {RobotIcon, RocketIcon, TerminalIcon} from "@sanity/icons";
 import {visionTool} from "@sanity/vision";
-import {defineConfig, type Config} from "sanity";
 import {markdownSchema} from "sanity-plugin-markdown";
 import {media} from "sanity-plugin-media";
 import {deskTool} from "sanity/desk";
 
 import {schemaTypes} from "./schemas";
+import {deskStructure} from "./src/desk-structure";
+
+// TODO: Type configs using `Config` and or `defineConfig()`
 
 const defaultConfig = {
-  plugins: [deskTool(), visionTool(), media(), markdownSchema()],
+  plugins: [
+    deskTool({
+      structure: (S) => deskStructure(S),
+    }),
+    visionTool(),
+    media(),
+    markdownSchema(),
+  ],
   schema: {types: schemaTypes},
   projectId: "nnumy1ga",
 };
 
-const prodConfig = defineConfig({
+const prodConfig = {
   ...defaultConfig,
 
   name: "production",
@@ -22,9 +31,9 @@ const prodConfig = defineConfig({
 
   basePath: "/prod",
   dataset: "production",
-});
+};
 
-const devConfig = defineConfig({
+const devConfig = {
   ...defaultConfig,
 
   name: "develop",
@@ -33,9 +42,9 @@ const devConfig = defineConfig({
 
   basePath: "/dev",
   dataset: "develop",
-});
+};
 
-const testConfig = defineConfig({
+const testConfig = {
   ...defaultConfig,
 
   name: "testing",
@@ -44,9 +53,9 @@ const testConfig = defineConfig({
 
   basePath: "/test",
   dataset: "testing",
-});
+};
 
-const getConfigs = (): Array<Config> => {
+const getConfigs = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (import.meta.env.DEV) {
     return [prodConfig, devConfig, testConfig];

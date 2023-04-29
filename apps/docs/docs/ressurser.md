@@ -1,7 +1,3 @@
----
-sidebar_position: 999
----
-
 # Gode ressurser
 
 ## Programmering
