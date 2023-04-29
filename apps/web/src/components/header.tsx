@@ -76,6 +76,7 @@ const Header = () => {
                   <HeaderMenuItem href="/event">Arrangementer</HeaderMenuItem>
                   <HeaderMenuItem href="/for-students/subgroup">Undergrupper</HeaderMenuItem>
                   <HeaderMenuItem href="/for-students/post">Innlegg</HeaderMenuItem>
+                  {session && <HeaderMenuItem href="/auth/profile">Min profil</HeaderMenuItem>}
                 </ul>
               </div>
 
