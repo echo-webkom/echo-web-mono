@@ -1,5 +1,6 @@
 import {type InferGetServerSidePropsType} from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import {format} from "date-fns";
 import {nb} from "date-fns/locale";
@@ -47,19 +48,32 @@ const HomePage = ({
                   transition={{
                     duration: 0.25,
                   }}
-                  className="text-center text-3xl font-semibold"
+                  className="text-center text-3xl font-semibold hover:underline"
                 >
                   Arrangementer
                 </motion.h2>
               </Link>
               <hr />
-              <ul className="flex h-full flex-col items-stretch divide-y overflow-hidden">
-                {events.map((event) => (
-                  <li key={event._id}>
-                    <EventPreviewBox event={event} />
-                  </li>
-                ))}
-              </ul>
+              {events.length > 0 ? (
+                <ul className="flex h-full flex-col items-stretch divide-y overflow-hidden">
+                  {events.map((event) => (
+                    <li key={event._id}>
+                      <EventPreviewBox event={event} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <Image
+                    className="rounded-lg"
+                    src="/gif/fresh-prince-room.gif"
+                    width={300}
+                    height={300}
+                    alt="Empty room fresh prince"
+                  />
+                  <p className="sr-only">Ingen kommende arrangementer</p>
+                </div>
+              )}
             </section>
           )}
 
@@ -73,19 +87,32 @@ const HomePage = ({
                   transition={{
                     duration: 0.25,
                   }}
-                  className="text-center text-3xl font-semibold"
+                  className="text-center text-3xl font-semibold hover:underline"
                 >
                   Bedriftspresentasjoner
                 </motion.h2>
               </Link>
               <hr />
-              <ul className="flex h-full flex-col justify-between divide-y">
-                {bedpresses.map((bedpres) => (
-                  <li key={bedpres._id}>
-                    <BedpresPreviewBox bedpres={bedpres} />
-                  </li>
-                ))}
-              </ul>
+              {bedpresses.length > 0 ? (
+                <ul className="flex h-full flex-col justify-between divide-y">
+                  {bedpresses.map((bedpres) => (
+                    <li key={bedpres._id}>
+                      <BedpresPreviewBox bedpres={bedpres} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <Image
+                    className="rounded-lg"
+                    src="/gif/empty-shelves-john-travolta.gif"
+                    width={300}
+                    height={300}
+                    alt="Empty shelves John Travolta"
+                  />
+                  <p className="sr-only">Ingen kommende bedriftspresentasjoner</p>
+                </div>
+              )}
             </section>
           )}
 
