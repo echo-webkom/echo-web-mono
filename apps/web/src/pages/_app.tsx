@@ -5,6 +5,7 @@ import {SessionProvider} from "next-auth/react";
 
 import {api} from "@/utils/api";
 import "@/styles/globals.css";
+import TailwindIndicator from "@/components/tailwind-indicator";
 import {Toaster} from "@/components/toaster";
 
 const inter = Inter({
@@ -39,9 +40,10 @@ const MyApp: AppType<{session: Session | null}> = ({
           }
         `}
       </style>
-      <Toaster />
       <SessionProvider session={session}>
         <Component {...pageProps} />
+        <Toaster />
+        <TailwindIndicator />
       </SessionProvider>
     </>
   );

@@ -11,17 +11,7 @@ export type RouteSection = {
   session?: boolean;
 };
 
-export type NavItem = Route | RouteSection;
-
-export const headerRoutes: Array<NavItem> = [
-  {
-    label: "Hjem",
-    href: "/",
-  },
-  {
-    label: "Arrangementer",
-    href: "/event",
-  },
+export const headerRoutes: Array<RouteSection> = [
   {
     label: "For studenter",
     sublinks: [
@@ -108,11 +98,6 @@ export const headerRoutes: Array<NavItem> = [
         label: "Bekk",
       },
     ],
-  },
-  {
-    href: "/auth/profile",
-    label: "Profil",
-    session: true,
   },
 ];
 
