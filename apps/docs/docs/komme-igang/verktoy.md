@@ -8,9 +8,19 @@ sidebar_position: 2
 
 Git er et distribuert versjonskontrollsystem som brukes til å administrere kodebasen til et prosjekt. Med Git kan flere utviklere samarbeide om samme kodebase og holde styr på endringer som er gjort over tid. Det er enkelt å lage nye branches (_grener_), merge endringer og reverte (_rulle tilbake_) til tidligere, fungerende versjoner av koden hvis det oppstår problemer.
 
-## VSCode
+## VS Code
 
-Med mindre du er en literal god som har brukt flerfoldige timer på oppsett av [neovim](https://neovim.io/), passer VSCode for deg. Visual Studio Code er en kraftig og svært tilpasningsdyktig kodeeditor som brukes til å utvikle programvare. VSCode har innebygd støtte for mange forskjellige programmeringsspråk og kan utvides med en rekke utvidelser som gir ekstra funksjonalitet $-$ i tillegg til extentions for feilsøking og debugging, integrasjon med Git og en rekke andre utviklerverktøy.
+Med mindre du er en literal god som har brukt flerfoldige timer på oppsett av [neovim](https://neovim.io/), passer VS Code for deg. Visual Studio Code er en kraftig og svært tilpasningsdyktig kodeeditor som brukes til å utvikle programvare. VS Code har innebygd støtte for mange forskjellige programmeringsspråk og kan utvides med en rekke utvidelser som gir ekstra funksjonalitet i tillegg til extentions for feilsøking og debugging, integrasjon med Git og en rekke andre utviklerverktøy.
+
+### Utvidelser
+
+Vi anbefaler å installere følgende utvidelser for VS Code:
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - Linter for JavaScript og TypeScript
+- [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) - Utvidelse for Prisma
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Formatter for JavaScript, TypeScript og mer
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) - IntelliSense for Tailwind CSS
+- [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) - Utvidelse for Playwright
 
 ## Docker
 
