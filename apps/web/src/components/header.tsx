@@ -43,17 +43,17 @@ const Header = () => {
       <WebsiteBanner banner={banner} />
 
       {/* HeaderRoot */}
-      <header className="relative z-30 flex w-full flex-col bg-background">
+      <header className="relative flex w-full flex-col bg-background">
         {/* HeaderOverlay */}
         {isOpen && (
           <div
-            className="fixed left-0 top-0 h-full w-full bg-black bg-opacity-20 backdrop-blur-sm"
+            className="fixed left-0 top-0 z-[1] h-full w-full bg-black bg-opacity-20 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
         )}
 
         {/* Header */}
-        <div className="z-20 flex items-center justify-between bg-background px-5 py-5 md:px-10">
+        <div className="z-30 flex items-center justify-between bg-background px-5 py-5 md:px-10">
           <div className="h-14 w-14">
             <HeaderLogo />
           </div>
