@@ -13,7 +13,7 @@ const WebsiteBanner = ({banner}: WebsiteBannerProps) => {
   }
 
   return (
-    <div className="text-md flex justify-center bg-banner px-5 py-3 font-bold md:text-lg">
+    <div className="text-md z-30 flex justify-center bg-banner px-5 py-3 font-bold md:text-lg">
       {banner.link ? (
         <Link
           href={banner.link}
