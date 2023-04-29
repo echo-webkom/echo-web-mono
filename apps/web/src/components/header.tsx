@@ -1,13 +1,14 @@
 import {useEffect, useState} from "react";
 import Link from "next/link";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
-import {signIn, signOut, useSession} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 
 import {fetchBanner} from "@/api/settings";
 import {type Banner} from "@/api/settings/schemas";
 import {headerRoutes} from "@/lib/routes";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
+import ProfileIcon from "./profile-icon";
 import {Button} from "./ui/button";
 
 const Header = () => {
@@ -28,14 +29,6 @@ const Header = () => {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleSession = () => {
-    if (session) {
-      void signOut();
-    } else {
-      void signIn();
-    }
   };
 
   return (
@@ -59,9 +52,13 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-5">
-            <Button variant="outline" onClick={handleSession}>
-              {session ? "Logg ut" : "Logg inn"}
-            </Button>
+            {session ? (
+              <ProfileIcon session={session} />
+            ) : (
+              <Button onClick={() => void signIn()} variant="link">
+                Logg inn
+              </Button>
+            )}
 
             <button type="button" onClick={handleToggle}>
               {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
