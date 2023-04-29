@@ -59,4 +59,12 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  ::-moz-selection {
+    background: var(--wave);
+  }
+
+  ::selection {
+    background: var(--wave);
+  }
 }

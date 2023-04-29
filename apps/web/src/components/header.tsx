@@ -1,76 +1,119 @@
 import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import Link from "next/link";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 import {signIn, signOut, useSession} from "next-auth/react";
 
 import {fetchBanner} from "@/api/settings";
 import {type Banner} from "@/api/settings/schemas";
+import {headerRoutes} from "@/lib/routes";
 import WebsiteBanner from "./banner";
 import HeaderLogo from "./header-logo";
-import {DesktopNavigation, MobileNavigation} from "./navigation";
 import {Button} from "./ui/button";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [banner, setBanner] = useState<Banner | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const {pathname} = useRouter();
   const {data: session} = useSession();
 
   useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+    const updateBanner = async () => {
+      const newBanner = await fetchBanner();
 
-  useEffect(() => {
-    const setBannerMessage = async () => {
-      const banner = await fetchBanner();
-      setBanner(banner);
+      setBanner(newBanner);
     };
 
-    void setBannerMessage();
-  }, []);
+    void updateBanner();
+  });
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSession = () => {
+    if (session) {
+      void signOut();
+    } else {
+      void signIn();
+    }
+  };
 
   return (
-    <div className="z-30 w-full bg-background">
+    <>
       <WebsiteBanner banner={banner} />
 
-      <header className="flex w-full items-center justify-between bg-inherit px-5 py-3 lg:px-10">
-        <div className="h-14 w-14">
-          <HeaderLogo />
+      {/* HeaderRoot */}
+      <header className="relative z-30 flex w-full flex-col bg-background">
+        {/* HeaderOverlay */}
+        {isOpen && (
+          <div
+            className="fixed left-0 top-0 h-full w-full bg-black bg-opacity-20 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+
+        {/* Header */}
+        <div className="z-20 flex items-center justify-between bg-background px-5 py-5 md:px-10">
+          <div className="h-14 w-14">
+            <HeaderLogo />
+          </div>
+
+          <div className="flex items-center gap-5">
+            <Button variant="outline" onClick={handleSession}>
+              {session ? "Logg ut" : "Logg inn"}
+            </Button>
+
+            <button type="button" onClick={handleToggle}>
+              {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
+              {isOpen && <Cross2Icon className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
-        <button
-          className="block lg:hidden"
-          type="button"
-          onClick={() => setIsOpen((current) => !current)}
-        >
-          {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
-          {isOpen && <Cross2Icon className="h-6 w-6" />}
-        </button>
+        {/* HeaderMenu */}
+        <div className="relative">
+          {isOpen && (
+            <div className="absolute z-20 w-full bg-background px-5 pb-20 pt-14">
+              <div className="mx-auto max-w-5xl">
+                <ul className="flex flex-col items-start gap-5 text-2xl font-bold md:flex-row md:items-center">
+                  <HeaderMenuItem href="/event">Arrangementer</HeaderMenuItem>
+                  <HeaderMenuItem href="/for-students/subgroup">Undergrupper</HeaderMenuItem>
+                  <HeaderMenuItem href="/for-students/post">Innlegg</HeaderMenuItem>
+                </ul>
+              </div>
 
-        <div className="hidden lg:block">
-          <DesktopNavigation />
-        </div>
+              <hr className="my-10" />
 
-        <div className="hidden lg:block">
-          {session ? (
-            <Button onClick={() => void signOut()} variant="outline">
-              Logg ut
-            </Button>
-          ) : (
-            <Button onClick={() => void signIn()} variant="outline">
-              Logg inn
-            </Button>
+              <div className="flex flex-col gap-10">
+                {headerRoutes.map((route) => (
+                  <div key={route.label} className="mx-auto w-full max-w-5xl">
+                    <h3 className="mb-3 text-2xl font-bold">{route.label}</h3>
+                    <ul className="flex flex-wrap items-center gap-8 text-lg font-medium">
+                      {route.sublinks.map((subRoute) => (
+                        <HeaderMenuItem key={subRoute.label} href={subRoute.href}>
+                          {subRoute.label}
+                        </HeaderMenuItem>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
+        <hr />
       </header>
+    </>
+  );
+};
 
-      {isOpen && (
-        <div className="absolute z-10 mx-auto w-full px-1 py-3 sm:px-3">
-          <MobileNavigation />
-        </div>
-      )}
-    </div>
+const HeaderMenuItem = ({children, href}: {children: React.ReactNode; href: string}) => {
+  return (
+    <li>
+      <Link className="hover:underline" href={href}>
+        {children}
+      </Link>
+    </li>
   );
 };
 
