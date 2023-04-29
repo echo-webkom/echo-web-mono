@@ -148,3 +148,18 @@ export const footerRoutes: Array<RouteSection> = [
     ],
   },
 ];
+
+export const adminRoutes: Array<Route> = [
+  {
+    label: "Dashboard",
+    href: "/admin",
+  },
+  {
+    label: "Tilbakemeldinger",
+    href: "/admin/feedback",
+  },
+  {
+    label: "Brukere",
+    href: "/admin/users",
+  },
+];

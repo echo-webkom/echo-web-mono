@@ -4,7 +4,7 @@ import {fetchBedpresBySlug, type Bedpres} from "@/api/bedpres";
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const BedpresPage = ({bedpres}: Props) => {
   return (
-    <Layout>
+    <DefaultLayout>
       <Container>
         <Breadcrumbs>
           <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -26,7 +26,7 @@ const BedpresPage = ({bedpres}: Props) => {
           <Markdown content={bedpres.body ?? ""} />
         </article>
       </Container>
-    </Layout>
+    </DefaultLayout>
   );
 };
 

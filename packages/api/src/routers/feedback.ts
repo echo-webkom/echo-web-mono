@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-import {createTRPCRouter, publicProcedure} from "../trpc";
+import {adminProcedure, createTRPCRouter, publicProcedure} from "../trpc";
 
 export const feedbackRouter = createTRPCRouter({
   create: publicProcedure
@@ -20,4 +20,12 @@ export const feedbackRouter = createTRPCRouter({
         },
       });
     }),
+
+  getAll: adminProcedure.query(async ({ctx}) => {
+    return await ctx.prisma.siteFeedback.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
 });

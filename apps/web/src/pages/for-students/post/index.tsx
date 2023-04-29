@@ -4,7 +4,7 @@ import removeMd from "remove-markdown";
 
 import {fetchPosts, type Post} from "@/api/posts";
 import Container from "@/components/container";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 
 const PostsPage = ({posts}: Props) => {
   return (
-    <Layout>
+    <DefaultLayout>
       <Container>
         <h1 className="mb-3 text-4xl font-bold md:text-6xl">Innlegg</h1>
 
@@ -35,7 +35,7 @@ const PostsPage = ({posts}: Props) => {
           ))}
         </ul>
       </Container>
-    </Layout>
+    </DefaultLayout>
   );
 };
 

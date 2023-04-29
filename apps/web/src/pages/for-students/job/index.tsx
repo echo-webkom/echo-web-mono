@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import {fetchJobAds, type JobAd} from "@/api/job-ad";
 import Container from "@/components/container";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 import {urlFor} from "@/utils/image-builder";
 
@@ -19,7 +19,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
       <Head>
         <title>Stillingsannonser</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <h1 className="mb-3 text-4xl font-bold">Stillingsannonser</h1>
           <ul className="flex flex-col gap-10">
@@ -46,7 +46,7 @@ const JobAdsOverviewPage = ({jobs}: Props) => {
             ))}
           </ul>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 import {studentGroupTypeName, type StudentGroup} from "@/api/student-group";
-import Layout from "../layouts/layout";
+import DefaultLayout from "../layouts/default";
 import Container from "./container";
 import Markdown from "./markdown";
 import Breadcrumbs from "./ui/breadcrumbs";
@@ -20,7 +20,7 @@ const StudentGroupPage = ({group}: StudentGroupPageProps) => {
           {title} - {group.name}
         </title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -37,7 +37,7 @@ const StudentGroupPage = ({group}: StudentGroupPageProps) => {
 
           {/* TODO: Render group members */}
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

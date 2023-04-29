@@ -28,6 +28,7 @@
 - [Radix UI Docs](https://www.radix-ui.com/docs/primitives/overview/getting-started)
 - [TailwindCSS Docs](https://tailwindcss.com/docs/installation)
 - [TailwindCSS Cheatsheet](https://nerdcave.com/tailwind-cheat-sheet)
+- [Flowbite](https://flowbite.com/)
 
 ## YouTubere
 

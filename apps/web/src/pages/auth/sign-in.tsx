@@ -3,7 +3,7 @@ import {getProviders, getSession, signIn} from "next-auth/react";
 
 import Container from "@/components/container";
 import {Button} from "@/components/ui/button";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 
 type Props = {
   providers: Awaited<ReturnType<typeof getProviders>>;
@@ -11,7 +11,7 @@ type Props = {
 
 const LoginPage = ({providers}: Props) => {
   return (
-    <Layout>
+    <DefaultLayout>
       <Container>
         {providers ? (
           <>
@@ -40,7 +40,7 @@ const LoginPage = ({providers}: Props) => {
           </div>
         )}
       </Container>
-    </Layout>
+    </DefaultLayout>
   );
 };
 
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: "/profile",
+        destination: "/auth/profile",
         permanent: false,
       },
     };

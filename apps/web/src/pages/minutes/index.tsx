@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 const TITLE = "Møtereferater";
@@ -27,7 +27,7 @@ const MinutesPage = ({minutes}: Props) => {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <h1 className="mb-5 text-4xl font-bold md:text-6xl">{TITLE}</h1>
           {years.map((year) => (
@@ -65,7 +65,7 @@ const MinutesPage = ({minutes}: Props) => {
             </Accordion>
           ))}
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

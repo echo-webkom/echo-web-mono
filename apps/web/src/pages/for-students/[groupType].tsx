@@ -12,7 +12,7 @@ import {
   type StudentGroupType,
 } from "@/api/student-group";
 import Container from "@/components/container";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 type Props = {
@@ -26,7 +26,7 @@ const SubGroupPage = ({groups, groupType}: Props) => {
       <Head>
         <title>{studentGroupTypeName[groupType]}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <h1 className="mb-4 text-4xl font-bold">{studentGroupTypeName[groupType]}</h1>
           <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -52,7 +52,7 @@ const SubGroupPage = ({groups, groupType}: Props) => {
             ))}
           </ul>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };
