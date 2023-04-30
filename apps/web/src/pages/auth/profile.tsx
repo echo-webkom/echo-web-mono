@@ -61,11 +61,8 @@ const ProfilePage = () => {
 
           <hr className="my-4" />
 
-          {user.data ? (
-            <UserForm user={user.data} refetchUser={() => user.refetch} />
-          ) : (
-            <LoadingComponent />
-          )}
+          {user.isLoading && <LoadingComponent />}
+          {user.data && <UserForm user={user.data} refetchUser={() => user.refetch} />}
 
           {user.data?.role === "ADMIN" && (
             <ButtonLink href="/admin" variant="link">
