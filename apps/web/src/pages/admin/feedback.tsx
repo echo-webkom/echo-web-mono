@@ -13,9 +13,7 @@ const AdminPage = () => {
       <Head>
         <title>Admin</title>
       </Head>
-      <AdminLayout>
-        <h1 className="text-3xl font-bold">Tilbakemeldinger</h1>
-
+      <AdminLayout title="Tilbakemeldinger">
         <div className="mt-5">
           {feedback.isLoading && <p>Laster...</p>}
 

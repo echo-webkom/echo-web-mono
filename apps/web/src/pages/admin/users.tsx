@@ -12,9 +12,7 @@ const AdminPage = () => {
       <Head>
         <title>Admin</title>
       </Head>
-      <AdminLayout>
-        <h1 className="text-3xl font-bold">Brukere</h1>
-
+      <AdminLayout title="Brukere">
         <div className="mt-5">
           {users.isLoading && <p>Laster...</p>}
 

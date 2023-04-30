@@ -9,8 +9,7 @@ const AdminPage = () => {
       <Head>
         <title>Admin</title>
       </Head>
-      <AdminLayout>
-        <h1 className="text-3xl font-bold">Admin</h1>
+      <AdminLayout title="Admin Dashboard">
         <p>På denne siden kan du se informasjon om brukere og se tilbakemeldinger.</p>
       </AdminLayout>
     </>
