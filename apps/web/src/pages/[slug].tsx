@@ -5,7 +5,7 @@ import {fetchStaticInfoBySlug, fetchStaticInfoPaths, type StaticInfo} from "@/ap
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 type Props = {
@@ -18,7 +18,7 @@ const StaticPage = ({page}: Props) => {
       <Head>
         <title>{page.title}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -30,7 +30,7 @@ const StaticPage = ({page}: Props) => {
             <Markdown content={page.body} />
           </article>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

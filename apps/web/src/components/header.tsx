@@ -46,24 +46,26 @@ const Header = () => {
         )}
 
         {/* Header */}
-        <div className="z-30 flex items-center justify-between bg-background px-5 py-5 md:px-10">
-          <div className="h-14 w-14">
-            <HeaderLogo />
-          </div>
+        <div className="z-30 bg-background">
+          <div className="z-30 mx-auto flex w-full max-w-7xl items-center justify-between bg-background px-5 py-5 md:px-10 ">
+            <div className="h-14 w-14">
+              <HeaderLogo />
+            </div>
 
-          <div className="flex items-center gap-5">
-            {session ? (
-              <ProfileIcon session={session} />
-            ) : (
-              <Button onClick={() => void signIn()} variant="link">
-                Logg inn
-              </Button>
-            )}
+            <div className="flex items-center gap-5">
+              {session ? (
+                <ProfileIcon session={session} />
+              ) : (
+                <Button onClick={() => void signIn()} variant="link">
+                  Logg inn
+                </Button>
+              )}
 
-            <button type="button" onClick={handleToggle}>
-              {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
-              {isOpen && <Cross2Icon className="h-6 w-6" />}
-            </button>
+              <button type="button" onClick={handleToggle}>
+                {!isOpen && <HamburgerMenuIcon className="h-6 w-6" />}
+                {isOpen && <Cross2Icon className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
 

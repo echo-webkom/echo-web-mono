@@ -4,8 +4,6 @@ tRPC (typed-rpc) er et rammeverk for å utvikle RPC (Remote Procedure Call)-tjen
 
 For å bruke tRPC, må du definere tjenestene dine ved hjelp av tRPC API-grensesnittet. Dette gjøres ved å definere queries og mutations, og angi hva slags input og output hver tjeneste forventer.
 
-Vi bruker routers til å organisere tjenestene våre. Hver router kan ha sine egne queries og mutations, og du kan bruke andre routers som under-routers.
-
 Et eksempel på en tjeneste som returnerer "Hei, [Ditt navn]!" kan se slik ut:
 
 ```tsx title="packages/api/src/routers/string.ts"

@@ -125,7 +125,7 @@ const UserForm = ({user, refetchUser}: UserFormProps) => {
       </div>
       <div className="flex gap-3">
         <Button type="submit" disabled={!methods.formState.isDirty}>
-          Lagre
+          {userMutation.isLoading ? "Lagrer..." : "Lagre"}
         </Button>
       </div>
     </form>

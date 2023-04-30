@@ -6,7 +6,7 @@ import {fetchMinuteBySlug, fetchMinutesPaths, type Minute} from "@/api/minutes";
 import Container from "@/components/container";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import {ButtonLink} from "@/components/ui/button";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {
@@ -19,7 +19,7 @@ const MinutePage = ({minute}: Props) => {
       <Head>
         <title>{`Møtereferat - ${format(new Date(minute.date), "dd.MM.yyyy")}`}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -34,7 +34,7 @@ const MinutePage = ({minute}: Props) => {
 
           <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

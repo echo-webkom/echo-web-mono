@@ -7,7 +7,7 @@ import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import {ButtonLink} from "@/components/ui/button";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 
 interface Props {
@@ -21,7 +21,7 @@ const JobAdPage = ({jobAd}: Props) => {
         <title>Stillingsannonse - {jobAd.title}</title>
       </Head>
 
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -68,7 +68,7 @@ const JobAdPage = ({jobAd}: Props) => {
             </div>
           </div>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

@@ -4,11 +4,11 @@ import Feedback from "@/components/feedback";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 
-type LayoutProps = {
+type DefaultLayoutProps = {
   children: ReactNode;
 };
 
-const Layout = ({children}: LayoutProps) => {
+const DefaultLayout = ({children}: DefaultLayoutProps) => {
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -21,4 +21,4 @@ const Layout = ({children}: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default DefaultLayout;

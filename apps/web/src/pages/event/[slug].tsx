@@ -6,7 +6,7 @@ import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import {Button} from "@/components/ui/button";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {api} from "@/utils/api";
 import {norwegianDateString} from "@/utils/date";
 import {isErrorMessage} from "@/utils/error";
@@ -65,7 +65,7 @@ const EventPage = ({event}: Props) => {
       <Head>
         <title>echo | {event.title}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -125,7 +125,7 @@ const EventPage = ({event}: Props) => {
             </article>
           </div>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

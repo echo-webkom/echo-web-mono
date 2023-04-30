@@ -144,7 +144,7 @@ model SiteFeedback {
   updatedAt DateTime @updatedAt
   name      String?
   email     String?
-  message   String
-  comment   String?
+  message   String   @db.Text
+  comment   String?  @db.Text
   isRead    Boolean  @default(false)
 }

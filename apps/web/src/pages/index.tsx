@@ -17,7 +17,7 @@ import Container from "@/components/container";
 import EventPreviewBox from "@/components/event-preview";
 import JobAdPreview from "@/components/jobad-preview";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {cn} from "@/utils/cn";
 import {isErrorMessage} from "@/utils/error";
@@ -36,7 +36,7 @@ const HomePage = ({
         <title>echo – Linjeforeningen for informatikk</title>
       </Head>
 
-      <Layout>
+      <DefaultLayout>
         <Container className="mx-auto grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
           {/* Events  */}
           {!isErrorMessage(events) && (
@@ -213,7 +213,7 @@ const HomePage = ({
             </section>
           )}
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

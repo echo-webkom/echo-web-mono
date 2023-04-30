@@ -16,7 +16,7 @@ import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {staggeredListContainer, verticalStaggeredChildren} from "@/utils/animations/helpers";
 import {isErrorMessage} from "@/utils/error";
 import {urlFor} from "@/utils/image-builder";
@@ -33,7 +33,7 @@ const SubGroupPage = ({group}: Props) => {
       <Head>
         <title>{`${title} - ${group.name}`}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -155,7 +155,7 @@ const SubGroupPage = ({group}: Props) => {
             </div>
           )}
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };

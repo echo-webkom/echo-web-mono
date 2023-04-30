@@ -8,7 +8,7 @@ import Container from "@/components/container";
 import LoadingComponent from "@/components/page-loader";
 import {ButtonLink} from "@/components/ui/button";
 import UserForm from "@/components/user-form";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {api} from "@/utils/api";
 
 const ProfilePage = () => {
@@ -19,7 +19,7 @@ const ProfilePage = () => {
       <Head>
         <title>Profil</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container className="max-w-xl">
           <div className="flex flex-col gap-3">
             <div>
@@ -73,7 +73,7 @@ const ProfilePage = () => {
             </ButtonLink>
           )}
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/signin",
+        destination: "/auth/sign-in",
         permanent: false,
       },
     };

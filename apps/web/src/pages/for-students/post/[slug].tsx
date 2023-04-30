@@ -7,7 +7,7 @@ import {fetchPostBySlug, fetchPostPaths, type Post} from "@/api/posts";
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
-import Layout from "@/layouts/layout";
+import DefaultLayout from "@/layouts/default";
 import {isErrorMessage} from "@/utils/error";
 import {capitalize} from "@/utils/string";
 
@@ -23,7 +23,7 @@ const PostPage = ({post}: Props) => {
       <Head>
         <title>{seoTitle}</title>
       </Head>
-      <Layout>
+      <DefaultLayout>
         <Container>
           <Breadcrumbs>
             <Breadcrumbs.Item to="/">Hjem</Breadcrumbs.Item>
@@ -44,7 +44,7 @@ const PostPage = ({post}: Props) => {
             <Markdown content={post.body} />
           </article>
         </Container>
-      </Layout>
+      </DefaultLayout>
     </>
   );
 };
