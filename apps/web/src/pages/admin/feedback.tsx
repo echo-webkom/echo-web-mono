@@ -18,7 +18,7 @@ const AdminPage = () => {
           {feedback.isLoading && <p>Laster...</p>}
 
           {feedback.isSuccess && (
-            <ul className="grid w-full max-w-7xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
               {feedback.data.map((feedback) => (
                 <li
                   key={feedback.id}
@@ -28,13 +28,20 @@ const AdminPage = () => {
                     <p className="text-xs text-muted-foreground">
                       {norwegianDateString(feedback.createdAt)}
                     </p>
+                    <h3 className="font-medium">Fra: {feedback.name ?? "Ikke oppgit"}</h3>
+                    <p className="text-sm font-medium text-muted-foreground">{feedback.email}</p>
 
-                    <h3>Fra: {feedback.name ?? "Ikke oppgit"}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{feedback.email}</p>
+                    <hr className="my-3" />
 
-                    <div className="mt-4">
+                    <div>
                       <p className="break-words text-sm text-muted-foreground">
-                        {feedback.message}
+                        {/* Show line breaks */}
+                        {feedback.message.split("\n").map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            <br />
+                          </span>
+                        ))}
                       </p>
                     </div>
                   </div>
