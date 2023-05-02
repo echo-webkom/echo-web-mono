@@ -74,7 +74,7 @@ const Header = () => {
           {isOpen && (
             <div className="absolute z-20 w-full bg-background px-5 pb-20 pt-14">
               <div className="mx-auto max-w-5xl">
-                <ul className="flex flex-col items-start gap-5 text-2xl font-bold md:flex-row md:items-center">
+                <ul className="flex flex-col items-start justify-between gap-5 text-2xl font-bold md:flex-row md:items-center">
                   <HeaderMenuItem href="/event">Arrangementer</HeaderMenuItem>
                   <HeaderMenuItem href="/for-students/subgroup">Undergrupper</HeaderMenuItem>
                   <HeaderMenuItem href="/for-students/post">Innlegg</HeaderMenuItem>

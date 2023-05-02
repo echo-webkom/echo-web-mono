@@ -2,6 +2,7 @@ import {Controller, useForm} from "react-hook-form";
 
 import {type Degree, type User} from "@echo-webkom/db/types";
 
+import {useToast} from "@/hooks/use-toast";
 import {api} from "@/utils/api";
 import {Button} from "./ui/button";
 import Input from "./ui/input";
@@ -28,14 +29,24 @@ type UserFormProps = {
 };
 
 const UserForm = ({user, refetchUser}: UserFormProps) => {
+  const {toast} = useToast();
+
   const userMutation = api.auth.update.useMutation({
     onSuccess: () => {
-      alert("Profilen din er oppdatert!");
+      toast({
+        title: "Profil oppdatert",
+        description: "Din profil har blitt oppdatert.",
+        variant: "success",
+      });
       void methods.reset();
       void refetchUser();
     },
-    onError: (err) => {
-      alert(err);
+    onError: () => {
+      toast({
+        title: "Noe gikk galt",
+        description: "Fikk ikke til å oppdatere profilen din",
+        variant: "warning",
+      });
     },
   });
 
@@ -56,7 +67,7 @@ const UserForm = ({user, refetchUser}: UserFormProps) => {
       });
     },
     (err) => {
-      alert(err);
+      console.error(err);
     },
   );
 

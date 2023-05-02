@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import {MdOutlineFeedback} from "react-icons/md";
 import {z} from "zod";
 
+import {useToast} from "@/hooks/use-toast";
 import {api} from "@/utils/api";
 import {Button} from "./ui/button";
 import {
@@ -29,6 +30,8 @@ const feedbackSchema = z.object({
 type FormValues = z.infer<typeof feedbackSchema>;
 
 const Feedback = () => {
+  const {toast} = useToast();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const methods = useForm<FormValues>({
@@ -39,10 +42,18 @@ const Feedback = () => {
     onSuccess: () => {
       setIsOpen(false);
       methods.reset();
-      alert("Takk for tilbakemeldingen!");
+      toast({
+        title: "Tilbakemelding sendt",
+        description: "Takk for din tilbakemelding!",
+        variant: "success",
+      });
     },
     onError: () => {
-      alert("Noe gikk galt, prøv igjen senere.");
+      toast({
+        title: "Noe gikk galt",
+        description: "Fikk ikke til å sende tilbakemeldingen din",
+        variant: "warning",
+      });
     },
   });
 
