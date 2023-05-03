@@ -7,10 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL")
-  directUrl         = env("POSTGRES_URL_NON_POOLING")
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -123,6 +121,7 @@ model Registration {
   happeningSlug String
   happening     Happening          @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade)
   status        RegistrationStatus
+  reason        String?
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
 
@@ -131,12 +130,31 @@ model Registration {
   @@index([userId])
 }
 
+enum QuestionType {
+  TEXT
+  CHOICE
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  title         String
+  required      Boolean
+  type          QuestionType
+  options       String[]
+  Happening     Happening?   @relation(fields: [happeningSlug], references: [slug])
+  happeningSlug String?
+
+  @@index([happeningSlug])
+}
+
 model Happening {
   slug              String         @id @unique
   type              HappeningType
   spotRanges        SpotRange[]
   registrations     Registration[]
   date              DateTime?
+  title             String
+  questions         Question[]
   registrationStart DateTime?
   registrationEnd   DateTime?
 }

@@ -51,7 +51,7 @@ const ProfilePage = () => {
                     }`}
                     className="text-lg font-bold hover:underline"
                   >
-                    {registration.happening.slug}
+                    {registration.happening.title}
                   </Link>
                   <p>{registration.status}</p>
                 </div>

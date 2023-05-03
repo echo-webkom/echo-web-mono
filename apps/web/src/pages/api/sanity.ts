@@ -20,6 +20,15 @@ const updateOrCreate = async (
         create: {
           slug: happening.slug,
           type,
+          title: happening.title,
+          questions: {
+            create: happening.additionalQuestions?.map((question) => ({
+              title: question.title,
+              type: question.type === "text" ? "TEXT" : "CHOICE",
+              required: question.required,
+              options: question.options ?? [],
+            })),
+          },
           spotRanges: {
             create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
               minDegreeYear,
@@ -32,12 +41,22 @@ const updateOrCreate = async (
           registrationEnd: happening.registrationEnd,
         },
         update: {
+          title: happening.title,
           spotRanges: {
             deleteMany: {},
             create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
               minDegreeYear,
               maxDegreeYear,
               spots,
+            })),
+          },
+          questions: {
+            deleteMany: {},
+            create: happening.additionalQuestions?.map((question) => ({
+              title: question.title,
+              type: question.type === "text" ? "TEXT" : "CHOICE",
+              required: question.required,
+              options: question.options ?? [],
             })),
           },
           date: happening.date,
