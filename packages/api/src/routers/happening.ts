@@ -129,6 +129,7 @@ export const happeningRouter = createTRPCRouter({
           slug: input.slug,
         },
         include: {
+          questions: true,
           spotRanges: true,
         },
       });
