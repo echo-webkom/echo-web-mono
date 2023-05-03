@@ -23,6 +23,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: ./.github/actions/pnpm-setup
+
       - name: Install system dependencies
         run: pnpm --filter=tests run test:install
 
