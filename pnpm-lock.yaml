@@ -238,8 +238,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       date-fns:
-        specifier: 2.29.3
-        version: 2.29.3
+        specifier: 2.30.0
+        version: 2.30.0
       framer-motion:
         specifier: 10.12.4
         version: 10.12.4(react-dom@18.2.0)(react@18.2.0)
@@ -4753,7 +4753,7 @@ packages:
     resolution: {integrity: sha512-ClUd3vtbd6IHzgxDWvtpH41QoSLRYBD4mNdBZEpsR+gwXfWbhuA0ZkM2TrEu/c8Eli7iPu9zGcNk/KrnOE/eiQ==}
     dependencies:
       '@sanity/types': 3.9.1
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       lodash: 4.17.21
       rxjs: 7.8.0
     transitivePeerDependencies:
@@ -7475,6 +7475,13 @@ packages:
   /date-fns@2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
+    dev: false
+
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.21.0
     dev: false
 
   /date-now@1.0.1:
