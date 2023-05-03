@@ -23,7 +23,7 @@ import {
 import {useToast} from "@/hooks/use-toast";
 import {api} from "@/utils/api";
 import {cn} from "@/utils/cn";
-import {norwegianDateString} from "@/utils/date";
+import {norwegianDateString, shortDate} from "@/utils/date";
 import {isErrorMessage} from "@/utils/error";
 
 type HappeningSidebarProps = {
@@ -145,15 +145,6 @@ const HappeningSidebar = ({slug}: HappeningSidebarProps) => {
     );
   };
 
-  //   if (eventInfo.isLoading) {
-  //     // TODO: Skeleton event page
-  //     return (
-  //       <div className="flex h-screen w-screen items-center justify-center">
-  //         <p>Laster...</p>
-  //       </div>
-  //     );
-  //   }
-
   if (eventInfo.isLoading) {
     return (
       <div className="flex h-[300px] w-full items-center justify-center rounded border">
@@ -182,13 +173,23 @@ const HappeningSidebar = ({slug}: HappeningSidebarProps) => {
           )}
         </div>
       )}
-      {eventInfo.data?.registrationStart && eventInfo.data.registrationEnd && (
+      {eventInfo.data?.waitlistedCount && (
         <div>
-          <h2 className="text-lg font-bold">Påmelding</h2>
-          <p className="text-sm">
-            {norwegianDateString(new Date(eventInfo.data?.registrationStart))} -{" "}
-            {norwegianDateString(new Date(eventInfo.data?.registrationEnd))}
-          </p>
+          <h2 className="text-lg font-bold">På venteliste</h2>
+          <p className="text-sm">{eventInfo.data?.waitlistedCount}</p>
+        </div>
+      )}
+      {eventInfo.data?.registrationStart &&
+        new Date() < new Date(eventInfo.data.registrationStart) && (
+          <div>
+            <h2 className="text-lg font-bold">Påmelding åpner</h2>
+            <p className="text-sm">{shortDate(new Date(eventInfo.data?.registrationStart))}</p>
+          </div>
+        )}
+      {eventInfo.data?.registrationEnd && new Date() < new Date(eventInfo.data.registrationEnd) && (
+        <div>
+          <h2 className="text-lg font-bold">Påmelding stenger</h2>
+          <p className="text-sm">{shortDate(new Date(eventInfo.data?.registrationEnd))}</p>
         </div>
       )}
       <div className="mt-5">
