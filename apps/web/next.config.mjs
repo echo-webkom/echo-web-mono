@@ -10,6 +10,7 @@ const config = {
     "@echo-webkom/api",
     "@echo-webkom/auth",
     "@echo-webkom/db",
+    "@echo-webkom/lib",
     "@echo-webkom/tailwind-config",
   ],
 

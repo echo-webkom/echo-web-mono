@@ -4,7 +4,7 @@ import superjson from "superjson";
 import {ZodError} from "zod";
 
 import {getServerSession, type Session} from "@echo-webkom/auth";
-import {prisma} from "@echo-webkom/db";
+import {prisma} from "@echo-webkom/db/client";
 
 type CreateContextOptions = {
   session: Session | null;
