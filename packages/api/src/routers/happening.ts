@@ -100,7 +100,7 @@ export const happeningRouter = createTRPCRouter({
     }),
 
   deregister: protectedProcedure
-    .input(z.object({slug: z.string()}))
+    .input(z.object({slug: z.string(), reason: z.string().min(1).max(500)}))
     .mutation(async ({ctx, input}) => {
       const registration = await ctx.prisma.registration.update({
         where: {
@@ -110,6 +110,7 @@ export const happeningRouter = createTRPCRouter({
           },
         },
         data: {
+          reason: input.reason,
           status: "DEREGISTERED",
         },
       });
