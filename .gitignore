@@ -4,6 +4,8 @@
 
 # Package manager
 node_modules/
+yarn.lock
+package-lock.json
 
 # Env
 .env*

@@ -13,3 +13,14 @@ export const norwegianDateString = (date: Date) => {
     }),
   );
 };
+
+export const shortDate = (date: Date) => {
+  return date.toLocaleTimeString("nb-NO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    timeZone: "Europe/Oslo",
+  });
+};

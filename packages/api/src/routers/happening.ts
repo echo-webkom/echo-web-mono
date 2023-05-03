@@ -146,6 +146,13 @@ export const happeningRouter = createTRPCRouter({
         },
       });
 
+      const waitlistedCount = await ctx.prisma.registration.count({
+        where: {
+          happeningSlug: input.slug,
+          status: "WAITLISTED",
+        },
+      });
+
       const isAlreadyRegistered =
         ctx.session?.user.id &&
         (await ctx.prisma.registration.count({
@@ -161,6 +168,7 @@ export const happeningRouter = createTRPCRouter({
         totalSpots: happening.spotRanges.reduce((acc, range) => acc + range.spots, 0),
         registeredCount,
         isAlreadyRegistered,
+        waitlistedCount,
       };
     }),
 });
