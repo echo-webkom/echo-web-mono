@@ -159,6 +159,9 @@ importers:
       '@echo-webkom/db':
         specifier: 0.1.0
         version: link:../../packages/db
+      '@echo-webkom/lib':
+        specifier: 0.1.0
+        version: link:../../packages/lib
       '@echo-webkom/tailwind-config':
         specifier: 0.1.0
         version: link:../../packages/config/tailwind
@@ -446,6 +449,25 @@ importers:
       prisma:
         specifier: ^4.13.0
         version: 4.13.0
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  packages/lib:
+    dependencies:
+      '@echo-webkom/auth':
+        specifier: 0.1.0
+        version: link:../auth
+      '@echo-webkom/db':
+        specifier: 0.1.0
+        version: link:../db
+    devDependencies:
+      eslint:
+        specifier: ^8.39.0
+        version: 8.39.0
+      eslint-config-custom:
+        specifier: 0.0.0
+        version: link:../config/eslint
       typescript:
         specifier: ^5.0.4
         version: 5.0.4

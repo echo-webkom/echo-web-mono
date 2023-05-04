@@ -16,6 +16,7 @@
     "@echo-webkom/api": "0.1.0",
     "@echo-webkom/auth": "0.1.0",
     "@echo-webkom/db": "0.1.0",
+    "@echo-webkom/lib": "0.1.0",
     "@echo-webkom/tailwind-config": "0.1.0",
     "@hookform/resolvers": "^3.1.0",
     "@next/bundle-analyzer": "^13.3.2",

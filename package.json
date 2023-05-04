@@ -11,7 +11,10 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:docs": "turbo run dev --filter=docs",
+    "dev:studio": "turbo run dev --filter=db",
+    "dev:all": "turbo run dev",
     "start": "turbo run start",
     "clean": "rm -rf node_modules",
     "clean:workspaces": "turbo run clean",

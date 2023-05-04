@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-import {Degree} from "@echo-webkom/db";
+import {Degree} from "@echo-webkom/db/types";
 
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "../trpc";
 

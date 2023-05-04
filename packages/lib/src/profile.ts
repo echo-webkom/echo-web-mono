@@ -1,4 +1,4 @@
-import {type Degree} from "@echo-webkom/db";
+import {type Degree, type RegistrationStatus} from "@echo-webkom/db/types";
 
 export const degreeToString: Record<Degree, string> = {
   DTEK: "Datateknologi",
@@ -20,4 +20,10 @@ export const yearToString: Record<number, string> = {
   3: "3. året",
   4: "4. året",
   5: "5. året",
+};
+
+export const registrationStatusToString: Record<RegistrationStatus, string> = {
+  REGISTERED: "Påmeldt",
+  WAITLISTED: "Venteliste",
+  DEREGISTERED: "Avmeldt",
 };

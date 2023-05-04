@@ -3,6 +3,7 @@ import Link from "next/link";
 import {type GetServerSideProps} from "next/types";
 
 import {getServerSession} from "@echo-webkom/auth";
+import {registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import LoadingComponent from "@/components/page-loader";
@@ -53,7 +54,7 @@ const ProfilePage = () => {
                   >
                     {registration.happening.title}
                   </Link>
-                  <p>{registration.status}</p>
+                  <p>{registrationStatusToString[registration.status]}</p>
                 </div>
               </div>
             ))}

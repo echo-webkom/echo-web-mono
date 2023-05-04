@@ -1,6 +1,7 @@
 import {type NextApiHandler} from "next";
 
-import {prisma, type HappeningType, type PrismaClient} from "@echo-webkom/db";
+import {type HappeningType, type PrismaClient} from "@echo-webkom/db";
+import {prisma} from "@echo-webkom/db/client";
 
 import {$fetchAllBedpresses, type Bedpres} from "@/api/bedpres";
 import {$fetchAllEvents, type Event} from "@/api/event";
