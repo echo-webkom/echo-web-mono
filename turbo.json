@@ -12,13 +12,6 @@
     "db:deploy": {
       "cache": false
     },
-    "docker:up": {
-      "cache": false,
-      "persistent": true
-    },
-    "docker:down": {
-      "cache": false
-    },
     "dev": {
       "dependsOn": ["^db:generate"],
       "persistent": true,

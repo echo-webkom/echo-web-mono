@@ -48,7 +48,7 @@ pnpm docker:up
 Etter du har startet databasen må du oppdatere tabellene med de fra Prisma. Det blir gjort med kommandoen `pnpm db:push`.
 
 ```sh title="Terminal"
-pnpm db:push
+pnpm db:deploy
 ```
 
 ## Starte koden

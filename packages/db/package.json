@@ -12,7 +12,7 @@
     "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma",
     "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
     "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
-    "docker:up": "docker-compose up --build",
+    "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
     "with-env": "dotenv -e ../../.env --"
