@@ -55,7 +55,7 @@ const HomePage = ({
               </Link>
               <hr />
               {events.length > 0 ? (
-                <ul className="flex h-full flex-col items-stretch divide-y overflow-hidden">
+                <ul className="flex h-full flex-col divide-y">
                   {events.map((event) => (
                     <li key={event._id}>
                       <EventPreviewBox event={event} />
@@ -94,7 +94,7 @@ const HomePage = ({
               </Link>
               <hr />
               {bedpresses.length > 0 ? (
-                <ul className="flex h-full flex-col justify-between divide-y">
+                <ul className="flex h-full flex-col divide-y">
                   {bedpresses.map((bedpres) => (
                     <li key={bedpres._id}>
                       <BedpresPreviewBox bedpres={bedpres} />

@@ -74,6 +74,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const events = await $fetchAllEvents();
     const bedpresses = await $fetchAllBedpresses();
+
     if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
       return res.status(500).json({
         message: "Failed to fetch events or bedpresses",

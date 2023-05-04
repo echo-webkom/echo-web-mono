@@ -121,7 +121,7 @@ model Registration {
   happeningSlug String
   happening     Happening          @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade)
   status        RegistrationStatus
-  reason        String?
+  reason        String?            @db.Text
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
 
