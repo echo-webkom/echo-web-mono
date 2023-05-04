@@ -10,8 +10,8 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma",
-    "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma",
-    "db:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
+    "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
+    "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
     "docker:up": "docker-compose up --build",
     "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
