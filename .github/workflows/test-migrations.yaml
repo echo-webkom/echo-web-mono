@@ -37,7 +37,7 @@ jobs:
 
       - name: Test migrations
         run: |
-          prisma migrate dev
-          prisma migrate reset --force
-          prisma migrate deploy
-          prisma generate
+          prisma migrate dev --schema ./packages/db/prisma/schema.prisma
+          prisma migrate reset --force --schema ./packages/db/prisma/schema.prisma
+          prisma migrate deploy --schema ./packages/db/prisma/schema.prisma
+          prisma generate --schema ./packages/db/prisma/schema.prisma
