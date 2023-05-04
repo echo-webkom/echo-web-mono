@@ -105,8 +105,6 @@ model SpotRange {
   spots         Int
   Happening     Happening? @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
   happeningSlug String?
-
-  @@index([happeningSlug])
 }
 
 enum RegistrationStatus {
@@ -126,8 +124,6 @@ model Registration {
   updatedAt     DateTime           @updatedAt
 
   @@unique([userId, happeningSlug])
-  @@index([happeningSlug])
-  @@index([userId])
 }
 
 enum QuestionType {
@@ -143,8 +139,6 @@ model Question {
   options       String[]
   Happening     Happening?   @relation(fields: [happeningSlug], references: [slug])
   happeningSlug String?
-
-  @@index([happeningSlug])
 }
 
 model Happening {
@@ -166,6 +160,5 @@ model SiteFeedback {
   name      String?
   email     String?
   message   String   @db.Text
-  comment   String?  @db.Text
   isRead    Boolean  @default(false)
 }

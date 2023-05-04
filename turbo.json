@@ -6,8 +6,10 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
-    "db:push": {
-      "inputs": ["prisma/schema.prisma"],
+    "db:migrate": {
+      "cache": false
+    },
+    "db:deploy": {
       "cache": false
     },
     "docker:up": {
