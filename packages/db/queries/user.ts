@@ -22,3 +22,7 @@ export const getUserHappenings = async (id: User["id"]) => {
     },
   });
 };
+
+export const getAllUsers = async () => {
+  return await prisma.user.findMany();
+};

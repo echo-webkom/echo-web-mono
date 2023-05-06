@@ -1,6 +1,7 @@
 import {IBM_Plex_Mono, Inter} from "next/font/google";
 
 import "@/styles/globals.css";
+import Feedback from "@/components/feedback";
 import {Toaster} from "@/components/toaster";
 import {cn} from "@/utils/cn";
 import Providers from "./providers";
@@ -49,6 +50,7 @@ export default function RootLayout({children}: RootLayoutProps) {
         >
           {children}
           <Toaster />
+          <Feedback />
         </body>
       </html>
     </Providers>
