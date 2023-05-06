@@ -3,6 +3,7 @@
 import {signIn, type getProviders} from "next-auth/react";
 
 import {Button} from "./ui/button";
+import Heading from "./ui/heading";
 
 export default function SignInButtons({
   providers,
@@ -11,7 +12,7 @@ export default function SignInButtons({
 }) {
   return (
     <div>
-      <h1 className="mb-10 text-center text-3xl font-bold">Velg en måte å logge inn på</h1>
+      <Heading>Velg en måte å logge inn på</Heading>
       <div className="flex flex-col justify-center gap-3">
         {Object.values(providers).map((provider) => (
           <div className="mx-auto" key={provider.name}>

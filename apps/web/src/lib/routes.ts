@@ -32,31 +32,31 @@ export const headerRoutes: Array<RouteSection> = [
         label: "Interessegrupper",
       },
       {
-        href: "/for-students/job",
+        href: "/for-students/jobs",
         label: "Stillingsannonser",
       },
       {
-        href: "/for-students/post",
+        href: "/for-students/posts",
         label: "Innlegg",
       },
       {
-        href: "/masterinfo",
+        href: "/for-students/masterinfo",
         label: "Masterinfo",
       },
       {
-        href: "/okonomisk-stotte",
+        href: "/for-students/okonomisk-stotte",
         label: "Økonomisk støtte",
       },
       {
-        href: "/anonyme-tilbakemeldinger",
+        href: "/for-students/anonyme-tilbakemeldinger",
         label: "Tilbakemeldinger",
       },
       {
-        href: "/utlegg",
+        href: "/for-studntes/utlegg",
         label: "Utlegg",
       },
       {
-        href: "/si-ifra",
+        href: "/for-students/si-ifra",
         label: "Si ifra",
       },
     ],
@@ -65,11 +65,11 @@ export const headerRoutes: Array<RouteSection> = [
     label: "For bedrifter",
     sublinks: [
       {
-        href: "/bedriftspresentasjon",
+        href: "/for-companies/bedriftspresentasjon",
         label: "Bedriftspresentasjon",
       },
       {
-        href: "/stillingsutlysninger",
+        href: "/for-companies/stillingsutlysninger",
         label: "Stillingsutlysninger",
       },
     ],
@@ -78,23 +78,23 @@ export const headerRoutes: Array<RouteSection> = [
     label: "Om echo",
     sublinks: [
       {
-        href: "/om-echo",
+        href: "/about/om-echo",
         label: "Hvem er vi",
       },
       {
-        href: "/instituttradet",
+        href: "/about/instituttradet",
         label: "Instituttrådet",
       },
       {
-        href: "/vedtekter",
+        href: "/about/vedtekter",
         label: "Vedtekter",
       },
       {
-        href: "/minutes",
+        href: "/about/minutes",
         label: "Møtereferat",
       },
       {
-        href: "/bekk",
+        href: "/about/bekk",
         label: "Bekk",
       },
     ],
@@ -122,7 +122,7 @@ export const footerRoutes: Array<RouteSection> = [
       },
       {
         label: "Opplevd noe kjipt? Si ifra!",
-        href: "/for-studenter/si-ifra",
+        href: "/for-students/si-ifra",
         isExternal: false,
       },
     ],

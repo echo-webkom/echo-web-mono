@@ -1,11 +1,19 @@
+import Link from "next/link";
 import {redirect} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
+import {type HappeningType} from "@echo-webkom/db/types";
 
 import Container from "@/components/container";
 import SignOutButton from "@/components/sign-out-button";
+import Heading from "@/components/ui/heading";
 import UserForm from "@/components/user-form";
 import {getServerSession} from "@/lib/session";
+
+const happeningTypeToPath: Record<HappeningType, string> = {
+  BEDPRES: "/bedpres",
+  EVENT: "/event",
+};
 
 export default async function ProfilePage() {
   const session = await getServerSession();
@@ -36,7 +44,7 @@ export default async function ProfilePage() {
 
   return (
     <Container className="max-w-2xl gap-10">
-      <h1 className="text-4xl font-bold">Din profil</h1>
+      <Heading>Din profil</Heading>
 
       <div className="flex flex-col gap-3">
         <div>
@@ -50,12 +58,17 @@ export default async function ProfilePage() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold">Påmeldte arrangementer</h2>
+        <h2 className="mb-3 text-2xl font-bold">Påmeldte arrangementer</h2>
         {happenings.length > 0 ? (
           <ul className="flex flex-col gap-3">
             {happenings.map((happening) => (
               <li key={happening.slug}>
-                <p className="font-semibold">{happening.title}</p>
+                <Link
+                  href={happeningTypeToPath[happening.type] + "/" + happening.slug}
+                  className="text-lg font-semibold hover:underline"
+                >
+                  {happening.title}
+                </Link>
               </li>
             ))}
           </ul>
@@ -73,7 +86,7 @@ export default async function ProfilePage() {
         />
       </div>
 
-      <div>
+      <div className="mx-auto w-fit">
         <SignOutButton />
       </div>
     </Container>

@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import PostPreview from "@/components/post-preview";
+import Heading from "@/components/ui/heading";
 import {fetchPosts} from "@/sanity/posts";
 
 export const metadata = {
@@ -11,7 +12,7 @@ export default async function PostsOverviewPage() {
 
   return (
     <Container>
-      <h1 className="text-5xl font-bold">Innlegg</h1>
+      <Heading>Innlegg</Heading>
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {posts.map((post) => (

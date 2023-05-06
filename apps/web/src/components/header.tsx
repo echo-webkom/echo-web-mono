@@ -10,6 +10,7 @@ import {type Session} from "@echo-webkom/auth";
 
 import {headerRoutes} from "@/lib/routes";
 import HeaderLogo from "./header-logo";
+import ProfileIcon from "./profile-icon";
 import {Button} from "./ui/button";
 
 type HeaderProps = {
@@ -49,7 +50,7 @@ export default function Header({session}: HeaderProps) {
 
           <div className="flex items-center gap-5">
             {session ? (
-              <p>Logget in som, {session.user?.name}</p>
+              <ProfileIcon session={session} />
             ) : (
               <Button onClick={() => void signIn()} variant="link">
                 Logg inn

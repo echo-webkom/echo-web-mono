@@ -1,5 +1,6 @@
 "use client";
 
+import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Controller, useForm} from "react-hook-form";
@@ -8,6 +9,7 @@ import {z} from "zod";
 import {Degree} from "@echo-webkom/db/types";
 import {degreeToString} from "@echo-webkom/lib";
 
+import {useToast} from "@/hooks/use-toast";
 import {Button} from "./ui/button";
 import Input from "./ui/input";
 import Label from "./ui/label";
@@ -38,6 +40,10 @@ export default function UserForm({
   year?: number;
   id: string;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {toast} = useToast();
+  const router = useRouter();
   const methods = useForm<FormData>({
     defaultValues: {
       alternativeEmail: alternativeEmail,
@@ -47,10 +53,10 @@ export default function UserForm({
     resolver: zodResolver(userSchema),
   });
 
-  const router = useRouter();
-
   const onSubmit = methods.handleSubmit(
     async (data) => {
+      setIsLoading(true);
+
       const response = await fetch(`/api/user/${id}`, {
         method: "PATCH",
         headers: {
@@ -59,16 +65,29 @@ export default function UserForm({
         body: JSON.stringify(data),
       });
 
+      setIsLoading(false);
+
       if (!response.ok) {
-        alert("Noe gikk galt.");
+        return toast({
+          title: "Noe gikk galt",
+          description: "Kunne ikke oppdatere bruker",
+          variant: "warning",
+        });
       }
 
-      alert("Bruker oppdatert");
+      toast({
+        title: "Bruker oppdatert",
+        description: "Brukeren din er nå oppdatert",
+        variant: "success",
+      });
 
       router.refresh();
     },
-    (error) => {
-      console.error(error);
+    () => {
+      toast({
+        title: "Noe gikk galt",
+        variant: "warning",
+      });
     },
   );
 
@@ -126,7 +145,9 @@ export default function UserForm({
       </div>
 
       <div>
-        <Button type="submit">Lagre</Button>
+        <Button disabled={!methods.formState.isDirty || isLoading} type="submit">
+          {isLoading ? "Lagrer..." : "Lagre"}
+        </Button>
       </div>
     </form>
   );

@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import JobAdPreview from "@/components/job-ad-preview";
+import Heading from "@/components/ui/heading";
 import {fetchJobAds} from "@/sanity/job-ad";
 
 export const metadata = {
@@ -11,15 +12,15 @@ export default async function JobAdsOverviewPage() {
 
   return (
     <Container>
-      <h1 className="text-5xl font-bold">Stillingsannonser</h1>
+      <Heading>Stillingsannonser</Heading>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+      <ul className="grid grid-cols-1 lg:grid-cols-2">
         {jobAds.map((jobAd) => (
-          <div key={jobAd._id}>
+          <li key={jobAd._id}>
             <JobAdPreview jobAd={jobAd} />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </Container>
   );
 }

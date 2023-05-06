@@ -2,6 +2,7 @@ import {getProviders} from "next-auth/react";
 
 import Container from "@/components/container";
 import SignInButtons from "@/components/sign-in-buttons";
+import Heading from "@/components/ui/heading";
 
 export default async function SignInPage() {
   const providers = await getProviders();
@@ -12,9 +13,7 @@ export default async function SignInPage() {
         <SignInButtons providers={providers} />
       ) : (
         <div className="flex flex-col justify-center gap-3">
-          <h1 className="mb-10 text-center text-3xl font-bold">
-            Ingen tilgjengelige innloggingstjenester
-          </h1>
+          <Heading>Ingen tilgjengelige innloggingstjenester</Heading>
         </div>
       )}
     </Container>

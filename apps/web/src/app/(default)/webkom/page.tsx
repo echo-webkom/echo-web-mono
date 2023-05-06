@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import Heading from "@/components/ui/heading";
+
 export default function WebkomPage() {
   return (
     <div className="text-center text-lg">
@@ -10,7 +12,8 @@ export default function WebkomPage() {
         height={200}
         alt="Webkom logo"
       />
-      <h1 className="mb-3 font-display text-4xl font-bold md:text-6xl">Webkom</h1>
+      <Heading className="font-display">Webkom</Heading>
+
       <p className="text-muted-foreground">Tidligere og nåværende medlemmer av echo Webkom.</p>
 
       <div className="mx-auto my-10 max-w-md">

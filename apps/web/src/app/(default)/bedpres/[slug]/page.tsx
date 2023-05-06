@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
+import Heading from "@/components/ui/heading";
 import {fetchBedpresBySlug} from "@/sanity/bedpres";
 
 export default async function BedpresPage({params}: {params: {slug: string}}) {
@@ -7,9 +8,9 @@ export default async function BedpresPage({params}: {params: {slug: string}}) {
 
   return (
     <Container>
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-4">
-        <article className="prose md:prose-xl lg:col-span-3">
-          <h1>{bedpres.title}</h1>
+      <div>
+        <Heading>{bedpres.title}</Heading>
+        <article>
           <Markdown content={bedpres.body ?? "## Mer informasjon kommer!"} />
         </article>
       </div>

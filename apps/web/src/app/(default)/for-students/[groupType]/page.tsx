@@ -2,6 +2,7 @@ import {type StudentGroupType} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import StudentGroupPreview from "@/components/student-group-preview";
+import Heading from "@/components/ui/heading";
 import {
   fetchStudentGroupsByType,
   studentGroupTypeName,
@@ -36,7 +37,7 @@ export default async function StudentGroupOverview({params}: {params: {groupType
 
   return (
     <Container>
-      <h1 className="text-4xl font-bold">{studentGroupTypeName[groupTypeFromPath]}</h1>
+      <Heading>{studentGroupTypeName[groupTypeFromPath]}</Heading>
 
       <ul className="grid grid-cols-1 lg:grid-cols-2">
         {groups.map((group) => (

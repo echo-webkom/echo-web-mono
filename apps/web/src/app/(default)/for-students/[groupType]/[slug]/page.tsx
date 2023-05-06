@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
+import Heading from "@/components/ui/heading";
 import {fetchStudentGroupBySlug, fetchStudentGroupParams} from "@/sanity/student-group";
 
 export const dynamicParams = false;
@@ -17,7 +18,7 @@ export default async function GroupPage({params}: {params: {slug: string}}) {
 
   return (
     <Container>
-      <h1 className="text-4xl font-bold">{group.name}</h1>
+      <Heading>{group.name}</Heading>
 
       <article>
         <Markdown content={group.description} />

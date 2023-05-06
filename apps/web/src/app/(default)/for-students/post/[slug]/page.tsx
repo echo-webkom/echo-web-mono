@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
+import Heading from "@/components/ui/heading";
 import {fetchPostBySlug, fetchPostParams, type Author} from "@/sanity/posts";
 import {urlFor} from "@/utils/image-builder";
 
@@ -39,7 +40,7 @@ export default async function PostPage({params}: Props) {
   return (
     <Container>
       <article className="flex flex-col gap-10">
-        <h1 className="text-4xl font-bold md:text-6xl">{post.title}</h1>
+        <Heading>{post.title}</Heading>
 
         <Authors authors={post.authors} />
 

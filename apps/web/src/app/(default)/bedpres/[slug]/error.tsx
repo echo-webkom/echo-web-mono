@@ -2,11 +2,12 @@
 
 import Container from "@/components/container";
 import ErrorBox from "@/components/error-box";
+import Heading from "@/components/ui/heading";
 
 export default function BedpresErrorPage({error}: {error: Error}) {
   return (
     <Container className="mx-auto max-w-4xl">
-      <h1 className="text-center text-5xl font-bold">404</h1>
+      <Heading>404</Heading>
       <p className="text-center">Finner ikke bedriftspresentasjonen du ser etter.</p>
 
       <div className="my-5" />

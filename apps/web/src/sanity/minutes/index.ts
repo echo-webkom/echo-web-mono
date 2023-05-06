@@ -1,8 +1,7 @@
 import {groq} from "next-sanity";
+import {z} from "zod";
 
-import {type ErrorMessage} from "@/utils/error";
 import {sanityClient} from "../client";
-import {slugSchema, type Slug} from "../utils/slug";
 import {minuteSchema, type Minute} from "./schema";
 
 export * from "./schema";
@@ -10,9 +9,8 @@ export * from "./schema";
 /**
  * Get all meeting minutes.
  */
-export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
-  try {
-    const query = groq`
+export const fetchMinutes = async () => {
+  const query = groq`
 *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
   _id,
   isAllMeeting,
@@ -22,38 +20,43 @@ export const fetchMinutes = async (): Promise<Array<Minute> | ErrorMessage> => {
 }
     `;
 
-    const result = await sanityClient.fetch<Array<Minute>>(query);
+  const result = await sanityClient.fetch<Array<Minute>>(query);
 
-    return minuteSchema.array().parse(result);
-  } catch (error) {
-    console.log(error); // eslint-disable-line
-    return {message: JSON.stringify(error)};
-  }
+  return minuteSchema.array().parse(result);
 };
 
-export const fetchMinutesPaths = async (): Promise<Array<string>> => {
-  try {
-    const query = groq`
+/**
+ * Get all meeting minutes slugs.
+ *
+ * @returns
+ */
+export const fetchMinuteParams = async () => {
+  const query = groq`
 *[_type == "meetingMinute" && !(_id in path('drafts.**'))] {
-  "slug": _id
+  "id": _id
 }
     `;
 
-    const result = await sanityClient.fetch<Array<Slug>>(query);
+  const result = await sanityClient.fetch<Array<{id: string}>>(query);
 
-    return slugSchema
-      .array()
-      .parse(result)
-      .map((nestedSlug) => nestedSlug.slug);
-  } catch {
-    return [];
-  }
+  return z
+    .object({
+      id: z.string(),
+    })
+    .array()
+    .parse(result)
+    .map((slug) => {
+      return {
+        params: {
+          id: slug,
+        },
+      };
+    });
 };
 
-export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMessage> => {
-  try {
-    const query = groq`
-*[_type == "meetingMinute" && _id == $slug && !(_id in path('drafts.**'))] {
+export const fetchMinuteById = async (id: string) => {
+  const query = groq`
+*[_type == "meetingMinute" && _id == $id && !(_id in path('drafts.**'))] {
   _id,
   isAllMeeting,
   date,
@@ -62,14 +65,11 @@ export const fetchMinuteBySlug = async (slug: string): Promise<Minute | ErrorMes
 }[0]
     `;
 
-    const params = {
-      slug,
-    };
+  const params = {
+    id,
+  };
 
-    const result = await sanityClient.fetch<Minute>(query, params);
+  const result = await sanityClient.fetch<Minute>(query, params);
 
-    return minuteSchema.parse(result);
-  } catch (error) {
-    return {message: JSON.stringify(error)};
-  }
+  return minuteSchema.parse(result);
 };

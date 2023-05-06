@@ -1,6 +1,7 @@
 import {IBM_Plex_Mono, Inter} from "next/font/google";
 
 import "@/styles/globals.css";
+import {Toaster} from "@/components/toaster";
 import {cn} from "@/utils/cn";
 
 const inter = Inter({
@@ -45,6 +46,7 @@ export default function RootLayout({children}: RootLayoutProps) {
         )}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

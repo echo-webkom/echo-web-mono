@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
+import Heading from "@/components/ui/heading";
 import {fetchJobAdBySlug} from "@/sanity/job-ad";
 
 export default async function JobAdPage({params}: {params: {slug: string}}) {
@@ -8,7 +9,7 @@ export default async function JobAdPage({params}: {params: {slug: string}}) {
   return (
     <Container>
       <article className="flex flex-col gap-10">
-        <h1 className="text-4xl font-bold md:text-6xl">{jobAd.title}</h1>
+        <Heading>{jobAd.title}</Heading>
 
         <Markdown content={jobAd.body} />
       </article>

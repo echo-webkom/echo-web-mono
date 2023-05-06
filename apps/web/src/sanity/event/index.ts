@@ -32,7 +32,7 @@ export const fetchComingEvents = async (n: number) => {
 *[_type == "event"
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
-  | order(date asc)
+  | order(dates.date asc)
   [0..$n] {
   _id,
   _createdAt,

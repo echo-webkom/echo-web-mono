@@ -4,9 +4,10 @@ import {prisma} from "@echo-webkom/db/client";
 
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
-import {Button} from "@/components/ui/button";
+import Heading from "@/components/ui/heading";
 import {getServerSession} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
+import RegisterButton from "./register-button";
 
 export default async function EventPage({params}: {params: {slug: string}}) {
   const session = await getServerSession();
@@ -17,8 +18,52 @@ export default async function EventPage({params}: {params: {slug: string}}) {
     },
   });
 
+  let isRegistered: boolean;
+  if (session) {
+    const registration = await prisma.registration.findUnique({
+      where: {
+        userId_happeningSlug: {
+          happeningSlug: params.slug,
+          userId: session.user.id,
+        },
+      },
+    });
+    isRegistered = Boolean(registration);
+  } else {
+    isRegistered = false;
+  }
+
+  const [registeredCount, waitlistCount] = await prisma.$transaction([
+    prisma.registration.count({
+      where: {
+        happeningSlug: params.slug,
+        status: "REGISTERED",
+      },
+    }),
+    prisma.registration.count({
+      where: {
+        happeningSlug: params.slug,
+        status: "WAITLISTED",
+      },
+    }),
+  ]);
+
+  const maxCapacity = (
+    await prisma.spotRange.findMany({
+      where: {
+        happeningSlug: params.slug,
+      },
+    })
+  ).reduce((acc, curr) => acc + curr.spots, 0);
+
   return (
     <Container>
+      {isRegistered && (
+        <div className="mb-5 rounded-xl border border-green-600 bg-green-600/20 p-3">
+          <p className="text-center text-xl font-bold">Du er påmeldt dette arrangementet</p>
+        </div>
+      )}
+
       <div className="flex flex-col gap-8 md:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 md:max-w-[250px]">
@@ -74,6 +119,24 @@ export default async function EventPage({params}: {params: {slug: string}}) {
             </div>
           )}
 
+          {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
+            <div>
+              <p className="font-semibold">Påmeldte:</p>
+              <p>
+                {registeredCount} / {maxCapacity}
+              </p>
+            </div>
+          )}
+
+          {eventInfo?.registrationStart &&
+            eventInfo.registrationStart < new Date() &&
+            waitlistCount > 0 && (
+              <div>
+                <p className="font-semibold">Venteliste:</p>
+                <p>{waitlistCount}</p>
+              </div>
+            )}
+
           {eventInfo?.registrationStart &&
             eventInfo.registrationEnd &&
             eventInfo.registrationStart < new Date() &&
@@ -85,12 +148,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
             )}
 
           {session ? (
-            eventInfo?.date &&
-            new Date() < eventInfo.date && (
-              <div>
-                <Button fullWidth>Meld på</Button>
-              </div>
-            )
+            eventInfo?.date && new Date() < eventInfo.date && <RegisterButton slug={params.slug} />
           ) : (
             <div>
               <p>Du må være logget inn for å melde deg på</p>
@@ -100,7 +158,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
 
         {/* Content */}
         <article>
-          <h1 className="mb-5 text-4xl font-bold md:text-6xl">{event.title}</h1>
+          <Heading>{event.title}</Heading>
           <Markdown content={event.body ?? "## Mer informasjon kommer!"} />
         </article>
       </div>
