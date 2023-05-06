@@ -7,7 +7,7 @@ import Heading from "@/components/ui/heading";
 export default function EventErrorPage({error}: {error: Error}) {
   return (
     <Container className="mx-auto max-w-4xl">
-      <Heading>404</Heading>
+      <Heading className="text-center">404</Heading>
       <p className="text-center">Finner ikke arrangementet du ser etter.</p>
 
       <div className="my-5" />

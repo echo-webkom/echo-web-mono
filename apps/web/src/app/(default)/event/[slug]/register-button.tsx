@@ -23,35 +23,12 @@ export default function RegisterButton({slug}: {slug: string}) {
 
     setIsLoading(false);
 
-    switch (response.status) {
-      case 201:
-        toast({
-          title: "Du er påmeldt!",
-          description: "Gratulere, du fikk plass på arrangementet!",
-          variant: "success",
-        });
-        break;
-      case 202:
-        toast({
-          title: "Du er påmeldt!",
-          description: "Du er nå på venteliste.",
-          variant: "warning",
-        });
-        break;
-      case 404:
-        toast({
-          title: "Arrangementet finnes ikke!",
-          description: "Arrangementet du prøver å melde deg på finnes ikke.",
-          variant: "destructive",
-        });
-      case 422:
-        toast({
-          title: "Du er allerede påmeldt!",
-          description: "Du er allerede påmeldt til dette arrangementet.",
-          variant: "warning",
-        });
-        break;
-    }
+    const data = await response.text();
+
+    toast({
+      description: data,
+      variant: response.status < 400 ? "success" : "warning",
+    });
 
     router.refresh();
   }

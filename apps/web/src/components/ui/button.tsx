@@ -43,7 +43,6 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({className, variant, size, fullWidth, asChild = false, ...props}, ref) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const Component = asChild ? Slot : "button";
 
     return (

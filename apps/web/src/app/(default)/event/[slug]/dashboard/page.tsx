@@ -1,10 +1,14 @@
 import Link from "next/link";
+import {notFound} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
+import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
+import {getUserById} from "@echo-webkom/db/queries/user";
 import {type Prisma} from "@echo-webkom/db/types";
 
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
+import {isEventOrganizer} from "@/lib/happening";
 import {getServerSession} from "@/lib/session";
 import {cn} from "@/utils/cn";
 
@@ -17,9 +21,15 @@ type Props = {
 export default async function EventDashboard({params}: Props) {
   const {slug} = params;
   const session = await getServerSession();
+  const user = await getUserById(session?.user.id ?? "");
+  const eventInfo = await getHappeningBySlug(slug);
 
-  if (!session) {
-    return <p>Not logged in</p>;
+  if (!eventInfo || !user) {
+    return notFound();
+  }
+
+  if (!isEventOrganizer(eventInfo, user)) {
+    return notFound();
   }
 
   const registrations = await prisma.registration.findMany({
@@ -30,16 +40,6 @@ export default async function EventDashboard({params}: Props) {
       user: true,
     },
   });
-
-  const eventInfo = await prisma.happening.findUnique({
-    where: {
-      slug: slug,
-    },
-  });
-
-  if (!eventInfo) {
-    return <p>Event not found</p>;
-  }
 
   const registered = registrations.filter((registration) => registration.status === "REGISTERED");
   const waitlist = registrations.filter((registration) => registration.status === "WAITLISTED");

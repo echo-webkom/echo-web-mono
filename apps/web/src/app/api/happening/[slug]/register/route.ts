@@ -25,7 +25,7 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
 
     const session = await getServerSession();
     if (!session?.user) {
-      return new Response(null, {status: 403});
+      return new Response("Ingen bruker.", {status: 403});
     }
 
     const happening = await prisma.happening.findUnique({
@@ -36,17 +36,17 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
 
     // Happening doesn't exist
     if (!happening) {
-      return new Response(null, {status: 404});
+      return new Response("Finner ikke hva du ser etter.", {status: 404});
     }
 
     // Happening is not open for registration
     if (!happening.registrationStart || !happening.registrationEnd) {
-      return new Response(null, {status: 403});
+      return new Response("Det er ingen påmeldingsdato.", {status: 403});
     }
 
     // Happening is not open for registration
     if (new Date() < happening.registrationStart || new Date() > happening.registrationEnd) {
-      return new Response(null, {status: 403});
+      return new Response("Påmeldingen er ikke åpen.", {status: 403});
     }
 
     const user = await prisma.user.findUnique({
@@ -57,12 +57,12 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
 
     // User doesn't exist
     if (!user) {
-      return new Response(null, {status: 404});
+      return new Response("Brukeren eksisterer ikke.", {status: 403});
     }
 
     // Insufficient information
     if (!user.degree || !user.year) {
-      return new Response(null, {status: 403});
+      return new Response("Studieretning og årstrinn er ikke fyllt ut.", {status: 403});
     }
 
     // User is already registered
@@ -79,7 +79,7 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
     });
 
     if (!spotRange) {
-      return new Response(null, {status: 403});
+      return new Response("Du kan ikke melde deg på dette arrangamentet.", {status: 403});
     }
 
     const registration = await prisma.registration.findFirst({
@@ -137,7 +137,9 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
       return registration.status;
     });
 
-    return new Response(status, {status: status === "REGISTERED" ? 201 : 202});
+    return new Response(status === "REGISTERED" ? "Du er påmeldt!" : "Du er på venteliste!", {
+      status: status === "REGISTERED" ? 201 : 202,
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), {status: 422});

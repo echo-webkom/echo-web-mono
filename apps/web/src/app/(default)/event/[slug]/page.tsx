@@ -1,11 +1,14 @@
 import Link from "next/link";
 
 import {prisma} from "@echo-webkom/db/client";
+import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
+import {getUserById} from "@echo-webkom/db/queries/user";
 
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
+import {isEventOrganizer} from "@/lib/happening";
 import {getServerSession} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
 import DeregisterButton from "./deregister-button";
@@ -26,11 +29,17 @@ export async function generateMetadata({params}: Props) {
 }
 
 export default async function EventPage({params}: Props) {
+  const {slug} = params;
+
   const session = await getServerSession();
-  const event = await fetchEventBySlug(params.slug);
-  const eventInfo = await prisma.happening.findUnique({
+  const event = await fetchEventBySlug(slug);
+  const eventInfo = await getHappeningBySlug(slug);
+  const user = await getUserById(session?.user.id ?? "");
+  const isOrganizer = eventInfo && user && isEventOrganizer(eventInfo, user);
+
+  const spotRange = await prisma.spotRange.findMany({
     where: {
-      slug: params.slug,
+      happeningSlug: slug,
     },
   });
 
@@ -39,7 +48,7 @@ export default async function EventPage({params}: Props) {
     const registration = await prisma.registration.findUnique({
       where: {
         userId_happeningSlug: {
-          happeningSlug: params.slug,
+          happeningSlug: slug,
           userId: session.user.id,
         },
       },
@@ -49,25 +58,23 @@ export default async function EventPage({params}: Props) {
     isRegistered = false;
   }
 
-  const [registeredCount, waitlistCount] = await prisma.$transaction([
-    prisma.registration.count({
-      where: {
-        happeningSlug: params.slug,
-        status: "REGISTERED",
-      },
-    }),
-    prisma.registration.count({
-      where: {
-        happeningSlug: params.slug,
-        status: "WAITLISTED",
-      },
-    }),
-  ]);
+  const registrations = await prisma.registration.findMany({
+    where: {
+      happeningSlug: slug,
+    },
+  });
+
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "REGISTERED",
+  ).length;
+  const waitlistCount = registrations.filter(
+    (registration) => registration.status === "WAITLISTED",
+  ).length;
 
   const maxCapacity = (
     await prisma.spotRange.findMany({
       where: {
-        happeningSlug: params.slug,
+        happeningSlug: slug,
       },
     })
   ).reduce((acc, curr) => acc + curr.spots, 0);
@@ -93,6 +100,25 @@ export default async function EventPage({params}: Props) {
                   minute: "2-digit",
                 })}
               </p>
+            </div>
+          )}
+
+          {spotRange.length > 0 && (
+            <div>
+              <p className="font-semibold">Plasser:</p>
+              {spotRange.map((range) => (
+                <p key={range.id}>
+                  {range.spots} plasser for
+                  {range.minDegreeYear === range.maxDegreeYear ? (
+                    <span> {range.minDegreeYear}. trinn</span>
+                  ) : (
+                    <span>
+                      {" "}
+                      {range.minDegreeYear} - {range.maxDegreeYear}. trinn
+                    </span>
+                  )}
+                </p>
+              ))}
             </div>
           )}
 
@@ -175,13 +201,14 @@ export default async function EventPage({params}: Props) {
             </div>
           )}
 
-          {session?.user.role === "ADMIN" && (
-            <div>
-              <Button fullWidth variant="secondary" asChild>
-                <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
-              </Button>
-            </div>
-          )}
+          {session?.user.role === "ADMIN" ||
+            (isOrganizer && (
+              <div>
+                <Button fullWidth variant="secondary" asChild>
+                  <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
+                </Button>
+              </div>
+            ))}
         </div>
 
         {/* Content */}

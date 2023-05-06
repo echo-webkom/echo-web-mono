@@ -11,10 +11,6 @@ import HeaderLogo from "./header-logo";
 import ProfileIcon from "./profile-icon";
 import {Button} from "./ui/button";
 
-// type HeaderProps = {
-//   session: Session | null;
-// };
-
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +27,6 @@ export default function Header() {
   };
 
   return (
-    // HeaderRoot
     <header className="relative flex w-full flex-col bg-background">
       {/* HeaderOverlay */}
       {isOpen && (
