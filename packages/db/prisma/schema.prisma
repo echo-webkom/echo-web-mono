@@ -60,14 +60,8 @@ model User {
   role             Role           @default(USER)
   degree           Degree?
   year             Int?
-  studentGroups    StudentGroup[]
+  studentGroups    Group[]
   Registration     Registration[]
-}
-
-model StudentGroup {
-  id    String @id @default(cuid())
-  name  String
-  users User[]
 }
 
 enum Role {
@@ -91,6 +85,19 @@ enum Degree {
   ARMNINF
   POST
   MISC
+}
+
+enum Group {
+  MAKERSPACE
+  BOARD
+  TILDE
+  GNIST
+  BEDKOM
+  ESC
+  HYGGKOM
+  WEBKOM
+  PROGBAR
+  SQUASH
 }
 
 enum HappeningType {
@@ -151,6 +158,7 @@ model Happening {
   questions         Question[]
   registrationStart DateTime?
   registrationEnd   DateTime?
+  groups            Group[]
 }
 
 model SiteFeedback {

@@ -20,7 +20,7 @@
     "clean": "rm -rf node_modules",
     "clean-workspaces": "turbo run clean",
     "db:generate": "turbo run db:generate",
-    "db:migrate": "turbo run db:migrate",
+    "db:migrate": "pnpm --filter=db db:migrate",
     "db:deploy": "turbo run db:deploy",
     "docker:up": "pnpm --filter=db docker:up",
     "docker:down": "pnpm --filter=db docker:down",

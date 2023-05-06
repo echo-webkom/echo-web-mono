@@ -1,17 +1,38 @@
 import {NextResponse} from "next/server";
 
-import {type HappeningType, type PrismaClient} from "@echo-webkom/db";
 import {prisma} from "@echo-webkom/db/client";
+import {type Group} from "@echo-webkom/db/types";
 
 import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
 import {$fetchAllEvents, type Event} from "@/sanity/event";
 import {isErrorMessage} from "@/utils/error";
 
-const updateOrCreate = async (
-  prisma: PrismaClient,
-  type: HappeningType,
-  happenings: Array<Event | Bedpres>,
-) => {
+const organizerSlugToGroup = (slug: string) => {
+  switch (slug) {
+    case "makerspace":
+      return "MAKERSPACE";
+    case "bedkom":
+      return "BEDKOM";
+    case "webkom":
+      return "WEBKOM";
+    case "gnist":
+      return "GNIST";
+    case "hyggkom":
+      return "HYGGKOM";
+    case "squash":
+      return "SQUASH";
+    case "esc":
+      return "ESC";
+    case "programmerbar":
+      return "PROGBAR";
+    case "tilde":
+      return "TILDE";
+    default:
+      return undefined;
+  }
+};
+
+const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -20,7 +41,7 @@ const updateOrCreate = async (
         },
         create: {
           slug: happening.slug,
-          type,
+          type: "BEDPRES",
           title: happening.title,
           questions: {
             create: happening.additionalQuestions?.map((question) => ({
@@ -37,6 +58,7 @@ const updateOrCreate = async (
               spots,
             })),
           },
+          groups: ["BEDKOM"],
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,
@@ -69,7 +91,79 @@ const updateOrCreate = async (
   );
 };
 
-export async function GET() {
+const updateOrCreateEvent = async (happenings: Array<Event>) => {
+  return await prisma.$transaction(
+    happenings.map((happening) =>
+      prisma.happening.upsert({
+        where: {
+          slug: happening.slug,
+        },
+        create: {
+          slug: happening.slug,
+          type: "EVENT",
+          title: happening.title,
+          questions: {
+            create: happening.additionalQuestions?.map((question) => ({
+              title: question.title,
+              type: question.type === "text" ? "TEXT" : "CHOICE",
+              required: question.required,
+              options: question.options ?? [],
+            })),
+          },
+          spotRanges: {
+            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+              minDegreeYear,
+              maxDegreeYear,
+              spots,
+            })),
+          },
+          groups: happening.organizers
+            .map((organizer) => organizerSlugToGroup(organizer.slug))
+            .filter((group) => group !== null) as Array<Group>,
+          date: happening.date,
+          registrationStart: happening.registrationStart,
+          registrationEnd: happening.registrationEnd,
+        },
+        update: {
+          title: happening.title,
+          spotRanges: {
+            deleteMany: {},
+            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+              minDegreeYear,
+              maxDegreeYear,
+              spots,
+            })),
+          },
+          questions: {
+            deleteMany: {},
+            create: happening.additionalQuestions?.map((question) => ({
+              title: question.title,
+              type: question.type === "text" ? "TEXT" : "CHOICE",
+              required: question.required,
+              options: question.options ?? [],
+            })),
+          },
+          date: happening.date,
+          registrationStart: happening.registrationStart,
+          registrationEnd: happening.registrationEnd,
+        },
+      }),
+    ),
+  );
+};
+
+export async function GET(request: Request) {
+  // Basic auth to prevent unauthorized access
+  const auth = request.headers.get("Authorization")?.split(" ")[1];
+  const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
+  const [, password] = decodedAuth.split(":");
+
+  if (password !== "password") {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
   const startTime = new Date().getTime();
 
   const events = await $fetchAllEvents();
@@ -81,8 +175,8 @@ export async function GET() {
     });
   }
 
-  const updatedEvents = await updateOrCreate(prisma, "EVENT", events);
-  const updatedBedpresses = await updateOrCreate(prisma, "BEDPRES", bedpresses);
+  const updatedEvents = await updateOrCreateEvent(events);
+  const updatedBedpresses = await updateOrCreateBedpres(bedpresses);
 
   const endTime = new Date().getTime();
   const totalSeconds = (endTime - startTime) / 1000;
