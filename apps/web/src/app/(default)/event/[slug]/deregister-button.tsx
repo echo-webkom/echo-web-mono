@@ -6,36 +6,29 @@ import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {useToast} from "@/hooks/use-toast";
 
-export default function RegisterButton({slug}: {slug: string}) {
+export default function DeregisterButton({slug}: {slug: string}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const {toast} = useToast();
 
-  async function handleRegister() {
+  async function handleDeregister() {
     setIsLoading(true);
 
-    const response = await fetch(`/api/happening/${slug}/register`, {
+    const response = await fetch(`/api/happening/${slug}/deregister`, {
       method: "POST",
       body: JSON.stringify({
-        questions: [],
+        reason: "fordi lol",
       }),
     });
 
     setIsLoading(false);
 
     switch (response.status) {
-      case 201:
+      case 200:
         toast({
-          title: "Du er påmeldt!",
-          description: "Gratulere, du fikk plass på arrangementet!",
+          title: "Du er avmeldt!",
+          description: "Du er nå avmeldt fra arrangementet.",
           variant: "success",
-        });
-        break;
-      case 202:
-        toast({
-          title: "Du er påmeldt!",
-          description: "Du er nå på venteliste.",
-          variant: "warning",
         });
         break;
       case 404:
@@ -57,8 +50,8 @@ export default function RegisterButton({slug}: {slug: string}) {
   }
 
   return (
-    <Button disabled={isLoading} onClick={() => void handleRegister()} fullWidth>
-      {isLoading ? "Melder deg på..." : "Meld deg på"}
+    <Button disabled={isLoading} onClick={() => void handleDeregister()} fullWidth>
+      {isLoading ? "Melder deg av..." : "Meld deg av"}
     </Button>
   );
 }

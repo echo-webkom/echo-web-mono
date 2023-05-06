@@ -86,6 +86,7 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
       where: {
         happeningSlug: happening.slug,
         userId: user.id,
+        status: "REGISTERED",
       },
     });
 

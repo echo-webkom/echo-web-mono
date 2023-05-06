@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import {Slot} from "@radix-ui/react-slot";
 import {cva, type VariantProps} from "class-variance-authority";
 
 import {cn} from "@/utils/cn";
@@ -34,12 +37,17 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({className, variant, size, fullWidth, ...props}, ref) => {
+  ({className, variant, size, fullWidth, asChild = false, ...props}, ref) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const Component = asChild ? Slot : "button";
+
     return (
-      <button
+      <Component
         className={cn(buttonVariants({variant, size, fullWidth, className}))}
         ref={ref}
         {...props}

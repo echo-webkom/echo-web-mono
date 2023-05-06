@@ -4,12 +4,28 @@ import {prisma} from "@echo-webkom/db/client";
 
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
+import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {getServerSession} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
+import DeregisterButton from "./deregister-button";
 import RegisterButton from "./register-button";
 
-export default async function EventPage({params}: {params: {slug: string}}) {
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+export async function generateMetadata({params}: Props) {
+  const event = await fetchEventBySlug(params.slug);
+
+  return {
+    title: event.title,
+  };
+}
+
+export default async function EventPage({params}: Props) {
   const session = await getServerSession();
   const event = await fetchEventBySlug(params.slug);
   const eventInfo = await prisma.happening.findUnique({
@@ -28,7 +44,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
         },
       },
     });
-    isRegistered = Boolean(registration);
+    isRegistered = Boolean(registration?.status === "REGISTERED");
   } else {
     isRegistered = false;
   }
@@ -57,16 +73,10 @@ export default async function EventPage({params}: {params: {slug: string}}) {
   ).reduce((acc, curr) => acc + curr.spots, 0);
 
   return (
-    <Container>
-      {isRegistered && (
-        <div className="mb-5 rounded-xl border border-green-600 bg-green-600/20 p-3">
-          <p className="text-center text-xl font-bold">Du er påmeldt dette arrangementet</p>
-        </div>
-      )}
-
-      <div className="flex flex-col gap-8 md:flex-row">
+    <Container className="w-full md:max-w-[800px] lg:max-w-[1500px]">
+      <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar */}
-        <div className="flex h-full w-full flex-col gap-3 md:max-w-[250px]">
+        <div className="flex h-full w-full flex-col gap-3 lg:max-w-[250px]">
           {eventInfo?.date && (
             <div>
               <p className="font-semibold">Dato:</p>
@@ -95,7 +105,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
 
           {event.organizers && (
             <div>
-              <p className="font-semibold">Arrangører:</p>
+              <p className="font-semibold">Arrangert av:</p>
               <ul>
                 {event.organizers.map((organizer) => (
                   <li key={organizer._id}>{organizer.name}</li>
@@ -104,7 +114,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
             </div>
           )}
 
-          {event.contacts && (
+          {event.contacts && event.contacts.length > 0 && (
             <div>
               <p className="font-semibold">Kontaktpersoner:</p>
               <ul>
@@ -147,11 +157,29 @@ export default async function EventPage({params}: {params: {slug: string}}) {
               </div>
             )}
 
-          {session ? (
-            eventInfo?.date && new Date() < eventInfo.date && <RegisterButton slug={params.slug} />
-          ) : (
+          {session && eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
+            <div>
+              {isRegistered ? (
+                <DeregisterButton slug={params.slug} />
+              ) : (
+                <>
+                  <RegisterButton slug={params.slug} />
+                </>
+              )}
+            </div>
+          )}
+
+          {!session && (
             <div>
               <p>Du må være logget inn for å melde deg på</p>
+            </div>
+          )}
+
+          {session?.user.role === "ADMIN" && (
+            <div>
+              <Button fullWidth variant="secondary" asChild>
+                <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
+              </Button>
             </div>
           )}
         </div>
@@ -163,7 +191,7 @@ export default async function EventPage({params}: {params: {slug: string}}) {
         </article>
       </div>
 
-      <div className="mt-16 flex flex-col gap-3 text-center text-sm text-muted-foreground md:mt-auto">
+      <div className="flex flex-col gap-3 pt-10 text-center text-sm text-muted-foreground lg:mt-auto">
         <p>Publisert: {new Date(event._createdAt).toLocaleDateString()}</p>
         <p>Sist oppdatert: {new Date(event._updatedAt).toLocaleDateString()}</p>
       </div>

@@ -2,18 +2,15 @@ import {type ReactNode} from "react";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import {getServerSession} from "@/lib/session";
 
 type DefaultLayoutProps = {
   children: ReactNode;
 };
 
-export default async function DefaultLayout({children}: DefaultLayoutProps) {
-  const session = await getServerSession();
-
+export default function DefaultLayout({children}: DefaultLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header session={session} />
+      <Header />
       <main className="my-10 flex w-full flex-grow">{children}</main>
       <Footer />
     </div>

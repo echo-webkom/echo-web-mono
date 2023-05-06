@@ -4,21 +4,21 @@ import {useEffect, useState} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
-import {signIn} from "next-auth/react";
-
-import {type Session} from "@echo-webkom/auth";
+import {signIn, useSession} from "next-auth/react";
 
 import {headerRoutes} from "@/lib/routes";
 import HeaderLogo from "./header-logo";
 import ProfileIcon from "./profile-icon";
 import {Button} from "./ui/button";
 
-type HeaderProps = {
-  session: Session | null;
-};
+// type HeaderProps = {
+//   session: Session | null;
+// };
 
-export default function Header({session}: HeaderProps) {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const {data: session} = useSession();
 
   const pathname = usePathname();
 

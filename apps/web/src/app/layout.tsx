@@ -3,6 +3,7 @@ import {IBM_Plex_Mono, Inter} from "next/font/google";
 import "@/styles/globals.css";
 import {Toaster} from "@/components/toaster";
 import {cn} from "@/utils/cn";
+import Providers from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,27 +28,29 @@ interface RootLayoutProps {
 
 export const metadata = {
   title: {
-    default: "echo Web",
-    template: "%s | echo Web",
+    default: "echo – Linjeforeningen for informatikk",
+    template: "%s | echo – Linjeforeningen for informatikk",
   },
-  description: "Nettsiden til echo — linjeforeningen for informatikk ved Universitetet i Bergen.",
+  description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
 };
 
 export default function RootLayout({children}: RootLayoutProps) {
   return (
-    <html lang="no" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "min-h-screen bg-background font-primary antialiased",
-          inter.variable,
-          ibmPlexMono.variable,
-          ibmPlexMonoDisplay.variable,
-        )}
-      >
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <Providers>
+      <html lang="no" suppressHydrationWarning>
+        <head />
+        <body
+          className={cn(
+            "min-h-screen bg-background font-primary antialiased",
+            inter.variable,
+            ibmPlexMono.variable,
+            ibmPlexMonoDisplay.variable,
+          )}
+        >
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </Providers>
   );
 }

@@ -4,7 +4,8 @@
   "types": "./types.ts",
   "files": [
     "client.ts",
-    "types.ts"
+    "types.ts",
+    "queries"
   ],
   "license": "MIT",
   "scripts": {

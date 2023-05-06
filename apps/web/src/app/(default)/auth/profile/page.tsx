@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
-import {prisma} from "@echo-webkom/db/client";
+import {getUserHappenings} from "@echo-webkom/db/queries/user";
 import {type HappeningType} from "@echo-webkom/db/types";
 
 import Container from "@/components/container";
@@ -22,25 +22,7 @@ export default async function ProfilePage() {
     redirect("/auth/sign-in");
   }
 
-  const happenings = await prisma.happening.findMany({
-    where: {
-      registrations: {
-        some: {
-          userId: session?.user.id,
-        },
-      },
-    },
-    include: {
-      registrations: {
-        where: {
-          userId: session?.user.id,
-        },
-      },
-    },
-    orderBy: {
-      date: "desc",
-    },
-  });
+  const happenings = await getUserHappenings(session.user.id);
 
   return (
     <Container className="max-w-2xl gap-10">

@@ -12,8 +12,8 @@ export default function SignInButtons({
 }) {
   return (
     <div>
-      <Heading>Velg en måte å logge inn på</Heading>
-      <div className="flex flex-col justify-center gap-3">
+      <Heading className="text-center text-4xl">Velg en måte å logge inn på</Heading>
+      <div className="my-10 flex flex-col justify-center gap-3">
         {Object.values(providers).map((provider) => (
           <div className="mx-auto" key={provider.name}>
             <Button
