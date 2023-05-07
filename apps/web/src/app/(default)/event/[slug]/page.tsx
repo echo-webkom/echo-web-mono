@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {ArrowRightIcon} from "@radix-ui/react-icons";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
@@ -35,7 +36,9 @@ export default async function EventPage({params}: Props) {
   const event = await fetchEventBySlug(slug);
   const eventInfo = await getHappeningBySlug(slug);
   const user = await getUserById(session?.user.id ?? "");
+
   const isOrganizer = eventInfo && user && isEventOrganizer(eventInfo, user);
+  const isAdmin = session?.user.role === "ADMIN";
 
   const spotRange = await prisma.spotRange.findMany({
     where: {
@@ -196,19 +199,25 @@ export default async function EventPage({params}: Props) {
           )}
 
           {!session && (
-            <div>
-              <p>Du må være logget inn for å melde deg på</p>
+            // Create a warning box that is yellow
+            <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+              <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
+              <div className="flex items-center">
+                <Link href="/api/auth/signin" className="hover:underline">
+                  Logg inn her
+                </Link>
+                <ArrowRightIcon className="ml-2 h-4 w-4" />
+              </div>
             </div>
           )}
 
-          {session?.user.role === "ADMIN" ||
-            (isOrganizer && (
-              <div>
-                <Button fullWidth variant="secondary" asChild>
-                  <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
-                </Button>
-              </div>
-            ))}
+          {(isAdmin || isOrganizer) && (
+            <div>
+              <Button fullWidth variant="secondary" asChild>
+                <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Content */}
