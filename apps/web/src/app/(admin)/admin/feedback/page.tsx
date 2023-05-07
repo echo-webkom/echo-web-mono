@@ -4,6 +4,8 @@ import {type SiteFeedback} from "@echo-webkom/db/types";
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function FeedbackOverview() {
   const feedback = await getAllFeedback();
 

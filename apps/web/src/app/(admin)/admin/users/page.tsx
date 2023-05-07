@@ -3,6 +3,8 @@ import {getAllUsers} from "@echo-webkom/db/queries/user";
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function FeedbackOverview() {
   const users = await getAllUsers();
 

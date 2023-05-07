@@ -3,6 +3,8 @@ import Link from "next/link";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 
+import {happeningTypeToPath} from "@echo-webkom/lib";
+
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
 import {cn} from "@/utils/cn";
@@ -26,15 +28,10 @@ const happeningTypeToString: Record<HappeningType, string> = {
   BEDPRES: "bedriftspresentasjoner",
 };
 
-const happeningToLink: Record<HappeningType, string> = {
-  EVENT: "/event",
-  BEDPRES: "/bedpres",
-};
-
 export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps) {
   return (
     <div>
-      <Link href={happeningToLink[type]} className="min-h-[2.5rem] overflow-hidden">
+      <Link href={happeningTypeToPath[type]} className="min-h-[2.5rem] overflow-hidden">
         <h2 className="text-center text-3xl font-semibold hover:underline">
           {capitalize(happeningTypeToString[type])}
         </h2>

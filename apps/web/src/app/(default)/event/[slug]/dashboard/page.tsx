@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
+import {redirect} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
@@ -25,11 +25,11 @@ export default async function EventDashboard({params}: Props) {
   const eventInfo = await getHappeningBySlug(slug);
 
   if (!eventInfo || !user) {
-    return notFound();
+    return redirect("/api/auth/signin");
   }
 
   if (!isEventOrganizer(eventInfo, user)) {
-    return notFound();
+    return redirect("/api/auth/signin");
   }
 
   const registrations = await prisma.registration.findMany({

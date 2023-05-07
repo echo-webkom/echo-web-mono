@@ -1,5 +1,5 @@
 import {type ReactNode} from "react";
-import {notFound} from "next/navigation";
+import {redirect} from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
@@ -18,7 +18,7 @@ export default async function DefaultLayout({children}: DefaultLayoutProps) {
   const session = await getServerSession();
 
   if (!session) {
-    return notFound();
+    return redirect("/api/auth/signin");
   }
 
   return (

@@ -8,17 +8,25 @@ export const getUserById = async (id: User["id"]) => {
   });
 };
 
-export const getUserHappenings = async (id: User["id"]) => {
-  return await prisma.happening.findMany({
+export const getUserRegistrations = async (id: User["id"]) => {
+  return await prisma.registration.findMany({
     where: {
-      registrations: {
-        some: {
-          userId: id,
+      userId: id,
+    },
+    include: {
+      happening: {
+        select: {
+          slug: true,
+          date: true,
+          title: true,
+          type: true,
         },
       },
     },
     orderBy: {
-      date: "desc",
+      happening: {
+        date: "desc",
+      },
     },
   });
 };

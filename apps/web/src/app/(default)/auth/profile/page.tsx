@@ -1,19 +1,18 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
-import {getUserHappenings} from "@echo-webkom/db/queries/user";
-import {type HappeningType} from "@echo-webkom/db/types";
+import {getUserRegistrations} from "@echo-webkom/db/queries/user";
+import {
+  happeningTypeToPath,
+  happeningTypeToString,
+  registrationStatusToString,
+} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import SignOutButton from "@/components/sign-out-button";
 import Heading from "@/components/ui/heading";
 import UserForm from "@/components/user-form";
 import {getServerSession} from "@/lib/session";
-
-const happeningTypeToPath: Record<HappeningType, string> = {
-  BEDPRES: "/bedpres",
-  EVENT: "/event",
-};
 
 export default async function ProfilePage() {
   const session = await getServerSession();
@@ -22,11 +21,15 @@ export default async function ProfilePage() {
     redirect("/auth/sign-in");
   }
 
-  const happenings = await getUserHappenings(session.user.id);
+  const registrations = await getUserRegistrations(session.user.id);
 
   return (
     <Container className="max-w-2xl gap-10">
       <Heading>Din profil</Heading>
+
+      <div className="mx-auto w-fit">
+        <SignOutButton />
+      </div>
 
       <div className="flex flex-col gap-3">
         <div>
@@ -40,26 +43,6 @@ export default async function ProfilePage() {
       </div>
 
       <div>
-        <h2 className="mb-3 text-2xl font-bold">Påmeldte arrangementer</h2>
-        {happenings.length > 0 ? (
-          <ul className="flex flex-col gap-3">
-            {happenings.map((happening) => (
-              <li key={happening.slug}>
-                <Link
-                  href={happeningTypeToPath[happening.type] + "/" + happening.slug}
-                  className="text-lg font-semibold hover:underline"
-                >
-                  {happening.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Du er ikke påmeldt noen arrangementer.</p>
-        )}
-      </div>
-
-      <div>
         <UserForm
           alternativeEmail={session.user.alternativeEmail ?? undefined}
           degree={session.user.degree ?? undefined}
@@ -68,9 +51,44 @@ export default async function ProfilePage() {
         />
       </div>
 
-      <div className="mx-auto w-fit">
-        <SignOutButton />
+      <div>
+        <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>
+        {registrations.length > 0 ? (
+          <ul className="flex flex-col divide-y">
+            {registrations.map((registration) => (
+              <li key={registration.happening.slug}>
+                <div className="py-3">
+                  <Link
+                    href={
+                      happeningTypeToPath[registration.happening.type] +
+                      "/" +
+                      registration.happening.slug
+                    }
+                    className="text-lg font-semibold hover:underline"
+                  >
+                    {registration.happening.title}
+                  </Link>
+
+                  <div className="mt-3 flex items-center gap-3">
+                    <Tag>
+                      <p>{happeningTypeToString[registration.happening.type]}</p>
+                    </Tag>
+                    <Tag>
+                      <p>{registrationStatusToString[registration.status]}</p>
+                    </Tag>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Du er ikke påmeldt noen arrangementer.</p>
+        )}
       </div>
     </Container>
   );
+}
+
+function Tag({children}: {children: React.ReactNode}) {
+  return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
 }
