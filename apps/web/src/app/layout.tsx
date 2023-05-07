@@ -1,10 +1,12 @@
 import {IBM_Plex_Mono, Inter} from "next/font/google";
 
 import "@/styles/globals.css";
+import {type Metadata} from "next";
+
 import Feedback from "@/components/feedback";
 import {Toaster} from "@/components/toaster";
 import {cn} from "@/utils/cn";
-import Providers from "./providers";
+import AuthProvider from "./auth-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,17 +29,29 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
   description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
+  icons: {
+    apple: "/apple-touch-icon.png",
+    icon: "/favicon-32x32.png",
+    shortcut: "/favicon16x16.ico",
+  },
+  manifest: "/site.webmanifest",
+  viewport: "width=device-width, initial-scale=1.0",
+  themeColor: "#008fa3",
+  appleWebApp: {
+    title: "echo",
+  },
 };
 
 export default function RootLayout({children}: RootLayoutProps) {
   return (
-    <Providers>
+    <AuthProvider>
       <html lang="no" suppressHydrationWarning>
         <head />
         <body
@@ -53,6 +67,6 @@ export default function RootLayout({children}: RootLayoutProps) {
           <Feedback />
         </body>
       </html>
-    </Providers>
+    </AuthProvider>
   );
 }
