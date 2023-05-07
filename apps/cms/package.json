@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^2.0.1",
-    "@types/react": "18.2.0",
+    "@types/react": "18.2.5",
     "@types/styled-components": "^5.1.26",
     "eslint": "^8.39.0",
     "prettier": "2.8.8",
