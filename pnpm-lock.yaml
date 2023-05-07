@@ -220,17 +220,17 @@ importers:
         specifier: 4.29.5
         version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
       '@trpc/client':
-        specifier: ^10.23.0
-        version: 10.23.0(@trpc/server@10.23.0)
+        specifier: ^10.25.0
+        version: 10.25.0(@trpc/server@10.25.0)
       '@trpc/next':
-        specifier: ^10.23.0
-        version: 10.23.0(@tanstack/react-query@4.29.5)(@trpc/client@10.23.0)(@trpc/react-query@10.23.0)(@trpc/server@10.23.0)(next@13.4.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^10.25.0
+        version: 10.25.0(@tanstack/react-query@4.29.5)(@trpc/client@10.25.0)(@trpc/react-query@10.25.0)(@trpc/server@10.25.0)(next@13.4.0)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
-        specifier: ^10.23.0
-        version: 10.23.0(@tanstack/react-query@4.29.5)(@trpc/client@10.23.0)(@trpc/server@10.23.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^10.25.0
+        version: 10.25.0(@tanstack/react-query@4.29.5)(@trpc/client@10.25.0)(@trpc/server@10.25.0)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
-        specifier: ^10.23.0
-        version: 10.23.0
+        specifier: ^10.25.0
+        version: 10.25.0
       '@types/remove-markdown':
         specifier: 0.3.1
         version: 0.3.1
@@ -326,11 +326,11 @@ importers:
         specifier: 0.1.0
         version: link:../db
       '@trpc/client':
-        specifier: ^10.23.0
-        version: 10.23.0(@trpc/server@10.23.0)
+        specifier: ^10.25.0
+        version: 10.25.0(@trpc/server@10.25.0)
       '@trpc/server':
-        specifier: ^10.23.0
-        version: 10.23.0
+        specifier: ^10.25.0
+        version: 10.25.0
       superjson:
         specifier: 1.12.3
         version: 1.12.3
@@ -5110,53 +5110,53 @@ packages:
     engines: {node: '>= 10'}
     dev: false
 
-  /@trpc/client@10.23.0(@trpc/server@10.23.0):
-    resolution: {integrity: sha512-7hTh9OjVIx4Co3kUyIu94SjbUIuS2WKl3E5BMseYbNOHfeY5rqwkCsw0N5EHWszhIVttUMDE0oCf10tNhYEq1A==}
+  /@trpc/client@10.25.0(@trpc/server@10.25.0):
+    resolution: {integrity: sha512-XWuzbbACX2fzB9UHVkPJtaaAeFiyPjQSC3YgnRtDwjQx03/nt7OsxTBxvG0kblCN0Z2zZrnLF65aDrMJEP43LQ==}
     peerDependencies:
-      '@trpc/server': 10.23.0
+      '@trpc/server': 10.25.0
     dependencies:
-      '@trpc/server': 10.23.0
+      '@trpc/server': 10.25.0
     dev: false
 
-  /@trpc/next@10.23.0(@tanstack/react-query@4.29.5)(@trpc/client@10.23.0)(@trpc/react-query@10.23.0)(@trpc/server@10.23.0)(next@13.4.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-IoyoID4wUIFI1nrx6EJM1fBVdkyLiadCsw+r3XLtKnxCwfK5PLeIwwJAQrf+4IFtQT7KYhw4dSkP4gfltIPC3Q==}
+  /@trpc/next@10.25.0(@tanstack/react-query@4.29.5)(@trpc/client@10.25.0)(@trpc/react-query@10.25.0)(@trpc/server@10.25.0)(next@13.4.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-cKvW8ktu7IKbPMobx7lzAPzXUG+vGofQtoQ76P0fmKj2ckh9chDMUnOa6XUaXm8InJrq1HM3gamf35zzGz3gqQ==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
-      '@trpc/client': 10.23.0
-      '@trpc/react-query': 10.23.0
-      '@trpc/server': 10.23.0
+      '@trpc/client': 10.25.0
+      '@trpc/react-query': 10.25.0
+      '@trpc/server': 10.25.0
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.29.5(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/client': 10.23.0(@trpc/server@10.23.0)
-      '@trpc/react-query': 10.23.0(@tanstack/react-query@4.29.5)(@trpc/client@10.23.0)(@trpc/server@10.23.0)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server': 10.23.0
+      '@trpc/client': 10.25.0(@trpc/server@10.25.0)
+      '@trpc/react-query': 10.25.0(@tanstack/react-query@4.29.5)(@trpc/client@10.25.0)(@trpc/server@10.25.0)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server': 10.25.0
       next: 13.4.0(@babel/core@7.20.12)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
     dev: false
 
-  /@trpc/react-query@10.23.0(@tanstack/react-query@4.29.5)(@trpc/client@10.23.0)(@trpc/server@10.23.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-50vfR3HtOEcjCQMuHSGTFOG6W9WunvcI8msTp84UNAqZ9dz4YdjgBVNn2wxqB5LAQ6AGlcKuzJWjEj3yO56tvw==}
+  /@trpc/react-query@10.25.0(@tanstack/react-query@4.29.5)(@trpc/client@10.25.0)(@trpc/server@10.25.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-6+gHPjEo4ocTwgij5fLqEwTP6ud1ZW48Kt/STM8Kgz8/Vj7QhBSbGVEmUL++/8MD3Ro1SEBV63DTc1t7vMEZ/Q==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
-      '@trpc/client': 10.23.0
-      '@trpc/server': 10.23.0
+      '@trpc/client': 10.25.0
+      '@trpc/server': 10.25.0
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.29.5(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/client': 10.23.0(@trpc/server@10.23.0)
-      '@trpc/server': 10.23.0
+      '@trpc/client': 10.25.0(@trpc/server@10.25.0)
+      '@trpc/server': 10.25.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/server@10.23.0:
-    resolution: {integrity: sha512-0CPfGZK3v3gfAL8ylV5vDJVBQtPp47EB4Vgx6WItSXmwYQlLC39ZC3gkZ4I5cGpQKl4l3QrNNeUvIcse4hlMxA==}
+  /@trpc/server@10.25.0:
+    resolution: {integrity: sha512-OKcGw2iZMUV8zCHoS+uLYGVq2tbZhhK0TPbb0pGhT+KTN8oWYPG+oYpTe9He9J1A2y8qcRAoy5u1zdiUUOiFEg==}
     dev: false
 
   /@trysound/sax@0.2.0:
