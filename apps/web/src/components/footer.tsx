@@ -12,7 +12,7 @@ type FooterProps = {
 
 export default function Footer({className}: FooterProps) {
   return (
-    <div className={cn(className)}>
+    <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
       <svg
         id="svg"

@@ -3,7 +3,7 @@ import {z} from "zod";
 
 import {type StudentGroupType} from "@echo-webkom/lib";
 
-import {sanityClient} from "../client";
+import {clientFetch} from "../client";
 import {studentGroupSchema, type StudentGroup} from "./schemas";
 
 export * from "./schemas";
@@ -25,7 +25,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await sanityClient.fetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
+  const result = await clientFetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
 
   const studentGroupSlugSchema = z.object({
     groupType: z.enum(["board", "subgroup", "intgroup", "suborg"]),
@@ -85,7 +85,7 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
     n,
   };
 
-  const res = await sanityClient.fetch<Array<StudentGroup>>(query, params);
+  const res = await clientFetch<Array<StudentGroup>>(query, params);
 
   return studentGroupSchema.array().parse(res);
 };
@@ -126,7 +126,7 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
       slug,
     };
 
-    const result = await sanityClient.fetch<StudentGroup>(query, params);
+    const result = await clientFetch<StudentGroup>(query, params);
 
     return studentGroupSchema.parse(result);
   } catch {

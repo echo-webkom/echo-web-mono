@@ -1,7 +1,7 @@
 import {groq} from "next-sanity";
 import {z} from "zod";
 
-import {sanityClient} from "../client";
+import {clientFetch} from "../client";
 import {minuteSchema, type Minute} from "./schema";
 
 export * from "./schema";
@@ -20,7 +20,7 @@ export const fetchMinutes = async () => {
 }
     `;
 
-  const result = await sanityClient.fetch<Array<Minute>>(query);
+  const result = await clientFetch<Array<Minute>>(query);
 
   return minuteSchema.array().parse(result);
 };
@@ -37,7 +37,7 @@ export const fetchMinuteParams = async () => {
 }
     `;
 
-  const result = await sanityClient.fetch<Array<{id: string}>>(query);
+  const result = await clientFetch<Array<{id: string}>>(query);
 
   return z
     .object({
@@ -69,7 +69,7 @@ export const fetchMinuteById = async (id: string) => {
     id,
   };
 
-  const result = await sanityClient.fetch<Minute>(query, params);
+  const result = await clientFetch<Minute>(query, params);
 
   return minuteSchema.parse(result);
 };

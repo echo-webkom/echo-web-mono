@@ -1,6 +1,6 @@
 import {groq} from "next-sanity";
 
-import {sanityClient} from "../client";
+import {clientFetch} from "../client";
 import {siteSettingsSchema, type Banner, type SiteSettings} from "./schemas";
 
 /**
@@ -22,7 +22,7 @@ export const fetchBanner = async (): Promise<Banner | null> => {
 }
     `;
 
-    const res = await sanityClient.fetch<SiteSettings>(query);
+    const res = await clientFetch<SiteSettings>(query);
 
     const settings = siteSettingsSchema.parse(res);
 

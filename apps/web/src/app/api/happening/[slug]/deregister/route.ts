@@ -54,7 +54,7 @@ export async function POST(req: Request, context: z.infer<typeof routeContextSch
     return new Response(registration.status, {status: 200});
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), {status: 422});
+      return new Response(JSON.stringify(error.issues), {status: 400});
     }
 
     return new Response(null, {status: 500});

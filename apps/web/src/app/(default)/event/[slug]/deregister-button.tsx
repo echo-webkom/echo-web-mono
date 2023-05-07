@@ -37,7 +37,7 @@ export default function DeregisterButton({slug}: {slug: string}) {
           description: "Arrangementet du prøver å melde deg på finnes ikke.",
           variant: "destructive",
         });
-      case 422:
+      case 400:
         toast({
           title: "Du er allerede påmeldt!",
           description: "Du er allerede påmeldt til dette arrangementet.",

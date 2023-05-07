@@ -1,7 +1,7 @@
 import {groq} from "next-sanity";
 
 import {type ErrorMessage} from "@/utils/error";
-import {sanityClient, sanityServerClient} from "../client";
+import {clientFetch, sanityServerClient} from "../client";
 import {slugSchema, type Slug} from "../utils/slug";
 import {eventSchema, type Event} from "./schemas";
 
@@ -76,7 +76,7 @@ export const fetchComingEvents = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await sanityClient.fetch<Array<Event>>(query, params);
+  const res = await clientFetch<Array<Event>>(query, params);
 
   return eventSchema.array().parse(res);
 };
@@ -128,7 +128,7 @@ export const fetchEventBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await sanityClient.fetch<Event>(query, params);
+  const res = await clientFetch<Event>(query, params);
 
   return eventSchema.parse(res);
 };

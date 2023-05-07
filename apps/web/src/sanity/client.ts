@@ -1,3 +1,4 @@
+import {cache} from "react";
 import {createClient} from "next-sanity";
 
 /**
@@ -9,13 +10,17 @@ import {createClient} from "next-sanity";
  * "production" and "development"
  */
 
+export const projectId = "nnumy1ga";
+export const dataset = "production";
+export const apiVersion = "2021-04-10";
+
 /**
  * Sanity client for client-side requests
  */
 export const sanityClient = createClient({
-  projectId: "nnumy1ga",
-  dataset: "production",
-  apiVersion: "2021-04-10",
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: true,
 });
 
@@ -23,8 +28,10 @@ export const sanityClient = createClient({
  * Sanity client for server-side requests
  */
 export const sanityServerClient = createClient({
-  projectId: "nnumy1ga",
-  dataset: "production",
-  apiVersion: "2021-04-10",
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: false,
 });
+
+export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));

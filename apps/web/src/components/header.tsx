@@ -67,8 +67,8 @@ export default function Header() {
             <div className="mx-auto max-w-5xl">
               <ul className="flex flex-col items-start justify-between gap-5 text-2xl font-bold md:flex-row md:items-center">
                 <HeaderMenuItem href="/event">Arrangementer</HeaderMenuItem>
-                <HeaderMenuItem href="/for-students/subgroup">Undergrupper</HeaderMenuItem>
-                <HeaderMenuItem href="/for-students/post">Innlegg</HeaderMenuItem>
+                <HeaderMenuItem href="/for-students/groups/subgroup">Undergrupper</HeaderMenuItem>
+                <HeaderMenuItem href="/for-students/posts">Innlegg</HeaderMenuItem>
                 {session && <HeaderMenuItem href="/auth/profile">Min profil</HeaderMenuItem>}
               </ul>
             </div>

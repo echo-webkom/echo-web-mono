@@ -16,19 +16,19 @@ export const headerRoutes: Array<RouteSection> = [
     label: "For studenter",
     sublinks: [
       {
-        href: "/for-students/board",
+        href: "/for-students/groups/board",
         label: "Hovedstyret",
       },
       {
-        href: "/for-students/subgroup",
+        href: "/for-students/groups/subgroup",
         label: "Undergrupper",
       },
       {
-        href: "/for-students/suborg",
+        href: "/for-students/groups/suborg",
         label: "Underorganisasjoner",
       },
       {
-        href: "/for-students/intgroup",
+        href: "/for-students/groups/intgroup",
         label: "Interessegrupper",
       },
       {

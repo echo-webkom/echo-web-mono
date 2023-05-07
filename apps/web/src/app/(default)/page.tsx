@@ -9,10 +9,6 @@ import {fetchComingEvents} from "@/sanity/event";
 import {fetchJobAds} from "@/sanity/job-ad";
 import {fetchPosts} from "@/sanity/posts";
 
-export const metadata = {
-  title: "echo – Linjeforeningen for informatikk",
-};
-
 export default async function HomePage() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(5),

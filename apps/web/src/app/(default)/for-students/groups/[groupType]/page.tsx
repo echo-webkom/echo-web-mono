@@ -1,3 +1,5 @@
+import {notFound} from "next/navigation";
+
 import {type StudentGroupType} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
@@ -11,6 +13,12 @@ import {
 
 export const dynamicParams = false;
 
+type Props = {
+  params: {
+    groupType: string;
+  };
+};
+
 export function generateStaticParams() {
   const params = Object.values(studentGroupTypeToUrl).map((groupType) => ({
     params: {groupType},
@@ -19,17 +27,7 @@ export function generateStaticParams() {
   return params;
 }
 
-const pathToGroupType = (path: string) => {
-  const groupType = Object.entries(studentGroupTypeToUrl).find(([_, url]) => url === path)?.[0];
-
-  if (!groupType) {
-    throw new Error(`Invalid path: ${path}`);
-  }
-
-  return groupType as StudentGroupType;
-};
-
-export default async function StudentGroupOverview({params}: {params: {groupType: string}}) {
+export default async function StudentGroupOverview({params}: Props) {
   const {groupType} = params;
   const groupTypeFromPath = pathToGroupType(groupType);
 
@@ -49,3 +47,13 @@ export default async function StudentGroupOverview({params}: {params: {groupType
     </Container>
   );
 }
+
+const pathToGroupType = (path: string) => {
+  const groupType = Object.entries(studentGroupTypeToUrl).find(([_, url]) => url === path)?.[0];
+
+  if (!groupType) {
+    notFound();
+  }
+
+  return groupType as StudentGroupType;
+};
