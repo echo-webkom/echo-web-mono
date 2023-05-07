@@ -3,13 +3,21 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import {cn} from "@/utils/cn";
+
 type MarkdownProps = {
-  content: string;
+  className?: string;
+  content: string | null;
 };
 
-const Markdown = ({content}: MarkdownProps) => {
+export default function Markdown({className, content}: MarkdownProps) {
+  if (!content) {
+    return null;
+  }
+
   return (
     <ReactMarkdown
+      className={cn("prose", "md:prose-xl", className)}
       components={{
         a: ({children, href}) => {
           // TODO: Add external link icon and behavior
@@ -39,6 +47,4 @@ const Markdown = ({content}: MarkdownProps) => {
       {content}
     </ReactMarkdown>
   );
-};
-
-export default Markdown;
+}

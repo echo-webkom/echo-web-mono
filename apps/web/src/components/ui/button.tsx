@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link, {type LinkProps} from "next/link";
 import {cva, type VariantProps} from "class-variance-authority";
 
 import {cn} from "@/utils/cn";
@@ -37,7 +36,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({className, variant, size, fullWidth, ...props}, ref) => {
     return (
       <button
@@ -49,27 +48,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 Button.displayName = "Button";
-
-interface ButtonLinkProps extends LinkProps, VariantProps<typeof buttonVariants> {
-  className?: string;
-  children: React.ReactNode;
-  isExternal?: boolean;
-}
-
-const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({className, variant, size, fullWidth, children, isExternal = false, ...props}, ref) => {
-    return (
-      <Link
-        ref={ref}
-        className={cn(buttonVariants({variant, size, fullWidth, className}))}
-        {...(isExternal ? {target: "_blank", rel: "noopener noreferrer"} : {})}
-        {...props}
-      >
-        {children}
-      </Link>
-    );
-  },
-);
-ButtonLink.displayName = "ButtonLink";
-
-export {Button, ButtonLink};

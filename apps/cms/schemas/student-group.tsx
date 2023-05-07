@@ -1,12 +1,7 @@
 import {UsersIcon} from "@sanity/icons";
 import {defineField, defineType} from "sanity";
 
-const GROUP_TYPES = [
-  {title: "Hovedstyre", value: "board"},
-  {title: "Undergruppe", value: "subgroup"},
-  {title: "Underorganisasjon", value: "suborg"},
-  {title: "Interessegruppe", value: "intgroup"},
-];
+import {GROUP_TYPES} from "@echo-webkom/lib";
 
 export default defineType({
   name: "studentGroup",
@@ -35,7 +30,9 @@ export default defineType({
       title: "Gruppetype",
       type: "string",
       options: {
-        list: GROUP_TYPES,
+        list: GROUP_TYPES.map(({title, value}) => {
+          return {title, value};
+        }),
         layout: "dropdown",
       },
       validation: (Rule) => Rule.required(),

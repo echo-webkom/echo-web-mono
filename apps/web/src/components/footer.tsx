@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import {useSession} from "next-auth/react";
 
 import {footerRoutes} from "@/lib/routes";
 import {sponsors} from "@/lib/sponsors";
@@ -11,9 +10,7 @@ type FooterProps = {
   className?: string;
 };
 
-const Footer = ({className}: FooterProps) => {
-  const {data: userSession} = useSession();
-
+export default function Footer({className}: FooterProps) {
   return (
     <div className={cn(className)}>
       {/* Footer wave */}
@@ -38,7 +35,7 @@ const Footer = ({className}: FooterProps) => {
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
             {footerRoutes.map((route) => {
-              if (route.session === !userSession) {
+              if (route.session) {
                 return null;
               }
 
@@ -104,6 +101,4 @@ const Footer = ({className}: FooterProps) => {
       </footer>
     </div>
   );
-};
-
-export default Footer;
+}

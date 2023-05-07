@@ -1,89 +1,115 @@
+"use client";
+
+import {useRouter} from "next/navigation";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {Controller, useForm} from "react-hook-form";
+import {z} from "zod";
 
-import {type Degree, type User} from "@echo-webkom/db/types";
+import {Degree} from "@echo-webkom/db/types";
+import {degreeToString} from "@echo-webkom/lib";
 
-import {useToast} from "@/hooks/use-toast";
-import {api} from "@/utils/api";
 import {Button} from "./ui/button";
 import Input from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import Label from "./ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./ui/select";
 
-// TODO: Add client side form validation?
-type FormValues = {
+const userSchema = z.object({
+  alternativeEmail: z.string().email().or(z.literal("")).optional(),
+  degree: z.nativeEnum(Degree).optional(),
+  year: z
+    .number()
+    .int()
+    .min(1)
+    .max(5)
+    .optional()
+    .transform((value) => (value ? Number(value) : undefined)),
+});
+
+type FormData = z.infer<typeof userSchema>;
+
+export default function UserForm({
+  alternativeEmail,
+  degree,
+  year,
+  id,
+}: {
   alternativeEmail?: string;
-  year?: string;
-  degree?: string;
-};
-
-type UserFormProps = {
-  user: User;
-  refetchUser: () => void;
-};
-
-const UserForm = ({user, refetchUser}: UserFormProps) => {
-  const {toast} = useToast();
-
-  const userMutation = api.auth.update.useMutation({
-    onSuccess: () => {
-      toast({
-        title: "Profil oppdatert",
-        description: "Din profil har blitt oppdatert.",
-        variant: "success",
-      });
-      void methods.reset();
-      void refetchUser();
-    },
-    onError: () => {
-      toast({
-        title: "Noe gikk galt",
-        description: "Fikk ikke til å oppdatere profilen din",
-        variant: "warning",
-      });
-    },
-  });
-
-  const methods = useForm<FormValues>({
+  degree?: Degree;
+  year?: number;
+  id: string;
+}) {
+  const methods = useForm<FormData>({
     defaultValues: {
-      alternativeEmail: user.alternativeEmail ?? undefined,
-      year: user.year?.toString() ?? undefined,
-      degree: user.degree ?? undefined,
+      alternativeEmail: alternativeEmail,
+      degree: degree,
+      year: year,
     },
+    resolver: zodResolver(userSchema),
   });
+
+  const router = useRouter();
 
   const onSubmit = methods.handleSubmit(
-    (data) => {
-      userMutation.mutate({
-        alternativeEmail: data.alternativeEmail ?? null,
-        year: data.year ? parseInt(data.year, 10) : undefined,
-        degree: data.degree as Degree,
+    async (data) => {
+      const response = await fetch(`/api/user/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+
+      if (!response.ok) {
+        alert("Noe gikk galt.");
+      }
+
+      alert("Bruker oppdatert");
+
+      router.refresh();
     },
-    (err) => {
-      console.error(err);
+    (error) => {
+      console.error(error);
     },
   );
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-2">
-        <Input {...methods.register("alternativeEmail")} placeholder="Alternativ e-post" />
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="alternativeEmail">Alternativ e-post</Label>
+        <Input type="email" {...methods.register("alternativeEmail")} />
       </div>
-
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="degree">Studieretning</Label>
+        <Controller
+          name="degree"
+          control={methods.control}
+          render={({field}) => (
+            <Select value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Velg studieretning" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(Degree).map(([key, value]) => (
+                  <SelectItem key={key} value={value}>
+                    {degreeToString[value]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="year">Årstrinn</Label>
         <Controller
           name="year"
           control={methods.control}
           render={({field}) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select
+              value={field.value?.toString()}
+              onValueChange={(e) => field.onChange(parseInt(e))}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Velg årstrinn" />
               </SelectTrigger>
@@ -99,48 +125,9 @@ const UserForm = ({user, refetchUser}: UserFormProps) => {
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Controller
-          name="degree"
-          control={methods.control}
-          render={({field}) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Velg studieretning" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Bachelor</SelectLabel>
-                  <SelectItem value="DSIK">Datasikkerhet</SelectItem>
-                  <SelectItem value="DTEK">Datateknologi</SelectItem>
-                  <SelectItem value="IMO">Informatikk-matematikk-økonomi</SelectItem>
-                  <SelectItem value="DVIT">Datavitenskap</SelectItem>
-                  <SelectItem value="BINF">Bioinformatikk</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Master</SelectLabel>
-                  <SelectItem value="DSC">Master i datascience</SelectItem>
-                  <SelectItem value="INF">Master i informatikk</SelectItem>
-                  <SelectItem value="PROG">Programvareutvikling</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Annet</SelectLabel>
-                  <SelectItem value="MISC">Annet</SelectItem>
-                  <SelectItem value="ARMNINF">Årstudium i informatikk</SelectItem>
-                  <SelectItem value="POST">Post-bachelor</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
-      </div>
-      <div className="flex gap-3">
-        <Button type="submit" disabled={!methods.formState.isDirty}>
-          {userMutation.isLoading ? "Lagrer..." : "Lagre"}
-        </Button>
+      <div>
+        <Button type="submit">Lagre</Button>
       </div>
     </form>
   );
-};
-
-export default UserForm;
+}
