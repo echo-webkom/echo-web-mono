@@ -18,7 +18,7 @@ export default async function DefaultLayout({children}: DefaultLayoutProps) {
   const session = await getServerSession();
 
   if (!session) {
-    notFound();
+    return notFound();
   }
 
   return (
