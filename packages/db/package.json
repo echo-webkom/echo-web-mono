@@ -4,14 +4,16 @@
   "types": "./types.ts",
   "files": [
     "client.ts",
-    "types.ts"
+    "types.ts",
+    "queries"
   ],
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma",
-    "db:push": "pnpm with-env prisma db push --skip-generate",
-    "docker:up": "docker-compose up --build",
+    "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
+    "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
+    "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
     "with-env": "dotenv -e ../../.env --"

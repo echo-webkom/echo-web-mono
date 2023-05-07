@@ -1,6 +1,7 @@
-// https://github.com/t3-oss/t3-env/blob/main/docs/src/components/tailwind-indicator.tsx
+import {env} from "@/env.mjs";
+
 const TailwindIndicator = () => {
-  if (process.env.NODE_ENV === "production") return null;
+  if (env.NODE_ENV === "production") return null;
 
   return (
     <div className="fixed bottom-2 left-2 z-50 flex h-8 w-8 items-center justify-center rounded bg-primary p-3 font-mono text-white">

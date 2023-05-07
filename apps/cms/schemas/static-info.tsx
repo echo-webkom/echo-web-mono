@@ -1,11 +1,7 @@
 import {DocumentTextIcon} from "@sanity/icons";
 import {defineField} from "sanity";
 
-const PAGE_TYPES = [
-  {title: "Om oss", value: "ABOUT"},
-  {title: "For studenter", value: "STUDENTS"},
-  {title: "For bedrifter", value: "COMPANIES"},
-];
+import {PAGE_TYPES} from "@echo-webkom/lib";
 
 export default defineField({
   name: "static",
@@ -34,7 +30,9 @@ export default defineField({
       title: "Side type",
       type: "string",
       options: {
-        list: PAGE_TYPES,
+        list: PAGE_TYPES.map(({title, value}) => {
+          return {title, value};
+        }),
       },
       validation: (Rule) => Rule.required(),
     }),

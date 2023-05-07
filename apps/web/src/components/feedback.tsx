@@ -1,12 +1,12 @@
+"use client";
+
 import {useState} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Tooltip} from "@radix-ui/react-tooltip";
 import {useForm} from "react-hook-form";
 import {MdOutlineFeedback} from "react-icons/md";
-import {z} from "zod";
 
 import {useToast} from "@/hooks/use-toast";
-import {api} from "@/utils/api";
+import {feedbackSchema, type FeedbackForm} from "@/lib/schemas/feedback";
 import {Button} from "./ui/button";
 import {
   Dialog,
@@ -20,50 +20,42 @@ import {
 import Input from "./ui/input";
 import Label from "./ui/label";
 import Textarea from "./ui/textarea";
-import {TooltipContent, TooltipProvider, TooltipTrigger} from "./ui/tooltip";
-
-const feedbackSchema = z.object({
-  email: z.string().email().or(z.literal("")).optional(),
-  name: z.string().max(100).optional(),
-  message: z.string().min(5).max(500),
-});
-type FormValues = z.infer<typeof feedbackSchema>;
 
 const Feedback = () => {
   const {toast} = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const methods = useForm<FormValues>({
+  const methods = useForm<FeedbackForm>({
     resolver: zodResolver(feedbackSchema),
   });
 
-  const feedbackMutation = api.feedback.create.useMutation({
-    onSuccess: () => {
+  const onSubmit = methods.handleSubmit(
+    async (data) => {
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Tilbakemelding sendt",
+          description: "Takk for din tilbakemelding!",
+          variant: "success",
+        });
+      } else {
+        toast({
+          title: "Noe gikk galt",
+          description: "Kunne ikke sende tilbakemelding",
+          variant: "warning",
+        });
+      }
+
       setIsOpen(false);
       methods.reset();
-      toast({
-        title: "Tilbakemelding sendt",
-        description: "Takk for din tilbakemelding!",
-        variant: "success",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Noe gikk galt",
-        description: "Fikk ikke til å sende tilbakemeldingen din",
-        variant: "warning",
-      });
-    },
-  });
-
-  const onSubmit = methods.handleSubmit(
-    (data) => {
-      feedbackMutation.mutate({
-        email: data.email?.length ? data.email : undefined,
-        name: data.name?.length ? data.name : undefined,
-        message: data.message,
-      });
     },
     (error) => {
       console.error(error);
@@ -73,21 +65,12 @@ const Feedback = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => setIsOpen(true)}
-                className="fixed bottom-0 right-0 z-30 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
-              >
-                <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Send tilbakemelding</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-0 right-0 z-30 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
+        >
+          <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
+        </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

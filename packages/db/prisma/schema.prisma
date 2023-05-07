@@ -60,14 +60,8 @@ model User {
   role             Role           @default(USER)
   degree           Degree?
   year             Int?
-  studentGroups    StudentGroup[]
+  studentGroups    Group[]
   Registration     Registration[]
-}
-
-model StudentGroup {
-  id    String @id @default(cuid())
-  name  String
-  users User[]
 }
 
 enum Role {
@@ -93,6 +87,19 @@ enum Degree {
   MISC
 }
 
+enum Group {
+  MAKERSPACE
+  BOARD
+  TILDE
+  GNIST
+  BEDKOM
+  ESC
+  HYGGKOM
+  WEBKOM
+  PROGBAR
+  SQUASH
+}
+
 enum HappeningType {
   BEDPRES
   EVENT
@@ -105,8 +112,6 @@ model SpotRange {
   spots         Int
   Happening     Happening? @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
   happeningSlug String?
-
-  @@index([happeningSlug])
 }
 
 enum RegistrationStatus {
@@ -126,8 +131,6 @@ model Registration {
   updatedAt     DateTime           @updatedAt
 
   @@unique([userId, happeningSlug])
-  @@index([happeningSlug])
-  @@index([userId])
 }
 
 enum QuestionType {
@@ -143,8 +146,6 @@ model Question {
   options       String[]
   Happening     Happening?   @relation(fields: [happeningSlug], references: [slug])
   happeningSlug String?
-
-  @@index([happeningSlug])
 }
 
 model Happening {
@@ -157,6 +158,7 @@ model Happening {
   questions         Question[]
   registrationStart DateTime?
   registrationEnd   DateTime?
+  groups            Group[]
 }
 
 model SiteFeedback {
@@ -166,6 +168,5 @@ model SiteFeedback {
   name      String?
   email     String?
   message   String   @db.Text
-  comment   String?  @db.Text
   isRead    Boolean  @default(false)
 }

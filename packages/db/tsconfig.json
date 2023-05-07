@@ -1,4 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["client.ts", "types.ts"]
+  "include": ["client.ts", "types.ts", "queries"]
 }

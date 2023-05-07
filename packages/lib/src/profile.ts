@@ -1,4 +1,9 @@
-import {type Degree, type RegistrationStatus} from "@echo-webkom/db/types";
+import {
+  type Degree,
+  type Group,
+  type HappeningType,
+  type RegistrationStatus,
+} from "@echo-webkom/db/types";
 
 export const degreeToString: Record<Degree, string> = {
   DTEK: "Datateknologi",
@@ -26,4 +31,27 @@ export const registrationStatusToString: Record<RegistrationStatus, string> = {
   REGISTERED: "Påmeldt",
   WAITLISTED: "Venteliste",
   DEREGISTERED: "Avmeldt",
+};
+
+export const happeningTypeToString: Record<HappeningType, string> = {
+  EVENT: "Arrangement",
+  BEDPRES: "Bedriftspresentasjon",
+};
+
+export const happeningTypeToPath: Record<HappeningType, string> = {
+  BEDPRES: "/bedpres",
+  EVENT: "/event",
+};
+
+export const groupToString: Record<Group, string> = {
+  BEDKOM: "Bedkom",
+  BOARD: "Hovedstyret",
+  ESC: "ESC",
+  HYGGKOM: "Hyggkom",
+  GNIST: "Gnist",
+  MAKERSPACE: "Makerspace",
+  WEBKOM: "Webkom",
+  SQUASH: "echo Squash",
+  PROGBAR: "Programmerbar",
+  TILDE: "Tilde",
 };

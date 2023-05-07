@@ -55,7 +55,7 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
 5. Initialiser databasen
 
    ```sh
-   pnpm db:push
+   pnpm db:deploy
    ```
 
 6. Start utviklingsmiljøet

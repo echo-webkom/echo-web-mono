@@ -2,7 +2,7 @@ import {type Config} from "tailwindcss";
 import {fontFamily} from "tailwindcss/defaultTheme";
 
 module.exports = {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,js,tsx,jsx}"],
   theme: {
     fontFamily: {
       primary: ["var(--inter-font)", ...fontFamily.sans],

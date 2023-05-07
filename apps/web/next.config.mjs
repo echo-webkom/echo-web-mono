@@ -7,7 +7,7 @@ const config = {
   reactStrictMode: true,
 
   experimental: {
-    appDir: false,
+    appDir: true,
   },
 
   transpilePackages: [

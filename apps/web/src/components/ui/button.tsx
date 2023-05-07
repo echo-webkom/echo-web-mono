@@ -1,5 +1,7 @@
+"use client";
+
 import * as React from "react";
-import Link, {type LinkProps} from "next/link";
+import {Slot} from "@radix-ui/react-slot";
 import {cva, type VariantProps} from "class-variance-authority";
 
 import {cn} from "@/utils/cn";
@@ -35,12 +37,16 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({className, variant, size, fullWidth, ...props}, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({className, variant, size, fullWidth, asChild = false, ...props}, ref) => {
+    const Component = asChild ? Slot : "button";
+
     return (
-      <button
+      <Component
         className={cn(buttonVariants({variant, size, fullWidth, className}))}
         ref={ref}
         {...props}
@@ -49,27 +55,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 Button.displayName = "Button";
-
-interface ButtonLinkProps extends LinkProps, VariantProps<typeof buttonVariants> {
-  className?: string;
-  children: React.ReactNode;
-  isExternal?: boolean;
-}
-
-const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({className, variant, size, fullWidth, children, isExternal = false, ...props}, ref) => {
-    return (
-      <Link
-        ref={ref}
-        className={cn(buttonVariants({variant, size, fullWidth, className}))}
-        {...(isExternal ? {target: "_blank", rel: "noopener noreferrer"} : {})}
-        {...props}
-      >
-        {children}
-      </Link>
-    );
-  },
-);
-ButtonLink.displayName = "ButtonLink";
-
-export {Button, ButtonLink};

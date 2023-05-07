@@ -6,15 +6,8 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
-    "db:push": {
-      "inputs": ["prisma/schema.prisma"],
-      "cache": false
-    },
-    "docker:up": {
-      "cache": false,
-      "persistent": true
-    },
-    "docker:down": {
+    "db:deploy": {
+      "dependsOn": ["^db:generate"],
       "cache": false
     },
     "dev": {
