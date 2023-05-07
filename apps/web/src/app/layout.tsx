@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   icons: {
     apple: "/apple-touch-icon.png",
     icon: "/favicon-32x32.png",
-    shortcut: "/favicon16x16.ico",
+    shortcut: "/favicon16x16.png",
   },
   manifest: "/site.webmanifest",
   viewport: "width=device-width, initial-scale=1.0",
