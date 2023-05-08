@@ -5,6 +5,7 @@ import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {getUserById} from "@echo-webkom/db/queries/user";
 import {type Prisma} from "@echo-webkom/db/types";
+import {registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
@@ -124,7 +125,7 @@ function RegistrationTable({registrations}: {registrations: Array<RegistrationWi
                 {registration.user.name}
               </th>
               <td className="px-6 py-4">{registration.user.email}</td>
-              <td className="px-6 py-4">{registration.status}</td>
+              <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {usePathname} from "next/navigation";
 import {AvatarIcon, ExitIcon, LockClosedIcon} from "@radix-ui/react-icons";
 import {signOut} from "next-auth/react";
 import {AiOutlineUserSwitch} from "react-icons/ai";
@@ -19,6 +20,8 @@ type ProfileIconProps = {
 };
 
 const ProfileIcon = ({session}: ProfileIconProps) => {
+  const pathname = usePathname();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -59,7 +62,7 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
             className="w-full"
             onClick={() =>
               void signOut({
-                callbackUrl: "/",
+                callbackUrl: pathname,
               })
             }
           >

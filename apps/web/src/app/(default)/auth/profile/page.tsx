@@ -1,8 +1,9 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
-import {getUserRegistrations} from "@echo-webkom/db/queries/user";
+import {getUserById, getUserRegistrations} from "@echo-webkom/db/queries/user";
 import {
+  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
@@ -22,6 +23,7 @@ export default async function ProfilePage() {
   }
 
   const registrations = await getUserRegistrations(session.user.id);
+  const user = await getUserById(session.user.id);
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -40,6 +42,12 @@ export default async function ProfilePage() {
           <p className="font-semibold">E-post:</p>
           <p>{session?.user.email}</p>
         </div>
+        {user?.studentGroups && (
+          <div>
+            <p className="font-semibold">Grupper:</p>
+            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+          </div>
+        )}
       </div>
 
       <div>
