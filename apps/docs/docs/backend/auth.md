@@ -12,7 +12,7 @@ Vi har også lagt til litt ekstra data i `User`-typen vår, som gjør at vi ogs�
 
 ## Beskytte sider
 
-For å beskytte sider kan du bruke `getServerSession` for å sjekke om brukeren har en session (om en bruker er logget inn). Du kan også bruke `redirect` til å sende de til en anne side om de ikke er logget inn.
+For å beskytte sider kan du bruke `getServerSession` for å sjekke om brukeren har en session (om en bruker er logget inn). Du kan også bruke `redirect` til å sende de til en annen side om de ikke er logget inn.
 
 ```tsx title="app/protected/route.tsx
 import {redirect} from "next/navigation";
