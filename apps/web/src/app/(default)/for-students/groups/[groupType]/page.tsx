@@ -11,13 +11,21 @@ import {
   studentGroupTypeToUrl,
 } from "@/sanity/student-group";
 
-export const dynamicParams = false;
-
 type Props = {
   params: {
     groupType: string;
   };
 };
+
+export function generateMetadata({params}: Props) {
+  const {groupType} = params;
+
+  const groupTypeFromPath = pathToGroupType(groupType);
+
+  return {
+    title: studentGroupTypeName[groupTypeFromPath],
+  };
+}
 
 export function generateStaticParams() {
   const params = Object.values(studentGroupTypeToUrl).map((groupType) => ({

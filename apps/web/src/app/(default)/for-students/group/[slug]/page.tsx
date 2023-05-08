@@ -3,7 +3,25 @@ import Markdown from "@/components/markdown";
 import Heading from "@/components/ui/heading";
 import {fetchStudentGroupBySlug, fetchStudentGroupParams} from "@/sanity/student-group";
 
-export const dynamicParams = false;
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+async function getData(slug: string) {
+  return await fetchStudentGroupBySlug(slug);
+}
+
+export async function generateMetadata({params}: Props) {
+  const {slug} = params;
+
+  const group = await getData(slug);
+
+  return {
+    title: group.name,
+  };
+}
 
 export async function generateStaticParams() {
   const params = await fetchStudentGroupParams();
@@ -11,10 +29,10 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default async function GroupPage({params}: {params: {slug: string}}) {
+export default async function GroupPage({params}: Props) {
   const {slug} = params;
 
-  const group = await fetchStudentGroupBySlug(slug);
+  const group = await getData(slug);
 
   return (
     <Container>
