@@ -12,38 +12,24 @@ Vi har også lagt til litt ekstra data i `User`-typen vår, som gjør at vi ogs�
 
 ## Beskytte sider
 
-For å beskytte sider i Next.js, kan vi bruke `getServerSideProps`-funksjonen. Denne funksjonen vil kjøre på serveren, og vi kan bruke den til å sjekke om brukeren er logget inn. Hvis brukeren ikke er logget inn, kan vi sende brukeren til en annen side, eller vise en feilmelding.
+For å beskytte sider kan du bruke `getServerSession` for å sjekke om brukeren har en session (om en bruker er logget inn). Du kan også bruke `redirect` til å sende de til en anne side om de ikke er logget inn.
 
-Gitt at du allerede har laget en side, kan du også legge til denne funksjonen for å beskytte siden:
+```tsx title="app/protected/route.tsx
+import {redirect} from "next/navigation";
 
-```tsx
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // Henter ut session fra Auth.js
-  const session = await getServerSession(ctx);
+import {getServerSession} from "@/lib/session";
 
-  // Hvis session er null, vil brukeren bli sendt til /auth/signin
+export default async function ProtectedPage() {
+  const session = await getServerSession();
+
   if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin",
-        permanent: false,
-      },
-    };
+    return redirect("/api/auth/signin");
   }
 
-  // Hvis session ikke er null, vil brukeren få lov til å se siden
-  return {
-    props: {
-      session,
-    },
-  };
-};
+  return (
+    <div>
+      <h1>Protected page</h1>
+    </div>
+  );
+}
 ```
-
-:::note Merk
-`getServerSideProps`-funksjonen vil kun kjøre på serveren. Dette vil si at alt av logikk som kjøres i denne funksjonen vil være skjult for brukeren.
-:::
-
-:::note Merk
-Vi returnerer `session` som en prop til siden, men man skal ikke bruke denne propen i komponenten for siden. Hvis du vil hente ut session, kan du bruke `useSession`-hooken. Ved å returnere `session` som en prop, kan vi hente ut session på client uten å gjøre en ekstra kall til databasen.
-:::
