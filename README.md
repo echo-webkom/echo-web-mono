@@ -61,7 +61,7 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
 6. Start utviklingsmiljøet
 
    ```sh
-    pnpm dev
+    pnpm dev:all
    ```
 
 Sidene som starter er:

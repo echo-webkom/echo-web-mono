@@ -12,9 +12,9 @@ Webkom er en undergruppe av echo — Linjeforeningen for informatikk ved Univers
 
 Som medlem i Webkom kan **du** bidra til utvikling av blant annet
 
-- publiseringssytemet til nettsiden
-- påmeldingsløsninger til bedriftspresentasjoner og arrangementer
-- design av ulike interne webapplikasjoner
+- Publiseringssytemet til nettsiden
+- Påmeldingsløsninger til bedriftspresentasjoner og arrangementer
+- Design av ulike interne webapplikasjoner
 
 ## Hva er poenget med en ny nettside? 🤔
 

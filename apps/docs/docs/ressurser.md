@@ -6,7 +6,6 @@
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
 - [React Docs](https://beta.reactjs.org/)
 - [Prisma Docs](https://www.prisma.io/docs)
-- [tRPC Docs](https://trpc.io/docs/)
 
 ## Versjonkontroll
 
