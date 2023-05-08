@@ -92,3 +92,48 @@ JSX er en syntaksutvidelse for JavaScript som lar deg skrive HTML-kode direkte i
 TypeScript er et programmeringsspråk som er bygget på JavaScript, som gjør det mulig å skrive mer strukturert kode ved hjelp av å legge til typer for variabler og funksjoner.
 
 Mer om TypeScript finner du i [TypeScript-dokumentasjonen](https://www.typescriptlang.org/docs/).
+
+## React Server Components
+
+På nettsiden bruker vi Next.js 13 med [app-router](https://nextjs.org/docs/app), dette gjør også at vi bruker
+[React Server Components (RSC)](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components). RSC er en ny måte å skrive React på som fokuserer på å rendre komponenter på serveren. Dette gjør at vi kan sende mindre kode til brukeren, og dermed få en raskere nettside.
+
+På grunn av dette så blir også måte man skriver komponenter litt annerledes. Du kan for eksempel hente ut data fra databasen i komponenten din, uten at brukeren har tilgang til denne koden.
+
+```jsx
+async function ServerComponent() {
+  const data = await getDataFromDatabase();
+
+  return (
+    <div>
+      <h1>I am a Server Component</h1>
+      <p>{data}</p>
+    </div>
+  );
+}
+```
+
+### Ulemper
+
+Server components kan ikke bruke hooks `useEffect`, `useState`, osv. Dette er fordi denne koden blir kjørt på clienten, og serveren har ikke tilgang til dette. Det man kan gjøre er å skrive en komponent hvor man eksplisitt sier at den skal kjøres på client.
+
+```jsx title="components/client-component.jsx"
+"use client";
+
+function ClientComponent() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount((c) => c + 1);
+
+  return (
+    <div>
+      <h1>I am a Client Component</h1>
+      <button onClick={increment}>{count}</button>
+    </div>
+  );
+}
+```
+
+:::note MERK
+Her bruker `"use client";` øverst i filen for å si at denne komponenten skal kjøres på client.
+:::
