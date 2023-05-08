@@ -3,8 +3,8 @@ import {redirect} from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import AdminSidebar from "@/components/sidebar";
 import {getServerSession} from "@/lib/session";
+import AdminSidebar from "./sidebar";
 
 type DefaultLayoutProps = {
   children: ReactNode;
