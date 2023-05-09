@@ -192,7 +192,7 @@ export default async function EventPage({params}: Props) {
                 <DeregisterButton slug={params.slug} />
               ) : (
                 <>
-                  <RegisterButton slug={params.slug} />
+                  <RegisterButton slug={params.slug} questions={eventInfo.questions} />
                 </>
               )}
             </div>

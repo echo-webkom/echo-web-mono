@@ -3,6 +3,7 @@ import {NextResponse} from "next/server";
 import {prisma} from "@echo-webkom/db/client";
 import {type Group} from "@echo-webkom/db/types";
 
+import {withBasicAuth} from "@/lib/checks/with-basic-auth";
 import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
 import {$fetchAllEvents, type Event} from "@/sanity/event";
 import {isErrorMessage} from "@/utils/error";
@@ -152,18 +153,7 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
   );
 };
 
-export async function GET(request: Request) {
-  // Basic auth to prevent unauthorized access
-  const auth = request.headers.get("Authorization")?.split(" ")[1];
-  const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
-  const [, password] = decodedAuth.split(":");
-
-  if (password !== "password") {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
-  }
-
+export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
 
   const events = await $fetchAllEvents();
@@ -187,4 +177,4 @@ export async function GET(request: Request) {
     bedpresses: updatedBedpresses,
     timeInSeconds: totalSeconds,
   });
-}
+});
