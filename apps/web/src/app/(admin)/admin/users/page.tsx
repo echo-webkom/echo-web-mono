@@ -30,7 +30,8 @@ function User({user}: {user: User}) {
       <h3 className="font-semibold">{user.name}</h3>
       <p className="mt-1 text-sm text-muted-foreground">E-post: {user.email}</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        Alternativ e-post: {user.alternativeEmail ?? "Ikke satt"}
+        {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
+        Alternativ e-post: {user.alternativeEmail || "Ikke satt"}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
         Studieprogram: {user.degree ?? "Ikke satt"}
