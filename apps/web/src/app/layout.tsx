@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: RootLayoutProps) {
   return (
     <AuthProvider>
-      <html lang="no" suppressHydrationWarning>
+      <html lang="no">
         <head />
         <body
           className={cn(

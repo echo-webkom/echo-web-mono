@@ -31,7 +31,10 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="mx-3 w-56">
-        <DropdownMenuLabel>Logget inn som, {session.user.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <p className="font-normal">Logget inn som,</p>
+          <p className="font-bold">{session.user.name}</p>
+        </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
 

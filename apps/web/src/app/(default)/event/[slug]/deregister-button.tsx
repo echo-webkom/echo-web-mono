@@ -5,7 +5,6 @@ import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Controller, useForm} from "react-hook-form";
 import {AiOutlineLoading} from "react-icons/ai";
-import {z} from "zod";
 
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
@@ -20,55 +19,45 @@ import {
 } from "@/components/ui/dialog";
 import Label from "@/components/ui/label";
 import Textarea from "@/components/ui/textarea";
+import {useDeregistration} from "@/hooks/use-deregistration";
 import {useToast} from "@/hooks/use-toast";
 import {deregistrationSchema, type DeregistrationForm} from "@/lib/schemas/deregistration";
-
-const responseDataSchema = z.object({
-  title: z.string(),
-  description: z.string().optional(),
-});
 
 export default function DeregisterButton({slug}: {slug: string}) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const {toast} = useToast();
+  const {deregister, isLoading} = useDeregistration(slug, {
+    onSuccess: () => {
+      setIsOpen(false);
+      router.refresh();
+      toast({
+        title: "Avmelding fullført",
+        description: "Du er nå avmeldt arrangementet",
+      });
+    },
+    onError: () => {
+      setIsOpen(false);
+      toast({
+        title: "Noe gikk galt",
+        description: "Kunne ikke melde deg av arrangementet",
+      });
+    },
+  });
 
   const methods = useForm<DeregistrationForm>({
     resolver: zodResolver(deregistrationSchema),
   });
 
   const onSubmit = methods.handleSubmit(async (data) => {
-    const response = await fetch(`/api/happening/${slug}/deregister`, {
-      method: "POST",
-      body: JSON.stringify({
-        reason: data.reason,
-      }),
-    });
-
-    const parsedData = responseDataSchema.safeParse(await response.json());
-    if (!parsedData.success) {
-      return toast({
-        title: "Noe gikk galt",
-        variant: "destructive",
-      });
-    }
-
-    const {title, description} = parsedData.data;
-
-    toast({
-      title,
-      description,
-      variant: response.status < 400 ? "success" : "warning",
-    });
-
-    router.refresh();
+    await deregister(data);
   });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)} variant="secondary" fullWidth>
-          {methods.formState.isLoading ? (
+          {isLoading ? (
             <>
               <span>
                 <AiOutlineLoading className="h-4 w-4 animate-spin" />

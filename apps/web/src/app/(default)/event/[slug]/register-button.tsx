@@ -26,6 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {useRegistration} from "@/hooks/use-registration";
+import {toast} from "@/hooks/use-toast";
 import {type RegistrationForm} from "@/lib/schemas/registration";
 
 export default function RegisterButton({
@@ -36,8 +38,24 @@ export default function RegisterButton({
   questions: Array<Question>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
   const router = useRouter();
+  const {register, isLoading} = useRegistration(slug, {
+    onSuccess: () => {
+      setIsOpen(false);
+      router.refresh();
+      toast({
+        title: "Påmelding fullført",
+        description: "Du er nå påmeldt til arrangementet",
+      });
+    },
+    onError: () => {
+      setIsOpen(false);
+      toast({
+        title: "Noe gikk galt",
+        description: "Kunne ikke melde deg på arrangementet",
+      });
+    },
+  });
 
   const methods = useForm<RegistrationForm>({
     defaultValues: {
@@ -48,21 +66,9 @@ export default function RegisterButton({
   });
 
   const onSubmit = methods.handleSubmit(async (data) => {
-    const response = await fetch(`/api/happening/${slug}/register`, {
-      method: "POST",
-      body: JSON.stringify({
-        questions: data.questions ?? [],
-      }),
+    await register({
+      questions: data.questions ?? [],
     });
-
-    if (!response.ok) {
-      return;
-    }
-
-    setIsOpen(false);
-
-    methods.reset();
-    router.refresh();
   });
 
   const handleReset = () => {
@@ -74,7 +80,7 @@ export default function RegisterButton({
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       <form onSubmit={onSubmit}>
         <Button fullWidth>
-          {methods.formState.isLoading ? (
+          {isLoading ? (
             <>
               <span>
                 <AiOutlineLoading className="h-4 w-4 animate-spin" />
@@ -93,7 +99,7 @@ export default function RegisterButton({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)} fullWidth>
-          {methods.formState.isLoading ? (
+          {isLoading ? (
             <>
               <span>
                 <AiOutlineLoading className="h-4 w-4 animate-spin" />
