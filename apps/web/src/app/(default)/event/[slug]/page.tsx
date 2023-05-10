@@ -83,7 +83,7 @@ export default async function EventPage({params}: Props) {
   ).reduce((acc, curr) => acc + curr.spots, 0);
 
   return (
-    <Container className="w-full md:max-w-[800px] lg:max-w-[1500px]">
+    <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 lg:max-w-[250px]">
@@ -213,7 +213,7 @@ export default async function EventPage({params}: Props) {
 
           {(isAdmin || isOrganizer) && (
             <div>
-              <Button fullWidth variant="secondary" asChild>
+              <Button fullWidth variant="link" asChild>
                 <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
               </Button>
             </div>

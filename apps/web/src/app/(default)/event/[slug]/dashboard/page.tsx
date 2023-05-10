@@ -5,7 +5,7 @@ import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {getUserById} from "@echo-webkom/db/queries/user";
 import {type Prisma} from "@echo-webkom/db/types";
-import {registrationStatusToString} from "@echo-webkom/lib";
+import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
@@ -33,7 +33,7 @@ export default async function EventDashboard({params}: Props) {
     return redirect("/api/auth/signin");
   }
 
-  const registrations = await prisma.registration.findMany({
+  const dbRegistrations = await prisma.registration.findMany({
     where: {
       happeningSlug: slug,
     },
@@ -42,11 +42,13 @@ export default async function EventDashboard({params}: Props) {
     },
   });
 
-  const registered = registrations.filter((registration) => registration.status === "REGISTERED");
-  const waitlist = registrations.filter((registration) => registration.status === "WAITLISTED");
-  const deregistered = registrations.filter(
+  const registered = dbRegistrations.filter((registration) => registration.status === "REGISTERED");
+  const waitlist = dbRegistrations.filter((registration) => registration.status === "WAITLISTED");
+  const deregistered = dbRegistrations.filter(
     (registration) => registration.status === "DEREGISTERED",
   );
+
+  const registrations = [...registered, ...waitlist, ...deregistered];
 
   return (
     <Container className="flex flex-col gap-10">
@@ -72,17 +74,7 @@ export default async function EventDashboard({params}: Props) {
 
       <div className="flex flex-col gap-3">
         <h2 className="text-3xl font-semibold">Registrerte</h2>
-        <RegistrationTable registrations={registered} />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Venteliste</h2>
-        <RegistrationTable registrations={waitlist} />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Avmeldt</h2>
-        <RegistrationTable registrations={deregistered} />
+        <RegistrationTable registrations={registrations} />
       </div>
     </Container>
   );
@@ -111,6 +103,12 @@ function RegistrationTable({registrations}: {registrations: Array<RegistrationWi
             <th scope="col" className="px-6 py-4 text-left">
               Status
             </th>
+            <th scope="col" className="px-6 py-4 text-left">
+              Grunn
+            </th>
+            <th scope="col" className="px-6 py-4 text-left">
+              Undergrupper
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -126,6 +124,11 @@ function RegistrationTable({registrations}: {registrations: Array<RegistrationWi
               </th>
               <td className="px-6 py-4">{registration.user.email}</td>
               <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
+              <td className="px-6 py-4">{registration.reason}</td>
+              <td className="px-6 py-4">
+                {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+                {registration.user.studentGroups.length === 0 && "Ingen"}
+              </td>
             </tr>
           ))}
         </tbody>

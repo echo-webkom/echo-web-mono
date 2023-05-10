@@ -67,7 +67,7 @@ export default function RegisterButton({
 
   const onSubmit = methods.handleSubmit(async (data) => {
     await register({
-      questions: data.questions ?? [],
+      questions: data.questions,
     });
   });
 
@@ -77,28 +77,33 @@ export default function RegisterButton({
 
   if (questions.length === 0) {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      <form onSubmit={onSubmit}>
-        <Button fullWidth>
-          {isLoading ? (
-            <>
-              <span>
-                <AiOutlineLoading className="h-4 w-4 animate-spin" />
-              </span>
-              <span className="ml-2">Vroom...</span>
-            </>
-          ) : (
-            <span>One-click påmelding</span>
-          )}
-        </Button>
-      </form>
+      <Button
+        onClick={() => {
+          void register({
+            questions: [],
+          });
+        }}
+        disabled={isLoading}
+        fullWidth
+      >
+        {isLoading ? (
+          <>
+            <span>
+              <AiOutlineLoading className="h-4 w-4 animate-spin" />
+            </span>
+            <span className="ml-2">Vroom...</span>
+          </>
+        ) : (
+          <span>One-click påmelding</span>
+        )}
+      </Button>
     );
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)} fullWidth>
+        <Button onClick={() => setIsOpen(true)} fullWidth disabled={isLoading}>
           {isLoading ? (
             <>
               <span>
