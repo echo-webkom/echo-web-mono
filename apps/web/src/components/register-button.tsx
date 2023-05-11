@@ -125,12 +125,16 @@ export default function RegisterButton({
           </DialogHeader>
           <div className="grid gap-4 py-4">
             {questions.map((question, index) => (
-              <div key={question.id}>
-                <Label>{question.title}</Label>
+              <div key={question.id} className="flex flex-col gap-2">
+                <Label>
+                  {question.title}
+                  {question.required && <span className="ml-1 text-red-500">*</span>}
+                </Label>
 
                 {question.type === "TEXT" && (
                   <Input
                     placeholder="Ditt svar..."
+                    autoComplete="off"
                     {...methods.register(`questions.${index}.answer`)}
                   />
                 )}
@@ -142,7 +146,7 @@ export default function RegisterButton({
                     render={({field}) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Velg her..." />
+                          <SelectValue>{field.value || "Velg svar..."}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           {question.options.map((option, optionIndex) => (
