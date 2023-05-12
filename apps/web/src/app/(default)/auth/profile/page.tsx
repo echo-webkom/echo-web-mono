@@ -10,8 +10,6 @@ import {
 } from "@echo-webkom/lib";
 
 import Container from "@/components/container";
-import SignOutButton from "@/components/sign-out-button";
-import Heading from "@/components/ui/heading";
 import UserForm from "@/components/user-form";
 import {getServerSession} from "@/lib/session";
 
@@ -27,13 +25,8 @@ export default async function ProfilePage() {
 
   return (
     <Container className="max-w-2xl gap-10">
-      <Heading>Din profil</Heading>
-
-      <div className="mx-auto w-fit">
-        <SignOutButton />
-      </div>
-
       <div className="flex flex-col gap-3">
+        <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
         <div>
           <p className="font-semibold">Navn:</p>
           <p>{session?.user.name}</p>
@@ -42,7 +35,7 @@ export default async function ProfilePage() {
           <p className="font-semibold">E-post:</p>
           <p>{session?.user.email}</p>
         </div>
-        {user?.studentGroups && (
+        {user?.studentGroups && user.studentGroups.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
             <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>

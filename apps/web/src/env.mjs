@@ -4,7 +4,7 @@ import {z} from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    ADMIN_KEY: z.string().optional(),
+    ADMIN_KEY: z.string().optional().default(""),
     UPSTASH_REDIS_REST_URL: z.string().default(""),
     UPSTASH_REDIS_REST_TOKEN: z.string().default(""),
   },

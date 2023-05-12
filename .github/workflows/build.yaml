@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     env:
       DATABASE_URL: postgres://admin:password@localhost:5432/postgres
       FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
@@ -17,10 +18,21 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm-install
 
       - run: pnpm db:generate
-
+      - run: pnpm db:deploy
       - run: pnpm build

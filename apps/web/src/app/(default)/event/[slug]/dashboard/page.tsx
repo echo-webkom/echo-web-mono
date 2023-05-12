@@ -5,9 +5,10 @@ import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {getUserById} from "@echo-webkom/db/queries/user";
 import {type Prisma} from "@echo-webkom/db/types";
-import {registrationStatusToString} from "@echo-webkom/lib";
+import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
+import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
 import {getServerSession} from "@/lib/session";
@@ -33,7 +34,7 @@ export default async function EventDashboard({params}: Props) {
     return redirect("/api/auth/signin");
   }
 
-  const registrations = await prisma.registration.findMany({
+  const dbRegistrations = await prisma.registration.findMany({
     where: {
       happeningSlug: slug,
     },
@@ -42,11 +43,13 @@ export default async function EventDashboard({params}: Props) {
     },
   });
 
-  const registered = registrations.filter((registration) => registration.status === "REGISTERED");
-  const waitlist = registrations.filter((registration) => registration.status === "WAITLISTED");
-  const deregistered = registrations.filter(
+  const registered = dbRegistrations.filter((registration) => registration.status === "REGISTERED");
+  const waitlist = dbRegistrations.filter((registration) => registration.status === "WAITLISTED");
+  const deregistered = dbRegistrations.filter(
     (registration) => registration.status === "DEREGISTERED",
   );
+
+  const registrations = [...registered, ...waitlist, ...deregistered];
 
   return (
     <Container className="flex flex-col gap-10">
@@ -57,32 +60,26 @@ export default async function EventDashboard({params}: Props) {
         </Link>
       </Heading>
 
-      <div className="flex flex-col gap-3">
-        <div>
-          <span className="font-semibold">Antall påmeldte:</span> <span>{registered.length}</span>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="rounded-xl border px-3 py-8 text-center">
+          <p>Antall påmeldte</p>
+          <p className="text-7xl">{registered.length}</p>
         </div>
-        <div>
-          <span className="font-semibold">Antall på venteliste:</span>{" "}
-          <span>{waitlist.length}</span>
+
+        <div className="rounded-xl border px-3 py-8 text-center">
+          <p>Antatall på venteliste</p>
+          <p className="text-7xl">{waitlist.length}</p>
         </div>
-        <div>
-          <span className="font-semibold">Antall avmeldt:</span> <span>{deregistered.length}</span>
+
+        <div className="rounded-xl border px-3 py-8 text-center">
+          <p>Antall avmeldt</p>
+          <p className="text-7xl">{deregistered.length}</p>
         </div>
       </div>
 
       <div className="flex flex-col gap-3">
         <h2 className="text-3xl font-semibold">Registrerte</h2>
-        <RegistrationTable registrations={registered} />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Venteliste</h2>
-        <RegistrationTable registrations={waitlist} />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Avmeldt</h2>
-        <RegistrationTable registrations={deregistered} />
+        <RegistrationTable registrations={registrations} />
       </div>
     </Container>
   );
@@ -111,25 +108,60 @@ function RegistrationTable({registrations}: {registrations: Array<RegistrationWi
             <th scope="col" className="px-6 py-4 text-left">
               Status
             </th>
+            <th scope="col" className="px-6 py-4 text-left">
+              Grunn
+            </th>
+            <th scope="col" className="px-6 py-4 text-left">
+              Undergrupper
+            </th>
+            <th scope="col" className="px-6 py-4 text-left">
+              Handling
+            </th>
           </tr>
         </thead>
         <tbody>
           {registrations.map((registration, i) => (
-            <tr
-              key={registration.userId}
-              className={cn("border-b", {
-                "bg-white": i % 2 === 0,
-              })}
-            >
-              <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
-                {registration.user.name}
-              </th>
-              <td className="px-6 py-4">{registration.user.email}</td>
-              <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
-            </tr>
+            <RegistrationRow key={registration.userId} registration={registration} index={i} />
           ))}
         </tbody>
       </table>
     </div>
+  );
+}
+
+function RegistrationRow({
+  registration,
+  index,
+}: {
+  registration: RegistrationWithUser;
+  index: number;
+}) {
+  const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
+
+  return (
+    <tr
+      key={registration.userId}
+      className={cn("border-b", {
+        "bg-white": index % 2 === 0,
+      })}
+    >
+      <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
+        {registration.user.name}
+      </th>
+      <td className="px-6 py-4">
+        <Link className="hover:underline" href={"mailto:" + email}>
+          {email}
+        </Link>
+      </td>
+      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
+      <td className="px-6 py-4">{registration.reason}</td>
+      <td className="px-6 py-4">
+        {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+        {registration.user.studentGroups.length === 0 && "Ingen"}
+      </td>
+      <td className="px-6 py-4">
+        <Button>Endre</Button>
+      </td>
+    </tr>
   );
 }

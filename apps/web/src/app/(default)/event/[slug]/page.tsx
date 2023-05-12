@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {notFound} from "next/navigation";
 import {ArrowRightIcon} from "@radix-ui/react-icons";
 
 import {prisma} from "@echo-webkom/db/client";
@@ -6,14 +7,14 @@ import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {getUserById} from "@echo-webkom/db/queries/user";
 
 import Container from "@/components/container";
+import DeregisterButton from "@/components/deregister-button";
 import Markdown from "@/components/markdown";
+import RegisterButton from "@/components/register-button";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
 import {getServerSession} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
-import DeregisterButton from "./deregister-button";
-import RegisterButton from "./register-button";
 
 type Props = {
   params: {
@@ -32,12 +33,16 @@ export async function generateMetadata({params}: Props) {
 export default async function EventPage({params}: Props) {
   const {slug} = params;
 
+  const eventInfo = await getHappeningBySlug(slug);
+  if (!eventInfo) {
+    return notFound();
+  }
+
   const session = await getServerSession();
   const event = await fetchEventBySlug(slug);
-  const eventInfo = await getHappeningBySlug(slug);
   const user = await getUserById(session?.user.id ?? "");
 
-  const isOrganizer = eventInfo && user && isEventOrganizer(eventInfo, user);
+  const isOrganizer = user && isEventOrganizer(eventInfo, user);
   const isAdmin = session?.user.role === "ADMIN";
 
   const spotRange = await prisma.spotRange.findMany({
@@ -82,8 +87,11 @@ export default async function EventPage({params}: Props) {
     })
   ).reduce((acc, curr) => acc + curr.spots, 0);
 
+  const isRegistrationOpen =
+    eventInfo?.registrationStart && eventInfo.registrationStart < new Date();
+
   return (
-    <Container className="w-full md:max-w-[800px] lg:max-w-[1500px]">
+    <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar */}
         <div className="flex h-full w-full flex-col gap-3 lg:max-w-[250px]">
@@ -176,13 +184,19 @@ export default async function EventPage({params}: Props) {
               </div>
             )}
 
-          {eventInfo?.registrationStart &&
-            eventInfo.registrationEnd &&
-            eventInfo.registrationStart < new Date() &&
-            new Date() < eventInfo.registrationEnd && (
+          {isRegistrationOpen && eventInfo?.registrationEnd && (
+            <div>
+              <p className="font-semibold">Påmeldingsfrist:</p>
+              <p>{eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}</p>
+            </div>
+          )}
+
+          {!isRegistrationOpen &&
+            eventInfo?.registrationStart &&
+            new Date() < eventInfo.registrationStart && (
               <div>
-                <p className="font-semibold">Påmeldingsfrist:</p>
-                <p>{eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}</p>
+                <p className="font-semibold">Påmelding åpner:</p>
+                <p>{eventInfo?.registrationStart.toLocaleDateString("nb-NO")}</p>
               </div>
             )}
 
@@ -192,7 +206,7 @@ export default async function EventPage({params}: Props) {
                 <DeregisterButton slug={params.slug} />
               ) : (
                 <>
-                  <RegisterButton slug={params.slug} />
+                  <RegisterButton slug={params.slug} questions={eventInfo.questions} />
                 </>
               )}
             </div>
@@ -213,7 +227,7 @@ export default async function EventPage({params}: Props) {
 
           {(isAdmin || isOrganizer) && (
             <div>
-              <Button fullWidth variant="secondary" asChild>
+              <Button fullWidth variant="link" asChild>
                 <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
               </Button>
             </div>

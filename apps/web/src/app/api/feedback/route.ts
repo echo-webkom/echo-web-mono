@@ -6,13 +6,13 @@ import {feedbackSchema} from "@/lib/schemas/feedback";
 
 export async function POST(req: Request) {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const body = await req.json();
-    const payload = feedbackSchema.parse(body);
+    const payload = feedbackSchema.parse(await req.json());
 
     await prisma.siteFeedback.create({
       data: {
-        ...payload,
+        email: payload.email,
+        name: payload.name,
+        message: payload.message,
       },
     });
 

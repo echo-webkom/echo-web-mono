@@ -1,8 +1,9 @@
+import {NextResponse} from "next/server";
 import {z} from "zod";
 
 import {prisma} from "@echo-webkom/db/client";
 
-import {getServerSession} from "@/lib/session";
+import {withSession} from "@/lib/checks/with-session";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -14,49 +15,39 @@ const payloadSchema = z.object({
   reason: z.string(),
 });
 
-export async function POST(req: Request, context: z.infer<typeof routeContextSchema>) {
-  try {
-    const {params} = routeContextSchema.parse(context);
-
-    const session = await getServerSession();
-    if (!session?.user) {
-      return new Response(null, {status: 403});
-    }
-
+export const POST = withSession(
+  async ({ctx, user, input}) => {
     const happening = await prisma.happening.findUnique({
       where: {
-        slug: params.slug,
+        slug: ctx.params.slug,
       },
     });
 
-    // Happening doesn't exist
-    if (!happening) {
+    // Happening doesn't exist and/or doesn't have a date
+    if (!happening?.date) {
       return new Response(null, {status: 404});
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const body = await req.json();
-    const payload = payloadSchema.parse(body);
+    // Happening has already happened
+    if (happening.date < new Date()) {
+      return new Response(null, {status: 400});
+    }
 
-    const registration = await prisma.registration.update({
+    await prisma.registration.update({
       where: {
         userId_happeningSlug: {
-          userId: session.user.id,
-          happeningSlug: params.slug,
+          userId: user.id,
+          happeningSlug: ctx.params.slug,
         },
       },
       data: {
-        reason: payload.reason,
+        reason: input.reason,
         status: "DEREGISTERED",
       },
     });
 
-    return new Response(registration.status, {status: 200});
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), {status: 400});
-    }
-
-    return new Response(null, {status: 500});
-  }
-}
+    return NextResponse.json({title: "Du er avmeldt"}, {status: 200});
+  },
+  routeContextSchema,
+  payloadSchema,
+);

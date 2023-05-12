@@ -51,22 +51,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: RootLayoutProps) {
   return (
-    <AuthProvider>
-      <html lang="no" suppressHydrationWarning>
-        <head />
-        <body
-          className={cn(
-            "min-h-screen bg-background font-primary antialiased",
-            inter.variable,
-            ibmPlexMono.variable,
-            ibmPlexMonoDisplay.variable,
-          )}
-        >
+    <html lang="no">
+      <head />
+      <body
+        className={cn(
+          "min-h-screen bg-background font-primary antialiased",
+          inter.variable,
+          ibmPlexMono.variable,
+          ibmPlexMonoDisplay.variable,
+        )}
+      >
+        <AuthProvider>
           {children}
           <Toaster />
           <Feedback />
-        </body>
-      </html>
-    </AuthProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }
