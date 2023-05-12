@@ -39,8 +39,8 @@ jobs:
       - name: Install system dependencies
         run: pnpm --filter=tests run test:install
 
-      - run: pnpm run build
       - run: pnpm run db:deploy
+      - run: pnpm run build
       - run: pnpm run test:e2e
 
       - uses: actions/upload-artifact@v3
