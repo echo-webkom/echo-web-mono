@@ -8,6 +8,8 @@ import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
 import {$fetchAllEvents, type Event} from "@/sanity/event";
 import {isErrorMessage} from "@/utils/error";
 
+export const revalidate = 0;
+
 const organizerSlugToGroup = (slug: string) => {
   switch (slug) {
     case "makerspace":
