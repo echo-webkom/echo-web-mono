@@ -31,7 +31,7 @@ export default async function HomePage() {
 
       {/* Posts */}
       <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-        <Link href="/for-students/post">
+        <Link href="/for-students/posts">
           <h2 className="text-center text-3xl font-semibold">Siste nytt</h2>
         </Link>
 
@@ -48,7 +48,7 @@ export default async function HomePage() {
 
       {/* Job ads */}
       <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-        <Link href="/for-students/job">
+        <Link href="/for-students/jobs">
           <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
         </Link>
 
