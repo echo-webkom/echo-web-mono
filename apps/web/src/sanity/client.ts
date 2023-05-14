@@ -35,3 +35,4 @@ export const sanityServerClient = createClient({
 });
 
 export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
+export const serverFetch = sanityServerClient.fetch.bind(sanityServerClient);

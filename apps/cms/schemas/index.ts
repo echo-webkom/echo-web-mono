@@ -6,6 +6,8 @@ import location from "./location";
 import meetingMinute from "./meeting-minute";
 import banner from "./objects/banner";
 import contactProfile from "./objects/contact-profile";
+import footerLink from "./objects/footer-link";
+import footerSection from "./objects/footer-section";
 import question from "./objects/question";
 import registrationDates from "./objects/registration-dates";
 import spotRange from "./objects/spot-range";
@@ -32,4 +34,6 @@ export const schemaTypes = [
   contactProfile,
   question,
   registrationDates,
+  footerLink,
+  footerSection,
 ];

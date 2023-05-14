@@ -4,6 +4,8 @@ import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import {fetchBanner} from "@/sanity/settings";
 import {type Banner} from "@/sanity/settings/schemas";
 
+export const dynamic = "force-static";
+
 export default async function WebsiteBanner() {
   const banner = await fetchBanner();
 
