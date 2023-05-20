@@ -15,6 +15,7 @@ export default function DefaultLayout({children}: DefaultLayoutProps) {
       <WebsiteBanner />
       <Header />
       <main className="my-10 flex w-full flex-grow">{children}</main>
+      {/* @ts-expect-error Server Component */}
       <Footer />
     </div>
   );

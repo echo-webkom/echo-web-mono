@@ -8,8 +8,20 @@ export const bannerSchema = z.object({
 });
 export type Banner = z.infer<typeof bannerSchema>;
 
-export const siteSettingsSchema = z.object({
+export const bannerSettingsSchema = z.object({
   showBanner: z.boolean(),
   banner: bannerSchema.nullable(),
 });
-export type SiteSettings = z.infer<typeof siteSettingsSchema>;
+export type BannerSettings = z.infer<typeof bannerSettingsSchema>;
+
+export const footerSectionSchema = z.object({
+  title: z.string(),
+  links: z.array(
+    z.object({
+      title: z.string(),
+      link: z.string(),
+    }),
+  ),
+});
+
+export type FooterSection = z.infer<typeof footerSectionSchema>;

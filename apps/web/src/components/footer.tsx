@@ -2,15 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
-import {footerRoutes} from "@/lib/routes";
 import {sponsors} from "@/lib/sponsors";
+import {fetchFooter} from "@/sanity/settings";
 import {cn} from "@/utils/cn";
+
+export const dynamic = "force-static";
 
 type FooterProps = {
   className?: string;
 };
 
-export default function Footer({className}: FooterProps) {
+export default async function Footer({className}: FooterProps) {
+  const footerSections = await fetchFooter();
+
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -34,36 +38,36 @@ export default function Footer({className}: FooterProps) {
       <footer className="bg-wave px-10 py-10">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
-            {footerRoutes.map((route) => {
-              if (route.session) {
-                return null;
-              }
-
+            {footerSections.map((section) => {
               return (
-                <div key={route.label}>
-                  <h3 className="mb-4 py-2 text-xl font-bold">{route.label}</h3>
+                <div key={section.title}>
+                  <h3 className="mb-4 py-2 text-xl font-bold">{section.title}</h3>
                   <ul className="space-y-1">
-                    {route.sublinks.map(({label, href, isExternal}) => (
-                      <li key={label}>
-                        <Link
-                          className="flex items-center gap-2 text-black/80 hover:underline"
-                          href={href}
-                          {...(isExternal && {
-                            target: "_blank",
-                            rel: "noreferrer",
-                          })}
-                        >
-                          {label}
+                    {section.links.map(({title, link}) => {
+                      const isExternal = !link?.startsWith("/");
 
-                          {/* Add external link icon */}
-                          {isExternal && (
-                            <span>
-                              <ExternalLinkIcon />
-                            </span>
-                          )}
-                        </Link>
-                      </li>
-                    ))}
+                      return (
+                        <li key={title}>
+                          <Link
+                            className="flex items-center gap-2 text-black/80 hover:underline"
+                            href={link}
+                            {...(isExternal && {
+                              target: "_blank",
+                              rel: "noreferrer",
+                            })}
+                          >
+                            {title}
+
+                            {/* Add external link icon */}
+                            {isExternal && (
+                              <span>
+                                <ExternalLinkIcon />
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               );

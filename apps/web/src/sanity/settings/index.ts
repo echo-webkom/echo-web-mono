@@ -1,7 +1,13 @@
 import {groq} from "next-sanity";
 
-import {clientFetch} from "../client";
-import {siteSettingsSchema, type Banner, type SiteSettings} from "./schemas";
+import {serverFetch} from "../client";
+import {
+  bannerSettingsSchema,
+  footerSectionSchema,
+  type Banner,
+  type BannerSettings,
+  type FooterSection,
+} from "./schemas";
 
 /**
  * Fetches the banner
@@ -22,9 +28,9 @@ export const fetchBanner = async (): Promise<Banner | null> => {
 }
     `;
 
-    const res = await clientFetch<SiteSettings>(query);
+    const res = await serverFetch<BannerSettings>(query);
 
-    const settings = siteSettingsSchema.parse(res);
+    const settings = bannerSettingsSchema.parse(res);
 
     if (!settings.showBanner) {
       return null;
@@ -39,8 +45,27 @@ export const fetchBanner = async (): Promise<Banner | null> => {
     }
 
     return settings.banner;
-  } catch (e) {
-    console.error(e);
+  } catch {
     return null;
   }
+};
+
+export const fetchFooter = async () => {
+  const query = groq`
+*[_id == "siteSettings" && !(_id in path('drafts.**'))][0] {
+  footer[] {
+    title,
+    links[] {
+      title,
+      link
+    }
+  }
+}.footer
+`;
+
+  const res = await serverFetch<Array<FooterSection>>(query);
+
+  const footerSections = footerSectionSchema.array().parse(res);
+
+  return footerSections;
 };

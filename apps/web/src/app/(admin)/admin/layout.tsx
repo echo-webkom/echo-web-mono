@@ -27,6 +27,7 @@ export default async function DefaultLayout({children}: DefaultLayoutProps) {
       <div className="flex w-full flex-grow flex-row">
         <AdminSidebar>{children}</AdminSidebar>
       </div>
+      {/* @ts-expect-error Server Component */}
       <Footer />
     </div>
   );

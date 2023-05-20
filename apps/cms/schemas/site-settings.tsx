@@ -32,6 +32,13 @@ export default defineType({
         }),
       hidden: ({document}) => !document?.showBanner,
     }),
+    defineField({
+      name: "footer",
+      title: "Footer",
+      description: "Lenker som vises i footer.",
+      type: "array",
+      of: [{type: "footerSection"}],
+    }),
   ],
   preview: {
     prepare: () => ({
