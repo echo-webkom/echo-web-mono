@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {notFound} from "next/navigation";
 import {ArrowRightIcon} from "@radix-ui/react-icons";
@@ -5,16 +6,16 @@ import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
-import {getUserById} from "@echo-webkom/db/queries/user";
 
 import Container from "@/components/container";
 import DeregisterButton from "@/components/deregister-button";
 import Markdown from "@/components/markdown";
 import RegisterButton from "@/components/register-button";
+import {Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle} from "@/components/sidebar";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
-import {getServerSession} from "@/lib/session";
+import {getUser} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
 
 type Props = {
@@ -39,12 +40,11 @@ export default async function EventPage({params}: Props) {
     return notFound();
   }
 
-  const session = await getServerSession();
+  const user = await getUser();
   const event = await fetchEventBySlug(slug);
-  const user = await getUserById(session?.user.id ?? "");
 
   const isOrganizer = user && isEventOrganizer(user, eventInfo);
-  const isAdmin = session?.user.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
 
   const spotRange = await prisma.spotRange.findMany({
     where: {
@@ -52,20 +52,18 @@ export default async function EventPage({params}: Props) {
     },
   });
 
-  let isRegistered: boolean;
-  if (session) {
-    const registration = await prisma.registration.findUnique({
-      where: {
-        userId_happeningSlug: {
-          happeningSlug: slug,
-          userId: session.user.id,
-        },
-      },
-    });
-    isRegistered = Boolean(registration?.status === "REGISTERED");
-  } else {
-    isRegistered = false;
-  }
+  const isRegistered = user
+    ? (
+        await prisma.registration.findUnique({
+          where: {
+            userId_happeningSlug: {
+              happeningSlug: slug,
+              userId: user.id,
+            },
+          },
+        })
+      )?.status === "REGISTERED"
+    : false;
 
   const registrations = await prisma.registration.findMany({
     where: {
@@ -89,37 +87,40 @@ export default async function EventPage({params}: Props) {
   ).reduce((acc, curr) => acc + curr.spots, 0);
 
   const isRegistrationOpen =
-    eventInfo?.registrationStart && eventInfo.registrationStart < new Date();
+    eventInfo?.registrationStart &&
+    eventInfo?.registrationEnd &&
+    isAfter(new Date(), eventInfo.registrationStart) &&
+    isBefore(new Date(), eventInfo.registrationEnd);
 
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar */}
-        <div className="flex h-full w-full flex-col gap-3 lg:max-w-[250px]">
-          {eventInfo?.date && (
-            <div>
-              <p className="font-semibold">Dato:</p>
-              <p>{eventInfo?.date.toLocaleDateString("nb-NO")}</p>
-            </div>
+        <Sidebar>
+          {eventInfo.date && (
+            <SidebarItem>
+              <SidebarItemTitle>Dato:</SidebarItemTitle>
+              <SidebarItemContent>{eventInfo?.date.toLocaleDateString("nb-NO")}</SidebarItemContent>
+            </SidebarItem>
           )}
 
-          {eventInfo?.date && (
-            <div>
-              <p className="font-semibold">Tid:</p>
-              <p>
+          {eventInfo.date && (
+            <SidebarItem>
+              <SidebarItemTitle>Tid:</SidebarItemTitle>
+              <SidebarItemContent>
                 {eventInfo?.date.toLocaleTimeString("nb-NO", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
-              </p>
-            </div>
+              </SidebarItemContent>
+            </SidebarItem>
           )}
 
           {spotRange.length > 0 && (
-            <div>
-              <p className="font-semibold">Plasser:</p>
+            <SidebarItem>
+              <SidebarItemTitle>Plasser:</SidebarItemTitle>
               {spotRange.map((range) => (
-                <p key={range.id}>
+                <SidebarItemContent key={range.id}>
                   {range.spots} plasser for
                   {range.minDegreeYear === range.maxDegreeYear ? (
                     <span> {range.minDegreeYear}. trinn</span>
@@ -129,104 +130,116 @@ export default async function EventPage({params}: Props) {
                       {range.minDegreeYear} - {range.maxDegreeYear}. trinn
                     </span>
                   )}
-                </p>
+                </SidebarItemContent>
               ))}
-            </div>
+            </SidebarItem>
           )}
 
           {event.location && (
-            <div>
-              <p className="font-semibold">Sted:</p>
-              <p>{event.location.name}</p>
-            </div>
+            <SidebarItem>
+              <SidebarItemTitle className="font-semibold">Sted:</SidebarItemTitle>
+              <SidebarItemContent>{event.location.name}</SidebarItemContent>
+            </SidebarItem>
           )}
 
           {event.organizers && (
-            <div>
-              <p className="font-semibold">Arrangert av:</p>
-              <ul>
-                {event.organizers.map((organizer) => (
-                  <li key={organizer._id}>{organizer.name}</li>
-                ))}
-              </ul>
-            </div>
+            <SidebarItem>
+              <SidebarItemTitle>Arrangert av:</SidebarItemTitle>
+              <SidebarItemContent>
+                <ul>
+                  {event.organizers.map((organizer) => (
+                    <li key={organizer._id}>{organizer.name}</li>
+                  ))}
+                </ul>
+              </SidebarItemContent>
+            </SidebarItem>
           )}
 
           {event.contacts && event.contacts.length > 0 && (
-            <div>
-              <p className="font-semibold">Kontaktpersoner:</p>
-              <ul>
-                {event.contacts.map((contact) => (
-                  <li key={contact.profile._id}>
-                    <Link className="hover:underline" href={"mailto:" + contact.email}>
-                      {contact.profile.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SidebarItem>
+              <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
+              <SidebarItemContent>
+                <ul>
+                  {event.contacts.map((contact) => (
+                    <li key={contact.profile._id}>
+                      <Link className="hover:underline" href={"mailto:" + contact.email}>
+                        {contact.profile.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </SidebarItemContent>
+            </SidebarItem>
           )}
 
           {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
-            <div>
-              <p className="font-semibold">Påmeldte:</p>
-              <p>
+            <SidebarItem>
+              <SidebarItemTitle className="font-semibold">Påmeldte:</SidebarItemTitle>
+              <SidebarItemContent>
                 {registeredCount} / {maxCapacity}
-              </p>
-            </div>
+              </SidebarItemContent>
+            </SidebarItem>
           )}
 
           {eventInfo?.registrationStart &&
             eventInfo.registrationStart < new Date() &&
             waitlistCount > 0 && (
-              <div>
-                <p className="font-semibold">Venteliste:</p>
-                <p>{waitlistCount}</p>
-              </div>
+              <SidebarItem>
+                <SidebarItemTitle>Venteliste:</SidebarItemTitle>
+                <SidebarItemContent>{waitlistCount}</SidebarItemContent>
+              </SidebarItem>
             )}
 
           {isRegistrationOpen && eventInfo?.registrationEnd && (
-            <div>
-              <p className="font-semibold">Påmeldingsfrist:</p>
-              <p>{eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}</p>
-            </div>
+            <SidebarItem>
+              <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
+              <SidebarItemContent>
+                {eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}
+              </SidebarItemContent>
+            </SidebarItem>
           )}
 
           {!isRegistrationOpen &&
             eventInfo?.registrationStart &&
             new Date() < eventInfo.registrationStart && (
-              <div>
-                <p className="font-semibold">Påmelding åpner:</p>
-                <p>{eventInfo?.registrationStart.toLocaleDateString("nb-NO")}</p>
-              </div>
+              <SidebarItem>
+                <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
+                <SidebarItemContent>
+                  {eventInfo?.registrationStart.toLocaleDateString("nb-NO")}
+                </SidebarItemContent>
+              </SidebarItem>
             )}
 
-          {session &&
-            eventInfo?.registrationStart &&
-            eventInfo?.registrationEnd &&
-            isAfter(new Date(), eventInfo.registrationStart) &&
-            isBefore(new Date(), eventInfo.registrationEnd) && (
-              <div>
-                {isRegistered ? (
-                  <DeregisterButton slug={params.slug} />
-                ) : (
-                  <>
-                    <RegisterButton slug={params.slug} questions={eventInfo.questions} />
-                  </>
-                )}
-              </div>
-            )}
+          {user && isRegistrationOpen && (
+            <SidebarItem>
+              {isRegistered ? (
+                <DeregisterButton slug={params.slug} />
+              ) : (
+                <RegisterButton slug={params.slug} questions={eventInfo.questions} />
+              )}
+            </SidebarItem>
+          )}
 
-          {!session && (
-            <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
-              <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
-              <div className="flex items-center">
-                <Link href="/api/auth/signin" className="hover:underline">
-                  Logg inn her
-                </Link>
-                <ArrowRightIcon className="ml-2 h-4 w-4" />
+          {user && !isRegistrationOpen && (
+            <SidebarItem>
+              <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+                <p className="font-semibold">Påmelding er stengt.</p>
               </div>
-            </div>
+            </SidebarItem>
+          )}
+
+          {!user && (
+            <SidebarItem>
+              <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+                <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
+                <div className="flex items-center">
+                  <Link href="/api/auth/signin" className="hover:underline">
+                    Logg inn her
+                  </Link>
+                  <ArrowRightIcon className="ml-2 h-4 w-4" />
+                </div>
+              </div>
+            </SidebarItem>
           )}
 
           {(isAdmin || isOrganizer) && (
@@ -236,12 +249,25 @@ export default async function EventPage({params}: Props) {
               </Button>
             </div>
           )}
-        </div>
+        </Sidebar>
 
         {/* Content */}
-        <article>
+        <article className="w-full">
           <Heading>{event.title}</Heading>
-          <Markdown content={event.body ?? "## Mer informasjon kommer!"} />
+          {event.body ? (
+            <Markdown content={event.body} />
+          ) : (
+            <div className="mx-auto flex w-fit flex-col gap-8 p-5">
+              <h3 className="text-center text-xl font-medium">Mer informasjon kommer!</h3>
+              <Image
+                className="rounded-lg"
+                src="/gif/wallace-construction.gif"
+                alt="Wallace hammering"
+                width={400}
+                height={400}
+              />
+            </div>
+          )}
         </article>
       </div>
 

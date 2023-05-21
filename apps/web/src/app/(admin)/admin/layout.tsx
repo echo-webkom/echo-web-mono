@@ -2,7 +2,7 @@ import {redirect} from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import {getServerSession} from "@/lib/session";
+import {getUser} from "@/lib/session";
 import AdminSidebar from "./sidebar";
 
 type Props = {
@@ -14,9 +14,9 @@ export const metadata = {
 };
 
 export default async function AdminDashboardLayout({children}: Props) {
-  const session = await getServerSession();
+  const user = await getUser();
 
-  if (!session) {
+  if (!user) {
     return redirect("/api/auth/signin");
   }
 

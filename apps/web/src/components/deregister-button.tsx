@@ -50,7 +50,9 @@ export default function DeregisterButton({slug}: {slug: string}) {
   });
 
   const onSubmit = methods.handleSubmit(async (data) => {
-    await deregister(data);
+    await deregister({
+      reason: data.reason,
+    });
   });
 
   return (
