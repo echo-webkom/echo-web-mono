@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {notFound} from "next/navigation";
 import {ArrowRightIcon} from "@radix-ui/react-icons";
+import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
@@ -200,17 +201,21 @@ export default async function EventPage({params}: Props) {
               </div>
             )}
 
-          {session && eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
-            <div>
-              {isRegistered ? (
-                <DeregisterButton slug={params.slug} />
-              ) : (
-                <>
-                  <RegisterButton slug={params.slug} questions={eventInfo.questions} />
-                </>
-              )}
-            </div>
-          )}
+          {session &&
+            eventInfo?.registrationStart &&
+            eventInfo?.registrationEnd &&
+            isAfter(new Date(), eventInfo.registrationStart) &&
+            isBefore(new Date(), eventInfo.registrationEnd) && (
+              <div>
+                {isRegistered ? (
+                  <DeregisterButton slug={params.slug} />
+                ) : (
+                  <>
+                    <RegisterButton slug={params.slug} questions={eventInfo.questions} />
+                  </>
+                )}
+              </div>
+            )}
 
           {!session && (
             // Create a warning box that is yellow

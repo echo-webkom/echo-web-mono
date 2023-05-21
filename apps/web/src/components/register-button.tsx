@@ -40,19 +40,21 @@ export default function RegisterButton({
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const {register, isLoading} = useRegistration(slug, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       setIsOpen(false);
       router.refresh();
       toast({
-        title: "Påmelding fullført",
-        description: "Du er nå påmeldt til arrangementet",
+        title: data.title,
+        description: data.description,
+        variant: "success",
       });
     },
-    onError: () => {
+    onError: (data) => {
       setIsOpen(false);
       toast({
         title: "Noe gikk galt",
-        description: "Kunne ikke melde deg på arrangementet",
+        description: data,
+        variant: "warning",
       });
     },
   });
