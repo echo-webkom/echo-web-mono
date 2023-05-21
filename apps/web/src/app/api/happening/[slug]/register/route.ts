@@ -71,7 +71,7 @@ export const POST = withSession(
       return NextResponse.json(
         {
           title: "En feil har skjedd",
-          description: "Du har ikke fylt ut nok informasjon.",
+          description: "Brukeren din mangler informasjon.",
         },
         {
           status: 403,

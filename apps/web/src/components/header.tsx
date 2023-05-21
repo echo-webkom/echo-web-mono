@@ -63,23 +63,12 @@ export default function Header() {
       {/* HeaderMenu */}
       <div className="relative">
         {isOpen && (
-          <div className="absolute z-20 w-full bg-background px-5 pb-20 pt-14">
-            <div className="mx-auto max-w-5xl">
-              <ul className="flex flex-col items-start justify-between gap-5 text-2xl font-bold md:flex-row md:items-center">
-                <HeaderMenuItem href="/event">Arrangementer</HeaderMenuItem>
-                <HeaderMenuItem href="/for-students/groups/subgroup">Undergrupper</HeaderMenuItem>
-                <HeaderMenuItem href="/for-students/posts">Innlegg</HeaderMenuItem>
-                {session && <HeaderMenuItem href="/auth/profile">Min profil</HeaderMenuItem>}
-              </ul>
-            </div>
-
-            <hr className="my-10" />
-
-            <div className="flex flex-col gap-10">
+          <div className="absolute z-20 w-full bg-background px-5 pb-20 pt-8">
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
               {headerRoutes.map((route) => (
-                <div key={route.label} className="mx-auto w-full max-w-5xl">
+                <div key={route.label}>
                   <h3 className="mb-3 text-2xl font-bold">{route.label}</h3>
-                  <ul className="flex flex-wrap items-center gap-8 text-lg font-medium">
+                  <ul className="grid grid-cols-1 text-lg font-medium sm:grid-cols-2 md:grid-cols-1">
                     {route.sublinks.map((subRoute) => (
                       <HeaderMenuItem key={subRoute.label} href={subRoute.href}>
                         {subRoute.label}
@@ -100,7 +89,10 @@ export default function Header() {
 function HeaderMenuItem({children, href}: {children: React.ReactNode; href: string}) {
   return (
     <li>
-      <Link className="hover:underline" href={href}>
+      <Link
+        className="flex w-full border-l-4 border-transparent p-2 transition-colors ease-in-out hover:border-primary hover:bg-black/5"
+        href={href}
+      >
         {children}
       </Link>
     </li>
