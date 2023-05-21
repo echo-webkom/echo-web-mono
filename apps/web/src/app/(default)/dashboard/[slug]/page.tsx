@@ -1,17 +1,14 @@
 import Link from "next/link";
-import {redirect} from "next/navigation";
+import {notFound} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
-import {getUserById} from "@echo-webkom/db/queries/user";
 import {type Prisma} from "@echo-webkom/db/types";
 import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-import {isEventOrganizer} from "@/lib/happening";
-import {getServerSession} from "@/lib/session";
 import {cn} from "@/utils/cn";
 
 type Props = {
@@ -22,19 +19,14 @@ type Props = {
 
 export default async function EventDashboard({params}: Props) {
   const {slug} = params;
-  const session = await getServerSession();
-  const user = await getUserById(session?.user.id ?? "");
+
   const eventInfo = await getHappeningBySlug(slug);
 
-  if (!eventInfo || !user) {
-    return redirect("/api/auth/signin");
+  if (!eventInfo) {
+    return notFound();
   }
 
-  if (!isEventOrganizer(eventInfo, user)) {
-    return redirect("/api/auth/signin");
-  }
-
-  const dbRegistrations = await prisma.registration.findMany({
+  const rows = await prisma.registration.findMany({
     where: {
       happeningSlug: slug,
     },
@@ -43,11 +35,9 @@ export default async function EventDashboard({params}: Props) {
     },
   });
 
-  const registered = dbRegistrations.filter((registration) => registration.status === "REGISTERED");
-  const waitlist = dbRegistrations.filter((registration) => registration.status === "WAITLISTED");
-  const deregistered = dbRegistrations.filter(
-    (registration) => registration.status === "DEREGISTERED",
-  );
+  const registered = rows.filter((registration) => registration.status === "REGISTERED");
+  const waitlist = rows.filter((registration) => registration.status === "WAITLISTED");
+  const deregistered = rows.filter((registration) => registration.status === "DEREGISTERED");
 
   const registrations = [...registered, ...waitlist, ...deregistered];
 

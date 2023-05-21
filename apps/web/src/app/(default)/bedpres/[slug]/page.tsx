@@ -45,7 +45,7 @@ export default async function BedpresPage({params}: Props) {
   const bedpres = await fetchBedpresBySlug(slug);
   const user = await getUserById(session?.user.id ?? "");
 
-  const isOrganizer = user && isEventOrganizer(eventInfo, user);
+  const isOrganizer = user && isEventOrganizer(user, eventInfo);
   const isAdmin = session?.user.role === "ADMIN";
 
   const spotRange = await prisma.spotRange.findMany({
@@ -236,7 +236,7 @@ export default async function BedpresPage({params}: Props) {
           {(isAdmin || isOrganizer) && (
             <div>
               <Button fullWidth variant="link" asChild>
-                <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
+                <Link href={"/dashboard/" + slug}>Til Dashboard</Link>
               </Button>
             </div>
           )}

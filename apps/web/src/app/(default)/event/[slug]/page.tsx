@@ -43,7 +43,7 @@ export default async function EventPage({params}: Props) {
   const event = await fetchEventBySlug(slug);
   const user = await getUserById(session?.user.id ?? "");
 
-  const isOrganizer = user && isEventOrganizer(eventInfo, user);
+  const isOrganizer = user && isEventOrganizer(user, eventInfo);
   const isAdmin = session?.user.role === "ADMIN";
 
   const spotRange = await prisma.spotRange.findMany({
@@ -218,7 +218,6 @@ export default async function EventPage({params}: Props) {
             )}
 
           {!session && (
-            // Create a warning box that is yellow
             <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
               <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
               <div className="flex items-center">
@@ -233,7 +232,7 @@ export default async function EventPage({params}: Props) {
           {(isAdmin || isOrganizer) && (
             <div>
               <Button fullWidth variant="link" asChild>
-                <Link href={"/event/" + params.slug + "/dashboard"}>Til Dashboard</Link>
+                <Link href={"/dashboard/" + slug}>Til Dashboard</Link>
               </Button>
             </div>
           )}
