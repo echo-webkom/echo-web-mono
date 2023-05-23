@@ -57,17 +57,15 @@ model User {
   accounts         Account[]
   sessions         Session[]
   alternativeEmail String?
-  type             Type           @default(USER)
+  type             UserType       @default(USER)
   degree           Degree?
   year             Int?
   studentGroups    StudentGroup[] @relation("StudentGroupMembers")
   leaderOf         StudentGroup[] @relation("StudentGroupLeader")
   Registration     Registration[]
-  StudentGroup     StudentGroup?  @relation(fields: [studentGroupId], references: [id])
-  studentGroupId   Int?
 }
 
-enum Type {
+enum UserType {
   USER
   COMPANY
   ADMIN
@@ -93,10 +91,9 @@ enum Degree {
 model StudentGroup {
   id         Int         @id @default(autoincrement())
   name       String
-  members    User[]      @relation("StudentGroupMembers")
   happenings Happening[]
+  members    User[]      @relation("StudentGroupMembers")
   leaders    User[]      @relation("StudentGroupLeader")
-  User       User[]
 }
 
 enum HappeningType {
