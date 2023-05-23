@@ -39,7 +39,7 @@
     "@manypkg/cli": "0.20.0",
     "@types/node": "18.16.12",
     "@types/prettier": "^2.7.2",
-    "eslint": "^8.40.0",
+    "eslint": "^8.41.0",
     "eslint-config-custom": "0.0.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
