@@ -28,7 +28,7 @@ export const fetchStudentGroupParams = async () => {
   const result = await clientFetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
 
   const studentGroupSlugSchema = z.object({
-    groupType: z.enum(["board", "subgroup", "intgroup", "suborg"]),
+    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
     slug: z.string(),
   });
 

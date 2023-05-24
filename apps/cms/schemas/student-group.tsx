@@ -65,7 +65,7 @@ export default defineType({
         }),
       ],
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      hidden: ({parent}) => parent.groupType === "board",
+      hidden: ({parent}) => parent.groupType === "BOARD",
     }),
     defineField({
       name: "description",
