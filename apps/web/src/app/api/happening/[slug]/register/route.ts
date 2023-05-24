@@ -116,8 +116,8 @@ export const POST = withSession(
       return new Response(null, {status: 403});
     }
 
-    const status = await prisma.$transaction(async (prisma) => {
-      const registrationCount = await prisma.happening.count({
+    const status = await prisma.$transaction(async (tx) => {
+      const registrationCount = await tx.happening.count({
         where: {
           slug: ctx.params.slug,
           registrations: {
@@ -135,7 +135,7 @@ export const POST = withSession(
 
       const registrationStatus = registrationCount < spotRange.spots ? "REGISTERED" : "WAITLISTED";
 
-      const registration = await prisma.registration.upsert({
+      const registration = await tx.registration.upsert({
         where: {
           userId_happeningSlug: {
             happeningSlug: ctx.params.slug,
