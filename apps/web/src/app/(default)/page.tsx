@@ -9,6 +9,8 @@ import {fetchComingEvents} from "@/sanity/event";
 import {fetchJobAds} from "@/sanity/job-ad";
 import {fetchPosts} from "@/sanity/posts";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(5),
