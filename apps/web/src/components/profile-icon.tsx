@@ -32,7 +32,7 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
 
       <DropdownMenuContent className="mx-3 w-56">
         <DropdownMenuLabel>
-          <p className="font-normal">Logget inn som,</p>
+          <p className="font-normal">Logget inn som</p>
           <p className="font-bold">{session.user.name}</p>
         </DropdownMenuLabel>
 
