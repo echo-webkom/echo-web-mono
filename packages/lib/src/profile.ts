@@ -3,6 +3,7 @@ import {
   type Group,
   type HappeningType,
   type RegistrationStatus,
+  type Role,
 } from "@echo-webkom/db/types";
 
 export const degreeToString: Record<Degree, string> = {
@@ -54,4 +55,10 @@ export const groupToString: Record<Group, string> = {
   SQUASH: "echo Squash",
   PROGBAR: "Programmerbar",
   TILDE: "Tilde",
+};
+
+export const roleToString: Record<Role, string> = {
+  ADMIN: "Administrator",
+  COMPANY: "Bedrift",
+  USER: "Bruker",
 };

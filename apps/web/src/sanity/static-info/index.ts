@@ -3,7 +3,7 @@ import {z} from "zod";
 
 import {type PageType} from "@echo-webkom/lib";
 
-import {clientFetch} from "../client";
+import {serverFetch} from "../client";
 import {staticInfoSchema, type StaticInfo} from "./schemas";
 
 export * from "./schemas";
@@ -17,7 +17,7 @@ export const pageTypeToUrl: Record<PageType, string> = {
 export const fetchStaticInfoPaths = async () => {
   const query = groq`*[_type == "static"]{ "slug": slug.current, pageType }`;
 
-  const result = await clientFetch<Array<{slug: string; pageType: PageType}>>(query);
+  const result = await serverFetch<Array<{slug: string; pageType: PageType}>>(query);
 
   const staticInfoSlugSchema = z.object({
     pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),
@@ -53,7 +53,7 @@ export const fetchStaticInfoBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await clientFetch<StaticInfo>(query, params);
+  const res = await serverFetch<StaticInfo>(query, params);
 
-  return staticInfoSchema.parse(res);
+  return staticInfoSchema.nullable().parse(res);
 };

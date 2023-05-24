@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
-import {getUserById, getUserRegistrations} from "@echo-webkom/db/queries/user";
+import {getUserRegistrations} from "@echo-webkom/db/queries/user";
 import {
   groupToString,
   happeningTypeToPath,
@@ -11,17 +11,16 @@ import {
 
 import Container from "@/components/container";
 import UserForm from "@/components/user-form";
-import {getServerSession} from "@/lib/session";
+import {getUser} from "@/lib/session";
 
 export default async function ProfilePage() {
-  const session = await getServerSession();
+  const user = await getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/auth/sign-in");
   }
 
-  const registrations = await getUserRegistrations(session.user.id);
-  const user = await getUserById(session.user.id);
+  const registrations = await getUserRegistrations(user.id);
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -29,11 +28,11 @@ export default async function ProfilePage() {
         <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
         <div>
           <p className="font-semibold">Navn:</p>
-          <p>{session?.user.name}</p>
+          <p>{user.name}</p>
         </div>
         <div>
           <p className="font-semibold">E-post:</p>
-          <p>{session?.user.email}</p>
+          <p>{user.email}</p>
         </div>
         {user?.studentGroups && user.studentGroups.length > 0 && (
           <div>
@@ -45,10 +44,10 @@ export default async function ProfilePage() {
 
       <div>
         <UserForm
-          alternativeEmail={session.user.alternativeEmail ?? undefined}
-          degree={session.user.degree ?? undefined}
-          year={session.user.year ?? undefined}
-          id={session.user.id}
+          alternativeEmail={user.alternativeEmail ?? undefined}
+          degree={user.degree ?? undefined}
+          year={user.year ?? undefined}
+          id={user.id}
         />
       </div>
 

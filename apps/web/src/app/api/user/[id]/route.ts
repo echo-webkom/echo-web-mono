@@ -3,7 +3,7 @@ import {z} from "zod";
 import {prisma} from "@echo-webkom/db/client";
 import {Degree} from "@echo-webkom/db/types";
 
-import {getServerSession} from "@/lib/session";
+import {getUser} from "@/lib/session";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -21,8 +21,8 @@ export async function PATCH(req: Request, context: z.infer<typeof routeContextSc
   try {
     const {params} = routeContextSchema.parse(context);
 
-    const session = await getServerSession();
-    if (!session?.user || params.id !== session?.user.id) {
+    const user = await getUser();
+    if (!user || params.id !== user.id) {
       return new Response(null, {status: 403});
     }
 
@@ -32,7 +32,7 @@ export async function PATCH(req: Request, context: z.infer<typeof routeContextSc
 
     await prisma.user.update({
       where: {
-        id: session.user.id,
+        id: user.id,
       },
       data: {
         alternativeEmail: payload.alternativeEmail ?? null,

@@ -1,7 +1,7 @@
 import {groq} from "next-sanity";
 
 import {type ErrorMessage} from "@/utils/error";
-import {clientFetch} from "../client";
+import {serverFetch} from "../client";
 import {bedpresSchema, type Bedpres} from "./schemas";
 
 export * from "./schemas";
@@ -12,7 +12,7 @@ export const fetchUpcomingBedpresses = async (n: number) => {
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(date asc)
-  [0..$n] {
+  [0...$n] {
   _id,
   _createdAt,
   _updatedAt,
@@ -56,7 +56,7 @@ export const fetchUpcomingBedpresses = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await clientFetch<Array<Bedpres>>(query, params);
+  const res = await serverFetch<Array<Bedpres>>(query, params);
 
   return bedpresSchema.array().parse(res);
 };
@@ -112,7 +112,7 @@ export const fetchBedpresBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await clientFetch<Bedpres>(query, params);
+  const res = await serverFetch<Bedpres>(query, params);
 
   return bedpresSchema.parse(res);
 };
@@ -164,7 +164,7 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
 }
     `;
 
-    const res = await clientFetch<Bedpres>(query);
+    const res = await serverFetch<Bedpres>(query);
 
     return bedpresSchema.array().parse(res);
   } catch (error) {

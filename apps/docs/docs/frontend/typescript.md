@@ -5,6 +5,8 @@ TypeScript er et programmeringsspråk som er bygget på JavaScript, som gjør de
 Med TypeScript kan utviklere angi typer for variabler, parametere og funksjonsreturverdier, og dermed hjelpe til med å identifisere feil og bugs tidligere i utviklingsprosessen. Dette gir også bedre lesbarhet og forståelse av koden, spesielt for større prosjekter med flere utviklere.
 
 ```tsx
+"use client";
+
 import {useEffect, useState} from "react";
 
 // Egendefinert type Post

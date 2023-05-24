@@ -56,7 +56,7 @@ pnpm db:deploy
 For å starte en utviklingsserver som automatisk oppdaterer når du gjør endringer, kan du bruke kommandoen `pnpm dev:web`.
 
 ```sh title="Terminal"
-pnpm dev:all
+pnpm dev
 ```
 
 Denne kommandoen vil starte nettsiden på [http://localhost:3000](http://localhost:3000), dokumentasjonen på [http://localhost:3001](http://localhost:3001), Sanity Studio på [http://localhost:3333](http://localhost:3333) og [Prisma Studio](https://www.prisma.io/studio) på [http://localhost:4000](http://localhost:4000).

@@ -13,10 +13,10 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
-    fetchComingEvents(5),
-    fetchUpcomingBedpresses(5),
-    fetchPosts(5),
-    fetchJobAds(5),
+    fetchComingEvents(3),
+    fetchUpcomingBedpresses(3),
+    fetchPosts(4),
+    fetchJobAds(4),
   ]);
 
   return (

@@ -3,6 +3,8 @@
 Framer Motion er et JavaScript-bibliotek som brukes til å legge til **animasjoner** og interaktivitet i webapplikasjoner. Det er spesielt populært blant utviklere som jobber med ReactJS, ettersom det er enkelt å integrere i React-prosjekter.
 
 ```tsx
+"use client";
+
 import {motion} from "framer-motion";
 
 const CoolAnimations = () => {
