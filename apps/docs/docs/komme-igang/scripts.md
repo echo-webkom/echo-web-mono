@@ -6,16 +6,16 @@ Vi har noen scripts som gjør det enklere å kjøre kommandoer.
 
 Vi bruker [`pnpm`](https://pnpm.io/) som package manager. Denne er mye raskere enn `npm` og `yarn`, og har en del andre fordeler. Du kan lese mer om det på [nettsiden deres](https://pnpm.io/).
 
-## `pnpm dev:{web|docs|cms|studio|all}`
+## `pnpm [web:|docs:|cms:|db:]dev`
 
-Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, cms, prisma eller alle sammen. Om man ønsker å starte nettsiden bruker man `pnpm dev:web`.
+Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, cms, prisma eller alle sammen. Om man ønsker å starte nettsiden bruker man `pnpm web:dev`.
 
 ```sh
-pnpm dev:web
-pnpm dev:docs
-pnpm dev:cms
-pnpm dev:studio
-pnpm dev:all
+pnpm dev
+pnpm web:dev
+pnpm docs:dev
+pnpm cms:dev
+pnpm db:dev
 ```
 
 ## `pnpm docker:{up|down}`
