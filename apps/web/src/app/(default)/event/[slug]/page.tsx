@@ -170,7 +170,7 @@ export default async function EventPage({params}: Props) {
                 </ul>
               </SidebarItemContent>
             </SidebarItem>
-           )}
+          )}
 
           {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
             <SidebarItem>
