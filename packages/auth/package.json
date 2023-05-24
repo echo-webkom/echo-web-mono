@@ -13,14 +13,14 @@
   "dependencies": {
     "@echo-webkom/db": "*",
     "@next-auth/prisma-adapter": "^1.0.6",
-    "next": "13.4.2",
+    "next": "13.4.3",
     "next-auth": "^4.22.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/node": "18.16.12",
-    "eslint": "^8.40.0",
+    "@types/node": "18.16.13",
+    "eslint": "^8.41.0",
     "eslint-config-custom": "0.0.0",
     "typescript": "^5.0.4"
   }

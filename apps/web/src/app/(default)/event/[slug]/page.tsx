@@ -162,15 +162,15 @@ export default async function EventPage({params}: Props) {
                 <ul>
                   {event.contacts.map((contact) => (
                     <li key={contact.profile._id}>
-                      <Link className="hover:underline" href={"mailto:" + contact.email}>
+                      <a className="hover:underline" href={"mailto:" + contact.email}>
                         {contact.profile.name}
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
               </SidebarItemContent>
             </SidebarItem>
-          )}
+           )}
 
           {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
             <SidebarItem>
