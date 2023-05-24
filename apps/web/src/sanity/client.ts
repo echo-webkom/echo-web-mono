@@ -1,4 +1,3 @@
-import {cache} from "react";
 import {createClient} from "next-sanity";
 
 /**
@@ -34,5 +33,5 @@ export const sanityServerClient = createClient({
   useCdn: false,
 });
 
-export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
+// export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
 export const serverFetch = sanityServerClient.fetch.bind(sanityServerClient);

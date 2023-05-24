@@ -3,7 +3,7 @@ import {z} from "zod";
 
 import {type StudentGroupType} from "@echo-webkom/lib";
 
-import {clientFetch} from "../client";
+import {serverFetch} from "../client";
 import {studentGroupSchema, type StudentGroup} from "./schemas";
 
 export * from "./schemas";
@@ -25,7 +25,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await clientFetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
+  const result = await serverFetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
 
   const studentGroupSlugSchema = z.object({
     groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
@@ -80,12 +80,11 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
       `;
 
   const params = {
-    // TODO: Should not be toLowerCase but is because of legacy data
-    type: type.toLowerCase(),
+    type: type,
     n,
   };
 
-  const res = await clientFetch<Array<StudentGroup>>(query, params);
+  const res = await serverFetch<Array<StudentGroup>>(query, params);
 
   return studentGroupSchema.array().parse(res);
 };
@@ -126,7 +125,7 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
       slug,
     };
 
-    const result = await clientFetch<StudentGroup>(query, params);
+    const result = await serverFetch<StudentGroup>(query, params);
 
     return studentGroupSchema.parse(result);
   } catch {

@@ -1,6 +1,6 @@
 import {groq} from "next-sanity";
 
-import {clientFetch} from "../client";
+import {serverFetch} from "../client";
 import {slugSchema} from "../utils/slug";
 import {jobAdSchema, type JobAd, type JobType} from "./schemas";
 
@@ -20,7 +20,7 @@ export const jobTypeToString: Record<JobType, string> = {
 export const fetchJobAdPaths = async (): Promise<Array<string>> => {
   try {
     const query = groq`*[_type == "job"]{ "slug": slug.current }`;
-    const result = await clientFetch<Array<string>>(query);
+    const result = await serverFetch<Array<string>>(query);
 
     return slugSchema
       .array()
@@ -67,7 +67,7 @@ export const fetchJobAds = async (n: number) => {
     n,
   };
 
-  const result = await clientFetch<Array<JobAd>>(query, params);
+  const result = await serverFetch<Array<JobAd>>(query, params);
 
   return jobAdSchema.array().parse(result);
 };
@@ -104,7 +104,7 @@ export const fetchJobAdBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await clientFetch<JobAd>(query, params);
+  const result = await serverFetch<JobAd>(query, params);
 
   return jobAdSchema.parse(result);
 };

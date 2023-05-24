@@ -1,6 +1,6 @@
 import {groq} from "next-sanity";
 
-import {clientFetch} from "../client";
+import {serverFetch} from "../client";
 import {slugSchema} from "../utils/slug";
 import {postSchema, type Post} from "./schemas";
 
@@ -12,7 +12,7 @@ export * from "./schemas";
  */
 export const fetchPostParams = async () => {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`;
-  const result = await clientFetch<Array<string>>(query);
+  const result = await serverFetch<Array<string>>(query);
 
   const slugs = slugSchema
     .array()
@@ -54,7 +54,7 @@ export const fetchPosts = async (n: number) => {
     n,
   };
 
-  const result = await clientFetch<Array<Post>>(query, params);
+  const result = await serverFetch<Array<Post>>(query, params);
 
   return postSchema.array().parse(result);
 };
@@ -84,7 +84,7 @@ export const fetchPostBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await clientFetch<Post>(query, params);
+  const result = await serverFetch<Post>(query, params);
 
   return postSchema.parse(result);
 };

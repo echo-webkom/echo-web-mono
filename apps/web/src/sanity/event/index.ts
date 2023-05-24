@@ -1,7 +1,7 @@
 import {groq} from "next-sanity";
 
 import {type ErrorMessage} from "@/utils/error";
-import {clientFetch, sanityServerClient} from "../client";
+import {serverFetch} from "../client";
 import {slugSchema, type Slug} from "../utils/slug";
 import {eventSchema, type Event} from "./schemas";
 
@@ -15,7 +15,7 @@ export const fetchEventPaths = async () => {
 }
     `;
 
-  const res = await sanityServerClient.fetch<Array<Slug>>(query);
+  const res = await serverFetch<Array<Slug>>(query);
 
   return slugSchema.array().parse(res);
 };
@@ -33,7 +33,7 @@ export const fetchComingEvents = async (n: number) => {
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(dates.date asc)
-  [0..$n] {
+  [0...$n] {
   _id,
   _createdAt,
   _updatedAt,
@@ -76,7 +76,7 @@ export const fetchComingEvents = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await clientFetch<Array<Event>>(query, params);
+  const res = await serverFetch<Array<Event>>(query, params);
 
   return eventSchema.array().parse(res);
 };
@@ -128,7 +128,7 @@ export const fetchEventBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await clientFetch<Event>(query, params);
+  const res = await serverFetch<Event>(query, params);
 
   return eventSchema.parse(res);
 };
@@ -176,7 +176,7 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
 }
     `;
 
-    const res = await sanityServerClient.fetch<Array<Event>>(query);
+    const res = await serverFetch<Array<Event>>(query);
 
     return eventSchema.array().parse(res);
   } catch (error) {
