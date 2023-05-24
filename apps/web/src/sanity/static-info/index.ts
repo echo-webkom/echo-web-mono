@@ -55,5 +55,5 @@ export const fetchStaticInfoBySlug = async (slug: string) => {
 
   const res = await serverFetch<StaticInfo>(query, params);
 
-  return staticInfoSchema.parse(res);
+  return staticInfoSchema.nullable().parse(res);
 };

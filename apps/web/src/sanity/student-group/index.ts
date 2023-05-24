@@ -25,11 +25,11 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await serverFetch<Array<{slug: string; pageType: StudentGroupType}>>(query);
+  const result = await serverFetch<Array<{slug: string; groupType: StudentGroupType}>>(query);
 
   const studentGroupSlugSchema = z.object({
-    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
     slug: z.string(),
+    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
   });
 
   const studentGroupPaths = result.map((studentGroup) =>
@@ -39,7 +39,7 @@ export const fetchStudentGroupParams = async () => {
   const paths = studentGroupPaths.map((studentGroup) => {
     return {
       params: {
-        groupType: studentGroupTypeToUrl[studentGroup.groupType.toUpperCase() as StudentGroupType],
+        groupType: studentGroupTypeToUrl[studentGroup.groupType],
         slug: studentGroup.slug,
       },
     };
@@ -80,7 +80,7 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
       `;
 
   const params = {
-    type: type,
+    type,
     n,
   };
 
@@ -90,8 +90,7 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
 };
 
 export const fetchStudentGroupBySlug = async (slug: string) => {
-  try {
-    const query = groq`
+  const query = groq`
 *[_type == "studentGroup"
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
@@ -121,14 +120,11 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
 }[0]
     `;
 
-    const params = {
-      slug,
-    };
+  const params = {
+    slug,
+  };
 
-    const result = await serverFetch<StudentGroup>(query, params);
+  const result = await serverFetch<StudentGroup>(query, params);
 
-    return studentGroupSchema.parse(result);
-  } catch {
-    throw new Error(`Could not find student group with slug ${slug}`);
-  }
+  return studentGroupSchema.parse(result);
 };

@@ -1,3 +1,5 @@
+import {notFound} from "next/navigation";
+
 import Container from "@/components/container";
 import Markdown from "@/components/markdown";
 import Heading from "@/components/ui/heading";
@@ -11,7 +13,13 @@ type Props = {
 };
 
 async function getData(slug: string) {
-  return await fetchStaticInfoBySlug(slug);
+  const page = await fetchStaticInfoBySlug(slug);
+
+  if (!page) {
+    return notFound();
+  }
+
+  return page;
 }
 
 export async function generateStaticParams() {

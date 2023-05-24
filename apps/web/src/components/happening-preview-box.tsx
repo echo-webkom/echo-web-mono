@@ -29,7 +29,7 @@ const happeningTypeToString: Record<HappeningType, string> = {
 export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps) {
   return (
     <div>
-      <h2 className="text-center text-3xl font-semibold hover:underline">
+      <h2 className="text-center text-3xl font-semibold">
         {capitalize(happeningTypeToString[type])}
       </h2>
 
