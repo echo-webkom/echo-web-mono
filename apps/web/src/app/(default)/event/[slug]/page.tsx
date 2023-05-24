@@ -243,11 +243,11 @@ export default async function EventPage({params}: Props) {
           )}
 
           {(isAdmin || isOrganizer) && (
-            <div>
+            <SidebarItem>
               <Button fullWidth variant="link" asChild>
                 <Link href={"/dashboard/" + slug}>Til Dashboard</Link>
               </Button>
-            </div>
+            </SidebarItem>
           )}
         </Sidebar>
 
