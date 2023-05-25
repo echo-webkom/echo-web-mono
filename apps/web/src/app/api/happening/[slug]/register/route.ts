@@ -116,44 +116,50 @@ export const POST = withSession(
       return new Response(null, {status: 403});
     }
 
-    const status = await prisma.$transaction(async (tx) => {
-      const registrationCount = await tx.happening.count({
-        where: {
-          slug: ctx.params.slug,
-          registrations: {
-            some: {
-              status: "REGISTERED",
+    const status = await prisma.$transaction(
+      async (tx) => {
+        const registrationCount = await tx.happening.count({
+          where: {
+            slug: ctx.params.slug,
+            registrations: {
+              some: {
+                status: "REGISTERED",
+              },
+            },
+            spotRanges: {
+              some: {
+                id: spotRange.id,
+              },
             },
           },
-          spotRanges: {
-            some: {
-              id: spotRange.id,
+        });
+
+        const registrationStatus =
+          registrationCount < spotRange.spots ? "REGISTERED" : "WAITLISTED";
+
+        const registration = await tx.registration.upsert({
+          where: {
+            userId_happeningSlug: {
+              happeningSlug: ctx.params.slug,
+              userId: user.id,
             },
           },
-        },
-      });
-
-      const registrationStatus = registrationCount < spotRange.spots ? "REGISTERED" : "WAITLISTED";
-
-      const registration = await tx.registration.upsert({
-        where: {
-          userId_happeningSlug: {
+          update: {
+            status: registrationStatus,
+          },
+          create: {
+            status: registrationStatus,
             happeningSlug: ctx.params.slug,
             userId: user.id,
           },
-        },
-        update: {
-          status: registrationStatus,
-        },
-        create: {
-          status: registrationStatus,
-          happeningSlug: ctx.params.slug,
-          userId: user.id,
-        },
-      });
+        });
 
-      return registration.status;
-    });
+        return registration.status;
+      },
+      {
+        isolationLevel: "Serializable",
+      },
+    );
 
     return NextResponse.json(
       {
