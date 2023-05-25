@@ -1,20 +1,28 @@
 import {cn} from "@/utils/cn";
 
-export default function Heading({
-  className,
-  children,
-}: {
+export type HeadingProps = {
+  level?: 1 | 2 | 3 | 4;
   className?: string;
   children: React.ReactNode;
-}) {
+};
+
+export default function Heading({level = 1, className, children}: HeadingProps) {
+  const Comp = `h${level}` as const;
+
   return (
-    <h1
+    <Comp
       className={cn(
-        "mb-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        "mb-5 scroll-m-20 font-extrabold tracking-tight",
+        {
+          "text-5xl": level === 1,
+          "text-4xl": level === 2,
+          "text-3xl": level === 3,
+          "text-2xl": level === 4,
+        },
         className,
       )}
     >
       {children}
-    </h1>
+    </Comp>
   );
 }

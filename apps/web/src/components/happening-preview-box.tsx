@@ -45,8 +45,9 @@ export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps
           ))}
         </ul>
       ) : (
-        <div className="flex h-full flex-col items-center justify-center text-lg font-medium">
+        <div className="px-3 py-5 text-center text-lg font-medium">
           <p>Ingen kommende {happeningTypeToString[type]}</p>
+          {/* TODO: Add funny gif */}
         </div>
       )}
     </div>
