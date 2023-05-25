@@ -39,16 +39,17 @@ export const fetchMinuteParams = async () => {
 
   const result = await serverFetch<Array<{id: string}>>(query);
 
+  // TODO: Make pretty
   return z
     .object({
       id: z.string(),
     })
     .array()
     .parse(result)
-    .map((slug) => {
+    .map(({id}) => {
       return {
         params: {
-          id: slug,
+          id,
         },
       };
     });

@@ -1,6 +1,8 @@
 import {type Metadata} from "next";
 
 import Container from "@/components/container";
+import {Button} from "@/components/ui/button";
+import Heading from "@/components/ui/heading";
 import {fetchMinuteById, fetchMinuteParams} from "@/sanity/minutes";
 
 export const dynamicParams = false;
@@ -20,18 +22,26 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
-  const data = await getData(params.id);
+  const {title} = await getData(params.id);
   return {
-    title: data.title,
+    title,
   };
 }
 
 export default async function MinutePage({params}: Props) {
-  const data = await getData(params.id);
+  const minute = await getData(params.id);
 
   return (
     <Container>
-      <h1>{data.title}</h1>
+      <Heading>{minute.title}</Heading>
+
+      <div className="flex flex-col gap-5">
+        <Button className="w-full md:w-fit" asChild>
+          <a href={minute.document}>Last ned</a>
+        </Button>
+
+        <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
+      </div>
     </Container>
   );
 }
