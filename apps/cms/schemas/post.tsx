@@ -17,7 +17,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: "title.no",
+        source: "title",
         maxLength: 96,
       },
     }),
@@ -44,7 +44,7 @@ export default defineType({
 
   preview: {
     select: {
-      title: "title.no",
+      title: "title",
       media: "image",
     },
   },

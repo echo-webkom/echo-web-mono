@@ -18,7 +18,7 @@ export default defineType({
       name: "date",
       title: "Dato",
       description: "Dato for møtet",
-      type: "date",
+      type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
