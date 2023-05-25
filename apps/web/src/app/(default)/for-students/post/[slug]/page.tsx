@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const post = await fetchData(params.slug);
 
-  const authors = post.authors.map((author) => {
+  const authors = post.authors?.map((author) => {
     return {
       name: author.name,
     };
@@ -42,7 +42,7 @@ export default async function PostPage({params}: Props) {
       <article className="flex flex-col gap-10">
         <Heading>{post.title}</Heading>
 
-        <Authors authors={post.authors} />
+        {post.authors && <Authors authors={post.authors} />}
 
         <Markdown content={post.body} />
       </article>
