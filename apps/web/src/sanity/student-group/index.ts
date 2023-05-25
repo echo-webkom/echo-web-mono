@@ -36,14 +36,10 @@ export const fetchStudentGroupParams = async () => {
     studentGroupSlugSchema.parse(studentGroup),
   );
 
-  const paths = studentGroupPaths.map((studentGroup) => {
-    return {
-      params: {
-        groupType: studentGroupTypeToUrl[studentGroup.groupType],
-        slug: studentGroup.slug,
-      },
-    };
-  });
+  const paths = studentGroupPaths.map((studentGroup) => ({
+    groupType: studentGroupTypeToUrl[studentGroup.groupType],
+    slug: studentGroup.slug,
+  }));
 
   return paths;
 };

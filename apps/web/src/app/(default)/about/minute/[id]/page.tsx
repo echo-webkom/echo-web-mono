@@ -5,6 +5,7 @@ import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {fetchMinuteById, fetchMinuteParams} from "@/sanity/minutes";
 
+export const dynamic = "force-static";
 export const dynamicParams = false;
 
 type Props = {

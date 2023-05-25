@@ -19,13 +19,9 @@ export const fetchPostParams = async () => {
     .parse(result)
     .map((nestedSlug) => nestedSlug.slug);
 
-  return slugs.map((slug) => {
-    return {
-      params: {
-        slug,
-      },
-    };
-  });
+  return slugs.map((slug) => ({
+    slug,
+  }));
 };
 
 /**

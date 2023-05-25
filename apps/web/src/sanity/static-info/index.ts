@@ -26,13 +26,10 @@ export const fetchStaticInfoPaths = async () => {
 
   const staticInfoSlugs = result.map((staticInfo) => staticInfoSlugSchema.parse(staticInfo));
 
-  const paths = staticInfoSlugs.map((staticInfo) => {
-    return {
-      params: {
-        slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
-      },
-    };
-  });
+  const paths = staticInfoSlugs.map((staticInfo) => ({
+    pageType: pageTypeToUrl[staticInfo.pageType],
+    slug: staticInfo.slug,
+  }));
 
   return paths;
 };
