@@ -71,6 +71,43 @@ export const fetchJobAds = async (n: number) => {
 
   return jobAdSchema.array().parse(result);
 };
+export const fetchAvailableJobAds = async (n: number) => {
+  const query = groq`
+*[_type == "job"
+  && !(_id in path('drafts.**')) 
+  && deadline >= now()]
+  | order(_createdAt desc) {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  "company": company->{
+    _id,
+    name,
+    website,
+    image,
+  },
+  "locations": locations[]->{
+    _id,
+    name,
+  },
+  jobType,
+  link,
+  deadline,
+  degreeYears,
+  body
+}[0..$n]
+      `;
+
+  const params = {
+    n,
+  };
+
+  const result = await serverFetch<Array<JobAd>>(query, params);
+
+  return jobAdSchema.array().parse(result);
+};
 
 export const fetchJobAdBySlug = async (slug: string) => {
   const query = groq`

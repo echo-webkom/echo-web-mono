@@ -21,7 +21,7 @@ export default function WebkomPage() {
           <li>Andreas Bakseter (Co-founder)</li>
           <li>Bo Aanes (Co-founder)</li>
 
-          <hr className="my-5" />
+          <hr className="my-4" />
 
           <li>Alvar Hønsi</li>
           <li>Øyvind Grutle</li>
