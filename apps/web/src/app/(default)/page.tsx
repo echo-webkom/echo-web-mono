@@ -6,7 +6,7 @@ import JobAdPreview from "@/components/job-ad-preview";
 import PostPreview from "@/components/post-preview";
 import {fetchUpcomingBedpresses} from "@/sanity/bedpres";
 import {fetchComingEvents} from "@/sanity/event";
-import {fetchJobAds} from "@/sanity/job-ad";
+import {fetchAvailableJobAds} from "@/sanity/job-ad";
 import {fetchPosts} from "@/sanity/posts";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export default async function HomePage() {
     fetchComingEvents(3),
     fetchUpcomingBedpresses(3),
     fetchPosts(4),
-    fetchJobAds(4),
+    fetchAvailableJobAds(4),
   ]);
 
   return (
@@ -49,21 +49,23 @@ export default async function HomePage() {
       </section>
 
       {/* Job ads */}
-      <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
-        <Link href="/for-students/jobs">
-          <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
-        </Link>
+      {jobAds.length > 0 && (
+        <section className="flex flex-col gap-5 rounded-md border p-5 lg:col-span-2">
+          <Link href="/for-students/jobs">
+            <h2 className="text-center text-3xl font-semibold">Jobbannonser</h2>
+          </Link>
 
-        <hr />
+          <hr />
 
-        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-          {jobAds.map((jobAd) => (
-            <li key={jobAd._id}>
-              <JobAdPreview jobAd={jobAd} />
-            </li>
-          ))}
-        </ul>
-      </section>
+          <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+            {jobAds.map((jobAd) => (
+              <li key={jobAd._id}>
+                <JobAdPreview jobAd={jobAd} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </Container>
   );
 }
