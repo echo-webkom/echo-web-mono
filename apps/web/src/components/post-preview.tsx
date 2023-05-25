@@ -29,10 +29,12 @@ export default function PostPreview({post}: {post: Post}) {
 
         <p className="my-2 line-clamp-3 italic">{removeMd(post.body)}</p>
 
-        <p>
-          <span className="font-semibold">Skrevet av:</span>{" "}
-          {post.authors.map((author) => author.name).join(", ")}
-        </p>
+        {post.authors && (
+          <p>
+            <span className="font-semibold">Skrevet av:</span>{" "}
+            {post.authors.map((author) => author.name).join(", ")}
+          </p>
+        )}
       </div>
     </Link>
   );
