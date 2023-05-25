@@ -27,4 +27,5 @@ export const imageSchema = z.object({
       y: z.number(),
     })
     .optional(),
+  caption: z.string().optional(),
 });

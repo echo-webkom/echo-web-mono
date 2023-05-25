@@ -15,7 +15,7 @@ export const postSchema = z.object({
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  authors: authorSchema.array(),
+  authors: authorSchema.array().nullable(),
   image: imageSchema.nullable(),
   body: z.string(),
 });

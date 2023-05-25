@@ -55,6 +55,9 @@ importers:
       '@echo-webkom/lib':
         specifier: 0.1.0
         version: link:../../packages/lib
+      '@sanity/client':
+        specifier: ^6.1.2
+        version: 6.1.2
       '@sanity/icons':
         specifier: ^2.3.1
         version: 2.3.1(react@18.2.0)
@@ -4455,8 +4458,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.0.1:
-    resolution: {integrity: sha512-q2Mi79ttJxoUjZG3LGlfIFoYfMUxra9tRaPbfmQRVJQ2I/TiVGvuE6yt38fgox796wpeZvYeuYH8L7Ms79IXYg==}
+  /@sanity/client@6.1.2:
+    resolution: {integrity: sha512-8/NRBmyzJaT8ZNZxj3UmOAhvqKxDtXWysogsa4rn+o/Z+zS7upkToh1wSdvoFLcv9uHSYF6JGeycigjwO1Zpnw==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -4665,7 +4668,7 @@ packages:
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@sanity/client': 6.0.1
+      '@sanity/client': 6.1.2
       '@sanity/eventsource': 5.0.0
       '@sanity/groq-store': 2.1.0
       '@vercel/stega': 0.0.4
@@ -4723,7 +4726,7 @@ packages:
   /@sanity/types@3.11.1:
     resolution: {integrity: sha512-TmCtStfZcf1VTKrPFJOjVhWOvjlrBncn86/0UuE7Ftsgq12tQEyPCpKAzAT6E7uUmr15wMUSvCgXX8hn9/poKg==}
     dependencies:
-      '@sanity/client': 6.0.1
+      '@sanity/client': 6.1.2
       '@types/react': 18.2.6
     transitivePeerDependencies:
       - supports-color
@@ -11076,7 +11079,7 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.2.0
     dependencies:
-      '@sanity/client': 6.0.1
+      '@sanity/client': 6.1.2
       '@sanity/icons': 2.3.1(react@18.2.0)
       '@sanity/preview-kit': 1.5.2(react@18.2.0)
       '@sanity/types': 3.11.1
@@ -13432,7 +13435,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.11.1
       '@sanity/cli': 3.11.1
-      '@sanity/client': 6.0.1
+      '@sanity/client': 6.1.2
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.11.1
       '@sanity/eventsource': 5.0.0
