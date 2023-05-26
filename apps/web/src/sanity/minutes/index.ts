@@ -46,13 +46,9 @@ export const fetchMinuteParams = async () => {
     })
     .array()
     .parse(result)
-    .map(({id}) => {
-      return {
-        params: {
-          id,
-        },
-      };
-    });
+    .map(({id}) => ({
+      id,
+    }));
 };
 
 export const fetchMinuteById = async (id: string) => {

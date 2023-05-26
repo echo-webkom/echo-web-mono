@@ -29,7 +29,7 @@ export function generateMetadata({params}: Props) {
 
 export function generateStaticParams() {
   const params = Object.values(studentGroupTypeToUrl).map((groupType) => ({
-    params: {groupType},
+    groupType,
   }));
 
   return params;
