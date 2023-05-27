@@ -5,6 +5,9 @@ import {prisma} from "../client";
 export const getUserById = async (id: User["id"]) => {
   return await prisma.user.findUnique({
     where: {id},
+    include: {
+      studentGroups: true,
+    },
   });
 };
 
@@ -32,5 +35,9 @@ export const getUserRegistrations = async (id: User["id"]) => {
 };
 
 export const getAllUsers = async () => {
-  return await prisma.user.findMany();
+  return await prisma.user.findMany({
+    include: {
+      studentGroups: true,
+    },
+  });
 };

@@ -3,7 +3,6 @@ import {redirect} from "next/navigation";
 
 import {getUserRegistrations} from "@echo-webkom/db/queries/user";
 import {
-  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
@@ -37,19 +36,17 @@ export default async function ProfilePage() {
         {user?.studentGroups && user.studentGroups.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
-            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+            <p>{user.studentGroups.map((group) => group.name).join(", ")}</p>
           </div>
         )}
       </div>
 
-      <div>
-        <UserForm
-          alternativeEmail={user.alternativeEmail ?? undefined}
-          degree={user.degree ?? undefined}
-          year={user.year ?? undefined}
-          id={user.id}
-        />
-      </div>
+      <UserForm
+        alternativeEmail={user.alternativeEmail}
+        degree={user.degree}
+        year={user.year}
+        id={user.id}
+      />
 
       <div>
         <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>

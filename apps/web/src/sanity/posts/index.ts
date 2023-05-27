@@ -30,7 +30,7 @@ export const fetchPostParams = async () => {
  */
 export const fetchPosts = async (n: number) => {
   const query = groq`
-*[_type == "post" && !(_id in path('drafts.**'))][0...$n] | order(_createdAt desc) {
+*[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {
   _id,
   _createdAt,
   _updatedAt,
@@ -43,7 +43,7 @@ export const fetchPosts = async (n: number) => {
   },
   image,
   body
-}
+}[0...$n]
   `;
 
   const params = {

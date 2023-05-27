@@ -24,6 +24,9 @@ export default defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      readOnly: ({currentUser}) => {
+        return !!currentUser?.roles.find((role) => role.name === "admin");
+      },
     }),
     defineField({
       name: "groupType",

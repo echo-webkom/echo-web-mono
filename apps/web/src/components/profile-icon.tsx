@@ -45,7 +45,7 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
           </Link>
         </DropdownMenuItem>
 
-        {session.user.role === "ADMIN" && (
+        {session.user.type === "ADMIN" && (
           <>
             <DropdownMenuSeparator />
 

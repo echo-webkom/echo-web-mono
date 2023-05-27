@@ -1,7 +1,6 @@
 import {NextResponse} from "next/server";
 
 import {prisma} from "@echo-webkom/db/client";
-import {type Group} from "@echo-webkom/db/types";
 
 import {withBasicAuth} from "@/lib/checks/with-basic-auth";
 import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
@@ -9,31 +8,6 @@ import {$fetchAllEvents, type Event} from "@/sanity/event";
 import {isErrorMessage} from "@/utils/error";
 
 export const revalidate = 0;
-
-const organizerSlugToGroup = (slug: string) => {
-  switch (slug) {
-    case "makerspace":
-      return "MAKERSPACE";
-    case "bedkom":
-      return "BEDKOM";
-    case "webkom":
-      return "WEBKOM";
-    case "gnist":
-      return "GNIST";
-    case "hyggkom":
-      return "HYGGKOM";
-    case "squash":
-      return "SQUASH";
-    case "esc":
-      return "ESC";
-    case "programmerbar":
-      return "PROGBAR";
-    case "tilde":
-      return "TILDE";
-    default:
-      return undefined;
-  }
-};
 
 const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
   return await prisma.$transaction(
@@ -61,7 +35,11 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
               spots,
             })),
           },
-          groups: ["BEDKOM"],
+          studentGroups: {
+            connect: {
+              id: "bedkom",
+            },
+          },
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,
@@ -95,6 +73,18 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
 };
 
 const updateOrCreateEvent = async (happenings: Array<Event>) => {
+  const organziers = happenings.flatMap((happening) =>
+    happening.organizers.map((organizer) => organizer.slug),
+  );
+
+  const foundGroups = await prisma.studentGroup.findMany({
+    where: {
+      id: {
+        in: organziers,
+      },
+    },
+  });
+
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -120,9 +110,9 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
               spots,
             })),
           },
-          groups: happening.organizers
-            .map((organizer) => organizerSlugToGroup(organizer.slug))
-            .filter((group) => group !== null) as Array<Group>,
+          studentGroups: {
+            connect: foundGroups.map((group) => ({id: group.id})),
+          },
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,
@@ -145,6 +135,10 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
               required: question.required,
               options: question.options ?? [],
             })),
+          },
+          studentGroups: {
+            deleteMany: {},
+            connect: foundGroups.map((group) => ({id: group.id})),
           },
           date: happening.date,
           registrationStart: happening.registrationStart,

@@ -25,7 +25,7 @@ DROP TYPE "Role";
 
 -- CreateTable
 CREATE TABLE "StudentGroup" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "StudentGroup_pkey" PRIMARY KEY ("id")
@@ -33,20 +33,20 @@ CREATE TABLE "StudentGroup" (
 
 -- CreateTable
 CREATE TABLE "_StudentGroupMembers" (
-    "A" INTEGER NOT NULL,
+    "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "_StudentGroupLeader" (
-    "A" INTEGER NOT NULL,
+    "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "_HappeningToStudentGroup" (
     "A" TEXT NOT NULL,
-    "B" INTEGER NOT NULL
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex

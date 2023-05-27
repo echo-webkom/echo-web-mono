@@ -17,7 +17,7 @@ import {
 export const fetchBanner = async (): Promise<Banner | null> => {
   try {
     const query = groq`
-*[_id == "siteSettings" && !(_id in path('drafts.**'))][0] {
+*[_id == "siteSettings" && !(_id in path('drafts.**'))] {
   showBanner,
   banner {
     title,
@@ -25,7 +25,7 @@ export const fetchBanner = async (): Promise<Banner | null> => {
     expiresAt,
     link,
   }
-}
+}[0]
     `;
 
     const res = await serverFetch<BannerSettings>(query);
@@ -52,7 +52,7 @@ export const fetchBanner = async (): Promise<Banner | null> => {
 
 export const fetchFooter = async () => {
   const query = groq`
-*[_id == "siteSettings" && !(_id in path('drafts.**'))][0] {
+*[_id == "siteSettings" && !(_id in path('drafts.**'))] {
   footer[] {
     title,
     links[] {
@@ -60,7 +60,7 @@ export const fetchFooter = async () => {
       link
     }
   }
-}.footer
+}[0].footer
 `;
 
   const res = await serverFetch<Array<FooterSection>>(query);

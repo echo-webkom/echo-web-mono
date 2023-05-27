@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -89,7 +88,7 @@ enum Degree {
 }
 
 model StudentGroup {
-  id         Int         @id @default(autoincrement())
+  id         String      @id
   name       String
   happenings Happening[]
   members    User[]      @relation("StudentGroupMembers")

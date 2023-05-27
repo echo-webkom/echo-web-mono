@@ -1,9 +1,8 @@
 import {
   type Degree,
-  type Group,
   type HappeningType,
   type RegistrationStatus,
-  type Role,
+  type UserType,
 } from "@echo-webkom/db/types";
 
 export const degreeToString: Record<Degree, string> = {
@@ -44,20 +43,7 @@ export const happeningTypeToPath: Record<HappeningType, string> = {
   EVENT: "/event",
 };
 
-export const groupToString: Record<Group, string> = {
-  BEDKOM: "Bedkom",
-  BOARD: "Hovedstyret",
-  ESC: "ESC",
-  HYGGKOM: "Hyggkom",
-  GNIST: "Gnist",
-  MAKERSPACE: "Makerspace",
-  WEBKOM: "Webkom",
-  SQUASH: "echo Squash",
-  PROGBAR: "Programmerbar",
-  TILDE: "Tilde",
-};
-
-export const roleToString: Record<Role, string> = {
+export const userTypeToString: Record<UserType, string> = {
   ADMIN: "Administrator",
   COMPANY: "Bedrift",
   USER: "Bruker",

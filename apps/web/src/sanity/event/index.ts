@@ -33,7 +33,7 @@ export const fetchComingEvents = async (n: number) => {
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(dates.date asc)
-  [0...$n] {
+  {
   _id,
   _createdAt,
   _updatedAt,
@@ -69,7 +69,7 @@ export const fetchComingEvents = async (n: number) => {
     options,
   },
   body
-}
+}[0...$n]
     `;
 
   const params = {

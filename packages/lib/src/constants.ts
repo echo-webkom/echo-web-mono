@@ -14,3 +14,17 @@ export const GROUP_TYPES = [
 ] as const;
 
 export type StudentGroupType = (typeof GROUP_TYPES)[number]["value"];
+
+export const STUDENT_GROUPS = [
+  {title: "Webkom", value: "WEBKOM"},
+  {title: "Hovedstyret", value: "HOVEDSTYRET"},
+  {title: "Bedkom", value: "BEDKOM"},
+  {title: "Gnist", value: "GNIST"},
+  {title: "Makerspace", value: "MAKERSPACE"},
+  {title: "Tilde", value: "TILDE"},
+  {title: "Hyggkom", value: "HYGGKOM"},
+  {title: "ESC", value: "ESC"},
+  {title: "Programmerbar", value: "PROGRAMMERBAR"},
+] as const;
+
+export type StudentGroup = (typeof STUDENT_GROUPS)[number]["value"];

@@ -1,14 +1,15 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
+import {notFound, redirect} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
 import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {type Prisma} from "@echo-webkom/db/types";
-import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
+import {registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
+import {getUser} from "@/lib/session";
 import {cn} from "@/utils/cn";
 
 type Props = {
@@ -19,6 +20,25 @@ type Props = {
 
 export default async function EventDashboard({params}: Props) {
   const {slug} = params;
+
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/signin");
+  }
+
+  const happening = await getHappeningBySlug(params.slug);
+
+  if (!happening) {
+    return redirect("/api/auth/signin");
+  }
+
+  const isAdmin = user.type === "ADMIN";
+
+  const isOrganizer = user?.studentGroups.some((group) => happening.studentGroups.includes(group));
+  if (!isAdmin && isOrganizer) {
+    return redirect("/api/auth/signin");
+  }
 
   const eventInfo = await getHappeningBySlug(slug);
 
@@ -31,7 +51,11 @@ export default async function EventDashboard({params}: Props) {
       happeningSlug: slug,
     },
     include: {
-      user: true,
+      user: {
+        include: {
+          studentGroups: true,
+        },
+      },
     },
   });
 
@@ -76,7 +100,7 @@ export default async function EventDashboard({params}: Props) {
 }
 
 type RegistrationWithUser = Prisma.RegistrationGetPayload<{
-  include: {user: true};
+  include: {user: {include: {studentGroups: true}}};
 }>;
 
 function RegistrationTable({registrations}: {registrations: Array<RegistrationWithUser>}) {
@@ -146,7 +170,7 @@ function RegistrationRow({
       <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
       <td className="px-6 py-4">{registration.reason}</td>
       <td className="px-6 py-4">
-        {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+        {registration.user.studentGroups.map((group) => group.name).join(", ")}
         {registration.user.studentGroups.length === 0 && "Ingen"}
       </td>
       <td className="px-6 py-4">

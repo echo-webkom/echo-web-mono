@@ -3,16 +3,24 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Controller, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {z} from "zod";
 
-import {Degree} from "@echo-webkom/db/types";
+import {Degree, type User} from "@echo-webkom/db/types";
 import {degreeToString} from "@echo-webkom/lib";
 
 import {useToast} from "@/hooks/use-toast";
 import {Button} from "./ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import Input from "./ui/input";
-import Label from "./ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./ui/select";
 
 const userSchema = z.object({
@@ -20,35 +28,32 @@ const userSchema = z.object({
   degree: z.nativeEnum(Degree).optional(),
   year: z
     .number()
-    .int()
     .min(1)
     .max(5)
     .optional()
     .transform((value) => (value ? Number(value) : undefined)),
 });
 
-type FormData = z.infer<typeof userSchema>;
-
 export default function UserForm({
+  id,
   alternativeEmail,
   degree,
   year,
-  id,
 }: {
-  alternativeEmail?: string;
-  degree?: Degree;
-  year?: number;
-  id: string;
+  id: User["id"];
+  alternativeEmail: User["alternativeEmail"];
+  degree: User["degree"];
+  year: User["year"];
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const {toast} = useToast();
   const router = useRouter();
-  const methods = useForm<FormData>({
+  const methods = useForm<z.infer<typeof userSchema>>({
     defaultValues: {
-      alternativeEmail: alternativeEmail,
-      degree: degree,
-      year: year,
+      alternativeEmail: alternativeEmail ?? undefined,
+      degree: degree ?? undefined,
+      year: year ?? undefined,
     },
     resolver: zodResolver(userSchema),
   });
@@ -86,69 +91,91 @@ export default function UserForm({
     () => {
       toast({
         title: "Noe gikk galt",
-        variant: "warning",
+        variant: "destructive",
       });
     },
   );
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="alternativeEmail">Alternativ e-post</Label>
-        <Input type="email" {...methods.register("alternativeEmail")} />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="degree">Studieretning</Label>
-        <Controller
-          name="degree"
+    <Form {...methods}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        <FormField
           control={methods.control}
+          name="alternativeEmail"
           render={({field}) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Velg studieretning" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(Degree).map(([key, value]) => (
-                  <SelectItem key={key} value={value}>
-                    {degreeToString[value]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FormItem>
+              <FormLabel htmlFor="alternativeEmail">Alternativ e-post</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="Din e-post" {...field} />
+              </FormControl>
+              <FormDescription>
+                Brukes til å sende deg e-post om du ikke vil bruke din UiB e-post
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
           )}
         />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="year">Årstrinn</Label>
-        <Controller
-          name="year"
-          control={methods.control}
-          render={({field}) => (
-            <Select
-              value={field.value?.toString()}
-              onValueChange={(e) => field.onChange(parseInt(e))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Velg årstrinn" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1. trinn</SelectItem>
-                <SelectItem value="2">2. trinn</SelectItem>
-                <SelectItem value="3">3. trinn</SelectItem>
-                <SelectItem value="4">4. trinn</SelectItem>
-                <SelectItem value="5">5. trinn</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
-        />
-      </div>
 
-      <div>
+        <FormField
+          control={methods.control}
+          name="degree"
+          render={({field}) => (
+            <FormItem>
+              <FormLabel htmlFor="degree">Studieretning</FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Velg studieretning" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(Degree).map(([key, value]) => (
+                    <SelectItem key={key} value={value}>
+                      {degreeToString[value]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Din studieretning er nødvendig for å kunne melde deg på arrangementer
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={methods.control}
+          name="year"
+          render={({field}) => (
+            <FormItem>
+              <FormLabel htmlFor="year">Årstrinn</FormLabel>
+              <Select
+                value={field.value?.toString()}
+                onValueChange={(e) => field.onChange(parseInt(e))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Velg årstrinn" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1. trinn</SelectItem>
+                  <SelectItem value="2">2. trinn</SelectItem>
+                  <SelectItem value="3">3. trinn</SelectItem>
+                  <SelectItem value="4">4. trinn</SelectItem>
+                  <SelectItem value="5">5. trinn</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Årstrinn er nødvendig for å kunne melde deg på arrangementer
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button disabled={!methods.formState.isDirty || isLoading} type="submit">
           {isLoading ? "Lagrer..." : "Lagre"}
         </Button>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 }

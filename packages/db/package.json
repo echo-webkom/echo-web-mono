@@ -13,6 +13,7 @@
     "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma",
     "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
     "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
+    "db:seed": "pnpm with-env tsx ./prisma/seed.ts",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "dotenv-cli": "7.2.1",
     "prisma": "^4.14.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.0.4"
   }
 }

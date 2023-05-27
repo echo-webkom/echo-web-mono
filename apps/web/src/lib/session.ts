@@ -18,3 +18,7 @@ export async function getUser() {
 
   return user;
 }
+
+export async function getServerSession() {
+  return await _getServerSession(authOptions);
+}

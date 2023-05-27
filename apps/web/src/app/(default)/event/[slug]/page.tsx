@@ -5,7 +5,9 @@ import {ArrowRightIcon} from "@radix-ui/react-icons";
 import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db/client";
-import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
+import {getHappeningBySlug, isUserRegistered} from "@echo-webkom/db/queries/happening";
+import {getRegistrationsBySlug} from "@echo-webkom/db/queries/registration";
+import {getSpotRangesSlug} from "@echo-webkom/db/queries/spotrange";
 
 import Container from "@/components/container";
 import DeregisterButton from "@/components/deregister-button";
@@ -14,7 +16,6 @@ import RegisterButton from "@/components/register-button";
 import {Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle} from "@/components/sidebar";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-import {isEventOrganizer} from "@/lib/happening";
 import {getUser} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
 
@@ -35,41 +36,20 @@ export async function generateMetadata({params}: Props) {
 export default async function EventPage({params}: Props) {
   const {slug} = params;
 
-  const eventInfo = await getHappeningBySlug(slug);
-  if (!eventInfo) {
+  const happening = await getHappeningBySlug(slug);
+  if (!happening) {
     return notFound();
   }
 
   const user = await getUser();
   const event = await fetchEventBySlug(slug);
 
-  const isOrganizer = user && isEventOrganizer(user, eventInfo);
-  const isAdmin = user?.role === "ADMIN";
+  const isOrganizer = user?.studentGroups.some((group) => happening.studentGroups.includes(group));
+  const isAdmin = user?.type === "ADMIN";
+  const isRegistered = Boolean(user && (await isUserRegistered(user.id, slug)));
 
-  const spotRange = await prisma.spotRange.findMany({
-    where: {
-      happeningSlug: slug,
-    },
-  });
-
-  const isRegistered = user
-    ? (
-        await prisma.registration.findUnique({
-          where: {
-            userId_happeningSlug: {
-              happeningSlug: slug,
-              userId: user.id,
-            },
-          },
-        })
-      )?.status === "REGISTERED"
-    : false;
-
-  const registrations = await prisma.registration.findMany({
-    where: {
-      happeningSlug: slug,
-    },
-  });
+  const spotRange = await getSpotRangesSlug(slug);
+  const registrations = await getRegistrationsBySlug(slug);
 
   const registeredCount = registrations.filter(
     (registration) => registration.status === "REGISTERED",
@@ -87,28 +67,28 @@ export default async function EventPage({params}: Props) {
   ).reduce((acc, curr) => acc + curr.spots, 0);
 
   const isRegistrationOpen =
-    eventInfo?.registrationStart &&
-    eventInfo?.registrationEnd &&
-    isAfter(new Date(), eventInfo.registrationStart) &&
-    isBefore(new Date(), eventInfo.registrationEnd);
+    happening?.registrationStart &&
+    happening?.registrationEnd &&
+    isAfter(new Date(), happening.registrationStart) &&
+    isBefore(new Date(), happening.registrationEnd);
 
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar */}
         <Sidebar>
-          {eventInfo.date && (
+          {happening.date && (
             <SidebarItem>
               <SidebarItemTitle>Dato:</SidebarItemTitle>
-              <SidebarItemContent>{eventInfo?.date.toLocaleDateString("nb-NO")}</SidebarItemContent>
+              <SidebarItemContent>{happening?.date.toLocaleDateString("nb-NO")}</SidebarItemContent>
             </SidebarItem>
           )}
 
-          {eventInfo.date && (
+          {happening.date && (
             <SidebarItem>
               <SidebarItemTitle>Tid:</SidebarItemTitle>
               <SidebarItemContent>
-                {eventInfo?.date.toLocaleTimeString("nb-NO", {
+                {happening?.date.toLocaleTimeString("nb-NO", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
@@ -172,7 +152,7 @@ export default async function EventPage({params}: Props) {
             </SidebarItem>
           )}
 
-          {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
+          {happening?.registrationStart && happening.registrationStart < new Date() && (
             <SidebarItem>
               <SidebarItemTitle className="font-semibold">Påmeldte:</SidebarItemTitle>
               <SidebarItemContent>
@@ -181,8 +161,8 @@ export default async function EventPage({params}: Props) {
             </SidebarItem>
           )}
 
-          {eventInfo?.registrationStart &&
-            eventInfo.registrationStart < new Date() &&
+          {happening?.registrationStart &&
+            happening.registrationStart < new Date() &&
             waitlistCount > 0 && (
               <SidebarItem>
                 <SidebarItemTitle>Venteliste:</SidebarItemTitle>
@@ -190,22 +170,22 @@ export default async function EventPage({params}: Props) {
               </SidebarItem>
             )}
 
-          {isRegistrationOpen && eventInfo?.registrationEnd && (
+          {isRegistrationOpen && happening?.registrationEnd && (
             <SidebarItem>
               <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
               <SidebarItemContent>
-                {eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}
+                {happening?.registrationEnd.toLocaleDateString("nb-NO")}
               </SidebarItemContent>
             </SidebarItem>
           )}
 
           {!isRegistrationOpen &&
-            eventInfo?.registrationStart &&
-            new Date() < eventInfo.registrationStart && (
+            happening?.registrationStart &&
+            new Date() < happening.registrationStart && (
               <SidebarItem>
                 <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
                 <SidebarItemContent>
-                  {eventInfo?.registrationStart.toLocaleDateString("nb-NO")}
+                  {happening?.registrationStart.toLocaleDateString("nb-NO")}
                 </SidebarItemContent>
               </SidebarItem>
             )}
@@ -215,7 +195,7 @@ export default async function EventPage({params}: Props) {
               {isRegistered ? (
                 <DeregisterButton slug={params.slug} />
               ) : (
-                <RegisterButton slug={params.slug} questions={eventInfo.questions} />
+                <RegisterButton slug={params.slug} questions={happening.questions} />
               )}
             </SidebarItem>
           )}

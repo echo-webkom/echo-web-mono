@@ -12,7 +12,7 @@ export const fetchUpcomingBedpresses = async (n: number) => {
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(date asc)
-  [0...$n] {
+  {
   _id,
   _createdAt,
   _updatedAt,
@@ -49,7 +49,7 @@ export const fetchUpcomingBedpresses = async (n: number) => {
     options,
   },
   body
-}
+}[0...$n]
     `;
 
   const params = {
