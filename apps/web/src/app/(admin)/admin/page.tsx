@@ -1,6 +1,10 @@
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
 
+export const metadata = {
+  title: "Admin",
+};
+
 export default function Dashboard() {
   return (
     <Container>

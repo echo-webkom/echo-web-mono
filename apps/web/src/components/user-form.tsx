@@ -98,7 +98,6 @@ export default function UserForm({
 
   return (
     <Form {...methods}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={onSubmit} className="flex flex-col gap-5">
         <FormField
           control={methods.control}

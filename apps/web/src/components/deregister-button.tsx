@@ -3,8 +3,9 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Controller, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {AiOutlineLoading} from "react-icons/ai";
+import {type z} from "zod";
 
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
@@ -17,11 +18,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Label from "@/components/ui/label";
 import Textarea from "@/components/ui/textarea";
 import {useDeregistration} from "@/hooks/use-deregistration";
 import {useToast} from "@/hooks/use-toast";
-import {deregistrationSchema, type DeregistrationForm} from "@/lib/schemas/deregistration";
+import {deregistrationSchema} from "@/lib/schemas/deregistration";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 
 export default function DeregisterButton({slug}: {slug: string}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +54,7 @@ export default function DeregisterButton({slug}: {slug: string}) {
     },
   });
 
-  const methods = useForm<DeregistrationForm>({
+  const methods = useForm<z.infer<typeof deregistrationSchema>>({
     resolver: zodResolver(deregistrationSchema),
   });
 
@@ -79,57 +88,67 @@ export default function DeregisterButton({slug}: {slug: string}) {
             av. Husk at prikken kan medfølge.
           </DialogDescription>
         </DialogHeader>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={onSubmit}>
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="reason">Hvorfor melder du deg av?</Label>
-              <Textarea
-                id="reason"
-                {...methods.register("reason")}
-                className="w-full"
-                placeholder="Skriv her..."
-              />
-              <p className="text-sm text-red-500">{methods.formState.errors.reason?.message}</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <Controller
-                  name="hasVerified"
-                  control={methods.control}
-                  defaultValue={false}
-                  render={({field}) => (
-                    <Checkbox
-                      id="hasVerified"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
+        <Form {...methods}>
+          <form onSubmit={onSubmit}>
+            <FormField
+              name="reason"
+              control={methods.control}
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel htmlFor="reason">Hvorfor melder du deg av?</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="reason"
+                      {...field}
+                      className="w-full"
+                      placeholder="Skriv her..."
                     />
-                  )}
-                />
+                  </FormControl>
+                  <FormDescription>
+                    Skriv en kort forklaring på hvorfor du melder deg av. Dette er for å gi
+                    arrangøren en forståelse av hvorfor du melder deg av.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <Label htmlFor="hasVerified">
-                  Jeg er klar over at jeg kan få prikker for dette.
-                </Label>
-              </div>
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.hasVerified?.message}
-              </p>
-            </div>
-          </div>
+            <FormField
+              name="hasVerified"
+              control={methods.control}
+              render={({field}) => (
+                <FormItem className="my-3">
+                  <div className="flex items-center gap-x-3">
+                    <FormControl>
+                      <Checkbox
+                        id="hasVerified"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel htmlFor="hasVerified">
+                      Jeg er klar over at jeg kan få prikker for dette.
+                    </FormLabel>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <DialogFooter className="mt-5 flex flex-col gap-2">
-            <Button
-              className="w-full sm:w-auto"
-              variant="secondary"
-              onClick={() => setIsOpen(false)}
-            >
-              Avbryt
-            </Button>
-            <Button className="w-full sm:w-auto" type="submit">
-              Send
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter className="mt-5 flex flex-col gap-2">
+              <Button
+                className="w-full sm:w-auto"
+                variant="secondary"
+                onClick={() => setIsOpen(false)}
+              >
+                Avbryt
+              </Button>
+              <Button className="w-full sm:w-auto" type="submit">
+                Send
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

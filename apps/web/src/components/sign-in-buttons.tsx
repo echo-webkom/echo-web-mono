@@ -20,7 +20,6 @@ export default function SignInButtons() {
         {providers.map(({id, name}) => (
           <div className="mx-auto" key={id}>
             <Button
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={async () =>
                 signIn(id, {
                   callbackUrl: "/",

@@ -9,10 +9,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
-  title: "Admin",
-};
-
 export default async function AdminDashboardLayout({children}: Props) {
   const user = await getUser();
 

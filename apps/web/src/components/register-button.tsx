@@ -119,7 +119,6 @@ export default function RegisterButton({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle>Tilleggsspørsmål</DialogTitle>

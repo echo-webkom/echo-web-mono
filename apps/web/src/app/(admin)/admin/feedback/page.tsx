@@ -6,6 +6,10 @@ import Heading from "@/components/ui/heading";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Tilbakemeldinger",
+};
+
 export default async function FeedbackOverview() {
   const feedback = await getAllFeedback();
 

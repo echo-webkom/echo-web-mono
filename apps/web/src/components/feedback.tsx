@@ -82,7 +82,6 @@ const Feedback = () => {
           </DialogDescription>
         </DialogHeader>
 
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={onSubmit} onReset={() => methods.reset()}>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2">
