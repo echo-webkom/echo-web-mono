@@ -1,15 +1,23 @@
 import {NextResponse} from "next/server";
 
 import {prisma} from "@echo-webkom/db/client";
+import {type Happening} from "@echo-webkom/db/types";
 
 import {withBasicAuth} from "@/lib/checks/with-basic-auth";
-import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
-import {$fetchAllEvents, type Event} from "@/sanity/event";
-import {isErrorMessage} from "@/utils/error";
+import {fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
+import {fetchAllEvents, type Event} from "@/sanity/event";
 
+// Don't cache this route.
 export const revalidate = 0;
 
-const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
+/**
+ * Updates or creates bedpresses in the database.
+ * A bedpres is always hosted by bedkom.
+ *
+ * @param happenings
+ * @returns {Promise<Array<Happening>>} The updated or created bedpresses.
+ */
+const updateOrCreateBedpres = async (happenings: Array<Bedpres>): Promise<Array<Happening>> => {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -72,19 +80,13 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
   );
 };
 
-const updateOrCreateEvent = async (happenings: Array<Event>) => {
-  const organziers = happenings.flatMap((happening) =>
-    happening.organizers.map((organizer) => organizer.slug),
-  );
-
-  const foundGroups = await prisma.studentGroup.findMany({
-    where: {
-      id: {
-        in: organziers,
-      },
-    },
-  });
-
+/**
+ * Updates or creates events in the database.
+ *
+ * @param happenings
+ * @returns {Promise<Array<Happening>>} The updated or created events.
+ */
+const updateOrCreateEvent = async (happenings: Array<Event>): Promise<Array<Happening>> => {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -111,7 +113,10 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
             })),
           },
           studentGroups: {
-            connect: foundGroups.map((group) => ({id: group.id})),
+            connectOrCreate: happening.organizers.map((group) => ({
+              where: {id: group.slug},
+              create: {id: group.slug, name: group.name},
+            })),
           },
           date: happening.date,
           registrationStart: happening.registrationStart,
@@ -138,7 +143,10 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
           },
           studentGroups: {
             deleteMany: {},
-            connect: foundGroups.map((group) => ({id: group.id})),
+            connectOrCreate: happening.organizers.map((group) => ({
+              where: {id: group.slug},
+              create: {id: group.slug, name: group.name},
+            })),
           },
           date: happening.date,
           registrationStart: happening.registrationStart,
@@ -150,27 +158,27 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
 };
 
 export const GET = withBasicAuth(async () => {
-  const startTime = new Date().getTime();
+  try {
+    const startTime = new Date().getTime();
 
-  const events = await $fetchAllEvents();
-  const bedpresses = await $fetchAllBedpresses();
+    const events = await fetchAllEvents();
+    const bedpresses = await fetchAllBedpresses();
 
-  if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
-    return new Response("Error fetching data from Sanity", {
+    const updatedEvents = await updateOrCreateEvent(events);
+    const updatedBedpresses = await updateOrCreateBedpres(bedpresses);
+
+    const endTime = new Date().getTime();
+    const totalSeconds = (endTime - startTime) / 1000;
+
+    return NextResponse.json({
+      message: "Success",
+      events: updatedEvents,
+      bedpresses: updatedBedpresses,
+      timeInSeconds: totalSeconds,
+    });
+  } catch (error) {
+    return new Response("Error updating happenings", {
       status: 500,
     });
   }
-
-  const updatedEvents = await updateOrCreateEvent(events);
-  const updatedBedpresses = await updateOrCreateBedpres(bedpresses);
-
-  const endTime = new Date().getTime();
-  const totalSeconds = (endTime - startTime) / 1000;
-
-  return NextResponse.json({
-    message: "Success",
-    events: updatedEvents,
-    bedpresses: updatedBedpresses,
-    timeInSeconds: totalSeconds,
-  });
 });

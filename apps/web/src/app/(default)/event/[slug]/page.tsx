@@ -44,7 +44,9 @@ export default async function EventPage({params}: Props) {
   const user = await getUser();
   const event = await fetchEventBySlug(slug);
 
-  const isOrganizer = user?.studentGroups.some((group) => happening.studentGroups.includes(group));
+  const isOrganizer = user?.studentGroups.some((group) =>
+    happening.studentGroups.map((group) => group.id).includes(group.id),
+  );
   const isAdmin = user?.type === "ADMIN";
   const isRegistered = Boolean(user && (await isUserRegistered(user.id, slug)));
 

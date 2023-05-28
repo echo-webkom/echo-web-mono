@@ -1,6 +1,5 @@
 import {groq} from "next-sanity";
 
-import {type ErrorMessage} from "@/utils/error";
 import {serverFetch} from "../client";
 import {slugSchema, type Slug} from "../utils/slug";
 import {eventSchema, type Event} from "./schemas";
@@ -43,6 +42,7 @@ export const fetchComingEvents = async (n: number) => {
     _id,
     name,
     "slug": slug.current,
+    groupType,
   },
   "contacts": contacts[] {
     email,
@@ -95,6 +95,7 @@ export const fetchEventBySlug = async (slug: string) => {
     _id,
     name,
     "slug": slug.current,
+    groupType,
   },
   "contacts": contacts[] {
     email,
@@ -133,9 +134,8 @@ export const fetchEventBySlug = async (slug: string) => {
   return eventSchema.parse(res);
 };
 
-export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> => {
-  try {
-    const query = groq`
+export const fetchAllEvents = async () => {
+  const query = groq`
 *[_type == "event"
   && !(_id in path('drafts.**'))] {
   _id,
@@ -147,6 +147,7 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
     _id,
     name,
     "slug": slug.current,
+    groupType,
   },
   "contacts": contacts[] {
     email,
@@ -176,13 +177,7 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
 }
     `;
 
-    const res = await serverFetch<Array<Event>>(query);
+  const res = await serverFetch<Array<Event>>(query);
 
-    return eventSchema.array().parse(res);
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Failed to fetch events",
-    };
-  }
+  return eventSchema.array().parse(res);
 };

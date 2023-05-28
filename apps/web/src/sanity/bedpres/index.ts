@@ -1,6 +1,5 @@
 import {groq} from "next-sanity";
 
-import {type ErrorMessage} from "@/utils/error";
 import {serverFetch} from "../client";
 import {bedpresSchema, type Bedpres} from "./schemas";
 
@@ -117,9 +116,8 @@ export const fetchBedpresBySlug = async (slug: string) => {
   return bedpresSchema.parse(res);
 };
 
-export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessage> => {
-  try {
-    const query = groq`
+export const fetchAllBedpresses = async () => {
+  const query = groq`
 *[_type == "bedpres"
   && !(_id in path('drafts.**'))] {
   _id,
@@ -164,13 +162,7 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
 }
     `;
 
-    const res = await serverFetch<Bedpres>(query);
+  const res = await serverFetch<Bedpres>(query);
 
-    return bedpresSchema.array().parse(res);
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Could not fetch bedpres.",
-    };
-  }
+  return bedpresSchema.array().parse(res);
 };

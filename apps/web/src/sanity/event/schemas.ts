@@ -12,7 +12,7 @@ export const eventSchema = z.object({
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  organizers: studentGroupSchema.pick({_id: true, name: true, slug: true}).array(),
+  organizers: studentGroupSchema.pick({_id: true, name: true, slug: true, groupType: true}).array(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   registrationStart: z.string().nullable(),

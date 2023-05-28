@@ -1,3 +1,4 @@
+import {cache} from "react";
 import {createClient} from "next-sanity";
 
 /**
@@ -30,8 +31,8 @@ export const sanityServerClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  useCdn: true,
 });
 
 // export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
-export const serverFetch = sanityServerClient.fetch.bind(sanityServerClient);
+export const serverFetch = cache(sanityServerClient.fetch.bind(sanityServerClient));
