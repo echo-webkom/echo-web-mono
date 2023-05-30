@@ -16,6 +16,10 @@ export const headerRoutes: Array<RouteSection> = [
     label: "For studenter",
     sublinks: [
       {
+        href: "/for-students/event",
+        label: "Arrangementer",
+      },
+      {
         href: "/for-students/groups/board",
         label: "Hovedstyret",
       },
