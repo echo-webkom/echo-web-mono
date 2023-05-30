@@ -1,6 +1,5 @@
 import Container from "@/components/container";
-import {HappeningPreviewBox} from "@/components/happening-preview-box";
-import {Select} from "@/components/ui/select";
+import Events from "@/components/event-filter";
 import {fetchUpcomingBedpresses} from "@/sanity/bedpres";
 import {fetchComingEvents} from "@/sanity/event";
 
@@ -12,28 +11,18 @@ export default async function HomePage() {
     fetchUpcomingBedpresses(-1),
   ]);
 
-  // const sortByDate = () => {
-  //   events.sort((a, b) => (new Date(a.date!) >= new Date(b.date!) ? 1 : -1));
-  // };
+  const e = events.map((event) => ({...event, type: "EVENT" as const}));
+  const b = bedpresses.map((bedpres) => ({...bedpres, type: "BEDPRES" as const}));
+  const happenings = [...e, ...b];
+
   return (
-    <Container className="grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
+    <Container className="grid grid-cols-1 gap-x-5 gap-y-12 px-3">
       {/* Events  */}
       <section className="lg:col-span-2">
         <h2 className="text-center text-3xl font-bold">Arrangementer</h2>
-        <form>
-          <label htmlFor="sort">Sortér</label>
-          <Select name="sort">
-            <option value="name">Navn</option>
-          </Select>
-        </form>
       </section>
       <section className="flex flex-col gap-5 rounded-md border p-5">
-        <HappeningPreviewBox type="EVENT" happenings={events} />
-      </section>
-
-      {/* Bedpresses */}
-      <section className="flex flex-col gap-5 rounded-md border p-5">
-        <HappeningPreviewBox type="BEDPRES" happenings={bedpresses} />
+        <Events events={happenings} />
       </section>
     </Container>
   );
