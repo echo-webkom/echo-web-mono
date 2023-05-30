@@ -175,8 +175,8 @@ importers:
         specifier: ^13.4.4
         version: 13.4.4
       '@radix-ui/react-accordion':
-        specifier: 1.1.1
-        version: 1.1.1(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.1.2
+        version: 1.1.2(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-alert-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
@@ -3744,22 +3744,31 @@ packages:
       '@babel/runtime': 7.21.0
     dev: false
 
-  /@radix-ui/react-accordion@1.1.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-TQtyyRubYe8DD6DYCovNLTjd2D+TFrNCpr99T5M3cYUbR7BsRxWsxfInjbQ1nHsdy2uPTcnJS5npyXPVfP0piw==}
+  /@radix-ui/react-accordion@1.1.2(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-fDG7jcoNKVjSK6yfmuAs0EnPDro0WMXIhMtXdTBWqEioVW206ku+4Lw07e+13lUkFkpoEQ2PdeMIAGpdqEAmDg==}
     peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
     dependencies:
       '@babel/runtime': 7.21.0
-      '@radix-ui/primitive': 1.0.0
-      '@radix-ui/react-collapsible': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-collection': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
-      '@radix-ui/react-context': 1.0.0(react@18.2.0)
-      '@radix-ui/react-direction': 1.0.0(react@18.2.0)
-      '@radix-ui/react-id': 1.0.0(react@18.2.0)
-      '@radix-ui/react-primitive': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-use-controllable-state': 1.0.0(react@18.2.0)
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-collapsible': 1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-collection': 1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-direction': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-id': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@types/react': 18.2.7
+      '@types/react-dom': 18.2.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -3836,21 +3845,30 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@radix-ui/react-collapsible@1.0.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-QNiDT6Au8jUU0K1WV+HEd4loH7C5CKQjeXxskwqyiyAkyCmW7qlQM5vSSJCIoQC+OVPyhgafSmGudRP8Qm1/gA==}
+  /@radix-ui/react-collapsible@1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-UBmVDkmR6IvDsloHVN+3rtx4Mi5TFvylYXpluuv0f37dtaz3H99bp8No0LGXRigVpl3UAT4l9j6bIchh42S/Gg==}
     peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
     dependencies:
       '@babel/runtime': 7.21.0
-      '@radix-ui/primitive': 1.0.0
-      '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
-      '@radix-ui/react-context': 1.0.0(react@18.2.0)
-      '@radix-ui/react-id': 1.0.0(react@18.2.0)
-      '@radix-ui/react-presence': 1.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-primitive': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-use-controllable-state': 1.0.0(react@18.2.0)
-      '@radix-ui/react-use-layout-effect': 1.0.0(react@18.2.0)
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-id': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-presence': 1.0.1(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@types/react': 18.2.7
+      '@types/react-dom': 18.2.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -3866,6 +3884,30 @@ packages:
       '@radix-ui/react-context': 1.0.0(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.2(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot': 1.0.1(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3SzW+0PW7yBBoQlT8wNcGtaxaD0XSu0uLUFgrtHY08Acx05TaHaOmVLR73c0j/cqpDy53KBMO7s0dx2wmOIDIA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.7)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': 1.0.2(@types/react@18.2.7)(react@18.2.0)
+      '@types/react': 18.2.7
+      '@types/react-dom': 18.2.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -3983,6 +4025,20 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
       '@babel/runtime': 7.21.0
+      react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-direction@1.0.1(@types/react@18.2.7)(react@18.2.0):
+    resolution: {integrity: sha512-RXcvnXgyvYvBEOhCBuddKecVkoMiI10Jcm5cTI7abJRAHYfFxeu+FBQs/DvdxSYucxR5mna0dNsL6QFlds5TMA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@types/react': 18.2.7
       react: 18.2.0
     dev: false
 
