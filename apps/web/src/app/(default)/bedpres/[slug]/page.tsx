@@ -5,7 +5,6 @@ import {ArrowRightIcon, ExternalLinkIcon} from "@radix-ui/react-icons";
 import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db/client";
-import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 
 import Container from "@/components/container";
 import DeregisterButton from "@/components/deregister-button";
@@ -15,6 +14,7 @@ import {Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle} from "@/comp
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
+import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 import {fetchBedpresBySlug} from "@/sanity/bedpres";
 import {urlFor} from "@/utils/image-builder";

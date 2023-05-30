@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {redirect} from "next/navigation";
 
-import {getUserRegistrations} from "@echo-webkom/db/queries/user";
 import {
   groupToString,
   happeningTypeToPath,
@@ -11,6 +10,7 @@ import {
 
 import Container from "@/components/container";
 import UserForm from "@/components/user-form";
+import {getUserRegistrations} from "@/lib/queries/user";
 import {getUser} from "@/lib/session";
 
 export default async function ProfilePage() {
