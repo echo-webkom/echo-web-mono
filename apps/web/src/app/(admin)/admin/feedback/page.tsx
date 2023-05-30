@@ -1,8 +1,8 @@
-import {getAllFeedback} from "@echo-webkom/db/queries/feedback";
 import {type SiteFeedback} from "@echo-webkom/db/types";
 
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";
+import {getAllFeedback} from "@/lib/queries/feedback";
 
 export const dynamic = "force-dynamic";
 

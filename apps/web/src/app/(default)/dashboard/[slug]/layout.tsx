@@ -1,8 +1,7 @@
 import {redirect} from "next/navigation";
 
-import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
-
 import {isEventOrganizer} from "@/lib/happening";
+import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 
 type Props = {

@@ -2,13 +2,13 @@ import Link from "next/link";
 import {notFound} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
-import {getHappeningBySlug} from "@echo-webkom/db/queries/happening";
 import {type Prisma} from "@echo-webkom/db/types";
 import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
+import {getHappeningBySlug} from "@/lib/queries/happening";
 import {cn} from "@/utils/cn";
 
 type Props = {
