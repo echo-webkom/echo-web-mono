@@ -238,8 +238,8 @@ importers:
         specifier: ^0.4.3
         version: 0.4.3
       '@upstash/redis':
-        specifier: ^1.20.6
-        version: 1.20.6
+        specifier: ^1.21.0
+        version: 1.21.0
       class-variance-authority:
         specifier: 0.6.0
         version: 0.6.0(typescript@5.0.4)
@@ -7029,7 +7029,7 @@ packages:
     resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@upstash/redis': 1.20.6
+      '@upstash/redis': 1.21.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -7042,8 +7042,8 @@ packages:
       - encoding
     dev: false
 
-  /@upstash/redis@1.20.6:
-    resolution: {integrity: sha512-q1izaYEUsq/WiXNOjf4oOjFZe8fIeBSZN8d5cEyOD4nem+zxc4jccieorQQrNlEahKPE1ZYLzVEkMODRUfch2g==}
+  /@upstash/redis@1.21.0:
+    resolution: {integrity: sha512-c6M+cl0LOgGK/7Gp6ooMkIZ1IDAJs8zFR+REPkoSkAq38o7CWFX5FYwYEqGZ6wJpUGBuEOr/7hTmippXGgL25A==}
     dependencies:
       isomorphic-fetch: 3.0.0
     transitivePeerDependencies:
