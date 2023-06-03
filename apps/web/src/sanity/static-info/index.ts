@@ -9,9 +9,9 @@ import {staticInfoSchema, type StaticInfo} from "./schemas";
 export * from "./schemas";
 
 export const pageTypeToUrl: Record<PageType, string> = {
-  ABOUT: "/about",
-  STUDENTS: "/for-students",
-  COMPANIES: "/for-companies",
+  ABOUT: "about",
+  STUDENTS: "for-students",
+  COMPANIES: "for-companies",
 };
 
 export const fetchStaticInfoPaths = async () => {
@@ -26,12 +26,10 @@ export const fetchStaticInfoPaths = async () => {
 
   const staticInfoSlugs = result.map((staticInfo) => staticInfoSlugSchema.parse(staticInfo));
 
-  const paths = staticInfoSlugs.map((staticInfo) => ({
-    pageType: pageTypeToUrl[staticInfo.pageType],
+  return staticInfoSlugs.map((staticInfo) => ({
+    type: pageTypeToUrl[staticInfo.pageType],
     slug: staticInfo.slug,
   }));
-
-  return paths;
 };
 
 export const fetchStaticInfoBySlug = async (slug: string) => {
