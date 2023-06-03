@@ -9,8 +9,6 @@ import {fetchComingEvents} from "@/sanity/event";
 import {fetchAvailableJobAds} from "@/sanity/job-ad";
 import {fetchPosts} from "@/sanity/posts";
 
-export const revalidate = 60;
-
 export default async function HomePage() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(3),
