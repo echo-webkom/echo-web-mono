@@ -105,7 +105,7 @@ export default function Events({events}: EventsProps) {
         )}
         {later.length > 0 && (
           <div>
-            <h3>Senere</h3>
+            {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
             {later.map((event) => (
               <div key={event._id}>
                 <div>
@@ -117,7 +117,7 @@ export default function Events({events}: EventsProps) {
         )}
         {earlier.length > 0 && isPast && (
           <div>
-            <h3>Tidligere</h3>
+            <h3>Tidligere arrangementer</h3>
             {earlier.map((event) => (
               <div key={event._id}>
                 <div>
