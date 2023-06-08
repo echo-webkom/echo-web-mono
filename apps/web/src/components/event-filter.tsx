@@ -2,10 +2,10 @@
 
 import {useState} from "react";
 import {addWeeks, isBefore, isThisWeek} from "date-fns";
-import nextThursday from "date-fns/nextThursday";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
+import {BedpresPreview, EventPreview} from "./happening-preview-box";
 import {Checkbox} from "./ui/checkbox";
 import Input from "./ui/input";
 import Label from "./ui/label";
@@ -108,9 +108,10 @@ export default function Events({events}: EventsProps) {
             {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
             {later.map((event) => (
               <div key={event._id}>
-                <div>
-                  {event.title} {event.date ? new Date(event.date).toLocaleDateString() : ""}
-                </div>
+                <ul key={event._id} className="py-3">
+                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                </ul>
               </div>
             ))}
           </div>
