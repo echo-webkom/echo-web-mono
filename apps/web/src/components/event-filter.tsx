@@ -1,6 +1,7 @@
 "use client";
 
 import {useState} from "react";
+import {isAfter, isBefore} from "date-fns";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
@@ -23,6 +24,9 @@ export default function Events({events}: EventsProps) {
   const [searchTitle, setSearchTitle] = useState("");
   const [isBedpres, setIsBedpres] = useState(true);
   const [isEvent, setIsEvent] = useState(true);
+  const [isPast, setIsPast] = useState(false);
+
+  const currentDate = new Date();
 
   const filteredEvents = events.filter((event) => {
     if (event.type === "EVENT" && isEvent) {
@@ -32,6 +36,15 @@ export default function Events({events}: EventsProps) {
       return event.title.toLowerCase().includes(searchTitle.toLowerCase());
     }
     return false;
+  });
+
+  const filteredDate = filteredEvents.filter((event) => {
+    if (!isPast && event.date) {
+      if (isBefore(new Date(event.date), currentDate)) {
+        return false;
+      }
+    }
+    return true;
   });
 
   return (
@@ -46,10 +59,14 @@ export default function Events({events}: EventsProps) {
       <Label>Arrangement</Label>
       <Checkbox checked={isBedpres} onCheckedChange={() => setIsBedpres((prev) => !prev)} />
       <Label>Bedpres</Label>
+      <Checkbox checked={isPast} onCheckedChange={() => setIsPast((prev) => !prev)} />
+      <Label>Vis tidligere</Label>
       <div>
-        {filteredEvents.map((event) => (
+        {filteredDate.map((event) => (
           <div key={event._id}>
-            <div>{event.title}</div>
+            <div>
+              {event.title} {event.date ? new Date(event.date).toLocaleDateString() : "Ingen dato"}
+            </div>
           </div>
         ))}
       </div>
