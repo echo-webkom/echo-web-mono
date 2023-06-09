@@ -7,9 +7,7 @@ import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
 import {BedpresPreview, EventPreview} from "./happening-preview-box";
 import {Button} from "./ui/button";
-import {Checkbox} from "./ui/checkbox";
 import Input from "./ui/input";
-import Label from "./ui/label";
 
 type EventsProps = {
   events: Array<
@@ -73,74 +71,90 @@ export default function Events({events}: EventsProps) {
   });
 
   return (
-    <div>
-      <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
-        Alle
-      </Button>
-      <Button variant={isEvent ? "default" : "outline"} onClick={() => handleTypeChange("EVENT")}>
-        Arrangementer
-      </Button>
-      <Button
-        variant={isBedpres ? "default" : "outline"}
-        onClick={() => handleTypeChange("BEDPRES")}
-      >
-        Bedriftspresentasjoner
-      </Button>
-      <Button variant={isPast ? "default" : "outline"} onClick={() => setIsPast((prev) => !prev)}>
-        Vis tidligere
-      </Button>
-      <Input
-        value={searchTitle}
-        onChange={(e) => setSearchTitle(e.currentTarget.value)}
-        type="text"
-        placeholder="Søk etter arrangement"
-      />
+    <div className="flex flex-col gap-10">
+      <div className="flex justify-between">
+        <div className="space-x-3">
+          <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
+            Alle
+          </Button>
+          <Button
+            variant={isEvent ? "default" : "outline"}
+            onClick={() => handleTypeChange("EVENT")}
+          >
+            Arrangementer
+          </Button>
+          <Button
+            variant={isBedpres ? "default" : "outline"}
+            onClick={() => handleTypeChange("BEDPRES")}
+          >
+            Bedriftspresentasjoner
+          </Button>
+        </div>
+        <div>
+          <Button
+            variant={isPast ? "default" : "outline"}
+            onClick={() => setIsPast((prev) => !prev)}
+          >
+            Vis tidligere
+          </Button>
+        </div>
+      </div>
+      <div className="flex space-x-3">
+        <div className="w-1/3">
+          <Input
+            value={searchTitle}
+            onChange={(e) => setSearchTitle(e.currentTarget.value)}
+            type="text"
+            placeholder="Søk etter arrangement"
+          />
+        </div>
 
-      <div>
-        {thisWeek.length > 0 && (
-          <div>
-            <h3>Denne uken</h3>
-            {thisWeek.map((event) => (
-              <ul key={event._id} className="py-3">
-                {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
-              </ul>
-            ))}
-          </div>
-        )}
-        {nextWeek.length > 0 && (
-          <div>
-            <h3>Neste uke</h3>
-            {nextWeek.map((event) => (
-              <ul key={event._id} className="py-3">
-                {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
-              </ul>
-            ))}
-          </div>
-        )}
-        {later.length > 0 && (
-          <div>
-            {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
-            {later.map((event) => (
-              <ul key={event._id} className="py-3">
-                {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
-              </ul>
-            ))}
-          </div>
-        )}
-        {earlier.length > 0 && isPast && (
-          <div>
-            <h3>Tidligere arrangementer</h3>
-            {earlier.map((event) => (
-              <ul key={event._id} className="py-1">
-                {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
-              </ul>
-            ))}
-          </div>
-        )}
+        <div className="w-2/3">
+          {thisWeek.length > 0 && (
+            <div>
+              <h3>Denne uken</h3>
+              {thisWeek.map((event) => (
+                <ul key={event._id} className="py-3">
+                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                </ul>
+              ))}
+            </div>
+          )}
+          {nextWeek.length > 0 && (
+            <div>
+              <h3>Neste uke</h3>
+              {nextWeek.map((event) => (
+                <ul key={event._id} className="py-3">
+                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                </ul>
+              ))}
+            </div>
+          )}
+          {later.length > 0 && (
+            <div>
+              {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
+              {later.map((event) => (
+                <ul key={event._id} className="py-3">
+                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                </ul>
+              ))}
+            </div>
+          )}
+          {earlier.length > 0 && isPast && (
+            <div>
+              <h3>Tidligere arrangementer</h3>
+              {earlier.map((event) => (
+                <ul key={event._id} className="py-1">
+                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                </ul>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
