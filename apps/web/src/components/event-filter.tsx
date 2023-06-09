@@ -6,6 +6,7 @@ import {addWeeks, isBefore, isThisWeek} from "date-fns";
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
 import {BedpresPreview, EventPreview} from "./happening-preview-box";
+import {Button} from "./ui/button";
 import {Checkbox} from "./ui/checkbox";
 import Input from "./ui/input";
 import Label from "./ui/label";
@@ -23,16 +24,25 @@ type EventsProps = {
 
 export default function Events({events}: EventsProps) {
   const [searchTitle, setSearchTitle] = useState("");
-  const [isBedpres, setIsBedpres] = useState(true);
-  const [isEvent, setIsEvent] = useState(true);
+  const [isAll, setIsAll] = useState(true);
+  const [isBedpres, setIsBedpres] = useState(false);
+  const [isEvent, setIsEvent] = useState(false);
   const [isPast, setIsPast] = useState(false);
+
+  const handleTypeChange = (type: string) => {
+    setIsAll(type === "ALL");
+    setIsBedpres(type === "BEDPRES");
+    setIsEvent(type === "EVENT");
+  };
+
+  const currentDate = new Date();
 
   const filteredEvents = events
     .filter((event) => {
-      if (event.type === "EVENT" && isEvent) {
+      if (event.type === "EVENT" && (isEvent || isAll)) {
         return event.title.toLowerCase().includes(searchTitle.toLowerCase());
       }
-      if (event.type === "BEDPRES" && isBedpres) {
+      if (event.type === "BEDPRES" && (isBedpres || isAll)) {
         return event.title.toLowerCase().includes(searchTitle.toLowerCase());
       }
       return false;
@@ -51,8 +61,6 @@ export default function Events({events}: EventsProps) {
 
   filteredEvents.forEach((event) => {
     if (event.date) {
-      const currentDate = new Date();
-
       if (isBefore(new Date(event.date), currentDate)) {
         return earlier.push(event);
       } else if (isThisWeek(new Date(event.date))) {
@@ -66,28 +74,37 @@ export default function Events({events}: EventsProps) {
 
   return (
     <div>
+      <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
+        Alle
+      </Button>
+      <Button variant={isEvent ? "default" : "outline"} onClick={() => handleTypeChange("EVENT")}>
+        Arrangementer
+      </Button>
+      <Button
+        variant={isBedpres ? "default" : "outline"}
+        onClick={() => handleTypeChange("BEDPRES")}
+      >
+        Bedriftspresentasjoner
+      </Button>
+      <Button variant={isPast ? "default" : "outline"} onClick={() => setIsPast((prev) => !prev)}>
+        Vis tidligere
+      </Button>
       <Input
         value={searchTitle}
         onChange={(e) => setSearchTitle(e.currentTarget.value)}
         type="text"
         placeholder="Søk etter arrangement"
       />
-      <Checkbox checked={isEvent} onCheckedChange={() => setIsEvent((prev) => !prev)} />
-      <Label>Arrangement</Label>
-      <Checkbox checked={isBedpres} onCheckedChange={() => setIsBedpres((prev) => !prev)} />
-      <Label>Bedpres</Label>
-      <Checkbox checked={isPast} onCheckedChange={() => setIsPast((prev) => !prev)} />
-      <Label>Vis tidligere</Label>
+
       <div>
         {thisWeek.length > 0 && (
           <div>
             <h3>Denne uken</h3>
             {thisWeek.map((event) => (
-              <div key={event._id}>
-                <div>
-                  {event.title} {event.date ? new Date(event.date).toLocaleDateString() : ""}
-                </div>
-              </div>
+              <ul key={event._id} className="py-3">
+                {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+              </ul>
             ))}
           </div>
         )}
@@ -95,11 +112,10 @@ export default function Events({events}: EventsProps) {
           <div>
             <h3>Neste uke</h3>
             {nextWeek.map((event) => (
-              <div key={event._id}>
-                <div>
-                  {event.title} {event.date ? new Date(event.date).toLocaleDateString() : ""}
-                </div>
-              </div>
+              <ul key={event._id} className="py-3">
+                {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+              </ul>
             ))}
           </div>
         )}
@@ -107,12 +123,10 @@ export default function Events({events}: EventsProps) {
           <div>
             {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
             {later.map((event) => (
-              <div key={event._id}>
-                <ul key={event._id} className="py-3">
-                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
-                </ul>
-              </div>
+              <ul key={event._id} className="py-3">
+                {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+              </ul>
             ))}
           </div>
         )}
@@ -120,11 +134,10 @@ export default function Events({events}: EventsProps) {
           <div>
             <h3>Tidligere arrangementer</h3>
             {earlier.map((event) => (
-              <div key={event._id}>
-                <div>
-                  {event.title} {event.date ? new Date(event.date).toLocaleDateString() : ""}
-                </div>
-              </div>
+              <ul key={event._id} className="py-1">
+                {event.type === "EVENT" && <EventPreview event={event as Event} />}
+                {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+              </ul>
             ))}
           </div>
         )}
