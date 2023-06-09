@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {addWeeks, isBefore, isThisWeek} from "date-fns";
+import {addWeeks, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-fns";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
@@ -63,12 +63,22 @@ export default function Events({events}: EventsProps) {
         return earlier.push(event);
       } else if (isThisWeek(new Date(event.date))) {
         return thisWeek.push(event);
-      } else if (isThisWeek(addWeeks(new Date(event.date), 1))) {
+      } else if (
+        isWithinInterval(new Date(event.date), {
+          start: nextMonday(currentDate),
+          end: nextMonday(nextMonday(currentDate)),
+        })
+      ) {
         return nextWeek.push(event);
       }
     }
     return later.push(event);
   });
+
+  later.forEach((event) => {
+    console.log(event.title);
+  });
+  console.log(`later length: ${later.length}`);
 
   return (
     <div className="flex flex-col gap-5">
