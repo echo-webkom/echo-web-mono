@@ -11,11 +11,9 @@ type DefaultLayoutProps = {
 export default function DefaultLayout({children}: DefaultLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      {/* @ts-expect-error Server Component */}
       <WebsiteBanner />
       <Header />
       <main className="my-10 flex w-full flex-grow">{children}</main>
-      {/* @ts-expect-error Server Component */}
       <Footer />
     </div>
   );

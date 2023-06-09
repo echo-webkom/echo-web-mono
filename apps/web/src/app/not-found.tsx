@@ -23,7 +23,6 @@ export default function NotFound() {
           <Link href="/">Til hovedsiden</Link>
         </Button>
       </main>
-      {/* @ts-expect-error Server Component */}
       <Footer />
     </div>
   );
