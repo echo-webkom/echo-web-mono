@@ -71,8 +71,8 @@ export default function Events({events}: EventsProps) {
   });
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex justify-between">
+    <div className="flex flex-col gap-5">
+      <div className="flex justify-between border-b-2 border-solid border-gray-400 border-opacity-20 pb-10">
         <div className="space-x-3">
           <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
             Alle
@@ -95,24 +95,25 @@ export default function Events({events}: EventsProps) {
             variant={isPast ? "default" : "outline"}
             onClick={() => setIsPast((prev) => !prev)}
           >
-            Vis tidligere
+            Se tidligere
           </Button>
         </div>
       </div>
-      <div className="flex space-x-3">
-        <div className="w-1/3">
-          <Input
-            value={searchTitle}
-            onChange={(e) => setSearchTitle(e.currentTarget.value)}
-            type="text"
-            placeholder="Søk etter arrangement"
-          />
+      <div className="flex gap-5">
+        <div className="flex w-1/4 flex-col pt-5">
+          <div className="p-5">
+            <Input
+              value={searchTitle}
+              onChange={(e) => setSearchTitle(e.currentTarget.value)}
+              type="text"
+              placeholder="Søk etter arrangement"
+            />
+          </div>
         </div>
-
-        <div className="w-2/3">
-          {thisWeek.length > 0 && (
+        <div className="w-3/4">
+          {thisWeek.length > 0 && !isPast && (
             <div>
-              <h3>Denne uken</h3>
+              <div className="p-5 text-3xl">Denne uken</div>
               {thisWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -123,9 +124,9 @@ export default function Events({events}: EventsProps) {
               ))}
             </div>
           )}
-          {nextWeek.length > 0 && (
+          {nextWeek.length > 0 && !isPast && (
             <div>
-              <h3>Neste uke</h3>
+              <div className="p-5 text-3xl">Neste uke</div>
               {nextWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -136,9 +137,11 @@ export default function Events({events}: EventsProps) {
               ))}
             </div>
           )}
-          {later.length > 0 && (
+          {later.length > 0 && !isPast && (
             <div>
-              {(thisWeek.length > 0 || nextWeek.length > 0) && <h3>Senere</h3>}
+              {(thisWeek.length > 0 || nextWeek.length > 0) && (
+                <div className="p-5 text-3xl">Senere</div>
+              )}
               {later.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -151,7 +154,7 @@ export default function Events({events}: EventsProps) {
           )}
           {earlier.length > 0 && isPast && (
             <div>
-              <h3>Tidligere arrangementer</h3>
+              <div className="p-5 pt-10 text-3xl">Tidligere</div>
               {earlier.map((event) => (
                 <ul key={event._id} className="py-1">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
