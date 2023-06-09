@@ -92,21 +92,28 @@ export function EventPreview({event}: EventPreviewProps) {
 
 type BedpresPreviewProps = {
   bedpres: Bedpres;
+  alignImageRight?: boolean;
 };
 
-export function BedpresPreview({bedpres}: BedpresPreviewProps) {
+export function BedpresPreview({bedpres, alignImageRight = false}: BedpresPreviewProps) {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
-        <div className="overflow-hidden rounded-full border">
-          <div className="relative aspect-square h-20 w-20">
-            <Image
-              src={urlFor(bedpres.company.image).url()}
-              alt={`${bedpres.company.name} logo`}
-              fill
-            />
+      <div
+        className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted", {
+          "justify-between": alignImageRight,
+        })}
+      >
+        {!alignImageRight && (
+          <div className="overflow-hidden rounded-full border">
+            <div className="relative aspect-square h-20 w-20">
+              <Image
+                src={urlFor(bedpres.company.image).url()}
+                alt={`${bedpres.company.name} logo`}
+                fill
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{bedpres.title}</h3>
           <ul>
@@ -126,6 +133,17 @@ export function BedpresPreview({bedpres}: BedpresPreviewProps) {
             </li>
           </ul>
         </div>
+        {alignImageRight && (
+          <div className="overflow-hidden rounded-full border">
+            <div className="relative aspect-square h-20 w-20">
+              <Image
+                src={urlFor(bedpres.company.image).url()}
+                alt={`${bedpres.company.name} logo`}
+                fill
+              />
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );

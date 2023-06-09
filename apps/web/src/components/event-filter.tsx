@@ -116,7 +116,9 @@ export default function Events({events}: EventsProps) {
               {thisWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                  {event.type === "BEDPRES" && (
+                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
+                  )}
                 </ul>
               ))}
             </div>
@@ -127,7 +129,9 @@ export default function Events({events}: EventsProps) {
               {nextWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                  {event.type === "BEDPRES" && (
+                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
+                  )}
                 </ul>
               ))}
             </div>
@@ -138,7 +142,9 @@ export default function Events({events}: EventsProps) {
               {later.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                  {event.type === "BEDPRES" && (
+                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
+                  )}
                 </ul>
               ))}
             </div>
@@ -149,7 +155,9 @@ export default function Events({events}: EventsProps) {
               {earlier.map((event) => (
                 <ul key={event._id} className="py-1">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && <BedpresPreview bedpres={event as Bedpres} />}
+                  {event.type === "BEDPRES" && (
+                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
+                  )}
                 </ul>
               ))}
             </div>
