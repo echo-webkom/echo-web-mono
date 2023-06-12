@@ -29,7 +29,7 @@ export default function Events({events}: EventsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPast, setIsPast] = useState(false);
 
-  const [searchTitle, setSearchTitle] = useState("");
+  const [search, setSearch] = useState("");
   const [showThisWeek, setShowThisWeek] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(true);
   const [showLater, setShowLater] = useState(true);
@@ -43,10 +43,13 @@ export default function Events({events}: EventsProps) {
   const filteredEvents = events
     .filter((event) => {
       if (event.type === "EVENT" && (isEvent || isAll)) {
-        return event.title.toLowerCase().includes(searchTitle.toLowerCase());
+        return (
+          event.title.toLowerCase().includes(search.toLowerCase()) ||
+          event.organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+        );
       }
       if (event.type === "BEDPRES" && (isBedpres || isAll)) {
-        return event.title.toLowerCase().includes(searchTitle.toLowerCase());
+        return event.title.toLowerCase().includes(search.toLowerCase());
       }
       return false;
     })
@@ -140,8 +143,8 @@ export default function Events({events}: EventsProps) {
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
             <Input
-              value={searchTitle}
-              onChange={(e) => setSearchTitle(e.currentTarget.value)}
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
               type="text"
               placeholder="Søk etter arrangement"
             />
