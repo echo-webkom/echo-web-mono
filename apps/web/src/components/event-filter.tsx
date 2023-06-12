@@ -96,8 +96,8 @@ export default function Events({events}: EventsProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex justify-between border-b-2 border-solid border-gray-400 border-opacity-20 pb-10">
-        <div className="space-x-3">
+      <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
+        <div className="md:space-x-3">
           <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
             Alle
           </Button>
@@ -116,6 +116,7 @@ export default function Events({events}: EventsProps) {
         </div>
         <div className="space-x-3">
           <Button
+            className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={isOpen ? "default" : "outline"}
             onClick={() => {
               setIsOpen((prev) => !prev);
@@ -135,9 +136,9 @@ export default function Events({events}: EventsProps) {
           </Button>
         </div>
       </div>
-      <div className="flex gap-5">
-        <div className="flex w-1/4 flex-col pt-5">
-          <div className="p-5">
+      <div className="container flex flex-col gap-5 md:flex-row md:gap-0">
+        <div className="left-panel flex w-full flex-col md:w-1/4">
+          <div className="p-4">
             <Input
               value={searchTitle}
               onChange={(e) => setSearchTitle(e.currentTarget.value)}
@@ -146,14 +147,14 @@ export default function Events({events}: EventsProps) {
             />
           </div>
           <div className="p-4">
-            <div className="mb-2 font-semibold">Tidspunkt</div>
+            <div className="mb-2 text-xl font-semibold">Tidspunkt</div>
 
             <div className="mb-2 flex items-center">
               <Checkbox
                 checked={showThisWeek}
                 onCheckedChange={() => setShowThisWeek((prev) => !prev)}
               />
-              <Label className="ml-2">Denne uken ({isPast ? 0 : thisWeek.length})</Label>
+              <Label className="ml-2 text-base">Denne uken ({isPast ? 0 : thisWeek.length})</Label>
             </div>
 
             <div className="mb-2 flex items-center">
@@ -161,16 +162,16 @@ export default function Events({events}: EventsProps) {
                 checked={showNextWeek}
                 onCheckedChange={() => setShowNextWeek((prev) => !prev)}
               />
-              <Label className="ml-2">Neste uke ({isPast ? 0 : nextWeek.length})</Label>
+              <Label className="ml-2 text-base">Neste uke ({isPast ? 0 : nextWeek.length})</Label>
             </div>
 
             <div className="flex items-center">
               <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
-              <Label className="ml-2">Senere ({isPast ? 0 : later.length})</Label>
+              <Label className="ml-2 text-base">Senere ({isPast ? 0 : later.length})</Label>
             </div>
           </div>
         </div>
-        <div className="w-3/4">
+        <div className="right-panel w-3/4 md:w-3/4">
           {thisWeek.length > 0 && showThisWeek && !isPast && (
             <div>
               {thisWeek.map((event) => (

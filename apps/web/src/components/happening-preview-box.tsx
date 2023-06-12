@@ -181,7 +181,7 @@ export function CombinedHappeningPreview({
           </ul>
         </div>
         {happening.type === "BEDPRES" && (
-          <div className="overflow-hidden rounded-full border">
+          <div className="hidden overflow-hidden rounded-full border sm:block">
             <div className="relative aspect-square h-20 w-20">
               <Image
                 src={urlFor(happening.company.image).url()}
