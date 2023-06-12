@@ -7,7 +7,9 @@ import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
 import {BedpresPreview, EventPreview} from "./happening-preview-box";
 import {Button} from "./ui/button";
+import {Checkbox} from "./ui/checkbox";
 import Input from "./ui/input";
+import Label from "./ui/label";
 
 type EventsProps = {
   events: Array<
@@ -25,8 +27,11 @@ export default function Events({events}: EventsProps) {
   const [isAll, setIsAll] = useState(true);
   const [isBedpres, setIsBedpres] = useState(false);
   const [isEvent, setIsEvent] = useState(false);
-  const [isPast, setIsPast] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showPast, setShowPast] = useState(false);
+  const [showThisWeek, setShowThisWeek] = useState(true);
+  const [showNextWeek, setShowNextWeek] = useState(true);
+  const [showLater, setShowLater] = useState(true);
 
   const handleTypeChange = (type: string) => {
     setIsAll(type === "ALL");
@@ -114,21 +119,9 @@ export default function Events({events}: EventsProps) {
         <div className="space-x-3">
           <Button
             variant={isOpen ? "default" : "outline"}
-            onClick={() => {
-              setIsOpen((prev) => !prev);
-              if (isPast) setIsPast(false);
-            }}
+            onClick={() => setIsOpen((prev) => !prev)}
           >
             Åpen for påmelding
-          </Button>
-          <Button
-            variant={isPast ? "default" : "outline"}
-            onClick={() => {
-              setIsPast((prev) => !prev);
-              if (isOpen) setIsOpen(false);
-            }}
-          >
-            Se tidligere
           </Button>
         </div>
       </div>
@@ -142,11 +135,38 @@ export default function Events({events}: EventsProps) {
               placeholder="Søk etter arrangement"
             />
           </div>
+          <div className="p-4">
+            <div className="mb-2 font-semibold">Tidspunkt</div>
+            <div className="mb-2 flex items-center">
+              <Checkbox checked={showPast} onCheckedChange={() => setShowPast((prev) => !prev)} />
+              <Label className="ml-2">Tidligere ({earlier.length})</Label>
+            </div>
+
+            <div className="mb-2 flex items-center">
+              <Checkbox
+                checked={showThisWeek}
+                onCheckedChange={() => setShowThisWeek((prev) => !prev)}
+              />
+              <Label className="ml-2">Denne uken ({thisWeek.length})</Label>
+            </div>
+
+            <div className="mb-2 flex items-center">
+              <Checkbox
+                checked={showNextWeek}
+                onCheckedChange={() => setShowNextWeek((prev) => !prev)}
+              />
+              <Label className="ml-2">Neste uke ({nextWeek.length})</Label>
+            </div>
+
+            <div className="flex items-center">
+              <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
+              <Label className="ml-2">Senere ({later.length})</Label>
+            </div>
+          </div>
         </div>
         <div className="w-3/4">
-          {thisWeek.length > 0 && !isPast && (
+          {thisWeek.length > 0 && showThisWeek && (
             <div>
-              <div className="p-5 text-3xl">Denne uken</div>
               {thisWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -157,9 +177,8 @@ export default function Events({events}: EventsProps) {
               ))}
             </div>
           )}
-          {nextWeek.length > 0 && !isPast && (
+          {nextWeek.length > 0 && showNextWeek && (
             <div>
-              <div className="p-5 text-3xl">Neste uke</div>
               {nextWeek.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -170,11 +189,8 @@ export default function Events({events}: EventsProps) {
               ))}
             </div>
           )}
-          {later.length > 0 && !isPast && (
+          {later.length > 0 && showLater && (
             <div>
-              {(thisWeek.length > 0 || nextWeek.length > 0) && (
-                <div className="p-5 text-3xl">Senere</div>
-              )}
               {later.map((event) => (
                 <ul key={event._id} className="py-3">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
@@ -185,9 +201,8 @@ export default function Events({events}: EventsProps) {
               ))}
             </div>
           )}
-          {earlier.length > 0 && isPast && (
+          {earlier.length > 0 && showPast && (
             <div>
-              <div className="p-5 pt-10 text-3xl">Tidligere</div>
               {earlier.map((event) => (
                 <ul key={event._id} className="py-1">
                   {event.type === "EVENT" && <EventPreview event={event as Event} />}
