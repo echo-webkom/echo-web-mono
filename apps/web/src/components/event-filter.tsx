@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {addWeeks, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-fns";
+import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-fns";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
@@ -26,6 +26,7 @@ export default function Events({events}: EventsProps) {
   const [isBedpres, setIsBedpres] = useState(false);
   const [isEvent, setIsEvent] = useState(false);
   const [isPast, setIsPast] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleTypeChange = (type: string) => {
     setIsAll(type === "ALL");
@@ -52,12 +53,27 @@ export default function Events({events}: EventsProps) {
       return 0;
     });
 
-  const earlier: typeof filteredEvents = [];
-  const thisWeek: typeof filteredEvents = [];
-  const nextWeek: typeof filteredEvents = [];
-  const later: typeof filteredEvents = [];
+  const filterIsOpen = filteredEvents.filter((event) => {
+    if (isOpen) {
+      if (
+        event.registrationStart &&
+        event.registrationEnd &&
+        isAfter(currentDate, new Date(event.registrationStart)) &&
+        isBefore(currentDate, new Date(event.registrationEnd))
+      ) {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  });
 
-  filteredEvents.forEach((event) => {
+  const earlier: typeof filterIsOpen = [];
+  const thisWeek: typeof filterIsOpen = [];
+  const nextWeek: typeof filterIsOpen = [];
+  const later: typeof filterIsOpen = [];
+
+  filterIsOpen.forEach((event) => {
     if (event.date) {
       if (isBefore(new Date(event.date), currentDate)) {
         return earlier.push(event);
@@ -74,11 +90,6 @@ export default function Events({events}: EventsProps) {
     }
     return later.push(event);
   });
-
-  later.forEach((event) => {
-    console.log(event.title);
-  });
-  console.log(`later length: ${later.length}`);
 
   return (
     <div className="flex flex-col gap-5">
@@ -100,10 +111,22 @@ export default function Events({events}: EventsProps) {
             Bedriftspresentasjoner
           </Button>
         </div>
-        <div>
+        <div className="space-x-3">
+          <Button
+            variant={isOpen ? "default" : "outline"}
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+              if (isPast) setIsPast(false);
+            }}
+          >
+            Åpen for påmelding
+          </Button>
           <Button
             variant={isPast ? "default" : "outline"}
-            onClick={() => setIsPast((prev) => !prev)}
+            onClick={() => {
+              setIsPast((prev) => !prev);
+              if (isOpen) setIsOpen(false);
+            }}
           >
             Se tidligere
           </Button>
