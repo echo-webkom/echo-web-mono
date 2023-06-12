@@ -150,7 +150,7 @@ export function CombinedHappeningPreview({
     <Link href={`/${happening.type.toLowerCase()}/${happening.slug}`}>
       <div
         className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted", {
-          "text-gray-600": isPast,
+          "text-gray-700": isPast,
         })}
       >
         <div className="overflow-x-hidden">

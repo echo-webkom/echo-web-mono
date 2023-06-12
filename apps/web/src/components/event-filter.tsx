@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-fns";
+import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set} from "date-fns";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
@@ -27,9 +27,9 @@ export default function Events({events}: EventsProps) {
   const [isBedpres, setIsBedpres] = useState(false);
   const [isEvent, setIsEvent] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isPast, setIsPast] = useState(false);
 
   const [searchTitle, setSearchTitle] = useState("");
-  const [showPast, setShowPast] = useState(false);
   const [showThisWeek, setShowThisWeek] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(true);
   const [showLater, setShowLater] = useState(true);
@@ -117,9 +117,21 @@ export default function Events({events}: EventsProps) {
         <div className="space-x-3">
           <Button
             variant={isOpen ? "default" : "outline"}
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+              if (isPast) setIsPast(false);
+            }}
           >
             Åpen for påmelding
+          </Button>
+          <Button
+            variant={isPast ? "default" : "outline"}
+            onClick={() => {
+              setIsPast((prev) => !prev);
+              if (isOpen) setIsOpen(false);
+            }}
+          >
+            Vis tidligere
           </Button>
         </div>
       </div>
@@ -135,17 +147,13 @@ export default function Events({events}: EventsProps) {
           </div>
           <div className="p-4">
             <div className="mb-2 font-semibold">Tidspunkt</div>
-            <div className="mb-2 flex items-center">
-              <Checkbox checked={showPast} onCheckedChange={() => setShowPast((prev) => !prev)} />
-              <Label className="ml-2">Tidligere ({earlier.length})</Label>
-            </div>
 
             <div className="mb-2 flex items-center">
               <Checkbox
                 checked={showThisWeek}
                 onCheckedChange={() => setShowThisWeek((prev) => !prev)}
               />
-              <Label className="ml-2">Denne uken ({thisWeek.length})</Label>
+              <Label className="ml-2">Denne uken ({isPast ? 0 : thisWeek.length})</Label>
             </div>
 
             <div className="mb-2 flex items-center">
@@ -153,47 +161,47 @@ export default function Events({events}: EventsProps) {
                 checked={showNextWeek}
                 onCheckedChange={() => setShowNextWeek((prev) => !prev)}
               />
-              <Label className="ml-2">Neste uke ({nextWeek.length})</Label>
+              <Label className="ml-2">Neste uke ({isPast ? 0 : nextWeek.length})</Label>
             </div>
 
             <div className="flex items-center">
               <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
-              <Label className="ml-2">Senere ({later.length})</Label>
+              <Label className="ml-2">Senere ({isPast ? 0 : later.length})</Label>
             </div>
           </div>
         </div>
         <div className="w-3/4">
-          {thisWeek.length > 0 && showThisWeek && (
+          {thisWeek.length > 0 && showThisWeek && !isPast && (
             <div>
               {thisWeek.map((event) => (
-                <ul key={event._id}>
+                <ul key={event._id} className="py-1">
                   <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
           )}
-          {nextWeek.length > 0 && showNextWeek && (
+          {nextWeek.length > 0 && showNextWeek && !isPast && (
             <div>
               {nextWeek.map((event) => (
-                <ul key={event._id}>
+                <ul key={event._id} className="py-1">
                   <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
           )}
-          {later.length > 0 && showLater && (
+          {later.length > 0 && showLater && !isPast && (
             <div>
               {later.map((event) => (
-                <ul key={event._id}>
+                <ul key={event._id} className="py-1">
                   <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
           )}
-          {earlier.length > 0 && showPast && (
+          {earlier.length > 0 && isPast && (
             <div>
               {earlier.map((event) => (
-                <ul key={event._id}>
+                <ul key={event._id} className="py-1">
                   <CombinedHappeningPreview happening={event} isPast={true} />
                 </ul>
               ))}
