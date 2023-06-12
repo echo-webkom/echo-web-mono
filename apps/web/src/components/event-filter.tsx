@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set} from "date-fns";
+import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-fns";
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
