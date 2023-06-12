@@ -5,7 +5,7 @@ import {isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday} from "date-
 
 import {type Bedpres} from "@/sanity/bedpres";
 import {type Event} from "@/sanity/event";
-import {BedpresPreview, EventPreview} from "./happening-preview-box";
+import {CombinedHappeningPreview} from "./happening-preview-box";
 import {Button} from "./ui/button";
 import {Checkbox} from "./ui/checkbox";
 import Input from "./ui/input";
@@ -23,11 +23,12 @@ type EventsProps = {
 };
 
 export default function Events({events}: EventsProps) {
-  const [searchTitle, setSearchTitle] = useState("");
   const [isAll, setIsAll] = useState(true);
   const [isBedpres, setIsBedpres] = useState(false);
   const [isEvent, setIsEvent] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [searchTitle, setSearchTitle] = useState("");
   const [showPast, setShowPast] = useState(false);
   const [showThisWeek, setShowThisWeek] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(true);
@@ -38,8 +39,6 @@ export default function Events({events}: EventsProps) {
     setIsBedpres(type === "BEDPRES");
     setIsEvent(type === "EVENT");
   };
-
-  const currentDate = new Date();
 
   const filteredEvents = events
     .filter((event) => {
@@ -58,17 +57,16 @@ export default function Events({events}: EventsProps) {
       return 0;
     });
 
+  const currentDate = new Date();
+
   const filterIsOpen = filteredEvents.filter((event) => {
     if (isOpen) {
-      if (
+      return (
         event.registrationStart &&
         event.registrationEnd &&
         isAfter(currentDate, new Date(event.registrationStart)) &&
         isBefore(currentDate, new Date(event.registrationEnd))
-      ) {
-        return true;
-      }
-      return false;
+      );
     }
     return true;
   });
@@ -168,11 +166,8 @@ export default function Events({events}: EventsProps) {
           {thisWeek.length > 0 && showThisWeek && (
             <div>
               {thisWeek.map((event) => (
-                <ul key={event._id} className="py-3">
-                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && (
-                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
-                  )}
+                <ul key={event._id}>
+                  <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
@@ -180,11 +175,8 @@ export default function Events({events}: EventsProps) {
           {nextWeek.length > 0 && showNextWeek && (
             <div>
               {nextWeek.map((event) => (
-                <ul key={event._id} className="py-3">
-                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && (
-                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
-                  )}
+                <ul key={event._id}>
+                  <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
@@ -192,11 +184,8 @@ export default function Events({events}: EventsProps) {
           {later.length > 0 && showLater && (
             <div>
               {later.map((event) => (
-                <ul key={event._id} className="py-3">
-                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && (
-                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
-                  )}
+                <ul key={event._id}>
+                  <CombinedHappeningPreview happening={event} />
                 </ul>
               ))}
             </div>
@@ -204,11 +193,8 @@ export default function Events({events}: EventsProps) {
           {earlier.length > 0 && showPast && (
             <div>
               {earlier.map((event) => (
-                <ul key={event._id} className="py-1">
-                  {event.type === "EVENT" && <EventPreview event={event as Event} />}
-                  {event.type === "BEDPRES" && (
-                    <BedpresPreview bedpres={event as Bedpres} alignImageRight={true} />
-                  )}
+                <ul key={event._id}>
+                  <CombinedHappeningPreview happening={event} isPast={true} />
                 </ul>
               ))}
             </div>
