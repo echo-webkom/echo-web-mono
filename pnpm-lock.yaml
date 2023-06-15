@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -60,8 +60,8 @@ importers:
         specifier: 0.1.0
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.1.2
-        version: 6.1.2
+        specifier: ^6.1.3
+        version: 6.1.3
       '@sanity/icons':
         specifier: ^2.3.1
         version: 2.3.1(react@18.2.0)
@@ -5655,8 +5655,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.1.2:
-    resolution: {integrity: sha512-8/NRBmyzJaT8ZNZxj3UmOAhvqKxDtXWysogsa4rn+o/Z+zS7upkToh1wSdvoFLcv9uHSYF6JGeycigjwO1Zpnw==}
+  /@sanity/client@6.1.3:
+    resolution: {integrity: sha512-asO/AvN+/D1Ljd6UNPWlo/toeO6SmZdsxyl+fJdLfI9by4svp/K3hD4Qy2DXXmwOfGYqGSH7etv2lnRhu+C5YA==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -5858,7 +5858,7 @@ packages:
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@sanity/client': 6.1.2
+      '@sanity/client': 6.1.3
       '@sanity/eventsource': 5.0.0
       '@sanity/groq-store': 2.1.0
       '@vercel/stega': 0.0.5
@@ -5907,7 +5907,7 @@ packages:
   /@sanity/types@3.12.0:
     resolution: {integrity: sha512-/OjguYRSzlrUzz2Nx5GOCBLzg3DaHTjkoi6esOO2G/SN7IHEZps1Imb12yy6aKMKtGOEZN1c8rmRVowb8Fo9yw==}
     dependencies:
-      '@sanity/client': 6.1.2
+      '@sanity/client': 6.1.3
       '@types/react': 18.2.11
     transitivePeerDependencies:
       - supports-color
@@ -12333,7 +12333,7 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.2.0
     dependencies:
-      '@sanity/client': 6.1.2
+      '@sanity/client': 6.1.3
       '@sanity/icons': 2.3.1(react@18.2.0)
       '@sanity/preview-kit': 1.5.4(react@18.2.0)
       '@sanity/types': 3.12.0
@@ -14950,7 +14950,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.12.0
       '@sanity/cli': 3.12.0
-      '@sanity/client': 6.1.2
+      '@sanity/client': 6.1.3
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.12.0
       '@sanity/eventsource': 5.0.0
