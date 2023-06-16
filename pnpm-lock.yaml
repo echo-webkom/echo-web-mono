@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -173,8 +173,8 @@ importers:
         specifier: 0.1.0
         version: link:../../packages/config/tailwind
       '@hookform/resolvers':
-        specifier: ^3.1.0
-        version: 3.1.0(react-hook-form@7.44.3)
+        specifier: ^3.1.1
+        version: 3.1.1(react-hook-form@7.44.3)
       '@next/bundle-analyzer':
         specifier: ^13.4.5
         version: 13.4.5
@@ -4165,8 +4165,8 @@ packages:
       react-hook-form: 6.15.8(react@18.2.0)
     dev: false
 
-  /@hookform/resolvers@3.1.0(react-hook-form@7.44.3):
-    resolution: {integrity: sha512-z0A8K+Nxq+f83Whm/ajlwE6VtQlp/yPHZnXw7XWVPIGm1Vx0QV8KThU3BpbBRfAZ7/dYqCKKBNnQh85BkmBKkA==}
+  /@hookform/resolvers@3.1.1(react-hook-form@7.44.3):
+    resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
