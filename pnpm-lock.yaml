@@ -254,8 +254,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       framer-motion:
-        specifier: 10.12.16
-        version: 10.12.16(react-dom@18.2.0)(react@18.2.0)
+        specifier: 10.12.17
+        version: 10.12.17(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: 13.4.6
         version: 13.4.6(@babel/core@7.22.1)(react-dom@18.2.0)(react@18.2.0)
@@ -5945,7 +5945,7 @@ packages:
       '@sanity/color': 2.2.5
       '@sanity/icons': 2.4.1(react@18.2.0)
       csstype: 3.1.2
-      framer-motion: 10.12.16(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.12.17(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
@@ -10004,6 +10004,24 @@ packages:
 
   /framer-motion@10.12.16(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-w/SfWEIWJkYSgRHYBmln7EhcNo31ao8Xexol8lGXf1pR/tlnBtf1HcxoUmEiEh6pacB4/geku5ami53AAQWHMQ==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.5.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /framer-motion@10.12.17(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-IR+aAYntsyu6ofyxqQV4QYotmOqzcuKxhqNpfc3DXJjNWOPpOeSyH0A+In3IEBu49Yx/+PNht+YMeZSdCNaYbw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
