@@ -37,7 +37,7 @@
     "@radix-ui/react-tooltip": "^1.0.6",
     "@sanity/image-url": "1.0.2",
     "@t3-oss/env-nextjs": "^0.4.1",
-    "@tanstack/react-table": "^8.9.2",
+    "@tanstack/react-table": "^8.9.3",
     "@types/remove-markdown": "0.3.1",
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.21.0",
