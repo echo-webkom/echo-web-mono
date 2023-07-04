@@ -40,7 +40,7 @@
     "@tanstack/react-table": "^8.9.3",
     "@types/remove-markdown": "0.3.1",
     "@upstash/ratelimit": "^0.4.3",
-    "@upstash/redis": "^1.21.0",
+    "@upstash/redis": "^1.22.0",
     "class-variance-authority": "0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "2.30.0",
