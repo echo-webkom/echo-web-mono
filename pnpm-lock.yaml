@@ -263,8 +263,8 @@ importers:
         specifier: ^4.22.1
         version: 4.22.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: 5.0.2
-        version: 5.0.2(@sanity/client@6.1.5)(@sanity/icons@2.4.1)(@sanity/types@3.13.0)(@sanity/ui@1.6.0)(@types/styled-components@5.1.26)(next@13.4.7)(react@18.2.0)(sanity@3.13.0)(styled-components@5.3.11)
+        specifier: 5.1.0
+        version: 5.1.0(@sanity/client@6.1.5)(@sanity/icons@2.4.1)(@sanity/types@3.13.0)(@sanity/ui@1.6.0)(@types/styled-components@5.1.26)(next@13.4.7)(react@18.2.0)(sanity@3.13.0)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -5758,8 +5758,8 @@ packages:
     resolution: {integrity: sha512-wtMYcV5GIDIhVyF/jjmdwq1GdlK07dRL40XMns73VbrFI7FteRltxv48bhYVZPcLkRXb0SHjpDS/icj9/yzbVA==}
     dev: false
 
-  /@sanity/groq-store@2.1.0:
-    resolution: {integrity: sha512-GYWtsi0TyTOXiFbGmlPccKE/UsFom9byU8DpPsshNpD0z2MNy19/L0lAaV5/JdUgb8uu84sEKYMPumkRG94lhw==}
+  /@sanity/groq-store@2.3.0:
+    resolution: {integrity: sha512-vj5uDeNQlhwyviEgq3cq0nobMHToBMYXPL1HSFKKuScxow1JO5RIt4KNnUoFyPQTcgsVcpGsg2RKbXMJ8GsqGw==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -5908,11 +5908,11 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit@2.2.2(@sanity/client@6.1.5)(react@18.2.0):
-    resolution: {integrity: sha512-8H5A2CtrA+Z/esDFT2WqxuLKvzUlg5TMU+yyTA6Dcl8AtDuWDIwzFo82wiU9L1wsQuzLjPXzWX9OcwHBtJbhng==}
+  /@sanity/preview-kit@2.3.0(@sanity/client@6.1.5)(react@18.2.0):
+    resolution: {integrity: sha512-gl71G3JyRUbSOgu6b4NPLgSVLaqrdkC/reTUM/8T1TD7r+Ro2z7wRHO28XjmJ/tq2D2Nu4lGrl/cw+FbjE8i0g==}
     engines: {node: '>=14'}
     peerDependencies:
-      '@sanity/client': ^6.1.1
+      '@sanity/client': ^6.1.4
       react: ^18.0.0
     peerDependenciesMeta:
       react:
@@ -5920,7 +5920,7 @@ packages:
     dependencies:
       '@sanity/client': 6.1.5
       '@sanity/eventsource': 5.0.0
-      '@sanity/groq-store': 2.1.0
+      '@sanity/groq-store': 2.3.0
       '@vercel/stega': 0.0.5
       lodash.get: 4.4.2
       lodash.isplainobject: 4.0.6
@@ -12427,11 +12427,11 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-sanity@5.0.2(@sanity/client@6.1.5)(@sanity/icons@2.4.1)(@sanity/types@3.13.0)(@sanity/ui@1.6.0)(@types/styled-components@5.1.26)(next@13.4.7)(react@18.2.0)(sanity@3.13.0)(styled-components@5.3.11):
-    resolution: {integrity: sha512-dopB2BQF/i04RcWjwlA+66Z52NtM1xbgcYE5mWP/fSmfwgq5Ee/k+JTgIvQ0EbDXon0dZZOVjsvlitWVO+5nZw==}
+  /next-sanity@5.1.0(@sanity/client@6.1.5)(@sanity/icons@2.4.1)(@sanity/types@3.13.0)(@sanity/ui@1.6.0)(@types/styled-components@5.1.26)(next@13.4.7)(react@18.2.0)(sanity@3.13.0)(styled-components@5.3.11):
+    resolution: {integrity: sha512-MqlkpaVyasfkz196dMm4oJkiBPgaoyb6lDC7X5hRStcIaZVTUgyoDSoeksQZxZLbo6QTf5HeBlrjeX8tNQ+HWQ==}
     engines: {node: '>=16.14'}
     peerDependencies:
-      '@sanity/client': ^6.1.1
+      '@sanity/client': ^6.1.4
       '@sanity/icons': ^2.0.0
       '@sanity/types': ^3.0.0
       '@sanity/ui': ^1.0.0
@@ -12443,7 +12443,7 @@ packages:
     dependencies:
       '@sanity/client': 6.1.5
       '@sanity/icons': 2.4.1(react@18.2.0)
-      '@sanity/preview-kit': 2.2.2(@sanity/client@6.1.5)(react@18.2.0)
+      '@sanity/preview-kit': 2.3.0(@sanity/client@6.1.5)(react@18.2.0)
       '@sanity/types': 3.13.0
       '@sanity/ui': 1.6.0(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 2.0.0
