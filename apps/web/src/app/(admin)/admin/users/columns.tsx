@@ -3,8 +3,8 @@
 import {DotsHorizontalIcon} from "@radix-ui/react-icons";
 import {type ColumnDef} from "@tanstack/react-table";
 
-import {type User as DbUser, type Group} from "@echo-webkom/db/types";
-import {groupToString, roleToString} from "@echo-webkom/lib";
+import {type User as DbUser, type StudentGroup} from "@echo-webkom/db/types";
+import {roleToString} from "@echo-webkom/lib";
 
 import {Button} from "@/components/ui/button";
 import {
@@ -38,12 +38,10 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "studentGroups",
     header: "Studentgrupper",
     cell: ({row}) => {
-      const groups = row.getValue<Array<Group>>("studentGroups");
+      const groups = row.getValue<Array<StudentGroup>>("studentGroups");
 
       return (
-        <div>
-          {groups.length ? groups.map((group) => groupToString[group]).join(", ") : "Ingen grupper"}
-        </div>
+        <div>{groups.length ? groups.map((group) => group.name).join(", ") : "Ingen grupper"}</div>
       );
     },
   },

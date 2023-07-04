@@ -32,6 +32,18 @@ export const getUserRegistrations = cache(async (id: User["id"]) => {
   });
 });
 
+export const getUserStudentGroups = cache(async (id: User["id"]) => {
+  return await prisma.studentGroup.findMany({
+    where: {
+      users: {
+        some: {
+          id,
+        },
+      },
+    },
+  });
+});
+
 export const getAllUsers = cache(async () => {
   return await prisma.user.findMany();
 });

@@ -2,7 +2,6 @@ import Link from "next/link";
 import {redirect} from "next/navigation";
 
 import {
-  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
@@ -10,7 +9,7 @@ import {
 
 import Container from "@/components/container";
 import UserForm from "@/components/user-form";
-import {getUserRegistrations} from "@/lib/queries/user";
+import {getUserRegistrations, getUserStudentGroups} from "@/lib/queries/user";
 import {getUser} from "@/lib/session";
 
 export default async function ProfilePage() {
@@ -21,6 +20,7 @@ export default async function ProfilePage() {
   }
 
   const registrations = await getUserRegistrations(user.id);
+  const studentGroups = await getUserStudentGroups(user.id);
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -34,10 +34,10 @@ export default async function ProfilePage() {
           <p className="font-semibold">E-post:</p>
           <p>{user.email}</p>
         </div>
-        {user?.studentGroups && user.studentGroups.length > 0 && (
+        {studentGroups && studentGroups.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
-            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+            <p>{studentGroups.map((group) => group.name).join(", ")}</p>
           </div>
         )}
       </div>

@@ -1,7 +1,6 @@
 import {NextResponse} from "next/server";
 
 import {prisma} from "@echo-webkom/db/client";
-import {type Group} from "@echo-webkom/db/types";
 
 import {withBasicAuth} from "@/lib/checks/with-basic-auth";
 import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
@@ -9,31 +8,6 @@ import {$fetchAllEvents, type Event} from "@/sanity/event";
 import {isErrorMessage} from "@/utils/error";
 
 export const revalidate = 0;
-
-const organizerSlugToGroup = (slug: string) => {
-  switch (slug) {
-    case "makerspace":
-      return "MAKERSPACE";
-    case "bedkom":
-      return "BEDKOM";
-    case "webkom":
-      return "WEBKOM";
-    case "gnist":
-      return "GNIST";
-    case "hyggkom":
-      return "HYGGKOM";
-    case "squash":
-      return "SQUASH";
-    case "esc":
-      return "ESC";
-    case "programmerbar":
-      return "PROGBAR";
-    case "tilde":
-      return "TILDE";
-    default:
-      return undefined;
-  }
-};
 
 const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
   return await prisma.$transaction(
@@ -61,7 +35,11 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
               spots,
             })),
           },
-          groups: ["BEDKOM"],
+          studentGroups: {
+            connect: {
+              id: "bedkom",
+            },
+          },
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,
@@ -120,9 +98,12 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
               spots,
             })),
           },
-          groups: happening.organizers
-            .map((organizer) => organizerSlugToGroup(organizer.slug))
-            .filter((group) => group !== null) as Array<Group>,
+          studentGroups: {
+            connectOrCreate: happening.organizers.map((group) => ({
+              where: {id: group.slug},
+              create: {id: group.slug, name: group.name},
+            })),
+          },
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,
@@ -135,6 +116,13 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
               minDegreeYear,
               maxDegreeYear,
               spots,
+            })),
+          },
+          studentGroups: {
+            deleteMany: {},
+            connectOrCreate: happening.organizers.map((group) => ({
+              where: {id: group.slug},
+              create: {id: group.slug, name: group.name},
             })),
           },
           questions: {

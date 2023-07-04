@@ -57,14 +57,15 @@ model User {
   accounts         Account[]
   sessions         Session[]
   alternativeEmail String?
-  role             Role           @default(USER)
+  role             UserType       @default(USER)
   degree           Degree?
   year             Int?
-  studentGroups    Group[]
-  Registration     Registration[]
+  studentGroups    StudentGroup[]
+  registrations    Registration[]
+  studentGroupId   String?
 }
 
-enum Role {
+enum UserType {
   USER
   COMPANY
   ADMIN
@@ -87,17 +88,13 @@ enum Degree {
   MISC
 }
 
-enum Group {
-  MAKERSPACE
-  BOARD
-  TILDE
-  GNIST
-  BEDKOM
-  ESC
-  HYGGKOM
-  WEBKOM
-  PROGBAR
-  SQUASH
+model StudentGroup {
+  id         String      @id
+  name       String
+  users      User[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  happenings Happening[]
 }
 
 enum HappeningType {
@@ -112,6 +109,8 @@ model SpotRange {
   spots         Int
   Happening     Happening? @relation(fields: [happeningSlug], references: [slug], onDelete: Cascade, onUpdate: Cascade)
   happeningSlug String?
+
+  @@unique([minDegreeYear, maxDegreeYear, happeningSlug])
 }
 
 enum RegistrationStatus {
@@ -131,6 +130,7 @@ model Registration {
   updatedAt     DateTime           @updatedAt
 
   @@unique([userId, happeningSlug])
+  @@index([happeningSlug])
 }
 
 enum QuestionType {
@@ -146,6 +146,8 @@ model Question {
   options       String[]
   Happening     Happening?   @relation(fields: [happeningSlug], references: [slug])
   happeningSlug String?
+
+  @@index([happeningSlug])
 }
 
 model Happening {
@@ -158,7 +160,9 @@ model Happening {
   questions         Question[]
   registrationStart DateTime?
   registrationEnd   DateTime?
-  groups            Group[]
+  studentGroups     StudentGroup[]
+
+  @@index([type, date])
 }
 
 model SiteFeedback {

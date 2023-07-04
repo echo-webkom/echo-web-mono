@@ -3,7 +3,7 @@ import {notFound} from "next/navigation";
 
 import {prisma} from "@echo-webkom/db/client";
 import {type Prisma} from "@echo-webkom/db/types";
-import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
+import {registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";
 import {Button} from "@/components/ui/button";
@@ -31,7 +31,11 @@ export default async function EventDashboard({params}: Props) {
       happeningSlug: slug,
     },
     include: {
-      user: true,
+      user: {
+        include: {
+          studentGroups: true,
+        },
+      },
     },
   });
 
@@ -76,7 +80,11 @@ export default async function EventDashboard({params}: Props) {
 }
 
 type RegistrationWithUser = Prisma.RegistrationGetPayload<{
-  include: {user: true};
+  include: {
+    user: {
+      include: {studentGroups: true};
+    };
+  };
 }>;
 
 function RegistrationTable({registrations}: {registrations: Array<RegistrationWithUser>}) {
@@ -146,7 +154,7 @@ function RegistrationRow({
       <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
       <td className="px-6 py-4">{registration.reason}</td>
       <td className="px-6 py-4">
-        {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+        {registration.user.studentGroups.map((group) => group.name).join(", ")}
         {registration.user.studentGroups.length === 0 && "Ingen"}
       </td>
       <td className="px-6 py-4">
