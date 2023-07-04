@@ -34,5 +34,5 @@ export const sanityServerClient = createClient({
   useCdn: true,
 });
 
-// export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
+export const clientFetch = cache(sanityClient.fetch.bind(sanityClient));
 export const serverFetch = cache(sanityServerClient.fetch.bind(sanityServerClient));
