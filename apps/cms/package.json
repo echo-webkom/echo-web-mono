@@ -29,7 +29,7 @@
     "sanity-plugin-markdown": "^4.1.0",
     "sanity-plugin-media": "^2.0.5",
     "slugify": "^1.6.6",
-    "styled-components": "^6.0.1"
+    "styled-components": "^6.0.2"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^2.0.1",
