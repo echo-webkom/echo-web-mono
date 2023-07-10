@@ -60,8 +60,8 @@ importers:
         specifier: 0.1.0
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.1.6
-        version: 6.1.6
+        specifier: ^6.1.7
+        version: 6.1.7
       '@sanity/icons':
         specifier: ^2.4.1
         version: 2.4.1(react@18.2.0)
@@ -5658,17 +5658,6 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.1.6:
-    resolution: {integrity: sha512-pFg9Zbp2ztNwTRr3ct5og1YL64sGUUMeoQVkp4SQgcRvcMpHNK8E3cLL8cz+VCUpp7ERE3K7M5hlyb+vnglaDA==}
-    engines: {node: '>=14.18'}
-    dependencies:
-      '@sanity/eventsource': 5.0.0
-      get-it: 8.1.1
-      rxjs: 7.8.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@sanity/client@6.1.7:
     resolution: {integrity: sha512-crleZDBic3VpmBhIuiVZNkJMxAWE/fj5v+hHBXt+2psW1CJrvBdTLX14f4cqC40W1YDDE4ZGrDkYuph6Y6/YzQ==}
     engines: {node: '>=14.18'}
@@ -5954,7 +5943,7 @@ packages:
   /@sanity/types@3.14.1:
     resolution: {integrity: sha512-13qj14LI69VsGE4+H+XrdFC7yUgHHtIHHqkqygBtvPAqfteVwDEG8KyWJ1+ZMXMUnz89fuTeP721DC3+AlrmPg==}
     dependencies:
-      '@sanity/client': 6.1.6
+      '@sanity/client': 6.1.7
       '@types/react': 18.2.14
     transitivePeerDependencies:
       - supports-color
@@ -15065,7 +15054,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.14.1
       '@sanity/cli': 3.14.1
-      '@sanity/client': 6.1.6
+      '@sanity/client': 6.1.7
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.14.1
       '@sanity/eventsource': 5.0.0
@@ -15193,7 +15182,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.14.1
       '@sanity/cli': 3.14.1
-      '@sanity/client': 6.1.6
+      '@sanity/client': 6.1.7
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.14.1
       '@sanity/eventsource': 5.0.0
