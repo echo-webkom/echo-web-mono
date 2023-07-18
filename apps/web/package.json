@@ -44,7 +44,7 @@
     "class-variance-authority": "0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "2.30.0",
-    "framer-motion": "10.12.18",
+    "framer-motion": "10.12.21",
     "next": "13.4.9",
     "next-auth": "^4.22.1",
     "next-sanity": "5.1.2",
