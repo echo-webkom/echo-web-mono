@@ -42,7 +42,7 @@
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.22.0",
     "class-variance-authority": "0.6.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "date-fns": "2.30.0",
     "framer-motion": "10.12.21",
     "next": "13.4.9",
