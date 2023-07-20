@@ -254,8 +254,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       framer-motion:
-        specifier: 10.12.21
-        version: 10.12.21(react-dom@18.2.0)(react@18.2.0)
+        specifier: 10.12.22
+        version: 10.12.22(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: 13.4.9
         version: 13.4.9(@babel/core@7.22.8)(react-dom@18.2.0)(react@18.2.0)
@@ -264,7 +264,7 @@ importers:
         version: 4.22.1(next@13.4.9)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.1.2
-        version: 5.1.2(@sanity/client@6.1.7)(@sanity/icons@2.4.1)(@sanity/types@3.14.1)(@sanity/ui@1.7.1)(@types/styled-components@5.1.26)(next@13.4.9)(react@18.2.0)(sanity@3.14.3)(styled-components@5.3.11)
+        version: 5.1.2(@sanity/client@6.1.7)(@sanity/icons@2.4.1)(@sanity/types@3.14.3)(@sanity/ui@1.7.3)(@types/styled-components@5.1.26)(next@13.4.9)(react@18.2.0)(sanity@3.14.3)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -6413,27 +6413,6 @@ packages:
       styled-components: 6.0.4(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@sanity/ui@1.7.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11):
-    resolution: {integrity: sha512-N8X/4ZVVvSs4YmfJrfohWX1YtFq8ASnbIADw1/Ak9qQgBzJ7aazILfzxfmqy8HH5KcmXTpXFrZ5WKBIp4x3mWg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: ^18
-      react-dom: ^18
-      react-is: ^18
-      styled-components: ^5.2
-    dependencies:
-      '@floating-ui/react-dom': 2.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@sanity/color': 2.2.5
-      '@sanity/icons': 2.4.1(react@18.2.0)
-      csstype: 3.1.2
-      framer-motion: 10.12.21(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-is: 18.2.0
-      react-refractor: 2.1.7(react@18.2.0)
-      styled-components: 5.3.11(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-    dev: false
-
   /@sanity/ui@1.7.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.4):
     resolution: {integrity: sha512-N8X/4ZVVvSs4YmfJrfohWX1YtFq8ASnbIADw1/Ak9qQgBzJ7aazILfzxfmqy8HH5KcmXTpXFrZ5WKBIp4x3mWg==}
     engines: {node: '>=14.0.0'}
@@ -6447,7 +6426,7 @@ packages:
       '@sanity/color': 2.2.5
       '@sanity/icons': 2.4.1(react@18.2.0)
       csstype: 3.1.2
-      framer-motion: 10.12.21(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.12.22(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
@@ -6468,7 +6447,7 @@ packages:
       '@sanity/color': 2.2.5
       '@sanity/icons': 2.4.1(react@18.2.0)
       csstype: 3.1.2
-      framer-motion: 10.12.21(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.12.22(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
@@ -10715,6 +10694,24 @@ packages:
       '@emotion/is-prop-valid': 0.8.8
     dev: false
 
+  /framer-motion@10.12.22(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-bBGYPOxvxcfzS7/py9MEqDucmXBkVl2g42HNlXXPieSTSGGkr8L7+MilCnrU6uX3HrNk/tcB++1SkWE8BosHFw==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.5.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
   /framer-motion@9.0.4(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-lZ1+2/WBn8iYRYmeEFpu/X2fI1GNwJL+X21EpnWwKP3vkJsnWBXZF5kHF29wIPk9sBU2xDIpDm9SAVo206bp9A==}
     peerDependencies:
@@ -13020,7 +13017,7 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-sanity@5.1.2(@sanity/client@6.1.7)(@sanity/icons@2.4.1)(@sanity/types@3.14.1)(@sanity/ui@1.7.1)(@types/styled-components@5.1.26)(next@13.4.9)(react@18.2.0)(sanity@3.14.3)(styled-components@5.3.11):
+  /next-sanity@5.1.2(@sanity/client@6.1.7)(@sanity/icons@2.4.1)(@sanity/types@3.14.3)(@sanity/ui@1.7.3)(@types/styled-components@5.1.26)(next@13.4.9)(react@18.2.0)(sanity@3.14.3)(styled-components@5.3.11):
     resolution: {integrity: sha512-nzfir4ObrZ0vc8i3KpPC5iE9O/rGqSHn6+lZaEcwjY575NM3DtSW5yGumqTJi/fOJr5Ru1IqRyBS3Q3GpG8okg==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -13037,8 +13034,8 @@ packages:
       '@sanity/client': 6.1.7
       '@sanity/icons': 2.4.1(react@18.2.0)
       '@sanity/preview-kit': 2.3.3(@sanity/client@6.1.7)(react@18.2.0)
-      '@sanity/types': 3.14.1
-      '@sanity/ui': 1.7.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      '@sanity/types': 3.14.3
+      '@sanity/ui': 1.7.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 2.0.0
       '@types/styled-components': 5.1.26
       groq: 3.6.0
@@ -15818,7 +15815,7 @@ packages:
       esbuild-register: 3.4.2(esbuild@0.18.14)
       execa: 2.1.0
       exif-component: 1.0.1
-      framer-motion: 10.12.21(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.12.22(react-dom@18.2.0)(react@18.2.0)
       get-it: 8.1.1
       get-random-values-esm: 1.0.0
       groq-js: 1.1.8
