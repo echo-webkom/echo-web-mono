@@ -22,7 +22,7 @@ export default async function Footer({className}: FooterProps) {
         id="svg"
         viewBox="0 0 1440 390"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-40 w-full transition duration-300 delay-150 ease-in-out"
+        className="h-40 w-full transition delay-150 duration-300 ease-in-out"
         preserveAspectRatio="none"
       >
         <path
@@ -30,7 +30,7 @@ export default async function Footer({className}: FooterProps) {
           stroke="none"
           strokeWidth="0"
           fillOpacity="1"
-          className="path-0 bg-wave fill-wave transition-all duration-300 delay-150 ease-in-out"
+          className="path-0 bg-wave fill-wave transition-all delay-150 duration-300 ease-in-out"
         ></path>
       </svg>
 

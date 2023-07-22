@@ -2,14 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import Footer from "@/components/footer";
-import Header from "@/components/header";
 import {Button} from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
+
+/**
+ * TODO:
+ *
+ * Add header. Could not use the header component because of
+ * `useSession` hook used inside of the header component.
+ */
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
       <main className="mx-auto my-10 flex w-fit flex-grow flex-col gap-5 text-center">
         <Heading>404 - Not Found</Heading>
         <Image

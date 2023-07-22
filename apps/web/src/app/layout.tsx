@@ -6,6 +6,7 @@ import {type Metadata} from "next";
 
 import Feedback from "@/components/feedback";
 import {Toaster} from "@/components/toaster";
+import {baseURL} from "@/config";
 import {cn} from "@/utils/cn";
 import AuthProvider from "./auth-provider";
 
@@ -31,6 +32,7 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL(baseURL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
