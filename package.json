@@ -24,8 +24,8 @@
     "db:deploy": "turbo run db:deploy",
     "docker:up": "pnpm --filter=db docker:up",
     "docker:down": "pnpm --filter=db docker:down",
-    "lint": "turbo run lint && manypkg check",
-    "lint-fix": "turbo run lint -- --fix && manypkg fix",
+    "lint": "turbo run lint",
+    "lint-fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "format-check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "type-check": "turbo run type-check",
@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
-    "@manypkg/cli": "0.21.0",
     "@types/node": "18.16.19",
     "@types/prettier": "^2.7.3",
     "eslint": "^8.45.0",

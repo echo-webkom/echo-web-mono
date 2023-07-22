@@ -1,8 +1,7 @@
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {AvatarIcon, ExitIcon, LockClosedIcon} from "@radix-ui/react-icons";
+import {AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon} from "@radix-ui/react-icons";
 import {signOut} from "next-auth/react";
-import {AiOutlineUserSwitch} from "react-icons/ai";
 
 import {type Session} from "@echo-webkom/auth";
 
@@ -40,7 +39,7 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
 
         <DropdownMenuItem asChild>
           <Link href="/auth/profile">
-            <AiOutlineUserSwitch className="mr-2 h-4 w-4" />
+            <PersonIcon className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
         </DropdownMenuItem>
