@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -87,7 +87,7 @@ importers:
         specifier: ^1.6.6
         version: 1.6.6
       styled-components:
-        specifier: ^5.2.0
+        specifier: ^5.3.11
         version: 5.3.11(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     devDependencies:
       '@sanity/eslint-config-studio':
