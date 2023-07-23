@@ -25,9 +25,9 @@
     "docker:up": "pnpm --filter=db docker:up",
     "docker:down": "pnpm --filter=db docker:down",
     "lint": "turbo run lint",
-    "lint-fix": "turbo run lint -- --fix",
+    "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
-    "format-check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "type-check": "turbo run type-check",
     "test:dev": "turbo run test:dev",
     "test:e2e": "start-server-and-test 'pnpm --filter=web run start' http://localhost:3000 'pnpm run test:dev'",
@@ -55,9 +55,9 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
+    "*.{js,jsx,ts,tsx,md,mdx,mjs,cjs}": [
       "eslint",
-      "prettier --check"
+      "prettier --check \"**/*.{ts,tsx,js,cjs,json,md,mdx}\""
     ]
   },
   "pnpm": {
