@@ -49,10 +49,15 @@
     "turbo": "1.10.9",
     "typescript": "^5.1.6"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mjs,cjs}": [
-      "pnpm lint",
-      "pnpm format-check"
+      "eslint",
+      "prettier --check"
     ]
   },
   "pnpm": {

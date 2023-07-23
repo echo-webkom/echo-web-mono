@@ -1,36 +1,32 @@
 {
   "name": "@echo-webkom/docs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start --port 3001 --no-open",
-    "dev": "docusaurus start --port 3001 --no-open",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
-    "clean": "rm -rf .docusaurus .turbo node_modules",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "lint": "next lint",
+    "start": "next start",
+    "clean": "rm -rf .next .turbo node_modules",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "2.4.1",
-    "@docusaurus/preset-classic": "2.4.1",
-    "@mdx-js/react": "^1.6.22",
-    "clsx": "^2.0.0",
-    "prism-react-renderer": "^1.3.5",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "@echo-webkom/tailwind-config": "0.1.0",
+    "next": "13.4.10",
+    "nextra": "latest",
+    "nextra-theme-docs": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.4.1",
-    "@docusaurus/plugin-content-docs": "^2.4.1",
-    "@docusaurus/types": "^2.4.1",
-    "@tsconfig/docusaurus": "^1.0.7",
-    "@types/react": "17.0.62",
-    "@types/react-dom": "17.0.20",
+    "@types/node": "18.11.10",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.14",
+    "eslint": "^8.45.0",
+    "eslint-config-custom": "0.0.0",
+    "postcss": "^8.4.26",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"
   }
 }
