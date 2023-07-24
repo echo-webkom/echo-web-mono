@@ -1,0 +1,29 @@
+# Verktøy
+
+## Git
+
+Git er et distribuert versjonskontrollsystem som brukes til å administrere kodebasen til et prosjekt. Med Git kan flere utviklere samarbeide om samme kodebase og holde styr på endringer som er gjort over tid. Det er enkelt å lage nye branches (_grener_), merge endringer og reverte (_rulle tilbake_) til tidligere, fungerende versjoner av koden hvis det oppstår problemer.
+
+## VS Code
+
+Med mindre du er en literal god som har brukt flerfoldige timer på oppsett av [neovim](https://neovim.io/), passer VS Code for deg. Visual Studio Code er en kraftig og svært tilpasningsdyktig kodeeditor som brukes til å utvikle programvare. VS Code har innebygd støtte for mange forskjellige programmeringsspråk og kan utvides med en rekke utvidelser som gir ekstra funksjonalitet i tillegg til extentions for feilsøking og debugging, integrasjon med Git og en rekke andre utviklerverktøy.
+
+### Utvidelser
+
+Vi anbefaler å installere følgende utvidelser for VS Code:
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - Linter for JavaScript og TypeScript
+- [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) - Utvidelse for Prisma
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Formatter for JavaScript, TypeScript og mer
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) - IntelliSense for Tailwind CSS
+- [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) - Utvidelse for Playwright
+
+## Docker
+
+Docker er en plattform for å utvikle, distribuere og kjøre applikasjoner i containere. Med Docker kan utviklere pakke en applikasjon og dens dependencies (_avhengigheter_) i én beholder, som kan kjøres på en hvilken som helst maskin med Docker installert. Dette gjør det enkelt å sette opp utviklingsmiljøer og distribuere applikasjoner på en konsistent måte, uavhengig av maskinvare- eller programvarekonfigurasjoner.
+
+Vi bruker Docker for å kjøre databasen vår lokalt. Dette gjør det enkelt å sette opp et utviklingsmiljø.
+
+## PNPM
+
+PNPM er en package manager (_pakkebehandler_) for Node.js-prosjekter som er utviklet for å forbedre ytelsen og redusere diskplassen som kreves for avhengigheter. I motsetning til andre pakkebehandlere som NPM eller Yarn, lagrer PNPM ikke kopier av avhengigheter i hver enkelt prosjektmapp. I stedet bruker det en delt cache, noe som betyr at flere prosjekter kan dele de samme avhengighetene uten å duplisere data. Dette reduserer diskplassen som kreves og kan føre til raskere installasjoner og bygging av prosjekter.

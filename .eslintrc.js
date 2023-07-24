@@ -20,6 +20,7 @@ const config = {
       rootDir: ["apps/web"],
     },
   },
+  ignorePatterns: ["node_modules", "dist", "coverage", "apps/web/.next", "*.mdx", "*.md"],
 };
 
 module.exports = config;
