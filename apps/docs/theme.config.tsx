@@ -32,6 +32,8 @@ const config = {
 
     return (
       <>
+        <title>{title ? title + " - echo Webkom Docs" : "echo Webkom Docs"}</title>
+        <meta charSet="utf-8" />
         <meta name="msapplication-TileColor" content="#fff" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="Content-Language" content="en" />
@@ -39,7 +41,7 @@ const config = {
         <meta name="og:description" content={metaDescription} />
         <meta name="twitter:site:domain" content={siteUrl} />
         <meta name="twitter:url" content={siteUrl} />
-        <meta name="og:title" content={title ? title + " – echo Webkom" : "echo Webkom"} />
+        <meta name="og:title" content={title ? title + " - echo Webkom" : "echo Webkom"} />
         <meta name="apple-mobile-web-app-title" content="echo Webkom" />
         <link rel="icon" href="/favicon.png" type="image/png" />
       </>

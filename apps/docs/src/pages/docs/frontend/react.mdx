@@ -76,8 +76,8 @@ const CoolComponent = () => {
 };
 ```
 
-import {CodeExample} from "../../components/code-example.tsx";
-import {CoolComponent} from "../../components/cool-component.tsx";
+import {CodeExample} from "@/components/code-example.tsx";
+import {CoolComponent} from "@/components/cool-component.tsx";
 
 <CodeExample>
   <CoolComponent />
@@ -121,6 +121,8 @@ Server components kan ikke bruke hooks `useEffect`, `useState`, osv. Dette er fo
 
 ```jsx filename="components/client-component.jsx"
 "use client";
+
+import {useState} from "react";
 
 function ClientComponent() {
   const [count, setCount] = useState(0);
