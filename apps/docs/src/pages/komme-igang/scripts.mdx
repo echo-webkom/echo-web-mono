@@ -6,11 +6,17 @@ Vi har noen scripts som gjør det enklere å kjøre kommandoer.
 
 ## `pnpm`
 
-Vi bruker [`pnpm`](https://pnpm.io/) som package manager. Denne er mye raskere enn `npm` og `yarn`, og har en del andre fordeler. Du kan lese mer om det på [nettsiden deres](https://pnpm.io/).
+Vi bruker [`pnpm`](https://pnpm.io/) som pakkebehandler (package manager). Grunnen til dette er at pnpm raskere enn `npm` og `yarn`, og har en del andre fordeler. Du kan lese mer om det på [nettsiden deres](https://pnpm.io/).
+
+Pakkebehandlere lar oss laste ned ekstern kode som vi kan bruke i prosjektet vårt. Dette gjør det enklere å gjenbruke kode, og gjør at vi ikke trenger å skrive alt fra bunnen av.
 
 ## `pnpm [web:|docs:|cms:|db:]dev`
 
-Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, cms, prisma eller alle sammen. Om man ønsker å starte nettsiden bruker man `pnpm web:dev`.
+Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, cms, prisma eller alle sammen.
+
+For å starte alle samtidig kjør `pnpm dev`.
+
+Om man ønsker å starte nettsiden bruker man `pnpm web:dev`.
 
 ```sh
 pnpm dev
@@ -22,7 +28,7 @@ pnpm db:dev
 
 ## `pnpm docker:{up|down}`
 
-Denne kommandoen starter eller stopper databasen. Databasen er en postgres database som kjører i en docker container.
+Denne kommandoen starter (bygger) eller stopper (ødelegger) databasen. Databasen er en postgres database som kjører i en docker container.
 
 ```sh
 pnpm docker:up
@@ -52,6 +58,8 @@ pnpm db:deploy
 ## `pnpm db:migrate`
 
 Dette scriptet lager ny migrasjon. Her må du også kjøre databasen først.
+
+Denne kjører du etter at du har gjort en endring i `schema.prisma`.
 
 ```sh
 pnpm db:migrate
@@ -96,5 +104,3 @@ Kjører typescript sin kompilator uten å faktisk kompilere koden. Denne vil sje
 ```sh
 pnpm type-check
 ```
-
-{/* TODO: Add more */}

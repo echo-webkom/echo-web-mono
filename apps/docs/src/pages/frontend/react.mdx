@@ -6,7 +6,9 @@ ReactJS er et JavaScript-bibliotek som brukes til å bygge brukergrensesnitt (UI
 
 ## Komponenter
 
-I vår kode bruker vi funksjonelle komponenter, som er enklere å lese og skrive enn klassekomponenter. Komponenter hjelper oss med å dele opp grensesnittet i små, gjenbrukbare deler, og gjør det enklere å vedlikeholde og oppdatere koden.
+I vår kode bruker vi funksjonelle komponenter, som er enklere å lese og skrive enn klassekomponenter. Komponenter en måte å dele opp grensesnittet i små, gjenbrukbare deler, og gjør det enklere å vedlikeholde og oppdatere koden.
+
+Her er et eksempel på en komponent som si er, "Hei, verden!":
 
 ```jsx
 const HelloWorld = () => {
@@ -20,39 +22,29 @@ const HelloWorld = () => {
 
 ## Props
 
-Props er en liste med egenskaper som sendes inn til en komponent. Props kan være alt fra tekststrenger til funksjoner, og brukes til å sende data fra en komponent til en annen. Props kan også brukes til å sende inn funksjoner som kan kalles fra en komponent.
+Props er en måte å sende egenskaper til en komponent. Props kan være alt fra tekststrenger til funksjoner til andre komponenter, og brukes til å sende data fra en komponent til en annen.
+
+Si man ønsker å lage en komponent som sier hei til en person, kan vi bruke props til å sende navnet til komponenten:
 
 ```jsx
 const Page = () => {
-  return (
-    <div>
-      <SayHello name="Bo">
-    </div>
-  )
-}
+  return <SayHello name="Bo" />;
+};
 
 const SayHello = (props) => {
-  return (
-    <>
-      <h1>Hei, {props.name}!</h1>
-    </>
-  )
-}
+  return <h1>Hei, {props.name}!</h1>;
+};
 ```
 
-<Callout>Props er read-only, og kan ikke endres av komponenten som mottar dem.</Callout>
+<Callout>Props er read-only (immutable), og kan ikke endres av komponenten som mottar dem.</Callout>
 
 <Callout>
-  Du kan bruke destructuring for å hente ut props fra et objekt. Dette er den anbefalte måten å
+  Du kan bruke destructuring for å hente ut props fra et objekt. Dette er måten vi anbefaler å
   hente ut props på.
 
 ```jsx
 const SayHello = ({name}) => {
-  return (
-    <>
-      <h1>Hei, {name}!</h1>
-    </>
-  );
+  return <h1>Hei, {name}!</h1>;
 };
 ```
 
@@ -65,6 +57,8 @@ Hooks er funksjoner som lar deg bruke React-funksjoner som `useState` og `useEff
 Eksempel på bruk av `useState`:
 
 ```jsx
+import {useState} from "react";
+
 const CoolComponent = () => {
   const [count, setCount] = useState(0);
 
@@ -81,6 +75,13 @@ const CoolComponent = () => {
   );
 };
 ```
+
+import {CodeExample} from "../../components/code-example.tsx";
+import {CoolComponent} from "../../components/cool-component.tsx";
+
+<CodeExample>
+  <CoolComponent />
+</CodeExample>
 
 Les mer om hooks i [React sin dokumentasjon](https://react.dev/reference/react).
 
