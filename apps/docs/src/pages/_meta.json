@@ -1,9 +1,14 @@
 {
-  "index": "Intro",
-  "ressurser": "Ressurser",
-  "komme-igang": "Komme i gang",
-  "frontend": "Frontend",
-  "sanity": "Sanity",
-  "backend": "Backend",
-  "cicd": "CI/CD"
+  "index": {
+    "title": "Hjem",
+    "display": "hidden",
+    "type": "page",
+    "theme": {
+      "sidebar": false
+    }
+  },
+  "docs": {
+    "title": "Dokumentasjon",
+    "type": "page"
+  }
 }

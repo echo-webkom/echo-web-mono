@@ -1,3 +1,5 @@
+import {CodeExample} from "@/components/code-example.tsx";
+
 # Tailwind
 
 Tailwind er et CSS-rammeverk som lar deg **designe** en nettside ved hjelp av forhåndsdefinerte klasser, i stedet for å skrive ren CSS-kode. Det gir utviklere et stort utvalg av fleksible, gjenbrukbare og responsive verktøy som gjør det enklere å bygge en stilfull og responsiv nettside eller applikasjon raskt. Tailwind inkluderer blant annet ferdige stiler for layout, tekstbehandling, farger, rammer og mye mer.
@@ -5,6 +7,10 @@ Tailwind er et CSS-rammeverk som lar deg **designe** en nettside ved hjelp av fo
 ```html
 <h1 className="text-4xl text-center font-bold">Foo Bar Baz</h1>
 ```
+
+<CodeExample>
+  <h1 className="text-center text-4xl font-bold">Foo Bar Baz</h1>
+</CodeExample>
 
 ## Farger
 
@@ -25,8 +31,12 @@ Tailwind har innebygd støtte for responsivt design. Dette gjør det enkelt å l
 Under er et eksmpel på hvordan tekststørrelsen kan gjøres responsiv:
 
 ```html
-<h1 className="text-2xl md:text-4xl text-center font-bold">Foo Bar Baz</h1>
+<h1 className="text-2xl md:text-4xl text-center font-bold md:text-red-400">Foo Bar Baz</h1>
 ```
+
+<CodeExample>
+  <h1 className="text-center text-2xl font-bold md:text-4xl md:text-red-400">Foo Bar Baz</h1>
+</CodeExample>
 
 ## Bli inspirert
 
