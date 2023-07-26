@@ -10,8 +10,8 @@
     "deploy": "sanity deploy",
     "clean": "rm -rf node_modules .sanity dist",
     "deploy-graphql": "sanity graphql deploy",
-    "todo:lint": "eslint '**/*.{js,ts,jsx,tsx}'",
-    "todo:lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
+    "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
+    "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
     "todo:type-check": "tsc --noEmit"
   },
   "keywords": [
@@ -34,6 +34,8 @@
   "devDependencies": {
     "@sanity/eslint-config-studio": "^2.0.4",
     "@types/react": "18.2.15",
+    "tsconfig": "workspace:*",
+    "eslint-config-webkom": "workspace:*",
     "@types/styled-components": "^5.1.26",
     "eslint": "^8.45.0",
     "prettier": "2.8.8",
