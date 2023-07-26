@@ -1,6 +1,6 @@
-type CodeExampleProps = {
+interface CodeExampleProps {
   children: React.ReactNode;
-};
+}
 
 // TODO: Fix light mode / dark mode
 export const CodeExample = ({children}: CodeExampleProps) => {

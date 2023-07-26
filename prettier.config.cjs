@@ -9,7 +9,7 @@ module.exports = {
   trailingComma: "all",
   tabWidth: 2,
   plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  tailwindConfig: "./packages/config/tailwind/index.ts",
+  tailwindConfig: "./apps/web/tailwind.config.ts",
   importOrder: [
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",
@@ -20,6 +20,6 @@ module.exports = {
     "^@/(.*)$",
     "^[./]",
   ],
-  importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
+  importOrderParserPlugins: ["typescript", "jsx"],
   importOrderTypeScriptVersion: "5.0.0",
 };

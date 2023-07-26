@@ -17,7 +17,7 @@ export const pageTypeToUrl: Record<PageType, string> = {
 export const fetchStaticInfoPaths = async () => {
   const query = groq`*[_type == "static"]{ "slug": slug.current, pageType }`;
 
-  const result = await serverFetch<Array<{slug: string; pageType: PageType}>>(query);
+  const result = await serverFetch<{slug: string; pageType: PageType}[]>(query);
 
   const staticInfoSlugSchema = z.object({
     pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),

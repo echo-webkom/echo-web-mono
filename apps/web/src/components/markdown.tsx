@@ -5,10 +5,10 @@ import remarkGfm from "remark-gfm";
 
 import {cn} from "@/utils/cn";
 
-type MarkdownProps = {
+interface MarkdownProps {
   className?: string;
   content: string | null;
-};
+}
 
 export default function Markdown({className, content}: MarkdownProps) {
   if (!content) {

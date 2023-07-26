@@ -1,18 +1,26 @@
 /** @type {import("eslint").Linter.Config} */
-const config = {
+module.exports = {
   extends: [
-    "next",
     "turbo",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "prettier",
   ],
+  env: {
+    es2022: true,
+    node: true,
+  },
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: true,
+  },
+  plugins: ["@typescript-eslint", "import"],
   rules: {
     eqeqeq: "error",
     "no-console": ["warn", {allow: ["warn", "error"]}],
     "eol-last": "error",
     "no-trailing-spaces": "error",
-    "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/restrict-template-expressions": "off",
@@ -29,8 +37,14 @@ const config = {
       {prefer: "type-imports", fixStyle: "inline-type-imports"},
     ],
   },
-  ignorePatterns: ["**/*.config.js", "**/*.config.cjs", "packages/config/**"],
   reportUnusedDisableDirectives: true,
+  ignorePatterns: [
+    "**/.eslintrc.cjs",
+    "**/*.config.js",
+    "**/*.config.cjs",
+    "packages/config/**",
+    ".next",
+    "dist",
+    "pnpm-lock.yaml",
+  ],
 };
-
-module.exports = config;

@@ -8,11 +8,11 @@ import {fetchMinuteById, fetchMinuteParams} from "@/sanity/minutes";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-type Props = {
+interface Props {
   params: {
     id: string;
   };
-};
+}
 
 async function getData(id: string) {
   return await fetchMinuteById(id);

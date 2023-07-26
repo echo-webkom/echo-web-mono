@@ -63,7 +63,7 @@ export const fetchFooter = async () => {
 }.footer
 `;
 
-  const res = await serverFetch<Array<FooterSection>>(query);
+  const res = await serverFetch<FooterSection[]>(query);
 
   const footerSections = footerSectionSchema.array().parse(res);
 

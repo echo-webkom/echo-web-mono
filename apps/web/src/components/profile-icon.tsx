@@ -14,9 +14,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-type ProfileIconProps = {
+interface ProfileIconProps {
   session: Session;
-};
+}
 
 const ProfileIcon = ({session}: ProfileIconProps) => {
   const pathname = usePathname();

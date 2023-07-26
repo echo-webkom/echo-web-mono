@@ -10,8 +10,8 @@
     "deploy": "sanity deploy",
     "clean": "rm -rf node_modules .sanity dist",
     "deploy-graphql": "sanity graphql deploy",
-    "todo:lint": "eslint '**/*.{js,ts,jsx,tsx}'",
-    "todo:lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
+    "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
+    "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
     "todo:type-check": "tsc --noEmit"
   },
   "keywords": [
@@ -24,19 +24,31 @@
     "@sanity/vision": "^3.14.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-is": "^18.2.0",
-    "sanity": "^3.14.4",
+    "react-is": "18.2.0",
+    "sanity": "^3.14.3",
     "sanity-plugin-markdown": "^4.1.0",
     "sanity-plugin-media": "^2.2.1",
     "slugify": "^1.6.6",
-    "styled-components": "^5.2.0"
+    "styled-components": "5.3.3"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "^2.0.4",
-    "@types/react": "18.2.17",
-    "@types/styled-components": "^5.1.26",
+    "@sanity/eslint-config-studio": "2.0.4",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.7",
+    "eslint-config-webkom": "workspace:*",
+    "@types/styled-components": "5.1.26",
     "eslint": "^8.45.0",
     "prettier": "2.8.8",
     "typescript": "^5.1.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base",
+      "webkom/react"
+    ],
+    "ignorePatterns": [
+      "migrations"
+    ]
   }
 }

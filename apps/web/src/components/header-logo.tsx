@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import {cn} from "@/utils/cn";
 
-type HeaderLogoProps = {
+interface HeaderLogoProps {
   className?: string;
-};
+}
 
 export default function HeaderLogo({className}: HeaderLogoProps) {
   const logo = "/images/android-chrome-512x512.png";

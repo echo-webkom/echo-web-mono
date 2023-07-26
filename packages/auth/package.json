@@ -1,13 +1,14 @@
 {
   "name": "@echo-webkom/auth",
   "version": "0.1.0",
+  "private": true,
   "main": "./index.ts",
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
-    "lint:fix": "pnpm lint --fix",
+    "lint:fix": "eslint lint --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,7 +22,13 @@
   "devDependencies": {
     "@types/node": "18.17.1",
     "eslint": "^8.45.0",
-    "eslint-config-custom": "0.0.0",
+    "eslint-config-webkom": "0.0.0",
     "typescript": "^5.1.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base"
+    ]
   }
 }

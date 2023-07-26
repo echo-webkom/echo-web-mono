@@ -8,9 +8,9 @@ import {cn} from "@/utils/cn";
 
 export const dynamic = "force-static";
 
-type FooterProps = {
+interface FooterProps {
   className?: string;
-};
+}
 
 export default async function Footer({className}: FooterProps) {
   const footerSections = await fetchFooter();

@@ -11,11 +11,11 @@ import {
 } from "@/sanity/student-group";
 import {urlFor} from "@/utils/image-builder";
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
 async function getData(slug: string) {
   return await fetchStudentGroupBySlug(slug);

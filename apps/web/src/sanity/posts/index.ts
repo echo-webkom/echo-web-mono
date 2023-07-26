@@ -12,7 +12,7 @@ export * from "./schemas";
  */
 export const fetchPostParams = async () => {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`;
-  const result = await serverFetch<Array<string>>(query);
+  const result = await serverFetch<string[]>(query);
 
   const slugs = slugSchema
     .array()
@@ -50,7 +50,7 @@ export const fetchPosts = async (n: number) => {
     n,
   };
 
-  const result = await serverFetch<Array<Post>>(query, params);
+  const result = await serverFetch<Post[]>(query, params);
 
   return postSchema.array().parse(result);
 };

@@ -1,5 +1,10 @@
 packages:
-  - apps/*
-  - packages/*
-  - packages/config/*
+  - apps/docs
+  - apps/web
+  - apps/cms
+  - packages/auth
+  - packages/db
+  - packages/eslint
+  - packages/lib
+  - packages/tsconfig
   - tests

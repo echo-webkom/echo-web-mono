@@ -7,9 +7,9 @@ import {jobTypeToString, type JobAd} from "@/sanity/job-ad";
 import {cn} from "@/utils/cn";
 import {urlFor} from "@/utils/image-builder";
 
-type JobAdPreviewProps = {
+interface JobAdPreviewProps {
   jobAd: JobAd;
-};
+}
 
 export default function JobAdPreview({jobAd}: JobAdPreviewProps) {
   return (

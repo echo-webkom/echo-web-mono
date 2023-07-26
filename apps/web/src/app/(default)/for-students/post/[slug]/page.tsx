@@ -7,9 +7,9 @@ import Heading from "@/components/ui/heading";
 import {fetchPostBySlug, fetchPostParams, type Author} from "@/sanity/posts";
 import {urlFor} from "@/utils/image-builder";
 
-type Props = {
+interface Props {
   params: {slug: string};
-};
+}
 
 function fetchData(slug: string) {
   return fetchPostBySlug(slug);
@@ -50,7 +50,7 @@ export default async function PostPage({params}: Props) {
   );
 }
 
-function Authors({authors}: {authors: Array<Author>}) {
+function Authors({authors}: {authors: Author[]}) {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xl font-bold">Publisert av:</p>

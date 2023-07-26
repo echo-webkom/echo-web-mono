@@ -11,11 +11,11 @@ import Heading from "@/components/ui/heading";
 import {getHappeningBySlug} from "@/lib/queries/happening";
 import {cn} from "@/utils/cn";
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
 export default async function EventDashboard({params}: Props) {
   const {slug} = params;
@@ -79,7 +79,7 @@ type RegistrationWithUser = Prisma.RegistrationGetPayload<{
   include: {user: true};
 }>;
 
-function RegistrationTable({registrations}: {registrations: Array<RegistrationWithUser>}) {
+function RegistrationTable({registrations}: {registrations: RegistrationWithUser[]}) {
   if (registrations.length === 0) {
     return <p className="text-center md:text-left">Ingen registrerte</p>;
   }

@@ -1,0 +1,27 @@
+{
+  "name": "eslint-config-webkom",
+  "version": "0.0.0",
+  "main": "index.js",
+  "files": [
+    "./index.js",
+    "./react.js",
+    "./nextjs.js"
+  ],
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@types/eslint": "^8.44.0",
+    "@types/node": "18.17.0",
+    "@typescript-eslint/eslint-plugin": "6.2.0",
+    "@next/eslint-plugin-next": "^13.4.12",
+    "@typescript-eslint/parser": "6.2.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-config-turbo": "^1.10.9",
+    "eslint-plugin-react": "7.33.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^5.1.6"
+  }
+}

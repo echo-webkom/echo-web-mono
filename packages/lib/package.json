@@ -5,17 +5,24 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
-    "lint:fix": "pnpm lint --fix",
+    "lint": "eslint index.ts src",
+    "lint:fix": "eslint lint --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@echo-webkom/auth": "0.1.0",
-    "@echo-webkom/db": "0.1.0"
+    "@echo-webkom/db": "0.1.0",
+    "@types/node": "18.17.0"
   },
   "devDependencies": {
     "eslint": "^8.45.0",
-    "eslint-config-custom": "0.0.0",
+    "eslint-config-webkom": "0.0.0",
     "typescript": "^5.1.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base"
+    ]
   }
 }

@@ -1,17 +1,17 @@
-export type Route = {
+export interface Route {
   label: string;
   href: string;
   isExternal?: boolean;
   session?: boolean;
-};
+}
 
-export type RouteSection = {
+export interface RouteSection {
   label: string;
-  sublinks: Array<Route>;
+  sublinks: Route[];
   session?: boolean;
-};
+}
 
-export const headerRoutes: Array<RouteSection> = [
+export const headerRoutes: RouteSection[] = [
   {
     label: "For studenter",
     sublinks: [
@@ -101,7 +101,7 @@ export const headerRoutes: Array<RouteSection> = [
   },
 ];
 
-export const footerRoutes: Array<RouteSection> = [
+export const footerRoutes: RouteSection[] = [
   {
     label: "📞 Kontakt oss",
     sublinks: [
@@ -149,7 +149,7 @@ export const footerRoutes: Array<RouteSection> = [
   },
 ];
 
-export const adminRoutes: Array<Route> = [
+export const adminRoutes: Route[] = [
   {
     label: "Dashboard",
     href: "/admin",
