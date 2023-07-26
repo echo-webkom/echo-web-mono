@@ -1,20 +1,18 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
   extends: [
+    "next",
     "turbo",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier",
   ],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    ecmaVersion: "latest",
-  },
   rules: {
     eqeqeq: "error",
     "no-console": ["warn", {allow: ["warn", "error"]}],
     "eol-last": "error",
     "no-trailing-spaces": "error",
+    "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/restrict-template-expressions": "off",
@@ -31,8 +29,8 @@ const config = {
       {prefer: "type-imports", fixStyle: "inline-type-imports"},
     ],
   },
+  ignorePatterns: ["**/*.config.js", "**/*.config.cjs", "packages/config/**"],
   reportUnusedDisableDirectives: true,
-  ignorePatterns: ["node_modules", "dist", "coverage"],
 };
 
 module.exports = config;
