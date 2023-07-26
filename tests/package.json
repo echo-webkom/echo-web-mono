@@ -7,16 +7,9 @@
     "test:dev": "playwright test",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
-    "lint": "eslint web --ext .ts",
-    "lint:fix": "eslint lint --fix",
     "clean": "rm -rf node_modules playwright-report test-results"
   },
   "devDependencies": {
-    "@playwright/test": "^1.32.3",
-    "@types/node": "18.17.0",
-    "eslint": "^8.45.0",
-    "eslint-config-webkom": "workspace:*",
-    "tsconfig": "workspace:*",
-    "typescript": "^5.1.6"
+    "@playwright/test": "^1.32.3"
   }
 }
