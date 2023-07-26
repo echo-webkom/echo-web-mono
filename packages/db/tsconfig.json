@@ -1,4 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["client.ts", "types.ts", "queries"]
+  "extends": "tsconfig/base.json",
+  "include": [".eslintrc.cjs", "client.ts", "types.ts", "queries"]
 }
