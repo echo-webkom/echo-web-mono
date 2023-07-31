@@ -12,11 +12,11 @@
     "clean": "rm -rf node_modules playwright-report test-results"
   },
   "devDependencies": {
-    "@playwright/test": "^1.32.3",
+    "@playwright/test": "^1.36.2",
     "@types/node": "18.17.0",
-    "eslint": "^8.45.0",
+    "eslint": "^8.46.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "^5.1.6"
+    "typescript": "5.1.6"
   },
   "eslintConfig": {
     "root": true,

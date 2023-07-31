@@ -10,14 +10,14 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/auth": "0.1.0",
-    "@echo-webkom/db": "0.1.0",
+    "@echo-webkom/auth": "workspace:*",
+    "@echo-webkom/db": "workspace:*",
     "@types/node": "18.17.0"
   },
   "devDependencies": {
-    "eslint": "^8.45.0",
-    "eslint-config-webkom": "0.0.0",
-    "typescript": "^5.1.6"
+    "eslint": "^8.46.0",
+    "eslint-config-webkom": "workspace:*",
+    "typescript": "5.1.6"
   },
   "eslintConfig": {
     "root": true,

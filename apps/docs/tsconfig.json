@@ -1,31 +1,24 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.json",
-
   "compilerOptions": {
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "allowJs": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    }
   },
   "mdx": {
     "plugins": ["remark-gfm"]
   },
-
   "include": [
     "next-env.d.ts",
     ".eslintrc.cjs",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.mjs",
+    "tailwind.config.ts",
+    "theme.config.tsx",
+    "src",
+    "*.cjs",
+    "*.mjs",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
