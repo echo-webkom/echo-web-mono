@@ -81,8 +81,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.4)(styled-components@5.3.11)
       sanity-plugin-media:
-        specifier: ^2.2.1
-        version: 2.2.1(@types/react@18.2.17)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.4)(styled-components@5.3.11)
+        specifier: ^2.2.2
+        version: 2.2.2(@types/react@18.2.17)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.4)(styled-components@5.3.11)
       slugify:
         specifier: ^1.6.6
         version: 1.6.6
@@ -2300,14 +2300,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@hookform/resolvers@3.1.1(react-hook-form@7.45.1):
-    resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
-    peerDependencies:
-      react-hook-form: ^7.0.0
-    dependencies:
-      react-hook-form: 7.45.1(react@18.2.0)
-    dev: false
-
   /@hookform/resolvers@3.1.1(react-hook-form@7.45.2):
     resolution: {integrity: sha512-tS16bAUkqjITNSvbJuO1x7MXbn7Oe8ZziDTJdA9mMvsoYthnOOiznOTGBYwbdlYBgU+tgpI/BtTU3paRbCuSlg==}
     peerDependencies:
@@ -4102,27 +4094,6 @@ packages:
       '@sanity/icons': 2.4.1(react@18.2.0)
       csstype: 3.1.2
       framer-motion: 9.0.4(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-is: 18.2.0
-      react-refractor: 2.1.7(react@18.2.0)
-      styled-components: 5.3.11(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-    dev: false
-
-  /@sanity/ui@1.7.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11):
-    resolution: {integrity: sha512-N8X/4ZVVvSs4YmfJrfohWX1YtFq8ASnbIADw1/Ak9qQgBzJ7aazILfzxfmqy8HH5KcmXTpXFrZ5WKBIp4x3mWg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: ^18
-      react-dom: ^18
-      react-is: ^18
-      styled-components: ^5.2
-    dependencies:
-      '@floating-ui/react-dom': 2.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@sanity/color': 2.2.5
-      '@sanity/icons': 2.4.1(react@18.2.0)
-      csstype: 3.1.2
-      framer-motion: 10.14.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
@@ -10486,15 +10457,6 @@ packages:
       use-sidecar: 1.1.2(@types/react@18.2.17)(react@18.2.0)
     dev: false
 
-  /react-hook-form@7.45.1(react@18.2.0):
-    resolution: {integrity: sha512-6dWoFJwycbuFfw/iKMcl+RdAOAOHDiF11KWYhNDRN/OkUt+Di5qsZHwA0OwsVnu9y135gkHpTw9DJA+WzCeR9w==}
-    engines: {node: '>=12.22.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /react-hook-form@7.45.2(react@18.2.0):
     resolution: {integrity: sha512-9s45OdTaKN+4NSTbXVqeDITd/nwIg++nxJGL8+OD5uf1DxvhsXQ641kaYHk5K28cpIOTYm71O/fYk7rFaygb3A==}
     engines: {node: '>=12.22.0'}
@@ -11124,8 +11086,8 @@ packages:
       - react-is
     dev: false
 
-  /sanity-plugin-media@2.2.1(@types/react@18.2.17)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.4)(styled-components@5.3.11):
-    resolution: {integrity: sha512-Eghn2fkaOmZsbY38EWz1FFllCJn4UbEdgRl2l1mshtY8NyNxaO2P2rDCYa/giazVb46ta4EBJMY4KoxGknMebg==}
+  /sanity-plugin-media@2.2.2(@types/react@18.2.17)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.4)(styled-components@5.3.11):
+    resolution: {integrity: sha512-z453GUpxugtVg2jPV39eAU6wWXZ4PKPZ7Ewaq83M2SABeO+YHB2l1f+gtPjP3iJ7Mpf+8BQEg6lo/mPW2y0cTA==}
     engines: {node: '>=14'}
     peerDependencies:
       react: ^18
@@ -11133,10 +11095,10 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.3.3
     dependencies:
-      '@hookform/resolvers': 3.1.1(react-hook-form@7.45.1)
+      '@hookform/resolvers': 3.1.1(react-hook-form@7.45.2)
       '@reduxjs/toolkit': 1.9.3(react-redux@7.2.9)(react@18.2.0)
       '@sanity/incompatible-plugin': 1.0.4(react-dom@18.2.0)(react@18.2.0)
-      '@sanity/ui': 1.7.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      '@sanity/ui': 1.7.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/uuid': 3.0.1
       '@tanem/react-nprogress': 5.0.33(react-dom@18.2.0)(react@18.2.0)
       copy-to-clipboard: 3.3.3
@@ -11150,7 +11112,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-dropzone: 11.7.1(react@18.2.0)
       react-file-icon: 1.3.0(react-dom@18.2.0)(react@18.2.0)
-      react-hook-form: 7.45.1(react@18.2.0)
+      react-hook-form: 7.45.2(react@18.2.0)
       react-redux: 7.2.9(react-dom@18.2.0)(react@18.2.0)
       react-select: 5.7.2(@types/react@18.2.17)(react-dom@18.2.0)(react@18.2.0)
       react-virtuoso: 4.3.11(react-dom@18.2.0)(react@18.2.0)
