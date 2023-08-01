@@ -26,8 +26,6 @@ export default async function AdminDashboardLayout({children}: Props) {
       <div className="flex w-full flex-grow flex-row">
         <AdminSidebar>{children}</AdminSidebar>
       </div>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore Server Component */}
       <Footer />
     </div>
   );

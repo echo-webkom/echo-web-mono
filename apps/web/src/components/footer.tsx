@@ -3,18 +3,54 @@ import Link from "next/link";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
 import {sponsors} from "@/lib/sponsors";
-import {fetchFooter} from "@/sanity/settings";
 import {cn} from "@/utils/cn";
-
-export const dynamic = "force-static";
 
 interface FooterProps {
   className?: string;
 }
 
-export default async function Footer({className}: FooterProps) {
-  const footerSections = await fetchFooter();
+export const footerSections = [
+  {
+    title: "📞 Kontakt oss",
+    links: [
+      {
+        title: "echo@uib.no",
+        href: "mailto:echo@uib.no",
+      },
+      {
+        title: "Thormøhlens gate 55 5006 BERGEN",
+        href: "https://goo.gl/maps/adUsBsoZh3QqNvA36",
+      },
+      {
+        title: "Organisasjonsnummer: 998 995 035",
+        href: "https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035",
+      },
+      {
+        title: "Opplevd noe kjipt? Si ifra!",
+        href: "/for-students/si-ifra",
+      },
+    ],
+  },
+  {
+    title: "💻 Følg oss",
+    links: [
+      {
+        title: "Facebook",
+        href: "https://www.facebook.com/groups/informatikk",
+      },
+      {
+        title: "Instagram",
+        href: "https://www.instagram.com/echo_uib/",
+      },
+      {
+        title: "GitHub",
+        href: "https://github.com/echo-webkom/new-echo-web-monorepo",
+      },
+    ],
+  },
+];
 
+export default function Footer({className}: FooterProps) {
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -43,14 +79,14 @@ export default async function Footer({className}: FooterProps) {
                 <div key={section.title}>
                   <h3 className="mb-4 py-2 text-xl font-bold">{section.title}</h3>
                   <ul className="space-y-1">
-                    {section.links.map(({title, link}) => {
-                      const isExternal = !link?.startsWith("/");
+                    {section.links.map(({title, href}) => {
+                      const isExternal = !href?.startsWith("/");
 
                       return (
                         <li key={title}>
                           <Link
                             className="flex items-center gap-2 text-black/80 hover:underline"
-                            href={link}
+                            href={href}
                             {...(isExternal && {
                               target: "_blank",
                               rel: "noreferrer",
@@ -58,7 +94,6 @@ export default async function Footer({className}: FooterProps) {
                           >
                             {title}
 
-                            {/* Add external link icon */}
                             {isExternal && (
                               <span>
                                 <ExternalLinkIcon />
