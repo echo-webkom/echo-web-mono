@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 
 import {authOptions} from "@echo-webkom/auth";
 
+// FIXME: WTF?
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const handler = NextAuth(authOptions);
 

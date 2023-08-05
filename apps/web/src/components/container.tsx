@@ -1,9 +1,9 @@
 import {cn} from "@/utils/cn";
 
-type ContainerProps = {
+interface ContainerProps {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 export default function Container({className, children}: ContainerProps) {
   return (

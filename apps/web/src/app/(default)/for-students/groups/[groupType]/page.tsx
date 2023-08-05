@@ -11,11 +11,11 @@ import {
   studentGroupTypeToUrl,
 } from "@/sanity/student-group";
 
-type Props = {
+interface Props {
   params: {
     groupType: string;
   };
-};
+}
 
 export function generateMetadata({params}: Props) {
   const {groupType} = params;

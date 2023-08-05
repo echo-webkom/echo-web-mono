@@ -5,9 +5,9 @@ import Header from "@/components/header";
 import {getUser} from "@/lib/session";
 import AdminSidebar from "./sidebar";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 export const metadata = {
   title: "Admin",

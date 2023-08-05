@@ -18,11 +18,11 @@ import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
 export async function generateMetadata({params}: Props) {
   const event = await fetchEventBySlug(params.slug);

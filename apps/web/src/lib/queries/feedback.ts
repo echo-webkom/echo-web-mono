@@ -1,7 +1,5 @@
-import {cache} from "react";
-
 import {prisma} from "@echo-webkom/db/client";
 
-export const getAllFeedback = cache(async () => {
+export const getAllFeedback = async () => {
   return await prisma.siteFeedback.findMany();
-});
+};

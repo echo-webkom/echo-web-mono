@@ -19,11 +19,11 @@ import {getUser} from "@/lib/session";
 import {fetchBedpresBySlug} from "@/sanity/bedpres";
 import {urlFor} from "@/utils/image-builder";
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
 export async function generateMetadata({params}: Props) {
   const bedpres = await fetchBedpresBySlug(params.slug);

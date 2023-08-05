@@ -14,6 +14,8 @@
     "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
     "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
     "docker:up": "docker-compose up -d",
+    "lint": "eslint .",
+    "lint:fix": "eslint lint --fix",
     "docker:down": "docker-compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
     "with-env": "dotenv -e ../../.env --"
@@ -22,8 +24,16 @@
     "@prisma/client": "^5.0.0"
   },
   "devDependencies": {
+    "@types/node": "18.17.0",
     "dotenv-cli": "7.2.1",
+    "eslint-config-webkom": "workspace:*",
     "prisma": "^5.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "5.1.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base"
+    ]
   }
 }

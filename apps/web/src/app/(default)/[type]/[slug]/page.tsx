@@ -5,12 +5,12 @@ import Markdown from "@/components/markdown";
 import Heading from "@/components/ui/heading";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths} from "@/sanity/static-info";
 
-type Props = {
+interface Props {
   params: {
     type: string;
     slug: string;
   };
-};
+}
 
 async function getData(slug: string) {
   const page = await fetchStaticInfoBySlug(slug);

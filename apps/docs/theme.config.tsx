@@ -9,7 +9,7 @@ const config = {
         <Image src="/images/webkom.png" alt="echo Webkom" width={48} height={48} />
         <span>echo Webkom</span>
       </div>
-      <style jsx>{`
+      <style>{`
         .header-logo {
           display: flex;
           align-items: center;
@@ -66,7 +66,7 @@ const config = {
         <p>
           Vi søker nye medlemmer! <a href="https://verv.echo-webkom.no">Les mer her</a>
         </p>
-        <style jsx>{`
+        <style>{`
           a {
             text-decoration: underline;
 

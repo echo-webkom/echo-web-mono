@@ -12,11 +12,11 @@ import {capitalize} from "@/utils/string";
 type HappeningPreviewBoxProps =
   | {
       type: "EVENT";
-      happenings: Array<Event>;
+      happenings: Event[];
     }
   | {
       type: "BEDPRES";
-      happenings: Array<Bedpres>;
+      happenings: Bedpres[];
     };
 
 type HappeningType = HappeningPreviewBoxProps["type"];
@@ -54,9 +54,9 @@ export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps
   );
 }
 
-type EventPreviewProps = {
+interface EventPreviewProps {
   event: Event;
-};
+}
 
 export function EventPreview({event}: EventPreviewProps) {
   return (
@@ -90,9 +90,9 @@ export function EventPreview({event}: EventPreviewProps) {
   );
 }
 
-type BedpresPreviewProps = {
+interface BedpresPreviewProps {
   bedpres: Bedpres;
-};
+}
 
 export function BedpresPreview({bedpres}: BedpresPreviewProps) {
   return (

@@ -35,7 +35,7 @@ const organizerSlugToGroup = (slug: string) => {
   }
 };
 
-const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
+const updateOrCreateBedpres = async (happenings: Bedpres[]) => {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -94,7 +94,7 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
   );
 };
 
-const updateOrCreateEvent = async (happenings: Array<Event>) => {
+const updateOrCreateEvent = async (happenings: Event[]) => {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -122,7 +122,7 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
           },
           groups: happening.organizers
             .map((organizer) => organizerSlugToGroup(organizer.slug))
-            .filter((group) => group !== null) as Array<Group>,
+            .filter((group) => group !== null) as Group[],
           date: happening.date,
           registrationStart: happening.registrationStart,
           registrationEnd: happening.registrationEnd,

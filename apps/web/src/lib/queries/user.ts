@@ -1,15 +1,14 @@
-import {cache} from "react";
 import {type User} from "@prisma/client";
 
 import {prisma} from "@echo-webkom/db/client";
 
-export const getUserById = cache(async (id: User["id"]) => {
+export const getUserById = async (id: User["id"]) => {
   return await prisma.user.findUnique({
     where: {id},
   });
-});
+};
 
-export const getUserRegistrations = cache(async (id: User["id"]) => {
+export const getUserRegistrations = async (id: User["id"]) => {
   return await prisma.registration.findMany({
     where: {
       userId: id,
@@ -30,8 +29,8 @@ export const getUserRegistrations = cache(async (id: User["id"]) => {
       },
     },
   });
-});
+};
 
-export const getAllUsers = cache(async () => {
+export const getAllUsers = async () => {
   return await prisma.user.findMany();
-});
+};

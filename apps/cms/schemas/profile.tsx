@@ -34,7 +34,7 @@ export default defineType({
                 return true;
               }
 
-              const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+              const emailRegex = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/;
               if (url && emailRegex.test(url)) {
                 return true;
               }

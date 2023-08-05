@@ -30,13 +30,7 @@ import {useRegistration} from "@/hooks/use-registration";
 import {toast} from "@/hooks/use-toast";
 import {type RegistrationForm} from "@/lib/schemas/registration";
 
-export default function RegisterButton({
-  slug,
-  questions,
-}: {
-  slug: string;
-  questions: Array<Question>;
-}) {
+export default function RegisterButton({slug, questions}: {slug: string; questions: Question[]}) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const {register, isLoading} = useRegistration(slug, {

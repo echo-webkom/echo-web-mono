@@ -15,11 +15,12 @@
   },
   "include": [
     "next-env.d.ts",
+    ".eslintrc.cjs",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
   ],
-  "exclude": []
+  "exclude": ["node_modules"]
 }

@@ -13,10 +13,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/auth": "0.1.0",
-    "@echo-webkom/db": "0.1.0",
-    "@echo-webkom/lib": "0.1.0",
-    "@echo-webkom/tailwind-config": "0.1.0",
+    "@echo-webkom/auth": "workspace:*",
+    "@echo-webkom/db": "workspace:*",
+    "@echo-webkom/lib": "workspace:*",
     "@hookform/resolvers": "^3.1.1",
     "@next/bundle-analyzer": "^13.4.12",
     "@radix-ui/react-accordion": "1.1.2",
@@ -59,15 +58,26 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/node": "18.17.1",
-    "@types/react": "18.2.17",
+    "@tailwindcss/forms": "0.5.4",
+    "@tailwindcss/typography": "0.5.9",
+    "@types/node": "18.17.0",
+    "@types/react": "18.2.0",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "dotenv-cli": "7.2.1",
-    "eslint": "^8.45.0",
-    "eslint-config-custom": "0.0.0",
+    "eslint": "^8.46.0",
+    "eslint-config-webkom": "workspace:*",
     "postcss": "^8.4.27",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.1.6"
+    "tailwindcss-animate": "1.0.6",
+    "typescript": "5.1.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base",
+      "webkom/react",
+      "webkom/nextjs"
+    ]
   }
 }

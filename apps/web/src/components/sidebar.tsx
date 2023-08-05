@@ -2,10 +2,10 @@ import React from "react";
 
 import {cn} from "@/utils/cn";
 
-type SidebarProps = {
+interface SidebarProps {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
   ({className, children}, ref) => {
@@ -29,10 +29,10 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 );
 Sidebar.displayName = "Sidebar";
 
-type SidebarItemProps = {
+interface SidebarItemProps {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
   ({className, children}, ref) => {
@@ -45,10 +45,10 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
 );
 SidebarItem.displayName = "SidebarItem";
 
-type SidebarItemTitleProps = {
+interface SidebarItemTitleProps {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 export const SidebarItemTitle = React.forwardRef<HTMLHeadingElement, SidebarItemTitleProps>(
   ({className, children}, ref) => {
@@ -61,10 +61,10 @@ export const SidebarItemTitle = React.forwardRef<HTMLHeadingElement, SidebarItem
 );
 SidebarItemTitle.displayName = "SidebarItemTitle";
 
-type SidebarItemContentProps = {
+interface SidebarItemContentProps {
   className?: string;
   children: React.ReactNode;
-};
+}
 
 export const SidebarItemContent = React.forwardRef<HTMLDivElement, SidebarItemContentProps>(
   ({className, children}, ref) => {

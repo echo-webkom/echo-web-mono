@@ -6,17 +6,17 @@ const responseSchema = z.object({
   description: z.string(),
 });
 
-type Data = {
-  questions: Array<{
+interface Data {
+  questions: {
     question: string;
     answer?: string;
-  }>;
-};
+  }[];
+}
 
-type RegisterOpts = {
+interface RegisterOpts {
   onSuccess?: (data: z.infer<typeof responseSchema>) => void;
   onError?: (error: string) => void;
-};
+}
 
 export function useRegistration(slug: string, {onSuccess, onError}: RegisterOpts) {
   const [isLoading, setIsLoading] = useState<boolean>(false);

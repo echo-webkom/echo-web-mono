@@ -5,14 +5,14 @@ const responseSchema = z.object({
   title: z.string(),
 });
 
-type Data = {
+interface Data {
   reason: string;
-};
+}
 
-type RegisterOpts = {
+interface RegisterOpts {
   onSuccess?: (data: z.infer<typeof responseSchema>) => void;
   onError?: (error: string) => void;
-};
+}
 
 export function useDeregistration(slug: string, {onSuccess, onError}: RegisterOpts) {
   const [isLoading, setIsLoading] = useState<boolean>(false);

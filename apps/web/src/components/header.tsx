@@ -33,6 +33,7 @@ export default function Header() {
         <div
           className="fixed left-0 top-0 z-[1] h-full w-full bg-black bg-opacity-20 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
 

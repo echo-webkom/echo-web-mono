@@ -24,10 +24,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type User = {
+export interface User {
   name: DbUser["name"];
   role: DbUser["role"];
-};
+}
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -38,7 +38,7 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "studentGroups",
     header: "Studentgrupper",
     cell: ({row}) => {
-      const groups = row.getValue<Array<Group>>("studentGroups");
+      const groups = row.getValue<Group[]>("studentGroups");
 
       return (
         <div>
