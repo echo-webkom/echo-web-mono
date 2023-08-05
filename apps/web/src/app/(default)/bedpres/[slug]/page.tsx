@@ -4,7 +4,7 @@ import {notFound} from "next/navigation";
 import {ArrowRightIcon, ExternalLinkIcon} from "@radix-ui/react-icons";
 import {isAfter, isBefore} from "date-fns";
 
-import {prisma} from "@echo-webkom/db/client";
+import {prisma} from "@echo-webkom/db";
 
 import Container from "@/components/container";
 import DeregisterButton from "@/components/deregister-button";

@@ -17,7 +17,7 @@ export default async function ProfilePage() {
   const user = await getUser();
 
   if (!user) {
-    redirect("/auth/sign-in");
+    return redirect("/auth/sign-in");
   }
 
   const registrations = await getUserRegistrations(user.id);
@@ -89,6 +89,6 @@ export default async function ProfilePage() {
   );
 }
 
-function Tag({children}: {children: React.ReactNode}) {
+const Tag = ({children}: {children: React.ReactNode}) => {
   return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
-}
+};

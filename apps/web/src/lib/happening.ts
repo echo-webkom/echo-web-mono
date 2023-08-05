@@ -1,4 +1,4 @@
-import {type Group, type Happening, type User} from "@echo-webkom/db/types";
+import {type Group, type Happening, type User} from "@echo-webkom/db";
 
 export const isEventOrganizer = (user: User, happening: Happening): boolean => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion

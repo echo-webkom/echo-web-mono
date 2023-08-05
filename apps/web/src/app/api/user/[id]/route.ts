@@ -1,7 +1,6 @@
 import {z} from "zod";
 
-import {prisma} from "@echo-webkom/db/client";
-import {Degree} from "@echo-webkom/db/types";
+import {Degree, prisma} from "@echo-webkom/db";
 
 import {getUser} from "@/lib/session";
 

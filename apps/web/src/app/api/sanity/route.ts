@@ -1,7 +1,6 @@
 import {NextResponse} from "next/server";
 
-import {prisma} from "@echo-webkom/db/client";
-import {type Group} from "@echo-webkom/db/types";
+import {prisma, type Group} from "@echo-webkom/db";
 
 import {withBasicAuth} from "@/lib/checks/with-basic-auth";
 import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";

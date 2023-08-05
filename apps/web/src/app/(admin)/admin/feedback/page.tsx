@@ -1,4 +1,4 @@
-import {type SiteFeedback} from "@echo-webkom/db/types";
+import {type SiteFeedback} from "@echo-webkom/db";
 
 import Container from "@/components/container";
 import Heading from "@/components/ui/heading";

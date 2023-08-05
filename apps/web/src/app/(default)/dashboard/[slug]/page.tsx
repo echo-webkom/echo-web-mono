@@ -1,8 +1,7 @@
 import Link from "next/link";
 import {notFound} from "next/navigation";
 
-import {prisma} from "@echo-webkom/db/client";
-import {type Prisma} from "@echo-webkom/db/types";
+import {prisma, type Prisma} from "@echo-webkom/db";
 import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
 import Container from "@/components/container";

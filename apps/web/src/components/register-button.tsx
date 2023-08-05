@@ -6,7 +6,7 @@ import {Label} from "@radix-ui/react-label";
 import {Controller, useForm} from "react-hook-form";
 import {AiOutlineLoading} from "react-icons/ai";
 
-import {type Question} from "@echo-webkom/db/types";
+import {type Question} from "@echo-webkom/db";
 
 import {Button} from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Input from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 import {
   Select,
   SelectContent,
