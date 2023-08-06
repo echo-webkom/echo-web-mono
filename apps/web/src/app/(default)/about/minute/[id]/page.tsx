@@ -1,33 +1,33 @@
 import {type Metadata} from "next";
 
-import Container from "@/components/container";
+import {Container} from "@/components/container";
 import {Button} from "@/components/ui/button";
-import Heading from "@/components/ui/heading";
+import {Heading} from "@/components/ui/heading";
 import {fetchMinuteById, fetchMinuteParams} from "@/sanity/minutes";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-interface Props {
+type Props = {
   params: {
     id: string;
   };
-}
+};
 
-async function getData(id: string) {
+const getData = async (id: string) => {
   return await fetchMinuteById(id);
-}
+};
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   return await fetchMinuteParams();
-}
+};
 
-export async function generateMetadata({params}: Props): Promise<Metadata> {
+export const generateMetadata = async ({params}: Props): Promise<Metadata> => {
   const {title} = await getData(params.id);
   return {
     title,
   };
-}
+};
 
 export default async function MinutePage({params}: Props) {
   const minute = await getData(params.id);

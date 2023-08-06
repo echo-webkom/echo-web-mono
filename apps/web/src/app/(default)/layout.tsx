@@ -1,11 +1,11 @@
 import {type ReactNode} from "react";
 
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+import {Footer} from "@/components/footer";
+import {Header} from "@/components/header";
 
-interface DefaultLayoutProps {
+type DefaultLayoutProps = {
   children: ReactNode;
-}
+};
 
 export default function DefaultLayout({children}: DefaultLayoutProps) {
   return (

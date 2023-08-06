@@ -7,11 +7,11 @@ import {jobTypeToString, type JobAd} from "@/sanity/job-ad";
 import {cn} from "@/utils/cn";
 import {urlFor} from "@/utils/image-builder";
 
-interface JobAdPreviewProps {
+type JobAdPreviewProps = {
   jobAd: JobAd;
-}
+};
 
-export default function JobAdPreview({jobAd}: JobAdPreviewProps) {
+export const JobAdPreview = ({jobAd}: JobAdPreviewProps) => {
   return (
     <Link href={`/for-students/job/${jobAd.slug}`}>
       <div
@@ -61,4 +61,4 @@ export default function JobAdPreview({jobAd}: JobAdPreviewProps) {
       </div>
     </Link>
   );
-}
+};

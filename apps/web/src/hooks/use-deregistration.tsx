@@ -5,16 +5,16 @@ const responseSchema = z.object({
   title: z.string(),
 });
 
-interface Data {
+type Data = {
   reason: string;
-}
+};
 
-interface RegisterOpts {
+type RegisterOpts = {
   onSuccess?: (data: z.infer<typeof responseSchema>) => void;
   onError?: (error: string) => void;
-}
+};
 
-export function useDeregistration(slug: string, {onSuccess, onError}: RegisterOpts) {
+export const useDeregistration = (slug: string, {onSuccess, onError}: RegisterOpts) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSucess, setIsSucess] = useState<boolean>(false);
@@ -48,4 +48,4 @@ export function useDeregistration(slug: string, {onSuccess, onError}: RegisterOp
   );
 
   return {isSucess, isLoading, error, deregister};
-}
+};

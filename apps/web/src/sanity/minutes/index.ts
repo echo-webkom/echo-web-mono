@@ -20,7 +20,7 @@ export const fetchMinutes = async () => {
 }
     `;
 
-  const result = await serverFetch<Minute[]>(query);
+  const result = await serverFetch<Array<Minute>>(query);
 
   return minuteSchema.array().parse(result);
 };
@@ -37,7 +37,7 @@ export const fetchMinuteParams = async () => {
 }
     `;
 
-  const result = await serverFetch<{id: string}[]>(query);
+  const result = await serverFetch<Array<{id: string}>>(query);
 
   // TODO: Make pretty
   return z

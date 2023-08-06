@@ -25,7 +25,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await serverFetch<{slug: string; groupType: StudentGroupType}[]>(query);
+  const result = await serverFetch<Array<{slug: string; groupType: StudentGroupType}>>(query);
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),
@@ -80,7 +80,7 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
     n,
   };
 
-  const res = await serverFetch<StudentGroup[]>(query, params);
+  const res = await serverFetch<Array<StudentGroup>>(query, params);
 
   return studentGroupSchema.array().parse(res);
 };

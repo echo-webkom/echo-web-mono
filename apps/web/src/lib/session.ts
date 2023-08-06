@@ -4,7 +4,7 @@ import {authOptions} from "@echo-webkom/auth";
 
 import {getUserById} from "./queries/user";
 
-export async function getUser() {
+export const getUser = async () => {
   const session = await _getServerSession(authOptions);
 
   if (!session) {
@@ -18,4 +18,4 @@ export async function getUser() {
   }
 
   return user;
-}
+};

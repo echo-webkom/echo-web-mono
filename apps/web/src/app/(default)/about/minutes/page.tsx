@@ -3,8 +3,8 @@ import {ArrowRightIcon} from "@radix-ui/react-icons";
 import {format} from "date-fns";
 import nb from "date-fns/locale/nb";
 
-import Container from "@/components/container";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {Heading} from "@/components/ui/heading";
 import {fetchMinutes} from "@/sanity/minutes";
 
 export const dynamic = "force-static";

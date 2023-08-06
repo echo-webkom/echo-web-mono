@@ -1,12 +1,12 @@
 import {cn} from "@/utils/cn";
 
-export interface HeadingProps {
+export type HeadingProps = {
   level?: 1 | 2 | 3 | 4;
   className?: string;
   children: React.ReactNode;
-}
+};
 
-export default function Heading({level = 1, className, children}: HeadingProps) {
+export const Heading = ({level = 1, className, children}: HeadingProps) => {
   const Comp = `h${level}` as const;
 
   return (
@@ -25,4 +25,4 @@ export default function Heading({level = 1, className, children}: HeadingProps) 
       {children}
     </Comp>
   );
-}
+};

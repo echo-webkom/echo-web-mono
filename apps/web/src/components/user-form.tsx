@@ -29,7 +29,7 @@ const userSchema = z.object({
 
 type FormData = z.infer<typeof userSchema>;
 
-export default function UserForm({
+export const UserForm = ({
   alternativeEmail,
   degree,
   year,
@@ -39,7 +39,7 @@ export default function UserForm({
   degree?: Degree;
   year?: number;
   id: string;
-}) {
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {toast} = useToast();
@@ -154,4 +154,4 @@ export default function UserForm({
       </div>
     </form>
   );
-}
+};

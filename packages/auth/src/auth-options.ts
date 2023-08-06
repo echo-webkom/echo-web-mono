@@ -29,22 +29,21 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/sign-in",
   },
+
   callbacks: {
-    session({session, user}) {
-      if (session.user) {
-        session.user.id = user.id;
-        session.user.role = user.role;
-        session.user.alternativeEmail = user.alternativeEmail;
-        session.user.degree = user.degree;
-        session.user.year = user.year;
-      }
-      return session;
-    },
+    session: ({session, user}) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+      },
+    }),
   },
-  adapter: PrismaAdapter(prisma),
+
   providers: [
     {
       id: "feide",
@@ -67,18 +66,10 @@ export const authOptions: NextAuthOptions = {
           email: string;
           picture: string;
         } & User,
-      ) => {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-          alternativeEmail: profile.alternativeEmail,
-          role: profile.role,
-          degree: profile.degree,
-          year: profile.year,
-        };
-      },
+      ) => ({
+        ...profile,
+        id: profile.sub,
+      }),
     },
   ],
 };

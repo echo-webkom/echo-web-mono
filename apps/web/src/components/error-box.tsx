@@ -6,7 +6,7 @@ import {AnimatePresence, motion} from "framer-motion";
 
 import {cn} from "@/utils/cn";
 
-export default function ErrorBox({error}: {error: Error}) {
+export const ErrorBox = ({error}: {error: Error}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -45,4 +45,4 @@ export default function ErrorBox({error}: {error: Error}) {
       </AnimatePresence>
     </div>
   );
-}
+};

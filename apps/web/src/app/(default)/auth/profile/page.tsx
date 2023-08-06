@@ -8,8 +8,8 @@ import {
   registrationStatusToString,
 } from "@echo-webkom/lib";
 
-import Container from "@/components/container";
-import UserForm from "@/components/user-form";
+import {Container} from "@/components/container";
+import {UserForm} from "@/components/user-form";
 import {getUserRegistrations} from "@/lib/queries/user";
 import {getUser} from "@/lib/session";
 

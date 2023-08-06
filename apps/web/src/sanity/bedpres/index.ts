@@ -56,7 +56,7 @@ export const fetchUpcomingBedpresses = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await serverFetch<Bedpres[]>(query, params);
+  const res = await serverFetch<Array<Bedpres>>(query, params);
 
   return bedpresSchema.array().parse(res);
 };
@@ -117,7 +117,7 @@ export const fetchBedpresBySlug = async (slug: string) => {
   return bedpresSchema.parse(res);
 };
 
-export const $fetchAllBedpresses = async (): Promise<Bedpres[] | ErrorMessage> => {
+export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessage> => {
   try {
     const query = groq`
 *[_type == "bedpres"

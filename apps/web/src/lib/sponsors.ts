@@ -1,10 +1,10 @@
-interface Sponsor {
+type Sponsor = {
   label: string;
   href: string;
   imageSrc: string;
-}
+};
 
-const createSponsorArray = <T extends readonly Sponsor[] & {label: V}[], V extends string>(
+const createSponsorArray = <T extends ReadonlyArray<Sponsor> & Array<{label: V}>, V extends string>(
   ...args: T
 ) => {
   return args;

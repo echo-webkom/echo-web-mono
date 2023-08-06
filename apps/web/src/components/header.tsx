@@ -7,11 +7,11 @@ import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
 import {signIn, useSession} from "next-auth/react";
 
 import {headerRoutes} from "@/lib/routes";
-import HeaderLogo from "./header-logo";
-import ProfileIcon from "./profile-icon";
+import {HeaderLogo} from "./header-logo";
+import {ProfileIcon} from "./profile-icon";
 import {Button} from "./ui/button";
 
-export default function Header() {
+export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {data: session} = useSession();
@@ -85,9 +85,9 @@ export default function Header() {
       <hr />
     </header>
   );
-}
+};
 
-function HeaderMenuItem({children, href}: {children: React.ReactNode; href: string}) {
+const HeaderMenuItem = ({children, href}: {children: React.ReactNode; href: string}) => {
   return (
     <li>
       <Link
@@ -98,4 +98,4 @@ function HeaderMenuItem({children, href}: {children: React.ReactNode; href: stri
       </Link>
     </li>
   );
-}
+};

@@ -19,9 +19,9 @@ import {
 } from "./ui/dialog";
 import {Input} from "./ui/input";
 import {Label} from "./ui/label";
-import Textarea from "./ui/textarea";
+import {Textarea} from "./ui/textarea";
 
-const Feedback = () => {
+export const Feedback = () => {
   const {toast} = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -151,5 +151,3 @@ const Feedback = () => {
     </Dialog>
   );
 };
-
-export default Feedback;

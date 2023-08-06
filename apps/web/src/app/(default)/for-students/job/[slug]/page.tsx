@@ -1,7 +1,9 @@
-import Container from "@/components/container";
-import Markdown from "@/components/markdown";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {Markdown} from "@/components/markdown";
+import {Heading} from "@/components/ui/heading";
 import {fetchJobAdBySlug} from "@/sanity/job-ad";
+
+// FIX SEO
 
 export default async function JobAdPage({params}: {params: {slug: string}}) {
   const jobAd = await fetchJobAdBySlug(params.slug);

@@ -1,26 +1,26 @@
 import {type Metadata} from "next";
 import Image from "next/image";
 
-import Container from "@/components/container";
-import Markdown from "@/components/markdown";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {Markdown} from "@/components/markdown";
+import {Heading} from "@/components/ui/heading";
 import {fetchPostBySlug, fetchPostParams, type Author} from "@/sanity/posts";
 import {urlFor} from "@/utils/image-builder";
 
-interface Props {
+type Props = {
   params: {slug: string};
-}
+};
 
-function fetchData(slug: string) {
-  return fetchPostBySlug(slug);
-}
+const getData = async (slug: string) => {
+  return await fetchPostBySlug(slug);
+};
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   return await fetchPostParams();
-}
+};
 
-export async function generateMetadata({params}: Props): Promise<Metadata> {
-  const post = await fetchData(params.slug);
+export const generateMetadata = async ({params}: Props): Promise<Metadata> => {
+  const post = await getData(params.slug);
 
   const authors = post.authors?.map((author) => {
     return {
@@ -32,10 +32,10 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
     title: post.title,
     authors,
   };
-}
+};
 
 export default async function PostPage({params}: Props) {
-  const post = await fetchData(params.slug);
+  const post = await getData(params.slug);
 
   return (
     <Container>
@@ -50,7 +50,7 @@ export default async function PostPage({params}: Props) {
   );
 }
 
-function Authors({authors}: {authors: Author[]}) {
+const Authors = ({authors}: {authors: Array<Author>}) => {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xl font-bold">Publisert av:</p>
@@ -74,4 +74,4 @@ function Authors({authors}: {authors: Author[]}) {
       </div>
     </div>
   );
-}
+};

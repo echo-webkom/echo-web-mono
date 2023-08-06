@@ -4,11 +4,11 @@ import "@/styles/globals.css";
 
 import {type Metadata} from "next";
 
-import Feedback from "@/components/feedback";
+import {Feedback} from "@/components/feedback";
 import {Toaster} from "@/components/toaster";
 import {baseURL} from "@/config";
 import {cn} from "@/utils/cn";
-import AuthProvider from "./auth-provider";
+import {Providers} from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,11 +27,11 @@ const ibmPlexMonoDisplay = IBM_Plex_Mono({
   variable: "--inter-display-font",
 });
 
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: React.ReactNode;
-}
+};
 
-export const metadata: Metadata = {
+export const metadata = {
   metadataBase: new URL(baseURL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: "echo",
   },
-};
+} satisfies Metadata;
 
 export default function RootLayout({children}: RootLayoutProps) {
   return (
@@ -64,11 +64,11 @@ export default function RootLayout({children}: RootLayoutProps) {
           ibmPlexMonoDisplay.variable,
         )}
       >
-        <AuthProvider>
+        <Providers>
           {children}
           <Toaster />
           <Feedback />
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

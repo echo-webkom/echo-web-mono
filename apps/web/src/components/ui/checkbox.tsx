@@ -6,7 +6,7 @@ import {CheckIcon} from "@radix-ui/react-icons";
 
 import {cn} from "@/utils/cn";
 
-const Checkbox = React.forwardRef<
+export const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
 >(({className, ...props}, ref) => (
@@ -24,5 +24,3 @@ const Checkbox = React.forwardRef<
   </CheckboxPrimitive.Root>
 ));
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
-
-export {Checkbox};

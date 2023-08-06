@@ -4,7 +4,7 @@ import {prisma} from "@echo-webkom/db";
 
 import {feedbackSchema} from "@/lib/schemas/feedback";
 
-export async function POST(req: Request) {
+export const POST = async (req: Request) => {
   try {
     const payload = feedbackSchema.parse(await req.json());
 
@@ -24,4 +24,4 @@ export async function POST(req: Request) {
 
     return new Response(null, {status: 500});
   }
-}
+};
