@@ -5,7 +5,6 @@ const withNextra = nextra({
   themeConfig: "./theme.config.tsx",
   latex: true,
   defaultShowCopyCode: true,
-  readingTime: true,
 });
 
 export default withNextra({

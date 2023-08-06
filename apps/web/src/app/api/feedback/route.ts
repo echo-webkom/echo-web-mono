@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-import {prisma} from "@echo-webkom/db/client";
+import {prisma} from "@echo-webkom/db";
 
 import {feedbackSchema} from "@/lib/schemas/feedback";
 

@@ -4,7 +4,7 @@ import {
   type HappeningType,
   type RegistrationStatus,
   type Role,
-} from "@echo-webkom/db/types";
+} from "@echo-webkom/db";
 
 export const degreeToString: Record<Degree, string> = {
   DTEK: "Datateknologi",

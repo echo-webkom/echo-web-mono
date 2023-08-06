@@ -6,13 +6,13 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Controller, useForm} from "react-hook-form";
 import {z} from "zod";
 
-import {Degree} from "@echo-webkom/db/types";
+import {Degree} from "@echo-webkom/db/enums";
 import {degreeToString} from "@echo-webkom/lib";
 
 import {useToast} from "@/hooks/use-toast";
 import {Button} from "./ui/button";
-import Input from "./ui/input";
-import Label from "./ui/label";
+import {Input} from "./ui/input";
+import {Label} from "./ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./ui/select";
 
 const userSchema = z.object({
@@ -83,6 +83,7 @@ export default function UserForm({
 
       router.refresh();
     },
+
     () => {
       toast({
         title: "Noe gikk galt",
@@ -96,8 +97,9 @@ export default function UserForm({
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         <Label htmlFor="alternativeEmail">Alternativ e-post</Label>
-        <Input type="email" {...methods.register("alternativeEmail")} />
+        <Input placeholder="Din e-post" type="email" {...methods.register("alternativeEmail")} />
       </div>
+
       <div className="flex flex-col gap-1">
         <Label htmlFor="degree">Studieretning</Label>
         <Controller
@@ -119,6 +121,7 @@ export default function UserForm({
           )}
         />
       </div>
+
       <div className="flex flex-col gap-1">
         <Label htmlFor="year">Årstrinn</Label>
         <Controller
@@ -127,7 +130,7 @@ export default function UserForm({
           render={({field}) => (
             <Select
               value={field.value?.toString()}
-              onValueChange={(e) => field.onChange(parseInt(e))}
+              onValueChange={(e) => field.onChange(Number(e))}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Velg årstrinn" />

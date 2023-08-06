@@ -62,20 +62,12 @@ const config = {
     dismissible: true,
     key: "echo-webkom-announcement",
     text: (
-      <>
-        <p>
-          Vi søker nye medlemmer! <a href="https://verv.echo-webkom.no">Les mer her</a>
-        </p>
-        <style>{`
-          a {
-            text-decoration: underline;
-
-            &:hover {
-              text-decoration: none;
-            }
-          }
-        `}</style>
-      </>
+      <p>
+        Vi søker nye medlemmer!{" "}
+        <a className="underline hover:no-underline" href="https://verv.echo-webkom.no">
+          Les mer her
+        </a>
+      </p>
     ),
   },
 } satisfies DocsThemeConfig;

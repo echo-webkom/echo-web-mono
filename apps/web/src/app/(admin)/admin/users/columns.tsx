@@ -3,7 +3,7 @@
 import {DotsHorizontalIcon} from "@radix-ui/react-icons";
 import {type ColumnDef} from "@tanstack/react-table";
 
-import {type User as DbUser, type Group} from "@echo-webkom/db/types";
+import {type User as DbUser, type Group} from "@echo-webkom/db";
 import {groupToString, roleToString} from "@echo-webkom/lib";
 
 import {Button} from "@/components/ui/button";

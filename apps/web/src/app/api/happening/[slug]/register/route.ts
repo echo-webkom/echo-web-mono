@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
 import {z} from "zod";
 
-import {prisma} from "@echo-webkom/db/client";
+import {prisma} from "@echo-webkom/db";
 
 import {withSession} from "@/lib/checks/with-session";
 

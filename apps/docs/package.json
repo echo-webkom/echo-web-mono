@@ -6,7 +6,7 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "lint": "next lint",
-    "start": "next start",
+    "start": "next start --port 3001",
     "clean": "rm -rf .next .turbo node_modules",
     "type-check": "tsc --noEmit"
   },
