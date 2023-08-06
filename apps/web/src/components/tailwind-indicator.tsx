@@ -1,6 +1,6 @@
 import {env} from "@/env.mjs";
 
-const TailwindIndicator = () => {
+export const TailwindIndicator = () => {
   if (env.NODE_ENV === "production") return null;
 
   return (
@@ -14,5 +14,3 @@ const TailwindIndicator = () => {
     </div>
   );
 };
-
-export default TailwindIndicator;

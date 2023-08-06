@@ -1,7 +1,7 @@
 import {type SiteFeedback} from "@echo-webkom/db";
 
-import Container from "@/components/container";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {Heading} from "@/components/ui/heading";
 import {getAllFeedback} from "@/lib/queries/feedback";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export default async function FeedbackOverview() {
   );
 }
 
-function Feedback({feedback}: {feedback: SiteFeedback}) {
+const Feedback = ({feedback}: {feedback: SiteFeedback}) => {
   return (
     <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
       <p className="text-xs text-muted-foreground">
@@ -56,4 +56,4 @@ function Feedback({feedback}: {feedback: SiteFeedback}) {
       </div>
     </div>
   );
-}
+};

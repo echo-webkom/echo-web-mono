@@ -1,18 +1,18 @@
 import {notFound} from "next/navigation";
 
-import Container from "@/components/container";
-import Markdown from "@/components/markdown";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {Markdown} from "@/components/markdown";
+import {Heading} from "@/components/ui/heading";
 import {fetchStaticInfoBySlug, fetchStaticInfoPaths} from "@/sanity/static-info";
 
-interface Props {
+type Props = {
   params: {
     type: string;
     slug: string;
   };
-}
+};
 
-async function getData(slug: string) {
+const getData = async (slug: string) => {
   const page = await fetchStaticInfoBySlug(slug);
 
   if (!page) {
@@ -20,19 +20,19 @@ async function getData(slug: string) {
   }
 
   return page;
-}
+};
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
   return await fetchStaticInfoPaths();
-}
+};
 
-export async function generateMetadata({params}: Props) {
+export const generateMetadata = async ({params}: Props) => {
   const page = await getData(params.slug);
 
   return {
     title: page.title,
   };
-}
+};
 
 export default async function StaticPage({params}: Props) {
   const page = await getData(params.slug);

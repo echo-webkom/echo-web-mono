@@ -2,8 +2,8 @@
 
 import {signIn} from "next-auth/react";
 
-import {Button} from "./ui/button";
-import Heading from "./ui/heading";
+import {Button} from "../../../../components/ui/button";
+import {Heading} from "../../../../components/ui/heading";
 
 const providers = [
   {
@@ -12,7 +12,7 @@ const providers = [
   },
 ];
 
-export default function SignInButtons() {
+export const SignInButtons = () => {
   return (
     <div>
       <Heading className="text-center text-4xl">Velg en måte å logge inn på</Heading>
@@ -33,4 +33,4 @@ export default function SignInButtons() {
       </div>
     </div>
   );
-}
+};

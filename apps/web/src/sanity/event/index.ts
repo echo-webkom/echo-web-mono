@@ -15,7 +15,7 @@ export const fetchEventPaths = async () => {
 }
     `;
 
-  const res = await serverFetch<Slug[]>(query);
+  const res = await serverFetch<Array<Slug>>(query);
 
   return slugSchema.array().parse(res);
 };
@@ -76,7 +76,7 @@ export const fetchComingEvents = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await serverFetch<Event[]>(query, params);
+  const res = await serverFetch<Array<Event>>(query, params);
 
   return eventSchema.array().parse(res);
 };
@@ -133,7 +133,7 @@ export const fetchEventBySlug = async (slug: string) => {
   return eventSchema.parse(res);
 };
 
-export const $fetchAllEvents = async (): Promise<Event[] | ErrorMessage> => {
+export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> => {
   try {
     const query = groq`
 *[_type == "event"
@@ -176,7 +176,7 @@ export const $fetchAllEvents = async (): Promise<Event[] | ErrorMessage> => {
 }
     `;
 
-    const res = await serverFetch<Event[]>(query);
+    const res = await serverFetch<Array<Event>>(query);
 
     return eventSchema.array().parse(res);
   } catch (error) {

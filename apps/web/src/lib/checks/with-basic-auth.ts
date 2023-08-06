@@ -1,6 +1,6 @@
 import {env} from "@/env.mjs";
 
-export function withBasicAuth(handler: (request: Request) => Promise<Response> | Response) {
+export const withBasicAuth = (handler: (request: Request) => Promise<Response> | Response) => {
   return async (request: Request): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
@@ -16,4 +16,4 @@ export function withBasicAuth(handler: (request: Request) => Promise<Response> |
 
     return handler(request);
   };
-}
+};

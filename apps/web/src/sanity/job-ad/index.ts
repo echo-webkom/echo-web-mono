@@ -17,10 +17,10 @@ export const jobTypeToString: Record<JobType, string> = {
 /**
  * @returns Array of slugs for all job ads
  */
-export const fetchJobAdPaths = async (): Promise<string[]> => {
+export const fetchJobAdPaths = async (): Promise<Array<string>> => {
   try {
     const query = groq`*[_type == "job"]{ "slug": slug.current }`;
-    const result = await serverFetch<string[]>(query);
+    const result = await serverFetch<Array<string>>(query);
 
     return slugSchema
       .array()
@@ -67,7 +67,7 @@ export const fetchJobAds = async (n: number) => {
     n,
   };
 
-  const result = await serverFetch<JobAd[]>(query, params);
+  const result = await serverFetch<Array<JobAd>>(query, params);
 
   return jobAdSchema.array().parse(result);
 };
@@ -104,7 +104,7 @@ export const fetchAvailableJobAds = async (n: number) => {
     n,
   };
 
-  const result = await serverFetch<JobAd[]>(query, params);
+  const result = await serverFetch<Array<JobAd>>(query, params);
 
   return jobAdSchema.array().parse(result);
 };

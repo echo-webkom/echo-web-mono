@@ -14,11 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-interface ProfileIconProps {
+type ProfileIconProps = {
   session: Session;
-}
+};
 
-const ProfileIcon = ({session}: ProfileIconProps) => {
+export const ProfileIcon = ({session}: ProfileIconProps) => {
   const pathname = usePathname();
 
   return (
@@ -76,5 +76,3 @@ const ProfileIcon = ({session}: ProfileIconProps) => {
     </DropdownMenu>
   );
 };
-
-export default ProfileIcon;

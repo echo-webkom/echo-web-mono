@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import Container from "@/components/container";
+import {Container} from "@/components/container";
 import {HappeningPreviewBox} from "@/components/happening-preview-box";
-import JobAdPreview from "@/components/job-ad-preview";
-import PostPreview from "@/components/post-preview";
+import {JobAdPreview} from "@/components/job-ad-preview";
+import {PostPreview} from "@/components/post-preview";
 import {fetchUpcomingBedpresses} from "@/sanity/bedpres";
 import {fetchComingEvents} from "@/sanity/event";
 import {fetchAvailableJobAds} from "@/sanity/job-ad";

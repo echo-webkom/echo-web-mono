@@ -4,12 +4,12 @@ import {isEventOrganizer} from "@/lib/happening";
 import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 
-interface Props {
+type Props = {
   children: React.ReactNode;
   params: {
     slug: string;
   };
-}
+};
 
 export default async function EventDashboardLayout({children, params}: Props) {
   const user = await getUser();

@@ -12,11 +12,11 @@ import {capitalize} from "@/utils/string";
 type HappeningPreviewBoxProps =
   | {
       type: "EVENT";
-      happenings: Event[];
+      happenings: Array<Event>;
     }
   | {
       type: "BEDPRES";
-      happenings: Bedpres[];
+      happenings: Array<Bedpres>;
     };
 
 type HappeningType = HappeningPreviewBoxProps["type"];
@@ -26,7 +26,7 @@ const happeningTypeToString: Record<HappeningType, string> = {
   BEDPRES: "bedriftspresentasjoner",
 };
 
-export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps) {
+export const HappeningPreviewBox = ({type, happenings}: HappeningPreviewBoxProps) => {
   return (
     <div>
       <h2 className="text-center text-3xl font-semibold">
@@ -52,13 +52,13 @@ export function HappeningPreviewBox({type, happenings}: HappeningPreviewBoxProps
       )}
     </div>
   );
-}
+};
 
-interface EventPreviewProps {
+type EventPreviewProps = {
   event: Event;
-}
+};
 
-export function EventPreview({event}: EventPreviewProps) {
+export const EventPreview = ({event}: EventPreviewProps) => {
   return (
     <Link href={`/event/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -88,13 +88,13 @@ export function EventPreview({event}: EventPreviewProps) {
       </div>
     </Link>
   );
-}
+};
 
-interface BedpresPreviewProps {
+type BedpresPreviewProps = {
   bedpres: Bedpres;
-}
+};
 
-export function BedpresPreview({bedpres}: BedpresPreviewProps) {
+export const BedpresPreview = ({bedpres}: BedpresPreviewProps) => {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -129,4 +129,4 @@ export function BedpresPreview({bedpres}: BedpresPreviewProps) {
       </div>
     </Link>
   );
-}
+};

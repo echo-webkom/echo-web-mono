@@ -36,6 +36,8 @@ module.exports = {
       "error",
       {prefer: "type-imports", fixStyle: "inline-type-imports"},
     ],
+    "@typescript-eslint/array-type": ["error", {default: "generic", readonly: "generic"}],
+    "@typescript-eslint/consistent-type-definitions": ["off"],
   },
   reportUnusedDisableDirectives: true,
   ignorePatterns: [

@@ -6,31 +6,31 @@ import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db";
 
-import Container from "@/components/container";
-import DeregisterButton from "@/components/deregister-button";
-import Markdown from "@/components/markdown";
-import RegisterButton from "@/components/register-button";
+import {Container} from "@/components/container";
+import {DeregisterButton} from "@/components/deregister-button";
+import {Markdown} from "@/components/markdown";
+import {RegisterButton} from "@/components/register-button";
 import {Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle} from "@/components/sidebar";
 import {Button} from "@/components/ui/button";
-import Heading from "@/components/ui/heading";
+import {Heading} from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
 import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 import {fetchEventBySlug} from "@/sanity/event";
 
-interface Props {
+type Props = {
   params: {
     slug: string;
   };
-}
+};
 
-export async function generateMetadata({params}: Props) {
+export const generateMetadata = async ({params}: Props) => {
   const event = await fetchEventBySlug(params.slug);
 
   return {
     title: event.title,
   };
-}
+};
 
 export default async function EventPage({params}: Props) {
   const {slug} = params;

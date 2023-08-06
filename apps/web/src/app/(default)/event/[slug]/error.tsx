@@ -1,8 +1,8 @@
 "use client";
 
-import Container from "@/components/container";
-import ErrorBox from "@/components/error-box";
-import Heading from "@/components/ui/heading";
+import {Container} from "@/components/container";
+import {ErrorBox} from "@/components/error-box";
+import {Heading} from "@/components/ui/heading";
 
 export default function EventErrorPage({error}: {error: Error}) {
   return (

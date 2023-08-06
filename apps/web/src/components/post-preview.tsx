@@ -6,7 +6,12 @@ import removeMd from "remove-markdown";
 import {type Post} from "@/sanity/posts";
 import {cn} from "@/utils/cn";
 
-export default function PostPreview({post}: {post: Post}) {
+type PostPreviewProps = {
+  post: Post;
+  withBorder?: boolean;
+};
+
+export const PostPreview = ({post, withBorder = false}: PostPreviewProps) => {
   return (
     <Link
       href={`/for-students/post/${post.slug}`}
@@ -14,6 +19,7 @@ export default function PostPreview({post}: {post: Post}) {
         "relative flex h-full flex-col gap-1 rounded-lg p-5",
         "hover:bg-muted",
         "transition-colors duration-200 ease-in-out",
+        withBorder && "border",
       )}
     >
       <h3 className="line-clamp-2 flex gap-2 text-2xl font-semibold">{post.title}</h3>
@@ -37,4 +43,4 @@ export default function PostPreview({post}: {post: Post}) {
       )}
     </Link>
   );
-}
+};

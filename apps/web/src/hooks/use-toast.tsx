@@ -48,9 +48,9 @@ type Action =
       toastId?: ToasterToast["id"];
     };
 
-interface State {
-  toasts: ToasterToast[];
-}
+type State = {
+  toasts: Array<ToasterToast>;
+};
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -123,20 +123,20 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-const listeners: ((state: State) => void)[] = [];
+const listeners: Array<(state: State) => void> = [];
 
 let memoryState: State = {toasts: []};
 
-function dispatch(action: Action) {
+const dispatch = (action: Action) => {
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => {
     listener(memoryState);
   });
-}
+};
 
 type Toast = Omit<ToasterToast, "id">;
 
-function toast({...props}: Toast) {
+export const toast = ({...props}: Toast) => {
   const id = genId();
 
   const update = (props: ToasterToast) =>
@@ -163,9 +163,9 @@ function toast({...props}: Toast) {
     dismiss,
     update,
   };
-}
+};
 
-function useToast() {
+export const useToast = () => {
   const [state, setState] = React.useState<State>(memoryState);
 
   React.useEffect(() => {
@@ -183,6 +183,4 @@ function useToast() {
     toast,
     dismiss: (toastId?: string) => dispatch({type: "DISMISS_TOAST", toastId}),
   };
-}
-
-export {useToast, toast};
+};

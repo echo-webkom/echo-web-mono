@@ -16,7 +16,7 @@ const payloadSchema = z.object({
   year: z.number().min(1).max(5).optional(),
 });
 
-export async function PATCH(req: Request, context: z.infer<typeof routeContextSchema>) {
+export const PATCH = async (req: Request, context: z.infer<typeof routeContextSchema>) => {
   try {
     const {params} = routeContextSchema.parse(context);
 
@@ -48,4 +48,4 @@ export async function PATCH(req: Request, context: z.infer<typeof routeContextSc
 
     return new Response(null, {status: 500});
   }
-}
+};

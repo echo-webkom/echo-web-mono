@@ -4,12 +4,12 @@ import {flexRender, getCoreRowModel, useReactTable, type ColumnDef} from "@tanst
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
+type DataTableProps<TData, TValue> = {
+  columns: Array<ColumnDef<TData, TValue>>;
+  data: Array<TData>;
+};
 
-export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export const DataTable = <TData, TValue>({columns, data}: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
     columns,
@@ -56,4 +56,4 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
       </Table>
     </div>
   );
-}
+};

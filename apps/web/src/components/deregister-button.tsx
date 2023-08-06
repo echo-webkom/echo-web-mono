@@ -18,12 +18,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
-import Textarea from "@/components/ui/textarea";
+import {Textarea} from "@/components/ui/textarea";
 import {useDeregistration} from "@/hooks/use-deregistration";
 import {useToast} from "@/hooks/use-toast";
 import {deregistrationSchema, type DeregistrationForm} from "@/lib/schemas/deregistration";
 
-export default function DeregisterButton({slug}: {slug: string}) {
+export const DeregisterButton = ({slug}: {slug: string}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const {toast} = useToast();
@@ -133,4 +133,4 @@ export default function DeregisterButton({slug}: {slug: string}) {
       </DialogContent>
     </Dialog>
   );
-}
+};

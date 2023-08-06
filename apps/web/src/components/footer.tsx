@@ -5,9 +5,9 @@ import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import {sponsors} from "@/lib/sponsors";
 import {cn} from "@/utils/cn";
 
-interface FooterProps {
+type FooterProps = {
   className?: string;
-}
+};
 
 export const footerSections = [
   {
@@ -50,7 +50,7 @@ export const footerSections = [
   },
 ];
 
-export default function Footer({className}: FooterProps) {
+export const Footer = ({className}: FooterProps) => {
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -140,4 +140,4 @@ export default function Footer({className}: FooterProps) {
       </footer>
     </div>
   );
-}
+};

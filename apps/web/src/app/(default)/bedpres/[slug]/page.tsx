@@ -6,32 +6,32 @@ import {isAfter, isBefore} from "date-fns";
 
 import {prisma} from "@echo-webkom/db";
 
-import Container from "@/components/container";
-import DeregisterButton from "@/components/deregister-button";
-import Markdown from "@/components/markdown";
-import RegisterButton from "@/components/register-button";
+import {Container} from "@/components/container";
+import {DeregisterButton} from "@/components/deregister-button";
+import {Markdown} from "@/components/markdown";
+import {RegisterButton} from "@/components/register-button";
 import {Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle} from "@/components/sidebar";
 import {Button} from "@/components/ui/button";
-import Heading from "@/components/ui/heading";
+import {Heading} from "@/components/ui/heading";
 import {isEventOrganizer} from "@/lib/happening";
 import {getHappeningBySlug} from "@/lib/queries/happening";
 import {getUser} from "@/lib/session";
 import {fetchBedpresBySlug} from "@/sanity/bedpres";
 import {urlFor} from "@/utils/image-builder";
 
-interface Props {
+type Props = {
   params: {
     slug: string;
   };
-}
+};
 
-export async function generateMetadata({params}: Props) {
+export const generateMetadata = async ({params}: Props) => {
   const bedpres = await fetchBedpresBySlug(params.slug);
 
   return {
     title: bedpres.title,
   };
-}
+};
 
 export default async function BedpresPage({params}: Props) {
   const {slug} = params;

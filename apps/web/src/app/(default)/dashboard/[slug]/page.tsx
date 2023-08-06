@@ -4,17 +4,17 @@ import {notFound} from "next/navigation";
 import {prisma, type Prisma} from "@echo-webkom/db";
 import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
 
-import Container from "@/components/container";
+import {Container} from "@/components/container";
 import {Button} from "@/components/ui/button";
-import Heading from "@/components/ui/heading";
+import {Heading} from "@/components/ui/heading";
 import {getHappeningBySlug} from "@/lib/queries/happening";
 import {cn} from "@/utils/cn";
 
-interface Props {
+type Props = {
   params: {
     slug: string;
   };
-}
+};
 
 export default async function EventDashboard({params}: Props) {
   const {slug} = params;
@@ -78,7 +78,7 @@ type RegistrationWithUser = Prisma.RegistrationGetPayload<{
   include: {user: true};
 }>;
 
-function RegistrationTable({registrations}: {registrations: RegistrationWithUser[]}) {
+function RegistrationTable({registrations}: {registrations: Array<RegistrationWithUser>}) {
   if (registrations.length === 0) {
     return <p className="text-center md:text-left">Ingen registrerte</p>;
   }
@@ -118,13 +118,13 @@ function RegistrationTable({registrations}: {registrations: RegistrationWithUser
   );
 }
 
-function RegistrationRow({
+const RegistrationRow = ({
   registration,
   index,
 }: {
   registration: RegistrationWithUser;
   index: number;
-}) {
+}) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
 
   return (
@@ -153,4 +153,4 @@ function RegistrationRow({
       </td>
     </tr>
   );
-}
+};
