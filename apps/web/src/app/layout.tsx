@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   viewport: "width=device-width, initial-scale=1.0",
-  themeColor: "#008fa3",
+  themeColor: "#ffeabb",
   appleWebApp: {
     title: "echo",
   },
