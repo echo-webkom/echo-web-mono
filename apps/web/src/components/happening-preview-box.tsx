@@ -29,7 +29,7 @@ const happeningTypeToString: Record<HappeningType, string> = {
 export const HappeningPreviewBox = ({type, happenings}: HappeningPreviewBoxProps) => {
   return (
     <div>
-      <h2 className="text-center text-3xl font-semibold">
+      <h2 className="text-center text-xl font-semibold md:text-3xl">
         {capitalize(happeningTypeToString[type])}
       </h2>
 
@@ -63,8 +63,8 @@ export const EventPreview = ({event}: EventPreviewProps) => {
     <Link href={`/event/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="overflow-x-hidden">
-          <h3 className="line-clamp-1 text-2xl font-semibold">{event.title}</h3>
-          <ul>
+          <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
+          <ul className="text-sm md:text-base">
             <li>
               <span className="font-semibold">Gruppe:</span>{" "}
               {capitalize(event.organizers.map((o) => o.name).join(", "))}
@@ -108,8 +108,8 @@ export const BedpresPreview = ({bedpres}: BedpresPreviewProps) => {
           </div>
         </div>
         <div className="overflow-x-hidden">
-          <h3 className="line-clamp-1 text-2xl font-semibold">{bedpres.title}</h3>
-          <ul>
+          <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{bedpres.title}</h3>
+          <ul className="text-sm md:text-base">
             {bedpres.date && (
               <li>
                 <span className="font-semibold">Dato:</span>{" "}

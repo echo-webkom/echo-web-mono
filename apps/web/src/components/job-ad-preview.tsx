@@ -31,7 +31,7 @@ export const JobAdPreview = ({jobAd}: JobAdPreviewProps) => {
           </div>
         </div>
         <div className="flex w-full flex-col gap-1 overflow-x-hidden">
-          <h3 className="truncate text-2xl font-semibold">{jobAd.title}</h3>
+          <h3 className="truncate text-lg font-semibold md:text-2xl">{jobAd.title}</h3>
           <hr />
           <ul>
             <li>

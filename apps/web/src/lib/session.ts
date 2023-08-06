@@ -19,3 +19,13 @@ export const getUser = async () => {
 
   return user;
 };
+
+export const getSession = async () => {
+  const session = await _getServerSession(authOptions);
+
+  if (!session) {
+    return null;
+  }
+
+  return session;
+};

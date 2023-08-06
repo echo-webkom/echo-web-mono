@@ -16,13 +16,13 @@ export const PostPreview = ({post, withBorder = false}: PostPreviewProps) => {
     <Link
       href={`/for-students/post/${post.slug}`}
       className={cn(
-        "relative flex h-full flex-col gap-1 rounded-lg p-5",
+        "flex h-full flex-col gap-1 rounded-lg p-5",
         "hover:bg-muted",
         "transition-colors duration-200 ease-in-out",
         withBorder && "border",
       )}
     >
-      <h3 className="line-clamp-2 flex gap-2 text-2xl font-semibold">{post.title}</h3>
+      <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
 
       <p>
         Publisert:{" "}
