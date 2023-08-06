@@ -1,5 +1,7 @@
 import {createClient} from "next-sanity";
 
+import {env} from "@/env.mjs";
+
 /**
  * Project IDS:
  * Old sanity: "pgq2pd26",
@@ -10,7 +12,7 @@ import {createClient} from "next-sanity";
  */
 
 export const projectId = "nnumy1ga";
-export const dataset = "production";
+export const dataset = env.NEXT_PUBLIC_SANITY_DATASET;
 export const apiVersion = "2021-04-10";
 
 /**
