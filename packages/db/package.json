@@ -19,13 +19,13 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.1.0"
+    "@prisma/client": "^5.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.4.8",
     "dotenv-cli": "7.2.1",
     "eslint-config-webkom": "workspace:*",
-    "prisma": "^5.1.0",
+    "prisma": "^5.1.1",
     "prisma-kysely": "^1.5.0",
     "tsx": "^3.12.7",
     "typescript": "5.1.6"
