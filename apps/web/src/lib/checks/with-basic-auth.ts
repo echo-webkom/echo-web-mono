@@ -1,8 +1,8 @@
-import {env} from "process";
+import {env} from "@/env.mjs";
 
 export function withBasicAuth(handler: (request: Request) => Promise<Response> | Response) {
   return async (request: Request): Promise<Response> => {
-    if (env.NODE_ENV !== "production") {
+    if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
       const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
       const [, password] = decodedAuth.split(":");
