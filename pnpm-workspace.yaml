@@ -7,4 +7,4 @@ packages:
   - packages/eslint
   - packages/lib
   - packages/tsconfig
-  - tests
+  - playwright

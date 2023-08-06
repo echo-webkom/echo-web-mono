@@ -1,10 +1,11 @@
 {
-  "name": "@echo-webkom/tests",
+  "name": "@echo-webkom/playwright",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test:dev": "playwright test",
+    "test": "playwright test",
+    "ui": "playwright test --ui",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
     "lint": "eslint web --ext .ts",

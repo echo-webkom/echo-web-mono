@@ -45,4 +45,10 @@ export default defineConfig({
       use: {...devices["iPhone 12"]},
     },
   ],
+
+  webServer: {
+    command: "pnpm --filter=web start",
+    port: 3000,
+    cwd: "../",
+  },
 });

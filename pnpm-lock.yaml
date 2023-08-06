@@ -249,7 +249,7 @@ importers:
         version: 4.22.3(next@13.4.12)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.1.2
-        version: 5.1.2(@sanity/client@6.4.0)(@sanity/icons@2.4.1)(@sanity/types@3.14.4)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.12)(react@18.2.0)(sanity@3.14.5)(styled-components@5.3.3)
+        version: 5.1.2(@sanity/client@6.4.0)(@sanity/icons@2.4.1)(@sanity/types@3.14.5)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.12)(react@18.2.0)(sanity@3.14.5)(styled-components@5.3.3)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -444,7 +444,7 @@ importers:
         specifier: 5.1.6
         version: 5.1.6
 
-  tests:
+  playwright:
     devDependencies:
       '@playwright/test':
         specifier: ^1.36.2
@@ -2958,7 +2958,7 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      '@types/node': 18.17.1
+      '@types/node': 20.4.8
       playwright-core: 1.36.2
     optionalDependencies:
       fsevents: 2.3.2
@@ -9512,7 +9512,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@5.1.2(@sanity/client@6.4.0)(@sanity/icons@2.4.1)(@sanity/types@3.14.4)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.12)(react@18.2.0)(sanity@3.14.5)(styled-components@5.3.3):
+  /next-sanity@5.1.2(@sanity/client@6.4.0)(@sanity/icons@2.4.1)(@sanity/types@3.14.5)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.12)(react@18.2.0)(sanity@3.14.5)(styled-components@5.3.3):
     resolution: {integrity: sha512-nzfir4ObrZ0vc8i3KpPC5iE9O/rGqSHn6+lZaEcwjY575NM3DtSW5yGumqTJi/fOJr5Ru1IqRyBS3Q3GpG8okg==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -9529,7 +9529,7 @@ packages:
       '@sanity/client': 6.4.0
       '@sanity/icons': 2.4.1(react@18.2.0)
       '@sanity/preview-kit': 2.3.3(@sanity/client@6.4.0)(react@18.2.0)
-      '@sanity/types': 3.14.4
+      '@sanity/types': 3.14.5
       '@sanity/ui': 1.7.4(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.3)
       '@sanity/webhook': 2.0.0
       '@types/styled-components': 5.1.26

@@ -24,9 +24,6 @@
       "persistent": true,
       "cache": false
     },
-    "test:dev": {
-      "cache": false
-    },
     "lint": {},
     "type-check": {
       "dependsOn": ["^db:generate"],
