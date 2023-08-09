@@ -68,6 +68,7 @@ export const Feedback = () => {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-0 right-0 z-30 m-5 h-12 w-12 rounded-full bg-primary shadow-md focus:ring focus:ring-primary focus:ring-offset-2"
+          data-testid="feedback-button"
         >
           <MdOutlineFeedback className="mx-auto mt-auto h-6 w-6 text-white" />
         </button>
