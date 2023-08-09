@@ -8,11 +8,14 @@ export const env = createEnv({
     UPSTASH_REDIS_REST_URL: z.string().default(""),
     UPSTASH_REDIS_REST_TOKEN: z.string().default(""),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_SANITY_DATASET: z.enum(["production", "develop"]).default("develop"),
+  },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     ADMIN_KEY: process.env.ADMIN_KEY,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
   },
 });

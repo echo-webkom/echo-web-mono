@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon} from "@radix-ui/react-icons";

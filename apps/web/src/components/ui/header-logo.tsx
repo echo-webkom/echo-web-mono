@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import Logo from "@/assets/echo-logo.png";
 import {cn} from "@/utils/cn";
 
 type HeaderLogoProps = {
@@ -8,12 +9,10 @@ type HeaderLogoProps = {
 };
 
 export const HeaderLogo = ({className}: HeaderLogoProps) => {
-  const logo = "/images/android-chrome-512x512.png";
-
   return (
-    <div className={cn("relative aspect-square h-full w-full", className)}>
+    <div className={cn("relative aspect-square h-14 w-14", className)}>
       <Link href="/">
-        <Image src={logo} alt="logo" sizes="200" fill />
+        <Image src={Logo} alt="logo" sizes="200" fill />
       </Link>
     </div>
   );

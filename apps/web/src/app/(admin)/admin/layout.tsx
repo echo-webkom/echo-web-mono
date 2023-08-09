@@ -2,7 +2,7 @@ import {redirect} from "next/navigation";
 import {type Metadata} from "next/types";
 
 import {Footer} from "@/components/footer";
-import {Header} from "@/components/header";
+import {SiteHeader} from "@/components/site-header";
 import {getUser} from "@/lib/session";
 import {AdminSidebar} from "./sidebar";
 
@@ -23,7 +23,7 @@ export default async function AdminDashboardLayout({children}: Props) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <SiteHeader />
       <div className="flex w-full flex-grow flex-row">
         <AdminSidebar>{children}</AdminSidebar>
       </div>
