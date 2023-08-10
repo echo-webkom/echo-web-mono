@@ -11,7 +11,7 @@ export default function DefaultLayout({children}: DefaultLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="my-10 flex w-full flex-grow">{children}</main>
+      <main className="flex w-full flex-grow flex-col">{children}</main>
       <Footer />
     </div>
   );
