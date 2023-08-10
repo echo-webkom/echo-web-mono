@@ -45,11 +45,19 @@ export const Header = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<
       setIsOpen(false);
     }, [pathname, setIsOpen]);
 
+    useEffect(() => {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    }, [isOpen]);
+
     return (
       <header
         ref={ref}
-        className={cn("z-20 w-full border-b", {
-          "relative bg-background backdrop-blur-none": isOpen,
+        className={cn("z-20 w-full", {
+          "fixed h-full max-h-screen overflow-y-scroll bg-background backdrop-blur-none": isOpen,
           "bg-background/80 sticky top-0 backdrop-blur-lg": !isOpen,
         })}
         {...props}
@@ -122,7 +130,7 @@ export const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenu
   ({to, children, ...props}, ref) => {
     return (
       <li ref={ref} {...props}>
-        <Button variant="link" asChild>
+        <Button variant="secondary" asChild>
           <Link href={to}>{children}</Link>
         </Button>
       </li>
@@ -140,12 +148,10 @@ export const ExpandedMenu = React.forwardRef<HTMLDivElement, ComponentPropsWitho
     return (
       <div
         ref={ref}
-        className="absolute flex w-full border-b bg-background px-5 pb-20 pt-8"
+        className="mx-auto flex h-fit max-w-7xl flex-row flex-wrap gap-8 px-5 py-10"
         {...props}
       >
-        <div className="mx-auto grid w-full max-w-7xl justify-between gap-5 md:grid-cols-3">
-          {children}
-        </div>
+        {children}
       </div>
     );
   },
@@ -157,7 +163,7 @@ export const ExpandedMenuSection = React.forwardRef<
   ComponentPropsWithoutRef<"div">
 >(({children, ...props}, ref) => {
   return (
-    <div ref={ref} className="flex flex-col" {...props}>
+    <div ref={ref} className="flex w-full flex-col sm:max-w-sm" {...props}>
       {children}
     </div>
   );
