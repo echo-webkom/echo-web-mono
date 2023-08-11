@@ -61,7 +61,7 @@ importers:
         version: 18.2.0
       sanity:
         specifier: ^3.14.5
-        version: 3.14.5(@types/node@18.17.3)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+        version: 3.14.5(@types/node@18.17.4)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       sanity-plugin-markdown:
         specifier: ^4.1.0
         version: 4.1.0(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.14.5)(styled-components@5.3.11)
@@ -119,8 +119,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
       '@types/react':
         specifier: 18.2.18
         version: 18.2.18
@@ -285,8 +285,8 @@ importers:
         specifier: 0.5.9
         version: 0.5.9(tailwindcss@3.3.3)
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
       '@types/react':
         specifier: 18.2.18
         version: 18.2.18
@@ -340,8 +340,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
       eslint:
         specifier: ^8.46.0
         version: 8.46.0
@@ -389,8 +389,8 @@ importers:
         specifier: ^8.44.2
         version: 8.44.2
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
       '@typescript-eslint/eslint-plugin':
         specifier: 6.2.1
         version: 6.2.1(@typescript-eslint/parser@6.2.1)(eslint@8.46.0)(typescript@5.1.6)
@@ -431,8 +431,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
     devDependencies:
       eslint:
         specifier: ^8.46.0
@@ -450,8 +450,8 @@ importers:
         specifier: ^1.36.2
         version: 1.36.2
       '@types/node':
-        specifier: 18.17.3
-        version: 18.17.3
+        specifier: 18.17.4
+        version: 18.17.4
       eslint:
         specifier: ^8.46.0
         version: 8.46.0
@@ -4795,8 +4795,8 @@ packages:
   /@types/ms@0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
 
-  /@types/node@18.17.3:
-    resolution: {integrity: sha512-2x8HWtFk0S99zqVQABU9wTpr8wPoaDHZUcAkoTKH+nL7kPv3WUI9cRi/Kk5Mz4xdqXSqTkKP7IWNoQQYCnDsTA==}
+  /@types/node@18.17.4:
+    resolution: {integrity: sha512-ATL4WLgr7/W40+Sp1WnNTSKbgVn6Pvhc/2RHAdt8fl6NsQyp4oPCi2eKcGOvA494bwf1K/W6nGgZ9TwDqvpjdw==}
 
   /@types/node@20.4.8:
     resolution: {integrity: sha512-0mHckf6D2DiIAzh8fM8f3HQCvMKDpK94YQ0DSVkfWTG9BZleYIWudw9cJxX8oCk9bM+vAkDyujDV6dmKHbvQpg==}
@@ -5147,7 +5147,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.9)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.9)
       react-refresh: 0.14.0
-      vite: 4.4.7(@types/node@18.17.3)
+      vite: 4.4.7(@types/node@18.17.4)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -9567,7 +9567,7 @@ packages:
       groq: 3.14.4
       next: 13.4.13(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      sanity: 3.14.5(@types/node@18.17.3)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.14.5(@types/node@18.17.4)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - supports-color
@@ -11309,7 +11309,7 @@ packages:
       easymde: 2.18.0
       react: 18.2.0
       react-simplemde-editor: 5.2.0(easymde@2.18.0)(react-dom@18.2.0)(react@18.2.0)
-      sanity: 3.14.5(@types/node@18.17.3)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.14.5(@types/node@18.17.4)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - react-dom
@@ -11349,7 +11349,7 @@ packages:
       redux: 4.2.1
       redux-observable: 2.0.0(redux@4.2.1)
       rxjs: 7.8.1
-      sanity: 3.14.5(@types/node@18.17.3)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.14.5(@types/node@18.17.4)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       zod: 3.21.4
     transitivePeerDependencies:
@@ -11358,7 +11358,7 @@ packages:
       - react-native
     dev: false
 
-  /sanity@3.14.5(@types/node@18.17.3)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
+  /sanity@3.14.5(@types/node@18.17.4)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
     resolution: {integrity: sha512-gaJhJ6BZekw/+HA0GQsM1hg4exhk/uo4AHxgZ3wpq0ZlfOvW+DUBkXKIN9sI+pPPqGMigPkpTZNNXNy3PTA1tw==}
     engines: {node: '>=14.18.0'}
     hasBin: true
@@ -11469,7 +11469,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.4.7(@types/node@18.17.3)
+      vite: 4.4.7(@types/node@18.17.4)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -12749,7 +12749,7 @@ packages:
       vfile-message: 3.1.4
     dev: false
 
-  /vite@4.4.7(@types/node@18.17.3):
+  /vite@4.4.7(@types/node@18.17.4):
     resolution: {integrity: sha512-6pYf9QJ1mHylfVh39HpuSfMPojPSKVxZvnclX1K1FyZ1PXDOcLBibdq5t1qxJSnL63ca8Wf4zts6mD8u8oc9Fw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -12777,7 +12777,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.17.3
+      '@types/node': 18.17.4
       esbuild: 0.18.17
       postcss: 8.4.27
       rollup: 3.27.0
