@@ -69,27 +69,6 @@ export const Header = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<
 );
 Header.displayName = "Header";
 
-export const HeaderOverlay = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
-  ({children, ...props}, ref) => {
-    const {isOpen, setIsOpen} = useHeader();
-
-    if (!isOpen) return null;
-
-    return (
-      <div
-        ref={ref}
-        className="fixed inset-0 z-20 bg-black/30 backdrop-blur-sm transition-all duration-100"
-        onClick={() => setIsOpen(false)}
-        aria-hidden="true"
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  },
-);
-HeaderOverlay.displayName = "HeaderOverlay";
-
 export const TopMenu = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
   ({children, ...props}, ref) => {
     return (
@@ -110,13 +89,15 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, ComponentPropsWit
     const {isOpen, toggle} = useHeader();
 
     return (
-      <nav ref={ref} className="flex items-center gap-4" {...props}>
-        <ul className="flex items-center">{children}</ul>
+      <div className="flex items-center gap-6">
+        <nav ref={ref} className="flex items-center gap-4" {...props}>
+          <ul className="flex items-center">{children}</ul>
+        </nav>
         <button>
           {isOpen && <Cross2Icon onClick={toggle} className="h-6 w-6" />}
           {!isOpen && <HamburgerMenuIcon onClick={toggle} className="h-6 w-6" />}
         </button>
-      </nav>
+      </div>
     );
   },
 );
@@ -148,7 +129,7 @@ export const ExpandedMenu = React.forwardRef<HTMLDivElement, ComponentPropsWitho
     return (
       <div
         ref={ref}
-        className="mx-auto flex h-fit max-w-7xl flex-row flex-wrap gap-8 px-5 py-10"
+        className="mx-auto grid h-fit w-full max-w-7xl grid-cols-1 gap-8 px-5 py-10 sm:grid-cols-2 lg:grid-cols-3"
         {...props}
       >
         {children}
@@ -163,7 +144,7 @@ export const ExpandedMenuSection = React.forwardRef<
   ComponentPropsWithoutRef<"div">
 >(({children, ...props}, ref) => {
   return (
-    <div ref={ref} className="flex w-full flex-col sm:max-w-sm" {...props}>
+    <div ref={ref} className="flex w-full flex-col" {...props}>
       {children}
     </div>
   );
@@ -194,9 +175,9 @@ export const ExpandedMenuTitle = React.forwardRef<
 ExpandedMenuTitle.displayName = "ExpandedMenuTitle";
 
 export const ExpandedMenuItem = React.forwardRef<HTMLLIElement, NavigationMenuItemProps>(
-  ({to, children, ...props}, ref) => {
+  ({to, className, children, ...props}, ref) => {
     return (
-      <li ref={ref} {...props}>
+      <li ref={ref} className={cn("w-full", className)} {...props}>
         <Link
           className="flex w-full border-l-4 border-transparent p-2 transition-colors ease-in-out hover:border-primary hover:bg-black/5"
           href={to}
