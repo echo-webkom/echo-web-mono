@@ -8,7 +8,6 @@ import {
   ExpandedMenuSection,
   ExpandedMenuTitle,
   Header,
-  HeaderOverlay,
   HeaderProvider,
   NavigationMenu,
   NavigationMenuItem,
@@ -21,7 +20,6 @@ export const SiteHeader = async () => {
 
   return (
     <HeaderProvider>
-      <HeaderOverlay />
       <Header>
         <TopMenu>
           <HeaderLogo />
@@ -35,22 +33,18 @@ export const SiteHeader = async () => {
         </TopMenu>
 
         <ExpandedMenu>
-          {headerRoutes.map((section) => {
-            return (
-              <ExpandedMenuSection key={section.label}>
-                <ExpandedMenuTitle>{section.label}</ExpandedMenuTitle>
-                <ExpandedMenuList>
-                  {section.sublinks.map((item) => {
-                    return (
-                      <ExpandedMenuItem key={item.label} to={item.href}>
-                        {item.label}
-                      </ExpandedMenuItem>
-                    );
-                  })}
-                </ExpandedMenuList>
-              </ExpandedMenuSection>
-            );
-          })}
+          {headerRoutes.map((section) => (
+            <ExpandedMenuSection key={section.label}>
+              <ExpandedMenuTitle>{section.label}</ExpandedMenuTitle>
+              <ExpandedMenuList>
+                {section.sublinks.map((item) => (
+                  <ExpandedMenuItem key={item.label} to={item.href}>
+                    {item.label}
+                  </ExpandedMenuItem>
+                ))}
+              </ExpandedMenuList>
+            </ExpandedMenuSection>
+          ))}
         </ExpandedMenu>
       </Header>
     </HeaderProvider>
