@@ -24,8 +24,8 @@ importers:
         specifier: 3.2.3
         version: 3.2.3(prettier@3.0.1)(typescript@5.1.6)
       prettier-plugin-tailwindcss:
-        specifier: 0.4.1
-        version: 0.4.1(@ianvs/prettier-plugin-sort-imports@4.1.0)(prettier-plugin-organize-imports@3.2.3)(prettier@3.0.1)
+        specifier: 0.5.2
+        version: 0.5.2(@ianvs/prettier-plugin-sort-imports@4.1.0)(prettier-plugin-organize-imports@3.2.3)(prettier@3.0.1)
       start-server-and-test:
         specifier: ^2.0.0
         version: 2.0.0
@@ -10384,16 +10384,16 @@ packages:
       typescript: 5.1.6
     dev: false
 
-  /prettier-plugin-tailwindcss@0.4.1(@ianvs/prettier-plugin-sort-imports@4.1.0)(prettier-plugin-organize-imports@3.2.3)(prettier@3.0.1):
-    resolution: {integrity: sha512-hwn2EiJmv8M+AW4YDkbjJ6HlZCTzLyz1QlySn9sMuKV/Px0fjwldlB7tol8GzdgqtkdPtzT3iJ4UzdnYXP25Ag==}
-    engines: {node: '>=12.17.0'}
+  /prettier-plugin-tailwindcss@0.5.2(@ianvs/prettier-plugin-sort-imports@4.1.0)(prettier-plugin-organize-imports@3.2.3)(prettier@3.0.1):
+    resolution: {integrity: sha512-i4swJk4f8YWK99BRPX3DdDNwMr6U1X8y9rvxGeX5zf090+SsHpPSVjgOb041Hh6/nZJWPi/JYno9UgBDm+/RxA==}
+    engines: {node: '>=14.21.3'}
     peerDependencies:
       '@ianvs/prettier-plugin-sort-imports': '*'
       '@prettier/plugin-pug': '*'
       '@shopify/prettier-plugin-liquid': '*'
       '@shufo/prettier-plugin-blade': '*'
       '@trivago/prettier-plugin-sort-imports': '*'
-      prettier: ^2.2 || ^3.0
+      prettier: ^3.0
       prettier-plugin-astro: '*'
       prettier-plugin-css-order: '*'
       prettier-plugin-import-sort: '*'
