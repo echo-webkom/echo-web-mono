@@ -42,8 +42,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.4.5
-        version: 6.4.5
+        specifier: ^6.4.6
+        version: 6.4.6
       '@sanity/icons':
         specifier: ^2.4.1
         version: 2.4.1(react@18.2.0)
@@ -249,7 +249,7 @@ importers:
         version: 4.23.0(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.2.6
-        version: 5.2.6(@sanity/client@6.4.5)(@sanity/icons@2.4.1)(@sanity/types@3.15.1)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.13)(react@18.2.0)(sanity@3.15.1)(styled-components@5.3.11)
+        version: 5.2.6(@sanity/client@6.4.6)(@sanity/icons@2.4.1)(@sanity/types@3.15.1)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.13)(react@18.2.0)(sanity@3.15.1)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4169,8 +4169,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.4.5:
-    resolution: {integrity: sha512-IL+fzoZ2ZJKke07fFzq8Y6/NbWHvcQqSc4FLSO2O4xyCdZl6H/hyvOODvWRP01NFS63IJS2GHLjufD9II8pLYQ==}
+  /@sanity/client@6.4.6:
+    resolution: {integrity: sha512-MtSYgmDkYyQSosO2GTtlYa0xl9K5fpQvTA1dcgk2XxIqweZEHVi4iDdsEA3JvyoEaURUtQkng8MdYcMzWxPAUg==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -4365,7 +4365,7 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit@2.4.12(@sanity/client@6.4.5)(react@18.2.0):
+  /@sanity/preview-kit@2.4.12(@sanity/client@6.4.6)(react@18.2.0):
     resolution: {integrity: sha512-TyYYoS6+0PfjWds/6y+tt8M8snyEqroi5v4tH39gOG1fUYNYYp7XG3iUlEz9efpIaLnX6KJuHvU0cxo8oOskGA==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4375,7 +4375,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@sanity/client': 6.4.5
+      '@sanity/client': 6.4.6
       '@sanity/eventsource': 5.0.0
       '@sanity/groq-store': 4.0.4
       '@vercel/stega': 0.1.0
@@ -4427,7 +4427,7 @@ packages:
   /@sanity/types@3.15.1:
     resolution: {integrity: sha512-B24SrVAJfCiF8q+JeTUtUqGjuX9YQj+ytdPcDNVbduIMeQeOmS6keumTvXZ7OS8OK0pgsffP5kUE00KWHgbPxg==}
     dependencies:
-      '@sanity/client': 6.4.5
+      '@sanity/client': 6.4.6
       '@types/react': 18.2.19
     transitivePeerDependencies:
       - supports-color
@@ -9643,7 +9643,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@5.2.6(@sanity/client@6.4.5)(@sanity/icons@2.4.1)(@sanity/types@3.15.1)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.13)(react@18.2.0)(sanity@3.15.1)(styled-components@5.3.11):
+  /next-sanity@5.2.6(@sanity/client@6.4.6)(@sanity/icons@2.4.1)(@sanity/types@3.15.1)(@sanity/ui@1.7.4)(@types/styled-components@5.1.26)(next@13.4.13)(react@18.2.0)(sanity@3.15.1)(styled-components@5.3.11):
     resolution: {integrity: sha512-uK5kUBy3ffLwzgWZKiFOe+wDek0c0kvzAAfv76wSwGXzsevG3+vzStw87+7lmb0bHM6Q50DYpTzSCLc5vEcs4w==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -9657,9 +9657,9 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.2.0
     dependencies:
-      '@sanity/client': 6.4.5
+      '@sanity/client': 6.4.6
       '@sanity/icons': 2.4.1(react@18.2.0)
-      '@sanity/preview-kit': 2.4.12(@sanity/client@6.4.5)(react@18.2.0)
+      '@sanity/preview-kit': 2.4.12(@sanity/client@6.4.6)(react@18.2.0)
       '@sanity/types': 3.15.1
       '@sanity/ui': 1.7.4(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 2.0.0
@@ -11478,7 +11478,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.15.1
       '@sanity/cli': 3.15.1
-      '@sanity/client': 6.4.5
+      '@sanity/client': 6.4.6
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.15.1
       '@sanity/eventsource': 5.0.0
