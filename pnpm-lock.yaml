@@ -216,7 +216,7 @@ importers:
         version: 1.0.2
       '@t3-oss/env-nextjs':
         specifier: ^0.6.0
-        version: 0.6.0(typescript@5.1.6)(zod@3.21.4)
+        version: 0.6.0(typescript@5.1.6)(zod@3.22.0)
       '@tanstack/react-table':
         specifier: ^8.9.3
         version: 8.9.3(react-dom@18.2.0)(react@18.2.0)
@@ -275,8 +275,8 @@ importers:
         specifier: ^1.14.0
         version: 1.14.0
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.0
+        version: 3.22.0
     devDependencies:
       '@tailwindcss/forms':
         specifier: 0.5.4
@@ -4537,25 +4537,25 @@ packages:
       tslib: 2.6.1
     dev: false
 
-  /@t3-oss/env-core@0.6.0(typescript@5.1.6)(zod@3.21.4):
+  /@t3-oss/env-core@0.6.0(typescript@5.1.6)(zod@3.22.0):
     resolution: {integrity: sha512-3FkPAba069WRZVVab/sB1m3eSGn/rZeypx5k+sWEu1d+k0OQdRDnvFS+7MtxYgqVrwaRk3b7yVnX2dgSPVmWPQ==}
     peerDependencies:
       typescript: '>=4.7.2'
       zod: ^3.0.0
     dependencies:
       typescript: 5.1.6
-      zod: 3.21.4
+      zod: 3.22.0
     dev: false
 
-  /@t3-oss/env-nextjs@0.6.0(typescript@5.1.6)(zod@3.21.4):
+  /@t3-oss/env-nextjs@0.6.0(typescript@5.1.6)(zod@3.22.0):
     resolution: {integrity: sha512-SpzcGNIbUYcQw4zPPFeRJqCC1560zL7QmB0puIqOnuCsmykPkqHPX+n9CNZLXVQerboHzfvb7Kd+jAdouk72Vw==}
     peerDependencies:
       typescript: '>=4.7.2'
       zod: ^3.0.0
     dependencies:
-      '@t3-oss/env-core': 0.6.0(typescript@5.1.6)(zod@3.21.4)
+      '@t3-oss/env-core': 0.6.0(typescript@5.1.6)(zod@3.22.0)
       typescript: 5.1.6
-      zod: 3.21.4
+      zod: 3.22.0
     dev: false
 
   /@tailwindcss/forms@0.5.4(tailwindcss@3.3.3):
@@ -10558,7 +10558,7 @@ packages:
       '@prisma/generator-helper': 4.13.0
       '@prisma/internals': 4.13.0
       typescript: 4.6.2
-      zod: 3.21.4
+      zod: 3.22.1
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -13172,6 +13172,15 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  /zod@3.22.0:
+    resolution: {integrity: sha512-y5KZY/ssf5n7hCGDGGtcJO/EBJEm5Pa+QQvFBeyMOtnFYOSflalxIFFvdaYevPhePcmcKC4aTbFkCcXN7D0O8Q==}
+    dev: false
+
+  /zod@3.22.1:
+    resolution: {integrity: sha512-+qUhAMl414+Elh+fRNtpU+byrwjDFOS1N7NioLY+tSlcADTx4TkCUua/hxJvxwDXcV4397/nZ420jy4n4+3WUg==}
+    dev: true
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
