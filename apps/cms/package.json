@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "^6.4.8",
+    "@sanity/client": "^6.4.9",
     "@sanity/icons": "^2.4.1",
     "@sanity/vision": "^3.15.1",
     "react": "18.2.0",
