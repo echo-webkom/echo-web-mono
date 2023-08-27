@@ -26,7 +26,7 @@
     "dotenv-cli": "7.3.0",
     "eslint-config-webkom": "workspace:*",
     "prisma": "^5.1.1",
-    "prisma-kysely": "^1.5.0",
+    "prisma-kysely": "^1.6.0",
     "tsx": "^3.12.7",
     "typescript": "5.1.6"
   },
