@@ -359,7 +359,7 @@ importers:
         version: 5.2.0(prisma@5.2.0)
     devDependencies:
       '@types/node':
-        specifier: ^20.5.5
+        specifier: ^20.5.6
         version: 20.5.6
       dotenv-cli:
         specifier: 7.3.0
