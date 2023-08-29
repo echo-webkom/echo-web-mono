@@ -8,6 +8,7 @@ import {getSession} from "@/lib/session";
 import {Content} from "./content";
 
 export default async function HomePage() {
+  const session = await getSession();
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex w-full flex-grow flex-col">
@@ -31,7 +32,7 @@ export default async function HomePage() {
                 </p>
                 <div>
                   <Button asChild variant="secondary">
-                    {(await getSession()) ? (
+                    {session ? (
                       <Link href="/auth/profile">Min profil</Link>
                     ) : (
                       <Link href="/auth/sign-in">Logg inn</Link>

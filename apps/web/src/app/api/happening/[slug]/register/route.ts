@@ -134,31 +134,30 @@ export const POST = withSession(
           },
         });
 
-        const registrationStatus =
-          registrationCount < spotRange.spots ? "REGISTERED" : "WAITLISTED";
-
-        const registration = await tx.registration.upsert({
-          where: {
-            userId_happeningSlug: {
+        if (registrationCount < spotRange.spots) {
+          const registration = await tx.registration.upsert({
+            where: {
+              userId_happeningSlug: {
+                happeningSlug: ctx.params.slug,
+                userId: user.id,
+              },
+            },
+            update: {
+              status: "REGISTERED",
+            },
+            create: {
+              status: "REGISTERED",
               happeningSlug: ctx.params.slug,
               userId: user.id,
             },
-          },
-          update: {
-            status: registrationStatus,
-          },
-          create: {
-            status: registrationStatus,
-            happeningSlug: ctx.params.slug,
-            userId: user.id,
-          },
-        });
+          });
 
-        return registration.status;
+          return registration.status;
+        } else {
+          return "WAITLISTED";
+        }
       },
-      {
-        isolationLevel: "Serializable",
-      },
+      {isolationLevel: "Serializable"},
     );
 
     return NextResponse.json(
