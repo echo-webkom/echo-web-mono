@@ -1,5 +1,5 @@
-import {UserIcon} from "@sanity/icons";
-import {defineField, defineType} from "sanity";
+import { UserIcon } from "@sanity/icons";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "profile",
@@ -17,7 +17,7 @@ export default defineType({
       name: "image",
       title: "Bilde",
       type: "image",
-      options: {hotspot: true},
+      options: { hotspot: true },
     }),
     defineField({
       name: "socials",

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
-import {type Metadata} from "next/types";
+import { notFound } from "next/navigation";
+import { type Metadata } from "next/types";
 
-import {Container} from "@/components/container";
-import {PostPreview} from "@/components/post-preview";
-import {Button} from "@/components/ui/button";
-import {Heading} from "@/components/ui/heading";
-import {fetchPostsByPage} from "@/sanity/posts";
+import { Container } from "@/components/container";
+import { PostPreview } from "@/components/post-preview";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { fetchPostsByPage } from "@/sanity/posts";
 
 type Props = {
   searchParams: {
@@ -18,10 +18,10 @@ export const metadata = {
   title: "Innlegg",
 } satisfies Metadata;
 
-export default async function PostsOverviewPage({searchParams}: Props) {
+export default async function PostsOverviewPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;
 
-  const {posts, hasMore} = await fetchPostsByPage(page, 6);
+  const { posts, hasMore } = await fetchPostsByPage(page, 6);
 
   if (posts.length === 0) {
     return notFound();

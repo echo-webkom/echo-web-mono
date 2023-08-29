@@ -1,11 +1,11 @@
-import {RobotIcon, RocketIcon, TerminalIcon} from "@sanity/icons";
-import {visionTool} from "@sanity/vision";
-import {markdownSchema} from "sanity-plugin-markdown";
-import {media} from "sanity-plugin-media";
-import {deskTool} from "sanity/desk";
+import { RobotIcon, RocketIcon, TerminalIcon } from "@sanity/icons";
+import { visionTool } from "@sanity/vision";
+import { markdownSchema } from "sanity-plugin-markdown";
+import { media } from "sanity-plugin-media";
+import { deskTool } from "sanity/desk";
 
-import {schemaTypes} from "./schemas";
-import {deskStructure} from "./src/desk-structure";
+import { schemaTypes } from "./schemas";
+import { deskStructure } from "./src/desk-structure";
 
 // TODO: Type configs using `Config` and or `defineConfig()`
 
@@ -18,7 +18,7 @@ const defaultConfig = {
     media(),
     markdownSchema(),
   ],
-  schema: {types: schemaTypes},
+  schema: { types: schemaTypes },
   projectId: "nnumy1ga",
 };
 

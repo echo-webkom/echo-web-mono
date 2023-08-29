@@ -1,6 +1,6 @@
-import {z} from "zod";
+import { z } from "zod";
 
-import {imageSchema} from "../utils/image";
+import { imageSchema } from "../utils/image";
 
 export const profileSchema = z.object({
   _id: z.string(),
@@ -17,6 +17,6 @@ export type Profile = z.infer<typeof profileSchema>;
 
 export const contactProfileSchema = z.object({
   email: z.string(),
-  profile: profileSchema.pick({_id: true, name: true}),
+  profile: profileSchema.pick({ _id: true, name: true }),
 });
 export type ContactProfile = z.infer<typeof contactProfileSchema>;

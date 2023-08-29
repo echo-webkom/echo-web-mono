@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import {usePathname} from "next/navigation";
-import {AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon} from "@radix-ui/react-icons";
-import {signOut} from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon } from "@radix-ui/react-icons";
+import { signOut } from "next-auth/react";
 
-import {type Session} from "@echo-webkom/auth";
+import { type Session } from "@echo-webkom/auth";
 
 import {
   DropdownMenu,
@@ -20,7 +20,7 @@ type ProfileIconProps = {
   session: Session;
 };
 
-export const ProfileIcon = ({session}: ProfileIconProps) => {
+export const ProfileIcon = ({ session }: ProfileIconProps) => {
   const pathname = usePathname();
 
   return (

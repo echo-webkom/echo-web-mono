@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import {Container} from "@/components/container";
-import {Footer} from "@/components/footer";
-import {SiteHeader} from "@/components/site-header";
-import {Button} from "@/components/ui/button";
-import {Content} from "./content";
+import { Container } from "@/components/container";
+import { Footer } from "@/components/footer";
+import { SiteHeader } from "@/components/site-header";
+import { Button } from "@/components/ui/button";
+import { Content } from "./content";
 
 export default function HomePage() {
   return (

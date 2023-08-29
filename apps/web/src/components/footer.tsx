@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import {ExternalLinkIcon} from "@radix-ui/react-icons";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
-import {sponsors} from "@/lib/sponsors";
-import {cn} from "@/utils/cn";
+import { sponsors } from "@/lib/sponsors";
+import { cn } from "@/utils/cn";
 
 type FooterProps = {
   className?: string;
@@ -50,7 +50,7 @@ export const footerSections = [
   },
 ];
 
-export const Footer = ({className}: FooterProps) => {
+export const Footer = ({ className }: FooterProps) => {
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -79,7 +79,7 @@ export const Footer = ({className}: FooterProps) => {
                 <div key={section.title}>
                   <h3 className="mb-4 py-2 text-xl font-bold">{section.title}</h3>
                   <ul className="space-y-1">
-                    {section.links.map(({title, href}) => {
+                    {section.links.map(({ title, href }) => {
                       const isExternal = !href?.startsWith("/");
 
                       return (
@@ -126,7 +126,7 @@ export const Footer = ({className}: FooterProps) => {
             <div>
               <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
               <ul className="space-y-5">
-                {sponsors.map(({label, href, imageSrc}) => (
+                {sponsors.map(({ label, href, imageSrc }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
                       <Image src={imageSrc} height={150} width={150} alt={`${label} logo`} />

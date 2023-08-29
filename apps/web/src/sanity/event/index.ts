@@ -1,9 +1,9 @@
-import {groq} from "next-sanity";
+import { groq } from "next-sanity";
 
-import {type ErrorMessage} from "@/utils/error";
-import {serverFetch} from "../client";
-import {slugSchema, type Slug} from "../utils/slug";
-import {eventSchema, type Event} from "./schemas";
+import { type ErrorMessage } from "@/utils/error";
+import { serverFetch } from "../client";
+import { slugSchema, type Slug } from "../utils/slug";
+import { eventSchema, type Event } from "./schemas";
 
 export * from "./schemas";
 

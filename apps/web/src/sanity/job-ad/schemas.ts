@@ -1,7 +1,7 @@
-import {z} from "zod";
+import { z } from "zod";
 
-import {companySchema} from "../company";
-import {locationSchema} from "../location";
+import { companySchema } from "../company";
+import { locationSchema } from "../location";
 
 // This is ugly?
 export const degreeYearsSchema = z.object({
@@ -21,8 +21,8 @@ export const jobAdSchema = z.object({
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  company: companySchema.pick({_id: true, name: true, website: true, image: true}),
-  locations: locationSchema.pick({name: true, _id: true}).array(),
+  company: companySchema.pick({ _id: true, name: true, website: true, image: true }),
+  locations: locationSchema.pick({ name: true, _id: true }).array(),
   jobType: jobTypeSchema,
   link: z.string(),
   deadline: z.string(),

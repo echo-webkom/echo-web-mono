@@ -1,4 +1,4 @@
-import {rm} from "node:fs/promises";
+import { rm } from "node:fs/promises";
 import path from "node:path";
 
 (async () => {

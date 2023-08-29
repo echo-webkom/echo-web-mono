@@ -1,5 +1,5 @@
-import {useCallback, useState} from "react";
-import {z} from "zod";
+import { useCallback, useState } from "react";
+import { z } from "zod";
 
 const responseSchema = z.object({
   title: z.string(),
@@ -18,7 +18,7 @@ type RegisterOpts = {
   onError?: (error: string) => void;
 };
 
-export const useRegistration = (slug: string, {onSuccess, onError}: RegisterOpts) => {
+export const useRegistration = (slug: string, { onSuccess, onError }: RegisterOpts) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSucess, setIsSucess] = useState<boolean>(false);
@@ -51,5 +51,5 @@ export const useRegistration = (slug: string, {onSuccess, onError}: RegisterOpts
     [slug],
   );
 
-  return {isSucess, isLoading, error, register};
+  return { isSucess, isLoading, error, register };
 };

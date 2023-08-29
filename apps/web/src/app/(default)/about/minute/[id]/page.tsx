@@ -1,9 +1,9 @@
-import {type Metadata} from "next";
+import { type Metadata } from "next";
 
-import {Container} from "@/components/container";
-import {Button} from "@/components/ui/button";
-import {Heading} from "@/components/ui/heading";
-import {fetchMinuteById, fetchMinuteParams} from "@/sanity/minutes";
+import { Container } from "@/components/container";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -22,14 +22,14 @@ export const generateStaticParams = async () => {
   return await fetchMinuteParams();
 };
 
-export const generateMetadata = async ({params}: Props): Promise<Metadata> => {
-  const {title} = await getData(params.id);
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { title } = await getData(params.id);
   return {
     title,
   };
 };
 
-export default async function MinutePage({params}: Props) {
+export default async function MinutePage({ params }: Props) {
   const minute = await getData(params.id);
 
   return (

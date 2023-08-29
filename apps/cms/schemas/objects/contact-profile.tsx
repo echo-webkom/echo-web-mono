@@ -1,4 +1,4 @@
-import {defineField, defineType} from "sanity";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "contactProfile",
@@ -9,7 +9,7 @@ export default defineType({
       name: "profile",
       title: "Profil",
       type: "reference",
-      to: {type: "profile"},
+      to: { type: "profile" },
       validation: (Rule) => Rule.required(),
     }),
     defineField({

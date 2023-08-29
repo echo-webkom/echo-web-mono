@@ -1,10 +1,10 @@
-import {groq} from "next-sanity";
-import {z} from "zod";
+import { groq } from "next-sanity";
+import { z } from "zod";
 
-import {type StudentGroupType} from "@echo-webkom/lib";
+import { type StudentGroupType } from "@echo-webkom/lib";
 
-import {serverFetch} from "../client";
-import {studentGroupSchema, type StudentGroup} from "./schemas";
+import { serverFetch } from "../client";
+import { studentGroupSchema, type StudentGroup } from "./schemas";
 
 export * from "./schemas";
 
@@ -25,7 +25,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await serverFetch<Array<{slug: string; groupType: StudentGroupType}>>(query);
+  const result = await serverFetch<Array<{ slug: string; groupType: StudentGroupType }>>(query);
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),

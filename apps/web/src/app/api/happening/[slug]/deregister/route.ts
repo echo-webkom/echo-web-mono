@@ -1,9 +1,9 @@
-import {NextResponse} from "next/server";
-import {z} from "zod";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
-import {prisma} from "@echo-webkom/db";
+import { prisma } from "@echo-webkom/db";
 
-import {withSession} from "@/lib/checks/with-session";
+import { withSession } from "@/lib/checks/with-session";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -16,7 +16,7 @@ const payloadSchema = z.object({
 });
 
 export const POST = withSession(
-  async ({ctx, user, input}) => {
+  async ({ ctx, user, input }) => {
     const happening = await prisma.happening.findUnique({
       where: {
         slug: ctx.params.slug,
@@ -25,12 +25,12 @@ export const POST = withSession(
 
     // Happening doesn't exist and/or doesn't have a date
     if (!happening?.date) {
-      return new Response(null, {status: 404});
+      return new Response(null, { status: 404 });
     }
 
     // Happening has already happened
     if (happening.date < new Date()) {
-      return new Response(null, {status: 400});
+      return new Response(null, { status: 400 });
     }
 
     await prisma.registration.update({
@@ -46,7 +46,7 @@ export const POST = withSession(
       },
     });
 
-    return NextResponse.json({title: "Du er avmeldt"}, {status: 200});
+    return NextResponse.json({ title: "Du er avmeldt" }, { status: 200 });
   },
   routeContextSchema,
   payloadSchema,

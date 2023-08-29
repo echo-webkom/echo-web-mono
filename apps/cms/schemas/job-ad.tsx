@@ -1,19 +1,19 @@
-import {CaseIcon} from "@sanity/icons";
-import {defineArrayMember, defineField, defineType} from "sanity";
+import { CaseIcon } from "@sanity/icons";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 const JOB_TYPES = [
-  {title: "Fulltid", value: "fulltime"},
-  {title: "Deltid", value: "parttime"},
-  {title: "Internship", value: "internship"},
-  {title: "Sommerjobb", value: "summerjob"},
+  { title: "Fulltid", value: "fulltime" },
+  { title: "Deltid", value: "parttime" },
+  { title: "Internship", value: "internship" },
+  { title: "Sommerjobb", value: "summerjob" },
 ];
 
 const YEARS = [
-  {title: "1. året", value: "FIRST"},
-  {title: "2. året", value: "SECOND"},
-  {title: "3. året", value: "THIRD"},
-  {title: "4. året", value: "FOURTH"},
-  {title: "5. året", value: "FIFTH"},
+  { title: "1. året", value: "FIRST" },
+  { title: "2. året", value: "SECOND" },
+  { title: "3. året", value: "THIRD" },
+  { title: "4. året", value: "FOURTH" },
+  { title: "5. året", value: "FIFTH" },
 ];
 
 export default defineType({
@@ -42,14 +42,14 @@ export default defineType({
       name: "company",
       title: "Selskap",
       type: "reference",
-      to: {type: "company"},
+      to: { type: "company" },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "locations",
       title: "Sted(er)",
       type: "array",
-      of: [defineArrayMember({type: "reference", to: {type: "location"}})],
+      of: [defineArrayMember({ type: "reference", to: { type: "location" } })],
       validation: (Rule) => Rule.required(),
     }),
     defineField({

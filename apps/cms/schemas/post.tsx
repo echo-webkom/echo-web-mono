@@ -1,5 +1,5 @@
-import {EnvelopeIcon} from "@sanity/icons";
-import {defineField, defineType} from "sanity";
+import { EnvelopeIcon } from "@sanity/icons";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "post",
@@ -25,7 +25,7 @@ export default defineType({
       name: "authors",
       title: "Forfattere",
       type: "array",
-      of: [{type: "reference", to: [{type: "studentGroup"}, {type: "profile"}]}],
+      of: [{ type: "reference", to: [{ type: "studentGroup" }, { type: "profile" }] }],
     }),
     defineField({
       name: "image",

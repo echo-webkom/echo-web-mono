@@ -1,6 +1,6 @@
-import {NextResponse, type NextFetchEvent, type NextRequest} from "next/server";
+import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server";
 
-import {ratelimit} from "./lib/rate-limit";
+import { ratelimit } from "./lib/rate-limit";
 
 export default async function middleware(
   request: NextRequest,
@@ -13,7 +13,7 @@ export default async function middleware(
 
   const res = limit.success
     ? NextResponse.next()
-    : NextResponse.json({error: "Rate limit exceeded"}, {status: 429});
+    : NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
 
   res.headers.set("X-RateLimit-Limit", limit.limit.toString());
   res.headers.set("X-RateLimit-Remaining", limit.remaining.toString());

@@ -1,14 +1,14 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {Label} from "@radix-ui/react-label";
-import {Controller, useForm} from "react-hook-form";
-import {AiOutlineLoading} from "react-icons/ai";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Label } from "@radix-ui/react-label";
+import { Controller, useForm } from "react-hook-form";
+import { AiOutlineLoading } from "react-icons/ai";
 
-import {type Question} from "@echo-webkom/db";
+import { type Question } from "@echo-webkom/db";
 
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -26,14 +26,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {useRegistration} from "@/hooks/use-registration";
-import {toast} from "@/hooks/use-toast";
-import {type RegistrationForm} from "@/lib/schemas/registration";
+import { useRegistration } from "@/hooks/use-registration";
+import { toast } from "@/hooks/use-toast";
+import { type RegistrationForm } from "@/lib/schemas/registration";
 
-export const RegisterButton = ({slug, questions}: {slug: string; questions: Array<Question>}) => {
+export const RegisterButton = ({
+  slug,
+  questions,
+}: {
+  slug: string;
+  questions: Array<Question>;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const {register, isLoading} = useRegistration(slug, {
+  const { register, isLoading } = useRegistration(slug, {
     onSuccess: (data) => {
       setIsOpen(false);
       router.refresh();
@@ -139,7 +145,7 @@ export const RegisterButton = ({slug, questions}: {slug: string; questions: Arra
                   <Controller
                     name={`questions.${index}.answer`}
                     control={methods.control}
-                    render={({field}) => (
+                    render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue>{field.value || "Velg svar..."}</SelectValue>

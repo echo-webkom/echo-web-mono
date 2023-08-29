@@ -1,4 +1,4 @@
-import {capitalize} from "./string";
+import { capitalize } from "./string";
 
 export const norwegianDateString = (date: Date) => {
   return capitalize(

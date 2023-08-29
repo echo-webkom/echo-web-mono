@@ -1,13 +1,13 @@
-import {type ReactNode} from "react";
+import { type ReactNode } from "react";
 
-import {Footer} from "@/components/footer";
-import {SiteHeader} from "@/components/site-header";
+import { Footer } from "@/components/footer";
+import { SiteHeader } from "@/components/site-header";
 
 type DefaultLayoutProps = {
   children: ReactNode;
 };
 
-export default function DefaultLayout({children}: DefaultLayoutProps) {
+export default function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />

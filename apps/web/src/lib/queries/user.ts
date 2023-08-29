@@ -1,8 +1,8 @@
-import {prisma, type User} from "@echo-webkom/db";
+import { prisma, type User } from "@echo-webkom/db";
 
 export const getUserById = async (id: User["id"]) => {
   return await prisma.user.findUnique({
-    where: {id},
+    where: { id },
   });
 };
 

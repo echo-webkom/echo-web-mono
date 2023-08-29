@@ -1,6 +1,6 @@
-import {forwardRef, type HTMLAttributes} from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
 type ContainerProps = HTMLAttributes<HTMLDivElement> & {
   className?: string;
@@ -9,7 +9,7 @@ type ContainerProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
-  ({layout = "normal", className, children, ...props}, ref) => {
+  ({ layout = "normal", className, children, ...props }, ref) => {
     return (
       <div
         ref={ref}

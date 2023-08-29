@@ -3,7 +3,7 @@ type CodeExampleProps = {
 };
 
 // TODO: Fix light mode / dark mode
-export const CodeExample = ({children}: CodeExampleProps) => {
+export const CodeExample = ({ children }: CodeExampleProps) => {
   return (
     <div className="overflow-hidden rounded-xl">
       <div className="bg-gray-200 p-3 dark:bg-gray-700">

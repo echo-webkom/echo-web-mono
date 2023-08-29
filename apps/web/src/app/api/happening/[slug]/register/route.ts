@@ -1,9 +1,9 @@
-import {NextResponse} from "next/server";
-import {z} from "zod";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
-import {prisma} from "@echo-webkom/db";
+import { prisma } from "@echo-webkom/db";
 
-import {withSession} from "@/lib/checks/with-session";
+import { withSession } from "@/lib/checks/with-session";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -21,7 +21,7 @@ const payloadSchema = z.object({
 });
 
 export const POST = withSession(
-  async ({ctx, user}) => {
+  async ({ ctx, user }) => {
     const happening = await prisma.happening.findUnique({
       where: {
         slug: ctx.params.slug,
@@ -113,7 +113,7 @@ export const POST = withSession(
     });
 
     if (registration) {
-      return new Response(null, {status: 403});
+      return new Response(null, { status: 403 });
     }
 
     const status = await prisma.$transaction(

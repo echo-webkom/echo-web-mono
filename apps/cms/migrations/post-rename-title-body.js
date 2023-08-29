@@ -1,4 +1,4 @@
-import {createClient} from "@sanity/client";
+import { createClient } from "@sanity/client";
 
 const token = "";
 const projectId = "nnumy1ga";

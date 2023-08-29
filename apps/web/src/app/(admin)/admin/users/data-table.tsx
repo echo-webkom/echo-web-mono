@@ -1,15 +1,22 @@
 "use client";
 
-import {flexRender, getCoreRowModel, useReactTable, type ColumnDef} from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type DataTableProps<TData, TValue> = {
   columns: Array<ColumnDef<TData, TValue>>;
   data: Array<TData>;
 };
 
-export const DataTable = <TData, TValue>({columns, data}: DataTableProps<TData, TValue>) => {
+export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
     columns,

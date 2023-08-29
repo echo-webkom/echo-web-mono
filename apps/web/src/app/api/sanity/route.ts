@@ -1,11 +1,11 @@
-import {NextResponse} from "next/server";
+import { NextResponse } from "next/server";
 
-import {prisma, type Group} from "@echo-webkom/db";
+import { prisma, type Group } from "@echo-webkom/db";
 
-import {withBasicAuth} from "@/lib/checks/with-basic-auth";
-import {$fetchAllBedpresses, type Bedpres} from "@/sanity/bedpres";
-import {$fetchAllEvents, type Event} from "@/sanity/event";
-import {isErrorMessage} from "@/utils/error";
+import { withBasicAuth } from "@/lib/checks/with-basic-auth";
+import { $fetchAllBedpresses, type Bedpres } from "@/sanity/bedpres";
+import { $fetchAllEvents, type Event } from "@/sanity/event";
+import { isErrorMessage } from "@/utils/error";
 
 export const revalidate = 0;
 
@@ -54,7 +54,7 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
             })),
           },
           spotRanges: {
-            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
               minDegreeYear,
               maxDegreeYear,
               spots,
@@ -69,7 +69,7 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
           title: happening.title,
           spotRanges: {
             deleteMany: {},
-            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
               minDegreeYear,
               maxDegreeYear,
               spots,
@@ -113,7 +113,7 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
             })),
           },
           spotRanges: {
-            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
               minDegreeYear,
               maxDegreeYear,
               spots,
@@ -130,7 +130,7 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
           title: happening.title,
           spotRanges: {
             deleteMany: {},
-            create: happening.spotRanges?.map(({minDegreeYear, maxDegreeYear, spots}) => ({
+            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
               minDegreeYear,
               maxDegreeYear,
               spots,

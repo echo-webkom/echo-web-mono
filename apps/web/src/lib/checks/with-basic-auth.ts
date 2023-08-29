@@ -1,4 +1,4 @@
-import {env} from "@/env.mjs";
+import { env } from "@/env.mjs";
 
 export const withBasicAuth = (handler: (request: Request) => Promise<Response> | Response) => {
   return async (request: Request): Promise<Response> => {

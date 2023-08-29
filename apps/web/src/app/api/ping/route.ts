@@ -1,7 +1,7 @@
-import {NextResponse} from "next/server";
+import { NextResponse } from "next/server";
 
 export const GET = (request: Request) => {
-  const {searchParams} = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const paramsCount = searchParams.get("count");
   const count = paramsCount ? parseInt(paramsCount, 10) : 1;
 

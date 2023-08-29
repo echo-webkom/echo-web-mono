@@ -1,5 +1,5 @@
-import {ComponentIcon} from "@sanity/icons";
-import {defineField, defineType} from "sanity";
+import { ComponentIcon } from "@sanity/icons";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "spotRange",
@@ -32,7 +32,7 @@ export default defineType({
       maxDegreeYear: "maxDegreeYear",
       spots: "spots",
     },
-    prepare({minDegreeYear, maxDegreeYear, spots}) {
+    prepare({ minDegreeYear, maxDegreeYear, spots }) {
       return {
         title: `${minDegreeYear}. - ${maxDegreeYear}. trinn`,
         subtitle: `${spots === 0 ? "Ubegrenset" : spots} plasser`,

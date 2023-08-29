@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
+import { groq } from "next-sanity";
 
-import {type ErrorMessage} from "@/utils/error";
-import {serverFetch} from "../client";
-import {bedpresSchema, type Bedpres} from "./schemas";
+import { type ErrorMessage } from "@/utils/error";
+import { serverFetch } from "../client";
+import { bedpresSchema, type Bedpres } from "./schemas";
 
 export * from "./schemas";
 

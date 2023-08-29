@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import {useConfig, type DocsThemeConfig} from "nextra-theme-docs";
+import { useConfig, type DocsThemeConfig } from "nextra-theme-docs";
 
 const config = {
   logo: (
@@ -26,7 +26,7 @@ const config = {
     link: "https://github.com/echo-webkom",
   },
   head: function useHead() {
-    const {title} = useConfig();
+    const { title } = useConfig();
     const metaDescription = "Dokumentasjon for echo Webkom";
     const siteUrl = "https://docs.echo-webkom.no";
 

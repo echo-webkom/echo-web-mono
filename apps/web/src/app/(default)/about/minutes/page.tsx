@@ -1,11 +1,11 @@
 import Link from "next/link";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
-import {format} from "date-fns";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 
-import {Container} from "@/components/container";
-import {Heading} from "@/components/ui/heading";
-import {fetchMinutes} from "@/sanity/minutes";
+import { Container } from "@/components/container";
+import { Heading } from "@/components/ui/heading";
+import { fetchMinutes } from "@/sanity/minutes";
 
 export const dynamic = "force-static";
 
@@ -25,7 +25,7 @@ export default async function MinuteOverview() {
 
                 <p>
                   <span className="font-semibold">Dato:</span>{" "}
-                  {format(new Date(minute.date), "d. MMMM yyyy", {locale: nb})}
+                  {format(new Date(minute.date), "d. MMMM yyyy", { locale: nb })}
                 </p>
 
                 <p className="flex items-center gap-1 group-hover:underline">

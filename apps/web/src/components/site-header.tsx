@@ -1,6 +1,6 @@
-import {headerRoutes} from "@/lib/routes";
-import {getSession} from "@/lib/session";
-import {ProfileIcon} from "./profile-icon";
+import { headerRoutes } from "@/lib/routes";
+import { getSession } from "@/lib/session";
+import { ProfileIcon } from "./profile-icon";
 import {
   ExpandedMenu,
   ExpandedMenuItem,
@@ -13,7 +13,7 @@ import {
   NavigationMenuItem,
   TopMenu,
 } from "./ui/header";
-import {HeaderLogo} from "./ui/header-logo";
+import { HeaderLogo } from "./ui/header-logo";
 
 export const SiteHeader = async () => {
   const session = await getSession();

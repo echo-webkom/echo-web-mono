@@ -1,6 +1,6 @@
-import {createClient} from "next-sanity";
+import { createClient } from "next-sanity";
 
-import {env} from "@/env.mjs";
+import { env } from "@/env.mjs";
 
 /**
  * Project IDS:

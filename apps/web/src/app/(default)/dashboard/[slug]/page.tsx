@@ -1,14 +1,14 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
 
-import {prisma, type Prisma} from "@echo-webkom/db";
-import {groupToString, registrationStatusToString} from "@echo-webkom/lib";
+import { prisma, type Prisma } from "@echo-webkom/db";
+import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
 
-import {Container} from "@/components/container";
-import {Button} from "@/components/ui/button";
-import {Heading} from "@/components/ui/heading";
-import {getHappeningBySlug} from "@/lib/queries/happening";
-import {cn} from "@/utils/cn";
+import { Container } from "@/components/container";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { getHappeningBySlug } from "@/lib/queries/happening";
+import { cn } from "@/utils/cn";
 
 type Props = {
   params: {
@@ -16,8 +16,8 @@ type Props = {
   };
 };
 
-export default async function EventDashboard({params}: Props) {
-  const {slug} = params;
+export default async function EventDashboard({ params }: Props) {
+  const { slug } = params;
 
   const eventInfo = await getHappeningBySlug(slug);
 
@@ -75,10 +75,10 @@ export default async function EventDashboard({params}: Props) {
 }
 
 type RegistrationWithUser = Prisma.RegistrationGetPayload<{
-  include: {user: true};
+  include: { user: true };
 }>;
 
-function RegistrationTable({registrations}: {registrations: Array<RegistrationWithUser>}) {
+function RegistrationTable({ registrations }: { registrations: Array<RegistrationWithUser> }) {
   if (registrations.length === 0) {
     return <p className="text-center md:text-left">Ingen registrerte</p>;
   }

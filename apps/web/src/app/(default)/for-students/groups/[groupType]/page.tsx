@@ -1,10 +1,10 @@
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
 
-import {type StudentGroupType} from "@echo-webkom/lib";
+import { type StudentGroupType } from "@echo-webkom/lib";
 
-import {Container} from "@/components/container";
-import {StudentGroupPreview} from "@/components/student-group-preview";
-import {Heading} from "@/components/ui/heading";
+import { Container } from "@/components/container";
+import { StudentGroupPreview } from "@/components/student-group-preview";
+import { Heading } from "@/components/ui/heading";
 import {
   fetchStudentGroupsByType,
   studentGroupTypeName,
@@ -17,8 +17,8 @@ type Props = {
   };
 };
 
-export const generateMetadata = ({params}: Props) => {
-  const {groupType} = params;
+export const generateMetadata = ({ params }: Props) => {
+  const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
 
@@ -35,8 +35,8 @@ export const generateStaticParams = () => {
   return params;
 };
 
-export default async function StudentGroupOverview({params}: Props) {
-  const {groupType} = params;
+export default async function StudentGroupOverview({ params }: Props) {
+  const { groupType } = params;
   const groupTypeFromPath = pathToGroupType(groupType);
 
   const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);

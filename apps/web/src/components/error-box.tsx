@@ -1,12 +1,12 @@
 "use client";
 
-import {useState} from "react";
-import {CaretUpIcon} from "@radix-ui/react-icons";
-import {AnimatePresence, motion} from "framer-motion";
+import { useState } from "react";
+import { CaretUpIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "framer-motion";
 
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
-export const ErrorBox = ({error}: {error: Error}) => {
+export const ErrorBox = ({ error }: { error: Error }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -32,8 +32,8 @@ export const ErrorBox = ({error}: {error: Error}) => {
             animate="open"
             exit="collapsed"
             variants={{
-              open: {height: "auto"},
-              collapsed: {height: 0},
+              open: { height: "auto" },
+              collapsed: { height: 0 },
             }}
             className="overflow-hidden"
           >

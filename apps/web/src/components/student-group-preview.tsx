@@ -1,16 +1,16 @@
 import Link from "next/link";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 import removeMd from "remove-markdown";
 
-import {type StudentGroup} from "@/sanity/student-group";
-import {cn} from "@/utils/cn";
+import { type StudentGroup } from "@/sanity/student-group";
+import { cn } from "@/utils/cn";
 
 type StudentGroupPreviewProps = {
   group: StudentGroup;
   withBorder?: boolean;
 };
 
-export const StudentGroupPreview = ({group, withBorder = false}: StudentGroupPreviewProps) => {
+export const StudentGroupPreview = ({ group, withBorder = false }: StudentGroupPreviewProps) => {
   return (
     <Link href={`/for-students/group/${group.slug}`}>
       <div
