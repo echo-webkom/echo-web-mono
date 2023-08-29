@@ -24,15 +24,16 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-        role: user.role,
-        alternativeEmail: user.alternativeEmail,
-      },
-    }),
+    session({session, user}) {
+      if (session.user) {
+        session.user.id = user.id;
+        session.user.role = user.role;
+        session.user.alternativeEmail = user.alternativeEmail;
+        session.user.degree = user.degree;
+        session.user.year = user.year;
+      }
+      return session;
+    },
   },
 
   providers: [
@@ -57,10 +58,18 @@ export const authOptions: NextAuthOptions = {
           email: string;
           picture: string;
         } & User,
-      ) => ({
-        ...profile,
-        id: profile.sub,
-      }),
+      ) => {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          alternativeEmail: profile.alternativeEmail,
+          role: profile.role,
+          degree: profile.degree,
+          year: profile.year,
+        };
+      },
     },
   ],
 };
