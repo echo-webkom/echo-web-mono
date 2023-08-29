@@ -4,9 +4,10 @@ import {Container} from "@/components/container";
 import {Footer} from "@/components/footer";
 import {SiteHeader} from "@/components/site-header";
 import {Button} from "@/components/ui/button";
+import {getSession} from "@/lib/session";
 import {Content} from "./content";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex w-full flex-grow flex-col">
@@ -30,7 +31,11 @@ export default function HomePage() {
                 </p>
                 <div>
                   <Button asChild variant="secondary">
-                    <Link href="/for-students">Bli medlem</Link>
+                    {(await getSession()) ? (
+                      <Link href="/auth/profile">Min profil</Link>
+                    ) : (
+                      <Link href="/auth/sign-in">Logg inn</Link>
+                    )}
                   </Button>
                 </div>
               </div>
