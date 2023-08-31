@@ -1,7 +1,7 @@
-import {UsersIcon} from "@sanity/icons";
-import {defineField, defineType} from "sanity";
+import { UsersIcon } from "@sanity/icons";
+import { defineField, defineType } from "sanity";
 
-import {GROUP_TYPES} from "@echo-webkom/lib";
+import { GROUP_TYPES } from "@echo-webkom/lib";
 
 export default defineType({
   name: "studentGroup",
@@ -30,8 +30,8 @@ export default defineType({
       title: "Gruppetype",
       type: "string",
       options: {
-        list: GROUP_TYPES.map(({title, value}) => {
-          return {title, value};
+        list: GROUP_TYPES.map(({ title, value }) => {
+          return { title, value };
         }),
         layout: "dropdown",
       },
@@ -65,7 +65,7 @@ export default defineType({
         }),
       ],
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      hidden: ({parent}) => parent.groupType === "BOARD",
+      hidden: ({ parent }) => parent.groupType === "BOARD",
     }),
     defineField({
       name: "description",
@@ -93,7 +93,7 @@ export default defineType({
               name: "profile",
               title: "Profil",
               type: "reference",
-              to: {type: "profile"},
+              to: { type: "profile" },
             }),
             defineField({
               name: "role",
@@ -119,7 +119,7 @@ export default defineType({
       image: "image",
     },
 
-    prepare({name, groupType, image}) {
+    prepare({ name, groupType, image }) {
       return {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         title: name,

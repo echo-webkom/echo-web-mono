@@ -1,19 +1,19 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Controller, useForm} from "react-hook-form";
-import {z} from "zod";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
-import {Degree} from "@echo-webkom/db/enums";
-import {degreeToString} from "@echo-webkom/lib";
+import { Degree } from "@echo-webkom/db/enums";
+import { degreeToString } from "@echo-webkom/lib";
 
-import {useToast} from "@/hooks/use-toast";
-import {Button} from "./ui/button";
-import {Input} from "./ui/input";
-import {Label} from "./ui/label";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
@@ -42,7 +42,7 @@ export const UserForm = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const {toast} = useToast();
+  const { toast } = useToast();
   const router = useRouter();
   const methods = useForm<FormData>({
     defaultValues: {
@@ -105,7 +105,7 @@ export const UserForm = ({
         <Controller
           name="degree"
           control={methods.control}
-          render={({field}) => (
+          render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Velg studieretning" />
@@ -127,7 +127,7 @@ export const UserForm = ({
         <Controller
           name="year"
           control={methods.control}
-          render={({field}) => (
+          render={({ field }) => (
             <Select
               value={field.value?.toString()}
               onValueChange={(e) => field.onChange(Number(e))}

@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 
-import {jobTypeToString, type JobAd} from "@/sanity/job-ad";
-import {cn} from "@/utils/cn";
-import {urlFor} from "@/utils/image-builder";
+import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
+import { cn } from "@/utils/cn";
+import { urlFor } from "@/utils/image-builder";
 
 type JobAdPreviewProps = {
   jobAd: JobAd;
 };
 
-export const JobAdPreview = ({jobAd}: JobAdPreviewProps) => {
+export const JobAdPreview = ({ jobAd }: JobAdPreviewProps) => {
   return (
     <Link href={`/for-students/job/${jobAd.slug}`}>
       <div

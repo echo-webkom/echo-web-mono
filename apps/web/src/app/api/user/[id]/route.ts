@@ -1,8 +1,8 @@
-import {z} from "zod";
+import { z } from "zod";
 
-import {Degree, prisma} from "@echo-webkom/db";
+import { Degree, prisma } from "@echo-webkom/db";
 
-import {getUser} from "@/lib/session";
+import { getUser } from "@/lib/session";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -18,11 +18,11 @@ const payloadSchema = z.object({
 
 export const PATCH = async (req: Request, context: z.infer<typeof routeContextSchema>) => {
   try {
-    const {params} = routeContextSchema.parse(context);
+    const { params } = routeContextSchema.parse(context);
 
     const user = await getUser();
     if (!user || params.id !== user.id) {
-      return new Response(null, {status: 403});
+      return new Response(null, { status: 403 });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -40,12 +40,12 @@ export const PATCH = async (req: Request, context: z.infer<typeof routeContextSc
       },
     });
 
-    return new Response(null, {status: 200});
+    return new Response(null, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), {status: 400});
+      return new Response(JSON.stringify(error.issues), { status: 400 });
     }
 
-    return new Response(null, {status: 500});
+    return new Response(null, { status: 500 });
   }
 };

@@ -1,7 +1,7 @@
-import {PrismaAdapter} from "@next-auth/prisma-adapter";
-import type {DefaultSession, NextAuthOptions, User} from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { DefaultSession, NextAuthOptions, User } from "next-auth";
 
-import {prisma, type Degree, type Role} from "@echo-webkom/db";
+import { prisma, type Degree, type Role } from "@echo-webkom/db";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

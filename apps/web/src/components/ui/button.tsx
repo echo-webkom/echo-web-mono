@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {Slot} from "@radix-ui/react-slot";
-import {cva, type VariantProps} from "class-variance-authority";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
 const buttonVariants = cva(
   "inline-flex items-center font-semibold justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
@@ -41,12 +41,12 @@ export type ButtonProps = {
   VariantProps<typeof buttonVariants>;
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({className, variant, size, fullWidth, type, asChild = false, ...props}, ref) => {
+  ({ className, variant, size, fullWidth, type, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : "button";
 
     return (
       <Component
-        className={cn(buttonVariants({variant, size, fullWidth, className}))}
+        className={cn(buttonVariants({ variant, size, fullWidth, className }))}
         type={type ?? "button"}
         ref={ref}
         {...props}

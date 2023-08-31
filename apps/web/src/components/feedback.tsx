@@ -1,13 +1,13 @@
 "use client";
 
-import {useState} from "react";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {MdOutlineFeedback} from "react-icons/md";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { MdOutlineFeedback } from "react-icons/md";
 
-import {useToast} from "@/hooks/use-toast";
-import {feedbackSchema, type FeedbackForm} from "@/lib/schemas/feedback";
-import {Button} from "./ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,12 +17,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import {Input} from "./ui/input";
-import {Label} from "./ui/label";
-import {Textarea} from "./ui/textarea";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
 
 export const Feedback = () => {
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
 

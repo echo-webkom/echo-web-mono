@@ -1,17 +1,17 @@
 import Link from "next/link";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
-import {type Post} from "@/sanity/posts";
-import {cn} from "@/utils/cn";
+import { type Post } from "@/sanity/posts";
+import { cn } from "@/utils/cn";
 
 type PostPreviewProps = {
   post: Post;
   withBorder?: boolean;
 };
 
-export const PostPreview = ({post, withBorder = false}: PostPreviewProps) => {
+export const PostPreview = ({ post, withBorder = false }: PostPreviewProps) => {
   return (
     <Link
       href={`/for-students/post/${post.slug}`}

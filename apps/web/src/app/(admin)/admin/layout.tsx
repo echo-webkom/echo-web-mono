@@ -1,10 +1,10 @@
-import {redirect} from "next/navigation";
-import {type Metadata} from "next/types";
+import { redirect } from "next/navigation";
+import { type Metadata } from "next/types";
 
-import {Footer} from "@/components/footer";
-import {SiteHeader} from "@/components/site-header";
-import {getUser} from "@/lib/session";
-import {AdminSidebar} from "./sidebar";
+import { Footer } from "@/components/footer";
+import { SiteHeader } from "@/components/site-header";
+import { getUser } from "@/lib/session";
+import { AdminSidebar } from "./sidebar";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export const metadata = {
   title: "Admin",
 } satisfies Metadata;
 
-export default async function AdminDashboardLayout({children}: Props) {
+export default async function AdminDashboardLayout({ children }: Props) {
   const user = await getUser();
 
   if (!user) {

@@ -1,5 +1,5 @@
-import {CogIcon} from "@sanity/icons";
-import {type StructureBuilder} from "sanity/desk";
+import { CogIcon } from "@sanity/icons";
+import { type StructureBuilder } from "sanity/desk";
 
 const hiddenDocuments = ["siteSettings", "media.tag"];
 

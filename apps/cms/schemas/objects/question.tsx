@@ -1,5 +1,5 @@
-import {InfoOutlineIcon} from "@sanity/icons";
-import {defineArrayMember, defineField, defineType} from "sanity";
+import { InfoOutlineIcon } from "@sanity/icons";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export default defineType({
   name: "question",
@@ -28,8 +28,8 @@ export default defineType({
       type: "string",
       options: {
         list: [
-          {title: "Tekstfelt", value: "text"},
-          {title: "Flervalg", value: "multipleChoice"},
+          { title: "Tekstfelt", value: "text" },
+          { title: "Flervalg", value: "multipleChoice" },
         ],
       },
       validation: (Rule) => Rule.required(),
@@ -44,7 +44,7 @@ export default defineType({
         }),
       ],
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      hidden: ({parent}) => parent.type !== "multipleChoice",
+      hidden: ({ parent }) => parent.type !== "multipleChoice",
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const options = value ?? [];
@@ -63,7 +63,7 @@ export default defineType({
     select: {
       title: "title",
     },
-    prepare({title}) {
+    prepare({ title }) {
       return {
         title: title as string,
         media: InfoOutlineIcon,

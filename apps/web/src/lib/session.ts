@@ -1,8 +1,8 @@
-import {getServerSession as _getServerSession} from "next-auth/next";
+import { getServerSession as _getServerSession } from "next-auth/next";
 
-import {authOptions} from "@echo-webkom/auth";
+import { authOptions } from "@echo-webkom/auth";
 
-import {getUserById} from "./queries/user";
+import { getUserById } from "./queries/user";
 
 export const getUser = async () => {
   const session = await _getServerSession(authOptions);

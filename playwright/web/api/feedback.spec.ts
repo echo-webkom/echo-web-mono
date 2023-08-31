@@ -1,9 +1,9 @@
-import {expect, test} from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-import {invalidFeedbacks, validFeedbacks} from "./fixtures/feedback";
+import { invalidFeedbacks, validFeedbacks } from "./fixtures/feedback";
 
 validFeedbacks.forEach((feedback, i) => {
-  test(`valid feedback ${i}`, async ({request}) => {
+  test(`valid feedback ${i}`, async ({ request }) => {
     const resp = await request.post("/api/feedback", {
       data: feedback,
     });
@@ -13,7 +13,7 @@ validFeedbacks.forEach((feedback, i) => {
 });
 
 invalidFeedbacks.forEach((feedback, i) => {
-  test(`invalid feedback ${i}`, async ({request}) => {
+  test(`invalid feedback ${i}`, async ({ request }) => {
     const resp = await request.post("/api/feedback", {
       data: feedback,
     });

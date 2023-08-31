@@ -8,11 +8,11 @@ import React, {
   type ComponentPropsWithoutRef,
 } from "react";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
-import {Cross2Icon, HamburgerMenuIcon} from "@radix-ui/react-icons";
+import { usePathname } from "next/navigation";
+import { Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 
-import {cn} from "@/utils/cn";
-import {Button} from "./button";
+import { cn } from "@/utils/cn";
+import { Button } from "./button";
 
 type HeaderContextType = {
   isOpen: boolean;
@@ -22,7 +22,7 @@ type HeaderContextType = {
 
 const HeaderContext = createContext<HeaderContextType>({} as HeaderContextType);
 
-export const HeaderProvider = ({children}: {children: React.ReactNode}) => {
+export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -30,15 +30,17 @@ export const HeaderProvider = ({children}: {children: React.ReactNode}) => {
   };
 
   return (
-    <HeaderContext.Provider value={{isOpen, toggle, setIsOpen}}>{children}</HeaderContext.Provider>
+    <HeaderContext.Provider value={{ isOpen, toggle, setIsOpen }}>
+      {children}
+    </HeaderContext.Provider>
   );
 };
 
 export const useHeader = () => useContext(HeaderContext);
 
 export const Header = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
-  ({children, ...props}, ref) => {
-    const {isOpen, setIsOpen} = useHeader();
+  ({ children, ...props }, ref) => {
+    const { isOpen, setIsOpen } = useHeader();
     const pathname = usePathname();
 
     useEffect(() => {
@@ -70,7 +72,7 @@ export const Header = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<
 Header.displayName = "Header";
 
 export const TopMenu = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
-  ({children, ...props}, ref) => {
+  ({ children, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -85,8 +87,8 @@ export const TopMenu = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef
 TopMenu.displayName = "TopMenu";
 
 export const NavigationMenu = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
-  ({children, ...props}, ref) => {
-    const {isOpen, toggle} = useHeader();
+  ({ children, ...props }, ref) => {
+    const { isOpen, toggle } = useHeader();
 
     return (
       <div className="flex items-center gap-6">
@@ -108,7 +110,7 @@ type NavigationMenuItemProps = ComponentPropsWithoutRef<"li"> & {
 };
 
 export const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenuItemProps>(
-  ({to, children, ...props}, ref) => {
+  ({ to, children, ...props }, ref) => {
     return (
       <li ref={ref} {...props}>
         <Button variant="secondary" asChild>
@@ -121,8 +123,8 @@ export const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenu
 NavigationMenuItem.displayName = "NavigationMenuItem";
 
 export const ExpandedMenu = React.forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
-  ({children, ...props}, ref) => {
-    const {isOpen} = useHeader();
+  ({ children, ...props }, ref) => {
+    const { isOpen } = useHeader();
 
     if (!isOpen) return null;
 
@@ -142,7 +144,7 @@ ExpandedMenu.displayName = "ExpandedMenu";
 export const ExpandedMenuSection = React.forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<"div">
->(({children, ...props}, ref) => {
+>(({ children, ...props }, ref) => {
   return (
     <div ref={ref} className="flex w-full flex-col" {...props}>
       {children}
@@ -152,7 +154,7 @@ export const ExpandedMenuSection = React.forwardRef<
 ExpandedMenuSection.displayName = "ExpandedMenuSection";
 
 export const ExpandedMenuList = React.forwardRef<HTMLUListElement, ComponentPropsWithoutRef<"ul">>(
-  ({children, ...props}, ref) => {
+  ({ children, ...props }, ref) => {
     return (
       <ul ref={ref} className="text-lg font-medium" {...props}>
         {children}
@@ -165,7 +167,7 @@ ExpandedMenuList.displayName = "ExpandedMenuList";
 export const ExpandedMenuTitle = React.forwardRef<
   HTMLHeadingElement,
   ComponentPropsWithoutRef<"h3">
->(({children, ...props}, ref) => {
+>(({ children, ...props }, ref) => {
   return (
     <h3 ref={ref} className="mb-3 text-2xl font-bold" {...props}>
       {children}
@@ -175,7 +177,7 @@ export const ExpandedMenuTitle = React.forwardRef<
 ExpandedMenuTitle.displayName = "ExpandedMenuTitle";
 
 export const ExpandedMenuItem = React.forwardRef<HTMLLIElement, NavigationMenuItemProps>(
-  ({to, className, children, ...props}, ref) => {
+  ({ to, className, children, ...props }, ref) => {
     return (
       <li ref={ref} className={cn("w-full", className)} {...props}>
         <Link

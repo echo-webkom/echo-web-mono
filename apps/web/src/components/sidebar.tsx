@@ -1,6 +1,6 @@
 import React from "react";
 
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
 type SidebarProps = {
   className?: string;
@@ -8,7 +8,7 @@ type SidebarProps = {
 };
 
 export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({className, children}, ref) => {
+  ({ className, children }, ref) => {
     const childrenArray = React.Children.toArray(children);
 
     return (
@@ -35,7 +35,7 @@ type SidebarItemProps = {
 };
 
 export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
-  ({className, children}, ref) => {
+  ({ className, children }, ref) => {
     return (
       <div ref={ref} className={cn(className)}>
         {children}
@@ -51,7 +51,7 @@ type SidebarItemTitleProps = {
 };
 
 export const SidebarItemTitle = React.forwardRef<HTMLHeadingElement, SidebarItemTitleProps>(
-  ({className, children}, ref) => {
+  ({ className, children }, ref) => {
     return (
       <h3 ref={ref} className={cn("text-lg font-semibold", className)}>
         {children}
@@ -67,7 +67,7 @@ type SidebarItemContentProps = {
 };
 
 export const SidebarItemContent = React.forwardRef<HTMLDivElement, SidebarItemContentProps>(
-  ({className, children}, ref) => {
+  ({ className, children }, ref) => {
     return (
       <div ref={ref} className={cn(className)}>
         {children}

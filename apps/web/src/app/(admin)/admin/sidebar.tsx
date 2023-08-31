@@ -1,12 +1,12 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
-import {ArrowLeftIcon} from "@radix-ui/react-icons";
+import { usePathname } from "next/navigation";
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
-import {Button} from "@/components/ui/button";
-import {cn} from "@/utils/cn";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
 
 const adminRoutes = [
   {
@@ -23,7 +23,7 @@ const adminRoutes = [
   },
 ];
 
-export const AdminSidebar = ({children}: {children: React.ReactNode}) => {
+export const AdminSidebar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const pathname = usePathname();

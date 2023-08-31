@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
-import {z} from "zod";
+import { groq } from "next-sanity";
+import { z } from "zod";
 
-import {serverFetch} from "../client";
-import {minuteSchema, type Minute} from "./schema";
+import { serverFetch } from "../client";
+import { minuteSchema, type Minute } from "./schema";
 
 export * from "./schema";
 
@@ -37,7 +37,7 @@ export const fetchMinuteParams = async () => {
 }
     `;
 
-  const result = await serverFetch<Array<{id: string}>>(query);
+  const result = await serverFetch<Array<{ id: string }>>(query);
 
   // TODO: Make pretty
   return z
@@ -46,7 +46,7 @@ export const fetchMinuteParams = async () => {
     })
     .array()
     .parse(result)
-    .map(({id}) => ({
+    .map(({ id }) => ({
       id,
     }));
 };

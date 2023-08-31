@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import {Footer} from "@/components/footer";
-import {Button} from "@/components/ui/button";
-import {Heading} from "@/components/ui/heading";
+import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 
 /**
  * TODO:

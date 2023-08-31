@@ -1,4 +1,4 @@
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
 export type HeadingProps = {
   level?: 1 | 2 | 3 | 4;
@@ -6,7 +6,7 @@ export type HeadingProps = {
   children: React.ReactNode;
 };
 
-export const Heading = ({level = 1, className, children}: HeadingProps) => {
+export const Heading = ({ level = 1, className, children }: HeadingProps) => {
   const Comp = `h${level}` as const;
 
   return (

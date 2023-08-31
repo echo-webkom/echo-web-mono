@@ -1,8 +1,8 @@
-import {z} from "zod";
+import { z } from "zod";
 
-import {prisma} from "@echo-webkom/db";
+import { prisma } from "@echo-webkom/db";
 
-import {feedbackSchema} from "@/lib/schemas/feedback";
+import { feedbackSchema } from "@/lib/schemas/feedback";
 
 export const POST = async (req: Request) => {
   try {
@@ -16,12 +16,12 @@ export const POST = async (req: Request) => {
       },
     });
 
-    return new Response("Takk for din tilbakemelding!", {status: 200});
+    return new Response("Takk for din tilbakemelding!", { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), {status: 400});
+      return new Response(JSON.stringify(error.issues), { status: 400 });
     }
 
-    return new Response(null, {status: 500});
+    return new Response(null, { status: 500 });
   }
 };

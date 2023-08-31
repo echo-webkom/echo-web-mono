@@ -1,13 +1,13 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Controller, useForm} from "react-hook-form";
-import {AiOutlineLoading} from "react-icons/ai";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { AiOutlineLoading } from "react-icons/ai";
 
-import {Button} from "@/components/ui/button";
-import {Checkbox} from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -17,17 +17,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {Textarea} from "@/components/ui/textarea";
-import {useDeregistration} from "@/hooks/use-deregistration";
-import {useToast} from "@/hooks/use-toast";
-import {deregistrationSchema, type DeregistrationForm} from "@/lib/schemas/deregistration";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useDeregistration } from "@/hooks/use-deregistration";
+import { useToast } from "@/hooks/use-toast";
+import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
-export const DeregisterButton = ({slug}: {slug: string}) => {
+export const DeregisterButton = ({ slug }: { slug: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const {toast} = useToast();
-  const {deregister, isLoading} = useDeregistration(slug, {
+  const { toast } = useToast();
+  const { deregister, isLoading } = useDeregistration(slug, {
     onSuccess: () => {
       setIsOpen(false);
       router.refresh();
@@ -98,7 +98,7 @@ export const DeregisterButton = ({slug}: {slug: string}) => {
                   name="hasVerified"
                   control={methods.control}
                   defaultValue={false}
-                  render={({field}) => (
+                  render={({ field }) => (
                     <Checkbox
                       id="hasVerified"
                       checked={field.value}

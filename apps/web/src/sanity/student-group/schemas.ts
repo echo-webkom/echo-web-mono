@@ -1,7 +1,7 @@
-import {z} from "zod";
+import { z } from "zod";
 
-import {profileSchema} from "../profile/schemas";
-import {imageSchema} from "../utils/image";
+import { profileSchema } from "../profile/schemas";
+import { imageSchema } from "../utils/image";
 
 export const studentGroupTypes = ["BOARD", "SUBORG", "SUBGROUP", "INTGROUP"] as const;
 
@@ -10,7 +10,7 @@ export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;
 
 export const memberSchema = z.object({
   role: z.string(),
-  profile: profileSchema.pick({_id: true, name: true, image: true, socials: true}),
+  profile: profileSchema.pick({ _id: true, name: true, image: true, socials: true }),
 });
 
 export type Member = z.infer<typeof memberSchema>;

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 
-import {type Bedpres} from "@/sanity/bedpres";
-import {type Event} from "@/sanity/event";
-import {cn} from "@/utils/cn";
-import {urlFor} from "@/utils/image-builder";
-import {capitalize} from "@/utils/string";
+import { type Bedpres } from "@/sanity/bedpres";
+import { type Event } from "@/sanity/event";
+import { cn } from "@/utils/cn";
+import { urlFor } from "@/utils/image-builder";
+import { capitalize } from "@/utils/string";
 
 type HappeningPreviewBoxProps =
   | {
@@ -26,7 +26,7 @@ const happeningTypeToString: Record<HappeningType, string> = {
   BEDPRES: "bedriftspresentasjoner",
 };
 
-export const HappeningPreviewBox = ({type, happenings}: HappeningPreviewBoxProps) => {
+export const HappeningPreviewBox = ({ type, happenings }: HappeningPreviewBoxProps) => {
   return (
     <div>
       <h2 className="text-center text-xl font-semibold md:text-3xl">
@@ -58,7 +58,7 @@ type EventPreviewProps = {
   event: Event;
 };
 
-export const EventPreview = ({event}: EventPreviewProps) => {
+export const EventPreview = ({ event }: EventPreviewProps) => {
   return (
     <Link href={`/event/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -72,7 +72,7 @@ export const EventPreview = ({event}: EventPreviewProps) => {
             {event.date && (
               <li>
                 <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(event.date), "d. MMMM yyyy", {locale: nb})}
+                {format(new Date(event.date), "d. MMMM yyyy", { locale: nb })}
               </li>
             )}
             <li>
@@ -94,7 +94,7 @@ type BedpresPreviewProps = {
   bedpres: Bedpres;
 };
 
-export const BedpresPreview = ({bedpres}: BedpresPreviewProps) => {
+export const BedpresPreview = ({ bedpres }: BedpresPreviewProps) => {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -113,7 +113,7 @@ export const BedpresPreview = ({bedpres}: BedpresPreviewProps) => {
             {bedpres.date && (
               <li>
                 <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(bedpres.date), "d. MMMM yyyy", {locale: nb})}
+                {format(new Date(bedpres.date), "d. MMMM yyyy", { locale: nb })}
               </li>
             )}
             <li>

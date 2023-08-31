@@ -1,9 +1,9 @@
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
 
-import {Container} from "@/components/container";
-import {Markdown} from "@/components/markdown";
-import {Heading} from "@/components/ui/heading";
-import {fetchStaticInfoBySlug, fetchStaticInfoPaths} from "@/sanity/static-info";
+import { Container } from "@/components/container";
+import { Markdown } from "@/components/markdown";
+import { Heading } from "@/components/ui/heading";
+import { fetchStaticInfoBySlug, fetchStaticInfoPaths } from "@/sanity/static-info";
 
 type Props = {
   params: {
@@ -26,7 +26,7 @@ export const generateStaticParams = async () => {
   return await fetchStaticInfoPaths();
 };
 
-export const generateMetadata = async ({params}: Props) => {
+export const generateMetadata = async ({ params }: Props) => {
   const page = await getData(params.slug);
 
   return {
@@ -34,7 +34,7 @@ export const generateMetadata = async ({params}: Props) => {
   };
 };
 
-export default async function StaticPage({params}: Props) {
+export default async function StaticPage({ params }: Props) {
   const page = await getData(params.slug);
 
   return (

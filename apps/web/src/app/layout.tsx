@@ -1,14 +1,14 @@
-import {IBM_Plex_Mono, Inter} from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 
 import "@/styles/globals.css";
 
-import {type Metadata} from "next";
+import { type Metadata } from "next";
 
-import {Feedback} from "@/components/feedback";
-import {Toaster} from "@/components/toaster";
-import {baseURL} from "@/config";
-import {cn} from "@/utils/cn";
-import {Providers} from "./providers";
+import { Feedback } from "@/components/feedback";
+import { Toaster } from "@/components/toaster";
+import { baseURL } from "@/config";
+import { cn } from "@/utils/cn";
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -52,7 +52,7 @@ export const metadata = {
   },
 } satisfies Metadata;
 
-export default function RootLayout({children}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" suppressHydrationWarning>
       <head />

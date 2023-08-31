@@ -1,5 +1,5 @@
-import {Container} from "@/components/container";
-import {Heading} from "@/components/ui/heading";
+import { Container } from "@/components/container";
+import { Heading } from "@/components/ui/heading";
 
 export default function Dashboard() {
   return (

@@ -1,4 +1,4 @@
-import {OkHandIcon} from "@sanity/icons";
+import { OkHandIcon } from "@sanity/icons";
 import {
   defineArrayMember,
   defineField,
@@ -13,7 +13,7 @@ export default defineType({
   title: "Arrangement",
   type: "document",
   icon: OkHandIcon,
-  groups: [{name: "dates", title: "Datoer"}],
+  groups: [{ name: "dates", title: "Datoer" }],
   fields: [
     defineField({
       name: "title",
@@ -29,17 +29,17 @@ export default defineType({
       options: {
         source: "title",
         slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
-          const slug = slugify(input, {remove: /[*+~.()'"!:@]/g, lower: true, strict: true});
+          const slug = slugify(input, { remove: /[*+~.()'"!:@]/g, lower: true, strict: true });
           const query =
             'count(*[_type == "bedpres" || _type == "event" && slug.current == $slug]{_id})';
-          const params = {slug};
-          const {getClient} = context;
+          const params = { slug };
+          const { getClient } = context;
 
-          const count: number = await getClient({apiVersion: "2021-04-10"}).fetch(query, params);
+          const count: number = await getClient({ apiVersion: "2021-04-10" }).fetch(query, params);
           return count > 0 ? `${slug}-${count + 1}` : slug;
         },
       },
-      readOnly: ({currentUser}) => {
+      readOnly: ({ currentUser }) => {
         return !!currentUser?.roles.find((role) => role.name === "admin");
       },
     }),
@@ -52,7 +52,7 @@ export default defineType({
       of: [
         {
           type: "reference",
-          to: {type: "studentGroup"},
+          to: { type: "studentGroup" },
         },
       ],
       validation: (Rule) => Rule.required(),
@@ -82,7 +82,7 @@ export default defineType({
       name: "location",
       title: "Sted",
       type: "reference",
-      to: {type: "location"},
+      to: { type: "location" },
     }),
     defineField({
       name: "spotRanges",

@@ -18,7 +18,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "import"],
   rules: {
     eqeqeq: "error",
-    "no-console": ["warn", {allow: ["warn", "error"]}],
+    "no-console": ["warn", { allow: ["warn", "error"] }],
     "eol-last": "error",
     "no-trailing-spaces": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
@@ -34,9 +34,9 @@ module.exports = {
     ],
     "@typescript-eslint/consistent-type-imports": [
       "error",
-      {prefer: "type-imports", fixStyle: "inline-type-imports"},
+      { prefer: "type-imports", fixStyle: "inline-type-imports" },
     ],
-    "@typescript-eslint/array-type": ["error", {default: "generic", readonly: "generic"}],
+    "@typescript-eslint/array-type": ["error", { default: "generic", readonly: "generic" }],
     "@typescript-eslint/consistent-type-definitions": ["off"],
   },
   reportUnusedDisableDirectives: true,

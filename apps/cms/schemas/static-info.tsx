@@ -1,7 +1,7 @@
-import {DocumentTextIcon} from "@sanity/icons";
-import {defineField} from "sanity";
+import { DocumentTextIcon } from "@sanity/icons";
+import { defineField } from "sanity";
 
-import {PAGE_TYPES} from "@echo-webkom/lib";
+import { PAGE_TYPES } from "@echo-webkom/lib";
 
 export default defineField({
   name: "static",
@@ -30,8 +30,8 @@ export default defineField({
       title: "Side type",
       type: "string",
       options: {
-        list: PAGE_TYPES.map(({title, value}) => {
-          return {title, value};
+        list: PAGE_TYPES.map(({ title, value }) => {
+          return { title, value };
         }),
       },
       validation: (Rule) => Rule.required(),
@@ -50,7 +50,7 @@ export default defineField({
       title: "title",
       subtitle: "pageType",
     },
-    prepare({title, subtitle}: {title: string; subtitle: string}) {
+    prepare({ title, subtitle }: { title: string; subtitle: string }) {
       return {
         title,
         subtitle: PAGE_TYPES.find((type) => type.value === subtitle)?.title,

@@ -1,8 +1,8 @@
-import {groq} from "next-sanity";
+import { groq } from "next-sanity";
 
-import {serverFetch} from "../client";
-import {slugSchema} from "../utils/slug";
-import {jobAdSchema, type JobAd, type JobType} from "./schemas";
+import { serverFetch } from "../client";
+import { slugSchema } from "../utils/slug";
+import { jobAdSchema, type JobAd, type JobType } from "./schemas";
 
 export * from "./schemas";
 

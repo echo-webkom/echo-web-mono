@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-import {Container} from "@/components/container";
-import {Footer} from "@/components/footer";
-import {SiteHeader} from "@/components/site-header";
-import {Button} from "@/components/ui/button";
-import {getSession} from "@/lib/session";
-import {Content} from "./content";
+import { Container } from "@/components/container";
+import { Footer } from "@/components/footer";
+import { SiteHeader } from "@/components/site-header";
+import { Button } from "@/components/ui/button";
+import { getSession } from "@/lib/session";
+import { Content } from "./content";
 
 export default async function HomePage() {
   const session = await getSession();

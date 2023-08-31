@@ -4,7 +4,10 @@ type Sponsor = {
   imageSrc: string;
 };
 
-const createSponsorArray = <T extends ReadonlyArray<Sponsor> & Array<{label: V}>, V extends string>(
+const createSponsorArray = <
+  T extends ReadonlyArray<Sponsor> & Array<{ label: V }>,
+  V extends string,
+>(
   ...args: T
 ) => {
   return args;

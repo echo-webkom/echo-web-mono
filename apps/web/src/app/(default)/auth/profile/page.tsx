@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 
 import {
   groupToString,
@@ -8,10 +8,10 @@ import {
   registrationStatusToString,
 } from "@echo-webkom/lib";
 
-import {Container} from "@/components/container";
-import {UserForm} from "@/components/user-form";
-import {getUserRegistrations} from "@/lib/queries/user";
-import {getUser} from "@/lib/session";
+import { Container } from "@/components/container";
+import { UserForm } from "@/components/user-form";
+import { getUserRegistrations } from "@/lib/queries/user";
+import { getUser } from "@/lib/session";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -89,6 +89,6 @@ export default async function ProfilePage() {
   );
 }
 
-const Tag = ({children}: {children: React.ReactNode}) => {
+const Tag = ({ children }: { children: React.ReactNode }) => {
   return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
 };

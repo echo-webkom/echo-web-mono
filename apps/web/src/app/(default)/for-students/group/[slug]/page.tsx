@@ -1,15 +1,15 @@
-import {AiOutlineInstagram, AiOutlineLinkedin} from "react-icons/ai";
-import {MdOutlineEmail, MdOutlineFacebook} from "react-icons/md";
+import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
+import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
-import {Container} from "@/components/container";
-import {Markdown} from "@/components/markdown";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { Container } from "@/components/container";
+import { Markdown } from "@/components/markdown";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupParams,
   studentGroupTypeName,
 } from "@/sanity/student-group";
-import {urlFor} from "@/utils/image-builder";
+import { urlFor } from "@/utils/image-builder";
 
 type Props = {
   params: {
@@ -21,8 +21,8 @@ const getData = async (slug: string) => {
   return await fetchStudentGroupBySlug(slug);
 };
 
-export const generateMetadata = async ({params}: Props) => {
-  const {slug} = params;
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = params;
 
   const group = await getData(slug);
 
@@ -37,8 +37,8 @@ export const generateStaticParams = async () => {
   return params;
 };
 
-export default async function GroupPage({params}: Props) {
-  const {slug} = params;
+export default async function GroupPage({ params }: Props) {
+  const { slug } = params;
 
   const group = await getData(slug);
 

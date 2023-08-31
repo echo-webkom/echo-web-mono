@@ -1,12 +1,12 @@
 "use client";
 
-import {DotsHorizontalIcon} from "@radix-ui/react-icons";
-import {type ColumnDef} from "@tanstack/react-table";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { type ColumnDef } from "@tanstack/react-table";
 
-import {type User as DbUser, type Group} from "@echo-webkom/db";
-import {groupToString, roleToString} from "@echo-webkom/lib";
+import { type User as DbUser, type Group } from "@echo-webkom/db";
+import { groupToString, roleToString } from "@echo-webkom/lib";
 
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +37,7 @@ export const columns: Array<ColumnDef<User>> = [
   {
     accessorKey: "studentGroups",
     header: "Studentgrupper",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const groups = row.getValue<Array<Group>>("studentGroups");
 
       return (
@@ -50,7 +50,7 @@ export const columns: Array<ColumnDef<User>> = [
   {
     accessorKey: "role",
     header: "Rolle",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const role = row.getValue<DbUser["role"]>("role");
 
       return <div>{roleToString[role]}</div>;
