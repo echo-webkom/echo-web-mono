@@ -371,8 +371,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       prisma-kysely:
-        specifier: ^1.6.0
-        version: 1.6.0
+        specifier: ^1.7.0
+        version: 1.7.0
       tsx:
         specifier: ^3.12.7
         version: 3.12.7
@@ -10685,8 +10685,8 @@ packages:
       parse-ms: 2.1.0
     dev: false
 
-  /prisma-kysely@1.6.0:
-    resolution: {integrity: sha512-ft4mEmEyM3qrJXwryXzYhWIPgZvWgezEiTwCEoDkKFfKzuZ/GyUxDz5P2Uor8vYx9EK5enYk3zsc0BgW6vrZ+w==}
+  /prisma-kysely@1.7.0:
+    resolution: {integrity: sha512-uWvnoYPybg6YIswyDDPfMwPNeL/dcNOWvcLOeGwaVi2DiYaL6gSsFYALeaKyX8CetAV7SSSNFXPJ4aOKhrkOQg==}
     hasBin: true
     dependencies:
       '@mrleebo/prisma-ast': 0.6.0
