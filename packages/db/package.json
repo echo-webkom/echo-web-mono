@@ -27,7 +27,7 @@
     "eslint-config-webkom": "workspace:*",
     "prisma": "^5.2.0",
     "prisma-kysely": "^1.7.0",
-    "tsx": "^3.12.7",
+    "tsx": "^3.12.8",
     "typescript": "5.2.2"
   },
   "eslintConfig": {
