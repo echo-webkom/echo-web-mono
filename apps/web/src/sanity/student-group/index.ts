@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
-import { serverFetch } from "../client";
+import { sanityFetch } from "../client";
 import { studentGroupSchema, type StudentGroup } from "./schemas";
 
 export * from "./schemas";
@@ -25,7 +25,10 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
 export const fetchStudentGroupParams = async () => {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await serverFetch<Array<{ slug: string; groupType: StudentGroupType }>>(query);
+  const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
+    query,
+    tags: ["student-group-params"],
+  });
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),
@@ -80,7 +83,11 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
     n,
   };
 
-  const res = await serverFetch<Array<StudentGroup>>(query, params);
+  const res = await sanityFetch<Array<StudentGroup>>({
+    query,
+    params,
+    tags: [`student-group-${type}`],
+  });
 
   return studentGroupSchema.array().parse(res);
 };
@@ -120,7 +127,11 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await serverFetch<StudentGroup>(query, params);
+  const result = await sanityFetch<StudentGroup>({
+    query,
+    params,
+    tags: [`student-group-${slug}`],
+  });
 
   return studentGroupSchema.parse(result);
 };
