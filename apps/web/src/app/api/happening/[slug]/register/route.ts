@@ -157,7 +157,7 @@ export const POST = withSession(
           return "WAITLISTED";
         }
       },
-      {isolationLevel: "Serializable"},
+      { isolationLevel: "Serializable" },
     );
 
     return NextResponse.json(

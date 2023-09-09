@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 import { type ErrorMessage } from "@/utils/error";
-import { serverFetch } from "../client";
+import { sanityFetch } from "../client";
 import { bedpresSchema, type Bedpres } from "./schemas";
 
 export * from "./schemas";
@@ -56,7 +56,11 @@ export const fetchUpcomingBedpresses = async (n: number) => {
     n: n > 0 ? n : -1,
   };
 
-  const res = await serverFetch<Array<Bedpres>>(query, params);
+  const res = await sanityFetch<Array<Bedpres>>({
+    query,
+    params,
+    tags: ["upcoming-bedpresses"],
+  });
 
   return bedpresSchema.array().parse(res);
 };
@@ -112,7 +116,11 @@ export const fetchBedpresBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await serverFetch<Bedpres>(query, params);
+  const res = await sanityFetch<Bedpres>({
+    query,
+    params,
+    tags: [`bedpres-${slug}`],
+  });
 
   return bedpresSchema.parse(res);
 };
@@ -164,7 +172,10 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
 }
     `;
 
-    const res = await serverFetch<Bedpres>(query);
+    const res = await sanityFetch<Bedpres>({
+      query,
+      tags: ["all-bedpresses"],
+    });
 
     return bedpresSchema.array().parse(res);
   } catch (error) {

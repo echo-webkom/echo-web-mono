@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-import { serverFetch } from "../client";
+import { sanityFetch } from "../client";
 import { slugSchema } from "../utils/slug";
 import { postSchema, type Post } from "./schemas";
 
@@ -12,7 +12,10 @@ export * from "./schemas";
  */
 export const fetchPostParams = async () => {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`;
-  const result = await serverFetch<Array<string>>(query);
+  const result = await sanityFetch<Array<string>>({
+    query,
+    tags: ["post-params"],
+  });
 
   const slugs = slugSchema
     .array()
@@ -50,7 +53,11 @@ export const fetchPosts = async (n: number) => {
     n,
   };
 
-  const result = await serverFetch<Array<Post>>(query, params);
+  const result = await sanityFetch<Array<Post>>({
+    query,
+    params,
+    tags: ["posts"],
+  });
 
   return postSchema.array().parse(result);
 };
@@ -89,7 +96,11 @@ export const fetchPostsByPage = async (
     pageSize,
   };
 
-  const result = await serverFetch<Array<Post>>(query, params);
+  const result = await sanityFetch<Array<Post>>({
+    query,
+    params,
+    tags: [`posts-page-${page}`],
+  });
 
   const posts = postSchema.array().parse(result);
 
@@ -126,7 +137,11 @@ export const fetchPostBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await serverFetch<Post>(query, params);
+  const result = await sanityFetch<Post>({
+    query,
+    params,
+    tags: [`post-${slug}`],
+  });
 
   return postSchema.parse(result);
 };

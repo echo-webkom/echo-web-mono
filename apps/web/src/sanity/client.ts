@@ -1,4 +1,4 @@
-import { createClient } from "next-sanity";
+import { createClient, type QueryParams } from "next-sanity";
 
 import { env } from "@/env.mjs";
 
@@ -13,7 +13,7 @@ import { env } from "@/env.mjs";
 
 export const projectId = "nnumy1ga";
 export const dataset = env.NEXT_PUBLIC_SANITY_DATASET;
-export const apiVersion = "2021-04-10";
+export const apiVersion = "2023-05-03";
 
 /**
  * Sanity client for client-side requests
@@ -28,12 +28,29 @@ export const sanityClient = createClient({
 /**
  * Sanity client for server-side requests
  */
-export const sanityServerClient = createClient({
+export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
 });
 
-export const clientFetch = sanityClient.fetch.bind(sanityClient);
-export const serverFetch = sanityServerClient.fetch.bind(sanityServerClient);
+const DEFAULT_PARAMS = {} as QueryParams;
+const DEFAULT_TAGS = [] as Array<string>;
+
+export async function sanityFetch<QueryResponse>({
+  query,
+  params = DEFAULT_PARAMS,
+  tags = DEFAULT_TAGS,
+}: {
+  query: string;
+  params?: QueryParams;
+  tags: Array<string>;
+}): Promise<QueryResponse> {
+  return await client.fetch<QueryResponse>(query, params, {
+    cache: "force-cache",
+    next: {
+      tags,
+    },
+  });
+}
