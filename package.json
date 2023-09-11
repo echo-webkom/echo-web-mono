@@ -26,13 +26,11 @@
     "type-check": "turbo run type-check",
     "test:e2e": "pnpm --filter=playwright test",
     "test:e2e:ui": "pnpm --filter=playwright ui",
-    "postinstall": "pnpm run db:generate",
-    "prepare": "husky install"
+    "postinstall": "pnpm run db:generate"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "@types/prettier": "^2.7.3",
-    "husky": "8.0.3",
     "prettier": "3.0.3",
     "prettier-plugin-organize-imports": "3.2.3",
     "prettier-plugin-tailwindcss": "0.5.4",
