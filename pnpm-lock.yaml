@@ -14,9 +14,6 @@ importers:
       '@types/prettier':
         specifier: ^2.7.3
         version: 2.7.3
-      husky:
-        specifier: 8.0.3
-        version: 8.0.3
       prettier:
         specifier: 3.0.3
         version: 3.0.3
@@ -8137,12 +8134,6 @@ packages:
 
   /humanize-list@1.0.1:
     resolution: {integrity: sha512-4+p3fCRF21oUqxhK0yZ6yaSP/H5/wZumc7q1fH99RkW7Q13aAxDeP78BKjoR+6y+kaHqKF/JWuQhsNuuI2NKtA==}
-    dev: false
-
-  /husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: false
 
   /iconv-lite@0.6.3:
