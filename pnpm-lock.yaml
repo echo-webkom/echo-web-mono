@@ -215,7 +215,7 @@ importers:
         specifier: ^0.6.1
         version: 0.6.1(typescript@5.2.2)(zod@3.22.2)
       '@tanstack/react-table':
-        specifier: ^8.9.8
+        specifier: ^8.9.9
         version: 8.9.9(react-dom@18.2.0)(react@18.2.0)
       '@types/remove-markdown':
         specifier: 0.3.1
