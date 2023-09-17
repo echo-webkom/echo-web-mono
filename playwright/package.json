@@ -13,7 +13,7 @@
     "clean": "rm -rf node_modules playwright-report test-results"
   },
   "devDependencies": {
-    "@playwright/test": "^1.37.1",
+    "@playwright/test": "^1.38.0",
     "@types/node": "18.17.15",
     "eslint": "^8.49.0",
     "eslint-config-webkom": "workspace:*",
