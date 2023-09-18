@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday } from "date-fns";
+import { useRouter, useSearchParams } from "next/navigation";
+import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
 
 import { type Bedpres } from "@/sanity/bedpres";
 import { type Event } from "@/sanity/event";
 import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import Input from "./ui/input";
-import Label from "./ui/label";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 type EventsProps = {
   events: Array<
@@ -22,6 +23,31 @@ type EventsProps = {
   >;
 };
 
+/**
+export const EventsView() {
+    const search = useSearchParams();
+    const searchQuery = search ? search.get("q") : null;
+    const encodedSearchQuery = encodeURI(searchQuery ?? "");
+
+    const [happenings, isLoading] = await Promise.all([]);
+
+    if (!happenings.ok) {
+        return <div>Something went wrong</div>;
+        }
+
+    return ({happenings.length > 0 && (
+        <div>
+          {happenings.map((hap) => (
+            <ul key={hap._id} className="py-1">
+              <CombinedHappeningPreview happening={hap} />
+            </ul>
+          ))}
+        </div>
+      )})
+
+}
+**/
+
 export default function Events({ events }: EventsProps) {
   const [isAll, setIsAll] = useState(true);
   const [isBedpres, setIsBedpres] = useState(false);
@@ -29,10 +55,47 @@ export default function Events({ events }: EventsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPast, setIsPast] = useState(false);
 
-  const [search, setSearch] = useState("");
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [showThisWeek, setShowThisWeek] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(true);
   const [showLater, setShowLater] = useState(true);
+
+  const handleSearch = () => {
+    if (searchQuery !== "") {
+      const encodedSearchQuery = encodeURI(searchQuery);
+      router.push(`?q=${encodedSearchQuery}`);
+    }
+
+    if (isAll) {
+      router.push(`?type=ALL`);
+    } else if (isBedpres) {
+      router.push(`?type=BEDPRES`);
+    } else if (isEvent) {
+      router.push(`?type=EVENT`);
+    }
+
+    if (isOpen) {
+      router.push(`?open=true`);
+    }
+
+    if (isPast) {
+      router.push(`?past=true`);
+    }
+
+    if (showThisWeek) {
+      router.push(`?thisWeek=true`);
+    }
+
+    if (showNextWeek) {
+      router.push(`?nextWeek=true`);
+    }
+
+    if (showLater) {
+      router.push(`?later=true`);
+    }
+  };
 
   const handleTypeChange = (type: string) => {
     setIsAll(type === "ALL");
@@ -40,16 +103,17 @@ export default function Events({ events }: EventsProps) {
     setIsEvent(type === "EVENT");
   };
 
+  /**
   const filteredEvents = events
     .filter((event) => {
       if (event.type === "EVENT" && (isEvent || isAll)) {
         return (
-          event.title.toLowerCase().includes(search.toLowerCase()) ||
-          event.organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.organizers.some((o) => o.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
       if (event.type === "BEDPRES" && (isBedpres || isAll)) {
-        return event.title.toLowerCase().includes(search.toLowerCase());
+        return event.title.toLowerCase().includes(searchQuery.toLowerCase());
       }
       return false;
     })
@@ -96,6 +160,7 @@ export default function Events({ events }: EventsProps) {
     }
     return later.push(event);
   });
+  **/
 
   return (
     <div className="flex flex-col gap-5">
@@ -143,8 +208,8 @@ export default function Events({ events }: EventsProps) {
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
             <Input
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.currentTarget.value)}
               type="text"
               placeholder="Søk etter arrangement"
             />
@@ -157,7 +222,7 @@ export default function Events({ events }: EventsProps) {
                 checked={showThisWeek}
                 onCheckedChange={() => setShowThisWeek((prev) => !prev)}
               />
-              <Label className="ml-2 text-base">Denne uken ({isPast ? 0 : thisWeek.length})</Label>
+              <Label className="ml-2 text-base">Denne uken</Label>
             </div>
 
             <div className="mb-2 flex items-center">
@@ -165,52 +230,17 @@ export default function Events({ events }: EventsProps) {
                 checked={showNextWeek}
                 onCheckedChange={() => setShowNextWeek((prev) => !prev)}
               />
-              <Label className="ml-2 text-base">Neste uke ({isPast ? 0 : nextWeek.length})</Label>
+              <Label className="ml-2 text-base">Neste uke</Label>
             </div>
 
             <div className="flex items-center">
               <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
-              <Label className="ml-2 text-base">Senere ({isPast ? 0 : later.length})</Label>
+              <Label className="ml-2 text-base">Senere</Label>
             </div>
           </div>
         </div>
         <div className="right-panel w-3/4 md:w-3/4">
-          {thisWeek.length > 0 && showThisWeek && !isPast && (
-            <div>
-              {thisWeek.map((event) => (
-                <ul key={event._id} className="py-1">
-                  <CombinedHappeningPreview happening={event} />
-                </ul>
-              ))}
-            </div>
-          )}
-          {nextWeek.length > 0 && showNextWeek && !isPast && (
-            <div>
-              {nextWeek.map((event) => (
-                <ul key={event._id} className="py-1">
-                  <CombinedHappeningPreview happening={event} />
-                </ul>
-              ))}
-            </div>
-          )}
-          {later.length > 0 && showLater && !isPast && (
-            <div>
-              {later.map((event) => (
-                <ul key={event._id} className="py-1">
-                  <CombinedHappeningPreview happening={event} />
-                </ul>
-              ))}
-            </div>
-          )}
-          {earlier.length > 0 && isPast && (
-            <div>
-              {earlier.map((event) => (
-                <ul key={event._id} className="py-1">
-                  <CombinedHappeningPreview happening={event} isPast={true} />
-                </ul>
-              ))}
-            </div>
-          )}
+          <EventsView />
         </div>
       </div>
     </div>
