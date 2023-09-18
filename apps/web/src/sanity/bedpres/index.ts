@@ -1,5 +1,6 @@
 import { groq } from "next-sanity";
 
+import { type Query } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { bedpresSchema, type Bedpres } from "./schemas";
@@ -175,6 +176,74 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
     const res = await sanityFetch<Bedpres>({
       query,
       tags: ["all-bedpresses"],
+    });
+
+    return bedpresSchema.array().parse(res);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Could not fetch bedpres.",
+    };
+  }
+};
+
+export const fetchFilteredBedpresses = async (qu: Query) => {
+  const isOpen = qu.open
+    ? `&& registrationStart.date <= now() && registrationEnd.date > now()`
+    : ``;
+  const isPast = qu.past ? `date.date < now()` : ``;
+  const isThisWeek = qu.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``;
+  const isNextWeek = qu.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``;
+  const isLater = qu.later ? `date.date >= now() + 14d` : ``;
+
+  try {
+    const query = groq`
+*[_type == "bedpres"
+  && !(_id in path('drafts.**'))
+  && ${isOpen} && ${isPast} && ${isThisWeek} && ${isNextWeek} && ${isLater}
+  && (title match ${qu.q} || company->name match ${qu.q})] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  "company": company->{
+    _id,
+    name,
+    website,
+    image,
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
+  "location": location->{
+    name,
+  },
+  "spotRanges": spotRanges[] {
+    spots,
+    minDegreeYear,
+    maxDegreeYear,
+  },
+  "additionalQuestions": additionalQuestions[] {
+    title,
+    required,
+    type,
+    options,
+  },
+  body
+}
+    `;
+
+    const res = await sanityFetch<Array<Bedpres>>({
+      query,
+      tags: ["filtered-bedpresses"],
     });
 
     return bedpresSchema.array().parse(res);

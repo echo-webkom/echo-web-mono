@@ -22,11 +22,30 @@ const initialParams = {
   later: true,
 };
 
-/**
-export const EventsView() {
-    const search = useSearchParams();
-    const searchQuery = search ? search.get("q") : null;
-    const encodedSearchQuery = encodeURI(searchQuery ?? "");
+export type Query = {
+    q: string,
+    type: string,
+    open: boolean,
+    past: boolean,
+    thisWeek: boolean,
+    nextWeek: boolean,
+    later: boolean,
+}
+
+
+function EventsView() {
+    const params = useSearchParams();
+    const query = {
+        q: params.get("q") ?? undefined,
+        type: params.get("type") ?? undefined,
+        open: params.get("open") ?? undefined,
+        past: params.get("past") ?? undefined,
+        thisWeek: params.get("thisWeek") ?? undefined,
+        nextWeek: params.get("nextWeek") ?? undefined,
+        later: params.get("later") ?? undefined,
+    }
+
+
 
     const [happenings, isLoading] = await Promise.all([]);
 
@@ -45,7 +64,7 @@ export const EventsView() {
       )})
 
 }
-**/
+
 
 export default function EventFilter() {
   const router = useRouter();
@@ -53,7 +72,7 @@ export default function EventFilter() {
 
   const handleSearch = () => {
     const query = {
-        q: searchParams.q ?? undefined,
+        q: encodeURI(searchParams.q) ?? undefined,
         type: searchParams.type ?? undefined,
         open: searchParams.open ? 'true' : undefined,
         past: searchParams.past ? 'true' : undefined,
@@ -62,7 +81,7 @@ export default function EventFilter() {
         later: searchParams.later ? 'true' : undefined,
       },
     
-    router.push({ pathname : '/for-students/arrangementer', query });
+    router.push({ pathname: '/for-students/arrangementer', query });
   };
 
   /**
