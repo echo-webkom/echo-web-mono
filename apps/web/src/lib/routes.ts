@@ -59,6 +59,10 @@ export const headerRoutes: Array<RouteSection> = [
         href: "/for-students/si-ifra",
         label: "Si ifra",
       },
+      {
+        href: "/for-students/arrangementer",
+        label: "Arrangementer",
+      },
     ],
   },
   {
