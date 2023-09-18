@@ -12,15 +12,14 @@ import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-type EventsProps = {
-  events: Array<
-    | (Event & {
-        type: "EVENT";
-      })
-    | (Bedpres & {
-        type: "BEDPRES";
-      })
-  >;
+const initialParams = {
+  q: "",
+  type: "ALL",
+  open: false,
+  past: false,
+  thisWeek: true,
+  nextWeek: true,
+  later: true,
 };
 
 /**
@@ -48,59 +47,22 @@ export const EventsView() {
 }
 **/
 
-export default function Events({ events }: EventsProps) {
-  const [isAll, setIsAll] = useState(true);
-  const [isBedpres, setIsBedpres] = useState(false);
-  const [isEvent, setIsEvent] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isPast, setIsPast] = useState(false);
-
+export default function EventFilter() {
   const router = useRouter();
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showThisWeek, setShowThisWeek] = useState(true);
-  const [showNextWeek, setShowNextWeek] = useState(true);
-  const [showLater, setShowLater] = useState(true);
+  const [searchParams, setSearchParams] = useState(initialParams);
 
   const handleSearch = () => {
-    if (searchQuery !== "") {
-      const encodedSearchQuery = encodeURI(searchQuery);
-      router.push(`?q=${encodedSearchQuery}`);
-    }
-
-    if (isAll) {
-      router.push(`?type=ALL`);
-    } else if (isBedpres) {
-      router.push(`?type=BEDPRES`);
-    } else if (isEvent) {
-      router.push(`?type=EVENT`);
-    }
-
-    if (isOpen) {
-      router.push(`?open=true`);
-    }
-
-    if (isPast) {
-      router.push(`?past=true`);
-    }
-
-    if (showThisWeek) {
-      router.push(`?thisWeek=true`);
-    }
-
-    if (showNextWeek) {
-      router.push(`?nextWeek=true`);
-    }
-
-    if (showLater) {
-      router.push(`?later=true`);
-    }
-  };
-
-  const handleTypeChange = (type: string) => {
-    setIsAll(type === "ALL");
-    setIsBedpres(type === "BEDPRES");
-    setIsEvent(type === "EVENT");
+    const query = {
+        q: searchParams.q ?? undefined,
+        type: searchParams.type ?? undefined,
+        open: searchParams.open ? 'true' : undefined,
+        past: searchParams.past ? 'true' : undefined,
+        thisWeek: searchParams.thisWeek ? 'true' : undefined,
+        nextWeek: searchParams.nextWeek ? 'true' : undefined,
+        later: searchParams.later ? 'true' : undefined,
+      },
+    
+    router.push({ pathname : '/for-students/arrangementer', query });
   };
 
   /**
@@ -166,18 +128,18 @@ export default function Events({ events }: EventsProps) {
     <div className="flex flex-col gap-5">
       <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
         <div className="md:space-x-3">
-          <Button variant={isAll ? "default" : "outline"} onClick={() => handleTypeChange("ALL")}>
+          <Button variant={searchParams.type === "ALL" ? "default" : "outline"} onClick={() => setSearchParams({ ...searchParams, type: "ALL"})}>
             Alle
           </Button>
           <Button
-            variant={isEvent ? "default" : "outline"}
-            onClick={() => handleTypeChange("EVENT")}
+            variant={searchParams.type === "EVENT" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "EVENT"})}
           >
             Arrangementer
           </Button>
           <Button
-            variant={isBedpres ? "default" : "outline"}
-            onClick={() => handleTypeChange("BEDPRES")}
+            variant={searchParams.type === "BEDPRES" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "BEDPRES"})}
           >
             Bedriftspresentasjoner
           </Button>
@@ -185,20 +147,15 @@ export default function Events({ events }: EventsProps) {
         <div className="space-x-3">
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
-            variant={isOpen ? "default" : "outline"}
-            onClick={() => {
-              setIsOpen((prev) => !prev);
-              if (isPast) setIsPast(false);
-            }}
+            variant={searchParams.open ? "default" : "outline"}
+            onClick={() => {setSearchParams({...searchParams, open: !searchParams.open, past: false })}}
           >
             Åpen for påmelding
           </Button>
           <Button
-            variant={isPast ? "default" : "outline"}
-            onClick={() => {
-              setIsPast((prev) => !prev);
-              if (isOpen) setIsOpen(false);
-            }}
+            variant={searchParams.past ? "default" : "outline"}
+            onClick={() => {setSearchParams({...searchParams, past: !searchParams.past, open: false })}}
+
           >
             Vis tidligere
           </Button>
@@ -208,8 +165,8 @@ export default function Events({ events }: EventsProps) {
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
             <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.currentTarget.value)}
+              value={searchParams.q}
+              onChange={(e) => setSearchParams({ ...searchParams, q: e.currentTarget.value})}
               type="text"
               placeholder="Søk etter arrangement"
             />
@@ -219,22 +176,22 @@ export default function Events({ events }: EventsProps) {
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={showThisWeek}
-                onCheckedChange={() => setShowThisWeek((prev) => !prev)}
+                checked={searchParams.thisWeek}
+                onCheckedChange={() => setSearchParams({ ...searchParams, thisWeek: !searchParams.thisWeek})}
               />
               <Label className="ml-2 text-base">Denne uken</Label>
             </div>
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={showNextWeek}
-                onCheckedChange={() => setShowNextWeek((prev) => !prev)}
+                checked={searchParams.nextWeek}
+                onCheckedChange={() => setSearchParams({...searchParams, nextWeek: !searchParams.nextWeek})}
               />
               <Label className="ml-2 text-base">Neste uke</Label>
             </div>
 
             <div className="flex items-center">
-              <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
+              <Checkbox checked={searchParams.later} onCheckedChange={() => setSearchParams({...searchParams, later: !searchParams.later})} />
               <Label className="ml-2 text-base">Senere</Label>
             </div>
           </div>
