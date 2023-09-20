@@ -1,20 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+  type ReadonlyURLSearchParams,
+} from "next/navigation";
 
-import { type Bedpres } from "@/sanity/bedpres";
-import { type Event } from "@/sanity/event";
-import { CombinedHappeningPreview } from "./happening-preview-box";
+// import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
+
+//import { type Bedpres } from "@/sanity/bedpres";
+// import { type Event } from "@/sanity/event";
+// import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 const initialParams = {
-  q: "",
   type: "ALL",
+  search: "",
   open: false,
   past: false,
   thisWeek: true,
@@ -22,66 +28,81 @@ const initialParams = {
   later: true,
 };
 
-export type Query = {
-    q: string,
-    type: string,
-    open: boolean,
-    past: boolean,
-    thisWeek: boolean,
-    nextWeek: boolean,
-    later: boolean,
-}
-
+export type SearchParams = {
+  type: string;
+  search?: string;
+  open?: string;
+  past?: string;
+  thisWeek?: string;
+  nextWeek?: string;
+  later?: string;
+};
 
 function EventsView() {
-    const params = useSearchParams();
-    const query = {
-        q: params.get("q") ?? undefined,
-        type: params.get("type") ?? undefined,
-        open: params.get("open") ?? undefined,
-        past: params.get("past") ?? undefined,
-        thisWeek: params.get("thisWeek") ?? undefined,
-        nextWeek: params.get("nextWeek") ?? undefined,
-        later: params.get("later") ?? undefined,
-    }
+  const params = useSearchParams();
 
+  const validQuery = validateQuery(params);
 
+  console.log(validQuery);
 
-    const [happenings, isLoading] = await Promise.all([]);
+  // return ({happenings.length > 0 && (
+  //     <div>
+  //       {happenings.map((hap) => (
+  //         <ul key={hap._id} className="py-1">
+  //           <CombinedHappeningPreview happening={hap} />
+  //         </ul>
+  //       ))}
+  //     </div>
+  //   )})
 
-    if (!happenings.ok) {
-        return <div>Something went wrong</div>;
-        }
-
-    return ({happenings.length > 0 && (
-        <div>
-          {happenings.map((hap) => (
-            <ul key={hap._id} className="py-1">
-              <CombinedHappeningPreview happening={hap} />
-            </ul>
-          ))}
-        </div>
-      )})
-
+  return <div>Something went wrong...</div>;
 }
 
+function validateQuery(params: ReadonlyURLSearchParams) {
+  const query = {
+    search: params.get("search") ?? undefined,
+    type: params.get("type") ?? undefined,
+    open: params.get("open") ?? undefined,
+    past: params.get("past") ?? undefined,
+    thisWeek: params.get("thisWeek") ?? undefined,
+    nextWeek: params.get("nextWeek") ?? undefined,
+    later: params.get("later") ?? undefined,
+  };
+
+  if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
+    query.type = "all";
+  }
+  if (query.search && query.search.length > 100) {
+    query.search = query.search.substring(0, 100);
+  }
+
+  query.open = query.open === "true" ? "true" : undefined;
+  query.past = query.past === "true" ? "true" : undefined;
+  query.thisWeek = query.thisWeek === "true" ? "true" : undefined;
+  query.nextWeek = query.nextWeek === "true" ? "true" : undefined;
+  query.later = query.later === "true" ? "true" : undefined;
+
+  return query;
+}
 
 export default function EventFilter() {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchParams, setSearchParams] = useState(initialParams);
 
   const handleSearch = () => {
-    const query = {
-        q: encodeURI(searchParams.q) ?? undefined,
-        type: searchParams.type ?? undefined,
-        open: searchParams.open ? 'true' : undefined,
-        past: searchParams.past ? 'true' : undefined,
-        thisWeek: searchParams.thisWeek ? 'true' : undefined,
-        nextWeek: searchParams.nextWeek ? 'true' : undefined,
-        later: searchParams.later ? 'true' : undefined,
-      },
-    
-    router.push({ pathname: '/for-students/arrangementer', query });
+    const query: SearchParams = { type: "all" };
+
+    if (searchParams.type) query.type = searchParams.type;
+    if (searchParams.search) query.search = encodeURI(searchParams.search);
+    if (searchParams.open) query.open = "true";
+    if (searchParams.past) query.past = "true";
+    if (searchParams.thisWeek) query.thisWeek = "true";
+    if (searchParams.nextWeek) query.nextWeek = "true";
+    if (searchParams.later) query.later = "true";
+
+    const queryString = new URLSearchParams(query).toString();
+    router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
   };
 
   /**
@@ -147,18 +168,21 @@ export default function EventFilter() {
     <div className="flex flex-col gap-5">
       <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
         <div className="md:space-x-3">
-          <Button variant={searchParams.type === "ALL" ? "default" : "outline"} onClick={() => setSearchParams({ ...searchParams, type: "ALL"})}>
+          <Button
+            variant={searchParams.type === "ALL" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "ALL" })}
+          >
             Alle
           </Button>
           <Button
             variant={searchParams.type === "EVENT" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "EVENT"})}
+            onClick={() => setSearchParams({ ...searchParams, type: "EVENT" })}
           >
             Arrangementer
           </Button>
           <Button
             variant={searchParams.type === "BEDPRES" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "BEDPRES"})}
+            onClick={() => setSearchParams({ ...searchParams, type: "BEDPRES" })}
           >
             Bedriftspresentasjoner
           </Button>
@@ -167,14 +191,17 @@ export default function EventFilter() {
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={searchParams.open ? "default" : "outline"}
-            onClick={() => {setSearchParams({...searchParams, open: !searchParams.open, past: false })}}
+            onClick={() => {
+              setSearchParams({ ...searchParams, open: !searchParams.open, past: false });
+            }}
           >
             Åpen for påmelding
           </Button>
           <Button
             variant={searchParams.past ? "default" : "outline"}
-            onClick={() => {setSearchParams({...searchParams, past: !searchParams.past, open: false })}}
-
+            onClick={() => {
+              setSearchParams({ ...searchParams, past: !searchParams.past, open: false });
+            }}
           >
             Vis tidligere
           </Button>
@@ -184,8 +211,9 @@ export default function EventFilter() {
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
             <Input
-              value={searchParams.q}
-              onChange={(e) => setSearchParams({ ...searchParams, q: e.currentTarget.value})}
+              value={searchParams.search}
+              onChange={(e) => setSearchParams({ ...searchParams, search: e.currentTarget.value })}
+              onBlur={handleSearch}
               type="text"
               placeholder="Søk etter arrangement"
             />
@@ -196,7 +224,9 @@ export default function EventFilter() {
             <div className="mb-2 flex items-center">
               <Checkbox
                 checked={searchParams.thisWeek}
-                onCheckedChange={() => setSearchParams({ ...searchParams, thisWeek: !searchParams.thisWeek})}
+                onCheckedChange={() =>
+                  setSearchParams({ ...searchParams, thisWeek: !searchParams.thisWeek })
+                }
               />
               <Label className="ml-2 text-base">Denne uken</Label>
             </div>
@@ -204,13 +234,20 @@ export default function EventFilter() {
             <div className="mb-2 flex items-center">
               <Checkbox
                 checked={searchParams.nextWeek}
-                onCheckedChange={() => setSearchParams({...searchParams, nextWeek: !searchParams.nextWeek})}
+                onCheckedChange={() =>
+                  setSearchParams({ ...searchParams, nextWeek: !searchParams.nextWeek })
+                }
               />
               <Label className="ml-2 text-base">Neste uke</Label>
             </div>
 
             <div className="flex items-center">
-              <Checkbox checked={searchParams.later} onCheckedChange={() => setSearchParams({...searchParams, later: !searchParams.later})} />
+              <Checkbox
+                checked={searchParams.later}
+                onCheckedChange={() =>
+                  setSearchParams({ ...searchParams, later: !searchParams.later })
+                }
+              />
               <Label className="ml-2 text-base">Senere</Label>
             </div>
           </div>
