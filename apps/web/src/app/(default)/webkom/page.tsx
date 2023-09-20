@@ -41,6 +41,7 @@ export default function WebkomPage() {
           <li>Kjetil Alvestad</li>
           <li>Jonas Hammerseth</li>
           {/* --- */}
+          <li>Johanne Blikberg Herheim</li>
         </ul>
       </div>
     </div>
