@@ -22,9 +22,7 @@ export default async function HomePage() {
                 <h1>
                   <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>
                   <br />
-                  <span className="text-4xl font-bold sm:text-5xl">
-                    echo &ndash; Linjeforeningen for informatikk
-                  </span>
+                  <span className="text-4xl font-bold sm:text-5xl">echo – Linjeforeningen for informatikk</span>
                 </h1>
                 <p>
                   Vi jobber utelukkende med å gjøre studiehverdagen for oss informatikere bedre og
