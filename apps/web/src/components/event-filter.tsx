@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   usePathname,
   useRouter,
@@ -88,9 +88,10 @@ function validateQuery(params: ReadonlyURLSearchParams) {
 export default function EventFilter() {
   const router = useRouter();
   const pathname = usePathname();
+  const [input, setInput] = useState("");
   const [searchParams, setSearchParams] = useState(initialParams);
 
-  const handleSearch = () => {
+  useEffect(() => {
     const query: SearchParams = { type: "all" };
 
     if (searchParams.type) query.type = searchParams.type;
@@ -103,7 +104,7 @@ export default function EventFilter() {
 
     const queryString = new URLSearchParams(query).toString();
     router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
-  };
+  }, [searchParams, pathname, router]);
 
   /**
   const filteredEvents = events
@@ -191,17 +192,17 @@ export default function EventFilter() {
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={searchParams.open ? "default" : "outline"}
-            onClick={() => {
-              setSearchParams({ ...searchParams, open: !searchParams.open, past: false });
-            }}
+            onClick={() =>
+              setSearchParams({ ...searchParams, open: !searchParams.open, past: false })
+            }
           >
             Åpen for påmelding
           </Button>
           <Button
             variant={searchParams.past ? "default" : "outline"}
-            onClick={() => {
-              setSearchParams({ ...searchParams, past: !searchParams.past, open: false });
-            }}
+            onClick={() =>
+              setSearchParams({ ...searchParams, past: !searchParams.past, open: false })
+            }
           >
             Vis tidligere
           </Button>
@@ -211,9 +212,11 @@ export default function EventFilter() {
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
             <Input
-              value={searchParams.search}
-              onChange={(e) => setSearchParams({ ...searchParams, search: e.currentTarget.value })}
-              onBlur={handleSearch}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setSearchParams({ ...searchParams, search: input });
+              }}
               type="text"
               placeholder="Søk etter arrangement"
             />
