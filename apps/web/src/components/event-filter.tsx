@@ -7,17 +7,26 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
-import { BorderWidthIcon } from "@radix-ui/react-icons";
+
+// import { BorderWidthIcon } from "@radix-ui/react-icons";
 
 // import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
 import { fetchFilteredBedpresses, type Bedpres } from "@/sanity/bedpres";
 import { fetchFilteredEvents, type Event } from "@/sanity/event";
-import { isErrorMessage, type ErrorMessage } from "@/utils/error";
+import { isErrorMessage } from "@/utils/error";
 import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+
+export type Happening =
+  | (Event & {
+      type: "EVENT";
+    })
+  | (Bedpres & {
+      type: "BEDPRES";
+    });
 
 const initialParams = {
   type: "ALL",
@@ -39,54 +48,69 @@ export type SearchParams = {
   later?: string;
 };
 
-async function EventsView() {
+function EventsView() {
+  const [happenings, setHappenings] = useState<Array<Happening>>([]);
+  const [loading, setLoading] = useState(true);
   const params = useSearchParams();
 
-  const validQuery = validateQuery(params);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const validQuery = validateQuery(params);
 
-  const bedpresses =
-    validQuery.type === "all" || validQuery.type === "bedpres"
-      ? await fetchFilteredBedpresses(validQuery)
-      : [];
-  const events =
-    validQuery.type === "all" || validQuery.type === "event"
-      ? await fetchFilteredEvents(validQuery)
-      : [];
+      const bedpresses =
+        validQuery.type === "all" || validQuery.type === "bedpres"
+          ? await fetchFilteredBedpresses(validQuery)
+          : [];
+      const events =
+        validQuery.type === "all" || validQuery.type === "event"
+          ? await fetchFilteredEvents(validQuery)
+          : [];
 
-  if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
-    return new Response("Error fetching data from Sanity", {
-      status: 500,
-    });
-  }
+      if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
+        return new Response("Error fetching data from Sanity", {
+          status: 500,
+        });
+      }
 
-  const happenings = [...events, ...bedpresses].sort((a, b) => {
-    if (a.date && b.date) {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    }
-    return 0;
-  });
+      const combinedHappenings = [
+        ...events.map((e) => ({ ...e, type: "EVENT" as const })),
+        ...bedpresses.map((b) => ({ ...b, type: "BEDPRES" as const })),
+      ].sort((a, b) => {
+        if (a.date && b.date) {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+        return 0;
+      });
 
-  return (
-    <>
-      {happenings.length > 0 && (
-        <div>
-          {happenings.map((hap) => (
-            <ul key={hap._id} className="py-1">
-              <CombinedHappeningPreview happening={hap} />
-            </ul>
-          ))}
-        </div>
-      )}
-      {happenings.length === 0 && (
-        <div className="flex h-full flex-col items-center justify-center">
-          <div className="text-2xl font-semibold">Ingen arrangementer funnet</div>
-          <div className="text-lg text-gray-500">
-            Prøv å endre på søkeparametrene eller søk etter noe annet
+      setHappenings(combinedHappenings);
+    };
+    setLoading(false);
+    fetchData().catch(console.error);
+  }, [params]);
+
+  if (loading)
+    return (
+      <>
+        {happenings.length > 0 && (
+          <div>
+            {happenings.map((hap) => (
+              <ul key={hap._id} className="py-1">
+                <CombinedHappeningPreview happening={hap} />
+              </ul>
+            ))}
           </div>
-        </div>
-      )}
-    </>
-  );
+        )}
+        {happenings.length === 0 && (
+          <div className="flex h-full flex-col items-center justify-center">
+            <div className="text-2xl font-semibold">Ingen arrangementer funnet</div>
+            <div className="text-lg text-gray-500">
+              Prøv å endre på søkeparametrene eller søk etter noe annet
+            </div>
+          </div>
+        )}
+      </>
+    );
 }
 
 function validateQuery(params: ReadonlyURLSearchParams) {

@@ -8,6 +8,7 @@ import { type Event } from "@/sanity/event";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
+import { Happening } from "./event-filter";
 
 type HappeningPreviewBoxProps =
   | {
@@ -132,7 +133,7 @@ export const BedpresPreview = ({ bedpres }: BedpresPreviewProps) => {
 };
 
 type CombinedHappeningPreviewProps = {
-  happening: Event | Bedpres;
+  happening: Happening;
   isPast?: boolean;
 };
 
