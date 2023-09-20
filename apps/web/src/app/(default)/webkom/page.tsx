@@ -45,6 +45,7 @@ export default function WebkomPage() {
           <li>Kristian Elde Johansen</li>
           <li>Swarnika Sellathurai</li>
           <li>Zeno Elio Leonardi</li>
+          <li>Izaak Sarnecki</li>
         </ul>
       </div>
     </div>
