@@ -10,20 +10,14 @@ const config = {
     serverActions: true,
   },
 
-  transpilePackages: [
-    "@echo-webkom/api",
-    "@echo-webkom/auth",
-    "@echo-webkom/db",
-    "@echo-webkom/lib",
-    "@echo-webkom/tailwind-config",
-  ],
+  transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
 
   images: {
     domains: ["cdn.sanity.io"],
   },
 
-  eslint: {ignoreDuringBuilds: !!process.env.CI},
-  typescript: {ignoreBuildErrors: !!process.env.CI},
+  eslint: { ignoreDuringBuilds: !!process.env.CI },
+  typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
 const withBundleAnalyzer = NextBundleAnalyzer({
