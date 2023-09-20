@@ -7,12 +7,13 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
+import { BorderWidthIcon } from "@radix-ui/react-icons";
 
 // import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
-
-//import { type Bedpres } from "@/sanity/bedpres";
-// import { type Event } from "@/sanity/event";
-// import { CombinedHappeningPreview } from "./happening-preview-box";
+import { fetchFilteredBedpresses, type Bedpres } from "@/sanity/bedpres";
+import { fetchFilteredEvents, type Event } from "@/sanity/event";
+import { isErrorMessage, type ErrorMessage } from "@/utils/error";
+import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
@@ -38,30 +39,60 @@ export type SearchParams = {
   later?: string;
 };
 
-function EventsView() {
+async function EventsView() {
   const params = useSearchParams();
 
   const validQuery = validateQuery(params);
 
-  console.log(validQuery);
+  const bedpresses =
+    validQuery.type === "all" || validQuery.type === "bedpres"
+      ? await fetchFilteredBedpresses(validQuery)
+      : [];
+  const events =
+    validQuery.type === "all" || validQuery.type === "event"
+      ? await fetchFilteredEvents(validQuery)
+      : [];
 
-  // return ({happenings.length > 0 && (
-  //     <div>
-  //       {happenings.map((hap) => (
-  //         <ul key={hap._id} className="py-1">
-  //           <CombinedHappeningPreview happening={hap} />
-  //         </ul>
-  //       ))}
-  //     </div>
-  //   )})
+  if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
+    return new Response("Error fetching data from Sanity", {
+      status: 500,
+    });
+  }
 
-  return <div>Something went wrong...</div>;
+  const happenings = [...events, ...bedpresses].sort((a, b) => {
+    if (a.date && b.date) {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    }
+    return 0;
+  });
+
+  return (
+    <>
+      {happenings.length > 0 && (
+        <div>
+          {happenings.map((hap) => (
+            <ul key={hap._id} className="py-1">
+              <CombinedHappeningPreview happening={hap} />
+            </ul>
+          ))}
+        </div>
+      )}
+      {happenings.length === 0 && (
+        <div className="flex h-full flex-col items-center justify-center">
+          <div className="text-2xl font-semibold">Ingen arrangementer funnet</div>
+          <div className="text-lg text-gray-500">
+            Prøv å endre på søkeparametrene eller søk etter noe annet
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 function validateQuery(params: ReadonlyURLSearchParams) {
-  const query = {
+  const query: SearchParams = {
     search: params.get("search") ?? undefined,
-    type: params.get("type") ?? undefined,
+    type: params.get("type") ?? "all",
     open: params.get("open") ?? undefined,
     past: params.get("past") ?? undefined,
     thisWeek: params.get("thisWeek") ?? undefined,
@@ -170,20 +201,20 @@ export default function EventFilter() {
       <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
         <div className="md:space-x-3">
           <Button
-            variant={searchParams.type === "ALL" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "ALL" })}
+            variant={searchParams.type === "all" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "all" })}
           >
             Alle
           </Button>
           <Button
-            variant={searchParams.type === "EVENT" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "EVENT" })}
+            variant={searchParams.type === "event" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "event" })}
           >
             Arrangementer
           </Button>
           <Button
-            variant={searchParams.type === "BEDPRES" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "BEDPRES" })}
+            variant={searchParams.type === "bedpres" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "bedpres" })}
           >
             Bedriftspresentasjoner
           </Button>

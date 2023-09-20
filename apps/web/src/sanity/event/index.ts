@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-import { Query } from "@/components/event-filter";
+import { type SearchParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { slugSchema, type Slug } from "../utils/slug";
@@ -202,21 +202,21 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
   }
 };
 
-export const fetchFilteredEvents = async (qu: Query) => {
-  const isOpen = qu.open
-    ? `&& registrationStart.date <= now() && registrationEnd.date > now()`
-    : ``;
-  const isPast = qu.past ? `date.date < now()` : ``;
-  const isThisWeek = qu.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``;
-  const isNextWeek = qu.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``;
-  const isLater = qu.later ? `date.date >= now() + 14d` : ``;
+export const fetchFilteredEvents = async (
+  q: SearchParams,
+): Promise<Array<Event> | ErrorMessage> => {
+  const isOpen = q.open ? `&& registrationStart.date <= now() && registrationEnd.date > now()` : ``;
+  const isPast = q.past ? `date.date < now()` : ``;
+  const isThisWeek = q.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``;
+  const isNextWeek = q.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``;
+  const isLater = q.later ? `date.date >= now() + 14d` : ``;
 
   try {
     const query = groq`
 *[_type == "event"
   && !(_id in path('drafts.**'))
   && ${isOpen} && ${isPast} && ${isThisWeek} && ${isNextWeek} && ${isLater}
-  && title match ${qu.q}] {
+  && title match ${q.search}] {
   _id,
   _createdAt,
   _updatedAt,

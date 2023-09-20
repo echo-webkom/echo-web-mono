@@ -132,13 +132,7 @@ export const BedpresPreview = ({ bedpres }: BedpresPreviewProps) => {
 };
 
 type CombinedHappeningPreviewProps = {
-  happening:
-    | (Event & {
-        type: "EVENT";
-      })
-    | (Bedpres & {
-        type: "BEDPRES";
-      });
+  happening: Event | Bedpres;
   isPast?: boolean;
 };
 
