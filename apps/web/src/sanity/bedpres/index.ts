@@ -188,18 +188,20 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
 };
 
 export const fetchFilteredBedpresses = async (q: SearchParams) => {
-  const isOpen = q.open ? `&& registrationStart.date <= now() && registrationEnd.date > now()` : ``;
-  const isPast = q.past ? `date.date < now()` : ``;
-  const isThisWeek = q.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``;
-  const isNextWeek = q.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``;
-  const isLater = q.later ? `date.date >= now() + 14d` : ``;
+  const conditions = [
+    `_type == "event"`,
+    `!(_id in path('drafts.**'))`,
+    q.open ? `registrationStart.date <= now() && registrationEnd.date > now()` : ``,
+    q.past ? `date.date < now()` : ``,
+    q.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``,
+    q.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``,
+    q.later ? `date.date >= now() + 14d` : ``,
+    q.search ? `title match ${q.search}` : ``,
+  ];
 
   try {
     const query = groq`
-*[_type == "bedpres"
-  && !(_id in path('drafts.**'))
-  && ${isOpen} && ${isPast} && ${isThisWeek} && ${isNextWeek} && ${isLater}
-  && (title match ${q.search} || company->name match ${q.search})] {
+*[${conditions.filter(Boolean).join(" && ")}] {
   _id,
   _createdAt,
   _updatedAt,
