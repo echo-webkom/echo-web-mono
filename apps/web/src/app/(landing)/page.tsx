@@ -27,8 +27,8 @@ export default async function HomePage() {
                   </span>
                 </h1>
                 <p>
-                  Vi jobber utelukkende med å gjøre studiehverdagen for oss informatikere bedre og
-                  er studentenes stemme opp mot instituttet, fakultetet og arbeidsmarkedet.
+                  Vi i echo jobber med å gjøre studiehverdagen for oss informatikere bedre ved å
+                  arrangere sosiale og faglige arrangementer.
                 </p>
                 <div>
                   <Button asChild variant="secondary">
