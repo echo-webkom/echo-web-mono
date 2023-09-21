@@ -187,24 +187,15 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
   }
 };
 
-export const fetchFilteredBedpresses = async (q: SearchParams) => {
+export const fetchFilteredBedpresses = async (
+  q: SearchParams,
+): Promise<Array<Bedpres> | ErrorMessage> => {
   const conditions = [
-    `_type == "event"`,
+    `_type == "bedpres"`,
     `!(_id in path('drafts.**'))`,
     q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
-    q.past ? `dates.date < now()` : null,
-    q.thisWeek && !q.nextWeek && !q.later ? `dates.date >= now() && dates.date < now() + 7d` : null,
-    !q.thisWeek && q.nextWeek && !q.later
-      ? `dates.date >= now() + 7d && dates.date < now() + 14d`
-      : null,
-    !q.thisWeek && !q.nextWeek && q.later ? `dates.date >= now() + 14d` : null,
-    q.thisWeek && q.nextWeek && !q.later ? `dates.date >= now() && dates.date < now() + 14d` : null,
-    q.thisWeek && !q.nextWeek && q.later
-      ? `(dates.date >= now() && dates.date < now() + 7d) || (dates.date >= now() + 14d)`
-      : null,
-    !q.thisWeek && q.nextWeek && q.later ? `dates.date >= now() + 7d` : null,
-    q.thisWeek && q.nextWeek && q.later ? `dates.date >= now()` : null,
-    q.search ? `title match ${q.search}` : null,
+    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.search ? `title match "*${q.search}*"` : null,
   ].filter(Boolean);
 
   try {
