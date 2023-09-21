@@ -131,6 +131,12 @@ function validateQuery(params: ReadonlyURLSearchParams) {
     query.search = query.search.substring(0, 100);
   }
 
+  if (query.past === "true") {
+    query.thisWeek = undefined;
+    query.nextWeek = undefined;
+    query.later = undefined;
+  }
+
   query.open = query.open === "true" ? "true" : undefined;
   query.past = query.past === "true" ? "true" : undefined;
   query.thisWeek = query.thisWeek === "true" ? "true" : undefined;

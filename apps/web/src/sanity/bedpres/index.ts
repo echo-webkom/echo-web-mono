@@ -191,17 +191,25 @@ export const fetchFilteredBedpresses = async (q: SearchParams) => {
   const conditions = [
     `_type == "event"`,
     `!(_id in path('drafts.**'))`,
-    q.open ? `registrationStart.date <= now() && registrationEnd.date > now()` : ``,
-    q.past ? `date.date < now()` : ``,
-    q.thisWeek ? `date.date >= now() && date.date < now() + 7d` : ``,
-    q.nextWeek ? `date.date >= now() + 7d && date.date < now() + 14d` : ``,
-    q.later ? `date.date >= now() + 14d` : ``,
-    q.search ? `title match ${q.search}` : ``,
-  ];
+    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
+    q.past ? `dates.date < now()` : null,
+    q.thisWeek && !q.nextWeek && !q.later ? `dates.date >= now() && dates.date < now() + 7d` : null,
+    !q.thisWeek && q.nextWeek && !q.later
+      ? `dates.date >= now() + 7d && dates.date < now() + 14d`
+      : null,
+    !q.thisWeek && !q.nextWeek && q.later ? `dates.date >= now() + 14d` : null,
+    q.thisWeek && q.nextWeek && !q.later ? `dates.date >= now() && dates.date < now() + 14d` : null,
+    q.thisWeek && !q.nextWeek && q.later
+      ? `(dates.date >= now() && dates.date < now() + 7d) || (dates.date >= now() + 14d)`
+      : null,
+    !q.thisWeek && q.nextWeek && q.later ? `dates.date >= now() + 7d` : null,
+    q.thisWeek && q.nextWeek && q.later ? `dates.date >= now()` : null,
+    q.search ? `title match ${q.search}` : null,
+  ].filter(Boolean);
 
   try {
     const query = groq`
-*[${conditions.filter(Boolean).join(" && ")}] {
+*[${conditions.join(" && ")}] {
   _id,
   _createdAt,
   _updatedAt,
