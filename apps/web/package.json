@@ -67,7 +67,7 @@
     "dotenv-cli": "7.3.0",
     "eslint": "^8.49.0",
     "eslint-config-webkom": "workspace:*",
-    "postcss": "^8.4.29",
+    "postcss": "^8.4.30",
     "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.2.2"
