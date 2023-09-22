@@ -61,7 +61,7 @@
     "@tailwindcss/forms": "0.5.6",
     "@tailwindcss/typography": "0.5.10",
     "@types/node": "18.17.17",
-    "@types/react": "18.2.21",
+    "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "dotenv-cli": "7.3.0",
