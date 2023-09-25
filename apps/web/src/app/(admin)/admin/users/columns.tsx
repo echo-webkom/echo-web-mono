@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Label } from "@radix-ui/react-label";
 
 export type User = {
   name: DbUser["name"];
@@ -78,12 +78,21 @@ export const columns: Array<ColumnDef<User>> = [
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete your account and
-                    remove your data from our servers.
-                  </DialogDescription>
+                  <DialogTitle className="text-xl font-bold">
+                    Detaljer for person navn
+                  </DialogTitle>
                 </DialogHeader>
+                <div className="flex flex-col gap-2">
+                  <div className="mb-2">
+                    <Label>Navn</Label>
+                    <p className="text-sm text-slate-500">NAVN</p>
+                  </div>
+
+                  <div className="mb-2">
+                    <Label>E-post</Label>
+                    <p className="text-sm text-slate-500">MAIL</p>
+                  </div>
+                </div>
               </DialogContent>
             </Dialog>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
