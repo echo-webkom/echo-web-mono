@@ -1,0 +1,24 @@
+{
+  "unversionedId": "frontend/framer-motion",
+  "id": "frontend/framer-motion",
+  "title": "Framer Motion",
+  "description": "Framer Motion er et JavaScript-bibliotek som brukes til å legge til animasjoner og interaktivitet i webapplikasjoner. Det er spesielt populært blant utviklere som jobber med ReactJS, ettersom det er enkelt å integrere i React-prosjekter.",
+  "source": "@site/docs/frontend/framer-motion.md",
+  "sourceDirName": "frontend",
+  "slug": "/frontend/framer-motion",
+  "permalink": "/docs/frontend/framer-motion",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/framer-motion.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Scripts",
+    "permalink": "/docs/komme-igang/scripts"
+  },
+  "next": {
+    "title": "React",
+    "permalink": "/docs/frontend/react"
+  }
+}

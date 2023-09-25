@@ -1,0 +1,17 @@
+{
+  "defaultLocale": "no",
+  "locales": [
+    "no"
+  ],
+  "path": "i18n",
+  "currentLocale": "no",
+  "localeConfigs": {
+    "no": {
+      "label": "Norsk",
+      "direction": "ltr",
+      "htmlLang": "no",
+      "calendar": "gregory",
+      "path": "no"
+    }
+  }
+}

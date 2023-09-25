@@ -21,12 +21,17 @@ const payloadSchema = z.object({
 });
 
 export const POST = withSession(
-  async ({ ctx, user }) => {
+  async ({ ctx, user, input }) => {
     const happening = await prisma.happening.findUnique({
       where: {
         slug: ctx.params.slug,
       },
+      include: {
+        questions: true,
+      }
     });
+
+    
 
     if (!happening) {
       return NextResponse.json(
@@ -97,6 +102,31 @@ export const POST = withSession(
         {
           title: "En feil har skjedd",
           description: "Du kan ikke melde deg på dette arrangamentet.",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
+
+    
+
+    const allQuestionsAnswered = happening.questions.every((question) => {
+
+
+      return input.questions.some((questionAndAnswer) => {
+        return questionAndAnswer.question === question.title;
+      });
+    });
+
+
+
+    if (!allQuestionsAnswered) {
+      return NextResponse.json(
+        {
+          title: "En feil har skjedd",
+          description: "Du har ikke svart på alle spørsmålene.",
         },
         {
           status: 403,

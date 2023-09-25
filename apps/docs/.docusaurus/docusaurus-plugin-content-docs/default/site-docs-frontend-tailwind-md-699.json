@@ -1,0 +1,24 @@
+{
+  "unversionedId": "frontend/tailwind",
+  "id": "frontend/tailwind",
+  "title": "Tailwind",
+  "description": "Tailwind er et CSS-rammeverk som lar deg designe en nettside ved hjelp av forhåndsdefinerte klasser, i stedet for å skrive ren CSS-kode. Det gir utviklere et stort utvalg av fleksible, gjenbrukbare og responsive verktøy som gjør det enklere å bygge en stilfull og responsiv nettside eller applikasjon raskt. Tailwind inkluderer blant annet ferdige stiler for layout, tekstbehandling, farger, rammer og mye mer.",
+  "source": "@site/docs/frontend/tailwind.md",
+  "sourceDirName": "frontend",
+  "slug": "/frontend/tailwind",
+  "permalink": "/docs/frontend/tailwind",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/tailwind.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "React",
+    "permalink": "/docs/frontend/react"
+  },
+  "next": {
+    "title": "TypeScript",
+    "permalink": "/docs/frontend/typescript"
+  }
+}

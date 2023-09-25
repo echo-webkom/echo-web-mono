@@ -1,0 +1,24 @@
+{
+  "unversionedId": "cicd/index",
+  "id": "cicd/index",
+  "title": "CI/CD",
+  "description": "CI/CD er en forkortelse for \"Continuous Integration\" og \"Continuous Delivery\" (eller \"Continuous Deployment\"), og er en metode for å utvikle og levere programvare raskere og mer effektivt.",
+  "source": "@site/docs/cicd/index.md",
+  "sourceDirName": "cicd",
+  "slug": "/cicd/",
+  "permalink": "/docs/cicd/",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/cicd/index.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Prisma",
+    "permalink": "/docs/backend/prisma"
+  },
+  "next": {
+    "title": "Gode ressurser",
+    "permalink": "/docs/ressurser"
+  }
+}

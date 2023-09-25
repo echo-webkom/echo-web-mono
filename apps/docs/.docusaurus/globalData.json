@@ -1,0 +1,133 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "intro",
+          "docs": [
+            {
+              "id": "backend/auth",
+              "path": "/docs/backend/auth",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "backend/index",
+              "path": "/docs/backend/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "backend/nextjs",
+              "path": "/docs/backend/nextjs",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "backend/prisma",
+              "path": "/docs/backend/prisma",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "cicd/index",
+              "path": "/docs/cicd/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "frontend/framer-motion",
+              "path": "/docs/frontend/framer-motion",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "frontend/react",
+              "path": "/docs/frontend/react",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "frontend/tailwind",
+              "path": "/docs/frontend/tailwind",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "frontend/typescript",
+              "path": "/docs/frontend/typescript",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "intro",
+              "path": "/docs/intro",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "komme-igang/forste-endring",
+              "path": "/docs/komme-igang/forste-endring",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "komme-igang/index",
+              "path": "/docs/komme-igang/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "komme-igang/platformer",
+              "path": "/docs/komme-igang/platformer",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "komme-igang/scripts",
+              "path": "/docs/komme-igang/scripts",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "komme-igang/verktoy",
+              "path": "/docs/komme-igang/verktoy",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "ressurser",
+              "path": "/docs/ressurser",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sanity/dokumenter",
+              "path": "/docs/sanity/dokumenter",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sanity/felt-og-typer",
+              "path": "/docs/sanity/felt-og-typer",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sanity/groq",
+              "path": "/docs/sanity/groq",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sanity/index",
+              "path": "/docs/sanity/",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sanity/objekter",
+              "path": "/docs/sanity/objekter",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/intro",
+                "label": "intro"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

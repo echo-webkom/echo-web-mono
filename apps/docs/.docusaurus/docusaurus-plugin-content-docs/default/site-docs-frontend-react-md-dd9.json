@@ -1,0 +1,24 @@
+{
+  "unversionedId": "frontend/react",
+  "id": "frontend/react",
+  "title": "React",
+  "description": "ReactJS er et JavaScript-bibliotek som brukes til å bygge brukergrensesnitt (UI). Det gir utviklere muligheten til å bygge interaktive og dynamiske brukergrensesnitt ved å dele dem opp i små komponenter som kan gjenbrukes og oppdateres separat fra resten av grensesnittet.",
+  "source": "@site/docs/frontend/react.md",
+  "sourceDirName": "frontend",
+  "slug": "/frontend/react",
+  "permalink": "/docs/frontend/react",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/react.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Framer Motion",
+    "permalink": "/docs/frontend/framer-motion"
+  },
+  "next": {
+    "title": "Tailwind",
+    "permalink": "/docs/frontend/tailwind"
+  }
+}

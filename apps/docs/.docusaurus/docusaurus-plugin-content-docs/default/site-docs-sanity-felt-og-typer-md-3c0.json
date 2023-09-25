@@ -1,0 +1,24 @@
+{
+  "unversionedId": "sanity/felt-og-typer",
+  "id": "sanity/felt-og-typer",
+  "title": "Felt og typer",
+  "description": "I Sanity er dokumenter og objekter definert som typer. Disse typene kan ha ulike felt. Feltene kan være av ulike typer, og de kan være obligatoriske eller valgfrie. De kan også ha valideringsregler som må oppfylles for at dokumentet eller objektet skal kunne lagres. Dette skal vi se nærmere på nå.",
+  "source": "@site/docs/sanity/felt-og-typer.md",
+  "sourceDirName": "sanity",
+  "slug": "/sanity/felt-og-typer",
+  "permalink": "/docs/sanity/felt-og-typer",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/felt-og-typer.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Dokumenter",
+    "permalink": "/docs/sanity/dokumenter"
+  },
+  "next": {
+    "title": "GROQ",
+    "permalink": "/docs/sanity/groq"
+  }
+}

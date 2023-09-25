@@ -1,0 +1,285 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "tutorialSidebar": [
+      {
+        "type": "link",
+        "label": "Introduksjon",
+        "href": "/docs/intro",
+        "docId": "intro"
+      },
+      {
+        "type": "category",
+        "label": "Komme i gang",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Verktøy",
+            "href": "/docs/komme-igang/verktoy",
+            "docId": "komme-igang/verktoy"
+          },
+          {
+            "type": "link",
+            "label": "Plattformer",
+            "href": "/docs/komme-igang/platformer",
+            "docId": "komme-igang/platformer"
+          },
+          {
+            "type": "link",
+            "label": "Din første endring til koden",
+            "href": "/docs/komme-igang/forste-endring",
+            "docId": "komme-igang/forste-endring"
+          },
+          {
+            "type": "link",
+            "label": "Scripts",
+            "href": "/docs/komme-igang/scripts",
+            "docId": "komme-igang/scripts"
+          }
+        ],
+        "href": "/docs/komme-igang/"
+      },
+      {
+        "type": "category",
+        "label": "Frontend",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Framer Motion",
+            "href": "/docs/frontend/framer-motion",
+            "docId": "frontend/framer-motion"
+          },
+          {
+            "type": "link",
+            "label": "React",
+            "href": "/docs/frontend/react",
+            "docId": "frontend/react"
+          },
+          {
+            "type": "link",
+            "label": "Tailwind",
+            "href": "/docs/frontend/tailwind",
+            "docId": "frontend/tailwind"
+          },
+          {
+            "type": "link",
+            "label": "TypeScript",
+            "href": "/docs/frontend/typescript",
+            "docId": "frontend/typescript"
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Sanity",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Dokumenter",
+            "href": "/docs/sanity/dokumenter",
+            "docId": "sanity/dokumenter"
+          },
+          {
+            "type": "link",
+            "label": "Felt og typer",
+            "href": "/docs/sanity/felt-og-typer",
+            "docId": "sanity/felt-og-typer"
+          },
+          {
+            "type": "link",
+            "label": "GROQ",
+            "href": "/docs/sanity/groq",
+            "docId": "sanity/groq"
+          },
+          {
+            "type": "link",
+            "label": "Objekter",
+            "href": "/docs/sanity/objekter",
+            "docId": "sanity/objekter"
+          }
+        ],
+        "href": "/docs/sanity/"
+      },
+      {
+        "type": "category",
+        "label": "Backend",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "link",
+            "label": "Auth.js (NextAuth.js)",
+            "href": "/docs/backend/auth",
+            "docId": "backend/auth"
+          },
+          {
+            "type": "link",
+            "label": "Next.js",
+            "href": "/docs/backend/nextjs",
+            "docId": "backend/nextjs"
+          },
+          {
+            "type": "link",
+            "label": "Prisma",
+            "href": "/docs/backend/prisma",
+            "docId": "backend/prisma"
+          }
+        ],
+        "href": "/docs/backend/"
+      },
+      {
+        "type": "link",
+        "label": "CI/CD",
+        "href": "/docs/cicd/",
+        "docId": "cicd/index"
+      },
+      {
+        "type": "link",
+        "label": "Gode ressurser",
+        "href": "/docs/ressurser",
+        "docId": "ressurser"
+      }
+    ]
+  },
+  "docs": {
+    "backend/auth": {
+      "id": "backend/auth",
+      "title": "Auth.js (NextAuth.js)",
+      "description": "Auth.js, tidligere kjent som NextAuth.js, er en pakke som lar oss håndtere autentisering og autorisering i våre applikasjoner. Prisma har også en adapter for Auth.js, som gjør det enklere for oss å bruke Auth.js med Prisma.",
+      "sidebar": "tutorialSidebar"
+    },
+    "backend/index": {
+      "id": "backend/index",
+      "title": "Vår backend",
+      "description": "Backend er den delen av nettsiden som kan være litt forrvirende og vanskelig å jobbe med. Siden vi bruker NextJS er den delt opp i flere deler.",
+      "sidebar": "tutorialSidebar"
+    },
+    "backend/nextjs": {
+      "id": "backend/nextjs",
+      "title": "Next.js",
+      "description": "I Next.js er det lett å lage en api-router. I app, så kan lage en mappe med navnet på ruten, og lage en fil med navnet route.ts.",
+      "sidebar": "tutorialSidebar"
+    },
+    "backend/prisma": {
+      "id": "backend/prisma",
+      "title": "Prisma",
+      "description": "Prisma er en ORM (Object Relation Mapper) for TypeScript. Den lar deg definere modeller og relasjoner mellom disse modellene, og genererer automatisk en database basert på disse modellene. Prisma gjør det også nesten umulig å kjøre spørringer som ikke funker på databasen. Samtidig er det enkelt å lage migrasjoner, siden Prisma genererer de for deg.",
+      "sidebar": "tutorialSidebar"
+    },
+    "cicd/index": {
+      "id": "cicd/index",
+      "title": "CI/CD",
+      "description": "CI/CD er en forkortelse for \"Continuous Integration\" og \"Continuous Delivery\" (eller \"Continuous Deployment\"), og er en metode for å utvikle og levere programvare raskere og mer effektivt.",
+      "sidebar": "tutorialSidebar"
+    },
+    "frontend/framer-motion": {
+      "id": "frontend/framer-motion",
+      "title": "Framer Motion",
+      "description": "Framer Motion er et JavaScript-bibliotek som brukes til å legge til animasjoner og interaktivitet i webapplikasjoner. Det er spesielt populært blant utviklere som jobber med ReactJS, ettersom det er enkelt å integrere i React-prosjekter.",
+      "sidebar": "tutorialSidebar"
+    },
+    "frontend/react": {
+      "id": "frontend/react",
+      "title": "React",
+      "description": "ReactJS er et JavaScript-bibliotek som brukes til å bygge brukergrensesnitt (UI). Det gir utviklere muligheten til å bygge interaktive og dynamiske brukergrensesnitt ved å dele dem opp i små komponenter som kan gjenbrukes og oppdateres separat fra resten av grensesnittet.",
+      "sidebar": "tutorialSidebar"
+    },
+    "frontend/tailwind": {
+      "id": "frontend/tailwind",
+      "title": "Tailwind",
+      "description": "Tailwind er et CSS-rammeverk som lar deg designe en nettside ved hjelp av forhåndsdefinerte klasser, i stedet for å skrive ren CSS-kode. Det gir utviklere et stort utvalg av fleksible, gjenbrukbare og responsive verktøy som gjør det enklere å bygge en stilfull og responsiv nettside eller applikasjon raskt. Tailwind inkluderer blant annet ferdige stiler for layout, tekstbehandling, farger, rammer og mye mer.",
+      "sidebar": "tutorialSidebar"
+    },
+    "frontend/typescript": {
+      "id": "frontend/typescript",
+      "title": "TypeScript",
+      "description": "TypeScript er et programmeringsspråk som er bygget på JavaScript, som gjør det mulig å skrive mer strukturert og forutsigbar kode ved å legge til typed variabler og funksjoner.",
+      "sidebar": "tutorialSidebar"
+    },
+    "intro": {
+      "id": "intro",
+      "title": "Introduksjon",
+      "description": "Hvem er vi? 👥",
+      "sidebar": "tutorialSidebar"
+    },
+    "komme-igang/forste-endring": {
+      "id": "komme-igang/forste-endring",
+      "title": "Din første endring til koden",
+      "description": "For å gjøre en endring til koden må du først gjøre en kopi av koden til din egen maskin. Dette gjør du ved å bruke kommandoen git clone. Denne kommandoen tar en URL som argument, og lager en kopi av koden på din maskin.",
+      "sidebar": "tutorialSidebar"
+    },
+    "komme-igang/index": {
+      "id": "komme-igang/index",
+      "title": "Komme i gang",
+      "description": "For å gjøre utviklingen lettere bruker vi diverese verktøy. Noen av disse må du har for å kunne med prosjektet, mens andre er anbefalinger.",
+      "sidebar": "tutorialSidebar"
+    },
+    "komme-igang/platformer": {
+      "id": "komme-igang/platformer",
+      "title": "Plattformer",
+      "description": "Utvikling 💻",
+      "sidebar": "tutorialSidebar"
+    },
+    "komme-igang/scripts": {
+      "id": "komme-igang/scripts",
+      "title": "Scripts",
+      "description": "Vi har noen scripts som gjør det enklere å kjøre kommandoer.",
+      "sidebar": "tutorialSidebar"
+    },
+    "komme-igang/verktoy": {
+      "id": "komme-igang/verktoy",
+      "title": "Verktøy",
+      "description": "Git",
+      "sidebar": "tutorialSidebar"
+    },
+    "ressurser": {
+      "id": "ressurser",
+      "title": "Gode ressurser",
+      "description": "Programmering",
+      "sidebar": "tutorialSidebar"
+    },
+    "sanity/dokumenter": {
+      "id": "sanity/dokumenter",
+      "title": "Dokumenter",
+      "description": "Dokumenter i Sanity er JSON-objekter som inneholder data. Vi bruker dokumenter til å lagre data som vi trenger i frontend-koden vår.",
+      "sidebar": "tutorialSidebar"
+    },
+    "sanity/felt-og-typer": {
+      "id": "sanity/felt-og-typer",
+      "title": "Felt og typer",
+      "description": "I Sanity er dokumenter og objekter definert som typer. Disse typene kan ha ulike felt. Feltene kan være av ulike typer, og de kan være obligatoriske eller valgfrie. De kan også ha valideringsregler som må oppfylles for at dokumentet eller objektet skal kunne lagres. Dette skal vi se nærmere på nå.",
+      "sidebar": "tutorialSidebar"
+    },
+    "sanity/groq": {
+      "id": "sanity/groq",
+      "title": "GROQ",
+      "description": "GROQ er et språk for å spørre data fra Sanity. Det er enkelt å lære, og lar deg spørre data på en måte som er veldig likt hvordan du spør data i JavaScript.",
+      "sidebar": "tutorialSidebar"
+    },
+    "sanity/index": {
+      "id": "sanity/index",
+      "title": "Sanity",
+      "description": "Sanity er et Content Management System (CMS) som lar deg administrere og publisere innhold på en nettside eller app. Sanity lar oss definere innholdstyper og strukturer, og publisere innholdet på tvers av flere kanaler og plattformer.",
+      "sidebar": "tutorialSidebar"
+    },
+    "sanity/objekter": {
+      "id": "sanity/objekter",
+      "title": "Objekter",
+      "description": "I Sanity kan man definere objekter som kan gjenbrukes i flere dokumenter. Objekter kan være enkelt eller mer komplekse. Objekter kan også inneholde andre objekter. Det kan være nyttig å definere et objekt for å unngå duplisering av data.",
+      "sidebar": "tutorialSidebar"
+    }
+  }
+}

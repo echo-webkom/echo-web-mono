@@ -1,0 +1,24 @@
+{
+  "unversionedId": "sanity/dokumenter",
+  "id": "sanity/dokumenter",
+  "title": "Dokumenter",
+  "description": "Dokumenter i Sanity er JSON-objekter som inneholder data. Vi bruker dokumenter til å lagre data som vi trenger i frontend-koden vår.",
+  "source": "@site/docs/sanity/dokumenter.md",
+  "sourceDirName": "sanity",
+  "slug": "/sanity/dokumenter",
+  "permalink": "/docs/sanity/dokumenter",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/dokumenter.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Sanity",
+    "permalink": "/docs/sanity/"
+  },
+  "next": {
+    "title": "Felt og typer",
+    "permalink": "/docs/sanity/felt-og-typer"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "/__docusaurus/debug-e17": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/__docusaurus/debug/config-628": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/__docusaurus/debug/content-dc4": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    },
+    "allContent": "allContent---docusaurus-debug-content-246-9aa"
+  },
+  "/__docusaurus/debug/globalData-92a": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/__docusaurus/debug/metadata-a0e": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/__docusaurus/debug/registry-dce": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/__docusaurus/debug/routes-333": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-7-a-4-bab"
+    }
+  },
+  "/docs-321": {
+    "__comp": "__comp---theme-doc-page-1-be-9be",
+    "__context": {
+      "plugin": "plugin---docs-8-ba-bd1"
+    },
+    "versionMetadata": "versionMetadata---docs-935-398"
+  },
+  "/docs/backend/-7dc": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-backend-6-e-2-980"
+  },
+  "/docs/backend/auth-387": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-backend-autha-8-b-d64"
+  },
+  "/docs/backend/nextjs-300": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-backend-nextjs-1-cd-c74"
+  },
+  "/docs/backend/prisma-327": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-backend-prisma-5-d-2-adb"
+  },
+  "/docs/cicd/-16e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-cicd-170-867"
+  },
+  "/docs/frontend/framer-motion-8db": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-frontend-framer-motion-04-a-e77"
+  },
+  "/docs/frontend/react-66a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-frontend-reactdd-9-ac8"
+  },
+  "/docs/frontend/tailwind-e0f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-frontend-tailwind-699-082"
+  },
+  "/docs/frontend/typescript-b88": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-frontend-typescript-309-f6f"
+  },
+  "/docs/intro-aed": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intro-0-e-3-be1"
+  },
+  "/docs/komme-igang/-94c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-komme-igang-f-47-60c"
+  },
+  "/docs/komme-igang/forste-endring-e26": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-komme-igang-forste-endringbbb-997"
+  },
+  "/docs/komme-igang/platformer-5a0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-komme-igang-platformercca-4df"
+  },
+  "/docs/komme-igang/scripts-b09": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-komme-igang-scripts-356-56a"
+  },
+  "/docs/komme-igang/verktoy-3d3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-komme-igang-verktoy-120-48c"
+  },
+  "/docs/ressurser-6c9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-ressurser-3-f-6-a0a"
+  },
+  "/docs/sanity/-a93": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-sanity-7-e-8-28a"
+  },
+  "/docs/sanity/dokumenter-949": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-sanity-dokumentereb-7-27f"
+  },
+  "/docs/sanity/felt-og-typer-85c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-sanity-felt-og-typer-3-c-0-67c"
+  },
+  "/docs/sanity/groq-e3f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-sanity-groq-04-b-c7c"
+  },
+  "/docs/sanity/objekter-11c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-sanity-objekter-39-e-7db"
+  },
+  "/-897": {
+    "__comp": "__comp---site-src-pages-index-tsx-1-df-d3e",
+    "__context": {
+      "plugin": "plugin---bbb-a3e"
+    },
+    "config": "config---5-e-9-4f3"
+  }
+}

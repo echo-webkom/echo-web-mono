@@ -1,0 +1,683 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "label": "Next",
+          "banner": null,
+          "badge": false,
+          "noIndex": false,
+          "className": "docs-version-current",
+          "path": "/docs",
+          "tagsPath": "/docs/tags",
+          "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs",
+          "editUrlLocalized": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/i18n/no/docusaurus-plugin-content-docs/current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/nikolaus/Documents/personal_projects/WebKom/new-echo-web-monorepo/apps/docs/sidebars.js",
+          "contentPath": "/home/nikolaus/Documents/personal_projects/WebKom/new-echo-web-monorepo/apps/docs/docs",
+          "contentPathLocalized": "/home/nikolaus/Documents/personal_projects/WebKom/new-echo-web-monorepo/apps/docs/i18n/no/docusaurus-plugin-content-docs/current",
+          "docs": [
+            {
+              "unversionedId": "backend/auth",
+              "id": "backend/auth",
+              "title": "Auth.js (NextAuth.js)",
+              "description": "Auth.js, tidligere kjent som NextAuth.js, er en pakke som lar oss håndtere autentisering og autorisering i våre applikasjoner. Prisma har også en adapter for Auth.js, som gjør det enklere for oss å bruke Auth.js med Prisma.",
+              "source": "@site/docs/backend/auth.md",
+              "sourceDirName": "backend",
+              "slug": "/backend/auth",
+              "permalink": "/docs/backend/auth",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/backend/auth.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Vår backend",
+                "permalink": "/docs/backend/"
+              },
+              "next": {
+                "title": "Next.js",
+                "permalink": "/docs/backend/nextjs"
+              }
+            },
+            {
+              "unversionedId": "backend/index",
+              "id": "backend/index",
+              "title": "Vår backend",
+              "description": "Backend er den delen av nettsiden som kan være litt forrvirende og vanskelig å jobbe med. Siden vi bruker NextJS er den delt opp i flere deler.",
+              "source": "@site/docs/backend/index.md",
+              "sourceDirName": "backend",
+              "slug": "/backend/",
+              "permalink": "/docs/backend/",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/backend/index.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Objekter",
+                "permalink": "/docs/sanity/objekter"
+              },
+              "next": {
+                "title": "Auth.js (NextAuth.js)",
+                "permalink": "/docs/backend/auth"
+              }
+            },
+            {
+              "unversionedId": "backend/nextjs",
+              "id": "backend/nextjs",
+              "title": "Next.js",
+              "description": "I Next.js er det lett å lage en api-router. I app, så kan lage en mappe med navnet på ruten, og lage en fil med navnet route.ts.",
+              "source": "@site/docs/backend/nextjs.md",
+              "sourceDirName": "backend",
+              "slug": "/backend/nextjs",
+              "permalink": "/docs/backend/nextjs",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/backend/nextjs.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Auth.js (NextAuth.js)",
+                "permalink": "/docs/backend/auth"
+              },
+              "next": {
+                "title": "Prisma",
+                "permalink": "/docs/backend/prisma"
+              }
+            },
+            {
+              "unversionedId": "backend/prisma",
+              "id": "backend/prisma",
+              "title": "Prisma",
+              "description": "Prisma er en ORM (Object Relation Mapper) for TypeScript. Den lar deg definere modeller og relasjoner mellom disse modellene, og genererer automatisk en database basert på disse modellene. Prisma gjør det også nesten umulig å kjøre spørringer som ikke funker på databasen. Samtidig er det enkelt å lage migrasjoner, siden Prisma genererer de for deg.",
+              "source": "@site/docs/backend/prisma.md",
+              "sourceDirName": "backend",
+              "slug": "/backend/prisma",
+              "permalink": "/docs/backend/prisma",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/backend/prisma.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Next.js",
+                "permalink": "/docs/backend/nextjs"
+              },
+              "next": {
+                "title": "CI/CD",
+                "permalink": "/docs/cicd/"
+              }
+            },
+            {
+              "unversionedId": "cicd/index",
+              "id": "cicd/index",
+              "title": "CI/CD",
+              "description": "CI/CD er en forkortelse for \"Continuous Integration\" og \"Continuous Delivery\" (eller \"Continuous Deployment\"), og er en metode for å utvikle og levere programvare raskere og mer effektivt.",
+              "source": "@site/docs/cicd/index.md",
+              "sourceDirName": "cicd",
+              "slug": "/cicd/",
+              "permalink": "/docs/cicd/",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/cicd/index.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Prisma",
+                "permalink": "/docs/backend/prisma"
+              },
+              "next": {
+                "title": "Gode ressurser",
+                "permalink": "/docs/ressurser"
+              }
+            },
+            {
+              "unversionedId": "frontend/framer-motion",
+              "id": "frontend/framer-motion",
+              "title": "Framer Motion",
+              "description": "Framer Motion er et JavaScript-bibliotek som brukes til å legge til animasjoner og interaktivitet i webapplikasjoner. Det er spesielt populært blant utviklere som jobber med ReactJS, ettersom det er enkelt å integrere i React-prosjekter.",
+              "source": "@site/docs/frontend/framer-motion.md",
+              "sourceDirName": "frontend",
+              "slug": "/frontend/framer-motion",
+              "permalink": "/docs/frontend/framer-motion",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/framer-motion.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Scripts",
+                "permalink": "/docs/komme-igang/scripts"
+              },
+              "next": {
+                "title": "React",
+                "permalink": "/docs/frontend/react"
+              }
+            },
+            {
+              "unversionedId": "frontend/react",
+              "id": "frontend/react",
+              "title": "React",
+              "description": "ReactJS er et JavaScript-bibliotek som brukes til å bygge brukergrensesnitt (UI). Det gir utviklere muligheten til å bygge interaktive og dynamiske brukergrensesnitt ved å dele dem opp i små komponenter som kan gjenbrukes og oppdateres separat fra resten av grensesnittet.",
+              "source": "@site/docs/frontend/react.md",
+              "sourceDirName": "frontend",
+              "slug": "/frontend/react",
+              "permalink": "/docs/frontend/react",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/react.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Framer Motion",
+                "permalink": "/docs/frontend/framer-motion"
+              },
+              "next": {
+                "title": "Tailwind",
+                "permalink": "/docs/frontend/tailwind"
+              }
+            },
+            {
+              "unversionedId": "frontend/tailwind",
+              "id": "frontend/tailwind",
+              "title": "Tailwind",
+              "description": "Tailwind er et CSS-rammeverk som lar deg designe en nettside ved hjelp av forhåndsdefinerte klasser, i stedet for å skrive ren CSS-kode. Det gir utviklere et stort utvalg av fleksible, gjenbrukbare og responsive verktøy som gjør det enklere å bygge en stilfull og responsiv nettside eller applikasjon raskt. Tailwind inkluderer blant annet ferdige stiler for layout, tekstbehandling, farger, rammer og mye mer.",
+              "source": "@site/docs/frontend/tailwind.md",
+              "sourceDirName": "frontend",
+              "slug": "/frontend/tailwind",
+              "permalink": "/docs/frontend/tailwind",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/tailwind.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "React",
+                "permalink": "/docs/frontend/react"
+              },
+              "next": {
+                "title": "TypeScript",
+                "permalink": "/docs/frontend/typescript"
+              }
+            },
+            {
+              "unversionedId": "frontend/typescript",
+              "id": "frontend/typescript",
+              "title": "TypeScript",
+              "description": "TypeScript er et programmeringsspråk som er bygget på JavaScript, som gjør det mulig å skrive mer strukturert og forutsigbar kode ved å legge til typed variabler og funksjoner.",
+              "source": "@site/docs/frontend/typescript.md",
+              "sourceDirName": "frontend",
+              "slug": "/frontend/typescript",
+              "permalink": "/docs/frontend/typescript",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/frontend/typescript.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Tailwind",
+                "permalink": "/docs/frontend/tailwind"
+              },
+              "next": {
+                "title": "Sanity",
+                "permalink": "/docs/sanity/"
+              }
+            },
+            {
+              "unversionedId": "intro",
+              "id": "intro",
+              "title": "Introduksjon",
+              "description": "Hvem er vi? 👥",
+              "source": "@site/docs/intro.md",
+              "sourceDirName": ".",
+              "slug": "/intro",
+              "permalink": "/docs/intro",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/intro.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "next": {
+                "title": "Komme i gang",
+                "permalink": "/docs/komme-igang/"
+              }
+            },
+            {
+              "unversionedId": "komme-igang/forste-endring",
+              "id": "komme-igang/forste-endring",
+              "title": "Din første endring til koden",
+              "description": "For å gjøre en endring til koden må du først gjøre en kopi av koden til din egen maskin. Dette gjør du ved å bruke kommandoen git clone. Denne kommandoen tar en URL som argument, og lager en kopi av koden på din maskin.",
+              "source": "@site/docs/komme-igang/forste-endring.md",
+              "sourceDirName": "komme-igang",
+              "slug": "/komme-igang/forste-endring",
+              "permalink": "/docs/komme-igang/forste-endring",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/komme-igang/forste-endring.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Plattformer",
+                "permalink": "/docs/komme-igang/platformer"
+              },
+              "next": {
+                "title": "Scripts",
+                "permalink": "/docs/komme-igang/scripts"
+              }
+            },
+            {
+              "unversionedId": "komme-igang/index",
+              "id": "komme-igang/index",
+              "title": "Komme i gang",
+              "description": "For å gjøre utviklingen lettere bruker vi diverese verktøy. Noen av disse må du har for å kunne med prosjektet, mens andre er anbefalinger.",
+              "source": "@site/docs/komme-igang/index.md",
+              "sourceDirName": "komme-igang",
+              "slug": "/komme-igang/",
+              "permalink": "/docs/komme-igang/",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/komme-igang/index.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Introduksjon",
+                "permalink": "/docs/intro"
+              },
+              "next": {
+                "title": "Verktøy",
+                "permalink": "/docs/komme-igang/verktoy"
+              }
+            },
+            {
+              "unversionedId": "komme-igang/platformer",
+              "id": "komme-igang/platformer",
+              "title": "Plattformer",
+              "description": "Utvikling 💻",
+              "source": "@site/docs/komme-igang/platformer.md",
+              "sourceDirName": "komme-igang",
+              "slug": "/komme-igang/platformer",
+              "permalink": "/docs/komme-igang/platformer",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/komme-igang/platformer.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Verktøy",
+                "permalink": "/docs/komme-igang/verktoy"
+              },
+              "next": {
+                "title": "Din første endring til koden",
+                "permalink": "/docs/komme-igang/forste-endring"
+              }
+            },
+            {
+              "unversionedId": "komme-igang/scripts",
+              "id": "komme-igang/scripts",
+              "title": "Scripts",
+              "description": "Vi har noen scripts som gjør det enklere å kjøre kommandoer.",
+              "source": "@site/docs/komme-igang/scripts.md",
+              "sourceDirName": "komme-igang",
+              "slug": "/komme-igang/scripts",
+              "permalink": "/docs/komme-igang/scripts",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/komme-igang/scripts.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Din første endring til koden",
+                "permalink": "/docs/komme-igang/forste-endring"
+              },
+              "next": {
+                "title": "Framer Motion",
+                "permalink": "/docs/frontend/framer-motion"
+              }
+            },
+            {
+              "unversionedId": "komme-igang/verktoy",
+              "id": "komme-igang/verktoy",
+              "title": "Verktøy",
+              "description": "Git",
+              "source": "@site/docs/komme-igang/verktoy.md",
+              "sourceDirName": "komme-igang",
+              "slug": "/komme-igang/verktoy",
+              "permalink": "/docs/komme-igang/verktoy",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/komme-igang/verktoy.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Komme i gang",
+                "permalink": "/docs/komme-igang/"
+              },
+              "next": {
+                "title": "Plattformer",
+                "permalink": "/docs/komme-igang/platformer"
+              }
+            },
+            {
+              "unversionedId": "ressurser",
+              "id": "ressurser",
+              "title": "Gode ressurser",
+              "description": "Programmering",
+              "source": "@site/docs/ressurser.md",
+              "sourceDirName": ".",
+              "slug": "/ressurser",
+              "permalink": "/docs/ressurser",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/ressurser.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "CI/CD",
+                "permalink": "/docs/cicd/"
+              }
+            },
+            {
+              "unversionedId": "sanity/dokumenter",
+              "id": "sanity/dokumenter",
+              "title": "Dokumenter",
+              "description": "Dokumenter i Sanity er JSON-objekter som inneholder data. Vi bruker dokumenter til å lagre data som vi trenger i frontend-koden vår.",
+              "source": "@site/docs/sanity/dokumenter.md",
+              "sourceDirName": "sanity",
+              "slug": "/sanity/dokumenter",
+              "permalink": "/docs/sanity/dokumenter",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/dokumenter.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Sanity",
+                "permalink": "/docs/sanity/"
+              },
+              "next": {
+                "title": "Felt og typer",
+                "permalink": "/docs/sanity/felt-og-typer"
+              }
+            },
+            {
+              "unversionedId": "sanity/felt-og-typer",
+              "id": "sanity/felt-og-typer",
+              "title": "Felt og typer",
+              "description": "I Sanity er dokumenter og objekter definert som typer. Disse typene kan ha ulike felt. Feltene kan være av ulike typer, og de kan være obligatoriske eller valgfrie. De kan også ha valideringsregler som må oppfylles for at dokumentet eller objektet skal kunne lagres. Dette skal vi se nærmere på nå.",
+              "source": "@site/docs/sanity/felt-og-typer.md",
+              "sourceDirName": "sanity",
+              "slug": "/sanity/felt-og-typer",
+              "permalink": "/docs/sanity/felt-og-typer",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/felt-og-typer.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Dokumenter",
+                "permalink": "/docs/sanity/dokumenter"
+              },
+              "next": {
+                "title": "GROQ",
+                "permalink": "/docs/sanity/groq"
+              }
+            },
+            {
+              "unversionedId": "sanity/groq",
+              "id": "sanity/groq",
+              "title": "GROQ",
+              "description": "GROQ er et språk for å spørre data fra Sanity. Det er enkelt å lære, og lar deg spørre data på en måte som er veldig likt hvordan du spør data i JavaScript.",
+              "source": "@site/docs/sanity/groq.md",
+              "sourceDirName": "sanity",
+              "slug": "/sanity/groq",
+              "permalink": "/docs/sanity/groq",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/groq.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Felt og typer",
+                "permalink": "/docs/sanity/felt-og-typer"
+              },
+              "next": {
+                "title": "Objekter",
+                "permalink": "/docs/sanity/objekter"
+              }
+            },
+            {
+              "unversionedId": "sanity/index",
+              "id": "sanity/index",
+              "title": "Sanity",
+              "description": "Sanity er et Content Management System (CMS) som lar deg administrere og publisere innhold på en nettside eller app. Sanity lar oss definere innholdstyper og strukturer, og publisere innholdet på tvers av flere kanaler og plattformer.",
+              "source": "@site/docs/sanity/index.md",
+              "sourceDirName": "sanity",
+              "slug": "/sanity/",
+              "permalink": "/docs/sanity/",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/index.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "TypeScript",
+                "permalink": "/docs/frontend/typescript"
+              },
+              "next": {
+                "title": "Dokumenter",
+                "permalink": "/docs/sanity/dokumenter"
+              }
+            },
+            {
+              "unversionedId": "sanity/objekter",
+              "id": "sanity/objekter",
+              "title": "Objekter",
+              "description": "I Sanity kan man definere objekter som kan gjenbrukes i flere dokumenter. Objekter kan være enkelt eller mer komplekse. Objekter kan også inneholde andre objekter. Det kan være nyttig å definere et objekt for å unngå duplisering av data.",
+              "source": "@site/docs/sanity/objekter.md",
+              "sourceDirName": "sanity",
+              "slug": "/sanity/objekter",
+              "permalink": "/docs/sanity/objekter",
+              "draft": false,
+              "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/objekter.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "GROQ",
+                "permalink": "/docs/sanity/groq"
+              },
+              "next": {
+                "title": "Vår backend",
+                "permalink": "/docs/backend/"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "tutorialSidebar": [
+              {
+                "type": "doc",
+                "id": "intro"
+              },
+              {
+                "type": "category",
+                "label": "Komme i gang",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "komme-igang/verktoy"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "komme-igang/platformer"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "komme-igang/forste-endring"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "komme-igang/scripts"
+                  }
+                ],
+                "link": {
+                  "type": "doc",
+                  "id": "komme-igang/index"
+                }
+              },
+              {
+                "type": "category",
+                "label": "Frontend",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "frontend/framer-motion"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "frontend/react"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "frontend/tailwind"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "frontend/typescript"
+                  }
+                ]
+              },
+              {
+                "type": "category",
+                "label": "Sanity",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "sanity/dokumenter"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "sanity/felt-og-typer"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "sanity/groq"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "sanity/objekter"
+                  }
+                ],
+                "link": {
+                  "type": "doc",
+                  "id": "sanity/index"
+                }
+              },
+              {
+                "type": "category",
+                "label": "Backend",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "backend/auth"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "backend/nextjs"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "backend/prisma"
+                  }
+                ],
+                "link": {
+                  "type": "doc",
+                  "id": "backend/index"
+                }
+              },
+              {
+                "type": "doc",
+                "label": "CI/CD",
+                "id": "cicd/index"
+              },
+              {
+                "type": "doc",
+                "id": "ressurser"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogSidebarTitle": "Recent posts",
+      "blogPosts": [],
+      "blogListPaginated": [],
+      "blogTags": {},
+      "blogTagsListPath": "/blog/tags",
+      "blogTagsPaginated": []
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.tsx"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {},
+  "docusaurus-theme-classic": {},
+  "docusaurus-bootstrap-plugin": {},
+  "docusaurus-mdx-fallback-plugin": {}
+}

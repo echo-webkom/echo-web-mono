@@ -1,0 +1,24 @@
+{
+  "unversionedId": "sanity/index",
+  "id": "sanity/index",
+  "title": "Sanity",
+  "description": "Sanity er et Content Management System (CMS) som lar deg administrere og publisere innhold på en nettside eller app. Sanity lar oss definere innholdstyper og strukturer, og publisere innholdet på tvers av flere kanaler og plattformer.",
+  "source": "@site/docs/sanity/index.md",
+  "sourceDirName": "sanity",
+  "slug": "/sanity/",
+  "permalink": "/docs/sanity/",
+  "draft": false,
+  "editUrl": "https://github.com/echo-webkom/new-echo-web-monorepo/tree/main/apps/docs/docs/sanity/index.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "TypeScript",
+    "permalink": "/docs/frontend/typescript"
+  },
+  "next": {
+    "title": "Dokumenter",
+    "permalink": "/docs/sanity/dokumenter"
+  }
+}
