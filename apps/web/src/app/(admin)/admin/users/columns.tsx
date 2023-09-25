@@ -72,7 +72,9 @@ export const columns: Array<ColumnDef<User>> = [
             <DropdownMenuSeparator />
             <Dialog>
               <DialogTrigger>
-                <DropdownMenuItem>Endre rolle</DropdownMenuItem>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  Endre rolle
+                </DropdownMenuItem>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
