@@ -1,0 +1,103 @@
+name: Deploy preview
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CREDENTIALS }}"
+
+  TF_VAR_db_user: echoadminpreview
+  TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+  TF_VAR_environment: preview
+
+  VERCEL_ACCESS_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  VERCEL_PROJECT_ID: prj_A27WwLBNQneMw0WPB6uX0Wo10J2c
+  VERCEL_TEAM_ID: team_BalajEhvjfBqbkouJFI9761w
+
+  GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
+
+jobs:
+  deploy-preview-db:
+    name: Deploy preview database
+    runs-on: ubuntu-latest
+
+    outputs:
+      fqdn: ${{ steps.preview-database-fqdn.outputs.FQDN }}
+      branch-name-formatted: ${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}
+
+    defaults:
+      run:
+        working-directory: ./terraform/preview
+
+    env:
+      ARM_SKIP_PROVIDER_REGISTRATION: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Set Terraform environment variable(s)
+        id: set-env
+        run: |
+          BRANCH_NAME_FORMATTED="$(echo "${{ github.head_ref }}" | sed -e 's/[\/_\.]/-/g')"
+          echo "BRANCH_NAME_FORMATTED=$BRANCH_NAME_FORMATTED" >> $GITHUB_OUTPUT
+
+      - name: Terraform Init
+        run: terraform init -lockfile=readonly
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform workspace select
+        run: |
+          terraform workspace select ${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }} || \
+          terraform workspace new ${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}
+
+      - name: Terraform Apply
+        id: terraform-apply
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_rg_name: echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}
+          TF_VAR_db_name: echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}-db
+
+      - name: Database fqdn
+        id: preview-database-fqdn
+        run: |
+          FQDN=$(terraform output -raw fqdn)
+          echo "FQDN=$FQDN" >> $GITHUB_OUTPUT
+
+      - uses: ./.github/actions/pnpm-install
+
+      - name: Apply migrations
+        run: pnpm db:deploy
+        env:
+          DATABASE_URL: postgres://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ steps.preview-database-fqdn.outputs.FQDN }}:5432/echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}-db?sslmode=require
+
+  vercel-preview:
+    name: Deploy Vercel preview
+    runs-on: ubuntu-latest
+    needs: deploy-preview-db
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to Vercel
+        uses: snaplet/vercel-action@v3
+        with:
+          env: |
+            DATABASE_URL=postgress://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ needs.deploy-preview-db.outputs.fqdn }}:5432/echo-web-${{ needs.deploy-preview-db.outputs.branch-name-formatted }}-db?sslmode=require
