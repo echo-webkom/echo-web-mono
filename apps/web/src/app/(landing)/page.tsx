@@ -33,9 +33,9 @@ export default async function HomePage() {
                 <div>
                   <Button asChild variant="secondary">
                     {session ? (
-                      <Link href="/auth/profile">Min profil</Link>
+                      <Link href="/auth/profil">Min profil</Link>
                     ) : (
-                      <Link href="/auth/sign-in">Logg inn</Link>
+                      <Link href="/auth/logg-inn">Logg inn</Link>
                     )}
                   </Button>
                 </div>
