@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
+import { footerRoutes } from "@/lib/routes";
 import { sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
 
@@ -9,48 +10,7 @@ type FooterProps = {
   className?: string;
 };
 
-export const footerSections = [
-  {
-    title: "📞 Kontakt oss",
-    links: [
-      {
-        title: "echo@uib.no",
-        href: "mailto:echo@uib.no",
-      },
-      {
-        title: "Thormøhlens gate 55 5006 BERGEN",
-        href: "https://goo.gl/maps/adUsBsoZh3QqNvA36",
-      },
-      {
-        title: "Organisasjonsnummer: 998 995 035",
-        href: "https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035",
-      },
-      {
-        title: "Opplevd noe kjipt? Si ifra!",
-        href: "/for-students/si-ifra",
-      },
-    ],
-  },
-  {
-    title: "💻 Følg oss",
-    links: [
-      {
-        title: "Facebook",
-        href: "https://www.facebook.com/groups/informatikk",
-      },
-      {
-        title: "Instagram",
-        href: "https://www.instagram.com/echo_uib/",
-      },
-      {
-        title: "GitHub",
-        href: "https://github.com/echo-webkom/new-echo-web-monorepo",
-      },
-    ],
-  },
-];
-
-export function Footer({ className }: FooterProps) {
+export const Footer = ({ className }: FooterProps) => {
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -74,16 +34,14 @@ export function Footer({ className }: FooterProps) {
       <footer className="bg-wave px-10 py-10">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
-            {footerSections.map((section) => {
+            {footerRoutes.map((section) => {
               return (
-                <div key={section.title}>
-                  <h3 className="mb-4 py-2 text-xl font-bold">{section.title}</h3>
+                <div key={section.label}>
+                  <h3 className="mb-4 py-2 text-xl font-bold">{section.label}</h3>
                   <ul className="space-y-1">
-                    {section.links.map(({ title, href }) => {
-                      const isExternal = !href?.startsWith("/");
-
+                    {section.sublinks.map(({ href, label, isExternal }) => {
                       return (
-                        <li key={title}>
+                        <li key={label}>
                           <Link
                             className="flex items-center gap-2 text-black/80 hover:underline"
                             href={href}
@@ -92,7 +50,7 @@ export function Footer({ className }: FooterProps) {
                               rel: "noreferrer",
                             })}
                           >
-                            {title}
+                            {label}
 
                             {isExternal && (
                               <span>
@@ -140,4 +98,4 @@ export function Footer({ className }: FooterProps) {
       </footer>
     </div>
   );
-}
+};
