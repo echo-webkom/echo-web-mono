@@ -28,10 +28,8 @@ export const POST = withSession(
       },
       include: {
         questions: true,
-      }
+      },
     });
-
-    
 
     if (!happening) {
       return NextResponse.json(
@@ -109,18 +107,13 @@ export const POST = withSession(
       );
     }
 
-
-    
-
     const allQuestionsAnswered = happening.questions.every((question) => {
-
-
-      return input.questions.some((questionAndAnswer) => {
-        return questionAndAnswer.question === question.title;
-      });
+      return (
+        input.questions.filter((userQuestion) => {
+          return userQuestion.question === question.title;
+        }).length === 1
+      );
     });
-
-
 
     if (!allQuestionsAnswered) {
       return NextResponse.json(
