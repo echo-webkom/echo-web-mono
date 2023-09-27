@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
-import { type Group, type Registration, type User } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
+import { prisma, type Prisma } from "@echo-webkom/db";
+import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 import { cn } from "@/utils/cn";
 
@@ -21,44 +19,37 @@ type Props = {
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
 
-  const happening = await getHappeningBySlug(slug);
+  const eventInfo = await getHappeningBySlug(slug);
 
-  if (!happening) {
+  if (!eventInfo) {
     return notFound();
   }
 
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
-    with: {
-      user: {
-        with: {
-          memberships: {
-            with: {
-              group: true,
-            },
-          },
-        },
-      },
+  const rows = await prisma.registration.findMany({
+    where: {
+      happeningSlug: slug,
+    },
+    include: {
+      user: true,
     },
   });
 
-  const registered = registrations.filter((registration) => registration.status === "registered");
-  const waitlist = registrations.filter((registration) => registration.status === "waiting");
-  const unregistered = registrations.filter(
-    (registration) => registration.status === "unregistered",
-  );
-  const removed = registrations.filter((registration) => registration.status === "removed");
+  const registered = rows.filter((registration) => registration.status === "REGISTERED");
+  const waitlist = rows.filter((registration) => registration.status === "WAITLISTED");
+  const deregistered = rows.filter((registration) => registration.status === "DEREGISTERED");
+
+  const registrations = [...registered, ...waitlist, ...deregistered];
 
   return (
     <Container className="flex flex-col gap-10">
       <Heading>
         Dashboard:{" "}
         <Link className="hover:underline" href={"/event/" + slug}>
-          {happening.title}
+          {eventInfo.title}
         </Link>
       </Heading>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
           <p className="text-7xl">{registered.length}</p>
@@ -71,12 +62,7 @@ export default async function EventDashboard({ params }: Props) {
 
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall avmeldt</p>
-          <p className="text-7xl">{unregistered.length}</p>
-        </div>
-
-        <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antall fjernet</p>
-          <p className="text-7xl">{removed.length}</p>
+          <p className="text-7xl">{deregistered.length}</p>
         </div>
       </div>
 
@@ -88,13 +74,9 @@ export default async function EventDashboard({ params }: Props) {
   );
 }
 
-type RegistrationWithUser = Omit<Registration, "userId"> & {
-  user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
-  };
-};
+type RegistrationWithUser = Prisma.RegistrationGetPayload<{
+  include: { user: true };
+}>;
 
 function RegistrationTable({ registrations }: { registrations: Array<RegistrationWithUser> }) {
   if (registrations.length === 0) {
@@ -113,10 +95,7 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
               E-post
             </th>
             <th scope="col" className="px-6 py-4 text-left">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Grunn
+              Allergier
             </th>
             <th scope="col" className="px-6 py-4 text-left">
               Undergrupper
@@ -128,7 +107,7 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
         </thead>
         <tbody>
           {registrations.map((registration, i) => (
-            <RegistrationRow key={registration.user.id} registration={registration} index={i} />
+            <RegistrationRow key={registration.userId} registration={registration} index={i} />
           ))}
         </tbody>
       </table>
@@ -147,7 +126,7 @@ const RegistrationRow = ({
 
   return (
     <tr
-      key={registration.user.id}
+      key={registration.userId}
       className={cn("border-b", {
         "bg-white": index % 2 === 0,
       })}
@@ -160,11 +139,10 @@ const RegistrationRow = ({
           {email}
         </Link>
       </td>
-      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
-      <td className="px-6 py-4">{registration.unregisterReason}</td>
+      <td className="px-6 py-4">{registration.}</td>
       <td className="px-6 py-4">
-        {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
-        {registration.user.memberships.length === 0 && "Ingen"}
+        {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+        {registration.user.studentGroups.length === 0 && "Ingen"}
       </td>
       <td className="px-6 py-4">
         <Button>Endre</Button>
