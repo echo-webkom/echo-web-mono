@@ -126,6 +126,28 @@ export const POST = withSession(
       );
     }
 
+    const allQuestionsExist = input.questions.every((userQuestion) => {
+    
+      // Happening questions with same title as userQuestion
+      const happeningQuestions = happening.questions.filter((happeningQuestion) => {
+        return happeningQuestion.title === userQuestion.question; 
+      })
+
+      return happeningQuestions.length > 0
+    })
+
+    if (!allQuestionsExist) {
+      return NextResponse.json(
+        {
+          title: "En feil har skjedd",
+          description: "Du har sendt inn ugyldige spørsmål.",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
     const registration = await prisma.registration.findFirst({
       where: {
         happeningSlug: happening.slug,
