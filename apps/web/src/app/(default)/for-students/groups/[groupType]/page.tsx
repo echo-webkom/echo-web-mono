@@ -17,7 +17,7 @@ type Props = {
   };
 };
 
-export const generateMetadata = ({ params }: Props) => {
+export function generateMetadata({ params }: Props) {
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
@@ -25,15 +25,15 @@ export const generateMetadata = ({ params }: Props) => {
   return {
     title: studentGroupTypeName[groupTypeFromPath],
   };
-};
+}
 
-export const generateStaticParams = () => {
+export function generateStaticParams() {
   const params = Object.values(studentGroupTypeToUrl).map((groupType) => ({
     groupType,
   }));
 
   return params;
-};
+}
 
 export default async function StudentGroupOverview({ params }: Props) {
   const { groupType } = params;
@@ -56,7 +56,7 @@ export default async function StudentGroupOverview({ params }: Props) {
   );
 }
 
-const pathToGroupType = (path: string) => {
+function pathToGroupType(path: string) {
   const groupType = Object.entries(studentGroupTypeToUrl).find(([_, url]) => url === path)?.[0];
 
   if (!groupType) {
@@ -64,4 +64,4 @@ const pathToGroupType = (path: string) => {
   }
 
   return groupType as StudentGroupType;
-};
+}

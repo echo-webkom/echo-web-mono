@@ -12,7 +12,7 @@ const providers = [
   },
 ];
 
-export const SignInButtons = () => {
+export function SignInButtons() {
   return (
     <div>
       <Heading className="text-center text-4xl">Velg en måte å logge inn på</Heading>
@@ -33,4 +33,4 @@ export const SignInButtons = () => {
       </div>
     </div>
   );
-};
+}

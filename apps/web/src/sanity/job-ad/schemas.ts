@@ -3,6 +3,8 @@ import { z } from "zod";
 import { companySchema } from "../company";
 import { locationSchema } from "../location";
 
+const jobTypeSchema = z.enum(["fulltime", "parttime", "internship", "summerjob"]);
+
 // This is ugly?
 export const degreeYearsSchema = z.object({
   FIRST: z.boolean().transform((v) => (v ? 1 : false)),
@@ -11,9 +13,6 @@ export const degreeYearsSchema = z.object({
   FOURTH: z.boolean().transform((v) => (v ? 4 : false)),
   FIFTH: z.boolean().transform((v) => (v ? 5 : false)),
 });
-
-const jobTypeSchema = z.enum(["fulltime", "parttime", "internship", "summerjob"]);
-export type JobType = z.infer<typeof jobTypeSchema>;
 
 export const jobAdSchema = z.object({
   _id: z.string(),
@@ -29,4 +28,6 @@ export const jobAdSchema = z.object({
   degreeYears: degreeYearsSchema.transform((v) => Object.values(v).filter(Boolean)),
   body: z.string(),
 });
+
+export type JobType = z.infer<typeof jobTypeSchema>;
 export type JobAd = z.infer<typeof jobAdSchema>;

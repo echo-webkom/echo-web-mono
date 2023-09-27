@@ -24,7 +24,7 @@ export default async function FeedbackOverview() {
   );
 }
 
-const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
+function Feedback({ feedback }: { feedback: SiteFeedback }) {
   return (
     <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
       <p className="text-xs text-muted-foreground">
@@ -56,4 +56,4 @@ const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
       </div>
     </div>
   );
-};
+}

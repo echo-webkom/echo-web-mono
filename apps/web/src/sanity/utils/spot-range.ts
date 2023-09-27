@@ -5,4 +5,5 @@ export const spotRangeSchema = z.object({
   maxDegreeYear: z.number().min(1).max(5),
   spots: z.number().min(0),
 });
+
 export type SpotRange = z.infer<typeof spotRangeSchema>;

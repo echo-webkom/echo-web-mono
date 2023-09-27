@@ -17,11 +17,11 @@ type Props = {
   };
 };
 
-const getData = async (slug: string) => {
+async function getData(slug: string) {
   return await fetchStudentGroupBySlug(slug);
-};
+}
 
-export const generateMetadata = async ({ params }: Props) => {
+export async function generateMetadata({ params }: Props) {
   const { slug } = params;
 
   const group = await getData(slug);
@@ -29,13 +29,13 @@ export const generateMetadata = async ({ params }: Props) => {
   return {
     title: group.name,
   };
-};
+}
 
-export const generateStaticParams = async () => {
+export async function generateStaticParams() {
   const params = await fetchStudentGroupParams();
 
   return params;
-};
+}
 
 export default async function GroupPage({ params }: Props) {
   const { slug } = params;

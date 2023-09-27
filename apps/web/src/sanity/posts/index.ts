@@ -10,7 +10,7 @@ export * from "./schemas";
  * Get all slugs for posts.
  * @returns an array of slugs
  */
-export const fetchPostParams = async () => {
+export async function fetchPostParams() {
   const query = groq`*[_type == "post"]{ "slug": slug.current }`;
   const result = await sanityFetch<Array<string>>({
     query,
@@ -25,13 +25,13 @@ export const fetchPostParams = async () => {
   return slugs.map((slug) => ({
     slug,
   }));
-};
+}
 
 /**
  * Get the n last published posts.
  * @param n how many posts to retrieve
  */
-export const fetchPosts = async (n: number) => {
+export async function fetchPosts(n: number) {
   const query = groq`
 *[_type == "post" && !(_id in path('drafts.**'))][0...$n] | order(_createdAt desc) {
   _id,
@@ -60,7 +60,7 @@ export const fetchPosts = async (n: number) => {
   });
 
   return postSchema.array().parse(result);
-};
+}
 
 /**
  * Get the posts for a given page. Default page size is 10
@@ -68,10 +68,7 @@ export const fetchPosts = async (n: number) => {
  * @param pageSize number of posts per page
  * @returns an object with the posts and if there are more posts to retrieve
  */
-export const fetchPostsByPage = async (
-  page: number,
-  pageSize = 10,
-): Promise<{ posts: Array<Post>; hasMore: boolean }> => {
+export async function fetchPostsByPage(page: number, pageSize = 10) {
   const query = groq`
 *[_type == "post" && !(_id in path('drafts.**'))][${(page - 1) * pageSize}...${
     page * pageSize
@@ -110,9 +107,9 @@ export const fetchPostsByPage = async (
     posts,
     hasMore,
   };
-};
+}
 
-export const fetchPostBySlug = async (slug: string) => {
+export async function fetchPostBySlug(slug: string) {
   const query = groq`
 *[_type == "post"
   && slug.current == $slug
@@ -137,11 +134,15 @@ export const fetchPostBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await sanityFetch<Post>({
+  const result = await sanityFetch<Post | null>({
     query,
     params,
     tags: [`post-${slug}`],
   });
 
+  if (!result) {
+    return null;
+  }
+
   return postSchema.parse(result);
-};
+}

@@ -1,5 +1,6 @@
 import { headerRoutes } from "@/lib/routes";
 import { getSession } from "@/lib/session";
+import { getDatabaseStatus } from "@/utils/database-status";
 import { ProfileIcon } from "./profile-icon";
 import {
   ExpandedMenu,
@@ -15,11 +16,12 @@ import {
 } from "./ui/header";
 import { HeaderLogo } from "./ui/header-logo";
 
-export const SiteHeader = async () => {
+export async function SiteHeader() {
   const session = await getSession();
 
   return (
     <HeaderProvider>
+      <DatabaseStatusBar />
       <Header>
         <TopMenu>
           <HeaderLogo />
@@ -49,4 +51,20 @@ export const SiteHeader = async () => {
       </Header>
     </HeaderProvider>
   );
-};
+}
+
+async function DatabaseStatusBar() {
+  const status = await getDatabaseStatus();
+
+  if (!status) {
+    return (
+      <div className="bg-red-400 p-2 text-center text-sm font-medium">
+        <p>
+          Webkom har mistet kontakt med databasen. Dette er ikke bra. Vi jobber med å fikse det.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+}

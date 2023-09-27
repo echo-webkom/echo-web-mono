@@ -13,10 +13,11 @@ export const profileSchema = z.object({
     })
     .nullable(),
 });
-export type Profile = z.infer<typeof profileSchema>;
 
 export const contactProfileSchema = z.object({
   email: z.string(),
   profile: profileSchema.pick({ _id: true, name: true }),
 });
+
+export type Profile = z.infer<typeof profileSchema>;
 export type ContactProfile = z.infer<typeof contactProfileSchema>;

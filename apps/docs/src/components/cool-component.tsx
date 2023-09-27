@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-export const CoolComponent = () => {
+export function CoolComponent() {
   const [count, setCount] = useState(0);
 
-  const increment = () => {
+  function increment() {
     setCount(count + 1);
-  };
+  }
 
   return (
     <div>
@@ -16,4 +16,4 @@ export const CoolComponent = () => {
       </button>
     </div>
   );
-};
+}

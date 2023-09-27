@@ -6,4 +6,5 @@ export const staticInfoSchema = z.object({
   pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),
   body: z.string(),
 });
+
 export type StaticInfo = z.infer<typeof staticInfoSchema>;

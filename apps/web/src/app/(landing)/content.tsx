@@ -9,7 +9,7 @@ import { fetchComingEvents } from "@/sanity/event";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
 
-export const Content = async () => {
+export async function Content() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(3),
     fetchUpcomingBedpresses(3),
@@ -66,4 +66,4 @@ export const Content = async () => {
       )}
     </Container>
   );
-};
+}

@@ -2,8 +2,7 @@ type CodeExampleProps = {
   children: React.ReactNode;
 };
 
-// TODO: Fix light mode / dark mode
-export const CodeExample = ({ children }: CodeExampleProps) => {
+export function CodeExample({ children }: CodeExampleProps) {
   return (
     <div className="overflow-hidden rounded-xl">
       <div className="bg-gray-200 p-3 dark:bg-gray-700">
@@ -17,4 +16,4 @@ export const CodeExample = ({ children }: CodeExampleProps) => {
       <div className="bg-[#f4f7fc] p-3 dark:bg-[#1e282f]">{children}</div>
     </div>
   );
-};
+}
