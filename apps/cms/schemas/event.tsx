@@ -47,7 +47,7 @@ export default defineType({
       name: "organizer",
       title: "Arrangør",
       description:
-        "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden.",
+        "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden. (Funker ikke enda)",
       type: "array",
       of: [
         {

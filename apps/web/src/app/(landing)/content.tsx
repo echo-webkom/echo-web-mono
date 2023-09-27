@@ -31,7 +31,7 @@ export async function Content() {
 
       {/* Posts */}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-        <Link href="/for-students/posts">
+        <Link href="/for-studenter/innlegg">
           <h2 className="text-center text-xl font-semibold md:text-3xl">Siste nytt</h2>
         </Link>
 
@@ -49,7 +49,7 @@ export async function Content() {
       {/* Job ads */}
       {jobAds.length > 0 && (
         <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-          <Link href="/for-students/jobs">
+          <Link href="/for-studenter/jobber">
             <h2 className="text-center text-xl font-semibold md:text-3xl">Jobbannonser</h2>
           </Link>
 

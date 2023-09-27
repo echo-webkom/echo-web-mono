@@ -17,7 +17,7 @@ export default async function ProfilePage() {
   const user = await getUser();
 
   if (!user) {
-    return redirect("/auth/sign-in");
+    return redirect("/auth/logg-inn");
   }
 
   const registrations = await getUserRegistrations(user.id);

@@ -22,7 +22,9 @@ export default async function HomePage() {
                 <h1>
                   <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>
                   <br />
-                  <span className="text-4xl font-bold sm:text-5xl">echo – Linjeforeningen for informatikk</span>
+                  <span className="text-4xl font-bold sm:text-5xl">
+                    echo – Linjeforeningen for informatikk
+                  </span>
                 </h1>
                 <p>
                   Vi i echo jobber med å gjøre studiehverdagen for oss informatikere bedre ved å
@@ -31,9 +33,9 @@ export default async function HomePage() {
                 <div>
                   <Button asChild variant="secondary">
                     {session ? (
-                      <Link href="/auth/profile">Min profil</Link>
+                      <Link href="/auth/profil">Min profil</Link>
                     ) : (
-                      <Link href="/auth/sign-in">Logg inn</Link>
+                      <Link href="/auth/logg-inn">Logg inn</Link>
                     )}
                   </Button>
                 </div>

@@ -16,10 +16,10 @@ export const studentGroupTypeName: Record<StudentGroupType, string> = {
 };
 
 export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
-  BOARD: "board",
-  SUBGROUP: "subgroup",
-  INTGROUP: "intgroup",
-  SUBORG: "suborg",
+  BOARD: "hovedstyre",
+  SUBGROUP: "undergruppe",
+  INTGROUP: "interessegruppe",
+  SUBORG: "underorganisasjon",
 };
 
 export async function fetchStudentGroupParams() {
