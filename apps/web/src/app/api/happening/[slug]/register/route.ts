@@ -27,7 +27,12 @@ export const POST = withSession(
         slug: ctx.params.slug,
       },
       include: {
-        questions: true,
+        questions: {
+          select: {
+            title: true,
+            required: true,
+          },
+        },
       },
     });
 
@@ -127,14 +132,13 @@ export const POST = withSession(
     }
 
     const allQuestionsExist = input.questions.every((userQuestion) => {
-    
       // Happening questions with same title as userQuestion
       const happeningQuestions = happening.questions.filter((happeningQuestion) => {
-        return happeningQuestion.title === userQuestion.question; 
-      })
+        return happeningQuestion.title === userQuestion.question;
+      });
 
-      return happeningQuestions.length > 0
-    })
+      return happeningQuestions.length > 0;
+    });
 
     if (!allQuestionsExist) {
       return NextResponse.json(
