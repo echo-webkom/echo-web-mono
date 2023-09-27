@@ -1,4 +1,4 @@
-import {Callout} from "nextra/components";
+import { Callout } from "nextra/components";
 
 # Din første endring til koden
 
@@ -37,10 +37,10 @@ pnpm db:generate
 
 ## Starte og opdatere databasen
 
-For å kunne kjøre koden må du starte databasen. Dette gjør du ved å bruke kommandoen `pnpm docker:up`. Dette krever at du har Docker installert på maskinen din.
+For å kunne kjøre koden må du starte databasen. Dette gjør du ved å bruke kommandoen `pnpm db:up`. Dette krever at du har Docker installert på maskinen din.
 
 ```sh filename="Terminal"
-pnpm docker:up
+pnpm db:up
 ```
 
 Etter du har startet databasen må du oppdatere tabellene med de fra Prisma. Det blir gjort med kommandoen `pnpm db:push`.

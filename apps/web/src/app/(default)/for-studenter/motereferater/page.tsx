@@ -19,7 +19,7 @@ export default async function MinuteOverview() {
       <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {minutes.map((minute) => (
           <li key={minute._id}>
-            <Link href={"/about/minute/" + minute._id}>
+            <Link href={"/for-studenter/motereferat/" + minute._id}>
               <div className="group rounded-lg p-5 hover:bg-muted">
                 <Heading level={4}>{minute.isAllMeeting ? "Generalforsamling" : "Møte"}</Heading>
 

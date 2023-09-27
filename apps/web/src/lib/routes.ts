@@ -1,165 +1,72 @@
-export type Route = {
-  label: string;
-  href: string;
-  isExternal?: boolean;
-  session?: boolean;
-};
+import { RouteGroup } from "./route-builder";
 
-export type RouteSection = {
-  label: string;
-  sublinks: Array<Route>;
-  session?: boolean;
-};
+const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For studenter" })
+  .link("/grupper/hovedstyre", { label: "Hovedstyret" })
+  .link("/grupper/undergruppe", { label: "Undergrupper" })
+  .link("/grupper/underorganisasjon", { label: "Underorganisasjoner" })
+  .link("/grupper/interessegruppe", { label: "Interessegrupper" })
+  .link("/jobber", { label: "Stillingsannonser" })
+  .link("/innlegg", { label: "Innlegg" })
+  .link("/masterinfo", { label: "Masterinfo" })
+  .link("/okonomisk-stotte", { label: "Økonomisk støtte" })
+  .link("/anonyme-tilbakemeldinger", { label: "Tilbakemeldinger" })
+  .link("/utlegg", { label: "Utlegg" })
+  .link("/si-ifra", { label: "Si ifra" })
+  .link("/motereferater", { label: "Møtereferater" })
+  .build();
 
-export const headerRoutes: Array<RouteSection> = [
-  {
-    label: "For studenter",
-    sublinks: [
-      {
-        href: "/for-students/groups/board",
-        label: "Hovedstyret",
-      },
-      {
-        href: "/for-students/groups/subgroup",
-        label: "Undergrupper",
-      },
-      {
-        href: "/for-students/groups/suborg",
-        label: "Underorganisasjoner",
-      },
-      {
-        href: "/for-students/groups/intgroup",
-        label: "Interessegrupper",
-      },
-      {
-        href: "/for-students/jobs",
-        label: "Stillingsannonser",
-      },
-      {
-        href: "/for-students/posts",
-        label: "Innlegg",
-      },
-      {
-        href: "/for-students/masterinfo",
-        label: "Masterinfo",
-      },
-      {
-        href: "/for-students/okonomisk-stotte",
-        label: "Økonomisk støtte",
-      },
-      {
-        href: "/for-students/anonyme-tilbakemeldinger",
-        label: "Tilbakemeldinger",
-      },
-      {
-        href: "/for-studntes/utlegg",
-        label: "Utlegg",
-      },
-      {
-        href: "/for-students/si-ifra",
-        label: "Si ifra",
-      },
-    ],
-  },
-  {
-    label: "For bedrifter",
-    sublinks: [
-      {
-        href: "/for-companies/bedriftspresentasjon",
-        label: "Bedriftspresentasjon",
-      },
-      {
-        href: "/for-companies/stillingsutlysninger",
-        label: "Stillingsutlysninger",
-      },
-    ],
-  },
-  {
-    label: "Om echo",
-    sublinks: [
-      {
-        href: "/about/om-echo",
-        label: "Hvem er vi",
-      },
-      {
-        href: "/about/instituttradet",
-        label: "Instituttrådet",
-      },
-      {
-        href: "/about/vedtekter",
-        label: "Vedtekter",
-      },
-      {
-        href: "/about/minutes",
-        label: "Møtereferat",
-      },
-      {
-        href: "/about/bekk",
-        label: "Bekk",
-      },
-    ],
-  },
-];
+const forCompaniesRoutes = new RouteGroup("/for-bedrifter", { label: "For bedrifter" })
+  .link("/bedriftspresentasjon", { label: "Bedriftspresentasjon" })
+  .link("/stillingsutlysninger", { label: "Stillingsutlysninger" })
+  .build();
 
-export const footerRoutes: Array<RouteSection> = [
-  {
-    label: "📞 Kontakt oss",
-    sublinks: [
-      {
-        label: "echo@uib.no",
-        href: "mailto:echo@uib.no",
-        isExternal: true,
-      },
-      {
-        label: "Thormøhlens gate 55 5006 BERGEN",
-        href: "https://goo.gl/maps/adUsBsoZh3QqNvA36",
-        isExternal: true,
-      },
-      {
-        label: "Organisasjonsnummer: 998 995 035",
-        href: "https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035",
-        isExternal: true,
-      },
-      {
-        label: "Opplevd noe kjipt? Si ifra!",
-        href: "/for-students/si-ifra",
-        isExternal: false,
-      },
-    ],
-  },
-  {
-    label: "💻 Følg oss",
-    sublinks: [
-      {
-        label: "Facebook",
-        href: "https://www.facebook.com/groups/informatikk",
-        isExternal: true,
-      },
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/echo_uib/",
-        isExternal: true,
-      },
-      {
-        label: "GitHub",
-        href: "https://github.com/echo-webkom/new-echo-web-monorepo",
-        isExternal: true,
-      },
-    ],
-  },
-];
+const aboutRoutes = new RouteGroup("/om", { label: "Om echo" })
+  .link("/echo", { label: "Hvem er vi" })
+  .link("/instituttradet", { label: "Instituttrådet" })
+  .link("/vedtekter", { label: "Vedtekter" })
+  .link("/bekk", { label: "Bekk" })
+  .build();
 
-export const adminRoutes: Array<Route> = [
-  {
-    label: "Dashboard",
-    href: "/admin",
-  },
-  {
-    label: "Tilbakemeldinger",
-    href: "/admin/feedback",
-  },
-  {
-    label: "Brukere",
-    href: "/admin/users",
-  },
-];
+const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
+  .link("/", { label: "Dashboard" })
+  .link("/feedback", { label: "Tilbakemeldinger" })
+  .link("/users", { label: "Brukere" })
+  .build();
+
+const contactUsRoutes = new RouteGroup("", { label: "📞 Kontakt oss" })
+  .link("mailto:echo@uib.no", {
+    label: "echo@uib.no",
+    isExternal: true,
+  })
+  .link("https://goo.gl/maps/adUsBsoZh3QqNvA36", {
+    label: "Thormøhlens gate 55 5006 BERGEN",
+    isExternal: true,
+  })
+  .link("https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035", {
+    label: "Organisasjonsnummer: 998 995 035",
+    isExternal: true,
+  })
+  .link("/for-studenter/si-ifra", {
+    label: "Opplevd noe kjipt? Si ifra!",
+    isExternal: false,
+  })
+  .build();
+
+const followUsRoutes = new RouteGroup("", { label: "💻 Følg oss" })
+  .link("https://www.facebook.com/groups/informatikk", {
+    label: "Facebook",
+    isExternal: true,
+  })
+  .link("https://www.instagram.com/echo_uib/", {
+    label: "Instagram",
+    isExternal: true,
+  })
+  .link("https://github.com/echo-webkom", {
+    label: "GitHub",
+    isExternal: true,
+  })
+  .build();
+
+export const headerRoutes = [forStudentsRoutes, forCompaniesRoutes, aboutRoutes];
+export const adminRoutes = [sidebarRoutes];
+export const footerRoutes = [contactUsRoutes, followUsRoutes];

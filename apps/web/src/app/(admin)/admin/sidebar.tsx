@@ -14,11 +14,11 @@ const adminRoutes = [
     label: "Dashboard",
   },
   {
-    href: "/admin/feedback",
+    href: "/admin/tilbakemeldinger",
     label: "Tilbakemeldinger",
   },
   {
-    href: "/admin/users",
+    href: "/admin/brukere",
     label: "Brukere",
   },
 ];

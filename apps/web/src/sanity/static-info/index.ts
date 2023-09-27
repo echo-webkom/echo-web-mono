@@ -10,9 +10,9 @@ export * from "./schemas";
 
 // Move this
 export const pageTypeToUrl: Record<PageType, string> = {
-  ABOUT: "about",
-  STUDENTS: "for-students",
-  COMPANIES: "for-companies",
+  ABOUT: "om",
+  STUDENTS: "for-studenter",
+  COMPANIES: "for-bedrifter",
 };
 
 export async function fetchStaticInfoPaths() {
