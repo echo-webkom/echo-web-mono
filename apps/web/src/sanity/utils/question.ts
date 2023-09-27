@@ -6,4 +6,5 @@ export const questionSchema = z.object({
   type: z.enum(["text", "multipleChoice"]),
   options: z.string().array().nullable(),
 });
+
 export type Question = z.infer<typeof questionSchema>;

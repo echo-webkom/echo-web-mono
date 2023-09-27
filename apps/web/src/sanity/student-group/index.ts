@@ -22,7 +22,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
   SUBORG: "suborg",
 };
 
-export const fetchStudentGroupParams = async () => {
+export async function fetchStudentGroupParams() {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
   const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
@@ -45,9 +45,9 @@ export const fetchStudentGroupParams = async () => {
   }));
 
   return paths;
-};
+}
 
-export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
+export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
   const query = groq`
 *[_type == "studentGroup"
   && groupType == $type
@@ -90,9 +90,9 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
   });
 
   return studentGroupSchema.array().parse(res);
-};
+}
 
-export const fetchStudentGroupBySlug = async (slug: string) => {
+export async function fetchStudentGroupBySlug(slug: string) {
   const query = groq`
 *[_type == "studentGroup"
   && slug.current == $slug
@@ -134,4 +134,4 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
   });
 
   return studentGroupSchema.parse(result);
-};
+}

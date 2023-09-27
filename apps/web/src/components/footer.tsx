@@ -50,7 +50,7 @@ export const footerSections = [
   },
 ];
 
-export const Footer = ({ className }: FooterProps) => {
+export function Footer({ className }: FooterProps) {
   return (
     <div className={cn("selection:bg-primary", className)}>
       {/* Footer wave */}
@@ -140,4 +140,4 @@ export const Footer = ({ className }: FooterProps) => {
       </footer>
     </div>
   );
-};
+}

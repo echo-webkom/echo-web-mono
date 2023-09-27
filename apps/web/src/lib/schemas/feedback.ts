@@ -8,4 +8,5 @@ export const feedbackSchema = z.object({
     .min(5, { message: "Tilbakemeldingen må være minst 5 bokstaver." })
     .max(500, { message: "Tilbakemeldingen kan ikke være mer enn 500 bokstaver." }),
 });
+
 export type FeedbackForm = z.infer<typeof feedbackSchema>;

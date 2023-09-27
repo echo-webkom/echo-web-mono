@@ -14,20 +14,20 @@ type Props = {
   };
 };
 
-const getData = async (id: string) => {
+async function getData(id: string) {
   return await fetchMinuteById(id);
-};
+}
 
-export const generateStaticParams = async () => {
+export async function generateStaticParams() {
   return await fetchMinuteParams();
-};
+}
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { title } = await getData(params.id);
   return {
     title,
   };
-};
+}
 
 export default async function MinutePage({ params }: Props) {
   const minute = await getData(params.id);

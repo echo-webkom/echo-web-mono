@@ -7,4 +7,5 @@ export const minuteSchema = z.object({
   isAllMeeting: z.boolean(),
   document: z.string(),
 });
+
 export type Minute = z.infer<typeof minuteSchema>;

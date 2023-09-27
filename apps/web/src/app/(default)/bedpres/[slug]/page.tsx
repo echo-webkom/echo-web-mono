@@ -25,6 +25,20 @@ type Props = {
   };
 };
 
+export async function getData(slug: string) {
+  const data = await getHappeningBySlug(slug);
+  const info = await fetchBedpresBySlug(slug);
+
+  if (!data || !info) {
+    return notFound();
+  }
+
+  return {
+    data,
+    info,
+  };
+}
+
 export const generateMetadata = async ({ params }: Props) => {
   const bedpres = await fetchBedpresBySlug(params.slug);
 
@@ -36,13 +50,10 @@ export const generateMetadata = async ({ params }: Props) => {
 export default async function BedpresPage({ params }: Props) {
   const { slug } = params;
 
-  const eventInfo = await getHappeningBySlug(slug);
-  if (!eventInfo) {
-    return notFound();
-  }
+  // RENAME VARIABLES
+  const { data: eventInfo, info: bedpres } = await getData(slug);
 
   const user = await getUser();
-  const bedpres = await fetchBedpresBySlug(slug);
 
   const isOrganizer = user && isEventOrganizer(user, eventInfo);
   const isAdmin = user?.role === "ADMIN";

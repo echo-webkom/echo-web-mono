@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import React, { type HTMLAttributes } from "react";
 
 import { cn } from "@/utils/cn";
 
@@ -8,7 +8,7 @@ type ContainerProps = HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
 };
 
-export const Container = forwardRef<HTMLDivElement, ContainerProps>(
+export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
   ({ layout = "normal", className, children, ...props }, ref) => {
     return (
       <div

@@ -11,7 +11,7 @@ type JobAdPreviewProps = {
   jobAd: JobAd;
 };
 
-export const JobAdPreview = ({ jobAd }: JobAdPreviewProps) => {
+export function JobAdPreview({ jobAd }: JobAdPreviewProps) {
   return (
     <Link href={`/for-students/job/${jobAd.slug}`}>
       <div
@@ -61,4 +61,4 @@ export const JobAdPreview = ({ jobAd }: JobAdPreviewProps) => {
       </div>
     </Link>
   );
-};
+}

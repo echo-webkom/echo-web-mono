@@ -34,7 +34,7 @@ const organizerSlugToGroup = (slug: string) => {
   }
 };
 
-const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
+async function updateOrCreateBedpres(happenings: Array<Bedpres>) {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -91,9 +91,9 @@ const updateOrCreateBedpres = async (happenings: Array<Bedpres>) => {
       }),
     ),
   );
-};
+}
 
-const updateOrCreateEvent = async (happenings: Array<Event>) => {
+async function updateOrCreateEvent(happenings: Array<Event>) {
   return await prisma.$transaction(
     happenings.map((happening) =>
       prisma.happening.upsert({
@@ -152,7 +152,7 @@ const updateOrCreateEvent = async (happenings: Array<Event>) => {
       }),
     ),
   );
-};
+}
 
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();

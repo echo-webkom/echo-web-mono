@@ -1,6 +1,6 @@
 import { capitalize } from "./string";
 
-export const norwegianDateString = (date: Date) => {
+export function norwegianDateString(date: Date) {
   return capitalize(
     date.toLocaleDateString("nb-NO", {
       weekday: "long",
@@ -12,9 +12,9 @@ export const norwegianDateString = (date: Date) => {
       timeZone: "Europe/Oslo",
     }),
   );
-};
+}
 
-export const shortDate = (date: Date) => {
+export function shortDate(date: Date) {
   return date.toLocaleTimeString("nb-NO", {
     day: "numeric",
     month: "short",
@@ -23,4 +23,4 @@ export const shortDate = (date: Date) => {
     minute: "numeric",
     timeZone: "Europe/Oslo",
   });
-};
+}

@@ -11,7 +11,7 @@ type PostPreviewProps = {
   withBorder?: boolean;
 };
 
-export const PostPreview = ({ post, withBorder = false }: PostPreviewProps) => {
+export function PostPreview({ post, withBorder = false }: PostPreviewProps) {
   return (
     <Link
       href={`/for-students/post/${post.slug}`}
@@ -43,4 +43,4 @@ export const PostPreview = ({ post, withBorder = false }: PostPreviewProps) => {
       )}
     </Link>
   );
-};
+}
