@@ -19,9 +19,9 @@ type Props = {
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
 
-  const eventInfo = await getHappeningBySlug(slug);
+  const { data: happening } = await getHappeningBySlug(slug);
 
-  if (!eventInfo) {
+  if (!happening) {
     return notFound();
   }
 
@@ -45,7 +45,7 @@ export default async function EventDashboard({ params }: Props) {
       <Heading>
         Dashboard:{" "}
         <Link className="hover:underline" href={"/event/" + slug}>
-          {eventInfo.title}
+          {happening.title}
         </Link>
       </Heading>
 

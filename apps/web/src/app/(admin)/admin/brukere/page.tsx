@@ -7,13 +7,13 @@ import { DataTable } from "./data-table";
 export const dynamic = "force-dynamic";
 
 export default async function FeedbackOverview() {
-  const users = await getAllUsers();
+  const { data: users } = await getAllUsers();
 
   return (
     <Container>
       <Heading>Brukere</Heading>
 
-      <DataTable columns={columns} data={users} />
+      {users === undefined ? <p>Ingen brukere</p> : <DataTable columns={columns} data={users} />}
     </Container>
   );
 }

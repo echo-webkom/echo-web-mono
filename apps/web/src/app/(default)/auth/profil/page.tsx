@@ -20,7 +20,7 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
-  const registrations = await getUserRegistrations(user.id);
+  const { data: registrations, error } = await getUserRegistrations(user.id);
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -53,7 +53,8 @@ export default async function ProfilePage() {
 
       <div>
         <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>
-        {registrations.length > 0 ? (
+        {error && <p>Det skjedde en feil ved henting av arrangementer.</p>}
+        {registrations ? (
           <ul className="flex flex-col divide-y">
             {registrations.map((registration) => (
               <li key={registration.happening.slug}>

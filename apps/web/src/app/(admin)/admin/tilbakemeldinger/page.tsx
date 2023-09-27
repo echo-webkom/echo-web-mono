@@ -7,14 +7,14 @@ import { getAllFeedback } from "@/lib/queries/feedback";
 export const dynamic = "force-dynamic";
 
 export default async function FeedbackOverview() {
-  const feedback = await getAllFeedback();
+  const { data: feedback } = await getAllFeedback();
 
   return (
     <Container>
       <Heading>Tilbakemeldinger</Heading>
 
       <ul className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
-        {feedback.map((feedback) => (
+        {feedback?.map((feedback) => (
           <li key={feedback.id}>
             <Feedback feedback={feedback} />
           </li>

@@ -21,11 +21,11 @@ export async function getUser() {
     return null;
   }
 
-  const user = await getUserById(session.user.id);
+  const { data, error } = await getUserById(session.user.id);
 
-  if (!user) {
+  if (!data || error) {
     return null;
   }
 
-  return user;
+  return data;
 }

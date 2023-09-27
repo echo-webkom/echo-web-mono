@@ -18,7 +18,7 @@ export default async function EventDashboardLayout({ children, params }: Props) 
     return redirect("/api/auth/signin");
   }
 
-  const event = await getHappeningBySlug(params.slug);
+  const { data: event } = await getHappeningBySlug(params.slug);
 
   if (!event) {
     return redirect("/api/auth/signin");

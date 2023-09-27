@@ -1,34 +1,83 @@
-import { prisma, type User } from "@echo-webkom/db";
+import { Prisma, prisma, type User } from "@echo-webkom/db";
 
-export async function getUserById(id: User["id"]) {
-  return await prisma.user.findUnique({
-    where: { id },
-  });
+import { type Result } from "./utils";
+
+export async function getUserById(id: User["id"]): Promise<Result<User | null>> {
+  try {
+    const data = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    return {
+      data,
+    };
+  } catch {
+    return {
+      error: "Failed to get user",
+    };
+  }
 }
 
-export async function getUserRegistrations(id: User["id"]) {
-  return await prisma.registration.findMany({
-    where: {
-      userId: id,
+const registrationWithHappenings = Prisma.validator<Prisma.RegistrationDefaultArgs>()({
+  include: {
+    happening: {
+      select: {
+        slug: true,
+        date: true,
+        title: true,
+        type: true,
+      },
     },
-    include: {
-      happening: {
-        select: {
-          slug: true,
-          date: true,
-          title: true,
-          type: true,
+  },
+});
+
+type RegistrationWithHappenings = Prisma.RegistrationGetPayload<typeof registrationWithHappenings>;
+
+export async function getUserRegistrations(
+  id: User["id"],
+): Promise<Result<Array<RegistrationWithHappenings>>> {
+  try {
+    const data = await prisma.registration.findMany({
+      where: {
+        userId: id,
+      },
+      include: {
+        happening: {
+          select: {
+            slug: true,
+            date: true,
+            title: true,
+            type: true,
+          },
         },
       },
-    },
-    orderBy: {
-      happening: {
-        date: "desc",
+      orderBy: {
+        happening: {
+          date: "desc",
+        },
       },
-    },
-  });
+    });
+
+    return {
+      data,
+    };
+  } catch {
+    return {
+      error: "Failed to get user registrations",
+    };
+  }
 }
 
-export async function getAllUsers() {
-  return await prisma.user.findMany();
+export async function getAllUsers(): Promise<Result<Array<User>>> {
+  try {
+    const data = await prisma.user.findMany();
+
+    return {
+      data,
+    };
+  } catch {
+    return {
+      error: "Failed to get all users",
+    };
+  }
 }
