@@ -29,7 +29,7 @@ export async function SiteHeader() {
             {session ? (
               <ProfileIcon session={session} />
             ) : (
-              <NavigationMenuItem to="/auth/sign-in">Logg inn</NavigationMenuItem>
+              <NavigationMenuItem to="/auth/logg-inn">Logg inn</NavigationMenuItem>
             )}
           </NavigationMenu>
         </TopMenu>

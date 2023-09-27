@@ -48,13 +48,13 @@ export default async function PostsOverviewPage({ searchParams }: Props) {
       <div className="flex justify-center gap-2">
         {page > 1 && (
           <Button asChild>
-            <Link href={`/for-students/posts?page=${page - 1}`}>Forrige side</Link>
+            <Link href={`/for-studenter/innlegg?page=${page - 1}`}>Forrige side</Link>
           </Button>
         )}
 
         {hasMore && (
           <Button asChild>
-            <Link href={`/for-students/posts?page=${page + 1}`}>Neste side</Link>
+            <Link href={`/for-studenter/innlegg?page=${page + 1}`}>Neste side</Link>
           </Button>
         )}
       </div>

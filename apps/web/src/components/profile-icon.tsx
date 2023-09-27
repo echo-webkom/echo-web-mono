@@ -40,7 +40,7 @@ export function ProfileIcon({ session }: ProfileIconProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/auth/profile">
+          <Link href="/auth/profil">
             <PersonIcon className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
