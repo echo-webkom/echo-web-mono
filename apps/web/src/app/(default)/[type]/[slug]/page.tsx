@@ -12,7 +12,7 @@ type Props = {
   };
 };
 
-const getData = async (slug: string) => {
+async function getData(slug: string) {
   const page = await fetchStaticInfoBySlug(slug);
 
   if (!page) {
@@ -20,19 +20,19 @@ const getData = async (slug: string) => {
   }
 
   return page;
-};
+}
 
-export const generateStaticParams = async () => {
+export async function generateStaticParams() {
   return await fetchStaticInfoPaths();
-};
+}
 
-export const generateMetadata = async ({ params }: Props) => {
+export async function generateMetadata({ params }: Props) {
   const page = await getData(params.slug);
 
   return {
     title: page.title,
   };
-};
+}
 
 export default async function StaticPage({ params }: Props) {
   const page = await getData(params.slug);

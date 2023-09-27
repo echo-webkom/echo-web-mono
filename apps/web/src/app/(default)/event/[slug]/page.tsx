@@ -24,24 +24,37 @@ type Props = {
   };
 };
 
-export const generateMetadata = async ({ params }: Props) => {
-  const event = await fetchEventBySlug(params.slug);
+export async function getData(slug: string) {
+  const data = await fetchEventBySlug(slug);
+  const info = await getHappeningBySlug(slug);
+
+  if (!data || !info) {
+    return notFound();
+  }
 
   return {
-    title: event.title,
+    data,
+    info,
   };
-};
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { slug } = params;
+
+  const event = await getData(slug);
+
+  return {
+    title: event.data.title,
+  };
+}
 
 export default async function EventPage({ params }: Props) {
   const { slug } = params;
 
-  const eventInfo = await getHappeningBySlug(slug);
-  if (!eventInfo) {
-    return notFound();
-  }
+  // RENAME VARIABLES
+  const { data: event, info: eventInfo } = await getData(slug);
 
   const user = await getUser();
-  const event = await fetchEventBySlug(slug);
 
   const isOrganizer = user && isEventOrganizer(user, eventInfo);
   const isAdmin = user?.role === "ADMIN";

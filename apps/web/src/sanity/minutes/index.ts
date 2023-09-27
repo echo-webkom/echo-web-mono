@@ -9,7 +9,7 @@ export * from "./schema";
 /**
  * Get all meeting minutes.
  */
-export const fetchMinutes = async () => {
+export async function fetchMinutes() {
   const query = groq`
 *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {
   _id,
@@ -26,14 +26,14 @@ export const fetchMinutes = async () => {
   });
 
   return minuteSchema.array().parse(result);
-};
+}
 
 /**
  * Get all meeting minutes slugs.
  *
  * @returns
  */
-export const fetchMinuteParams = async () => {
+export async function fetchMinuteParams() {
   const query = groq`
 *[_type == "meetingMinute" && !(_id in path('drafts.**'))] {
   "id": _id
@@ -55,9 +55,9 @@ export const fetchMinuteParams = async () => {
     .map(({ id }) => ({
       id,
     }));
-};
+}
 
-export const fetchMinuteById = async (id: string) => {
+export async function fetchMinuteById(id: string) {
   const query = groq`
 *[_type == "meetingMinute" && _id == $id && !(_id in path('drafts.**'))] {
   _id,
@@ -79,4 +79,4 @@ export const fetchMinuteById = async (id: string) => {
   });
 
   return minuteSchema.parse(result);
-};
+}

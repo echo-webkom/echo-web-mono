@@ -1,6 +1,6 @@
 import { env } from "@/env.mjs";
 
-export const TailwindIndicator = () => {
+export function TailwindIndicator() {
   if (env.NODE_ENV === "production") return null;
 
   return (
@@ -13,4 +13,4 @@ export const TailwindIndicator = () => {
       <p className="hidden 2xl:block">2xl</p>
     </div>
   );
-};
+}

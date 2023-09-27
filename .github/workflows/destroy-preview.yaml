@@ -1,0 +1,72 @@
+name: Destroy preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SKIP_PROVIDER_REGISTRATION: true
+
+  TF_VAR_db_user: echoadminpreview
+  TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+  TF_VAR_environment: preview
+
+  VERCEL_ACCESS_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  VERCEL_PROJECT_ID: prj_A27WwLBNQneMw0WPB6uX0Wo10J2c
+  VERCEL_TEAM_ID: team_BalajEhvjfBqbkouJFI9761w
+
+  GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
+
+jobs:
+  destroy-database-preview:
+    name: Destroy database preview
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./terraform/preview
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Set Terraform environment variable(s)
+        id: set-env
+        run: |
+          BRANCH_NAME_FORMATTED="$(echo "${{ github.head_ref }}" | sed -e 's/[\/_\.]/-/g')"
+          echo "BRANCH_NAME_FORMATTED=$BRANCH_NAME_FORMATTED" >> $GITHUB_OUTPUT
+
+      - name: Terraform Init
+        run: terraform init -lockfile=readonly
+
+      - name: Destroy preview container
+        run: |
+          terraform workspace select ${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }} && \
+            terraform destroy -auto-approve -lock-timeout=15m && \
+            terraform workspace select default && \
+            terraform workspace delete ${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}
+        env:
+          TF_VAR_rg_name: echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}
+          TF_VAR_db_name: echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}-db
+          TF_VAR_db_user: echoadminpreview
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_environment: development
+
+  destroy-vercel-preview:
+    name: Destroy Vercel preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Destroy Vercel preview
+        uses: snaplet/vercel-action@v3
+        with:
+          delete: true

@@ -8,13 +8,14 @@ import { staticInfoSchema, type StaticInfo } from "./schemas";
 
 export * from "./schemas";
 
+// Move this
 export const pageTypeToUrl: Record<PageType, string> = {
   ABOUT: "about",
   STUDENTS: "for-students",
   COMPANIES: "for-companies",
 };
 
-export const fetchStaticInfoPaths = async () => {
+export async function fetchStaticInfoPaths() {
   const query = groq`*[_type == "static"]{ "slug": slug.current, pageType }`;
 
   const result = await sanityFetch<Array<{ slug: string; pageType: PageType }>>({
@@ -33,9 +34,9 @@ export const fetchStaticInfoPaths = async () => {
     type: pageTypeToUrl[staticInfo.pageType],
     slug: staticInfo.slug,
   }));
-};
+}
 
-export const fetchStaticInfoBySlug = async (slug: string) => {
+export async function fetchStaticInfoBySlug(slug: string) {
   const query = groq`
 *[_type == "static"
   && slug.current == $slug
@@ -58,4 +59,4 @@ export const fetchStaticInfoBySlug = async (slug: string) => {
   });
 
   return staticInfoSchema.nullable().parse(res);
-};
+}

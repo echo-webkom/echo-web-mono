@@ -1,12 +1,12 @@
 import { prisma, type User } from "@echo-webkom/db";
 
-export const getUserById = async (id: User["id"]) => {
+export async function getUserById(id: User["id"]) {
   return await prisma.user.findUnique({
     where: { id },
   });
-};
+}
 
-export const getUserRegistrations = async (id: User["id"]) => {
+export async function getUserRegistrations(id: User["id"]) {
   return await prisma.registration.findMany({
     where: {
       userId: id,
@@ -27,8 +27,8 @@ export const getUserRegistrations = async (id: User["id"]) => {
       },
     },
   });
-};
+}
 
-export const getAllUsers = async () => {
+export async function getAllUsers() {
   return await prisma.user.findMany();
-};
+}

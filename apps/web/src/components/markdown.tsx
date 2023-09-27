@@ -10,7 +10,7 @@ type MarkdownProps = {
   content: string | null;
 };
 
-export const Markdown = ({ className, content }: MarkdownProps) => {
+export function Markdown({ className, content }: MarkdownProps) {
   if (!content) {
     return null;
   }
@@ -47,4 +47,4 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
       {content}
     </ReactMarkdown>
   );
-};
+}
