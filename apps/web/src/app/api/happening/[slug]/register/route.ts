@@ -108,11 +108,10 @@ export const POST = withSession(
     }
 
     const allQuestionsAnswered = happening.questions.every((question) => {
-      return (
-        input.questions.filter((userQuestion) => {
-          return userQuestion.question === question.title;
-        }).length === 1
-      );
+      const matchingAnswers = input.questions.filter((userQuestion) => {
+        return userQuestion.question === question.title;
+      });
+      return matchingAnswers.length === 1 || (!question.required && matchingAnswers.length === 0);
     });
 
     if (!allQuestionsAnswered) {
