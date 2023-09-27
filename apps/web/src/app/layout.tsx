@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { type Metadata } from "next";
 
 import { Feedback } from "@/components/feedback";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { baseURL } from "@/config";
 import { cn } from "@/utils/cn";
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Toaster />
           <Feedback />
         </Providers>
+        <TailwindIndicator />
       </body>
     </html>
   );

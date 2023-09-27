@@ -6,7 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/utils/cn";
 
-export const ErrorBox = ({ error }: { error: Error }) => {
+// TODO: Remove this component if
+// https://github.com/echo-webkom/new-echo-web-monorepo/pull/672
+// is merged
+export function ErrorBox({ error }: { error: Error }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -45,4 +48,4 @@ export const ErrorBox = ({ error }: { error: Error }) => {
       </AnimatePresence>
     </div>
   );
-};
+}

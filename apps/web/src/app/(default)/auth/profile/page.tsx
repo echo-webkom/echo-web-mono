@@ -89,6 +89,6 @@ export default async function ProfilePage() {
   );
 }
 
-const Tag = ({ children }: { children: React.ReactNode }) => {
+function Tag({ children }: { children: React.ReactNode }) {
   return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
-};
+}

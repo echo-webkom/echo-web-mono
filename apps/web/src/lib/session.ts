@@ -4,8 +4,18 @@ import { authOptions } from "@echo-webkom/auth";
 
 import { getUserById } from "./queries/user";
 
-export const getUser = async () => {
+export async function getSession() {
   const session = await _getServerSession(authOptions);
+
+  if (!session) {
+    return null;
+  }
+
+  return session;
+}
+
+export async function getUser() {
+  const session = await getSession();
 
   if (!session) {
     return null;
@@ -18,14 +28,4 @@ export const getUser = async () => {
   }
 
   return user;
-};
-
-export const getSession = async () => {
-  const session = await _getServerSession(authOptions);
-
-  if (!session) {
-    return null;
-  }
-
-  return session;
-};
+}

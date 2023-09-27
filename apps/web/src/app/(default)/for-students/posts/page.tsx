@@ -18,14 +18,20 @@ export const metadata = {
   title: "Innlegg",
 } satisfies Metadata;
 
+export async function getData(page: number) {
+  const resp = await fetchPostsByPage(page, 6);
+
+  if (resp.posts.length === 0) {
+    return notFound();
+  }
+
+  return resp;
+}
+
 export default async function PostsOverviewPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;
 
-  const { posts, hasMore } = await fetchPostsByPage(page, 6);
-
-  if (posts.length === 0) {
-    return notFound();
-  }
+  const { posts, hasMore } = await getData(page);
 
   return (
     <Container className="space-y-4">

@@ -8,7 +8,7 @@ import { getUser } from "@/lib/session";
 type TRequest = Request | NextRequest;
 type TResponse = Response | NextResponse;
 
-export const withSession = <TContext, TInput>(
+export function withSession<TContext, TInput>(
   handler: ({
     request,
     ctx,
@@ -22,7 +22,7 @@ export const withSession = <TContext, TInput>(
   }) => Promise<TResponse> | TResponse,
   contextValidator?: ZodType<TContext>,
   inputValidator?: ZodType<TInput>,
-) => {
+) {
   return async (request: TRequest, context: TContext): Promise<TResponse> => {
     const user = await getUser();
 
@@ -67,4 +67,4 @@ export const withSession = <TContext, TInput>(
       input: input as TInput,
     });
   };
-};
+}

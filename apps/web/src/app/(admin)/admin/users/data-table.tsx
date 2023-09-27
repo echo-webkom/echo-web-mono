@@ -16,7 +16,7 @@ type DataTableProps<TData, TValue> = {
   data: Array<TData>;
 };
 
-export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -63,4 +63,4 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
       </Table>
     </div>
   );
-};
+}

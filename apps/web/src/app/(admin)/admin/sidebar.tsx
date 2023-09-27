@@ -23,7 +23,7 @@ const adminRoutes = [
   },
 ];
 
-export const AdminSidebar = ({ children }: { children: React.ReactNode }) => {
+export function AdminSidebar({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const pathname = usePathname();
@@ -93,4 +93,4 @@ export const AdminSidebar = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-};
+}

@@ -23,7 +23,11 @@ import { useDeregistration } from "@/hooks/use-deregistration";
 import { useToast } from "@/hooks/use-toast";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
-export const DeregisterButton = ({ slug }: { slug: string }) => {
+type DeregisterButtonProps = {
+  slug: string;
+};
+
+export function DeregisterButton({ slug }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -133,4 +137,4 @@ export const DeregisterButton = ({ slug }: { slug: string }) => {
       </DialogContent>
     </Dialog>
   );
-};
+}

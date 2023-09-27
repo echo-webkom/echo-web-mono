@@ -21,7 +21,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 
-export const Feedback = () => {
+export function Feedback() {
   const { toast } = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -151,4 +151,4 @@ export const Feedback = () => {
       </DialogContent>
     </Dialog>
   );
-};
+}

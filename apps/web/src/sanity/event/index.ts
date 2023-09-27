@@ -1,13 +1,12 @@
 import { groq } from "next-sanity";
 
-import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { slugSchema, type Slug } from "../utils/slug";
 import { eventSchema, type Event } from "./schemas";
 
 export * from "./schemas";
 
-export const fetchEventPaths = async () => {
+export async function fetchEventPaths() {
   const query = groq`
 *[_type == "event"
   && !(_id in path('drafts.**'))] {
@@ -21,7 +20,7 @@ export const fetchEventPaths = async () => {
   });
 
   return slugSchema.array().parse(res);
-};
+}
 
 /**
  * Fetch a preview of the coming events
@@ -30,7 +29,7 @@ export const fetchEventPaths = async () => {
  * @param n Amount of events to fetch
  * @returns A list of event previews
  */
-export const fetchComingEvents = async (n: number) => {
+export async function fetchComingEvents(n: number) {
   const query = groq`
 *[_type == "event"
   && !(_id in path('drafts.**'))
@@ -86,9 +85,9 @@ export const fetchComingEvents = async (n: number) => {
   });
 
   return eventSchema.array().parse(res);
-};
+}
 
-export const fetchEventBySlug = async (slug: string) => {
+export async function fetchEventBySlug(slug: string) {
   const query = groq`
 *[_type == "event"
   && slug.current == $slug
@@ -135,16 +134,20 @@ export const fetchEventBySlug = async (slug: string) => {
     slug,
   };
 
-  const res = await sanityFetch<Event>({
+  const res = await sanityFetch<Event | null>({
     query,
     params,
     tags: [`event-${slug}`],
   });
 
-  return eventSchema.parse(res);
-};
+  if (!res) {
+    return null;
+  }
 
-export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> => {
+  return eventSchema.parse(res);
+}
+
+export async function $fetchAllEvents() {
   try {
     const query = groq`
 *[_type == "event"
@@ -199,4 +202,4 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
       message: "Failed to fetch events",
     };
   }
-};
+}
