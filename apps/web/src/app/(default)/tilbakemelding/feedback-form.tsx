@@ -15,6 +15,11 @@ export function FeedbackForm() {
 
   const methods = useForm<FeedbackForm>({
     resolver: zodResolver(feedbackSchema),
+    defaultValues: {
+      email: "",
+      message: "",
+      name: "",
+    },
   });
 
   const onSubmit = methods.handleSubmit(
@@ -83,7 +88,9 @@ export function FeedbackForm() {
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="message">Tilbakemelding</Label>
+          <Label htmlFor="message" required>
+            Tilbakemelding
+          </Label>
           <Textarea
             {...methods.register("message")}
             id="message"
