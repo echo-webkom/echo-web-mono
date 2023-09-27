@@ -95,10 +95,7 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
               E-post
             </th>
             <th scope="col" className="px-6 py-4 text-left">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Grunn
+              Allergier
             </th>
             <th scope="col" className="px-6 py-4 text-left">
               Undergrupper
@@ -142,8 +139,7 @@ const RegistrationRow = ({
           {email}
         </Link>
       </td>
-      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
-      <td className="px-6 py-4">{registration.reason}</td>
+      <td className="px-6 py-4">{registration.}</td>
       <td className="px-6 py-4">
         {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
         {registration.user.studentGroups.length === 0 && "Ingen"}
