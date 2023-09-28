@@ -35,7 +35,7 @@
     "@sanity/eslint-config-studio": "3.0.1",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
-    "@types/styled-components": "5.1.27",
+    "@types/styled-components": "5.1.28",
     "eslint": "^8.50.0",
     "eslint-config-webkom": "workspace:*",
     "prettier": "3.0.3",
