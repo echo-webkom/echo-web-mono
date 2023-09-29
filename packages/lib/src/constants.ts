@@ -1,3 +1,5 @@
+import type { Group } from "@echo-webkom/db";
+
 export const PAGE_TYPES = [
   { title: "Om oss", value: "ABOUT" },
   { title: "For studenter", value: "STUDENTS" },
@@ -14,3 +16,16 @@ export const GROUP_TYPES = [
 ] as const;
 
 export type StudentGroupType = (typeof GROUP_TYPES)[number]["value"];
+
+export const groupNames = {
+  WEBKOM: "Webkom",
+  HYGGKOM: "Hyggkom",
+  MAKERSPACE: "Makerspace",
+  TILDE: "Tilde",
+  GNIST: "Gnist",
+  BEDKOM: "Bedkom",
+  ESC: "ESC",
+  PROGBAR: "Programmerbar",
+  SQUASH: "Squash",
+  BOARD: "Hovedstyret",
+} satisfies Record<Group, string>;
