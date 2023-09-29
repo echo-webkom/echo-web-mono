@@ -50,24 +50,25 @@ export default async function EventDashboard({ params }: Props) {
       </Heading>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-        <div className="rounded-xl border px-3 py-8 text-center">
+      <Link href={`/dashbord/${params.slug}/`}><div className="rounded-xl border-2 border-foreground px-3 py-8 text-center bg-wave">
           <p>Antall påmeldte</p>
-          <p className="text-7xl">{registered.length}</p>
-        </div>
 
-        <div className="rounded-xl border px-3 py-8 text-center">
+          <p className="text-7xl">{registered.length}</p>
+        </div></Link>
+
+        <Link href={`/dashbord/${params.slug}/venteliste`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
           <p>Antall på venteliste</p>
           <p className="text-7xl">{waitlist.length}</p>
-        </div>
+        </div></Link>
 
-        <div className="rounded-xl border px-3 py-8 text-center">
+        <Link href={`/dashbord/${params.slug}/avmeldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
           <p>Antall avmeldt</p>
           <p className="text-7xl">{deregistered.length}</p>
-        </div>
+        </div></Link>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Registrerte</h2>
+        <h2 className="text-3xl font-semibold">Påmeldte</h2>
         <RegistrationTable registrations={registrations} />
       </div>
     </Container>
@@ -122,8 +123,8 @@ const RegistrationRow = ({
   registration: RegistrationWithUser;
   index: number;
 }) => {
+  if (registration.status === "REGISTERED") {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
-
   return (
     <tr
       key={registration.userId}
@@ -139,7 +140,7 @@ const RegistrationRow = ({
           {email}
         </Link>
       </td>
-      <td className="px-6 py-4">{registration.}</td>
+      <td className="px-6 py-4">{}</td>
       <td className="px-6 py-4">
         {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
         {registration.user.studentGroups.length === 0 && "Ingen"}
@@ -149,4 +150,5 @@ const RegistrationRow = ({
       </td>
     </tr>
   );
+    }
 };

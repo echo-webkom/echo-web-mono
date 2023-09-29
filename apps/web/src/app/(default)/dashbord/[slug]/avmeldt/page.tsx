@@ -50,7 +50,7 @@ export default async function EventDashboard({ params }: Props) {
       </Heading>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-        <Link href={`/dashbord/${params.slug}/paameldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
+      <Link href={`/dashbord/${params.slug}/paameldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
           <p>Antall påmeldte</p>
 
           <p className="text-7xl">{registered.length}</p>
@@ -61,14 +61,14 @@ export default async function EventDashboard({ params }: Props) {
           <p className="text-7xl">{waitlist.length}</p>
         </div></Link>
 
-        <Link href={`/dashbord/${params.slug}/avmeldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
+        <Link href={`/dashbord/${params.slug}/`}><div className="rounded-xl border-2 border-foreground px-3 py-8 text-center bg-wave">
           <p>Antall avmeldt</p>
           <p className="text-7xl">{deregistered.length}</p>
         </div></Link>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Registrerte</h2>
+        <h2 className="text-3xl font-semibold">Avmeldte</h2>
         <RegistrationTable registrations={registrations} />
       </div>
     </Container>
@@ -94,9 +94,6 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
             </th>
             <th scope="col" className="px-6 py-4 text-left">
               E-post
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Status
             </th>
             <th scope="col" className="px-6 py-4 text-left">
               Grunn
@@ -126,8 +123,8 @@ const RegistrationRow = ({
   registration: RegistrationWithUser;
   index: number;
 }) => {
+  if (registration.status === "DEREGISTERED") {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
-
   return (
     <tr
       key={registration.userId}
@@ -143,7 +140,6 @@ const RegistrationRow = ({
           {email}
         </Link>
       </td>
-      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
       <td className="px-6 py-4">{registration.reason}</td>
       <td className="px-6 py-4">
         {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
@@ -154,4 +150,5 @@ const RegistrationRow = ({
       </td>
     </tr>
   );
+    }
 };
