@@ -61,15 +61,16 @@ export default async function EventDashboard({ params }: Props) {
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
-          <p className="text-7xl">{registered.length}</p>
-        </div>
 
-        <div className="rounded-xl border px-3 py-8 text-center">
+          <p className="text-7xl">{registered.length}</p>
+        </div></Link>
+
+        <Link href={`/dashbord/${params.slug}/venteliste`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
           <p>Antall på venteliste</p>
           <p className="text-7xl">{waitlist.length}</p>
-        </div>
+        </div></Link>
 
-        <div className="rounded-xl border px-3 py-8 text-center">
+        <Link href={`/dashbord/${params.slug}/avmeldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
           <p>Antall avmeldt</p>
           <p className="text-7xl">{unregistered.length}</p>
         </div>
