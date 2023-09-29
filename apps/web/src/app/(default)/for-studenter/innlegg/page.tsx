@@ -18,7 +18,7 @@ export const metadata = {
   title: "Innlegg",
 } satisfies Metadata;
 
-export async function getData(page: number) {
+async function getData(page: number) {
   const resp = await fetchPostsByPage(page, 6);
 
   if (resp.posts.length === 0) {
