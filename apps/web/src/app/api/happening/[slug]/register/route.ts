@@ -31,6 +31,7 @@ export const POST = withSession(
           select: {
             title: true,
             required: true,
+            id: true,
           },
         },
       },
@@ -113,10 +114,8 @@ export const POST = withSession(
     }
 
     const allQuestionsAnswered = happening.questions.every((question) => {
-      const matchingAnswers = input.questions.filter((userQuestion) => {
-        return userQuestion.question === question.title;
-      });
-      return matchingAnswers.length === 1 || (!question.required && matchingAnswers.length === 0);
+      const answer = input.questions.find((answer) => answer.question === question.title);
+      return !question.required || answer?.answer;
     });
 
     if (!allQuestionsAnswered) {
@@ -124,27 +123,6 @@ export const POST = withSession(
         {
           title: "En feil har skjedd",
           description: "Du har ikke svart på alle spørsmålene.",
-        },
-        {
-          status: 403,
-        },
-      );
-    }
-
-    const allQuestionsExist = input.questions.every((userQuestion) => {
-      // Happening questions with same title as userQuestion
-      const happeningQuestions = happening.questions.filter((happeningQuestion) => {
-        return happeningQuestion.title === userQuestion.question;
-      });
-
-      return happeningQuestions.length > 0;
-    });
-
-    if (!allQuestionsExist) {
-      return NextResponse.json(
-        {
-          title: "En feil har skjedd",
-          description: "Du har sendt inn ugyldige spørsmål.",
         },
         {
           status: 403,
@@ -199,6 +177,43 @@ export const POST = withSession(
               userId: user.id,
             },
           });
+
+          // const answersToSave = input.questions.filter((userQuestion) => {
+          //   return happening.questions.some((happeningQuestion) => {
+          //     return happeningQuestion.title === userQuestion.question;
+          //   })
+          // });
+
+          const answersToSave: {
+            text: string;
+            answer: string;
+            registrationId?: string;
+            questionId?: string;
+          }[] = [];
+
+          for (var userAnswer of input.questions) {
+            const foundQuestion = happening.questions.find((happeningQuestion) => {
+              return happeningQuestion.title === userAnswer.question;
+            });
+            if (foundQuestion) {
+              answersToSave.push({
+                text: userAnswer.question,
+                answer: userAnswer.answer,
+                registrationId: registration.id,
+                questionId: foundQuestion.id,
+              });
+            }
+          }
+
+          const saveAnswer = await tx.answer.createMany({
+            data: answersToSave.map((ans) => {
+              return {
+                questionId: ans.questionId ?? "",
+                registrationId: ans.registrationId ?? "",
+                text: ans.text,
+              }
+            })
+          })
 
           return registration.status;
         } else {
