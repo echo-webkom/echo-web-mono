@@ -137,7 +137,7 @@ model Registration {
   updatedAt     DateTime           @updatedAt
   Answer        Answer[]
 
- // @@unique([userId, happeningSlug])
+ @@unique([userId, happeningSlug])
 }
 
 enum QuestionType {
