@@ -2,9 +2,8 @@ packages:
   - apps/docs
   - apps/web
   - apps/cms
-  - packages/auth
-  - packages/db
+  - apps/api
+  - packages/storage
   - packages/eslint
   - packages/lib
-  - packages/tsconfig
   - playwright

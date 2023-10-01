@@ -20,7 +20,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../packages/sanity/src/client.ts"
   ],
   "exclude": ["node_modules"]
 }

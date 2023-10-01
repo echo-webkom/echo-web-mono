@@ -1,33 +1,33 @@
-import Link from "next/link";
-
 import { getSession } from "@/lib/session";
-import { getDatabaseStatus } from "@/utils/database-status";
-import { DesktopNavigation } from "./desktop-navigation";
-import { MobileNavigation } from "./mobile-navigation";
-import { ProfileIcon } from "./profile-icon";
-import { Button } from "./ui/button";
+import {
+  Header,
+  HeaderProvider,
+  NavigationMenu,
+  NavigationMenuItem,
+  TopMenu,
+} from "./ui/header";
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
   const session = await getSession();
 
   return (
-    <div>
-      <DatabaseStatusBar />
-
-      <div className="border-b">
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
-          <div className="flex items-center">
-            <HeaderLogo />
-            <DesktopNavigation />
-          </div>
-          <div className="flex items-center">
+    <HeaderProvider>
+      {/* <DatabaseStatusBar /> */}
+      <Header>
+        <TopMenu>
+          <HeaderLogo />
+          <NavigationMenu>
             {session ? (
-              <ProfileIcon session={session} />
+              <>
+                <NavigationMenuItem to="/auth/profil">Se profil</NavigationMenuItem>
+                <NavigationMenuItem to="/auth/logg-ut">Logg ut</NavigationMenuItem>
+              </>
             ) : (
-              <Button variant="secondary" asChild>
-                <Link href="/auth/logg-inn">Logg inn</Link>
-              </Button>
+              <>
+                <NavigationMenuItem to="/auth/logg-inn">Logg inn</NavigationMenuItem>
+                <NavigationMenuItem to="/auth/lag-bruker">Lag bruker</NavigationMenuItem>
+              </>
             )}
             <MobileNavigation />
           </div>
@@ -37,18 +37,18 @@ export async function SiteHeader() {
   );
 }
 
-async function DatabaseStatusBar() {
-  const status = await getDatabaseStatus();
+// async function DatabaseStatusBar() {
+//   const status = await getDatabaseStatus();
 
-  if (!status) {
-    return (
-      <div className="bg-red-400 p-2 text-center text-sm font-medium">
-        <p>
-          Webkom har mistet kontakt med databasen. Dette er ikke bra. Vi jobber med å fikse det.
-        </p>
-      </div>
-    );
-  }
+//   if (!status) {
+//     return (
+//       <div className="bg-red-400 p-2 text-center text-sm font-medium">
+//         <p>
+//           Webkom har mistet kontakt med databasen. Dette er ikke bra. Vi jobber med å fikse det.
+//         </p>
+//       </div>
+//     );
+//   }
 
-  return null;
-}
+//   return null;
+// }

@@ -9,7 +9,6 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { baseURL } from "@/config";
 import { cn } from "@/utils/cn";
-import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,11 +64,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           ibmPlexMonoDisplay.variable,
         )}
       >
-        <Providers>
-          {children}
-          <Toaster />
-          <FeedbackBlob />
-        </Providers>
+        {children}
+        <Toaster />
+        <FeedbackBlob />
         <TailwindIndicator />
       </body>
     </html>

@@ -6,49 +6,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Degree } from "@echo-webkom/db/enums";
 import { degreeToString } from "@echo-webkom/lib";
+import { degreeEnum, yearEnum, type Degree, type Year } from "@echo-webkom/storage/client";
 
 import { useToast } from "@/hooks/use-toast";
+import { bat } from "@/lib/bat";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 const userSchema = z.object({
-  alternativeEmail: z.string().email().or(z.literal("")).optional(),
-  degree: z.nativeEnum(Degree).optional(),
-  year: z
-    .number()
-    .int()
-    .min(1)
-    .max(5)
-    .optional()
-    .transform((value) => (value ? Number(value) : undefined)),
+  degree: z.enum(degreeEnum.enumValues).optional(),
+  year: z.enum(yearEnum.enumValues).optional(),
 });
 
 type FormData = z.infer<typeof userSchema>;
 
-export function UserForm({
-  alternativeEmail,
-  degree,
-  year,
-  id,
-}: {
-  alternativeEmail?: string;
-  degree?: Degree;
-  year?: number;
-  id: string;
-}) {
+export function UserForm({ degree, year }: { degree: Degree | null; year: Year | null }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
   const methods = useForm<FormData>({
     defaultValues: {
-      alternativeEmail: alternativeEmail,
-      degree: degree,
-      year: year,
+      degree: degree ?? undefined,
+      year: year ?? undefined,
     },
     resolver: zodResolver(userSchema),
   });
@@ -57,13 +39,7 @@ export function UserForm({
     async (data) => {
       setIsLoading(true);
 
-      const response = await fetch(`/api/user/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await bat.patch("/me", data);
 
       setIsLoading(false);
 
@@ -96,11 +72,6 @@ export function UserForm({
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
-        <Label htmlFor="alternativeEmail">Alternativ e-post</Label>
-        <Input placeholder="Din e-post" type="email" {...methods.register("alternativeEmail")} />
-      </div>
-
-      <div className="flex flex-col gap-1">
         <Label htmlFor="degree">Studieretning</Label>
         <Controller
           name="degree"
@@ -111,9 +82,9 @@ export function UserForm({
                 <SelectValue placeholder="Velg studieretning" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(Degree).map(([key, value]) => (
-                  <SelectItem key={key} value={value}>
-                    {degreeToString[value]}
+                {Object.values(degreeEnum.enumValues).map((degree) => (
+                  <SelectItem key={degree} value={degree}>
+                    {degreeToString[degree]}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -136,11 +107,11 @@ export function UserForm({
                 <SelectValue placeholder="Velg årstrinn" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">1. trinn</SelectItem>
-                <SelectItem value="2">2. trinn</SelectItem>
-                <SelectItem value="3">3. trinn</SelectItem>
-                <SelectItem value="4">4. trinn</SelectItem>
-                <SelectItem value="5">5. trinn</SelectItem>
+                <SelectItem value={yearEnum.enumValues["0"]}>1. trinn</SelectItem>
+                <SelectItem value={yearEnum.enumValues["1"]}>2. trinn</SelectItem>
+                <SelectItem value={yearEnum.enumValues["2"]}>3. trinn</SelectItem>
+                <SelectItem value={yearEnum.enumValues["3"]}>4. trinn</SelectItem>
+                <SelectItem value={yearEnum.enumValues["4"]}>5. trinn</SelectItem>
               </SelectContent>
             </Select>
           )}

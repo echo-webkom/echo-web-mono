@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@tests/*": ["tests/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    ".eslintrc.cjs",
+    "*.config.cjs",
+    "*.config.ts",
+    "../../packages/storage/drizzle/**/*.ts",
+    "../../packages/storage"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

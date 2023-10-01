@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Label } from "@radix-ui/react-label";
+import { type InferSelectModel } from "drizzle-orm";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { type Question } from "@echo-webkom/db";
+import { type questions } from "@echo-webkom/storage";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +33,7 @@ import { type RegistrationForm } from "@/lib/schemas/registration";
 
 type RegisterButtonProps = {
   slug: string;
-  questions: Array<Question>;
+  questions: Array<InferSelectModel<typeof questions>>;
 };
 
 export function RegisterButton({ slug, questions }: RegisterButtonProps) {
@@ -132,7 +133,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                   {question.required && <span className="ml-1 text-red-500">*</span>}
                 </Label>
 
-                {question.type === "TEXT" && (
+                {question.type === "text" && (
                   <Input
                     placeholder="Ditt svar..."
                     autoComplete="off"
@@ -140,7 +141,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                   />
                 )}
 
-                {question.type === "CHOICE" && (
+                {question.type === "select" && (
                   <Controller
                     name={`questions.${index}.answer`}
                     control={methods.control}
@@ -150,9 +151,9 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                           <SelectValue>{field.value || "Velg svar..."}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          {question.options.map((option, optionIndex) => (
-                            <SelectItem key={optionIndex} value={option}>
-                              {option}
+                          {question.options?.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
                             </SelectItem>
                           ))}
                         </SelectContent>

@@ -1,0 +1,182 @@
+enum user_role {
+  admin
+  student
+  company
+  guest
+}
+
+enum degree {
+  dtek
+  dsik
+  dvit
+  binf
+  imo
+  inf
+  prog
+  dsc
+  armninf
+  post
+  misc
+}
+
+enum group {
+  makerspace
+  board
+  tilde
+  gnist
+  bedkom
+  esc
+  hyggkom
+  webkom
+  progbar
+  squash
+}
+
+enum happening_type {
+  bedpres
+  event
+}
+
+enum question_type {
+  text
+  textarea
+  checkbox
+  radio
+  select
+}
+
+enum registration_status {
+  registered
+  unregistered
+  waiting
+  removed
+}
+
+enum year {
+  first
+  second
+  third
+  fourth
+  fifth
+}
+
+table answer {
+  id uuid [not null]
+  registration_id uuid
+  question_id uuid
+  answer varchar(255)
+
+  indexes {
+    id [pk]
+  }
+}
+
+table happening {
+  slug varchar(255) [not null]
+  title varchar(255) [not null]
+  type happening_type [not null]
+  date "timestamp with time zone"
+  registration_start "timestamp with time zone"
+  registration_end "timestamp with time zone"
+
+  indexes {
+    slug [pk]
+  }
+}
+
+table password {
+  user_id uuid
+  password varchar(255) [not null]
+
+  indexes {
+    user_id [pk]
+  }
+}
+
+table question {
+  id uuid [not null, default: `gen_random_uuid()`]
+  happening_slug varchar(255) [not null]
+  title varchar(255) [not null]
+  type question_type
+  required boolean [not null, default: false]
+  options json
+
+  indexes {
+    id [pk]
+  }
+}
+
+table registration {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  spot_range_id uuid [not null]
+  happening_slug varchar(255) [not null]
+  user_id uuid [not null]
+  status registration_status [not null, default: 'unregistered']
+
+  indexes {
+    (user_id, happening_slug) [name: 'registration_user_id_happening_slug_unique', unique]
+  }
+}
+
+table site_feedback {
+  id uuid [not null]
+  name varchar(255) [not null]
+  email varchar(255) [not null]
+  feedback varchar(5000) [not null]
+  is_read boolean [not null, default: false]
+
+  indexes {
+    id [pk]
+  }
+}
+
+table spot_range {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  happening_slug varchar(255)
+  min_year year [not null]
+  max_year year [not null]
+  spots integer [not null]
+}
+
+table user_group_membership {
+  id group [not null]
+  user_id uuid [not null]
+
+  indexes {
+    (user_id, id) [pk]
+  }
+}
+
+table user {
+  id uuid [not null, default: `gen_random_uuid()`]
+  email varchar(255) [not null]
+  firstName varchar(255) [not null]
+  lastName varchar(255) [not null]
+  student_mail varchar(255)
+  account_type user_role [not null, default: 'guest']
+  degree degree
+  year year
+
+  indexes {
+    id [pk]
+    email [name: 'user_email_unique', unique]
+  }
+}
+
+ref: answer.registration_id - registration.id
+
+ref: answer.question_id - question.id
+
+ref: password.user_id > user.id
+
+ref: question.happening_slug > happening.slug
+
+ref: registration.user_id - user.id
+
+ref: registration.happening_slug > happening.slug
+
+ref: registration.spot_range_id > spot_range.id
+
+ref: spot_range.happening_slug > happening.slug
+
+ref: user_group_membership.user_id > user.id

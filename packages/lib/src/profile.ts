@@ -1,23 +1,23 @@
 import {
+  type AccountType,
   type Degree,
   type Group,
   type HappeningType,
   type RegistrationStatus,
-  type Role,
-} from "@echo-webkom/db";
+} from "@echo-webkom/storage";
 
 export const degreeToString: Record<Degree, string> = {
-  DTEK: "Datateknologi",
-  DSIK: "Datasikkerhet",
-  DVIT: "Datavitenskap",
-  IMO: "Informatikk-matematikk-økonomi",
-  BINF: "Bioinformatikk",
-  ARMNINF: "Årstudium i informatikk",
-  DSC: "Master i datascience",
-  INF: "Master i informatikk",
-  POST: "Post-bachelor",
-  MISC: "Annet",
-  PROG: "Programvareutvikling",
+  dtek: "Datateknologi",
+  dsik: "Datasikkerhet",
+  dvit: "Datavitenskap",
+  imo: "Informatikk-matematikk-økonomi",
+  binf: "Bioinformatikk",
+  armninf: "Årstudium i informatikk",
+  dsc: "Master i datascience",
+  inf: "Master i informatikk",
+  post: "Post-bachelor",
+  misc: "Annet",
+  prog: "Programvareutvikling",
 };
 
 export const yearToString: Record<number, string> = {
@@ -29,36 +29,38 @@ export const yearToString: Record<number, string> = {
 };
 
 export const registrationStatusToString: Record<RegistrationStatus, string> = {
-  REGISTERED: "Påmeldt",
-  WAITLISTED: "Venteliste",
-  DEREGISTERED: "Avmeldt",
+  registered: "Påmeldt",
+  waiting: "Venteliste",
+  unregistered: "Avmeldt",
+  removed: "Fjernet",
 };
 
 export const happeningTypeToString: Record<HappeningType, string> = {
-  EVENT: "Arrangement",
-  BEDPRES: "Bedriftspresentasjon",
+  event: "Arrangement",
+  bedpres: "Bedriftspresentasjon",
 };
 
 export const happeningTypeToPath: Record<HappeningType, string> = {
-  BEDPRES: "/bedpres",
-  EVENT: "/event",
+  bedpres: "/bedpres",
+  event: "/event",
 };
 
 export const groupToString: Record<Group, string> = {
-  BEDKOM: "Bedkom",
-  BOARD: "Hovedstyret",
-  ESC: "ESC",
-  HYGGKOM: "Hyggkom",
-  GNIST: "Gnist",
-  MAKERSPACE: "Makerspace",
-  WEBKOM: "Webkom",
-  SQUASH: "echo Squash",
-  PROGBAR: "Programmerbar",
-  TILDE: "Tilde",
+  bedkom: "Bedkom",
+  board: "Hovedstyret",
+  esc: "ESC",
+  hyggkom: "Hyggkom",
+  gnist: "Gnist",
+  makerspace: "Makerspace",
+  webkom: "Webkom",
+  squash: "echo Squash",
+  progbar: "Programmerbar",
+  tilde: "Tilde",
 };
 
-export const roleToString: Record<Role, string> = {
-  ADMIN: "Administrator",
-  COMPANY: "Bedrift",
-  USER: "Bruker",
+export const accountTypeToString: Record<AccountType, string> = {
+  admin: "Administrator",
+  company: "Bedrift",
+  guest: "Gjest",
+  student: "Student",
 };

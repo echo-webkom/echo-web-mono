@@ -1,26 +1,31 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
 import {
-  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
 } from "@echo-webkom/lib";
+import { db } from "@echo-webkom/storage";
 
 import { Container } from "@/components/container";
 import { UserForm } from "@/components/user-form";
-import { getUserRegistrations } from "@/lib/queries/user";
-import { getUser } from "@/lib/session";
+import { getSession } from "@/lib/session";
 
 export default async function ProfilePage() {
-  const user = await getUser();
+  const user = await getSession();
 
   if (!user) {
     return redirect("/auth/logg-inn");
   }
 
-  const registrations = await getUserRegistrations(user.id);
+  const registrations = await db.query.registrations.findMany({
+    where: (r) => eq(r.userId, user.id),
+    with: {
+      happening: true,
+    },
+  });
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -28,27 +33,24 @@ export default async function ProfilePage() {
         <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
         <div>
           <p className="font-semibold">Navn:</p>
-          <p>{user.name}</p>
+          <p>
+            {user.firstName} {user.lastName}
+          </p>
         </div>
         <div>
           <p className="font-semibold">E-post:</p>
           <p>{user.email}</p>
         </div>
-        {user?.studentGroups && user.studentGroups.length > 0 && (
+        {/* {user?.studentGroups && user.studentGroups.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
             <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
           </div>
-        )}
+        )} */}
       </div>
 
       <div>
-        <UserForm
-          alternativeEmail={user.alternativeEmail ?? undefined}
-          degree={user.degree ?? undefined}
-          year={user.year ?? undefined}
-          id={user.id}
-        />
+        <UserForm degree={user.degree} year={user.year} />
       </div>
 
       <div>
@@ -56,7 +58,7 @@ export default async function ProfilePage() {
         {registrations.length > 0 ? (
           <ul className="flex flex-col divide-y">
             {registrations.map((registration) => (
-              <li key={registration.happening.slug}>
+              <li key={registration.happeningSlug}>
                 <div className="py-3">
                   <Link
                     href={

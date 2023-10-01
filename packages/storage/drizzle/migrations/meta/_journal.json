@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1696087007120,
+      "tag": "0000_closed_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1696096478213,
+      "tag": "0001_amazing_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1696166933405,
+      "tag": "0002_sharp_xorn",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1696168147340,
+      "tag": "0003_tired_anita_blake",
+      "breakpoints": true
+    }
+  ]
+}

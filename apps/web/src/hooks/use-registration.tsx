@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { z } from "zod";
 
+import { bat } from "@/lib/bat";
+
 const responseSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -27,10 +29,7 @@ export function useRegistration(slug: string, { onSuccess, onError }: RegisterOp
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/happening/${slug}/register`, {
-        method: "POST",
-        body: JSON.stringify(input),
-      });
+      const response = await bat.post(`/happening/${slug}/register`, input);
 
       const data = responseSchema.parse(await response.json());
 

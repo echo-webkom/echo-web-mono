@@ -8,9 +8,10 @@ const config = {
 
   experimental: {
     serverActions: true,
+    serverComponentsExternalPackages: ["pg", "pg-native", "@echo-webkom/storage"],
   },
 
-  transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
+  transpilePackages: ["@echo-webkom/lib", "@echo-webkom/storage"],
 
   images: {
     domains: ["cdn.sanity.io"],

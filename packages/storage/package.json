@@ -1,0 +1,31 @@
+{
+  "name": "@echo-webkom/storage",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "./server.ts",
+  "scripts": {
+    "dev": "pnpm with-env drizzle-kit studio",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "db:diagram": "pnpm with-env tsx ./drizzle/diagram.ts",
+    "db:generate": "pnpm with-env drizzle-kit generate:pg",
+    "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
+    "db:seed": "pnpm with-env tsx ./drizzle/seed.ts",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@redis/client": "1.5.11",
+    "@types/pg": "^8.10.3",
+    "@types/react": "^18.2.23",
+    "dotenv-cli": "7.3.0",
+    "drizzle-dbml-generator": "^0.4.0",
+    "drizzle-kit": "^0.19.13",
+    "drizzle-orm": "^0.28.6",
+    "pg": "^8.11.3",
+    "pg-native": "^3.0.1",
+    "redis": "^4.6.10",
+    "server-only": "^0.0.1",
+    "tsx": "^3.13.0",
+    "typescript": "^5.2.2"
+  }
+}

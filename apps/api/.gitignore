@@ -1,0 +1,9 @@
+.DS_Store
+coverage/
+node_modules/
+dist/
+.env*
+!.env.example
+postgres-data/
+.idea/
+.react-email/

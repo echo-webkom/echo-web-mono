@@ -10,9 +10,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/auth": "workspace:*",
-    "@echo-webkom/db": "workspace:*",
-    "@types/node": "18.18.5"
+    "@echo-webkom/storage": "workspace:*",
+    "@types/node": "18.18.3"
   },
   "devDependencies": {
     "eslint": "^8.51.0",

@@ -15,19 +15,13 @@
     "setup": "pnpm install && pnpm db:up && pnpm db:deploy",
     "clean": "rm -rf node_modules",
     "clean-workspaces": "turbo run clean",
-    "db:generate": "turbo run db:generate",
-    "db:migrate": "pnpm --filter=db db:migrate",
-    "db:deploy": "turbo run db:deploy",
-    "db:up": "pnpm --filter=db db:up",
-    "db:down": "pnpm --filter=db db:down",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "type-check": "turbo run type-check",
     "test:e2e": "pnpm --filter=playwright test",
-    "test:e2e:ui": "pnpm --filter=playwright ui",
-    "postinstall": "pnpm run db:generate"
+    "test:e2e:ui": "pnpm --filter=playwright ui"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",

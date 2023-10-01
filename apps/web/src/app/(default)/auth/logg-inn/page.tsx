@@ -1,10 +1,19 @@
-import { Container } from "@/components/container";
-import { SignInButtons } from "./sign-in-buttons";
+import { redirect } from "next/navigation";
 
-export default function SignInPage() {
+import { Container } from "@/components/container";
+import { getSession } from "@/lib/session";
+import { SignInForm } from "./sign-in-form";
+
+export default async function SignInPage() {
+  const session = await getSession();
+
+  if (session) {
+    return redirect("/auth/profil");
+  }
+
   return (
     <Container>
-      <SignInButtons />
+      <SignInForm />
     </Container>
   );
 }

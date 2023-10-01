@@ -1,31 +1,36 @@
-import { getServerSession as _getServerSession } from "next-auth/next";
+import { cookies } from "next/headers";
 
-import { authOptions } from "@echo-webkom/auth";
+import { type AccountType, type Degree, type Year } from "@echo-webkom/storage";
 
-import { getUserById } from "./queries/user";
+import { bat } from "./bat";
+
+type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  studentMail: string | null;
+  type: AccountType;
+  degree: Degree | null;
+  year: Year | null;
+};
 
 export async function getSession() {
-  const session = await _getServerSession(authOptions);
+  const userCookie = cookies().get("user");
 
-  if (!session) {
+  if (!userCookie?.value) {
     return null;
   }
 
-  return session;
-}
+  const resp = await bat.get("/me", {
+    headers: {
+      Cookie: `user=${userCookie.value}`,
+    },
+  });
 
-export async function getUser() {
-  const session = await getSession();
-
-  if (!session) {
+  if (!resp.ok) {
     return null;
   }
 
-  const user = await getUserById(session.user.id);
-
-  if (!user) {
-    return null;
-  }
-
-  return user;
+  return (await resp.json()) as User;
 }

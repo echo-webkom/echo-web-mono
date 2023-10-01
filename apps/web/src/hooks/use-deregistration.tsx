@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { z } from "zod";
 
+import { bat } from "@/lib/bat";
+
 const responseSchema = z.object({
   title: z.string(),
 });
@@ -23,19 +25,16 @@ export function useDeregistration(slug: string, { onSuccess, onError }: Register
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/happening/${slug}/deregister`, {
-        method: "POST",
-        body: JSON.stringify(input),
-      });
-
-      const data = responseSchema.parse(await response.json());
+      const response = await bat.post(`/happening/${slug}/unregister`, input);
 
       if (response.ok) {
         setIsSucess(true);
-        onSuccess?.(data);
+        onSuccess?.({
+          title: "Du er nå avmeldt",
+        });
       } else {
-        setError(data.title);
-        onError?.(data.title);
+        setError("Fikk ikke til å melde deg av");
+        onError?.("Fikk ikke til å melde deg av");
       }
     } catch (err) {
       setError("Noe gikk galt");
