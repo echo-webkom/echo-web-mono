@@ -58,3 +58,11 @@ export const signOut = async (app: Hono) => {
     method: "POST",
   });
 };
+
+export const getJwt = (resp: Response) => resp.headers.getSetCookie()[0]?.split("; ")[0]?.slice(5);
+
+export const getUserCookie = (resp: Response) =>
+  resp.headers
+    .getSetCookie()[0]
+    ?.split("; ")
+    .find((c) => c.startsWith("user="));

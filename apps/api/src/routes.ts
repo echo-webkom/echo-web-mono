@@ -1,8 +1,9 @@
 import { type Hono } from "hono";
+import { jwt } from "hono/jwt";
 
 import { handleCreateAccount, handleLogin, handleSignOut } from "./handlers/auth";
 import { handleGetHappening, handleGetHappenings } from "./handlers/happening";
-import { handleGetSelf, handleGetSelfRegistrations } from "./handlers/me";
+import { handleGetSelf, handleGetSelfRegistrations, handleUpdateSelf } from "./handlers/me";
 import {
   handleGetRegistrations,
   handleRegistration,
@@ -10,6 +11,9 @@ import {
 } from "./handlers/registration";
 import { handleSyncSanity } from "./handlers/sanity";
 import { handleGetHappeningSpotRanges } from "./handlers/spot-range";
+
+const secret = process.env.JWT_SECRET!;
+const jwtConfig = { secret, cookie: "user" };
 
 export class RouteFactory {
   private app: Hono;
@@ -40,10 +44,10 @@ export class RouteFactory {
 
     const happeningRouter = this.app.basePath("/happening");
     happeningRouter.get("/:slug", handleGetHappening);
-    happeningRouter.get("/:slug/registrations", handleGetRegistrations);
-    happeningRouter.post("/:slug/register", handleRegistration);
-    happeningRouter.post("/:slug/unregister", handleUnregister);
-    happeningRouter.get("/:slug/spot-ranges", handleGetHappeningSpotRanges);
+    happeningRouter.get("/:slug/registrations", jwt(jwtConfig), handleGetRegistrations);
+    happeningRouter.post("/:slug/register", jwt(jwtConfig), handleRegistration);
+    happeningRouter.post("/:slug/unregister", jwt(jwtConfig), handleUnregister);
+    happeningRouter.get("/:slug/spot-ranges", jwt(jwtConfig), handleGetHappeningSpotRanges);
   }
 
   private configureAdminRoutes() {
@@ -63,8 +67,9 @@ export class RouteFactory {
   private configureMeRoutes() {
     const meRouter = this.app.basePath("/me");
 
-    meRouter.get("/", handleGetSelf);
-    meRouter.get("/registrations", handleGetSelfRegistrations);
+    meRouter.get("/", jwt(jwtConfig), handleGetSelf);
+    meRouter.patch("/", jwt(jwtConfig), handleUpdateSelf);
+    meRouter.get("/registrations", jwt(jwtConfig), handleGetSelfRegistrations);
   }
 
   private configureSanityRoutes() {

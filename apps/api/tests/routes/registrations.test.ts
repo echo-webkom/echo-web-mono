@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 
 import { app } from "@/app";
-import { signIn } from "../helpers/auth";
+import { getJwt, getUserCookie, signIn } from "../helpers/auth";
 import { resetDb } from "../helpers/db";
 import { insertTestHappening } from "../helpers/happening";
 import { insertUser } from "../helpers/users";
@@ -35,7 +35,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -69,7 +69,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -108,7 +108,7 @@ describe("Registration route", () => {
         ],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -147,7 +147,7 @@ describe("Registration route", () => {
         ],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -177,7 +177,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -203,7 +203,7 @@ describe("Registration route", () => {
       ],
     });
 
-    const signInRes = await signIn(app, {
+    const signInRes1 = await signIn(app, {
       email: user1.email,
     });
     const signInRes2 = await signIn(app, {
@@ -216,7 +216,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes1)}`,
       },
     });
 
@@ -226,7 +226,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes2.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes2)}`,
       },
     });
 
@@ -269,7 +269,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -281,7 +281,7 @@ describe("Registration route", () => {
         reason: "I don't want to go anymore",
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -309,7 +309,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -321,7 +321,7 @@ describe("Registration route", () => {
         reason: "I don't want to go anymore",
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 
@@ -334,7 +334,7 @@ describe("Registration route", () => {
         questions: [],
       }),
       headers: {
-        Cookie: `${signInRes.headers.getSetCookie()[0]!}`,
+        Cookie: `${getUserCookie(signInRes)}`,
       },
     });
 

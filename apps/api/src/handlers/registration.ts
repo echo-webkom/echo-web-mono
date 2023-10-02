@@ -7,7 +7,7 @@ import { yearToNumber } from "@echo-webkom/lib";
 import { answers, db, getHappening, registrations } from "@echo-webkom/storage";
 
 import { sendUnregisterEmail } from "@/email/unregister";
-import { getUser } from "@/lib/user";
+import { getJwtPayload } from "@/lib/jwt";
 
 const { DatabaseError } = pg;
 
@@ -29,7 +29,11 @@ export const handleRegistration: Handler = async (c) => {
       return c.text("No slug provided");
     }
 
-    const user = await getUser(c);
+    const jwt = getJwtPayload(c);
+
+    const user = await db.query.users.findFirst({
+      where: (u) => eq(u.id, jwt.sub),
+    });
 
     if (!user) {
       c.status(403);
@@ -220,7 +224,11 @@ export const handleUnregister: Handler = async (c) => {
   try {
     const { reason } = unregisterSchema.parse(await c.req.raw.json());
 
-    const user = await getUser(c);
+    const jwt = getJwtPayload(c);
+
+    const user = await db.query.users.findFirst({
+      where: (u) => eq(u.id, jwt.sub),
+    });
 
     if (!user) {
       c.status(403);

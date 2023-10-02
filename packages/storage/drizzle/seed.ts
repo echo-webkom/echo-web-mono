@@ -108,11 +108,11 @@ async function seed() {
    */
   await db.insert(passwords).values([
     {
-      password: bcrypt.hashSync("password", 10),
+      password: bcrypt.hashSync("password", 12),
       userId: "00000000-0000-0000-0000-000000000000",
     },
     {
-      password: bcrypt.hashSync("password", 10),
+      password: bcrypt.hashSync("password", 12),
       userId: "00000000-0000-0000-0000-000000000001",
     },
   ]);

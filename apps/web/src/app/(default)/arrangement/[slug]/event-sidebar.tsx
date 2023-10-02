@@ -40,6 +40,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     happening?.registrationStart &&
     happening.registrationStart < new Date() &&
     (!happening.registrationEnd || happening.registrationEnd > new Date());
+
   return (
     <Sidebar>
       {!happening && (

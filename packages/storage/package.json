@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "@redis/client": "1.5.11",
+    "@types/bcrypt": "^5.0.0",
     "@types/pg": "^8.10.3",
     "@types/react": "^18.2.23",
+    "bcrypt": "^5.1.1",
     "dotenv-cli": "7.3.0",
     "drizzle-dbml-generator": "^0.4.0",
     "drizzle-kit": "^0.19.13",

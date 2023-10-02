@@ -1,35 +1,70 @@
 import { eq } from "drizzle-orm";
 import { type Handler } from "hono";
+import { z } from "zod";
 
-import { db } from "@echo-webkom/storage";
+import { db, degreeEnum, users, yearEnum } from "@echo-webkom/storage";
 
-import { getUser } from "@/lib/user";
+import { getJwtPayload } from "@/lib/jwt";
 
 export const handleGetSelf: Handler = async (c) => {
-  const user = await getUser(c);
+  const jwt = getJwtPayload(c);
 
-  if (!user) {
-    c.status(403);
-    return c.text("You're not logged in");
-  }
-
-  return c.json(user);
+  return c.json(jwt);
 };
 
 export const handleGetSelfRegistrations: Handler = async (c) => {
-  const user = await getUser(c);
-
-  if (!user) {
-    c.status(403);
-    return c.text("You're not logged in");
-  }
+  const jwt = getJwtPayload(c);
 
   const registrations = await db.query.registrations.findMany({
-    where: (r) => eq(r.userId, user.id),
+    where: (r) => eq(r.userId, jwt.sub),
     with: {
       happening: true,
     },
   });
 
   return c.json(registrations);
+};
+
+const updateSelfSchema = z.object({
+  firstName: z.string().nonempty().optional(),
+  lastName: z.string().nonempty().optional(),
+  email: z.string().email().optional(),
+  degree: z.enum(degreeEnum.enumValues).optional(),
+  year: z.enum(yearEnum.enumValues).optional(),
+});
+
+export const handleUpdateSelf: Handler = async (c) => {
+  try {
+    const jwt = getJwtPayload(c);
+
+    const data = updateSelfSchema.parse(await c.req.raw.json());
+
+    const user = await db.query.users.findFirst({
+      where: (u) => eq(u.id, jwt.sub),
+    });
+
+    if (!user) {
+      c.status(404);
+      return c.text("User not found");
+    }
+
+    const updatedUser = (
+      await db
+        .update(users)
+        .set({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          degree: data.degree,
+          year: data.year,
+        })
+        .where(eq(users.id, jwt.sub))
+        .returning()
+    )[0];
+
+    return c.json(updatedUser);
+  } catch {
+    c.status(400);
+    return c.text("Invalid request");
+  }
 };

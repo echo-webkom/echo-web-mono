@@ -1,11 +1,13 @@
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { type Handler } from "hono";
-import { deleteCookie, setSignedCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 import { sign } from "hono/jwt";
 import { z } from "zod";
 
 import { db, passwords, users } from "@echo-webkom/storage";
+
+import { createJWT } from "@/lib/jwt";
 
 const createAccountSchema = z.object({
   firstName: z.string().nonempty(),
@@ -39,7 +41,7 @@ export const handleCreateAccount: Handler = async (c) => {
           .returning()
       )[0];
 
-      const encryptedPassword = await bcrypt.hash(data.password, 10);
+      const encryptedPassword = await bcrypt.hash(data.password, 12);
 
       if (!user) {
         throw new Error("User not created");
@@ -53,17 +55,9 @@ export const handleCreateAccount: Handler = async (c) => {
       return user;
     });
 
-    const jwt = await sign(
-      {
-        id: user.id,
-        firstNams: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      },
-      process.env.JWT_SECRET!,
-    );
+    const jwt = await createJWT(user);
 
-    await setSignedCookie(c, "user", jwt, process.env.JWT_SECRET!, {
+    setCookie(c, "user", jwt, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       domain: "localhost",
       path: "/",
@@ -116,17 +110,9 @@ export const handleLogin: Handler = async (c) => {
       return c.text("Incorrect email and password combination");
     }
 
-    const jwt = await sign(
-      {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      },
-      process.env.JWT_SECRET!,
-    );
+    const jwt = await createJWT(user);
 
-    await setSignedCookie(c, "user", jwt, process.env.JWT_SECRET!, {
+    setCookie(c, "user", jwt, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       domain: "localhost",
       path: "/",

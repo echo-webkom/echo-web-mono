@@ -2,6 +2,7 @@ import { type Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
 
 export class MiddlewareFactory {
   private app;
@@ -14,6 +15,7 @@ export class MiddlewareFactory {
     this.configureCors();
     this.configureLogger();
     this.configureAdminAuth();
+    this.configureSecureHeaders();
   }
 
   private configureAdminAuth() {
@@ -21,11 +23,16 @@ export class MiddlewareFactory {
 
     if (apiKey) {
       this.app.use("/admin/*", bearerAuth({ token: apiKey }));
+      this.app.use("/sanity/*", bearerAuth({ token: apiKey }));
     }
   }
 
   private configureLogger() {
     this.app.use("*", logger());
+  }
+
+  private configureSecureHeaders() {
+    this.app.use("*", secureHeaders());
   }
 
   private configureCors() {
