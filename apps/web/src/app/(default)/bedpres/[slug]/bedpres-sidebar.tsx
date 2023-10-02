@@ -8,7 +8,7 @@ import { getHappening, getSpotRangeByHappening } from "@echo-webkom/storage";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
-import { getSession } from "@/lib/session";
+import { getJwtPayload } from "@/lib/session";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
 
@@ -25,7 +25,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
   // Get spot ranges
   // Check if registration is open
 
-  const session = await getSession();
+  const session = await getJwtPayload();
   const happening = await getHappening(slug);
   const spotRanges = await getSpotRangeByHappening(slug);
 

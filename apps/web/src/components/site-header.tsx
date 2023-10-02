@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/session";
+import { getJwtPayload } from "@/lib/session";
 import {
   Header,
   HeaderProvider,
@@ -9,7 +9,7 @@ import {
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
-  const session = await getSession();
+  const session = await getJwtPayload();
 
   return (
     <HeaderProvider>

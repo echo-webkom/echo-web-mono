@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import {
+  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
@@ -11,13 +12,24 @@ import { db } from "@echo-webkom/storage";
 
 import { Container } from "@/components/container";
 import { UserForm } from "@/components/user-form";
-import { getSession } from "@/lib/session";
+import { getJwtPayload } from "@/lib/session";
 
 export default async function ProfilePage() {
-  const user = await getSession();
+  const jwt = await getJwtPayload();
+
+  if (!jwt) {
+    return redirect("/auth/logg-inn");
+  }
+
+  const user = await db.query.users.findFirst({
+    where: (u) => eq(u.id, jwt.sub),
+    with: {
+      groups: true,
+    },
+  });
 
   if (!user) {
-    return redirect("/auth/logg-inn");
+    return <p>Fant ikke brukeren din.</p>;
   }
 
   const registrations = await db.query.registrations.findMany({
@@ -41,17 +53,15 @@ export default async function ProfilePage() {
           <p className="font-semibold">E-post:</p>
           <p>{user.email}</p>
         </div>
-        {/* {user?.studentGroups && user.studentGroups.length > 0 && (
+        {user.groups.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
-            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+            <p>{user.groups.map((group) => groupToString[group.id]).join(", ")}</p>
           </div>
-        )} */}
+        )}
       </div>
 
-      <div>
-        <UserForm degree={user.degree} year={user.year} />
-      </div>
+      <UserForm degree={user.degree} year={user.year} />
 
       <div>
         <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>

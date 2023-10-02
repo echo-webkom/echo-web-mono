@@ -8,7 +8,7 @@ import { db, getHappening, getSpotRangeByHappening } from "@echo-webkom/storage"
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
-import { getSession } from "@/lib/session";
+import { getJwtPayload } from "@/lib/session";
 import { type Event } from "@/sanity/event";
 
 type EventSidebarProps = {
@@ -25,7 +25,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
   // Get spot ranges
   // Check if registration is open
 
-  const session = await getSession();
+  const session = await getJwtPayload();
   const happening = await getHappening(slug);
   const spotRanges = await getSpotRangeByHappening(slug);
 

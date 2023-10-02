@@ -27,7 +27,7 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
 
   const { toast } = useToast();
   const router = useRouter();
-  const methods = useForm<FormData>({
+  const form = useForm<FormData>({
     defaultValues: {
       degree: degree ?? undefined,
       year: year ?? undefined,
@@ -35,7 +35,7 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
     resolver: zodResolver(userSchema),
   });
 
-  const onSubmit = methods.handleSubmit(
+  const onSubmit = form.handleSubmit(
     async (data) => {
       setIsLoading(true);
 
@@ -75,7 +75,7 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
         <Label htmlFor="degree">Studieretning</Label>
         <Controller
           name="degree"
-          control={methods.control}
+          control={form.control}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger>
@@ -97,21 +97,18 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
         <Label htmlFor="year">Årstrinn</Label>
         <Controller
           name="year"
-          control={methods.control}
+          control={form.control}
           render={({ field }) => (
-            <Select
-              value={field.value?.toString()}
-              onValueChange={(e) => field.onChange(Number(e))}
-            >
+            <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Velg årstrinn" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={yearEnum.enumValues["0"]}>1. trinn</SelectItem>
-                <SelectItem value={yearEnum.enumValues["1"]}>2. trinn</SelectItem>
-                <SelectItem value={yearEnum.enumValues["2"]}>3. trinn</SelectItem>
-                <SelectItem value={yearEnum.enumValues["3"]}>4. trinn</SelectItem>
-                <SelectItem value={yearEnum.enumValues["4"]}>5. trinn</SelectItem>
+                <SelectItem value="first">1. trinn</SelectItem>
+                <SelectItem value="second">2. trinn</SelectItem>
+                <SelectItem value="third">3. trinn</SelectItem>
+                <SelectItem value="fourth">4. trinn</SelectItem>
+                <SelectItem value="fifth">5. trinn</SelectItem>
               </SelectContent>
             </Select>
           )}
@@ -119,7 +116,7 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
       </div>
 
       <div>
-        <Button disabled={!methods.formState.isDirty || isLoading} type="submit">
+        <Button disabled={!form.formState.isDirty || isLoading} type="submit">
           {isLoading ? "Lagrer..." : "Lagre"}
         </Button>
       </div>

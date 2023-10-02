@@ -40,7 +40,7 @@ export class MiddlewareFactory {
       "*",
       cors({
         origin: ["http://localhost:3000"],
-        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allowHeaders: ["Content-Type", "Authorization"],
         credentials: true,
       }),

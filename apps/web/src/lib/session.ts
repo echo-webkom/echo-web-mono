@@ -1,21 +1,16 @@
 import { cookies } from "next/headers";
 
-import { type AccountType, type Degree, type Year } from "@echo-webkom/storage";
-
 import { bat } from "./bat";
 
-type User = {
-  id: string;
+type JWTPayload = {
+  sub: string;
   firstName: string;
   lastName: string;
   email: string;
-  studentMail: string | null;
-  type: AccountType;
-  degree: Degree | null;
-  year: Year | null;
+  iat: number;
 };
 
-export async function getSession() {
+export async function getJwtPayload() {
   const userCookie = cookies().get("user");
 
   if (!userCookie?.value) {
@@ -32,5 +27,5 @@ export async function getSession() {
     return null;
   }
 
-  return (await resp.json()) as User;
+  return (await resp.json()) as JWTPayload;
 }
