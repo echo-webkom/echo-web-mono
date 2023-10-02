@@ -8,17 +8,9 @@ export const getSpotRangeByHappening = async (slug: string) => {
     where: (sr) => eq(sr.happeningSlug, slug),
   });
 
-  const formattedSpotRanges = spotRanges.map(async (sr) => {
-    const spotRangeRegistrations = await db
-      .select({
-        count: sql<number>`count(*)`,
-      })
-      .from(registrations)
-      .where(and(eq(registrations.spotRangeId, sr.id)));
-
+  const formattedSpotRanges = spotRanges.map((sr) => {
     return {
       spots: sr.spots,
-      registrations: Number(spotRangeRegistrations[0]!.count),
       minYear: sr.minYear,
       maxYear: sr.maxYear,
     };

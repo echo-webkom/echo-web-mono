@@ -44,8 +44,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
       setIsOpen(false);
       router.refresh();
       toast({
-        title: data.title,
-        description: data.description,
+        title: data,
         variant: "success",
       });
     },

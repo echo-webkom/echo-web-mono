@@ -3,7 +3,7 @@ import { type Metadata } from "next/types";
 
 import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
-import { getUser } from "@/lib/session";
+import { getJwtPayload } from "@/lib/session";
 import { AdminSidebar } from "./sidebar";
 
 type Props = {
@@ -15,9 +15,9 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function AdminDashboardLayout({ children }: Props) {
-  const user = await getUser();
+  const jwt = await getJwtPayload();
 
-  if (!user) {
+  if (!jwt) {
     return redirect("/api/auth/signin");
   }
 

@@ -6,7 +6,7 @@ import { db, degreeEnum, users, yearEnum } from "@echo-webkom/storage";
 
 import { getJwtPayload } from "@/lib/jwt";
 
-export const handleGetSelf: Handler = async (c) => {
+export const handleGetSelf: Handler = (c) => {
   const jwt = getJwtPayload(c);
 
   return c.json(jwt);

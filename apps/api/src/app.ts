@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+
 import { MiddlewareFactory } from "./middleware";
 import { RouteFactory } from "./routes";
 

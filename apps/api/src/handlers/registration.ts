@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { type Handler } from "hono";
 import pg from "pg";
 import { z } from "zod";
@@ -98,34 +98,28 @@ export const handleRegistration: Handler = async (c) => {
       };
     });
 
-    const status = await db.transaction(
-      async (tx) => {
-        const r = (
-          await tx
-            .select({
-              count: sql<number>`COUNT(*)`,
-            })
-            .from(registrations)
-            .where(
-              and(
-                eq(registrations.happeningSlug, happening.slug),
-                eq(registrations.spotRangeId, correctSpotRange.id),
-              ),
-            )
-        )[0];
-
-        if (!r) {
-          throw new Error("Failed to get spot range");
-        }
-
-        const status = r.count >= correctSpotRange.spots ? "waiting" : "registered";
-
-        return status;
+    // Get the number of registered registrations that belong to the correct spot range
+    // and the happening
+    const registeredRegistrations = await db.query.registrations.findMany({
+      where: (r) => and(eq(r.happeningSlug, happening.slug), eq(r.status, "registered")),
+      with: {
+        user: true,
       },
-      {
-        isolationLevel: "serializable",
-      },
-    );
+    });
+
+    const registeredRegistrationsInSpotRange = registeredRegistrations.filter((r) => {
+      const correctSpotRange = happening.spotRanges.find((sr) => {
+        return yearToNumber(sr.minYear) <= yearToNumber(r.user.year) &&
+          yearToNumber(sr.maxYear) >= yearToNumber(r.user.year)
+          ? true
+          : false;
+      });
+
+      return correctSpotRange ? true : false;
+    }).length;
+
+    const status =
+      registeredRegistrationsInSpotRange < correctSpotRange.spots ? "registered" : "waiting";
 
     const userRegistration = existingRegistration
       ? (
@@ -147,7 +141,6 @@ export const handleRegistration: Handler = async (c) => {
             .insert(registrations)
             .values({
               happeningSlug: happening.slug,
-              spotRangeId: correctSpotRange.id,
               userId: user.id,
               status,
             })

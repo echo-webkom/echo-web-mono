@@ -1,6 +1,6 @@
 import { createClient } from "@sanity/client";
 import { sql } from "drizzle-orm";
-import { Handler } from "hono";
+import { type Handler } from "hono";
 
 import { numberToYear } from "@echo-webkom/lib";
 import { db, happenings, questions, spotRanges } from "@echo-webkom/storage";

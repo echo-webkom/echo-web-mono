@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 
 import { app } from "@/app";
-import { getJwt, getUserCookie, signIn } from "../helpers/auth";
+import { getUserCookie, signIn } from "../helpers/auth";
 import { resetDb } from "../helpers/db";
 import { insertTestHappening } from "../helpers/happening";
 import { insertUser } from "../helpers/users";

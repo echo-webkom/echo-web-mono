@@ -42,7 +42,7 @@ export const happeningTypeToString: Record<HappeningType, string> = {
 
 export const happeningTypeToPath: Record<HappeningType, string> = {
   bedpres: "/bedpres",
-  event: "/event",
+  event: "/arrangement",
 };
 
 export const groupToString: Record<Group, string> = {

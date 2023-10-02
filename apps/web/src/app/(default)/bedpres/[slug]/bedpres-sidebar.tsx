@@ -25,7 +25,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
   // Get spot ranges
   // Check if registration is open
 
-  const session = await getJwtPayload();
+  const jwt = await getJwtPayload();
   const happening = await getHappening(slug);
   const spotRanges = await getSpotRangeByHappening(slug);
 
@@ -93,7 +93,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           <SidebarItemTitle>Plasser:</SidebarItemTitle>
           {spotRanges.map((sr) => (
             <SidebarItemContent key={`${sr.minYear}${sr.maxYear}`}>
-              {sr.registrations} / {sr.spots} for
+              idk / {sr.spots} for
               {sr.minYear === sr.maxYear ? (
                 <span> {yearToNumber(sr.minYear)}. trinn</span>
               ) : (
@@ -162,7 +162,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           </SidebarItem>
         )}
 
-      {session && isRegistrationOpen && happening?.questions && (
+      {jwt && isRegistrationOpen && happening?.questions && (
         <SidebarItem>
           {isRegistered ? (
             <DeregisterButton slug={slug} />
@@ -172,7 +172,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {session && !isRegistrationOpen && (
+      {jwt && !isRegistrationOpen && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -180,7 +180,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {!session && (
+      {!jwt && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>

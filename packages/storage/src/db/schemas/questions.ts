@@ -1,15 +1,9 @@
 import { relations } from "drizzle-orm";
-import {
-  pgTable,
-  uuid,
-  varchar,
-  primaryKey,
-  boolean,
-  json,
-} from "drizzle-orm/pg-core";
+import { boolean, json, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+import { z } from "zod";
+
 import { questionTypeEnum } from "./enums";
 import { happenings } from "./happenings";
-import { z } from "zod";
 
 export const optionsSchema = z.object({
   label: z.string(),
@@ -30,7 +24,7 @@ export const questions = pgTable(
   },
   (q) => ({
     primaryKey: primaryKey(q.id),
-  })
+  }),
 );
 
 export const questionsRelations = relations(questions, ({ one }) => ({

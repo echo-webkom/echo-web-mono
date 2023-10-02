@@ -39,9 +39,7 @@
       "compositePrimaryKeys": {
         "answer_id": {
           "name": "answer_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -92,9 +90,7 @@
       "compositePrimaryKeys": {
         "happening_slug": {
           "name": "happening_slug",
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "uniqueConstraints": {}
@@ -121,9 +117,7 @@
       "compositePrimaryKeys": {
         "password_user_id": {
           "name": "password_user_id",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       },
       "uniqueConstraints": {}
@@ -176,9 +170,7 @@
       "compositePrimaryKeys": {
         "question_id": {
           "name": "question_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -227,10 +219,7 @@
         "registration_user_id_happening_slug_unique": {
           "name": "registration_user_id_happening_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id",
-            "happening_slug"
-          ]
+          "columns": ["user_id", "happening_slug"]
         }
       }
     },
@@ -282,9 +271,7 @@
       "compositePrimaryKeys": {
         "site_feedback_id": {
           "name": "site_feedback_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -352,10 +339,7 @@
       "compositePrimaryKeys": {
         "user_group_membership_user_id_id": {
           "name": "user_group_membership_user_id_id",
-          "columns": [
-            "user_id",
-            "id"
-          ]
+          "columns": ["user_id", "id"]
         }
       },
       "uniqueConstraints": {}
@@ -420,18 +404,14 @@
       "compositePrimaryKeys": {
         "user_id": {
           "name": "user_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     }

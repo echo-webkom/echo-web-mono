@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, varchar, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+
 import { users } from "./users";
 
 export const passwords = pgTable(
@@ -10,7 +11,7 @@ export const passwords = pgTable(
   },
   (p) => ({
     primaryKey: primaryKey(p.userId),
-  })
+  }),
 );
 
 export const passwordsRelations = relations(passwords, ({ one }) => ({

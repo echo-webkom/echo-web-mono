@@ -2,9 +2,10 @@
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
+import { type InferSelectModel } from "drizzle-orm";
 
-import { type User as DbUser, type Group } from "@echo-webkom/db";
-import { groupToString, roleToString } from "@echo-webkom/lib";
+import { accountTypeToString, groupToString } from "@echo-webkom/lib";
+import { type Group, type users } from "@echo-webkom/storage";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,10 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type User = {
-  name: DbUser["name"];
-  role: DbUser["role"];
-};
+export type User = InferSelectModel<typeof users>;
 
 export const columns: Array<ColumnDef<User>> = [
   {
@@ -51,9 +49,9 @@ export const columns: Array<ColumnDef<User>> = [
     accessorKey: "role",
     header: "Rolle",
     cell: ({ row }) => {
-      const role = row.getValue<DbUser["role"]>("role");
+      const role = row.getValue<User["type"]>("type");
 
-      return <div>{roleToString[role]}</div>;
+      return <div>{accountTypeToString[role]}</div>;
     },
   },
   {

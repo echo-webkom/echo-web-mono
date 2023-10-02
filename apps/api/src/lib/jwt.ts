@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import { type Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { sign } from "hono/jwt";
 
@@ -10,6 +10,7 @@ export type JWT = {
 };
 
 export const getJwtPayload = (c: Context): JWT => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const jwt = c.get("jwtPayload");
 
   if (!jwt) {
@@ -22,7 +23,7 @@ export const getJwtPayload = (c: Context): JWT => {
     throw new HTTPException(401, { res });
   }
 
-  return jwt;
+  return jwt as JWT;
 };
 
 export const createJWT = async <

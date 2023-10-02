@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { bat } from "./bat";
 
-type JWTPayload = {
+export type JWTPayload = {
   sub: string;
   firstName: string;
   lastName: string;

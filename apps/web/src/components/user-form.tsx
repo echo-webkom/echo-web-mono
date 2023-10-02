@@ -116,7 +116,7 @@ export function UserForm({ degree, year }: { degree: Degree | null; year: Year |
       </div>
 
       <div>
-        <Button disabled={!form.formState.isDirty || isLoading} type="submit">
+        <Button aria-disabled={!form.formState.isDirty || isLoading} type="submit">
           {isLoading ? "Lagrer..." : "Lagre"}
         </Button>
       </div>

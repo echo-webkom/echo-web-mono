@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
-import { pgTable, varchar, timestamp, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+
 import { happeningTypeEnum } from "./enums";
 import { questions } from "./questions";
-import { spotRanges } from "./spot-ranges";
 import { registrations } from "./registrations";
+import { spotRanges } from "./spot-ranges";
 
 export const happenings = pgTable(
   "happening",
@@ -23,7 +24,7 @@ export const happenings = pgTable(
   },
   (h) => ({
     primaryKey: primaryKey(h.slug),
-  })
+  }),
 );
 
 export const happeningsRelations = relations(happenings, ({ many }) => ({

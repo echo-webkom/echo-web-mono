@@ -25,15 +25,15 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
   // Get spot ranges
   // Check if registration is open
 
-  const session = await getJwtPayload();
+  const jwt = await getJwtPayload();
   const happening = await getHappening(slug);
   const spotRanges = await getSpotRangeByHappening(slug);
 
   const isRegistered =
-    session &&
+    jwt &&
     !!(await db.query.registrations.findFirst({
       where: (r) =>
-        and(eq(r.happeningSlug, slug), eq(r.userId, session?.id), eq(r.status, "registered")),
+        and(eq(r.happeningSlug, slug), eq(r.userId, jwt?.sub), eq(r.status, "registered")),
     }));
 
   const isRegistrationOpen =
@@ -77,7 +77,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           <SidebarItemTitle>Plasser:</SidebarItemTitle>
           {spotRanges.map((sr) => (
             <SidebarItemContent key={`${sr.minYear}${sr.maxYear}`}>
-              {sr.registrations} / {sr.spots} for
+              idk / {sr.spots} for
               {sr.minYear === sr.maxYear ? (
                 <span> {yearToNumber(sr.minYear)}. trinn</span>
               ) : (
@@ -159,7 +159,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           </SidebarItem>
         )}
 
-      {session && isRegistrationOpen && happening?.questions && (
+      {jwt && isRegistrationOpen && happening?.questions && (
         <SidebarItem>
           {isRegistered ? (
             <DeregisterButton slug={slug} />
@@ -169,7 +169,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {session && !isRegistrationOpen && (
+      {jwt && !isRegistrationOpen && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -177,7 +177,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {!session && (
+      {!jwt && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>

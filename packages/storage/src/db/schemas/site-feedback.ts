@@ -1,4 +1,4 @@
-import { boolean, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgTable, primaryKey, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 import { siteFeedbackTypeEnum } from "./enums";
 
@@ -11,6 +11,7 @@ export const siteFeedbacks = pgTable(
     feedback: varchar("feedback", { length: 5000 }).notNull(),
     type: siteFeedbackTypeEnum("type").notNull(),
     isRead: boolean("is_read").notNull().default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (sf) => ({
     primaryKey: primaryKey(sf.id),

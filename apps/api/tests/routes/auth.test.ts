@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 
 import { app } from "@/app";

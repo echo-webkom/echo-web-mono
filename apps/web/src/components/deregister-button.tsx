@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useDeregistration } from "@/hooks/use-deregistration";
 import { useToast } from "@/hooks/use-toast";
+import { useUnregistration } from "@/hooks/use-unregistration";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
 type DeregisterButtonProps = {
@@ -31,7 +31,7 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { deregister, isLoading } = useDeregistration(slug, {
+  const { deregister, isLoading } = useUnregistration(slug, {
     onSuccess: () => {
       setIsOpen(false);
       router.refresh();

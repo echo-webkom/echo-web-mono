@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { type Handler } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
-import { sign } from "hono/jwt";
 import { z } from "zod";
 
 import { db, passwords, users } from "@echo-webkom/storage";

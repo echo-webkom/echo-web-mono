@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
-import { isEventOrganizer } from "@/lib/happening";
-import { getHappeningBySlug } from "@/lib/queries/happening";
-import { getUser } from "@/lib/session";
+import { db, getHappening } from "@echo-webkom/storage";
+
+import { getJwtPayload } from "@/lib/session";
 
 type Props = {
   children: React.ReactNode;
@@ -12,21 +13,29 @@ type Props = {
 };
 
 export default async function EventDashboardLayout({ children, params }: Props) {
-  const user = await getUser();
+  const jwt = await getJwtPayload();
 
-  if (!user) {
+  if (!jwt) {
     return redirect("/api/auth/signin");
   }
 
-  const event = await getHappeningBySlug(params.slug);
+  const happening = await getHappening(params.slug);
 
-  if (!event) {
+  if (!happening) {
     return redirect("/api/auth/signin");
   }
 
-  const isAdmin = user.role === "ADMIN";
+  const user = await db.query.users.findFirst({
+    where: (u) => eq(u.id, jwt.sub),
+  });
 
-  if (!isAdmin && !isEventOrganizer(user, event)) {
+  const isAdmin = user?.type === "admin";
+
+  // TODO Check if user is organizer
+  // if (!isAdmin && !isEventOrganizer(user, event)) {
+  //   return redirect("/api/auth/signin");
+  // }
+  if (!isAdmin) {
     return redirect("/api/auth/signin");
   }
 

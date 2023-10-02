@@ -1,13 +1,18 @@
+import { db } from "@echo-webkom/storage";
+
 import { Container } from "@/components/container";
 import { Heading } from "@/components/ui/heading";
-import { getAllUsers } from "@/lib/queries/user";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export const dynamic = "force-dynamic";
 
 export default async function FeedbackOverview() {
-  const users = await getAllUsers();
+  const users = await db.query.users.findMany({
+    with: {
+      groups: true,
+    },
+  });
 
   return (
     <Container>

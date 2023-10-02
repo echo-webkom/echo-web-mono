@@ -1,12 +1,6 @@
 import { useState } from "react";
-import { z } from "zod";
 
 import { bat } from "@/lib/bat";
-
-const responseSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-});
 
 type Data = {
   questions: Array<{
@@ -16,7 +10,7 @@ type Data = {
 };
 
 type RegisterOpts = {
-  onSuccess?: (data: z.infer<typeof responseSchema>) => void;
+  onSuccess?: (data: string) => void;
   onError?: (error: string) => void;
 };
 
@@ -31,14 +25,14 @@ export function useRegistration(slug: string, { onSuccess, onError }: RegisterOp
     try {
       const response = await bat.post(`/happening/${slug}/register`, input);
 
-      const data = responseSchema.parse(await response.json());
+      const data = await response.text();
 
       if (response.ok) {
         setIsSucess(true);
         onSuccess?.(data);
       } else {
-        setError(data.title);
-        onError?.(data.title);
+        setError(data);
+        onError?.(data);
       }
     } catch (err) {
       setError("Noe gikk galt");

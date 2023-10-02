@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, varchar, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+
 import { questions } from "./questions";
 import { registrations } from "./registrations";
 
@@ -13,7 +14,7 @@ export const answers = pgTable(
   },
   (a) => ({
     primaryKey: primaryKey(a.id),
-  })
+  }),
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({
