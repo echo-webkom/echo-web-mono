@@ -492,6 +492,12 @@ importers:
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(@types/pg@8.10.3)(pg@8.11.3)
+      eslint:
+        specifier: ^8.50.0
+        version: 8.50.0
+      eslint-config-webkom:
+        specifier: workspace:*
+        version: link:../eslint
       pg:
         specifier: ^8.11.3
         version: 8.11.3(pg-native@3.0.1)

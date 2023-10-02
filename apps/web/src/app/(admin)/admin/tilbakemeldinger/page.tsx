@@ -37,9 +37,7 @@ function Feedback({ feedback }: { feedback: InferSelectModel<typeof siteFeedback
           minute: "2-digit",
         })}
       </p>
-      {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       <h3 className="font-medium">Fra: {feedback.name || "Ingen"}</h3>
-      {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       <p className="text-sm font-medium text-muted-foreground">{feedback.email || "Ingen"}</p>
 
       <hr className="my-3" />

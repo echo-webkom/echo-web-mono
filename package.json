@@ -14,6 +14,8 @@
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "db:seed": "pnpm --filter=storage db:seed",
+    "db:generate": "pnpm --filter=storage db:generate",
+    "db:migrate": "pnpm --filter=storage db:migrate",
     "docker:up": "pnpm --filter=storage docker:up",
     "docker:down": "pnpm --filter=storage docker:down",
     "clean": "rm -rf node_modules",

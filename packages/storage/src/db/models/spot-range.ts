@@ -1,7 +1,6 @@
-import { and, eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "../drizzle";
-import { registrations } from "../schemas";
 
 export const getSpotRangeByHappening = async (slug: string) => {
   const spotRanges = await db.query.spotRanges.findMany({

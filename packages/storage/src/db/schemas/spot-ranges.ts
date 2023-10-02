@@ -3,7 +3,6 @@ import { integer, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
 import { yearEnum } from "./enums";
 import { happenings } from "./happenings";
-import { registrations } from "./registrations";
 
 export const spotRanges = pgTable("spot_range", {
   id: uuid("id").notNull().defaultRandom().primaryKey(),
@@ -13,10 +12,9 @@ export const spotRanges = pgTable("spot_range", {
   spots: integer("spots").notNull(),
 });
 
-export const spotRangesRelations = relations(spotRanges, ({ one, many }) => ({
+export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
   happening: one(happenings, {
     fields: [spotRanges.happeningSlug],
     references: [happenings.slug],
   }),
-  registrations: many(registrations),
 }));

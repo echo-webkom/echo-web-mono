@@ -120,6 +120,7 @@ async function seed() {
 
 seed()
   .then(() => {
+    // eslint-disable-next-line no-console
     console.log("🌱 Done seeding.");
     process.exit(0);
   })

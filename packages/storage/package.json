@@ -5,6 +5,7 @@
   "main": "./server.ts",
   "scripts": {
     "dev": "pnpm with-env drizzle-kit studio",
+    "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "db:diagram": "pnpm with-env tsx ./drizzle/diagram.ts",
@@ -23,11 +24,19 @@
     "drizzle-dbml-generator": "^0.4.0",
     "drizzle-kit": "^0.19.13",
     "drizzle-orm": "^0.28.6",
+    "eslint": "^8.50.0",
+    "eslint-config-webkom": "workspace:*",
     "pg": "^8.11.3",
     "pg-native": "^3.0.1",
     "redis": "^4.6.10",
     "server-only": "^0.0.1",
     "tsx": "^3.13.0",
     "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base"
+    ]
   }
 }

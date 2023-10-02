@@ -44,6 +44,7 @@
     "ADMIN_KEY",
     "API_KEY",
     "JWT_SECRET",
+    "REDIS_URL",
     "NEXT_PUBLIC_SANITY_DATASET",
     "SKIP_ENV_VALIDATION",
     "VERCEL",

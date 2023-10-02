@@ -179,8 +179,6 @@ export const handleRegistration: Handler = async (c) => {
       }
     }
 
-    console.log(e);
-
     c.status(500);
     return c.text("Something went wrong");
   }

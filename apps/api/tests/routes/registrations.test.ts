@@ -238,8 +238,6 @@ describe("Registration route", () => {
     const text1 = await res1.text();
     const text2 = await res2.text();
 
-    console.log(text1, text2);
-
     if (text1 === "Registration successful, status: registered") {
       expect(text2).toBe("Registration successful, status: waiting");
     }
