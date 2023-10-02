@@ -25,7 +25,7 @@ type Props = {
   };
 };
 
-export async function getData(slug: string) {
+async function getData(slug: string) {
   const data = await getHappeningBySlug(slug);
   const info = await fetchBedpresBySlug(slug);
 

@@ -12,7 +12,7 @@
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@types/node": "18.17.19"
+    "@types/node": "18.18.0"
   },
   "devDependencies": {
     "eslint": "^8.50.0",
