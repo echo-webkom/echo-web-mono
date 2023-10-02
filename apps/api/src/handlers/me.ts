@@ -6,10 +6,19 @@ import { db, degreeEnum, users, yearEnum } from "@echo-webkom/storage";
 
 import { getJwtPayload } from "@/lib/jwt";
 
-export const handleGetSelf: Handler = (c) => {
+export const handleGetSelf: Handler = async (c) => {
   const jwt = getJwtPayload(c);
 
-  return c.json(jwt);
+  const user = await db.query.users.findFirst({
+    where: (u) => eq(u.id, jwt.sub),
+  });
+
+  if (!user) {
+    c.status(404);
+    return c.text("User not found");
+  }
+
+  return c.json(user);
 };
 
 export const handleGetSelfRegistrations: Handler = async (c) => {

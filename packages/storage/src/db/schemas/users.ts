@@ -3,6 +3,7 @@ import { pgTable, primaryKey, unique, uuid, varchar } from "drizzle-orm/pg-core"
 
 import { accountTypeEnum, degreeEnum, yearEnum } from "./enums";
 import { passwords } from "./passwords";
+import { registrations } from "./registrations";
 import { userGroupMemberships } from "./user-group-memberships";
 
 export const users = pgTable(
@@ -26,4 +27,5 @@ export const users = pgTable(
 export const usersRelations = relations(users, ({ many }) => ({
   passwords: many(passwords),
   groups: many(userGroupMemberships),
+  registrations: many(registrations),
 }));

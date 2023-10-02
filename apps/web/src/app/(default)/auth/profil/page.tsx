@@ -12,24 +12,18 @@ import { db } from "@echo-webkom/storage";
 
 import { Container } from "@/components/container";
 import { UserForm } from "@/components/user-form";
-import { getJwtPayload } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 
 export default async function ProfilePage() {
-  const jwt = await getJwtPayload();
-
-  if (!jwt) {
-    return redirect("/auth/logg-inn");
-  }
-
-  const user = await db.query.users.findFirst({
-    where: (u) => eq(u.id, jwt.sub),
+  const user = await getCurrentUser({
     with: {
       groups: true,
+      registrations: true,
     },
   });
 
   if (!user) {
-    return <p>Fant ikke brukeren din.</p>;
+    return redirect("/auth/logg-inn");
   }
 
   const registrations = await db.query.registrations.findMany({

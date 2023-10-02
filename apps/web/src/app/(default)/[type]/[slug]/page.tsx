@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
