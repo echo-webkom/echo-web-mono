@@ -8,14 +8,19 @@ import { fetchUpcomingBedpresses } from "@/sanity/bedpres";
 import { fetchComingEvents } from "@/sanity/event";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
+import { prisma } from "@echo-webkom/db";
+import { Button } from "@/components/ui/button";
+
 
 export async function Content() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(3),
     fetchUpcomingBedpresses(3),
     fetchPosts(4),
-    fetchAvailableJobAds(4),
+    fetchAvailableJobAds(4)
   ]);
+  
+  const items = await prisma.hyggkomItem.findMany();
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -64,6 +69,28 @@ export async function Content() {
           </ul>
         </section>
       )}
+      
+      {/* Hyggkom */}
+      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
+        <Link href="/handleliste">
+          <h2 className="text-center text-xl font-semibold md:text-3xl">Hyggkom Handleliste</h2>
+        </Link>
+
+        <hr />
+
+        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+          {items.map((item) => (
+            <li key={item.id}>
+              {item.name}
+            </li>
+          ))}
+        </ul>
+        <Button>
+          <Link href="/handleliste">Se mer</Link>
+        </Button>
+      </section>
+      
+
     </Container>
   );
 }

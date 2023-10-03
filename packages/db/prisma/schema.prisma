@@ -67,6 +67,7 @@ model User {
   year             Int?
   studentGroups    Group[]
   Registration     Registration[]
+  HyggkomItemVote  HyggkomItem[]
 }
 
 enum Role {
@@ -174,4 +175,12 @@ model SiteFeedback {
   email     String?
   message   String   @db.Text
   isRead    Boolean  @default(false)
+}
+
+model HyggkomItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
