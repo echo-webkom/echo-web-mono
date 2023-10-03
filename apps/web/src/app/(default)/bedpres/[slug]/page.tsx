@@ -137,7 +137,7 @@ export default async function BedpresPage({ params }: Props) {
             <SidebarItem>
               <SidebarItemTitle>Dato:</SidebarItemTitle>
               <SidebarItemContent>
-                <AddToCalender date={eventInfo?.date} />
+                <AddToCalender date={eventInfo?.date} title={eventInfo?.title}/>
               </SidebarItemContent>
             </SidebarItem>
           )}

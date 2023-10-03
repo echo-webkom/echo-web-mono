@@ -4,14 +4,19 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { google, outlook, office365, yahoo, ics, type CalendarEvent } from "calendar-link";
 import Link from 'next/link';
 import test from 'node:test';
+import { BiLogoGoogle } from "react-icons/bi"
+import { SiYahoo, SiMicrosoftoutlook, SiMicrosoftoffice } from "react-icons/si"
+import { FaFileDownload } from "react-icons/fa"
+
+
 
 
 interface Props {
-    date: Date
-
+    date: Date,
+    title: string,
 }
 
-export function AddToCalender({ date }: Props) {
+export function AddToCalender({ date, title }: Props) {
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -26,7 +31,11 @@ export function AddToCalender({ date }: Props) {
                         Legg til i kalender 📅
                     </Dialog.Title>
                     <Dialog.Content className="text-mauve11 mt-[10px] mb-5 text-[15px] leading-normal">
-                        {google(createEvent("test", date))}
+                        <CalendarButton title={title} date={date} calendarType={CalendarType.GOOGLE} />
+                        <CalendarButton title={title} date={date} calendarType={CalendarType.OUTLOOK} />
+                        <CalendarButton title={title} date={date} calendarType={CalendarType.OFFICE} />
+                        <CalendarButton title={title} date={date} calendarType={CalendarType.YAHOO} />
+                        <CalendarButton title={title} date={date} calendarType={CalendarType.ICS} />
                     </Dialog.Content>
 
                     <Dialog.Close asChild>
@@ -42,11 +51,50 @@ export function AddToCalender({ date }: Props) {
         </Dialog.Root>)
 };
 
-const createEvent = (title: string, date: Date): CalendarEvent => {
-    return {
+enum CalendarType {
+    GOOGLE = "Google",
+    OUTLOOK = "Outlook",
+    OFFICE = "Office",
+    YAHOO = "Yahoo",
+    ICS = "Ics",
+}
+
+
+interface CalendarButtonProps {
+    title: string,
+    date: Date,
+    calendarType: CalendarType,
+}
+
+const CalendarButton = ({ title, date, calendarType }: CalendarButtonProps) => {
+    const event: CalendarEvent = {
         title,
-        description: "test",
+        description: "",
         start: date,
         duration: [2, "hour"]
+    }
+    let calendarFunc = getCalendarFunc(calendarType)
+    const link = calendarFunc(event)
+    return (
+        <a href={link}>
+            {CalendarType.GOOGLE === calendarType && <BiLogoGoogle />}
+            {CalendarType.OUTLOOK === calendarType && <SiMicrosoftoutlook />}
+            {CalendarType.OFFICE === calendarType && <SiMicrosoftoffice />}
+            {CalendarType.YAHOO === calendarType && <SiYahoo />}
+            {CalendarType.ICS === calendarType && <FaFileDownload />}
+            <p>{calendarType}</p>
+        </a>
+
+    )
+}
+
+const getCalendarFunc = (calendarType: CalendarType) => {
+    switch (calendarType) {
+        case CalendarType.GOOGLE: return google;
+        case CalendarType.OUTLOOK: return outlook;
+        case CalendarType.OFFICE: return office365;
+        case CalendarType.YAHOO: return yahoo;
+        case CalendarType.ICS: return ics;
+        default: throw new Error("Could not recognize calendar type");
     }
 }

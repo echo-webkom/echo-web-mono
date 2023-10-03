@@ -116,7 +116,7 @@ export default async function EventPage({ params }: Props) {
               <SidebarItemTitle>Dato:</SidebarItemTitle>
 
               <SidebarItemContent>
-                <AddToCalender date={eventInfo?.date} />
+                <AddToCalender date={eventInfo?.date} title={eventInfo?.title} />
               </SidebarItemContent>
             </SidebarItem>
           )}
