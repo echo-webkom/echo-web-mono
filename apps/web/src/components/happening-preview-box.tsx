@@ -8,7 +8,7 @@ import { type Event } from "@/sanity/event";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
-import { Happening } from "./event-filter";
+import { type Happening } from "./event-filter";
 
 type HappeningPreviewBoxProps =
   | {

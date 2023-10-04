@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-import { type SearchParams } from "@/components/event-filter";
+import { type URLParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { bedpresSchema, type Bedpres } from "./schemas";
@@ -188,7 +188,7 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
 };
 
 export const fetchFilteredBedpresses = async (
-  q: SearchParams,
+  q: URLParams,
 ): Promise<Array<Bedpres> | ErrorMessage> => {
   const conditions = [
     `_type == "bedpres"`,

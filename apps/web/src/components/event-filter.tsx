@@ -7,7 +7,7 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
-import { isBefore, isThisWeek, isWithinInterval, nextMonday } from "date-fns";
+import { isBefore, isThisWeek, isWithinInterval, nextMonday, startOfDay } from "date-fns";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { fetchFilteredBedpresses, type Bedpres } from "@/sanity/bedpres";
@@ -27,33 +27,65 @@ export type Happening =
       type: "BEDPRES";
     });
 
-export type SearchParams = {
+export type URLParams = {
   type: string;
   search?: string;
   open?: string;
   past?: string;
 };
 
-const initialParams = {
-  type: "all",
-  search: "",
-  open: false,
-  past: false,
+export type SearchParams = {
+  type: string;
+  search?: string;
+  open: boolean;
+  past: boolean;
 };
 
-function validateQuery(params: ReadonlyURLSearchParams) {
-  const query: SearchParams = {
-    search: params.get("search") ?? undefined,
-    type: params.get("type") ?? "all",
-    open: params.get("open") ?? undefined,
-    past: params.get("past") ?? undefined,
+function URLtoSearchParams(url: ReadonlyURLSearchParams) {
+  const params: SearchParams = {
+    type: url.get("type") ?? "all",
+    search: url.get("search") ?? undefined,
+    open: url.get("open") === "true" ? true : false,
+    past: url.get("past") === "true" ? true : false,
+  };
+
+  if (params.open && params.past) {
+    params.open = false;
+    params.past = false;
+  }
+
+  if (!(params.type === "all" || params.type === "event" || params.type === "bedpres")) {
+    params.type = "all";
+  }
+
+  if (params.search && !onlyLettersAndNumbers(params.search)) {
+    params.search = undefined;
+  }
+
+  if (params.search && params.search.length > 50) {
+    params.search = params.search.substring(0, 50);
+  }
+
+  return params;
+}
+
+function onlyLettersAndNumbers(str: string) {
+  return str.match("^[A-Za-z0-9]+$");
+}
+
+function validateQueryToURL(params: SearchParams) {
+  const query: URLParams = {
+    search: params.search ?? undefined,
+    type: params.type ?? "all",
+    open: params.open ? "true" : undefined,
+    past: params.past ? "true" : undefined,
   };
 
   if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
     query.type = "all";
   }
-  if (query.search && query.search.length > 100) {
-    query.search = query.search.substring(0, 100);
+  if (query.search && query.search.length > 50) {
+    query.search = query.search.substring(0, 50);
   }
 
   query.open === "true" ?? undefined;
@@ -83,7 +115,7 @@ export default function EventFilter() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const [searchParams, setSearchParams] = useState(initialParams);
+  const [searchParams, setSearchParams] = useState(URLtoSearchParams(params));
   const [input, setInput] = useState("");
 
   const [happenings, setHappenings] = useState<Array<Happening>>([]);
@@ -94,21 +126,10 @@ export default function EventFilter() {
   const [showLater, setShowLater] = useState(true);
 
   useEffect(() => {
-    const query: SearchParams = { type: "all" };
-
-    if (searchParams.type) query.type = searchParams.type;
-    if (searchParams.search) query.search = encodeURI(searchParams.search);
-    if (searchParams.open) query.open = "true";
-    if (searchParams.past) query.past = "true";
-
-    const queryString = new URLSearchParams(query).toString();
-    router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
-  }, [searchParams, pathname, router]);
-
-  useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const validQuery = validateQuery(params);
+      const url = URLtoSearchParams(params);
+      const validQuery = validateQueryToURL(url);
 
       const bedpresses =
         validQuery.type === "all" || validQuery.type === "bedpres"
@@ -141,6 +162,18 @@ export default function EventFilter() {
     fetchData().catch(console.error);
   }, [params]);
 
+  useEffect(() => {
+    const query: URLParams = { type: "all" };
+
+    if (searchParams.type) query.type = searchParams.type;
+    if (searchParams.search) query.search = encodeURI(searchParams.search);
+    if (searchParams.open) query.open = "true";
+    if (searchParams.past) query.past = "true";
+
+    const queryString = new URLSearchParams(query).toString();
+    router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
+  }, [searchParams, pathname, router]);
+
   const currentDate = new Date();
 
   const earlier: Array<Happening> = [];
@@ -156,8 +189,8 @@ export default function EventFilter() {
         return thisWeek.push(event);
       } else if (
         isWithinInterval(new Date(event.date), {
-          start: nextMonday(currentDate),
-          end: nextMonday(nextMonday(currentDate)),
+          start: startOfDay(nextMonday(currentDate)),
+          end: startOfDay(nextMonday(nextMonday(currentDate))),
         })
       ) {
         return nextWeek.push(event);
@@ -193,17 +226,13 @@ export default function EventFilter() {
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={searchParams.open ? "default" : "outline"}
-            onClick={() =>
-              setSearchParams({ ...searchParams, open: !searchParams.open, past: false })
-            }
+            onClick={() => setSearchParams((prev) => ({ ...prev, open: !prev.open, past: false }))}
           >
             Åpen for påmelding
           </Button>
           <Button
             variant={searchParams.past ? "default" : "outline"}
-            onClick={() =>
-              setSearchParams({ ...searchParams, past: !searchParams.past, open: false })
-            }
+            onClick={() => setSearchParams((prev) => ({ ...prev, past: !prev.past, open: false }))}
           >
             Vis tidligere
           </Button>
@@ -219,7 +248,7 @@ export default function EventFilter() {
                 if (e.key === "Enter") setSearchParams({ ...searchParams, search: input });
               }}
               type="text"
-              placeholder="Søk etter arrangement"
+              placeholder={searchParams.search ?? "Søk etter arrangement"}
             />
           </div>
           <div className="p-4">
