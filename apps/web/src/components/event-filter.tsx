@@ -28,24 +28,18 @@ export type Happening =
       type: "BEDPRES";
     });
 
-const initialParams = {
-  type: "ALL",
-  search: "",
-  open: false,
-  past: false,
-  thisWeek: true,
-  nextWeek: true,
-  later: true,
-};
-
 export type SearchParams = {
   type: string;
   search?: string;
   open?: string;
   past?: string;
-  thisWeek?: string;
-  nextWeek?: string;
-  later?: string;
+};
+
+const initialParams = {
+  type: "ALL",
+  search: "",
+  open: false,
+  past: false,
 };
 
 function EventsView() {
@@ -119,9 +113,6 @@ function validateQuery(params: ReadonlyURLSearchParams) {
     type: params.get("type") ?? "all",
     open: params.get("open") ?? undefined,
     past: params.get("past") ?? undefined,
-    thisWeek: params.get("thisWeek") ?? undefined,
-    nextWeek: params.get("nextWeek") ?? undefined,
-    later: params.get("later") ?? undefined,
   };
 
   if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
@@ -131,17 +122,8 @@ function validateQuery(params: ReadonlyURLSearchParams) {
     query.search = query.search.substring(0, 100);
   }
 
-  if (query.past === "true") {
-    query.thisWeek = undefined;
-    query.nextWeek = undefined;
-    query.later = undefined;
-  }
-
-  query.open = query.open === "true" ? "true" : undefined;
-  query.past = query.past === "true" ? "true" : undefined;
-  query.thisWeek = query.thisWeek === "true" ? "true" : undefined;
-  query.nextWeek = query.nextWeek === "true" ? "true" : undefined;
-  query.later = query.later === "true" ? "true" : undefined;
+  query.open === "true" ?? undefined;
+  query.past === "true" ?? undefined;
 
   return query;
 }
@@ -159,9 +141,6 @@ export default function EventFilter() {
     if (searchParams.search) query.search = encodeURI(searchParams.search);
     if (searchParams.open) query.open = "true";
     if (searchParams.past) query.past = "true";
-    if (searchParams.thisWeek) query.thisWeek = "true";
-    if (searchParams.nextWeek) query.nextWeek = "true";
-    if (searchParams.later) query.later = "true";
 
     const queryString = new URLSearchParams(query).toString();
     router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
