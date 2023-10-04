@@ -31,6 +31,7 @@ import { userFormSchema } from "./schemas";
 import { updateUserAction } from "./action";
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { Switch } from '@/components/ui/switch';
 
 export type User = DbUser
 
@@ -92,7 +93,8 @@ function UserForm({ user }: { user: User }) {
     userFormSchema
     ),
     defaultValues: {
-      groups: user.studentGroups
+      groups: user.studentGroups,
+      role: user.role,
     },
   });
   const onSubmit = form.handleSubmit(async (data) => {
@@ -136,61 +138,85 @@ function UserForm({ user }: { user: User }) {
         </div>
         <Form {...form}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={onSubmit} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="groups"
-            render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">Undergrupper</FormLabel>
-                  <FormDescription>
-                    Velg de undergruppene brukeren er en del av.
-                  </FormDescription>
-                </div>
-
-                {Object.entries(groupNames).map(([id, label]) => (
-                  <FormField
-                  key={id}
-                  control={form.control}
-                  name="groups"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                      key={id}
-                      className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                      <FormControl>
-                      <Checkbox
-                      checked={field.value?.includes(id as Group)}
+          <form onSubmit={onSubmit} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Administrator</FormLabel>
+                    <FormDescription>
+                      Skal brukeren ha tilgang til admin dashboard?
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value === 'ADMIN'}
                       onCheckedChange={(checked) => {
                         return checked
-                        ? field.onChange([...field.value, id])
-                        : field.onChange(
-                          field.value?.filter(
-                            (value) => value !== id
-                            )
+                          ? field.onChange('ADMIN')
+                          : field.onChange('USER');
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="groups"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Undergrupper</FormLabel>
+                    <FormDescription>
+                      Velg de undergruppene brukeren er en del av.
+                    </FormDescription>
+                  </div>
+
+                  {Object.entries(groupNames).map(([id, label]) => (
+                    <FormField
+                    key={id}
+                    control={form.control}
+                    name="groups"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                        key={id}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                        <FormControl>
+                        <Checkbox
+                        checked={field.value?.includes(id as Group)}
+                        onCheckedChange={(checked) => {
+                          return checked
+                          ? field.onChange([...field.value, id])
+                          : field.onChange(
+                            field.value?.filter(
+                              (value) => value !== id
+                              )
+                              );
+                            }}
+                            />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                            {label}
+                            </FormLabel>
+                            </FormItem>
                             );
                           }}
                           />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">
-                          {label}
-                          </FormLabel>
-                          </FormItem>
-                          );
-                        }}
-                        />
-                      ))}
-                <FormMessage />
-              </FormItem>
-            )}
-            />
-            <Button type="submit">
-              <span>Lagre</span>
-            </Button>
-        </form>
-          </Form>
+                        ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+              />
+              <Button type="submit">
+                <span>Lagre</span>
+              </Button>
+          </form>
+        </Form>
       </div>
     </DialogContent>
   </Dialog>
