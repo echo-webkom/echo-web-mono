@@ -29,6 +29,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { userFormSchema } from "./schemas";
 import { updateUserAction } from "./action";
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 export type User = DbUser
 
@@ -84,20 +86,30 @@ export const columns: Array<ColumnDef<User>> = [
 ];
 
 function UserForm({ user }: { user: User }) {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm({ resolver: zodResolver(
-      userFormSchema
+    userFormSchema
     ),
     defaultValues: {
       groups: user.studentGroups
     },
   });
-
   const onSubmit = form.handleSubmit(async (data) => {
-    const result = await updateUserAction(user.id, data);
-    // console.log(data);
-  },
-  (err) => {
-    console.log(err);
+    const { result } = await updateUserAction(user.id, data);
+    if (result === "success") {
+      toast({
+        title: "Bruker oppdatert!",
+        description: "Brukeren ble oppdatert.",
+      });
+      router.refresh();
+    }
+    else {
+      toast({
+        title: "Noe gikk galt!",
+        description: "Kunne ikke oppdatere bruker.",
+      });
+    }
   });
 
   return (
