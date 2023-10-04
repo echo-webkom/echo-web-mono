@@ -33,7 +33,7 @@ export const updateUserAction = async (
 
 import { type z } from "zod";
 import { type userFormSchema } from "./schemas";
-import { type Group, prisma } from "@echo-webkom/db";
+import { type Group, type Role, prisma } from "@echo-webkom/db";
 import { getUser } from "@/lib/session";
 
 type Response =
@@ -56,8 +56,12 @@ export const updateUserAction = async (
     if (actionUser === null || actionUser?.role !=="ADMIN") {
       return {
         result: "error",
+<<<<<<< HEAD
         message: "You are not logged in",
 >>>>>>> 75207b8 (onSubmit shows toast🎉)
+=======
+        message: "You are not logged in as an admin",
+>>>>>>> 489e9b0 (added isAdmin button)
       };
     }
 
@@ -92,6 +96,15 @@ export const updateUserAction = async (
         studentGroups: {
           set: data.groups as Array<Group>
         }
+      }
+    })
+
+    await prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        role: data.role as Role
       }
     })
 
