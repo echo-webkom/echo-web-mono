@@ -13,6 +13,7 @@ export const studentGroupTypeName: Record<StudentGroupType, string> = {
   SUBGROUP: "Undergrupper",
   INTGROUP: "Interessegrupper",
   SUBORG: "Underorganisasjoner",
+  SPORT: "Idrettslag",
 };
 
 export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
@@ -20,6 +21,7 @@ export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
   SUBGROUP: "undergruppe",
   INTGROUP: "interessegruppe",
   SUBORG: "underorganisasjon",
+  SPORT: "idrettslag",
 };
 
 export async function fetchStudentGroupParams() {
@@ -32,7 +34,7 @@ export async function fetchStudentGroupParams() {
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),
-    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
+    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG", "SPORT"]),
   });
 
   const studentGroupPaths = result.map((studentGroup) =>

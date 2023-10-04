@@ -11,6 +11,7 @@ export const GROUP_TYPES = [
   { title: "Undergruppe", value: "SUBGROUP" },
   { title: "Underorganisasjon", value: "SUBORG" },
   { title: "Interessegruppe", value: "INTGROUP" },
+  { title: "Idrettslag", value: "SPORT" },
 ] as const;
 
 export type StudentGroupType = (typeof GROUP_TYPES)[number]["value"];
