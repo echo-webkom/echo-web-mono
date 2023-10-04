@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 "use server";
 
 import { type z } from "zod";
@@ -30,30 +31,34 @@ export const updateUserAction = async (
         message: "You are not logged in as an admin",
 =======
 "use server"
+=======
+"use server";
+>>>>>>> 4c28961 (lint and formatting)
 
 import { type z } from "zod";
-import { type userFormSchema } from "./schemas";
-import { type Group, type Role, prisma } from "@echo-webkom/db";
+
+import { prisma, type Group, type Role } from "@echo-webkom/db";
+
 import { getUser } from "@/lib/session";
+import { type userFormSchema } from "./schemas";
 
 type Response =
-| {
-    result: "success";
-  }
-| {
-    result: "error";
-    message: string;
-  };
-
+  | {
+      result: "success";
+    }
+  | {
+      result: "error";
+      message: string;
+    };
 
 export const updateUserAction = async (
-  userId : string,
-  data :  z.infer<typeof userFormSchema>
-) : Promise<Response> => {
+  userId: string,
+  data: z.infer<typeof userFormSchema>,
+): Promise<Response> => {
   try {
     const actionUser = await getUser();
 
-    if (actionUser === null || actionUser?.role !=="ADMIN") {
+    if (actionUser === null || actionUser?.role !== "ADMIN") {
       return {
         result: "error",
 <<<<<<< HEAD
@@ -67,6 +72,7 @@ export const updateUserAction = async (
 
     await prisma.user.update({
       where: {
+<<<<<<< HEAD
 <<<<<<< HEAD
         id: userId,
       },
@@ -91,28 +97,35 @@ export const updateUserAction = async (
     };
 =======
         id: userId
+=======
+        id: userId,
+>>>>>>> 4c28961 (lint and formatting)
       },
       data: {
         studentGroups: {
-          set: data.groups as Array<Group>
-        }
-      }
-    })
+          set: data.groups as Array<Group>,
+        },
+      },
+    });
 
     await prisma.user.update({
       where: {
-        id: userId
+        id: userId,
       },
       data: {
-        role: data.role as Role
-      }
-    })
+        role: data.role as Role,
+      },
+    });
 
     return {
       result: "success",
+<<<<<<< HEAD
     }
 
 >>>>>>> 75207b8 (onSubmit shows toast🎉)
+=======
+    };
+>>>>>>> 4c28961 (lint and formatting)
   } catch (error) {
     return {
       result: "error",
@@ -121,6 +134,9 @@ export const updateUserAction = async (
   }
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 75207b8 (onSubmit shows toast🎉)
+=======
+>>>>>>> 4c28961 (lint and formatting)

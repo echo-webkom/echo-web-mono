@@ -90,8 +90,8 @@ export const columns: Array<ColumnDef<User>> = [
           </DropdownMenuContent>
         </DropdownMenu>
       );
-      }
     },
+  },
 ];
 
 function UserForm({ user }: { user: User }) {
