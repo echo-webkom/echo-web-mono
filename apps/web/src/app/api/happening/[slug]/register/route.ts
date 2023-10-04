@@ -180,22 +180,22 @@ export const POST = withSession(
 
           const answersToSave = [];
 
-          for (var userAnswer of input.questions) {
-            const foundQuestion = happening.questions.find((happeningQuestion) => {
+          for (var happeningQuestion of happening.questions) {
+            const foundAnswer = input.questions.find((userAnswer) => {
               return happeningQuestion.title === userAnswer.question;
             });
-            if (foundQuestion) {
+            if (foundAnswer) {
               answersToSave.push({
                 registrationId: registration.id,
-                questionId: foundQuestion.id,
-                text: userAnswer.answer,
+                questionId: happeningQuestion.id,
+                text: foundAnswer.answer,
               });
             }
           }
 
           await tx.answer.createMany({
             data: answersToSave,
-          })
+          });
 
           return registration.status;
         } else {
