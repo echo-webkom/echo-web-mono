@@ -5,6 +5,7 @@ const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For student
   .link("/grupper/undergruppe", { label: "Undergrupper" })
   .link("/grupper/underorganisasjon", { label: "Underorganisasjoner" })
   .link("/grupper/interessegruppe", { label: "Interessegrupper" })
+  .link("/grupper/idrettslag", { label: "Idrettslag" })
   .link("/jobber", { label: "Stillingsannonser" })
   .link("/innlegg", { label: "Innlegg" })
   .link("/masterinfo", { label: "Masterinfo" })
