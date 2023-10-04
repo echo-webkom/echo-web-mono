@@ -178,18 +178,7 @@ export const POST = withSession(
             },
           });
 
-          // const answersToSave = input.questions.filter((userQuestion) => {
-          //   return happening.questions.some((happeningQuestion) => {
-          //     return happeningQuestion.title === userQuestion.question;
-          //   })
-          // });
-
-          const answersToSave: {
-            text: string;
-            answer: string;
-            registrationId?: string;
-            questionId?: string;
-          }[] = [];
+          const answersToSave = [];
 
           for (var userAnswer of input.questions) {
             const foundQuestion = happening.questions.find((happeningQuestion) => {
@@ -197,22 +186,15 @@ export const POST = withSession(
             });
             if (foundQuestion) {
               answersToSave.push({
-                text: userAnswer.question,
-                answer: userAnswer.answer,
                 registrationId: registration.id,
                 questionId: foundQuestion.id,
+                text: userAnswer.answer,
               });
             }
           }
 
-          const saveAnswer = await tx.answer.createMany({
-            data: answersToSave.map((ans) => {
-              return {
-                questionId: ans.questionId ?? "",
-                registrationId: ans.registrationId ?? "",
-                text: ans.text,
-              }
-            })
+          await tx.answer.createMany({
+            data: answersToSave,
           })
 
           return registration.status;
