@@ -1,3 +1,4 @@
+"use client";
 //import Image from "next/image";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +7,9 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Container } from "@/components/container";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 //import { Heading } from "@/components/ui/heading";
 
@@ -43,11 +47,22 @@ export default function HyggkomHandleliste() {
           variant: "warning",
         });
       }
+
     },
     (error) => {
       console.error(error);
     },
   );
 
-  return <Button>Legg til ditt forslag!</Button>;
+  return (
+    <Container className="max-w-xl">
+      <form>
+        <fieldset className="flex flex-col gap-2">
+          <Label htmlFor="">Hva ønsker du?</Label>
+          <Input type="text" />
+        </fieldset>
+  <Button>Legg til ditt forslag!</Button>
+      </form>
+    </Container>
+  );
 }
