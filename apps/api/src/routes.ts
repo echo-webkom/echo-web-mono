@@ -11,6 +11,7 @@ import {
 } from "./handlers/registration";
 import { handleSyncSanity } from "./handlers/sanity";
 import { handleGetHappeningSpotRanges } from "./handlers/spot-range";
+import { user } from "./middleware/user";
 
 const secret = process.env.JWT_SECRET!;
 const jwtConfig = { secret, cookie: "user" };
@@ -67,7 +68,7 @@ export class RouteFactory {
   private configureMeRoutes() {
     const meRouter = this.app.basePath("/me");
 
-    meRouter.get("/", jwt(jwtConfig), handleGetSelf);
+    meRouter.get("/", user(), handleGetSelf);
     meRouter.patch("/", jwt(jwtConfig), handleUpdateSelf);
     meRouter.get("/registrations", jwt(jwtConfig), handleGetSelfRegistrations);
   }

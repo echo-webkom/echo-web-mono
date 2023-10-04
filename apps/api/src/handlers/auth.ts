@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { type Handler } from "hono";
-import { deleteCookie, setCookie } from "hono/cookie";
+import { deleteCookie, setSignedCookie } from "hono/cookie";
 import { z } from "zod";
 
 import { db, passwords, users } from "@echo-webkom/storage";
@@ -56,7 +56,7 @@ export const handleCreateAccount: Handler = async (c) => {
 
     const jwt = await createJWT(user);
 
-    setCookie(c, "user", jwt, {
+    await setSignedCookie(c, "user", jwt, process.env.JWT_SECRET!, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       domain: "localhost",
       path: "/",
@@ -111,7 +111,7 @@ export const handleLogin: Handler = async (c) => {
 
     const jwt = await createJWT(user);
 
-    setCookie(c, "user", jwt, {
+    await setSignedCookie(c, "user", jwt, process.env.JWT_SECRET!, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       domain: "localhost",
       path: "/",

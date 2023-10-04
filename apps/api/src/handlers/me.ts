@@ -7,11 +7,7 @@ import { db, degreeEnum, users, yearEnum } from "@echo-webkom/storage";
 import { getJwtPayload } from "@/lib/jwt";
 
 export const handleGetSelf: Handler = async (c) => {
-  const jwt = getJwtPayload(c);
-
-  const user = await db.query.users.findFirst({
-    where: (u) => eq(u.id, jwt.sub),
-  });
+  const user = c.get("user");
 
   if (!user) {
     c.status(404);
