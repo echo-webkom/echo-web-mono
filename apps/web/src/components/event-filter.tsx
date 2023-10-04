@@ -7,10 +7,9 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
+import { isBefore, isThisWeek, isWithinInterval, nextMonday } from "date-fns";
+import { AiOutlineLoading } from "react-icons/ai";
 
-// import { BorderWidthIcon } from "@radix-ui/react-icons";
-
-// import { isAfter, isBefore, isThisWeek, isWithinInterval, nextMonday, set } from "date-fns";
 import { fetchFilteredBedpresses, type Bedpres } from "@/sanity/bedpres";
 import { fetchFilteredEvents, type Event } from "@/sanity/event";
 import { isErrorMessage } from "@/utils/error";
@@ -36,16 +35,75 @@ export type SearchParams = {
 };
 
 const initialParams = {
-  type: "ALL",
+  type: "all",
   search: "",
   open: false,
   past: false,
 };
 
-function EventsView() {
-  const [happenings, setHappenings] = useState<Array<Happening>>([]);
-  const [loading, setLoading] = useState(true);
+function validateQuery(params: ReadonlyURLSearchParams) {
+  const query: SearchParams = {
+    search: params.get("search") ?? undefined,
+    type: params.get("type") ?? "all",
+    open: params.get("open") ?? undefined,
+    past: params.get("past") ?? undefined,
+  };
+
+  if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
+    query.type = "all";
+  }
+  if (query.search && query.search.length > 100) {
+    query.search = query.search.substring(0, 100);
+  }
+
+  query.open === "true" ?? undefined;
+  query.past === "true" ?? undefined;
+
+  return query;
+}
+
+function EventsView({ happenings, show }: { happenings: Array<Happening>; show: boolean }) {
+  return (
+    <>
+      {happenings.length > 0 && show && (
+        <div>
+          {happenings.map((event) => (
+            <ul key={event._id} className="py-1">
+              <CombinedHappeningPreview happening={event} />
+            </ul>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function EventFilter() {
+  const router = useRouter();
+  const pathname = usePathname();
   const params = useSearchParams();
+
+  const [searchParams, setSearchParams] = useState(initialParams);
+  const [input, setInput] = useState("");
+
+  const [happenings, setHappenings] = useState<Array<Happening>>([]);
+  const [isLoading, setLoading] = useState(true);
+
+  const [showThisWeek, setShowThisWeek] = useState(true);
+  const [showNextWeek, setShowNextWeek] = useState(true);
+  const [showLater, setShowLater] = useState(true);
+
+  useEffect(() => {
+    const query: SearchParams = { type: "all" };
+
+    if (searchParams.type) query.type = searchParams.type;
+    if (searchParams.search) query.search = encodeURI(searchParams.search);
+    if (searchParams.open) query.open = "true";
+    if (searchParams.past) query.past = "true";
+
+    const queryString = new URLSearchParams(query).toString();
+    router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
+  }, [searchParams, pathname, router]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,115 +136,19 @@ function EventsView() {
       });
 
       setHappenings(combinedHappenings);
+      setLoading(false);
     };
-    setLoading(false);
     fetchData().catch(console.error);
   }, [params]);
 
-  if (loading)
-    return (
-      <>
-        {happenings.length > 0 && (
-          <div>
-            {happenings.map((hap) => (
-              <ul key={hap._id} className="py-1">
-                <CombinedHappeningPreview happening={hap} />
-              </ul>
-            ))}
-          </div>
-        )}
-        {happenings.length === 0 && (
-          <div className="flex h-full flex-col items-center justify-center">
-            <div className="text-2xl font-semibold">Ingen arrangementer funnet</div>
-            <div className="text-lg text-gray-500">
-              Prøv å endre på søkeparametrene eller søk etter noe annet
-            </div>
-          </div>
-        )}
-      </>
-    );
-}
-
-function validateQuery(params: ReadonlyURLSearchParams) {
-  const query: SearchParams = {
-    search: params.get("search") ?? undefined,
-    type: params.get("type") ?? "all",
-    open: params.get("open") ?? undefined,
-    past: params.get("past") ?? undefined,
-  };
-
-  if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
-    query.type = "all";
-  }
-  if (query.search && query.search.length > 100) {
-    query.search = query.search.substring(0, 100);
-  }
-
-  query.open === "true" ?? undefined;
-  query.past === "true" ?? undefined;
-
-  return query;
-}
-
-export default function EventFilter() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [input, setInput] = useState("");
-  const [searchParams, setSearchParams] = useState(initialParams);
-
-  useEffect(() => {
-    const query: SearchParams = { type: "all" };
-
-    if (searchParams.type) query.type = searchParams.type;
-    if (searchParams.search) query.search = encodeURI(searchParams.search);
-    if (searchParams.open) query.open = "true";
-    if (searchParams.past) query.past = "true";
-
-    const queryString = new URLSearchParams(query).toString();
-    router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
-  }, [searchParams, pathname, router]);
-
-  /**
-  const filteredEvents = events
-    .filter((event) => {
-      if (event.type === "EVENT" && (isEvent || isAll)) {
-        return (
-          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.organizers.some((o) => o.name.toLowerCase().includes(searchQuery.toLowerCase()))
-        );
-      }
-      if (event.type === "BEDPRES" && (isBedpres || isAll)) {
-        return event.title.toLowerCase().includes(searchQuery.toLowerCase());
-      }
-      return false;
-    })
-    .sort((a, b) => {
-      if (a.date && b.date) {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      }
-      return 0;
-    });
-
   const currentDate = new Date();
 
-  const filterIsOpen = filteredEvents.filter((event) => {
-    if (isOpen) {
-      return (
-        event.registrationStart &&
-        event.registrationEnd &&
-        isAfter(currentDate, new Date(event.registrationStart)) &&
-        isBefore(currentDate, new Date(event.registrationEnd))
-      );
-    }
-    return true;
-  });
+  const earlier: Array<Happening> = [];
+  const thisWeek: Array<Happening> = [];
+  const nextWeek: Array<Happening> = [];
+  const later: Array<Happening> = [];
 
-  const earlier: typeof filterIsOpen = [];
-  const thisWeek: typeof filterIsOpen = [];
-  const nextWeek: typeof filterIsOpen = [];
-  const later: typeof filterIsOpen = [];
-
-  filterIsOpen.forEach((event) => {
+  happenings.forEach((event) => {
     if (event.date) {
       if (isBefore(new Date(event.date), currentDate)) {
         return earlier.push(event);
@@ -203,7 +165,6 @@ export default function EventFilter() {
     }
     return later.push(event);
   });
-  **/
 
   return (
     <div className="flex flex-col gap-5">
@@ -266,37 +227,56 @@ export default function EventFilter() {
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={searchParams.thisWeek}
-                onCheckedChange={() =>
-                  setSearchParams({ ...searchParams, thisWeek: !searchParams.thisWeek })
-                }
+                checked={showThisWeek}
+                onCheckedChange={() => setShowThisWeek((prev) => !prev)}
               />
-              <Label className="ml-2 text-base">Denne uken</Label>
+              <Label className="ml-2 text-base">Denne uken ({thisWeek.length})</Label>
             </div>
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={searchParams.nextWeek}
-                onCheckedChange={() =>
-                  setSearchParams({ ...searchParams, nextWeek: !searchParams.nextWeek })
-                }
+                checked={showNextWeek}
+                onCheckedChange={() => setShowNextWeek((prev) => !prev)}
               />
-              <Label className="ml-2 text-base">Neste uke</Label>
+              <Label className="ml-2 text-base">Neste uke ({nextWeek.length})</Label>
             </div>
 
             <div className="flex items-center">
-              <Checkbox
-                checked={searchParams.later}
-                onCheckedChange={() =>
-                  setSearchParams({ ...searchParams, later: !searchParams.later })
-                }
-              />
-              <Label className="ml-2 text-base">Senere</Label>
+              <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
+              <Label className="ml-2 text-base">Senere ({later.length})</Label>
             </div>
           </div>
         </div>
         <div className="right-panel w-3/4 md:w-3/4">
-          <EventsView />
+          {isLoading && (
+            <div className="flex h-full items-center justify-center">
+              <AiOutlineLoading className="animate-spin" />
+            </div>
+          )}
+
+          {!isLoading &&
+            happenings.length !== 0 &&
+            (showThisWeek ? thisWeek.length : 0) +
+              (showNextWeek ? nextWeek.length : 0) +
+              (showLater ? later.length : 0) +
+              earlier.length ===
+              0 && (
+              <div className="px-3 py-5 text-center text-lg font-medium">
+                <p>Her var det tomt gitt!</p>
+              </div>
+            )}
+
+          {happenings.length === 0 && !isLoading && (
+            <div className="px-3 py-5 text-center text-lg font-medium">
+              <p>Ingen arrangementer funnet</p>
+              <p>Prøv å endre søket ditt</p>
+            </div>
+          )}
+
+          <EventsView happenings={earlier} show={true} />
+          <EventsView happenings={thisWeek} show={showThisWeek} />
+          <EventsView happenings={nextWeek} show={showNextWeek} />
+          <EventsView happenings={later} show={showLater} />
         </div>
       </div>
     </div>
