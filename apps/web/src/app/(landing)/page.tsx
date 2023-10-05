@@ -27,8 +27,12 @@ export default async function HomePage() {
                   </span>
                 </h1>
                 <p>
-                  Vi i echo jobber med å gjøre studiehverdagen for oss informatikere bedre ved å
+                  Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
                   arrangere sosiale og faglige arrangementer.
+                  <br /> Les mer {" "}
+                  <Link href="/om/echo">
+                    <strong>her.</strong>
+                  </Link>
                 </p>
                 <div>
                   <Button asChild variant="secondary">
