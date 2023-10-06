@@ -242,8 +242,8 @@ importers:
         specifier: 13.5.3
         version: 13.5.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.23.1
-        version: 4.23.1(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.23.2
+        version: 4.23.2(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.5.4
         version: 5.5.4(@sanity/client@6.4.12)(@sanity/icons@2.4.1)(@sanity/types@3.16.7)(@sanity/ui@1.7.4)(next@13.5.3)(react@18.2.0)(sanity@3.16.7)(styled-components@5.3.11)
@@ -325,13 +325,13 @@ importers:
         version: link:../db
       '@next-auth/prisma-adapter':
         specifier: ^1.0.7
-        version: 1.0.7(@prisma/client@5.3.1)(next-auth@4.23.1)
+        version: 1.0.7(@prisma/client@5.3.1)(next-auth@4.23.2)
       next:
         specifier: 13.5.3
         version: 13.5.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.23.1
-        version: 4.23.1(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.23.2
+        version: 4.23.2(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -2749,14 +2749,14 @@ packages:
       '@napi-rs/simple-git-win32-x64-msvc': 0.1.9
     dev: false
 
-  /@next-auth/prisma-adapter@1.0.7(@prisma/client@5.3.1)(next-auth@4.23.1):
+  /@next-auth/prisma-adapter@1.0.7(@prisma/client@5.3.1)(next-auth@4.23.2):
     resolution: {integrity: sha512-Cdko4KfcmKjsyHFrWwZ//lfLUbcLqlyFqjd/nYE2m3aZ7tjMNUjpks47iw7NTCnXf+5UWz5Ypyt1dSs1EP5QJw==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3'
       next-auth: ^4
     dependencies:
       '@prisma/client': 5.3.1(prisma@5.3.1)
-      next-auth: 4.23.1(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
+      next-auth: 4.23.2(next@13.5.3)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /@next/bundle-analyzer@13.5.3:
@@ -9964,8 +9964,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /next-auth@4.23.1(next@13.5.3)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-mL083z8KgRtlrIV6CDca2H1kduWJuK/3pTS0Fe2og15KOm4v2kkLGdSDfc2g+019aEBrJUT0pPW2Xx42ImN1WA==}
+  /next-auth@4.23.2(next@13.5.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-VRmInu0r/yZNFQheDFeOKtiugu3bt90Po3owAQDnFQ3YLQFmUKgFjcE2+3L0ny5jsJpBXaKbm7j7W2QTc6Ye2A==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5
