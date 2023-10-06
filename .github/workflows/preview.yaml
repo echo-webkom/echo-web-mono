@@ -98,4 +98,4 @@ jobs:
         uses: snaplet/vercel-action@v3
         with:
           env: |
-            DATABASE_URL=postgress://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ needs.deploy-preview-db.outputs.fqdn }}:5432/echo-web-${{ needs.deploy-preview-db.outputs.branch-name-formatted }}-db?sslmode=require
+            DATABASE_URL=postgres://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ needs.deploy-preview-db.outputs.fqdn }}:5432/echo-web-${{ needs.deploy-preview-db.outputs.branch-name-formatted }}-db?sslmode=require
