@@ -1,101 +1,84 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogHeader } from "./ui/dialog";
-import { google, outlook, office365, yahoo, ics, type CalendarEvent } from "calendar-link";
-import Link from 'next/link';
-import test from 'node:test';
-import { BiLogoGoogle } from "react-icons/bi"
-import { SiYahoo, SiMicrosoftoutlook, SiMicrosoftoffice } from "react-icons/si"
-import { FaFileDownload } from "react-icons/fa"
+import { google, ics, office365, outlook, yahoo, type CalendarEvent } from "calendar-link";
+import { BiLogoGoogle } from "react-icons/bi";
+import { FaFileDownload } from "react-icons/fa";
+import { SiMicrosoftoffice, SiMicrosoftoutlook, SiYahoo } from "react-icons/si";
 
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
-
-
-interface Props {
-    date: Date,
-    title: string,
-}
-
-export function AddToCalender({ date, title }: Props) {
-    return (
-        <Dialog>
-            <DialogTrigger>
-                {date.toLocaleDateString("nb-NO")}
-            </DialogTrigger>
-
-
-
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle className="pl-5">
-                        Legg til i kalender 📅
-                    </DialogTitle>
-                </DialogHeader>
-                <div className="flex flex-col sm:flex-row justify-around pt-4 gap-4 sm:gap-0">
-                    <CalendarButton title={title} date={date} calendarType={CalendarType.GOOGLE} />
-                    <CalendarButton title={title} date={date} calendarType={CalendarType.OUTLOOK} />
-                    <CalendarButton title={title} date={date} calendarType={CalendarType.OFFICE} />
-                    <CalendarButton title={title} date={date} calendarType={CalendarType.YAHOO} />
-                    <CalendarButton title={title} date={date} calendarType={CalendarType.ICS} />
-                </div>
-
-            </DialogContent>
-
-
-        </Dialog>)
+type Props = {
+  date: Date;
+  title: string;
 };
 
-enum CalendarType {
-    GOOGLE = "Google",
-    OUTLOOK = "Outlook",
-    OFFICE = "Office",
-    YAHOO = "Yahoo",
-    ICS = "Ics",
+export function AddToCalender({ date, title }: Props) {
+  return (
+    <Dialog>
+      <DialogTrigger>{date.toLocaleDateString("nb-NO")}</DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="pl-5">Legg til i kalender 📅</DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col justify-around gap-4 pt-4 sm:flex-row sm:gap-0">
+          <CalendarButton title={title} date={date} calendarType={"Google"} />
+          <CalendarButton title={title} date={date} calendarType={"Outlook"} />
+          <CalendarButton title={title} date={date} calendarType={"Office"} />
+          <CalendarButton title={title} date={date} calendarType={"Yahoo"} />
+          <CalendarButton title={title} date={date} calendarType={"Ics"} />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
+type CalendarType = "Google" | "Outlook" | "Office" | "Yahoo" | "Ics";
 
-interface CalendarButtonProps {
-    title: string,
-    date: Date,
-    calendarType: CalendarType,
-}
+type CalendarButtonProps = {
+  title: string;
+  date: Date;
+  calendarType: CalendarType;
+};
 
 const CalendarButton = ({ title, date, calendarType }: CalendarButtonProps) => {
-    const event: CalendarEvent = {
-        title,
-        description: "",
-        start: date,
-        duration: [2, "hour"]
-    }
-    let calendarFunc = getCalendarFunc(calendarType)
-    const link = calendarFunc(event)
-    const iconClassNames = "h-8 w-8"
-    return (
-        <a href={link} target="_blank">
-            <div className="flex flex-col sm:gap-4 py-3 sm:py-0 bg-gray-100 sm:bg-transparent rounded-sm">
+  const event: CalendarEvent = {
+    title,
+    description: "",
+    start: date,
+    duration: [2, "hour"],
+  };
+  const link = getCalendarLink(calendarType, event);
+  const iconClassNames = "h-8 w-8";
+  return (
+    <a href={link} target="_blank" rel="noreferrer">
+      <div className="flex flex-col rounded-sm bg-gray-100 py-3 sm:gap-4 sm:bg-transparent sm:py-0">
+        <div className="mx-auto">
+          {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
+          {"Outlook" === calendarType && <SiMicrosoftoutlook className={iconClassNames} />}
+          {"Office" === calendarType && <SiMicrosoftoffice className={iconClassNames} />}
+          {"Yahoo" === calendarType && <SiYahoo className={iconClassNames} />}
+          {"Ics" === calendarType && <FaFileDownload className={iconClassNames} />}
+        </div>
+        <p className="text-center">{calendarType}</p>
+      </div>
+    </a>
+  );
+};
 
-
-                <div className="mx-auto">
-                    {CalendarType.GOOGLE === calendarType && <BiLogoGoogle className={iconClassNames} />}
-                    {CalendarType.OUTLOOK === calendarType && <SiMicrosoftoutlook className={iconClassNames} />}
-                    {CalendarType.OFFICE === calendarType && <SiMicrosoftoffice className={iconClassNames} />}
-                    {CalendarType.YAHOO === calendarType && <SiYahoo className={iconClassNames} />}
-                    {CalendarType.ICS === calendarType && <FaFileDownload className={iconClassNames} />}
-                </div>
-                <p className="text-center">{calendarType}</p>
-            </div>
-        </a>
-
-    )
-}
-
-const getCalendarFunc = (calendarType: CalendarType) => {
-    switch (calendarType) {
-        case CalendarType.GOOGLE: return google;
-        case CalendarType.OUTLOOK: return outlook;
-        case CalendarType.OFFICE: return office365;
-        case CalendarType.YAHOO: return yahoo;
-        case CalendarType.ICS: return ics;
-        default: throw new Error("Could not recognize calendar type");
-    }
-}
+const getCalendarLink = (calendarType: CalendarType, event: CalendarEvent): string => {
+  switch (calendarType) {
+    case "Google":
+      return google(event);
+    case "Outlook":
+      return outlook(event);
+    case "Office":
+      return office365(event);
+    case "Yahoo":
+      return yahoo(event);
+    case "Ics":
+      return ics(event);
+    default:
+      return ics(event);
+  }
+};
