@@ -180,7 +180,7 @@ export const POST = withSession(
 
           const answersToSave = [];
 
-          for (var happeningQuestion of happening.questions) {
+          for (const happeningQuestion of happening.questions) {
             const foundAnswer = input.questions.find((userAnswer) => {
               return happeningQuestion.title === userAnswer.question;
             });
