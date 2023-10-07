@@ -355,7 +355,7 @@ importers:
   packages/db:
     dependencies:
       '@prisma/client':
-        specifier: ^5.4.0
+        specifier: ^5.4.1
         version: 5.4.1(prisma@5.4.1)
     devDependencies:
       '@types/node':
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:*
         version: link:../eslint
       prisma:
-        specifier: ^5.4.0
+        specifier: ^5.4.1
         version: 5.4.1
       prisma-kysely:
         specifier: ^1.7.1
