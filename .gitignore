@@ -29,6 +29,9 @@ test-results/
 playwright-report/
 playwright/.cache/
 
+# DB
+postgres-data/
+
 
 # Sanity
 .sanity

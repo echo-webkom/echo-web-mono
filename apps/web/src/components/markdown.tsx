@@ -19,6 +19,12 @@ export function Markdown({ className, content }: MarkdownProps) {
     <ReactMarkdown
       className={cn("prose", "md:prose-xl", className)}
       components={{
+        h1: ({ children }) => {
+          return <h1 className="mb-4 text-xl font-bold">{children}</h1>;
+        },
+        h2: ({ children }) => {
+          return <h2 className="mb-4 text-xl font-bold">{children}</h2>;
+        },
         a: ({ children, href }) => {
           // TODO: Add external link icon and behavior
           return (

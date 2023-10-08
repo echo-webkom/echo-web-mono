@@ -18,15 +18,19 @@ export type JWTPayload = {
  * @returns The JWT payload if the user is logged in, otherwise null
  */
 export async function getJwtPayload() {
-  const jwt = cookies().get("user")?.value;
+  try {
+    const jwt = cookies().get("user")?.value;
 
-  if (!jwt) {
+    if (!jwt) {
+      return null;
+    }
+
+    const payload = (await verify(jwt, process.env.JWT_SECRET!)) as JWTPayload;
+
+    return payload;
+  } catch {
     return null;
   }
-
-  const payload = (await verify(jwt, process.env.JWT_SECRET!)) as JWTPayload;
-
-  return payload;
 }
 
 type GetCurrentUserOptions = {

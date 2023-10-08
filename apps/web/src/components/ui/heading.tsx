@@ -14,8 +14,8 @@ export const Heading = ({ level = 1, className, children }: HeadingProps) => {
       className={cn(
         "font-bold tracking-tight",
         {
-          "text-3xl": level === 1,
-          "text-2xl": level === 2,
+          "text-2xl": level === 1,
+          "text-xl": level === 2,
         },
         className,
       )}

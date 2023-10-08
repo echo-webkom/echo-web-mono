@@ -1,6 +1,6 @@
 import { eq, type InferSelectModel } from "drizzle-orm";
 import { type MiddlewareHandler } from "hono";
-import { getSignedCookie } from "hono/cookie";
+import { getCookie, getSignedCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import { verify } from "hono/jwt";
 
@@ -17,9 +17,9 @@ declare module "hono" {
 
 export const user = (): MiddlewareHandler => {
   return async (c, next) => {
-    const token = await getSignedCookie(c, process.env.JWT_SECRET!, USER_COOKIE_NAME);
+    const cookie = getCookie(c, USER_COOKIE_NAME);
 
-    if (!token) {
+    if (!cookie) {
       const res = new Response("Unauthorized", {
         status: 401,
         headers: {
@@ -29,7 +29,7 @@ export const user = (): MiddlewareHandler => {
       throw new HTTPException(401, { res });
     }
 
-    const payload = (await verify(token, process.env.JWT_SECRET!)) as JWTPayload;
+    const payload = (await verify(cookie, process.env.JWT_SECRET!)) as JWTPayload;
 
     if (!payload) {
       const res = new Response("Unauthorized", {
@@ -47,6 +47,6 @@ export const user = (): MiddlewareHandler => {
 
     c.set("user", user);
 
-    await next();
+    return await next();
   };
 };

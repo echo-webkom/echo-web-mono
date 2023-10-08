@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import { pgGenerate } from "drizzle-dbml-generator";
 
 import * as schema from "../src/db/schemas";

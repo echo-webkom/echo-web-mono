@@ -2,7 +2,8 @@
   "name": "@echo-webkom/storage",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "./server.ts",
+  "main": "index.ts",
+  "types": "index.ts",
   "scripts": {
     "dev": "pnpm with-env drizzle-kit studio",
     "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
@@ -31,7 +32,8 @@
     "redis": "^4.6.10",
     "server-only": "^0.0.1",
     "tsx": "^3.13.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "zod": "^3.22.2"
   },
   "eslintConfig": {
     "root": true,

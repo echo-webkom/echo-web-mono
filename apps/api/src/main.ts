@@ -8,9 +8,12 @@ import { app } from "./app";
 
 const PORT = 3003;
 
-serve({
-  fetch: app.fetch,
-  port: PORT,
-});
-
-console.log(chalk.bgBlue.black(`🚀 Server listening on port ${PORT}`));
+serve(
+  {
+    fetch: app.fetch,
+    port: PORT,
+  },
+  (info) => {
+    console.log(chalk.bgBlue.black(`🚀 Server listening on port ${info.port}`));
+  },
+);

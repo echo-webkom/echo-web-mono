@@ -2,6 +2,11 @@ import { type Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { sign } from "hono/jwt";
 
+import { USER_COOKIE_NAME } from "@/constants";
+
+const secret = process.env.JWT_SECRET!;
+export const jwtConfig = { secret, cookie: USER_COOKIE_NAME };
+
 export type JWTPayload = {
   sub: string;
   email: string;

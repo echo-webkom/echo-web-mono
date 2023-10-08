@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
-import "dotenv/config";
-
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
-import { db } from "../server";
+import { db } from "../src/db/drizzle";
 
 console.log("🚀 Starting migrations...");
 

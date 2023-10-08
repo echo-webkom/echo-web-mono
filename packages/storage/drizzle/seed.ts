@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import bcrypt from "bcrypt";
 
 import { slugify } from "../../../apps/api/src/lib/slugify";
