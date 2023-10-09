@@ -27,7 +27,7 @@ const useNavigation = () => {
 
 const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
