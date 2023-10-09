@@ -64,3 +64,7 @@ export const accountTypeToString: Record<AccountType, string> = {
   guest: "Gjest",
   student: "Student",
 };
+
+export const YEARCOURSE: Array<Degree> = ["armninf"];
+export const BACHELORS: Array<Degree> = ["binf", "dsik", "dtek", "dvit", "imo"];
+export const MASTERS: Array<Degree> = ["dsc", "inf", "post", "prog"];
