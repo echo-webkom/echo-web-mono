@@ -137,17 +137,10 @@ type CombinedHappeningPreviewProps = {
   isPast?: boolean;
 };
 
-export function CombinedHappeningPreview({
-  happening,
-  isPast = false,
-}: CombinedHappeningPreviewProps) {
+export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
   return (
     <Link href={`/${happening.type}/${happening.slug}`}>
-      <div
-        className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted", {
-          "text-gray-700": isPast,
-        })}
-      >
+      <div className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted")}>
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
@@ -163,16 +156,14 @@ export function CombinedHappeningPreview({
                 {format(new Date(happening.date), "d. MMMM yyyy", { locale: nb })}
               </li>
             )}
-            {!isPast && (
-              <li>
-                <span className="font-semibold">Påmelding:</span>{" "}
-                {happening.registrationStart
-                  ? format(new Date(happening.registrationStart), "d. MMMM yyyy", {
-                      locale: nb,
-                    })
-                  : "Påmelding åpner snart"}
-              </li>
-            )}
+            <li>
+              <span className="font-semibold">Påmelding:</span>{" "}
+              {happening.registrationStart
+                ? format(new Date(happening.registrationStart), "d. MMMM yyyy", {
+                    locale: nb,
+                  })
+                : "Påmelding åpner snart"}
+            </li>
           </ul>
         </div>
         {happening.type === "bedpres" && (
