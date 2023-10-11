@@ -27,13 +27,15 @@ export type Happening =
       type: "BEDPRES";
     });
 
-export type URLParams = {
+// For querying Sanity
+export type QueryParams = {
   type: string;
   search?: string;
   open?: string;
   past?: string;
 };
 
+// For handling state
 export type SearchParams = {
   type: string;
   search?: string;
@@ -41,6 +43,7 @@ export type SearchParams = {
   past: boolean;
 };
 
+// Makes it so URLs can be shared with filters intact
 function URLtoSearchParams(url: ReadonlyURLSearchParams) {
   const params: SearchParams = {
     type: url.get("type") ?? "all",
@@ -58,23 +61,12 @@ function URLtoSearchParams(url: ReadonlyURLSearchParams) {
     params.type = "all";
   }
 
-  if (params.search && !onlyLettersAndNumbers(params.search)) {
-    params.search = undefined;
-  }
-
-  if (params.search && params.search.length > 50) {
-    params.search = params.search.substring(0, 50);
-  }
-
   return params;
 }
 
-function onlyLettersAndNumbers(str: string) {
-  return str.match("^[A-Za-z0-9]+$");
-}
-
-function validateQueryToURL(params: SearchParams) {
-  const query: URLParams = {
+// Sanitizes the query params before fetching data
+function validateParamsToQuery(params: SearchParams) {
+  const query: QueryParams = {
     search: params.search ?? undefined,
     type: params.type ?? "all",
     open: params.open ? "true" : undefined,
@@ -84,14 +76,18 @@ function validateQueryToURL(params: SearchParams) {
   if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
     query.type = "all";
   }
-  if (query.search && query.search.length > 50) {
-    query.search = query.search.substring(0, 50);
+  if (query.search) {
+    query.search = removeInvalidChars(query.search);
+    if (query.search.length > 50) {
+      query.search = query.search.substring(0, 50);
+    }
   }
 
-  query.open === "true" ?? undefined;
-  query.past === "true" ?? undefined;
-
   return query;
+}
+
+function removeInvalidChars(str: string) {
+  return str.replace(/[^ a-zæøåÆØÅ0-9-]/g, "");
 }
 
 function EventsView({ happenings, show }: { happenings: Array<Happening>; show: boolean }) {
@@ -116,7 +112,7 @@ export default function EventFilter() {
   const params = useSearchParams();
 
   const [searchParams, setSearchParams] = useState(URLtoSearchParams(params));
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(searchParams.search ?? "");
 
   const [happenings, setHappenings] = useState<Array<Happening>>([]);
   const [isLoading, setLoading] = useState(true);
@@ -128,8 +124,8 @@ export default function EventFilter() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const url = URLtoSearchParams(params);
-      const validQuery = validateQueryToURL(url);
+      const p = URLtoSearchParams(params);
+      const validQuery = validateParamsToQuery(p);
 
       const bedpresses =
         validQuery.type === "all" || validQuery.type === "bedpres"
@@ -163,10 +159,10 @@ export default function EventFilter() {
   }, [params]);
 
   useEffect(() => {
-    const query: URLParams = { type: "all" };
+    const query: QueryParams = { type: "all" };
 
     if (searchParams.type) query.type = searchParams.type;
-    if (searchParams.search) query.search = encodeURI(searchParams.search);
+    if (searchParams.search) query.search = searchParams.search;
     if (searchParams.open) query.open = "true";
     if (searchParams.past) query.past = "true";
 
@@ -248,7 +244,7 @@ export default function EventFilter() {
                 if (e.key === "Enter") setSearchParams({ ...searchParams, search: input });
               }}
               type="text"
-              placeholder={searchParams.search ?? "Søk etter arrangement"}
+              placeholder="Søk etter arrangement"
             />
           </div>
           <div className="p-4">
@@ -302,7 +298,7 @@ export default function EventFilter() {
             </div>
           )}
 
-          <EventsView happenings={earlier} show={true} />
+          <EventsView happenings={earlier} show={searchParams.past} />
           <EventsView happenings={thisWeek} show={showThisWeek} />
           <EventsView happenings={nextWeek} show={showNextWeek} />
           <EventsView happenings={later} show={showLater} />

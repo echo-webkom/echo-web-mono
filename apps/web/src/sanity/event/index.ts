@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-import { type URLParams } from "@/components/event-filter";
+import { type QueryParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { slugSchema, type Slug } from "../utils/slug";
@@ -202,7 +202,7 @@ export const $fetchAllEvents = async (): Promise<Array<Event> | ErrorMessage> =>
   }
 };
 
-export const fetchFilteredEvents = async (q: URLParams): Promise<Array<Event> | ErrorMessage> => {
+export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> | ErrorMessage> => {
   const conditions = [
     `_type == "event"`,
     `!(_id in path('drafts.**'))`,
