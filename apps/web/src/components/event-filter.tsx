@@ -237,15 +237,39 @@ export default function EventFilter() {
       <div className="container flex flex-col gap-5 md:flex-row md:gap-0">
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") setSearchParams({ ...searchParams, search: input });
-              }}
-              type="text"
-              placeholder="Søk etter arrangement"
-            />
+            <div className="flex rounded-lg border border-gray-300 hover:border-gray-500 focus:ring-0">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setSearchParams({ ...searchParams, search: input });
+                }}
+                type="text"
+                placeholder="Søk etter arrangement"
+                className="appearance-none border-none bg-transparent outline-none focus:ring-0 focus:ring-offset-0"
+              />
+              {input !== "" && (
+                <button className="p-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-gray-400 hover:text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    onClick={() => {
+                      setInput(""), setSearchParams({ ...searchParams, search: "" });
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
           <div className="p-4">
             <div className="mb-2 text-xl font-semibold">Tidspunkt</div>
