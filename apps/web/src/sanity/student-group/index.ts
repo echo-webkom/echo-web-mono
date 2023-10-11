@@ -29,7 +29,7 @@ export async function fetchStudentGroupParams() {
 
   const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
     query,
-    tags: ["student-group-params"],
+    tags: [],
   });
 
   const studentGroupSlugSchema = z.object({
