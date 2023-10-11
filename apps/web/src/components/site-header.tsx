@@ -1,55 +1,39 @@
-import { headerRoutes } from "@/lib/routes";
+import Link from "next/link";
+
 import { getSession } from "@/lib/session";
 import { getDatabaseStatus } from "@/utils/database-status";
+import { DesktopNavigation } from "./desktop-navigation";
+import { MobileNavigation } from "./mobile-navigation";
 import { ProfileIcon } from "./profile-icon";
-import {
-  ExpandedMenu,
-  ExpandedMenuItem,
-  ExpandedMenuList,
-  ExpandedMenuSection,
-  ExpandedMenuTitle,
-  Header,
-  HeaderProvider,
-  NavigationMenu,
-  NavigationMenuItem,
-  TopMenu,
-} from "./ui/header";
+import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
   const session = await getSession();
 
   return (
-    <HeaderProvider>
+    <div>
       <DatabaseStatusBar />
-      <Header>
-        <TopMenu>
-          <HeaderLogo />
-          <NavigationMenu>
+
+      <div className="border-b">
+        <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+          <div className="flex items-center">
+            <HeaderLogo />
+            <DesktopNavigation />
+          </div>
+          <div className="flex items-center">
             {session ? (
               <ProfileIcon session={session} />
             ) : (
-              <NavigationMenuItem to="/auth/logg-inn">Logg inn</NavigationMenuItem>
+              <Button variant="secondary" asChild>
+                <Link href="/auth/logg-inn">Logg inn</Link>
+              </Button>
             )}
-          </NavigationMenu>
-        </TopMenu>
-
-        <ExpandedMenu>
-          {headerRoutes.map((section) => (
-            <ExpandedMenuSection key={section.label}>
-              <ExpandedMenuTitle>{section.label}</ExpandedMenuTitle>
-              <ExpandedMenuList>
-                {section.sublinks.map((item) => (
-                  <ExpandedMenuItem key={item.label} to={item.href}>
-                    {item.label}
-                  </ExpandedMenuItem>
-                ))}
-              </ExpandedMenuList>
-            </ExpandedMenuSection>
-          ))}
-        </ExpandedMenu>
-      </Header>
-    </HeaderProvider>
+            <MobileNavigation />
+          </div>
+        </header>
+      </div>
+    </div>
   );
 }
 
