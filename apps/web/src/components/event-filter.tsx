@@ -21,10 +21,10 @@ import { Label } from "./ui/label";
 
 export type Happening =
   | (Event & {
-      type: "EVENT";
+      type: "event";
     })
   | (Bedpres & {
-      type: "BEDPRES";
+      type: "bedpres";
     });
 
 // For querying Sanity
@@ -143,8 +143,8 @@ export default function EventFilter() {
       }
 
       const combinedHappenings = [
-        ...events.map((e) => ({ ...e, type: "EVENT" as const })),
-        ...bedpresses.map((b) => ({ ...b, type: "BEDPRES" as const })),
+        ...events.map((e) => ({ ...e, type: "event" as const })),
+        ...bedpresses.map((b) => ({ ...b, type: "bedpres" as const })),
       ].sort((a, b) => {
         if (a.date && b.date) {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
@@ -196,7 +196,7 @@ export default function EventFilter() {
   });
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex min-h-full flex-col gap-5">
       <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
         <div className="md:space-x-3">
           <Button

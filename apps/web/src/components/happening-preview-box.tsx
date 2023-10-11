@@ -142,7 +142,7 @@ export function CombinedHappeningPreview({
   isPast = false,
 }: CombinedHappeningPreviewProps) {
   return (
-    <Link href={`/${happening.type.toLowerCase()}/${happening.slug}`}>
+    <Link href={`/${happening.type}/${happening.slug}`}>
       <div
         className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted", {
           "text-gray-700": isPast,
@@ -151,7 +151,7 @@ export function CombinedHappeningPreview({
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
-            {happening.type === "EVENT" && (
+            {happening.type === "event" && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
                 {capitalize(happening.organizers.map((o) => o.name).join(", "))}
@@ -175,7 +175,7 @@ export function CombinedHappeningPreview({
             )}
           </ul>
         </div>
-        {happening.type === "BEDPRES" && (
+        {happening.type === "bedpres" && (
           <div className="hidden overflow-hidden rounded-full border sm:block">
             <div className="relative aspect-square h-20 w-20">
               <Image
