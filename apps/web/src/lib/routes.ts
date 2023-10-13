@@ -14,6 +14,7 @@ const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For student
   .link("/utlegg", { label: "Utlegg" })
   .link("/si-ifra", { label: "Si ifra" })
   .link("/motereferater", { label: "Møtereferater" })
+  .link("/arrangementer", { label: "Arrangementer" })
   .build();
 
 const forCompaniesRoutes = new RouteGroup("/for-bedrifter", { label: "For bedrifter" })

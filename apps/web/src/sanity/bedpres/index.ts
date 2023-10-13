@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
 
+import { type QueryParams } from "@/components/event-filter";
+import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { bedpresSchema, type Bedpres } from "./schemas";
 
@@ -184,3 +186,70 @@ export async function $fetchAllBedpresses() {
     };
   }
 }
+
+export const fetchFilteredBedpresses = async (
+  q: QueryParams,
+): Promise<Array<Bedpres> | ErrorMessage> => {
+  const conditions = [
+    `_type == "bedpres"`,
+    `!(_id in path('drafts.**'))`,
+    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
+    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.search ? `title match "*${q.search}*"` : null,
+  ].filter(Boolean);
+
+  try {
+    const query = groq`
+*[${conditions.join(" && ")}] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  "company": company->{
+    _id,
+    name,
+    website,
+    image,
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
+  "location": location->{
+    name,
+  },
+  "spotRanges": spotRanges[] {
+    spots,
+    minDegreeYear,
+    maxDegreeYear,
+  },
+  "additionalQuestions": additionalQuestions[] {
+    title,
+    required,
+    type,
+    options,
+  },
+  body
+}
+    `;
+
+    const res = await sanityFetch<Array<Bedpres>>({
+      query,
+      tags: ["filtered-bedpresses"],
+    });
+
+    return bedpresSchema.array().parse(res);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Could not fetch bedpres.",
+    };
+  }
+};

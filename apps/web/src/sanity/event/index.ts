@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
 
+import { type QueryParams } from "@/components/event-filter";
+import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { slugSchema, type Slug } from "../utils/slug";
 import { eventSchema, type Event } from "./schemas";
@@ -203,3 +205,68 @@ export async function $fetchAllEvents() {
     };
   }
 }
+
+export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> | ErrorMessage> => {
+  const conditions = [
+    `_type == "event"`,
+    `!(_id in path('drafts.**'))`,
+    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
+    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.search ? `title match "*${q.search}*"` : null,
+  ].filter(Boolean);
+
+  try {
+    const query = groq`
+*[${conditions.join(" && ")}] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  "organizers": organizer[]->{
+    _id,
+    name,
+    "slug": slug.current,
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "date": dates.date,
+  "registrationStart": dates.registrationStart,
+  "registrationEnd": dates.registrationEnd,
+  "location": location->{
+    name,
+  },
+  "spotRanges": spotRanges[] {
+    spots,
+    minDegreeYear,
+    maxDegreeYear,
+  },
+  "additionalQuestions": additionalQuestions[] {
+    title,
+    required,
+    type,
+    options,
+  },
+  body
+}
+
+    `;
+
+    const res = await sanityFetch<Array<Event>>({
+      query,
+      tags: ["filtered-events"],
+    });
+
+    return eventSchema.array().parse(res);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Failed to fetch events",
+    };
+  }
+};
