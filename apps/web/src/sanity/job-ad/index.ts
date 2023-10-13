@@ -17,7 +17,7 @@ export const jobTypeToString: Record<JobType, string> = {
 /**
  * @returns Array of slugs for all job ads
  */
-export const fetchJobAdPaths = async (): Promise<Array<string>> => {
+export async function fetchJobAdPaths() {
   try {
     const query = groq`*[_type == "job"]{ "slug": slug.current }`;
     const result = await sanityFetch<Array<string>>({
@@ -32,13 +32,13 @@ export const fetchJobAdPaths = async (): Promise<Array<string>> => {
   } catch {
     return [];
   }
-};
+}
 
 /**
  * @param n - number of job ads to fetch
  * @returns Array of job ads or an error message
  */
-export const fetchJobAds = async (n: number) => {
+export async function fetchJobAds(n: number) {
   const query = groq`
 *[_type == "job"
   && !(_id in path('drafts.**'))]
@@ -77,8 +77,9 @@ export const fetchJobAds = async (n: number) => {
   });
 
   return jobAdSchema.array().parse(result);
-};
-export const fetchAvailableJobAds = async (n: number) => {
+}
+
+export async function fetchAvailableJobAds(n: number) {
   const query = groq`
 *[_type == "job"
   && !(_id in path('drafts.**'))
@@ -118,9 +119,9 @@ export const fetchAvailableJobAds = async (n: number) => {
   });
 
   return jobAdSchema.array().parse(result);
-};
+}
 
-export const fetchJobAdBySlug = async (slug: string) => {
+export async function fetchJobAdBySlug(slug: string) {
   const query = groq`
 *[_type == "job"
   && slug.current == $slug
@@ -152,11 +153,15 @@ export const fetchJobAdBySlug = async (slug: string) => {
     slug,
   };
 
-  const result = await sanityFetch<JobAd>({
+  const result = await sanityFetch<JobAd | null>({
     query,
     params,
     tags: [`job-ad-${slug}`],
   });
 
+  if (!result) {
+    return null;
+  }
+
   return jobAdSchema.parse(result);
-};
+}

@@ -2,16 +2,17 @@ version: "3.8"
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:14.7
     restart: always
     container_name: echo-web-db
     environment:
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
+
 volumes:
   db:
     driver: local

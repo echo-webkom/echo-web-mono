@@ -43,7 +43,7 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
 3. Start databasen
 
    ```sh
-   pnpm docker:up
+   pnpm db:up
    ```
 
 4. Generer prisma typer

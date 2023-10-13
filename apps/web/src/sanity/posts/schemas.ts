@@ -7,7 +7,6 @@ export const authorSchema = z.object({
   name: z.string(),
   image: imageSchema.nullable(),
 });
-export type Author = z.infer<typeof authorSchema>;
 
 export const postSchema = z.object({
   _id: z.string(),
@@ -19,4 +18,6 @@ export const postSchema = z.object({
   image: imageSchema.nullable(),
   body: z.string(),
 });
+
+export type Author = z.infer<typeof authorSchema>;
 export type Post = z.infer<typeof postSchema>;

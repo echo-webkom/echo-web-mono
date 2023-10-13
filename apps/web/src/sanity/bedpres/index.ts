@@ -7,7 +7,7 @@ import { bedpresSchema, type Bedpres } from "./schemas";
 
 export * from "./schemas";
 
-export const fetchUpcomingBedpresses = async (n: number) => {
+export async function fetchUpcomingBedpresses(n: number) {
   const query = groq`
 *[_type == "bedpres"
   && !(_id in path('drafts.**'))
@@ -64,9 +64,9 @@ export const fetchUpcomingBedpresses = async (n: number) => {
   });
 
   return bedpresSchema.array().parse(res);
-};
+}
 
-export const fetchBedpresBySlug = async (slug: string) => {
+export async function fetchBedpresBySlug(slug: string) {
   const query = groq`
 *[_type == "bedpres"
   && slug.current == $slug
@@ -124,9 +124,9 @@ export const fetchBedpresBySlug = async (slug: string) => {
   });
 
   return bedpresSchema.parse(res);
-};
+}
 
-export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessage> => {
+export async function $fetchAllBedpresses() {
   try {
     const query = groq`
 *[_type == "bedpres"
@@ -185,7 +185,7 @@ export const $fetchAllBedpresses = async (): Promise<Array<Bedpres> | ErrorMessa
       message: "Could not fetch bedpres.",
     };
   }
-};
+}
 
 export const fetchFilteredBedpresses = async (
   q: QueryParams,

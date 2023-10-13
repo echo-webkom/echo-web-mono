@@ -25,6 +25,20 @@ type Props = {
   };
 };
 
+async function getData(slug: string) {
+  const data = await getHappeningBySlug(slug);
+  const info = await fetchBedpresBySlug(slug);
+
+  if (!data || !info) {
+    return notFound();
+  }
+
+  return {
+    data,
+    info,
+  };
+}
+
 export const generateMetadata = async ({ params }: Props) => {
   const bedpres = await fetchBedpresBySlug(params.slug);
 
@@ -36,13 +50,10 @@ export const generateMetadata = async ({ params }: Props) => {
 export default async function BedpresPage({ params }: Props) {
   const { slug } = params;
 
-  const eventInfo = await getHappeningBySlug(slug);
-  if (!eventInfo) {
-    return notFound();
-  }
+  // RENAME VARIABLES
+  const { data: eventInfo, info: bedpres } = await getData(slug);
 
   const user = await getUser();
-  const bedpres = await fetchBedpresBySlug(slug);
 
   const isOrganizer = user && isEventOrganizer(user, eventInfo);
   const isAdmin = user?.role === "ADMIN";
@@ -244,7 +255,7 @@ export default async function BedpresPage({ params }: Props) {
               <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
                 <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
                 <div className="flex items-center">
-                  <Link href="/api/auth/signin" className="hover:underline">
+                  <Link href="/api/auth/logg-inn" className="hover:underline">
                     Logg inn her
                   </Link>
                   <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -256,7 +267,7 @@ export default async function BedpresPage({ params }: Props) {
           {(isAdmin || isOrganizer) && (
             <SidebarItem>
               <Button fullWidth variant="link" asChild>
-                <Link href={"/dashboard/" + slug}>Til Dashboard</Link>
+                <Link href={"/dashbord/" + slug}>Til Dashboard</Link>
               </Button>
             </SidebarItem>
           )}

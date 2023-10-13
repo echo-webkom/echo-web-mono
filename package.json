@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.7.5",
+  "packageManager": "pnpm@8.9.0",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -12,13 +12,14 @@
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "start": "turbo run start",
+    "setup": "pnpm install && pnpm db:up && pnpm db:deploy",
     "clean": "rm -rf node_modules",
     "clean-workspaces": "turbo run clean",
     "db:generate": "turbo run db:generate",
     "db:migrate": "pnpm --filter=db db:migrate",
     "db:deploy": "turbo run db:deploy",
-    "docker:up": "pnpm --filter=db docker:up",
-    "docker:down": "pnpm --filter=db docker:down",
+    "db:up": "pnpm --filter=db db:up",
+    "db:down": "pnpm --filter=db db:down",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
@@ -33,9 +34,9 @@
     "@types/prettier": "^2.7.3",
     "prettier": "3.0.3",
     "prettier-plugin-organize-imports": "3.2.3",
-    "prettier-plugin-tailwindcss": "0.5.4",
-    "start-server-and-test": "^2.0.0",
-    "turbo": "1.10.13",
+    "prettier-plugin-tailwindcss": "0.5.5",
+    "start-server-and-test": "^2.0.1",
+    "turbo": "1.10.15",
     "typescript": "5.2.2"
   }
 }

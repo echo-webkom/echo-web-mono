@@ -58,18 +58,18 @@ const config = {
   footer: {
     text: "Dokumentasjon for echo Webkom",
   },
-  banner: {
-    dismissible: true,
-    key: "echo-webkom-announcement",
-    text: (
-      <p>
-        Vi søker nye medlemmer!{" "}
-        <a className="underline hover:no-underline" href="https://verv.echo-webkom.no">
-          Les mer her
-        </a>
-      </p>
-    ),
-  },
+  // banner: {
+  //   dismissible: true,
+  //   key: "echo-webkom-announcement",
+  //   text: (
+  //     <p>
+  //       Vi søker nye medlemmer!{" "}
+  //       <a className="underline hover:no-underline" href="https://verv.echo-webkom.no">
+  //         Les mer her
+  //       </a>
+  //     </p>
+  //   ),
+  // },
 } satisfies DocsThemeConfig;
 
 export default config;

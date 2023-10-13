@@ -20,7 +20,7 @@ type ProfileIconProps = {
   session: Session;
 };
 
-export const ProfileIcon = ({ session }: ProfileIconProps) => {
+export function ProfileIcon({ session }: ProfileIconProps) {
   const pathname = usePathname();
 
   return (
@@ -40,7 +40,7 @@ export const ProfileIcon = ({ session }: ProfileIconProps) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/auth/profile">
+          <Link href="/auth/profil">
             <PersonIcon className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
@@ -77,4 +77,4 @@ export const ProfileIcon = ({ session }: ProfileIconProps) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

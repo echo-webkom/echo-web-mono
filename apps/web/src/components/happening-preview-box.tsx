@@ -27,7 +27,7 @@ const happeningTypeToString: Record<HappeningType, string> = {
   BEDPRES: "bedriftspresentasjoner",
 };
 
-export const HappeningPreviewBox = ({ type, happenings }: HappeningPreviewBoxProps) => {
+export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxProps) {
   return (
     <div>
       <h2 className="text-center text-xl font-semibold md:text-3xl">
@@ -53,13 +53,13 @@ export const HappeningPreviewBox = ({ type, happenings }: HappeningPreviewBoxPro
       )}
     </div>
   );
-};
+}
 
 type EventPreviewProps = {
   event: Event;
 };
 
-export const EventPreview = ({ event }: EventPreviewProps) => {
+export function EventPreview({ event }: EventPreviewProps) {
   return (
     <Link href={`/event/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -89,13 +89,13 @@ export const EventPreview = ({ event }: EventPreviewProps) => {
       </div>
     </Link>
   );
-};
+}
 
 type BedpresPreviewProps = {
   bedpres: Bedpres;
 };
 
-export const BedpresPreview = ({ bedpres }: BedpresPreviewProps) => {
+export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -130,7 +130,7 @@ export const BedpresPreview = ({ bedpres }: BedpresPreviewProps) => {
       </div>
     </Link>
   );
-};
+}
 
 type CombinedHappeningPreviewProps = {
   happening: Happening;

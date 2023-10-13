@@ -11,23 +11,23 @@
     "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma && tsx ./prisma/post-generate.ts",
     "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
     "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
-    "docker:up": "docker-compose up -d",
+    "db:up": "docker compose up -d",
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
-    "docker:down": "docker-compose down",
+    "db:down": "docker compose down",
     "dev": "pnpm with-env prisma studio --port 4000 --browser none",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.3.0"
+    "@prisma/client": "^5.4.1"
   },
   "devDependencies": {
-    "@types/node": "^20.6.0",
+    "@types/node": "^20.8.4",
     "dotenv-cli": "7.3.0",
     "eslint-config-webkom": "workspace:*",
-    "prisma": "^5.3.0",
-    "prisma-kysely": "^1.7.0",
-    "tsx": "^3.12.10",
+    "prisma": "^5.4.1",
+    "prisma-kysely": "^1.7.1",
+    "tsx": "^3.13.0",
     "typescript": "5.2.2"
   },
   "eslintConfig": {

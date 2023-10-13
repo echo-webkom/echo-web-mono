@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const LandingPage = () => {
+export function LandingPage() {
   return (
     <div className="mx-auto w-full max-w-lg space-y-10 py-24">
       <Image
@@ -19,4 +19,4 @@ export const LandingPage = () => {
       </p>
     </div>
   );
-};
+}

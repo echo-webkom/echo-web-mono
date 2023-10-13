@@ -22,4 +22,5 @@ export const bedpresSchema = z.object({
   additionalQuestions: questionSchema.array().nullable(),
   body: z.string().nullable(),
 });
+
 export type Bedpres = z.infer<typeof bedpresSchema>;

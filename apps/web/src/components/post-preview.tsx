@@ -11,10 +11,10 @@ type PostPreviewProps = {
   withBorder?: boolean;
 };
 
-export const PostPreview = ({ post, withBorder = false }: PostPreviewProps) => {
+export function PostPreview({ post, withBorder = false }: PostPreviewProps) {
   return (
     <Link
-      href={`/for-students/post/${post.slug}`}
+      href={`/for-studenter/innlegg/${post.slug}`}
       className={cn(
         "flex h-full flex-col gap-1 rounded-lg p-5",
         "hover:bg-muted",
@@ -43,4 +43,4 @@ export const PostPreview = ({ post, withBorder = false }: PostPreviewProps) => {
       )}
     </Link>
   );
-};
+}

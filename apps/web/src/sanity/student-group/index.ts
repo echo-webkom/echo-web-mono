@@ -13,26 +13,28 @@ export const studentGroupTypeName: Record<StudentGroupType, string> = {
   SUBGROUP: "Undergrupper",
   INTGROUP: "Interessegrupper",
   SUBORG: "Underorganisasjoner",
+  SPORT: "Idrettslag",
 };
 
 export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
-  BOARD: "board",
-  SUBGROUP: "subgroup",
-  INTGROUP: "intgroup",
-  SUBORG: "suborg",
+  BOARD: "hovedstyre",
+  SUBGROUP: "undergruppe",
+  INTGROUP: "interessegruppe",
+  SUBORG: "underorganisasjon",
+  SPORT: "idrettslag",
 };
 
-export const fetchStudentGroupParams = async () => {
+export async function fetchStudentGroupParams() {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
   const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
     query,
-    tags: ["student-group-params"],
+    tags: [],
   });
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),
-    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG"]),
+    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG", "SPORT"]),
   });
 
   const studentGroupPaths = result.map((studentGroup) =>
@@ -45,9 +47,9 @@ export const fetchStudentGroupParams = async () => {
   }));
 
   return paths;
-};
+}
 
-export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
+export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
   const query = groq`
 *[_type == "studentGroup"
   && groupType == $type
@@ -90,9 +92,9 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
   });
 
   return studentGroupSchema.array().parse(res);
-};
+}
 
-export const fetchStudentGroupBySlug = async (slug: string) => {
+export async function fetchStudentGroupBySlug(slug: string) {
   const query = groq`
 *[_type == "studentGroup"
   && slug.current == $slug
@@ -134,4 +136,4 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
   });
 
   return studentGroupSchema.parse(result);
-};
+}

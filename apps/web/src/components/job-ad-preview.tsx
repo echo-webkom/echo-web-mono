@@ -11,9 +11,9 @@ type JobAdPreviewProps = {
   jobAd: JobAd;
 };
 
-export const JobAdPreview = ({ jobAd }: JobAdPreviewProps) => {
+export function JobAdPreview({ jobAd }: JobAdPreviewProps) {
   return (
-    <Link href={`/for-students/job/${jobAd.slug}`}>
+    <Link href={`/for-studenter/jobb/${jobAd.slug}`}>
       <div
         className={cn(
           "flex h-full flex-row items-center gap-5 rounded-lg p-5",
@@ -61,4 +61,4 @@ export const JobAdPreview = ({ jobAd }: JobAdPreviewProps) => {
       </div>
     </Link>
   );
-};
+}

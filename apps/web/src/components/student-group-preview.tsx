@@ -10,9 +10,9 @@ type StudentGroupPreviewProps = {
   withBorder?: boolean;
 };
 
-export const StudentGroupPreview = ({ group, withBorder = false }: StudentGroupPreviewProps) => {
+export function StudentGroupPreview({ group, withBorder = false }: StudentGroupPreviewProps) {
   return (
-    <Link href={`/for-students/group/${group.slug}`}>
+    <Link href={`/for-studenter/gruppe/${group.slug}`}>
       <div
         className={cn("flex flex-col gap-3 rounded-lg p-5 hover:bg-muted", withBorder && "border")}
       >
@@ -27,4 +27,4 @@ export const StudentGroupPreview = ({ group, withBorder = false }: StudentGroupP
       </div>
     </Link>
   );
-};
+}

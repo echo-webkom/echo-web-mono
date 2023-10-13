@@ -21,10 +21,19 @@ const payloadSchema = z.object({
 });
 
 export const POST = withSession(
-  async ({ ctx, user }) => {
+  async ({ ctx, user, input }) => {
     const happening = await prisma.happening.findUnique({
       where: {
         slug: ctx.params.slug,
+      },
+      include: {
+        questions: {
+          select: {
+            title: true,
+            required: true,
+            id: true,
+          },
+        },
       },
     });
 
@@ -104,6 +113,23 @@ export const POST = withSession(
       );
     }
 
+    const allQuestionsAnswered = happening.questions.every((question) => {
+      const answer = input.questions.find((answer) => answer.question === question.title);
+      return !question.required || answer?.answer;
+    });
+
+    if (!allQuestionsAnswered) {
+      return NextResponse.json(
+        {
+          title: "En feil har skjedd",
+          description: "Du har ikke svart på alle spørsmålene.",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
     const registration = await prisma.registration.findFirst({
       where: {
         happeningSlug: happening.slug,
@@ -150,6 +176,25 @@ export const POST = withSession(
               happeningSlug: ctx.params.slug,
               userId: user.id,
             },
+          });
+
+          const answersToSave = [];
+
+          for (const happeningQuestion of happening.questions) {
+            const foundAnswer = input.questions.find((userAnswer) => {
+              return happeningQuestion.title === userAnswer.question;
+            });
+            if (foundAnswer) {
+              answersToSave.push({
+                registrationId: registration.id,
+                questionId: happeningQuestion.id,
+                text: foundAnswer.answer,
+              });
+            }
+          }
+
+          await tx.answer.createMany({
+            data: answersToSave,
           });
 
           return registration.status;
