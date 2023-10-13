@@ -7,8 +7,6 @@ import { Container } from "@/components/container";
 import { Heading } from "@/components/ui/heading";
 import { fetchMinutes } from "@/sanity/minutes";
 
-export const dynamic = "force-static";
-
 export default async function MinuteOverview() {
   const minutes = await fetchMinutes();
 
