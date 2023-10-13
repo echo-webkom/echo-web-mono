@@ -21,7 +21,7 @@ import { Label } from "./ui/label";
 
 export type Happening =
   | (Event & {
-      type: "event";
+      type: "arrangement";
     })
   | (Bedpres & {
       type: "bedpres";
@@ -132,7 +132,7 @@ export default function EventFilter() {
           ? await fetchFilteredBedpresses(validQuery)
           : [];
       const events =
-        validQuery.type === "all" || validQuery.type === "event"
+        validQuery.type === "all" || validQuery.type === "arrangement"
           ? await fetchFilteredEvents(validQuery)
           : [];
 
@@ -143,7 +143,7 @@ export default function EventFilter() {
       }
 
       const combinedHappenings = [
-        ...events.map((e) => ({ ...e, type: "event" as const })),
+        ...events.map((e) => ({ ...e, type: "arrangement" as const })),
         ...bedpresses.map((b) => ({ ...b, type: "bedpres" as const })),
       ].sort((a, b) => {
         if (a.date && b.date) {

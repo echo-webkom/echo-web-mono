@@ -143,7 +143,7 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
-            {happening.type === "event" && (
+            {happening.type === "arrangement" && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
                 {capitalize(happening.organizers.map((o) => o.name).join(", "))}
