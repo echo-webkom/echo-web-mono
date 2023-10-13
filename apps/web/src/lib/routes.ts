@@ -1,10 +1,10 @@
 import { RouteGroup } from "./route-builder";
 
 const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For studenter" })
-  .link("/grupper/hovedstyre", { label: "Hovedstyret" })
-  .link("/grupper/undergruppe", { label: "Undergrupper" })
-  .link("/grupper/underorganisasjon", { label: "Underorganisasjoner" })
-  .link("/grupper/interessegruppe", { label: "Interessegrupper" })
+  .link("/grupper/hovedstyre", { label: "Hovedstyre" })
+  .link("/grupper/undergrupper", { label: "Undergrupper" })
+  .link("/grupper/underorganisasjoner", { label: "Underorganisasjoner" })
+  .link("/grupper/interessegrupper", { label: "Interessegrupper" })
   .link("/grupper/idrettslag", { label: "Idrettslag" })
   .link("/jobber", { label: "Stillingsannonser" })
   .link("/innlegg", { label: "Innlegg" })

@@ -5,11 +5,7 @@ import { type StudentGroupType } from "@echo-webkom/lib";
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/ui/heading";
-import {
-  fetchStudentGroupsByType,
-  studentGroupTypeName,
-  studentGroupTypeToUrl,
-} from "@/sanity/student-group";
+import { fetchStudentGroupsByType, studentGroupTypeName } from "@/sanity/student-group";
 
 type Props = {
   params: {
@@ -28,11 +24,9 @@ export function generateMetadata({ params }: Props) {
 }
 
 export function generateStaticParams() {
-  const params = Object.values(studentGroupTypeToUrl).map((groupType) => ({
-    groupType,
+  return Object.values(studentGroupTypeName).map((groupType) => ({
+    groupType: groupType.toLowerCase(),
   }));
-
-  return params;
 }
 
 export default async function StudentGroupOverview({ params }: Props) {
@@ -57,7 +51,9 @@ export default async function StudentGroupOverview({ params }: Props) {
 }
 
 function pathToGroupType(path: string) {
-  const groupType = Object.entries(studentGroupTypeToUrl).find(([_, url]) => url === path)?.[0];
+  const groupType = Object.entries(studentGroupTypeName).find(
+    ([_, url]) => url.toLowerCase() === path,
+  )?.[0];
 
   if (!groupType) {
     return notFound();
