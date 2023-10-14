@@ -37,7 +37,7 @@ export default async function StudentGroupOverview({ params }: Props) {
 
   return (
     <Container>
-      <Heading>{studentGroupTypeName[groupTypeFromPath]}</Heading>
+      <Heading className="mb-4">{studentGroupTypeName[groupTypeFromPath]}</Heading>
 
       <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {groups.map((group) => (
