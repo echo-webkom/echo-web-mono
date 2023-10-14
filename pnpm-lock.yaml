@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -35,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.4.12
-        version: 6.4.12
+        specifier: ^6.5.0
+        version: 6.6.0
       '@sanity/icons':
         specifier: ^2.5.0
         version: 2.5.0(react@18.2.0)
@@ -242,7 +246,7 @@ importers:
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.5.5
-        version: 5.5.5(@sanity/client@6.4.12)(@sanity/icons@2.5.0)(@sanity/types@3.17.0)(@sanity/ui@1.7.4)(next@13.5.4)(react@18.2.0)(sanity@3.17.0)(styled-components@5.3.11)
+        version: 5.5.5(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.17.0)(@sanity/ui@1.7.4)(next@13.5.4)(react@18.2.0)(sanity@3.17.0)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4053,8 +4057,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.4.12:
-    resolution: {integrity: sha512-TuseXC5z0CORO7wKMmhNTiKy/8vjWsN7/PTMy53MUBshlMYE2xPad2QFw1zr+n/7qvNNc/CQ6Y2wVnaXU9PHVg==}
+  /@sanity/client@6.6.0:
+    resolution: {integrity: sha512-AZNtl1/BSRNOsjy5k/1q1feIHPuExugWsG0ZuNj4/etOddFMaXfUvCHHuv89pHb6l/3CWv+UPysvMNU0+qS2Ig==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -4253,7 +4257,7 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit@3.1.6(@sanity/client@6.4.12)(react@18.2.0):
+  /@sanity/preview-kit@3.1.6(@sanity/client@6.6.0)(react@18.2.0):
     resolution: {integrity: sha512-V8gZlIcyqqMr1WDAzrNXntrgYVeR56EKEZHbXOoHIr3qjgCRXPogVJ5w09DJ6cMhv2NKClOpAqmA9MWzt81wXw==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4263,7 +4267,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@sanity/client': 6.4.12
+      '@sanity/client': 6.6.0
       '@sanity/eventsource': 5.0.0
       '@sanity/groq-store': 4.1.1
       '@vercel/stega': 0.1.0
@@ -4295,7 +4299,7 @@ packages:
   /@sanity/types@3.17.0:
     resolution: {integrity: sha512-bjqsw11XKSE5jly2h3ex7NfTjIbefbfNA/W7pVqTdhPmmC+aLxLh+6sMuCzOMhwz7I2ZCsdAhxtfs+6oXZtzDQ==}
     dependencies:
-      '@sanity/client': 6.4.12
+      '@sanity/client': 6.6.0
       '@types/react': 18.2.28
     transitivePeerDependencies:
       - supports-color
@@ -9995,7 +9999,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@5.5.5(@sanity/client@6.4.12)(@sanity/icons@2.5.0)(@sanity/types@3.17.0)(@sanity/ui@1.7.4)(next@13.5.4)(react@18.2.0)(sanity@3.17.0)(styled-components@5.3.11):
+  /next-sanity@5.5.5(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.17.0)(@sanity/ui@1.7.4)(next@13.5.4)(react@18.2.0)(sanity@3.17.0)(styled-components@5.3.11):
     resolution: {integrity: sha512-ISthy/K4y50CgLmwnF8MSdKlZF4wHfTuq+GJemn1oRyUlBUNwT03nVaPgG+KF29Vx2jxrFM7CSA+1Zg0bheoKg==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -10008,9 +10012,9 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.2.0 || ^6.0.0
     dependencies:
-      '@sanity/client': 6.4.12
+      '@sanity/client': 6.6.0
       '@sanity/icons': 2.5.0(react@18.2.0)
-      '@sanity/preview-kit': 3.1.6(@sanity/client@6.4.12)(react@18.2.0)
+      '@sanity/preview-kit': 3.1.6(@sanity/client@6.6.0)(react@18.2.0)
       '@sanity/types': 3.17.0
       '@sanity/ui': 1.7.4(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 3.0.1
@@ -11882,7 +11886,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.17.0
       '@sanity/cli': 3.17.0
-      '@sanity/client': 6.4.12
+      '@sanity/client': 6.6.0
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.17.0
       '@sanity/diff-match-patch': 3.1.1
@@ -13664,7 +13668,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
