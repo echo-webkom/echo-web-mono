@@ -220,7 +220,7 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4
       '@upstash/redis':
-        specifier: ^1.23.2
+        specifier: ^1.23.3
         version: 1.23.3
       class-variance-authority:
         specifier: 0.7.0
