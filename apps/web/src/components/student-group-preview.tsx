@@ -15,13 +15,17 @@ export function StudentGroupPreview({ group, withBorder = false }: StudentGroupP
     <Link href={`/for-studenter/gruppe/${group.slug}`}>
       <div
         className={cn(
-          "flex h-full flex-col gap-3 rounded-lg p-5 hover:bg-muted",
+          "group flex h-full flex-col gap-3 rounded-lg p-5 shadow-lg hover:bg-muted",
           withBorder && "border",
         )}
       >
         <h2 className="text-2xl font-bold">{group.name}</h2>
-        <p className="line-clamp-3 flex-1 text-slate-700">{removeMd(group.description ?? "")}</p>
-        <p className="flex items-center gap-1 group-hover:underline">
+
+        {group.description && (
+          <p className="line-clamp-3 flex-1 text-slate-700">{removeMd(group.description ?? "")}</p>
+        )}
+
+        <p className="flex items-center gap-1">
           Les mer
           <span className="transition-all duration-150 group-hover:pl-1">
             <ArrowRightIcon />
