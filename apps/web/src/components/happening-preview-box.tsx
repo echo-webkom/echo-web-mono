@@ -60,7 +60,7 @@ type EventPreviewProps = {
 
 export function EventPreview({ event }: EventPreviewProps) {
   return (
-    <Link href={`/event/${event.slug}`}>
+    <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
