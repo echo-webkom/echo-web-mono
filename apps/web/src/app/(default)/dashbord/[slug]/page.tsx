@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
@@ -10,7 +12,10 @@ import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
 import { getHappeningBySlug } from "@/lib/queries/happening";
+
 import { cn } from "@/utils/cn";
+import { EditRegistrationButton } from "@/components/edit-registration-button";
+import { useState } from "react";
 
 type Props = {
   params: {
@@ -98,28 +103,36 @@ type RegistrationWithUser = Omit<Registration, "userId"> & {
 };
 
 function RegistrationTable({ registrations }: { registrations: Array<RegistrationWithUser> }) {
-  if (registrations.length === 0) {
+  // State variable for search query
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter the registrations based on the search query
+  const filteredRegistrations = registrations.filter((registration) =>
+    registration.user.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (filteredRegistrations.length === 0) {
     return <p className="text-center md:text-left">Ingen registrerte</p>;
   }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-left text-sm text-gray-500">
+      <table className="w-full text-left text-sm text-gray-500 table-auto">
         <thead className="bg-gray-200 text-xs uppercase">
           <tr>
             <th scope="col" className="px-6 py-4 text-left">
               Navn
             </th>
-            <th scope="col" className="px-6 py-4 text-left">
+            <th scope="col" className="px-6 py-4 text-left hidden md:table-cell">
               E-post
             </th>
             <th scope="col" className="px-6 py-4 text-left">
               Status
             </th>
-            <th scope="col" className="px-6 py-4 text-left">
+            <th scope="col" className="px-6 py-4 text-left hidden md:table-cell">
               Grunn
             </th>
-            <th scope="col" className="px-6 py-4 text-left">
+            <th scope="col" className="px-6 py-4 text-left hidden md:table-cell">
               Undergrupper
             </th>
             <th scope="col" className="px-6 py-4 text-left">
@@ -128,14 +141,16 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
           </tr>
         </thead>
         <tbody>
-          {registrations.map((registration, i) => (
-            <RegistrationRow key={registration.user.id} registration={registration} index={i} />
+          {filteredRegistrations.map((registration, i) => (
+            <RegistrationRow key={registration.userId} registration={registration} index={i} />
           ))}
         </tbody>
       </table>
     </div>
   );
 }
+
+// The rest of your code, including the EventDashboard component, remains the same.
 
 const RegistrationRow = ({
   registration,
@@ -145,6 +160,7 @@ const RegistrationRow = ({
   index: number;
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
+  const slug = registration.happeningSlug;
 
   return (
     <tr
@@ -156,7 +172,7 @@ const RegistrationRow = ({
       <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
         {registration.user.name}
       </th>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 hidden md:table-cell">
         <Link className="hover:underline" href={"mailto:" + email}>
           {email}
         </Link>
@@ -168,7 +184,7 @@ const RegistrationRow = ({
         {registration.user.memberships.length === 0 && "Ingen"}
       </td>
       <td className="px-6 py-4">
-        <Button>Endre</Button>
+      <EditRegistrationButton slug={slug} registration={registration}/>
       </td>
     </tr>
   );
