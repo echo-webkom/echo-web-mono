@@ -4,7 +4,7 @@ import { Container } from "@/components/container";
 import { HappeningPreviewBox } from "@/components/happening-preview-box";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
-import { fetchUpcomingBedpresses } from "@/sanity/bedpres";
+import { $fetchAllBedpresses, fetchUpcomingBedpresses } from "@/sanity/bedpres";
 import { fetchComingEvents } from "@/sanity/event";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
@@ -12,11 +12,10 @@ import { fetchPosts } from "@/sanity/posts";
 export async function Content() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchComingEvents(3),
-    fetchUpcomingBedpresses(3),
+    $fetchAllBedpresses(),
     fetchPosts(4),
     fetchAvailableJobAds(4),
   ]);
-
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
       {/* Events  */}
