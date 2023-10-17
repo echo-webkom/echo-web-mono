@@ -64,6 +64,17 @@ export async function Content() {
           </ul>
         </section>
       )}
+
+      {/* Useful links */}
+      {(
+        <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
+          <Link href="/for-studenter/nyttige-lenker">
+            <h2 className="text-center text-xl font-semibold md:text-3xl">Nyttige lenker</h2>
+          </Link>
+
+          <hr />
+        </section>
+      )}
     </Container>
   );
 }
