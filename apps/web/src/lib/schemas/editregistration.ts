@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const editRegistrationSchema = z.object({
-  status: z
-    .string(),
+  status: z.string(),
+  reason: z.string().optional(),
   hasVerified: z.boolean().refine((v) => v, { message: "Må bekrefte" }),
 });
 

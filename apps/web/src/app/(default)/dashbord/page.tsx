@@ -9,15 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 
-import { cn } from "@/utils/cn";
-import { EditRegistrationButton } from "@/components/edit-registration-button";
-import { HappeningPreviewBox } from "@/components/happening-preview-box";
-import { JobAdPreview } from "@/components/job-ad-preview";
-import { PostPreview } from "@/components/post-preview";
+import { HappeningDashboardBox } from "@/components/happening-dashboard-box";
 import { $fetchAllBedpresses, fetchUpcomingBedpresses } from "@/sanity/bedpres";
-import { fetchComingEvents } from "@/sanity/event";
-import { fetchAvailableJobAds } from "@/sanity/job-ad";
-import { fetchPosts } from "@/sanity/posts";
+import { $fetchAllEvents } from "@/sanity/event";
 
 
 type Props = {
@@ -27,11 +21,9 @@ type Props = {
 };
 
 export default async function EventDashboard({}: Props) {
-    const [events, bedpresses, posts, jobAds] = await Promise.all([
-      fetchComingEvents(3),
-      $fetchAllBedpresses(),
-      fetchPosts(4),
-      fetchAvailableJobAds(4),
+    const [events, bedpresses] = await Promise.all([
+      $fetchAllEvents(),
+      $fetchAllBedpresses()
     ]);
 
   return (
@@ -41,12 +33,12 @@ export default async function EventDashboard({}: Props) {
       </Heading>
 
       <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
-        <HappeningPreviewBox type="EVENT" happenings={events} />
+        <HappeningDashboardBox type="EVENT" happenings={events} />
       </section>
 
       {/* Bedpresses */}
       <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
-        <HappeningPreviewBox type="BEDPRES" happenings={bedpresses} />
+        <HappeningDashboardBox type="BEDPRES" happenings={bedpresses} />
       </section>
 
       <div className="flex flex-col gap-3">
