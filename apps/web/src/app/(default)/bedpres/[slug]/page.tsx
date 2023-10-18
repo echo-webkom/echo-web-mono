@@ -18,6 +18,7 @@ import { getHappeningBySlug } from "@/lib/queries/happening";
 import { getUser } from "@/lib/session";
 import { fetchBedpresBySlug } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
+import { AddToCalender } from "@/components/add-to-calender";
 
 type Props = {
   params: {
@@ -66,15 +67,15 @@ export default async function BedpresPage({ params }: Props) {
 
   const isRegistered = user
     ? (
-        await prisma.registration.findUnique({
-          where: {
-            userId_happeningSlug: {
-              happeningSlug: slug,
-              userId: user.id,
-            },
+      await prisma.registration.findUnique({
+        where: {
+          userId_happeningSlug: {
+            happeningSlug: slug,
+            userId: user.id,
           },
-        })
-      )?.status === "REGISTERED"
+        },
+      })
+    )?.status === "REGISTERED"
     : false;
 
   const registrations = await prisma.registration.findMany({
@@ -135,7 +136,9 @@ export default async function BedpresPage({ params }: Props) {
           {eventInfo.date && (
             <SidebarItem>
               <SidebarItemTitle>Dato:</SidebarItemTitle>
-              <SidebarItemContent>{eventInfo?.date.toLocaleDateString("nb-NO")}</SidebarItemContent>
+              <SidebarItemContent>
+                <AddToCalender date={eventInfo?.date} title={eventInfo?.title}/>
+              </SidebarItemContent>
             </SidebarItem>
           )}
 
