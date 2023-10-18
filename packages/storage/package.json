@@ -18,7 +18,6 @@
   "dependencies": {
     "@redis/client": "1.5.11",
     "@types/bcryptjs": "^2.4.5",
-    "@types/pg": "^8.10.3",
     "@types/react": "^18.2.23",
     "bcryptjs": "^2.4.3",
     "dotenv-cli": "7.3.0",
@@ -27,8 +26,8 @@
     "drizzle-orm": "^0.28.6",
     "eslint": "^8.50.0",
     "eslint-config-webkom": "workspace:*",
-    "pg": "^8.11.3",
     "pg-native": "^3.0.1",
+    "postgres": "^3.4.0",
     "redis": "^4.6.10",
     "server-only": "^0.0.1",
     "tsx": "^3.13.0",

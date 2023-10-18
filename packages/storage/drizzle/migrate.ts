@@ -1,11 +1,18 @@
 /* eslint-disable no-console */
-import { migrate } from "drizzle-orm/node-postgres/migrator";
-
-import { db } from "../src/db/drizzle";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
 
 console.log("🚀 Starting migrations...");
 
-migrate(db, { migrationsFolder: "./drizzle/migrations" })
+migrate(
+  drizzle(
+    postgres(process.env.DATABASE_URL!, {
+      max: 1,
+    }),
+  ),
+  { migrationsFolder: "./drizzle/migrations" },
+)
   .then(() => {
     console.log("✅ Migrations complete!");
     process.exit(0);
