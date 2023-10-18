@@ -1,15 +1,16 @@
 "use client";
-//import Image from "next/image";
 
+//import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { Container } from "@/components/container";
+import { ShoppingList } from "@/components/hyggkom-handleliste";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 //import { Heading } from "@/components/ui/heading";
 
@@ -18,6 +19,8 @@ const shoppingListSchema = z.object({
 });
 
 export default function HyggkomHandleliste() {
+  const itemList = ["Epler", "Bananer", "Pærer"];
+
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof shoppingListSchema>>({
@@ -47,7 +50,6 @@ export default function HyggkomHandleliste() {
           variant: "warning",
         });
       }
-
     },
     (error) => {
       console.error(error);
@@ -56,12 +58,13 @@ export default function HyggkomHandleliste() {
 
   return (
     <Container className="max-w-xl">
+      <ShoppingList items={itemList}></ShoppingList>
       <form>
         <fieldset className="flex flex-col gap-2">
           <Label htmlFor="">Hva ønsker du?</Label>
           <Input type="text" />
         </fieldset>
-  <Button>Legg til ditt forslag!</Button>
+        <Button>Legg til ditt forslag!</Button>
       </form>
     </Container>
   );
