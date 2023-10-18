@@ -172,7 +172,7 @@ function UserForm({ user }: { user: User }) {
                       <FormLabel className="text-base">Undergrupper</FormLabel>
                       <FormDescription>
                         Velg de undergruppene brukeren er en del av.
-                      </FormDescription>
+                      </FormDescription> 
                     </div>
 
                     {Object.entries(groupNames).map(([id, label]) => (
