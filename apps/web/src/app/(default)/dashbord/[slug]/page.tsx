@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,7 +11,6 @@ import { getHappeningBySlug } from "@/lib/queries/happening";
 
 import { cn } from "@/utils/cn";
 import { EditRegistrationButton } from "@/components/edit-registration-button";
-import { useState } from "react";
 
 type Props = {
   params: {
@@ -48,30 +45,34 @@ export default async function EventDashboard({ params }: Props) {
   return (
     <Container className="flex flex-col gap-10">
       <Heading>
-        Dashboard:{" "}
+        <Link className="hover:underline" href={"/dashbord/"}>Dashboard:{" "}</Link>
+
         <Link className="hover:underline" href={"/event/" + slug}>
           {eventInfo.title}
+          {eventInfo.type === "BEDPRES" && " (Bedriftspresentasjon)"}
         </Link>
       </Heading>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-        <Link href={`/dashbord/${params.slug}/paameldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
+        <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
 
           <p className="text-7xl">{registered.length}</p>
-        </div></Link>
+        </div>
 
-        <Link href={`/dashbord/${params.slug}/venteliste`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
+        <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall på venteliste</p>
           <p className="text-7xl">{waitlist.length}</p>
-        </div></Link>
+        </div>
 
-        <Link href={`/dashbord/${params.slug}/avmeldt`}><div className="rounded-xl border px-3 py-8 text-center hover:bg-wave">
+        <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall avmeldt</p>
           <p className="text-7xl">{deregistered.length}</p>
-        </div></Link>
+        </div>
       </div>
-
+      <div>
+        <h2 className="text-3xl font-semibold">Info:</h2>
+      </div>
       <div className="flex flex-col gap-3">
         <h2 className="text-3xl font-semibold">Registrerte</h2>
         <RegistrationTable registrations={registrations} />
@@ -85,17 +86,6 @@ type RegistrationWithUser = Prisma.RegistrationGetPayload<{
 }>;
 
 function RegistrationTable({ registrations }: { registrations: Array<RegistrationWithUser> }) {
-  // State variable for search query
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Filter the registrations based on the search query
-  const filteredRegistrations = registrations.filter((registration) =>
-    registration.user.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (filteredRegistrations.length === 0) {
-    return <p className="text-center md:text-left">Ingen registrerte</p>;
-  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -123,7 +113,7 @@ function RegistrationTable({ registrations }: { registrations: Array<Registratio
           </tr>
         </thead>
         <tbody>
-          {filteredRegistrations.map((registration, i) => (
+          {registrations.map((registration, i) => (
             <RegistrationRow key={registration.userId} registration={registration} index={i} />
           ))}
         </tbody>
@@ -143,6 +133,7 @@ const RegistrationRow = ({
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const slug = registration.happeningSlug;
+  const statusClass = getStatusClass(registration.status);
 
   return (
     <tr
@@ -159,7 +150,7 @@ const RegistrationRow = ({
           {email}
         </Link>
       </td>
-      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
+      <td className={`px-6 py-4`}><span className={`${statusClass}`}>{registrationStatusToString[registration.status]}</span></td>
       <td className="px-6 py-4 hidden md:table-cell">{registration.reason}</td>
       <td className="px-6 py-4 hidden md:table-cell">
         {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
@@ -171,3 +162,16 @@ const RegistrationRow = ({
     </tr>
   );
 };
+
+function getStatusClass(status: string): string {
+  switch (status) {
+    case "REGISTERED":
+      return "text-green-600";
+    case "WAITLISTED":
+      return "text-yellow-600";
+    case "DEREGISTERED":
+      return "text-red-600";
+    default:
+      return "";
+  }
+}
