@@ -12,12 +12,10 @@ export const Heading = ({ level = 1, className, children }: HeadingProps) => {
   return (
     <Comp
       className={cn(
-        "mb-5 scroll-m-20 font-extrabold tracking-tight",
+        "font-bold tracking-tight",
         {
-          "text-5xl": level === 1,
-          "text-4xl": level === 2,
-          "text-3xl": level === 3,
-          "text-2xl": level === 4,
+          "text-3xl": level === 1,
+          "text-2xl": level === 2,
         },
         className,
       )}

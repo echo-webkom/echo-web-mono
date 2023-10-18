@@ -1,18 +1,20 @@
 import { RouteGroup } from "./route-builder";
 
 const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For studenter" })
-  .link("/grupper/hovedstyre", { label: "Hovedstyret" })
-  .link("/grupper/undergruppe", { label: "Undergrupper" })
-  .link("/grupper/underorganisasjon", { label: "Underorganisasjoner" })
-  .link("/grupper/interessegruppe", { label: "Interessegrupper" })
+  .link("/arrangementer", { label: "Arrangementer" })
   .link("/jobber", { label: "Stillingsannonser" })
   .link("/innlegg", { label: "Innlegg" })
+  .link("/grupper/hovedstyre", { label: "Hovedstyre" })
+  .link("/grupper/undergrupper", { label: "Undergrupper" })
+  .link("/grupper/underorganisasjoner", { label: "Underorganisasjoner" })
+  .link("/grupper/interessegrupper", { label: "Interessegrupper" })
+  .link("/grupper/idrettslag", { label: "Idrettslag" })
+  .link("/motereferater", { label: "Møtereferater" })
   .link("/masterinfo", { label: "Masterinfo" })
   .link("/okonomisk-stotte", { label: "Økonomisk støtte" })
   .link("/anonyme-tilbakemeldinger", { label: "Tilbakemeldinger" })
   .link("/utlegg", { label: "Utlegg" })
   .link("/si-ifra", { label: "Si ifra" })
-  .link("/motereferater", { label: "Møtereferater" })
   .build();
 
 const forCompaniesRoutes = new RouteGroup("/for-bedrifter", { label: "For bedrifter" })

@@ -127,6 +127,7 @@ enum RegistrationStatus {
 }
 
 model Registration {
+  id            String             @id @default(cuid())
   userId        String
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   happeningSlug String
@@ -135,8 +136,9 @@ model Registration {
   reason        String?            @db.Text
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
+  Answer        Answer[]
 
-  @@unique([userId, happeningSlug])
+ @@unique([userId, happeningSlug])
 }
 
 enum QuestionType {
@@ -152,6 +154,7 @@ model Question {
   options       String[]
   Happening     Happening?   @relation(fields: [happeningSlug], references: [slug])
   happeningSlug String?
+  answers       Answer[]
 }
 
 model Happening {
@@ -165,6 +168,16 @@ model Happening {
   registrationStart DateTime?
   registrationEnd   DateTime?
   groups            Group[]
+}
+
+model Answer {
+  id                        String       @id @default(cuid())
+  questionId                String
+  question                  Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  registrationId            String
+  registration              Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  text                      String?
+  choice                    String?
 }
 
 model SiteFeedback {
