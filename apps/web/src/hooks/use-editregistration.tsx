@@ -7,6 +7,7 @@ const responseSchema = z.object({
 
 type Data = {
   status: string;
+  reason?: string;
 };
 
 type EditRegistrationOpts = {
@@ -32,6 +33,7 @@ export function useEditregistration(slug: string, registrationUserId: string, { 
       const data = responseSchema.parse(await response.json());
 
       if (response.ok) {
+        onSuccess?.(data);
         setIsSuccess(true);
         return data;
       } else {

@@ -22,17 +22,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEditregistration } from "@/hooks/use-editregistration";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
+import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
+import { Prisma } from "@echo-webkom/db";
+import { RegistrationStatus } from "@echo-webkom/db/enums";
 
 type EditRegistrationButtonProps = {
   slug: string;
-  registration: any;
+  registration: RegistrationWithUser;
 };
+
+type RegistrationWithUser = Prisma.RegistrationGetPayload<{
+  include: { user: true };
+}>;
 
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
   const initialFormValues = {
     status: registration.status,
-    changelog: '', // Add more initial values as needed
-    hasVerified: false, // Add more initial values as needed
+    reason: '',
+    hasVerified: false,
   };
   const [formValues, setFormValues] = useState(initialFormValues)
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +52,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
       toast({
         title: "Endring fullført",
         description: "Du har nå endret registreringen",
+        color: "green",
       });
       setFormValues(initialFormValues);
     },
@@ -53,6 +61,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
       toast({
         title: "Noe gikk galt",
         description: "Kunne ikke endre registreringen",
+        color: "red",
       });
     },
   });
@@ -61,6 +70,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
     setFormValues(initialFormValues);
     setSelectedStatus(registration.status);
     setIsOpen(false);
+
+    methods.setValue('reason', '');
+    methods.setValue('hasVerified', false);
   };
 
   const methods = useForm<editRegistrationForm>({
@@ -69,13 +81,14 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
 
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
-  const handleStatusChange = (status: string) => {
+  const handleStatusChange = (status: RegistrationStatus) => {
     setSelectedStatus(status);
   };
 
   const onSubmit = methods.handleSubmit(async (data) => {
     await editRegistration({
       status: selectedStatus,
+      reason: data.reason,
     });
     resetState();
     setIsOpen(false);
@@ -83,24 +96,15 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   });
 
   return (
-    <Dialog open={isOpen} onOpenChange={(setIsOpen) => {
-      if (!open) {
+    <Dialog open={isOpen} onOpenChange={(newIsOpen) => {
+      if (!newIsOpen) {
         resetState();
       }
     }}>
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)} variant="secondary" fullWidth>
-          {isLoading ? (
-            <>
-              <span>
-                <AiOutlineLoading className="h-4 w-4 animate-spin" />
-              </span>
-              <span className="ml-2">Endrer...</span>
-            </>
-          ) : (
-            <span>Endre</span>
-          )}
-          </Button>
+          Endre
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -126,7 +130,8 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
               <div className="flex flex-col gap-2">
                 <Label>Verv:</Label>
-                {/* <Label>{registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}</Label> */}
+                {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
+                {registration.user.studentGroups.length === 0 && "Ingen"}
               </div>
               <div className="flex flex-row gap-10">
                 <Label>Status:</Label>
@@ -158,40 +163,48 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                 </div>
               </div>
               <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="changelog">Hvorfor gjør du endring?</Label>
-              <Textarea
-                id="changelog"
-                {...methods.register("status")}
-                className="w-full"
-                placeholder="Skriv her..."
-              />
-              <p className="text-sm text-red-500">{methods.formState.errors.status?.message}</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <Controller
-                  name="hasVerified"
-                  control={methods.control}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <Checkbox
-                      id="hasVerified"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="reason">Hvorfor gjør du endring?</Label>
+                  <Controller
+                    name="reason"
+                    control={methods.control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Textarea
+                        id="reason"
+                        {...methods.register("reason")}
+                        className="w-full"
+                        placeholder="Skriv her..."
+                        onChange={field.onChange}
+                        />
+                    )}
+                  />
+                  <p className="text-sm text-red-500">{methods.formState.errors.reason?.message}</p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <Controller
+                      name="hasVerified"
+                      control={methods.control}
+                      defaultValue={false}
+                      render={({ field }) => (
+                        <Checkbox
+                          id="hasVerified"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      )}
                     />
-                  )}
-                />
 
-                <Label htmlFor="hasVerified">
-                  Jeg bekrefter endringen.
-                </Label>
+                    <Label htmlFor="hasVerified">
+                      Jeg bekrefter endringen.
+                    </Label>
+                  </div>
+                  <p className="text-sm text-red-500">
+                    {methods.formState.errors.hasVerified?.message}
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.hasVerified?.message}
-              </p>
-            </div>
-          </div>
             </div>
 
           </div>
@@ -207,7 +220,16 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               Avbryt
             </Button>
             <Button className="w-full sm:w-auto" type="submit">
-              Send
+              {isLoading ? (
+                <>
+                  <span>
+                    <AiOutlineLoading className="h-4 w-4 animate-spin" />
+                  </span>
+                  <span className="ml-2">Endrer...</span>
+                </>
+              ) : (
+                <span>Send</span>
+              )}
             </Button>
           </DialogFooter>
         </form>

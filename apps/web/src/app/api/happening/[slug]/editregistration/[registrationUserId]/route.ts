@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "@echo-webkom/db";
 
 import { withSession } from "@/lib/checks/with-session";
+import { atMaxCapacity } from "@/lib/queries/happening";
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -14,6 +15,7 @@ const routeContextSchema = z.object({
 type EnumRegistrationStatus = "REGISTERED" | "WAITLISTED" | "DEREGISTERED";
 
 const payloadSchema = z.object({
+  reason: z.string().optional(),
   status: z.string().refine((status) => {
     return ["REGISTERED", "WAITLISTED", "DEREGISTERED"].includes(status as EnumRegistrationStatus);
   }),
@@ -27,13 +29,11 @@ export const PUT = withSession(
         slug: slug,
       },
     });
-
-    if (!happening?.date) {
-      return new Response(null, { status: 404 });
+    if (!happening){
+      return new Response(null, { status: 404 })
     }
-
-    if (happening.date < new Date()) {
-      return new Response(null, { status: 400 });
+    if (input.status === "REGISTERED" && (await atMaxCapacity(happening))) {
+      return NextResponse.json({ title: "Arrangementet er fullt" }, { status: 406})
     }
 
     await prisma.registration.update({
@@ -44,7 +44,8 @@ export const PUT = withSession(
         },
       },
       data: {
-        status: input.status as EnumRegistrationStatus
+        status: input.status as EnumRegistrationStatus,
+        reason: input.reason as string,
         // Kan legge til flere felt her, feks changelog
       },
     });
