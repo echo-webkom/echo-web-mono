@@ -6,6 +6,7 @@ import { isAfter, isBefore } from "date-fns";
 
 import { prisma } from "@echo-webkom/db";
 
+import { AddToCalender } from "@/components/add-to-calender";
 import { Container } from "@/components/container";
 import { DeregisterButton } from "@/components/deregister-button";
 import { Markdown } from "@/components/markdown";
@@ -18,7 +19,6 @@ import { getHappeningBySlug } from "@/lib/queries/happening";
 import { getUser } from "@/lib/session";
 import { fetchBedpresBySlug } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
-import { AddToCalender } from "@/components/add-to-calender";
 
 type Props = {
   params: {
@@ -67,15 +67,15 @@ export default async function BedpresPage({ params }: Props) {
 
   const isRegistered = user
     ? (
-      await prisma.registration.findUnique({
-        where: {
-          userId_happeningSlug: {
-            happeningSlug: slug,
-            userId: user.id,
+        await prisma.registration.findUnique({
+          where: {
+            userId_happeningSlug: {
+              happeningSlug: slug,
+              userId: user.id,
+            },
           },
-        },
-      })
-    )?.status === "REGISTERED"
+        })
+      )?.status === "REGISTERED"
     : false;
 
   const registrations = await prisma.registration.findMany({
@@ -137,7 +137,7 @@ export default async function BedpresPage({ params }: Props) {
             <SidebarItem>
               <SidebarItemTitle>Dato:</SidebarItemTitle>
               <SidebarItemContent>
-                <AddToCalender date={eventInfo?.date} title={eventInfo?.title}/>
+                <AddToCalender date={eventInfo?.date} title={eventInfo?.title} />
               </SidebarItemContent>
             </SidebarItem>
           )}

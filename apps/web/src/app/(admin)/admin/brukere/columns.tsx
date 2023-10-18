@@ -122,7 +122,9 @@ function UserForm({ user }: { user: User }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()} className= "pr-10" >Endre rolle</DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="pr-10">
+          Endre rolle
+        </DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

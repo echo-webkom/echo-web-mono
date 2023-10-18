@@ -6,6 +6,7 @@ import { isAfter, isBefore } from "date-fns";
 
 import { prisma } from "@echo-webkom/db";
 
+import { AddToCalender } from "@/components/add-to-calender";
 import { Container } from "@/components/container";
 import { DeregisterButton } from "@/components/deregister-button";
 import { Markdown } from "@/components/markdown";
@@ -17,7 +18,6 @@ import { isEventOrganizer } from "@/lib/happening";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 import { getUser } from "@/lib/session";
 import { fetchEventBySlug } from "@/sanity/event";
-import { AddToCalender } from "@/components/add-to-calender";
 
 type Props = {
   params: {
@@ -68,15 +68,15 @@ export default async function EventPage({ params }: Props) {
 
   const isRegistered = user
     ? (
-      await prisma.registration.findUnique({
-        where: {
-          userId_happeningSlug: {
-            happeningSlug: slug,
-            userId: user.id,
+        await prisma.registration.findUnique({
+          where: {
+            userId_happeningSlug: {
+              happeningSlug: slug,
+              userId: user.id,
+            },
           },
-        },
-      })
-    )?.status === "REGISTERED"
+        })
+      )?.status === "REGISTERED"
     : false;
 
   const registrations = await prisma.registration.findMany({
