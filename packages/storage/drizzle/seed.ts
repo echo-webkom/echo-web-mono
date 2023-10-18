@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { slugify } from "../../../apps/api/src/lib/slugify";
 import { db } from "../src/db/drizzle";

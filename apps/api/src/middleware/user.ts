@@ -1,6 +1,6 @@
 import { eq, type InferSelectModel } from "drizzle-orm";
 import { type MiddlewareHandler } from "hono";
-import { getCookie, getSignedCookie } from "hono/cookie";
+import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import { verify } from "hono/jwt";
 

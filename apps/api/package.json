@@ -22,13 +22,12 @@
     "@react-email/html": "0.0.4",
     "@react-email/render": "^0.0.7",
     "@sanity/client": "^6.4.12",
-    "@types/bcrypt": "^5.0.0",
     "@types/eslint": "^8.44.3",
     "@types/node": "^20.7.1",
     "@types/pg": "^8.10.3",
     "@types/react": "^18.2.23",
     "@vitest/coverage-v8": "^0.34.5",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "chalk": "^5.3.0",
     "dotenv": "^16.3.1",
     "dotenv-cli": "7.3.0",
@@ -52,5 +51,8 @@
     "extends": [
       "webkom/base"
     ]
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.5"
   }
 }
