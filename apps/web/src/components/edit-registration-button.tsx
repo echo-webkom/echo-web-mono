@@ -25,11 +25,18 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
+import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
+import { Prisma } from "@echo-webkom/db";
+import { RegistrationStatus } from "@echo-webkom/db/enums";
 
 type EditRegistrationButtonProps = {
   slug: string;
   registration: RegistrationWithUser;
 };
+
+type RegistrationWithUser = Prisma.RegistrationGetPayload<{
+  include: { user: true };
+}>;
 
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
