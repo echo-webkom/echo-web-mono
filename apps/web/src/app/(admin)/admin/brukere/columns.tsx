@@ -86,7 +86,6 @@ export const columns: Array<ColumnDef<User>> = [
             <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <UserForm user={user} />
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -123,7 +122,7 @@ function UserForm({ user }: { user: User }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Endre rolle</DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()} className= "pr-10" >Endre rolle</DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
