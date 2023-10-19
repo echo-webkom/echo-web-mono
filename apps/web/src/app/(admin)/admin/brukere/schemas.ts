@@ -1,6 +1,8 @@
 import { z } from "zod";
 
+import { userTypeEnum } from "@echo-webkom/db/schemas";
+
 export const userFormSchema = z.object({
-  groups: z.string().array(),
-  role: z.string(),
+  memberships: z.string().array(),
+  type: z.enum(userTypeEnum.enumValues),
 });

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon } from "@radix-ui/react-icons";
 import { signOut } from "next-auth/react";
 
-import { type Session } from "@echo-webkom/auth";
+import { type User } from "@echo-webkom/db/schemas";
 
 import {
   DropdownMenu,
@@ -17,10 +17,10 @@ import {
 } from "./ui/dropdown-menu";
 
 type ProfileIconProps = {
-  session: Session;
+  user: User;
 };
 
-export function ProfileIcon({ session }: ProfileIconProps) {
+export function ProfileIcon({ user }: ProfileIconProps) {
   const pathname = usePathname();
 
   return (
@@ -34,7 +34,7 @@ export function ProfileIcon({ session }: ProfileIconProps) {
       <DropdownMenuContent className="mx-3 w-56">
         <DropdownMenuLabel>
           <p className="font-normal">Logget inn som</p>
-          <p className="font-bold">{session.user.name}</p>
+          <p className="font-bold">{user.name}</p>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
@@ -46,7 +46,7 @@ export function ProfileIcon({ session }: ProfileIconProps) {
           </Link>
         </DropdownMenuItem>
 
-        {session.user.role === "ADMIN" && (
+        {user.type === "admin" && (
           <>
             <DropdownMenuSeparator />
 

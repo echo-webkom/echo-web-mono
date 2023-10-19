@@ -1,8 +1,10 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { type z } from "zod";
 
-import { prisma, type Group, type Role } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { users, usersToGroups } from "@echo-webkom/db/schemas";
 
 import { getUser } from "@/lib/session";
 import { type userFormSchema } from "./schemas";
@@ -23,32 +25,16 @@ export const updateUserAction = async (
   try {
     const actionUser = await getUser();
 
-    if (actionUser === null || actionUser?.role !== "ADMIN") {
+    if (actionUser === null || actionUser?.type !== "admin") {
       return {
         result: "error",
         message: "You are not logged in as an admin",
       };
     }
 
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        studentGroups: {
-          set: data.groups as Array<Group>,
-        },
-      },
-    });
-
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        role: data.role as Role,
-      },
-    });
+    await db.delete(usersToGroups).where(eq(usersToGroups.userId, userId));
+    await db.insert(usersToGroups).values(data.memberships.map((groupId) => ({ userId, groupId })));
+    await db.update(users).set({ type: data.type }).where(eq(users.id, userId));
 
     return {
       result: "success",

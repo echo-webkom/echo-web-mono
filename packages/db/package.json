@@ -3,30 +3,35 @@
   "version": "0.1.0",
   "exports": {
     ".": "./index.ts",
-    "./enums": "./enums.ts"
+    "./schemas": "./schemas"
   },
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "db:generate": "pnpm with-env prisma generate --schema=./prisma/schema.prisma && tsx ./prisma/post-generate.ts",
-    "db:migrate": "pnpm with-env prisma migrate dev --schema ./prisma/schema.prisma",
-    "db:deploy": "pnpm with-env prisma migrate deploy --schema ./prisma/schema.prisma",
-    "db:up": "docker compose up -d",
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
+    "db:generate": "pnpm with-env drizzle-kit generate:pg",
+    "db:migrate": "pnpm with-env tsx ./drizzle/migrate",
+    "db:seed": "pnpm with-env tsx ./drizzle/seed",
+    "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev": "pnpm with-env prisma studio --port 4000 --browser none",
+    "dev": "pnpm with-env drizzle-kit studio --port 4000",
+    "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.4.2"
+    "@auth/core": "^0.17.0",
+    "drizzle-orm": "^0.28.6",
+    "nanoid": "^5.0.2",
+    "postgres": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.8.6",
+    "@types/pg": "^8.10.7",
     "dotenv-cli": "7.3.0",
+    "drizzle-kit": "^0.19.13",
     "eslint-config-webkom": "workspace:*",
-    "prisma": "^5.4.2",
-    "prisma-kysely": "^1.7.1",
+    "pg": "^8.11.3",
     "tsx": "^3.13.0",
     "typescript": "5.2.2"
   },

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { isEventOrganizer } from "@/lib/happening";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 import { getUser } from "@/lib/session";
 
@@ -21,12 +20,6 @@ export default async function EventDashboardLayout({ children, params }: Props) 
   const event = await getHappeningBySlug(params.slug);
 
   if (!event) {
-    return redirect("/api/auth/signin");
-  }
-
-  const isAdmin = user.role === "ADMIN";
-
-  if (!isAdmin && !isEventOrganizer(user, event)) {
     return redirect("/api/auth/signin");
   }
 

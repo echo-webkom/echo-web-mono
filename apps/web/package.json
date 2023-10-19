@@ -10,7 +10,7 @@
     "clean": "rm -rf .next .turbo node_modules",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",
@@ -44,6 +44,7 @@
     "class-variance-authority": "0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "2.30.0",
+    "drizzle-orm": "^0.28.6",
     "framer-motion": "10.16.4",
     "next": "13.5.5",
     "next-auth": "^4.23.2",

@@ -12,7 +12,7 @@
     "deploy-graphql": "sanity graphql deploy",
     "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
     "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
-    "todo:type-check": "tsc --noEmit"
+    "todo:typecheck": "tsc --noEmit"
   },
   "keywords": [
     "sanity"

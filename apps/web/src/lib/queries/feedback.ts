@@ -1,5 +1,5 @@
-import { prisma } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
 
 export async function getAllFeedback() {
-  return await prisma.siteFeedback.findMany();
+  return await db.query.siteFeedback.findMany();
 }

@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
+import { type z } from "zod";
 
-import { type User as DbUser, type Group } from "@echo-webkom/db";
-import { groupNames, groupToString, roleToString } from "@echo-webkom/lib";
+import { type Group } from "@echo-webkom/db/schemas";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,42 +38,55 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { capitalize } from "@/utils/string";
 import { updateUserAction } from "./action";
+import { type AllUsers } from "./page";
 import { userFormSchema } from "./schemas";
 
-export type User = DbUser;
-
-export const columns: Array<ColumnDef<User>> = [
+export const columns: Array<
+  ColumnDef<{
+    user: AllUsers[number];
+    groups: Array<Group>;
+  }>
+> = [
   {
     accessorKey: "name",
     header: "Navn",
+    cell: ({ row }) => {
+      const { user } = row.original;
+
+      return <div>{user.name}</div>;
+    },
   },
   {
-    accessorKey: "studentGroups",
+    accessorKey: "memberships",
     header: "Studentgrupper",
     cell: ({ row }) => {
-      const groups = row.getValue<Array<Group>>("studentGroups");
+      const { user } = row.original;
 
       return (
         <div>
-          {groups.length ? groups.map((group) => groupToString[group]).join(", ") : "Ingen grupper"}
+          {user.memberships.length
+            ? user.memberships.map((membership) => membership.group.name).join(", ")
+            : "Ingen grupper"}
         </div>
       );
     },
   },
   {
-    accessorKey: "role",
-    header: "Rolle",
+    accessorKey: "type",
+    header: "Brukertype",
     cell: ({ row }) => {
-      const role = row.getValue<DbUser["role"]>("role");
+      const { user } = row.original;
 
-      return <div>{roleToString[role]}</div>;
+      return <div>{capitalize(user.type)}</div>;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const user = row.original;
+      const { user, groups } = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -85,7 +98,7 @@ export const columns: Array<ColumnDef<User>> = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <UserForm user={user} />
+            <UserForm user={user} groups={groups} />
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -93,18 +106,26 @@ export const columns: Array<ColumnDef<User>> = [
   },
 ];
 
-function UserForm({ user }: { user: User }) {
+type UserFormProps = {
+  user: AllUsers[number];
+  groups: Array<Group>;
+};
+
+function UserForm({ user, groups }: UserFormProps) {
   const router = useRouter();
   const { toast } = useToast();
-  const form = useForm({
+
+  const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      groups: user.studentGroups,
-      role: user.role,
+      memberships: user.memberships.map((membership) => membership.group.id),
+      type: user.type,
     },
   });
+
   const onSubmit = form.handleSubmit(async (data) => {
     const { result } = await updateUserAction(user.id, data);
+
     if (result === "success") {
       toast({
         title: "Bruker oppdatert!",
@@ -144,7 +165,7 @@ function UserForm({ user }: { user: User }) {
             <form onSubmit={onSubmit} className="space-y-8">
               <FormField
                 control={form.control}
-                name="role"
+                name="type"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between">
                     <div className="space-y-0.5">
@@ -155,7 +176,7 @@ function UserForm({ user }: { user: User }) {
                     </div>
                     <FormControl>
                       <Switch
-                        checked={field.value === "ADMIN"}
+                        checked={field.value === "admin"}
                         onCheckedChange={(checked) => {
                           return checked ? field.onChange("ADMIN") : field.onChange("USER");
                         }}
@@ -166,7 +187,7 @@ function UserForm({ user }: { user: User }) {
               />
               <FormField
                 control={form.control}
-                name="groups"
+                name="memberships"
                 render={() => (
                   <FormItem>
                     <div className="mb-4">
@@ -176,11 +197,11 @@ function UserForm({ user }: { user: User }) {
                       </FormDescription>
                     </div>
 
-                    {Object.entries(groupNames).map(([id, label]) => (
+                    {groups.map(({ id, name }) => (
                       <FormField
                         key={id}
                         control={form.control}
-                        name="groups"
+                        name="memberships"
                         render={({ field }) => {
                           return (
                             <FormItem
@@ -189,7 +210,7 @@ function UserForm({ user }: { user: User }) {
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(id as Group)}
+                                  checked={field.value?.includes(id)}
                                   onCheckedChange={(checked) => {
                                     return checked
                                       ? field.onChange([...field.value, id])
@@ -199,7 +220,7 @@ function UserForm({ user }: { user: User }) {
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel className="text-sm font-normal">{label}</FormLabel>
+                              <FormLabel className="text-sm font-normal">{name}</FormLabel>
                             </FormItem>
                           );
                         }}

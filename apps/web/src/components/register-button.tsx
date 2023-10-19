@@ -6,7 +6,7 @@ import { Label } from "@radix-ui/react-label";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { type Question } from "@echo-webkom/db";
+import { type Question } from "@echo-webkom/db/schemas";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -132,7 +132,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                   {question.required && <span className="ml-1 text-red-500">*</span>}
                 </Label>
 
-                {question.type === "TEXT" && (
+                {question.type === "text" && (
                   <Input
                     placeholder="Ditt svar..."
                     autoComplete="off"
@@ -140,19 +140,19 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                   />
                 )}
 
-                {question.type === "CHOICE" && (
+                {question.type === "radio" && (
                   <Controller
                     name={`questions.${index}.answer`}
                     control={methods.control}
                     render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger>
-                          <SelectValue>{field.value || "Velg svar..."}</SelectValue>
+                          <SelectValue placeholder="Velg svar..." />
                         </SelectTrigger>
                         <SelectContent>
-                          {question.options.map((option, optionIndex) => (
-                            <SelectItem key={optionIndex} value={option}>
-                              {option}
+                          {question?.options?.map((option) => (
+                            <SelectItem key={option.id} value={option.value}>
+                              {option.value}
                             </SelectItem>
                           ))}
                         </SelectContent>
