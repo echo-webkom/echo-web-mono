@@ -20,7 +20,7 @@ export const groups = pgTable(
 );
 
 export const groupsRelations = relations(groups, ({ one, many }) => ({
-  leader: one(users, {
+  leaderUser: one(users, {
     fields: [groups.leader],
     references: [users.id],
     relationName: "group_leader",
