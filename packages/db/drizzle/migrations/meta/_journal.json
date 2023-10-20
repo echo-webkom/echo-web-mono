@@ -15,6 +15,13 @@
       "when": 1697710120828,
       "tag": "0001_volatile_ultimo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697798320256,
+      "tag": "0002_volatile_starfox",
+      "breakpoints": true
     }
   ]
 }

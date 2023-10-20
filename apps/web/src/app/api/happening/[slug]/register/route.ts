@@ -194,7 +194,8 @@ export const POST = withSession(
 
     return NextResponse.json(
       {
-        title: status === "registered" ? "Gratulere du har fått plass!" : "Du er på venteliste.",
+        title: "Påmelding registrert",
+        description: status === "registered" ? "Gratulerer, du har fått plass!" : "Du er meldt på ventelisten.",
       },
       {
         status: 200,

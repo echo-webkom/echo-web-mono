@@ -40,7 +40,8 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
   const isOrganizer = false;
   const isAdmin = false;
 
-  const isRegistered = registrations.some((registration) => registration.user.id === user?.id);
+  const isRegistered = registrations.some((registration) => registration.user.id === user?.id && registration.status === "registered");
+
   const maxCapacity = spotRange.reduce((acc, curr) => acc + (curr.spots ?? 0), 0);
   const registeredCount = registrations.filter(
     (registration) => registration.status === "registered",

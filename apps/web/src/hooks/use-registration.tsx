@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 const responseSchema = z.object({
   title: z.string(),
