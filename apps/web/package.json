@@ -39,7 +39,7 @@
     "@tanstack/react-table": "^8.10.7",
     "@types/remove-markdown": "0.3.2",
     "@upstash/ratelimit": "^0.4.4",
-    "@upstash/redis": "^1.23.3",
+    "@upstash/redis": "^1.23.4",
     "calendar-link": "^2.6.0",
     "class-variance-authority": "0.7.0",
     "clsx": "^2.0.0",
