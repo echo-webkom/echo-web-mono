@@ -22,8 +22,16 @@ const adminRoutes = [
     label: "Brukere",
   },
   {
+    href: "/admin/happenings",
+    label: "Happenings",
+  },
+  {
     href: "/admin/grupper",
     label: "Grupper",
+  },
+  {
+    href: "/admin/studieretninger",
+    label: "Studieretninger",
   },
 ];
 
