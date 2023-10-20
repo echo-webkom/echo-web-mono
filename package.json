@@ -12,7 +12,7 @@
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "start": "turbo run start",
-    "setup": "pnpm install && pnpm db:up && pnpm db:deploy",
+    "setup": "pnpm install && pnpm db:up && pnpm db:migrate",
     "clean": "rm -rf node_modules",
     "clean-workspaces": "turbo run clean",
     "db:generate": "pnpm --filter=db db:generate",
