@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1697707513732,
+      "tag": "0000_white_hellcat",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1697710120828,
+      "tag": "0001_volatile_ultimo",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697798320256,
+      "tag": "0002_volatile_starfox",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1697804494706,
+      "tag": "0003_freezing_next_avengers",
+      "breakpoints": true
+    }
+  ]
+}

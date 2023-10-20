@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getSession } from "@/lib/session";
+import { getUser } from "@/lib/session";
 import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -9,7 +9,7 @@ import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
-  const session = await getSession();
+  const user = await getUser();
 
   return (
     <div>
@@ -22,8 +22,8 @@ export async function SiteHeader() {
             <DesktopNavigation />
           </div>
           <div className="flex items-center">
-            {session ? (
-              <ProfileIcon session={session} />
+            {user ? (
+              <ProfileIcon user={user} />
             ) : (
               <Button variant="secondary" asChild>
                 <Link href="/auth/logg-inn">Logg inn</Link>

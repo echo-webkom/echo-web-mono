@@ -7,7 +7,7 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint index.ts src",
     "lint:fix": "eslint lint --fix",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",

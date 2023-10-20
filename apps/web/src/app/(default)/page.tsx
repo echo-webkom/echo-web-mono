@@ -7,6 +7,7 @@ import { Content } from "./content";
 
 export default async function HomePage() {
   const session = await getSession();
+
   return (
     <>
       <Container className="relative pb-40 pt-24" layout="full">

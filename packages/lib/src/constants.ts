@@ -1,5 +1,3 @@
-import { type Group } from "@echo-webkom/db";
-
 export const PAGE_TYPES = [
   { title: "Om oss", value: "ABOUT" },
   { title: "For studenter", value: "STUDENTS" },
@@ -7,19 +5,6 @@ export const PAGE_TYPES = [
 ] as const;
 
 export type PageType = (typeof PAGE_TYPES)[number]["value"];
-
-export const groupNames = {
-  MAKERSPACE: "Makerspace",
-  BOARD: "Hovedstyret",
-  TILDE: "Tilde",
-  GNIST: "Gnist",
-  BEDKOM: "Bedkom",
-  ESC: "ESC",
-  HYGGKOM: "Hyggkom",
-  WEBKOM: "Webkom",
-  PROGBAR: "Programmerbar",
-  SQUASH: "Squash",
-} satisfies Record<Group, string>;
 
 export const GROUP_TYPES = [
   { title: "Hovedstyre", value: "BOARD" },

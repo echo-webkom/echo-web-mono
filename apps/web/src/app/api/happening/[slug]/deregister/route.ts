@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { prisma } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { registrations } from "@echo-webkom/db/schemas";
 
 import { withSession } from "@/lib/checks/with-session";
 
@@ -17,10 +19,8 @@ const payloadSchema = z.object({
 
 export const POST = withSession(
   async ({ ctx, user, input }) => {
-    const happening = await prisma.happening.findUnique({
-      where: {
-        slug: ctx.params.slug,
-      },
+    const happening = await db.query.happenings.findFirst({
+      where: (happening) => eq(happening.slug, ctx.params.slug),
     });
 
     // Happening doesn't exist and/or doesn't have a date
@@ -33,18 +33,15 @@ export const POST = withSession(
       return new Response(null, { status: 400 });
     }
 
-    await prisma.registration.update({
-      where: {
-        userId_happeningSlug: {
-          userId: user.id,
-          happeningSlug: ctx.params.slug,
-        },
-      },
-      data: {
-        reason: input.reason,
-        status: "DEREGISTERED",
-      },
-    });
+    await db
+      .update(registrations)
+      .set({
+        unregisterReason: input.reason,
+        status: "unregistered",
+      })
+      .where(
+        and(eq(registrations.userId, user.id), eq(registrations.happeningSlug, ctx.params.slug)),
+      );
 
     return NextResponse.json({ title: "Du er avmeldt" }, { status: 200 });
   },

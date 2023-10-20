@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { prisma } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { siteFeedback } from "@echo-webkom/db/schemas";
 
 import { feedbackSchema } from "@/lib/schemas/feedback";
 
@@ -8,12 +9,10 @@ export async function POST(req: Request) {
   try {
     const payload = feedbackSchema.parse(await req.json());
 
-    await prisma.siteFeedback.create({
-      data: {
-        email: payload.email,
-        name: payload.name,
-        message: payload.message,
-      },
+    await db.insert(siteFeedback).values({
+      email: payload.email,
+      name: payload.name,
+      message: payload.message,
     });
 
     return new Response("Takk for din tilbakemelding!", { status: 200 });

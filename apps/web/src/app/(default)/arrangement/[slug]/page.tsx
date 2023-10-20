@@ -1,23 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { isAfter, isBefore } from "date-fns";
 
-import { prisma } from "@echo-webkom/db";
-
-import { AddToCalender } from "@/components/add-to-calender";
 import { Container } from "@/components/container";
-import { DeregisterButton } from "@/components/deregister-button";
 import { Markdown } from "@/components/markdown";
-import { RegisterButton } from "@/components/register-button";
-import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
-import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { isEventOrganizer } from "@/lib/happening";
-import { getHappeningBySlug } from "@/lib/queries/happening";
-import { getUser } from "@/lib/session";
 import { fetchEventBySlug } from "@/sanity/event";
+import { EventSidebar } from "./event-sidebar";
 
 type Props = {
   params: {
@@ -26,247 +14,30 @@ type Props = {
 };
 
 async function getData(slug: string) {
-  const data = await fetchEventBySlug(slug);
-  const info = await getHappeningBySlug(slug);
+  const event = await fetchEventBySlug(slug);
 
-  if (!data || !info) {
+  if (!event) {
     return notFound();
   }
 
-  return {
-    data,
-    info,
-  };
+  return event;
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { slug } = params;
-
-  const event = await getData(slug);
+  const event = await getData(params.slug);
 
   return {
-    title: event.data.title,
+    title: event.title,
   };
 }
 
 export default async function EventPage({ params }: Props) {
-  const { slug } = params;
-
-  // RENAME VARIABLES
-  const { data: event, info: eventInfo } = await getData(slug);
-
-  const user = await getUser();
-
-  const isOrganizer = user && isEventOrganizer(user, eventInfo);
-  const isAdmin = user?.role === "ADMIN";
-
-  const spotRange = await prisma.spotRange.findMany({
-    where: {
-      happeningSlug: slug,
-    },
-  });
-
-  const isRegistered = user
-    ? (
-        await prisma.registration.findUnique({
-          where: {
-            userId_happeningSlug: {
-              happeningSlug: slug,
-              userId: user.id,
-            },
-          },
-        })
-      )?.status === "REGISTERED"
-    : false;
-
-  const registrations = await prisma.registration.findMany({
-    where: {
-      happeningSlug: slug,
-    },
-  });
-
-  const registeredCount = registrations.filter(
-    (registration) => registration.status === "REGISTERED",
-  ).length;
-  const waitlistCount = registrations.filter(
-    (registration) => registration.status === "WAITLISTED",
-  ).length;
-
-  const maxCapacity = (
-    await prisma.spotRange.findMany({
-      where: {
-        happeningSlug: slug,
-      },
-    })
-  ).reduce((acc, curr) => acc + curr.spots, 0);
-
-  const isRegistrationOpen =
-    eventInfo?.registrationStart &&
-    eventInfo?.registrationEnd &&
-    isAfter(new Date(), eventInfo.registrationStart) &&
-    isBefore(new Date(), eventInfo.registrationEnd);
+  const event = await getData(params.slug);
 
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Sidebar */}
-        <Sidebar>
-          {eventInfo.date && (
-            <SidebarItem>
-              <SidebarItemTitle>Dato:</SidebarItemTitle>
-
-              <SidebarItemContent>
-                <AddToCalender date={eventInfo?.date} title={eventInfo?.title} />
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {eventInfo.date && (
-            <SidebarItem>
-              <SidebarItemTitle>Tid:</SidebarItemTitle>
-              <SidebarItemContent>
-                {eventInfo?.date.toLocaleTimeString("nb-NO", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {spotRange.length > 0 && (
-            <SidebarItem>
-              <SidebarItemTitle>Plasser:</SidebarItemTitle>
-              {spotRange.map((range) => (
-                <SidebarItemContent key={range.id}>
-                  {range.spots} plasser for
-                  {range.minDegreeYear === range.maxDegreeYear ? (
-                    <span> {range.minDegreeYear}. trinn</span>
-                  ) : (
-                    <span>
-                      {" "}
-                      {range.minDegreeYear} - {range.maxDegreeYear}. trinn
-                    </span>
-                  )}
-                </SidebarItemContent>
-              ))}
-            </SidebarItem>
-          )}
-
-          {event.location && (
-            <SidebarItem>
-              <SidebarItemTitle className="font-semibold">Sted:</SidebarItemTitle>
-              <SidebarItemContent>{event.location.name}</SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {event.organizers && (
-            <SidebarItem>
-              <SidebarItemTitle>Arrangert av:</SidebarItemTitle>
-              <SidebarItemContent>
-                <ul>
-                  {event.organizers.map((organizer) => (
-                    <li key={organizer._id}>{organizer.name}</li>
-                  ))}
-                </ul>
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {event.contacts && event.contacts.length > 0 && (
-            <SidebarItem>
-              <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
-              <SidebarItemContent>
-                <ul>
-                  {event.contacts.map((contact) => (
-                    <li key={contact.profile._id}>
-                      <a className="hover:underline" href={"mailto:" + contact.email}>
-                        {contact.profile.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {eventInfo?.registrationStart && eventInfo.registrationStart < new Date() && (
-            <SidebarItem>
-              <SidebarItemTitle className="font-semibold">Påmeldte:</SidebarItemTitle>
-              <SidebarItemContent>
-                {registeredCount} / {maxCapacity}
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {eventInfo?.registrationStart &&
-            eventInfo.registrationStart < new Date() &&
-            waitlistCount > 0 && (
-              <SidebarItem>
-                <SidebarItemTitle>Venteliste:</SidebarItemTitle>
-                <SidebarItemContent>{waitlistCount}</SidebarItemContent>
-              </SidebarItem>
-            )}
-
-          {isRegistrationOpen && eventInfo?.registrationEnd && (
-            <SidebarItem>
-              <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
-              <SidebarItemContent>
-                {eventInfo?.registrationEnd.toLocaleDateString("nb-NO")}
-              </SidebarItemContent>
-            </SidebarItem>
-          )}
-
-          {!isRegistrationOpen &&
-            eventInfo?.registrationStart &&
-            new Date() < eventInfo.registrationStart && (
-              <SidebarItem>
-                <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
-                <SidebarItemContent>
-                  {eventInfo?.registrationStart.toLocaleDateString("nb-NO")}
-                </SidebarItemContent>
-              </SidebarItem>
-            )}
-
-          {user && isRegistrationOpen && (
-            <SidebarItem>
-              {isRegistered ? (
-                <DeregisterButton slug={params.slug} />
-              ) : (
-                <RegisterButton slug={params.slug} questions={eventInfo.questions} />
-              )}
-            </SidebarItem>
-          )}
-
-          {user && !isRegistrationOpen && (
-            <SidebarItem>
-              <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
-                <p className="font-semibold">Påmelding er stengt.</p>
-              </div>
-            </SidebarItem>
-          )}
-
-          {!user && (
-            <SidebarItem>
-              <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
-                <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
-                <div className="flex items-center">
-                  <Link href="/api/auth/signin" className="hover:underline">
-                    Logg inn her
-                  </Link>
-                  <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </div>
-              </div>
-            </SidebarItem>
-          )}
-
-          {(isAdmin || isOrganizer) && (
-            <SidebarItem>
-              <Button fullWidth variant="link" asChild>
-                <Link href={"/dashboard/" + slug}>Til Dashboard</Link>
-              </Button>
-            </SidebarItem>
-          )}
-        </Sidebar>
+        <EventSidebar slug={params.slug} event={event} />
 
         {/* Content */}
         <article className="w-full">

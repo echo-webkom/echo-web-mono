@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
+import { db } from "@echo-webkom/db";
 import {
-  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
@@ -20,7 +21,16 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
-  const registrations = await getUserRegistrations(user.id);
+  const [registrations, degrees, memberships] = await Promise.all([
+    getUserRegistrations(user.id),
+    db.query.degrees.findMany(),
+    db.query.usersToGroups.findMany({
+      where: (usersToGroup) => eq(usersToGroup.userId, user.id),
+      with: {
+        group: true,
+      },
+    }),
+  ]);
 
   return (
     <Container className="max-w-2xl gap-10">
@@ -34,20 +44,23 @@ export default async function ProfilePage() {
           <p className="font-semibold">E-post:</p>
           <p>{user.email}</p>
         </div>
-        {user?.studentGroups && user.studentGroups.length > 0 && (
+        {memberships.length > 0 && (
           <div>
             <p className="font-semibold">Grupper:</p>
-            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+            <p>{memberships.map((membership) => membership.group.name).join(", ")}</p>
           </div>
         )}
       </div>
 
       <div>
         <UserForm
-          alternativeEmail={user.alternativeEmail ?? undefined}
-          degree={user.degree ?? undefined}
-          year={user.year ?? undefined}
-          id={user.id}
+          user={{
+            id: user.id,
+            degree: user.degree ?? undefined,
+            year: user.year ?? undefined,
+            alternativeEmail: user.alternativeEmail ?? undefined,
+          }}
+          degrees={degrees}
         />
       </div>
 

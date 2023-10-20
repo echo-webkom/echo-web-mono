@@ -1,7 +1,7 @@
 import { type NextRequest, type NextResponse } from "next/server";
 import { type ZodType } from "zod";
 
-import { type User } from "@echo-webkom/db";
+import { type User } from "@echo-webkom/db/schemas";
 
 import { getUser } from "@/lib/session";
 

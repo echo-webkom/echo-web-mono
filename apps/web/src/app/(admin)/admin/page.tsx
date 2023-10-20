@@ -4,7 +4,7 @@ import { Heading } from "@/components/ui/heading";
 export default function Dashboard() {
   return (
     <Container>
-      <Heading>Dashboard</Heading>
+      <Heading className="mb-4">Dashboard</Heading>
 
       <p>Velkommen til dashboardet. Bla blab blabblalb bal</p>
     </Container>

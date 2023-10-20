@@ -1,6 +1,8 @@
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { Degree, prisma } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { users } from "@echo-webkom/db/schemas";
 
 import { getUser } from "@/lib/session";
 
@@ -12,7 +14,7 @@ const routeContextSchema = z.object({
 
 const payloadSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
-  degree: z.nativeEnum(Degree).optional(),
+  degree: z.string().optional(),
   year: z.number().min(1).max(5).optional(),
 });
 
@@ -25,20 +27,16 @@ export async function PATCH(req: Request, context: z.infer<typeof routeContextSc
       return new Response(null, { status: 403 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const body = await req.json();
-    const payload = payloadSchema.parse(body);
+    const payload = payloadSchema.parse(await req.json());
 
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
+    await db
+      .update(users)
+      .set({
         alternativeEmail: payload.alternativeEmail ?? null,
-        degree: payload.degree,
+        degreeId: payload.degree,
         year: payload.year,
-      },
-    });
+      })
+      .where(eq(users.id, user.id));
 
     return new Response(null, { status: 200 });
   } catch (error) {

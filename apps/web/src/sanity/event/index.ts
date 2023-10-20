@@ -63,8 +63,8 @@ export async function fetchComingEvents(n: number) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -119,8 +119,8 @@ export async function fetchEventBySlug(slug: string) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -147,63 +147,6 @@ export async function fetchEventBySlug(slug: string) {
   }
 
   return eventSchema.parse(res);
-}
-
-export async function $fetchAllEvents() {
-  try {
-    const query = groq`
-*[_type == "event"
-  && !(_id in path('drafts.**'))] {
-  _id,
-  _createdAt,
-  _updatedAt,
-  title,
-  "slug": slug.current,
-  "organizers": organizer[]->{
-    _id,
-    name,
-    "slug": slug.current,
-  },
-  "contacts": contacts[] {
-    email,
-    "profile": profile->{
-      _id,
-      name,
-    },
-  },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
-  "location": location->{
-    name,
-  },
-  "spotRanges": spotRanges[] {
-    spots,
-    minDegreeYear,
-    maxDegreeYear,
-  },
-  "additionalQuestions": additionalQuestions[] {
-    title,
-    required,
-    type,
-    options,
-  },
-  body
-}
-    `;
-
-    const res = await sanityFetch<Array<Event>>({
-      query,
-      tags: ["all-events"],
-    });
-
-    return eventSchema.array().parse(res);
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Failed to fetch events",
-    };
-  }
 }
 
 export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> | ErrorMessage> => {
@@ -243,8 +186,8 @@ export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> 
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
