@@ -3,10 +3,10 @@
 import { eq } from "drizzle-orm";
 import { type z } from "zod";
 
+import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { users, usersToGroups } from "@echo-webkom/db/schemas";
 
-import { getUser } from "@/lib/session";
 import { type userFormSchema } from "./schemas";
 
 type Response =
@@ -23,9 +23,9 @@ export const updateUserAction = async (
   data: z.infer<typeof userFormSchema>,
 ): Promise<Response> => {
   try {
-    const actionUser = await getUser();
+    const user = await getAuth();
 
-    if (actionUser === null || actionUser?.type !== "admin") {
+    if (user === null || user.type !== "admin") {
       return {
         result: "error",
         message: "You are not logged in as an admin",

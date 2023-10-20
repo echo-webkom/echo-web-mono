@@ -1,8 +1,9 @@
 import { relations } from "drizzle-orm";
 import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happenings, questionTypeEnum } from ".";
+import { answers, happenings, questionTypeEnum } from ".";
 
 type Option = {
   id: string;
@@ -28,12 +29,16 @@ export const questions = pgTable(
   }),
 );
 
-export const questionsRelations = relations(questions, ({ one }) => ({
+export const questionsRelations = relations(questions, ({ one, many }) => ({
   happening: one(happenings, {
     fields: [questions.happeningSlug],
     references: [happenings.slug],
   }),
+  answers: many(answers),
 }));
 
 export type Question = (typeof questions)["$inferSelect"];
 export type QuestionInsert = (typeof questions)["$inferInsert"];
+
+export const selectQuestionSchema = createSelectSchema(questions);
+export const insertQuestionSchema = createInsertSchema(questions);

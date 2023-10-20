@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
@@ -20,3 +21,6 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 export type Session = (typeof sessions)["$inferSelect"];
 export type SessionInsert = (typeof sessions)["$inferInsert"];
+
+export const selectSessionSchema = createSelectSchema(sessions);
+export const insertSessionSchema = createInsertSchema(sessions);

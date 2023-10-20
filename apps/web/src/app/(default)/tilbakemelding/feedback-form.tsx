@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { sendFeedback } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,27 +25,12 @@ export function FeedbackForm() {
 
   const onSubmit = methods.handleSubmit(
     async (data) => {
-      const response = await fetch("/api/feedback", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const { success, message } = await sendFeedback(data);
 
-      if (response.ok) {
-        toast({
-          title: "Tilbakemelding sendt",
-          description: "Takk for din tilbakemelding!",
-          variant: "success",
-        });
-      } else {
-        toast({
-          title: "Noe gikk galt",
-          description: "Kunne ikke sende tilbakemelding",
-          variant: "warning",
-        });
-      }
+      toast({
+        title: message,
+        variant: success ? "success" : "destructive",
+      });
 
       methods.reset();
     },

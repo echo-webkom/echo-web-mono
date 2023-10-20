@@ -1,10 +1,11 @@
 import { relations, sql } from "drizzle-orm";
 import { check, integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, groups, usersToGroups, userTypeEnum } from ".";
 
 export const users = pgTable(
-  "users",
+  "user",
   {
     id: text("id").notNull(),
     name: text("name"),
@@ -33,3 +34,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 
 export type User = (typeof users)["$inferSelect"];
 export type UserInsert = (typeof users)["$inferInsert"];
+
+export const selectUserSchema = createSelectSchema(users);
+export const insertUserSchema = createInsertSchema(users);

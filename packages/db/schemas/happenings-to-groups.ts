@@ -1,17 +1,16 @@
 import { relations } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, happenings } from ".";
 
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",
   {
-    happeningSlug: varchar("happening_slug", { length: 255 })
-      .notNull()
-      .references(() => happenings.slug),
-    groupId: varchar("group_id", { length: 21 })
-      .notNull()
-      .references(() => groups.id),
+    // Don't use `.refrences` to avoid foreign key constraints
+    happeningSlug: varchar("happening_slug", { length: 255 }).notNull(),
+    // Don't use `.refrences` to avoid foreign key constraints
+    groupId: varchar("group_id", { length: 21 }).notNull(),
   },
   (table) => ({
     pk: primaryKey(table.happeningSlug, table.groupId),
@@ -31,3 +30,6 @@ export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one 
 
 export type HappeningsToGroups = (typeof happeningsToGroups)["$inferSelect"];
 export type HappeningsToGroupsInsert = (typeof happeningsToGroups)["$inferInsert"];
+
+export const selectHappeningsToGroupsSchema = createSelectSchema(happeningsToGroups);
+export const insertHappeningsToGroupsSchema = createInsertSchema(happeningsToGroups);

@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { happeningsToGroups, users } from ".";
@@ -31,3 +32,6 @@ export const groupsRelations = relations(groups, ({ one, many }) => ({
 
 export type Group = (typeof groups)["$inferSelect"];
 export type GroupInsert = (typeof groups)["$inferInsert"];
+
+export const selectGroupSchema = createSelectSchema(groups);
+export const insertGroupSchema = createInsertSchema(groups);

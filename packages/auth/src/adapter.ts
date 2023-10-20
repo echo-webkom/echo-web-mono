@@ -105,7 +105,7 @@ export function DrizzleAdapter(client: InstanceType<typeof PgDatabase>): Adapter
         return null;
       }
 
-      return dbAccount.users;
+      return dbAccount.user;
     },
     async deleteSession(sessionToken) {
       const session = await client

@@ -1,5 +1,6 @@
 import { gte, relations } from "drizzle-orm";
 import { check, index, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
 
@@ -32,3 +33,6 @@ export const happeningsRelations = relations(happenings, ({ many }) => ({
 
 export type Happening = (typeof happenings)["$inferSelect"];
 export type HappeningInsert = (typeof happenings)["$inferInsert"];
+
+export const selectHappeningSchema = createSelectSchema(happenings);
+export const insertHappeningSchema = createInsertSchema(happenings);

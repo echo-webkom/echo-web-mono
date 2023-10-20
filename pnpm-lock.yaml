@@ -369,6 +369,9 @@ importers:
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(@types/pg@8.10.7)(pg@8.11.3)(postgres@3.4.0)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.4)
       nanoid:
         specifier: ^5.0.2
         version: 5.0.2
@@ -6536,6 +6539,16 @@ packages:
       '@types/pg': 8.10.7
       pg: 8.11.3
       postgres: 3.4.0
+    dev: false
+
+  /drizzle-zod@0.5.1(drizzle-orm@0.28.6)(zod@3.22.4):
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+    dependencies:
+      drizzle-orm: 0.28.6(@types/pg@8.10.7)(pg@8.11.3)(postgres@3.4.0)
+      zod: 3.22.4
     dev: false
 
   /duplexer@0.1.2:
