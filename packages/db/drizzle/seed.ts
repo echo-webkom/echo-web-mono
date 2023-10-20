@@ -85,8 +85,16 @@ async function seed() {
       name: "Programmerbar",
     },
     {
-      id: "squash",
-      name: "echo Squash",
+      id: "esc-squash",
+      name: "ESC Squash",
+    },
+    {
+      id: "esc-fotball",
+      name: "ESC Fotball",
+    },
+    {
+      id: "bryggelaget",
+      name: "Bryggelaget",
     },
   ]);
 }
