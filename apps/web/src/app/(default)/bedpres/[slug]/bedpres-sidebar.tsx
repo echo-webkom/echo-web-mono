@@ -10,7 +10,6 @@ import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
-import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/session";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
@@ -37,10 +36,6 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
       user: true,
     },
   });
-
-  // TODO
-  const isOrganizer = false;
-  const isAdmin = false;
 
   const isRegistered = registrations.some((registration) => registration.user.id === user?.id);
   const maxCapacity = spotRange.reduce((acc, curr) => acc + (curr.spots ?? 0), 0);
@@ -223,14 +218,6 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
               <ArrowRightIcon className="ml-2 h-4 w-4" />
             </div>
           </div>
-        </SidebarItem>
-      )}
-
-      {(isAdmin || isOrganizer) && (
-        <SidebarItem>
-          <Button fullWidth variant="link" asChild>
-            <Link href={"/dashbord/" + slug}>Til Dashboard</Link>
-          </Button>
         </SidebarItem>
       )}
     </Sidebar>

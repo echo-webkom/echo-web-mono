@@ -1,7 +1,7 @@
 import { gte, relations } from "drizzle-orm";
 import { check, index, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
 
-import { happeningTypeEnum, questions, registrations, spotRanges } from ".";
+import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
 
 export const happenings = pgTable(
   "happening",
@@ -27,6 +27,7 @@ export const happeningsRelations = relations(happenings, ({ many }) => ({
   registrations: many(registrations),
   spotRanges: many(spotRanges),
   questions: many(questions),
+  groups: many(happeningsToGroups),
 }));
 
 export type Happening = (typeof happenings)["$inferSelect"];

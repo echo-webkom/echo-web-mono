@@ -3,6 +3,7 @@ export * from "./answers";
 export * from "./degrees";
 export * from "./enums";
 export * from "./groups";
+export * from "./happenings-to-groups";
 export * from "./happenings";
 export * from "./questions";
 export * from "./registrations";

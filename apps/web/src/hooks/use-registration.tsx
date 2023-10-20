@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 
 const responseSchema = z.object({
   title: z.string(),

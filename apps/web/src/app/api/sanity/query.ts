@@ -7,6 +7,7 @@ export const happeningQuery = `
   "date": dates.date,
   "registrationStart": dates.registrationStart,
   "registrationEnd": dates.registrationEnd,
+  "groups": organizer[]->slug.current,
   "spotRanges": spotRanges[] {
     spots,
     minYear,
@@ -28,6 +29,7 @@ export type HappeningQueryType = Array<{
   date: string;
   registrationStart: string;
   registrationEnd: string;
+  groups: Array<string>;
   spotRanges: Array<{
     spots: number;
     minYear: number;

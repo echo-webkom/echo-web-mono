@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { happenings, questions, spotRanges } from "@echo-webkom/db/schemas";
+import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
-import { sanityFetch } from "@/sanity/client";
+import { client } from "@/sanity/client";
 import { happeningQuery, type HappeningQueryType } from "./query";
 
 export const revalidate = 0;
@@ -13,7 +13,7 @@ export const revalidate = 0;
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
 
-  const res = await sanityFetch<HappeningQueryType>({ query: happeningQuery, tags: [] });
+  const res = await client.fetch<HappeningQueryType>(happeningQuery);
 
   const formattedHappenings = res.map((h) => ({
     ...h,
@@ -46,7 +46,18 @@ export const GET = withBasicAuth(async () => {
       },
     });
 
-  await db.execute(sql`TRUNCATE TABLE spot_range CASCADE;`);
+  await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
+
+  await db.insert(happeningsToGroups).values(
+    formattedHappenings.flatMap((h) => {
+      return (h.groups ?? []).map((g) => ({
+        happeningSlug: h.slug,
+        groupId: h._type === "bedpres" ? "bedkom" : g,
+      }));
+    }),
+  );
+
+  await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);
 
   const spotRangesToInsert = formattedHappenings.flatMap((h) => {
     return (h.spotRanges ?? []).map((sr) => {
