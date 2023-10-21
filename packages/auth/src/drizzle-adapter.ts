@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import type { Adapter } from "@auth/core/adapters";
 import { and, eq } from "drizzle-orm";
 import { type PgDatabase } from "drizzle-orm/pg-core";
