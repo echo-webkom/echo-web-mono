@@ -25,6 +25,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "typecheck": "turbo run typecheck",
+    "test:unit": "turbo run test:unit",
     "test:e2e": "pnpm --filter=playwright test",
     "test:e2e:ui": "pnpm --filter=playwright ui"
   },

@@ -45,6 +45,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Run unit tests
+        run: pnpm test:unit
+
       - name: Install playwright browsers
         run: pnpm --filter=playwright test:install
 

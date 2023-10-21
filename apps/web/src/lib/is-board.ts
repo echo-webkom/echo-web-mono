@@ -3,7 +3,9 @@ export function isBoard(str: string) {
     return false;
   }
 
-  const [start, end] = str.split("/");
+  const delimIndex = str.indexOf("/");
+  const start = str.slice(0, delimIndex);
+  const end = str.slice(delimIndex + 1);
 
   const startIsNumber = !isNaN(Number(start));
   const endIsNumber = !isNaN(Number(end));

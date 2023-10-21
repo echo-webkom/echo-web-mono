@@ -15,15 +15,15 @@ export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSc
   try {
     const data = await sendFeedbackPayloadSchema.parseAsync(payload);
 
-    const id = await db
+    const feedback = await db
       .insert(siteFeedback)
       .values({
         ...data,
       })
       .returning()
-      .then((res) => res[0]?.id ?? null);
+      .then((res) => res[0] ?? null);
 
-    if (!id) {
+    if (!feedback) {
       return {
         success: false,
         message: "Fikk ikke til å sende tilbakemeldingen",

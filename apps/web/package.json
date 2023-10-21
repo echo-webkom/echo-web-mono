@@ -8,6 +8,7 @@
     "lint": "SKIP_ENV_VALIDATION=1 next lint",
     "start": "pnpm run with-env next start",
     "clean": "rm -rf .next .turbo node_modules",
+    "test:unit": "vitest",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
     "typecheck": "tsc --noEmit"
@@ -73,7 +74,8 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "1.0.7",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
   },
   "eslintConfig": {
     "root": true,

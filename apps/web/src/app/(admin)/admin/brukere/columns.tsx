@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -9,6 +10,7 @@ import { type z } from "zod";
 
 import { type Group } from "@echo-webkom/db/schemas";
 
+import { updateUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -39,7 +41,6 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { capitalize } from "@/utils/string";
-import { updateUserAction } from "./action";
 import { type AllUsers } from "./page";
 import { userFormSchema } from "./schemas";
 
@@ -114,6 +115,7 @@ type UserFormProps = {
 function UserForm({ user, groups }: UserFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
@@ -124,20 +126,18 @@ function UserForm({ user, groups }: UserFormProps) {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { result } = await updateUserAction(user.id, data);
+    setIsLoading(true);
 
-    if (result === "success") {
-      toast({
-        title: "Bruker oppdatert!",
-        description: "Brukeren ble oppdatert.",
-      });
-      router.refresh();
-    } else {
-      toast({
-        title: "Noe gikk galt!",
-        description: "Kunne ikke oppdatere bruker.",
-      });
-    }
+    const { success, message } = await updateUser(user.id, data);
+
+    setIsLoading(false);
+
+    toast({
+      title: message,
+      variant: success ? "success" : "destructive",
+    });
+
+    router.refresh();
   });
 
   return (
@@ -178,7 +178,7 @@ function UserForm({ user, groups }: UserFormProps) {
                       <Switch
                         checked={field.value === "admin"}
                         onCheckedChange={(checked) => {
-                          return checked ? field.onChange("ADMIN") : field.onChange("USER");
+                          return checked ? field.onChange("admin") : field.onChange("user");
                         }}
                       />
                     </FormControl>
@@ -230,9 +230,7 @@ function UserForm({ user, groups }: UserFormProps) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">
-                <span>Lagre</span>
-              </Button>
+              <Button type="submit">{isLoading ? "Lagrer..." : "Lagre endringer"}</Button>
             </form>
           </Form>
         </div>
