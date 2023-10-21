@@ -407,8 +407,8 @@ importers:
         specifier: ^13.5.5
         version: 13.5.6
       '@types/eslint':
-        specifier: ^8.44.4
-        version: 8.44.4
+        specifier: ^8.44.5
+        version: 8.44.6
       '@types/node':
         specifier: 18.18.5
         version: 18.18.5
@@ -4423,8 +4423,8 @@ packages:
       '@types/ms': 0.7.31
     dev: false
 
-  /@types/eslint@8.44.4:
-    resolution: {integrity: sha512-lOzjyfY/D9QR4hY9oblZ76B90MYTB3RrQ4z2vBIJKj9ROCRqdkYl2gSUx1x1a4IWPjKJZLL4Aw1Zfay7eMnmnA==}
+  /@types/eslint@8.44.6:
+    resolution: {integrity: sha512-P6bY56TVmX8y9J87jHNgQh43h6VVU+6H7oN7hgvivV81K2XY8qJZ5vqPy/HdUoVIelii2kChYVzQanlswPWVFw==}
     dependencies:
       '@types/estree': 1.0.1
       '@types/json-schema': 7.0.12
