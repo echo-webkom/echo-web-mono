@@ -20,11 +20,24 @@ export function Markdown({ className, content }: MarkdownProps) {
     <article className={cn("max-w-3xl text-xl text-gray-800", className)}>
       <ReactMarkdown
         components={{
+          h1: ({ children }) => {
+            return <Heading level={1}>{children}</Heading>;
+          },
           h2: ({ children }) => {
             return <Heading level={2}>{children}</Heading>;
           },
           p: ({ children }) => {
             return <p className="py-4 leading-8">{children}</p>;
+          },
+          code: ({ children }) => {
+            return <code className="rounded bg-gray-200 px-1 py-0.5 font-mono">{children}</code>;
+          },
+          blockquote: ({ children }) => {
+            return (
+              <blockquote className="border-l-4 border-gray-300 py-4 pl-4 italic">
+                {children}
+              </blockquote>
+            );
           },
           ul: ({ children }) => {
             return <ul className="list-disc py-4 pl-8">{children}</ul>;
