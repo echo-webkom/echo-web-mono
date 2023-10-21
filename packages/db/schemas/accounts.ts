@@ -1,6 +1,6 @@
 import type { AdapterAccount } from "@auth/core/adapters";
-import { relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
@@ -26,12 +26,8 @@ export const accounts = pgTable(
   }),
 );
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  user: one(users, {
-    fields: [accounts.userId],
-    references: [users.id],
-  }),
-}));
-
 export type Account = (typeof accounts)["$inferSelect"];
 export type AccountInsert = (typeof accounts)["$inferInsert"];
+
+export const selectAccountSchema = createSelectSchema(accounts);
+export const insertAccountSchema = createInsertSchema(accounts);

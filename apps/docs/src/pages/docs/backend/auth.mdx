@@ -10,17 +10,17 @@ N책r en bruker har logget inn kan vi bruke `useSession`-hooken til Auth.js for �
 
 ## Beskytte sider
 
-For 책 beskytte sider kan du bruke `getUser` for 책 sjekke om brukeren har en session (om en bruker er logget inn). Du kan ogs책 bruke `redirect` til 책 sende de til en annen side om de ikke er logget inn.
+For 책 beskytte sider kan du bruke `getAuthSession` for 책 sjekke om brukeren har en session (om en bruker er logget inn). Du kan ogs책 bruke `redirect` til 책 sende de til en annen side om de ikke er logget inn.
 
 ```tsx filename="app/protected/route.tsx
 import {redirect} from "next/navigation";
 
-import {getUser} from "@/lib/session";
+import {getAuthSession} from "@echo-webkom/auth";
 
 export default async function ProtectedPage() {
-  const user = await getUser();
+  const session = await getAuthSession();
 
-  if (!user) {
+  if (!session) {
     return redirect("/api/auth/signin");
   }
 

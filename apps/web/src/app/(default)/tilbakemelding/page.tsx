@@ -14,9 +14,7 @@ export default function FeedbackPage() {
           </p>
         </div>
 
-        <div>
-          <FeedbackForm />
-        </div>
+        <FeedbackForm />
       </div>
     </Container>
   );

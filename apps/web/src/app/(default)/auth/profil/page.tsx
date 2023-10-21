@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
+import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   happeningTypeToPath,
@@ -12,10 +13,9 @@ import {
 import { Container } from "@/components/container";
 import { UserForm } from "@/components/user-form";
 import { getUserRegistrations } from "@/lib/queries/user";
-import { getUser } from "@/lib/session";
 
 export default async function ProfilePage() {
-  const user = await getUser();
+  const user = await getAuth();
 
   if (!user) {
     return redirect("/auth/logg-inn");

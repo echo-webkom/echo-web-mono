@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
+import { deregister } from "@/actions/deregister";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useDeregistration } from "@/hooks/use-deregistration";
 import { useToast } from "@/hooks/use-toast";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
@@ -29,34 +29,36 @@ type DeregisterButtonProps = {
 
 export function DeregisterButton({ slug }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { deregister, isLoading } = useDeregistration(slug, {
-    onSuccess: () => {
-      setIsOpen(false);
-      router.refresh();
-      toast({
-        title: "Avmelding fullført",
-        description: "Du er nå avmeldt arrangementet",
-      });
-    },
-    onError: () => {
-      setIsOpen(false);
-      toast({
-        title: "Noe gikk galt",
-        description: "Kunne ikke melde deg av arrangementet",
-      });
-    },
-  });
 
-  const methods = useForm<DeregistrationForm>({
+  const form = useForm<DeregistrationForm>({
     resolver: zodResolver(deregistrationSchema),
+    defaultValues: {
+      hasVerified: false,
+      reason: "",
+    },
   });
 
-  const onSubmit = methods.handleSubmit(async (data) => {
-    await deregister({
+  const onSubmit = form.handleSubmit(async (data) => {
+    setIsLoading(true);
+
+    await deregister(slug, {
       reason: data.reason,
     });
+
+    setIsLoading(false);
+
+    toast({
+      title: "Du er nå meldt av",
+      description: "Du er nå meldt av arrangementet.",
+      variant: "success",
+    });
+
+    router.refresh();
+    form.reset();
+    setIsOpen(false);
   });
 
   return (
@@ -90,17 +92,17 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
               <Label htmlFor="reason">Hvorfor melder du deg av?</Label>
               <Textarea
                 id="reason"
-                {...methods.register("reason")}
+                {...form.register("reason")}
                 className="w-full"
                 placeholder="Skriv her..."
               />
-              <p className="text-sm text-red-500">{methods.formState.errors.reason?.message}</p>
+              <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
             </div>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <Controller
                   name="hasVerified"
-                  control={methods.control}
+                  control={form.control}
                   defaultValue={false}
                   render={({ field }) => (
                     <Checkbox
@@ -115,9 +117,7 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
                   Jeg er klar over at jeg kan få prikker for dette.
                 </Label>
               </div>
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.hasVerified?.message}
-              </p>
+              <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
             </div>
           </div>
 

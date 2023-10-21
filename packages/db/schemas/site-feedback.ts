@@ -1,4 +1,5 @@
 import { boolean, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 export const siteFeedback = pgTable("site_feedback", {
@@ -15,3 +16,6 @@ export const siteFeedback = pgTable("site_feedback", {
 
 export type SiteFeedback = (typeof siteFeedback)["$inferSelect"];
 export type SiteFeedbackInsert = (typeof siteFeedback)["$inferInsert"];
+
+export const selectSiteFeedbackSchema = createSelectSchema(siteFeedback);
+export const insertSiteFeedbackSchema = createInsertSchema(siteFeedback);

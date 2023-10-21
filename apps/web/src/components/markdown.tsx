@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { cn } from "@/utils/cn";
+import { Heading } from "./ui/heading";
 
 type MarkdownProps = {
   className?: string;
@@ -19,6 +20,9 @@ export function Markdown({ className, content }: MarkdownProps) {
     <article className={cn("max-w-3xl text-xl text-gray-800", className)}>
       <ReactMarkdown
         components={{
+          h2: ({ children }) => {
+            return <Heading level={2}>{children}</Heading>;
+          },
           p: ({ children }) => {
             return <p className="py-4 leading-8">{children}</p>;
           },

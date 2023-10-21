@@ -4,13 +4,13 @@ import { ArrowRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
 import { isAfter, isBefore } from "date-fns";
 import { eq } from "drizzle-orm";
 
+import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
-import { getUser } from "@/lib/session";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
 
@@ -20,7 +20,7 @@ type BedpresSidebarProps = {
 };
 
 export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
-  const user = await getUser();
+  const user = await getAuth();
   const happening = await db.query.happenings.findFirst({
     where: (event) => eq(event.slug, slug),
     with: {
@@ -37,7 +37,11 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
     },
   });
 
-  const isRegistered = registrations.some((registration) => registration.user.id === user?.id);
+  const isRegistered = registrations.some(
+    (registration) =>
+      registration.user.id === user?.id &&
+      (registration.status === "registered" || registration.status === "waiting"),
+  );
   const maxCapacity = spotRange.reduce((acc, curr) => acc + (curr.spots ?? 0), 0);
   const registeredCount = registrations.filter(
     (registration) => registration.status === "registered",
@@ -212,7 +216,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
             <div className="flex items-center">
-              <Link href="/api/auth/logg-inn" className="hover:underline">
+              <Link href="/auth/logg-inn" className="hover:underline">
                 Logg inn her
               </Link>
               <ArrowRightIcon className="ml-2 h-4 w-4" />

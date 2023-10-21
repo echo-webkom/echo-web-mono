@@ -8,6 +8,7 @@ import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
+import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -50,33 +51,21 @@ export function UserForm({ user, degrees }: UserFormProps) {
     async (data) => {
       setIsLoading(true);
 
-      const response = await fetch(`/api/user/${user.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      const { success, message } = await updateSelf({
+        alternativeEmail: data.alternativeEmail,
+        degreeId: data.degree,
+        year: data.year,
       });
 
       setIsLoading(false);
 
-      if (!response.ok) {
-        return toast({
-          title: "Noe gikk galt",
-          description: "Kunne ikke oppdatere bruker",
-          variant: "warning",
-        });
-      }
-
       toast({
-        title: "Bruker oppdatert",
-        description: "Brukeren din er nå oppdatert",
-        variant: "success",
+        title: message,
+        variant: success ? "success" : "warning",
       });
 
       router.refresh();
     },
-
     () => {
       toast({
         title: "Noe gikk galt",

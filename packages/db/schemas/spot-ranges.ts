@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { happenings } from ".";
@@ -26,3 +27,6 @@ export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
 
 export type SpotRange = (typeof spotRanges)["$inferSelect"];
 export type SpotRangeInsert = (typeof spotRanges)["$inferInsert"];
+
+export const selectSpotRangeSchema = createSelectSchema(spotRanges);
+export const insertSpotRangeSchema = createInsertSchema(spotRanges);

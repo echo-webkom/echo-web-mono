@@ -22,6 +22,7 @@
   "dependencies": {
     "@auth/core": "^0.17.0",
     "drizzle-orm": "^0.28.6",
+    "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.2",
     "postgres": "^3.4.0"
   },

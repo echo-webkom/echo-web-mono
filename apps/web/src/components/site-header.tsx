@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { getUser } from "@/lib/session";
+import { getAuth } from "@echo-webkom/auth";
+
 import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -9,7 +10,7 @@ import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
-  const user = await getUser();
+  const user = await getAuth();
 
   return (
     <div>

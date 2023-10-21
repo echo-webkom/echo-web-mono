@@ -1,15 +1,12 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
-import { nanoid } from "nanoid";
+import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happenings, registrationStatusEnum, users } from ".";
+import { answers, happenings, registrationStatusEnum, users } from ".";
 
 export const registrations = pgTable(
   "registration",
   {
-    id: varchar("id", { length: 21 })
-      .notNull()
-      .$defaultFn(() => nanoid()),
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
@@ -18,14 +15,15 @@ export const registrations = pgTable(
       .references(() => happenings.slug),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey(table.id),
+    pk: primaryKey(table.userId, table.happeningSlug),
     statusIdx: index("status_idx").on(table.status),
   }),
 );
 
-export const registrationsRelations = relations(registrations, ({ one }) => ({
+export const registrationsRelations = relations(registrations, ({ one, many }) => ({
   happening: one(happenings, {
     fields: [registrations.happeningSlug],
     references: [happenings.slug],
@@ -34,7 +32,11 @@ export const registrationsRelations = relations(registrations, ({ one }) => ({
     fields: [registrations.userId],
     references: [users.id],
   }),
+  answers: many(answers),
 }));
 
 export type Registration = (typeof registrations)["$inferSelect"];
 export type RegistrationInsert = (typeof registrations)["$inferInsert"];
+
+export const selectRegistrationSchema = createSelectSchema(registrations);
+export const insertRegistrationSchema = createInsertSchema(registrations);

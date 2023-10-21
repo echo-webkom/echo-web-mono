@@ -22,6 +22,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "user_type" AS ENUM('student', 'company', 'admin');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "account" (
 	"user_id" text NOT NULL,
 	"type" text NOT NULL,
@@ -39,7 +45,8 @@ CREATE TABLE IF NOT EXISTS "account" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "answer" (
 	"question_id" varchar(21) NOT NULL,
-	"registration_id" varchar(21) NOT NULL,
+	"user_id" text NOT NULL,
+	"happening_slug" text NOT NULL,
 	"answer" text,
 	CONSTRAINT answer_question_id PRIMARY KEY("question_id")
 );
@@ -55,6 +62,12 @@ CREATE TABLE IF NOT EXISTS "group" (
 	"name" varchar(255) NOT NULL,
 	"leader" text,
 	CONSTRAINT group_id PRIMARY KEY("id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "happenings_to_groups" (
+	"happening_slug" varchar(255) NOT NULL,
+	"group_id" varchar(21) NOT NULL,
+	CONSTRAINT happenings_to_groups_happening_slug_group_id PRIMARY KEY("happening_slug","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happening" (
@@ -78,12 +91,12 @@ CREATE TABLE IF NOT EXISTS "question" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "registration" (
-	"id" varchar(21) NOT NULL,
 	"user_id" text NOT NULL,
 	"happening_slug" text NOT NULL,
 	"status" "registration_status" DEFAULT 'waiting' NOT NULL,
 	"unregister_reason" text,
-	CONSTRAINT registration_id PRIMARY KEY("id")
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT registration_user_id_happening_slug PRIMARY KEY("user_id","happening_slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -110,12 +123,12 @@ CREATE TABLE IF NOT EXISTS "spot_range" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_to_groups" (
-	"user_id" text,
-	"group_id" varchar(21),
+	"user_id" text NOT NULL,
+	"group_id" varchar(21) NOT NULL,
 	CONSTRAINT users_to_groups_user_id_group_id PRIMARY KEY("user_id","group_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users" (
+CREATE TABLE IF NOT EXISTS "user" (
 	"id" text NOT NULL,
 	"name" text,
 	"email" text NOT NULL,
@@ -124,7 +137,8 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"alternative_email" varchar(255),
 	"degree_id" varchar(21),
 	"year" integer,
-	CONSTRAINT users_id PRIMARY KEY("id")
+	"type" "user_type" DEFAULT 'student' NOT NULL,
+	CONSTRAINT user_id PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verification_token" (
@@ -137,25 +151,19 @@ CREATE TABLE IF NOT EXISTS "verification_token" (
 CREATE INDEX IF NOT EXISTS "type_idx" ON "happening" ("type");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "status_idx" ON "registration" ("status");--> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "account" ADD CONSTRAINT "account_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_question_id_question_id_fk" FOREIGN KEY ("question_id") REFERENCES "question"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_happening_slug_user_id_registration_happening_slug_user_id_fk" FOREIGN KEY ("happening_slug","user_id") REFERENCES "registration"("happening_slug","user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_registration_id_registration_id_fk" FOREIGN KEY ("registration_id") REFERENCES "registration"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "group" ADD CONSTRAINT "group_leader_users_id_fk" FOREIGN KEY ("leader") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "group" ADD CONSTRAINT "group_leader_user_id_fk" FOREIGN KEY ("leader") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -167,7 +175,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "registration" ADD CONSTRAINT "registration_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "registration" ADD CONSTRAINT "registration_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -179,7 +187,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "session" ADD CONSTRAINT "session_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -191,7 +199,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "users_to_groups" ADD CONSTRAINT "users_to_groups_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "users_to_groups" ADD CONSTRAINT "users_to_groups_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -203,7 +211,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "users" ADD CONSTRAINT "users_degree_id_degree_id_fk" FOREIGN KEY ("degree_id") REFERENCES "degree"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "user" ADD CONSTRAINT "user_degree_id_degree_id_fk" FOREIGN KEY ("degree_id") REFERENCES "degree"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
