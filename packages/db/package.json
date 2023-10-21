@@ -32,7 +32,7 @@
     "drizzle-kit": "^0.19.13",
     "eslint-config-webkom": "workspace:*",
     "pg": "^8.11.3",
-    "tsx": "^3.13.0",
+    "tsx": "^3.14.0",
     "typescript": "5.2.2"
   },
   "eslintConfig": {
