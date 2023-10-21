@@ -1,12 +1,14 @@
 import Link from "next/link";
 
+import { getAuthSession } from "@echo-webkom/auth";
+
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { getSession } from "@/lib/session";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await getSession();
+  const session = await getAuthSession();
+
   return (
     <>
       <Container className="relative pb-40 pt-24" layout="full">
