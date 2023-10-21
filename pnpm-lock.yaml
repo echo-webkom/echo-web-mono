@@ -252,7 +252,7 @@ importers:
         version: 4.23.2(next@13.5.5)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 5.5.8
-        version: 5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.18.0)(@sanity/ui@1.7.4)(next@13.5.5)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11)
+        version: 5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@13.5.5)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -377,8 +377,8 @@ importers:
         version: 3.4.0
     devDependencies:
       '@types/node':
-        specifier: ^20.8.6
-        version: 20.8.6
+        specifier: ^20.8.7
+        version: 20.8.7
       '@types/pg':
         specifier: ^8.10.7
         version: 8.10.7
@@ -4452,7 +4452,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.8.6
+      '@types/node': 20.8.7
     dev: false
 
   /@types/hast@2.3.5:
@@ -4527,8 +4527,8 @@ packages:
   /@types/node@18.18.5:
     resolution: {integrity: sha512-4slmbtwV59ZxitY4ixUZdy1uRLf9eSIvBWPQxNjhHYWEtn0FryfKpyS2cvADYXTayWdKEIsJengncrVvkI4I6A==}
 
-  /@types/node@20.8.6:
-    resolution: {integrity: sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==}
+  /@types/node@20.8.7:
+    resolution: {integrity: sha512-21TKHHh3eUHIi2MloeptJWALuCu5H7HQTdTrWIFReA8ad+aggoX+lRes3ex7/FtpC+sVUpFMQ+QTfYr74mruiQ==}
     dependencies:
       undici-types: 5.25.3
 
@@ -4543,7 +4543,7 @@ packages:
   /@types/pg@8.10.7:
     resolution: {integrity: sha512-ksJqHipwYaSEHz9e1fr6H6erjoEdNNaOxwyJgPx9bNeaqOW3iWBQgVHfpwiSAoqGzchfc+ZyRLwEfeCcyYD3uQ==}
     dependencies:
-      '@types/node': 20.8.6
+      '@types/node': 20.8.7
       pg-protocol: 1.6.0
       pg-types: 4.0.1
 
@@ -9964,7 +9964,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.18.0)(@sanity/ui@1.7.4)(next@13.5.5)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11):
+  /next-sanity@5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.5.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@13.5.5)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11):
     resolution: {integrity: sha512-RXblju8LqkHOOBsGrO7z0Psotog08paopR82N6/zqpGXq+4qIYla5kzEOGtRGUYbA/T2+gpnxijmLATxnSVNNw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -9980,7 +9980,7 @@ packages:
       '@sanity/client': 6.6.0
       '@sanity/icons': 2.5.0(react@18.2.0)
       '@sanity/preview-kit': 3.2.0(@sanity/client@6.6.0)(react@18.2.0)
-      '@sanity/types': 3.18.0
+      '@sanity/types': 3.18.1
       '@sanity/ui': 1.7.4(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 3.0.1
       groq: 3.15.0
