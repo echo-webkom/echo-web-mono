@@ -15,7 +15,7 @@ export async function SiteHeader() {
     <div className="sticky top-0 z-20">
       <DatabaseStatusBar />
 
-      <div className="border-b">
+      <div className="border-b bg-background">
         <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
           <div className="flex items-center">
             <HeaderLogo />
