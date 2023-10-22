@@ -3,8 +3,8 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
+import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heading } from "@/components/ui/heading";
 import {
   fetchStudentGroupBySlug,
   fetchStudentGroupParams,

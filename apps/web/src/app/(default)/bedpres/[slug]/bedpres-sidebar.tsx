@@ -11,6 +11,7 @@ import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
+import { Callout } from "@/components/typography/callout";
 import { isValidVerified } from "@/lib/is-valid-verified";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
@@ -63,10 +64,10 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
     <Sidebar>
       {!happening && (
         <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+          <Callout type="warning" noIcon>
             <p className="font-semibold">Fant ikke arrangementet.</p>
             <p>Kontakt Webkom!</p>
-          </div>
+          </Callout>
         </SidebarItem>
       )}
 
@@ -208,9 +209,9 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
 
       {user && !isRegistrationOpen && (
         <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+          <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
-          </div>
+          </Callout>
         </SidebarItem>
       )}
 
@@ -230,7 +231,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
 
       {!user && (
         <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+          <Callout type="warning" noIcon>
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
             <div className="group flex items-center">
               <Link href="/auth/logg-inn" className="hover:underline">
@@ -238,9 +239,11 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
                 <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
             </div>
-          </div>
+          </Callout>
         </SidebarItem>
       )}
+
+      {/* TODO CHECK IF USER IS ADMIN OR ORGANIZER */}
     </Sidebar>
   );
 }
