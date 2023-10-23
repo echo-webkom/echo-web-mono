@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Container } from "@/components/container";
-import { ShoppingList } from "@/components/hyggkom-handleliste";
+import { ShoppingList } from "@/components/hyggkomShoppingList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +19,7 @@ const shoppingListSchema = z.object({
 });
 
 export default function HyggkomHandleliste() {
-  const itemList = ["Epler", "Bananer", "Pærer"];
+  const itemList = ["epler", "Bananer", "Pærer", "Druer"];
 
   const { toast } = useToast();
 
@@ -64,7 +64,7 @@ export default function HyggkomHandleliste() {
           <Label htmlFor="">Hva ønsker du?</Label>
           <Input type="text" />
         </fieldset>
-        <Button>Legg til ditt forslag!</Button>
+        <Button type="submit">Legg til ditt forslag!</Button>
       </form>
     </Container>
   );
