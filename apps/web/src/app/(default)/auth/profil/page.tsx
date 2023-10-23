@@ -53,15 +53,10 @@ export default async function ProfilePage() {
         )}
       </div>
 
-      {user.verifiedAt ? (
-        <p>✅ Profilen din er verifisert</p>
-      ) : (
-        <div className="flex items-center justify-between border p-2">
-          <h2 className="text-lg font-semibold">Verifiser din UiB-bruker</h2>
-
-          <VerifyButton />
-        </div>
-      )}
+      <div className="flex items-center justify-between border p-2">
+        <h2 className="text-lg font-semibold">Verifiser din UiB-bruker</h2>
+        <VerifyButton verified={user.verifiedAt !== null}/>
+      </div>
 
       <UserForm
         user={{
