@@ -6,6 +6,8 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { accounts, users } from "@echo-webkom/db/schemas";
 
+import { isValidVerified } from "@/lib/is-valid-verified";
+
 const FEIDE_GROUPS_ENDPOINT = "https://groups-api.dataporten.no";
 
 type GroupsResponse = {
@@ -46,7 +48,7 @@ export async function verifyFeide() {
       };
     }
 
-    if (user.verifiedAt) {
+    if (isValidVerified(user.verifiedAt)) {
       return {
         success: true,
         message: "Du er medlem av echo",

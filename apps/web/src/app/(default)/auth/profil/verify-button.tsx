@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { CheckIcon, Cross1Icon } from "@radix-ui/react-icons";
 
-import { verifyFeide } from "@/actions/veriy-feide";
+import { verifyFeide } from "@/actions/verify-feide";
 import { useToast } from "@/hooks/use-toast";
 
 type Props = {

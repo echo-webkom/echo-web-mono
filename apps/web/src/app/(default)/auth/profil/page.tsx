@@ -12,6 +12,7 @@ import {
 
 import { Container } from "@/components/container";
 import { UserForm } from "@/components/user-form";
+import { isValidVerified } from "@/lib/is-valid-verified";
 import { getUserRegistrations } from "@/lib/queries/user";
 import { VerifyButton } from "./verify-button";
 
@@ -55,7 +56,7 @@ export default async function ProfilePage() {
 
       <div className="flex items-center justify-between border p-2">
         <h2 className="text-lg font-semibold">Verifiser din UiB-bruker</h2>
-        <VerifyButton verified={user.verifiedAt !== null}/>
+        <VerifyButton verified={isValidVerified(user.verifiedAt)} />
       </div>
 
       <UserForm
