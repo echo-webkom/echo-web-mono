@@ -1,8 +1,10 @@
 import { capitalize } from "./string";
 
-export function norwegianDateString(date: Date) {
+export function norwegianDateString(date: Date | string) {
+  const d = new Date(date);
+
   return capitalize(
-    date.toLocaleDateString("nb-NO", {
+    d.toLocaleDateString("nb-NO", {
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -14,13 +16,26 @@ export function norwegianDateString(date: Date) {
   );
 }
 
-export function shortDate(date: Date) {
-  return date.toLocaleTimeString("nb-NO", {
+export function shortDate(date: Date | string) {
+  const d = new Date(date);
+
+  return d.toLocaleTimeString("nb-NO", {
     day: "numeric",
     month: "short",
     year: "numeric",
     hour: "numeric",
     minute: "numeric",
+    timeZone: "Europe/Oslo",
+  });
+}
+
+export function shortDateNoTime(date: Date | string) {
+  const d = new Date(date);
+
+  return d.toLocaleDateString("nb-NO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
     timeZone: "Europe/Oslo",
   });
 }

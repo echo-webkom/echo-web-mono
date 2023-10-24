@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/ui/heading";
+import { isBoard } from "@/lib/is-board";
 import { fetchPostBySlug, fetchPostParams, type Author } from "@/sanity/posts";
 import { urlFor } from "@/utils/image-builder";
 
@@ -76,7 +77,7 @@ function Authors({ authors }: { authors: Array<Author> }) {
               </div>
             )}
 
-            <p className="text-xl">{author.name}</p>
+            <p className="text-xl">{isBoard(author.name) ? "Hovedstyret" : author.name}</p>
           </div>
         ))}
       </div>

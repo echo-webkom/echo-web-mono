@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { isEventOrganizer } from "@/lib/happening";
+import { getAuth } from "@echo-webkom/auth";
+
 import { getHappeningBySlug } from "@/lib/queries/happening";
-import { getUser } from "@/lib/session";
 
 type Props = {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default async function EventDashboardLayout({ children, params }: Props) {
-  const user = await getUser();
+  const user = await getAuth();
 
   if (!user) {
     return redirect("/api/auth/signin");
@@ -21,12 +21,6 @@ export default async function EventDashboardLayout({ children, params }: Props) 
   const event = await getHappeningBySlug(params.slug);
 
   if (!event) {
-    return redirect("/api/auth/signin");
-  }
-
-  const isAdmin = user.role === "ADMIN";
-
-  if (!isAdmin && !isEventOrganizer(user, event)) {
     return redirect("/api/auth/signin");
   }
 

@@ -9,6 +9,7 @@ export default {
       sans: ["var(--inter-font)", ...fontFamily.sans],
       mono: ["var(--ibm-font)", ...fontFamily.mono],
       display: ["var(--inter-display-font)", ...fontFamily.sans],
+      block: ["var(--block-font)", ...fontFamily.mono],
     },
     extend: {
       colors: {

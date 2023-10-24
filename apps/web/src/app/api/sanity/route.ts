@@ -1,181 +1,102 @@
 import { NextResponse } from "next/server";
+import { sql } from "drizzle-orm";
 
-import { prisma, type Group } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
-import { $fetchAllBedpresses, type Bedpres } from "@/sanity/bedpres";
-import { $fetchAllEvents, type Event } from "@/sanity/event";
-import { isErrorMessage } from "@/utils/error";
+import { client } from "@/sanity/client";
+import { happeningQuery, type HappeningQueryType } from "./query";
 
 export const revalidate = 0;
-
-const organizerSlugToGroup = (slug: string) => {
-  switch (slug) {
-    case "makerspace":
-      return "MAKERSPACE";
-    case "bedkom":
-      return "BEDKOM";
-    case "webkom":
-      return "WEBKOM";
-    case "gnist":
-      return "GNIST";
-    case "hyggkom":
-      return "HYGGKOM";
-    case "squash":
-      return "SQUASH";
-    case "esc":
-      return "ESC";
-    case "programmerbar":
-      return "PROGBAR";
-    case "tilde":
-      return "TILDE";
-    default:
-      return undefined;
-  }
-};
-
-async function updateOrCreateBedpres(happenings: Array<Bedpres>) {
-  return await prisma.$transaction(
-    happenings.map((happening) =>
-      prisma.happening.upsert({
-        where: {
-          slug: happening.slug,
-        },
-        create: {
-          slug: happening.slug,
-          type: "BEDPRES",
-          title: happening.title,
-          questions: {
-            create: happening.additionalQuestions?.map((question) => ({
-              title: question.title,
-              type: question.type === "text" ? "TEXT" : "CHOICE",
-              required: question.required,
-              options: question.options ?? [],
-            })),
-          },
-          spotRanges: {
-            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
-              minDegreeYear,
-              maxDegreeYear,
-              spots,
-            })),
-          },
-          groups: ["BEDKOM"],
-          date: happening.date,
-          registrationStart: happening.registrationStart,
-          registrationEnd: happening.registrationEnd,
-        },
-        update: {
-          title: happening.title,
-          spotRanges: {
-            deleteMany: {},
-            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
-              minDegreeYear,
-              maxDegreeYear,
-              spots,
-            })),
-          },
-          questions: {
-            deleteMany: {},
-            create: happening.additionalQuestions?.map((question) => ({
-              title: question.title,
-              type: question.type === "text" ? "TEXT" : "CHOICE",
-              required: question.required,
-              options: question.options ?? [],
-            })),
-          },
-          date: happening.date,
-          registrationStart: happening.registrationStart,
-          registrationEnd: happening.registrationEnd,
-        },
-      }),
-    ),
-  );
-}
-
-async function updateOrCreateEvent(happenings: Array<Event>) {
-  return await prisma.$transaction(
-    happenings.map((happening) =>
-      prisma.happening.upsert({
-        where: {
-          slug: happening.slug,
-        },
-        create: {
-          slug: happening.slug,
-          type: "EVENT",
-          title: happening.title,
-          questions: {
-            create: happening.additionalQuestions?.map((question) => ({
-              title: question.title,
-              type: question.type === "text" ? "TEXT" : "CHOICE",
-              required: question.required,
-              options: question.options ?? [],
-            })),
-          },
-          spotRanges: {
-            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
-              minDegreeYear,
-              maxDegreeYear,
-              spots,
-            })),
-          },
-          groups: happening.organizers
-            .map((organizer) => organizerSlugToGroup(organizer.slug))
-            .filter((group) => group !== null) as Array<Group>,
-          date: happening.date,
-          registrationStart: happening.registrationStart,
-          registrationEnd: happening.registrationEnd,
-        },
-        update: {
-          title: happening.title,
-          spotRanges: {
-            deleteMany: {},
-            create: happening.spotRanges?.map(({ minDegreeYear, maxDegreeYear, spots }) => ({
-              minDegreeYear,
-              maxDegreeYear,
-              spots,
-            })),
-          },
-          questions: {
-            deleteMany: {},
-            create: happening.additionalQuestions?.map((question) => ({
-              title: question.title,
-              type: question.type === "text" ? "TEXT" : "CHOICE",
-              required: question.required,
-              options: question.options ?? [],
-            })),
-          },
-          date: happening.date,
-          registrationStart: happening.registrationStart,
-          registrationEnd: happening.registrationEnd,
-        },
-      }),
-    ),
-  );
-}
 
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
 
-  const events = await $fetchAllEvents();
-  const bedpresses = await $fetchAllBedpresses();
+  const res = await client.fetch<HappeningQueryType>(happeningQuery);
 
-  if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
-    return new Response("Error fetching data from Sanity", {
-      status: 500,
+  const formattedHappenings = res.map((h) => ({
+    ...h,
+    date: new Date(h.date),
+    registrationStart: new Date(h.registrationStart),
+    registrationEnd: new Date(h.registrationEnd),
+  }));
+
+  await db
+    .insert(happenings)
+    .values(
+      formattedHappenings.map((h) => ({
+        slug: h.slug,
+        title: h.title,
+        type: h._type,
+        date: h.date,
+        registrationStart: h.registrationStart,
+        registrationEnd: h.registrationEnd,
+      })),
+    )
+    .onConflictDoUpdate({
+      target: [happenings.slug],
+      set: {
+        title: sql`excluded."title"`,
+        type: sql`excluded."type"`,
+        date: sql`excluded."date"`,
+        registrationStart: sql`excluded."registration_start"`,
+        registrationEnd: sql`excluded."registration_end"`,
+        slug: sql`excluded."slug"`,
+      },
     });
+
+  await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
+
+  await db.insert(happeningsToGroups).values(
+    formattedHappenings.flatMap((h) => {
+      return (h.groups ?? []).map((g) => ({
+        happeningSlug: h.slug,
+        groupId: h._type === "bedpres" ? "bedkom" : g,
+      }));
+    }),
+  );
+
+  await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);
+
+  const spotRangesToInsert = formattedHappenings.flatMap((h) => {
+    return (h.spotRanges ?? []).map((sr) => {
+      return {
+        happeningSlug: h.slug,
+        spots: sr.spots,
+        minYear: sr.minYear,
+        maxYear: sr.maxYear,
+      };
+    });
+  });
+
+  if (spotRangesToInsert.length > 0) {
+    await db.insert(spotRanges).values(spotRangesToInsert);
   }
 
-  const updatedEvents = await updateOrCreateEvent(events);
-  const updatedBedpresses = await updateOrCreateBedpres(bedpresses);
+  await db.execute(sql`TRUNCATE TABLE question CASCADE;`);
+
+  const questionsToInsert = formattedHappenings.flatMap((h) => {
+    return (h.questions ?? []).map((q) => {
+      return {
+        happeningSlug: h.slug,
+        title: q.title,
+        required: q.required,
+        type: q.type,
+        options: (q.options ?? []).map((o) => ({ id: o, value: o })),
+      };
+    });
+  });
+
+  if (questionsToInsert.length > 0) {
+    await db.insert(questions).values(questionsToInsert);
+  }
 
   const endTime = new Date().getTime();
   const totalSeconds = (endTime - startTime) / 1000;
 
   return NextResponse.json({
-    message: "Success",
-    events: updatedEvents,
-    bedpresses: updatedBedpresses,
+    message: "OK",
     timeInSeconds: totalSeconds,
   });
 });

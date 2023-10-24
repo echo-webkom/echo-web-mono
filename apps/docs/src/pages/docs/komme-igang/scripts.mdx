@@ -12,7 +12,7 @@ Pakkebehandlere lar oss laste ned ekstern kode som vi kan bruke i prosjektet vå
 
 ## `pnpm [web:|docs:|cms:|db:]dev`
 
-Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, cms, prisma eller alle sammen.
+Dette scriptet starter opp utviklingsmiljøet for web, dokumentasjon, Sanity Studio, Drizzle Studio eller alle sammen.
 
 For å starte alle samtidig kjør `pnpm dev`.
 
@@ -41,25 +41,15 @@ pnpm db:down
 
 ## `pnpm db:generate`
 
-Dette scriptet genererer prisma typer. Disse brukes for å gjøre det enklere å bruke prisma i typescript.
+Dette scriptet genererer migrasjonsfilene til Drizzle.
 
 ```sh
 pnpm db:generate
 ```
 
-## `pnpm db:deploy`
-
-Dette scriptet initialiserer databasen. Det er viktig å kjøre dette scriptet etter at databasen er startet.
-
-```sh
-pnpm db:deploy
-```
-
 ## `pnpm db:migrate`
 
 Dette scriptet lager ny migrasjon. Her må du også kjøre databasen først.
-
-Denne kjører du etter at du har gjort en endring i `schema.prisma`.
 
 ```sh
 pnpm db:migrate
@@ -97,10 +87,10 @@ Denne kommandoen sjekker om koden er formattert etter reglene vi har satt i `pre
 pnpm format:check
 ```
 
-## `pnpm type-check`
+## `pnpm typecheck`
 
 Kjører typescript sin kompilator uten å faktisk kompilere koden. Denne vil sjekke om alle typene i koden er skrevet riktig, og om det er noen feil i koden.
 
 ```sh
-pnpm type-check
+pnpm typecheck
 ```

@@ -29,7 +29,9 @@ export default defineType({
       options: {
         list: [
           { title: "Tekstfelt", value: "text" },
-          { title: "Flervalg", value: "multipleChoice" },
+          { title: "Stort tekstfelt", value: "textarea" },
+          { title: "Sjekkbokser", value: "checkbox" },
+          { title: "Valg", value: "radio" },
         ],
       },
       validation: (Rule) => Rule.required(),
@@ -43,8 +45,8 @@ export default defineType({
           type: "string",
         }),
       ],
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      hidden: ({ parent }) => parent.type !== "multipleChoice",
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      hidden: ({ parent }) => ["text", "textarea"].includes(parent?.type),
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const options = value ?? [];
@@ -52,9 +54,14 @@ export default defineType({
           // @ts-ignore
           const questionType = context.parent.type as string;
 
-          if (questionType === "multipleChoice" && options.length < 2) {
+          if (["checkbox", "radio"].includes(questionType) && options.length < 2) {
             return "Flervalg må ha minst to alternativer";
           }
+
+          if (["text", "textarea"].includes(questionType) && options.length > 0) {
+            return "Tekstfelt kan ikke ha alternativer";
+          }
+
           return true;
         }),
     }),

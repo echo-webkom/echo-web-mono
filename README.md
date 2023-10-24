@@ -46,19 +46,13 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
    pnpm db:up
    ```
 
-4. Generer prisma typer
+4. Bruk migrasjoner for å oppdatere databasen
 
    ```sh
-   pnpm db:generate
+   pnpm db:migrate
    ```
 
-5. Initialiser databasen
-
-   ```sh
-   pnpm db:deploy
-   ```
-
-6. Start utviklingsmiljøet
+5. Start utviklingsmiljøet
 
    ```sh
     pnpm dev
@@ -68,8 +62,8 @@ Sidene som starter er:
 
 - [http://localhost:3000](http://localhost:3000) for nettsiden
 - [http://localhost:3001](http://localhost:3001) for dokumentasjon
-- [http://localhost:3333](http://localhost:3333) for sanity
-- [http://localhost:4000](http://localhost:4000) for prisma studio
+- [http://localhost:3333](http://localhost:3333) for Sanity Studio
+- [http://localhost:4000](http://localhost:4000) for Drizzle Studio
 
 ## Dokumentasjon
 

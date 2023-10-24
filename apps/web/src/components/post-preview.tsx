@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
+import { isBoard } from "@/lib/is-board";
 import { type Post } from "@/sanity/posts";
 import { cn } from "@/utils/cn";
 
@@ -17,9 +18,7 @@ export function PostPreview({ post, withBorder = false, className }: PostPreview
     <Link
       href={`/for-studenter/innlegg/${post.slug}`}
       className={cn(
-        "flex h-full flex-col gap-1 rounded-lg p-5",
-        "hover:bg-muted",
-        "shadow-lg transition-colors duration-200 ease-in-out",
+        "flex h-full flex-col gap-1 rounded-lg p-5 shadow-lg transition-colors duration-200 ease-in-out hover:bg-muted",
         withBorder && "border",
         className,
       )}
@@ -40,7 +39,9 @@ export function PostPreview({ post, withBorder = false, className }: PostPreview
       {post.authors && (
         <p>
           <span className="font-semibold">Skrevet av:</span>{" "}
-          {post.authors.map((author) => author.name).join(", ")}
+          {post.authors
+            .map((author) => (isBoard(author.name) ? "Hovedstyret" : author.name))
+            .join(", ")}
         </p>
       )}
     </Link>

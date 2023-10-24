@@ -21,6 +21,18 @@ const adminRoutes = [
     href: "/admin/brukere",
     label: "Brukere",
   },
+  {
+    href: "/admin/happenings",
+    label: "Happenings",
+  },
+  {
+    href: "/admin/grupper",
+    label: "Grupper",
+  },
+  {
+    href: "/admin/studieretninger",
+    label: "Studieretninger",
+  },
 ];
 
 export function AdminSidebar({ children }: { children: React.ReactNode }) {

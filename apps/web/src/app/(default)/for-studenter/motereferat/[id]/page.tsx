@@ -31,7 +31,7 @@ export default async function MinutePage({ params }: Props) {
 
   return (
     <Container>
-      <Heading>{minute.title}</Heading>
+      <Heading className="mb-4">{minute.title}</Heading>
 
       <div className="flex flex-col gap-5">
         <Button className="w-full md:w-fit" asChild>

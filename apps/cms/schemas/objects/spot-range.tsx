@@ -7,34 +7,34 @@ export default defineType({
   type: "object",
   fields: [
     defineField({
-      name: "minDegreeYear",
+      name: "minYear",
       title: "Minste trinn",
       type: "number",
       validation: (Rule) => Rule.required().min(1).max(5),
     }),
     defineField({
-      name: "maxDegreeYear",
+      name: "maxYear",
       title: "Største trinn",
       type: "number",
-      validation: (Rule) => Rule.required().min(Rule.valueOfField("minDegreeYear")).max(5),
+      validation: (Rule) => Rule.required().min(Rule.valueOfField("minYear")).max(5),
     }),
     defineField({
       name: "spots",
       title: "Antall plasser",
       description: "Skriv '0' hvis ubegrenset antall plasser er ønsket",
       type: "number",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(0),
     }),
   ],
   preview: {
     select: {
-      minDegreeYear: "minDegreeYear",
-      maxDegreeYear: "maxDegreeYear",
+      minYear: "minYear",
+      maxYear: "maxYear",
       spots: "spots",
     },
-    prepare({ minDegreeYear, maxDegreeYear, spots }) {
+    prepare({ minYear, maxYear, spots }) {
       return {
-        title: `${minDegreeYear}. - ${maxDegreeYear}. trinn`,
+        title: `${minYear}. - ${maxYear}. trinn`,
         subtitle: `${spots === 0 ? "Ubegrenset" : spots} plasser`,
         media: ComponentIcon,
       };

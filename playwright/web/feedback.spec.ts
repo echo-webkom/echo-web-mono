@@ -8,5 +8,5 @@ test("test", async ({ page }) => {
 
   await page.getByRole("button", { name: "Send" }).click();
 
-  await expect(page.getByTestId("toast")).toContainText("Tilbakemelding sendt");
+  await expect(page.getByTestId("toast")).toContainText("Takk for tilbakemeldingen!");
 });
