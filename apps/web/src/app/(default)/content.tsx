@@ -8,13 +8,15 @@ import { fetchUpcomingBedpresses } from "@/sanity/bedpres";
 import { fetchComingEvents } from "@/sanity/event";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
+import { fetchLinks } from "@/sanity/link";
 
 export async function Content() {
-  const [events, bedpresses, posts, jobAds] = await Promise.all([
+  const [events, bedpresses, posts, jobAds, links] = await Promise.all([
     fetchComingEvents(3),
     fetchUpcomingBedpresses(3),
     fetchPosts(4),
     fetchAvailableJobAds(4),
+    fetchLinks(4),
   ]);
 
   return (
@@ -68,9 +70,16 @@ export async function Content() {
       {/* Useful links */}
       {(
         <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-          <Link href="/for-studenter/nyttige-lenker">
-            <h2 className="text-center text-xl font-semibold md:text-3xl">Nyttige lenker</h2>
-          </Link>
+           <Link href="/for-studenter/nyttige-lenker">
+              <h2 className="text-center text-xl font-semibold md:text-3xl">Nyttige lenker</h2>
+            </Link>
+            <ul>
+              {links.map((link) => (
+                <Link key={link._id} href="/for-studenter/nyttige-lenker">
+                  <li className="text-center text-xl font-semibold md:text-3xl">Nyttige lenker</li>
+                </Link>
+              ))}
+            </ul>
 
           <hr />
         </section>

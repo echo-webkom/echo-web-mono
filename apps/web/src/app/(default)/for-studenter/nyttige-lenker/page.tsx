@@ -1,5 +1,4 @@
 import { type Metadata } from "next/types";
-
 import { Container } from "@/components/container";
 import { Heading } from "@/components/ui/heading";
 import Link from "next/link";
