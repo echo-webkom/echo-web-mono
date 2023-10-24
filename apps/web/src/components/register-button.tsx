@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
 type RegisterButtonProps = {
@@ -41,6 +41,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registrationFormSchema>>({
     resolver: zodResolver(registrationFormSchema),
@@ -69,17 +70,24 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
     router.refresh();
   });
 
+  const handleOneClickRegister = () => {
+    async () => {
+      setIsLoading(true);
+
+      const { success, message } = await register(slug, { questions: [] });
+
+      toast({
+        title: message,
+        variant: success ? "success" : "warning",
+      });
+
+      router.refresh();
+    };
+  };
+
   if (questions.length === 0) {
     return (
-      <Button
-        onClick={() => {
-          void register(slug, {
-            questions: [],
-          });
-        }}
-        disabled={isLoading}
-        fullWidth
-      >
+      <Button onClick={handleOneClickRegister} disabled={isLoading} fullWidth>
         {isLoading ? (
           <>
             <span>

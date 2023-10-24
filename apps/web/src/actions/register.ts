@@ -81,6 +81,15 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
     const spotRanges = await db.query.spotRanges.findMany({
       where: (spotRange) => eq(spotRange.happeningSlug, slug),
     });
+    if (spotRanges.length === 0) {
+      spotRanges.push({
+        id: "default",
+        happeningSlug: happening.slug,
+        minYear: 0,
+        maxYear: 1000,
+        spots: 0,
+      });
+    }
 
     const userSpotRange = spotRanges.find((spotRange) => {
       // Error with typescript. We have already checked that user.degreeId and user.year is not null
@@ -143,7 +152,25 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       answer: question.answer,
     }));
 
-    await db.insert(answers).values(answersToInsert);
+    if (answersToInsert.length > 0) {
+      await db.insert(answers).values(answersToInsert);
+    }
+
+    if (userSpotRange.spots === 0) {
+      await db
+        .update(registrations)
+        .set({
+          status: "registered",
+        })
+        .where(
+          and(eq(registrations.happeningSlug, happening.slug), eq(registrations.userId, user.id)),
+        );
+
+      return {
+        success: true,
+        message: "Du er påmeldt",
+      };
+    }
 
     const currentlyRegistered = await db.query.registrations.findMany({
       where: (registration) =>
