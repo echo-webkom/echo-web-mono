@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "^6.6.0",
+    "@sanity/client": "^6.7.0",
     "@sanity/icons": "^2.6.0",
     "@sanity/vision": "^3.18.1",
     "react": "18.2.0",
@@ -33,10 +33,10 @@
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "3.0.1",
-    "@types/react": "18.2.29",
-    "@types/react-dom": "18.2.13",
-    "@types/styled-components": "5.1.28",
-    "eslint": "^8.51.0",
+    "@types/react": "18.2.31",
+    "@types/react-dom": "18.2.14",
+    "@types/styled-components": "5.1.29",
+    "eslint": "^8.52.0",
     "eslint-config-webkom": "workspace:*",
     "prettier": "3.0.3",
     "typescript": "5.2.2"
