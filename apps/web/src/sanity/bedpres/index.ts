@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
 
+import { type QueryParams } from "@/components/event-filter";
+import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { bedpresSchema, type Bedpres } from "./schemas";
 
@@ -38,8 +40,8 @@ export async function fetchUpcomingBedpresses(n: number) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -95,8 +97,8 @@ export async function fetchBedpresBySlug(slug: string) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -124,11 +126,20 @@ export async function fetchBedpresBySlug(slug: string) {
   return bedpresSchema.parse(res);
 }
 
-export async function $fetchAllBedpresses() {
+export const fetchFilteredBedpresses = async (
+  q: QueryParams,
+): Promise<Array<Bedpres> | ErrorMessage> => {
+  const conditions = [
+    `_type == "bedpres"`,
+    `!(_id in path('drafts.**'))`,
+    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
+    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.search ? `title match "*${q.search}*"` : null,
+  ].filter(Boolean);
+
   try {
     const query = groq`
-*[_type == "bedpres"
-  && !(_id in path('drafts.**'))] {
+*[${conditions.join(" && ")}] {
   _id,
   _createdAt,
   _updatedAt,
@@ -155,8 +166,8 @@ export async function $fetchAllBedpresses() {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -164,16 +175,13 @@ export async function $fetchAllBedpresses() {
     type,
     options,
   },
-  "body": body {
-    no,
-    en,
-  }
+  body
 }
     `;
 
-    const res = await sanityFetch<Bedpres>({
+    const res = await sanityFetch<Array<Bedpres>>({
       query,
-      tags: ["all-bedpresses"],
+      tags: ["filtered-bedpresses"],
     });
 
     return bedpresSchema.array().parse(res);
@@ -183,4 +191,4 @@ export async function $fetchAllBedpresses() {
       message: "Could not fetch bedpres.",
     };
   }
-}
+};

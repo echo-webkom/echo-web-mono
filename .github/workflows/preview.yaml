@@ -81,9 +81,9 @@ jobs:
       - uses: ./.github/actions/pnpm-install
 
       - name: Apply migrations
-        run: pnpm db:deploy
+        run: pnpm db:migrate
         env:
-          DATABASE_URL: postgres://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ steps.preview-database-fqdn.outputs.FQDN }}:5432/echo-web-${{ steps.set-env.outputs.BRANCH_NAME_FORMATTED }}-db?sslmode=require
+          DATABASE_URL: postgres://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ steps.preview-database-fqdn.outputs.FQDN }}:5432/postgres?sslmode=require
 
   vercel-preview:
     name: Deploy Vercel preview
@@ -98,4 +98,4 @@ jobs:
         uses: snaplet/vercel-action@v3
         with:
           env: |
-            DATABASE_URL=postgress://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ needs.deploy-preview-db.outputs.fqdn }}:5432/echo-web-${{ needs.deploy-preview-db.outputs.branch-name-formatted }}-db?sslmode=require
+            DATABASE_URL=postgres://${{ env.TF_VAR_db_user }}:${{ env.TF_VAR_db_password }}@${{ needs.deploy-preview-db.outputs.fqdn }}:5432/postgres?sslmode=require

@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { type z } from "zod";
 
-import { type Question } from "@echo-webkom/db";
+import { type Question } from "@echo-webkom/db/schemas";
 
+import { register } from "@/actions/register";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,9 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRegistration } from "@/hooks/use-registration";
-import { toast } from "@/hooks/use-toast";
-import { type RegistrationForm } from "@/lib/schemas/registration";
+import { useToast } from "@/hooks/use-toast";
+import { registrationFormSchema } from "@/lib/schemas/registration";
 
 type RegisterButtonProps = {
   slug: string;
@@ -37,56 +39,55 @@ type RegisterButtonProps = {
 
 export function RegisterButton({ slug, questions }: RegisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { register, isLoading } = useRegistration(slug, {
-    onSuccess: (data) => {
-      setIsOpen(false);
-      router.refresh();
-      toast({
-        title: data.title,
-        description: data.description,
-        variant: "success",
-      });
-    },
-    onError: (data) => {
-      setIsOpen(false);
-      toast({
-        title: "Noe gikk galt",
-        description: data,
-        variant: "warning",
-      });
-    },
-  });
+  const { toast } = useToast();
 
-  const methods = useForm<RegistrationForm>({
+  const form = useForm<z.infer<typeof registrationFormSchema>>({
+    resolver: zodResolver(registrationFormSchema),
     defaultValues: {
       questions: questions.map((question) => ({
-        question: question.title,
+        questionId: question.id,
+        answer: undefined,
       })),
     },
   });
 
-  const onSubmit = methods.handleSubmit(async (data) => {
-    await register({
+  const onSubmit = form.handleSubmit(async (data) => {
+    setIsLoading(true);
+
+    const { success, message } = await register(slug, {
       questions: data.questions,
     });
+
+    setIsLoading(false);
+
+    toast({
+      title: message,
+      variant: success ? "success" : "warning",
+    });
+
+    router.refresh();
   });
 
-  const handleReset = () => {
-    methods.reset();
+  const handleOneClickRegister = () => {
+    async () => {
+      setIsLoading(true);
+
+      const { success, message } = await register(slug, { questions: [] });
+
+      toast({
+        title: message,
+        variant: success ? "success" : "warning",
+      });
+
+      router.refresh();
+    };
   };
 
   if (questions.length === 0) {
     return (
-      <Button
-        onClick={() => {
-          void register({
-            questions: [],
-          });
-        }}
-        disabled={isLoading}
-        fullWidth
-      >
+      <Button onClick={handleOneClickRegister} disabled={isLoading} fullWidth>
         {isLoading ? (
           <>
             <span>
@@ -132,27 +133,35 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                   {question.required && <span className="ml-1 text-red-500">*</span>}
                 </Label>
 
-                {question.type === "TEXT" && (
-                  <Input
-                    placeholder="Ditt svar..."
-                    autoComplete="off"
-                    {...methods.register(`questions.${index}.answer`)}
+                {question.type === "text" && (
+                  <Controller
+                    name={`questions.${index}.answer`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <Input
+                        placeholder="Ditt svar..."
+                        autoComplete="off"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                      />
+                    )}
                   />
                 )}
 
-                {question.type === "CHOICE" && (
+                {question.type === "radio" && (
                   <Controller
                     name={`questions.${index}.answer`}
-                    control={methods.control}
+                    control={form.control}
                     render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger>
-                          <SelectValue>{field.value || "Velg svar..."}</SelectValue>
+                          <SelectValue placeholder="Velg svar..." />
                         </SelectTrigger>
                         <SelectContent>
-                          {question.options.map((option, optionIndex) => (
-                            <SelectItem key={optionIndex} value={option}>
-                              {option}
+                          {question?.options?.map((option) => (
+                            <SelectItem key={option.id} value={option.value}>
+                              {option.value}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -160,13 +169,16 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                     )}
                   />
                 )}
+
+                {form.formState.errors.questions?.[index]?.answer && (
+                  <p className="text-red-500">
+                    {form.formState.errors.questions?.[index]?.answer?.message}
+                  </p>
+                )}
               </div>
             ))}
           </div>
           <DialogFooter>
-            <Button type="button" variant="link" onClick={handleReset}>
-              Reset
-            </Button>
             <Button type="submit">Send inn</Button>
           </DialogFooter>
         </form>

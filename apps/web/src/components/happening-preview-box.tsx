@@ -8,6 +8,7 @@ import { type Event } from "@/sanity/event";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
+import { type Happening } from "./event-filter";
 
 type HappeningPreviewBoxProps =
   | {
@@ -126,6 +127,55 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
             </li>
           </ul>
         </div>
+      </div>
+    </Link>
+  );
+}
+
+type CombinedHappeningPreviewProps = {
+  happening: Happening;
+};
+
+export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
+  return (
+    <Link href={`/${happening.type}/${happening.slug}`}>
+      <div className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted")}>
+        <div className="overflow-x-hidden">
+          <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
+          <ul>
+            {happening.type === "arrangement" && (
+              <li>
+                <span className="font-semibold">Gruppe:</span>{" "}
+                {capitalize(happening.organizers.map((o) => o.name).join(", "))}
+              </li>
+            )}
+            {happening.date && (
+              <li>
+                <span className="font-semibold">Dato:</span>{" "}
+                {format(new Date(happening.date), "d. MMMM yyyy", { locale: nb })}
+              </li>
+            )}
+            <li>
+              <span className="font-semibold">Påmelding:</span>{" "}
+              {happening.registrationStart
+                ? format(new Date(happening.registrationStart), "d. MMMM yyyy", {
+                    locale: nb,
+                  })
+                : "Påmelding åpner snart"}
+            </li>
+          </ul>
+        </div>
+        {happening.type === "bedpres" && (
+          <div className="hidden overflow-hidden rounded-full border sm:block">
+            <div className="relative aspect-square h-20 w-20">
+              <Image
+                src={urlFor(happening.company.image).url()}
+                alt={`${happening.company.name} logo`}
+                fill
+              />
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );

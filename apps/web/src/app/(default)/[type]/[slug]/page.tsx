@@ -40,7 +40,7 @@ export default async function StaticPage({ params }: Props) {
   return (
     <Container>
       <article>
-        <Heading>{page.title}</Heading>
+        <Heading className="mb-4">{page.title}</Heading>
 
         <Markdown content={page.body} />
       </article>

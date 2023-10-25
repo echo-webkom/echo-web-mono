@@ -69,10 +69,11 @@ export async function fetchPosts(n: number) {
  * @returns an object with the posts and if there are more posts to retrieve
  */
 export async function fetchPostsByPage(page: number, pageSize = 10) {
+  const start = (page - 1) * pageSize;
+  const end = page * pageSize;
+
   const query = groq`
-*[_type == "post" && !(_id in path('drafts.**'))][${(page - 1) * pageSize}...${
-    page * pageSize
-  }] | order(_createdAt desc) {
+*[_type == "post" && !(_id in path('drafts.**'))]| order(_createdAt desc) {
   _id,
   _createdAt,
   _updatedAt,
@@ -85,12 +86,12 @@ export async function fetchPostsByPage(page: number, pageSize = 10) {
   },
   image,
   body
-}
+}[$start...$end]
   `;
 
   const params = {
-    page,
-    pageSize,
+    start,
+    end,
   };
 
   const result = await sanityFetch<Array<Post>>({

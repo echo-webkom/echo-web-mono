@@ -3,23 +3,24 @@ import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
+import { isBoard } from "@/lib/is-board";
 import { type Post } from "@/sanity/posts";
 import { cn } from "@/utils/cn";
 
 type PostPreviewProps = {
   post: Post;
   withBorder?: boolean;
+  className?: string;
 };
 
-export function PostPreview({ post, withBorder = false }: PostPreviewProps) {
+export function PostPreview({ post, withBorder = false, className }: PostPreviewProps) {
   return (
     <Link
       href={`/for-studenter/innlegg/${post.slug}`}
       className={cn(
-        "flex h-full flex-col gap-1 rounded-lg p-5",
-        "hover:bg-muted",
-        "transition-colors duration-200 ease-in-out",
+        "flex h-full flex-col gap-1 rounded-lg p-5 shadow-lg transition-colors duration-200 ease-in-out hover:bg-muted",
         withBorder && "border",
+        className,
       )}
     >
       <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
@@ -38,7 +39,9 @@ export function PostPreview({ post, withBorder = false }: PostPreviewProps) {
       {post.authors && (
         <p>
           <span className="font-semibold">Skrevet av:</span>{" "}
-          {post.authors.map((author) => author.name).join(", ")}
+          {post.authors
+            .map((author) => (isBoard(author.name) ? "Hovedstyret" : author.name))
+            .join(", ")}
         </p>
       )}
     </Link>

@@ -10,7 +10,7 @@ type HeaderLogoProps = {
 
 export const HeaderLogo = ({ className }: HeaderLogoProps) => {
   return (
-    <div className={cn("relative aspect-square h-14 w-14", className)}>
+    <div className={cn("relative aspect-square h-16 w-auto", className)}>
       <Link href="/">
         <Image src={Logo} alt="logo" sizes="200" fill />
       </Link>

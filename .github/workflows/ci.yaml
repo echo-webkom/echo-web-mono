@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize]
 
 env:
-  DATABASE_URL: postgres://admin:password@localhost:5432/postgres
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
   NEXT_PUBLIC_SANITY_DATASET: "develop"
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
@@ -23,9 +23,9 @@ jobs:
       postgres:
         image: postgres:14.7
         env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: echo-web
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -34,17 +34,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
 
-      - run: pnpm db:generate
-      - run: pnpm db:deploy
+      - run: pnpm db:migrate
 
       - name: Lint
         run: pnpm lint
 
       - name: Type check
-        run: pnpm type-check
+        run: pnpm typecheck
 
       - name: Build
         run: pnpm build
+
+      - name: Run unit tests
+        run: pnpm test:unit
 
       - name: Install playwright browsers
         run: pnpm --filter=playwright test:install

@@ -1,55 +1,40 @@
-import { headerRoutes } from "@/lib/routes";
-import { getSession } from "@/lib/session";
+import Link from "next/link";
+
+import { getAuth } from "@echo-webkom/auth";
+
 import { getDatabaseStatus } from "@/utils/database-status";
+import { DesktopNavigation } from "./desktop-navigation";
+import { MobileNavigation } from "./mobile-navigation";
 import { ProfileIcon } from "./profile-icon";
-import {
-  ExpandedMenu,
-  ExpandedMenuItem,
-  ExpandedMenuList,
-  ExpandedMenuSection,
-  ExpandedMenuTitle,
-  Header,
-  HeaderProvider,
-  NavigationMenu,
-  NavigationMenuItem,
-  TopMenu,
-} from "./ui/header";
+import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 
 export async function SiteHeader() {
-  const session = await getSession();
+  const user = await getAuth();
 
   return (
-    <HeaderProvider>
+    <div className="sticky top-0 z-20">
       <DatabaseStatusBar />
-      <Header>
-        <TopMenu>
-          <HeaderLogo />
-          <NavigationMenu>
-            {session ? (
-              <ProfileIcon session={session} />
-            ) : (
-              <NavigationMenuItem to="/auth/logg-inn">Logg inn</NavigationMenuItem>
-            )}
-          </NavigationMenu>
-        </TopMenu>
 
-        <ExpandedMenu>
-          {headerRoutes.map((section) => (
-            <ExpandedMenuSection key={section.label}>
-              <ExpandedMenuTitle>{section.label}</ExpandedMenuTitle>
-              <ExpandedMenuList>
-                {section.sublinks.map((item) => (
-                  <ExpandedMenuItem key={item.label} to={item.href}>
-                    {item.label}
-                  </ExpandedMenuItem>
-                ))}
-              </ExpandedMenuList>
-            </ExpandedMenuSection>
-          ))}
-        </ExpandedMenu>
-      </Header>
-    </HeaderProvider>
+      <div className="border-b bg-background">
+        <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
+          <div className="flex items-center">
+            <HeaderLogo />
+            <DesktopNavigation />
+          </div>
+          <div className="flex items-center">
+            {user ? (
+              <ProfileIcon user={user} />
+            ) : (
+              <Button variant="secondary" asChild>
+                <Link href="/auth/logg-inn">Logg inn</Link>
+              </Button>
+            )}
+            <MobileNavigation />
+          </div>
+        </header>
+      </div>
+    </div>
   );
 }
 
