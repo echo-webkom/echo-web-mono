@@ -27,7 +27,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
       questions: true,
     },
   });
-  const spotRange = await db.query.spotRanges.findMany({
+  const spotRanges = await db.query.spotRanges.findMany({
     where: (spotRange) => eq(spotRange.happeningSlug, slug),
   });
   const registrations = await db.query.registrations.findMany({
@@ -42,7 +42,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
       registration.user.id === user?.id &&
       (registration.status === "registered" || registration.status === "waiting"),
   );
-  const maxCapacity = spotRange.reduce((acc, curr) => acc + (curr.spots ?? 0), 0);
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + (curr.spots ?? 0), 0);
   const registeredCount = registrations.filter(
     (registration) => registration.status === "registered",
   ).length;
@@ -112,12 +112,12 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {spotRange.length > 0 && (
+      {spotRanges.length > 0 && (
         <SidebarItem>
           <SidebarItemTitle>Plasser:</SidebarItemTitle>
-          {spotRange.map((range) => (
+          {spotRanges.map((range) => (
             <SidebarItemContent key={range.id}>
-              {range.spots} plasser for
+              {range.spots || "Uendelig"} plasser for
               {range.minYear === range.maxYear ? (
                 <span> {range.minYear}. trinn</span>
               ) : (
