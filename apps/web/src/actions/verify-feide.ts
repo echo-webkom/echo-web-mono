@@ -74,8 +74,11 @@ export async function verifyFeide() {
       },
     });
 
-    const groups = (await response.json()) as Array<GroupsResponse>;
+    if (response.status > 200) {
+      throw new Error("Noe gikk galt.");
+    }
 
+    const groups = (await response.json()) as Array<GroupsResponse>;
     const userPrograms = groups.filter((group) => group.id.startsWith(PROGRAM_ID_PREFIX));
     const isMemberOfecho = userPrograms.some((program) =>
       VALID_PROGRAM_IDS.includes(program.id.slice(PROGRAM_ID_PREFIX.length)),
@@ -110,6 +113,20 @@ export async function verifyFeide() {
       message: "Du er medlem av echo",
     };
   } catch (error) {
+    if (error instanceof SyntaxError) {
+      return {
+        success: false,
+        message: "Noe gikk galt. (id: 1)",
+      };
+    }
+
+    if (error instanceof TypeError) {
+      return {
+        success: false,
+        message: "Noe gikk galt. (id: 2)",
+      };
+    }
+
     return {
       success: false,
       message: "Noe gikk galt.",
