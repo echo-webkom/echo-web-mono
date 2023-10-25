@@ -7,6 +7,8 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 
+import { isValidVerified } from "@/lib/is-valid-verified";
+
 const registerPayloadSchema = z.object({
   questions: z.array(
     z.object({
@@ -31,6 +33,13 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       return {
         success: false,
         message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
+      };
+    }
+
+    if (!isValidVerified(user.verifiedAt)) {
+      return {
+        success: false,
+        message: "Du må ha verifisert brukeren din for å kunne registrere deg",
       };
     }
 

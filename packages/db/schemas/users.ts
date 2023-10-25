@@ -15,6 +15,7 @@ export const users = pgTable(
     alternativeEmail: varchar("alternative_email", { length: 255 }),
     degreeId: varchar("degree_id", { length: 21 }).references(() => degrees.id),
     year: integer("year"),
+    verifiedAt: timestamp("verified_at"),
     type: userTypeEnum("type").notNull().default("student"),
   },
   (table) => ({

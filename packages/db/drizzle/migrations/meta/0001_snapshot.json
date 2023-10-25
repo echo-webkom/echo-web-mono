@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "4b25c796-44ce-40e0-acda-44311b2823b3",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5a37ac83-a39c-425f-8a6b-38b5766e0065",
+  "prevId": "4b25c796-44ce-40e0-acda-44311b2823b3",
   "tables": {
     "account": {
       "name": "account",
@@ -665,6 +665,12 @@
         "year": {
           "name": "year",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verified_at": {
+          "name": "verified_at",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },

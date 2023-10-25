@@ -11,6 +11,7 @@ import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
+import { isValidVerified } from "@/lib/is-valid-verified";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
 
@@ -55,6 +56,8 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
     happening?.registrationEnd &&
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
+
+  const isUserComplete = user?.degreeId && user.year && isValidVerified(user.verifiedAt);
 
   return (
     <Sidebar>
@@ -193,7 +196,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           </SidebarItem>
         )}
 
-      {user && isRegistrationOpen && (
+      {user && isRegistrationOpen && isUserComplete && (
         <SidebarItem>
           {isRegistered ? (
             <DeregisterButton slug={slug} />
@@ -211,15 +214,29 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
+      {user && !isUserComplete && (
+        <SidebarItem>
+          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+            <p className="mb-3 font-semibold">Du må fullføre brukeren din.</p>
+            <div className="group flex items-center">
+              <Link href="/auth/profil" className="hover:underline">
+                Her
+                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+              </Link>
+            </div>
+          </div>
+        </SidebarItem>
+      )}
+
       {!user && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
-            <div className="flex items-center">
+            <div className="group flex items-center">
               <Link href="/auth/logg-inn" className="hover:underline">
                 Logg inn her
+                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
-              <ArrowRightIcon className="ml-2 h-4 w-4" />
             </div>
           </div>
         </SidebarItem>
