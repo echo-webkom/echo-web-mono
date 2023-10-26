@@ -1,15 +1,7 @@
-import NextBundleAnalyzer from "@next/bundle-analyzer";
-
 import "./src/env.mjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
-
-  experimental: {
-    serverActions: true,
-  },
-
   transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
 
   images: {
@@ -20,9 +12,4 @@ const config = {
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
-const withBundleAnalyzer = NextBundleAnalyzer({
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  enabled: process.env.ANALYZE === "true",
-});
-
-export default withBundleAnalyzer(config);
+export default config;

@@ -1,4 +1,4 @@
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
 
@@ -15,7 +15,7 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db),
   pages: {
     signIn: "/auth/logg-inn",
