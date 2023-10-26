@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { fetchEventBySlug } from "@/sanity/event";
+import { shortDate } from "@/utils/date";
 import { EventSidebar } from "./event-sidebar";
 
 type Props = {
@@ -42,6 +44,7 @@ export default async function EventPage({ params }: Props) {
         {/* Content */}
         <article className="w-full">
           <Heading>{event.title}</Heading>
+
           {event.body ? (
             <Markdown content={event.body} />
           ) : (
@@ -59,9 +62,13 @@ export default async function EventPage({ params }: Props) {
         </article>
       </div>
 
-      <div className="flex flex-col gap-3 pt-10 text-center text-sm text-muted-foreground lg:mt-auto">
-        <p>Publisert: {new Date(event._createdAt).toLocaleDateString()}</p>
-        <p>Sist oppdatert: {new Date(event._updatedAt).toLocaleDateString()}</p>
+      <div className="pt-10 text-center text-muted-foreground lg:mt-auto">
+        <Text size="sm" className="p-0">
+          Publisert: {shortDate(event._createdAt)}
+        </Text>
+        <Text size="sm" className="p-0">
+          Sist oppdatert: {shortDate(event._updatedAt)}
+        </Text>
       </div>
     </Container>
   );

@@ -1,7 +1,7 @@
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { getAllUsers } from "@/lib/queries/user";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";

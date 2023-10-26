@@ -31,6 +31,7 @@
   "globalEnv": [
     "CI",
     "NODE_ENV",
+    "VERCEL_ENV",
     "DATABASE_URL",
     "NEXTAUTH_SECRET",
     "NEXTAUTH_URL",

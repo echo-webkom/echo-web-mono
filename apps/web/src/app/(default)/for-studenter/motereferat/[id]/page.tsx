@@ -1,8 +1,8 @@
 import { type Metadata } from "next";
 
 import { Container } from "@/components/container";
+import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
 import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes";
 
 type Props = {

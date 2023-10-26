@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfoBySlug, fetchStaticInfoPaths } from "@/sanity/static-info";
 
 type Props = {

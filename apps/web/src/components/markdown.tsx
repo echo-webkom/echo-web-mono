@@ -4,7 +4,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { cn } from "@/utils/cn";
-import { Heading } from "./ui/heading";
+import { Heading } from "./typography/heading";
+import { OrderedList, UnorderedList } from "./typography/list";
+import { ListItem } from "./typography/list-item";
+import { Text } from "./typography/text";
 
 type MarkdownProps = {
   className?: string;
@@ -17,7 +20,7 @@ export function Markdown({ className, content }: MarkdownProps) {
   }
 
   return (
-    <article className={cn("max-w-3xl text-xl text-gray-800", className)}>
+    <div className={cn("max-w-3xl space-y-4", className)}>
       <ReactMarkdown
         components={{
           h1: ({ children }) => {
@@ -26,8 +29,11 @@ export function Markdown({ className, content }: MarkdownProps) {
           h2: ({ children }) => {
             return <Heading level={2}>{children}</Heading>;
           },
+          h3: ({ children }) => {
+            return <Heading level={3}>{children}</Heading>;
+          },
           p: ({ children }) => {
-            return <p className="py-4 leading-8">{children}</p>;
+            return <Text>{children}</Text>;
           },
           code: ({ children }) => {
             return <code className="rounded bg-gray-200 px-1 py-0.5 font-mono">{children}</code>;
@@ -40,13 +46,13 @@ export function Markdown({ className, content }: MarkdownProps) {
             );
           },
           ul: ({ children }) => {
-            return <ul className="list-disc py-4 pl-8">{children}</ul>;
+            return <UnorderedList>{children}</UnorderedList>;
           },
           ol: ({ children }) => {
-            return <ol className="list-decimal py-4 pl-8">{children}</ol>;
+            return <OrderedList>{children}</OrderedList>;
           },
           li: ({ children }) => {
-            return <li className="py-1">{children}</li>;
+            return <ListItem>{children}</ListItem>;
           },
           a: ({ children, href }) => {
             const isExternal = href?.startsWith("http");
@@ -95,6 +101,6 @@ export function Markdown({ className, content }: MarkdownProps) {
       >
         {content}
       </ReactMarkdown>
-    </article>
+    </div>
   );
 }

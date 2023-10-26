@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Container className="relative pb-40 pt-24" layout="full">
+      <Container className="relative pb-40 pt-16" layout="full">
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="max-w-xl space-y-8">
             <h1>

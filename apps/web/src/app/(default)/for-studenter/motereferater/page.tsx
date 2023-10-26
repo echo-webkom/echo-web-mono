@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { fetchMinutes } from "@/sanity/minutes";
 import { shortDateNoTime } from "@/utils/date";
 
@@ -19,11 +20,7 @@ export default async function MinuteOverview() {
             <Link href={"/for-studenter/motereferat/" + minute._id}>
               <div className="group flex items-center justify-between px-5 py-5 transition-all hover:bg-gray-100 hover:py-10">
                 <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <Heading level={2}>
-                      {minute.isAllMeeting ? "Generalforsamling" : "Møte"}
-                    </Heading>
-                  </div>
+                  <Text size="lg">{minute.isAllMeeting ? "Generalforsamling" : "Møte"}</Text>
 
                   <div className="flex items-center gap-2">
                     <p>{shortDateNoTime(minute.date)}</p>

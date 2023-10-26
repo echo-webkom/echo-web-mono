@@ -7,8 +7,8 @@ import { type Group, type Registration, type User } from "@echo-webkom/db/schema
 import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
+import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 import { cn } from "@/utils/cn";
 
