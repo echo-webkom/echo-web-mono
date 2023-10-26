@@ -1,0 +1,39 @@
+{
+  "name": "@echo-webkom/email",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint",
+    "lint:fix": "eslint lint --fix",
+    "typecheck": "tsc --noEmit",
+    "broken:dev": "pnpm with-env email dev --port 3003",
+    "export": "pnpm with-env email export",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.7",
+    "react": "18.2.0",
+    "react-email": "^1.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "18.18.5",
+    "@types/react": "18.2.28",
+    "dotenv-cli": "7.3.0",
+    "eslint": "^8.51.0",
+    "eslint-config-webkom": "workspace:*",
+    "typescript": "5.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base",
+      "webkom/react"
+    ]
+  }
+}

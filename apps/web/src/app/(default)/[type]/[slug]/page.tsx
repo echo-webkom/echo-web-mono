@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfoBySlug, fetchStaticInfoPaths } from "@/sanity/static-info";
 
 type Props = {
@@ -40,7 +40,7 @@ export default async function StaticPage({ params }: Props) {
   return (
     <Container>
       <article>
-        <Heading>{page.title}</Heading>
+        <Heading className="mb-4">{page.title}</Heading>
 
         <Markdown content={page.body} />
       </article>

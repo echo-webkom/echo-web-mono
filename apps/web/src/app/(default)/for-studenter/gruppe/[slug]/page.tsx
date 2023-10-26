@@ -3,6 +3,7 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
+import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchStudentGroupBySlug,
@@ -42,68 +43,90 @@ export default async function GroupPage({ params }: Props) {
 
   const group = await getData(slug);
 
+  const hasSocials = Object.values(group.socials ?? {}).some((social) => social);
+
   return (
-    <Container className="prose md:prose-xl">
-      <p className="not-prose">{studentGroupTypeName[group.groupType]}</p>
-
-      <h1>{group.name}</h1>
-
-      <div className="not-prose mb-4 flex gap-4">
-        {group.socials?.email && (
-          <a href={`mailto:${group.socials.email}`}>
-            <p className="sr-only">E-post</p>
-            <MdOutlineEmail className="h-6 w-6" />
-          </a>
-        )}
-        {group.socials?.facebook && (
-          <a href={group.socials.facebook}>
-            <p className="sr-only">Facebook</p>
-            <MdOutlineFacebook className="h-6 w-6" />
-          </a>
-        )}
-        {group.socials?.instagram && (
-          <a href={group.socials.instagram}>
-            <p className="sr-only">Instagram</p>
-            <AiOutlineInstagram className="h-6 w-6" />
-          </a>
-        )}
-        {group.socials?.linkedin && (
-          <a href={group.socials.linkedin}>
-            <p className="sr-only">LinkedIn</p>
-            <AiOutlineLinkedin className="h-6 w-6" />
-          </a>
-        )}
+    <Container className="space-y-8">
+      <div>
+        <p>{studentGroupTypeName[group.groupType]}</p>
+        <Heading>{group.name}</Heading>
       </div>
 
-      <article>
-        <Markdown content={group.description} />
-      </article>
+      {hasSocials && (
+        <section className="flex items-center gap-4">
+          {group.socials?.email && (
+            <a
+              href={`mailto:${group.socials.email}`}
+              className="flex items-center gap-2 hover:underline"
+            >
+              <span>
+                <MdOutlineEmail className="h-6 w-6" />
+              </span>
+              <span>E-post</span>
+            </a>
+          )}
+          {group.socials?.facebook && (
+            <a href={group.socials.facebook} className="flex items-center gap-2 hover:underline">
+              <span>
+                <MdOutlineFacebook className="h-6 w-6" />
+              </span>
+              <span>Facebook</span>
+            </a>
+          )}
+          {group.socials?.instagram && (
+            <a href={group.socials.instagram} className="flex items-center gap-2 hover:underline">
+              <span>
+                <AiOutlineInstagram className="h-6 w-6" />
+              </span>
+              <span>Instagram</span>
+            </a>
+          )}
+          {group.socials?.linkedin && (
+            <a href={group.socials.linkedin} className="flex items-center gap-2 hover:underline">
+              <span>
+                <AiOutlineLinkedin className="h-6 w-6" />
+              </span>
+              <span>LinkedIn</span>
+            </a>
+          )}
+        </section>
+      )}
 
-      <h2>Medlemmer</h2>
+      <section>
+        <article>
+          <Markdown content={group.description} />
+        </article>
+      </section>
 
-      <div className="not-prose mx-auto grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        {group.members?.map((member) => {
-          const image = member.profile?.image;
-          const initials = member.profile?.name
-            .split(" ")
-            .map((name) => name[0])
-            .join("")
-            .slice(0, 2);
+      {group.members && (
+        <section>
+          <Heading level={2}>Medlemmer</Heading>
 
-          return (
-            <div className="flex flex-col gap-2 p-5 text-center" key={member.profile._id}>
-              <Avatar className="mx-auto">
-                <AvatarImage src={image ? urlFor(image).url() : undefined} />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
+          <div className="mx-auto grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {group.members.map((member) => {
+              const image = member.profile?.image;
+              const initials = member.profile?.name
+                .split(" ")
+                .map((name) => name[0])
+                .join("")
+                .slice(0, 2);
 
-              <p className="text-lg font-medium">{member.profile.name}</p>
-              <p>{member.role}</p>
-              {/* TODO: Add member socials */}
-            </div>
-          );
-        })}
-      </div>
+              return (
+                <div className="flex flex-col gap-2 p-5 text-center" key={member.profile._id}>
+                  <Avatar className="mx-auto">
+                    <AvatarImage src={image ? urlFor(image).url() : undefined} />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+
+                  <p className="text-lg font-medium">{member.profile.name}</p>
+                  <p>{member.role}</p>
+                  {/* TODO: Add member socials */}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </Container>
   );
 }

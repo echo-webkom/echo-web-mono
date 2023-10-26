@@ -1,58 +1,95 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
+import { getAuth } from "@echo-webkom/auth";
+import { db } from "@echo-webkom/db";
 import {
-  groupToString,
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
 } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
+import { Chip } from "@/components/typography/chip";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { UserForm } from "@/components/user-form";
+import { isValidVerified } from "@/lib/is-valid-verified";
 import { getUserRegistrations } from "@/lib/queries/user";
-import { getUser } from "@/lib/session";
+import { VerifyButton } from "./verify-button";
 
 export default async function ProfilePage() {
-  const user = await getUser();
+  const user = await getAuth();
 
   if (!user) {
     return redirect("/auth/logg-inn");
   }
 
-  const registrations = await getUserRegistrations(user.id);
+  const [registrations, degrees, memberships] = await Promise.all([
+    getUserRegistrations(user.id),
+    db.query.degrees.findMany(),
+    db.query.usersToGroups.findMany({
+      where: (usersToGroup) => eq(usersToGroup.userId, user.id),
+      with: {
+        group: true,
+      },
+    }),
+  ]);
 
   return (
-    <Container className="max-w-2xl gap-10">
-      <div className="flex flex-col gap-3">
-        <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
+    <Container className="max-w-2xl gap-8">
+      <Heading level={2}>Din profil</Heading>
+
+      <div className="flex flex-col gap-2">
         <div>
-          <p className="font-semibold">Navn:</p>
-          <p>{user.name}</p>
+          <Text size="sm" className="font-semibold">
+            Navn
+          </Text>
+          <Text>{user.name}</Text>
         </div>
         <div>
-          <p className="font-semibold">E-post:</p>
-          <p>{user.email}</p>
+          <Text size="sm" className="font-semibold">
+            E-post:
+          </Text>
+          <Text>{user.email}</Text>
         </div>
-        {user?.studentGroups && user.studentGroups.length > 0 && (
+        {memberships.length > 0 && (
           <div>
-            <p className="font-semibold">Grupper:</p>
-            <p>{user.studentGroups.map((group) => groupToString[group]).join(", ")}</p>
+            <Text size="sm" className="mb-2 font-semibold">
+              Grupper:
+            </Text>
+
+            <div className="flex flex-wrap gap-1">
+              {memberships.map(({ group }) => (
+                <Chip key={group.id} className="bg-secondary text-secondary-foreground">
+                  {group.name}
+                </Chip>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
-      <div>
-        <UserForm
-          alternativeEmail={user.alternativeEmail ?? undefined}
-          degree={user.degree ?? undefined}
-          year={user.year ?? undefined}
-          id={user.id}
-        />
+      <div className="flex items-center justify-between border p-2">
+        <h2 className="text-lg font-semibold">Verifiser din UiB-bruker</h2>
+        <VerifyButton verified={isValidVerified(user.verifiedAt)} />
       </div>
 
+      <UserForm
+        user={{
+          id: user.id,
+          degree: user.degree ?? undefined,
+          year: user.year ?? undefined,
+          alternativeEmail: user.alternativeEmail ?? undefined,
+        }}
+        degrees={degrees}
+      />
+
       <div>
-        <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>
+        <Heading level={2} className="mb-4">
+          Dine arrangementer
+        </Heading>
         {registrations.length > 0 ? (
           <ul className="flex flex-col divide-y">
             {registrations.map((registration) => (
@@ -69,13 +106,9 @@ export default async function ProfilePage() {
                     {registration.happening.title}
                   </Link>
 
-                  <div className="mt-3 flex items-center gap-3">
-                    <Tag>
-                      <p>{happeningTypeToString[registration.happening.type]}</p>
-                    </Tag>
-                    <Tag>
-                      <p>{registrationStatusToString[registration.status]}</p>
-                    </Tag>
+                  <div className="mt-3 flex gap-1">
+                    <Chip>{happeningTypeToString[registration.happening.type]}</Chip>
+                    <Chip>{registrationStatusToString[registration.status]}</Chip>
                   </div>
                 </div>
               </li>
@@ -87,8 +120,4 @@ export default async function ProfilePage() {
       </div>
     </Container>
   );
-}
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
 }

@@ -9,27 +9,19 @@ import { studentGroupSchema, type StudentGroup } from "./schemas";
 export * from "./schemas";
 
 export const studentGroupTypeName: Record<StudentGroupType, string> = {
-  BOARD: "Hovedstyret",
+  BOARD: "Hovedstyre",
   SUBGROUP: "Undergrupper",
   INTGROUP: "Interessegrupper",
   SUBORG: "Underorganisasjoner",
   SPORT: "Idrettslag",
-};
-
-export const studentGroupTypeToUrl: Record<StudentGroupType, string> = {
-  BOARD: "hovedstyre",
-  SUBGROUP: "undergruppe",
-  INTGROUP: "interessegruppe",
-  SUBORG: "underorganisasjon",
-  SPORT: "idrettslag",
-};
+} as const;
 
 export async function fetchStudentGroupParams() {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
   const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
     query,
-    tags: ["student-group-params"],
+    tags: [],
   });
 
   const studentGroupSlugSchema = z.object({
@@ -42,7 +34,7 @@ export async function fetchStudentGroupParams() {
   );
 
   const paths = studentGroupPaths.map((studentGroup) => ({
-    groupType: studentGroupTypeToUrl[studentGroup.groupType],
+    groupType: studentGroupTypeName[studentGroup.groupType].toLowerCase(),
     slug: studentGroup.slug,
   }));
 

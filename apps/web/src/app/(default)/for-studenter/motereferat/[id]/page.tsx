@@ -1,12 +1,9 @@
 import { type Metadata } from "next";
 
 import { Container } from "@/components/container";
+import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
 import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes";
-
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 type Props = {
   params: {
@@ -34,7 +31,7 @@ export default async function MinutePage({ params }: Props) {
 
   return (
     <Container>
-      <Heading>{minute.title}</Heading>
+      <Heading className="mb-4">{minute.title}</Heading>
 
       <div className="flex flex-col gap-5">
         <Button className="w-full md:w-fit" asChild>

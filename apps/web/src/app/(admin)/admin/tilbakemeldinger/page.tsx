@@ -1,7 +1,7 @@
-import { type SiteFeedback } from "@echo-webkom/db";
+import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { getAllFeedback } from "@/lib/queries/feedback";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ export default async function FeedbackOverview() {
 
   return (
     <Container>
-      <Heading>Tilbakemeldinger</Heading>
+      <Heading className="mb-4">Tilbakemeldinger</Heading>
 
       <ul className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
         {feedback.map((feedback) => (

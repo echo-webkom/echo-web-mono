@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
 
+import { type QueryParams } from "@/components/event-filter";
+import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { slugSchema, type Slug } from "../utils/slug";
 import { eventSchema, type Event } from "./schemas";
@@ -61,8 +63,8 @@ export async function fetchComingEvents(n: number) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -117,8 +119,8 @@ export async function fetchEventBySlug(slug: string) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -147,11 +149,18 @@ export async function fetchEventBySlug(slug: string) {
   return eventSchema.parse(res);
 }
 
-export async function $fetchAllEvents() {
+export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> | ErrorMessage> => {
+  const conditions = [
+    `_type == "event"`,
+    `!(_id in path('drafts.**'))`,
+    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
+    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.search ? `title match "*${q.search}*"` : null,
+  ].filter(Boolean);
+
   try {
     const query = groq`
-*[_type == "event"
-  && !(_id in path('drafts.**'))] {
+*[${conditions.join(" && ")}] {
   _id,
   _createdAt,
   _updatedAt,
@@ -177,8 +186,8 @@ export async function $fetchAllEvents() {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -188,11 +197,12 @@ export async function $fetchAllEvents() {
   },
   body
 }
+
     `;
 
     const res = await sanityFetch<Array<Event>>({
       query,
-      tags: ["all-events"],
+      tags: ["filtered-events"],
     });
 
     return eventSchema.array().parse(res);
@@ -202,4 +212,4 @@ export async function $fetchAllEvents() {
       message: "Failed to fetch events",
     };
   }
-}
+};

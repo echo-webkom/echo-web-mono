@@ -48,7 +48,7 @@ export async function sanityFetch<QueryResponse>({
   tags: Array<string>;
 }): Promise<QueryResponse> {
   return await client.fetch<QueryResponse>(query, params, {
-    cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+    cache: "force-cache",
     next: {
       tags,
     },

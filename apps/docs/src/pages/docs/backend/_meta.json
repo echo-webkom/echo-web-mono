@@ -1,6 +1,6 @@
 {
   "index": "Vår backend",
   "nextjs": "NextJS",
-  "prisma": "Prisma",
+  "drizzle": "Drizzle",
   "auth": "Autentisering"
 }

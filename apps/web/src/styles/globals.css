@@ -21,6 +21,7 @@
 
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
+    --primary-hover: #32a5b5;
 
     --secondary: #fed879;
     --secondary-foreground: #171923;
@@ -57,7 +58,9 @@
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 
   ::-moz-selection {

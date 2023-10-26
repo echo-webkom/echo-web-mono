@@ -1,15 +1,17 @@
 import Link from "next/link";
 
+import { getAuthSession } from "@echo-webkom/auth";
+
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { getSession } from "@/lib/session";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await getSession();
+  const session = await getAuthSession();
+
   return (
     <>
-      <Container className="relative pb-40 pt-24" layout="full">
+      <Container className="relative pb-40 pt-16" layout="full">
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="max-w-xl space-y-8">
             <h1>
@@ -23,8 +25,8 @@ export default async function HomePage() {
               Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
               arrangere sosiale og faglige arrangementer.
               <br /> Les mer{" "}
-              <Link href="/om/echo">
-                <strong>her.</strong>
+              <Link className="font-semibold" href="/om/echo">
+                her.
               </Link>
             </p>
             <div>

@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Degree } from "@echo-webkom/db/enums";
-import { degreeToString } from "@echo-webkom/lib";
+import { type Degree } from "@echo-webkom/db/schemas";
 
+import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -17,38 +17,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
-  degree: z.nativeEnum(Degree).optional(),
-  year: z
-    .number()
-    .int()
-    .min(1)
-    .max(5)
-    .optional()
-    .transform((value) => (value ? Number(value) : undefined)),
+  degree: z.string().optional(),
+  year: z.number().min(1).max(5).optional(),
 });
 
 type FormData = z.infer<typeof userSchema>;
 
-export function UserForm({
-  alternativeEmail,
-  degree,
-  year,
-  id,
-}: {
-  alternativeEmail?: string;
-  degree?: Degree;
-  year?: number;
-  id: string;
-}) {
+type UserFormProps = {
+  user: {
+    alternativeEmail?: string;
+    degree?: Degree;
+    year?: number;
+    id: string;
+  };
+  degrees: Array<Degree>;
+};
+
+export function UserForm({ user, degrees }: UserFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
   const methods = useForm<FormData>({
     defaultValues: {
-      alternativeEmail: alternativeEmail,
-      degree: degree,
-      year: year,
+      alternativeEmail: user.alternativeEmail,
+      degree: user.degree?.id,
+      year: user.year,
     },
     resolver: zodResolver(userSchema),
   });
@@ -57,33 +51,21 @@ export function UserForm({
     async (data) => {
       setIsLoading(true);
 
-      const response = await fetch(`/api/user/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      const { success, message } = await updateSelf({
+        alternativeEmail: data.alternativeEmail,
+        degreeId: data.degree,
+        year: data.year,
       });
 
       setIsLoading(false);
 
-      if (!response.ok) {
-        return toast({
-          title: "Noe gikk galt",
-          description: "Kunne ikke oppdatere bruker",
-          variant: "warning",
-        });
-      }
-
       toast({
-        title: "Bruker oppdatert",
-        description: "Brukeren din er nå oppdatert",
-        variant: "success",
+        title: message,
+        variant: success ? "success" : "warning",
       });
 
       router.refresh();
     },
-
     () => {
       toast({
         title: "Noe gikk galt",
@@ -111,9 +93,9 @@ export function UserForm({
                 <SelectValue placeholder="Velg studieretning" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(Degree).map(([key, value]) => (
-                  <SelectItem key={key} value={value}>
-                    {degreeToString[value]}
+                {degrees.map((degree) => (
+                  <SelectItem key={degree.id} value={degree.id}>
+                    {degree.name}
                   </SelectItem>
                 ))}
               </SelectContent>
