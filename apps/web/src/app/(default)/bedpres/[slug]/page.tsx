@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { fetchBedpresBySlug } from "@/sanity/bedpres";
+import { shortDate } from "@/utils/date";
 import { BedpresSidebar } from "./bedpres-sidebar";
 
 type Props = {
@@ -42,6 +44,7 @@ export default async function BedpresPage({ params }: Props) {
         {/* Content */}
         <article className="w-full">
           <Heading>{bedpres.title}</Heading>
+
           {bedpres.body ? (
             <Markdown content={bedpres.body} />
           ) : (
@@ -59,9 +62,13 @@ export default async function BedpresPage({ params }: Props) {
         </article>
       </div>
 
-      <div className="flex flex-col gap-3 pt-10 text-center text-sm text-muted-foreground lg:mt-auto">
-        <p>Publisert: {new Date(bedpres._createdAt).toLocaleDateString()}</p>
-        <p>Sist oppdatert: {new Date(bedpres._updatedAt).toLocaleDateString()}</p>
+      <div className="pt-10 text-center text-muted-foreground lg:mt-auto">
+        <Text size="sm" className="p-0">
+          Publisert: {shortDate(bedpres._createdAt)}
+        </Text>
+        <Text size="sm" className="p-0">
+          Sist oppdatert: {shortDate(bedpres._updatedAt)}
+        </Text>
       </div>
     </Container>
   );
