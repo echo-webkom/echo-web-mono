@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@auth/core": "^0.17.0",
+    "@auth/core": "^0.18.0",
     "@echo-webkom/db": "^0.1.0",
     "drizzle-orm": "^0.28.6",
     "next": "13.5.6",
