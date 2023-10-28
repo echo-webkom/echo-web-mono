@@ -20,7 +20,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@auth/core": "^0.17.0",
+    "@auth/core": "^0.18.0",
     "drizzle-orm": "^0.28.6",
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.2",

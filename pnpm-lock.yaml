@@ -330,8 +330,8 @@ importers:
   packages/auth:
     dependencies:
       '@auth/core':
-        specifier: ^0.17.0
-        version: 0.17.0
+        specifier: ^0.18.0
+        version: 0.18.0
       '@echo-webkom/db':
         specifier: ^0.1.0
         version: link:../db
@@ -367,8 +367,8 @@ importers:
   packages/db:
     dependencies:
       '@auth/core':
-        specifier: ^0.17.0
-        version: 0.17.0
+        specifier: ^0.18.0
+        version: 0.18.0
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(@types/pg@8.10.7)(pg@8.11.3)(postgres@3.4.0)
@@ -538,8 +538,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@auth/core@0.17.0:
-    resolution: {integrity: sha512-YkbWuXny6sv0gF/sYm7KD3GxnnGxJomoQJzibzhJuwVOYjPUjjYBv/JMTkYcfpBuPHoHZwTVR3y1J+/W18oRxA==}
+  /@auth/core@0.18.0:
+    resolution: {integrity: sha512-Xb41H3FIv4PlTZmwoFvntaNlVTwIqFxIg7i0/ieHOOxf/7H8EJpGTWoNrqKhwMyZEPU6fHp+VcUiqdX3vFrWSg==}
     peerDependencies:
       nodemailer: ^6.8.0
     peerDependenciesMeta:
