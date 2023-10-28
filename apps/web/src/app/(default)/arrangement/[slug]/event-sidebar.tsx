@@ -11,7 +11,6 @@ import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
-import { isValidVerified } from "@/lib/is-valid-verified";
 import { type Event } from "@/sanity/event";
 
 type EventSidebarProps = {
@@ -58,7 +57,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
-  const isUserComplete = user?.degreeId && user.year && isValidVerified(user.verifiedAt);
+  const isUserComplete = user?.degreeId && user.year;
 
   return (
     <Sidebar>

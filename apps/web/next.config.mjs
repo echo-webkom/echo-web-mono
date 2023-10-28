@@ -5,7 +5,12 @@ const config = {
   transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
 
   images: {
-    domains: ["cdn.sanity.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+    ],
   },
 
   eslint: { ignoreDuringBuilds: !!process.env.CI },

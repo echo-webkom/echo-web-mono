@@ -4,6 +4,7 @@ import { db } from "@echo-webkom/db";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
+import { isMemberOfecho } from "./is-member-of-echo";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -27,6 +28,24 @@ export const authOptions: AuthOptions = {
         session.user.id = user.id;
       }
       return session;
+    },
+    signIn({ account }) {
+      if (!account?.access_token) {
+        return false;
+      }
+
+      return isMemberOfecho(account.access_token).then((res) => res === true);
+    },
+  },
+
+  events: {
+    signIn({ user }) {
+      // eslint-disable-next-line no-console
+      console.log(`${user.name} logget inn`);
+    },
+    signOut({ session }) {
+      // eslint-disable-next-line no-console
+      console.log(`${session.user.name} logget ut`);
     },
   },
 
