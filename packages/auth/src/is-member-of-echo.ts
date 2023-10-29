@@ -27,6 +27,15 @@ const VALID_PROGRAM_IDS = [
   "POST",
 ];
 
+export const SignInError = {
+  NOT_MEMBER_OF_ECHO: "NOT_MEMBER_OF_ECHO",
+  NOT_VALID_TOKEN: "NOT_VALID_TOKEN",
+  INTERNAL_ERROR: "INTERNAL_ERROR",
+} as const;
+
+export const isValidSignInError = (error: string): error is keyof typeof SignInError =>
+  Object.keys(SignInError).includes(error);
+
 export async function isMemberOfecho(accessToken: string) {
   try {
     const response = await fetch(`${FEIDE_GROUPS_ENDPOINT}/groups/me/groups`, {
@@ -36,29 +45,27 @@ export async function isMemberOfecho(accessToken: string) {
     });
 
     if (response.status > 200) {
-      return "Ikke gyldig bruker.";
+      return SignInError.NOT_VALID_TOKEN;
     }
 
     const groups = (await response.json()) as Array<GroupsResponse>;
+
     const userPrograms = groups.filter((group) => group.id.startsWith(PROGRAM_ID_PREFIX));
+
     const isMemberOfecho = userPrograms.some((program) =>
       VALID_PROGRAM_IDS.includes(program.id.slice(PROGRAM_ID_PREFIX.length)),
     );
 
     if (!isMemberOfecho) {
-      return "Du er ikke regnet som medlem av echo. Kontakt Webkom hvis du mener dette er feil.";
+      return SignInError.NOT_MEMBER_OF_ECHO;
     }
 
     return true;
   } catch (error) {
     if (error instanceof SyntaxError) {
-      return "Ugyldig token.";
+      return SignInError.NOT_VALID_TOKEN;
     }
 
-    if (error instanceof TypeError) {
-      return "Noe gikk galt.";
-    }
-
-    return "Noe gikk galt.";
+    return SignInError.INTERNAL_ERROR;
   }
 }

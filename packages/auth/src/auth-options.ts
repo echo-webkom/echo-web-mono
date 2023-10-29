@@ -29,12 +29,18 @@ export const authOptions: AuthOptions = {
       }
       return session;
     },
-    signIn({ account }) {
+    async signIn({ account }) {
       if (!account?.access_token) {
         return false;
       }
 
-      return isMemberOfecho(account.access_token).then((res) => res === true);
+      const result = await isMemberOfecho(account.access_token);
+
+      if (result === true) {
+        return true;
+      }
+
+      return `/auth/logg-inn?error=${result}`;
     },
   },
 
