@@ -1,0 +1,65 @@
+"use server"
+
+import { and, asc, eq } from "drizzle-orm";
+import { z } from "zod";
+
+import { getAuth } from "@echo-webkom/auth";
+import { db } from "@echo-webkom/db"
+import { registrations } from "@echo-webkom/db/schemas";
+
+const updateRegistrationPayloadSchema = z.object({
+  status: z.string(),
+  reason: z.string(),
+})
+
+type StatusEnum = "registered" | "unregistered" | "removed" | "waiting"
+
+export async function updateRegistration(slug: string, registrationUserId: string, payload: z.infer<typeof updateRegistrationPayloadSchema>) {
+  try {
+    const user = await getAuth();
+
+    if (!user) {
+      return {
+        success: false,
+        message: "Du er ikke logget inn",
+      };
+    }
+    const exisitingRegistration = await db.query.registrations.findFirst({
+      where: (registration) =>
+        and(eq(registration.happeningSlug, slug), eq(registration.userId, registrationUserId)),
+    });
+
+    if (!exisitingRegistration) {
+      return {
+        success: false,
+        message: "Denne personen er ikke påmeldt arrangementet",
+      };
+    }
+
+    const data = await updateRegistrationPayloadSchema.parseAsync(payload);
+
+    await db
+      .update(registrations)
+      .set({
+        status: data.status as StatusEnum,
+        unregisterReason: data.reason,
+      })
+      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningSlug, slug)));
+
+    return {
+      success: true,
+      message: "Påmeldingen er endret"
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        message: "Grunnen er ikke i riktig format",
+      };
+    }
+    return {
+      success: false,
+      message: "En feil har oppstått",
+    };
+  }
+}
