@@ -19,81 +19,72 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useEditregistration } from "@/hooks/use-editregistration";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
-import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
-import { Prisma } from "@echo-webkom/db";
-import { RegistrationStatus } from "@echo-webkom/db/enums";
+import { updateRegistration } from "@/actions/update-registration";
+
 
 type EditRegistrationButtonProps = {
   slug: string;
-  registration: RegistrationWithUser;
+  registration: any;
 };
 
-type RegistrationWithUser = Prisma.RegistrationGetPayload<{
-  include: { user: true };
-}>;
-
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
-  const initialFormValues = {
-    status: registration.status,
-    reason: '',
-    hasVerified: false,
-  };
-  const [formValues, setFormValues] = useState(initialFormValues)
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { editRegistration, isLoading } = useEditregistration(slug, registration.userId, {
-    onSuccess: () => {
-      setIsOpen(false);
-      router.refresh();
-      toast({
-        title: "Endring fullført",
-        description: "Du har nå endret registreringen",
-        color: "green",
-      });
-      setFormValues(initialFormValues);
-    },
-    onError: () => {
-      setIsOpen(false);
-      toast({
-        title: "Noe gikk galt",
-        description: "Kunne ikke endre registreringen",
-        color: "red",
-      });
-    },
-  });
 
-  const resetState = () => {
-    setFormValues(initialFormValues);
-    setSelectedStatus(registration.status);
-    setIsOpen(false);
-
-    methods.setValue('reason', '');
-    methods.setValue('hasVerified', false);
-  };
-
-  const methods = useForm<editRegistrationForm>({
+  const form = useForm<editRegistrationForm>({
     resolver: zodResolver(editRegistrationSchema),
+    defaultValues: {
+      status: registration.status,
+      reason: "",
+      hasVerified: false,
+    },
   });
 
-  const [selectedStatus, setSelectedStatus] = useState(registration.status);
+  const onSubmit = form.handleSubmit(async (data) => {
+    setIsLoading(true);
 
-  const handleStatusChange = (status: RegistrationStatus) => {
-    setSelectedStatus(status);
-  };
-
-  const onSubmit = methods.handleSubmit(async (data) => {
-    await editRegistration({
+    await updateRegistration(slug, registration.userId, {
       status: selectedStatus,
       reason: data.reason,
     });
-    resetState();
-    setIsOpen(false);
+
+    setIsLoading(false);
+
+    toast({
+      title: "Påmeldingen er endret",
+      description: "Påmeldingen er endret.",
+      variant: "success",
+    });
+
     router.refresh();
+    form.reset();
+    setIsOpen(false);
   });
+
+  const [formValues, setFormValues] = useState(form)
+
+  const resetState = () => {
+    setFormValues(form);
+    setSelectedStatus(registration.status);
+    setIsOpen(false);
+
+    form.setValue('reason', '');
+    form.setValue('hasVerified', false);
+  };
+
+
+  const [selectedStatus, setSelectedStatus] = useState(registration.status);
+
+
+  const handleStatusChange = (status: string) => {
+    setSelectedStatus(status);
+  };
+
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(newIsOpen) => {
@@ -130,8 +121,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
               <div className="flex flex-col gap-2">
                 <Label>Verv:</Label>
-                {registration.user.studentGroups.map((group) => groupToString[group]).join(", ")}
-                {registration.user.studentGroups.length === 0 && "Ingen"}
+                {registration.user.memberships.map((membership: { group: { name: string } }) => membership.group?.name).join(", ")}
+                {registration.user.memberships.length === 0 && "Ingen"}
+              </div>
               </div>
               <div className="flex flex-row gap-10">
                 <Label>Status:</Label>
@@ -167,25 +159,25 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                   <Label htmlFor="reason">Hvorfor gjør du endring?</Label>
                   <Controller
                     name="reason"
-                    control={methods.control}
+                    control={form.control}
                     defaultValue=""
                     render={({ field }) => (
                       <Textarea
                         id="reason"
-                        {...methods.register("reason")}
+                        {...form.register("reason")}
                         className="w-full"
                         placeholder="Skriv her..."
                         onChange={field.onChange}
                         />
                     )}
                   />
-                  <p className="text-sm text-red-500">{methods.formState.errors.reason?.message}</p>
+                  <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
                 </div>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <Controller
                       name="hasVerified"
-                      control={methods.control}
+                      control={form.control}
                       defaultValue={false}
                       render={({ field }) => (
                         <Checkbox
@@ -201,7 +193,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                     </Label>
                   </div>
                   <p className="text-sm text-red-500">
-                    {methods.formState.errors.hasVerified?.message}
+                    {form.formState.errors.hasVerified?.message}
                   </p>
                 </div>
               </div>
