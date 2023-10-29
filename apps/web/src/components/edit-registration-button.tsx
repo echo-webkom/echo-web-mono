@@ -25,18 +25,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
-import { groupToString, registrationStatusToString } from "@echo-webkom/lib";
-import { Prisma } from "@echo-webkom/db";
-import { RegistrationStatus } from "@echo-webkom/db/enums";
+import { updateRegistration } from "@/actions/update-registration";
+
 
 type EditRegistrationButtonProps = {
   slug: string;
-  registration: RegistrationWithUser;
+  registration: any;
 };
-
-type RegistrationWithUser = Prisma.RegistrationGetPayload<{
-  include: { user: true };
-}>;
 
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +47,29 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
       hasVerified: false,
     },
   });
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    setIsLoading(true);
+
+    await updateRegistration(slug, registration.userId, {
+      status: selectedStatus,
+      reason: data.reason,
+    });
+
+    setIsLoading(false);
+
+    toast({
+      title: "Påmeldingen er endret",
+      description: "Påmeldingen er endret.",
+      variant: "success",
+    });
+
+    router.refresh();
+    form.reset();
+    setIsOpen(false);
+  });
+
+  const [formValues, setFormValues] = useState(form)
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
@@ -76,9 +94,12 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
 
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
-  const handleStatusChange = (status: RegistrationStatus) => {
+
+  const handleStatusChange = (status: string) => {
     setSelectedStatus(status);
   };
+
+
 
   return (
     <Dialog
@@ -205,7 +226,13 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                     )}
                   />
 
-                  <Label htmlFor="hasVerified">Jeg bekrefter endringen.</Label>
+                    <Label htmlFor="hasVerified">
+                      Jeg bekrefter endringen.
+                    </Label>
+                  </div>
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.hasVerified?.message}
+                  </p>
                 </div>
                 <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
               </div>
