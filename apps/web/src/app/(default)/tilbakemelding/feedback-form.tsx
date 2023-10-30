@@ -5,9 +5,15 @@ import { useForm } from "react-hook-form";
 
 import { sendFeedback } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -58,7 +64,7 @@ export function FeedbackForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="email">E-post</Label>
+                <FormLabel>E-post</FormLabel>
                 <FormControl>
                   <Input id="email" placeholder="Din e-post" {...field} />
                 </FormControl>
@@ -71,7 +77,7 @@ export function FeedbackForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="name">Navn</Label>
+                <FormLabel>Navn</FormLabel>
                 <FormControl>
                   <Input id="name" placeholder="Ditt navn" {...field} />
                 </FormControl>
@@ -84,23 +90,19 @@ export function FeedbackForm() {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="category" required>
-                  Kategori
-                </Label>
+                <FormLabel required>Kategori</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Velg en kategori" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="bug">Bug</SelectItem>
-                        <SelectItem value="feature">Funksjonalitet</SelectItem>
-                        <SelectItem value="login">Innlogging</SelectItem>
-                        <SelectItem value="other">Annet</SelectItem>
-                      </SelectContent>
-                    </>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Velg en kategori" />
+                    </SelectTrigger>
                   </FormControl>
+                  <SelectContent>
+                    <SelectItem value="bug">Bug</SelectItem>
+                    <SelectItem value="feature">Funksjonalitet</SelectItem>
+                    <SelectItem value="login">Innlogging</SelectItem>
+                    <SelectItem value="other">Annet</SelectItem>
+                  </SelectContent>
                 </Select>
                 <FormMessage />
               </FormItem>
@@ -111,9 +113,7 @@ export function FeedbackForm() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="message" required>
-                  Tilbakemelding
-                </Label>
+                <FormLabel required>Tilbakemelding</FormLabel>
                 <FormControl>
                   <Textarea id="message" placeholder="Din tilbakemelding" {...field} />
                 </FormControl>

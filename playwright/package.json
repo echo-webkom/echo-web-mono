@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "playwright test",
-    "ui": "playwright test --ui",
+    "ui": "playwright test --ui-port 5000",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
     "lint": "eslint web --ext .ts",
