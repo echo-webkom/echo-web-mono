@@ -1,8 +1,8 @@
 name: Deploy preview
 
-on:
-  pull_request:
-    types: [opened, synchronize]
+# on:
+#   pull_request:
+#     types: [opened, synchronize]
 
 permissions:
   id-token: write
