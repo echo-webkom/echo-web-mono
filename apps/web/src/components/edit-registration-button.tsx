@@ -26,11 +26,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 import { updateRegistration } from "@/actions/update-registration";
+import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
+import { RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/page";
 
 
 type EditRegistrationButtonProps = {
   slug: string;
-  registration: any;
+  registration: RegistrationWithUser;
 };
 
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
@@ -51,9 +53,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await updateRegistration(slug, registration.userId, {
+    await updateRegistration(slug, registration.user.id, {
       status: selectedStatus,
-      reason: data.reason,
+      reason: data.reason || "",
     });
 
     setIsLoading(false);
@@ -95,7 +97,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
 
-  const handleStatusChange = (status: string) => {
+  const handleStatusChange = (status: RegistrationStatus) => {
     setSelectedStatus(status);
   };
 
@@ -237,7 +239,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                 <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
               </div>
             </div>
-          </div>
+
 
           <DialogFooter className="mt-5 flex flex-col gap-2">
             <Button
@@ -265,6 +267,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog>
+      </Dialog>
   );
 }
