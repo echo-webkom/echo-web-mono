@@ -221,7 +221,7 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4
       '@upstash/redis':
-        specifier: ^1.24.0
+        specifier: ^1.24.1
         version: 1.24.1
       calendar-link:
         specifier: ^2.6.0
