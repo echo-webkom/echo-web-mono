@@ -22,11 +22,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 import { updateRegistration } from "@/actions/update-registration";
+import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
+import { RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/page";
 
 
 type EditRegistrationButtonProps = {
   slug: string;
-  registration: any;
+  registration: RegistrationWithUser;
 };
 
 export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
@@ -47,9 +49,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await updateRegistration(slug, registration.userId, {
+    await updateRegistration(slug, registration.user.id, {
       status: selectedStatus,
-      reason: data.reason,
+      reason: data.reason || "",
     });
 
     setIsLoading(false);
@@ -80,7 +82,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
 
-  const handleStatusChange = (status: string) => {
+  const handleStatusChange = (status: RegistrationStatus) => {
     setSelectedStatus(status);
   };
 
@@ -117,41 +119,45 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
               <div className="flex flex-col gap-2">
                 <Label>Studie:</Label>
-                <Label>{registration.user.degree}</Label>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label>Verv:</Label>
-                {registration.user.memberships.map((membership: { group: { name: string } }) => membership.group?.name).join(", ")}
-                {registration.user.memberships.length === 0 && "Ingen"}
+                <Label>{registration.user.degreeId}</Label>
               </div>
               </div>
+              <div className="flex flex-col gap-5">
+                </div>
               <div className="flex flex-row gap-10">
                 <Label>Status:</Label>
                 <Label></Label>
               </div>
-              <div className="grid grid-cols-3 w-full md:w-1/2 gap-1">
+              <div className="grid grid-cols-4 w-full gap-1">
                 <div
                   className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'REGISTERED' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
+                  ${selectedStatus === 'registered' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
                   `}
-                  onClick={() => handleStatusChange('REGISTERED')}
+                  onClick={() => handleStatusChange('registered')}
                 >
                   <p>Påmeldt</p>
                 </div>
                 <div
                   className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'WAITLISTED' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
+                  ${selectedStatus === 'waiting' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
                   `}
-                  onClick={() => handleStatusChange('WAITLISTED')}
+                  onClick={() => handleStatusChange('waiting')}
                 >
                   <p>Venteliste</p>
                 </div>
                 <div className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'DEREGISTERED' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
+                  ${selectedStatus === 'unregistered' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
                 `}
-                  onClick={() => handleStatusChange('DEREGISTERED')}
+                  onClick={() => handleStatusChange('unregistered')}
                 >
                   <p>Avmeldt</p>
+                </div>
+                <div className={`border px-2 py-4 text-center text-xs rounded-lg
+                  ${selectedStatus === 'removed' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
+                `}
+                  onClick={() => handleStatusChange('removed')}
+                >
+                  <p>Fjernet</p>
                 </div>
               </div>
               <div className="flex flex-col gap-5">
@@ -199,7 +205,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
             </div>
 
-          </div>
+
           <DialogFooter className="mt-5 flex flex-col gap-2">
             <Button
               className="w-full sm:w-auto"
@@ -226,6 +232,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog>
+      </Dialog>
   );
 }
