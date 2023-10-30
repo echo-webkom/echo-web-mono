@@ -11,8 +11,10 @@ import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
+import { Button } from "@/components/ui/button";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
+import { getUserStudentGroups } from "../../../../lib/queries/student-groups";
 
 type BedpresSidebarProps = {
   slug: string;
@@ -55,6 +57,11 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
     happening?.registrationEnd &&
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
+
+  const userGroups = user ? await getUserStudentGroups(user.id) : [];
+
+  const isHost =
+    userGroups.some((group) => group.groupId === "bedkom") || user?.type === "admin";
 
   return (
     <Sidebar>
@@ -222,6 +229,13 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
               <ArrowRightIcon className="ml-2 h-4 w-4" />
             </div>
           </div>
+        </SidebarItem>
+      )}
+      {user && isHost && (
+        <SidebarItem>
+          <Button variant="link" className="w-full" asChild>
+            <Link href={`/dashbord/${slug}`}>Admin dashbord</Link>
+          </Button>
         </SidebarItem>
       )}
     </Sidebar>
