@@ -25,10 +25,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
-import { updateRegistration } from "@/actions/update-registration";
-import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
-import { RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/page";
-
 
 type EditRegistrationButtonProps = {
   slug: string;
@@ -71,7 +67,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
     setIsOpen(false);
   });
 
-  const [formValues, setFormValues] = useState(form)
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
@@ -96,12 +91,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
 
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
-
   const handleStatusChange = (status: RegistrationStatus) => {
     setSelectedStatus(status);
   };
-
-
 
   return (
     <Dialog
@@ -228,18 +220,12 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                     )}
                   />
 
-                    <Label htmlFor="hasVerified">
-                      Jeg bekrefter endringen.
-                    </Label>
-                  </div>
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.hasVerified?.message}
-                  </p>
+                  <Label htmlFor="hasVerified">Jeg bekrefter endringen.</Label>
                 </div>
                 <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
               </div>
             </div>
-
+          </div>
 
           <DialogFooter className="mt-5 flex flex-col gap-2">
             <Button
@@ -267,6 +253,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
           </DialogFooter>
         </form>
       </DialogContent>
-      </Dialog>
+    </Dialog>
   );
 }
