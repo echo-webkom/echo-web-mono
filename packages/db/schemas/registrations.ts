@@ -15,6 +15,7 @@ export const registrations = pgTable(
       .references(() => happenings.slug),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
+    //updateReason: text("update_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({

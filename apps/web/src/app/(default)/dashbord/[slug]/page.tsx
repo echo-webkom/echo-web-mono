@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { type Group, type Registration, type User } from "@echo-webkom/db/schemas";
+import { RegistrationStatus, type Group, type Registration, type User } from "@echo-webkom/db/schemas";
 import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
@@ -11,8 +11,10 @@ import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
 import { getHappeningBySlug } from "@/lib/queries/happening";
 
+
 import { cn } from "@/utils/cn";
 import { EditRegistrationButton } from "@/components/edit-registration-button";
+import { HappeningPreviewBox } from "@/components/happening-preview-box";
 
 type Props = {
   params: {
@@ -54,7 +56,7 @@ export default async function EventDashboard({ params }: Props) {
   return (
     <Container className="flex flex-col gap-10">
       <Heading>
-        <Link className="hover:underline" href={"/dashbord/"}>Dashboard:{" "}</Link>
+        Dashboard:{" "}
 
         <Link className="hover:underline" href={"/event/" + slug}>
           {happening.title}
@@ -148,7 +150,7 @@ const RegistrationRow = ({
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const slug = registration.happeningSlug;
-  const statusClass = getStatusClass(registration.status);
+  const statusClass = getStatusClassColor(registration.status);
 
   return (
     <tr
@@ -178,13 +180,15 @@ const RegistrationRow = ({
   );
 };
 
-function getStatusClass(status: string): string {
+function getStatusClassColor(status: RegistrationStatus): string {
   switch (status) {
-    case "REGISTERED":
+    case "registered":
       return "text-green-600";
-    case "WAITLISTED":
+    case "waiting":
       return "text-yellow-600";
-    case "DEREGISTERED":
+    case "unregistered":
+      return "text-red-600";
+    case "removed":
       return "text-red-600";
     default:
       return "";

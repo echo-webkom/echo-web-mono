@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
+import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
+
+import { updateRegistration } from "@/actions/update-registration";
+import { RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/page";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -21,10 +25,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
-import { updateRegistration } from "@/actions/update-registration";
-import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
-import { RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/page";
-
 
 type EditRegistrationButtonProps = {
   slug: string;
@@ -67,33 +67,32 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
     setIsOpen(false);
   });
 
-  const [formValues, setFormValues] = useState(form)
+  const [formValues, setFormValues] = useState(form);
 
   const resetState = () => {
     setFormValues(form);
     setSelectedStatus(registration.status);
     setIsOpen(false);
 
-    form.setValue('reason', '');
-    form.setValue('hasVerified', false);
+    form.setValue("reason", "");
+    form.setValue("hasVerified", false);
   };
 
-
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
-
 
   const handleStatusChange = (status: RegistrationStatus) => {
     setSelectedStatus(status);
   };
 
-
-
   return (
-    <Dialog open={isOpen} onOpenChange={(newIsOpen) => {
-      if (!newIsOpen) {
-        resetState();
-      }
-    }}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(newIsOpen) => {
+        if (!newIsOpen) {
+          resetState();
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)} variant="secondary" fullWidth>
           Endre
@@ -103,7 +102,8 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
         <DialogHeader>
           <DialogTitle>Endre registrering</DialogTitle>
           <DialogDescription>
-            Her kan du gjøre endring på den valgte registreringen. Skriv i tekstboksen hvorfor du gjør endringen og hvem du er.
+            Her kan du gjøre endring på den valgte registreringen. Skriv i tekstboksen hvorfor du
+            gjør endringen og hvem du er.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit}>
@@ -115,96 +115,108 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
               <div className="flex flex-col gap-2">
                 <Label>E-Post:</Label>
-                <Label>{registration.user.alternativeEmail == null ? registration.user.email : registration.user.alternativeEmail}</Label>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label>Studie:</Label>
-                <Label>{registration.user.degreeId}</Label>
-              </div>
-              </div>
-              <div className="flex flex-col gap-5">
-                </div>
-              <div className="flex flex-row gap-10">
-                <Label>Status:</Label>
-                <Label></Label>
-              </div>
-              <div className="grid grid-cols-4 w-full gap-1">
-                <div
-                  className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'registered' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
-                  `}
-                  onClick={() => handleStatusChange('registered')}
-                >
-                  <p>Påmeldt</p>
-                </div>
-                <div
-                  className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'waiting' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
-                  `}
-                  onClick={() => handleStatusChange('waiting')}
-                >
-                  <p>Venteliste</p>
-                </div>
-                <div className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'unregistered' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
-                `}
-                  onClick={() => handleStatusChange('unregistered')}
-                >
-                  <p>Avmeldt</p>
-                </div>
-                <div className={`border px-2 py-4 text-center text-xs rounded-lg
-                  ${selectedStatus === 'removed' ? 'bg-primary font-bold text-white border border-black' : 'hover:bg-secondary'}
-                `}
-                  onClick={() => handleStatusChange('removed')}
-                >
-                  <p>Fjernet</p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-3">
-                  <Label htmlFor="reason">Hvorfor gjør du endring?</Label>
-                  <Controller
-                    name="reason"
-                    control={form.control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <Textarea
-                        id="reason"
-                        {...form.register("reason")}
-                        className="w-full"
-                        placeholder="Skriv her..."
-                        onChange={field.onChange}
-                        />
-                    )}
-                  />
-                  <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3">
-                    <Controller
-                      name="hasVerified"
-                      control={form.control}
-                      defaultValue={false}
-                      render={({ field }) => (
-                        <Checkbox
-                          id="hasVerified"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      )}
-                    />
-
-                    <Label htmlFor="hasVerified">
-                      Jeg bekrefter endringen.
-                    </Label>
-                  </div>
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.hasVerified?.message}
-                  </p>
-                </div>
+                <Label>
+                  {registration.user.alternativeEmail == null
+                    ? registration.user.email
+                    : registration.user.alternativeEmail}
+                </Label>
               </div>
             </div>
+            <div className="flex flex-col gap-5"></div>
+            <div className="flex flex-row gap-10">
+              <Label>Status:</Label>
+              <Label></Label>
+            </div>
+            <div className="grid w-full grid-cols-4 gap-1">
+              <div
+                className={`rounded-lg border px-2 py-4 text-center text-xs
+                  ${
+                    selectedStatus === "registered"
+                      ? "border border-black bg-primary font-bold text-white"
+                      : "hover:bg-secondary"
+                  }
+                  `}
+                onClick={() => handleStatusChange("registered")}
+              >
+                <p>Påmeldt</p>
+              </div>
+              <div
+                className={`rounded-lg border px-2 py-4 text-center text-xs
+                  ${
+                    selectedStatus === "waiting"
+                      ? "border border-black bg-primary font-bold text-white"
+                      : "hover:bg-secondary"
+                  }
+                  `}
+                onClick={() => handleStatusChange("waiting")}
+              >
+                <p>Venteliste</p>
+              </div>
+              <div
+                className={`rounded-lg border px-2 py-4 text-center text-xs
+                  ${
+                    selectedStatus === "unregistered"
+                      ? "border border-black bg-primary font-bold text-white"
+                      : "hover:bg-secondary"
+                  }
+                `}
+                onClick={() => handleStatusChange("unregistered")}
+              >
+                <p>Avmeldt</p>
+              </div>
+              <div
+                className={`rounded-lg border px-2 py-4 text-center text-xs
+                  ${
+                    selectedStatus === "removed"
+                      ? "border border-black bg-primary font-bold text-white"
+                      : "hover:bg-secondary"
+                  }
+                `}
+                onClick={() => handleStatusChange("removed")}
+              >
+                <p>Fjernet</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="reason">Hvorfor gjør du endring?</Label>
+                <Controller
+                  name="reason"
+                  control={form.control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Textarea
+                      id="reason"
+                      {...form.register("reason")}
+                      className="w-full"
+                      placeholder="Skriv her..."
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+                <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <Controller
+                    name="hasVerified"
+                    control={form.control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <Checkbox
+                        id="hasVerified"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    )}
+                  />
 
+                  <Label htmlFor="hasVerified">Jeg bekrefter endringen.</Label>
+                </div>
+                <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
+              </div>
+            </div>
+          </div>
 
           <DialogFooter className="mt-5 flex flex-col gap-2">
             <Button
@@ -232,6 +244,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
           </DialogFooter>
         </form>
       </DialogContent>
-      </Dialog>
+    </Dialog>
   );
 }
