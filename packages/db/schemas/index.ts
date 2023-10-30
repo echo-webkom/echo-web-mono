@@ -10,6 +10,7 @@ export * from "./registrations";
 export * from "./sessions";
 export * from "./site-feedback";
 export * from "./spot-ranges";
+export * from "./strikes";
 export * from "./users-to-groups";
 export * from "./users";
 export * from "./verification-tokens";

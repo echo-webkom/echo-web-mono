@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { answers, registrations } from "@echo-webkom/db/schemas";
+import { answers, registrations, strikes } from "@echo-webkom/db/schemas";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -46,6 +46,11 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
     await db
       .delete(answers)
       .where(and(eq(answers.userId, user.id), eq(answers.happeningSlug, slug)));
+    await db.insert(strikes).values({
+      happeningSlug: slug,
+      userId: user.id,
+      reason: payload.reason,
+    });
 
     return {
       success: true,
