@@ -248,8 +248,8 @@ importers:
         specifier: ^4.24.3
         version: 4.24.3(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: 5.5.9
-        version: 5.5.9(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@14.0.0)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11)
+        specifier: 5.5.10
+        version: 5.5.10(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@14.0.0)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -11262,8 +11262,8 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@5.5.9(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@14.0.0)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11):
-    resolution: {integrity: sha512-dU6QVAeYxDWqmEzNR4sVqeJkJb3XtOA3VegWaet1pL1zqtZS+I++Ja+Cm2JhHl8db5twyVhkc0Ii8gsmW1ip/w==}
+  /next-sanity@5.5.10(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.7.4)(next@14.0.0)(react@18.2.0)(sanity@3.18.1)(styled-components@5.3.11):
+    resolution: {integrity: sha512-S/ZFq3xs3WTFl8awDjbcQI8TxzEqPfKEXFze2yTJEu3Ny0yAvSHxF6AysYyCvb8nAnpCMTJsxiHZX6OambVlpg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@sanity/client': ^6.4.9
