@@ -92,7 +92,7 @@ export default async function EventDashboard({ params }: Props) {
   );
 }
 
-type RegistrationWithUser = Omit<Registration, "userId"> & {
+export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
     memberships: Array<{
       group: Group | null;
