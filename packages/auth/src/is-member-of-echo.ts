@@ -29,7 +29,7 @@ const VALID_PROGRAM_IDS = [
 
 export const SignInError = {
   NOT_MEMBER_OF_ECHO: "NOT_MEMBER_OF_ECHO",
-  NOT_VALID_TOKEN: "NOT_VALID_TOKEN",
+  INVALID_TOKEN: "INVALID_TOKEN",
   INTERNAL_ERROR: "INTERNAL_ERROR",
 } as const;
 
@@ -45,7 +45,7 @@ export async function isMemberOfecho(accessToken: string) {
     });
 
     if (response.status > 200) {
-      return SignInError.NOT_VALID_TOKEN;
+      return SignInError.INVALID_TOKEN;
     }
 
     const groups = (await response.json()) as Array<GroupsResponse>;
@@ -63,7 +63,7 @@ export async function isMemberOfecho(accessToken: string) {
     return true;
   } catch (error) {
     if (error instanceof SyntaxError) {
-      return SignInError.NOT_VALID_TOKEN;
+      return SignInError.INVALID_TOKEN;
     }
 
     return SignInError.INTERNAL_ERROR;
