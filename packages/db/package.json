@@ -24,7 +24,7 @@
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.2",
     "next-auth": "^4.24.3",
-    "postgres": "^3.4.1"
+    "postgres": "^3.4.2"
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
