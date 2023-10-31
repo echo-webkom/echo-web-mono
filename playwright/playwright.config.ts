@@ -31,7 +31,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "pnpm --filter=web start",
+    command: "pnpm start",
     port: 3000,
     cwd: "../",
   },
