@@ -40,8 +40,8 @@ export async function fetchUpcomingBedpresses(n: number) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -97,8 +97,8 @@ export async function fetchBedpresBySlug(slug: string) {
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,
@@ -124,67 +124,6 @@ export async function fetchBedpresBySlug(slug: string) {
   });
 
   return bedpresSchema.parse(res);
-}
-
-export async function $fetchAllBedpresses() {
-  try {
-    const query = groq`
-*[_type == "bedpres"
-  && !(_id in path('drafts.**'))] {
-  _id,
-  _createdAt,
-  _updatedAt,
-  title,
-  "slug": slug.current,
-  "company": company->{
-    _id,
-    name,
-    website,
-    image,
-  },
-  "contacts": contacts[] {
-    email,
-    "profile": profile->{
-      _id,
-      name,
-    },
-  },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
-  "location": location->{
-    name,
-  },
-  "spotRanges": spotRanges[] {
-    spots,
-    minDegreeYear,
-    maxDegreeYear,
-  },
-  "additionalQuestions": additionalQuestions[] {
-    title,
-    required,
-    type,
-    options,
-  },
-  "body": body {
-    no,
-    en,
-  }
-}
-    `;
-
-    const res = await sanityFetch<Bedpres>({
-      query,
-      tags: ["all-bedpresses"],
-    });
-
-    return bedpresSchema.array().parse(res);
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Could not fetch bedpres.",
-    };
-  }
 }
 
 export const fetchFilteredBedpresses = async (
@@ -227,8 +166,8 @@ export const fetchFilteredBedpresses = async (
   },
   "spotRanges": spotRanges[] {
     spots,
-    minDegreeYear,
-    maxDegreeYear,
+    minYear,
+    maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
     title,

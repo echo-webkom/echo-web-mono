@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { hyggkomSubmit } from "@/actions/hyggkom_submit";
 
 //import { Heading } from "@/components/ui/heading";
 
@@ -29,11 +30,8 @@ export default function HyggkomHandleliste() {
   });
   const onSubmit = form.handleSubmit(
     async (data) => {
-      const response = await fetch("/api/hyggkomShoppingList", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
+      const response = await hyggkomSubmit("/api/hyggkomShoppingList", {
+        
         },
       });
 

@@ -1,4 +1,4 @@
-import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 
 import "@/styles/globals.css";
 
@@ -26,6 +26,12 @@ const ibmPlexMonoDisplay = IBM_Plex_Mono({
   weight: "700",
   subsets: ["latin"],
   variable: "--inter-display-font",
+});
+
+const vt323 = VT323({
+  subsets: ["latin"],
+  variable: "--block-font",
+  weight: ["400"],
 });
 
 type RootLayoutProps = {
@@ -63,6 +69,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           inter.variable,
           ibmPlexMono.variable,
           ibmPlexMonoDisplay.variable,
+          vt323.variable,
         )}
       >
         <Providers>

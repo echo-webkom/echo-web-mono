@@ -7,15 +7,15 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint index.ts src",
     "lint:fix": "eslint lint --fix",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@types/node": "18.18.5"
+    "@types/node": "18.18.6"
   },
   "devDependencies": {
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.2.2"
   },
