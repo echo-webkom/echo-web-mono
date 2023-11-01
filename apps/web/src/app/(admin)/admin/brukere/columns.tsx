@@ -167,21 +167,24 @@ function UserForm({ user, groups }: UserFormProps) {
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Administrator</FormLabel>
-                      <FormDescription>
-                        Skal brukeren ha tilgang til admin dashboard?
-                      </FormDescription>
+                  <FormItem>
+                    <div className="flex flex-row items-center justify-between">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">Administrator</FormLabel>
+                        <FormDescription>
+                          Skal brukeren ha tilgang til admin dashboard?
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value === "admin"}
+                          onCheckedChange={(checked) => {
+                            return checked ? field.onChange("admin") : field.onChange("student");
+                          }}
+                        />
+                      </FormControl>
                     </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value === "admin"}
-                        onCheckedChange={(checked) => {
-                          return checked ? field.onChange("admin") : field.onChange("user");
-                        }}
-                      />
-                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
