@@ -12,24 +12,26 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
   });
 }
 
-export async function atMaxCapacity(happening: Happening) {
-  const max = await maxCapacity(happening);
-  const registrations = await prisma.registration.count({
-    where: {
-      happeningSlug: happening.slug,
+export async function atMaxCapacity(slug: string) {
+  const max = await maxCapacityBySlug(slug);
+  const registrations = await db.query.registrations.findMany({
+    where: (registration) => eq(registration.happeningSlug, slug),
+    with: {
+      happening: true,
     }
   })
-  return registrations >= max;
+  return registrations.length >= max;
   }
 
-export async function maxCapacity(happening?: Happening, slug?: string) {
-  if (!happening && !slug) {
-    throw new Error("Must provide either happening or slug");
+export async function maxCapacityBySlug(slug?: string) {
+  if (!slug) {
+    throw new Error("Must provide slug");
   }
   return (
-    await prisma.spotRange.findMany({
-      where: {
-        happeningSlug: happening ? happening.slug : slug,
+    await db.query.spotRanges.findMany({
+      where: (spotRange) => eq(spotRange.happeningSlug, slug),
+      with: {
+        event: true,
       },
     })
   ).reduce((acc, curr) => acc + curr.spots, 0);
