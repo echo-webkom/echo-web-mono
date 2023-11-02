@@ -50,9 +50,10 @@ export const authOptions: AuthOptions = {
         where: eq(whitelist.email, profile.email),
       });
 
-      if (whitelistEntry) {
+      const today = new Date();
+      if (whitelistEntry && whitelistEntry.expiresAt > today) {
         return true;
-      }
+      };
 
       return `/auth/logg-inn?error=${result}`;
     },
