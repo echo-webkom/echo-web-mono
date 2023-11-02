@@ -33,6 +33,10 @@ const adminRoutes = [
     href: "/admin/studieretninger",
     label: "Studieretninger",
   },
+  {
+    href: "/admin/whitelist",
+    label: "Whitelist",
+  },
 ];
 
 export function AdminSidebar({ children }: { children: React.ReactNode }) {

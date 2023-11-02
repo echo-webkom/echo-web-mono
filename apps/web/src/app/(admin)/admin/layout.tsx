@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { type Metadata } from "next/types";
 
-import { getAuthSession } from "@echo-webkom/auth";
+import { getAuth } from "@echo-webkom/auth";
 
 import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
@@ -16,10 +16,10 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function AdminDashboardLayout({ children }: Props) {
-  const session = await getAuthSession();
+  const user = await getAuth();
 
-  if (!session) {
-    return redirect("/api/auth/signin");
+  if (!user || user.type !== "admin") {
+    return redirect("/");
   }
 
   return (
