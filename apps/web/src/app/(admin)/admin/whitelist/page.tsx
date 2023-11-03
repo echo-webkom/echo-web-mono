@@ -1,5 +1,8 @@
 import { db } from "@echo-webkom/db";
 
+import { Container } from "@/components/container";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import WhitelistButton from "@/components/whitelist-button";
 import { shortDateNoTime } from "@/utils/date";
 
@@ -7,11 +10,22 @@ export default async function WhitelistPage() {
   const whitelisted = await db.query.whitelist.findMany();
 
   return (
-    <div className="flex flex-col gap-4 md:mx-10">
+    <Container>
       <div className="flex flex-row justify-between">
-        <h1 className="text-3xl font-bold">Whitelist</h1>
+        <Heading level={1}>Whitelist</Heading>
         <WhitelistButton className="mx-4">Legg til</WhitelistButton>
       </div>
+      <Text size="md" className="font-semibold">
+        E-post adresser med tilgang uten å være medlemmer av echo.
+      </Text>
+
+      <Text size="md" className="mb-10">
+        Legg til e-post adresser som skal ha tilgang til echo sine sider uten å være medlemmer av
+        echo. Trykk på {"Legg til"} for å gi tilgang til en ny bruker. Trykk på {"Endre"} for å
+        oppdatere utløpsdato eller slette tilgangen til en bruker. E-post adressen skal være på
+        formen <i>fornavn.etternavn@student.uib.no</i>
+      </Text>
+
       <table className="w-full table-fixed border-separate rounded-md border">
         <thead>
           <tr>
@@ -29,11 +43,17 @@ export default async function WhitelistPage() {
         </thead>
         <tbody>
           {whitelisted.map((whitelistEntry) => (
-            <tr key={whitelistEntry.email}>
-              <td className="border-b p-4">{whitelistEntry.email}</td>
-              <td className="border-b p-4">{shortDateNoTime(whitelistEntry.expiresAt)}</td>
-              <td className="break-words border-b p-4">{whitelistEntry.reason}</td>
-              <td className="border-b p-4 text-end">
+            <tr key={whitelistEntry.email} className="group">
+              <td className="border-x-0 border-b p-4 group-last:border-none ">
+                {whitelistEntry.email}
+              </td>
+              <td className="border-x-0 border-b p-4 group-last:border-none ">
+                {shortDateNoTime(whitelistEntry.expiresAt)}
+              </td>
+              <td className="break-words border-x-0 border-b p-4 group-last:border-none ">
+                {whitelistEntry.reason}
+              </td>
+              <td className="border-x-0 border-b p-4 text-end group-last:border-none">
                 {
                   <WhitelistButton variant="secondary" whitelistEntry={whitelistEntry}>
                     Endre
@@ -44,6 +64,6 @@ export default async function WhitelistPage() {
           ))}
         </tbody>
       </table>
-    </div>
+    </Container>
   );
 }

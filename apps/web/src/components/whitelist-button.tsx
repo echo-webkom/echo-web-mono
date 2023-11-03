@@ -18,9 +18,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { Input } from "./ui/input";
 
 const whitelistFormSchema = z.object({
-  email: z.string().email("Ugyldig e-post"),
+  email: z
+    .string()
+    .email("Ugyldig e-post")
+    .endsWith("@student.uib.no", "Må ende med @student.uib.no"),
   days: z.coerce.number().positive("Må være et positivt tall"),
   reason: z.string().min(3, "Må være minst 3 tegn"),
 });
@@ -42,11 +47,7 @@ export default function WhitelistButton({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<WhitelistForm>({
+  const form = useForm<WhitelistForm>({
     resolver: zodResolver(whitelistFormSchema),
     defaultValues: {
       email: whitelistEntry?.email ?? "",
@@ -55,7 +56,7 @@ export default function WhitelistButton({
     },
   });
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     const { success, message } = await upsertWhitelist(data.email, data.reason, data.days);
 
     toast({
@@ -98,60 +99,73 @@ export default function WhitelistButton({
           <DialogDescription></DialogDescription>
         </DialogHeader>
 
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form className="grid gap-4 py-4" onSubmit={onSubmit}>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="email" className="text-right">
-              e-post
-            </label>
-            <input
-              id="email"
-              placeholder="ola.nordmann@student.uib.no"
-              className="col-span-3"
-              {...register("email")}
-              disabled={whitelistEntry !== undefined}
-            />
-          </div>
+        <Form {...form}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form className="grid gap-4 py-4" onSubmit={onSubmit}>
+            <div className="flex flex-col gap-3">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>E-post</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="email"
+                        placeholder="Din e-post"
+                        disabled={whitelistEntry?.email !== undefined}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="days" className="text-right">
-              Dager
-            </label>
-            <input
-              id="days"
-              placeholder="30"
-              className="col-span-1"
-              type="number"
-              {...register("days")}
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name="days"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dager</FormLabel>
+                    <FormControl>
+                      <Input id="days" placeholder="30" {...field} type="number" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="reason" className="text-right">
-              grunn
-            </label>
-            <input
-              id="reason"
-              placeholder={whitelistEntry?.reason ?? "Grunn for whitelisting"}
-              className="col-span-3"
-              {...register("reason")}
-            />
-          </div>
-          {(errors.email && <span className="text-red-500">1{errors.email.message}</span>) ??
-            (errors.days && <span className="text-red-500">2{errors.days.message}</span>) ??
-            (errors.reason && <span className="text-red-500">3{errors.reason.message}</span>)}
-
-          <DialogFooter>
-            <Button type="submit" className="">
-              Lagre
-            </Button>
-            {whitelistEntry && (
-              <Button variant="destructive" onClick={() => void handleDelete()}>
-                Slett
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Grunn</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="reason"
+                        placeholder={whitelistEntry?.reason ?? "Grunn for whitelisting"}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="submit" className="">
+                Lagre
               </Button>
-            )}
-          </DialogFooter>
-        </form>
+              {whitelistEntry && (
+                <Button variant="destructive" onClick={() => void handleDelete()}>
+                  Slett
+                </Button>
+              )}
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
