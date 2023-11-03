@@ -41,7 +41,8 @@ export function RegistrationTable({
   const filteredRegistrations = registrations.filter((registration) => {
     const matchesSearchTerm =
       registration.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      registration.user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      registration.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      registration.user.alternativeEmail?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesYearFilter =
       yearFilter === "" || registration.user.year?.toString() === yearFilter;
@@ -56,13 +57,21 @@ export function RegistrationTable({
     const matchesGroupFilter =
       groupFilter === "" ||
       (groupFilter === "webkom" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Webkom")) ||
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Webkom",
+          )) ||
       (groupFilter === "bedkom" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Bedkom")) ||
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Bedkom",
+          )) ||
       (groupFilter === "hyggkom" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Hyggkom")) ||
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Hyggkom",
+          )) ||
       (groupFilter === "gnist" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Gnist")) ||
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Gnist",
+          )) ||
       (groupFilter === "programmerbar" &&
         registration.user.memberships.some(
           (membership) => membership.group?.name === "Programmerbar",
@@ -76,9 +85,12 @@ export function RegistrationTable({
           (membership) => membership.group?.name === "Makerspace",
         )) ||
       (groupFilter === "tilde" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Tilde")) ||
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Tilde",
+          )) ||
       (groupFilter === "esc" &&
-        registration.user.memberships.some((membership) => membership.group?.name === "Esc"));
+        registration.user.memberships.some(
+          (membership) => membership.group?.name === "Esc"));
 
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });

@@ -75,12 +75,23 @@ async function EventInfoBox({ event }: { event: Event }) {
 
         <div className="py-4">
           <div>Sted: {event.location?.name ? event.location.name : "Ikke bestemt"}</div>
-          <div>Kapasitet: {await maxCapacityBySlug(event.slug) === 0 ? 'uendelig' : await maxCapacityBySlug(event.slug)}</div>
+          <div>
+            Kapasitet:{" "}
+            {(await maxCapacityBySlug(event.slug)) === 0
+              ? "uendelig"
+              : await maxCapacityBySlug(event.slug)}
+          </div>
           <div>Publisert: {new Date(event._createdAt).toLocaleDateString()}</div>
           <div>Sist oppdatert: {new Date(event._updatedAt).toLocaleDateString()}</div>
           <div>
             Kontakt:{" "}
-            {event.contacts && event.contacts.length > 0 ? event.contacts[0]?.email : "Ikke angitt"}
+            {event.contacts && event.contacts.length > 0 ? (
+              <a className="hover:underline" href={"mailto:" + event.contacts[0]?.email}>
+                {event.contacts[0]?.email}
+              </a>
+            ) : (
+              "Ikke angitt"
+            )}
           </div>
           <div>
             Påmelding:{" "}
@@ -136,7 +147,12 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
 
         <div className="py-4">
           <div>Sted: {bedpres.location?.name ? bedpres.location.name : "Ikke bestemt"}</div>
-          <div>Kapasitet: {await maxCapacityBySlug(bedpres.slug) === 0 ? 'uendelig' : await maxCapacityBySlug(bedpres.slug)}</div>
+          <div>
+            Kapasitet:{" "}
+            {(await maxCapacityBySlug(bedpres.slug)) === 0
+              ? "uendelig"
+              : await maxCapacityBySlug(bedpres.slug)}
+          </div>
           <div>Publisert: {new Date(bedpres._createdAt).toLocaleDateString()}</div>
           <div>Sist oppdatert: {new Date(bedpres._updatedAt).toLocaleDateString()}</div>
           <div>

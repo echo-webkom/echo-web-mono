@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
@@ -83,10 +84,23 @@ export default async function EventDashboard({ params }: Props) {
       <div className="flex flex-col gap-3">
         <HappeningInfoBox happening={happening} />
       </div>
-      <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Registrerte</h2>
-        <RegistrationTable registrations={registrations} />
-      </div>
+      {registrations.length > 0 ? (
+        <div className="flex flex-col gap-3">
+          <h2 className="text-3xl font-semibold">Registrerte</h2>
+          <RegistrationTable registrations={registrations} />
+        </div>
+      ) : (
+        <div className="mx-auto flex w-fit flex-col gap-8 p-5">
+          <h3 className="text-center text-xl font-medium">Ingen er registrerte!</h3>
+          <Image
+            className="rounded-lg"
+            src="/gif/empty-shelves-john-travolta.gif"
+            alt="Travolta looking around in an empty store"
+            width={600}
+            height={600}
+          />
+        </div>
+      )}
     </Container>
   );
 }
