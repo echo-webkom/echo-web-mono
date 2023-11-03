@@ -22,10 +22,10 @@
     "react-email": "^1.9.5"
   },
   "devDependencies": {
-    "@types/node": "18.18.5",
-    "@types/react": "18.2.28",
+    "@types/node": "18.18.7",
+    "@types/react": "18.2.33",
     "dotenv-cli": "7.3.0",
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.2.2"
   },
