@@ -24,7 +24,7 @@ export function Markdown({ className, content }: MarkdownProps) {
       <ReactMarkdown
         components={{
           h1: ({ children }) => {
-            return <Heading level={2}>{children}</Heading>;
+            return <Heading level={1}>{children}</Heading>;
           },
           h2: ({ children }) => {
             return <Heading level={2}>{children}</Heading>;
@@ -34,6 +34,16 @@ export function Markdown({ className, content }: MarkdownProps) {
           },
           p: ({ children }) => {
             return <Text>{children}</Text>;
+          },
+          code: ({ children }) => {
+            return <code className="rounded bg-gray-200 px-1 py-0.5 font-mono">{children}</code>;
+          },
+          blockquote: ({ children }) => {
+            return (
+              <blockquote className="border-l-4 border-gray-300 py-4 pl-4 italic">
+                {children}
+              </blockquote>
+            );
           },
           ul: ({ children }) => {
             return <UnorderedList>{children}</UnorderedList>;
