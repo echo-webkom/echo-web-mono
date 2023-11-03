@@ -1,6 +1,8 @@
+import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
+import { whitelist } from "@echo-webkom/db/schemas";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
@@ -29,7 +31,7 @@ export const authOptions: AuthOptions = {
       }
       return session;
     },
-    async signIn({ account }) {
+    async signIn({ account, profile }) {
       if (!account?.access_token) {
         return false;
       }
@@ -39,6 +41,19 @@ export const authOptions: AuthOptions = {
       if (result === true) {
         return true;
       }
+
+      if (!profile?.email) {
+        return false;
+      }
+
+      const whitelistEntry = await db.query.whitelist.findFirst({
+        where: eq(whitelist.email, profile.email),
+      });
+
+      const today = new Date();
+      if (whitelistEntry && whitelistEntry.expiresAt > today) {
+        return true;
+      };
 
       return `/auth/logg-inn?error=${result}`;
     },

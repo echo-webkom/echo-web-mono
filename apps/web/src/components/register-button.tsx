@@ -81,6 +81,8 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
         variant: success ? "success" : "warning",
       });
 
+      setIsLoading(false);
+
       router.refresh();
     };
   };
