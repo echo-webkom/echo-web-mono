@@ -14,13 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
@@ -64,7 +58,7 @@ export function FeedbackForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>E-post</FormLabel>
+                <FormLabel htmlFor="email">E-post</FormLabel>
                 <FormControl>
                   <Input id="email" placeholder="Din e-post" {...field} />
                 </FormControl>
@@ -77,7 +71,7 @@ export function FeedbackForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Navn</FormLabel>
+                <FormLabel htmlFor="name">Navn</FormLabel>
                 <FormControl>
                   <Input id="name" placeholder="Ditt navn" {...field} />
                 </FormControl>
@@ -90,20 +84,18 @@ export function FeedbackForm() {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel required>Kategori</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Velg en kategori" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="bug">Bug</SelectItem>
-                    <SelectItem value="feature">Funksjonalitet</SelectItem>
-                    <SelectItem value="login">Innlogging</SelectItem>
-                    <SelectItem value="other">Annet</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormLabel {...form} htmlFor="category" required>
+                  Kategori
+                </FormLabel>
+                <FormControl>
+                  <Select id="category" {...field}>
+                    <option hidden>Velg en kategori</option>
+                    <option value="bug">Bug</option>
+                    <option value="feature">Funksjonalitet</option>
+                    <option value="login">Innlogging</option>
+                    <option value="other">Annet</option>
+                  </Select>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -113,7 +105,9 @@ export function FeedbackForm() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel required>Tilbakemelding</FormLabel>
+                <FormLabel htmlFor="message" required>
+                  Tilbakemelding
+                </FormLabel>
                 <FormControl>
                   <Textarea id="message" placeholder="Din tilbakemelding" {...field} />
                 </FormControl>

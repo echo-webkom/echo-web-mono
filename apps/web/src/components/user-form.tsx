@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Select } from "./ui/select";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
@@ -88,17 +88,13 @@ export function UserForm({ user, degrees }: UserFormProps) {
           name="degree"
           control={methods.control}
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Velg studieretning" />
-              </SelectTrigger>
-              <SelectContent>
-                {degrees.map((degree) => (
-                  <SelectItem key={degree.id} value={degree.id}>
-                    {degree.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+            <Select {...field}>
+              <option hidden>Velg studieretning</option>
+              {degrees.map((degree) => (
+                <option key={degree.id} value={degree.id}>
+                  {degree.name}
+                </option>
+              ))}
             </Select>
           )}
         />
@@ -110,20 +106,13 @@ export function UserForm({ user, degrees }: UserFormProps) {
           name="year"
           control={methods.control}
           render={({ field }) => (
-            <Select
-              value={field.value?.toString()}
-              onValueChange={(e) => field.onChange(Number(e))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Velg årstrinn" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1. trinn</SelectItem>
-                <SelectItem value="2">2. trinn</SelectItem>
-                <SelectItem value="3">3. trinn</SelectItem>
-                <SelectItem value="4">4. trinn</SelectItem>
-                <SelectItem value="5">5. trinn</SelectItem>
-              </SelectContent>
+            <Select {...field}>
+              <option hidden>Velg årstrinn</option>
+              <option value="1">1. trinn</option>
+              <option value="2">2. trinn</option>
+              <option value="3">3. trinn</option>
+              <option value="4">4. trinn</option>
+              <option value="5">5. trinn</option>
             </Select>
           )}
         />

@@ -22,13 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
@@ -156,17 +150,13 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                     name={`questions.${index}.answer`}
                     control={form.control}
                     render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Velg svar..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {question?.options?.map((option) => (
-                            <SelectItem key={option.id} value={option.value}>
-                              {option.value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
+                      <Select {...field}>
+                        <option hidden>Velg...</option>
+                        {question?.options?.map((option) => (
+                          <option key={option.id} value={option.value}>
+                            {option.value}
+                          </option>
+                        ))}
                       </Select>
                     )}
                   />
