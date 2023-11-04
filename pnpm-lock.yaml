@@ -404,8 +404,8 @@ importers:
   packages/email:
     dependencies:
       '@react-email/components':
-        specifier: ^0.0.10
-        version: 0.0.10(@types/react@18.2.33)(react@18.2.0)
+        specifier: ^0.0.11
+        version: 0.0.11(@types/react@18.2.33)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4244,8 +4244,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-email/components@0.0.10(@types/react@18.2.33)(react@18.2.0):
-    resolution: {integrity: sha512-LmBZbN0qx4fq1gGeBniNrBfG32302bRCZJ7j9w0YJHuK3Q9bNFjf0UjKMxCIJn03OVUnAW/7GRzObCPwit9c7Q==}
+  /@react-email/components@0.0.11(@types/react@18.2.33)(react@18.2.0):
+    resolution: {integrity: sha512-wj9Sra/AGQvadb3ZABz44ll9Fb9FvXPEmODXRWbNRSc8pJTFGWorrsm4M/yj8dnewd4HtnbLkV1eDOvuiLAVLA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: 18.2.0
@@ -4262,7 +4262,7 @@ packages:
       '@react-email/img': 0.0.6(react@18.2.0)
       '@react-email/link': 0.0.6(react@18.2.0)
       '@react-email/preview': 0.0.7(react@18.2.0)
-      '@react-email/render': 0.0.8
+      '@react-email/render': 0.0.9
       '@react-email/row': 0.0.6(react@18.2.0)
       '@react-email/section': 0.0.10(react@18.2.0)
       '@react-email/tailwind': 0.0.12(react@18.2.0)
@@ -4364,8 +4364,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@react-email/render@0.0.8:
-    resolution: {integrity: sha512-DwrCG5t2nXlXYcchZz8h4NOhBYoU5Rpogz54Z18mANUmwMtzl88x6NwRDwzZoAVAlTLOPqvsQbYtWHvfpTfmmA==}
+  /@react-email/render@0.0.9:
+    resolution: {integrity: sha512-nrim7wiACnaXsGtL7GF6jp3Qmml8J6vAjAH88jkC8lIbfNZaCyuPQHANjyYIXlvQeAbsWADQJFZgOHUqFqjh/A==}
     engines: {node: '>=18.0.0'}
     dependencies:
       html-to-text: 9.0.5
