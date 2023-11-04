@@ -20,4 +20,5 @@ if (process.env.NODE_ENV !== "production") {
 
 export const db = drizzle(pg, {
   schema,
+  logger: process.env.NODE_ENV !== "production",
 });

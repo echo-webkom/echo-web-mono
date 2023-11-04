@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getAuth } from "@echo-webkom/auth";
 
-import { getDatabaseStatus } from "@/utils/database-status";
+import { DatabaseStatusBar } from "./database-status";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ProfileIcon } from "./profile-icon";
@@ -36,20 +36,4 @@ export async function SiteHeader() {
       </div>
     </div>
   );
-}
-
-async function DatabaseStatusBar() {
-  const status = await getDatabaseStatus();
-
-  if (!status) {
-    return (
-      <div className="bg-red-400 p-2 text-center text-sm font-medium">
-        <p>
-          Webkom har mistet kontakt med databasen. Dette er ikke bra. Vi jobber med å fikse det.
-        </p>
-      </div>
-    );
-  }
-
-  return null;
 }

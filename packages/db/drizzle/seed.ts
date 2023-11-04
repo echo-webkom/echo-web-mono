@@ -1,14 +1,6 @@
 /* eslint-disable no-console */
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
+import { db } from "..";
 import { degrees, groups } from "../schemas";
-
-const pg = postgres(process.env.DATABASE_URL!, {
-  max: 1,
-});
-
-const db = drizzle(pg);
 
 async function seed() {
   await db.insert(degrees).values([
@@ -109,7 +101,4 @@ void seed()
   .catch((e) => {
     console.error("🚨 Seeding failed with error:", e);
     process.exit(1);
-  })
-  .finally(() => {
-    void pg.end();
   });
