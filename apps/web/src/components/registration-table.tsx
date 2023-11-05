@@ -66,7 +66,6 @@ export function RegistrationTable({
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });
 
-
   const resetFilters = () => {
     setSearchTerm("");
     setYearFilter("");
