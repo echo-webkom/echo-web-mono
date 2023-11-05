@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 import process from "node:process";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 
 import { db } from "..";
 
 if (process.env.VERCEL_ENV === "preview") {
   process.exit(0);
 }
+
+console.log("🚚 Starting migration...");
 
 void migrate(db, {
   migrationsFolder: "./drizzle/migrations",
