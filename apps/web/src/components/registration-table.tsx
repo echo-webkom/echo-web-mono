@@ -95,6 +95,7 @@ export function RegistrationTable({
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });
 
+
   const resetFilters = () => {
     setSearchTerm("");
     setYearFilter("");
@@ -149,6 +150,7 @@ export function RegistrationTable({
 
           <div className="flex flex-col">
             <Label className="px-2">Undergruppe:</Label>
+
             <select
               className="sm:rounded-lg"
               value={groupFilter}
@@ -292,3 +294,4 @@ function getStatusClassColor(status: RegistrationStatus): string {
       return "";
   }
 }
+

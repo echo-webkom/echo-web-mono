@@ -36,6 +36,11 @@ async function getBedpresBySlug(slug: string) {
   return bedpres;
 }
 
+async function fetchMaxCapacity(slug: string) {
+  const capacity = await maxCapacityBySlug(slug);
+  return capacity === 0 ? "Uendelig" : capacity;
+}
+
 async function getEventBySlug(slug: string) {
   const happening = await fetchEventBySlug(slug);
 
@@ -46,12 +51,16 @@ async function getEventBySlug(slug: string) {
   return happening;
 }
 
+
+
 async function EventInfoBox({ event }: { event: Event }) {
   const isRegistrationOpen =
     event?.registrationStart &&
     event?.registrationEnd &&
     isAfter(new Date(), new Date(event.registrationStart)) &&
     isBefore(new Date(), new Date(event.registrationEnd));
+
+  const capacity = await fetchMaxCapacity(event.slug);
 
   return (
     <div className="flex h-full items-center rounded-xl border gap-5 p-5 bg-card overflow-x-auto sm:rounded-lg">
@@ -65,9 +74,7 @@ async function EventInfoBox({ event }: { event: Event }) {
           <div>Sted: {event.location?.name ? event.location.name : "Ikke bestemt"}</div>
           <div>
             Kapasitet:{" "}
-            {(await maxCapacityBySlug(event.slug)) === 0
-              ? "uendelig"
-              : await maxCapacityBySlug(event.slug)}
+            {capacity}
           </div>
           <div>Publisert: {norwegianDateString(event._createdAt)}</div>
           <div>Sist oppdatert: {norwegianDateString(event._updatedAt)}</div>
@@ -102,20 +109,10 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
     isAfter(new Date(), new Date(bedpres.registrationStart)) &&
     isBefore(new Date(), new Date(bedpres.registrationEnd));
 
+  const capacity = await fetchMaxCapacity(bedpres.slug);
   return (
     <div
-      className={cn(
-        "flex",
-        "h-full",
-        "items-center",
-        "gap-5",
-        "p-5",
-        "bg-card",
-        "border",
-        "overflow-x-auto",
-        "sm:rounded-lg",
-      )}
-    >
+      className="flex h-full items-center gap-5 p-5 bg-card border overflow-x-auto sm:rounded-lg">
       <div className="flex-1">
         {!bedpres && (
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
@@ -137,9 +134,7 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
           <div>Sted: {bedpres.location?.name ? bedpres.location.name : "Ikke bestemt"}</div>
           <div>
             Kapasitet:{" "}
-            {(await maxCapacityBySlug(bedpres.slug)) === 0
-              ? "uendelig"
-              : await maxCapacityBySlug(bedpres.slug)}
+            {capacity}
           </div>
           <div>Publisert: {norwegianDateString(bedpres._createdAt)}</div>
           <div>Sist oppdatert: {norwegianDateString(bedpres._updatedAt)}</div>
@@ -175,3 +170,6 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
     </div>
   );
 }
+
+
+
