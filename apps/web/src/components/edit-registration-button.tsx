@@ -74,8 +74,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
     setSelectedStatus(registration.status);
     setIsOpen(false);
 
-    form.setValue("reason", "");
-    form.setValue("hasVerified", false);
+    form.reset();
   };
 
   const [selectedStatus, setSelectedStatus] = useState(registration.status);

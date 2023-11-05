@@ -6,13 +6,12 @@ import { z } from "zod";
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db"
 import { registrations } from "@echo-webkom/db/schemas";
+import { registrationStatusEnum } from "@echo-webkom/db/schemas";
 
 const updateRegistrationPayloadSchema = z.object({
-  status: z.string(),
+  status: z.enum(registrationStatusEnum.enumValues),
   reason: z.string(),
 })
-
-type StatusEnum = "registered" | "unregistered" | "removed" | "waiting"
 
 export async function updateRegistration(slug: string, registrationUserId: string, payload: z.infer<typeof updateRegistrationPayloadSchema>) {
   try {
@@ -41,7 +40,7 @@ export async function updateRegistration(slug: string, registrationUserId: strin
     await db
       .update(registrations)
       .set({
-        status: data.status as StatusEnum,
+        status: data.status,
         unregisterReason: data.reason,
       })
       .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningSlug, slug)));
