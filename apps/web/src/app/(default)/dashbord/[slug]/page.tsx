@@ -91,7 +91,7 @@ export default async function EventDashboard({ params }: Props) {
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">
-          <h3 className="text-center text-xl font-medium">Ingen er registrerte!</h3>
+          <h3 className="text-center text-xl font-medium">Ingen registrerte!</h3>
           <Image
             className="rounded-lg"
             src="/gif/empty-shelves-john-travolta.gif"

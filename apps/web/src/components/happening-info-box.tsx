@@ -13,6 +13,7 @@ import { fetchEventBySlug, type Event } from "@/sanity/event";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
+import { norwegianDateString } from "@/utils/date";
 
 export async function HappeningInfoBox({ happening }: { happening: Happening }) {
   return (
@@ -53,20 +54,7 @@ async function EventInfoBox({ event }: { event: Event }) {
     isBefore(new Date(), new Date(event.registrationEnd));
 
   return (
-    <div
-      className={cn(
-        "flex",
-        "h-full",
-        "items-center",
-        "rounded-xl",
-        "border",
-        "gap-5",
-        "p-5",
-        "bg-card",
-        "overflow-x-auto",
-        "sm:rounded-lg",
-      )}
-    >
+    <div className="flex h-full items-center rounded-xl border gap-5 p-5 bg-card overflow-x-auto sm:rounded-lg">
       <div className="overflow-x-hidden">
         <Heading className="line-clamp-1 text-lg font-semibold md:text-2xl">
           {capitalize(event.title)}
@@ -81,8 +69,8 @@ async function EventInfoBox({ event }: { event: Event }) {
               ? "uendelig"
               : await maxCapacityBySlug(event.slug)}
           </div>
-          <div>Publisert: {new Date(event._createdAt).toLocaleDateString()}</div>
-          <div>Sist oppdatert: {new Date(event._updatedAt).toLocaleDateString()}</div>
+          <div>Publisert: {norwegianDateString(event._createdAt)}</div>
+          <div>Sist oppdatert: {norwegianDateString(event._updatedAt)}</div>
           <div>
             Kontakt:{" "}
             {event.contacts && event.contacts.length > 0 ? (
@@ -153,8 +141,8 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
               ? "uendelig"
               : await maxCapacityBySlug(bedpres.slug)}
           </div>
-          <div>Publisert: {new Date(bedpres._createdAt).toLocaleDateString()}</div>
-          <div>Sist oppdatert: {new Date(bedpres._updatedAt).toLocaleDateString()}</div>
+          <div>Publisert: {norwegianDateString(bedpres._createdAt)}</div>
+          <div>Sist oppdatert: {norwegianDateString(bedpres._updatedAt)}</div>
           <div>
             Kontakt:{" "}
             {bedpres.contacts && bedpres.contacts.length > 0
