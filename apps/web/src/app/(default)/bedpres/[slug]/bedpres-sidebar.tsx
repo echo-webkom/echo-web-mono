@@ -8,6 +8,7 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
+import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
@@ -196,17 +197,26 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           </SidebarItem>
         )}
 
-      {user && isRegistrationOpen && isUserComplete && (
+      {isRegistered && (
         <SidebarItem>
-          {isRegistered ? (
-            <DeregisterButton slug={slug} />
-          ) : (
-            <RegisterButton slug={slug} questions={happening.questions} />
-          )}
+          <DeregisterButton slug={slug} />
         </SidebarItem>
       )}
 
-      {user && !isRegistrationOpen && (
+      {!isRegistered &&
+        isUserComplete &&
+        happening?.registrationStart &&
+        isAfter(
+          new Date(),
+          new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
+        ) && (
+          <SidebarItem className="relative">
+            <RegisterButton slug={slug} questions={happening.questions} />
+            <Countdown toDate={happening.registrationStart} />
+          </SidebarItem>
+        )}
+
+      {user && happening?.registrationEnd && isAfter(new Date(), happening.registrationEnd) && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>

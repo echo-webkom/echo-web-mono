@@ -7,11 +7,13 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
+import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { type Event } from "@/sanity/event";
+import { norwegianDateString } from "@/utils/date";
 
 type EventSidebarProps = {
   slug: string;
@@ -75,18 +77,6 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
             <AddToCalender date={happening?.date} title={happening?.title} />
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
-      {happening?.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Tid:</SidebarItemTitle>
-          <SidebarItemContent>
-            {happening?.date.toLocaleTimeString("nb-NO", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -167,22 +157,31 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           <SidebarItem>
             <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
             <SidebarItemContent>
-              {happening?.registrationStart.toLocaleDateString("nb-NO")}
+              {norwegianDateString(happening?.registrationStart)}
             </SidebarItemContent>
           </SidebarItem>
         )}
 
-      {user && isRegistrationOpen && isUserComplete && (
+      {isRegistered && (
         <SidebarItem>
-          {isRegistered ? (
-            <DeregisterButton slug={slug} />
-          ) : (
-            <RegisterButton slug={slug} questions={happening.questions} />
-          )}
+          <DeregisterButton slug={slug} />
         </SidebarItem>
       )}
 
-      {user && !isRegistrationOpen && (
+      {!isRegistered &&
+        isUserComplete &&
+        happening?.registrationStart &&
+        isAfter(
+          new Date(),
+          new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
+        ) && (
+          <SidebarItem className="relative">
+            <RegisterButton slug={slug} questions={happening.questions} />
+            <Countdown toDate={happening.registrationStart} />
+          </SidebarItem>
+        )}
+
+      {user && happening?.registrationEnd && isAfter(new Date(), happening.registrationEnd) && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>

@@ -64,26 +64,25 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
     router.refresh();
   });
 
-  const handleOneClickRegister = () => {
-    async () => {
-      setIsLoading(true);
+  const handleOneClickRegister = async () => {
+    setIsLoading(true);
 
-      const { success, message } = await register(slug, { questions: [] });
+    const { success, message } = await register(slug, { questions: [] });
 
-      toast({
-        title: message,
-        variant: success ? "success" : "warning",
-      });
+    toast({
+      title: message,
+      variant: success ? "success" : "warning",
+    });
 
-      setIsLoading(false);
+    setIsLoading(false);
 
-      router.refresh();
-    };
+    router.refresh();
   };
 
   if (questions.length === 0) {
     return (
-      <Button onClick={handleOneClickRegister} disabled={isLoading} fullWidth>
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (
           <>
             <span>
