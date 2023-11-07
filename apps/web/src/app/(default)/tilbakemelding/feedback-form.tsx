@@ -5,8 +5,16 @@ import { useForm } from "react-hook-form";
 
 import { sendFeedback } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
@@ -14,16 +22,17 @@ import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
 export function FeedbackForm() {
   const { toast } = useToast();
 
-  const methods = useForm<FeedbackForm>({
+  const form = useForm<FeedbackForm>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       email: "",
-      message: "",
       name: "",
+      category: undefined,
+      message: "",
     },
   });
 
-  const onSubmit = methods.handleSubmit(
+  const onSubmit = form.handleSubmit(
     async (data) => {
       const { success, message } = await sendFeedback(data);
 
@@ -32,7 +41,7 @@ export function FeedbackForm() {
         variant: success ? "success" : "destructive",
       });
 
-      methods.reset();
+      form.reset();
     },
     (error) => {
       console.error(error);
@@ -40,69 +49,87 @@ export function FeedbackForm() {
   );
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email">E-post</Label>
-          <Input
-            {...methods.register("email")}
-            id="email"
+    <Form {...form}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div className="flex flex-col gap-3">
+          <FormField
+            control={form.control}
             name="email"
-            type="email"
-            placeholder="Din e-post"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="email">E-post</FormLabel>
+                <FormControl>
+                  <Input id="email" placeholder="Din e-post" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {methods.formState.errors.email?.message && (
-            <p className="text-xs italic text-red-500">
-              {methods.formState.errors.email?.message.toString()}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name">Navn</Label>
-          <Input
-            {...methods.register("name")}
-            id="name"
+          <FormField
+            control={form.control}
             name="name"
-            type="text"
-            placeholder="Ditt navn"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="name">Navn</FormLabel>
+                <FormControl>
+                  <Input id="name" placeholder="Ditt navn" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {methods.formState.errors.name?.message && (
-            <p className="text-xs italic text-red-500">
-              {methods.formState.errors.name?.message.toString()}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="message" required>
-            Tilbakemelding
-          </Label>
-          <Textarea
-            {...methods.register("message")}
-            id="message"
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel {...form} htmlFor="category" required>
+                  Kategori
+                </FormLabel>
+                <FormControl>
+                  <Select id="category" {...field}>
+                    <option hidden>Velg en kategori</option>
+                    <option value="bug">Bug</option>
+                    <option value="feature">Funksjonalitet</option>
+                    <option value="login">Innlogging</option>
+                    <option value="other">Annet</option>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="message"
-            placeholder="Din tilbakemelding"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="message" required>
+                  Tilbakemelding
+                </FormLabel>
+                <FormControl>
+                  <Textarea id="message" placeholder="Din tilbakemelding" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {methods.formState.errors.message?.message && (
-            <p className="text-xs italic text-red-500">
-              {methods.formState.errors.message?.message.toString()}
-            </p>
-          )}
         </div>
-      </div>
 
-      <div>
-        <small>
-          Feltene for navn og e-post er ikke påkrevd, men fylles ut dersom du tillater at vi
-          kontakter deg om tilbakemeldingen.
-        </small>
-      </div>
+        <div>
+          <small>
+            Feltene for navn og e-post er ikke påkrevd, men fylles ut dersom du tillater at vi
+            kontakter deg om tilbakemeldingen.
+          </small>
+        </div>
 
-      <div>
-        <Button className="w-full sm:w-auto" type="submit">
-          Send
-        </Button>
-      </div>
-    </form>
+        <div>
+          <Button className="w-full sm:w-auto" type="submit">
+            Send
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

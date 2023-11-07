@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test("test", async ({ page }) => {
+test("sending feedback", async ({ page }) => {
   await page.goto("/tilbakemelding");
+
+  await page.getByLabel("Kategori*").selectOption("bug");
 
   await page.getByPlaceholder("Din tilbakemelding").click();
   await page.getByPlaceholder("Din tilbakemelding").fill("Hello world!");

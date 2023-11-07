@@ -15,9 +15,7 @@ import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { UserForm } from "@/components/user-form";
-import { isValidVerified } from "@/lib/is-valid-verified";
 import { getUserRegistrations } from "@/lib/queries/user";
-import { VerifyButton } from "./verify-button";
 
 export default async function ProfilePage() {
   const user = await getAuth();
@@ -69,11 +67,6 @@ export default async function ProfilePage() {
             </div>
           </div>
         )}
-      </div>
-
-      <div className="flex items-center justify-between border p-2">
-        <h2 className="text-lg font-semibold">Verifiser din UiB-bruker</h2>
-        <VerifyButton verified={isValidVerified(user.verifiedAt)} />
       </div>
 
       <UserForm

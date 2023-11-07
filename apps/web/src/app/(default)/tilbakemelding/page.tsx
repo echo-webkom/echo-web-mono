@@ -7,7 +7,7 @@ export default function FeedbackPage() {
   return (
     <Container className="py-24">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-        <div className="flex flex-col gap-4 md:sticky md:top-0">
+        <div className="space-y-2">
           <Heading className="font-medium">Send inn tilbakemelding</Heading>
           <Text>
             Din tilbakemelding betyr mye for oss. Gjerne fortell oss hva du ønsker å se på nettsiden

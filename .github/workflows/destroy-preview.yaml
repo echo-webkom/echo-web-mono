@@ -1,9 +1,9 @@
 name: Destroy preview
 
-on:
-  pull_request:
-    branches: [main]
-    types: [closed]
+# on:
+#   pull_request:
+#     branches: [main]
+#     types: [closed]
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
 
