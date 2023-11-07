@@ -35,7 +35,7 @@ const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
   .link("/users", { label: "Brukere" })
   .build();
 
-const contactUsRoutes = new RouteGroup("", { label: "📞 Kontakt oss" })
+const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
   .link("mailto:echo@uib.no", {
     label: "echo@uib.no",
     isExternal: true,
@@ -54,7 +54,7 @@ const contactUsRoutes = new RouteGroup("", { label: "📞 Kontakt oss" })
   })
   .build();
 
-const followUsRoutes = new RouteGroup("", { label: "💻 Følg oss" })
+const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   .link("https://www.facebook.com/groups/informatikk", {
     label: "Facebook",
     isExternal: true,
