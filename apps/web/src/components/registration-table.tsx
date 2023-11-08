@@ -18,7 +18,7 @@ import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 import { RandomPersonButton } from "./random-person-button";
 import Confetti from 'react-confetti';
-import { getStudentGroups } from "@/lib/queries/student-groups";
+
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -30,8 +30,10 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
 
 export function RegistrationTable({
   registrations,
+  studentGroups,
 }: {
   registrations: Array<RegistrationWithUser>;
+  studentGroups: Array<Group>;
 }) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,44 +58,13 @@ export function RegistrationTable({
       (statusFilter === "avmeldt" && registration.status === "unregistered") ||
       (statusFilter === "fjernet" && registration.status === "removed");
 
-    const matchesGroupFilter =
-      groupFilter === "" ||
-      (groupFilter === "webkom" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Webkom",
-          )) ||
-      (groupFilter === "bedkom" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Bedkom",
-          )) ||
-      (groupFilter === "hyggkom" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Hyggkom",
-          )) ||
-      (groupFilter === "gnist" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Gnist",
-          )) ||
-      (groupFilter === "programmerbar" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Programmerbar",
-        )) ||
-      (groupFilter === "hovedstyret" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Hovedstyret",
-        )) ||
-      (groupFilter === "makerspace" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Makerspace",
-        )) ||
-      (groupFilter === "tilde" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Tilde",
-          )) ||
-      (groupFilter === "esc" &&
-        registration.user.memberships.some(
-          (membership) => membership.group?.name === "Esc"));
-
+      const matchesGroupFilter = groupFilter === "" ||
+      studentGroups.some((group) => {
+        return groupFilter === group.name.toLowerCase() &&
+          registration.user.memberships.some(
+            (membership) => membership.group?.name.toLowerCase() === group.name.toLowerCase()
+          );
+      });
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });
 
@@ -105,15 +76,13 @@ export function RegistrationTable({
     setGroupFilter("");
   };
 
-  //const groups = await getStudentGroups();
-
   return (
     <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
 
       <div className="relative overflow-x-auto pt-2">
         <div className="flex w-full gap-5 p-4 pt-0">
           <div className="flex flex-col">
-            <Label className="px-2">Søk:</Label>
+            <span className="px-2">Søk:</span>
             <input
               className="sm:rounded-lg"
               type="text"
@@ -123,7 +92,7 @@ export function RegistrationTable({
             />
           </div>
           <div className="flex flex-col">
-            <Label className="px-2">Trinn:</Label>
+            <span className="px-2">Trinn:</span>
             <select
               className="sm:rounded-lg"
               value={yearFilter}
@@ -138,7 +107,7 @@ export function RegistrationTable({
             </select>
           </div>
           <div className="flex flex-col">
-            <Label className="px-2">Status:</Label>
+            <span className="px-2">Status:</span>
             <select
               className="sm:rounded-lg"
               value={statusFilter}
@@ -153,7 +122,7 @@ export function RegistrationTable({
           </div>
 
           <div className="flex flex-col">
-            <Label className="px-2">Undergruppe:</Label>
+            <span className="px-2">Undergruppe:</span>
 
 
             <select
@@ -162,18 +131,9 @@ export function RegistrationTable({
               onChange={(e) => setGroupFilter(e.target.value)}
             >
               <option value="">Alle</option>
-
-
-
-              <option value="gnist">Gnist</option>
-              <option value="programmerbar">Programmerbar</option>
-              <option value="bedkom">Bedkom</option>
-              <option value="hyggkom">Hyggkom</option>
-              <option value="webkom">Webkom</option>
-              <option value="hovedstyret">Hovedstyret</option>
-              <option value="makerspace">Makerspace</option>
-              <option value="tilde">Tilde</option>
-              <option value="esc">Esc</option>
+              {studentGroups.map((group) => (
+                <option value={group.id}>{group.name}</option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col justify-end">
@@ -185,9 +145,9 @@ export function RegistrationTable({
       </div>
         </div>
         <div className="flex flex-row justify-between px-5 pb-2">
-          <Label>Antall resultater: {filteredRegistrations.length}</Label>
+          <span>Antall resultater: {filteredRegistrations.length}</span>
           <div className="flex gap-2">
-            <Label>Vis nummer</Label>
+            <span>Vis nummer</span>
             <input
               type="checkbox"
               className="form-checkbox h-5 w-5 text-primary"

@@ -6,7 +6,7 @@ import { isAfter, isBefore } from "date-fns";
 
 import { Happening } from "@echo-webkom/db/schemas";
 
-import { Heading } from "@/components/ui/heading";
+
 import { maxCapacityBySlug } from "@/lib/queries/happening";
 import { fetchBedpresBySlug, type Bedpres } from "@/sanity/bedpres";
 import { fetchEventBySlug, type Event } from "@/sanity/event";
@@ -65,9 +65,9 @@ async function EventInfoBox({ event }: { event: Event }) {
   return (
     <div className="flex h-full items-center rounded-xl border gap-5 p-5 bg-card overflow-x-auto sm:rounded-lg">
       <div className="overflow-x-hidden">
-        <Heading className="line-clamp-1 text-lg font-semibold md:text-2xl">
+        <h1 className="line-clamp-1 text-lg font-semibold md:text-2xl">
           {capitalize(event.title)}
-        </Heading>
+        </h1>
         <p className="text-sm md:text-base">Arrangement</p>
 
         <div className="py-4">
@@ -121,9 +121,9 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
           </div>
         )}
 
-        <Heading className="line-clamp-1 text-lg font-semibold md:text-2xl">
+        <h1 className="line-clamp-1 text-lg font-semibold md:text-2xl">
           {capitalize(bedpres!.title)}
-        </Heading>
+        </h1>
 
         <Link href={bedpres.company.website} className="hover:underline">
           Bedriftspresentasjon {bedpres.company.name}
