@@ -61,12 +61,10 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
-
   const userGroups = user ? await getUserStudentGroups(user.id) : [];
 
   const isHost =
     userGroups.some((group) => event.organizers.some((organizer) => group.groupId===organizer.slug) ) || user?.type === "admin";
-
 
   const isUserComplete = user?.degreeId && user.year;
 
