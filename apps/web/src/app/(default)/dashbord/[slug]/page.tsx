@@ -9,6 +9,7 @@ import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getHappeningBySlug } from "@/lib/queries/happening";
+import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {
@@ -49,6 +50,8 @@ export default async function EventDashboard({ params }: Props) {
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
 
+  const groups = await getStudentGroups();
+
   return (
     <Container className="flex flex-col gap-10">
       <div className="m-2">
@@ -87,7 +90,7 @@ export default async function EventDashboard({ params }: Props) {
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable registrations={registrations} />
+          <RegistrationTable registrations={registrations} studentGroups={groups}/>
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">
