@@ -24,8 +24,8 @@ importers:
         specifier: 0.5.6
         version: 0.5.6(@ianvs/prettier-plugin-sort-imports@4.1.1)(prettier-plugin-organize-imports@3.2.3)(prettier@3.0.3)
       start-server-and-test:
-        specifier: ^2.0.1
-        version: 2.0.1
+        specifier: ^2.0.2
+        version: 2.0.2
       turbo:
         specifier: 1.10.16
         version: 1.10.16
@@ -9530,8 +9530,8 @@ packages:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: false
 
-  /joi@17.9.2:
-    resolution: {integrity: sha512-Itk/r+V4Dx0V3c7RLFdRh12IOjySm2/WGPMubBT92cQvRfYZhPM2W0hZlctjj72iES8jsRCwp7S/cRmWBnJ4nw==}
+  /joi@17.11.0:
+    resolution: {integrity: sha512-NgB+lZLNoqISVy1rZocE9PZI36bL/77ie924Ri43yEvi9GUUMPeyVIr8KdFTMUlby1p0PBYMk9spIxEUQYqrJQ==}
     dependencies:
       '@hapi/hoek': 9.3.0
       '@hapi/topo': 5.1.0
@@ -13750,8 +13750,8 @@ packages:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
     dev: true
 
-  /start-server-and-test@2.0.1:
-    resolution: {integrity: sha512-8PFo4DLLLCDMuS51/BEEtE1m9CAXw1LNVtZSS1PzkYQh6Qf9JUwM4huYeSoUumaaoAyuwYBwCa9OsrcpMqcOdQ==}
+  /start-server-and-test@2.0.2:
+    resolution: {integrity: sha512-4sGS2QmETUwqeBUqtTLP7OqXp3PdDnevaWlPlrFQgn8+7uCgVg4Do7/H/ZhAAVyvnL3DqKyANhnLgcgxrjhrMA==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
@@ -13762,7 +13762,7 @@ packages:
       execa: 5.1.1
       lazy-ass: 1.6.0
       ps-tree: 1.2.0
-      wait-on: 7.0.1(debug@4.3.4)
+      wait-on: 7.1.0(debug@4.3.4)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -15072,13 +15072,13 @@ packages:
       xml-name-validator: 4.0.0
     dev: false
 
-  /wait-on@7.0.1(debug@4.3.4):
-    resolution: {integrity: sha512-9AnJE9qTjRQOlTZIldAaf/da2eW0eSRSgcqq85mXQja/DW3MriHxkpODDSUEg+Gri/rKEcXUZHe+cevvYItaog==}
+  /wait-on@7.1.0(debug@4.3.4):
+    resolution: {integrity: sha512-U7TF/OYYzAg+OoiT/B8opvN48UHt0QYMi4aD3PjRFpybQ+o6czQF8Ig3SKCCMJdxpBrCalIJ4O00FBof27Fu9Q==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
       axios: 0.27.2(debug@4.3.4)
-      joi: 17.9.2
+      joi: 17.11.0
       lodash: 4.17.21
       minimist: 1.2.8
       rxjs: 7.8.1
