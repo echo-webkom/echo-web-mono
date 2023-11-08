@@ -65,7 +65,6 @@ export default async function EventDashboard({ params }: Props) {
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
-
           <p className="text-7xl">{registered.length}</p>
         </div>
 
