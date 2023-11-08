@@ -224,7 +224,6 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {/* TODO CHECK IF USER IS ADMIN OR ORGANIZER */}
       {user && isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
