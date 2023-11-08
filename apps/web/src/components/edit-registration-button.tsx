@@ -51,28 +51,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
 
     await updateRegistration(slug, registration.user.id, {
       status: selectedStatus,
-      reason: data.reason || "",
-    });
-
-    setIsLoading(false);
-
-    toast({
-      title: "Påmeldingen er endret",
-      description: "Påmeldingen er endret.",
-      variant: "success",
-    });
-
-    router.refresh();
-    form.reset();
-    setIsOpen(false);
-  });
-
-
-  const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-
-    await updateRegistration(slug, registration.user.id, {
-      status: selectedStatus,
       reason: data.reason ?? "",
     });
 
