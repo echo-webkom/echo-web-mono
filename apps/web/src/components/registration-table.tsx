@@ -10,7 +10,6 @@ import {
 } from "@echo-webkom/db/schemas";
 import { registrationStatusToString } from "@echo-webkom/lib";
 
-
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
@@ -120,7 +119,6 @@ export function RegistrationTable({
 
           <div className="flex flex-col">
             <span className="px-2">Undergruppe:</span>
-
 
             <select
               className="sm:rounded-lg"
