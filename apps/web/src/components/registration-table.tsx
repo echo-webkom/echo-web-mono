@@ -28,7 +28,7 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   };
 };
 
-export async function RegistrationTable({
+export function RegistrationTable({
   registrations,
 }: {
   registrations: Array<RegistrationWithUser>;
@@ -105,7 +105,7 @@ export async function RegistrationTable({
     setGroupFilter("");
   };
 
-  const groups = await getStudentGroups();
+  //const groups = await getStudentGroups();
 
   return (
     <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
@@ -162,13 +162,18 @@ export async function RegistrationTable({
               onChange={(e) => setGroupFilter(e.target.value)}
             >
               <option value="">Alle</option>
-              <>              {groups.map((group) => (
-                <option key={group.id} value={group.name}>
-                  {group.name}
-                </option>
-              ))
-              }
-              </>
+
+
+
+              <option value="gnist">Gnist</option>
+              <option value="programmerbar">Programmerbar</option>
+              <option value="bedkom">Bedkom</option>
+              <option value="hyggkom">Hyggkom</option>
+              <option value="webkom">Webkom</option>
+              <option value="hovedstyret">Hovedstyret</option>
+              <option value="makerspace">Makerspace</option>
+              <option value="tilde">Tilde</option>
+              <option value="esc">Esc</option>
             </select>
           </div>
           <div className="flex flex-col justify-end">
