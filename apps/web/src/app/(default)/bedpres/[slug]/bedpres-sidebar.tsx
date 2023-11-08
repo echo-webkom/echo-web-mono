@@ -258,6 +258,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
           </Callout>
         </SidebarItem>
       )}
+
       {user && isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>

@@ -223,6 +223,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           </Callout>
         </SidebarItem>
       )}
+
       {user && isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
