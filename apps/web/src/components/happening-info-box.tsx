@@ -4,13 +4,11 @@ import { notFound } from "next/navigation";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { isAfter, isBefore } from "date-fns";
 
-import { Happening } from "@echo-webkom/db/schemas";
-
+import { type Happening } from "@echo-webkom/db/schemas";
 
 import { maxCapacityBySlug } from "@/lib/queries/happening";
 import { fetchBedpresBySlug, type Bedpres } from "@/sanity/bedpres";
 import { fetchEventBySlug, type Event } from "@/sanity/event";
-import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
 import { norwegianDateString } from "@/utils/date";
@@ -122,7 +120,7 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
         )}
 
         <h1 className="line-clamp-1 text-lg font-semibold md:text-2xl">
-          {capitalize(bedpres!.title)}
+          {capitalize(bedpres.title)}
         </h1>
 
         <Link href={bedpres.company.website} className="hover:underline">
