@@ -1,6 +1,6 @@
 "use server"
 
-import { and, asc, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";

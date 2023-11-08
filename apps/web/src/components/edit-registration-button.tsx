@@ -6,10 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { Registration, RegistrationStatus, User } from "@echo-webkom/db/schemas";
+import { type RegistrationStatus} from "@echo-webkom/db/schemas";
 
 import { updateRegistration } from "@/actions/update-registration";
-import { RegistrationWithUser } from "@/components/registration-table";
+import { type RegistrationWithUser } from "@/components/registration-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -51,7 +51,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
 
     await updateRegistration(slug, registration.user.id, {
       status: selectedStatus,
-      reason: data.reason || "",
+      reason: data.reason ?? "",
     });
 
     setIsLoading(false);
@@ -67,16 +67,6 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
     setIsOpen(false);
   });
 
-  const [formValues, setFormValues] = useState(form);
-
-  const resetState = () => {
-    setFormValues(form);
-    setSelectedStatus(registration.status);
-    setIsOpen(false);
-
-    form.reset();
-  };
-
   const [selectedStatus, setSelectedStatus] = useState(registration.status);
 
   const handleStatusChange = (status: RegistrationStatus) => {
@@ -88,7 +78,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
       open={isOpen}
       onOpenChange={(newIsOpen) => {
         if (!newIsOpen) {
-          resetState();
+          form.reset();
         }
       }}
     >
@@ -105,7 +95,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
             gjør endringen og hvem du er.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={() => onSubmit}>
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
@@ -115,9 +105,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               <div className="flex flex-col gap-2">
                 <Label>E-Post:</Label>
                 <Label>
-                  {registration.user.alternativeEmail == null
-                    ? registration.user.email
-                    : registration.user.alternativeEmail}
+                  {registration.user.alternativeEmail ?? registration.user.email}
                 </Label>
               </div>
             </div>
@@ -127,7 +115,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               <Label></Label>
             </div>
             <div className="grid w-full grid-cols-4 gap-1">
-              <div
+              <button
                 className={`rounded-lg border px-2 py-4 text-center text-xs
                   ${
                     selectedStatus === "registered"
@@ -137,9 +125,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                   `}
                 onClick={() => handleStatusChange("registered")}
               >
-                <p>Påmeldt</p>
-              </div>
-              <div
+                Påmeldt
+              </button>
+              <button
                 className={`rounded-lg border px-2 py-4 text-center text-xs
                   ${
                     selectedStatus === "waiting"
@@ -149,9 +137,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                   `}
                 onClick={() => handleStatusChange("waiting")}
               >
-                <p>Venteliste</p>
-              </div>
-              <div
+                Venteliste
+              </button>
+              <button
                 className={`rounded-lg border px-2 py-4 text-center text-xs
                   ${
                     selectedStatus === "unregistered"
@@ -161,9 +149,9 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                 `}
                 onClick={() => handleStatusChange("unregistered")}
               >
-                <p>Avmeldt</p>
-              </div>
-              <div
+                Avmeldt
+              </button>
+              <button
                 className={`rounded-lg border px-2 py-4 text-center text-xs
                   ${
                     selectedStatus === "removed"
@@ -173,8 +161,8 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
                 `}
                 onClick={() => handleStatusChange("removed")}
               >
-                <p>Fjernet</p>
-              </div>
+                Fjernet
+              </button>
             </div>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-3">
@@ -223,7 +211,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               variant="secondary"
               onClick={() => {
                 setIsOpen(false);
-                resetState();
+                form.reset();
               }}
             >
               Avbryt

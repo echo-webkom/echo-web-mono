@@ -6,8 +6,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/ui/button";
+
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getHappeningBySlug } from "@/lib/queries/happening";
