@@ -9,14 +9,14 @@ export const answers = pgTable(
   {
     questionId: varchar("question_id", { length: 21 }).notNull(),
     userId: text("user_id").notNull(),
-    happeningSlug: text("happening_slug").notNull(),
+    happeningId: text("happening_id").notNull(),
     answer: text("answer"),
   },
   (table) => ({
     pk: primaryKey(table.questionId),
     fk: foreignKey({
-      columns: [table.happeningSlug, table.userId],
-      foreignColumns: [registrations.happeningSlug, registrations.userId],
+      columns: [table.happeningId, table.userId],
+      foreignColumns: [registrations.happeningId, registrations.userId],
     }),
   }),
 );
@@ -27,12 +27,12 @@ export const answersRelations = relations(answers, ({ one }) => ({
     references: [questions.id],
   }),
   registration: one(registrations, {
-    fields: [answers.happeningSlug, answers.userId],
-    references: [registrations.happeningSlug, registrations.userId],
+    fields: [answers.happeningId, answers.userId],
+    references: [registrations.happeningId, registrations.userId],
   }),
   happening: one(happenings, {
-    fields: [answers.happeningSlug],
-    references: [happenings.slug],
+    fields: [answers.happeningId],
+    references: [happenings.id],
   }),
   user: one(users, {
     fields: [answers.userId],

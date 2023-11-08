@@ -26,6 +26,7 @@ export const GET = withBasicAuth(async () => {
     .insert(happenings)
     .values(
       formattedHappenings.map((h) => ({
+        id: h.slug,
         slug: h.slug,
         title: h.title,
         type: h._type,

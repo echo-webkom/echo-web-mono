@@ -20,9 +20,9 @@ export const questions = pgTable(
     required: boolean("required").notNull().default(false),
     type: questionTypeEnum("type").notNull().default("text"),
     options: json("options").$type<Array<Option>>(),
-    happeningSlug: text("happening_slug")
+    happeningId: text("happening_id")
       .notNull()
-      .references(() => happenings.slug),
+      .references(() => happenings.id),
   },
   (q) => ({
     pk: primaryKey(q.id),
@@ -31,8 +31,8 @@ export const questions = pgTable(
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({
   happening: one(happenings, {
-    fields: [questions.happeningSlug],
-    references: [happenings.slug],
+    fields: [questions.happeningId],
+    references: [happenings.id],
   }),
   answers: many(answers),
 }));

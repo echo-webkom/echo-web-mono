@@ -10,9 +10,9 @@ export const spotRanges = pgTable("spot_range", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  happeningSlug: varchar("happening_slug", { length: 255 })
+  happeningId: varchar("happening_id", { length: 36 })
     .notNull()
-    .references(() => happenings.slug),
+    .references(() => happenings.id),
   spots: integer("spots").notNull(),
   minYear: integer("min_year").notNull(),
   maxYear: integer("max_year").notNull(),
@@ -20,8 +20,8 @@ export const spotRanges = pgTable("spot_range", {
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
   event: one(happenings, {
-    fields: [spotRanges.happeningSlug],
-    references: [happenings.slug],
+    fields: [spotRanges.happeningId],
+    references: [happenings.id],
   }),
 }));
 
