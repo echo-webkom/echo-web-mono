@@ -8,3 +8,7 @@ export async function getUserStudentGroups(userId: User["id"]) {
     where: (userToGroup) => eq(userToGroup.userId, userId)
   });
 }
+
+export async function getStudentGroups() {
+  return (await db.query.groups.findMany());
+}

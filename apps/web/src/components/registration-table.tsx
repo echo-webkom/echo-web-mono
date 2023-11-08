@@ -12,11 +12,13 @@ import {
 } from "@echo-webkom/db/schemas";
 import { registrationStatusToString } from "@echo-webkom/lib";
 
+
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 import { RandomPersonButton } from "./random-person-button";
 import Confetti from 'react-confetti';
+import { getStudentGroups } from "@/lib/queries/student-groups";
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -26,7 +28,7 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   };
 };
 
-export function RegistrationTable({
+export async function RegistrationTable({
   registrations,
 }: {
   registrations: Array<RegistrationWithUser>;
@@ -103,6 +105,8 @@ export function RegistrationTable({
     setGroupFilter("");
   };
 
+  const groups = await getStudentGroups();
+
   return (
     <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
 
@@ -151,21 +155,20 @@ export function RegistrationTable({
           <div className="flex flex-col">
             <Label className="px-2">Undergruppe:</Label>
 
+
             <select
               className="sm:rounded-lg"
               value={groupFilter}
               onChange={(e) => setGroupFilter(e.target.value)}
             >
               <option value="">Alle</option>
-              <option value="gnist">Gnist</option>
-              <option value="programmerbar">Programmerbar</option>
-              <option value="bedkom">Bedkom</option>
-              <option value="hyggkom">Hyggkom</option>
-              <option value="webkom">Webkom</option>
-              <option value="hovedstyret">Hovedstyret</option>
-              <option value="makerspace">Makerspace</option>
-              <option value="tilde">Tilde</option>
-              <option value="esc">Esc</option>
+              <>              {groups.map((group) => (
+                <option key={group.id} value={group.name}>
+                  {group.name}
+                </option>
+              ))
+              }
+              </>
             </select>
           </div>
           <div className="flex flex-col justify-end">
