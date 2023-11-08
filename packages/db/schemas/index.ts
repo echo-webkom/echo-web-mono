@@ -13,3 +13,4 @@ export * from "./spot-ranges";
 export * from "./users-to-groups";
 export * from "./users";
 export * from "./verification-tokens";
+export * from "./shopping-list";

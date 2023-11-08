@@ -1,28 +1,28 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
-export const shoppingList = pgTable("shoppingList", {
-  itemId: integer("item_id").notNull().primaryKey(),
+export const shoppingListItems = pgTable("shopping_list_item", {
+  id: uuid("id").defaultRandom().primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  itemName: text("item_name").notNull(),
-  submitTime: timestamp("timestamp").notNull().defaultNow(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   likes: integer("likes").default(0).notNull(),
 });
 
-export const shoppingListRelations = relations(shoppingList, ({ one }) => ({
+export const shoppingListRelations = relations(shoppingListItems, ({ one }) => ({
   user: one(users, {
-    fields: [shoppingList.userId],
+    fields: [shoppingListItems.userId],
     references: [users.id],
   }),
 }));
 
-export type ShoppingList = (typeof shoppingList)["$inferSelect"];
-export type ShoppingListInsert = (typeof shoppingList)["$inferInsert"];
+export type ShoppingList = (typeof shoppingListItems)["$inferSelect"];
+export type ShoppingListInsert = (typeof shoppingListItems)["$inferInsert"];
 
-export const selectRegistrationSchema = createSelectSchema(shoppingList);
-export const insertRegistrationSchema = createInsertSchema(shoppingList);
+export const selectShoppingListSchema = createSelectSchema(shoppingListItems);
+export const insertShoppingListSchema = createInsertSchema(shoppingListItems);
