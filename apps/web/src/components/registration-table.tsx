@@ -2,10 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Label } from "@radix-ui/react-label";
-
 import {
-  RegistrationStatus,
+  type RegistrationStatus,
   type Group,
   type Registration,
   type User,
@@ -44,8 +42,8 @@ export function RegistrationTable({
 
   const filteredRegistrations = registrations.filter((registration) => {
     const matchesSearchTerm =
-      registration.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      registration.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      registration.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ??
+      registration.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ??
       registration.user.alternativeEmail?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesYearFilter =
@@ -132,7 +130,7 @@ export function RegistrationTable({
             >
               <option value="">Alle</option>
               {studentGroups.map((group) => (
-                <option value={group.id}>{group.name}</option>
+                <option key={group.id}>{group.name}</option>
               ))}
             </select>
           </div>

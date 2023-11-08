@@ -1,4 +1,4 @@
-import { RegistrationWithUser } from "./registration-table";
+import { type RegistrationWithUser } from "./registration-table";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
