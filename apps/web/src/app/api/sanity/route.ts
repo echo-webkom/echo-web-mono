@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-webkom/db/schemas";
@@ -7,6 +7,7 @@ import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-web
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
 import { happeningQuery, type HappeningQueryType } from "./query";
+import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
@@ -101,3 +102,31 @@ export const GET = withBasicAuth(async () => {
     timeInSeconds: totalSeconds,
   });
 });
+
+const sanityPayloadSchema = z.object({
+  _id: z.string(),
+});
+
+export const POST = withBasicAuth(async (req) => {
+  const startTime = new Date().getTime();
+
+  const payload = sanityPayloadSchema.parse(await req.json());
+
+  const res = await client.fetch<HappeningQueryType>(happeningQuery, {
+    id: payload._id,
+  });
+
+  const shouldDelete = res === null ;
+  if (shouldDelete) {
+    await db.delete(happenings).where(eq(happenings.id, payload._id));
+  } else {
+
+    db.
+    
+  }
+
+
+
+
+ 
+})

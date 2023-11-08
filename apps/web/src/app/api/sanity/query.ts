@@ -1,5 +1,6 @@
 export const happeningQuery = `
 *[_type == "event" || _type == "bedpres"
+  && _id == $id
   && !(_id in path('drafts.**'))] {
   _type,
   title,
@@ -19,10 +20,10 @@ export const happeningQuery = `
     type,
     options,
   }
-}
+}[0]
 `;
 
-export type HappeningQueryType = Array<{
+export type HappeningQueryType = {
   _type: "event" | "bedpres";
   title: string;
   slug: string;
@@ -41,4 +42,4 @@ export type HappeningQueryType = Array<{
     type: "text" | "textarea" | "checkbox" | "radio";
     options: Array<string> | null;
   }> | null;
-}>;
+} | null;
