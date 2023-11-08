@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { type RegistrationStatus} from "@echo-webkom/db/schemas";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { updateRegistration } from "@/actions/update-registration";
 import { type RegistrationWithUser } from "@/components/registration-table";
@@ -95,7 +95,12 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
             gjør endringen og hvem du er.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={() => onSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void onSubmit();
+          }}
+        >
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
@@ -104,9 +109,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
               </div>
               <div className="flex flex-col gap-2">
                 <Label>E-Post:</Label>
-                <Label>
-                  {registration.user.alternativeEmail ?? registration.user.email}
-                </Label>
+                <Label>{registration.user.alternativeEmail ?? registration.user.email}</Label>
               </div>
             </div>
             <div className="flex flex-col gap-5"></div>
@@ -117,11 +120,11 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
             <div className="grid w-full grid-cols-4 gap-1">
               <button
                 className={`rounded-lg border px-2 py-4 text-center text-xs
-                  ${
-                    selectedStatus === "registered"
-                      ? "border border-black bg-primary font-bold text-white"
-                      : "hover:bg-secondary"
-                  }
+                ${
+                  selectedStatus === "registered"
+                    ? "border border-black bg-primary font-bold text-white"
+                    : "hover:bg-secondary"
+                }
                   `}
                 onClick={() => handleStatusChange("registered")}
               >
