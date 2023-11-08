@@ -66,13 +66,6 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
   const isHost =
     userGroups.some((group) => event.organizers.some((organizer) => group.groupId===organizer.slug) ) || user?.type === "admin";
 
-
-  const userGroups = user ? await getUserStudentGroups(user.id) : [];
-
-  const isHost =
-    userGroups.some((group) => event.organizers.some((organizer) => group.groupId===organizer.slug) ) || user?.type === "admin";
-
-
   const isUserComplete = user?.degreeId && user.year;
 
   return (
