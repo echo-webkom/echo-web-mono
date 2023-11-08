@@ -59,7 +59,6 @@ export default async function EventDashboard({ params }: Props) {
         <Link href={`/${happeningType}/${happening.slug}`}>
           <span className="p-2">⇐</span>
           <span className="underline">Tilbake</span>
-          {eventInfo.type === "BEDPRES" && " (Bedriftspresentasjon)"}
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">

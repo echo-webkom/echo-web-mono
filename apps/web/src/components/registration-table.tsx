@@ -2,21 +2,20 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Confetti from "react-confetti";
+
 import {
-  type RegistrationStatus,
   type Group,
   type Registration,
+  type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
 import { registrationStatusToString } from "@echo-webkom/lib";
 
-
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
-import { Button } from "./ui/button";
 import { RandomPersonButton } from "./random-person-button";
-import Confetti from 'react-confetti';
-
+import { Button } from "./ui/button";
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -42,9 +41,9 @@ export function RegistrationTable({
 
   const filteredRegistrations = registrations.filter((registration) => {
     const matchesSearchTerm =
-      registration.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ??
-      registration.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ??
-      registration.user.alternativeEmail?.toLowerCase().includes(searchTerm.toLowerCase());
+      (registration.user.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (registration.user.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (registration.user.alternativeEmail ?? "").toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesYearFilter =
       yearFilter === "" || registration.user.year?.toString() === yearFilter;
@@ -56,16 +55,18 @@ export function RegistrationTable({
       (statusFilter === "avmeldt" && registration.status === "unregistered") ||
       (statusFilter === "fjernet" && registration.status === "removed");
 
-      const matchesGroupFilter = groupFilter === "" ||
+    const matchesGroupFilter =
+      groupFilter === "" ||
       studentGroups.some((group) => {
-        return groupFilter === group.name.toLowerCase() &&
+        return (
+          groupFilter.toLowerCase() === group.name.toLowerCase() &&
           registration.user.memberships.some(
-            (membership) => membership.group?.name.toLowerCase() === group.name.toLowerCase()
-          );
+            (membership) => membership.group?.name.toLowerCase() === group.name.toLowerCase(),
+          )
+        );
       });
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });
-
 
   const resetFilters = () => {
     setSearchTerm("");
@@ -76,7 +77,6 @@ export function RegistrationTable({
 
   return (
     <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
-
       <div className="relative overflow-x-auto pt-2">
         <div className="flex w-full gap-5 p-4 pt-0">
           <div className="flex flex-col">
@@ -122,7 +122,6 @@ export function RegistrationTable({
           <div className="flex flex-col">
             <span className="px-2">Undergruppe:</span>
 
-
             <select
               className="sm:rounded-lg"
               value={groupFilter}
@@ -138,9 +137,14 @@ export function RegistrationTable({
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
           <div className="flex flex-col justify-end">
-          {showConfetti && <Confetti width={window.window.innerWidth} height={window.window.innerHeight} />}
-      <RandomPersonButton registrations={registrations} setShowConfetti={setShowConfetti}></RandomPersonButton>
-      </div>
+            {showConfetti && (
+              <Confetti width={window.window.innerWidth} height={window.window.innerHeight} />
+            )}
+            <RandomPersonButton
+              registrations={registrations}
+              setShowConfetti={setShowConfetti}
+            ></RandomPersonButton>
+          </div>
         </div>
         <div className="flex flex-row justify-between px-5 pb-2">
           <span>Antall resultater: {filteredRegistrations.length}</span>
@@ -189,7 +193,12 @@ export function RegistrationTable({
             </thead>
             <tbody>
               {filteredRegistrations.map((registration, i) => (
-                <RegistrationRow key={registration.user.id} registration={registration} index={i} showIndex={showIndex}/>
+                <RegistrationRow
+                  key={registration.user.id}
+                  registration={registration}
+                  index={i}
+                  showIndex={showIndex}
+                />
               ))}
             </tbody>
           </table>
@@ -219,9 +228,7 @@ const RegistrationRow = ({
         "bg-white": index % 2 === 0,
       })}
     >
-      {showIndex && (
-        <td className="px-6 py-4">{index + 1}</td>
-      )}
+      {showIndex && <td className="px-6 py-4">{index + 1}</td>}
       <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
         {registration.user.name}
       </th>
@@ -260,4 +267,3 @@ function getStatusClassColor(status: RegistrationStatus): string {
       return "";
   }
 }
-
