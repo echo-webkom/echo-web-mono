@@ -504,6 +504,9 @@ importers:
       '@types/node':
         specifier: 18.18.9
         version: 18.18.9
+      dotenv-cli:
+        specifier: 7.3.0
+        version: 7.3.0
       eslint:
         specifier: ^8.53.0
         version: 8.53.0

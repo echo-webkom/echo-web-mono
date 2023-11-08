@@ -53,7 +53,13 @@ export const authOptions: AuthOptions = {
       const today = new Date();
       if (whitelistEntry && whitelistEntry.expiresAt > today) {
         return true;
-      };
+      }
+
+      if (process.env.TESTING === "true") {
+        if (profile.email === "kjella@test.feide.no") {
+          return true;
+        }
+      }
 
       return `/auth/logg-inn?error=${result}`;
     },

@@ -30,9 +30,20 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: "pnpm --filter=web start",
-    port: 3000,
-    cwd: "../",
-  },
+  webServer: [
+    {
+      command: "pnpm run start --filter=web",
+      url: "http://localhost:3000",
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+      cwd: "../",
+    },
+    {
+      command: "pnpm run start --filter=docs",
+      url: "http://localhost:3001",
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+      cwd: "../",
+    },
+  ],
 });

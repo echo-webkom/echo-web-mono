@@ -15,6 +15,16 @@
       "persistent": true,
       "cache": false
     },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
+    "test:e2e:ui": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
     "test:unit": {},
     "lint": {},
     "typecheck": {
@@ -42,6 +52,7 @@
     "ADMIN_KEY",
     "NEXT_PUBLIC_SANITY_DATASET",
     "SKIP_ENV_VALIDATION",
+    "TESTING",
     "VERCEL",
     "VERCEL_URL",
     "PORT"
