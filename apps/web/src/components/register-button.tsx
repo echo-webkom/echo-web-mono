@@ -22,13 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
@@ -70,24 +64,25 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
     router.refresh();
   });
 
-  const handleOneClickRegister = () => {
-    async () => {
-      setIsLoading(true);
+  const handleOneClickRegister = async () => {
+    setIsLoading(true);
 
-      const { success, message } = await register(slug, { questions: [] });
+    const { success, message } = await register(slug, { questions: [] });
 
-      toast({
-        title: message,
-        variant: success ? "success" : "warning",
-      });
+    toast({
+      title: message,
+      variant: success ? "success" : "warning",
+    });
 
-      router.refresh();
-    };
+    setIsLoading(false);
+
+    router.refresh();
   };
 
   if (questions.length === 0) {
     return (
-      <Button onClick={handleOneClickRegister} disabled={isLoading} fullWidth>
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (
           <>
             <span>
@@ -154,17 +149,13 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
                     name={`questions.${index}.answer`}
                     control={form.control}
                     render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Velg svar..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {question?.options?.map((option) => (
-                            <SelectItem key={option.id} value={option.value}>
-                              {option.value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
+                      <Select {...field}>
+                        <option hidden>Velg...</option>
+                        {question?.options?.map((option) => (
+                          <option key={option.id} value={option.value}>
+                            {option.value}
+                          </option>
+                        ))}
                       </Select>
                     )}
                   />

@@ -7,10 +7,13 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
+import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
+import { Callout } from "@/components/typography/callout";
 import { type Event } from "@/sanity/event";
+import { norwegianDateString } from "@/utils/date";
 import { getUserStudentGroups } from "@/lib/queries/student-groups";
 import { Button } from "@/components/ui/button";
 
@@ -58,20 +61,28 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
-    const userGroups = user ? await getUserStudentGroups(user.id) : [];
+  const userGroups = user ? await getUserStudentGroups(user.id) : [];
 
   const isHost =
     userGroups.some((group) => event.organizers.some((organizer) => group.groupId===organizer.slug) ) || user?.type === "admin";
 
 
+  const userGroups = user ? await getUserStudentGroups(user.id) : [];
+
+  const isHost =
+    userGroups.some((group) => event.organizers.some((organizer) => group.groupId===organizer.slug) ) || user?.type === "admin";
+
+
+  const isUserComplete = user?.degreeId && user.year;
+
   return (
     <Sidebar>
       {!happening && (
         <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+          <Callout type="warning" noIcon>
             <p className="font-semibold">Fant ikke arrangementet.</p>
             <p>Kontakt Webkom!</p>
-          </div>
+          </Callout>
         </SidebarItem>
       )}
 
@@ -80,18 +91,6 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
             <AddToCalender date={happening?.date} title={happening?.title} />
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
-      {happening?.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Tid:</SidebarItemTitle>
-          <SidebarItemContent>
-            {happening?.date.toLocaleTimeString("nb-NO", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -172,42 +171,67 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           <SidebarItem>
             <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
             <SidebarItemContent>
-              {happening?.registrationStart.toLocaleDateString("nb-NO")}
+              {norwegianDateString(happening?.registrationStart)}
             </SidebarItemContent>
           </SidebarItem>
         )}
 
-      {user && isRegistrationOpen && (
+      {isRegistered && (
         <SidebarItem>
-          {isRegistered ? (
-            <DeregisterButton slug={slug} />
-          ) : (
-            <RegisterButton slug={slug} questions={happening.questions} />
-          )}
+          <DeregisterButton slug={slug} />
         </SidebarItem>
       )}
 
-      {user && !isRegistrationOpen && (
+      {!isRegistered &&
+        isUserComplete &&
+        happening?.registrationStart &&
+        isAfter(
+          new Date(),
+          new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
+        ) && (
+          <SidebarItem className="relative">
+            <RegisterButton slug={slug} questions={happening.questions} />
+            <Countdown toDate={happening.registrationStart} />
+          </SidebarItem>
+        )}
+
+      {user && happening?.registrationEnd && isAfter(new Date(), happening.registrationEnd) && (
+        <SidebarItem>
+          <Callout type="warning" noIcon>
+            <p className="font-semibold">Påmelding er stengt.</p>
+          </Callout>
+        </SidebarItem>
+      )}
+
+      {user && !isUserComplete && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
-            <p className="font-semibold">Påmelding er stengt.</p>
+            <p className="mb-3 font-semibold">Du må fullføre brukeren din.</p>
+            <div className="group flex items-center">
+              <Link href="/auth/profil" className="hover:underline">
+                Her
+                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+              </Link>
+            </div>
           </div>
         </SidebarItem>
       )}
 
       {!user && (
         <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+          <Callout type="warning" noIcon>
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
-            <div className="flex items-center">
+            <div className="group flex items-center">
               <Link href="/auth/logg-inn" className="hover:underline">
                 Logg inn her
+                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
-              <ArrowRightIcon className="ml-2 h-4 w-4" />
             </div>
-          </div>
+          </Callout>
         </SidebarItem>
       )}
+
+      {/* TODO CHECK IF USER IS ADMIN OR ORGANIZER */}
       {user && isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>

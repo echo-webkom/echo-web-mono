@@ -27,8 +27,8 @@ export type HappeningQueryType = Array<{
   title: string;
   slug: string;
   date: string;
-  registrationStart: string;
-  registrationEnd: string;
+  registrationStart: string | null;
+  registrationEnd: string | null;
   groups: Array<string>;
   spotRanges: Array<{
     spots: number;

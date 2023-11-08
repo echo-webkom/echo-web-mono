@@ -8,7 +8,7 @@ import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
 import { happeningQuery, type HappeningQueryType } from "./query";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
@@ -18,8 +18,8 @@ export const GET = withBasicAuth(async () => {
   const formattedHappenings = res.map((h) => ({
     ...h,
     date: new Date(h.date),
-    registrationStart: new Date(h.registrationStart),
-    registrationEnd: new Date(h.registrationEnd),
+    registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
+    registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
   }));
 
   await db

@@ -27,12 +27,19 @@ const happeningTypeToString: Record<HappeningType, string> = {
   BEDPRES: "bedriftspresentasjoner",
 };
 
+const typeToLink: Record<HappeningType, string> = {
+  EVENT: "/for-studenter/arrangementer?type=arrangement",
+  BEDPRES: "/for-studenter/arrangementer?type=bedpres",
+};
+
 export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxProps) {
   return (
     <div>
-      <h2 className="text-center text-xl font-semibold md:text-3xl">
-        {capitalize(happeningTypeToString[type])}
-      </h2>
+      <Link href={typeToLink[type]}>
+        <h2 className="text-center text-xl font-semibold md:text-3xl">
+          {capitalize(happeningTypeToString[type])}
+        </h2>
+      </Link>
 
       <hr className="my-3" />
 

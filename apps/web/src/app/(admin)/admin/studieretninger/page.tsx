@@ -1,7 +1,7 @@
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 
 export default async function AdminDegreePage() {
   const degrees = await db.query.degrees.findMany();

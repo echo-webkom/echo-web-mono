@@ -57,7 +57,7 @@ function URLtoSearchParams(url: ReadonlyURLSearchParams) {
     params.past = false;
   }
 
-  if (!(params.type === "all" || params.type === "event" || params.type === "bedpres")) {
+  if (!(params.type === "all" || params.type === "arrangement" || params.type === "bedpres")) {
     params.type = "all";
   }
 
@@ -73,7 +73,7 @@ function validateParamsToQuery(params: SearchParams) {
     past: params.past ? "true" : undefined,
   };
 
-  if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
+  if (!(query.type === "all" || query.type === "arrangement" || query.type === "bedpres")) {
     query.type = "all";
   }
   if (query.search) {
@@ -206,8 +206,8 @@ export default function EventFilter() {
             Alle
           </Button>
           <Button
-            variant={searchParams.type === "event" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "event" })}
+            variant={searchParams.type === "arrangement" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "arrangement" })}
           >
             Arrangementer
           </Button>

@@ -19,3 +19,11 @@ export const questionTypeEnum = pgEnum("question_type", ["text", "textarea", "ra
 
 export type UserType = (typeof userTypeEnum)["enumValues"][number];
 export const userTypeEnum = pgEnum("user_type", ["student", "company", "admin"]);
+
+export type FeedbackCategory = (typeof feedbackCategoryEnum)["enumValues"][number];
+export const feedbackCategoryEnum = pgEnum("feedback_category", [
+  "bug",
+  "feature",
+  "login",
+  "other",
+]);

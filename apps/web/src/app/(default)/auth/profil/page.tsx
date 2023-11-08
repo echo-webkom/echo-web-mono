@@ -11,6 +11,9 @@ import {
 } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
+import { Chip } from "@/components/typography/chip";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { UserForm } from "@/components/user-form";
 import { getUserRegistrations } from "@/lib/queries/user";
 
@@ -33,39 +36,53 @@ export default async function ProfilePage() {
   ]);
 
   return (
-    <Container className="max-w-2xl gap-10">
-      <div className="flex flex-col gap-3">
-        <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
+    <Container className="max-w-2xl gap-8">
+      <Heading level={2}>Din profil</Heading>
+
+      <div className="flex flex-col gap-2">
         <div>
-          <p className="font-semibold">Navn:</p>
-          <p>{user.name}</p>
+          <Text size="sm" className="font-semibold">
+            Navn
+          </Text>
+          <Text>{user.name}</Text>
         </div>
         <div>
-          <p className="font-semibold">E-post:</p>
-          <p>{user.email}</p>
+          <Text size="sm" className="font-semibold">
+            E-post:
+          </Text>
+          <Text>{user.email}</Text>
         </div>
         {memberships.length > 0 && (
           <div>
-            <p className="font-semibold">Grupper:</p>
-            <p>{memberships.map((membership) => membership.group.name).join(", ")}</p>
+            <Text size="sm" className="mb-2 font-semibold">
+              Grupper:
+            </Text>
+
+            <div className="flex flex-wrap gap-1">
+              {memberships.map(({ group }) => (
+                <Chip key={group.id} className="bg-secondary text-secondary-foreground">
+                  {group.name}
+                </Chip>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
-      <div>
-        <UserForm
-          user={{
-            id: user.id,
-            degree: user.degree ?? undefined,
-            year: user.year ?? undefined,
-            alternativeEmail: user.alternativeEmail ?? undefined,
-          }}
-          degrees={degrees}
-        />
-      </div>
+      <UserForm
+        user={{
+          id: user.id,
+          degree: user.degree ?? undefined,
+          year: user.year ?? undefined,
+          alternativeEmail: user.alternativeEmail ?? undefined,
+        }}
+        degrees={degrees}
+      />
 
       <div>
-        <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>
+        <Heading level={2} className="mb-4">
+          Dine arrangementer
+        </Heading>
         {registrations.length > 0 ? (
           <ul className="flex flex-col divide-y">
             {registrations.map((registration) => (
@@ -82,13 +99,9 @@ export default async function ProfilePage() {
                     {registration.happening.title}
                   </Link>
 
-                  <div className="mt-3 flex items-center gap-3">
-                    <Tag>
-                      <p>{happeningTypeToString[registration.happening.type]}</p>
-                    </Tag>
-                    <Tag>
-                      <p>{registrationStatusToString[registration.status]}</p>
-                    </Tag>
+                  <div className="mt-3 flex gap-1">
+                    <Chip>{happeningTypeToString[registration.happening.type]}</Chip>
+                    <Chip>{registrationStatusToString[registration.status]}</Chip>
                   </div>
                 </div>
               </li>
@@ -100,8 +113,4 @@ export default async function ProfilePage() {
       </div>
     </Container>
   );
-}
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
 }

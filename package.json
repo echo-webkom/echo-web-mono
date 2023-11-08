@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.9.2",
+  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -12,7 +12,7 @@
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "start": "turbo run start",
-    "setup": "pnpm install && pnpm db:up && pnpm db:deploy",
+    "setup": "pnpm install && pnpm db:up && pnpm db:migrate",
     "clean": "rm -rf node_modules",
     "clean-workspaces": "turbo run clean",
     "db:generate": "pnpm --filter=db db:generate",
@@ -35,7 +35,7 @@
     "prettier": "3.0.3",
     "prettier-plugin-organize-imports": "3.2.3",
     "prettier-plugin-tailwindcss": "0.5.6",
-    "start-server-and-test": "^2.0.1",
+    "start-server-and-test": "^2.0.2",
     "turbo": "1.10.16",
     "typescript": "5.2.2"
   }

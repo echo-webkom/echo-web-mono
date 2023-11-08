@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
+import process from "node:process";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
+
+if (process.env.VERCEL_ENV === "preview") {
+  process.exit(0);
+}
 
 const pg = postgres(process.env.DATABASE_URL!, {
   max: 1,

@@ -4,8 +4,8 @@ import { type Metadata } from "next/types";
 
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
+import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
 import { fetchPostsByPage } from "@/sanity/posts";
 
 type Props = {

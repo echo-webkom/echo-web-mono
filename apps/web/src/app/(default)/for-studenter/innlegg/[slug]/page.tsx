@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { isBoard } from "@/lib/is-board";
 import { fetchPostBySlug, fetchPostParams, type Author } from "@/sanity/posts";
 import { urlFor } from "@/utils/image-builder";
@@ -47,14 +47,10 @@ export default async function PostPage({ params }: Props) {
   const post = await getData(params.slug);
 
   return (
-    <Container>
-      <article className="flex flex-col gap-10">
-        <Heading>{post.title}</Heading>
-
-        {post.authors && <Authors authors={post.authors} />}
-
-        <Markdown content={post.body} />
-      </article>
+    <Container className="space-y-4">
+      <Heading>{post.title}</Heading>
+      {post.authors && <Authors authors={post.authors} />}
+      <Markdown content={post.body} />
     </Container>
   );
 }

@@ -8,6 +8,7 @@ import { insertSiteFeedbackSchema, siteFeedback } from "@echo-webkom/db/schemas"
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   email: true,
   name: true,
+  category: true,
   message: true,
 });
 
