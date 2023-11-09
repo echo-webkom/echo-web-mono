@@ -1,16 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { type Group, type Registration, type User } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/ui/button";
+
+import { HappeningInfoBox } from "@/components/happening-info-box";
+import { RegistrationTable } from "@/components/registration-table";
 import { getHappeningBySlug } from "@/lib/queries/happening";
-import { cn } from "@/utils/cn";
+import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {
@@ -42,6 +42,8 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
+  const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
+
   const registered = registrations.filter((registration) => registration.status === "registered");
   const waitlist = registrations.filter((registration) => registration.status === "waiting");
   const unregistered = registrations.filter(
@@ -49,23 +51,25 @@ export default async function EventDashboard({ params }: Props) {
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
 
+  const groups = await getStudentGroups();
+
   return (
     <Container className="flex flex-col gap-10">
-      <Heading>
-        Dashboard:{" "}
-        <Link className="hover:underline" href={"/event/" + slug}>
-          {happening.title}
+      <div className="m-2">
+        <Link href={`/${happeningType}/${happening.slug}`}>
+          <span className="p-2">⇐</span>
+          <span className="underline">Tilbake</span>
         </Link>
-      </Heading>
-
+      </div>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
+
           <p className="text-7xl">{registered.length}</p>
         </div>
 
         <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antatall på venteliste</p>
+          <p>Antall på venteliste</p>
           <p className="text-7xl">{waitlist.length}</p>
         </div>
 
@@ -81,94 +85,25 @@ export default async function EventDashboard({ params }: Props) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold">Registrerte</h2>
-        <RegistrationTable registrations={registrations} />
+        <HappeningInfoBox happening={happening} />
       </div>
+      {registrations.length > 0 ? (
+        <div className="flex flex-col gap-3">
+          <h2 className="text-3xl font-semibold">Registrerte</h2>
+          <RegistrationTable registrations={registrations} studentGroups={groups}/>
+        </div>
+      ) : (
+        <div className="mx-auto flex w-fit flex-col gap-8 p-5">
+          <h3 className="text-center text-xl font-medium">Ingen registrerte!</h3>
+          <Image
+            className="rounded-lg"
+            src="/gif/empty-shelves-john-travolta.gif"
+            alt="Travolta looking around in an empty store"
+            width={600}
+            height={600}
+          />
+        </div>
+      )}
     </Container>
   );
 }
-
-type RegistrationWithUser = Omit<Registration, "userId"> & {
-  user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
-  };
-};
-
-function RegistrationTable({ registrations }: { registrations: Array<RegistrationWithUser> }) {
-  if (registrations.length === 0) {
-    return <p className="text-center md:text-left">Ingen registrerte</p>;
-  }
-
-  return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-left text-sm text-gray-500">
-        <thead className="bg-gray-200 text-xs uppercase">
-          <tr>
-            <th scope="col" className="px-6 py-4 text-left">
-              Navn
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              E-post
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Grunn
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Undergrupper
-            </th>
-            <th scope="col" className="px-6 py-4 text-left">
-              Handling
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {registrations.map((registration, i) => (
-            <RegistrationRow key={registration.user.id} registration={registration} index={i} />
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-const RegistrationRow = ({
-  registration,
-  index,
-}: {
-  registration: RegistrationWithUser;
-  index: number;
-}) => {
-  const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
-
-  return (
-    <tr
-      key={registration.user.id}
-      className={cn("border-b", {
-        "bg-white": index % 2 === 0,
-      })}
-    >
-      <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
-        {registration.user.name}
-      </th>
-      <td className="px-6 py-4">
-        <Link className="hover:underline" href={"mailto:" + email}>
-          {email}
-        </Link>
-      </td>
-      <td className="px-6 py-4">{registrationStatusToString[registration.status]}</td>
-      <td className="px-6 py-4">{registration.unregisterReason}</td>
-      <td className="px-6 py-4">
-        {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
-        {registration.user.memberships.length === 0 && "Ingen"}
-      </td>
-      <td className="px-6 py-4">
-        <Button>Endre</Button>
-      </td>
-    </tr>
-  );
-};

@@ -16,7 +16,6 @@ export async function Content() {
     fetchPosts(4),
     fetchAvailableJobAds(4),
   ]);
-
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
       {/* Events  */}

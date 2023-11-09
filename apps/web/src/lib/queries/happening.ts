@@ -11,3 +11,28 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
     },
   });
 }
+
+export async function atMaxCapacity(slug: string) {
+  const max = await maxCapacityBySlug(slug);
+  const registrations = await db.query.registrations.findMany({
+    where: (registration) => eq(registration.happeningSlug, slug),
+    with: {
+      happening: true,
+    }
+  })
+  return registrations.length >= max;
+  }
+
+export async function maxCapacityBySlug(slug?: string) {
+  if (!slug) {
+    throw new Error("Must provide slug");
+  }
+  return (
+    await db.query.spotRanges.findMany({
+      where: (spotRange) => eq(spotRange.happeningSlug, slug),
+      with: {
+        event: true,
+      },
+    })
+  ).reduce((acc, curr) => acc + curr.spots, 0);
+}

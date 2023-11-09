@@ -18,6 +18,10 @@ export default async function EventDashboardLayout({ children, params }: Props) 
     return redirect("/api/auth/signin");
   }
 
+  if (user.type !== "admin") {
+    return redirect("/auth/logg-inn");
+  }
+
   const event = await getHappeningBySlug(params.slug);
 
   if (!event) {

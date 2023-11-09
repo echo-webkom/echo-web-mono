@@ -14,6 +14,8 @@ import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/co
 import { Callout } from "@/components/typography/callout";
 import { type Event } from "@/sanity/event";
 import { norwegianDateString } from "@/utils/date";
+import { getUserStudentGroups } from "@/lib/queries/student-groups";
+import { Button } from "@/components/ui/button";
 
 type EventSidebarProps = {
   slug: string;
@@ -58,6 +60,11 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     happening?.registrationEnd &&
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
+
+  const userGroups = user ? await getUserStudentGroups(user.id) : [];
+
+  const isHost =
+    userGroups.some((group) => event.organizers.some((organizer) => group.groupId === organizer.slug)) || user?.type === "admin";
 
   const isUserComplete = user?.degreeId && user.year;
 
@@ -217,7 +224,13 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {/* TODO CHECK IF USER IS ADMIN OR ORGANIZER */}
+      {user && isHost && (
+        <SidebarItem>
+          <Button variant="link" className="w-full" asChild>
+            <Link href={`/dashbord/${slug}`}>Admin dashbord</Link>
+          </Button>
+        </SidebarItem>
+      )}
     </Sidebar>
   );
 }
