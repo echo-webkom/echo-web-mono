@@ -31,6 +31,6 @@ test("login as non-member", async ({ page }) => {
 
   await page.getByRole("button", { name: "Log in" }).click();
 
-  await page.waitForURL("**/auth/logg-inn**");
+  await page.waitForURL("/auth/logg-inn**");
   await expect(page.getByText("Grunn: NOT_MEMBER_OF_ECHO")).toBeVisible();
 });
