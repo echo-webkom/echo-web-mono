@@ -1,14 +1,6 @@
 /* eslint-disable no-console */
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
-import { degrees, groups } from "../schemas";
-
-const pg = postgres(process.env.DATABASE_URL!, {
-  max: 1,
-});
-
-const db = drizzle(pg);
+import { db } from "..";
+import { accounts, degrees, groups, sessions, users } from "../schemas";
 
 async function seed() {
   await db.insert(degrees).values([
@@ -97,6 +89,26 @@ async function seed() {
       name: "Bryggelaget",
     },
   ]);
+
+  await db.insert(users).values({
+    id: "admin",
+    name: "Admin",
+    email: "admin@echo.uib.no",
+    type: "admin",
+  });
+
+  await db.insert(accounts).values({
+    userId: "admin",
+    type: "oauth",
+    provider: "test",
+    providerAccountId: "test",
+  });
+
+  await db.insert(sessions).values({
+    sessionToken: "admin",
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    userId: "admin",
+  });
 }
 
 console.log("🌱 Starting seeding...");
@@ -109,7 +121,4 @@ void seed()
   .catch((e) => {
     console.error("🚨 Seeding failed with error:", e);
     process.exit(1);
-  })
-  .finally(() => {
-    void pg.end();
   });

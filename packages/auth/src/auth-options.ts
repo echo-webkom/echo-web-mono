@@ -65,17 +65,6 @@ export const authOptions: AuthOptions = {
     },
   },
 
-  events: {
-    signIn({ user }) {
-      // eslint-disable-next-line no-console
-      console.log(`${user.name} logget inn`);
-    },
-    signOut({ session }) {
-      // eslint-disable-next-line no-console
-      console.log(`${session.user.name} logget ut`);
-    },
-  },
-
   providers: [
     Feide({
       clientId: process.env.FEIDE_CLIENT_ID,
