@@ -364,8 +364,8 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.4)
       nanoid:
-        specifier: ^5.0.2
-        version: 5.0.2
+        specifier: ^5.0.3
+        version: 5.0.3
       next-auth:
         specifier: ^4.24.4
         version: 4.24.4(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
@@ -11084,8 +11084,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  /nanoid@5.0.2:
-    resolution: {integrity: sha512-2ustYUX1R2rL/Br5B/FMhi8d5/QzvkJ912rBYxskcpu0myTHzSZfTr1LAS2Sm7jxRUObRrSBFoyzwAhL49aVSg==}
+  /nanoid@5.0.3:
+    resolution: {integrity: sha512-I7X2b22cxA4LIHXPSqbBCEQSL+1wv8TuoefejsX4HFWyC6jc5JG7CEaxOltiKjc1M+YCS2YkrZZcj4+dytw9GA==}
     engines: {node: ^18 || >=20}
     hasBin: true
     dev: false
