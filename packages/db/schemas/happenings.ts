@@ -7,7 +7,7 @@ import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRa
 export const happenings = pgTable(
   "happening",
   {
-    id: varchar("id", { length: 36 }).notNull().unique(),
+    id: varchar("id", { length: 36 }).notNull(),
     slug: varchar("slug", { length: 255 }).notNull(),
     title: varchar("title", { length: 255 }).notNull(),
     type: happeningTypeEnum("type").notNull().default("event"),
@@ -19,10 +19,6 @@ export const happenings = pgTable(
     pk: primaryKey(e.id),
     typeIdx: index("type_idx").on(e.type),
     slugIdx: uniqueIndex("slug_idx").on(e.slug),
-    // checkRegistration: check(
-    //   "registration_end_after_start",
-    //   gte(e.registrationEnd, e.registrationStart),
-    // ),
   }),
 );
 

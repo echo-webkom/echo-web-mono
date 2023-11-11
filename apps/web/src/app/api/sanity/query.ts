@@ -1,7 +1,10 @@
-export const happeningQuery = `
+import { groq } from "next-sanity";
+
+export const happeningQuery = groq`
 *[_type == "event" || _type == "bedpres"
   && _id == $id
   && !(_id in path('drafts.**'))] {
+  _id,
   _type,
   title,
   "slug": slug.current,
@@ -23,7 +26,8 @@ export const happeningQuery = `
 }[0]
 `;
 
-export type HappeningQueryType = {
+export type SanityHappening = {
+  _id: string;
   _type: "event" | "bedpres";
   title: string;
   slug: string;
@@ -42,4 +46,6 @@ export type HappeningQueryType = {
     type: "text" | "textarea" | "checkbox" | "radio";
     options: Array<string> | null;
   }> | null;
-} | null;
+};
+
+export type HappeningQueryType = SanityHappening | null;

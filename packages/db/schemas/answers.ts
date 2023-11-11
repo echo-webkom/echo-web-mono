@@ -9,7 +9,11 @@ export const answers = pgTable(
   {
     questionId: varchar("question_id", { length: 21 }).notNull(),
     userId: text("user_id").notNull(),
-    happeningId: text("happening_id").notNull(),
+    happeningId: text("happening_id")
+      .notNull()
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
     answer: text("answer"),
   },
   (table) => ({

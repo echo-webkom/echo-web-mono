@@ -9,10 +9,14 @@ export const registrations = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
     happeningId: text("happening_id")
       .notNull()
-      .references(() => happenings.id),
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -36,8 +40,8 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
   answers: many(answers),
   spotrange: one(spotRanges, {
     fields: [registrations.spotrangeId],
-    references: [spotRanges.id]
-  })
+    references: [spotRanges.id],
+  }),
 }));
 
 export type Registration = (typeof registrations)["$inferSelect"];

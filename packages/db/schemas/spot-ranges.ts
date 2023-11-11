@@ -12,7 +12,9 @@ export const spotRanges = pgTable("spot_range", {
     .$defaultFn(() => nanoid()),
   happeningId: varchar("happening_id", { length: 36 })
     .notNull()
-    .references(() => happenings.id),
+    .references(() => happenings.id, {
+      onDelete: "cascade",
+    }),
   spots: integer("spots").notNull(),
   minYear: integer("min_year").notNull(),
   maxYear: integer("max_year").notNull(),

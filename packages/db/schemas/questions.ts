@@ -22,7 +22,9 @@ export const questions = pgTable(
     options: json("options").$type<Array<Option>>(),
     happeningId: text("happening_id")
       .notNull()
-      .references(() => happenings.id),
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
   },
   (q) => ({
     pk: primaryKey(q.id),
