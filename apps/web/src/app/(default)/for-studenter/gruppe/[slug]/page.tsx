@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
@@ -18,9 +19,9 @@ type Props = {
   };
 };
 
-async function getData(slug: string) {
+const getData = cache(async (slug: string) => {
   return await fetchStudentGroupBySlug(slug);
-}
+});
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = params;

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { type Metadata } from "next/types";
@@ -18,7 +19,7 @@ export const metadata = {
   title: "Innlegg",
 } satisfies Metadata;
 
-async function getData(page: number) {
+const getData = cache(async (page: number) => {
   const resp = await fetchPostsByPage(page, 6);
 
   if (resp.posts.length === 0) {
@@ -26,7 +27,7 @@ async function getData(page: number) {
   }
 
   return resp;
-}
+});
 
 export default async function PostsOverviewPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;

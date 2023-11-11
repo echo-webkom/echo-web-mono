@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { type Metadata } from "next";
 
 import { Container } from "@/components/container";
@@ -11,9 +12,9 @@ type Props = {
   };
 };
 
-async function getData(id: string) {
+const getData = cache(async (id: string) => {
   return await fetchMinuteById(id);
-}
+});
 
 export async function generateStaticParams() {
   return await fetchMinuteParams();

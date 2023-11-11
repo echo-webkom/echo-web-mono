@@ -1,3 +1,4 @@
+import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -14,7 +15,7 @@ type Props = {
   };
 };
 
-async function getData(slug: string) {
+const getData = cache(async (slug: string) => {
   const post = await fetchPostBySlug(slug);
 
   if (!post) {
@@ -22,7 +23,7 @@ async function getData(slug: string) {
   }
 
   return post;
-}
+});
 
 export const generateStaticParams = async () => {
   return await fetchPostParams();

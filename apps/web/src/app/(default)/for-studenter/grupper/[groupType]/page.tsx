@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
@@ -50,7 +51,7 @@ export default async function StudentGroupOverview({ params }: Props) {
   );
 }
 
-function pathToGroupType(path: string) {
+const pathToGroupType = cache((path: string) => {
   const groupType = Object.entries(studentGroupTypeName).find(
     ([_, url]) => url.toLowerCase() === path,
   )?.[0];
@@ -60,4 +61,4 @@ function pathToGroupType(path: string) {
   }
 
   return groupType as StudentGroupType;
-}
+});

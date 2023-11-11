@@ -18,6 +18,7 @@
     "db:generate": "pnpm --filter=db db:generate",
     "db:migrate": "pnpm --filter=db db:migrate",
     "db:seed": "pnpm --filter=db db:seed",
+    "db:check": "pnpm --filter=db db:check",
     "db:up": "pnpm --filter=db db:up",
     "db:down": "pnpm --filter=db db:down",
     "lint": "turbo run lint",
