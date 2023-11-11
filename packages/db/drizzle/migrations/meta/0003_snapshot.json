@@ -81,12 +81,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -94,10 +90,7 @@
       "compositePrimaryKeys": {
         "account_provider_provider_account_id": {
           "name": "account_provider_provider_account_id",
-          "columns": [
-            "provider",
-            "provider_account_id"
-          ]
+          "columns": ["provider", "provider_account_id"]
         }
       },
       "uniqueConstraints": {}
@@ -137,14 +130,8 @@
           "name": "answer_happening_slug_user_id_registration_happening_slug_user_id_fk",
           "tableFrom": "answer",
           "tableTo": "registration",
-          "columnsFrom": [
-            "happening_slug",
-            "user_id"
-          ],
-          "columnsTo": [
-            "happening_slug",
-            "user_id"
-          ],
+          "columnsFrom": ["happening_slug", "user_id"],
+          "columnsTo": ["happening_slug", "user_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -152,9 +139,7 @@
       "compositePrimaryKeys": {
         "answer_question_id": {
           "name": "answer_question_id",
-          "columns": [
-            "question_id"
-          ]
+          "columns": ["question_id"]
         }
       },
       "uniqueConstraints": {}
@@ -181,9 +166,7 @@
       "compositePrimaryKeys": {
         "degree_id": {
           "name": "degree_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -217,12 +200,8 @@
           "name": "group_leader_user_id_fk",
           "tableFrom": "group",
           "tableTo": "user",
-          "columnsFrom": [
-            "leader"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["leader"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -230,9 +209,7 @@
       "compositePrimaryKeys": {
         "group_id": {
           "name": "group_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -259,10 +236,7 @@
       "compositePrimaryKeys": {
         "happenings_to_groups_happening_slug_group_id": {
           "name": "happenings_to_groups_happening_slug_group_id",
-          "columns": [
-            "happening_slug",
-            "group_id"
-          ]
+          "columns": ["happening_slug", "group_id"]
         }
       },
       "uniqueConstraints": {}
@@ -312,9 +286,7 @@
       "indexes": {
         "type_idx": {
           "name": "type_idx",
-          "columns": [
-            "type"
-          ],
+          "columns": ["type"],
           "isUnique": false
         }
       },
@@ -322,9 +294,7 @@
       "compositePrimaryKeys": {
         "happening_slug": {
           "name": "happening_slug",
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "uniqueConstraints": {}
@@ -378,12 +348,8 @@
           "name": "question_happening_slug_happening_slug_fk",
           "tableFrom": "question",
           "tableTo": "happening",
-          "columnsFrom": [
-            "happening_slug"
-          ],
-          "columnsTo": [
-            "slug"
-          ],
+          "columnsFrom": ["happening_slug"],
+          "columnsTo": ["slug"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -391,9 +357,7 @@
       "compositePrimaryKeys": {
         "question_id": {
           "name": "question_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -438,9 +402,7 @@
       "indexes": {
         "status_idx": {
           "name": "status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -449,12 +411,8 @@
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -462,12 +420,8 @@
           "name": "registration_happening_slug_happening_slug_fk",
           "tableFrom": "registration",
           "tableTo": "happening",
-          "columnsFrom": [
-            "happening_slug"
-          ],
-          "columnsTo": [
-            "slug"
-          ],
+          "columnsFrom": ["happening_slug"],
+          "columnsTo": ["slug"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -475,10 +429,7 @@
       "compositePrimaryKeys": {
         "registration_user_id_happening_slug": {
           "name": "registration_user_id_happening_slug",
-          "columns": [
-            "user_id",
-            "happening_slug"
-          ]
+          "columns": ["user_id", "happening_slug"]
         }
       },
       "uniqueConstraints": {}
@@ -512,12 +463,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -620,12 +567,8 @@
           "name": "spot_range_happening_slug_happening_slug_fk",
           "tableFrom": "spot_range",
           "tableTo": "happening",
-          "columnsFrom": [
-            "happening_slug"
-          ],
-          "columnsTo": [
-            "slug"
-          ],
+          "columnsFrom": ["happening_slug"],
+          "columnsTo": ["slug"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -656,12 +599,8 @@
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -669,12 +608,8 @@
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "group",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -682,10 +617,7 @@
       "compositePrimaryKeys": {
         "users_to_groups_user_id_group_id": {
           "name": "users_to_groups_user_id_group_id",
-          "columns": [
-            "user_id",
-            "group_id"
-          ]
+          "columns": ["user_id", "group_id"]
         }
       },
       "uniqueConstraints": {}
@@ -756,12 +688,8 @@
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
           "tableTo": "degree",
-          "columnsFrom": [
-            "degree_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["degree_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -769,9 +697,7 @@
       "compositePrimaryKeys": {
         "user_id": {
           "name": "user_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -804,10 +730,7 @@
       "compositePrimaryKeys": {
         "verification_token_identifier_token": {
           "name": "verification_token_identifier_token",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {}

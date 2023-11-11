@@ -5,9 +5,9 @@ import { getAuth } from "@echo-webkom/auth";
 import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
-import { ProfileIcon } from "./profile-icon";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
+import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
   const user = await getAuth();
@@ -24,7 +24,7 @@ export async function SiteHeader() {
           </div>
           <div className="flex items-center">
             {user ? (
-              <ProfileIcon user={user} />
+              <UserMenu user={user} />
             ) : (
               <Button variant="secondary" asChild>
                 <Link href="/auth/logg-inn">Logg inn</Link>

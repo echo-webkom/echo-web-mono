@@ -26,8 +26,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\"",
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
-    "test:e2e": "pnpm --filter=playwright test",
-    "test:e2e:ui": "pnpm --filter=playwright ui"
+    "test:e2e": "turbo run test:e2e",
+    "test:e2e:ui": "turbo run test:e2e:ui"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",

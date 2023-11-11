@@ -42,6 +42,9 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
+      - name: Check style
+        run: pnpm format:check
+
       - name: Build
         run: pnpm build
 
@@ -51,6 +54,9 @@ jobs:
       - name: Install playwright browsers
         run: pnpm --filter=playwright test:install
 
+      - name: Seed database
+        run: pnpm db:seed
+
       - name: Run playwright tests
         run: pnpm test:e2e
 
@@ -59,5 +65,5 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: tests/playwright-report/
+          path: playwright/playwright-report/
           retention-days: 30

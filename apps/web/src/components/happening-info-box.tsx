@@ -9,9 +9,9 @@ import { type Happening } from "@echo-webkom/db/schemas";
 import { maxCapacityBySlug } from "@/lib/queries/happening";
 import { fetchBedpresBySlug, type Bedpres } from "@/sanity/bedpres";
 import { fetchEventBySlug, type Event } from "@/sanity/event";
+import { norwegianDateString } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
-import { norwegianDateString } from "@/utils/date";
 
 export async function HappeningInfoBox({ happening }: { happening: Happening }) {
   return (
@@ -49,8 +49,6 @@ async function getEventBySlug(slug: string) {
   return happening;
 }
 
-
-
 async function EventInfoBox({ event }: { event: Event }) {
   const isRegistrationOpen =
     event?.registrationStart &&
@@ -61,7 +59,7 @@ async function EventInfoBox({ event }: { event: Event }) {
   const capacity = await fetchMaxCapacity(event.slug);
 
   return (
-    <div className="flex h-full items-center rounded-xl border gap-5 p-5 bg-card overflow-x-auto sm:rounded-lg">
+    <div className="flex h-full items-center gap-5 overflow-x-auto rounded-xl border bg-card p-5 sm:rounded-lg">
       <div className="overflow-x-hidden">
         <h1 className="line-clamp-1 text-lg font-semibold md:text-2xl">
           {capitalize(event.title)}
@@ -70,10 +68,7 @@ async function EventInfoBox({ event }: { event: Event }) {
 
         <div className="py-4">
           <div>Sted: {event.location?.name ? event.location.name : "Ikke bestemt"}</div>
-          <div>
-            Kapasitet:{" "}
-            {capacity}
-          </div>
+          <div>Kapasitet: {capacity}</div>
           <div>Publisert: {norwegianDateString(event._createdAt)}</div>
           <div>Sist oppdatert: {norwegianDateString(event._updatedAt)}</div>
           <div>
@@ -109,8 +104,7 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
 
   const capacity = await fetchMaxCapacity(bedpres.slug);
   return (
-    <div
-      className="flex h-full items-center gap-5 p-5 bg-card border overflow-x-auto sm:rounded-lg">
+    <div className="flex h-full items-center gap-5 overflow-x-auto border bg-card p-5 sm:rounded-lg">
       <div className="flex-1">
         {!bedpres && (
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
@@ -130,10 +124,7 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
 
         <div className="py-4">
           <div>Sted: {bedpres.location?.name ? bedpres.location.name : "Ikke bestemt"}</div>
-          <div>
-            Kapasitet:{" "}
-            {capacity}
-          </div>
+          <div>Kapasitet: {capacity}</div>
           <div>Publisert: {norwegianDateString(bedpres._createdAt)}</div>
           <div>Sist oppdatert: {norwegianDateString(bedpres._updatedAt)}</div>
           <div>
@@ -168,6 +159,3 @@ async function BedpresInfoBox({ bedpres }: { bedpres: Bedpres }) {
     </div>
   );
 }
-
-
-

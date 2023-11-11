@@ -18,10 +18,10 @@ export async function atMaxCapacity(slug: string) {
     where: (registration) => eq(registration.happeningSlug, slug),
     with: {
       happening: true,
-    }
-  })
+    },
+  });
   return registrations.length >= max;
-  }
+}
 
 export async function maxCapacityBySlug(slug?: string) {
   if (!slug) {

@@ -1,14 +1,8 @@
 /* eslint-disable no-console */
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import process from "node:process";
 
-import { degrees, groups } from "../schemas";
-
-const pg = postgres(process.env.DATABASE_URL!, {
-  max: 1,
-});
-
-const db = drizzle(pg);
+import { db } from "..";
+import { accounts, degrees, groups, sessions, users, type UserType } from "../schemas";
 
 async function seed() {
   await db.insert(degrees).values([
@@ -97,6 +91,57 @@ async function seed() {
       name: "Bryggelaget",
     },
   ]);
+
+  await createUser({
+    id: "student",
+    name: "Student",
+    email: "student@echo.uib.no",
+    type: "student",
+    token: "student",
+  });
+
+  await createUser({
+    id: "admin",
+    name: "Andreas Aanes",
+    email: "admin@echo.uib.on",
+    type: "admin",
+    token: "admin",
+  });
+}
+
+async function createUser({
+  id,
+  name,
+  email,
+  type,
+  token,
+}: {
+  id: string;
+  name: string;
+  email: string;
+  type: UserType;
+  token: string;
+}) {
+  console.log(`Inserted user ${name} with id ${id}`);
+  await db.insert(users).values({
+    id,
+    name,
+    email,
+    type,
+  });
+
+  await db.insert(accounts).values({
+    userId: id,
+    type: "oauth",
+    provider: "test",
+    providerAccountId: token,
+  });
+
+  await db.insert(sessions).values({
+    sessionToken: token,
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    userId: id,
+  });
 }
 
 console.log("🌱 Starting seeding...");
@@ -109,7 +154,4 @@ void seed()
   .catch((e) => {
     console.error("🚨 Seeding failed with error:", e);
     process.exit(1);
-  })
-  .finally(() => {
-    void pg.end();
   });

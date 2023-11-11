@@ -68,7 +68,7 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-4 py-2 text-xl font-bold pl-5">Hovedsamarbeidspartner 💘</h3>
+              <h3 className="mb-4 py-2 pl-5 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
                   src="/images/bekk.png"
