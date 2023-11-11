@@ -82,8 +82,8 @@ importers:
         specifier: 18.2.14
         version: 18.2.14
       '@types/styled-components':
-        specifier: 5.1.29
-        version: 5.1.29
+        specifier: 5.1.30
+        version: 5.1.30
       eslint:
         specifier: ^8.53.0
         version: 8.53.0
@@ -5193,8 +5193,8 @@ packages:
     resolution: {integrity: sha512-nBHZAaNTEw1YG3ROL7HtTp7HjW8HD7DuFYbWoonUKTZHj7eyOt4vPzyMcc3+xgWNv7xi2rziaiBXHIq6wBeyrw==}
     dev: false
 
-  /@types/styled-components@5.1.29:
-    resolution: {integrity: sha512-5h/ah9PAblggQ6Laa4peplT4iY5ddA8qM1LMD4HzwToUWs3hftfy0fayeRgbtH1JZUdw5CCaowmz7Lnb8SjIxQ==}
+  /@types/styled-components@5.1.30:
+    resolution: {integrity: sha512-xxJqw0s1myRTgrzHgG5tKHS9hK+KNhjbKMXDWlHRo9eDNVVUqf147QUGYUqwyCDkFyGr2pi1qJKFMEy0ACZb0A==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
       '@types/react': 18.2.36
