@@ -380,7 +380,7 @@ importers:
         specifier: ^20.8.7
         version: 20.8.7
       '@types/pg':
-        specifier: ^8.10.8
+        specifier: ^8.10.9
         version: 8.10.9
       dotenv-cli:
         specifier: 7.3.0
