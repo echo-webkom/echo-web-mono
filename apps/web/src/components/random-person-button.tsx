@@ -1,11 +1,11 @@
-import { type RegistrationWithUser } from "./registration-table";
-import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { AiOutlineLoading } from "react-icons/ai";
-import { Label } from "@/components/ui/label";
 
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { type RegistrationWithUser } from "./registration-table";
 
 type RandomPersonButtonProps = {
   registrations: Array<RegistrationWithUser>;
@@ -14,14 +14,12 @@ type RandomPersonButtonProps = {
 
 export function RandomPersonButton({ registrations, setShowConfetti }: RandomPersonButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [randomUserName, setRandomUserName] = useState('');
+  const [randomUserName, setRandomUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const getRegisteredUsers = () => {
-    return registrations.filter(
-      (registration) => registration.status === "registered"
-    );
+    return registrations.filter((registration) => registration.status === "registered");
   };
 
   const pickRandomRegisteredUser = () => {
@@ -56,24 +54,24 @@ export function RandomPersonButton({ registrations, setShowConfetti }: RandomPer
   return (
     <>
       <Button onClick={pickRandomRegisteredUser}>
-      {isLoading ? (
-        <>
-        <span>
-         <AiOutlineLoading className="h-4 w-4 animate-spin" />
-          </span>
-          <span className="px-2">Velger..</span>
+        {isLoading ? (
+          <>
+            <span>
+              <AiOutlineLoading className="h-4 w-4 animate-spin" />
+            </span>
+            <span className="px-2">Velger..</span>
           </>
-  ) : (
-    <span>Velg tilfeldig person</span>
-  )}
-</Button>
+        ) : (
+          <span>Velg tilfeldig person</span>
+        )}
+      </Button>
       {isOpen && (
         <>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger>
               <DialogContent>
-                    <Label className="text-center text-2xl p-10">{randomUserName}</Label>
-                    <Button onClick={closeDialog}>Close</Button>
+                <Label className="p-10 text-center text-2xl">{randomUserName}</Label>
+                <Button onClick={closeDialog}>Close</Button>
               </DialogContent>
             </DialogTrigger>
           </Dialog>

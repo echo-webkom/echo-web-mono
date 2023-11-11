@@ -64,8 +64,7 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
 
   const userGroups = user ? await getUserStudentGroups(user.id) : [];
 
-  const isHost =
-    userGroups.some((group) => group.groupId === "bedkom") || user?.type === "admin";
+  const isHost = userGroups.some((group) => group.groupId === "bedkom") || user?.type === "admin";
 
   return (
     <Sidebar>

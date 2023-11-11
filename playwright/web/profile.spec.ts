@@ -19,7 +19,7 @@ test("Student")("update profile", async ({ page }) => {
 test("Admin")("see admin dashboard", async ({ page }) => {
   await page.goto("/");
 
-  await page.getByRole("banner").getByRole("button").nth(3).click();
+  await page.getByTestId("user-menu").click();
 
   const dashboardItem = page.getByRole("menuitem", { name: "Dashboard" });
 

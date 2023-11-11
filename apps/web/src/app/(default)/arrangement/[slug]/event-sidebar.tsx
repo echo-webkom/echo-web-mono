@@ -12,10 +12,10 @@ import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
+import { Button } from "@/components/ui/button";
+import { getUserStudentGroups } from "@/lib/queries/student-groups";
 import { type Event } from "@/sanity/event";
 import { norwegianDateString } from "@/utils/date";
-import { getUserStudentGroups } from "@/lib/queries/student-groups";
-import { Button } from "@/components/ui/button";
 
 type EventSidebarProps = {
   slug: string;
@@ -64,7 +64,9 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
   const userGroups = user ? await getUserStudentGroups(user.id) : [];
 
   const isHost =
-    userGroups.some((group) => event.organizers.some((organizer) => group.groupId === organizer.slug)) || user?.type === "admin";
+    userGroups.some((group) =>
+      event.organizers.some((organizer) => group.groupId === organizer.slug),
+    ) || user?.type === "admin";
 
   const isUserComplete = user?.degreeId && user.year;
 

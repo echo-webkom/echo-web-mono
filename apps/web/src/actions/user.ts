@@ -86,7 +86,9 @@ export const updateUser = async (
 
     await db.delete(usersToGroups).where(eq(usersToGroups.userId, userId));
     if (data.memberships.length > 0) {
-      await db.insert(usersToGroups).values(data.memberships.map((groupId) => ({ userId, groupId })));
+      await db
+        .insert(usersToGroups)
+        .values(data.memberships.map((groupId) => ({ userId, groupId })));
     }
     await db.update(users).set({ type: data.type }).where(eq(users.id, userId));
 

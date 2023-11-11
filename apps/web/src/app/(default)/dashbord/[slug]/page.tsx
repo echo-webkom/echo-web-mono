@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
-
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getHappeningBySlug } from "@/lib/queries/happening";
@@ -90,7 +89,7 @@ export default async function EventDashboard({ params }: Props) {
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable registrations={registrations} studentGroups={groups}/>
+          <RegistrationTable registrations={registrations} studentGroups={groups} />
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">

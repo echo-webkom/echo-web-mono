@@ -1,19 +1,22 @@
-"use server"
+"use server";
 
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db"
-import { registrations } from "@echo-webkom/db/schemas";
-import { registrationStatusEnum } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db";
+import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
 
 const updateRegistrationPayloadSchema = z.object({
   status: z.enum(registrationStatusEnum.enumValues),
   reason: z.string(),
-})
+});
 
-export async function updateRegistration(slug: string, registrationUserId: string, payload: z.infer<typeof updateRegistrationPayloadSchema>) {
+export async function updateRegistration(
+  slug: string,
+  registrationUserId: string,
+  payload: z.infer<typeof updateRegistrationPayloadSchema>,
+) {
   try {
     const user = await getAuth();
 
@@ -43,11 +46,13 @@ export async function updateRegistration(slug: string, registrationUserId: strin
         status: data.status,
         unregisterReason: data.reason,
       })
-      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningSlug, slug)));
+      .where(
+        and(eq(registrations.userId, registrationUserId), eq(registrations.happeningSlug, slug)),
+      );
 
     return {
       success: true,
-      message: "Påmeldingen er endret"
+      message: "Påmeldingen er endret",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

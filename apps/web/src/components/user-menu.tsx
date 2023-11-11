@@ -16,17 +16,17 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-type ProfileIconProps = {
+type UserMenuProps = {
   user: User;
 };
 
-export function ProfileIcon({ user }: ProfileIconProps) {
+export function UserMenu({ user }: UserMenuProps) {
   const pathname = usePathname();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button>
+        <button data-testid="user-menu">
           <AvatarIcon className="h-7 w-7" />
         </button>
       </DropdownMenuTrigger>
