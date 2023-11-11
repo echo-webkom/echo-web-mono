@@ -22,7 +22,7 @@
     "react-email": "^1.9.5"
   },
   "devDependencies": {
-    "@types/node": "18.18.8",
+    "@types/node": "18.18.9",
     "@types/react": "18.2.36",
     "dotenv-cli": "7.3.0",
     "eslint": "^8.53.0",
