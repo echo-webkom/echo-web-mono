@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { foreignKey, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { index, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happenings, questions, registrations, users } from ".";
@@ -7,40 +7,41 @@ import { happenings, questions, registrations, users } from ".";
 export const answers = pgTable(
   "answer",
   {
-    questionId: varchar("question_id", { length: 21 }).notNull(),
-    userId: text("user_id").notNull(),
-    happeningId: text("happening_id")
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
+    happeningId: varchar("happening_id")
       .notNull()
       .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
+    questionId: varchar("question_id")
+      .notNull()
+      .references(() => questions.id, {
         onDelete: "cascade",
       }),
     answer: text("answer"),
   },
   (table) => ({
-    pk: primaryKey(table.questionId),
-    fk: foreignKey({
-      columns: [table.happeningId, table.userId],
-      foreignColumns: [registrations.happeningId, registrations.userId],
-    }),
+    pk: primaryKey(table.userId, table.happeningId, table.questionId),
+    questionIdx: index("question_idx").on(table.questionId),
   }),
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({
-  question: one(questions, {
-    fields: [answers.questionId],
-    references: [questions.id],
-  }),
-  registration: one(registrations, {
-    fields: [answers.happeningId, answers.userId],
-    references: [registrations.happeningId, registrations.userId],
+  user: one(registrations, {
+    fields: [answers.userId, answers.happeningId],
+    references: [registrations.userId, registrations.happeningId],
   }),
   happening: one(happenings, {
     fields: [answers.happeningId],
     references: [happenings.id],
   }),
-  user: one(users, {
-    fields: [answers.userId],
-    references: [users.id],
+  question: one(questions, {
+    fields: [answers.questionId],
+    references: [questions.id],
   }),
 }));
 

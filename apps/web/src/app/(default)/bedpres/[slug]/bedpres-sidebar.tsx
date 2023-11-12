@@ -164,14 +164,16 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.registrationStart && isAfter(new Date(), happening.registrationStart) && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
+      {happening?.registrationStart &&
+        isAfter(new Date(), happening.registrationStart) &&
+        spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+            <SidebarItemContent>
+              {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
 
       {happening?.registrationStart &&
         happening.registrationStart < new Date() &&
@@ -210,6 +212,7 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
 
       {!isRegistered &&
         isUserComplete &&
+        spotRanges.length > 0 &&
         happening?.registrationStart &&
         isAfter(
           new Date(),

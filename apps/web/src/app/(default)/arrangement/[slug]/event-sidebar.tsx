@@ -132,17 +132,19 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.registrationStart && isAfter(new Date(), happening.registrationStart) && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
+      {happening?.registrationStart &&
+        isAfter(new Date(), happening.registrationStart) &&
+        spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+            <SidebarItemContent>
+              {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
 
       {happening?.registrationStart &&
-        happening.registrationStart < new Date() &&
+        isAfter(new Date(), happening.registrationStart) &&
         waitlistCount > 0 && (
           <SidebarItem>
             <SidebarItemTitle>Venteliste:</SidebarItemTitle>
@@ -178,6 +180,7 @@ export async function EventSidebar({ event }: EventSidebarProps) {
 
       {!isRegistered &&
         isUserComplete &&
+        spotRanges.length > 0 &&
         happening?.registrationStart &&
         isAfter(
           new Date(),

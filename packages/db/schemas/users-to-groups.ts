@@ -10,7 +10,7 @@ export const usersToGroups = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    groupId: varchar("group_id", { length: 21 })
+    groupId: varchar("group_id")
       .notNull()
       .references(() => groups.id),
   },

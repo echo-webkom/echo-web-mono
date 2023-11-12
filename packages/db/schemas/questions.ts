@@ -13,7 +13,7 @@ type Option = {
 export const questions = pgTable(
   "question",
   {
-    id: varchar("id", { length: 21 })
+    id: varchar("id")
       .notNull()
       .$defaultFn(() => nanoid()),
     title: text("title").notNull(),

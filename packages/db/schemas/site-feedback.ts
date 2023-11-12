@@ -5,12 +5,12 @@ import { nanoid } from "nanoid";
 import { feedbackCategoryEnum } from "./enums";
 
 export const siteFeedback = pgTable("site_feedback", {
-  id: varchar("id", { length: 21 })
+  id: varchar("id")
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  name: varchar("name", { length: 255 }),
-  email: varchar("email", { length: 255 }),
+  name: varchar("name"),
+  email: varchar("email"),
   message: text("message").notNull(),
   category: feedbackCategoryEnum("category").notNull(),
   isRead: boolean("is_read").notNull().default(false),

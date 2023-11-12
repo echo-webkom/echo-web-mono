@@ -50,36 +50,36 @@ CREATE TABLE IF NOT EXISTS "account" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "answer" (
-	"question_id" varchar(21) NOT NULL,
 	"user_id" text NOT NULL,
-	"happening_id" text NOT NULL,
+	"happening_id" varchar NOT NULL,
+	"question_id" varchar NOT NULL,
 	"answer" text,
-	CONSTRAINT answer_question_id PRIMARY KEY("question_id")
+	CONSTRAINT answer_user_id_happening_id_question_id PRIMARY KEY("user_id","happening_id","question_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "degree" (
-	"id" varchar(21) NOT NULL,
-	"name" varchar(255) NOT NULL,
+	"id" varchar NOT NULL,
+	"name" varchar NOT NULL,
 	CONSTRAINT degree_id PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "group" (
-	"id" varchar(21) NOT NULL,
-	"name" varchar(255) NOT NULL,
+	"id" varchar NOT NULL,
+	"name" varchar NOT NULL,
 	"leader" text,
 	CONSTRAINT group_id PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happenings_to_groups" (
-	"happening_id" varchar(36) NOT NULL,
-	"group_id" varchar(21) NOT NULL,
+	"happening_id" varchar NOT NULL,
+	"group_id" varchar NOT NULL,
 	CONSTRAINT happenings_to_groups_happening_id_group_id PRIMARY KEY("happening_id","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happening" (
-	"id" varchar(36) NOT NULL,
-	"slug" varchar(255) NOT NULL,
-	"title" varchar(255) NOT NULL,
+	"id" varchar NOT NULL,
+	"slug" varchar NOT NULL,
+	"title" varchar NOT NULL,
 	"type" "happening_type" DEFAULT 'event' NOT NULL,
 	"date" timestamp,
 	"registration_start" timestamp,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS "happening" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
-	"id" varchar(21) NOT NULL,
+	"id" varchar NOT NULL,
 	"title" text NOT NULL,
 	"required" boolean DEFAULT false NOT NULL,
 	"type" "question_type" DEFAULT 'text' NOT NULL,
@@ -100,10 +100,10 @@ CREATE TABLE IF NOT EXISTS "question" (
 CREATE TABLE IF NOT EXISTS "registration" (
 	"user_id" text NOT NULL,
 	"happening_id" text NOT NULL,
+	"spot_range_id" varchar,
 	"status" "registration_status" DEFAULT 'waiting' NOT NULL,
 	"unregister_reason" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"spotrange_id" varchar(21) NOT NULL,
 	CONSTRAINT registration_user_id_happening_id PRIMARY KEY("user_id","happening_id")
 );
 --> statement-breakpoint
@@ -114,9 +114,9 @@ CREATE TABLE IF NOT EXISTS "session" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "site_feedback" (
-	"id" varchar(21) PRIMARY KEY NOT NULL,
-	"name" varchar(255),
-	"email" varchar(255),
+	"id" varchar PRIMARY KEY NOT NULL,
+	"name" varchar,
+	"email" varchar,
 	"message" text NOT NULL,
 	"category" "feedback_category" NOT NULL,
 	"is_read" boolean DEFAULT false NOT NULL,
@@ -124,8 +124,8 @@ CREATE TABLE IF NOT EXISTS "site_feedback" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "spot_range" (
-	"id" varchar(21) PRIMARY KEY NOT NULL,
-	"happening_id" varchar(36) NOT NULL,
+	"id" varchar PRIMARY KEY NOT NULL,
+	"happening_id" varchar NOT NULL,
 	"spots" integer NOT NULL,
 	"min_year" integer NOT NULL,
 	"max_year" integer NOT NULL
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS "spot_range" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_to_groups" (
 	"user_id" text NOT NULL,
-	"group_id" varchar(21) NOT NULL,
+	"group_id" varchar NOT NULL,
 	CONSTRAINT users_to_groups_user_id_group_id PRIMARY KEY("user_id","group_id")
 );
 --> statement-breakpoint
@@ -143,8 +143,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"email" text NOT NULL,
 	"email_verified" timestamp,
 	"image" text,
-	"alternative_email" varchar(255),
-	"degree_id" varchar(21),
+	"alternative_email" varchar,
+	"degree_id" varchar,
 	"year" integer,
 	"type" "user_type" DEFAULT 'student' NOT NULL,
 	CONSTRAINT user_id PRIMARY KEY("id")
@@ -164,11 +164,18 @@ CREATE TABLE IF NOT EXISTS "whitelist" (
 	CONSTRAINT whitelist_email PRIMARY KEY("email")
 );
 --> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "question_idx" ON "answer" ("question_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "type_idx" ON "happening" ("type");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "slug_idx" ON "happening" ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "status_idx" ON "registration" ("status");--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -180,7 +187,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_happening_id_user_id_registration_happening_id_user_id_fk" FOREIGN KEY ("happening_id","user_id") REFERENCES "registration"("happening_id","user_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_question_id_question_id_fk" FOREIGN KEY ("question_id") REFERENCES "question"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -210,7 +217,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "registration" ADD CONSTRAINT "registration_spotrange_id_spot_range_id_fk" FOREIGN KEY ("spotrange_id") REFERENCES "spot_range"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "registration" ADD CONSTRAINT "registration_spot_range_id_spot_range_id_fk" FOREIGN KEY ("spot_range_id") REFERENCES "spot_range"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

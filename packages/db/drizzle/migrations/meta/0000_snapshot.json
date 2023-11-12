@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "d5b033a4-b352-4055-9df2-cc7f61301186",
+  "id": "a92e9068-c3f3-4591-aeac-f34e524b862f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -106,12 +106,6 @@
       "name": "answer",
       "schema": "",
       "columns": {
-        "question_id": {
-          "name": "question_id",
-          "type": "varchar(21)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "user_id": {
           "name": "user_id",
           "type": "text",
@@ -120,7 +114,13 @@
         },
         "happening_id": {
           "name": "happening_id",
-          "type": "text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "question_id": {
+          "name": "question_id",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -131,8 +131,29 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "question_idx": {
+          "name": "question_idx",
+          "columns": [
+            "question_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
+        "answer_user_id_user_id_fk": {
+          "name": "answer_user_id_user_id_fk",
+          "tableFrom": "answer",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
           "tableFrom": "answer",
@@ -146,26 +167,26 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "answer_happening_id_user_id_registration_happening_id_user_id_fk": {
-          "name": "answer_happening_id_user_id_registration_happening_id_user_id_fk",
+        "answer_question_id_question_id_fk": {
+          "name": "answer_question_id_question_id_fk",
           "tableFrom": "answer",
-          "tableTo": "registration",
+          "tableTo": "question",
           "columnsFrom": [
-            "happening_id",
-            "user_id"
+            "question_id"
           ],
           "columnsTo": [
-            "happening_id",
-            "user_id"
+            "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "answer_question_id": {
-          "name": "answer_question_id",
+        "answer_user_id_happening_id_question_id": {
+          "name": "answer_user_id_happening_id_question_id",
           "columns": [
+            "user_id",
+            "happening_id",
             "question_id"
           ]
         }
@@ -178,13 +199,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         }
@@ -207,13 +228,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -256,13 +277,13 @@
       "columns": {
         "happening_id": {
           "name": "happening_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "group_id": {
           "name": "group_id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         }
@@ -286,19 +307,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "slug": {
           "name": "slug",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "title": {
           "name": "title",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -361,7 +382,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -440,6 +461,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "spot_range_id": {
+          "name": "spot_range_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "status": {
           "name": "status",
           "type": "registration_status",
@@ -459,12 +486,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "spotrange_id": {
-          "name": "spotrange_id",
-          "type": "varchar(21)",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {
@@ -503,12 +524,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "registration_spotrange_id_spot_range_id_fk": {
-          "name": "registration_spotrange_id_spot_range_id_fk",
+        "registration_spot_range_id_spot_range_id_fk": {
+          "name": "registration_spot_range_id_spot_range_id_fk",
           "tableFrom": "registration",
           "tableTo": "spot_range",
           "columnsFrom": [
-            "spotrange_id"
+            "spot_range_id"
           ],
           "columnsTo": [
             "id"
@@ -576,19 +597,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
         "email": {
           "name": "email",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -630,13 +651,13 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
         "happening_id": {
           "name": "happening_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -690,7 +711,7 @@
         },
         "group_id": {
           "name": "group_id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         }
@@ -771,13 +792,13 @@
         },
         "alternative_email": {
           "name": "alternative_email",
-          "type": "varchar(255)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
         "degree_id": {
           "name": "degree_id",
-          "type": "varchar(21)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },

@@ -17,14 +17,12 @@ export const registrations = pgTable(
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
+    spotRangeId: varchar("spot_range_id").references(() => spotRanges.id, {
+      onDelete: "cascade",
+    }),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    spotrangeId: varchar("spotrange_id", { length: 21 })
-      .notNull()
-      .references(() => spotRanges.id, {
-        onDelete: "cascade",
-      }),
   },
   (table) => ({
     pk: primaryKey(table.userId, table.happeningId),
@@ -41,11 +39,11 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
     fields: [registrations.userId],
     references: [users.id],
   }),
-  answers: many(answers),
-  spotrange: one(spotRanges, {
-    fields: [registrations.spotrangeId],
+  spotRange: one(spotRanges, {
+    fields: [registrations.spotRangeId],
     references: [spotRanges.id],
   }),
+  answers: many(answers),
 }));
 
 export type Registration = (typeof registrations)["$inferSelect"];

@@ -6,11 +6,11 @@ import { nanoid } from "nanoid";
 import { happenings } from ".";
 
 export const spotRanges = pgTable("spot_range", {
-  id: varchar("id", { length: 21 })
+  id: varchar("id")
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  happeningId: varchar("happening_id", { length: 36 })
+  happeningId: varchar("happening_id")
     .notNull()
     .references(() => happenings.id, {
       onDelete: "cascade",

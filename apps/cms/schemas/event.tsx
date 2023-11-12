@@ -31,7 +31,7 @@ export default defineType({
         slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
           const slug = slugify(input, { remove: /[*+~.()'"!:@]/g, lower: true, strict: true });
           const query =
-            'count(*[_type == "bedpres" || _type == "event" && slug.current == $slug]{_id})';
+            'count(*[(_type == "bedpres" || _type == "event") && slug.current == $slug]{_id})';
           const params = { slug };
           const { getClient } = context;
 

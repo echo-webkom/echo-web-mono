@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { type z } from "zod";
 
@@ -25,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 
 type RegisterButtonProps = {
   id: string;
@@ -51,7 +51,10 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
     setIsLoading(true);
 
     const { success, message } = await register(id, {
-      questions: data.questions,
+      questions: data.questions.map((question) => ({
+        ...question,
+        answer: question.answer ?? "",
+      })),
     });
 
     setIsLoading(false);
@@ -114,65 +117,57 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={onSubmit}>
-          <DialogHeader>
-            <DialogTitle>Tilleggsspørsmål</DialogTitle>
-            <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            {questions.map((question, index) => (
-              <div key={question.id} className="flex flex-col gap-2">
-                <Label>
-                  {question.title}
-                  {question.required && <span className="ml-1 text-red-500">*</span>}
-                </Label>
+        <Form {...form}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={onSubmit} className="space-y-4">
+            <DialogHeader>
+              <DialogTitle>Tilleggsspørsmål</DialogTitle>
+              <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              {questions.map((question, index) => (
+                <FormField
+                  key={question.id}
+                  control={form.control}
+                  name={`questions.${index}.answer`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel required={question.required}>{question.title}</FormLabel>
+                      {question.type === "text" && (
+                        <FormControl>
+                          <Input
+                            placeholder="Ditt svar..."
+                            autoComplete="off"
+                            {...field}
+                            value={field.value ?? ""}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                      )}
 
-                {question.type === "text" && (
-                  <Controller
-                    name={`questions.${index}.answer`}
-                    control={form.control}
-                    render={({ field }) => (
-                      <Input
-                        placeholder="Ditt svar..."
-                        autoComplete="off"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={field.onChange}
-                      />
-                    )}
-                  />
-                )}
-
-                {question.type === "radio" && (
-                  <Controller
-                    name={`questions.${index}.answer`}
-                    control={form.control}
-                    render={({ field }) => (
-                      <Select {...field}>
-                        <option hidden>Velg...</option>
-                        {question?.options?.map((option) => (
-                          <option key={option.id} value={option.value}>
-                            {option.value}
-                          </option>
-                        ))}
-                      </Select>
-                    )}
-                  />
-                )}
-
-                {form.formState.errors.questions?.[index]?.answer && (
-                  <p className="text-red-500">
-                    {form.formState.errors.questions?.[index]?.answer?.message}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-          <DialogFooter>
-            <Button type="submit">Send inn</Button>
-          </DialogFooter>
-        </form>
+                      {question.type === "radio" && (
+                        <FormControl>
+                          <Select {...field}>
+                            <option hidden>Velg...</option>
+                            {question?.options?.map((option) => (
+                              <option key={option.id} value={option.value}>
+                                {option.value}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+            <DialogFooter>
+              <Button type="submit">Send inn</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
