@@ -13,7 +13,7 @@ const updateRegistrationPayloadSchema = z.object({
 });
 
 export async function updateRegistration(
-  slug: string,
+  id: string,
   registrationUserId: string,
   payload: z.infer<typeof updateRegistrationPayloadSchema>,
 ) {
@@ -28,7 +28,7 @@ export async function updateRegistration(
     }
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
-        and(eq(registration.happeningSlug, slug), eq(registration.userId, registrationUserId)),
+        and(eq(registration.happeningId, id), eq(registration.userId, registrationUserId)),
     });
 
     if (!exisitingRegistration) {
@@ -46,9 +46,7 @@ export async function updateRegistration(
         status: data.status,
         unregisterReason: data.reason,
       })
-      .where(
-        and(eq(registrations.userId, registrationUserId), eq(registrations.happeningSlug, slug)),
-      );
+      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningId, id)));
 
     return {
       success: true,

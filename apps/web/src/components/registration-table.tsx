@@ -218,7 +218,7 @@ const RegistrationRow = ({
   showIndex: boolean;
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
-  const slug = registration.happeningSlug;
+  const id = registration.happeningId;
   const statusClass = getStatusClassColor(registration.status);
 
   return (
@@ -247,7 +247,7 @@ const RegistrationRow = ({
         {registration.user.memberships.length === 0 && "Ingen"}
       </td>
       <td className="px-6 py-4">
-        <EditRegistrationButton slug={slug} registration={registration} />
+        <EditRegistrationButton id={id} registration={registration} />
       </td>
     </tr>
   );

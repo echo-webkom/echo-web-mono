@@ -27,7 +27,7 @@ export default async function EventDashboard({ params }: Props) {
   }
 
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, happening.id),
     with: {
       user: {
         with: {
