@@ -20,7 +20,11 @@ export const registrations = pgTable(
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    spotrangeId: varchar("spotrange_id", { length: 21 }).notNull(),
+    spotrangeId: varchar("spotrange_id", { length: 21 })
+      .notNull()
+      .references(() => spotRanges.id, {
+        onDelete: "cascade",
+      }),
   },
   (table) => ({
     pk: primaryKey(table.userId, table.happeningId),

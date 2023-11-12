@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "4b25c796-44ce-40e0-acda-44311b2823b3",
+  "id": "d5b033a4-b352-4055-9df2-cc7f61301186",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -81,8 +81,12 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -90,7 +94,10 @@
       "compositePrimaryKeys": {
         "account_provider_provider_account_id": {
           "name": "account_provider_provider_account_id",
-          "columns": ["provider", "provider_account_id"]
+          "columns": [
+            "provider",
+            "provider_account_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -111,8 +118,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -126,12 +133,31 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "answer_happening_slug_user_id_registration_happening_slug_user_id_fk": {
-          "name": "answer_happening_slug_user_id_registration_happening_slug_user_id_fk",
+        "answer_happening_id_happening_id_fk": {
+          "name": "answer_happening_id_happening_id_fk",
+          "tableFrom": "answer",
+          "tableTo": "happening",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "answer_happening_id_user_id_registration_happening_id_user_id_fk": {
+          "name": "answer_happening_id_user_id_registration_happening_id_user_id_fk",
           "tableFrom": "answer",
           "tableTo": "registration",
-          "columnsFrom": ["happening_slug", "user_id"],
-          "columnsTo": ["happening_slug", "user_id"],
+          "columnsFrom": [
+            "happening_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "happening_id",
+            "user_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -139,7 +165,9 @@
       "compositePrimaryKeys": {
         "answer_question_id": {
           "name": "answer_question_id",
-          "columns": ["question_id"]
+          "columns": [
+            "question_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -166,7 +194,9 @@
       "compositePrimaryKeys": {
         "degree_id": {
           "name": "degree_id",
-          "columns": ["id"]
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -200,8 +230,12 @@
           "name": "group_leader_user_id_fk",
           "tableFrom": "group",
           "tableTo": "user",
-          "columnsFrom": ["leader"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "leader"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -209,7 +243,9 @@
       "compositePrimaryKeys": {
         "group_id": {
           "name": "group_id",
-          "columns": ["id"]
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -218,9 +254,9 @@
       "name": "happenings_to_groups",
       "schema": "",
       "columns": {
-        "happening_slug": {
-          "name": "happening_slug",
-          "type": "varchar(255)",
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true
         },
@@ -234,9 +270,12 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "happenings_to_groups_happening_slug_group_id": {
-          "name": "happenings_to_groups_happening_slug_group_id",
-          "columns": ["happening_slug", "group_id"]
+        "happenings_to_groups_happening_id_group_id": {
+          "name": "happenings_to_groups_happening_id_group_id",
+          "columns": [
+            "happening_id",
+            "group_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -245,6 +284,12 @@
       "name": "happening",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar(255)",
@@ -286,15 +331,26 @@
       "indexes": {
         "type_idx": {
           "name": "type_idx",
-          "columns": ["type"],
+          "columns": [
+            "type"
+          ],
           "isUnique": false
+        },
+        "slug_idx": {
+          "name": "slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "happening_slug": {
-          "name": "happening_slug",
-          "columns": ["slug"]
+        "happening_id": {
+          "name": "happening_id",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -335,8 +391,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -344,20 +400,26 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "question_happening_slug_happening_slug_fk": {
-          "name": "question_happening_slug_happening_slug_fk",
+        "question_happening_id_happening_id_fk": {
+          "name": "question_happening_id_happening_id_fk",
           "tableFrom": "question",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "question_id": {
           "name": "question_id",
-          "columns": ["id"]
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -372,8 +434,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -397,12 +459,20 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "spotrange_id": {
+          "name": "spotrange_id",
+          "type": "varchar(21)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {
         "status_idx": {
           "name": "status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "isUnique": false
         }
       },
@@ -411,25 +481,49 @@
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "registration_happening_slug_happening_slug_fk": {
-          "name": "registration_happening_slug_happening_slug_fk",
+        "registration_happening_id_happening_id_fk": {
+          "name": "registration_happening_id_happening_id_fk",
           "tableFrom": "registration",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "registration_spotrange_id_spot_range_id_fk": {
+          "name": "registration_spotrange_id_spot_range_id_fk",
+          "tableFrom": "registration",
+          "tableTo": "spot_range",
+          "columnsFrom": [
+            "spotrange_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "registration_user_id_happening_slug": {
-          "name": "registration_user_id_happening_slug",
-          "columns": ["user_id", "happening_slug"]
+        "registration_user_id_happening_id": {
+          "name": "registration_user_id_happening_id",
+          "columns": [
+            "user_id",
+            "happening_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -463,8 +557,12 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -500,6 +598,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "category": {
+          "name": "category",
+          "type": "feedback_category",
+          "primaryKey": false,
+          "notNull": true
+        },
         "is_read": {
           "name": "is_read",
           "type": "boolean",
@@ -530,9 +634,9 @@
           "primaryKey": true,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
-          "type": "varchar(255)",
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true
         },
@@ -557,13 +661,17 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "spot_range_happening_slug_happening_slug_fk": {
-          "name": "spot_range_happening_slug_happening_slug_fk",
+        "spot_range_happening_id_happening_id_fk": {
+          "name": "spot_range_happening_id_happening_id_fk",
           "tableFrom": "spot_range",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -593,8 +701,12 @@
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -602,8 +714,12 @@
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "group",
-          "columnsFrom": ["group_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -611,7 +727,10 @@
       "compositePrimaryKeys": {
         "users_to_groups_user_id_group_id": {
           "name": "users_to_groups_user_id_group_id",
-          "columns": ["user_id", "group_id"]
+          "columns": [
+            "user_id",
+            "group_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -682,8 +801,12 @@
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
           "tableTo": "degree",
-          "columnsFrom": ["degree_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "degree_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -691,7 +814,9 @@
       "compositePrimaryKeys": {
         "user_id": {
           "name": "user_id",
-          "columns": ["id"]
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -724,7 +849,45 @@
       "compositePrimaryKeys": {
         "verification_token_identifier_token": {
           "name": "verification_token_identifier_token",
-          "columns": ["identifier", "token"]
+          "columns": [
+            "identifier",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "whitelist": {
+      "name": "whitelist",
+      "schema": "",
+      "columns": {
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "whitelist_email": {
+          "name": "whitelist_email",
+          "columns": [
+            "email"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -738,6 +901,15 @@
         "masters": "masters",
         "integrated": "integrated",
         "year": "year"
+      }
+    },
+    "feedback_category": {
+      "name": "feedback_category",
+      "values": {
+        "bug": "bug",
+        "feature": "feature",
+        "login": "login",
+        "other": "other"
       }
     },
     "happening_type": {

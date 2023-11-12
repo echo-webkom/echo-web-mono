@@ -29,11 +29,13 @@ export const POST = withBasicAuth(async (req) => {
   if (shouldDelete) {
     await db.delete(happenings).where(eq(happenings.id, payload._id));
 
+    // TODO: Revalidate tags (bedpres or event)
+
     return NextResponse.json(
       {
         status: "success",
         message: `Deleted happening with id ${payload._id}`,
-        time: new Date().getTime() - startTime,
+        time: (new Date().getTime() - startTime) / 1000,
       },
       { status: 200 },
     );
@@ -63,11 +65,13 @@ export const POST = withBasicAuth(async (req) => {
       target: happenings.id,
     });
 
+  // TODO: Revalidate tag (bedpres or event)
+
   return NextResponse.json(
     {
       status: "success",
       message: `Happening with id ${payload._id} inserted or updated`,
-      time: new Date().getTime() - startTime,
+      time: (new Date().getTime() - startTime) / 1000,
     },
     { status: 200 },
   );

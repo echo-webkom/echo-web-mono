@@ -40,7 +40,7 @@ export default async function EventPage({ params }: Props) {
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <EventSidebar slug={params.slug} event={event} />
+        <EventSidebar event={event} />
 
         {/* Content */}
         <article className="w-full">

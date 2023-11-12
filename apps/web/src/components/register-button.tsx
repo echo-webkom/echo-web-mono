@@ -27,11 +27,11 @@ import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
 type RegisterButtonProps = {
-  slug: string;
+  id: string;
   questions: Array<Question>;
 };
 
-export function RegisterButton({ slug, questions }: RegisterButtonProps) {
+export function RegisterButton({ id, questions }: RegisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -50,7 +50,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await register(slug, {
+    const { success, message } = await register(id, {
       questions: data.questions,
     });
 
@@ -67,7 +67,7 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
   const handleOneClickRegister = async () => {
     setIsLoading(true);
 
-    const { success, message } = await register(slug, { questions: [] });
+    const { success, message } = await register(id, { questions: [] });
 
     toast({
       title: message,

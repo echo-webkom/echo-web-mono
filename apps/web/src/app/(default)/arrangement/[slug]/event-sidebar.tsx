@@ -18,24 +18,23 @@ import { type Event } from "@/sanity/event";
 import { norwegianDateString } from "@/utils/date";
 
 type EventSidebarProps = {
-  slug: string;
   event: Event;
 };
 
-export async function EventSidebar({ slug, event }: EventSidebarProps) {
+export async function EventSidebar({ event }: EventSidebarProps) {
   const user = await getAuth();
 
   const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
+    where: (happening) => eq(happening.id, event._id),
     with: {
       questions: true,
     },
   });
   const spotRanges = await db.query.spotRanges.findMany({
-    where: (spotRange) => eq(spotRange.happeningSlug, slug),
+    where: (spotRange) => eq(spotRange.happeningId, event._id),
   });
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, event._id),
     with: {
       user: true,
     },
@@ -173,7 +172,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
 
       {isRegistered && (
         <SidebarItem>
-          <DeregisterButton slug={slug} />
+          <DeregisterButton id={event._id} />
         </SidebarItem>
       )}
 
@@ -185,7 +184,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
           new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
         ) && (
           <SidebarItem className="relative">
-            <RegisterButton slug={slug} questions={happening.questions} />
+            <RegisterButton id={event._id} questions={happening.questions} />
             <Countdown toDate={happening.registrationStart} />
           </SidebarItem>
         )}
@@ -229,7 +228,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
       {user && isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${slug}`}>Admin dashbord</Link>
+            <Link href={`/dashbord/${event._id}`}>Admin dashbord</Link>
           </Button>
         </SidebarItem>
       )}

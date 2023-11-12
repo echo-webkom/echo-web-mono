@@ -24,10 +24,10 @@ import { useToast } from "@/hooks/use-toast";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
 type DeregisterButtonProps = {
-  slug: string;
+  id: string;
 };
 
-export function DeregisterButton({ slug }: DeregisterButtonProps) {
+export function DeregisterButton({ id }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -44,7 +44,7 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await deregister(slug, {
+    await deregister(id, {
       reason: data.reason,
     });
 

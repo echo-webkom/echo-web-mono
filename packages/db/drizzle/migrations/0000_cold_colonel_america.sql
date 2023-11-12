@@ -5,6 +5,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "feedback_category" AS ENUM('bug', 'feature', 'login', 'other');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "happening_type" AS ENUM('bedpres', 'event', 'external');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -46,7 +52,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 CREATE TABLE IF NOT EXISTS "answer" (
 	"question_id" varchar(21) NOT NULL,
 	"user_id" text NOT NULL,
-	"happening_slug" text NOT NULL,
+	"happening_id" text NOT NULL,
 	"answer" text,
 	CONSTRAINT answer_question_id PRIMARY KEY("question_id")
 );
@@ -65,19 +71,20 @@ CREATE TABLE IF NOT EXISTS "group" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happenings_to_groups" (
-	"happening_slug" varchar(255) NOT NULL,
+	"happening_id" varchar(36) NOT NULL,
 	"group_id" varchar(21) NOT NULL,
-	CONSTRAINT happenings_to_groups_happening_slug_group_id PRIMARY KEY("happening_slug","group_id")
+	CONSTRAINT happenings_to_groups_happening_id_group_id PRIMARY KEY("happening_id","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happening" (
+	"id" varchar(36) NOT NULL,
 	"slug" varchar(255) NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"type" "happening_type" DEFAULT 'event' NOT NULL,
 	"date" timestamp,
 	"registration_start" timestamp,
 	"registration_end" timestamp,
-	CONSTRAINT happening_slug PRIMARY KEY("slug")
+	CONSTRAINT happening_id PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
@@ -86,17 +93,18 @@ CREATE TABLE IF NOT EXISTS "question" (
 	"required" boolean DEFAULT false NOT NULL,
 	"type" "question_type" DEFAULT 'text' NOT NULL,
 	"options" json,
-	"happening_slug" text NOT NULL,
+	"happening_id" text NOT NULL,
 	CONSTRAINT question_id PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "registration" (
 	"user_id" text NOT NULL,
-	"happening_slug" text NOT NULL,
+	"happening_id" text NOT NULL,
 	"status" "registration_status" DEFAULT 'waiting' NOT NULL,
 	"unregister_reason" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT registration_user_id_happening_slug PRIMARY KEY("user_id","happening_slug")
+	"spotrange_id" varchar(21) NOT NULL,
+	CONSTRAINT registration_user_id_happening_id PRIMARY KEY("user_id","happening_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -110,13 +118,14 @@ CREATE TABLE IF NOT EXISTS "site_feedback" (
 	"name" varchar(255),
 	"email" varchar(255),
 	"message" text NOT NULL,
+	"category" "feedback_category" NOT NULL,
 	"is_read" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "spot_range" (
 	"id" varchar(21) PRIMARY KEY NOT NULL,
-	"happening_slug" varchar(255) NOT NULL,
+	"happening_id" varchar(36) NOT NULL,
 	"spots" integer NOT NULL,
 	"min_year" integer NOT NULL,
 	"max_year" integer NOT NULL
@@ -148,7 +157,15 @@ CREATE TABLE IF NOT EXISTS "verification_token" (
 	CONSTRAINT verification_token_identifier_token PRIMARY KEY("identifier","token")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "whitelist" (
+	"email" text NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"reason" text NOT NULL,
+	CONSTRAINT whitelist_email PRIMARY KEY("email")
+);
+--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "type_idx" ON "happening" ("type");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "slug_idx" ON "happening" ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "status_idx" ON "registration" ("status");--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
@@ -157,7 +174,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_happening_slug_user_id_registration_happening_slug_user_id_fk" FOREIGN KEY ("happening_slug","user_id") REFERENCES "registration"("happening_slug","user_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_happening_id_happening_id_fk" FOREIGN KEY ("happening_id") REFERENCES "happening"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_happening_id_user_id_registration_happening_id_user_id_fk" FOREIGN KEY ("happening_id","user_id") REFERENCES "registration"("happening_id","user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -169,19 +192,25 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "question" ADD CONSTRAINT "question_happening_slug_happening_slug_fk" FOREIGN KEY ("happening_slug") REFERENCES "happening"("slug") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "question" ADD CONSTRAINT "question_happening_id_happening_id_fk" FOREIGN KEY ("happening_id") REFERENCES "happening"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "registration" ADD CONSTRAINT "registration_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "registration" ADD CONSTRAINT "registration_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "registration" ADD CONSTRAINT "registration_happening_slug_happening_slug_fk" FOREIGN KEY ("happening_slug") REFERENCES "happening"("slug") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "registration" ADD CONSTRAINT "registration_happening_id_happening_id_fk" FOREIGN KEY ("happening_id") REFERENCES "happening"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "registration" ADD CONSTRAINT "registration_spotrange_id_spot_range_id_fk" FOREIGN KEY ("spotrange_id") REFERENCES "spot_range"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -193,7 +222,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "spot_range" ADD CONSTRAINT "spot_range_happening_slug_happening_slug_fk" FOREIGN KEY ("happening_slug") REFERENCES "happening"("slug") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "spot_range" ADD CONSTRAINT "spot_range_happening_id_happening_id_fk" FOREIGN KEY ("happening_id") REFERENCES "happening"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

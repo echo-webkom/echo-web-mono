@@ -40,7 +40,7 @@ export default async function BedpresPage({ params }: Props) {
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <BedpresSidebar slug={params.slug} bedpres={bedpres} />
+        <BedpresSidebar bedpres={bedpres} />
 
         {/* Content */}
         <article className="w-full">

@@ -1,6 +1,6 @@
 "use server";
 
-import { and, asc, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
@@ -16,7 +16,7 @@ const registerPayloadSchema = z.object({
   ),
 });
 
-export async function register(slug: string, payload: z.infer<typeof registerPayloadSchema>) {
+export async function register(id: string, payload: z.infer<typeof registerPayloadSchema>) {
   try {
     const user = await getAuth();
 
@@ -37,7 +37,7 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
         and(
-          eq(registration.happeningSlug, slug),
+          eq(registration.happeningId, id),
           eq(registration.userId, user.id),
           eq(registration.status, "registered"),
         ),
@@ -51,7 +51,7 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
     }
 
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => eq(happening.slug, slug),
+      where: (happening) => eq(happening.id, id),
       with: {
         questions: true,
       },
@@ -79,12 +79,12 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
     }
 
     const spotRanges = await db.query.spotRanges.findMany({
-      where: (spotRange) => eq(spotRange.happeningSlug, slug),
+      where: (spotRange) => eq(spotRange.happeningId, id),
     });
     if (spotRanges.length === 0) {
       spotRanges.push({
         id: "default",
-        happeningSlug: happening.slug,
+        happeningId: happening.id,
         minYear: 0,
         maxYear: 1000,
         spots: 0,
@@ -118,35 +118,8 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
-    const registration = await db
-      .insert(registrations)
-      .values({
-        happeningSlug: happening.slug,
-        userId: user.id,
-        status: "waiting",
-      })
-      .onConflictDoUpdate({
-        target: [registrations.happeningSlug, registrations.userId],
-        where: and(
-          eq(registrations.happeningSlug, happening.slug),
-          eq(registrations.userId, user.id),
-        ),
-        set: {
-          status: "waiting",
-        },
-      })
-      .returning()
-      .then((res) => res[0] ?? null);
-
-    if (!registration) {
-      return {
-        success: false,
-        message: "En feil har oppstått",
-      };
-    }
-
     const answersToInsert = data.questions.map((question) => ({
-      happeningSlug: happening.slug,
+      happeningId: happening.id,
       userId: user.id,
       questionId: question.questionId,
       answer: question.answer,
@@ -156,60 +129,40 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       await db.insert(answers).values(answersToInsert);
     }
 
-    if (userSpotRange.spots === 0) {
-      await db
-        .update(registrations)
-        .set({
-          status: "registered",
-        })
-        .where(
-          and(eq(registrations.happeningSlug, happening.slug), eq(registrations.userId, user.id)),
-        );
-
-      return {
-        success: true,
-        message: "Du er påmeldt",
-      };
-    }
-
-    const currentlyRegistered = await db.query.registrations.findMany({
-      where: (registration) =>
-        and(eq(registration.happeningSlug, happening.slug), eq(registration.status, "registered")),
-      orderBy: (registration) => asc(registration.createdAt),
-      with: {
-        user: true,
+    const numRegistrations = await db.transaction(
+      async (tx) => {
+        return tx
+          .select({
+            count: sql<number>`count(*)`,
+          })
+          .from(registrations)
+          .where(
+            and(
+              eq(registrations.happeningId, happening.id),
+              eq(registrations.spotrangeId, userSpotRange.id),
+            ),
+          )
+          .then((res) => res[0]?.count ?? null);
       },
-    });
-
-    const registrationsInSameSpotRange = currentlyRegistered.filter((registration) => {
-      const user = registration.user;
-      return user.year! >= userSpotRange.minYear && user.year! <= userSpotRange.maxYear;
-    });
-
-    const userSpotIndex = registrationsInSameSpotRange.findIndex(
-      (r) => r.happeningSlug === registration.happeningSlug && r.userId === registration.userId,
+      {
+        isolationLevel: "serializable",
+      },
     );
-    const waitlistSpot = userSpotIndex - userSpotRange.spots;
-    const isWaitlisted = waitlistSpot >= 0;
 
-    if (!isWaitlisted) {
-      await db
-        .update(registrations)
-        .set({
-          status: "registered",
-        })
-        .where(
-          and(eq(registrations.happeningSlug, happening.slug), eq(registrations.userId, user.id)),
-        );
-    }
+    const isWatilisted =
+      typeof numRegistrations === "number" && numRegistrations >= userSpotRange.spots;
 
-    const message = isWaitlisted
-      ? `Du er på venteliste. Plass nr. ${waitlistSpot}`
-      : "Du er påmeldt";
+    const registration = await db.insert(registrations).values({
+      userId: user.id,
+      happeningId: happening.id,
+      spotrangeId: userSpotRange.id,
+      status: isWatilisted ? "waiting" : "registered",
+    });
 
     return {
       success: true,
-      message,
+      message: isWatilisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
+      registration,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
