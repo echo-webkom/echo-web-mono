@@ -21,7 +21,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "^0.28.6",
+    "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.3",
     "next-auth": "^4.24.4",
@@ -31,7 +31,7 @@
     "@types/node": "^20.8.7",
     "@types/pg": "^8.10.9",
     "dotenv-cli": "7.3.0",
-    "drizzle-kit": "^0.19.13",
+    "drizzle-kit": "^0.20.1",
     "eslint-config-webkom": "workspace:*",
     "tsx": "^4.0.0",
     "typescript": "5.2.2"
