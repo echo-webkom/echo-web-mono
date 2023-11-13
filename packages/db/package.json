@@ -25,10 +25,11 @@
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.3",
     "next-auth": "^4.24.4",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.8.7",
+    "@types/node": "18.18.9",
     "@types/pg": "^8.10.9",
     "dotenv-cli": "7.3.0",
     "drizzle-kit": "^0.20.1",
