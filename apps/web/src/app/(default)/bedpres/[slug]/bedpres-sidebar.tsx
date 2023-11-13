@@ -14,9 +14,9 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { isHost as _isHost } from "@/lib/is-host";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
-import { getUserStudentGroups } from "../../../../lib/queries/student-groups";
 
 type BedpresSidebarProps = {
   bedpres: Bedpres;
@@ -28,6 +28,11 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
     where: (happening) => eq(happening.id, bedpres._id),
     with: {
       questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
     },
   });
   const spotRanges = await db.query.spotRanges.findMany({
@@ -59,11 +64,9 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
+  const isHost = user && happening ? _isHost(user, happening) : false;
+
   const isUserComplete = user?.degreeId && user.year;
-
-  const userGroups = user ? await getUserStudentGroups(user.id) : [];
-
-  const isHost = userGroups.some((group) => group.groupId === "bedkom") || user?.type === "admin";
 
   return (
     <Sidebar>
@@ -260,7 +263,7 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {user && isHost && (
+      {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
             <Link href={`/dashbord/${bedpres.slug}`}>Admin dashbord</Link>

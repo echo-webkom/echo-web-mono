@@ -13,7 +13,7 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { getUserStudentGroups } from "@/lib/queries/student-groups";
+import { isHost as _isHost } from "@/lib/is-host";
 import { type Event } from "@/sanity/event";
 import { norwegianDateString } from "@/utils/date";
 
@@ -28,6 +28,11 @@ export async function EventSidebar({ event }: EventSidebarProps) {
     where: (happening) => eq(happening.id, event._id),
     with: {
       questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
     },
   });
   const spotRanges = await db.query.spotRanges.findMany({
@@ -60,12 +65,7 @@ export async function EventSidebar({ event }: EventSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
-  const userGroups = user ? await getUserStudentGroups(user.id) : [];
-
-  const isHost =
-    userGroups.some((group) =>
-      event.organizers.some((organizer) => group.groupId === organizer.slug),
-    ) || user?.type === "admin";
+  const isHost = user && happening ? _isHost(user, happening) : false;
 
   const isUserComplete = user?.degreeId && user.year;
 
@@ -228,10 +228,10 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {user && isHost && (
+      {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${event._id}`}>Admin dashbord</Link>
+            <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
         </SidebarItem>
       )}

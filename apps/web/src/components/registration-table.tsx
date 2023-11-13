@@ -16,6 +16,10 @@ import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Select } from "./ui/select";
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -76,38 +80,34 @@ export function RegistrationTable({
   };
 
   return (
-    <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
-      <div className="relative overflow-x-auto pt-2">
-        <div className="flex w-full gap-5 p-4 pt-0">
-          <div className="flex flex-col">
-            <span className="px-2">Søk:</span>
-            <input
-              className="sm:rounded-lg"
+    <div className="overflow-x-auto rounded-lg border shadow-md">
+      <div className="overflow-x-auto">
+        <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
+          <div className="flex w-full flex-col gap-1">
+            <Label htmlFor="search">Søk:</Label>
+            <Input
+              id="search"
               type="text"
               placeholder="Søk etter navn eller e-post"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex flex-col">
-            <span className="px-2">Trinn:</span>
-            <select
-              className="sm:rounded-lg"
-              value={yearFilter}
-              onChange={(e) => setYearFilter(e.target.value)}
-            >
+          <div className="flex w-full flex-col gap-1">
+            <Label htmlFor="year">Trinn:</Label>
+            <Select id="year" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)}>
               <option value="">Alle</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
-            </select>
+            </Select>
           </div>
-          <div className="flex flex-col">
-            <span className="px-2">Status:</span>
-            <select
-              className="sm:rounded-lg"
+          <div className="flex w-full flex-col gap-1">
+            <Label htmlFor="status">Status:</Label>
+            <Select
+              id="status"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -116,50 +116,51 @@ export function RegistrationTable({
               <option value="venteliste">Bare venteliste</option>
               <option value="avmeldt">Bare avmeldt</option>
               <option value="fjernet">Bare fjernet</option>
-            </select>
+            </Select>
           </div>
 
-          <div className="flex flex-col">
-            <span className="px-2">Undergruppe:</span>
-
-            <select
-              className="sm:rounded-lg"
-              value={groupFilter}
-              onChange={(e) => setGroupFilter(e.target.value)}
-            >
+          <div className="flex w-full flex-col gap-1">
+            <Label htmlFor="group">Undergruppe:</Label>
+            <Select id="group" value={groupFilter} onChange={(e) => setGroupFilter(e.target.value)}>
               <option value="">Alle</option>
               {studentGroups.map((group) => (
                 <option key={group.id}>{group.name}</option>
               ))}
-            </select>
+            </Select>
           </div>
-          <div className="flex flex-col justify-end">
+
+          <div className="mt-auto w-full max-w-fit">
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
-          <div className="flex flex-col justify-end">
+        </div>
+        <div className="flex flex-row justify-between px-4 py-2">
+          <div className="mt-auto w-full">
+            <RandomPersonButton registrations={registrations} setShowConfetti={setShowConfetti} />
             {showConfetti && (
-              <Confetti width={window.window.innerWidth} height={window.window.innerHeight} />
+              <Confetti
+                className="fixed left-0 top-0"
+                width={window.window.innerWidth}
+                height={window.window.innerHeight}
+              />
             )}
-            <RandomPersonButton
-              registrations={registrations}
-              setShowConfetti={setShowConfetti}
-            ></RandomPersonButton>
           </div>
         </div>
-        <div className="flex flex-row justify-between px-5 pb-2">
-          <span>Antall resultater: {filteredRegistrations.length}</span>
+
+        <div className="flex flex-row justify-between px-4 py-2">
+          <p>Antall resultater: {filteredRegistrations.length}</p>
+
           <div className="flex gap-2">
-            <span>Vis nummer</span>
-            <input
-              type="checkbox"
-              className="form-checkbox h-5 w-5 text-primary"
+            <Label htmlFor="show-index">Vis nummer</Label>
+            <Checkbox
+              id="show-index"
+              name="show-index"
               checked={showIndex}
-              onChange={(e) => setShowIndex(e.target.checked)}
+              onCheckedChange={(e) => setShowIndex(e === true)}
             />
           </div>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="overflow-x-auto">
           <table className="w-full table-auto text-left text-sm text-gray-500">
             <thead className="bg-gray-200 text-xs uppercase">
               <tr>

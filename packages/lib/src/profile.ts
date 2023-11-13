@@ -15,6 +15,6 @@ export const happeningTypeToString: Record<HappeningType, string> = {
 
 export const happeningTypeToPath: Record<HappeningType, string> = {
   bedpres: "/bedpres",
-  event: "/event",
-  external: "/event",
+  event: "/arrangement",
+  external: "/arrangement",
 };
