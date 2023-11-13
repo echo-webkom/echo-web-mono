@@ -24,7 +24,7 @@
     "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.3",
-    "next-auth": "^4.24.4",
+    "next-auth": "^4.24.5",
     "pg": "^8.11.3"
   },
   "devDependencies": {
