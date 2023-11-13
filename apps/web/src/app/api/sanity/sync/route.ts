@@ -83,6 +83,7 @@ export const GET = withBasicAuth(async () => {
         happeningId: h._id,
         title: q.title,
         required: q.required,
+        isSensitive: q.isSensitive,
         type: q.type,
         options: (q.options ?? []).map((o) => ({ id: o, value: o })),
       };

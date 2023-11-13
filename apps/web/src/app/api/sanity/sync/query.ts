@@ -18,6 +18,7 @@ export const happeningQuery = `
     title,
     required,
     type,
+    isSensitive,
     options,
   }
 }
@@ -40,6 +41,7 @@ export type HappeningQueryType = Array<{
   questions: Array<{
     title: string;
     required: boolean;
+    isSensitive: boolean;
     type: "text" | "textarea" | "checkbox" | "radio";
     options: Array<string> | null;
   }> | null;

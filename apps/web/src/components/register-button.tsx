@@ -25,6 +25,7 @@ import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { Textarea } from "./ui/textarea";
 
 type RegisterButtonProps = {
   id: string;
@@ -155,6 +156,17 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
                               </option>
                             ))}
                           </Select>
+                        </FormControl>
+                      )}
+
+                      {question.type === "textarea" && (
+                        <FormControl>
+                          <Textarea
+                            placeholder="Ditt svar..."
+                            {...field}
+                            value={field.value ?? ""}
+                            onChange={field.onChange}
+                          />
                         </FormControl>
                       )}
                       <FormMessage />

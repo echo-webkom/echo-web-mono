@@ -26,6 +26,7 @@ export default defineType({
       name: "type",
       title: "Spørsmålstype",
       type: "string",
+      initialValue: "text",
       options: {
         list: [
           { title: "Tekstfelt", value: "text" },
@@ -35,6 +36,17 @@ export default defineType({
         ],
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "isSensitive",
+      title: "Er dette et sensitivt spørsmål?",
+      description:
+        "Sensitive spørsmål er spørsmål om helse, allergier, osv. Disse spørsmålene vil også regelmessig bli slettet fra databasen.",
+      type: "boolean",
+      initialValue: false,
+      options: {
+        layout: "checkbox",
+      },
     }),
     defineField({
       name: "options",
