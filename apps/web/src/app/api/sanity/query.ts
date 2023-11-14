@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 export const happeningQuery = groq`
-*[_type == "event" || _type == "bedpres"
+*[(_type == "event" || _type == "bedpres")
   && _id == $id
   && !(_id in path('drafts.**'))] {
   _id,
