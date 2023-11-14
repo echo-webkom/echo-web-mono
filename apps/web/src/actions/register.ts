@@ -174,6 +174,8 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
         registration,
         isWaitlisted,
       };
+    }, {
+      isolationLevel: "serializable",
     });
 
     if (!registration) {
