@@ -139,44 +139,47 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
     /**
      * Check amount of registrations for spot range, and insert registration
      */
-    const { registration, isWaitlisted } = await db.transaction(async (tx) => {
-      const spotRangeRegistrations = await tx.query.registrations.findMany({
-        where: (registration) =>
-          and(
-            eq(registration.spotRangeId, userSpotRange.id),
-            eq(registration.status, "registered"),
-          ),
-      });
+    const { registration, isWaitlisted } = await db.transaction(
+      async (tx) => {
+        const spotRangeRegistrations = await tx.query.registrations.findMany({
+          where: (registration) =>
+            and(
+              eq(registration.spotRangeId, userSpotRange.id),
+              eq(registration.status, "registered"),
+            ),
+        });
 
-      const isWaitlisted = spotRangeRegistrations.length >= userSpotRange.spots;
+        const isWaitlisted = spotRangeRegistrations.length >= userSpotRange.spots;
 
-      /**
-       * Insert registration
-       */
-      const registration = await tx
-        .insert(registrations)
-        .values({
-          happeningId: happening.id,
-          userId: user.id,
-          spotRangeId: userSpotRange.id,
-          status: isWaitlisted ? "waiting" : "registered",
-        })
-        .onConflictDoUpdate({
-          set: {
-            status: sql`excluded.status`,
-          },
-          target: [registrations.happeningId, registrations.userId],
-        })
-        .returning()
-        .then((res) => res[0] ?? null);
+        /**
+         * Insert registration
+         */
+        const registration = await tx
+          .insert(registrations)
+          .values({
+            happeningId: happening.id,
+            userId: user.id,
+            spotRangeId: userSpotRange.id,
+            status: isWaitlisted ? "waiting" : "registered",
+          })
+          .onConflictDoUpdate({
+            set: {
+              status: sql`excluded.status`,
+            },
+            target: [registrations.happeningId, registrations.userId],
+          })
+          .returning()
+          .then((res) => res[0] ?? null);
 
-      return {
-        registration,
-        isWaitlisted,
-      };
-    }, {
-      isolationLevel: "serializable",
-    });
+        return {
+          registration,
+          isWaitlisted,
+        };
+      },
+      {
+        isolationLevel: "serializable",
+      },
+    );
 
     if (!registration) {
       throw new Error("Could not create registration");
