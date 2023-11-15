@@ -196,29 +196,29 @@ export default function EventFilter() {
   });
 
   return (
-    <div className="flex min-h-full flex-col gap-5">
-      <div className="flex items-center border-b-2 border-solid border-gray-400 border-opacity-20 pb-5 md:justify-between">
-        <div className="md:space-x-3">
-          <Button
+    <div className="flex min-h-full flex-col gap-5 mt-4">
+      <div className="flex items-center sm:flex-row flex-col border-b-2 border-solid border-gray-400 border-opacity-20 sm:pb-4 pb-8 sm:justify-between gap-10">
+        <div className="flex flex-col sm:flex-row flex-wrap space-x-0 lg:space-x-3">
+          <Button className="w-full sm:w-auto"
             variant={searchParams.type === "all" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "all" })}
           >
             Alle
           </Button>
-          <Button
+          <Button className="w-full sm:w-auto"
             variant={searchParams.type === "arrangement" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "arrangement" })}
           >
             Arrangementer
           </Button>
-          <Button
+          <Button className="w-full sm:w-auto"
             variant={searchParams.type === "bedpres" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "bedpres" })}
           >
             Bedriftspresentasjoner
           </Button>
         </div>
-        <div className="space-x-3">
+        <div className="flex flex-col sm:flex-row w-48 sm:w-auto flex-wrap justify-end lg:space-x-3">
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={searchParams.open ? "default" : "outline"}
