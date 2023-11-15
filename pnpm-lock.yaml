@@ -386,7 +386,7 @@ importers:
         specifier: 7.3.0
         version: 7.3.0
       drizzle-kit:
-        specifier: ^0.20.1
+        specifier: ^0.20.2
         version: 0.20.2
       eslint-config-webkom:
         specifier: workspace:*
