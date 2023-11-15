@@ -1,8 +1,12 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { index, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happenings, questions, registrations, users } from ".";
+
+type AnswerObj = {
+  answer: string | Array<string>;
+};
 
 export const answers = pgTable(
   "answer",
@@ -22,7 +26,7 @@ export const answers = pgTable(
       .references(() => questions.id, {
         onDelete: "cascade",
       }),
-    answer: text("answer"),
+    answer: json("answer").$type<AnswerObj>(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
