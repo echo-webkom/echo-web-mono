@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
@@ -10,6 +10,7 @@ import {
   registrations,
   spotRanges,
   type HappeningsToGroupsInsert,
+  type SpotRangeInsert,
 } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
@@ -107,7 +108,30 @@ export const POST = withBasicAuth(async (req) => {
    * Remove previous spot ranges and insert new ones
    */
 
+  await db.delete(spotRanges).where(eq(spotRanges.happeningId, res._id));
+
+  const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map(
+    (sr) =>
+      ({
+        happeningId: res._id,
+        spots: sr.spots,
+        minYear: sr.minYear,
+        maxYear: sr.maxYear,
+      }),
+  );
+
+  if (spotRangesToInsert.length > 0) {
+    await db.insert(spotRanges).values(spotRangesToInsert);
+  }
+
+
+  /**
+   * Remove previous questions and insert new ones
+   */
+  await db.delete(questions).where(eq(questions.happeningId, res._id));
+
   // TODO: Revalidate tag (bedpres or event)
+
 
   return NextResponse.json(
     {

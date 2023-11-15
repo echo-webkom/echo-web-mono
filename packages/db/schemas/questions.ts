@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { boolean, json, pgTable, primaryKey, text, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
@@ -27,8 +27,9 @@ export const questions = pgTable(
         onDelete: "cascade",
       }),
   },
-  (q) => ({
-    pk: primaryKey({ columns: [q.id] }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.id] }),
+    uniqueHappeningIdTitle: uniqueIndex("happening_id_title").on(table.title, table.happeningId),
   }),
 );
 

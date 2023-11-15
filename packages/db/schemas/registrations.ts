@@ -1,8 +1,8 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { answers, happenings, registrationStatusEnum, spotRanges, users } from ".";
+import { answers, happenings, registrationStatusEnum, users } from ".";
 
 export const registrations = pgTable(
   "registration",
@@ -17,9 +17,6 @@ export const registrations = pgTable(
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    spotRangeId: varchar("spot_range_id").references(() => spotRanges.id, {
-      onDelete: "cascade",
-    }),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -38,10 +35,6 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
   user: one(users, {
     fields: [registrations.userId],
     references: [users.id],
-  }),
-  spotRange: one(spotRanges, {
-    fields: [registrations.spotRangeId],
-    references: [spotRanges.id],
   }),
   answers: many(answers),
 }));

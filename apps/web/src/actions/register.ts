@@ -141,15 +141,23 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
      */
     const { registration, isWaitlisted } = await db.transaction(
       async (tx) => {
-        const spotRangeRegistrations = await tx.query.registrations.findMany({
-          where: (registration) =>
-            and(
-              eq(registration.spotRangeId, userSpotRange.id),
-              eq(registration.status, "registered"),
-            ),
+        const spotRangeRegistrations = (
+          await tx.query.registrations.findMany({
+            where: (registration) => and(eq(registration.status, "registered")),
+            with: {
+              user: true,
+            },
+          })
+        ).filter((registration) => {
+          if (!registration.user.year) {
+            return false;
+          }
+          const userSpotRange = getCorrectSpotrange(registration.user.year, spotRanges);
+          return userSpotRange?.id === userSpotRange?.id;
         });
 
-        const isWaitlisted = spotRangeRegistrations.length >= userSpotRange.spots;
+        const isWaitlisted =
+          userSpotRange.spots === 0 || spotRangeRegistrations.length >= userSpotRange.spots;
 
         /**
          * Insert registration
@@ -159,7 +167,6 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
           .values({
             happeningId: happening.id,
             userId: user.id,
-            spotRangeId: userSpotRange.id,
             status: isWaitlisted ? "waiting" : "registered",
           })
           .onConflictDoUpdate({

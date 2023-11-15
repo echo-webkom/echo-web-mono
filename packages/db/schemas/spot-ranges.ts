@@ -3,7 +3,7 @@ import { integer, pgTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm/
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happenings, registrations } from ".";
+import { happenings } from ".";
 
 export const spotRanges = pgTable(
   "spot_range",
@@ -30,12 +30,11 @@ export const spotRanges = pgTable(
   }),
 );
 
-export const spotRangesRelations = relations(spotRanges, ({ one, many }) => ({
+export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
   event: one(happenings, {
     fields: [spotRanges.happeningId],
     references: [happenings.id],
   }),
-  registrations: many(registrations),
 }));
 
 export type SpotRange = (typeof spotRanges)["$inferSelect"];

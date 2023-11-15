@@ -38,6 +38,7 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
   const spotRanges = await db.query.spotRanges.findMany({
     where: (spotRange) => eq(spotRange.happeningId, bedpres._id),
   });
+
   const registrations = await db.query.registrations.findMany({
     where: (registration) => eq(registration.happeningId, bedpres._id),
     with: {

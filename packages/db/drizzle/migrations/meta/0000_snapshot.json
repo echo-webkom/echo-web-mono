@@ -1,8 +1,8 @@
 {
+  "id": "bbd6e244-0f39-44d3-8d17-35102f6625cd",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
-  "id": "a92e9068-c3f3-4591-aeac-f34e524b862f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
       "name": "account",
@@ -406,6 +406,13 @@
           "notNull": true,
           "default": "'text'"
         },
+        "is_sensitive": {
+          "name": "is_sensitive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "options": {
           "name": "options",
           "type": "json",
@@ -414,7 +421,7 @@
         },
         "happening_id": {
           "name": "happening_id",
-          "type": "text",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         }
@@ -460,12 +467,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "spot_range_id": {
-          "name": "spot_range_id",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
         },
         "status": {
           "name": "status",
@@ -523,19 +524,6 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        },
-        "registration_spot_range_id_spot_range_id_fk": {
-          "name": "registration_spot_range_id_spot_range_id_fk",
-          "tableFrom": "registration",
-          "tableTo": "spot_range",
-          "columnsFrom": [
-            "spot_range_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -556,7 +544,7 @@
         "session_token": {
           "name": "session_token",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "user_id": {
@@ -588,7 +576,14 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "session_session_token": {
+          "name": "session_session_token",
+          "columns": [
+            "session_token"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "site_feedback": {
@@ -598,7 +593,7 @@
         "id": {
           "name": "id",
           "type": "varchar",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -642,7 +637,14 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "site_feedback_id": {
+          "name": "site_feedback_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "spot_range": {
@@ -652,7 +654,7 @@
         "id": {
           "name": "id",
           "type": "varchar",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "happening_id": {
@@ -680,7 +682,17 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_min_year_max_year": {
+          "name": "happening_id_min_year_max_year",
+          "columns": [
+            "happening_id",
+            "min_year",
+            "max_year"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "spot_range_happening_id_happening_id_fk": {
           "name": "spot_range_happening_id_happening_id_fk",
@@ -696,7 +708,14 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "spot_range_id": {
+          "name": "spot_range_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "users_to_groups": {
