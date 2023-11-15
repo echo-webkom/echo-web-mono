@@ -28,7 +28,7 @@ export const questions = pgTable(
       }),
   },
   (q) => ({
-    pk: primaryKey(q.id),
+    pk: primaryKey({ columns: [q.id] }),
   }),
 );
 

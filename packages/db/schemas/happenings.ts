@@ -16,7 +16,7 @@ export const happenings = pgTable(
     registrationEnd: timestamp("registration_end"),
   },
   (e) => ({
-    pk: primaryKey(e.id),
+    pk: primaryKey({ columns: [e.id] }),
     typeIdx: index("type_idx").on(e.type),
     slugIdx: uniqueIndex("slug_idx").on(e.slug),
   }),

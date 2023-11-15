@@ -18,7 +18,7 @@ export const users = pgTable(
     type: userTypeEnum("type").notNull().default("student"),
   },
   (table) => ({
-    pk: primaryKey(table.id),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 

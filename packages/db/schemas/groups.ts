@@ -16,7 +16,7 @@ export const groups = pgTable(
     leader: text("leader").references(() => users.id),
   },
   (table) => ({
-    pk: primaryKey(table.id),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 

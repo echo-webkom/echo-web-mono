@@ -9,7 +9,7 @@ export const whitelist = pgTable(
     reason: text("reason").notNull(),
   },
   (table) => ({
-    pk: primaryKey(table.email),
+    pk: primaryKey({ columns: [table.email] }),
   }),
 );
 

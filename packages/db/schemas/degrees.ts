@@ -14,7 +14,7 @@ export const degrees = pgTable(
     name: varchar("name").notNull(),
   },
   (table) => ({
-    pk: primaryKey(table.id),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 

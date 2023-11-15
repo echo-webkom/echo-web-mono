@@ -25,7 +25,7 @@ export const registrations = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.happeningId),
+    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
     statusIdx: index("status_idx").on(table.status),
   }),
 );

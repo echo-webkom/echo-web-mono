@@ -3,7 +3,14 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
-import { happenings } from "@echo-webkom/db/schemas";
+import {
+  happenings,
+  happeningsToGroups,
+  questions,
+  registrations,
+  spotRanges,
+  type HappeningsToGroupsInsert,
+} from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
@@ -28,6 +35,10 @@ export const POST = withBasicAuth(async (req) => {
 
   if (shouldDelete) {
     await db.delete(happenings).where(eq(happenings.id, payload._id));
+    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, payload._id));
+    await db.delete(questions).where(eq(questions.happeningId, payload._id));
+    await db.delete(spotRanges).where(eq(spotRanges.happeningId, payload._id));
+    await db.delete(registrations).where(eq(registrations.happeningId, payload._id));
 
     // TODO: Revalidate tags (bedpres or event)
 
@@ -41,6 +52,9 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
+  /**
+   * Update or insert happening
+   */
   await db
     .insert(happenings)
     .values({
@@ -64,6 +78,34 @@ export const POST = withBasicAuth(async (req) => {
       where: eq(happenings.id, res._id),
       target: happenings.id,
     });
+
+  /**
+   * Remove previous group mappings and insert new ones
+   */
+  await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, res._id));
+
+  if (res._type === "bedpres") {
+    await db.insert(happeningsToGroups).values({
+      happeningId: res._id,
+      groupId: "bedkom",
+    });
+  } else {
+    const happeningsToGroupsToInsert = res.groups.map(
+      (g) =>
+        ({
+          happeningId: res._id,
+          groupId: g,
+        }) satisfies HappeningsToGroupsInsert,
+    );
+
+    if (happeningsToGroupsToInsert.length > 0) {
+      await db.insert(happeningsToGroups).values(happeningsToGroupsToInsert);
+    }
+  }
+
+  /**
+   * Remove previous spot ranges and insert new ones
+   */
 
   // TODO: Revalidate tag (bedpres or event)
 

@@ -75,7 +75,7 @@ export const GET = withBasicAuth(async () => {
     await db.insert(spotRanges).values(spotRangesToInsert);
   }
 
-  await db.execute(sql`TRUNCATE TABLE question CASCADE;`);
+  await db.execute(sql`TRUNCATE TABLE ${questions} CASCADE;`);
 
   const questionsToInsert = formattedHappenings.flatMap((h) => {
     return (h.questions ?? []).map((q) => {

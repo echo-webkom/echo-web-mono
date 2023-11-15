@@ -13,7 +13,7 @@ export const happeningsToGroups = pgTable(
     groupId: varchar("group_id").notNull(),
   },
   (table) => ({
-    pk: primaryKey(table.happeningId, table.groupId),
+    pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
   }),
 );
 

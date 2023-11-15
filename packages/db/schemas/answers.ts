@@ -25,7 +25,7 @@ export const answers = pgTable(
     answer: text("answer"),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.happeningId, table.questionId),
+    pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
     questionIdx: index("question_idx").on(table.questionId),
   }),
 );
