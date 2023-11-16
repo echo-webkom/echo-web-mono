@@ -16,7 +16,7 @@
     "db:check": "pnpm with-env tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev": "pnpm with-env drizzle-kit studio --port 4000",
+    "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
