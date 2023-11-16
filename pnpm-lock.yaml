@@ -39,7 +39,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.8.0
+        specifier: ^6.8.1
         version: 6.8.4
       '@sanity/icons':
         specifier: ^2.7.0
