@@ -44,7 +44,7 @@
     "clsx": "^2.0.0",
     "date-fns": "2.30.0",
     "drizzle-orm": "^0.29.0",
-    "framer-motion": "10.16.4",
+    "framer-motion": "10.16.5",
     "next": "14.0.2",
     "next-auth": "^4.24.5",
     "next-sanity": "6.0.1",
