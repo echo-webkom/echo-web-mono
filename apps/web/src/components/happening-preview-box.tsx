@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon , CalendarIcon} from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import nb from "date-fns/locale/nb";
 
@@ -62,23 +62,23 @@ export function EventPreview({ event }: EventPreviewProps) {
   return (
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
-        <div className="overflow-x-hidden">
-          <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
+        <div className="flex w-full justify-between overflow-x-hidden">
+          <h3 className="my-auto line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
           <ul className="text-sm md:text-base">
-            <li>
+            {/* <li>
               <span className="font-semibold">Gruppe:</span>{" "}
               {capitalize(event.organizers.map((o) => o.name).join(", "))}
-            </li>
+            </li> */}
             {event.date && (
-              <li>
-                <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(event.date), "d. MMMM yyyy", { locale: nb })}
+              <li className="flex justify-end">
+                <CalendarIcon className="my-auto mr-2" />
+                {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
             )}
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
               {event.registrationStart
-                ? format(new Date(event.registrationStart), "d. MMMM yyyy", {
+                ? format(new Date(event.registrationStart), "dd. MMM", {
                     locale: nb,
                   })
                 : "Påmelding åpner snart"}
@@ -109,19 +109,21 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
             )}
           </div>
         </div>
-        <div className="overflow-x-hidden">
-          <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{bedpres.title}</h3>
+        <div className="flex flex-1 justify-between overflow-x-hidden">
+          <h3 className="my-auto line-clamp-1 text-lg font-semibold md:text-2xl">
+            {bedpres.title}
+          </h3>
           <ul className="text-sm md:text-base">
             {bedpres.date && (
-              <li>
-                <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(bedpres.date), "d. MMMM yyyy", { locale: nb })}
+              <li className="flex justify-end">
+                <CalendarIcon className="my-auto mr-2" />
+                {format(new Date(bedpres.date), "dd. MMM", { locale: nb })}
               </li>
             )}
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
               {bedpres.registrationStart
-                ? format(new Date(bedpres.registrationStart), "d. MMMM yyyy", {
+                ? format(new Date(bedpres.registrationStart), "dd. MMM", {
                     locale: nb,
                   })
                 : "Påmelding åpner snart"}
