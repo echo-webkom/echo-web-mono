@@ -386,8 +386,8 @@ importers:
         specifier: 7.3.0
         version: 7.3.0
       drizzle-kit:
-        specifier: ^0.20.1
-        version: 0.20.2
+        specifier: ^0.20.4
+        version: 0.20.4
       eslint-config-webkom:
         specifier: workspace:*
         version: link:../eslint
@@ -7622,8 +7622,8 @@ packages:
       wordwrap: 1.0.0
     dev: true
 
-  /drizzle-kit@0.20.2:
-    resolution: {integrity: sha512-4iwjsIj2sY3B3MleKeyNzg/6myjXbTE/CBOXwfePoRVXayM3VwHGZboMkxUkmIQk6o7UAKRb2ODDpO24YNoL2g==}
+  /drizzle-kit@0.20.4:
+    resolution: {integrity: sha512-pfaryOMS4jtQ6PNIanggsXqZnl34nMeoFd6Mmc9mZA+amSym0izLTuOO3xnivPT2BDsDVOoPhrC47QzKij7fRA==}
     hasBin: true
     dependencies:
       '@drizzle-team/studio': 0.0.27
