@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: ^6.8.1
-        version: 6.8.4
+        specifier: ^6.8.6
+        version: 6.8.6
       '@sanity/icons':
         specifier: ^2.7.0
         version: 2.7.0(react@18.2.0)
@@ -246,7 +246,7 @@ importers:
         version: 4.24.5(next@14.0.2)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 6.0.1
-        version: 6.0.1(@sanity/client@6.8.4)(@sanity/icons@2.7.0)(@sanity/types@3.19.2)(@sanity/ui@1.8.3)(next@14.0.2)(react@18.2.0)(sanity@3.19.2)(styled-components@5.3.11)
+        version: 6.0.1(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.19.2)(@sanity/ui@1.8.3)(next@14.0.2)(react@18.2.0)(sanity@3.19.2)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4729,8 +4729,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.8.4:
-    resolution: {integrity: sha512-ewmfiN54qy7cHiZFFFLq2+L/5gR8vnJT8LYoe1Cyw76aZNDEDUtEHuyIZbEy5LovAmW2CJVs3I+GV6vxJwsrfw==}
+  /@sanity/client@6.8.6:
+    resolution: {integrity: sha512-Va4KZ4mRnyIbV+61VIJ+Op/amNAwWTo/ET3egtnEqPuXYLg60VWffNoAtAjuaZ5qM9BpTOCGJZjTKCHq+/5CEw==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.1
@@ -4930,7 +4930,7 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit@3.2.6(@sanity/client@6.8.4)(react@18.2.0):
+  /@sanity/preview-kit@3.2.6(@sanity/client@6.8.6)(react@18.2.0):
     resolution: {integrity: sha512-TsqAbw/YikixLQ6Brphc8fkldBS3aTRWU5i+pAW4Lk9ywNCYqarKyXfMXGHjhb8eK7QQBnKQoQ93sPzKB9tz3w==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4940,7 +4940,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@sanity/client': 6.8.4
+      '@sanity/client': 6.8.6
       '@sanity/eventsource': 5.0.1
       '@sanity/groq-store': 4.1.3
       '@vercel/stega': 0.1.0
@@ -4972,7 +4972,7 @@ packages:
   /@sanity/types@3.19.1:
     resolution: {integrity: sha512-v6YiiI78V4ea7CsaHeDlV2JnlhuwXkFgSgnWZAunJ0N42FOXw8C7K2+SrmASoltANMPPVljEe5etSVJqLeFsMQ==}
     dependencies:
-      '@sanity/client': 6.8.4
+      '@sanity/client': 6.8.6
       '@types/react': 18.2.37
     transitivePeerDependencies:
       - supports-color
@@ -4981,7 +4981,7 @@ packages:
   /@sanity/types@3.19.2:
     resolution: {integrity: sha512-kTT/+G8yLYZAnauxANrQxxW9QRYt33Mv6xDu4IHcvmFDOXzZLtW6tazOuSwgkMzBSpl8PCkU4fKSGU2myRf7SA==}
     dependencies:
-      '@sanity/client': 6.8.4
+      '@sanity/client': 6.8.6
       '@types/react': 18.2.37
     transitivePeerDependencies:
       - supports-color
@@ -11557,7 +11557,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@6.0.1(@sanity/client@6.8.4)(@sanity/icons@2.7.0)(@sanity/types@3.19.2)(@sanity/ui@1.8.3)(next@14.0.2)(react@18.2.0)(sanity@3.19.2)(styled-components@5.3.11):
+  /next-sanity@6.0.1(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.19.2)(@sanity/ui@1.8.3)(next@14.0.2)(react@18.2.0)(sanity@3.19.2)(styled-components@5.3.11):
     resolution: {integrity: sha512-4hwusvA5Iw5ZbH1CbSVYmuXJB/6NzKe/apMb7dLaJPT02L2UQQNzhHjO/cxhXpr74962+IxCaARnJfrlNXjt5Q==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -11570,9 +11570,9 @@ packages:
       sanity: ^3.19
       styled-components: ^5.2 || ^6.0
     dependencies:
-      '@sanity/client': 6.8.4
+      '@sanity/client': 6.8.6
       '@sanity/icons': 2.7.0(react@18.2.0)
-      '@sanity/preview-kit': 3.2.6(@sanity/client@6.8.4)(react@18.2.0)
+      '@sanity/preview-kit': 3.2.6(@sanity/client@6.8.6)(react@18.2.0)
       '@sanity/types': 3.19.2
       '@sanity/ui': 1.8.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 3.0.1
@@ -13778,7 +13778,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.19.2
       '@sanity/cli': 3.19.2
-      '@sanity/client': 6.8.4
+      '@sanity/client': 6.8.6
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.19.2
       '@sanity/diff-match-patch': 3.1.1
