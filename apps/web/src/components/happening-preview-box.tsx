@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon , CalendarIcon} from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, isAfter } from "date-fns";
 import nb from "date-fns/locale/nb";
 
 import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
@@ -36,7 +36,7 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
       <hr className="my-3" />
 
       {happenings.length > 0 ? (
-        <ul className="flex h-full flex-col divide-y">
+        <ul className="flex h-full flex-col divide-y ">
           {happenings.map((happening) => (
             <li key={happening._id} className="py-3 h-28">
               {type === "event" && <EventPreview event={happening} />}
@@ -63,7 +63,9 @@ export function EventPreview({ event }: EventPreviewProps) {
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="flex w-full justify-between overflow-x-hidden">
-          <h3 className="my-auto line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
+          <h3 className="text-md my-auto line-clamp-1 text-lg font-semibold sm:text-2xl">
+            {event.title}
+          </h3>
           <ul className="text-sm md:text-base">
             {/* <li>
               <span className="font-semibold">Gruppe:</span>{" "}
@@ -76,12 +78,12 @@ export function EventPreview({ event }: EventPreviewProps) {
               </li>
             )}
             <li>
-              <span className="font-semibold">Påmelding:</span>{" "}
               {event.registrationStart
-                ? format(new Date(event.registrationStart), "dd. MMM", {
-                    locale: nb,
-                  })
-                : "Påmelding åpner snart"}
+                ? isAfter(new Date(), new Date(event.registrationStart))
+                  ? "Påmeldingen er åpen"
+                  : "Påmelding:" +
+                    format(new Date(event.registrationStart), "dd. MMM", { locale: nb })
+                : "Ingen påmelding"}
             </li>
           </ul>
         </div>
