@@ -70,4 +70,61 @@
   ::selection {
     background: var(--wave);
   }
+  
+  .dark {
+    --background: #171923;
+    --foreground: #f9fafb;
+
+    --muted: #1e202a;
+    --muted-foreground: #64748b;
+
+    --popover: #f9fafb;
+    --popover-foreground: #171923;
+
+    --card: #f9fafb;
+    --card-foreground: #171923;
+
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+
+    --primary: #f9fafb;
+    --primary-foreground: #008fa3;
+
+    --secondary: #fed879;
+    --secondary-foreground: #171923;
+
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
+
+    --success: #48bb78;
+    --success-foreground: #f9fafb;
+
+    --destructive: #e53e3e;
+    --destructive-foreground: #f9fafb;
+
+    --warning: #f6ad55;
+    --warning-foreground: #171923;
+
+    --info: #3182ce;
+    --info-foreground: #f9fafb;
+
+    --banner: #53adbd;
+
+    --wave: #ffeabb;
+
+    --ring: #94a3b8;
+
+    --radius: 0.5rem;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

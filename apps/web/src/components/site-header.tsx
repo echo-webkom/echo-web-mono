@@ -8,6 +8,7 @@ import { MobileNavigation } from "./mobile-navigation";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
+import ModeToggle from "./theme-switch-button";
 
 export async function SiteHeader() {
   const user = await getAuth();
@@ -22,7 +23,8 @@ export async function SiteHeader() {
             <HeaderLogo />
             <DesktopNavigation />
           </div>
-          <div className="flex items-center">
+          <div className="flex space-x-2 items-center">
+          <ModeToggle />
             {user ? (
               <UserMenu user={user} />
             ) : (
@@ -30,6 +32,7 @@ export async function SiteHeader() {
                 <Link href="/auth/logg-inn">Logg inn</Link>
               </Button>
             )}
+            
             <MobileNavigation />
           </div>
         </header>
