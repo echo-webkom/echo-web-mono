@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-webkom/db/schemas";
+import {
+  happenings,
+  happeningsToGroups,
+  questions,
+  spotRanges,
+  type QuestionInsert,
+} from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
@@ -77,9 +83,10 @@ export const GET = withBasicAuth(async () => {
 
   await db.execute(sql`TRUNCATE TABLE ${questions} CASCADE;`);
 
-  const questionsToInsert = formattedHappenings.flatMap((h) => {
+  const questionsToInsert: Array<QuestionInsert> = formattedHappenings.flatMap((h) => {
     return (h.questions ?? []).map((q) => {
       return {
+        id: q.id,
         happeningId: h._id,
         title: q.title,
         required: q.required,

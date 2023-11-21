@@ -1,8 +1,14 @@
 import { relations } from "drizzle-orm";
-import { boolean, json, pgTable, primaryKey, text, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  json,
+  pgTable,
+  primaryKey,
+  text,
+  uniqueIndex,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { nanoid } from "nanoid";
-
 import { answers, happenings, questionTypeEnum } from ".";
 
 type Option = {
@@ -13,9 +19,7 @@ type Option = {
 export const questions = pgTable(
   "question",
   {
-    id: varchar("id")
-      .notNull()
-      .$defaultFn(() => nanoid()),
+    id: varchar("id").notNull(),
     title: text("title").notNull(),
     required: boolean("required").notNull().default(false),
     type: questionTypeEnum("type").notNull().default("text"),

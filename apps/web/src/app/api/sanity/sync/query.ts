@@ -15,6 +15,7 @@ export const happeningQuery = `
     maxYear,
   },
   "questions": additionalQuestions[] {
+    id,
     title,
     required,
     type,
@@ -39,6 +40,7 @@ export type HappeningQueryType = Array<{
     maxYear: number;
   }> | null;
   questions: Array<{
+    id: string;
     title: string;
     required: boolean;
     isSensitive: boolean;

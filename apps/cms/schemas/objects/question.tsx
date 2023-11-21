@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { InfoOutlineIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
@@ -6,6 +7,13 @@ export default defineType({
   title: "Spørsmål",
   type: "object",
   fields: [
+    defineField({
+      name: "id",
+      title: "ID",
+      type: "string",
+      initialValue: () => crypto.randomBytes(16).toString("hex").slice(0, 8),
+      hidden: true,
+    }),
     defineField({
       name: "title",
       title: "Spørsmål",

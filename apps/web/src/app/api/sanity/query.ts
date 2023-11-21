@@ -18,6 +18,7 @@ export const happeningQuery = groq`
     maxYear,
   },
   "questions": additionalQuestions[] {
+    id,
     title,
     required,
     type,
@@ -41,6 +42,7 @@ export type SanityHappening = {
     maxYear: number;
   }> | null;
   questions: Array<{
+    id: string;
     title: string;
     required: boolean;
     type: "text" | "textarea" | "checkbox" | "radio";

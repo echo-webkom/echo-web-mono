@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -11,6 +11,7 @@ import {
   spotRanges,
   type HappeningsToGroupsInsert,
   type SpotRangeInsert,
+  type QuestionInsert,
 } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
@@ -125,10 +126,45 @@ export const POST = withBasicAuth(async (req) => {
   }
 
 
-  /**
-   * Remove previous questions and insert new ones
-   */
-  await db.delete(questions).where(eq(questions.happeningId, res._id));
+  const currentQuestions = await db.query.questions.findMany(
+    {
+      where: eq(questions.happeningId, res._id),
+    }
+  );
+
+
+  const questionsToDelete = currentQuestions.filter((q) => !res.questions?.map((newQuestion) => newQuestion.title).includes(q.title));
+
+  for (const question of questionsToDelete) {
+    await db.delete(questions).where(eq(questions.id, question.id));
+  }
+
+
+  const questionsToInsert: Array<QuestionInsert> = (res.questions ?? []).map((q) => ({
+    id: q.id,
+    happeningId: res._id,
+    title: q.title,
+    required: q.required,
+    type: q.type,
+    options: q.options?.map((o) => ({
+      id: o,
+      value: o,
+      })),
+  }));
+
+
+  if (questionsToInsert.length > 0) {
+    await db.insert(questions).values(questionsToInsert).onConflictDoUpdate({
+      target: questions.id,
+      set: {
+        title: sql`excluded."title"`,
+        required: sql`excluded."required"`,
+        type: sql`excluded."type"`,
+        options: sql`excluded."options"`,
+        isSensitive: sql`excluded."is_sensitive"`,
+      },
+    });
+  }
 
   // TODO: Revalidate tag (bedpres or event)
 
