@@ -196,29 +196,32 @@ export default function EventFilter() {
   });
 
   return (
-    <div className="flex min-h-full flex-col gap-5 mt-4">
-      <div className="flex items-center sm:flex-row flex-col border-b-2 border-solid border-gray-400 border-opacity-20 sm:pb-4 pb-8 sm:justify-between gap-10">
-        <div className="flex flex-col sm:flex-row flex-wrap space-x-0 lg:space-x-3">
-          <Button className="w-full sm:w-auto"
+    <div className="mt-4 flex min-h-full flex-col gap-5">
+      <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-gray-400 border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
+        <div className="flex flex-col flex-wrap space-x-0 sm:flex-row lg:space-x-3">
+          <Button
+            className="w-full sm:w-auto"
             variant={searchParams.type === "all" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "all" })}
           >
             Alle
           </Button>
-          <Button className="w-full sm:w-auto"
+          <Button
+            className="w-full sm:w-auto"
             variant={searchParams.type === "arrangement" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "arrangement" })}
           >
             Arrangementer
           </Button>
-          <Button className="w-full sm:w-auto"
+          <Button
+            className="w-full sm:w-auto"
             variant={searchParams.type === "bedpres" ? "default" : "outline"}
             onClick={() => setSearchParams({ ...searchParams, type: "bedpres" })}
           >
             Bedriftspresentasjoner
           </Button>
         </div>
-        <div className="flex flex-col sm:flex-row w-48 sm:w-auto flex-wrap justify-end lg:space-x-3">
+        <div className="flex w-48 flex-col flex-wrap justify-end sm:w-auto sm:flex-row lg:space-x-3">
           <Button
             className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
             variant={searchParams.open ? "default" : "outline"}
