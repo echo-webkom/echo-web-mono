@@ -11,7 +11,6 @@ runs:
 
     - name: Install pnpm
       uses: pnpm/action-setup@v2
-      id: pnpm-install
       with:
         run_install: false
 

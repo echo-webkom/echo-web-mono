@@ -15,6 +15,16 @@
       "persistent": true,
       "cache": false
     },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
+    "test:e2e:ui": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
+    },
     "test:unit": {},
     "lint": {},
     "typecheck": {
@@ -33,6 +43,7 @@
     "NODE_ENV",
     "VERCEL_ENV",
     "DATABASE_URL",
+    "TEST_DATABASE_URL",
     "NEXTAUTH_SECRET",
     "NEXTAUTH_URL",
     "FEIDE_CLIENT_ID",
@@ -42,6 +53,7 @@
     "ADMIN_KEY",
     "NEXT_PUBLIC_SANITY_DATASET",
     "SKIP_ENV_VALIDATION",
+    "TESTING",
     "VERCEL",
     "VERCEL_URL",
     "PORT"

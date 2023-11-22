@@ -1,7 +1,22 @@
 import { expect, test } from "@playwright/test";
 
-test("test", async ({ page }) => {
+test("login as non-member", async ({ page }) => {
+  test.skip(process.env.CI === "true", "Doesn't work in CI");
+
   await page.goto("/");
-  await page.getByRole("link", { name: "Logg inn" }).nth(0).click();
-  await expect(page.getByRole("button", { name: "Logg inn med Feide" })).toBeVisible();
+
+  await page.getByRole("banner").getByRole("link", { name: "Logg inn" }).click();
+  await page.getByRole("button", { name: "Logg inn med Feide" }).click();
+
+  await page.getByPlaceholder("Search or choose from the list").click();
+  await page.getByLabel("Feide test users").click();
+
+  await page.getByLabel("Username").fill("marit789faculty");
+  await page.getByLabel("Password", { exact: true }).fill("098asd");
+
+  await page.getByRole("button", { name: "Log in" }).click();
+
+  await page.waitForLoadState("load");
+
+  await expect(page.getByText("Grunn: NOT_MEMBER_OF_ECHO")).toBeVisible();
 });

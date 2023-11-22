@@ -85,7 +85,11 @@ export const updateUser = async (
     const data = await updateUserPayloadSchema.parseAsync(payload);
 
     await db.delete(usersToGroups).where(eq(usersToGroups.userId, userId));
-    await db.insert(usersToGroups).values(data.memberships.map((groupId) => ({ userId, groupId })));
+    if (data.memberships.length > 0) {
+      await db
+        .insert(usersToGroups)
+        .values(data.memberships.map((groupId) => ({ userId, groupId })));
+    }
     await db.update(users).set({ type: data.type }).where(eq(users.id, userId));
 
     return {

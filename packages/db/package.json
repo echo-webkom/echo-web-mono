@@ -11,8 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
     "db:generate": "pnpm with-env drizzle-kit generate:pg",
-    "db:migrate": "pnpm with-env tsx ./drizzle/migrate",
-    "db:seed": "pnpm with-env tsx ./drizzle/seed",
+    "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
+    "db:seed": "pnpm with-env tsx ./drizzle/seed.ts",
+    "db:check": "pnpm with-env tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "dev": "pnpm with-env drizzle-kit studio --port 4000",
@@ -20,20 +21,19 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "^0.28.6",
+    "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
-    "nanoid": "^5.0.2",
-    "next-auth": "^4.24.4",
-    "postgres": "^3.4.3"
+    "nanoid": "^5.0.3",
+    "next-auth": "^4.24.5",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
-    "@types/pg": "^8.10.7",
+    "@types/pg": "^8.10.9",
     "dotenv-cli": "7.3.0",
-    "drizzle-kit": "^0.19.13",
+    "drizzle-kit": "^0.20.1",
     "eslint-config-webkom": "workspace:*",
-    "pg": "^8.11.3",
-    "tsx": "^3.14.0",
+    "tsx": "^4.1.3",
     "typescript": "5.2.2"
   },
   "eslintConfig": {

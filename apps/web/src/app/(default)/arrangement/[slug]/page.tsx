@@ -1,3 +1,4 @@
+import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -15,7 +16,7 @@ type Props = {
   };
 };
 
-async function getData(slug: string) {
+const getData = cache(async (slug: string) => {
   const event = await fetchEventBySlug(slug);
 
   if (!event) {
@@ -23,7 +24,7 @@ async function getData(slug: string) {
   }
 
   return event;
-}
+});
 
 export async function generateMetadata({ params }: Props) {
   const event = await getData(params.slug);

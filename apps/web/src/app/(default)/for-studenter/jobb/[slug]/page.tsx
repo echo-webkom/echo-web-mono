@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
@@ -11,7 +12,7 @@ type Props = {
   };
 };
 
-async function getData(slug: Props["params"]["slug"]) {
+const getData = cache(async (slug: Props["params"]["slug"]) => {
   const jobAd = await fetchJobAdBySlug(slug);
 
   if (!jobAd) {
@@ -19,7 +20,7 @@ async function getData(slug: Props["params"]["slug"]) {
   }
 
   return jobAd;
-}
+});
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = params;
