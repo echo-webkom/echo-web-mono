@@ -4,5 +4,8 @@
     { "pattern": "apps/*/" },
     { "pattern": "packages/*/" },
     { "pattern": "playwright/" }
-  ]
+  ],
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": true
 }

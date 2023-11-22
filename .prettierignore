@@ -6,6 +6,9 @@ node_modules/
 .sanity/
 .docusaurus/
 
+# Deno
+/services/cron/
+
 # Builds
 dist/
 build/
