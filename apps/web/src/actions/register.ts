@@ -6,17 +6,10 @@ import { z } from "zod";
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations, type AnswerInsert, type SpotRange } from "@echo-webkom/db/schemas";
+import { registrationFormSchema } from "@/lib/schemas/registration";
 
-const registerPayloadSchema = z.object({
-  questions: z.array(
-    z.object({
-      questionId: z.string(),
-      answer: z.string().optional().or(z.literal("")),
-    }),
-  ),
-});
 
-export async function register(id: string, payload: z.infer<typeof registerPayloadSchema>) {
+export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   try {
     /**
      * Check if user is signed in
@@ -117,7 +110,7 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
       };
     }
 
-    const data = await registerPayloadSchema.parseAsync(payload);
+    const data = await registrationFormSchema.parseAsync(payload);
 
     /**
      * Check if all questions are answered
@@ -201,7 +194,9 @@ export async function register(id: string, payload: z.infer<typeof registerPaylo
           happeningId: happening.id,
           userId: user.id,
           questionId: question.questionId,
-          answer: question.answer,
+          answer: question.answer ? {
+            answer: question.answer
+          } : null
         }) satisfies AnswerInsert,
     );
 

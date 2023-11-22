@@ -36,14 +36,18 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
 
     const data = await deregisterPayloadSchema.parseAsync(payload);
 
-    await db
-      .update(registrations)
-      .set({
-        status: "unregistered",
-        unregisterReason: data.reason,
-      })
-      .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id)));
-    await db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id)));
+    await Promise.all([
+      db
+        .update(registrations)
+        .set({
+          status: "unregistered",
+          unregisterReason: data.reason,
+        })
+        .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
+      db
+        .delete(answers)
+        .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
+    ]);
 
     return {
       success: true,

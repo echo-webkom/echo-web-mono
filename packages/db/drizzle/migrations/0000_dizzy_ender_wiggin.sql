@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "answer" (
 	"user_id" text NOT NULL,
 	"happening_id" varchar NOT NULL,
 	"question_id" varchar NOT NULL,
-	"answer" text,
+	"answer" json,
 	CONSTRAINT answer_user_id_happening_id_question_id PRIMARY KEY("user_id","happening_id","question_id")
 );
 --> statement-breakpoint
@@ -170,6 +170,7 @@ CREATE TABLE IF NOT EXISTS "whitelist" (
 CREATE INDEX IF NOT EXISTS "question_idx" ON "answer" ("question_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "type_idx" ON "happening" ("type");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "slug_idx" ON "happening" ("slug");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "happening_id_title" ON "question" ("title","happening_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "status_idx" ON "registration" ("status");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "happening_id_min_year_max_year" ON "spot_range" ("happening_id","min_year","max_year");--> statement-breakpoint
 DO $$ BEGIN

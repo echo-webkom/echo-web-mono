@@ -28,41 +28,43 @@ export const GET = withBasicAuth(async () => {
     registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
   }));
 
-  await db
-    .insert(happenings)
-    .values(
-      formattedHappenings.map((h) => ({
-        id: h._id,
-        slug: h.slug,
-        title: h.title,
-        type: h._type,
-        date: h.date,
-        registrationStart: h.registrationStart,
-        registrationEnd: h.registrationEnd,
-      })),
-    )
-    .onConflictDoUpdate({
-      target: [happenings.slug],
-      set: {
-        title: sql`excluded."title"`,
-        type: sql`excluded."type"`,
-        date: sql`excluded."date"`,
-        registrationStart: sql`excluded."registration_start"`,
-        registrationEnd: sql`excluded."registration_end"`,
-        slug: sql`excluded."slug"`,
-      },
-    });
+  if (formattedHappenings.length > 0) {
+    await db
+      .insert(happenings)
+      .values(
+        formattedHappenings.map((h) => ({
+          id: h._id,
+          slug: h.slug,
+          title: h.title,
+          type: h._type,
+          date: h.date,
+          registrationStart: h.registrationStart,
+          registrationEnd: h.registrationEnd,
+        })),
+      )
+      .onConflictDoUpdate({
+        target: [happenings.slug],
+        set: {
+          title: sql`excluded."title"`,
+          type: sql`excluded."type"`,
+          date: sql`excluded."date"`,
+          registrationStart: sql`excluded."registration_start"`,
+          registrationEnd: sql`excluded."registration_end"`,
+          slug: sql`excluded."slug"`,
+        },
+      });
 
-  await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
+    await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
 
-  await db.insert(happeningsToGroups).values(
-    formattedHappenings.flatMap((h) => {
-      return (h.groups ?? []).map((g) => ({
-        happeningId: h._id,
-        groupId: h._type === "bedpres" ? "bedkom" : g,
-      }));
-    }),
-  );
+    await db.insert(happeningsToGroups).values(
+      formattedHappenings.flatMap((h) => {
+        return (h.groups ?? []).map((g) => ({
+          happeningId: h._id,
+          groupId: h._type === "bedpres" ? "bedkom" : g,
+        }));
+      }),
+    );
+  }
 
   await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);
 

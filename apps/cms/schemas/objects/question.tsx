@@ -1,6 +1,6 @@
-import crypto from "node:crypto";
 import { InfoOutlineIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { nanoid } from "nanoid";
 
 export default defineType({
   name: "question",
@@ -11,7 +11,7 @@ export default defineType({
       name: "id",
       title: "ID",
       type: "string",
-      initialValue: () => crypto.randomBytes(16).toString("hex").slice(0, 8),
+      initialValue: () => nanoid(),
       hidden: true,
     }),
     defineField({

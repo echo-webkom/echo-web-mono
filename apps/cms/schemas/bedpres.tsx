@@ -115,8 +115,6 @@ export default defineType({
           type: "question",
         }),
       ],
-      // TODO: Add validation to check that there are no duplicate questions
-      validation: (Rule) => Rule.unique().required(),
     }),
     defineField({
       name: "body",

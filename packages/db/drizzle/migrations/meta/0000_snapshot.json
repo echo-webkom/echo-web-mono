@@ -1,5 +1,5 @@
 {
-  "id": "bbd6e244-0f39-44d3-8d17-35102f6625cd",
+  "id": "f3172986-8c1b-4266-be89-e0fe987b67a9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -126,7 +126,7 @@
         },
         "answer": {
           "name": "answer",
-          "type": "text",
+          "type": "json",
           "primaryKey": false,
           "notNull": false
         }
@@ -426,7 +426,16 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_title": {
+          "name": "happening_id_title",
+          "columns": [
+            "title",
+            "happening_id"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "question_happening_id_happening_id_fk": {
           "name": "question_happening_id_happening_id_fk",

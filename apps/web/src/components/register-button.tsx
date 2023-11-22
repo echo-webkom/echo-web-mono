@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 
@@ -43,7 +44,7 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
     defaultValues: {
       questions: questions.map((question) => ({
         questionId: question.id,
-        answer: undefined,
+        answer: question.type === "checkbox" ? [] : undefined,
       })),
     },
   });
@@ -126,6 +127,7 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
               <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
+              <p>{JSON.stringify(form.watch(), null, 2)}</p>
               {questions.map((question, index) => (
                 <FormField
                   key={question.id}
@@ -147,16 +149,19 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
                       )}
 
                       {question.type === "radio" && (
-                        <FormControl>
-                          <Select {...field}>
-                            <option hidden>Velg...</option>
-                            {question?.options?.map((option) => (
-                              <option key={option.id} value={option.value}>
-                                {option.value}
-                              </option>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <div>
+                          asrtarst
+                          <FormControl>
+                            <Select {...field}>
+                              <option hidden>Velg...</option>
+                              {question?.options?.map((option) => (
+                                <option key={option.id} value={option.value}>
+                                  {option.value}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </div>
                       )}
 
                       {question.type === "textarea" && (
@@ -169,6 +174,40 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
                           />
                         </FormControl>
                       )}
+
+                      {question.type === "checkbox" &&
+                        question.options?.map((option) => (
+                          <FormField
+                            key={option.id}
+                            control={form.control}
+                            name={`questions.${index}.answer`}
+                            render={({ field }) => (
+                              <FormItem
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(option.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...(field.value as Array<string>),
+                                            option.id,
+                                          ])
+                                        : field.onChange(
+                                            (field.value as Array<string>).filter(
+                                              (value) => value !== option.id,
+                                            ),
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel>{option.value}</FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+
                       <FormMessage />
                     </FormItem>
                   )}
