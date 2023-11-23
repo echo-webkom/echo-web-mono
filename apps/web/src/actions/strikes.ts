@@ -2,8 +2,10 @@
 
 import { eq } from "drizzle-orm";
 
+import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { strikes } from "@echo-webkom/db/schemas";
+import { strikes, type StrikeInsert } from "@echo-webkom/db/schemas";
+import { strikeInfo, type StrikeInfoInsert } from "@echo-webkom/db/schemas/strike-info";
 
 export type StrikeType =
   | "UNREGISTER_BEFORE_DEADLINE"
@@ -37,10 +39,39 @@ export const STRIKE_TYPE_POINTS: Record<StrikeType, number | null> = {
 export async function addStrike(
   happeningSlug: string,
   userId: string,
-  type: StrikeType,
   reason: string,
+  amount: number,
 ) {
   try {
+    const issuer = await getAuth();
+
+    if (!issuer) {
+      return {
+        success: false,
+        message: "Du er ikke logget inn",
+      };
+    }
+
+    if (issuer.type !== "admin") {
+      const isBedkom = await db.query.usersToGroups.findFirst({
+        where: (user) => eq(user.userId, userId) && eq(user.groupId, "bedkom"),
+      });
+
+      if (!isBedkom) {
+        return {
+          success: false,
+          message: "Du har ikke lov til å gi prikker",
+        };
+      }
+    }
+
+    if (amount < 1) {
+      return {
+        success: false,
+        message: "Antall prikker tildelt må være større enn 0",
+      };
+    }
+
     const happening = await db.query.happenings.findFirst({
       where: (happening) => eq(happening.slug, happeningSlug),
     });
@@ -64,25 +95,34 @@ export async function addStrike(
     }
 
     const data = {
-      userId: user.id,
       happeningSlug: happening.slug,
-      reason,
-      type,
-    };
+      userId: user.id,
+      issuerId: issuer.id,
+      reason: reason,
+    } satisfies StrikeInfoInsert;
 
-    await db
-      .insert(strikes)
+    const info = await db
+      .insert(strikeInfo)
       .values(data)
-      .onConflictDoUpdate({
-        set: {
-          reason: data.reason,
-        },
-        target: [strikes.userId, strikes.happeningSlug],
-      });
+      .returning({ id: strikeInfo.id })
+      .then((res) => res[0] ?? null);
+
+    if (!info) {
+      throw Error("Something went wrong");
+    }
+
+    const issuedStrikes = Array.from({ length: amount }).map(
+      () =>
+        ({
+          strikeInfoId: info.id,
+        }) satisfies StrikeInsert,
+    );
+
+    await db.insert(strikes).values(issuedStrikes);
 
     return {
       success: true,
-      message: "Strike lagt til",
+      message: "Prikker lagt til",
     };
   } catch {
     return {

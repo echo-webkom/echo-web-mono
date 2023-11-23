@@ -1,35 +1,20 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, serial, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happenings, users } from ".";
+import { strikeInfo } from "./strike-info";
 
-export const strikes = pgTable(
-  "strike",
-  {
-    userId: text("user_id")
-      .notNull()
-      .references(() => users.id),
-    happeningSlug: varchar("happening_slug", { length: 255 })
-      .notNull()
-      .references(() => happenings.slug),
-    reason: text("reason").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    amount: integer("amount").notNull().default(1),
-  },
-  (table) => ({
-    pk: primaryKey(table.userId, table.happeningSlug),
-  }),
-);
+export const strikes = pgTable("strike", {
+  id: serial("id").notNull().primaryKey(),
+  strikeInfoId: text("info")
+    .notNull()
+    .references(() => strikeInfo.id, { onDelete: "cascade" }),
+});
 
 export const strikesRelations = relations(strikes, ({ one }) => ({
-  user: one(users, {
-    fields: [strikes.userId],
-    references: [users.id],
-  }),
-  happening: one(happenings, {
-    fields: [strikes.happeningSlug],
-    references: [happenings.slug],
+  strikeInfo: one(strikeInfo, {
+    fields: [strikes.strikeInfoId],
+    references: [strikeInfo.id],
   }),
 }));
 
