@@ -26,7 +26,7 @@ export const STRIKE_TYPE_MESSAGE: Record<StrikeType, string> = {
   OTHER: "Annet",
 } as const;
 
-export const STRIKE_TYPE_POINTS: Record<StrikeType, number | null> = {
+export const STRIKE_TYPE_AMOUNT: Record<StrikeType, number | null> = {
   UNREGISTER_BEFORE_DEADLINE: 1,
   UNREGISTER_AFTER_DEADLINE: 2,
   NO_SHOW: 1, // and excluded from next three eligable happenings

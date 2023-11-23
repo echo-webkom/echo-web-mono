@@ -5,7 +5,9 @@ import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { answers, registrations, strikes } from "@echo-webkom/db/schemas";
+import { answers, registrations } from "@echo-webkom/db/schemas";
+
+import { addStrike, STRIKE_TYPE_AMOUNT, STRIKE_TYPE_MESSAGE, type StrikeType } from "./strikes";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -25,6 +27,14 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
         and(eq(registration.happeningSlug, slug), eq(registration.userId, user.id)),
+      with: {
+        happening: {
+          columns: {
+            type: true,
+            registrationEnd: true,
+          },
+        },
+      },
     });
 
     if (!exisitingRegistration) {
@@ -46,11 +56,21 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
     await db
       .delete(answers)
       .where(and(eq(answers.userId, user.id), eq(answers.happeningSlug, slug)));
-    await db.insert(strikes).values({
-      happeningSlug: slug,
-      userId: user.id,
-      reason: payload.reason,
-    });
+
+    if (exisitingRegistration.happening.type === "bedpres") {
+      const now = new Date();
+      const regEnd = exisitingRegistration.happening.registrationEnd;
+
+      const strikeType: StrikeType =
+        regEnd && regEnd < now ? "UNREGISTER_AFTER_DEADLINE" : "UNREGISTER_BEFORE_DEADLINE";
+
+      await addStrike(
+        exisitingRegistration.happeningSlug,
+        user.id,
+        STRIKE_TYPE_MESSAGE[strikeType],
+        STRIKE_TYPE_AMOUNT[strikeType]!,
+      );
+    }
 
     return {
       success: true,
