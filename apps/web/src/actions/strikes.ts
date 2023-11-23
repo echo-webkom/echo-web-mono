@@ -36,7 +36,7 @@ export const STRIKE_TYPE_AMOUNT: Record<StrikeType, number | null> = {
   OTHER: null,
 } as const;
 
-export async function addStrike(
+export async function manualAddStrike(
   happeningSlug: string,
   userId: string,
   reason: string,
@@ -98,6 +98,58 @@ export async function addStrike(
       happeningSlug: happening.slug,
       userId: user.id,
       issuerId: issuer.id,
+      reason: reason,
+    } satisfies StrikeInfoInsert;
+
+    const info = await db
+      .insert(strikeInfo)
+      .values(data)
+      .returning({ id: strikeInfo.id })
+      .then((res) => res[0] ?? null);
+
+    if (!info) {
+      throw Error("Something went wrong");
+    }
+
+    const issuedStrikes = Array.from({ length: amount }).map(
+      () =>
+        ({
+          strikeInfoId: info.id,
+        }) satisfies StrikeInsert,
+    );
+
+    await db.insert(strikes).values(issuedStrikes);
+
+    return {
+      success: true,
+      message: "Prikker lagt til",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "En feil har oppstått",
+    };
+  }
+}
+
+export async function automaticAddStrike(happeningSlug: string, userId: string, type: StrikeType) {
+  try {
+    //Happening and user should already be verified before call
+
+    const reason = STRIKE_TYPE_MESSAGE[type];
+    const amount = STRIKE_TYPE_AMOUNT[type];
+
+    if (!amount || amount < 1) {
+      return {
+        success: false,
+        message: "Antall prikker tildelt må være større enn 0",
+      };
+    }
+
+    const data = {
+      happeningSlug: happeningSlug,
+      userId: userId,
+      issuerId: userId,
       reason: reason,
     } satisfies StrikeInfoInsert;
 

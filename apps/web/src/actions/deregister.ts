@@ -7,7 +7,7 @@ import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 
-import { addStrike, STRIKE_TYPE_AMOUNT, STRIKE_TYPE_MESSAGE, type StrikeType } from "./strikes";
+import { automaticAddStrike, type StrikeType } from "./strikes";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -64,12 +64,7 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
       const strikeType: StrikeType =
         regEnd && regEnd < now ? "UNREGISTER_AFTER_DEADLINE" : "UNREGISTER_BEFORE_DEADLINE";
 
-      await addStrike(
-        exisitingRegistration.happeningSlug,
-        user.id,
-        STRIKE_TYPE_MESSAGE[strikeType],
-        STRIKE_TYPE_AMOUNT[strikeType]!,
-      );
+      await automaticAddStrike(exisitingRegistration.happeningSlug, user.id, strikeType);
     }
 
     return {
