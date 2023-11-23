@@ -44,9 +44,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
           unregisterReason: data.reason,
         })
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
-      db
-        .delete(answers)
-        .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
+      db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
     ]);
 
     return {

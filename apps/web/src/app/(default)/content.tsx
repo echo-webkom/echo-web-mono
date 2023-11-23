@@ -19,12 +19,12 @@ export async function Content() {
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
       {/* Events  */}
-      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
+      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg hover:shadow-xl transition-shadow">
         <HappeningPreviewBox type="EVENT" happenings={events} />
       </section>
 
       {/* Bedpresses */}
-      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
+      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg hover:shadow-xl transition-shadow">
         <HappeningPreviewBox type="BEDPRES" happenings={bedpresses} />
       </section>
 

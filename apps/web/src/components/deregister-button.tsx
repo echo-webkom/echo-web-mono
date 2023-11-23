@@ -44,16 +44,15 @@ export function DeregisterButton({ id }: DeregisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await deregister(id, {
+    const { success, message } = await deregister(id, {
       reason: data.reason,
     });
 
     setIsLoading(false);
 
     toast({
-      title: "Du er nå meldt av",
-      description: "Du er nå meldt av arrangementet.",
-      variant: "success",
+      title: message,
+      variant: success ? "success" : "warning",
     });
 
     router.refresh();
