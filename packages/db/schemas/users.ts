@@ -16,6 +16,7 @@ export const users = pgTable(
     degreeId: varchar("degree_id", { length: 21 }).references(() => degrees.id),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
+    bannedFromStrike: integer("strike_id"),
   },
   (table) => ({
     pk: primaryKey(table.id),
@@ -31,6 +32,10 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   groupLeader: many(groups),
   memberships: many(usersToGroups),
   strikes: many(strikes),
+  bannedFromStrike: one(strikes, {
+    fields: [users.bannedFromStrike],
+    references: [strikes.id],
+  }),
 }));
 
 export type User = (typeof users)["$inferSelect"];

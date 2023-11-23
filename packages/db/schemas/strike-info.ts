@@ -6,12 +6,12 @@ import { happenings, users } from ".";
 
 export const strikeInfo = pgTable("strikeInfo", {
   id: uuid("id").defaultRandom().primaryKey(),
-  happeningSlug: varchar("happening_slug", { length: 255 })
-    .notNull()
-    .references(() => happenings.slug),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
+  happeningSlug: varchar("happening_slug", { length: 255 })
+    .notNull()
+    .references(() => happenings.slug),
   issuerId: text("reporter-id")
     .notNull()
     .references(() => users.id),
@@ -19,7 +19,7 @@ export const strikeInfo = pgTable("strikeInfo", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const strikesRelations = relations(strikeInfo, ({ one }) => ({
+export const strikeInfoRelations = relations(strikeInfo, ({ one }) => ({
   user: one(users, {
     fields: [strikeInfo.userId],
     references: [users.id],
@@ -37,5 +37,5 @@ export const strikesRelations = relations(strikeInfo, ({ one }) => ({
 export type StrikeInfo = (typeof strikeInfo)["$inferSelect"];
 export type StrikeInfoInsert = (typeof strikeInfo)["$inferInsert"];
 
-export const selectStrikeSchema = createSelectSchema(strikeInfo);
-export const insertStrikeSchema = createInsertSchema(strikeInfo);
+export const selectStrikeInfoSchema = createSelectSchema(strikeInfo);
+export const insertStrikeInfoSchema = createInsertSchema(strikeInfo);
