@@ -58,7 +58,7 @@ importers:
         version: 18.2.0
       sanity:
         specifier: ^3.20.1
-        version: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+        version: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       sanity-plugin-markdown:
         specifier: ^4.1.0
         version: 4.1.0(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.20.1)(styled-components@5.3.11)
@@ -116,8 +116,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       '@types/react':
         specifier: 18.2.37
         version: 18.2.37
@@ -246,7 +246,7 @@ importers:
         version: 4.24.5(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 6.0.5
-        version: 6.0.5(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.20.0)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.1)(styled-components@5.3.11)
+        version: 6.0.5(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.20.1)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.1)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -288,8 +288,8 @@ importers:
         specifier: 0.5.10
         version: 0.5.10(tailwindcss@3.3.5)
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       '@types/react':
         specifier: 18.2.37
         version: 18.2.37
@@ -346,8 +346,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       eslint:
         specifier: ^8.54.0
         version: 8.54.0
@@ -411,8 +411,8 @@ importers:
         version: 1.9.5
     devDependencies:
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       '@types/react':
         specifier: 18.2.37
         version: 18.2.37
@@ -438,8 +438,8 @@ importers:
         specifier: ^8.44.7
         version: 8.44.7
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       '@typescript-eslint/eslint-plugin':
         specifier: 6.12.0
         version: 6.12.0(@typescript-eslint/parser@6.12.0)(eslint@8.54.0)(typescript@5.3.2)
@@ -480,8 +480,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
     devDependencies:
       eslint:
         specifier: ^8.54.0
@@ -499,8 +499,8 @@ importers:
         specifier: ^1.40.0
         version: 1.40.0
       '@types/node':
-        specifier: 18.18.9
-        version: 18.18.9
+        specifier: 18.18.12
+        version: 18.18.12
       dotenv-cli:
         specifier: 7.3.0
         version: 7.3.0
@@ -4962,7 +4962,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       rxjs: 7.8.1
-      sanity: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       suspend-react: 0.1.3(react@18.2.0)
     transitivePeerDependencies:
@@ -5020,7 +5020,7 @@ packages:
       '@sanity/client': 6.8.6
       '@sanity/icons': 2.7.0(react@18.2.0)
       '@sanity/uuid': 3.0.2
-      sanity: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
     dev: false
 
   /@sanity/schema@3.20.1:
@@ -5466,8 +5466,8 @@ packages:
       '@types/node': 20.8.7
     dev: true
 
-  /@types/node@18.18.9:
-    resolution: {integrity: sha512-0f5klcuImLnG4Qreu9hPj/rEfFq6YRc5n2mAjSsH+ec/mJL+3voBH0+8T7o8RpFjH7ovc+TRsL/c7OYIQsPTfQ==}
+  /@types/node@18.18.12:
+    resolution: {integrity: sha512-G7slVfkwOm7g8VqcEF1/5SXiMjP3Tbt+pXDU3r/qhlM2KkGm786DUD4xyMA2QzEElFrv/KZV9gjygv4LnkpbMQ==}
     dependencies:
       undici-types: 5.26.5
 
@@ -5930,7 +5930,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.9)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.9)
       react-refresh: 0.14.0
-      vite: 4.4.7(@types/node@18.18.9)
+      vite: 4.4.7(@types/node@18.18.12)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -11626,7 +11626,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@6.0.5(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.20.0)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.1)(styled-components@5.3.11):
+  /next-sanity@6.0.5(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(@sanity/types@3.20.1)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.1)(styled-components@5.3.11):
     resolution: {integrity: sha512-7y3ax7lXtikHPSHLVLOVlw7YEz3bZVfgDaLh1HYvr08ZXQqzQe2faAOKBt6OpcVbR2Fvs90p8ZqRxxc8CVhsXg==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -11642,13 +11642,13 @@ packages:
       '@sanity/client': 6.8.6
       '@sanity/icons': 2.7.0(react@18.2.0)
       '@sanity/preview-kit': 4.0.0(@sanity/client@6.8.6)(react@18.2.0)
-      '@sanity/types': 3.20.0
+      '@sanity/types': 3.20.1
       '@sanity/ui': 1.9.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 3.0.1
       groq: 3.19.1
       next: 14.0.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      sanity: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - supports-color
@@ -13785,7 +13785,7 @@ packages:
       easymde: 2.18.0
       react: 18.2.0
       react-simplemde-editor: 5.2.0(easymde@2.18.0)(react-dom@18.2.0)(react@18.2.0)
-      sanity: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - react-dom
@@ -13826,7 +13826,7 @@ packages:
       redux: 4.2.1
       redux-observable: 2.0.0(redux@4.2.1)
       rxjs: 7.8.1
-      sanity: 3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      sanity: 3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       styled-components: 5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       zod: 3.22.4
     transitivePeerDependencies:
@@ -13835,7 +13835,7 @@ packages:
       - react-native
     dev: false
 
-  /sanity@3.20.1(@types/node@18.18.9)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
+  /sanity@3.20.1(@types/node@18.18.12)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
     resolution: {integrity: sha512-/+JfUUKjVp9+qnL+UtwbzIAhzZT1x30QhUuxAxXNugejPrBVoQaGfEuW0AmIN1zK8uH9WcHNWRD1f9HlD7Wi1w==}
     engines: {node: '>=18'}
     hasBin: true
@@ -13948,7 +13948,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.4.7(@types/node@18.18.9)
+      vite: 4.4.7(@types/node@18.18.12)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -15497,7 +15497,7 @@ packages:
       - terser
     dev: true
 
-  /vite@4.4.7(@types/node@18.18.9):
+  /vite@4.4.7(@types/node@18.18.12):
     resolution: {integrity: sha512-6pYf9QJ1mHylfVh39HpuSfMPojPSKVxZvnclX1K1FyZ1PXDOcLBibdq5t1qxJSnL63ca8Wf4zts6mD8u8oc9Fw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -15525,7 +15525,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.18.9
+      '@types/node': 18.18.12
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.27.0
