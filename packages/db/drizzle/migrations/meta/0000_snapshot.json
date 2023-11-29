@@ -1,5 +1,5 @@
 {
-  "id": "f3172986-8c1b-4266-be89-e0fe987b67a9",
+  "id": "5d8ec312-9508-408a-94ff-5575121249c5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -742,6 +742,13 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_leader": {
+          "name": "is_leader",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {},
@@ -992,7 +999,8 @@
       "values": {
         "student": "student",
         "company": "company",
-        "admin": "admin"
+        "guest": "guest",
+        "alum": "alum"
       }
     }
   },

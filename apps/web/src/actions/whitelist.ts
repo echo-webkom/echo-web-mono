@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
+import { isWebkom } from "@/lib/user";
 
 export async function upsertWhitelist(email: string, reason: string, days: number) {
   try {
@@ -17,7 +18,7 @@ export async function upsertWhitelist(email: string, reason: string, days: numbe
       };
     }
 
-    if (user.type !== "admin") {
+    if (!isWebkom(user)) {
       return {
         success: false,
         message: "Du har ikke tilgang til denne funksjonen",
@@ -71,7 +72,7 @@ export async function removeWhitelist(email: string) {
       };
     }
 
-    if (user.type !== "admin") {
+    if (!isWebkom(user)) {
       return {
         success: false,
         message: "Du har ikke tilgang til denne funksjonen",

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon } from "@radix-ui/react-icons";
 import { signOut } from "next-auth/react";
 
-import { type User } from "@echo-webkom/db/schemas";
+import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
 import {
   DropdownMenu,
@@ -15,9 +15,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { isWebkom } from "@/lib/user";
 
 type UserMenuProps = {
-  user: User;
+  user: User & {
+    memberships: Array<
+      UsersToGroups & {
+        group: Group;
+      }
+    >;
+  };
 };
 
 export function UserMenu({ user }: UserMenuProps) {
@@ -46,7 +53,7 @@ export function UserMenu({ user }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
 
-        {user.type === "admin" && (
+        {isWebkom(user) && (
           <>
             <DropdownMenuSeparator />
 

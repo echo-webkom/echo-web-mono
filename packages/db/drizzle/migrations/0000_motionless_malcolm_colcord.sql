@@ -29,7 +29,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "user_type" AS ENUM('student', 'company', 'admin');
+ CREATE TYPE "user_type" AS ENUM('student', 'company', 'guest', 'alum');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS "spot_range" (
 CREATE TABLE IF NOT EXISTS "users_to_groups" (
 	"user_id" text NOT NULL,
 	"group_id" varchar NOT NULL,
+	"is_leader" boolean DEFAULT false NOT NULL,
 	CONSTRAINT users_to_groups_user_id_group_id PRIMARY KEY("user_id","group_id")
 );
 --> statement-breakpoint

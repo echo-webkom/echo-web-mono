@@ -4,6 +4,7 @@ import {
   type User,
   type usersToGroups,
 } from "@echo-webkom/db/schemas";
+import { isWebkom } from "./user";
 
 type TUser = User & {
   memberships: Array<
@@ -25,6 +26,6 @@ export function isHost<U extends TUser, H extends THappening>(user: U, happening
   return (
     user.memberships.some((membership) =>
       happening.groups.some((group) => group.groupId === membership.groupId),
-    ) || user.type === "admin"
+    ) || isWebkom(user)
   );
 }

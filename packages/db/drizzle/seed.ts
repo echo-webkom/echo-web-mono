@@ -2,44 +2,55 @@
 import process from "node:process";
 
 import { db } from "..";
-import { accounts, degrees, groups, sessions, users, type UserType } from "../schemas";
+import { accounts, degrees, groups, sessions, users, usersToGroups, type UserType } from "../schemas";
 
 async function seed() {
   await db.insert(degrees).values([
     {
+      id: "dtek",
       name: "Datateknologi",
     },
     {
+      id: "dsik",
       name: "Datasikkerhet",
     },
     {
+      id: "dvit",
       name: "Datavitenskap",
     },
     {
+      id: "binf",
       name: "Bioinformatikk",
     },
     {
+      id: "imo",
       name: "Informatikk-matematikk-økonomi",
     },
     {
+      id: "inf",
       name: "Master i informatikk",
     },
     {
+      id: "prog",
       name: "Programvareutvikling",
     },
     {
+      id: "dsc",
       name: "Master i data science",
     },
     {
+      id: "arminf",
       name: "Årsstudium i informatikk",
     },
     {
+      id: "post",
       name: "Post-bachelor",
     },
     {
+      id: "other",
       name: "Annet",
     },
-  ]);
+  ]).onConflictDoNothing();
 
   await db.insert(groups).values([
     {
@@ -90,7 +101,7 @@ async function seed() {
       id: "bryggelaget",
       name: "Bryggelaget",
     },
-  ]);
+  ]).onConflictDoNothing();
 
   await createUser({
     id: "student",
@@ -101,11 +112,24 @@ async function seed() {
   });
 
   await createUser({
-    id: "admin",
+    id: "alum",
     name: "Andreas Aanes",
+    email: "alum@echo.uib.on",
+    type: "alum",
+    token: "alum",
+  });
+  await createUser({
+    id: "admin",
+    name: "Bo Salhus",
     email: "admin@echo.uib.on",
-    type: "admin",
+    type: "student",
     token: "admin",
+  })
+
+  await db.insert(usersToGroups).values({
+    userId: "admin",
+    groupId: "webkom",
+    isLeader: true,
   });
 }
 
@@ -128,20 +152,20 @@ async function createUser({
     name,
     email,
     type,
-  });
+  }).onConflictDoNothing();
 
   await db.insert(accounts).values({
     userId: id,
     type: "oauth",
     provider: "test",
     providerAccountId: token,
-  });
+  }).onConflictDoNothing();
 
   await db.insert(sessions).values({
     sessionToken: token,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
     userId: id,
-  });
+  }).onConflictDoNothing();
 }
 
 console.log("🌱 Starting seeding...");
