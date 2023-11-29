@@ -5,6 +5,7 @@ import { getAuth } from "@echo-webkom/auth";
 
 import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
+import { isWebkom } from "@/lib/user";
 import { AdminSidebar } from "./sidebar";
 
 type Props = {
@@ -18,7 +19,7 @@ export const metadata = {
 export default async function AdminDashboardLayout({ children }: Props) {
   const user = await getAuth();
 
-  if (!user || user.type !== "admin") {
+  if (!user || !isWebkom(user)) {
     return redirect("/");
   }
 

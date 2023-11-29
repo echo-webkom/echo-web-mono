@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import { Container } from "@/components/container";
 import { HappeningPreviewBox } from "@/components/happening-preview-box";
@@ -19,19 +20,22 @@ export async function Content() {
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
       {/* Events  */}
-      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
-        <HappeningPreviewBox type="EVENT" happenings={events} />
+      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
+        <HappeningPreviewBox type="EVENT" happenings={events ?? []} />
       </section>
 
       {/* Bedpresses */}
-      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg">
-        <HappeningPreviewBox type="BEDPRES" happenings={bedpresses} />
+      <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
+        <HappeningPreviewBox type="BEDPRES" happenings={bedpresses ?? []} />
       </section>
 
       {/* Posts */}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
         <Link href="/for-studenter/innlegg">
-          <h2 className="text-center text-xl font-semibold md:text-3xl">Siste nytt</h2>
+          <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
+            Siste nytt
+            <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+          </h2>
         </Link>
 
         <hr />

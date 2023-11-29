@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import process from "node:process";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 
 import { db } from "..";
 

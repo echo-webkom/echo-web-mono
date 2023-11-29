@@ -5,7 +5,9 @@ import { z } from "zod";
 
 import { getAuth, getAuthSession } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { insertUserSchema, users, usersToGroups, userTypeEnum } from "@echo-webkom/db/schemas";
+import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
+
+import { isWebkom } from "@/lib/user";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
@@ -64,7 +66,6 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
 }
 
 const updateUserPayloadSchema = z.object({
-  type: z.enum(userTypeEnum.enumValues),
   memberships: z.array(z.string()),
 });
 
@@ -75,7 +76,7 @@ export const updateUser = async (
   try {
     const user = await getAuth();
 
-    if (user === null || user.type !== "admin") {
+    if (user === null || !isWebkom(user)) {
       return {
         success: false,
         message: "Du er ikke logget inn som en admin",
@@ -90,7 +91,6 @@ export const updateUser = async (
         .insert(usersToGroups)
         .values(data.memberships.map((groupId) => ({ userId, groupId })));
     }
-    await db.update(users).set({ type: data.type }).where(eq(users.id, userId));
 
     return {
       success: true,

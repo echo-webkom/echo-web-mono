@@ -9,24 +9,28 @@ export const registrations = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
-    happeningSlug: text("happening_slug")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
+    happeningId: text("happening_id")
       .notNull()
-      .references(() => happenings.slug),
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.happeningSlug),
+    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
     statusIdx: index("status_idx").on(table.status),
   }),
 );
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({
   happening: one(happenings, {
-    fields: [registrations.happeningSlug],
-    references: [happenings.slug],
+    fields: [registrations.happeningId],
+    references: [happenings.id],
   }),
   user: one(users, {
     fields: [registrations.userId],

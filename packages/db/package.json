@@ -16,7 +16,7 @@
     "db:check": "pnpm with-env tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev": "pnpm with-env drizzle-kit studio --port 4000",
+    "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -25,13 +25,14 @@
     "drizzle-zod": "^0.5.1",
     "nanoid": "^5.0.3",
     "next-auth": "^4.24.5",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "postgres": "^3.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
     "@types/pg": "^8.10.9",
     "dotenv-cli": "7.3.0",
-    "drizzle-kit": "^0.20.1",
+    "drizzle-kit": "^0.20.6",
     "eslint-config-webkom": "workspace:*",
     "tsx": "^4.5.0",
     "typescript": "5.3.2"

@@ -13,29 +13,33 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { getUserStudentGroups } from "@/lib/queries/student-groups";
+import { isHost as _isHost } from "@/lib/is-host";
 import { type Event } from "@/sanity/event";
 import { norwegianDateString } from "@/utils/date";
 
 type EventSidebarProps = {
-  slug: string;
   event: Event;
 };
 
-export async function EventSidebar({ slug, event }: EventSidebarProps) {
+export async function EventSidebar({ event }: EventSidebarProps) {
   const user = await getAuth();
 
   const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
+    where: (happening) => eq(happening.id, event._id),
     with: {
       questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
     },
   });
   const spotRanges = await db.query.spotRanges.findMany({
-    where: (spotRange) => eq(spotRange.happeningSlug, slug),
+    where: (spotRange) => eq(spotRange.happeningId, event._id),
   });
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, event._id),
     with: {
       user: true,
     },
@@ -61,12 +65,7 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
-  const userGroups = user ? await getUserStudentGroups(user.id) : [];
-
-  const isHost =
-    userGroups.some((group) =>
-      event.organizers.some((organizer) => group.groupId === organizer.slug),
-    ) || user?.type === "admin";
+  const isHost = user && happening ? _isHost(user, happening) : false;
 
   const isUserComplete = user?.degreeId && user.year;
 
@@ -133,17 +132,19 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.registrationStart && isAfter(new Date(), happening.registrationStart) && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
+      {happening?.registrationStart &&
+        isAfter(new Date(), happening.registrationStart) &&
+        spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+            <SidebarItemContent>
+              {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
 
       {happening?.registrationStart &&
-        happening.registrationStart < new Date() &&
+        isAfter(new Date(), happening.registrationStart) &&
         waitlistCount > 0 && (
           <SidebarItem>
             <SidebarItemTitle>Venteliste:</SidebarItemTitle>
@@ -173,19 +174,20 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
 
       {isRegistered && (
         <SidebarItem>
-          <DeregisterButton slug={slug} />
+          <DeregisterButton id={event._id} />
         </SidebarItem>
       )}
 
       {!isRegistered &&
         isUserComplete &&
+        spotRanges.length > 0 &&
         happening?.registrationStart &&
         isAfter(
           new Date(),
           new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
         ) && (
           <SidebarItem className="relative">
-            <RegisterButton slug={slug} questions={happening.questions} />
+            <RegisterButton id={event._id} questions={happening.questions} />
             <Countdown toDate={happening.registrationStart} />
           </SidebarItem>
         )}
@@ -226,10 +228,10 @@ export async function EventSidebar({ slug, event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {user && isHost && (
+      {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${slug}`}>Admin dashbord</Link>
+            <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
         </SidebarItem>
       )}

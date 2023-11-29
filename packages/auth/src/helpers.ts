@@ -27,6 +27,11 @@ const getUserById = db.query.users
     where: (user) => eq(user.id, sql.placeholder("userId")),
     with: {
       degree: true,
+      memberships: {
+        with: {
+          group: true,
+        },
+      },
     },
   })
   .prepare("get-user-by-id");

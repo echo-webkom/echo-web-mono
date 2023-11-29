@@ -1,23 +1,19 @@
 "use server";
 
-import { and, asc, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { answers, registrations } from "@echo-webkom/db/schemas";
+import { answers, registrations, type AnswerInsert, type SpotRange } from "@echo-webkom/db/schemas";
 
-const registerPayloadSchema = z.object({
-  questions: z.array(
-    z.object({
-      questionId: z.string(),
-      answer: z.string(),
-    }),
-  ),
-});
+import { registrationFormSchema } from "@/lib/schemas/registration";
 
-export async function register(slug: string, payload: z.infer<typeof registerPayloadSchema>) {
+export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   try {
+    /**
+     * Check if user is signed in
+     */
     const user = await getAuth();
 
     if (!user) {
@@ -27,6 +23,9 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
+    /**
+     * Check if user has filled out necessary information
+     */
     if (!user.degreeId || !user.year) {
       return {
         success: false,
@@ -34,24 +33,11 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
-    const exisitingRegistration = await db.query.registrations.findFirst({
-      where: (registration) =>
-        and(
-          eq(registration.happeningSlug, slug),
-          eq(registration.userId, user.id),
-          eq(registration.status, "registered"),
-        ),
-    });
-
-    if (exisitingRegistration) {
-      return {
-        success: false,
-        message: "Du er allerede påmeldt dette arrangementet",
-      };
-    }
-
+    /**
+     * Get happening, and check if it exists
+     */
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => eq(happening.slug, slug),
+      where: (happening) => eq(happening.id, id),
       with: {
         questions: true,
       },
@@ -64,6 +50,28 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
+    /**
+     * Check if user is already registered
+     */
+    const exisitingRegistration = await db.query.registrations.findFirst({
+      where: (registration) =>
+        and(
+          eq(registration.happeningId, id),
+          eq(registration.userId, user.id),
+          eq(registration.status, "registered"),
+        ),
+    });
+
+    if (exisitingRegistration) {
+      return {
+        success: false,
+        message: "Du er allerede påmeldt dette arrangementet",
+      };
+    }
+
+    /**
+     * Check if registration is open
+     */
     if (happening.registrationStart && new Date() < happening.registrationStart) {
       return {
         success: false,
@@ -71,6 +79,9 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
+    /**
+     * Check if registration is closed
+     */
     if (happening.registrationEnd && new Date() > happening.registrationEnd) {
       return {
         success: false,
@@ -78,23 +89,19 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
+    /**
+     * Get spot ranges for happening
+     */
     const spotRanges = await db.query.spotRanges.findMany({
-      where: (spotRange) => eq(spotRange.happeningSlug, slug),
+      where: (spotRange) => eq(spotRange.happeningId, id),
     });
-    if (spotRanges.length === 0) {
-      spotRanges.push({
-        id: "default",
-        happeningSlug: happening.slug,
-        minYear: 0,
-        maxYear: 1000,
-        spots: 0,
-      });
-    }
 
-    const userSpotRange = spotRanges.find((spotRange) => {
-      // Error with typescript. We have already checked that user.degreeId and user.year is not null
-      return user.year! >= spotRange.minYear && user.year! <= spotRange.maxYear;
-    });
+    /**
+     * Get correct spot range for user
+     *
+     * If user is not in any spot range, return error
+     */
+    const userSpotRange = getCorrectSpotrange(user.year, spotRanges);
 
     if (!userSpotRange) {
       return {
@@ -103,12 +110,16 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
-    const data = await registerPayloadSchema.parseAsync(payload);
+    const data = await registrationFormSchema.parseAsync(payload);
 
+    /**
+     * Check if all questions are answered
+     */
     const allQuestionsAnswered = happening.questions.every((question) => {
       const questionExists = data.questions.find((q) => q.questionId === question.id);
-      const hasAnswer = (questionExists && questionExists.answer.length > 0) ?? !question.required;
-      return hasAnswer;
+      const questionAnswer = questionExists?.answer;
+
+      return question.required ? !!questionAnswer : true;
     });
 
     if (!allQuestionsAnswered) {
@@ -118,100 +129,90 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       };
     }
 
-    const registration = await db
-      .insert(registrations)
-      .values({
-        happeningSlug: happening.slug,
-        userId: user.id,
-        status: "waiting",
-      })
-      .onConflictDoUpdate({
-        target: [registrations.happeningSlug, registrations.userId],
-        where: and(
-          eq(registrations.happeningSlug, happening.slug),
-          eq(registrations.userId, user.id),
-        ),
-        set: {
-          status: "waiting",
-        },
-      })
-      .returning()
-      .then((res) => res[0] ?? null);
+    /**
+     * Check amount of registrations for spot range, and insert registration
+     */
+    const { registration, isWaitlisted } = await db.transaction(
+      async (tx) => {
+        const spotRangeRegistrations = (
+          await tx.query.registrations.findMany({
+            where: (registration) => and(eq(registration.status, "registered")),
+            with: {
+              user: true,
+            },
+          })
+        ).filter((registration) => {
+          if (!registration.user.year) {
+            return false;
+          }
+          const userSpotRange = getCorrectSpotrange(registration.user.year, spotRanges);
+          return userSpotRange?.id === userSpotRange?.id;
+        });
+
+        const isWaitlisted =
+          userSpotRange.spots === 0 || spotRangeRegistrations.length >= userSpotRange.spots;
+
+        /**
+         * Insert registration
+         */
+        const registration = await tx
+          .insert(registrations)
+          .values({
+            happeningId: happening.id,
+            userId: user.id,
+            status: isWaitlisted ? "waiting" : "registered",
+          })
+          .onConflictDoUpdate({
+            set: {
+              status: sql`excluded.status`,
+            },
+            target: [registrations.happeningId, registrations.userId],
+          })
+          .returning()
+          .then((res) => res[0] ?? null);
+
+        return {
+          registration,
+          isWaitlisted,
+        };
+      },
+      {
+        isolationLevel: "serializable",
+      },
+    );
 
     if (!registration) {
-      return {
-        success: false,
-        message: "En feil har oppstått",
-      };
+      throw new Error("Could not create registration");
     }
 
-    const answersToInsert = data.questions.map((question) => ({
-      happeningSlug: happening.slug,
-      userId: user.id,
-      questionId: question.questionId,
-      answer: question.answer,
-    }));
+    /**
+     * Insert answers
+     */
+    const answersToInsert = data.questions.map(
+      (question) =>
+        ({
+          happeningId: happening.id,
+          userId: user.id,
+          questionId: question.questionId,
+          answer: question.answer
+            ? {
+                answer: question.answer,
+              }
+            : null,
+        }) satisfies AnswerInsert,
+    );
 
     if (answersToInsert.length > 0) {
-      await db.insert(answers).values(answersToInsert);
+      await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
-
-    if (userSpotRange.spots === 0) {
-      await db
-        .update(registrations)
-        .set({
-          status: "registered",
-        })
-        .where(
-          and(eq(registrations.happeningSlug, happening.slug), eq(registrations.userId, user.id)),
-        );
-
-      return {
-        success: true,
-        message: "Du er påmeldt",
-      };
-    }
-
-    const currentlyRegistered = await db.query.registrations.findMany({
-      where: (registration) =>
-        and(eq(registration.happeningSlug, happening.slug), eq(registration.status, "registered")),
-      orderBy: (registration) => asc(registration.createdAt),
-      with: {
-        user: true,
-      },
-    });
-
-    const registrationsInSameSpotRange = currentlyRegistered.filter((registration) => {
-      const user = registration.user;
-      return user.year! >= userSpotRange.minYear && user.year! <= userSpotRange.maxYear;
-    });
-
-    const userSpotIndex = registrationsInSameSpotRange.findIndex(
-      (r) => r.happeningSlug === registration.happeningSlug && r.userId === registration.userId,
-    );
-    const waitlistSpot = userSpotIndex - userSpotRange.spots;
-    const isWaitlisted = waitlistSpot >= 0;
-
-    if (!isWaitlisted) {
-      await db
-        .update(registrations)
-        .set({
-          status: "registered",
-        })
-        .where(
-          and(eq(registrations.happeningSlug, happening.slug), eq(registrations.userId, user.id)),
-        );
-    }
-
-    const message = isWaitlisted
-      ? `Du er på venteliste. Plass nr. ${waitlistSpot}`
-      : "Du er påmeldt";
 
     return {
       success: true,
-      message,
+      message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
     };
   } catch (error) {
+    console.error(error);
+
     if (error instanceof z.ZodError) {
       return {
         success: false,
@@ -224,4 +225,12 @@ export async function register(slug: string, payload: z.infer<typeof registerPay
       message: "En feil har oppstått",
     };
   }
+}
+
+function getCorrectSpotrange(year: number, spotRanges: Array<SpotRange>) {
+  return (
+    spotRanges.find((spotRange) => {
+      return year >= spotRange.minYear && year <= spotRange.maxYear;
+    }) ?? null
+  );
 }

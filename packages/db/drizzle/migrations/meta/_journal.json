@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1697839327253,
-      "tag": "0000_famous_puck",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1697922319864,
-      "tag": "0001_unique_yellow_claw",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1698513855473,
-      "tag": "0002_tricky_marvel_zombies",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1698615490727,
-      "tag": "0003_ordinary_red_ghost",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1698931551271,
-      "tag": "0004_low_ultimates",
+      "when": 1701274511590,
+      "tag": "0000_parallel_onslaught",
       "breakpoints": true
     }
   ]

@@ -12,10 +12,10 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
   });
 }
 
-export async function atMaxCapacity(slug: string) {
-  const max = await maxCapacityBySlug(slug);
+export async function atMaxCapacity(id: string) {
+  const max = await maxCapacityBySlug(id);
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, id),
     with: {
       happening: true,
     },
@@ -23,13 +23,10 @@ export async function atMaxCapacity(slug: string) {
   return registrations.length >= max;
 }
 
-export async function maxCapacityBySlug(slug?: string) {
-  if (!slug) {
-    throw new Error("Must provide slug");
-  }
+export async function maxCapacityBySlug(id: string) {
   return (
     await db.query.spotRanges.findMany({
-      where: (spotRange) => eq(spotRange.happeningSlug, slug),
+      where: (spotRange) => eq(spotRange.happeningId, id),
       with: {
         event: true,
       },

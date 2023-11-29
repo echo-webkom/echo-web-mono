@@ -14,28 +14,33 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { isHost as _isHost } from "@/lib/is-host";
 import { type Bedpres } from "@/sanity/bedpres";
 import { urlFor } from "@/utils/image-builder";
-import { getUserStudentGroups } from "../../../../lib/queries/student-groups";
 
 type BedpresSidebarProps = {
-  slug: string;
   bedpres: Bedpres;
 };
 
-export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
+export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
   const user = await getAuth();
   const happening = await db.query.happenings.findFirst({
-    where: (event) => eq(event.slug, slug),
+    where: (happening) => eq(happening.id, bedpres._id),
     with: {
       questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
     },
   });
   const spotRanges = await db.query.spotRanges.findMany({
-    where: (spotRange) => eq(spotRange.happeningSlug, slug),
+    where: (spotRange) => eq(spotRange.happeningId, bedpres._id),
   });
+
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, bedpres._id),
     with: {
       user: true,
     },
@@ -60,11 +65,9 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
     isAfter(new Date(), happening.registrationStart) &&
     isBefore(new Date(), happening.registrationEnd);
 
+  const isHost = user && happening ? _isHost(user, happening) : false;
+
   const isUserComplete = user?.degreeId && user.year;
-
-  const userGroups = user ? await getUserStudentGroups(user.id) : [];
-
-  const isHost = userGroups.some((group) => group.groupId === "bedkom") || user?.type === "admin";
 
   return (
     <Sidebar>
@@ -165,14 +168,16 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.registrationStart && isAfter(new Date(), happening.registrationStart) && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
+      {happening?.registrationStart &&
+        isAfter(new Date(), happening.registrationStart) &&
+        spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+            <SidebarItemContent>
+              {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
 
       {happening?.registrationStart &&
         happening.registrationStart < new Date() &&
@@ -205,19 +210,20 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
 
       {isRegistered && (
         <SidebarItem>
-          <DeregisterButton slug={slug} />
+          <DeregisterButton id={bedpres._id} />
         </SidebarItem>
       )}
 
       {!isRegistered &&
         isUserComplete &&
+        spotRanges.length > 0 &&
         happening?.registrationStart &&
         isAfter(
           new Date(),
           new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
         ) && (
           <SidebarItem className="relative">
-            <RegisterButton slug={slug} questions={happening.questions} />
+            <RegisterButton id={bedpres._id} questions={happening.questions} />
             <Countdown toDate={happening.registrationStart} />
           </SidebarItem>
         )}
@@ -258,10 +264,10 @@ export async function BedpresSidebar({ slug, bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {user && isHost && (
+      {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${slug}`}>Admin dashbord</Link>
+            <Link href={`/dashbord/${bedpres.slug}`}>Admin dashbord</Link>
           </Button>
         </SidebarItem>
       )}

@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, users } from ".";
@@ -10,12 +10,13 @@ export const usersToGroups = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    groupId: varchar("group_id", { length: 21 })
+    groupId: varchar("group_id")
       .notNull()
       .references(() => groups.id),
+    isLeader: boolean("is_leader").notNull().default(false),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.groupId),
+    pk: primaryKey({ columns: [table.userId, table.groupId] }),
   }),
 );
 
