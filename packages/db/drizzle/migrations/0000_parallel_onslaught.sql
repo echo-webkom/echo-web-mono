@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 	"scope" text,
 	"id_token" text,
 	"session_state" text,
-	CONSTRAINT account_provider_provider_account_id PRIMARY KEY("provider","provider_account_id")
+	CONSTRAINT account_provider_provider_account_id_pk PRIMARY KEY("provider","provider_account_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "answer" (
@@ -54,26 +54,26 @@ CREATE TABLE IF NOT EXISTS "answer" (
 	"happening_id" varchar NOT NULL,
 	"question_id" varchar NOT NULL,
 	"answer" json,
-	CONSTRAINT answer_user_id_happening_id_question_id PRIMARY KEY("user_id","happening_id","question_id")
+	CONSTRAINT answer_user_id_happening_id_question_id_pk PRIMARY KEY("user_id","happening_id","question_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "degree" (
 	"id" varchar NOT NULL,
 	"name" varchar NOT NULL,
-	CONSTRAINT degree_id PRIMARY KEY("id")
+	CONSTRAINT degree_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "group" (
 	"id" varchar NOT NULL,
 	"name" varchar NOT NULL,
 	"leader" text,
-	CONSTRAINT group_id PRIMARY KEY("id")
+	CONSTRAINT group_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happenings_to_groups" (
 	"happening_id" varchar NOT NULL,
 	"group_id" varchar NOT NULL,
-	CONSTRAINT happenings_to_groups_happening_id_group_id PRIMARY KEY("happening_id","group_id")
+	CONSTRAINT happenings_to_groups_happening_id_group_id_pk PRIMARY KEY("happening_id","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "happening" (
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS "happening" (
 	"date" timestamp,
 	"registration_start" timestamp,
 	"registration_end" timestamp,
-	CONSTRAINT happening_id PRIMARY KEY("id")
+	CONSTRAINT happening_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS "question" (
 	"is_sensitive" boolean DEFAULT false NOT NULL,
 	"options" json,
 	"happening_id" varchar NOT NULL,
-	CONSTRAINT question_id PRIMARY KEY("id")
+	CONSTRAINT question_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "registration" (
@@ -104,14 +104,14 @@ CREATE TABLE IF NOT EXISTS "registration" (
 	"status" "registration_status" DEFAULT 'waiting' NOT NULL,
 	"unregister_reason" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT registration_user_id_happening_id PRIMARY KEY("user_id","happening_id")
+	CONSTRAINT registration_user_id_happening_id_pk PRIMARY KEY("user_id","happening_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
 	"session_token" text NOT NULL,
 	"user_id" text NOT NULL,
 	"expires" timestamp NOT NULL,
-	CONSTRAINT session_session_token PRIMARY KEY("session_token")
+	CONSTRAINT session_session_token_pk PRIMARY KEY("session_token")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "site_feedback" (
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS "site_feedback" (
 	"category" "feedback_category" NOT NULL,
 	"is_read" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT site_feedback_id PRIMARY KEY("id")
+	CONSTRAINT site_feedback_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "spot_range" (
@@ -131,14 +131,14 @@ CREATE TABLE IF NOT EXISTS "spot_range" (
 	"spots" integer NOT NULL,
 	"min_year" integer NOT NULL,
 	"max_year" integer NOT NULL,
-	CONSTRAINT spot_range_id PRIMARY KEY("id")
+	CONSTRAINT spot_range_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_to_groups" (
 	"user_id" text NOT NULL,
 	"group_id" varchar NOT NULL,
 	"is_leader" boolean DEFAULT false NOT NULL,
-	CONSTRAINT users_to_groups_user_id_group_id PRIMARY KEY("user_id","group_id")
+	CONSTRAINT users_to_groups_user_id_group_id_pk PRIMARY KEY("user_id","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
@@ -151,21 +151,21 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"degree_id" varchar,
 	"year" integer,
 	"type" "user_type" DEFAULT 'student' NOT NULL,
-	CONSTRAINT user_id PRIMARY KEY("id")
+	CONSTRAINT user_id_pk PRIMARY KEY("id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verification_token" (
 	"identifier" text NOT NULL,
 	"token" text NOT NULL,
 	"expires" timestamp NOT NULL,
-	CONSTRAINT verification_token_identifier_token PRIMARY KEY("identifier","token")
+	CONSTRAINT verification_token_identifier_token_pk PRIMARY KEY("identifier","token")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "whitelist" (
 	"email" text NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	"reason" text NOT NULL,
-	CONSTRAINT whitelist_email PRIMARY KEY("email")
+	CONSTRAINT whitelist_email_pk PRIMARY KEY("email")
 );
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "question_idx" ON "answer" ("question_id");--> statement-breakpoint

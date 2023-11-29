@@ -13,6 +13,7 @@ import {
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
 import { happeningQuery, type HappeningQueryType } from "./query";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +104,7 @@ export const GET = withBasicAuth(async () => {
     await db.insert(questions).values(questionsToInsert);
   }
 
-  // TODO: Revalidate tags
+  revalidatePath("/");
 
   return NextResponse.json({
     message: "OK",

@@ -1,5 +1,5 @@
 {
-  "id": "5d8ec312-9508-408a-94ff-5575121249c5",
+  "id": "c2bee28c-1136-4412-9ed0-bd5bdff91265",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -92,8 +92,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_provider_account_id": {
-          "name": "account_provider_provider_account_id",
+        "account_provider_provider_account_id_pk": {
+          "name": "account_provider_provider_account_id_pk",
           "columns": [
             "provider",
             "provider_account_id"
@@ -182,8 +182,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "answer_user_id_happening_id_question_id": {
-          "name": "answer_user_id_happening_id_question_id",
+        "answer_user_id_happening_id_question_id_pk": {
+          "name": "answer_user_id_happening_id_question_id_pk",
           "columns": [
             "user_id",
             "happening_id",
@@ -213,8 +213,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "degree_id": {
-          "name": "degree_id",
+        "degree_id_pk": {
+          "name": "degree_id_pk",
           "columns": [
             "id"
           ]
@@ -262,8 +262,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "group_id": {
-          "name": "group_id",
+        "group_id_pk": {
+          "name": "group_id_pk",
           "columns": [
             "id"
           ]
@@ -291,8 +291,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "happenings_to_groups_happening_id_group_id": {
-          "name": "happenings_to_groups_happening_id_group_id",
+        "happenings_to_groups_happening_id_group_id_pk": {
+          "name": "happenings_to_groups_happening_id_group_id_pk",
           "columns": [
             "happening_id",
             "group_id"
@@ -367,8 +367,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "happening_id": {
-          "name": "happening_id",
+        "happening_id_pk": {
+          "name": "happening_id_pk",
           "columns": [
             "id"
           ]
@@ -452,8 +452,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "question_id": {
-          "name": "question_id",
+        "question_id_pk": {
+          "name": "question_id_pk",
           "columns": [
             "id"
           ]
@@ -536,8 +536,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "registration_user_id_happening_id": {
-          "name": "registration_user_id_happening_id",
+        "registration_user_id_happening_id_pk": {
+          "name": "registration_user_id_happening_id_pk",
           "columns": [
             "user_id",
             "happening_id"
@@ -586,8 +586,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "session_session_token": {
-          "name": "session_session_token",
+        "session_session_token_pk": {
+          "name": "session_session_token_pk",
           "columns": [
             "session_token"
           ]
@@ -647,8 +647,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "site_feedback_id": {
-          "name": "site_feedback_id",
+        "site_feedback_id_pk": {
+          "name": "site_feedback_id_pk",
           "columns": [
             "id"
           ]
@@ -718,8 +718,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "spot_range_id": {
-          "name": "spot_range_id",
+        "spot_range_id_pk": {
+          "name": "spot_range_id_pk",
           "columns": [
             "id"
           ]
@@ -781,8 +781,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "users_to_groups_user_id_group_id": {
-          "name": "users_to_groups_user_id_group_id",
+        "users_to_groups_user_id_group_id_pk": {
+          "name": "users_to_groups_user_id_group_id_pk",
           "columns": [
             "user_id",
             "group_id"
@@ -868,8 +868,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "user_id": {
-          "name": "user_id",
+        "user_id_pk": {
+          "name": "user_id_pk",
           "columns": [
             "id"
           ]
@@ -903,8 +903,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "verification_token_identifier_token": {
-          "name": "verification_token_identifier_token",
+        "verification_token_identifier_token_pk": {
+          "name": "verification_token_identifier_token_pk",
           "columns": [
             "identifier",
             "token"
@@ -939,8 +939,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "whitelist_email": {
-          "name": "whitelist_email",
+        "whitelist_email_pk": {
+          "name": "whitelist_email_pk",
           "columns": [
             "email"
           ]

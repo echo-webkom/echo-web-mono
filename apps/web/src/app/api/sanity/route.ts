@@ -1,5 +1,6 @@
-import { eq, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
@@ -10,8 +11,8 @@ import {
   registrations,
   spotRanges,
   type HappeningsToGroupsInsert,
-  type SpotRangeInsert,
   type QuestionInsert,
+  type SpotRangeInsert,
 } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
@@ -42,8 +43,7 @@ export const POST = withBasicAuth(async (req) => {
     await db.delete(spotRanges).where(eq(spotRanges.happeningId, payload._id));
     await db.delete(registrations).where(eq(registrations.happeningId, payload._id));
 
-    // TODO: Revalidate tags (bedpres or event)
-
+    revalidatePath("/");
     return NextResponse.json(
       {
         status: "success",
@@ -111,34 +111,28 @@ export const POST = withBasicAuth(async (req) => {
 
   await db.delete(spotRanges).where(eq(spotRanges.happeningId, res._id));
 
-  const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map(
-    (sr) =>
-      ({
-        happeningId: res._id,
-        spots: sr.spots,
-        minYear: sr.minYear,
-        maxYear: sr.maxYear,
-      }),
-  );
+  const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map((sr) => ({
+    happeningId: res._id,
+    spots: sr.spots,
+    minYear: sr.minYear,
+    maxYear: sr.maxYear,
+  }));
 
   if (spotRangesToInsert.length > 0) {
     await db.insert(spotRanges).values(spotRangesToInsert);
   }
 
+  const currentQuestions = await db.query.questions.findMany({
+    where: eq(questions.happeningId, res._id),
+  });
 
-  const currentQuestions = await db.query.questions.findMany(
-    {
-      where: eq(questions.happeningId, res._id),
-    }
+  const questionsToDelete = currentQuestions.filter(
+    (q) => !res.questions?.map((newQuestion) => newQuestion.title).includes(q.title),
   );
-
-
-  const questionsToDelete = currentQuestions.filter((q) => !res.questions?.map((newQuestion) => newQuestion.title).includes(q.title));
 
   for (const question of questionsToDelete) {
     await db.delete(questions).where(eq(questions.id, question.id));
   }
-
 
   const questionsToInsert: Array<QuestionInsert> = (res.questions ?? []).map((q) => ({
     id: q.id,
@@ -149,25 +143,27 @@ export const POST = withBasicAuth(async (req) => {
     options: q.options?.map((o) => ({
       id: o,
       value: o,
-      })),
+    })),
   }));
 
-
   if (questionsToInsert.length > 0) {
-    await db.insert(questions).values(questionsToInsert).onConflictDoUpdate({
-      target: questions.id,
-      set: {
-        title: sql`excluded."title"`,
-        required: sql`excluded."required"`,
-        type: sql`excluded."type"`,
-        options: sql`excluded."options"`,
-        isSensitive: sql`excluded."is_sensitive"`,
-      },
-    });
+    await db
+      .insert(questions)
+      .values(questionsToInsert)
+      .onConflictDoUpdate({
+        target: questions.id,
+        set: {
+          title: sql`excluded."title"`,
+          required: sql`excluded."required"`,
+          type: sql`excluded."type"`,
+          options: sql`excluded."options"`,
+          isSensitive: sql`excluded."is_sensitive"`,
+        },
+      });
   }
 
-  // TODO: Revalidate tag (bedpres or event)
-
+  revalidatePath("/");
+  revalidatePath(`/${res._type === "bedpres" ? "bedpres" : "arrangement"}/${res.slug}`);
 
   return NextResponse.json(
     {
