@@ -4,6 +4,7 @@ import {
   type User,
   type usersToGroups,
 } from "@echo-webkom/db/schemas";
+
 import { isWebkom } from "./user";
 
 type TUser = User & {

@@ -57,13 +57,17 @@ export async function fetchUpcomingBedpresses(n: number) {
     n: n > 0 ? n : -1,
   };
 
-  const res = await sanityFetch<Array<Bedpres>>({
-    query,
-    params,
-    tags: ["upcoming-bedpresses"],
-  });
+  try {
+    const res = await sanityFetch<Array<Bedpres>>({
+      query,
+      params,
+      tags: ["upcoming-bedpresses"],
+    });
 
-  return bedpresSchema.array().parse(res);
+    return bedpresSchema.array().parse(res);
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function fetchBedpresBySlug(slug: string) {
@@ -117,13 +121,17 @@ export async function fetchBedpresBySlug(slug: string) {
     slug,
   };
 
-  const res = await sanityFetch<Bedpres>({
-    query,
-    params,
-    tags: [`bedpres-${slug}`],
-  });
+  try {
+    const res = await sanityFetch<Bedpres>({
+      query,
+      params,
+      tags: [`bedpres-${slug}`],
+    });
 
-  return bedpresSchema.parse(res);
+    return bedpresSchema.parse(res);
+  } catch (error) {
+    return null;
+  }
 }
 
 export const fetchFilteredBedpresses = async (

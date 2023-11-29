@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 
@@ -13,7 +14,6 @@ import {
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
 import { happeningQuery, type HappeningQueryType } from "./query";
-import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 

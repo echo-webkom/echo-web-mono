@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
+import { isWebkom } from "@/lib/user";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { isWebkom } from "@/lib/user";
 
 type UserMenuProps = {
   user: User & {

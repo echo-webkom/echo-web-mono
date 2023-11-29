@@ -6,8 +6,8 @@ import { z } from "zod";
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations, type AnswerInsert, type SpotRange } from "@echo-webkom/db/schemas";
-import { registrationFormSchema } from "@/lib/schemas/registration";
 
+import { registrationFormSchema } from "@/lib/schemas/registration";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   try {
@@ -194,9 +194,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           happeningId: happening.id,
           userId: user.id,
           questionId: question.questionId,
-          answer: question.answer ? {
-            answer: question.answer
-          } : null
+          answer: question.answer
+            ? {
+                answer: question.answer,
+              }
+            : null,
         }) satisfies AnswerInsert,
     );
 
