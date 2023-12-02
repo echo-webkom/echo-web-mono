@@ -43,7 +43,7 @@
     "class-variance-authority": "0.7.0",
     "clsx": "2.0.0",
     "date-fns": "2.30.0",
-    "drizzle-orm": "0.29.0",
+    "drizzle-orm": "0.29.1",
     "framer-motion": "10.16.5",
     "next": "14.0.3",
     "next-auth": "4.24.5",
