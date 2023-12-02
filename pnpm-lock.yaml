@@ -239,8 +239,8 @@ importers:
         specifier: 0.29.1
         version: 0.29.1(@types/pg@8.10.9)(pg@8.11.3)(postgres@3.4.3)
       framer-motion:
-        specifier: 10.16.5
-        version: 10.16.5(react-dom@18.2.0)(react@18.2.0)
+        specifier: 10.16.7
+        version: 10.16.7(react-dom@18.2.0)(react@18.2.0)
       next:
         specifier: 14.0.3
         version: 14.0.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
@@ -5142,7 +5142,7 @@ packages:
       '@sanity/preview-url-secret': 1.2.0(@sanity/client@6.8.6)(@sanity/icons@2.7.0)(sanity@3.20.1)
       '@sanity/ui': 1.9.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@types/lodash.isequal': 4.5.8
-      framer-motion: 10.16.5(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.7(react-dom@18.2.0)(react@18.2.0)
       lodash.isequal: 4.5.0
       mendoza: 3.0.3
       react: 18.2.0
@@ -5254,7 +5254,7 @@ packages:
       '@sanity/color': 2.2.5
       '@sanity/icons': 2.7.0(react@18.2.0)
       csstype: 3.1.2
-      framer-motion: 10.16.5(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.7(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
@@ -8912,6 +8912,24 @@ packages:
 
   /framer-motion@10.16.5(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-GEzVjOYP2MIpV9bT/GbhcsBNoImG3/2X3O/xVNWmktkv9MdJ7P/44zELm/7Fjb+O3v39SmKFnoDQB32giThzpg==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.6.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /framer-motion@10.16.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-iJrX0RXxbRI3qSvDjMIp0hj+Rq6eAx+GotpX8fnZhI88Texkhlj5QHifY4BdokCh4C0oYKPsyf0wL+kwM6/taw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
