@@ -6,7 +6,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchBedpresBySlug } from "@/sanity/bedpres";
+import { fetchHappeningBySlug } from "@/sanity/happening";
 import { shortDate } from "@/utils/date";
 import { BedpresSidebar } from "./bedpres-sidebar";
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const bedpres = await fetchBedpresBySlug(slug);
+  const bedpres = await fetchHappeningBySlug(slug);
 
   if (!bedpres) {
     return notFound();

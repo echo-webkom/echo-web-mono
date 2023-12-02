@@ -14,11 +14,11 @@ import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/co
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { isHost as _isHost } from "@/lib/is-host";
-import { type Event } from "@/sanity/event";
+import { type Happening } from "@/sanity/happening/schemas";
 import { norwegianDateString } from "@/utils/date";
 
 type EventSidebarProps = {
-  event: Event;
+  event: Happening;
 };
 
 export async function EventSidebar({ event }: EventSidebarProps) {

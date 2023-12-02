@@ -3,16 +3,27 @@ import { z } from "zod";
 import { companySchema } from "../company";
 import { locationSchema } from "../location";
 import { contactProfileSchema } from "../profile/schemas";
+import { studentGroupSchema } from "../student-group";
 import { questionSchema } from "../utils/question";
 import { spotRangeSchema } from "../utils/spot-range";
 
-export const bedpresSchema = z.object({
+export const happeningTypeSchema = z.enum(["event", "bedpres"]);
+
+export type HappeningType = z.infer<typeof happeningTypeSchema>;
+
+export const happeningSchema = z.object({
   _id: z.string(),
   _createdAt: z.string(),
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  company: companySchema.pick({ _id: true, name: true, image: true, website: true }),
+  happeningType: happeningTypeSchema,
+  organizers: studentGroupSchema
+    .pick({ _id: true, name: true, slug: true })
+    .array()
+    .nullable()
+    .transform((groups) => groups ?? []),
+  company: companySchema.omit({ description: true }).nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   registrationStartGroups: z.string().nullable(),
@@ -25,4 +36,4 @@ export const bedpresSchema = z.object({
   body: z.string().nullable(),
 });
 
-export type Bedpres = z.infer<typeof bedpresSchema>;
+export type Happening = z.infer<typeof happeningSchema>;

@@ -10,22 +10,14 @@ import {
 import { isBefore, isThisWeek, isWithinInterval, nextMonday, startOfDay } from "date-fns";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { fetchFilteredBedpresses, type Bedpres } from "@/sanity/bedpres";
-import { fetchFilteredEvents, type Event } from "@/sanity/event";
+import { fetchFilteredHappening } from "@/sanity/happening";
+import { type Happening } from "@/sanity/happening/schemas";
 import { isErrorMessage } from "@/utils/error";
 import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-
-export type Happening =
-  | (Event & {
-      type: "arrangement";
-    })
-  | (Bedpres & {
-      type: "bedpres";
-    });
 
 // For querying Sanity
 export type QueryParams = {
@@ -126,26 +118,15 @@ export default function EventFilter() {
       setLoading(true);
       const p = URLtoSearchParams(params);
       const validQuery = validateParamsToQuery(p);
+      const happenings = await fetchFilteredHappening(validQuery);
 
-      const bedpresses =
-        validQuery.type === "all" || validQuery.type === "bedpres"
-          ? await fetchFilteredBedpresses(validQuery)
-          : [];
-      const events =
-        validQuery.type === "all" || validQuery.type === "event"
-          ? await fetchFilteredEvents(validQuery)
-          : [];
-
-      if (isErrorMessage(events) || isErrorMessage(bedpresses)) {
+      if (isErrorMessage(happenings)) {
         return new Response("Error fetching data from Sanity", {
           status: 500,
         });
       }
 
-      const combinedHappenings = [
-        ...events.map((e) => ({ ...e, type: "arrangement" as const })),
-        ...bedpresses.map((b) => ({ ...b, type: "bedpres" as const })),
-      ].sort((a, b) => {
+      const combinedHappenings = happenings.sort((a, b) => {
         if (a.date && b.date) {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         }
