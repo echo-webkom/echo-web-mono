@@ -17,7 +17,7 @@ import {
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
-import { happeningQuery, type HappeningQueryType } from "./query";
+import { happeningQuery, type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +30,7 @@ export const POST = withBasicAuth(async (req) => {
 
   const payload = sanityPayloadSchema.parse(await req.json());
 
-  const res = await client.fetch<HappeningQueryType>(happeningQuery, {
+  const res = await client.fetch<SanityHappening | null>(happeningQuery, {
     id: payload._id,
   });
 

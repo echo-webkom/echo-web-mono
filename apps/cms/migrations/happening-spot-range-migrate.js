@@ -12,16 +12,19 @@ const client = createClient({
   token,
 });
 
-const fetchDocuments = () => client.fetch(`*[_type == "post" && length(body) == null]`);
+const fetchDocuments = () => client.fetch(`*[_type == "happening" && defined(spotRanges)]`);
 
 const buildPatches = (docs) =>
   docs.map((doc) => ({
     id: doc._id,
     patch: {
       set: {
-        body: doc.body.no,
+        spotRanges: doc.spotRanges.map((spotRange) => ({
+          ...spotRange,
+          minYear: spotRange.minDegreeYear,
+          maxYear: spotRange.maxDegreeYear,
+        })),
       },
-      unset: ["body.no"],
       ifRevisionID: doc._rev,
     },
   }));

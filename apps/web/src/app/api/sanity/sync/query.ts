@@ -1,13 +1,18 @@
-export const happeningQuery = `
-*[_type == "event" || _type == "bedpres"
+import { groq } from "next-sanity";
+
+export const happeningQuery = groq`
+*[_type == "happening" &&
+  && _id == $id
   && !(_id in path('drafts.**'))] {
   _id,
   _type,
   title,
   "slug": slug.current,
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "groups": organizer[]->slug.current,
   "spotRanges": spotRanges[] {
     spots,
@@ -25,12 +30,16 @@ export const happeningQuery = `
 }
 `;
 
-export type HappeningQueryType = Array<{
+export const singleHappeningQuery = groq`${happeningQuery}[0]`;
+
+export type SanityHappening = {
   _id: string;
   _type: "event" | "bedpres";
   title: string;
   slug: string;
   date: string;
+  registrationStartGroups: string | null;
+  registrationGroups: Array<string>;
   registrationStart: string | null;
   registrationEnd: string | null;
   groups: Array<string>;
@@ -43,8 +52,8 @@ export type HappeningQueryType = Array<{
     id: string;
     title: string;
     required: boolean;
-    isSensitive: boolean;
     type: "text" | "textarea" | "checkbox" | "radio";
+    isSensitive: boolean;
     options: Array<string> | null;
   }> | null;
-}>;
+};

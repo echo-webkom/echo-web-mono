@@ -12,16 +12,15 @@ const client = createClient({
   token,
 });
 
-const fetchDocuments = () => client.fetch(`*[_type == "post" && length(body) == null]`);
+const fetchDocuments = () => client.fetch(`*[_type == "happening" && defined(happeningType)]`);
 
 const buildPatches = (docs) =>
   docs.map((doc) => ({
     id: doc._id,
     patch: {
       set: {
-        body: doc.body.no,
+        happeningType: doc.happeningType.toLowerCase(),
       },
-      unset: ["body.no"],
       ifRevisionID: doc._rev,
     },
   }));

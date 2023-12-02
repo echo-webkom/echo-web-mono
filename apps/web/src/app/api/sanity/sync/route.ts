@@ -13,18 +13,19 @@ import {
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
-import { happeningQuery, type HappeningQueryType } from "./query";
+import { happeningQuery, type SanityHappening } from "./query";
 
 export const dynamic = "force-dynamic";
 
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
 
-  const res = await client.fetch<HappeningQueryType>(happeningQuery);
+  const res = await client.fetch<Array<SanityHappening>>(happeningQuery);
 
   const formattedHappenings = res.map((h) => ({
     ...h,
     date: new Date(h.date),
+    registrationStartGroups: h.registrationStartGroups ? new Date(h.registrationStartGroups) : null,
     registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
     registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
   }));
