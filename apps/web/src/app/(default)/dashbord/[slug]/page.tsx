@@ -103,7 +103,7 @@ export default async function EventDashboard({ params }: Props) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <HappeningInfoBox happening={happening} />
+        <HappeningInfoBox happeningId={happening.id} />
       </div>
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">

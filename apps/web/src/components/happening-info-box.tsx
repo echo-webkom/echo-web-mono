@@ -1,7 +1,7 @@
 import { isAfter, isBefore } from "date-fns";
 
 import { maxCapacityBySlug } from "@/lib/queries/happening";
-import { type Happening } from "@/sanity/happening/schemas";
+import { fetchHappeningBySlug } from "@/sanity/happening";
 import { norwegianDateString } from "@/utils/date";
 import { capitalize } from "@/utils/string";
 
@@ -10,10 +10,20 @@ async function fetchMaxCapacity(slug: string) {
   return capacity === 0 ? "Uendelig" : capacity;
 }
 
-export async function HappeningInfoBox(happening: Happening) {
+type HappeningInfoBoxProps = {
+  happeningId: string;
+};
+
+export async function HappeningInfoBox({ happeningId }: HappeningInfoBoxProps) {
+  const happening = await fetchHappeningBySlug(happeningId);
+
+  if (!happening) {
+    return null;
+  }
+
   const isRegistrationOpen =
-    happening?.registrationStart &&
-    happening?.registrationEnd &&
+    happening.registrationStart &&
+    happening.registrationEnd &&
     isAfter(new Date(), new Date(happening.registrationStart)) &&
     isBefore(new Date(), new Date(happening.registrationEnd));
 
