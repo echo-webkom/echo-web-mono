@@ -16,7 +16,8 @@ export * from "./schemas";
  */
 export async function fetchComingEvents(n: number) {
   const query = groq`
-*[_type == "event"
+*[_type == "happening"
+  && happeningType == "event"
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(dates.date asc)
@@ -38,9 +39,11 @@ export async function fetchComingEvents(n: number) {
       name,
     },
   },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "location": location->{
     name,
   },
@@ -77,7 +80,8 @@ export async function fetchComingEvents(n: number) {
 
 export async function fetchEventBySlug(slug: string) {
   const query = groq`
-*[_type == "event"
+*[_type == "happening"
+  && happeningType == "event"
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
   _id,
@@ -97,9 +101,11 @@ export async function fetchEventBySlug(slug: string) {
       name,
     },
   },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "location": location->{
     name,
   },
@@ -137,10 +143,11 @@ export async function fetchEventBySlug(slug: string) {
 
 export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> | ErrorMessage> => {
   const conditions = [
-    `_type == "event"`,
+    `_type == "happening"`,
     `!(_id in path('drafts.**'))`,
-    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
-    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.type === "all" ? null : `happeningType == "${q.type}"`,
+    q.open ? `registrationStart <= now() && registrationEnd > now()` : null,
+    q.past ? `date < now()` : `date >= now()`,
     q.search ? `title match "*${q.search}*"` : null,
   ].filter(Boolean);
 
@@ -152,10 +159,11 @@ export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> 
   _updatedAt,
   title,
   "slug": slug.current,
-  "organizers": organizer[]->{
+  "company": company->{
     _id,
     name,
-    "slug": slug.current,
+    website,
+    image,
   },
   "contacts": contacts[] {
     email,
@@ -164,9 +172,11 @@ export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> 
       name,
     },
   },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "location": location->{
     name,
   },
@@ -183,7 +193,6 @@ export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> 
   },
   body
 }
-
     `;
 
     const res = await sanityFetch<Array<Event>>({
@@ -195,7 +204,7 @@ export const fetchFilteredEvents = async (q: QueryParams): Promise<Array<Event> 
   } catch (error) {
     console.error(error);
     return {
-      message: "Failed to fetch events",
+      message: "Could not fetch bedpres.",
     };
   }
 };

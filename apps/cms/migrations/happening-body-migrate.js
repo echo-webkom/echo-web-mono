@@ -12,7 +12,8 @@ const client = createClient({
   token,
 });
 
-const fetchDocuments = () => client.fetch(`*[_type == "happening" && defined(body.no)]`);
+const fetchDocuments = () =>
+  client.fetch(`*[_type == "happening" && body._type == "localeMarkdown"]`);
 
 const buildPatches = (docs) =>
   docs.map((doc) => ({

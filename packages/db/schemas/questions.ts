@@ -20,13 +20,13 @@ type Option = {
 export const questions = pgTable(
   "question",
   {
-    id: varchar("id").notNull(),
+    id: varchar("id", { length: 255 }).notNull(),
     title: text("title").notNull(),
     required: boolean("required").notNull().default(false),
     type: questionTypeEnum("type").notNull().default("text"),
     isSensitive: boolean("is_sensitive").notNull().default(false),
     options: json("options").$type<Array<Option>>(),
-    happeningId: varchar("happening_id")
+    happeningId: varchar("happening_id", { length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",

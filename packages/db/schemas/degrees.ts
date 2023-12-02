@@ -8,10 +8,10 @@ import { users } from ".";
 export const degrees = pgTable(
   "degree",
   {
-    id: varchar("id")
+    id: varchar("id", { length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
-    name: varchar("name").notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

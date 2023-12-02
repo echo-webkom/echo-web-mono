@@ -29,7 +29,7 @@ export type Happening =
 
 // For querying Sanity
 export type QueryParams = {
-  type: string;
+  type: "all" | "event" | "bedpres";
   search?: string;
   open?: string;
   past?: string;
@@ -37,7 +37,7 @@ export type QueryParams = {
 
 // For handling state
 export type SearchParams = {
-  type: string;
+  type: "all" | "event" | "bedpres";
   search?: string;
   open: boolean;
   past: boolean;
@@ -46,7 +46,7 @@ export type SearchParams = {
 // Makes it so URLs can be shared with filters intact
 function URLtoSearchParams(url: ReadonlyURLSearchParams) {
   const params: SearchParams = {
-    type: url.get("type") ?? "all",
+    type: (url.get("type") as "event" | "bedpres" | "all") ?? "all",
     search: url.get("search") ?? undefined,
     open: url.get("open") === "true" ? true : false,
     past: url.get("past") === "true" ? true : false,
@@ -57,7 +57,7 @@ function URLtoSearchParams(url: ReadonlyURLSearchParams) {
     params.past = false;
   }
 
-  if (!(params.type === "all" || params.type === "arrangement" || params.type === "bedpres")) {
+  if (!(params.type === "all" || params.type === "event" || params.type === "bedpres")) {
     params.type = "all";
   }
 
@@ -73,7 +73,7 @@ function validateParamsToQuery(params: SearchParams) {
     past: params.past ? "true" : undefined,
   };
 
-  if (!(query.type === "all" || query.type === "arrangement" || query.type === "bedpres")) {
+  if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
     query.type = "all";
   }
   if (query.search) {
@@ -132,7 +132,7 @@ export default function EventFilter() {
           ? await fetchFilteredBedpresses(validQuery)
           : [];
       const events =
-        validQuery.type === "all" || validQuery.type === "arrangement"
+        validQuery.type === "all" || validQuery.type === "event"
           ? await fetchFilteredEvents(validQuery)
           : [];
 
@@ -208,8 +208,8 @@ export default function EventFilter() {
           </Button>
           <Button
             className="w-full sm:w-auto"
-            variant={searchParams.type === "arrangement" ? "default" : "outline"}
-            onClick={() => setSearchParams({ ...searchParams, type: "arrangement" })}
+            variant={searchParams.type === "event" ? "default" : "outline"}
+            onClick={() => setSearchParams({ ...searchParams, type: "event" })}
           >
             Arrangementer
           </Button>

@@ -8,10 +8,10 @@ import { happenings } from ".";
 export const spotRanges = pgTable(
   "spot_range",
   {
-    id: varchar("id")
+    id: varchar("id", { length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
-    happeningId: varchar("happening_id")
+    happeningId: varchar("happening_id", { length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",

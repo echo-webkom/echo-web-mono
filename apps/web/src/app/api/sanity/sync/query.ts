@@ -1,14 +1,11 @@
 import { groq } from "next-sanity";
 
-export const happeningQuery = groq`
-*[_type == "happening" &&
-  && _id == $id
-  && !(_id in path('drafts.**'))] {
+const happeningQueryPartial = groq`
   _id,
-  _type,
   title,
   "slug": slug.current,
   "date": date,
+  happeningType,
   "registrationStartGroups": registrationStartGroups,
   "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": registrationStart,
@@ -27,17 +24,29 @@ export const happeningQuery = groq`
     isSensitive,
     options,
   }
+`;
+
+export const happeningQuerySingle = groq`
+*[_type == "happening"
+  && _id == $id
+  && !(_id in path('drafts.**'))] {
+  ${happeningQueryPartial}
+}[0]
+`;
+
+export const happeningQueryList = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))] {
+  ${happeningQueryPartial}
 }
 `;
 
-export const singleHappeningQuery = groq`${happeningQuery}[0]`;
-
 export type SanityHappening = {
   _id: string;
-  _type: "event" | "bedpres";
   title: string;
   slug: string;
   date: string;
+  happeningType: "event" | "bedpres";
   registrationStartGroups: string | null;
   registrationGroups: Array<string>;
   registrationStart: string | null;

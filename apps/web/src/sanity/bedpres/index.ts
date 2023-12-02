@@ -9,7 +9,8 @@ export * from "./schemas";
 
 export async function fetchUpcomingBedpresses(n: number) {
   const query = groq`
-*[_type == "bedpres"
+*[_type == "happening"
+  && happeningType == "bedpres"
   && !(_id in path('drafts.**'))
   && dates.date >= now()]
   | order(date asc)
@@ -32,9 +33,11 @@ export async function fetchUpcomingBedpresses(n: number) {
       name,
     },
   },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "location": location->{
     name,
   },
@@ -72,7 +75,8 @@ export async function fetchUpcomingBedpresses(n: number) {
 
 export async function fetchBedpresBySlug(slug: string) {
   const query = groq`
-*[_type == "bedpres"
+*[_type == "happening"
+  && happeningType == "bedpres"
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
   _id,
@@ -94,6 +98,8 @@ export async function fetchBedpresBySlug(slug: string) {
     },
   },
   "date": dates.date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": dates.registrationStart,
   "registrationEnd": dates.registrationEnd,
   "location": location->{
@@ -138,10 +144,11 @@ export const fetchFilteredBedpresses = async (
   q: QueryParams,
 ): Promise<Array<Bedpres> | ErrorMessage> => {
   const conditions = [
-    `_type == "bedpres"`,
+    `_type == "happening"`,
     `!(_id in path('drafts.**'))`,
-    q.open ? `dates.registrationStart <= now() && dates.registrationEnd > now()` : null,
-    q.past ? `dates.date < now()` : `dates.date >= now()`,
+    q.type === "all" ? null : `happeningType == "${q.type}"`,
+    q.open ? `registrationStart <= now() && registrationEnd > now()` : null,
+    q.past ? `date < now()` : `date >= now()`,
     q.search ? `title match "*${q.search}*"` : null,
   ].filter(Boolean);
 
@@ -166,9 +173,11 @@ export const fetchFilteredBedpresses = async (
       name,
     },
   },
-  "date": dates.date,
-  "registrationStart": dates.registrationStart,
-  "registrationEnd": dates.registrationEnd,
+  "date": date,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
   "location": location->{
     name,
   },
