@@ -56,7 +56,7 @@ export async function fetchUpcomingHappening(type: "event" | "bedpres", n: numbe
 *[_type == "happening"
   && happeningType == $type
   && !(_id in path('drafts.**'))
-  && dates.date >= now()]
+  && date >= now()]
   | order(date asc)
   [0...$n] {
   ${happeningPartial}

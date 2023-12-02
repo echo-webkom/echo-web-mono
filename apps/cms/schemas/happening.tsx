@@ -1,4 +1,4 @@
-import { OkHandIcon } from "@sanity/icons";
+import { CalendarIcon } from "@sanity/icons";
 import {
   defineArrayMember,
   defineField,
@@ -17,7 +17,7 @@ export default defineType({
   name: "happening",
   title: "Hendelse",
   type: "document",
-  icon: OkHandIcon,
+  icon: CalendarIcon,
   preview: {
     select: {
       title: "title",

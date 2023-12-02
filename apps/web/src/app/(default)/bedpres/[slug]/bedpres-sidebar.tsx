@@ -117,18 +117,6 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Tid:</SidebarItemTitle>
-          <SidebarItemContent>
-            {happening?.date.toLocaleTimeString("nb-NO", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
       {spotRanges.length > 0 && (
         <SidebarItem>
           <SidebarItemTitle>Plasser:</SidebarItemTitle>

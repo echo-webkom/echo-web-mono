@@ -1,6 +1,8 @@
-const { createClient } = require("@sanity/client");
+import "dotenv/const";
 
-const token = "";
+import { createClient } from "@sanity/client";
+
+const token = process.env.SANITY_TOKEN;
 const projectId = "nnumy1ga";
 const dataset = "production";
 const apiVersion = "2021-10-21";
