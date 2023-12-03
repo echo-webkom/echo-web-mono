@@ -8,38 +8,17 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 
-const adminRoutes = [
-  {
-    href: "/admin",
-    label: "Dashboard",
-  },
-  {
-    href: "/admin/tilbakemeldinger",
-    label: "Tilbakemeldinger",
-  },
-  {
-    href: "/admin/brukere",
-    label: "Brukere",
-  },
-  {
-    href: "/admin/happenings",
-    label: "Happenings",
-  },
-  {
-    href: "/admin/grupper",
-    label: "Grupper",
-  },
-  {
-    href: "/admin/studieretninger",
-    label: "Studieretninger",
-  },
-  {
-    href: "/admin/whitelist",
-    label: "Whitelist",
-  },
-];
+type Route = {
+  href: string;
+  label: string;
+};
 
-export function AdminSidebar({ children }: { children: React.ReactNode }) {
+type SidebarLayoutProps = {
+  routes: Array<Route>;
+  children: React.ReactNode;
+};
+
+export function SidebarLayout({ routes, children }: SidebarLayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const pathname = usePathname();
@@ -68,7 +47,7 @@ export function AdminSidebar({ children }: { children: React.ReactNode }) {
         <aside className="w-full">
           <nav className="flex flex-col">
             <ul className="flex flex-col gap-1">
-              {adminRoutes.map((route) => (
+              {routes.map((route) => (
                 <li key={route.href}>
                   <Link
                     className={cn("flex rounded-lg px-3 py-1 text-lg font-medium hover:bg-muted", {
