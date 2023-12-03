@@ -81,8 +81,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Toaster />
           {/* <CookieBanner /> */}
           <FeedbackBlob />
+          <TailwindIndicator />
         </Providers>
-        <TailwindIndicator />
       </body>
     </html>
   );
