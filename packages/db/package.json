@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "exports": {
     ".": "./index.ts",
-    "./schemas": "./schemas"
+    "./schemas": "./schemas",
+    "./utils": "./utils"
   },
   "license": "MIT",
   "scripts": {
