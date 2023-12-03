@@ -9,10 +9,10 @@ import { usersToGroups } from "./users-to-groups";
 export const groups = pgTable(
   "group",
   {
-    id: varchar("id")
+    id: varchar("id", { length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
-    name: varchar("name").notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
     leader: text("leader").references(() => users.id),
   },
   (table) => ({

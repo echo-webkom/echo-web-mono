@@ -14,7 +14,8 @@ const client = createClient({
   token,
 });
 
-const fetchDocuments = () => client.fetch(`*[_type == "post" && length(body) == null]`);
+const fetchDocuments = () =>
+  client.fetch(`*[_type == "happening" && body._type == "localeMarkdown"]`);
 
 const buildPatches = (docs) =>
   docs.map((doc) => ({
@@ -23,7 +24,7 @@ const buildPatches = (docs) =>
       set: {
         body: doc.body.no,
       },
-      unset: ["body.no"],
+      unset: ["body.no", "body.en"],
       ifRevisionID: doc._rev,
     },
   }));

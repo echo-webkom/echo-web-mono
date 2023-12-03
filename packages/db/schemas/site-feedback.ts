@@ -10,8 +10,8 @@ export const siteFeedback = pgTable(
     id: varchar("id")
       .notNull()
       .$defaultFn(() => nanoid()),
-    name: varchar("name"),
-    email: varchar("email"),
+    name: varchar("name", { length: 255 }),
+    email: varchar("email", { length: 255 }),
     message: text("message").notNull(),
     category: feedbackCategoryEnum("category").notNull(),
     isRead: boolean("is_read").notNull().default(false),

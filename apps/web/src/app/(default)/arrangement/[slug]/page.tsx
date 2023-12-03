@@ -6,7 +6,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchEventBySlug } from "@/sanity/event";
+import { fetchHappeningBySlug } from "@/sanity/happening";
 import { shortDate } from "@/utils/date";
 import { EventSidebar } from "./event-sidebar";
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const event = await fetchEventBySlug(slug);
+  const event = await fetchHappeningBySlug(slug);
 
   if (!event) {
     return notFound();

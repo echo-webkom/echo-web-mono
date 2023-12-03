@@ -13,18 +13,19 @@ import {
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
-import { happeningQuery, type HappeningQueryType } from "./query";
+import { happeningQueryList, type SanityHappening } from "./query";
 
 export const dynamic = "force-dynamic";
 
 export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
 
-  const res = await client.fetch<HappeningQueryType>(happeningQuery);
+  const res = await client.fetch<Array<SanityHappening>>(happeningQueryList);
 
   const formattedHappenings = res.map((h) => ({
     ...h,
     date: new Date(h.date),
+    registrationStartGroups: h.registrationStartGroups ? new Date(h.registrationStartGroups) : null,
     registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
     registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
   }));
@@ -37,7 +38,7 @@ export const GET = withBasicAuth(async () => {
           id: h._id,
           slug: h.slug,
           title: h.title,
-          type: h._type,
+          type: h.happeningType,
           date: h.date,
           registrationStart: h.registrationStart,
           registrationEnd: h.registrationEnd,
@@ -57,14 +58,16 @@ export const GET = withBasicAuth(async () => {
 
     await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
 
-    await db.insert(happeningsToGroups).values(
-      formattedHappenings.flatMap((h) => {
-        return (h.groups ?? []).map((g) => ({
-          happeningId: h._id,
-          groupId: h._type === "bedpres" ? "bedkom" : g,
-        }));
-      }),
-    );
+    const groupsToInsert = formattedHappenings.flatMap((h) => {
+      return (h.registrationGroups ?? []).map((g) => ({
+        happeningId: h._id,
+        groupId: g,
+      }));
+    });
+
+    if (groupsToInsert.length > 0) {
+      await db.insert(happeningsToGroups).values(groupsToInsert);
+    }
   }
 
   await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);

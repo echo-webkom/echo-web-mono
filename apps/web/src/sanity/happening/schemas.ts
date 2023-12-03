@@ -1,20 +1,33 @@
 import { z } from "zod";
 
+import { companySchema } from "../company";
 import { locationSchema } from "../location";
 import { contactProfileSchema } from "../profile/schemas";
 import { studentGroupSchema } from "../student-group";
 import { questionSchema } from "../utils/question";
 import { spotRangeSchema } from "../utils/spot-range";
 
-export const eventSchema = z.object({
+export const happeningTypeSchema = z.enum(["event", "bedpres"]);
+
+export type HappeningType = z.infer<typeof happeningTypeSchema>;
+
+export const happeningSchema = z.object({
   _id: z.string(),
   _createdAt: z.string(),
   _updatedAt: z.string(),
   title: z.string(),
   slug: z.string(),
-  organizers: studentGroupSchema.pick({ _id: true, name: true, slug: true }).array(),
+  happeningType: happeningTypeSchema,
+  organizers: studentGroupSchema
+    .pick({ _id: true, name: true, slug: true })
+    .array()
+    .nullable()
+    .transform((groups) => groups ?? []),
+  company: companySchema.omit({ description: true }).nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
+  registrationStartGroups: z.string().nullable(),
+  registrationGroups: z.array(z.string()).nullable(),
   registrationStart: z.string().nullable(),
   registrationEnd: z.string().nullable(),
   location: locationSchema.pick({ name: true }).nullable(),
@@ -23,4 +36,4 @@ export const eventSchema = z.object({
   body: z.string().nullable(),
 });
 
-export type Event = z.infer<typeof eventSchema>;
+export type Happening = z.infer<typeof happeningSchema>;

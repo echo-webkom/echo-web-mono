@@ -4,7 +4,7 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happenings, questions, registrations, users } from ".";
 
-type AnswerObj = {
+type AnswerCol = {
   answer: string | Array<string>;
 };
 
@@ -16,17 +16,17 @@ export const answers = pgTable(
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    happeningId: varchar("happening_id")
+    happeningId: varchar("happening_id", { length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    questionId: varchar("question_id")
+    questionId: varchar("question_id", { length: 255 })
       .notNull()
       .references(() => questions.id, {
         onDelete: "cascade",
       }),
-    answer: json("answer").$type<AnswerObj>(),
+    answer: json("answer").$type<AnswerCol>(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),

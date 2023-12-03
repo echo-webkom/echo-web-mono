@@ -15,11 +15,11 @@ import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/co
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { isHost as _isHost } from "@/lib/is-host";
-import { type Bedpres } from "@/sanity/bedpres";
+import { type Happening } from "@/sanity/happening/schemas";
 import { urlFor } from "@/utils/image-builder";
 
 type BedpresSidebarProps = {
-  bedpres: Bedpres;
+  bedpres: Happening;
 };
 
 export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
@@ -80,47 +80,39 @@ export async function BedpresSidebar({ bedpres }: BedpresSidebarProps) {
         </SidebarItem>
       )}
 
-      <SidebarItem>
-        <Link href={bedpres.company.website}>
-          <div className="overflow-hidden">
-            <div className="relative aspect-square w-full">
-              <Image
-                src={urlFor(bedpres.company.image).url()}
-                alt={`${bedpres.company.name} logo`}
-                fill
-              />
-            </div>
-          </div>
-        </Link>
-      </SidebarItem>
+      {bedpres.company && (
+        <>
+          <SidebarItem>
+            <Link href={bedpres.company.website}>
+              <div className="overflow-hidden">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={urlFor(bedpres.company.image).url()}
+                    alt={`${bedpres.company.name} logo`}
+                    fill
+                  />
+                </div>
+              </div>
+            </Link>
+          </SidebarItem>
 
-      <SidebarItem>
-        <SidebarItemTitle>Bedrift:</SidebarItemTitle>
-        <SidebarItemContent>
-          <Link className="hover:underline" href={bedpres.company.website}>
-            {bedpres.company.name}
-            <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
-          </Link>
-        </SidebarItemContent>
-      </SidebarItem>
+          <SidebarItem>
+            <SidebarItemTitle>Bedrift:</SidebarItemTitle>
+            <SidebarItemContent>
+              <Link className="hover:underline" href={bedpres.company.website}>
+                {bedpres.company.name}
+                <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
+              </Link>
+            </SidebarItemContent>
+          </SidebarItem>
+        </>
+      )}
 
       {happening?.date && (
         <SidebarItem>
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
             <AddToCalender date={happening?.date} title={happening?.title} />
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
-      {happening?.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Tid:</SidebarItemTitle>
-          <SidebarItemContent>
-            {happening?.date.toLocaleTimeString("nb-NO", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
           </SidebarItemContent>
         </SidebarItem>
       )}

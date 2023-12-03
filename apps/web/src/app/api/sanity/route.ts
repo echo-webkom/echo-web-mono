@@ -17,7 +17,7 @@ import {
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
-import { happeningQuery, type HappeningQueryType } from "./query";
+import { happeningQuerySingle, type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +30,7 @@ export const POST = withBasicAuth(async (req) => {
 
   const payload = sanityPayloadSchema.parse(await req.json());
 
-  const res = await client.fetch<HappeningQueryType>(happeningQuery, {
+  const res = await client.fetch<SanityHappening | null>(happeningQuerySingle, {
     id: payload._id,
   });
 
@@ -61,7 +61,7 @@ export const POST = withBasicAuth(async (req) => {
     .insert(happenings)
     .values({
       id: res._id,
-      type: res._type,
+      type: res.happeningType,
       title: res.title,
       slug: res.slug,
       date: new Date(res.date),
@@ -70,7 +70,7 @@ export const POST = withBasicAuth(async (req) => {
     })
     .onConflictDoUpdate({
       set: {
-        type: res._type,
+        type: res.happeningType,
         title: res.title,
         slug: res.slug,
         date: new Date(res.date),
@@ -86,7 +86,7 @@ export const POST = withBasicAuth(async (req) => {
    */
   await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, res._id));
 
-  if (res._type === "bedpres") {
+  if (res.happeningType === "bedpres") {
     await db.insert(happeningsToGroups).values({
       happeningId: res._id,
       groupId: "bedkom",
@@ -163,7 +163,7 @@ export const POST = withBasicAuth(async (req) => {
   }
 
   revalidatePath("/");
-  revalidatePath(`/${res._type === "bedpres" ? "bedpres" : "arrangement"}/${res.slug}`);
+  revalidatePath(`/${res.happeningType === "bedpres" ? "bedpres" : "arrangement"}/${res.slug}`);
 
   return NextResponse.json(
     {
