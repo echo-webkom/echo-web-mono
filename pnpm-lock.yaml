@@ -284,8 +284,8 @@ importers:
         specifier: 0.33.0
         version: 0.33.0
       tailwind-merge:
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.1.0
+        version: 2.1.0
       zod:
         specifier: 3.22.4
         version: 3.22.4
@@ -1765,6 +1765,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
+
+  /@babel/runtime@7.23.5:
+    resolution: {integrity: sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
+    dev: false
 
   /@babel/template@7.22.5:
     resolution: {integrity: sha512-X7yV7eiwAxdj9k94NEylvbVHLiVG1nvzCV2EAowhxLTwODV1jl9UzZ48leOC0sH7OnuHrIkllaBgneUykIcZaw==}
@@ -3778,7 +3785,7 @@ packages:
   /@radix-ui/primitive@1.0.1:
     resolution: {integrity: sha512-yQ8oGX2GVsEYMWGxcovu1uGWPCxV5BFfeeYxqPmuAzUyLT9qmaMXSAhXpb0WrspIeqYzdJpkh2vHModJPgRIaw==}
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
     dev: false
 
   /@radix-ui/react-accordion@1.1.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
@@ -3922,7 +3929,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.41)(react@18.2.0)
       '@radix-ui/react-context': 1.0.1(@types/react@18.2.41)(react@18.2.0)
@@ -3950,7 +3957,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.41)(react@18.2.0)
       '@radix-ui/react-context': 1.0.1(@types/react@18.2.41)(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
@@ -3970,7 +3977,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@types/react': 18.2.41
       react: 18.2.0
     dev: false
@@ -3984,7 +3991,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@types/react': 18.2.41
       react: 18.2.0
     dev: false
@@ -4032,7 +4039,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@types/react': 18.2.41
       react: 18.2.0
     dev: false
@@ -4143,7 +4150,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.41)(react@18.2.0)
       '@types/react': 18.2.41
       react: 18.2.0
@@ -4328,7 +4335,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.41)(react@18.2.0)
       '@types/react': 18.2.41
       '@types/react-dom': 18.2.17
@@ -4545,7 +4552,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.23.2
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.2.41)(react@18.2.0)
       '@types/react': 18.2.41
       react: 18.2.0
@@ -14784,10 +14791,10 @@ packages:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
     dev: false
 
-  /tailwind-merge@2.0.0:
-    resolution: {integrity: sha512-WO8qghn9yhsldLSg80au+3/gY9E4hFxIvQ3qOmlpXnqpDKoMruKfi/56BbbMg6fHTQJ9QD3cc79PoWqlaQE4rw==}
+  /tailwind-merge@2.1.0:
+    resolution: {integrity: sha512-l11VvI4nSwW7MtLSLYT4ldidDEUwQAMWuSHk7l4zcXZDgnCRa0V3OdCwFfM7DCzakVXMNRwAeje9maFFXT71dQ==}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
     dev: false
 
   /tailwindcss-animate@1.0.7(tailwindcss@3.3.5):
