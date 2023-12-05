@@ -254,8 +254,8 @@ importers:
         specifier: 4.24.5
         version: 4.24.5(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: 7.0.0
-        version: 7.0.0(@sanity/client@6.9.1)(@sanity/icons@2.7.0)(@sanity/types@3.20.2)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.2)(styled-components@5.3.11)
+        specifier: 7.0.1
+        version: 7.0.1(@sanity/client@6.9.1)(@sanity/icons@2.7.0)(@sanity/types@3.20.2)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.2)(styled-components@5.3.11)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -5159,8 +5159,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@sanity/preview-kit@5.0.0(@sanity/client@6.9.1)(react@18.2.0):
-    resolution: {integrity: sha512-dj2HZvfkInoIQLwFPoFfYHBQaUvEDC5TgW3EjX/zSbJmd2+JFRNSLinuEi7jeyMytT+zSaAP3NxvevVe+jMvNw==}
+  /@sanity/preview-kit@5.0.1(@sanity/client@6.9.1)(react@18.2.0):
+    resolution: {integrity: sha512-MFkOGPegwvQ0EJ9H5nzLnYvVxLCzamevb8rdEgsubL4rTswkRKL52zogFuYOr3/XlBmQgC2y1/jSTlyEtqwslw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@sanity/client': ^6.9.1
@@ -11829,8 +11829,8 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@7.0.0(@sanity/client@6.9.1)(@sanity/icons@2.7.0)(@sanity/types@3.20.2)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.2)(styled-components@5.3.11):
-    resolution: {integrity: sha512-k5b9HWhNjnr/rCT/DbLiuc01SreCT5gcRnyGWEvQ0xv5lfhdQT++lY5PgeTrqNsNA+R7A7Yn4pNcCKw27bnFuQ==}
+  /next-sanity@7.0.1(@sanity/client@6.9.1)(@sanity/icons@2.7.0)(@sanity/types@3.20.2)(@sanity/ui@1.9.3)(next@14.0.3)(react@18.2.0)(sanity@3.20.2)(styled-components@5.3.11):
+    resolution: {integrity: sha512-WezHXY5Wt0SArjl6Ddg0pmu+yy3ygULEgVA44UJpM5VvZIn8lHNDrq2gTduJxYgrBvDx/m5RR48nAW86bbGxyQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@sanity/client': ^6.9.1
@@ -11844,7 +11844,7 @@ packages:
     dependencies:
       '@sanity/client': 6.9.1
       '@sanity/icons': 2.7.0(react@18.2.0)
-      '@sanity/preview-kit': 5.0.0(@sanity/client@6.9.1)(react@18.2.0)
+      '@sanity/preview-kit': 5.0.1(@sanity/client@6.9.1)(react@18.2.0)
       '@sanity/types': 3.20.2
       '@sanity/ui': 1.9.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 4.0.0
