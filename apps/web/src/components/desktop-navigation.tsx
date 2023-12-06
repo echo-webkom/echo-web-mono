@@ -56,7 +56,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:bg-muted"
+        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 dark:text-foreground hover:bg-muted"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -74,7 +74,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
 
 const NavigationLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
   return (
-    <Link href={to} className="p-2 text-gray-600 hover:bg-muted rounded-md hover:underline">
+    <Link href={to} className="p-2 text-gray-600 dark:text-foreground hover:bg-muted rounded-md hover:underline">
       {children}
     </Link>
   );

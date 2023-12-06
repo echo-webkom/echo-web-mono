@@ -22,7 +22,7 @@ export function StudentGroupPreview({ group, withBorder = false }: StudentGroupP
         <h2 className="text-2xl font-bold">{group.name}</h2>
 
         {group.description && (
-          <p className="line-clamp-3 flex-1 text-slate-700">{removeMd(group.description ?? "")}</p>
+          <p className="line-clamp-3 flex-1 text-slate-700 dark:text-foreground">{removeMd(group.description ?? "")}</p>
         )}
 
         <p className="flex items-center gap-1">
