@@ -16,7 +16,7 @@ export const pageTypeToUrl: Record<PageType, string> = {
 };
 
 export async function fetchStaticInfoPaths() {
-  const query = groq`*[_type == "static"]{ "slug": slug.current, pageType }`;
+  const query = groq`*[_type == "staticInfo"]{ "slug": slug.current, pageType }`;
 
   const result = await sanityFetch<Array<{ slug: string; pageType: PageType }>>({
     query,
@@ -38,7 +38,7 @@ export async function fetchStaticInfoPaths() {
 
 export async function fetchStaticInfoBySlug(slug: string) {
   const query = groq`
-*[_type == "static"
+*[_type == "staticInfo"
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
   title,

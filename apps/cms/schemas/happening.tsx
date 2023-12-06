@@ -104,7 +104,7 @@ export default defineType({
       to: { type: "location" },
     }),
     defineField({
-      name: "payment",
+      name: "cost",
       title: "Betaling",
       description: "Hvor mye det koster å delta på arrangementet.",
       type: "number",

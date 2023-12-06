@@ -2,6 +2,20 @@ import "dotenv/config";
 
 import { createClient } from "@sanity/client";
 
+/**
+ * MIGRATION INFO:
+ *
+ * Migration to remove a11y fields from post documents
+ *
+ * This migration should get all the post documents and
+ * unset the a11y fields from the body and title fields,
+ * then set the body and title fields to the norwegian
+ * locale.
+ *
+ * As a bonus this migration also removes the publishedOnce
+ * since it is not used.
+ */
+
 const token = process.env.SANITY_TOKEN;
 const projectId = "nnumy1ga";
 const dataset = "production";
@@ -14,19 +28,24 @@ const client = createClient({
   token,
 });
 
-const fetchDocuments = () => client.fetch(`*[_type == "happening" && defined(spotRanges)]`);
+const sectionMapping = {
+  "for-bedrifter": "for-companies",
+  "for-studenter": "for-students",
+  "om-oss": "about",
+};
+
+const fetchDocuments = () => client.fetch(`*[_type == "staticInfo"]`);
 
 const buildPatches = (docs) =>
   docs.map((doc) => ({
     id: doc._id,
     patch: {
       set: {
-        spotRanges: doc.spotRanges.map((spotRange) => ({
-          ...spotRange,
-          minYear: spotRange.minDegreeYear,
-          maxYear: spotRange.maxDegreeYear,
-        })),
+        body: doc.info,
+        pageType: doc.section ? sectionMapping[doc.section] : null,
+        title: doc.name.slice(0, 1).toUpperCase() + doc.name.slice(1),
       },
+      unset: ["publishedOnce", "info", "section", "name"],
       ifRevisionID: doc._rev,
     },
   }));
