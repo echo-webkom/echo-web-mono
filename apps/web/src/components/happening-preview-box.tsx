@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format, isAfter } from "date-fns";
+import { format, isBefore, isToday } from "date-fns";
 import nb from "date-fns/locale/nb";
 
 import { type Bedpres } from "@/sanity/bedpres";
@@ -47,7 +47,7 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
       {happenings.length > 0 ? (
         <ul className="flex h-full flex-col divide-y ">
           {happenings.map((happening) => (
-            <li key={happening._id} className="sm:h-30 h-40 py-3">
+            <li key={happening._id} className="h-32 py-3">
               {type === "EVENT" && <EventPreview event={happening as Event} />}
               {type === "BEDPRES" && <BedpresPreview bedpres={happening as Bedpres} />}
             </li>
@@ -87,12 +87,14 @@ export function EventPreview({ event }: EventPreviewProps) {
               </li>
             )}
             <li>
+              <span className="font-semibold">Påmelding: </span>{" "}
               {event.registrationStart
-                ? isAfter(new Date(), new Date(event.registrationStart))
-                  ? "Påmeldingen er åpen"
-                  : "Påmelding:" +
-                    format(new Date(event.registrationStart), "dd. MMM", { locale: nb })
-                : "Ingen påmelding"}
+                ? isBefore(new Date(), new Date(event.registrationStart))
+                  ? format(new Date(event.registrationStart), "dd. MMM", { locale: nb })
+                  : isToday(new Date(event.registrationStart))
+                    ? "i dag"
+                    : "åpen"
+                : null}
             </li>
           </ul>
         </div>
@@ -108,9 +110,9 @@ type BedpresPreviewProps = {
 export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
+      <div className={cn("flex h-full items-center gap-5 p-3", "hover:bg-muted")}>
         <div className="overflow-hidden rounded-full border">
-          <div className="relative aspect-square h-20 w-20">
+          <div className="relative aspect-square h-16 w-16">
             <Image
               src={urlFor(bedpres.company.image).url()}
               alt={`${bedpres.company.name} logo`}
@@ -130,12 +132,14 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
               </li>
             )}
             <li>
-              <span className="font-semibold">Påmelding:</span>{" "}
+              <span className="font-semibold">Påmelding: </span>{" "}
               {bedpres.registrationStart
-                ? format(new Date(bedpres.registrationStart), "dd. MMM", {
-                    locale: nb,
-                  })
-                : "Påmelding åpner snart"}
+                ? isBefore(new Date(), new Date(bedpres.registrationStart))
+                  ? format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb })
+                  : isToday(new Date(bedpres.registrationStart))
+                    ? "i dag"
+                    : "åpen"
+                : null}
             </li>
           </ul>
         </div>
