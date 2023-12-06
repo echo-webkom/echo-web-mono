@@ -256,6 +256,9 @@ importers:
       next-sanity:
         specifier: 7.0.3
         version: 7.0.3(@sanity/client@6.10.0)(@sanity/icons@2.7.0)(@sanity/types@3.21.1)(@sanity/ui@1.9.3)(next@14.0.4)(react@18.2.0)(sanity@3.21.1)(styled-components@5.3.11)
+      next-themes:
+        specifier: 0.2.1
+        version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -12218,7 +12221,7 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 14.0.4(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.4(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
