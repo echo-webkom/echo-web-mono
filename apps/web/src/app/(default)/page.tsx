@@ -25,7 +25,10 @@ export default async function HomePage() {
               Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
               arrangere sosiale og faglige arrangementer.
               <br /> Les mer{" "}
-              <Link className="font-semibold" href="/om/echo">
+              <Link
+                className="font-semibold underline underline-offset-2 hover:text-primary"
+                href="/om/echo"
+              >
                 her.
               </Link>
             </p>
