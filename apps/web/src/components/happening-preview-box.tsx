@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon , CalendarIcon} from "@radix-ui/react-icons";
-import { format, isBefore, isToday } from "date-fns";
+import { format, isAfter, isBefore, isToday } from "date-fns";
 import nb from "date-fns/locale/nb";
+import { eq } from "drizzle-orm";
+
+import { db } from "@echo-webkom/db";
+import { type Registration } from "@echo-webkom/db/schemas";
 
 import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
 import { cn } from "@/utils/cn";
@@ -22,6 +26,20 @@ const typeToLink: Record<HappeningType, string> = {
 type HappeningPreviewBoxProps = {
   type: HappeningType;
   happenings: Array<Happening>;
+};
+
+const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
+  spotRanges: Array<TSpotRange>,
+  registrations: Array<Registration>,
+) => {
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "registered",
+  ).length;
+  return {
+    maxCapacity,
+    registeredCount,
+  };
 };
 
 export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxProps) {
@@ -58,7 +76,28 @@ type EventPreviewProps = {
   event: Happening;
 };
 
-export function EventPreview({ event }: EventPreviewProps) {
+export async function EventPreview({ event }: EventPreviewProps) {
+  const spotRanges = event.spotRanges;
+  const registrations = await db.query.registrations.findMany({
+    where: (registration) => eq(registration.happeningSlug, event.slug),
+    with: {
+      user: true,
+    },
+  });
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
+  const registrationStatus = (maxCapacity: number, registeredCount: number) => {
+    if (!event.registrationStart) {
+      return null;
+    }
+    if (isToday(new Date()) && isBefore(new Date(), new Date(event.registrationStart))) {
+      return "Påmelding i dag";
+    } else if (isBefore(new Date(), new Date(event.registrationStart))) {
+      return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
+    } else if (isAfter(new Date(), new Date(event.registrationStart))) {
+      return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+    }
+    return "Fullt";
+  };
   return (
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
@@ -67,26 +106,13 @@ export function EventPreview({ event }: EventPreviewProps) {
             {event.title}
           </h3>
           <ul className="text-sm md:text-base">
-            {/* <li>
-              <span className="font-semibold">Gruppe:</span>{" "}
-              {capitalize(event.organizers.map((o) => o.name).join(", "))}
-            </li> */}
             {event.date && (
               <li className="flex justify-end">
-                <CalendarIcon className="my-auto mr-2" />
+                <CalendarIcon className="my-auto mr-1" />
                 {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li>
-              <span className="font-semibold">Påmelding: </span>{" "}
-              {event.registrationStart
-                ? isBefore(new Date(), new Date(event.registrationStart))
-                  ? format(new Date(event.registrationStart), "dd. MMM", { locale: nb })
-                  : isToday(new Date(event.registrationStart))
-                    ? "i dag"
-                    : "åpen"
-                : null}
-            </li>
+            <li className="flex justify-end">{registrationStatus(maxCapacity, registeredCount)}</li>
           </ul>
         </div>
       </div>
@@ -98,7 +124,28 @@ type BedpresPreviewProps = {
   bedpres: Happening;
 };
 
-export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
+export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
+  const spotRanges = bedpres.spotRanges;
+  const registrations = await db.query.registrations.findMany({
+    where: (registration) => eq(registration.happeningSlug, bedpres.slug),
+    with: {
+      user: true,
+    },
+  });
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
+  const registrationStatus = (maxCapacity: number, registeredCount: number) => {
+    if (!bedpres.registrationStart) {
+      return null;
+    }
+    if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
+      return "Påmelding i dag";
+    } else if (isBefore(new Date(), new Date(bedpres.registrationStart))) {
+      return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
+    } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
+      return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+    }
+    return "Fullt";
+  };
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-3", "hover:bg-muted")}>
@@ -118,20 +165,11 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
           <ul className="text-sm md:text-base">
             {bedpres.date && (
               <li className="flex justify-end">
-                <CalendarIcon className="my-auto mr-2" />
+                <CalendarIcon className="my-auto mr-1" />
                 {format(new Date(bedpres.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li>
-              <span className="font-semibold">Påmelding: </span>{" "}
-              {bedpres.registrationStart
-                ? isBefore(new Date(), new Date(bedpres.registrationStart))
-                  ? format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb })
-                  : isToday(new Date(bedpres.registrationStart))
-                    ? "i dag"
-                    : "åpen"
-                : null}
-            </li>
+            <li className="flex justify-end">{registrationStatus(maxCapacity, registeredCount)}</li>
           </ul>
         </div>
       </div>
