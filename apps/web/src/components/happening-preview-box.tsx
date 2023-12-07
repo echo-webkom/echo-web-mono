@@ -54,7 +54,7 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
       <hr className="my-3" />
 
       {happenings.length > 0 ? (
-        <ul className="flex h-full flex-col divide-y ">
+        <ul className="flex h-full flex-col divide-y  ">
           {happenings.map((happening) => (
             <li key={happening._id} className="h-28 py-3">
               {type === "event" && <EventPreview event={happening} />}
