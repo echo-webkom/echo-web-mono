@@ -14,6 +14,7 @@ import {
   type QuestionInsert,
   type SpotRangeInsert,
 } from "@echo-webkom/db/schemas";
+import { type HappeningType } from "@echo-webkom/lib";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { client } from "@/sanity/client";
@@ -24,6 +25,11 @@ export const dynamic = "force-dynamic";
 const sanityPayloadSchema = z.object({
   _id: z.string(),
 });
+
+const revalidate = (type: HappeningType, slug: string) => {
+  revalidatePath("/");
+  revalidatePath(`/${type === "bedpres" ? "bedpres" : "arrangement"}/${slug}`);
+};
 
 export const POST = withBasicAuth(async (req) => {
   const startTime = new Date().getTime();
@@ -37,17 +43,32 @@ export const POST = withBasicAuth(async (req) => {
   const shouldDelete = res === null;
 
   if (shouldDelete) {
+    const happening = await db.query.happenings.findFirst({
+      where: eq(happenings.id, payload._id),
+    });
     await db.delete(happenings).where(eq(happenings.id, payload._id));
     await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, payload._id));
     await db.delete(questions).where(eq(questions.happeningId, payload._id));
     await db.delete(spotRanges).where(eq(spotRanges.happeningId, payload._id));
     await db.delete(registrations).where(eq(registrations.happeningId, payload._id));
 
-    revalidatePath("/");
+    if (happening) revalidate(happening.type, happening.slug);
     return NextResponse.json(
       {
         status: "success",
         message: `Deleted happening with id ${payload._id}`,
+        time: (new Date().getTime() - startTime) / 1000,
+      },
+      { status: 200 },
+    );
+  }
+
+  if (res.happeningType === "external") {
+    revalidate(res.happeningType, res.slug);
+    return NextResponse.json(
+      {
+        status: "success",
+        message: `Happening with id ${payload._id} is external. Nothing done.`,
         time: (new Date().getTime() - startTime) / 1000,
       },
       { status: 200 },
@@ -162,8 +183,7 @@ export const POST = withBasicAuth(async (req) => {
       });
   }
 
-  revalidatePath("/");
-  revalidatePath(`/${res.happeningType === "bedpres" ? "bedpres" : "arrangement"}/${res.slug}`);
+  revalidate(res.happeningType, res.slug);
 
   return NextResponse.json(
     {

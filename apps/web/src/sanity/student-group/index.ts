@@ -14,10 +14,11 @@ export const studentGroupTypeName: Record<StudentGroupType, string> = {
   intgroup: "Interessegrupper",
   suborg: "Underorganisasjoner",
   sport: "Idrettslag",
+  hidden: "Skjult",
 } as const;
 
 export async function fetchStudentGroupParams() {
-  const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
+  const query = groq`*[_type == "studentGroup" && groupType != "hidden"]{ "slug": slug.current, groupType }`;
 
   const result =
     await sanityClient.fetch<Array<{ slug: string; groupType: StudentGroupType }>>(query);
@@ -31,10 +32,12 @@ export async function fetchStudentGroupParams() {
     studentGroupSlugSchema.parse(studentGroup),
   );
 
-  const paths = studentGroupPaths.map((studentGroup) => ({
-    groupType: studentGroupTypeName[studentGroup.groupType].toLowerCase(),
-    slug: studentGroup.slug,
-  }));
+  const paths = studentGroupPaths
+    .filter((studentGroup) => studentGroup.groupType !== "hidden")
+    .map((studentGroup) => ({
+      groupType: studentGroupTypeName[studentGroup.groupType],
+      slug: studentGroup.slug,
+    }));
 
   return paths;
 }

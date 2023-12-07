@@ -27,11 +27,12 @@ const buildPatches = (docs) =>
         registrationEnd: doc.registrationDeadline,
         cost: doc.deductiblePayment,
         registrationStartGroups: doc.studentGroupRegistrationDate,
-        spotRanges: doc.spotRanges?.map((spotRange) => ({
-          ...spotRange,
-          minYear: spotRange.minDegreeYear,
-          maxYear: spotRange.maxDegreeYear,
-        })),
+        spotRanges:
+          doc.spotRanges?.map((spotRange) => ({
+            ...spotRange,
+            minYear: spotRange.minDegreeYear,
+            maxYear: spotRange.maxDegreeYear,
+          })) ?? [],
       },
       unset: [
         "body.no",

@@ -46,7 +46,7 @@ export type SanityHappening = {
   title: string;
   slug: string;
   date: string;
-  happeningType: "event" | "bedpres";
+  happeningType: "event" | "bedpres" | "external";
   registrationStartGroups: string | null;
   registrationGroups: Array<string>;
   registrationStart: string | null;

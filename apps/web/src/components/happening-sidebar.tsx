@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { isAfter, isBefore } from "date-fns";
+import { ArrowRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
+import { isFuture, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
 
 import { getAuth } from "@echo-webkom/auth";
@@ -16,12 +17,13 @@ import { Button } from "@/components/ui/button";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
 import { norwegianDateString } from "@/utils/date";
+import { urlFor } from "@/utils/image-builder";
 
 type EventSidebarProps = {
   event: Happening;
 };
 
-export async function EventSidebar({ event }: EventSidebarProps) {
+export async function HappeningSidebar({ event }: EventSidebarProps) {
   const user = await getAuth();
 
   const happening = await db.query.happenings.findFirst({
@@ -62,8 +64,8 @@ export async function EventSidebar({ event }: EventSidebarProps) {
   const isRegistrationOpen =
     happening?.registrationStart &&
     happening?.registrationEnd &&
-    isAfter(new Date(), happening.registrationStart) &&
-    isBefore(new Date(), happening.registrationEnd);
+    isPast(happening.registrationStart) &&
+    isFuture(happening.registrationEnd);
 
   const isHost = user && happening ? _isHost(user, happening) : false;
 
@@ -71,7 +73,12 @@ export async function EventSidebar({ event }: EventSidebarProps) {
 
   return (
     <Sidebar>
-      {!happening && (
+      {/**
+       * Show warning if:
+       * - Event is not happening
+       * - Event is not external
+       */}
+      {!happening && event.happeningType !== "external" && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Fant ikke arrangementet.</p>
@@ -80,15 +87,55 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.date && (
+      {/**
+       * Show company logo if:
+       * - There is a company
+       */}
+      {event.company && (
+        <>
+          <SidebarItem>
+            <Link href={event.company.website}>
+              <div className="overflow-hidden">
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={urlFor(event.company.image).url()}
+                    alt={`${event.company.name} logo`}
+                    fill
+                  />
+                </div>
+              </div>
+            </Link>
+          </SidebarItem>
+
+          <SidebarItem>
+            <SidebarItemTitle>Bedrift:</SidebarItemTitle>
+            <SidebarItemContent>
+              <Link className="hover:underline" href={event.company.website}>
+                {event.company.name}
+                <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
+              </Link>
+            </SidebarItemContent>
+          </SidebarItem>
+        </>
+      )}
+
+      {/**
+       * Show date if:
+       * - There is a date set
+       */}
+      {event.date && (
         <SidebarItem>
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
-            <AddToCalender date={happening?.date} title={happening?.title} />
+            <AddToCalender date={new Date(event.date)} title={event.title} />
           </SidebarItemContent>
         </SidebarItem>
       )}
 
+      {/**
+       * Show spot ranges if:
+       * - There are spot ranges
+       */}
       {spotRanges.length > 0 && (
         <SidebarItem>
           <SidebarItemTitle>Plasser:</SidebarItemTitle>
@@ -108,6 +155,10 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
+      {/**
+       * Show location if:
+       * - There is a location set
+       */}
       {event.location && (
         <SidebarItem>
           <SidebarItemTitle>Sted:</SidebarItemTitle>
@@ -115,6 +166,10 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
+      {/**
+       * Show hosts if:
+       * - There are hosts
+       */}
       {event.contacts && event.contacts.length > 0 && (
         <SidebarItem>
           <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
@@ -132,26 +187,48 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {happening?.registrationStart &&
-        isAfter(new Date(), happening.registrationStart) &&
-        spotRanges.length > 0 && (
-          <SidebarItem>
-            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-            <SidebarItemContent>
-              {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-            </SidebarItemContent>
-          </SidebarItem>
-        )}
+      {/**
+       * Show deductable if:
+       * - There is a deductable
+       */}
+      {Boolean(event.cost) && (
+        <SidebarItem>
+          <SidebarItemTitle>Pris:</SidebarItemTitle>
+          <SidebarItemContent>{event.cost} kr</SidebarItemContent>
+        </SidebarItem>
+      )}
 
-      {happening?.registrationStart &&
-        isAfter(new Date(), happening.registrationStart) &&
-        waitlistCount > 0 && (
-          <SidebarItem>
-            <SidebarItemTitle>Venteliste:</SidebarItemTitle>
-            <SidebarItemContent>{waitlistCount}</SidebarItemContent>
-          </SidebarItem>
-        )}
+      {/**
+       * Show registered count if:
+       * - Registration is open
+       * - People are registered
+       */}
+      {isRegistrationOpen && spotRanges.length > 0 && (
+        <SidebarItem>
+          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+          <SidebarItemContent>
+            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
 
+      {/**
+       * Show waitlist count if:
+       * - Registration is open
+       * - There is a waitlist
+       */}
+      {isRegistrationOpen && waitlistCount > 0 && (
+        <SidebarItem>
+          <SidebarItemTitle>Venteliste:</SidebarItemTitle>
+          <SidebarItemContent>{waitlistCount}</SidebarItemContent>
+        </SidebarItem>
+      )}
+
+      {/**
+       * Show registration end date if:
+       * - Registration is open
+       * - Registration end date is set
+       */}
       {isRegistrationOpen && happening.registrationEnd && (
         <SidebarItem>
           <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
@@ -161,38 +238,56 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {!isRegistrationOpen &&
-        happening?.registrationStart &&
-        new Date() < happening.registrationStart && (
-          <SidebarItem>
-            <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
-            <SidebarItemContent>
-              {norwegianDateString(happening?.registrationStart)}
-            </SidebarItemContent>
-          </SidebarItem>
-        )}
+      {/**
+       * Show registration start date if:
+       * - Registration is not open
+       * - Registration start date is set
+       */}
+      {!isRegistrationOpen && happening?.registrationStart && (
+        <SidebarItem>
+          <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
+          <SidebarItemContent>
+            {norwegianDateString(happening?.registrationStart)}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
 
+      {/**
+       * Show deregister button if:
+       * - User is registered to happening
+       */}
       {isRegistered && (
         <SidebarItem>
           <DeregisterButton id={event._id} />
         </SidebarItem>
       )}
 
+      {/**
+       * Show registration button if:
+       * - User is logged in
+       * - User has completed profile
+       * - There is a spot range (you can register to this event)
+       * - Registration is open
+       * - Registration is not closed
+       */}
       {!isRegistered &&
         isUserComplete &&
         spotRanges.length > 0 &&
         happening?.registrationStart &&
-        isAfter(
-          new Date(),
-          new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000),
-        ) && (
+        (happening.registrationEnd ? isFuture(new Date(happening.registrationEnd)) : true) &&
+        isPast(new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
           <SidebarItem className="relative">
             <RegisterButton id={event._id} questions={happening.questions} />
             <Countdown toDate={happening.registrationStart} />
           </SidebarItem>
         )}
 
-      {user && happening?.registrationEnd && isAfter(new Date(), happening.registrationEnd) && (
+      {/**
+       * Show warning closed happening warning if:
+       * - User is logged in
+       * - Registration is closed
+       */}
+      {user && !isRegistrationOpen && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -200,6 +295,11 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
+      {/**
+       * Show uncomplete user warning if:
+       * - User is logged in
+       * - User has not completed profile
+       */}
       {user && !isUserComplete && (
         <SidebarItem>
           <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
@@ -214,7 +314,12 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {!user && (
+      {/**
+       * Show login warning if:
+       * - User is not logged in
+       * - Registration start is set
+       */}
+      {!user && happening?.registrationStart && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
@@ -228,6 +333,10 @@ export async function EventSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
+      {/**
+       * Show link to admin dashbord if:
+       * - User is host
+       */}
       {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>

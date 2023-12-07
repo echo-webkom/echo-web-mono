@@ -7,7 +7,7 @@ import { studentGroupSchema } from "../student-group";
 import { questionSchema } from "../utils/question";
 import { spotRangeSchema } from "../utils/spot-range";
 
-export const happeningTypeSchema = z.enum(["event", "bedpres"]);
+export const happeningTypeSchema = z.enum(["event", "bedpres", "external"]);
 
 export type HappeningType = z.infer<typeof happeningTypeSchema>;
 
@@ -26,6 +26,7 @@ export const happeningSchema = z.object({
   company: companySchema.omit({ description: true }).nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
+  cost: z.number().nullable(),
   registrationStartGroups: z.string().nullable(),
   registrationGroups: z.array(z.string()).nullable(),
   registrationStart: z.string().nullable(),
