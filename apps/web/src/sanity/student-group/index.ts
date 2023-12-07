@@ -3,30 +3,28 @@ import { z } from "zod";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
-import { sanityFetch } from "../client";
-import { studentGroupSchema, type StudentGroup } from "./schemas";
+import { sanityClient } from "../client";
+import { studentGroupSchema, studentGroupTypes, type StudentGroup } from "./schemas";
 
 export * from "./schemas";
 
 export const studentGroupTypeName: Record<StudentGroupType, string> = {
-  BOARD: "Hovedstyre",
-  SUBGROUP: "Undergrupper",
-  INTGROUP: "Interessegrupper",
-  SUBORG: "Underorganisasjoner",
-  SPORT: "Idrettslag",
+  board: "Hovedstyre",
+  subgroup: "Undergrupper",
+  intgroup: "Interessegrupper",
+  suborg: "Underorganisasjoner",
+  sport: "Idrettslag",
 } as const;
 
 export async function fetchStudentGroupParams() {
   const query = groq`*[_type == "studentGroup"]{ "slug": slug.current, groupType }`;
 
-  const result = await sanityFetch<Array<{ slug: string; groupType: StudentGroupType }>>({
-    query,
-    tags: [],
-  });
+  const result =
+    await sanityClient.fetch<Array<{ slug: string; groupType: StudentGroupType }>>(query);
 
   const studentGroupSlugSchema = z.object({
     slug: z.string(),
-    groupType: z.enum(["BOARD", "SUBGROUP", "INTGROUP", "SUBORG", "SPORT"]),
+    groupType: z.enum(studentGroupTypes),
   });
 
   const studentGroupPaths = result.map((studentGroup) =>
@@ -77,13 +75,9 @@ export async function fetchStudentGroupsByType(type: StudentGroupType, n: number
     n,
   };
 
-  const res = await sanityFetch<Array<StudentGroup>>({
-    query,
-    params,
-    tags: [`student-group-${type}`],
-  });
+  const result = await sanityClient.fetch<Array<StudentGroup>>(query, params);
 
-  return studentGroupSchema.array().parse(res);
+  return studentGroupSchema.array().parse(result);
 }
 
 export async function fetchStudentGroupBySlug(slug: string) {
@@ -121,11 +115,7 @@ export async function fetchStudentGroupBySlug(slug: string) {
     slug,
   };
 
-  const result = await sanityFetch<StudentGroup>({
-    query,
-    params,
-    tags: [`student-group-${slug}`],
-  });
+  const result = await sanityClient.fetch<StudentGroup>(query, params);
 
   return studentGroupSchema.parse(result);
 }

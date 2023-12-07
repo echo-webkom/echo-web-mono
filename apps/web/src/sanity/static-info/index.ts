@@ -3,28 +3,25 @@ import { z } from "zod";
 
 import { type PageType } from "@echo-webkom/lib";
 
-import { sanityFetch } from "../client";
+import { sanityClient } from "../client";
 import { staticInfoSchema, type StaticInfo } from "./schemas";
 
 export * from "./schemas";
 
 // Move this
 export const pageTypeToUrl: Record<PageType, string> = {
-  ABOUT: "om",
-  STUDENTS: "for-studenter",
-  COMPANIES: "for-bedrifter",
+  about: "om",
+  "for-companies": "for-studenter",
+  "for-students": "for-bedrifter",
 };
 
 export async function fetchStaticInfoPaths() {
   const query = groq`*[_type == "staticInfo"]{ "slug": slug.current, pageType }`;
 
-  const result = await sanityFetch<Array<{ slug: string; pageType: PageType }>>({
-    query,
-    tags: ["static-info-params"],
-  });
+  const result = await sanityClient.fetch<Array<{ slug: string; pageType: PageType }>>(query);
 
   const staticInfoSlugSchema = z.object({
-    pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),
+    pageType: z.enum(["about", "for-students", "for-companies"]),
     slug: z.string(),
   });
 
@@ -52,11 +49,7 @@ export async function fetchStaticInfoBySlug(slug: string) {
     slug,
   };
 
-  const res = await sanityFetch<StaticInfo>({
-    query,
-    params,
-    tags: ["static-info"],
-  });
+  const result = await sanityClient.fetch<StaticInfo>(query, params);
 
-  return staticInfoSchema.nullable().parse(res);
+  return staticInfoSchema.nullable().parse(result);
 }
