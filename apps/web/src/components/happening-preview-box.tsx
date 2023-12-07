@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon , CalendarIcon} from "@radix-ui/react-icons";
+import { ArrowRightIcon, CalendarIcon } from "@radix-ui/react-icons";
 import { format, isAfter, isBefore, isToday } from "date-fns";
 import nb from "date-fns/locale/nb";
 import { eq } from "drizzle-orm";
@@ -56,7 +56,7 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
       {happenings.length > 0 ? (
         <ul className="flex h-full flex-col divide-y ">
           {happenings.map((happening) => (
-            <li key={happening._id} className="py-3 h-28">
+            <li key={happening._id} className="h-28 py-3">
               {type === "event" && <EventPreview event={happening} />}
               {type === "bedpres" && <BedpresPreview bedpres={happening} />}
             </li>
@@ -79,7 +79,7 @@ type EventPreviewProps = {
 export async function EventPreview({ event }: EventPreviewProps) {
   const spotRanges = event.spotRanges;
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, event.slug),
+    where: (registration) => eq(registration.happeningId, event._id),
     with: {
       user: true,
     },
@@ -127,7 +127,7 @@ type BedpresPreviewProps = {
 export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
   const spotRanges = bedpres.spotRanges;
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, bedpres.slug),
+    where: (registration) => eq(registration.happeningId, bedpres._id),
     with: {
       user: true,
     },
@@ -151,11 +151,13 @@ export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
       <div className={cn("flex h-full items-center gap-5 p-3", "hover:bg-muted")}>
         <div className="overflow-hidden rounded-full border">
           <div className="relative aspect-square h-16 w-16">
-            <Image
-              src={urlFor(bedpres.company.image).url()}
-              alt={`${bedpres.company.name} logo`}
-              fill
-            />
+            {bedpres.company && (
+              <Image
+                src={urlFor(bedpres.company.image).url()}
+                alt={`${bedpres.company.name} logo`}
+                fill
+              />
+            )}
           </div>
         </div>
         <div className="flex flex-1 justify-between overflow-x-hidden">
