@@ -75,7 +75,7 @@
     "tailwindcss": "3.3.6",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.3.2",
-    "vitest": "0.34.6"
+    "vitest": "1.0.1"
   },
   "eslintConfig": {
     "root": true,
