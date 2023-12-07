@@ -3,20 +3,20 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "./ui/button";
-
 export default function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === "dark";
+
   function changeTheme() {
     setTheme(isDarkMode ? "light" : "dark");
   }
+
   return (
-    <button onClick={() => changeTheme()}>
+    <button onClick={() => changeTheme()} suppressHydrationWarning>
       {isDarkMode ? (
-        <Sun className="text-foreground h-8 d-8"/>
+        <Sun className="d-8 h-8 text-foreground" />
       ) : (
-        <Moon className="text-foreground h-8 d-8" />
+        <Moon className="d-8 h-8 text-foreground" />
       )}
 
       <span className="sr-only">Toggle theme</span>

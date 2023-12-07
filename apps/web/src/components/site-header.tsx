@@ -5,10 +5,10 @@ import { getAuth } from "@echo-webkom/auth";
 import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import ModeToggle from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
-import ModeToggle from "./theme-switch-button";
 
 export async function SiteHeader() {
   const user = await getAuth();
@@ -23,8 +23,8 @@ export async function SiteHeader() {
             <HeaderLogo />
             <DesktopNavigation />
           </div>
-          <div className="flex space-x-2 items-center">
-          <ModeToggle />
+          <div className="flex items-center space-x-2">
+            <ModeToggle />
             {user ? (
               <UserMenu user={user} />
             ) : (
@@ -32,7 +32,7 @@ export async function SiteHeader() {
                 <Link href="/auth/logg-inn">Logg inn</Link>
               </Button>
             )}
-            
+
             <MobileNavigation />
           </div>
         </header>

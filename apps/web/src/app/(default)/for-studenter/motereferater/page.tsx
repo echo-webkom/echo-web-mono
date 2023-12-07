@@ -17,7 +17,7 @@ export default async function MinuteOverview() {
         {minutes.map((minute) => (
           <li key={minute._id}>
             <Link href={"/for-studenter/motereferat/" + minute._id}>
-              <div className="hover:bg-muted group flex items-center justify-between px-5 py-5 transition-all hover:py-10">
+              <div className="group flex items-center justify-between px-5 py-5 transition-all hover:bg-muted hover:py-10">
                 <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
                   <Text size="lg">{minute.isAllMeeting ? "Generalforsamling" : "Møte"}</Text>
 

@@ -68,7 +68,7 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="text-black mb-4 py-2 pl-5 text-xl font-bold">
+              <h3 className="mb-4 py-2 pl-5 text-xl font-bold text-black">
                 Hovedsamarbeidspartner 💘
               </h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
@@ -84,7 +84,7 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Other sponsors */}
             <div>
-              <h3 className="text-black mb-4 py-2 text-xl font-bold">Powered by 🔧</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold text-black">Powered by 🔧</h3>
               <ul className="space-y-5">
                 {sponsors.map(({ label, href, imageSrc }) => (
                   <li key={label}>
