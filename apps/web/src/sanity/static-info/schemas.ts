@@ -3,7 +3,7 @@ import { z } from "zod";
 export const staticInfoSchema = z.object({
   title: z.string(),
   slug: z.string(),
-  pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),
+  pageType: z.enum(["about", "for-students", "for-companies"]),
   body: z.string(),
 });
 
