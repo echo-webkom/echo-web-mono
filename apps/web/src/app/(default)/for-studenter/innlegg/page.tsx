@@ -35,10 +35,10 @@ export default async function PostsOverviewPage({ searchParams }: Props) {
   const { posts, hasMore } = await getData(page);
 
   return (
-    <Container className="space-y-4">
+    <Container className="space-y-8">
       <Heading>Innlegg</Heading>
 
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-8 lg:grid-cols-2">
         {posts.map((post) => (
           <div key={post._id}>
             <PostPreview post={post} withBorder />

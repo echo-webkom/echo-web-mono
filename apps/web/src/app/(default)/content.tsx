@@ -39,7 +39,7 @@ export async function Content() {
 
         <hr />
 
-        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4 lg:grid-cols-2">
           {posts.map((post) => (
             <li key={post._id}>
               <PostPreview post={post} className="shadow-none" />
