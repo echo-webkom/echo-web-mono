@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, gte, lte, or, sql } from "drizzle-orm";
+import { and, eq, gte, lt, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
@@ -12,7 +12,6 @@ import {
   type AnswerInsert,
   type SpotRange,
 } from "@echo-webkom/db/schemas";
-import { runWithRetries } from "@echo-webkom/db/utils";
 
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
@@ -65,14 +64,18 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         and(
           eq(registration.happeningId, id),
           eq(registration.userId, user.id),
-          eq(registration.status, "registered"),
+          or(eq(registration.status, "registered"), eq(registration.status, "waiting")),
         ),
     });
 
     if (exisitingRegistration) {
+      const status =
+        exisitingRegistration.status === "registered"
+          ? "Du er allerede påmeldt dette arrangementet"
+          : "Du er allerede på venteliste til dette arrangementet";
       return {
         success: false,
-        message: "Du er allerede påmeldt dette arrangementet",
+        message: status,
       };
     }
 
@@ -136,55 +139,72 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    const resp = await runWithRetries(async () => {
-      return await db.transaction(
-        async (tx) => {
-          const regs = await tx
-            .select()
-            .from(registrations)
-            .where(
-              and(
-                eq(registrations.happeningId, id),
-                lte(users.year, userSpotRange.maxYear),
-                gte(users.year, userSpotRange.minYear),
-                or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
-              ),
-            )
-            .leftJoin(users, eq(registrations.userId, users.id))
-            .for("update");
-
-          const isWaitlisted = regs.length >= userSpotRange.spots;
-
-          const registration = await tx
-            .insert(registrations)
-            .values({
-              happeningId: id,
-              userId: user.id,
-              status: isWaitlisted ? "waiting" : "registered",
-            })
-            .onConflictDoUpdate({
-              target: [registrations.happeningId, registrations.userId],
-              set: {
-                status: sql`excluded.status`,
-              },
-            })
-            .returning()
-            .then((res) => res[0] ?? null);
-
-          return {
-            registration,
-            isWaitlisted,
-          };
+    const pendingReg = await db
+      .insert(registrations)
+      .values({
+        happeningId: id,
+        userId: user.id,
+        status: "pending",
+      })
+      .onConflictDoUpdate({
+        target: [registrations.happeningId, registrations.userId],
+        set: {
+          status: sql`excluded.status`,
         },
-        {
-          isolationLevel: "serializable",
-        },
-      );
-    }, userSpotRange.spots + 20);
+      })
+      .returning()
+      .then((res) => res[0] ?? null);
 
-    if (!resp?.registration) {
+    if (!pendingReg) {
       throw new Error("Could not create registration");
     }
+
+    const resp = await db.transaction(
+      async (tx) => {
+        const regs = await tx
+          .select()
+          .from(registrations)
+          .where(
+            and(
+              eq(registrations.happeningId, id),
+              lte(users.year, userSpotRange.maxYear),
+              gte(users.year, userSpotRange.minYear),
+              or(
+                eq(registrations.status, "registered"),
+                eq(registrations.status, "waiting"),
+                and(
+                  eq(registrations.status, "pending"),
+                  lt(registrations.createdAt, pendingReg.createdAt),
+                ),
+              ),
+            ),
+          )
+          .leftJoin(users, eq(registrations.userId, users.id))
+          .for("update");
+
+        const isWaitlisted = regs.length >= userSpotRange.spots;
+
+        const registration = await tx
+          .update(registrations)
+          .set({ status: isWaitlisted ? "waiting" : "registered" })
+          .where(
+            and(
+              eq(registrations.happeningId, pendingReg.happeningId),
+              eq(registrations.userId, pendingReg.userId),
+            ),
+          )
+          .returning()
+          .then((res) => res[0] ?? null);
+
+        return {
+          registration,
+          isWaitlisted,
+        };
+      },
+      {
+        isolationLevel: "serializable",
+      },
+    );
 
     const { isWaitlisted } = resp;
 
