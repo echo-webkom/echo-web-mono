@@ -113,7 +113,7 @@ export const POST = withBasicAuth(async (req) => {
       groupId: "bedkom",
     });
   } else {
-    const happeningsToGroupsToInsert = res.groups.map(
+    const happeningsToGroupsToInsert = (res.groups ?? []).map(
       (g) =>
         ({
           happeningId: res._id,
