@@ -8,10 +8,12 @@ import {
   happeningsToGroups,
   questions,
   spotRanges,
+  type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
+import { isBoard } from "@/lib/is-board";
 import { client } from "@/sanity/client";
 import { happeningQueryList, type SanityHappening } from "./query";
 
@@ -32,21 +34,29 @@ export const GET = withBasicAuth(async () => {
         : null,
       registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
       registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
+      registrationGroups:
+        h.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
+      groups: h.groups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
     }));
 
   if (formattedHappenings.length > 0) {
     await db
       .insert(happenings)
       .values(
-        formattedHappenings.map((h) => ({
-          id: h._id,
-          slug: h.slug,
-          title: h.title,
-          type: h.happeningType,
-          date: h.date,
-          registrationStart: h.registrationStart,
-          registrationEnd: h.registrationEnd,
-        })),
+        formattedHappenings.map(
+          (h) =>
+            ({
+              id: h._id,
+              slug: h.slug,
+              title: h.title,
+              type: h.happeningType,
+              date: h.date,
+              registrationStart: h.registrationStart,
+              registrationEnd: h.registrationEnd,
+              registrationStartGroups: h.registrationStartGroups,
+              registrationGroups: h.registrationGroups,
+            }) satisfies HappeningInsert,
+        ),
       )
       .onConflictDoUpdate({
         target: [happenings.slug],
@@ -56,17 +66,23 @@ export const GET = withBasicAuth(async () => {
           date: sql`excluded."date"`,
           registrationStart: sql`excluded."registration_start"`,
           registrationEnd: sql`excluded."registration_end"`,
+          registrationStartGroups: sql`excluded."registration_start_groups"`,
+          registrationGroups: sql`excluded."registration_groups"`,
           slug: sql`excluded."slug"`,
         },
       });
 
     await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
 
+    const validGroups = await db.query.groups.findMany();
+
     const groupsToInsert = formattedHappenings.flatMap((h) => {
-      return (h.registrationGroups ?? []).map((g) => ({
-        happeningId: h._id,
-        groupId: g,
-      }));
+      return (h.groups ?? [])
+        .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+        .map((groupId) => ({
+          happeningId: h._id,
+          groupId,
+        }));
     });
 
     if (groupsToInsert.length > 0) {

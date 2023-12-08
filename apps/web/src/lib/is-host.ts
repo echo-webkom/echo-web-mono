@@ -18,7 +18,7 @@ type TUser = User & {
 type THappening = {
   groups: Array<
     typeof happeningsToGroups.$inferSelect & {
-      group: typeof groups.$inferSelect;
+      group: typeof groups.$inferSelect | null;
     }
   >;
 };

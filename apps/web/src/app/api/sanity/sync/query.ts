@@ -6,7 +6,7 @@ const happeningQueryPartial = groq`
   "slug": slug.current,
   "date": date,
   happeningType,
-  "registrationStartGroups": registrationStartGroups,
+  "registrationStartGroups": registrationStartGroups[]->slug.current,
   "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": registrationStart,
   "registrationEnd": registrationEnd,
@@ -48,7 +48,7 @@ export type SanityHappening = {
   date: string;
   happeningType: "event" | "bedpres" | "external";
   registrationStartGroups: string | null;
-  registrationGroups: Array<string>;
+  registrationGroups: Array<string> | null;
   registrationStart: string | null;
   registrationEnd: string | null;
   groups: Array<string> | null;

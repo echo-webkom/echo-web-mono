@@ -7,10 +7,12 @@ import { groups, happenings } from ".";
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",
   {
-    // Don't use `.refrences` to avoid foreign key constraints
-    happeningId: varchar("happening_id", { length: 255 }).notNull(),
-    // Don't use `.refrences` to avoid foreign key constraints
-    groupId: varchar("group_id", { length: 255 }).notNull(),
+    happeningId: varchar("happening_id", { length: 255 })
+      .notNull()
+      .references(() => happenings.id),
+    groupId: varchar("group_id", { length: 255 })
+      .notNull()
+      .references(() => groups.id),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
