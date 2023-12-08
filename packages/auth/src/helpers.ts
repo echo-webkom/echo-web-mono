@@ -52,6 +52,7 @@ export async function getAuth() {
   });
 
   if (!user) {
+    console.error(`User ${session.user.id} not found in database`);
     return null;
   }
 
