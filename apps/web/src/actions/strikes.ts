@@ -1,11 +1,18 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { strikes, type StrikeInsert } from "@echo-webkom/db/schemas";
 import { strikeInfo, type StrikeInfoInsert } from "@echo-webkom/db/schemas/strike-info";
+
+export const BAN_AMOUNT = 5;
+
+type TUser = {
+  userId: string;
+  bannedFromStrike: number | null;
+};
 
 export type StrikeType =
   | "UNREGISTER_BEFORE_DEADLINE"
@@ -36,11 +43,22 @@ export const STRIKE_TYPE_AMOUNT: Record<StrikeType, number | null> = {
   OTHER: null,
 } as const;
 
+async function numValidStrikes<T extends TUser>(user: T) {
+  const userStrikes = await db.query.strikes.findMany({
+    with: { strikeInfo: true },
+    where: (strike) =>
+      and(gt(strike.id, user.bannedFromStrike ?? -1), eq(strikeInfo.userId, userId)),
+  });
+
+  return userStrikes.length;
+}
+
 export async function manualAddStrike(
   happeningSlug: string,
   userId: string,
   reason: string,
   amount: number,
+  type: StrikeType,
 ) {
   try {
     const issuer = await getAuth();
@@ -101,6 +119,14 @@ export async function manualAddStrike(
       reason: reason,
     } satisfies StrikeInfoInsert;
 
+    const userStrikes = await numValidStrikes({
+      userId: user.id,
+      bannedFromStrike: user.bannedFromStrike,
+    });
+    const newStrikesAmount = userStrikes + amount;
+
+    const newBannableStrike = newStrikesAmount >= BAN_AMOUNT ?? || type === "NO_SHOW";
+
     const info = await db
       .insert(strikeInfo)
       .values(data)
@@ -134,8 +160,6 @@ export async function manualAddStrike(
 
 export async function automaticAddStrike(happeningSlug: string, userId: string, type: StrikeType) {
   try {
-    //Happening and user should already be verified before call
-
     const reason = STRIKE_TYPE_MESSAGE[type];
     const amount = STRIKE_TYPE_AMOUNT[type];
 
