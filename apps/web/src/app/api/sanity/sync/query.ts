@@ -10,7 +10,7 @@ const happeningQueryPartial = groq`
   "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": registrationStart,
   "registrationEnd": registrationEnd,
-  "groups": organizer[]->slug.current,
+  "groups": organizers[]->slug.current,
   "spotRanges": spotRanges[] {
     spots,
     minYear,
@@ -51,7 +51,7 @@ export type SanityHappening = {
   registrationGroups: Array<string>;
   registrationStart: string | null;
   registrationEnd: string | null;
-  groups: Array<string>;
+  groups: Array<string> | null;
   spotRanges: Array<{
     spots: number;
     minYear: number;
