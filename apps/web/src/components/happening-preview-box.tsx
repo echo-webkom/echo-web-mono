@@ -10,11 +10,13 @@ import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
 
 const happeningTypeToString: Record<HappeningType, string> = {
+  external: "arrangementer",
   event: "arrangementer",
   bedpres: "bedriftspresentasjoner",
 };
 
 const typeToLink: Record<HappeningType, string> = {
+  external: "/for-studenter/arrangementer?type=external",
   event: "/for-studenter/arrangementer?type=arrangement",
   bedpres: "/for-studenter/arrangementer?type=bedpres",
 };

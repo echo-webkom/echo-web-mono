@@ -6,17 +6,23 @@ import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfoBySlug, fetchStaticInfoPaths } from "@/sanity/static-info";
 
-export const revalidate = 86400;
+export const revalidate = 86400; // 24 hours
+export const dynamicParams = false;
 
 type Props = {
   params: {
-    type: string;
-    slug: string;
+    slug: [string, string];
   };
 };
 
-const getData = cache(async (slug: string) => {
-  const page = await fetchStaticInfoBySlug(slug);
+const getData = cache(async (params: [string | undefined, string]) => {
+  const [pageType, slug] = params;
+
+  if (pageType === undefined) {
+    return notFound();
+  }
+
+  const page = await fetchStaticInfoBySlug(pageType, slug);
 
   if (!page) {
     return notFound();

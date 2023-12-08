@@ -12,6 +12,15 @@ export const GROUP_TYPES = [
   { title: "Underorganisasjon", value: "suborg" },
   { title: "Interessegruppe", value: "intgroup" },
   { title: "Idrettslag", value: "sport" },
+  { title: "Skjult", value: "hidden" },
 ] as const;
 
 export type StudentGroupType = (typeof GROUP_TYPES)[number]["value"];
+
+export const HAPPENING_TYPES = [
+  { title: "Arrangement", value: "event" },
+  { title: "Bedriftspresentasjon", value: "bedpres" },
+  { title: "Ekstern", value: "external" },
+] as const;
+
+export type HappeningType = (typeof HAPPENING_TYPES)[number]["value"];

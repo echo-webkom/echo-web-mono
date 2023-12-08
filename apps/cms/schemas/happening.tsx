@@ -8,10 +8,7 @@ import {
 } from "sanity";
 import slugify from "slugify";
 
-const happeningTypes = [
-  { title: "Bedriftspresentasjon", value: "bedpres" },
-  { title: "Arrangement", value: "event" },
-];
+import { HAPPENING_TYPES, type HappeningType } from "@echo-webkom/lib";
 
 export default defineType({
   name: "happening",
@@ -24,7 +21,8 @@ export default defineType({
       type: "happeningType",
     },
     prepare: ({ title, type }) => {
-      const typeTitle = happeningTypes.find((happeningType) => happeningType.value === type)?.title;
+      const typeTitle = HAPPENING_TYPES.find((happeningType) => happeningType.value === type)
+        ?.title;
       return {
         title: `${title}`,
         subtitle: typeTitle,
@@ -64,7 +62,8 @@ export default defineType({
       title: "Type",
       type: "string",
       options: {
-        list: happeningTypes,
+        // @ts-expect-error sanity
+        list: HAPPENING_TYPES,
       },
       validation: (Rule) => Rule.required(),
     }),
@@ -80,14 +79,23 @@ export default defineType({
           to: { type: "studentGroup" },
         },
       ],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((organizers, context) => {
+          if (organizers?.length === 0 && context.document?.happeningType !== "external") {
+            return "Arrangementer må ha minst en arrangør.";
+          }
+
+          return true;
+        }),
     }),
     defineField({
       name: "company",
       title: "Selskap",
       type: "reference",
       to: { type: "company" },
-      hidden: ({ document }) => document?.happeningType !== "bedpres",
+      hidden: ({ document }) =>
+        // @ts-expect-error sanity
+        !(["bedpres", "external"] satisfies Array<HappeningType>).includes(document?.happeningType),
       validation: (Rule) =>
         Rule.custom((company, context) => {
           if (context.document?.happeningType === "bedpres" && !company) {

@@ -1,5 +1,6 @@
-import { groq, type QueryParams } from "next-sanity";
+import { groq } from "next-sanity";
 
+import { type QueryParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
 import { sanityFetch } from "../client";
 import { happeningSchema, type Happening } from "./schemas";
@@ -30,6 +31,7 @@ const happeningPartial = groq`
     },
   },
   "date": date,
+  cost,
   "registrationStartGroups": registrationStartGroups,
   "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": registrationStart,

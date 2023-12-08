@@ -22,13 +22,17 @@ export const GET = withBasicAuth(async () => {
 
   const res = await client.fetch<Array<SanityHappening>>(happeningQueryList);
 
-  const formattedHappenings = res.map((h) => ({
-    ...h,
-    date: new Date(h.date),
-    registrationStartGroups: h.registrationStartGroups ? new Date(h.registrationStartGroups) : null,
-    registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
-    registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
-  }));
+  const formattedHappenings = res
+    .filter((happening) => happening.happeningType !== "external")
+    .map((h) => ({
+      ...h,
+      date: new Date(h.date),
+      registrationStartGroups: h.registrationStartGroups
+        ? new Date(h.registrationStartGroups)
+        : null,
+      registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
+      registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
+    }));
 
   if (formattedHappenings.length > 0) {
     await db

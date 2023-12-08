@@ -3,12 +3,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
+import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { fetchHappeningBySlug } from "@/sanity/happening";
 import { shortDate } from "@/utils/date";
-import { EventSidebar } from "./event-sidebar";
 
 type Props = {
   params: {
@@ -40,7 +40,7 @@ export default async function EventPage({ params }: Props) {
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <EventSidebar event={event} />
+        <HappeningSidebar event={event} />
 
         {/* Content */}
         <article className="w-full">

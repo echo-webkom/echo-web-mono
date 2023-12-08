@@ -11,8 +11,8 @@ export * from "./schemas";
 // Move this
 export const pageTypeToUrl: Record<PageType, string> = {
   about: "om",
-  "for-companies": "for-studenter",
-  "for-students": "for-bedrifter",
+  "for-companies": "for-bedrifter",
+  "for-students": "for-studenter",
 };
 
 export async function fetchStaticInfoPaths() {
@@ -28,15 +28,15 @@ export async function fetchStaticInfoPaths() {
   const staticInfoSlugs = result.map((staticInfo) => staticInfoSlugSchema.parse(staticInfo));
 
   return staticInfoSlugs.map((staticInfo) => ({
-    type: pageTypeToUrl[staticInfo.pageType],
-    slug: staticInfo.slug,
+    slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
   }));
 }
 
-export async function fetchStaticInfoBySlug(slug: string) {
+export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
   const query = groq`
 *[_type == "staticInfo"
   && slug.current == $slug
+  && pageType == $pageType
   && !(_id in path('drafts.**'))] {
   title,
   "slug": slug.current,
@@ -45,8 +45,12 @@ export async function fetchStaticInfoBySlug(slug: string) {
 }[0]
       `;
 
+  const parsedPageType = Object.keys(pageTypeToUrl).find(
+    (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === pageType,
+  );
   const params = {
     slug,
+    pageType: parsedPageType,
   };
 
   const result = await sanityClient.fetch<StaticInfo>(query, params);

@@ -3,7 +3,14 @@ import { z } from "zod";
 import { profileSchema } from "../profile/schemas";
 import { imageSchema } from "../utils/image";
 
-export const studentGroupTypes = ["board", "suborg", "subgroup", "intgroup", "sport"] as const;
+export const studentGroupTypes = [
+  "board",
+  "suborg",
+  "subgroup",
+  "intgroup",
+  "sport",
+  "hidden",
+] as const;
 
 export const studentGroupTypeSchema = z.enum(studentGroupTypes);
 
