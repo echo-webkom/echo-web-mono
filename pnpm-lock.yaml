@@ -85,8 +85,8 @@ importers:
         specifier: 18.2.17
         version: 18.2.17
       '@types/styled-components':
-        specifier: 5.1.32
-        version: 5.1.32
+        specifier: 5.1.34
+        version: 5.1.34
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
@@ -5783,8 +5783,8 @@ packages:
     resolution: {integrity: sha512-nBHZAaNTEw1YG3ROL7HtTp7HjW8HD7DuFYbWoonUKTZHj7eyOt4vPzyMcc3+xgWNv7xi2rziaiBXHIq6wBeyrw==}
     dev: false
 
-  /@types/styled-components@5.1.32:
-    resolution: {integrity: sha512-DqVpl8R0vbhVSop4120UHtGrFmHuPeoDwF4hDT0kPJTY8ty0SI38RV3VhCMsWigMUXG+kCXu7vMRqMFNy6eQgA==}
+  /@types/styled-components@5.1.34:
+    resolution: {integrity: sha512-mmiVvwpYklFIv9E8qfxuPyIt/OuyIrn6gMOAMOFUO3WJfSrSE+sGUoa4PiZj77Ut7bKZpaa6o1fBKS/4TOEvnA==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
       '@types/react': 18.2.42
