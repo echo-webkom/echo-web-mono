@@ -102,12 +102,10 @@ export async function EventPreview({ event }: EventPreviewProps) {
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="flex w-full justify-between overflow-x-hidden">
-          <h3 className="text-md my-auto line-clamp-1 font-semibold sm:text-2xl">
-            {event.title}
-          </h3>
+          <h3 className="text-md my-auto line-clamp-1 font-semibold sm:text-2xl">{event.title}</h3>
           <ul className="text-sm md:text-base">
             {event.date && (
-              <li className="flex justify-end w-28">
+              <li className="flex w-28 justify-end">
                 <CalendarIcon className="my-auto mr-1" />
                 {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
