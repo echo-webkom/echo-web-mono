@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import { Container } from "@/components/container";
-import { HappeningPreviewBox } from "@/components/happening-preview-box";
+import { HappeningPreviewBox } from "@/components/happening-preview-box-server";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
 import { fetchUpcomingHappening } from "@/sanity/happening";
