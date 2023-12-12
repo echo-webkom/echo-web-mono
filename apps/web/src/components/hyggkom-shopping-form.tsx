@@ -50,10 +50,10 @@ export function HyggkomShoppingForm() {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={onSubmit}>
-      <fieldset className="flex flex-col gap-2">
-        <Label htmlFor="">Hva ønsker du?</Label>
-        <Input type="text" {...form.register("name")} />
+    <form onSubmit={onSubmit} className="py-5">
+      <fieldset className="flex flex-col gap-2 py-2">
+        <Label htmlFor="" className="text-lg">Hva ønsker du at vi skal ha på lesesalen?</Label>
+        <Input type="text" {...form.register("name")} className=""/>
       </fieldset>
       <Button type="submit">Legg til ditt forslag!</Button>
     </form>

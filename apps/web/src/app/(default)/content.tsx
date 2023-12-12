@@ -11,6 +11,7 @@ import { fetchUpcomingBedpresses } from "@/sanity/bedpres";
 import { fetchComingEvents } from "@/sanity/event";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
+import { type ShoppingListItems } from "@echo-webkom/db/schemas";
 
 export async function Content() {
   const [events, bedpresses, posts, jobAds] = await Promise.all([
@@ -20,7 +21,10 @@ export async function Content() {
     fetchAvailableJobAds(4),
   ]);
 
-  const itemNames = await db.query.shoppingListItems.findMany();
+  const itemNames = await db.query.shoppingListItems.findMany({
+    orderBy: (shoppingListItems, {desc}) => [desc(shoppingListItems.createdAt)],
+    limit: 5,
+  });
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -79,12 +83,11 @@ export async function Content() {
         <hr />
 
         <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-          {/* {itemNames.map((item:any) => (
-            <li key={item.id}>
-            {item.name}
+          {itemNames.map((item: ShoppingListItems) => (
+            <li key={item.id} className="grid grid-cols-2">
+              <p>{item.name}</p>
           </li>
-          ))} */}
-          {JSON.stringify(itemNames)}
+          ))}
         </ul>
         <Button>
           <Link href="/handleliste">Se mer</Link>
