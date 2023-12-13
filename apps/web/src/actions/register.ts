@@ -178,12 +178,16 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           )
           .leftJoin(users, eq(registrations.userId, users.id))
           .orderBy(registrations.regId)
-          .limit(userSpotRange.spots)
           .for("update");
 
-        const isWaitlisted = regs.find((reg) => reg.registration.regId === pendingReg.regId)
-          ? false
-          : true;
+        const pendings = regs.filter((reg) => reg.registration.status === "pending");
+        const index = pendings.findIndex((reg) => reg.registration.regId === pendingReg.regId);
+
+        if (index < 0) {
+          throw new Error("Could not find pending registration");
+        }
+
+        const isWaitlisted = regs.length - pendings.length + index >= userSpotRange.spots;
 
         const registration = await tx
           .update(registrations)
