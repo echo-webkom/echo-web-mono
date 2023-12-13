@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, gte, lt, lte, or, sql } from "drizzle-orm";
+import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { getAuth } from "@echo-webkom/auth";
@@ -172,17 +172,18 @@ export async function register(id: string, payload: z.infer<typeof registrationF
               or(
                 eq(registrations.status, "registered"),
                 eq(registrations.status, "waiting"),
-                and(
-                  eq(registrations.status, "pending"),
-                  lt(registrations.createdAt, pendingReg.createdAt),
-                ),
+                eq(registrations.status, "pending"),
               ),
             ),
           )
           .leftJoin(users, eq(registrations.userId, users.id))
+          .orderBy(registrations.regId)
+          .limit(userSpotRange.spots)
           .for("update");
 
-        const isWaitlisted = regs.length >= userSpotRange.spots;
+        const isWaitlisted = regs.find((reg) => reg.registration.regId === pendingReg.regId)
+          ? false
+          : true;
 
         const registration = await tx
           .update(registrations)
@@ -202,7 +203,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         };
       },
       {
-        isolationLevel: "serializable",
+        isolationLevel: "read committed",
       },
     );
 

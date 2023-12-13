@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { index, pgTable, primaryKey, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, registrationStatusEnum, users } from ".";
@@ -7,6 +7,7 @@ import { answers, happenings, registrationStatusEnum, users } from ".";
 export const registrations = pgTable(
   "registration",
   {
+    regId: serial("reg_id"),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, {
