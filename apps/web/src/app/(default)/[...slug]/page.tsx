@@ -11,14 +11,14 @@ export const dynamicParams = false;
 
 type Props = {
   params: {
-    slug: [string, string];
+    slug: Array<string> | undefined;
   };
 };
 
-const getData = cache(async (params: [string | undefined, string]) => {
-  const [pageType, slug] = params;
+const getData = cache(async (slugs: Props["params"]["slug"]) => {
+  const [pageType, slug] = slugs ?? [];
 
-  if (pageType === undefined) {
+  if (typeof pageType !== "string" || typeof slug !== "string") {
     return notFound();
   }
 
