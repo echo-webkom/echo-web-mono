@@ -3,6 +3,7 @@ import {  pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
+import { usersToShoppingListItems } from "./users_to_shopping_list_items";
 
 export const shoppingListItems = pgTable("shopping_list_item", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -13,11 +14,12 @@ export const shoppingListItems = pgTable("shopping_list_item", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const shoppingListItemsRelations = relations(shoppingListItems, ({ one }) => ({
+export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({
   userId: one(users, {
     fields: [shoppingListItems.userId],
     references: [users.id],
   }),
+  likes: many(usersToShoppingListItems)
 }));
 
 export type ShoppingListItems = (typeof shoppingListItems)["$inferSelect"];

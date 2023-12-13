@@ -22,6 +22,20 @@
       "when": 1699464663726,
       "tag": "0002_glamorous_the_hand",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1702484920869,
+      "tag": "0003_careless_calypso",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1702501404907,
+      "tag": "0004_majestic_carlie_cooper",
+      "breakpoints": true
     }
   ]
 }

@@ -3,6 +3,7 @@ import { check, integer, pgTable, primaryKey, text, timestamp, varchar } from "d
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, groups, usersToGroups, userTypeEnum } from ".";
+import { usersToShoppingListItems } from "./users_to_shopping_list_items";
 
 export const users = pgTable(
   "user",
@@ -30,6 +31,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   }),
   groupLeader: many(groups),
   memberships: many(usersToGroups),
+  likes: many(usersToShoppingListItems)
 }));
 
 export type User = (typeof users)["$inferSelect"];

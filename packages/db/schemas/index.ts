@@ -14,4 +14,4 @@ export * from "./users-to-groups";
 export * from "./users";
 export * from "./verification-tokens";
 export * from "./shopping-list-items";
-export * from "./shopping-list-likes";
+export * from "./users_to_shopping_list_items";

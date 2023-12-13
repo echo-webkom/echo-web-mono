@@ -3,7 +3,7 @@ import { eq, sql } from "drizzle-orm";
 import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
-import { shoppingListItems, shoppingListLikes } from "@echo-webkom/db/schemas";
+import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
 
 export default async function HyggkomHandleliste() {
   const items = await db
@@ -13,12 +13,12 @@ export default async function HyggkomHandleliste() {
     userId: shoppingListItems.userId,
     createdAt: shoppingListItems.createdAt,
     likesCount:
-  sql`COUNT(${shoppingListLikes.item})`,
+  sql`COUNT(${usersToShoppingListItems.itemId})`,
   })
   .from(shoppingListItems)
   .leftJoin(
-    shoppingListLikes,
-    eq(shoppingListItems.id, shoppingListLikes.item)
+    usersToShoppingListItems,
+    eq(shoppingListItems.id, usersToShoppingListItems.itemId)
   )
   .groupBy(shoppingListItems.id);
 
