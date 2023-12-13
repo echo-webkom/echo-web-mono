@@ -159,7 +159,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       throw new Error("Could not create registration");
     }
 
-    const resp = await db.transaction(
+    const { registration, isWaitlisted } = await db.transaction(
       async (tx) => {
         const regs = await tx
           .select()
@@ -211,7 +211,9 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       },
     );
 
-    const { isWaitlisted } = resp;
+    if (!registration) {
+      throw new Error("Failed to update registration");
+    }
 
     /**
      * Insert answers
