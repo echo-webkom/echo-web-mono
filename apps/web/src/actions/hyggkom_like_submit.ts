@@ -2,7 +2,7 @@
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { usersToShoppingListItems } from "@echo-webkom/db/schemas/users_to_shopping_list_items";
+import { usersToShoppingListItems } from "@echo-webkom/db/schemas";
 
 export async function hyggkomLikeSubmit(payload: string) {
     try {
