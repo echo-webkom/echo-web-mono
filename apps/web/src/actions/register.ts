@@ -177,11 +177,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
             ),
           )
           .leftJoin(users, eq(registrations.userId, users.id))
-          .orderBy(registrations.regId)
+          .orderBy(registrations.id)
           .for("update");
 
         const pendings = regs.filter((reg) => reg.registration.status === "pending");
-        const index = pendings.findIndex((reg) => reg.registration.regId === pendingReg.regId);
+        const index = pendings.findIndex((reg) => reg.registration.id === pendingReg.id);
 
         if (index < 0) {
           throw new Error("Could not find pending registration");
