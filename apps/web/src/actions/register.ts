@@ -177,18 +177,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
             ),
           )
           .leftJoin(users, eq(registrations.userId, users.id))
-          .orderBy(registrations.id)
           .for("update");
 
         const pendings = regs.filter((reg) => reg.registration.status === "pending");
 
         const isWaitlisted = regs.length - pendings.length >= userSpotRange.spots;
-
-        if (isWaitlisted) {
-          console.log("Regs.length: ", regs.length);
-          console.log("Pendings.length: ", pendings.length);
-          console.log("Spots: ", userSpotRange.spots);
-        }
 
         const registration = await tx
           .update(registrations)
