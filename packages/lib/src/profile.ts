@@ -5,6 +5,7 @@ export const registrationStatusToString: Record<RegistrationStatus, string> = {
   waiting: "Venteliste",
   unregistered: "Avmeldt",
   removed: "Fjernet",
+  pending: "Under behandling",
 };
 
 export const happeningTypeToString: Record<HappeningType, string> = {

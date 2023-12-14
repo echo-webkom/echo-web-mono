@@ -12,6 +12,7 @@ export const registrationStatusEnum = pgEnum("registration_status", [
   "unregistered",
   "removed",
   "waiting",
+  "pending",
 ]);
 
 export type QuestionType = (typeof questionTypeEnum)["enumValues"][number];

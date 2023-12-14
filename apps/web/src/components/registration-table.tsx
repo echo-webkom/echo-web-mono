@@ -57,7 +57,8 @@ export function RegistrationTable({
       (statusFilter === "påmeldt" && registration.status === "registered") ||
       (statusFilter === "venteliste" && registration.status === "waiting") ||
       (statusFilter === "avmeldt" && registration.status === "unregistered") ||
-      (statusFilter === "fjernet" && registration.status === "removed");
+      (statusFilter === "fjernet" && registration.status === "removed") ||
+      (statusFilter === "under behandling" && registration.status === "pending");
 
     const matchesGroupFilter =
       groupFilter === "" ||
@@ -264,6 +265,8 @@ function getStatusClassColor(status: RegistrationStatus): string {
       return "text-red-600";
     case "removed":
       return "text-red-600";
+    case "pending":
+      return "text-blue-600";
     default:
       return "";
   }

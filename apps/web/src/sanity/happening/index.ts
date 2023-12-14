@@ -88,7 +88,7 @@ export async function fetchHappeningBySlug(slug: string) {
 *[_type == "happening"
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
-  ${happeningPartial}
+${happeningPartial}
 }[0]
     `;
 

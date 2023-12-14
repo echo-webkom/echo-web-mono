@@ -15,6 +15,13 @@
       "when": 1701525206480,
       "tag": "0001_lame_iron_lad",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1702573307656,
+      "tag": "0002_normal_famine",
+      "breakpoints": true
     }
   ]
 }
