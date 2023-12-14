@@ -17,7 +17,7 @@ export const registrations = pgTable(
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    status: registrationStatusEnum("status").notNull().default("pending"),
+    status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
