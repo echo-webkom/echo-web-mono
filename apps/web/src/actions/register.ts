@@ -181,13 +181,14 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           .for("update");
 
         const pendings = regs.filter((reg) => reg.registration.status === "pending");
-        const index = pendings.findIndex((reg) => reg.registration.id === pendingReg.id);
 
-        if (index < 0) {
-          throw new Error("Could not find pending registration");
+        const isWaitlisted = regs.length - pendings.length >= userSpotRange.spots;
+
+        if (isWaitlisted) {
+          console.log("Regs.length: ", regs.length);
+          console.log("Pendings.length: ", pendings.length);
+          console.log("Spots: ", userSpotRange.spots);
         }
-
-        const isWaitlisted = regs.length - pendings.length + index >= userSpotRange.spots;
 
         const registration = await tx
           .update(registrations)
