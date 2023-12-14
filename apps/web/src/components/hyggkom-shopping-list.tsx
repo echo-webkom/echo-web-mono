@@ -1,7 +1,6 @@
 "use client";
 
 import { hyggkomLikeSubmit } from "@/actions/hyggkom_like_submit";
-import { error } from "console";
 import { useRouter } from "next/navigation";
 
 
