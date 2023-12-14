@@ -1,6 +1,9 @@
 "use client";
 
 import { hyggkomLikeSubmit } from "@/actions/hyggkom_like_submit";
+import { error } from "console";
+import { useRouter } from "next/navigation";
+
 
 type itemProps = {
   id: string,
@@ -16,15 +19,16 @@ type hyggkomShoppingListProps = {
 
 
 export function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
+  const router = useRouter();
 
   const handleClick = (item: string) => {
+
     try {
-      const response = hyggkomLikeSubmit(item);
-    } catch (error) {
-      console.error('Error liking item:', error);
-      // Handle the error, e.g., display a message to the user
-    }
-  }
+    const response = hyggkomLikeSubmit(item);
+    router.refresh();
+    } catch {console.log('Error occured')}
+
+    };
 
   return (
     <div>
