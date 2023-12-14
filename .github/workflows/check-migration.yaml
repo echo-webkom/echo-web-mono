@@ -1,0 +1,55 @@
+name: Database check migrations
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+  NEXT_PUBLIC_SANITY_DATASET: "develop"
+  FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+  FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+jobs:
+  check-migration:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14.7
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: echo-web
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: Apply migrations (main)
+        run: pnpm db:migrate
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: Check migrations (PR Branch)
+        run: pnpm db:check
+
+      - name: Apply migrations (PR Branch)
+        run: pnpm db:migrate
