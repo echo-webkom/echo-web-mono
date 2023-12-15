@@ -10,6 +10,7 @@ import {
   questions,
   registrations,
   spotRanges,
+  type HappeningInsert,
   type HappeningsToGroupsInsert,
   type QuestionInsert,
   type SpotRangeInsert,
@@ -17,6 +18,7 @@ import {
 import { type HappeningType } from "@echo-webkom/lib";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
+import { isBoard } from "@/lib/is-board";
 import { client } from "@/sanity/client";
 import { happeningQuerySingle, type SanityHappening } from "./sync/query";
 
@@ -75,29 +77,29 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
+  const validGroups = await db.query.groups.findMany();
+
+  const formattedHappening = {
+    ...res,
+    id: res._id,
+    date: new Date(res.date),
+    registrationStartGroups: res.registrationStartGroups
+      ? new Date(res.registrationStartGroups)
+      : null,
+    registrationStart: res.registrationStart ? new Date(res.registrationStart) : null,
+    registrationEnd: res.registrationEnd ? new Date(res.registrationEnd) : null,
+    registrationGroups:
+      res.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
+  } satisfies HappeningInsert;
+
   /**
    * Update or insert happening
    */
   await db
     .insert(happenings)
-    .values({
-      id: res._id,
-      type: res.happeningType,
-      title: res.title,
-      slug: res.slug,
-      date: new Date(res.date),
-      registrationStart: res.registrationStart ? new Date(res.registrationStart) : null,
-      registrationEnd: res.registrationEnd ? new Date(res.registrationEnd) : null,
-    })
+    .values(formattedHappening)
     .onConflictDoUpdate({
-      set: {
-        type: res.happeningType,
-        title: res.title,
-        slug: res.slug,
-        date: new Date(res.date),
-        registrationStart: res.registrationStart ? new Date(res.registrationStart) : null,
-        registrationEnd: res.registrationEnd ? new Date(res.registrationEnd) : null,
-      },
+      set: formattedHappening,
       where: eq(happenings.id, res._id),
       target: happenings.id,
     });
@@ -108,18 +110,15 @@ export const POST = withBasicAuth(async (req) => {
   await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, res._id));
 
   if (res.happeningType === "bedpres") {
-    await db.insert(happeningsToGroups).values({
-      happeningId: res._id,
-      groupId: "bedkom",
-    });
-  } else {
-    const happeningsToGroupsToInsert = (res.groups ?? []).map(
-      (g) =>
-        ({
-          happeningId: res._id,
-          groupId: g,
-        }) satisfies HappeningsToGroupsInsert,
-    );
+    const happeningsToGroupsToInsert = (res.groups ?? [])
+      .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+      .map(
+        (groupId) =>
+          ({
+            happeningId: res._id,
+            groupId,
+          }) satisfies HappeningsToGroupsInsert,
+      );
 
     if (happeningsToGroupsToInsert.length > 0) {
       await db.insert(happeningsToGroups).values(happeningsToGroupsToInsert);
@@ -129,7 +128,6 @@ export const POST = withBasicAuth(async (req) => {
   /**
    * Remove previous spot ranges and insert new ones
    */
-
   await db.delete(spotRanges).where(eq(spotRanges.happeningId, res._id));
 
   const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map((sr) => ({
