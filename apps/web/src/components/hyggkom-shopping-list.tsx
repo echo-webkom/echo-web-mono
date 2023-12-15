@@ -1,6 +1,7 @@
 "use client";
 
 import { hyggkomLikeSubmit } from "@/actions/hyggkom_like_submit";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 
@@ -9,7 +10,7 @@ type itemProps = {
   name: string,
   userId: string,
   createdAt: Date,
-  likesCount: unknown,
+  likesCount: number,
 }
 type hyggkomShoppingListProps = {
   items: Array<itemProps>;
@@ -19,14 +20,34 @@ type hyggkomShoppingListProps = {
 
 export function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
   const router = useRouter();
+  const { toast } = useToast();
 
-  const handleClick = (item: string) => {
+  const handleButtonClick = (item: string) => {
+    handleClick(item).catch((error) => {
+      console.error("Error:", error);
+    });
+  };
 
-    try {
-    const response = hyggkomLikeSubmit(item);
-    router.refresh();
-    } catch {console.log('Error occured')}
+  const handleClick = async (item: string) => {
+    const response = await hyggkomLikeSubmit(item);
 
+    if (response) {
+      toast({
+        title: "Takk for din tilbakemelding!",
+        description: "Forslaget ble liket.",
+        variant: "success",
+      });
+
+      router.refresh();
+    } else {
+      toast({
+        title: "Takk for din tilbakemelding!",
+        description: "Din like er blitt fjernet.",
+        variant: "warning",
+      });
+
+      router.refresh();
+    }
     };
 
   return (
@@ -36,8 +57,8 @@ export function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
         {items.map((item) => (
           <li className="grid grid-cols-5 py-2 px-2" key={item.id}>
             <p className="col-span-3">{item.name}</p>
-            <p className="col-span-1">{item.likesCount as number}</p>
-            <button className="col-span-1 border rounded-xl bg-rose-500" onClick={() => handleClick(item.id)}>like</button>
+            <p className="col-span-1">{item.likesCount}</p>
+            <button className="col-span-1 border rounded-xl bg-rose-500" onClick={() => handleButtonClick(item.id)}>like</button>
           </li>
         ))}
       </ul>
