@@ -1,5 +1,6 @@
 "use client";
 
+import { getColor } from "@/actions/get_color_like_button";
 import { hyggkomLikeSubmit } from "@/actions/hyggkom_like_submit";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -12,13 +13,14 @@ type itemProps = {
   createdAt: Date,
   likesCount: number,
 }
+
 type hyggkomShoppingListProps = {
   items: Array<itemProps>;
 };
 
 
 
-export function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
+export async function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -48,19 +50,22 @@ export function HyggkomShoppingList({ items }: hyggkomShoppingListProps) {
 
       router.refresh();
     }
-    };
+  };
+
+  const color = await Promise.all(items.map((item) => getColor(item.id)));
 
   return (
     <div>
       <h3>Like de tingene du mener vi bør kjøpe inn, eller legg til ditt eget forslag!</h3>
       <ul className="list-group capitalize border rounded-lg">
-        {items.map((item) => (
+        {items.map((item, index) => {
+          return (
           <li className="grid grid-cols-5 py-2 px-2" key={item.id}>
             <p className="col-span-3">{item.name}</p>
             <p className="col-span-1">{item.likesCount}</p>
-            <button className="col-span-1 border rounded-xl bg-rose-500" onClick={() => handleButtonClick(item.id)}>like</button>
-          </li>
-        ))}
+            <button className={`col-span-1 border rounded-xl ${color[index]}`} onClick={() => handleButtonClick(item.id)}>like</button>
+          </li>)
+        })}
       </ul>
     </div>
   );
