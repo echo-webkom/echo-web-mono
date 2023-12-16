@@ -3,43 +3,40 @@ import { z } from "zod";
 
 import { type PageType } from "@echo-webkom/lib";
 
-import { sanityFetch } from "../client";
+import { sanityClient } from "../client";
 import { staticInfoSchema, type StaticInfo } from "./schemas";
 
 export * from "./schemas";
 
 // Move this
 export const pageTypeToUrl: Record<PageType, string> = {
-  ABOUT: "om",
-  STUDENTS: "for-studenter",
-  COMPANIES: "for-bedrifter",
+  about: "om",
+  "for-companies": "for-bedrifter",
+  "for-students": "for-studenter",
 };
 
 export async function fetchStaticInfoPaths() {
-  const query = groq`*[_type == "static"]{ "slug": slug.current, pageType }`;
+  const query = groq`*[_type == "staticInfo"]{ "slug": slug.current, pageType }`;
 
-  const result = await sanityFetch<Array<{ slug: string; pageType: PageType }>>({
-    query,
-    tags: ["static-info-params"],
-  });
+  const result = await sanityClient.fetch<Array<{ slug: string; pageType: PageType }>>(query);
 
   const staticInfoSlugSchema = z.object({
-    pageType: z.enum(["ABOUT", "STUDENTS", "COMPANIES"]),
+    pageType: z.enum(["about", "for-students", "for-companies"]),
     slug: z.string(),
   });
 
   const staticInfoSlugs = result.map((staticInfo) => staticInfoSlugSchema.parse(staticInfo));
 
   return staticInfoSlugs.map((staticInfo) => ({
-    type: pageTypeToUrl[staticInfo.pageType],
-    slug: staticInfo.slug,
+    slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
   }));
 }
 
-export async function fetchStaticInfoBySlug(slug: string) {
+export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
   const query = groq`
-*[_type == "static"
+*[_type == "staticInfo"
   && slug.current == $slug
+  && pageType == $pageType
   && !(_id in path('drafts.**'))] {
   title,
   "slug": slug.current,
@@ -48,15 +45,15 @@ export async function fetchStaticInfoBySlug(slug: string) {
 }[0]
       `;
 
+  const parsedPageType = Object.keys(pageTypeToUrl).find(
+    (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === pageType,
+  );
   const params = {
     slug,
+    pageType: parsedPageType,
   };
 
-  const res = await sanityFetch<StaticInfo>({
-    query,
-    params,
-    tags: ["static-info"],
-  });
+  const result = await sanityClient.fetch<StaticInfo>(query, params);
 
-  return staticInfoSchema.nullable().parse(res);
+  return staticInfoSchema.nullable().parse(result);
 }

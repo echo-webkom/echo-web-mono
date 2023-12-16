@@ -27,11 +27,11 @@ import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 
 type EditRegistrationButtonProps = {
-  slug: string;
+  id: string;
   registration: RegistrationWithUser;
 };
 
-export function EditRegistrationButton({ slug, registration }: EditRegistrationButtonProps) {
+export function EditRegistrationButton({ id, registration }: EditRegistrationButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -49,7 +49,7 @@ export function EditRegistrationButton({ slug, registration }: EditRegistrationB
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await updateRegistration(slug, registration.user.id, {
+    await updateRegistration(id, registration.user.id, {
       status: selectedStatus,
       reason: data.reason ?? "",
     });

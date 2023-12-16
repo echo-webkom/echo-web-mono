@@ -3,12 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
+import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
-import { getHappeningBySlug } from "@/lib/queries/happening";
+import { isHost as _isHost } from "@/lib/is-host";
 import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
@@ -20,14 +21,32 @@ type Props = {
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
 
-  const happening = await getHappeningBySlug(slug);
+  const happening = await db.query.happenings.findFirst({
+    where: (happening) => eq(happening.slug, slug),
+    with: {
+      questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
+    },
+  });
 
   if (!happening) {
     return notFound();
   }
 
+  const user = await getAuth();
+
+  const isHost = user ? _isHost(user, happening) : false;
+
+  if (!isHost) {
+    return notFound();
+  }
+
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningSlug, slug),
+    where: (registration) => eq(registration.happeningId, happening.id),
     with: {
       user: {
         with: {
@@ -84,7 +103,7 @@ export default async function EventDashboard({ params }: Props) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <HappeningInfoBox happening={happening} />
+        <HappeningInfoBox happeningId={happening.id} />
       </div>
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">

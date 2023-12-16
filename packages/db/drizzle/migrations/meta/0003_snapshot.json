@@ -1,8 +1,8 @@
 {
+  "id": "3666cdd0-8146-46ff-8b46-5779395d8c9f",
+  "prevId": "aef7c6fe-385c-4ca5-abe8-efc1b8bc42ab",
   "version": "5",
   "dialect": "pg",
-  "id": "d1d69419-1f6d-47b5-a823-8027627ed9be",
-  "prevId": "36cde571-1128-4add-b5bf-5492d58aa9f0",
   "tables": {
     "account": {
       "name": "account",
@@ -81,16 +81,23 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_provider_account_id": {
-          "name": "account_provider_provider_account_id",
-          "columns": ["provider", "provider_account_id"]
+        "account_provider_provider_account_id_pk": {
+          "name": "account_provider_provider_account_id_pk",
+          "columns": [
+            "provider",
+            "provider_account_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -99,47 +106,89 @@
       "name": "answer",
       "schema": "",
       "columns": {
-        "question_id": {
-          "name": "question_id",
-          "type": "varchar(21)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "user_id": {
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
-          "type": "text",
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "question_id": {
+          "name": "question_id",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "answer": {
           "name": "answer",
-          "type": "text",
+          "type": "json",
           "primaryKey": false,
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "question_idx": {
+          "name": "question_idx",
+          "columns": [
+            "question_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
-        "answer_happening_slug_user_id_registration_happening_slug_user_id_fk": {
-          "name": "answer_happening_slug_user_id_registration_happening_slug_user_id_fk",
+        "answer_user_id_user_id_fk": {
+          "name": "answer_user_id_user_id_fk",
           "tableFrom": "answer",
-          "tableTo": "registration",
-          "columnsFrom": ["happening_slug", "user_id"],
-          "columnsTo": ["happening_slug", "user_id"],
-          "onDelete": "no action",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "answer_happening_id_happening_id_fk": {
+          "name": "answer_happening_id_happening_id_fk",
+          "tableFrom": "answer",
+          "tableTo": "happening",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "answer_question_id_question_id_fk": {
+          "name": "answer_question_id_question_id_fk",
+          "tableFrom": "answer",
+          "tableTo": "question",
+          "columnsFrom": [
+            "question_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "answer_question_id": {
-          "name": "answer_question_id",
-          "columns": ["question_id"]
+        "answer_user_id_happening_id_question_id_pk": {
+          "name": "answer_user_id_happening_id_question_id_pk",
+          "columns": [
+            "user_id",
+            "happening_id",
+            "question_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -150,7 +199,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -164,9 +213,11 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "degree_id": {
-          "name": "degree_id",
-          "columns": ["id"]
+        "degree_id_pk": {
+          "name": "degree_id_pk",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -177,7 +228,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -200,16 +251,22 @@
           "name": "group_leader_user_id_fk",
           "tableFrom": "group",
           "tableTo": "user",
-          "columnsFrom": ["leader"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "leader"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "group_id": {
-          "name": "group_id",
-          "columns": ["id"]
+        "group_id_pk": {
+          "name": "group_id_pk",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -218,25 +275,55 @@
       "name": "happenings_to_groups",
       "schema": "",
       "columns": {
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "group_id": {
           "name": "group_id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "happenings_to_groups_happening_id_happening_id_fk": {
+          "name": "happenings_to_groups_happening_id_happening_id_fk",
+          "tableFrom": "happenings_to_groups",
+          "tableTo": "happening",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "happenings_to_groups_group_id_group_id_fk": {
+          "name": "happenings_to_groups_group_id_group_id_fk",
+          "tableFrom": "happenings_to_groups",
+          "tableTo": "group",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
-        "happenings_to_groups_happening_slug_group_id": {
-          "name": "happenings_to_groups_happening_slug_group_id",
-          "columns": ["happening_slug", "group_id"]
+        "happenings_to_groups_happening_id_group_id_pk": {
+          "name": "happenings_to_groups_happening_id_group_id_pk",
+          "columns": [
+            "happening_id",
+            "group_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -245,6 +332,12 @@
       "name": "happening",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar(255)",
@@ -270,6 +363,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "registration_groups": {
+          "name": "registration_groups",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "registration_start_groups": {
+          "name": "registration_start_groups",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
         "registration_start": {
           "name": "registration_start",
           "type": "timestamp",
@@ -286,15 +391,26 @@
       "indexes": {
         "type_idx": {
           "name": "type_idx",
-          "columns": ["type"],
+          "columns": [
+            "type"
+          ],
           "isUnique": false
+        },
+        "slug_idx": {
+          "name": "slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "happening_slug": {
-          "name": "happening_slug",
-          "columns": ["slug"]
+        "happening_id_pk": {
+          "name": "happening_id_pk",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -305,7 +421,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -329,35 +445,57 @@
           "notNull": true,
           "default": "'text'"
         },
+        "is_sensitive": {
+          "name": "is_sensitive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "options": {
           "name": "options",
           "type": "json",
           "primaryKey": false,
           "notNull": false
         },
-        "happening_slug": {
-          "name": "happening_slug",
-          "type": "text",
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_title": {
+          "name": "happening_id_title",
+          "columns": [
+            "title",
+            "happening_id"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
-        "question_happening_slug_happening_slug_fk": {
-          "name": "question_happening_slug_happening_slug_fk",
+        "question_happening_id_happening_id_fk": {
+          "name": "question_happening_id_happening_id_fk",
           "tableFrom": "question",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "question_id": {
-          "name": "question_id",
-          "columns": ["id"]
+        "question_id_pk": {
+          "name": "question_id_pk",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -372,8 +510,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -402,7 +540,9 @@
       "indexes": {
         "status_idx": {
           "name": "status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "isUnique": false
         }
       },
@@ -411,25 +551,36 @@
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "registration_happening_slug_happening_slug_fk": {
-          "name": "registration_happening_slug_happening_slug_fk",
+        "registration_happening_id_happening_id_fk": {
+          "name": "registration_happening_id_happening_id_fk",
           "tableFrom": "registration",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "registration_user_id_happening_slug": {
-          "name": "registration_user_id_happening_slug",
-          "columns": ["user_id", "happening_slug"]
+        "registration_user_id_happening_id_pk": {
+          "name": "registration_user_id_happening_id_pk",
+          "columns": [
+            "user_id",
+            "happening_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -441,7 +592,7 @@
         "session_token": {
           "name": "session_token",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "user_id": {
@@ -463,13 +614,24 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "session_session_token_pk": {
+          "name": "session_session_token_pk",
+          "columns": [
+            "session_token"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "site_feedback": {
@@ -478,8 +640,8 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
-          "primaryKey": true,
+          "type": "varchar",
+          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -523,7 +685,14 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "site_feedback_id_pk": {
+          "name": "site_feedback_id_pk",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "spot_range": {
@@ -532,12 +701,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(21)",
-          "primaryKey": true,
+          "type": "varchar(255)",
+          "primaryKey": false,
           "notNull": true
         },
-        "happening_slug": {
-          "name": "happening_slug",
+        "happening_id": {
+          "name": "happening_id",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -561,19 +730,40 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_min_year_max_year": {
+          "name": "happening_id_min_year_max_year",
+          "columns": [
+            "happening_id",
+            "min_year",
+            "max_year"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
-        "spot_range_happening_slug_happening_slug_fk": {
-          "name": "spot_range_happening_slug_happening_slug_fk",
+        "spot_range_happening_id_happening_id_fk": {
+          "name": "spot_range_happening_id_happening_id_fk",
           "tableFrom": "spot_range",
           "tableTo": "happening",
-          "columnsFrom": ["happening_slug"],
-          "columnsTo": ["slug"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "spot_range_id_pk": {
+          "name": "spot_range_id_pk",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "users_to_groups": {
@@ -588,9 +778,16 @@
         },
         "group_id": {
           "name": "group_id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_leader": {
+          "name": "is_leader",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {},
@@ -599,8 +796,12 @@
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -608,16 +809,23 @@
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
           "tableTo": "group",
-          "columnsFrom": ["group_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "users_to_groups_user_id_group_id": {
-          "name": "users_to_groups_user_id_group_id",
-          "columns": ["user_id", "group_id"]
+        "users_to_groups_user_id_group_id_pk": {
+          "name": "users_to_groups_user_id_group_id_pk",
+          "columns": [
+            "user_id",
+            "group_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -664,7 +872,7 @@
         },
         "degree_id": {
           "name": "degree_id",
-          "type": "varchar(21)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -688,16 +896,22 @@
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
           "tableTo": "degree",
-          "columnsFrom": ["degree_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "degree_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "user_id": {
-          "name": "user_id",
-          "columns": ["id"]
+        "user_id_pk": {
+          "name": "user_id_pk",
+          "columns": [
+            "id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -728,9 +942,47 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "verification_token_identifier_token": {
-          "name": "verification_token_identifier_token",
-          "columns": ["identifier", "token"]
+        "verification_token_identifier_token_pk": {
+          "name": "verification_token_identifier_token_pk",
+          "columns": [
+            "identifier",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "whitelist": {
+      "name": "whitelist",
+      "schema": "",
+      "columns": {
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "whitelist_email_pk": {
+          "name": "whitelist_email_pk",
+          "columns": [
+            "email"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -778,7 +1030,8 @@
         "registered": "registered",
         "unregistered": "unregistered",
         "removed": "removed",
-        "waiting": "waiting"
+        "waiting": "waiting",
+        "pending": "pending"
       }
     },
     "user_type": {
@@ -786,7 +1039,8 @@
       "values": {
         "student": "student",
         "company": "company",
-        "admin": "admin"
+        "guest": "guest",
+        "alum": "alum"
       }
     }
   },

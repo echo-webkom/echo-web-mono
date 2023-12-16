@@ -11,7 +11,15 @@ import { type Degree } from "@echo-webkom/db/schemas";
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
 
@@ -85,6 +93,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
               <FormControl>
                 <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
               </FormControl>
+              <FormDescription>Om du ønsker å få e-post tilsendt en annen mail.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

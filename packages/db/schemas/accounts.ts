@@ -22,7 +22,7 @@ export const accounts = pgTable(
     session_state: text("session_state"),
   },
   (account) => ({
-    pk: primaryKey(account.provider, account.providerAccountId),
+    pk: primaryKey({ columns: [account.provider, account.providerAccountId] }),
   }),
 );
 

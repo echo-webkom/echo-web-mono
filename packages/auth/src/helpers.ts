@@ -27,6 +27,11 @@ const getUserById = db.query.users
     where: (user) => eq(user.id, sql.placeholder("userId")),
     with: {
       degree: true,
+      memberships: {
+        with: {
+          group: true,
+        },
+      },
     },
   })
   .prepare("get-user-by-id");
@@ -47,6 +52,7 @@ export async function getAuth() {
   });
 
   if (!user) {
+    console.error(`User ${session.user.id} not found in database`);
     return null;
   }
 

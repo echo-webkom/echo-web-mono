@@ -1,6 +1,6 @@
-import { type Config } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit";
 
-export default {
+export default defineConfig({
   driver: "pg",
   out: "./drizzle/migrations",
   strict: true,
@@ -8,4 +8,4 @@ export default {
   dbCredentials: {
     connectionString: process.env.DATABASE_URL!,
   },
-} satisfies Config;
+});

@@ -13,7 +13,7 @@ const deregisterPayloadSchema = z.object({
   reason: z.string(),
 });
 
-export async function deregister(slug: string, payload: z.infer<typeof deregisterPayloadSchema>) {
+export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
   try {
     const user = await getAuth();
 
@@ -26,7 +26,7 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
 
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
-        and(eq(registration.happeningSlug, slug), eq(registration.userId, user.id)),
+        and(eq(registration.happeningId, id), eq(registration.userId, user.id)),
       with: {
         happening: {
           columns: {
@@ -46,16 +46,16 @@ export async function deregister(slug: string, payload: z.infer<typeof deregiste
 
     const data = await deregisterPayloadSchema.parseAsync(payload);
 
-    await db
-      .update(registrations)
-      .set({
-        status: "unregistered",
-        unregisterReason: data.reason,
-      })
-      .where(and(eq(registrations.userId, user.id), eq(registrations.happeningSlug, slug)));
-    await db
-      .delete(answers)
-      .where(and(eq(answers.userId, user.id), eq(answers.happeningSlug, slug)));
+    await Promise.all([
+      db
+        .update(registrations)
+        .set({
+          status: "unregistered",
+          unregisterReason: data.reason,
+        })
+        .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
+      db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
+    ]);
 
     if (exisitingRegistration.happening.type === "bedpres") {
       const now = new Date();

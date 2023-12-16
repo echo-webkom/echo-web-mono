@@ -4,7 +4,7 @@ import { defineField } from "sanity";
 import { PAGE_TYPES } from "@echo-webkom/lib";
 
 export default defineField({
-  name: "static",
+  name: "staticInfo",
   title: "Statiske sider",
   type: "document",
   icon: DocumentTextIcon,

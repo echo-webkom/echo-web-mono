@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { type RegistrationWithUser } from "./registration-table";
@@ -46,9 +46,18 @@ export function RandomPersonButton({ registrations, setShowConfetti }: RandomPer
     }, 1500); // 1.5 sekund delay
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      setShowConfetti(false);
+    }
+
+    return () => {
+      setShowConfetti(false);
+    };
+  }, [isOpen, setShowConfetti]);
+
   const closeDialog = () => {
     setIsOpen(false);
-    setShowConfetti(false);
   };
 
   return (
@@ -65,17 +74,14 @@ export function RandomPersonButton({ registrations, setShowConfetti }: RandomPer
           <span>Velg tilfeldig person</span>
         )}
       </Button>
+
       {isOpen && (
-        <>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger>
-              <DialogContent>
-                <Label className="p-10 text-center text-2xl">{randomUserName}</Label>
-                <Button onClick={closeDialog}>Close</Button>
-              </DialogContent>
-            </DialogTrigger>
-          </Dialog>
-        </>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent>
+            <Label className="p-10 text-center text-2xl">{randomUserName}</Label>
+            <Button onClick={closeDialog}>Close</Button>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
@@ -20,7 +21,13 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  return await fetchStudentGroupBySlug(slug);
+  const group = await fetchStudentGroupBySlug(slug);
+
+  if (group.groupType === "hidden") {
+    return notFound();
+  }
+
+  return group;
 });
 
 export async function generateMetadata({ params }: Props) {

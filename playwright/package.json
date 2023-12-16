@@ -14,12 +14,12 @@
     "with-env": "dotenv -e ../.env --"
   },
   "devDependencies": {
-    "@playwright/test": "^1.39.0",
-    "@types/node": "18.18.9",
+    "@playwright/test": "1.40.1",
+    "@types/node": "18.19.3",
     "dotenv-cli": "7.3.0",
-    "eslint": "^8.54.0",
+    "eslint": "8.55.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   },
   "eslintConfig": {
     "root": true,

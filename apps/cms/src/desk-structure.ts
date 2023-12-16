@@ -8,9 +8,9 @@ export const deskStructure = (S: StructureBuilder) =>
     .title("Generelt")
     .items([
       S.listItem()
-        .title("Sideinnstillinger")
+        .title("Innstillinger")
         .icon(CogIcon)
-        .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
+        .child(S.document().schemaType("settings").documentId("settings")),
       S.divider(),
       ...S.documentTypeListItems().filter(
         (listItem) => !hiddenDocuments.includes(listItem.getId() ?? ""),

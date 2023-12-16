@@ -38,7 +38,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { capitalize } from "@/utils/string";
 import { type AllUsers } from "./page";
@@ -121,7 +120,6 @@ function UserForm({ user, groups }: UserFormProps) {
     resolver: zodResolver(userFormSchema),
     defaultValues: {
       memberships: user.memberships.map((membership) => membership.group.id),
-      type: user.type,
     },
   });
 
@@ -163,31 +161,6 @@ function UserForm({ user, groups }: UserFormProps) {
           <Form {...form}>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <form onSubmit={onSubmit} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-row items-center justify-between">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Administrator</FormLabel>
-                        <FormDescription>
-                          Skal brukeren ha tilgang til admin dashboard?
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value === "admin"}
-                          onCheckedChange={(checked) => {
-                            return checked ? field.onChange("admin") : field.onChange("student");
-                          }}
-                        />
-                      </FormControl>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="memberships"

@@ -32,6 +32,15 @@ export function Markdown({ className, content }: MarkdownProps) {
           h3: ({ children }) => {
             return <Heading level={3}>{children}</Heading>;
           },
+          h4: ({ children }) => {
+            return <Text className="font-bold">{children}</Text>;
+          },
+          h5: ({ children }) => {
+            return <Text className="font-bold">{children}</Text>;
+          },
+          h6: ({ children }) => {
+            return <Text className="font-bold">{children}</Text>;
+          },
           p: ({ children }) => {
             return <Text>{children}</Text>;
           },

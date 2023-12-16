@@ -39,4 +39,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
   ],
+  preview: {
+    select: {
+      title: "title",
+      isAllMeeting: "isAllMeeting",
+    },
+    prepare({ title, isAllMeeting }: { title: string; isAllMeeting: boolean }) {
+      const subtitle = isAllMeeting ? "Allmøte" : "Styremøte";
+
+      return {
+        title,
+        subtitle,
+        media: <span style={{ fontSize: "1.5rem" }}>{isAllMeeting ? "👔" : "📝"}</span>,
+      };
+    },
+  },
 });

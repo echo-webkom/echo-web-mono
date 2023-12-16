@@ -11,7 +11,20 @@ export default async function HomePage() {
 
   return (
     <>
-      <Container className="relative pb-40 pt-16" layout="full">
+      <Container className="relative pb-40" layout="full">
+        {/* New website announcment */}
+        <div className="mx-auto mb-10 flex w-fit flex-row items-center gap-5 text-center">
+          <span className="text-3xl">🎊</span>
+          <div className="flex flex-col gap-1">
+            <p className="text-2xl font-bold">Vi har fått ny nettside!</p>
+            <p>
+              <Link className="underline hover:no-underline" href="/tilbakemelding">
+                Gjerne gi oss tilbakemeldinger på den nye nettsiden her.
+              </Link>
+            </p>
+          </div>
+          <span className="text-3xl">🎊</span>
+        </div>
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="max-w-xl space-y-8">
             <h1>
@@ -25,7 +38,10 @@ export default async function HomePage() {
               Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
               arrangere sosiale og faglige arrangementer.
               <br /> Les mer{" "}
-              <Link className="font-semibold" href="/om/echo">
+              <Link
+                className="font-semibold underline underline-offset-2 hover:text-primary"
+                href="/om/echo"
+              >
                 her.
               </Link>
             </p>
