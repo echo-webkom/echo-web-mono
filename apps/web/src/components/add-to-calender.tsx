@@ -5,7 +5,7 @@ import { BiLogoGoogle } from "react-icons/bi";
 import { FaFileDownload } from "react-icons/fa";
 import { SiMicrosoftoffice, SiMicrosoftoutlook, SiYahoo } from "react-icons/si";
 
-import { norwegianDateString } from "@/utils/date";
+import { shortDateNoTime } from "@/utils/date";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 type Props = {
@@ -16,9 +16,7 @@ type Props = {
 export function AddToCalender({ date, title }: Props) {
   return (
     <Dialog>
-      <DialogTrigger className="text-left hover:underline">
-        {norwegianDateString(date)}
-      </DialogTrigger>
+      <DialogTrigger className="text-left hover:underline">{shortDateNoTime(date)}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
