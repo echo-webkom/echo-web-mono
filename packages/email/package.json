@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "18.19.3",
-    "@types/react": "18.2.44",
+    "@types/react": "18.2.45",
     "dotenv-cli": "7.3.0",
     "eslint": "8.55.0",
     "eslint-config-webkom": "workspace:*",
