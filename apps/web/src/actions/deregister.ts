@@ -64,7 +64,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
       const strikeType: StrikeType =
         regEnd && regEnd < now ? "UNREGISTER_AFTER_DEADLINE" : "UNREGISTER_BEFORE_DEADLINE";
 
-      await automaticAddStrike(exisitingRegistration.happeningSlug, user.id, strikeType);
+      await automaticAddStrike(exisitingRegistration.happeningId, user.id, strikeType);
     }
 
     return {

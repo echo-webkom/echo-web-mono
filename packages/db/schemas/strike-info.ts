@@ -9,9 +9,9 @@ export const strikeInfo = pgTable("strikeInfo", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  happeningSlug: varchar("happening_slug", { length: 255 })
+  happeningId: varchar("happening-id", { length: 255 })
     .notNull()
-    .references(() => happenings.slug),
+    .references(() => happenings.id),
   issuerId: text("reporter-id")
     .notNull()
     .references(() => users.id),
@@ -29,8 +29,8 @@ export const strikeInfoRelations = relations(strikeInfo, ({ one }) => ({
     references: [users.id],
   }),
   happening: one(happenings, {
-    fields: [strikeInfo.happeningSlug],
-    references: [happenings.slug],
+    fields: [strikeInfo.happeningId],
+    references: [happenings.id],
   }),
 }));
 

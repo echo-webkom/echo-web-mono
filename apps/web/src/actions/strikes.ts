@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, gt } from "drizzle-orm";
+import { and, eq, gt, or } from "drizzle-orm";
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
@@ -47,14 +47,14 @@ async function numValidStrikes<T extends TUser>(user: T) {
   const userStrikes = await db.query.strikes.findMany({
     with: { strikeInfo: true },
     where: (strike) =>
-      and(gt(strike.id, user.bannedFromStrike ?? -1), eq(strikeInfo.userId, userId)),
+      and(gt(strike.id, user.bannedFromStrike ?? -1), eq(strikeInfo.userId, user.userId)),
   });
 
   return userStrikes.length;
 }
 
 export async function manualAddStrike(
-  happeningSlug: string,
+  happeningId: string,
   userId: string,
   reason: string,
   amount: number,
@@ -70,17 +70,16 @@ export async function manualAddStrike(
       };
     }
 
-    if (issuer.type !== "admin") {
-      const isBedkom = await db.query.usersToGroups.findFirst({
-        where: (user) => eq(user.userId, userId) && eq(user.groupId, "bedkom"),
-      });
+    const isAllowed = await db.query.usersToGroups.findFirst({
+      where: (user) =>
+        eq(user.userId, userId) && or(eq(user.groupId, "bedkom"), eq(user.groupId, "webkom")),
+    });
 
-      if (!isBedkom) {
-        return {
-          success: false,
-          message: "Du har ikke lov til å gi prikker",
-        };
-      }
+    if (!isAllowed) {
+      return {
+        success: false,
+        message: "Du har ikke lov til å gi prikker",
+      };
     }
 
     if (amount < 1) {
@@ -91,7 +90,7 @@ export async function manualAddStrike(
     }
 
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => eq(happening.slug, happeningSlug),
+      where: (happening) => eq(happening.id, happeningId),
     });
 
     if (!happening) {
@@ -113,7 +112,7 @@ export async function manualAddStrike(
     }
 
     const data = {
-      happeningSlug: happening.slug,
+      happeningId: happening.id,
       userId: user.id,
       issuerId: issuer.id,
       reason: reason,
@@ -123,9 +122,10 @@ export async function manualAddStrike(
       userId: user.id,
       bannedFromStrike: user.bannedFromStrike,
     });
+
     const newStrikesAmount = userStrikes + amount;
 
-    const newBannableStrike = newStrikesAmount >= BAN_AMOUNT ?? || type === "NO_SHOW";
+    const newBannableStrike = newStrikesAmount >= BAN_AMOUNT || type === "NO_SHOW";
 
     const info = await db
       .insert(strikeInfo)
@@ -158,7 +158,7 @@ export async function manualAddStrike(
   }
 }
 
-export async function automaticAddStrike(happeningSlug: string, userId: string, type: StrikeType) {
+export async function automaticAddStrike(happeningId: string, userId: string, type: StrikeType) {
   try {
     const reason = STRIKE_TYPE_MESSAGE[type];
     const amount = STRIKE_TYPE_AMOUNT[type];
@@ -171,7 +171,7 @@ export async function automaticAddStrike(happeningSlug: string, userId: string, 
     }
 
     const data = {
-      happeningSlug: happeningSlug,
+      happeningId: happeningId,
       userId: userId,
       issuerId: userId,
       reason: reason,
