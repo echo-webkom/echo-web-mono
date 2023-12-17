@@ -13,12 +13,11 @@ export default async function MinuteOverview() {
   return (
     <Container>
       <Heading className="mb-4">Møtereferater</Heading>
-
       <ul className="divide-y border">
         {minutes.map((minute) => (
           <li key={minute._id}>
             <Link href={"/for-studenter/motereferat/" + minute._id}>
-              <div className="group flex items-center justify-between px-5 py-5 transition-all hover:bg-gray-100 hover:py-10">
+              <div className="group flex items-center justify-between px-5 py-5 transition-all hover:bg-muted hover:py-10">
                 <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
                   <Text size="lg">{minute.isAllMeeting ? "Generalforsamling" : "Møte"}</Text>
 

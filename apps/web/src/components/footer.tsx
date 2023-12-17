@@ -37,13 +37,13 @@ export const Footer = ({ className }: FooterProps) => {
             {footerRoutes.map((section) => {
               return (
                 <div key={section.label}>
-                  <h3 className="mb-4 py-2 text-xl font-bold">{section.label}</h3>
+                  <h3 className="mb-4 py-2 text-xl font-bold text-black">{section.label}</h3>
                   <ul className="space-y-1">
                     {section.sublinks.map(({ href, label, isExternal }) => {
                       return (
                         <li key={label}>
                           <Link
-                            className="flex items-center gap-2 text-black/80 hover:underline"
+                            className="flex items-center gap-2 text-black hover:underline"
                             href={href}
                             {...(isExternal && {
                               target: "_blank",
@@ -68,7 +68,9 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-4 py-2 pl-5 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
+              <h3 className="mb-4 py-2 pl-5 text-xl font-bold text-black">
+                Hovedsamarbeidspartner 💘
+              </h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
                   src="/images/bekk.png"
@@ -82,7 +84,7 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Other sponsors */}
             <div>
-              <h3 className="mb-4 py-2 text-xl font-bold">Powered by 🔧</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold text-black">Powered by 🔧</h3>
               <ul className="space-y-5">
                 {sponsors.map(({ label, href, imageSrc }) => (
                   <li key={label}>

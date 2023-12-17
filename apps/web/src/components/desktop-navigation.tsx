@@ -56,7 +56,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -74,7 +74,10 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
 
 const NavigationLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
   return (
-    <Link href={to} className="p-2 text-gray-600 hover:text-gray-900 hover:underline">
+    <Link
+      href={to}
+      className="rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+    >
       {children}
     </Link>
   );
@@ -107,7 +110,7 @@ export function DesktopNavigation() {
           <NavigationItem key={route.label} label={route.label}>
             <NavigationDropdown>
               {route.sublinks.map((subroute) => (
-                <Link key={subroute.label} className="p-2 hover:bg-gray-100" href={subroute.href}>
+                <Link key={subroute.label} className="p-2 hover:bg-muted" href={subroute.href}>
                   {subroute.label}
                 </Link>
               ))}

@@ -53,7 +53,7 @@ const MenuButton = () => {
 
   return (
     <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground "
       onClick={() => setIsOpen(!isOpen)}
     >
       <span className="sr-only">Meny</span>
@@ -67,7 +67,7 @@ const CloseMenuButton = () => {
 
   return (
     <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted hover:text-gray-900 dark:text-foreground"
       onClick={() => setIsOpen(false)}
     >
       <span className="sr-only">Lukk meny</span>
@@ -84,7 +84,7 @@ const MenuContent = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background p-6">
+    <div className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background p-6 dark:text-foreground">
       {children}
     </div>
   );
@@ -96,7 +96,7 @@ const MenuLink = ({ to, children }: { to: string; children: React.ReactNode }) =
   return (
     <Link
       href={to}
-      className="block px-4 py-2 text-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+      className="block rounded-md px-4 py-2 text-xl text-gray-600 hover:bg-muted dark:text-foreground"
       onClick={() => setIsOpen(false)}
     >
       {children}
@@ -110,7 +110,7 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
   return (
     <div>
       <button
-        className="flex w-full flex-row items-center gap-1 rounded-md px-4 py-2 text-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+        className="flex w-full flex-row items-center gap-1 rounded-md px-4 py-2 text-xl text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{label}</span>
@@ -139,7 +139,7 @@ export const MobileNavigation = () => {
 
       <MenuContent>
         <div className="flex items-center justify-between px-4">
-          <h1 className="text-2xl font-bold text-gray-700">Navigasjon</h1>
+          <h1 className="text-2xl font-bold text-gray-700 dark:text-foreground">Navigasjon</h1>
 
           <CloseMenuButton />
         </div>
@@ -151,7 +151,7 @@ export const MobileNavigation = () => {
               {route.sublinks.map((subRoute) => (
                 <li key={subRoute.label} className="w-full py-2">
                   <Link
-                    className="block w-full text-lg text-gray-600 hover:text-gray-900 hover:underline"
+                    className="block w-full text-lg text-gray-600 hover:underline dark:text-foreground"
                     href={subRoute.href}
                   >
                     {subRoute.label}
