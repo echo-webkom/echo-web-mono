@@ -47,6 +47,8 @@
 
     --ring: #94a3b8;
 
+    --selected: #ffeabb;
+
     --radius: 0.5rem;
   }
   
@@ -93,6 +95,8 @@
     --wave: #ffeabb;
 
     --ring: #94a3b8;
+
+    --selected: #008fa3;
     
     --radius: 0.5rem;
   }
@@ -106,10 +110,10 @@
   }
 
   ::-moz-selection {
-    background: var(--wave);
+    background: var(--selected);
   }
   
   ::selection {
-    background: var(--wave);
+    background: var(--selected);
   }
 }
