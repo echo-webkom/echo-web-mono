@@ -125,9 +125,7 @@ export function EventPreview({ event }: EventPreviewProps) {
                 {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li className="flex justify-end">
-              {registrationStatus()}
-            </li>
+            <li className="flex justify-end">{registrationStatus()}</li>
           </ul>
         </div>
       </div>
@@ -165,7 +163,9 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
       if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
         return "Påmelding i dag";
       } else if (isBefore(new Date(), new Date(bedpres.registrationStart))) {
-        return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
+        return (
+          "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb })
+        );
       } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
         return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
       }
