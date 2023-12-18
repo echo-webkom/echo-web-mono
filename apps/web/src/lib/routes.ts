@@ -28,6 +28,7 @@ const aboutRoutes = new RouteGroup("/om", { label: "Om echo" })
   .link("/vedtekter", { label: "Vedtekter" })
   .link("/bekk", { label: "Bekk" })
   .link("/brosjyre", { label: "Brosjyre" })
+  .link("/programstyrene", { label: "Programstyrene" })
   .build();
 
 const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
