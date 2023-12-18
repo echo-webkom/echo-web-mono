@@ -78,26 +78,40 @@ type EventPreviewProps = {
   event: Happening;
 };
 
-export async function EventPreview({ event }: EventPreviewProps) {
-  const spotRanges = event.spotRanges;
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, event._id),
-    with: { user: true },
-  });
-
-  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
-  const registrationStatus = (maxCapacity: number, registeredCount: number) => {
+export function EventPreview({ event }: EventPreviewProps) {
+  const noDataBase = () => {
     if (!event.registrationStart) {
       return null;
     }
     if (isToday(new Date()) && isBefore(new Date(), new Date(event.registrationStart))) {
       return "Påmelding i dag";
-    } else if (isBefore(new Date(), new Date(event.registrationStart))) {
-      return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
     } else if (isAfter(new Date(), new Date(event.registrationStart))) {
-      return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+      return "Åpen";
     }
-    return "Fullt";
+    return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
+  };
+  const registrationStatus = async () => {
+    try {
+      const spotRanges = event.spotRanges;
+      const registrations = await db.query.registrations.findMany({
+        where: (registration) => eq(registration.happeningId, event._id),
+        with: { user: true },
+      });
+      const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
+      if (!event.registrationStart) {
+        return null;
+      }
+      if (isToday(new Date()) && isBefore(new Date(), new Date(event.registrationStart))) {
+        return "Påmelding i dag";
+      } else if (isBefore(new Date(), new Date(event.registrationStart))) {
+        return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
+      } else if (isAfter(new Date(), new Date(event.registrationStart))) {
+        return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+      }
+      return "Fullt";
+    } catch (error) {
+      return noDataBase();
+    }
   };
   return (
     <Link href={`/arrangement/${event.slug}`}>
@@ -111,7 +125,9 @@ export async function EventPreview({ event }: EventPreviewProps) {
                 {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li className="flex justify-end">{registrationStatus(maxCapacity, registeredCount)}</li>
+            <li className="flex justify-end">
+              {registrationStatus()}
+            </li>
           </ul>
         </div>
       </div>
@@ -123,27 +139,40 @@ type BedpresPreviewProps = {
   bedpres: Happening;
 };
 
-export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
-  const spotRanges = bedpres.spotRanges;
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, bedpres._id),
-    with: {
-      user: true,
-    },
-  });
-  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
-  const registrationStatus = (maxCapacity: number, registeredCount: number) => {
+export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
+  const noDataBase = () => {
     if (!bedpres.registrationStart) {
       return null;
     }
     if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
       return "Påmelding i dag";
-    } else if (isBefore(new Date(), new Date(bedpres.registrationStart))) {
-      return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
     } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
-      return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+      return "Åpen";
     }
-    return "Fullt";
+    return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
+  };
+  const registrationStatus = async () => {
+    try {
+      const spotRanges = bedpres.spotRanges;
+      const registrations = await db.query.registrations.findMany({
+        where: (registration) => eq(registration.happeningId, bedpres._id),
+        with: { user: true },
+      });
+      const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
+      if (!bedpres.registrationStart) {
+        return null;
+      }
+      if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
+        return "Påmelding i dag";
+      } else if (isBefore(new Date(), new Date(bedpres.registrationStart))) {
+        return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
+      } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
+        return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
+      }
+      return "Fullt";
+    } catch (error) {
+      return noDataBase();
+    }
   };
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
@@ -168,7 +197,7 @@ export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
                 {format(new Date(bedpres.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li className="flex justify-end">{registrationStatus(maxCapacity, registeredCount)}</li>
+            <li className="flex justify-end">{registrationStatus()}</li>
           </ul>
         </div>
       </div>
