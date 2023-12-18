@@ -117,7 +117,7 @@ export function EventPreview({ event }: EventPreviewProps) {
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="flex w-full justify-between overflow-x-hidden">
-          <h3 className="text-md my-auto font-semibold sm:text-xl">{event.title}</h3>
+          <h3 className="my-auto text-sm font-semibold sm:text-xl">{event.title}</h3>
           <ul className="text-sm md:text-base">
             {event.date && (
               <li className="flex w-20 justify-end">
