@@ -63,7 +63,7 @@ type EventPreviewProps = {
 export function EventPreview({ event }: EventPreviewProps) {
   return (
     <Link href={`/arrangement/${event.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5 rounded-md", "hover:bg-muted")}>
+      <div className={cn("flex h-full items-center gap-5 rounded-md p-5", "hover:bg-muted")}>
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
           <ul className="text-sm md:text-base">
@@ -99,7 +99,7 @@ type BedpresPreviewProps = {
 export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5 rounded-md", "hover:bg-muted")}>
+      <div className={cn("flex h-full items-center gap-5 rounded-md p-5", "hover:bg-muted")}>
         <div className="overflow-hidden rounded-full border">
           <div className="relative aspect-square h-20 w-20">
             {bedpres.company && (
@@ -144,7 +144,12 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
 
   return (
     <Link href={`/${parentPath}/${happening.slug}`}>
-      <div className={cn("flex h-full items-center justify-between gap-5 p-5 rounded-md", "hover:bg-muted")}>
+      <div
+        className={cn(
+          "flex h-full items-center justify-between gap-5 rounded-md p-5",
+          "hover:bg-muted",
+        )}
+      >
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
