@@ -224,8 +224,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@upstash/redis':
-        specifier: 1.25.2
-        version: 1.25.2
+        specifier: 1.27.0
+        version: 1.27.0
       calendar-link:
         specifier: 2.6.0
         version: 2.6.0
@@ -6336,7 +6336,7 @@ packages:
     resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@upstash/redis': 1.25.2
+      '@upstash/redis': 1.27.0
     dev: false
 
   /@upstash/ratelimit@1.0.0:
@@ -6345,8 +6345,8 @@ packages:
       '@upstash/core-analytics': 0.0.6
     dev: false
 
-  /@upstash/redis@1.25.2:
-    resolution: {integrity: sha512-iI3jgvmDIbe4Px0PskB8lrn1NXz7ZQyGpW9Ehmonk6SEFqhqssqIB04VmlNh8zZUXwzy6G9DaIa5gIUM6B7DwA==}
+  /@upstash/redis@1.27.0:
+    resolution: {integrity: sha512-zAPfd0oRHcWtokJrytdHBuucGb3u9HqwvkjqnzAe1sg/Hbka8Dx5DLHEm6fEX0X0EpHE/SvVF8BSZ4b4ystU0Q==}
     dependencies:
       crypto-js: 4.2.0
     dev: false
