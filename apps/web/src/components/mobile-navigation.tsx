@@ -43,7 +43,7 @@ const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NavigationContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className="mt-auto px-6 py-2 md:hidden">{children}</div>
+      <div className="md:hidden">{children}</div>
     </NavigationContext.Provider>
   );
 };

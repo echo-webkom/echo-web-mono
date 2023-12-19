@@ -7,18 +7,14 @@ export default function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === "dark";
 
-  function changeTheme() {
+  function toggleTheme() {
     setTheme(isDarkMode ? "light" : "dark");
   }
 
   return (
-    <button onClick={() => changeTheme()} suppressHydrationWarning>
-      {isDarkMode ? (
-        <Sun className="d-8 h-8 text-foreground" />
-      ) : (
-        <Moon className="d-8 h-8 text-foreground" />
-      )}
-
+    <button onClick={toggleTheme} className="h-8 w-8">
+      <Moon className="block h-full w-full p-1 dark:hidden" />
+      <Sun className="hidden h-full w-full p-1 dark:block" />
       <span className="sr-only">Toggle theme</span>
     </button>
   );

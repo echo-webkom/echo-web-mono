@@ -32,7 +32,6 @@ export async function SiteHeader() {
                 <Link href="/auth/logg-inn">Logg inn</Link>
               </Button>
             )}
-
             <MobileNavigation />
           </div>
         </header>
