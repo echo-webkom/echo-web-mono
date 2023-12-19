@@ -60,11 +60,11 @@
     --muted: #181818;
     --muted-foreground: #5a5a5a;
 
-    --popover: #f9fafb;
-    --popover-foreground: #171923;
+    --popover: #181818;
+    --popover-foreground: #eeeeee;
 
     --card: #171717;
-    --card-foreground: #f9fafb;
+    --card-foreground: #eeeeee;
 
     --border: #2a2a2a;
     --input: #171717;
