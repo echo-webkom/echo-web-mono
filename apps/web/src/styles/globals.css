@@ -17,7 +17,7 @@
     --card-foreground: #171923;
 
     --border: #e2e8f0;
-    --input: #e2e8f0;
+    --input: #f1f5f9;
 
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
@@ -58,7 +58,7 @@
     --foreground: #f9fafb;
 
     --muted: #181818;
-    --muted-foreground: #f9fafb;
+    --muted-foreground: #5a5a5a;
 
     --popover: #f9fafb;
     --popover-foreground: #171923;
@@ -67,7 +67,7 @@
     --card-foreground: #f9fafb;
 
     --border: #2a2a2a;
-    --input: #2a2a2a;
+    --input: #171717;
 
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
