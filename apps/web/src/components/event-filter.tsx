@@ -178,7 +178,7 @@ export default function EventFilter() {
 
   return (
     <div className="mt-4 flex min-h-full flex-col gap-5">
-      <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-gray-400 border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
+      <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
         <div className="flex flex-col flex-wrap space-x-0 sm:flex-row lg:space-x-3">
           <Button
             className="w-full sm:w-auto"
@@ -221,7 +221,7 @@ export default function EventFilter() {
       <div className="container flex flex-col gap-5 md:flex-row md:gap-0">
         <div className="left-panel flex w-full flex-col md:w-1/4">
           <div className="p-4">
-            <div className="flex rounded-lg border border-gray-300 hover:border-gray-500 focus:ring-0">
+            <div className="flex rounded-lg border border-border hover:border-gray-500 focus:ring-0">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
