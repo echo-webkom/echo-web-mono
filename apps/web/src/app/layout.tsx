@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -83,6 +85,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <FeedbackBlob />
           <TailwindIndicator />
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
