@@ -26,26 +26,32 @@ type EventSidebarProps = {
 export async function HappeningSidebar({ event }: EventSidebarProps) {
   const user = await getAuth();
 
-  const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.id, event._id),
-    with: {
-      questions: true,
-      groups: {
-        with: {
-          group: true,
+  const happening = await db.query.happenings
+    .findFirst({
+      where: (happening) => eq(happening.id, event._id),
+      with: {
+        questions: true,
+        groups: {
+          with: {
+            group: true,
+          },
         },
       },
-    },
-  });
-  const spotRanges = await db.query.spotRanges.findMany({
-    where: (spotRange) => eq(spotRange.happeningId, event._id),
-  });
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, event._id),
-    with: {
-      user: true,
-    },
-  });
+    })
+    .catch(() => null);
+  const spotRanges = await db.query.spotRanges
+    .findMany({
+      where: (spotRange) => eq(spotRange.happeningId, event._id),
+    })
+    .catch(() => []);
+  const registrations = await db.query.registrations
+    .findMany({
+      where: (registration) => eq(registration.happeningId, event._id),
+      with: {
+        user: true,
+      },
+    })
+    .catch(() => []);
 
   const isRegistered = registrations.some(
     (registration) =>
