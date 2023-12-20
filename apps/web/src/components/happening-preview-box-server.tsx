@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon, CalendarIcon } from "@radix-ui/react-icons";
-import { format, isAfter, isBefore, isToday } from "date-fns";
+import { format, isFuture, isPast, isToday } from "date-fns";
 import nb from "date-fns/locale/nb";
 import { eq } from "drizzle-orm";
 
@@ -28,20 +28,6 @@ const typeToLink: Record<HappeningType, string> = {
 type HappeningPreviewBoxProps = {
   type: HappeningType;
   happenings: Array<Happening>;
-};
-
-const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
-  spotRanges: Array<TSpotRange>,
-  registrations: Array<Registration>,
-) => {
-  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
-  const registeredCount = registrations.filter(
-    (registration) => registration.status === "registered",
-  ).length;
-  return {
-    maxCapacity,
-    registeredCount,
-  };
 };
 
 export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxProps) {
@@ -78,54 +64,62 @@ type EventPreviewProps = {
   event: Happening;
 };
 
-export function EventPreview({ event }: EventPreviewProps) {
-  const noDataBase = () => {
-    if (!event.registrationStart) {
-      return null;
-    }
-    if (isToday(new Date()) && isBefore(new Date(), new Date(event.registrationStart))) {
-      return "Påmelding i dag";
-    } else if (isAfter(new Date(), new Date(event.registrationStart))) {
-      return "Åpen";
-    }
-    return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
+const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
+  spotRanges: Array<TSpotRange>,
+  registrations: Array<Registration>,
+) => {
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "registered",
+  ).length;
+  return {
+    maxCapacity,
+    registeredCount,
   };
-  const registrationStatus = async () => {
-    try {
-      const spotRanges = event.spotRanges;
-      const registrations = await db.query.registrations.findMany({
-        where: (registration) => eq(registration.happeningId, event._id),
-        with: { user: true },
-      });
-      const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
-      if (!event.registrationStart) {
-        return null;
-      }
-      if (isToday(new Date()) && isBefore(new Date(), new Date(event.registrationStart))) {
-        return "Påmelding i dag";
-      } else if (isBefore(new Date(), new Date(event.registrationStart))) {
-        return "Påmelding: " + format(new Date(event.registrationStart), "dd. MMM", { locale: nb });
-      } else if (isAfter(new Date(), new Date(event.registrationStart))) {
-        return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
-      }
-      return "Fullt";
-    } catch (error) {
-      return noDataBase();
-    }
-  };
+};
+
+const getRegistrationStatus = (registrationDate: string, capacity: number, registered: number) => {
+  if (isToday(new Date()) && isFuture(new Date(registrationDate))) {
+    return <p className="text-right">Påmelding i dag</p>;
+  } else if (isFuture(new Date(registrationDate))) {
+    return "Påmelding: " + format(new Date(registrationDate), "dd. MMM", { locale: nb });
+  } else if (isPast(new Date(registrationDate))) {
+    return registered + "/" + (capacity || ("Uendelig" && "∞"));
+  }
+  return "Fullt";
+};
+
+export async function EventPreview({ event }: EventPreviewProps) {
+  const spotRanges = await db.query.spotRanges
+    .findMany({
+      where: (spotRange) => eq(spotRange.happeningId, event._id),
+    })
+    .catch(() => []);
+  const registrations = await db.query.registrations
+    .findMany({
+      where: (registration) => eq(registration.happeningId, event._id),
+      with: {
+        user: true,
+      },
+    })
+    .catch(() => []);
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
   return (
     <Link href={`/arrangement/${event.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
         <div className="flex w-full justify-between overflow-x-hidden">
           <h3 className="my-auto text-sm font-semibold sm:text-xl">{event.title}</h3>
-          <ul className="text-sm md:text-base">
+          <ul className="ml-2 w-20 text-sm md:text-base">
             {event.date && (
-              <li className="flex w-20 justify-end">
-                <CalendarIcon className="my-auto mr-1" />
+              <li className="flex justify-end">
+                <CalendarIcon className="my-auto mr-1 font-semibold" />
                 {format(new Date(event.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li className="flex justify-end">{registrationStatus()}</li>
+            <li className="flex justify-end">
+              {event.registrationStart &&
+                getRegistrationStatus(event.registrationStart, maxCapacity, registeredCount)}
+            </li>
           </ul>
         </div>
       </div>
@@ -137,43 +131,22 @@ type BedpresPreviewProps = {
   bedpres: Happening;
 };
 
-export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
-  const noDataBase = () => {
-    if (!bedpres.registrationStart) {
-      return null;
-    }
-    if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
-      return "Påmelding i dag";
-    } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
-      return "Åpen";
-    }
-    return "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb });
-  };
-  const registrationStatus = async () => {
-    try {
-      const spotRanges = bedpres.spotRanges;
-      const registrations = await db.query.registrations.findMany({
-        where: (registration) => eq(registration.happeningId, bedpres._id),
-        with: { user: true },
-      });
-      const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
-      if (!bedpres.registrationStart) {
-        return null;
-      }
-      if (isToday(new Date()) && isBefore(new Date(), new Date(bedpres.registrationStart))) {
-        return "Påmelding i dag";
-      } else if (isBefore(new Date(), new Date(bedpres.registrationStart))) {
-        return (
-          "Påmelding: " + format(new Date(bedpres.registrationStart), "dd. MMM", { locale: nb })
-        );
-      } else if (isAfter(new Date(), new Date(bedpres.registrationStart))) {
-        return registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"));
-      }
-      return "Fullt";
-    } catch (error) {
-      return noDataBase();
-    }
-  };
+export async function BedpresPreview({ bedpres }: BedpresPreviewProps) {
+  const spotRanges = await db.query.spotRanges
+    .findMany({
+      where: (spotRange) => eq(spotRange.happeningId, bedpres._id),
+    })
+    .catch(() => []);
+  const registrations = await db.query.registrations
+    .findMany({
+      where: (registration) => eq(registration.happeningId, bedpres._id),
+      with: {
+        user: true,
+      },
+    })
+    .catch(() => []);
+
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
       <div className={cn("flex h-full items-center gap-5 p-3", "hover:bg-muted")}>
@@ -190,74 +163,19 @@ export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
         </div>
         <div className="flex flex-1 justify-between overflow-x-hidden">
           <h3 className="my-auto text-lg font-semibold md:text-xl">{bedpres.title}</h3>
-          <ul className="text-sm md:text-base">
+          <ul className="w-20 text-sm md:text-base">
             {bedpres.date && (
-              <li className="flex w-20 justify-end">
+              <li className="flex justify-end">
                 <CalendarIcon className="my-auto mr-1" />
                 {format(new Date(bedpres.date), "dd. MMM", { locale: nb })}
               </li>
             )}
-            <li className="flex justify-end">{registrationStatus()}</li>
-          </ul>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-type CombinedHappeningPreviewProps = {
-  happening: Happening;
-};
-
-export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
-  const parentPath = happening.happeningType === "bedpres" ? "bedpres" : "arrangement";
-
-  return (
-    <Link href={`/${parentPath}/${happening.slug}`}>
-      <div
-        className={cn(
-          "flex h-full items-center justify-between gap-5 rounded-md p-5",
-          "hover:bg-muted",
-        )}
-      >
-        <div className="overflow-x-hidden">
-          <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
-          <ul>
-            {happening.happeningType === "event" && (
-              <li>
-                <span className="font-semibold">Gruppe:</span>{" "}
-                {capitalize(happening.organizers.map((o) => o.name).join(", "))}
-              </li>
-            )}
-            {happening.date && (
-              <li>
-                <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(happening.date), "d. MMMM yyyy", { locale: nb })}
-              </li>
-            )}
-            <li>
-              <span className="font-semibold">Påmelding:</span>{" "}
-              {happening.registrationStart
-                ? format(new Date(happening.registrationStart), "d. MMMM yyyy", {
-                    locale: nb,
-                  })
-                : "Påmelding åpner snart"}
+            <li className="flex justify-end">
+              {bedpres.registrationStart &&
+                getRegistrationStatus(bedpres.registrationStart, maxCapacity, registeredCount)}
             </li>
           </ul>
         </div>
-        {happening.happeningType === "bedpres" && (
-          <div className="hidden overflow-hidden rounded-full border sm:block">
-            <div className="relative aspect-square h-20 w-20">
-              {happening.company && (
-                <Image
-                  src={urlFor(happening.company.image).url()}
-                  alt={`${happening.company.name} logo`}
-                  fill
-                />
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </Link>
   );
