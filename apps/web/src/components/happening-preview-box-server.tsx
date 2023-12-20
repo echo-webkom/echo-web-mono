@@ -79,10 +79,14 @@ const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; m
 };
 
 const getRegistrationStatus = (registrationDate: string, capacity: number, registered: number) => {
-  if (isToday(new Date()) && isFuture(new Date(registrationDate))) {
+  if (isToday(new Date(registrationDate)) && isFuture(new Date(registrationDate))) {
     return <p className="text-right">Påmelding i dag</p>;
   } else if (isFuture(new Date(registrationDate))) {
-    return "Påmelding: " + format(new Date(registrationDate), "dd. MMM", { locale: nb });
+    return (
+      <p className="text-right">
+        Påmelding {format(new Date(registrationDate), "dd. MMM", { locale: nb })}
+      </p>
+    );
   } else if (isPast(new Date(registrationDate))) {
     return registered + "/" + (capacity || ("Uendelig" && "∞"));
   }
