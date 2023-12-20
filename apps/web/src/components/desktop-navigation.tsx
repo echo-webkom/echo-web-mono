@@ -1,10 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 
+import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
@@ -27,10 +28,17 @@ const useNavigation = () => {
 
 const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const [activeDropdown, setActiveDropdown] = useState<React.ReactNode | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(() => {
+    setActiveDropdown(null);
+  }, [navRef]);
 
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
-      <nav className="mt-auto hidden px-6 py-2 md:block">{children}</nav>
+      <nav ref={navRef} className="mt-auto hidden px-6 py-2 md:block">
+        {children}
+      </nav>
     </NavigationContext.Provider>
   );
 };
@@ -74,17 +82,19 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
 
 const NavigationLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
   return (
-    <Link
-      href={to}
-      className="rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
-    >
-      {children}
-    </Link>
+    <li>
+      <Link
+        href={to}
+        className="rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+      >
+        {children}
+      </Link>
+    </li>
   );
 };
 
 const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
-  return <div className="mx-auto grid max-w-4xl grid-cols-2 gap-2">{children}</div>;
+  return <ul className="mx-auto grid max-w-4xl grid-cols-2 gap-2">{children}</ul>;
 };
 
 const NavigationViewport = () => {
