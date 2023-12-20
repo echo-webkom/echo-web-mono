@@ -1,3 +1,5 @@
+import { isFuture, isPast } from "date-fns";
+
 import { capitalize } from "./string";
 
 export function norwegianDateString(date: Date | string) {
@@ -50,7 +52,12 @@ export function time(date: Date | string) {
   });
 }
 
-export function toDateOrNull(date: Date | string | null) {
+/**
+ *
+ * @param date date to convert
+ * @returns the date if it is valid, otherwise null
+ */
+export function toDateOrNull(date: string | Date | null) {
   if (!date) return null;
 
   const d = new Date(date);
@@ -58,4 +65,14 @@ export function toDateOrNull(date: Date | string | null) {
   if (isNaN(d.getTime())) return null;
 
   return d;
+}
+
+/**
+ *
+ * @param startDate earliest date
+ * @param endDate latest date
+ * @returns if the current date is between the two dates
+ */
+export function isBetween(startDate: Date, endDate: Date): boolean {
+  return isPast(startDate) && isFuture(endDate);
 }
