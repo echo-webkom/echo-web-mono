@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import nb from "date-fns/locale/nb";
+import { nb } from "date-fns/locale/nb";
 
 import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
 import { cn } from "@/utils/cn";
@@ -80,9 +80,7 @@ export function EventPreview({ event }: EventPreviewProps) {
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
               {event.registrationStart
-                ? format(new Date(event.registrationStart), "d. MMMM yyyy", {
-                    locale: nb,
-                  })
+                ? format(new Date(event.registrationStart), "d. MMMM yyyy")
                 : "Påmelding åpner snart"}
             </li>
           </ul>
