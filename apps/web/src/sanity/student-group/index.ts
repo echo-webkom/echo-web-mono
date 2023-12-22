@@ -43,10 +43,12 @@ export async function fetchStudentGroupParams() {
 }
 
 export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
+  const orderDir = type === "board" ? "desc" : "asc";
+
   const query = groq`
 *[_type == "studentGroup"
   && groupType == $type
-  && !(_id in path('drafts.**'))] {
+  && !(_id in path('drafts.**'))] | order(name ${orderDir}) {
   _id,
   _createdAt,
   _updatedAt,
@@ -60,7 +62,7 @@ export async function fetchStudentGroupsByType(type: StudentGroupType, n: number
     "profile": profile->{
       _id,
       name,
-      image,
+      picture,
       socials,
     },
   },
@@ -101,7 +103,7 @@ export async function fetchStudentGroupBySlug(slug: string) {
     "profile": profile->{
       _id,
       name,
-      image,
+      picture,
       socials,
     },
   },

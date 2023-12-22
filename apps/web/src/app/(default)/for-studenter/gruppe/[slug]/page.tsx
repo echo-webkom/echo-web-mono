@@ -112,7 +112,7 @@ export default async function GroupPage({ params }: Props) {
 
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {group.members.map((member) => {
-              const image = member.profile?.image;
+              const image = member.profile?.picture;
               const initials = member.profile?.name
                 .split(" ")
                 .map((name) => name[0])

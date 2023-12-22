@@ -16,7 +16,7 @@ export const studentGroupTypeSchema = z.enum(studentGroupTypes);
 
 export const memberSchema = z.object({
   role: z.string(),
-  profile: profileSchema.pick({ _id: true, name: true, image: true, socials: true }),
+  profile: profileSchema.pick({ _id: true, name: true, picture: true, socials: true }),
 });
 
 export const studentGroupSchema = z.object({
