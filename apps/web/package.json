@@ -42,7 +42,7 @@
     "calendar-link": "2.6.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.0.0",
-    "date-fns": "3.0.2",
+    "date-fns": "3.0.4",
     "drizzle-orm": "0.29.1",
     "framer-motion": "10.16.16",
     "lucide-react": "^0.300.0",
