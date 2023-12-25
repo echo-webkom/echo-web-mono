@@ -236,8 +236,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       date-fns:
-        specifier: 3.0.4
-        version: 3.0.4
+        specifier: 3.0.5
+        version: 3.0.5
       drizzle-orm:
         specifier: 0.29.1
         version: 0.29.1(@types/pg@8.10.9)(pg@8.11.3)(postgres@3.4.3)
@@ -8062,8 +8062,8 @@ packages:
       '@babel/runtime': 7.23.5
     dev: false
 
-  /date-fns@3.0.4:
-    resolution: {integrity: sha512-+daptVi95nJ/D4TPS7/gbUqneVMA0Izr4qYAsL2ZZwtcDtEP8Zge765mbXhTqWYdTSG79/VtbBigQTluiE9DBQ==}
+  /date-fns@3.0.5:
+    resolution: {integrity: sha512-Q4Tq5c5s/Zl/zbgdWf6pejn9ru7UwdIlLfvEEg1hVsQNQ7LKt76qIduagIT9OPK7+JCv1mAKherdU6bOqGYDnw==}
     dev: false
 
   /date-now@1.0.1:
