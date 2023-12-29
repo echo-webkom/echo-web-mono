@@ -223,15 +223,9 @@ importers:
       '@upstash/ratelimit':
         specifier: 1.0.0
         version: 1.0.0
-      '@vercel/analytics':
-        specifier: ^1.1.1
-        version: 1.1.1
       '@vercel/kv':
         specifier: ^1.0.1
         version: 1.0.1
-      '@vercel/speed-insights':
-        specifier: ^1.0.2
-        version: 1.0.2
       calendar-link:
         specifier: 2.6.0
         version: 2.6.0
@@ -261,7 +255,7 @@ importers:
         version: 4.24.5(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 7.0.5
-        version: 7.0.5(@sanity/client@6.10.0)(@sanity/icons@2.8.0)(@sanity/types@3.23.4)(@sanity/ui@1.9.3)(next@14.0.4)(react@18.2.0)(sanity@3.23.4)(styled-components@5.3.11)
+        version: 7.0.5(@sanity/client@6.10.0)(@sanity/icons@2.8.0)(@sanity/types@3.21.3)(@sanity/ui@1.9.3)(next@14.0.4)(react@18.2.0)(sanity@3.23.4)(styled-components@5.3.11)
       next-themes:
         specifier: 0.2.1
         version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1137,7 +1131,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.5
-      '@babel/helper-create-class-features-plugin': 7.23.6(@babel/core@7.23.5)
+      '@babel/helper-create-class-features-plugin': 7.22.9(@babel/core@7.23.5)
       '@babel/helper-plugin-utils': 7.22.5
     dev: false
 
@@ -4613,7 +4607,7 @@ packages:
       text-table: 0.2.0
       url-join: 4.0.0
       wrap-ansi: 7.0.0
-      ws: 8.16.0
+      ws: 8.13.0
     transitivePeerDependencies:
       - bluebird
       - bufferutil
@@ -7330,6 +7324,15 @@ packages:
       typeid-js: 0.3.0
     dev: false
 
+  /@sanity/types@3.21.3:
+    resolution: {integrity: sha512-Z2OZHGDBGPdXLJQjUtp9w/+32yZvhsne5Z4GqClTKsPnzzB4S37OqoUOVfCCi35yMl+xVZv+ILerLwZl9Uo7fA==}
+    dependencies:
+      '@sanity/client': 6.10.0
+      '@types/react': 18.2.45
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@sanity/types@3.23.4:
     resolution: {integrity: sha512-v3EN73ECxlwHAScOhQhSnnfpZf62LX8vN62V3m6tY7+Umnc9XwKUoTtKiMQUKJy4XuZgarot3kM4/6GfB9Y3Mg==}
     dependencies:
@@ -8223,7 +8226,7 @@ packages:
     resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      '@upstash/redis': 1.27.1
+      '@upstash/redis': 1.27.0
     dev: false
 
   /@upstash/ratelimit@1.0.0:
@@ -8238,8 +8241,8 @@ packages:
       crypto-js: 4.2.0
     dev: false
 
-  /@upstash/redis@1.27.1:
-    resolution: {integrity: sha512-K9UgTBypJ4Dx65s2u5auoyf/5YoCQjaN91QtxlkNg+3g0rqXXy4ELtzACstk1v+bTa547Mm3rzTjotDX/s9+Zg==}
+  /@upstash/redis@1.27.0:
+    resolution: {integrity: sha512-zAPfd0oRHcWtokJrytdHBuucGb3u9HqwvkjqnzAe1sg/Hbka8Dx5DLHEm6fEX0X0EpHE/SvVF8BSZ4b4ystU0Q==}
     dependencies:
       crypto-js: 4.2.0
     dev: false
@@ -8264,22 +8267,11 @@ packages:
       wonka: 4.0.15
     dev: false
 
-  /@vercel/analytics@1.1.1:
-    resolution: {integrity: sha512-+NqgNmSabg3IFfxYhrWCfB/H+RCUOCR5ExRudNG2+pcRehq628DJB5e1u1xqwpLtn4pAYii4D98w7kofORAGQA==}
-    dependencies:
-      server-only: 0.0.1
-    dev: false
-
   /@vercel/kv@1.0.1:
     resolution: {integrity: sha512-uTKddsqVYS2GRAM/QMNNXCTuw9N742mLoGRXoNDcyECaxEXvIHG0dEY+ZnYISV4Vz534VwJO+64fd9XeSggSKw==}
     engines: {node: '>=14.6'}
     dependencies:
       '@upstash/redis': 1.25.1
-    dev: false
-
-  /@vercel/speed-insights@1.0.2:
-    resolution: {integrity: sha512-y5HWeB6RmlyVYxJAMrjiDEz8qAIy2cit0fhBq+MD78WaUwQvuBnQlX4+5MuwVTWi46bV3klaRMq83u9zUy1KOg==}
-    requiresBuild: true
     dev: false
 
   /@vercel/stega@0.1.0:
@@ -15251,7 +15243,7 @@ packages:
       - supports-color
     dev: false
 
-  /next-sanity@7.0.5(@sanity/client@6.10.0)(@sanity/icons@2.8.0)(@sanity/types@3.23.4)(@sanity/ui@1.9.3)(next@14.0.4)(react@18.2.0)(sanity@3.23.4)(styled-components@5.3.11):
+  /next-sanity@7.0.5(@sanity/client@6.10.0)(@sanity/icons@2.8.0)(@sanity/types@3.21.3)(@sanity/ui@1.9.3)(next@14.0.4)(react@18.2.0)(sanity@3.23.4)(styled-components@5.3.11):
     resolution: {integrity: sha512-CZLE3LTnWDPoUtpdVcA+L+cXvgbc+0uvR3PvkEqHmWU8N1UE/S6QCUhtOrxNErp3vP87PzQM9Msc9rUu4jH80w==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -15267,7 +15259,7 @@ packages:
       '@sanity/client': 6.10.0
       '@sanity/icons': 2.8.0(react@18.2.0)
       '@sanity/preview-kit': 5.0.6(@sanity/client@6.10.0)(react@18.2.0)
-      '@sanity/types': 3.23.4
+      '@sanity/types': 3.21.3
       '@sanity/ui': 1.9.3(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@sanity/webhook': 4.0.0
       groq: 3.19.1
@@ -18047,10 +18039,6 @@ packages:
       type-fest: 0.12.0
     dev: false
 
-  /server-only@0.0.1:
-    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
-
   /set-function-name@2.0.1:
     resolution: {integrity: sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==}
     engines: {node: '>= 0.4'}
@@ -20142,7 +20130,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /ws@8.16.0:
     resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}

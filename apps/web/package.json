@@ -39,8 +39,6 @@
     "@types/remove-markdown": "0.3.4",
     "@upstash/ratelimit": "1.0.0",
     "@vercel/kv": "^1.0.1",
-    "@vercel/analytics": "^1.1.1",
-    "@vercel/speed-insights": "^1.0.2",
     "calendar-link": "2.6.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.0.0",
