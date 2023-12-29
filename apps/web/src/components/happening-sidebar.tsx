@@ -16,7 +16,7 @@ import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
-import { norwegianDateString } from "@/utils/date";
+import { norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 type EventSidebarProps = {
@@ -135,6 +135,17 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>
             <AddToCalender date={new Date(event.date)} title={event.title} />
           </SidebarItemContent>
+        </SidebarItem>
+      )}
+
+      {/**
+       * Show time if:
+       * - There is a date set
+       */}
+      {event.date && (
+        <SidebarItem>
+          <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
+          <SidebarItemContent>{time(event.date)}</SidebarItemContent>
         </SidebarItem>
       )}
 
