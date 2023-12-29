@@ -67,11 +67,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     (registration) => registration.status === "waiting",
   ).length;
 
+  const hasRegistration = happening?.registrationStart && happening?.registrationEnd;
+
+  // Must use "!" because of the check above
   const isRegistrationOpen =
-    happening?.registrationStart &&
-    happening?.registrationEnd &&
-    isPast(happening.registrationStart) &&
-    isFuture(happening.registrationEnd);
+    hasRegistration && isPast(happening.registrationStart!) && isFuture(happening.registrationEnd!);
 
   const isHost = user && happening ? _isHost(user, happening) : false;
 
@@ -304,7 +304,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - User is logged in
        * - Registration is closed
        */}
-      {user && !isRegistrationOpen && (
+      {user && !isRegistrationOpen && hasRegistration && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
