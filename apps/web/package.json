@@ -47,7 +47,7 @@
     "date-fns": "3.0.6",
     "drizzle-orm": "0.29.2",
     "framer-motion": "10.16.16",
-    "lucide-react": "^0.302.0",
+    "lucide-react": "^0.303.0",
     "next": "14.0.4",
     "next-auth": "4.24.5",
     "next-themes": "0.2.1",
