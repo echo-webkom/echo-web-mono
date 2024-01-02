@@ -36,159 +36,185 @@ const revalidate = (type: HappeningType, slug: string) => {
 export const POST = withBasicAuth(async (req) => {
   const startTime = new Date().getTime();
 
-  const payload = sanityPayloadSchema.parse(await req.json());
+  const payload = sanityPayloadSchema.safeParse(await req.json());
 
-  const res = await client.fetch<SanityHappening | null>(happeningQuerySingle, {
-    id: payload._id,
-  });
-
-  const shouldDelete = res === null;
-
-  if (shouldDelete) {
-    const happening = await db.query.happenings.findFirst({
-      where: eq(happenings.id, payload._id),
-    });
-    await db.delete(happenings).where(eq(happenings.id, payload._id));
-    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, payload._id));
-    await db.delete(questions).where(eq(questions.happeningId, payload._id));
-    await db.delete(spotRanges).where(eq(spotRanges.happeningId, payload._id));
-    await db.delete(registrations).where(eq(registrations.happeningId, payload._id));
-
-    if (happening) revalidate(happening.type, happening.slug);
+  if (!payload.success) {
     return NextResponse.json(
       {
-        status: "success",
-        message: `Deleted happening with id ${payload._id}`,
-        time: (new Date().getTime() - startTime) / 1000,
+        status: "error",
+        message: "Invalid payload",
       },
-      { status: 200 },
+      { status: 400 },
     );
   }
 
-  if (res.happeningType === "external") {
-    revalidate(res.happeningType, res.slug);
-    return NextResponse.json(
-      {
-        status: "success",
-        message: `Happening with id ${payload._id} is external. Nothing done.`,
-        time: (new Date().getTime() - startTime) / 1000,
-      },
-      { status: 200 },
-    );
-  }
+  const documentId = payload.data._id;
 
-  const validGroups = await db.query.groups.findMany();
-
-  const formattedHappening = {
-    ...res,
-    id: res._id,
-    date: new Date(res.date),
-    registrationStartGroups: res.registrationStartGroups
-      ? new Date(res.registrationStartGroups)
-      : null,
-    registrationStart: res.registrationStart ? new Date(res.registrationStart) : null,
-    registrationEnd: res.registrationEnd ? new Date(res.registrationEnd) : null,
-    registrationGroups:
-      res.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
-  } satisfies HappeningInsert;
-
-  /**
-   * Update or insert happening
-   */
-  await db
-    .insert(happenings)
-    .values(formattedHappening)
-    .onConflictDoUpdate({
-      set: formattedHappening,
-      where: eq(happenings.id, res._id),
-      target: happenings.id,
+  try {
+    const res = await client.fetch<SanityHappening | null>(happeningQuerySingle, {
+      id: documentId,
     });
 
-  /**
-   * Remove previous group mappings and insert new ones
-   */
-  await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, res._id));
+    const shouldDelete = res === null;
 
-  if (res.happeningType === "bedpres") {
-    const happeningsToGroupsToInsert = (res.groups ?? [])
-      .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
-      .map(
-        (groupId) =>
-          ({
-            happeningId: res._id,
-            groupId,
-          }) satisfies HappeningsToGroupsInsert,
-      );
-
-    if (happeningsToGroupsToInsert.length > 0) {
-      await db.insert(happeningsToGroups).values(happeningsToGroupsToInsert);
-    }
-  }
-
-  /**
-   * Remove previous spot ranges and insert new ones
-   */
-  await db.delete(spotRanges).where(eq(spotRanges.happeningId, res._id));
-
-  const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map((sr) => ({
-    happeningId: res._id,
-    spots: sr.spots,
-    minYear: sr.minYear,
-    maxYear: sr.maxYear,
-  }));
-
-  if (spotRangesToInsert.length > 0) {
-    await db.insert(spotRanges).values(spotRangesToInsert);
-  }
-
-  const currentQuestions = await db.query.questions.findMany({
-    where: eq(questions.happeningId, res._id),
-  });
-
-  const questionsToDelete = currentQuestions.filter(
-    (q) => !res.questions?.map((newQuestion) => newQuestion.title).includes(q.title),
-  );
-
-  for (const question of questionsToDelete) {
-    await db.delete(questions).where(eq(questions.id, question.id));
-  }
-
-  const questionsToInsert: Array<QuestionInsert> = (res.questions ?? []).map((q) => ({
-    id: q.id,
-    happeningId: res._id,
-    title: q.title,
-    required: q.required,
-    type: q.type,
-    options: q.options?.map((o) => ({
-      id: o,
-      value: o,
-    })),
-  }));
-
-  if (questionsToInsert.length > 0) {
-    await db
-      .insert(questions)
-      .values(questionsToInsert)
-      .onConflictDoUpdate({
-        target: questions.id,
-        set: {
-          title: sql`excluded."title"`,
-          required: sql`excluded."required"`,
-          type: sql`excluded."type"`,
-          options: sql`excluded."options"`,
-          isSensitive: sql`excluded."is_sensitive"`,
-        },
+    if (shouldDelete) {
+      const happening = await db.query.happenings.findFirst({
+        where: eq(happenings.id, documentId),
       });
+      await db.delete(happenings).where(eq(happenings.id, documentId));
+      await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, documentId));
+      await db.delete(questions).where(eq(questions.happeningId, documentId));
+      await db.delete(spotRanges).where(eq(spotRanges.happeningId, documentId));
+      await db.delete(registrations).where(eq(registrations.happeningId, documentId));
+
+      if (happening) revalidate(happening.type, happening.slug);
+      return NextResponse.json(
+        {
+          status: "success",
+          message: `Deleted happening with id ${documentId}`,
+          time: (new Date().getTime() - startTime) / 1000,
+        },
+        { status: 200 },
+      );
+    }
+
+    if (res.happeningType === "external") {
+      revalidate(res.happeningType, res.slug);
+      return NextResponse.json(
+        {
+          status: "success",
+          message: `Happening with id ${documentId} is external. Nothing done.`,
+          time: (new Date().getTime() - startTime) / 1000,
+        },
+        { status: 200 },
+      );
+    }
+
+    const validGroups = await db.query.groups.findMany();
+
+    const formattedHappening = {
+      id: res._id,
+      date: new Date(res.date),
+      registrationStartGroups: res.registrationStartGroups
+        ? new Date(res.registrationStartGroups)
+        : null,
+      registrationStart: res.registrationStart ? new Date(res.registrationStart) : null,
+      registrationEnd: res.registrationEnd ? new Date(res.registrationEnd) : null,
+      registrationGroups:
+        res.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
+      slug: res.slug,
+      title: res.title,
+      type: res.happeningType,
+    } satisfies HappeningInsert;
+
+    /**
+     * Update or insert happening
+     */
+    await db
+      .insert(happenings)
+      .values(formattedHappening)
+      .onConflictDoUpdate({
+        set: formattedHappening,
+        where: eq(happenings.id, res._id),
+        target: happenings.id,
+      });
+
+    /**
+     * Remove previous group mappings and insert new ones
+     */
+    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, res._id));
+
+    if (res.happeningType === "bedpres") {
+      const happeningsToGroupsToInsert = (res.groups ?? [])
+        .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+        .map(
+          (groupId) =>
+            ({
+              happeningId: res._id,
+              groupId,
+            }) satisfies HappeningsToGroupsInsert,
+        );
+
+      if (happeningsToGroupsToInsert.length > 0) {
+        await db.insert(happeningsToGroups).values(happeningsToGroupsToInsert);
+      }
+    }
+
+    /**
+     * Remove previous spot ranges and insert new ones
+     */
+    await db.delete(spotRanges).where(eq(spotRanges.happeningId, res._id));
+
+    const spotRangesToInsert: Array<SpotRangeInsert> = (res.spotRanges ?? []).map((sr) => ({
+      happeningId: res._id,
+      spots: sr.spots,
+      minYear: sr.minYear,
+      maxYear: sr.maxYear,
+    }));
+
+    if (spotRangesToInsert.length > 0) {
+      await db.insert(spotRanges).values(spotRangesToInsert);
+    }
+
+    const currentQuestions = await db.query.questions.findMany({
+      where: eq(questions.happeningId, res._id),
+    });
+
+    const questionsToDelete = currentQuestions.filter(
+      (q) => !res.questions?.map((newQuestion) => newQuestion.title).includes(q.title),
+    );
+
+    for (const question of questionsToDelete) {
+      await db.delete(questions).where(eq(questions.id, question.id));
+    }
+
+    const questionsToInsert: Array<QuestionInsert> = (res.questions ?? []).map((q) => ({
+      id: q.id,
+      happeningId: res._id,
+      title: q.title,
+      required: q.required,
+      type: q.type,
+      options: q.options?.map((o) => ({
+        id: o,
+        value: o,
+      })),
+    }));
+
+    if (questionsToInsert.length > 0) {
+      await db
+        .insert(questions)
+        .values(questionsToInsert)
+        .onConflictDoUpdate({
+          target: questions.id,
+          set: {
+            title: sql`excluded."title"`,
+            required: sql`excluded."required"`,
+            type: sql`excluded."type"`,
+            options: sql`excluded."options"`,
+            isSensitive: sql`excluded."is_sensitive"`,
+          },
+        });
+    }
+
+    revalidate(res.happeningType, res.slug);
+
+    return NextResponse.json(
+      {
+        status: "success",
+        message: `Happening with id ${documentId} inserted or updated`,
+        time: (new Date().getTime() - startTime) / 1000,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      {
+        status: "error",
+        message: `Failed to insert or update happening with id ${documentId}`,
+      },
+      { status: 500 },
+    );
   }
-
-  revalidate(res.happeningType, res.slug);
-
-  return NextResponse.json(
-    {
-      status: "success",
-      message: `Happening with id ${payload._id} inserted or updated`,
-      time: (new Date().getTime() - startTime) / 1000,
-    },
-    { status: 200 },
-  );
 });

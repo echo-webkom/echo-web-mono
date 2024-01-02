@@ -15,8 +15,8 @@ type Props = {
   };
 };
 
-const getData = cache(async (slugs: Props["params"]["slug"]) => {
-  const [pageType, slug] = slugs ?? [];
+const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
+  const [pageType, slug] = slugs;
 
   if (typeof pageType !== "string" || typeof slug !== "string") {
     return notFound();
