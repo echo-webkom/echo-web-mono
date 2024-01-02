@@ -45,6 +45,16 @@ const config = {
       destination: "/for-studenter/innlegg/:path",
       statusCode: 301,
     },
+    {
+      source: "/om-echo/studentgrupper/:path",
+      destination: "/for-studenter/gruppe/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/arrangementer",
+      destination: "/for-studenter/arrangementer",
+      statusCode: 301,
+    },
   ],
 
   eslint: { ignoreDuringBuilds: !!process.env.CI },
