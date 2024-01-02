@@ -19,7 +19,7 @@ const defaultConfig = {
     markdownSchema(),
   ],
   schema: { types: schemaTypes },
-  projectId: "nnumy1ga",
+  projectId: "pgq2pd26",
 };
 
 const prodConfig = {
