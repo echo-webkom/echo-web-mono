@@ -2,8 +2,8 @@ import { groq } from "next-sanity";
 
 import { type QueryParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
-import { sanityFetch } from "../client";
-import { happeningSchema, type Happening } from "./schemas";
+import { sanityClient, sanityFetch } from "../client";
+import { happeningSchema, happeningTypeSchema, type Happening } from "./schemas";
 
 const happeningPartial = groq`
   _id,
@@ -141,3 +141,17 @@ export const fetchFilteredHappening = async (
     };
   }
 };
+
+export async function getHappeningTypeBySlug(slug: string) {
+  try {
+    const query = groq`
+*[_type == "happening" && slug.current == $slug] {
+  happeningType,
+}.happeningType
+`;
+
+    return await sanityClient.fetch(query, { slug }).then((res) => happeningTypeSchema.parse(res));
+  } catch {
+    return null;
+  }
+}
