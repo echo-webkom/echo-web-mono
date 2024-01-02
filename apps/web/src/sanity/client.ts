@@ -11,7 +11,7 @@ import { env } from "@/env.mjs";
  * "production" and "development"
  */
 
-export const projectId = "nnumy1ga";
+export const projectId = "pgq2pd26";
 export const dataset = env.NEXT_PUBLIC_SANITY_DATASET;
 export const apiVersion = "2023-05-03";
 
