@@ -43,7 +43,7 @@
     "@vercel/speed-insights": "^1.0.2",
     "calendar-link": "2.6.0",
     "class-variance-authority": "0.7.0",
-    "clsx": "2.0.0",
+    "clsx": "2.1.0",
     "date-fns": "3.0.6",
     "drizzle-orm": "0.29.2",
     "framer-motion": "10.16.16",
