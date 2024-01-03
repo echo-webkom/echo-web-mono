@@ -150,7 +150,9 @@ export async function getHappeningTypeBySlug(slug: string) {
 }.happeningType
 `;
 
-    return await sanityClient.fetch(query, { slug }).then((res) => happeningTypeSchema.parse(res));
+    return await sanityClient
+      .fetch(query, { slug })
+      .then((res: [string]) => happeningTypeSchema.parse(res[0]));
   } catch {
     return null;
   }
