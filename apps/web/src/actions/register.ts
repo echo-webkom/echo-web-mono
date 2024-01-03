@@ -1,5 +1,6 @@
 "use server";
 
+import * as va from "@vercel/analytics";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
@@ -16,19 +17,19 @@ import {
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
+  /**
+   * Check if user is signed in
+   */
+  const user = await getAuth();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "Du er ikke logget inn",
+    };
+  }
+
   try {
-    /**
-     * Check if user is signed in
-     */
-    const user = await getAuth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
     /**
      * Check if user has filled out necessary information
      */
@@ -230,6 +231,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
+    va.track("Successful reigstration", {
+      userId: user.id,
+      happeningId: happening.id,
+    });
+
     return {
       success: true,
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
@@ -243,6 +249,12 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         message: "Skjemaet er ikke i riktig format",
       };
     }
+
+    va.track("Failed registration", {
+      userId: user?.id ?? null,
+      happeningId: id ?? null,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
 
     return {
       success: false,
