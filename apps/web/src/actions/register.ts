@@ -1,6 +1,6 @@
 "use server";
 
-import * as va from "@vercel/analytics";
+import * as va from "@vercel/analytics/server";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
@@ -231,7 +231,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
-    va.track("Successful reigstration", {
+    await va.track("Successful reigstration", {
       userId: user.id,
       happeningId: happening.id,
     });
@@ -250,7 +250,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    va.track("Failed registration", {
+    await va.track("Failed registration", {
       userId: user?.id ?? null,
       happeningId: id ?? null,
       error: error instanceof Error ? error.message : "Unknown error",
