@@ -1,7 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
-import { createClient } from "next-sanity";
 
 import { db } from "@echo-webkom/db";
 import {
@@ -15,32 +14,13 @@ import {
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { isBoard } from "@/lib/is-board";
-import { apiVersion, projectId } from "@/sanity/client";
+import { client } from "@/sanity/client";
 import { happeningQueryList, type SanityHappening } from "./query";
 
 export const dynamic = "force-dynamic";
 
-const getSanityClient = (dataset: "testing") =>
-  createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    useCdn: false,
-  });
-
-export const GET = withBasicAuth(async (request) => {
+export const GET = withBasicAuth(async () => {
   const startTime = new Date().getTime();
-
-  const searchParams = new URLSearchParams(request.url);
-  const requestDataset = searchParams.get("dataset") ?? "develop";
-
-  if (!["develop", "production", "testing"].includes(requestDataset)) {
-    return NextResponse.json({
-      message: "Invalid dataset chose one of: develop, production, testing",
-    });
-  }
-
-  const client = getSanityClient("testing");
 
   const res = await client.fetch<Array<SanityHappening>>(happeningQueryList);
 
