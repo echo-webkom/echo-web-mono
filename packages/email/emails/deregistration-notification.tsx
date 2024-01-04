@@ -12,21 +12,23 @@ import {
   Text,
 } from "jsx-email";
 
-type RegistrationConfirmationEmailProps = {
-  title?: string;
-  isBedpres?: boolean;
+type DeregistrationNotificationEmailProps = {
+  name?: string;
+  reason?: string;
+  happeningTitle?: string;
 };
 
-export default function RegistrationConfirmationEmail({
-  title = "Workshop med Webkom",
-  isBedpres = false,
-}: RegistrationConfirmationEmailProps) {
-  const typeText = isBedpres ? "bedriftspresentasjonen" : "arrangmentet";
-
+export default function DeregistrationNotificationEmail({
+  name = "Bo Salhus",
+  reason = "Jeg har blitt syk",
+  happeningTitle = "Workshop med Webkom",
+}: DeregistrationNotificationEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Du har fått plass på {title}.</Preview>
+      <Preview>
+        {name} har meldt seg av {happeningTitle}
+      </Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto my-8 w-full max-w-screen-sm border border-solid border-gray-200">
@@ -38,11 +40,15 @@ export default function RegistrationConfirmationEmail({
                 alt="echo"
                 style={{ margin: "auto" }}
               />
-              <Heading className="text-3xl font-bold">Du har fått plass!</Heading>
+              <Heading className="text-2xl font-bold">
+                {name} har meldt seg av {happeningTitle}
+              </Heading>
 
-              <Text className="text-gray-600">
-                Du har fått plass på {typeText}, {title}.
-              </Text>
+              <Section>
+                <Text className="text-gray-600">{name} har meldt seg av med følgende grunn:</Text>
+
+                <Text className="rounded-md bg-gray-100 p-4 text-gray-600">{reason}</Text>
+              </Section>
             </Section>
           </Container>
         </Body>

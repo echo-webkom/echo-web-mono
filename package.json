@@ -21,6 +21,7 @@
     "db:check": "pnpm --filter=db db:check",
     "db:up": "pnpm --filter=db db:up",
     "db:down": "pnpm --filter=db db:down",
+    "email:preview": "pnpm --filter=email preview",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
