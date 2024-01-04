@@ -6,7 +6,9 @@ import {
   accounts,
   degrees,
   groups,
+  happenings,
   sessions,
+  spotRanges,
   users,
   usersToGroups,
   type UserType,
@@ -145,6 +147,30 @@ async function seed() {
     groupId: "webkom",
     isLeader: true,
   });
+
+  await db
+    .insert(happenings)
+    .values({
+      id: "party-med-webkom",
+      slug: "party-med-webkom",
+      title: "Party med Webkom",
+      date: new Date("2030-01-01"),
+      registrationEnd: new Date("2029-12-31"),
+      registrationStart: new Date("2024-01-01"),
+      type: "event",
+    })
+    .onConflictDoNothing();
+
+  await db
+    .insert(spotRanges)
+    .values({
+      happeningId: "party-med-webkom",
+      id: "party-med-webkom-spotrange",
+      maxYear: 5,
+      minYear: 1,
+      spots: 10,
+    })
+    .onConflictDoNothing();
 }
 
 async function createUser({
