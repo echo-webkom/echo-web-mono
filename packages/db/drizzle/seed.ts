@@ -151,7 +151,7 @@ async function seed() {
   await db
     .insert(happenings)
     .values({
-      id: "party-med-webkom",
+      id: "5cbb5337-a6e6-4eff-a821-a73722594f47",
       slug: "party-med-webkom",
       title: "Party med Webkom",
       date: new Date("2030-01-01"),
@@ -161,16 +161,20 @@ async function seed() {
     })
     .onConflictDoNothing();
 
+  console.log("Inserted happening Party med Webkom with id 5cbb5337-a6e6-4eff-a821-a73722594f47");
+
   await db
     .insert(spotRanges)
     .values({
-      happeningId: "party-med-webkom",
+      happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
       id: "party-med-webkom-spotrange",
       maxYear: 5,
       minYear: 1,
-      spots: 10,
+      spots: 5,
     })
     .onConflictDoNothing();
+
+  console.log("Inserted spot range for Party med Webkom");
 }
 
 async function createUser({

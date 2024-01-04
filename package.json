@@ -21,6 +21,9 @@
     "db:check": "pnpm --filter=db db:check",
     "db:up": "pnpm --filter=db db:up",
     "db:down": "pnpm --filter=db db:down",
+    "db:remove": "pnpm db:down && rm -rf packages/db/postgres-data",
+    "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate && pnpm db:seed",
+    "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
     "email:preview": "pnpm --filter=email preview",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
@@ -29,7 +32,8 @@
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
     "test:e2e": "turbo run test:e2e",
-    "test:e2e:ui": "turbo run test:e2e:ui"
+    "test:e2e:ui": "turbo run test:e2e:ui",
+    "test:e2e:update": "turbo run test:e2e:update"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
