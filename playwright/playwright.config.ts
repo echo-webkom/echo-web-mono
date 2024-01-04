@@ -18,6 +18,8 @@ export default defineConfig({
     baseURL: "http://localhost:3000",
   },
 
+  globalSetup: "./global-setup",
+
   projects: [
     /* Test against desktop viewports. */
     {

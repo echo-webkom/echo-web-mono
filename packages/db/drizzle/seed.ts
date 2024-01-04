@@ -153,12 +153,16 @@ async function createUser({
   email,
   type,
   token,
+  year = 1,
+  degreeId = "dtek",
 }: {
   id: string;
   name: string;
   email: string;
   type: UserType;
   token: string;
+  year?: number;
+  degreeId?: string;
 }) {
   console.log(`Inserted user ${name} with id ${id}`);
   await db
@@ -168,6 +172,8 @@ async function createUser({
       name,
       email,
       type,
+      year,
+      degreeId,
     })
     .onConflictDoNothing();
 
