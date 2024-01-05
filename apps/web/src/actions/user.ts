@@ -3,7 +3,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth, getAuthSession } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
@@ -17,9 +17,9 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
 
 export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema>) {
   try {
-    const session = await getAuthSession();
+    const user = await auth();
 
-    if (!session) {
+    if (!user) {
       return {
         success: false,
         message: "Du er ikke logget inn",
@@ -28,18 +28,18 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
 
     const data = await updateSelfPayloadSchema.parseAsync(payload);
 
-    const user = await db
+    const resp = await db
       .update(users)
       .set({
         alternativeEmail: data.alternativeEmail ?? null,
         degreeId: data.degreeId,
         year: data.year,
       })
-      .where(eq(users.id, session.user.id))
+      .where(eq(users.id, user.id))
       .returning()
       .then((res) => res[0] ?? null);
 
-    if (!user) {
+    if (!resp) {
       return {
         success: false,
         message: "Fikk ikke til å oppdatere brukeren",
@@ -74,7 +74,7 @@ export const updateUser = async (
   payload: z.infer<typeof updateUserPayloadSchema>,
 ) => {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (user === null || !isWebkom(user)) {
       return {

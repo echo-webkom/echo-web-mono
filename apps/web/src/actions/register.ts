@@ -4,7 +4,7 @@ import * as va from "@vercel/analytics/server";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   answers,
@@ -20,7 +20,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
   /**
    * Check if user is signed in
    */
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user) {
     return {

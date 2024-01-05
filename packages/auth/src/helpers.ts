@@ -40,7 +40,7 @@ const getUserById = db.query.users
  *
  * @returns user of currently signed in user
  */
-export async function getAuth() {
+export async function auth() {
   const session = await getAuthSession();
 
   if (!session) {

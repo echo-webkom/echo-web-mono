@@ -4,7 +4,7 @@ import { ArrowRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
 import { isFuture, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
@@ -24,7 +24,7 @@ type EventSidebarProps = {
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {
-  const user = await getAuth();
+  const user = await auth();
 
   const happening = await db.query.happenings
     .findFirst({
