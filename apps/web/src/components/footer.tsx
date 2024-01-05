@@ -1,7 +1,9 @@
+import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
+import BekkLogo from "@/assets/images/bekk.png";
 import { footerRoutes } from "@/lib/routes";
 import { sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
@@ -68,12 +70,12 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-4 py-2 pl-5 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
-                  src="/images/bekk.png"
+                  src={BekkLogo}
                   className="invert dark:invert-0"
-                  height={250}
+                  height={100}
                   width={250}
                   alt="Bekk logo"
                 />
@@ -88,8 +90,8 @@ export const Footer = ({ className }: FooterProps) => {
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
                       <Image
-                        src={imageSrc}
-                        height={150}
+                        src={imageSrc as StaticImport}
+                        height={30}
                         width={150}
                         alt={`${label} logo`}
                         className={cn(label === "Vercel" && "invert-0 dark:invert")}
