@@ -29,6 +29,13 @@
       "when": 1702644301355,
       "tag": "0003_known_shaman",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1704362797554,
+      "tag": "0004_soft_monster_badoon",
+      "breakpoints": true
     }
   ]
 }

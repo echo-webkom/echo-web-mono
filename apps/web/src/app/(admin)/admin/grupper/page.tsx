@@ -15,11 +15,6 @@ export default async function AdminGroupsPage() {
           },
         },
       },
-      leaderUser: {
-        columns: {
-          name: true,
-        },
-      },
     },
   });
 
@@ -27,7 +22,6 @@ export default async function AdminGroupsPage() {
     return {
       "id/slug": group.id,
       name: group.name,
-      leader: group.leaderUser?.name ?? "Ingen",
       members: group.members.map((member) => member.user.name),
     };
   });
