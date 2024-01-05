@@ -1,13 +1,13 @@
 import Link from "next/link";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await getAuth();
+  const session = await auth();
 
   return (
     <>

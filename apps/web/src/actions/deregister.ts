@@ -3,7 +3,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 
@@ -13,7 +13,7 @@ const deregisterPayloadSchema = z.object({
 
 export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return {

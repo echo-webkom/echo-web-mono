@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { Chip } from "@/components/typography/chip";
@@ -11,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 
 export default async function ProfilePage() {
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");
@@ -47,13 +48,20 @@ export default async function ProfilePage() {
               Grupper:
             </Text>
 
-            <div className="flex flex-wrap gap-1">
+            <ul className="flex flex-wrap gap-1">
               {memberships.map(({ group }) => (
-                <Chip key={group.id} className="bg-secondary text-secondary-foreground">
-                  {group.name}
-                </Chip>
+                <li key={group.id}>
+                  <Link href={`/gruppe/${group.id}`}>
+                    <Chip
+                      key={group.id}
+                      className="bg-secondary text-secondary-foreground hover:underline"
+                    >
+                      {group.name}
+                    </Chip>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
       </div>

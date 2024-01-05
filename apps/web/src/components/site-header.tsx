@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation } from "./desktop-navigation";
@@ -11,7 +11,7 @@ import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
-  const user = await getAuth();
+  const user = await auth();
 
   return (
     <div className="sticky top-0 z-20">
