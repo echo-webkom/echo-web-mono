@@ -98,31 +98,31 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - There is a company
        */}
       {event.company && (
-        <>
-          <SidebarItem>
-            <Link href={event.company.website}>
-              <div className="overflow-hidden">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={urlFor(event.company.image).url()}
-                    alt={`${event.company.name} logo`}
-                    fill
-                  />
-                </div>
+        <SidebarItem>
+          <Link href={event.company.website}>
+            <div className="overflow-hidden">
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={urlFor(event.company.image).url()}
+                  alt={`${event.company.name} logo`}
+                  fill
+                />
               </div>
-            </Link>
-          </SidebarItem>
+            </div>
+          </Link>
+        </SidebarItem>
+      )}
 
-          <SidebarItem>
-            <SidebarItemTitle>Bedrift:</SidebarItemTitle>
-            <SidebarItemContent>
-              <Link className="hover:underline" href={event.company.website}>
-                {event.company.name}
-                <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
-              </Link>
-            </SidebarItemContent>
-          </SidebarItem>
-        </>
+      {event.company && (
+        <SidebarItem>
+          <SidebarItemTitle>Bedrift:</SidebarItemTitle>
+          <SidebarItemContent>
+            <Link className="hover:underline" href={event.company.website}>
+              {event.company.name}
+              <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
+            </Link>
+          </SidebarItemContent>
+        </SidebarItem>
       )}
 
       {/**
