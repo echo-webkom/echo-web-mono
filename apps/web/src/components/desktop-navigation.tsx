@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { type LucideIcon } from "lucide-react";
 
 import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
@@ -94,7 +95,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
 };
 
 const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="mx-auto grid max-w-4xl grid-cols-2 gap-2">{children}</ul>;
+  return <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-2 lg:grid-cols-3">{children}</ul>;
 };
 
 const NavigationViewport = () => {
@@ -115,21 +116,54 @@ export function DesktopNavigation() {
   return (
     <NavigationRoot>
       <NavigationList>
-        <NavigationLink to="/">Hjem</NavigationLink>
-        {headerRoutes.map((route) => (
-          <NavigationItem key={route.label} label={route.label}>
-            <NavigationDropdown>
-              {route.sublinks.map((subroute) => (
-                <Link key={subroute.label} className="p-2 hover:bg-muted" href={subroute.href}>
-                  {subroute.label}
-                </Link>
-              ))}
-            </NavigationDropdown>
-          </NavigationItem>
-        ))}
-      </NavigationList>
+        {headerRoutes.map((route) => {
+          if ("href" in route) {
+            return (
+              <NavigationLink key={route.label} to={route.href}>
+                {route.label}
+              </NavigationLink>
+            );
+          }
 
+          return (
+            <NavigationItem key={route.label} label={route.label}>
+              <NavigationDropdown>
+                {route.links.map((link) => (
+                  <IconLink
+                    key={link.label}
+                    href={link.href}
+                    label={link.label}
+                    description={link.description}
+                    icon={link.icon}
+                  />
+                ))}
+              </NavigationDropdown>
+            </NavigationItem>
+          );
+        })}
+      </NavigationList>
       <NavigationViewport />
     </NavigationRoot>
+  );
+}
+
+type IconLinkProps = {
+  href: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+function IconLink({ icon, ...props }: IconLinkProps) {
+  return (
+    <Link className="flex items-center rounded-lg p-4 hover:bg-muted" href={props.href}>
+      <div className="flex items-center gap-6">
+        {React.createElement(icon, { className: "h-6 w-6" })}
+        <div>
+          <p>{props.label}</p>
+          <p className="text-sm text-muted-foreground">{props.description}</p>
+        </div>
+      </div>
+    </Link>
   );
 }

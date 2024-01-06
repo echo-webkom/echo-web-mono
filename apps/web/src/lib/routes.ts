@@ -1,35 +1,185 @@
+import {
+  Atom,
+  Briefcase,
+  Building2,
+  CalendarDays,
+  CircleDollarSign,
+  GraduationCap,
+  Heart,
+  HeartHandshake,
+  MailOpen,
+  Megaphone,
+  Presentation,
+  Scale,
+  StickyNote,
+  Users,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+
 import { RouteGroup } from "./route-builder";
 
-const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For studenter" })
-  .link("/arrangementer", { label: "Arrangementer" })
-  .link("/jobber", { label: "Stillingsannonser" })
-  .link("/innlegg", { label: "Innlegg" })
-  .link("/grupper/hovedstyre", { label: "Hovedstyre" })
-  .link("/grupper/undergrupper", { label: "Undergrupper" })
-  .link("/grupper/underorganisasjoner", { label: "Underorganisasjoner" })
-  .link("/grupper/interessegrupper", { label: "Interessegrupper" })
-  .link("/grupper/idrettslag", { label: "Idrettslag" })
-  .link("/motereferater", { label: "Møtereferater" })
-  .link("/masterinfo", { label: "Masterinfo" })
-  .link("/okonomisk-stotte", { label: "Økonomisk støtte" })
-  .link("/anonyme-tilbakemeldinger", { label: "Tilbakemeldinger" })
-  .link("/utlegg", { label: "Utlegg" })
-  .link("/si-ifra", { label: "Si ifra" })
-  .build();
-
-const forCompaniesRoutes = new RouteGroup("/for-bedrifter", { label: "For bedrifter" })
-  .link("/bedriftspresentasjon", { label: "Bedriftspresentasjon" })
-  .link("/stillingsutlysninger", { label: "Stillingsutlysninger" })
-  .build();
-
-const aboutRoutes = new RouteGroup("/om", { label: "Om echo" })
-  .link("/echo", { label: "Hvem er vi" })
-  .link("/instituttradet", { label: "Instituttrådet" })
-  .link("/vedtekter", { label: "Vedtekter" })
-  .link("/bekk", { label: "Bekk" })
-  .link("/brosjyre", { label: "Brosjyre" })
-  .link("/programstyrene", { label: "Programstyrene" })
-  .build();
+export const headerRoutes: Array<
+  | {
+      label: string;
+      href: string;
+    }
+  | {
+      label: string;
+      links: Array<{
+        label: string;
+        href: string;
+        description: string;
+        icon: LucideIcon;
+      }>;
+    }
+> = [
+  {
+    label: "Hjem",
+    href: "/",
+  },
+  {
+    label: "For studenter",
+    links: [
+      {
+        label: "Arrangementer",
+        href: "/for-studenter/arrangementer",
+        description: "Oversikt over kommende og tidligere arrangementer",
+        icon: CalendarDays,
+      },
+      {
+        label: "Jobber",
+        href: "/for-studenter/jobber",
+        description: "Se hvilke jobber som er tilgjengelig for studenter",
+        icon: CircleDollarSign,
+      },
+      {
+        label: "Innlegg",
+        href: "/for-studenter/innlegg",
+        description: "Nyheter og oppdateringer fra echo",
+        icon: MailOpen,
+      },
+      {
+        label: "Hovedstyre",
+        href: "/for-studenter/grupper/hovedstyre",
+        description: "Oversikt over hovedstyret",
+        icon: Users,
+      },
+      {
+        label: "Undergrupper",
+        href: "/for-studenter/grupper/undergrupper",
+        description: "Oversikt over undergrupper",
+        icon: Users,
+      },
+      {
+        label: "Underorganisasjoner",
+        href: "/for-studenter/grupper/underorganisasjoner",
+        description: "Oversikt over underorganisasjoner",
+        icon: Users,
+      },
+      {
+        label: "Interessegrupper",
+        href: "/for-studenter/grupper/interessegrupper",
+        description: "Oversikt over interessegrupper",
+        icon: Users,
+      },
+      {
+        label: "Idrettslag",
+        href: "/for-studenter/grupper/idrettslag",
+        description: "Oversikt over idrettslag",
+        icon: Users,
+      },
+      {
+        label: "Masterinfo",
+        href: "/for-studenter/masterinfo",
+        description: "Informasjon til deg som tar master",
+        icon: GraduationCap,
+      },
+      {
+        label: "Økonomisk støtte",
+        href: "/for-studenter/okonomisk-stotte",
+        description: "Økonmisk støtte for arrangementer og aktiviteter",
+        icon: CircleDollarSign,
+      },
+      {
+        label: "Anonyme tilbakemeldinger",
+        href: "/for-studenter/anonyme-tilbakemeldinger",
+        description: "Send anonyme tilbakemeldinger",
+        icon: Megaphone,
+      },
+      {
+        label: "Utlegg",
+        href: "/for-studenter/utlegg",
+        description: "Sende inn faktura og utlegg",
+        icon: Wallet,
+      },
+      {
+        label: "Si ifra",
+        href: "/for-studenter/si-ifra",
+        description: "Opplevd noe kjipt? Si ifra!",
+        icon: Heart,
+      },
+    ],
+  },
+  {
+    label: "For bedrifter",
+    links: [
+      {
+        label: "Bedriftspresentasjon",
+        href: "/for-bedrifter/bedriftspresentasjon",
+        description: "Ønsker du å presentere bedriften din?",
+        icon: Presentation,
+      },
+      {
+        label: "Stillingsannonser",
+        href: "/for-bedrifter/stillingsutlysninger",
+        description: "Informasjon om stillingsutlysninger på våre nettsider",
+        icon: Briefcase,
+      },
+    ],
+  },
+  {
+    label: "Om echo",
+    links: [
+      {
+        label: "Om oss",
+        href: "/om/echo",
+        description: "Om echo",
+        icon: Atom,
+      },
+      {
+        label: "Instituttrådet",
+        href: "/om/instituttradet",
+        description: "Om instituttrådet",
+        icon: Building2,
+      },
+      {
+        label: "Vedtekter",
+        href: "/om/vedtekter",
+        description: "Vedtekter",
+        icon: Scale,
+      },
+      {
+        label: "Bekk",
+        href: "/om/bekk",
+        description: "Om Bekk, vår hovedsponsor",
+        icon: HeartHandshake,
+      },
+      {
+        label: "Brosjyre",
+        href: "/om/brosjyre",
+        description: "Brosjyre med informasjon om echo",
+        icon: StickyNote,
+      },
+      {
+        label: "Programstyrene",
+        href: "/om/programstyrene",
+        description: "Oversikt over programstyrene",
+        icon: Users,
+      },
+    ],
+  },
+];
 
 const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
   .link("/", { label: "Dashboard" })
@@ -71,6 +221,5 @@ const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   })
   .build();
 
-export const headerRoutes = [forStudentsRoutes, forCompaniesRoutes, aboutRoutes];
 export const adminRoutes = [sidebarRoutes];
 export const footerRoutes = [contactUsRoutes, followUsRoutes];
