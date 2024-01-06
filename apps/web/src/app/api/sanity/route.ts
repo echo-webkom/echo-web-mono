@@ -83,6 +83,10 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
+  if (data?.slug) {
+    revalidate(data.slug);
+  }
+
   /**
    * If the happening is external, we don't want to do anything. Since
    * we are not responsible for the registrations of external happenings.
@@ -190,8 +194,6 @@ export const POST = withBasicAuth(async (req) => {
       await db.insert(questions).values(questionsToInsert);
     }
 
-    revalidate(happening.slug);
-
     return NextResponse.json(
       {
         status: "success",
@@ -292,8 +294,6 @@ export const POST = withBasicAuth(async (req) => {
         ),
       );
     }
-
-    revalidate(happening.slug);
 
     return NextResponse.json(
       {
