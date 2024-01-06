@@ -130,7 +130,7 @@ export default async function ManageGroup({ params }: Props) {
                         user={{
                           email: member.user.email,
                           id: member.userId,
-                          name: member.user.name ?? member.userId,
+                          name: member.user.name ?? member.user.email,
                         }}
                         group={group}
                         isLeader={member.isLeader}
