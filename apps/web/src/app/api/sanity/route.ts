@@ -20,6 +20,9 @@ import { type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Revalidates the cache based on the changes being made in Sanity.
+ */
 function revalidate(slug: string) {
   revalidateTag(`happening-${slug}`);
   revalidateTag("upcoming-happenings");
@@ -64,10 +67,11 @@ function revalidate(slug: string) {
  * ```
  */
 export const POST = withBasicAuth(async (req) => {
-  const { operation, documentId, data } = (await req.json()) as unknown as {
+  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
     operation: "create" | "update" | "delete";
     documentId: string;
-    data: SanityHappening | null;
+    pastSlug: string | null; // Is null on create and string on delete and update
+    data: SanityHappening | null; // Is null on delete
   };
 
   // eslint-disable-next-line no-console
@@ -85,6 +89,8 @@ export const POST = withBasicAuth(async (req) => {
 
   if (data?.slug) {
     revalidate(data.slug);
+  } else if (pastSlug) {
+    revalidate(pastSlug);
   }
 
   /**
@@ -104,23 +110,7 @@ export const POST = withBasicAuth(async (req) => {
     /**
      * Delete the happening. Tables with foreign keys will be deleted automatically.
      */
-    const happening = await db
-      .delete(happenings)
-      .where(eq(happenings.id, documentId))
-      .returning({ slug: happenings.slug })
-      .then((res) => res[0]);
-
-    if (!happening) {
-      return NextResponse.json(
-        {
-          status: "error",
-          message: `Happening with id ${documentId} not found`,
-        },
-        { status: 404 },
-      );
-    }
-
-    revalidate(happening.slug);
+    await db.delete(happenings).where(eq(happenings.id, documentId));
 
     return NextResponse.json(
       {
