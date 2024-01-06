@@ -26,7 +26,7 @@ export default async function FeedbackOverview() {
 
 function Feedback({ feedback }: { feedback: SiteFeedback }) {
   return (
-    <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+    <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-card px-4 py-5 text-card-foreground shadow sm:p-6 dark:border">
       <p className="text-xs text-muted-foreground">
         {feedback.createdAt.toLocaleTimeString("nb-NO", {
           day: "2-digit",
@@ -37,14 +37,18 @@ function Feedback({ feedback }: { feedback: SiteFeedback }) {
         })}
       </p>
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
-      <h3 className="font-medium">Fra: {feedback.name || "Ingen"}</h3>
-      {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
-      <p className="text-sm font-medium text-muted-foreground">{feedback.email || "Ingen"}</p>
+      <h3 className="font-medium">Navn: {feedback.name || "Ukjent"}</h3>
+      <p className="text-sm font-medium text-muted-foreground">
+        {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
+        E-post: {feedback.email || "Ukjent"}
+      </p>
+
+      <p className="text-sm font-medium text-muted-foreground">Tema: {feedback.category}</p>
 
       <hr className="my-3" />
 
       <div>
-        <p className="break-words text-sm text-muted-foreground">
+        <p className="break-words text-sm text-card-foreground">
           {/* Show line breaks */}
           {feedback.message.split("\n").map((line, index) => (
             <span key={index}>
