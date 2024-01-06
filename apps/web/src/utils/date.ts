@@ -49,3 +49,13 @@ export function time(date: Date | string) {
     timeZone: "Europe/Oslo",
   });
 }
+
+export function toDateOrNull(date: Date | string | null) {
+  if (!date) return null;
+
+  const d = new Date(date);
+
+  if (isNaN(d.getTime())) return null;
+
+  return d;
+}
