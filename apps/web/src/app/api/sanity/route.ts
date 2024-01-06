@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
@@ -18,6 +19,11 @@ import { makeListUnique } from "@/utils/list";
 import { type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
+
+function revalidate(slug: string) {
+  revalidateTag(`happening-${slug}`);
+  revalidateTag("upcoming-happenings");
+}
 
 /**
  * Endpoint for syncing happenings from Sanity to the database.
@@ -94,7 +100,23 @@ export const POST = withBasicAuth(async (req) => {
     /**
      * Delete the happening. Tables with foreign keys will be deleted automatically.
      */
-    await db.delete(happenings).where(eq(happenings.id, documentId));
+    const happening = await db
+      .delete(happenings)
+      .where(eq(happenings.id, documentId))
+      .returning({ slug: happenings.slug })
+      .then((res) => res[0]);
+
+    if (!happening) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: `Happening with id ${documentId} not found`,
+        },
+        { status: 404 },
+      );
+    }
+
+    revalidate(happening.slug);
 
     return NextResponse.json(
       {
@@ -167,6 +189,8 @@ export const POST = withBasicAuth(async (req) => {
     if (questionsToInsert.length > 0) {
       await db.insert(questions).values(questionsToInsert);
     }
+
+    revalidate(happening.slug);
 
     return NextResponse.json(
       {
@@ -268,6 +292,8 @@ export const POST = withBasicAuth(async (req) => {
         ),
       );
     }
+
+    revalidate(happening.slug);
 
     return NextResponse.json(
       {
