@@ -128,31 +128,29 @@ export const fetchFilteredHappening = async (
 }
     `;
 
-    const res = await sanityFetch<Array<Happening>>({
-      query,
-      tags: ["filtered-bedpresses"],
-    });
-
-    return happeningSchema.array().parse(res);
+    return happeningSchema.array().parse(await sanityClient.fetch(query));
   } catch (error) {
     console.error(error);
     return {
-      message: "Could not fetch bedpres.",
+      message: "Could not fetch happening.",
     };
   }
 };
 
 export async function getHappeningTypeBySlug(slug: string) {
-  try {
-    const query = groq`
+  const query = groq`
 *[_type == "happening" && slug.current == $slug] {
   happeningType,
 }.happeningType
 `;
 
-    return await sanityClient
-      .fetch(query, { slug })
-      .then((res: [string]) => happeningTypeSchema.parse(res[0]));
+  try {
+    const res = await sanityFetch<string>({
+      query,
+      tags: [`happening-${slug}`],
+    });
+
+    return happeningTypeSchema.parse(res);
   } catch {
     return null;
   }

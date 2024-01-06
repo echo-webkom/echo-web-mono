@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
@@ -18,6 +19,14 @@ import { makeListUnique } from "@/utils/list";
 import { type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
+
+/**
+ * Revalidates the cache based on the changes being made in Sanity.
+ */
+function revalidate(slug: string) {
+  revalidateTag(`happening-${slug}`);
+  revalidateTag("upcoming-happenings");
+}
 
 /**
  * Endpoint for syncing happenings from Sanity to the database.
@@ -58,10 +67,11 @@ export const dynamic = "force-dynamic";
  * ```
  */
 export const POST = withBasicAuth(async (req) => {
-  const { operation, documentId, data } = (await req.json()) as unknown as {
+  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
     operation: "create" | "update" | "delete";
     documentId: string;
-    data: SanityHappening | null;
+    pastSlug: string | null; // Is null on create and string on delete and update
+    data: SanityHappening | null; // Is null on delete
   };
 
   // eslint-disable-next-line no-console
@@ -75,6 +85,12 @@ export const POST = withBasicAuth(async (req) => {
       },
       { status: 400 },
     );
+  }
+
+  if (data?.slug) {
+    revalidate(data.slug);
+  } else if (pastSlug) {
+    revalidate(pastSlug);
   }
 
   /**
