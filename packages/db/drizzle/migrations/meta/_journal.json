@@ -36,6 +36,13 @@
       "when": 1704362797554,
       "tag": "0004_soft_monster_badoon",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1704473981524,
+      "tag": "0005_typical_ego",
+      "breakpoints": true
     }
   ]
 }
