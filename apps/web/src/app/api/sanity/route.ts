@@ -19,6 +19,44 @@ import { type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Endpoint for syncing happenings from Sanity to the database.
+ * Gets triggered by a webhook from Sanity, on create, update and delete of a happening.
+ *
+ * Data is sent from a GROQ projection in Sanity:
+ * ```
+ * {
+ *   "operation": delta::operation(),
+ *   "documentId": _id,
+ *   "data": after(){
+ *     _id,
+ *     title,
+ *     body,
+ *     "slug": slug.current,
+ *     date,
+ *     happeningType,
+ *     "registrationStartGroups": registrationStartGroups[]->slug.current,
+ *     "registrationGroups": registrationGroups[]->slug.current,
+ *     "registrationStart": registrationStart,
+ *     "registrationEnd": registrationEnd,
+ *     "groups": organizers[]->slug.current,
+ *     "spotRanges": spotRanges[] {
+ *       spots,
+ *       minYear,
+ *       maxYear
+ *     },
+ *     "questions": additionalQuestions[] {
+ *       id,
+ *       title,
+ *       required,
+ *       type,
+ *       isSensitive,
+ *       options
+ *     }
+ *   }
+ * }
+ * ```
+ */
 export const POST = withBasicAuth(async (req) => {
   const { operation, documentId, data } = (await req.json()) as unknown as {
     operation: "create" | "update" | "delete";
