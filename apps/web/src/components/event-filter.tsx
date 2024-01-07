@@ -10,7 +10,7 @@ import {
 import { isBefore, isThisWeek, isWithinInterval, nextMonday, startOfDay } from "date-fns";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { fetchFilteredHappening } from "@/sanity/happening";
+import { fetchFilteredHappening } from "@/sanity/happening/requests";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isErrorMessage } from "@/utils/error";
 import { CombinedHappeningPreview } from "./happening-preview-box";

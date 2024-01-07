@@ -4,7 +4,7 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchMinutes } from "@/sanity/minutes";
+import { fetchMinutes } from "@/sanity/minutes/requests";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function MinuteOverview() {

@@ -1,2 +1,2 @@
-export * from "./profile";
+export * from "./mappers";
 export * from "./constants";

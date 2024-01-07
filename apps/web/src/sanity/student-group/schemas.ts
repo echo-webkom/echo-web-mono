@@ -39,6 +39,11 @@ export const studentGroupSchema = z.object({
     .nullable(),
 });
 
+export const studentGroupSlugSchema = z.object({
+  slug: z.string(),
+  groupType: z.enum(studentGroupTypes),
+});
+
 export type Member = z.infer<typeof memberSchema>;
 export type StudentGroupType = z.infer<typeof studentGroupTypeSchema>;
 export type StudentGroup = z.infer<typeof studentGroupSchema>;

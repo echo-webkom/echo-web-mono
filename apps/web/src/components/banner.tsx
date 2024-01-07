@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { getBanner } from "@/sanity/settings";
+import { fetchBanner } from "@/sanity/settings";
 
 export async function Banner() {
-  const banner = await getBanner();
+  const banner = await fetchBanner();
 
   if (!banner?.showBanner) {
     return null;
@@ -27,11 +27,11 @@ export async function Banner() {
   return <BaseBanner banner={banner} />;
 }
 
-function BaseBanner({ banner }: { banner: Awaited<ReturnType<typeof getBanner>> }) {
-  if (!banner) {
-    return null;
-  }
-
+function BaseBanner({
+  banner,
+}: {
+  banner: Exclude<Awaited<ReturnType<typeof fetchBanner>>, null>;
+}) {
   return (
     <div className="bg-primary py-3 text-center text-white selection:text-black">
       <p className="text-lg font-semibold group-hover:underline">{banner.title}</p>
