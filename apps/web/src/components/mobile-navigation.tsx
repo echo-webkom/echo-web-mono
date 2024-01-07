@@ -67,7 +67,7 @@ const CloseMenuButton = () => {
 
   return (
     <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted hover:text-gray-900 dark:text-foreground"
+      className="flex flex-row items-center gap-1 rounded-md p-2 text-muted-foreground hover:bg-muted"
       onClick={() => setIsOpen(false)}
     >
       <span className="sr-only">Lukk meny</span>
@@ -84,7 +84,7 @@ const MenuContent = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background p-6 dark:text-foreground">
+    <div className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background px-6 pb-24 pt-6 dark:text-foreground">
       {children}
     </div>
   );
@@ -96,7 +96,7 @@ const MenuLink = ({ to, children }: { to: string; children: React.ReactNode }) =
   return (
     <Link
       href={to}
-      className="block rounded-md px-4 py-2 text-xl text-gray-600 hover:bg-muted dark:text-foreground"
+      className="block rounded-md p-4 text-2xl text-gray-600 hover:bg-muted dark:text-foreground"
       onClick={() => setIsOpen(false)}
     >
       {children}
@@ -110,10 +110,10 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
   return (
     <div>
       <button
-        className="flex w-full flex-row items-center gap-1 rounded-md px-4 py-2 text-xl text-gray-600 hover:bg-muted dark:text-foreground"
+        className="flex w-full flex-row items-center gap-1 rounded-md p-4 text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{label}</span>
+        <span className="text-2xl">{label}</span>
         <span>
           <ChevronDownIcon
             className={cn("h-4 w-4 transition duration-200 ease-in-out", {
@@ -129,7 +129,7 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
 };
 
 const MenuDropdown = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="w-full items-start divide-y px-6">{children}</ul>;
+  return <ul className="w-full items-start">{children}</ul>;
 };
 
 export const MobileNavigation = () => {
@@ -138,29 +138,44 @@ export const MobileNavigation = () => {
       <MenuButton />
 
       <MenuContent>
-        <div className="flex items-center justify-between px-4">
-          <h1 className="text-2xl font-bold text-gray-700 dark:text-foreground">Navigasjon</h1>
-
+        <div className="flex items-center justify-end">
           <CloseMenuButton />
         </div>
 
-        <MenuLink to="/">Hjem</MenuLink>
-        {headerRoutes.map((route) => (
-          <MenuItem key={route.label} label={route.label}>
-            <MenuDropdown>
-              {route.sublinks.map((subRoute) => (
-                <li key={subRoute.label} className="w-full py-2">
-                  <Link
-                    className="block w-full text-lg text-gray-600 hover:underline dark:text-foreground"
-                    href={subRoute.href}
-                  >
-                    {subRoute.label}
-                  </Link>
-                </li>
-              ))}
-            </MenuDropdown>
-          </MenuItem>
-        ))}
+        {headerRoutes.map((route) => {
+          if ("href" in route) {
+            return (
+              <MenuLink key={route.label} to={route.href}>
+                {route.label}
+              </MenuLink>
+            );
+          }
+
+          return (
+            <MenuItem key={route.label} label={route.label}>
+              <MenuDropdown>
+                {route.links.map((link) => (
+                  <li key={link.label} className="w-full">
+                    <Link
+                      className="flex items-center rounded-lg p-4 hover:bg-muted"
+                      href={link.href}
+                    >
+                      <div className="flex items-center gap-4">
+                        {React.createElement(link.icon, { className: "h-6 w-6" })}
+                        <div>
+                          <div>
+                            <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
+                            <p className="text-sm text-muted-foreground">{link.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </MenuDropdown>
+            </MenuItem>
+          );
+        })}
       </MenuContent>
     </NavigationRoot>
   );
