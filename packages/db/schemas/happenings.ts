@@ -8,7 +8,7 @@ export const happenings = pgTable(
   "happening",
   {
     id: varchar("id", { length: 255 }).notNull(),
-    slug: varchar("slug", { length: 255 }).notNull(),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
     title: varchar("title", { length: 255 }).notNull(),
     type: happeningTypeEnum("type").notNull().default("event"),
     date: timestamp("date"),
@@ -17,10 +17,8 @@ export const happenings = pgTable(
     registrationStart: timestamp("registration_start"),
     registrationEnd: timestamp("registration_end"),
   },
-  (e) => ({
-    pk: primaryKey({ columns: [e.id] }),
-    // typeIdx: index("type_idx").on(e.type),
-    // slugIdx: uniqueIndex("slug_idx").on(e.slug),
+  (table) => ({
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 
