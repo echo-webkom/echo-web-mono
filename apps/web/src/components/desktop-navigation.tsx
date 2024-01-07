@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "framer-motion";
 import { type LucideIcon } from "lucide-react";
 
 import { useOutsideClick } from "@/hooks/use-outsideclick";
@@ -11,8 +12,13 @@ import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
 type NavigationContextType = {
-  activeDropdown: React.ReactNode | null;
-  setActiveDropdown: React.Dispatch<React.SetStateAction<React.ReactNode | null>>;
+  activeDropdown: { id: string; children: React.ReactNode } | null;
+  setActiveDropdown: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      children: React.ReactNode;
+    } | null>
+  >;
 };
 
 const NavigationContext = createContext<NavigationContextType | null>(null);
@@ -28,7 +34,10 @@ const useNavigation = () => {
 };
 
 const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
-  const [activeDropdown, setActiveDropdown] = useState<React.ReactNode | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<{
+    id: string;
+    children: React.ReactNode;
+  } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(() => {
@@ -52,10 +61,17 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   const pathname = usePathname();
   const { activeDropdown, setActiveDropdown } = useNavigation();
 
-  const isActive = activeDropdown === children;
+  const isActive = activeDropdown?.id === label;
 
   const handleClick = () => {
-    setActiveDropdown(isActive ? null : children);
+    setActiveDropdown(
+      isActive
+        ? null
+        : {
+            id: label,
+            children,
+          },
+    );
   };
 
   useEffect(() => {
@@ -101,14 +117,19 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
 const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
-  if (!activeDropdown) {
-    return null;
-  }
-
   return (
-    <div className="absolute left-0 z-20 w-full border-b bg-background p-4 shadow-lg">
-      {activeDropdown}
-    </div>
+    <AnimatePresence>
+      {activeDropdown && (
+        <motion.div
+          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background p-4 shadow-lg"
+          initial={{ height: 0 }}
+          animate={{ height: "auto" }}
+          exit={{ height: activeDropdown ? 0 : "auto" }}
+        >
+          {activeDropdown.children}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
