@@ -2,7 +2,12 @@ import "./src/env.mjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
+  transpilePackages: [
+    "@echo-webkom/auth",
+    "@echo-webkom/db",
+    "@echo-webkom/lib",
+    "@echo-webkom/email",
+  ],
 
   images: {
     remotePatterns: [

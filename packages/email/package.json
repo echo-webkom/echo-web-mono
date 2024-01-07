@@ -12,14 +12,13 @@
     "lint": "eslint",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
-    "broken:dev": "pnpm with-env email dev --port 3003",
+    "preview": "pnpm with-env email preview ./emails",
     "export": "pnpm with-env email export",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@react-email/components": "0.0.12",
-    "react": "18.2.0",
-    "react-email": "1.10.0"
+    "jsx-email": "1.7.0",
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@types/node": "18.19.4",

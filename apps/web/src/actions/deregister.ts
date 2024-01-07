@@ -6,6 +6,10 @@ import { z } from "zod";
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
+import { DeregistrationNotificationEmail } from "@echo-webkom/email";
+
+import { getContactsBySlug } from "@/sanity/utils/contacts";
+import { sendEmail } from "@/utils/send-email";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -25,6 +29,9 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
         and(eq(registration.happeningId, id), eq(registration.userId, user.id)),
+      with: {
+        happening: true,
+      },
     });
 
     if (!exisitingRegistration) {
@@ -46,6 +53,20 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
     ]);
+
+    const contacts = await getContactsBySlug(exisitingRegistration.happening.slug);
+
+    if (contacts.length > 0) {
+      await sendEmail(
+        contacts.map((contact) => contact.email),
+        `${user.name ?? "Ukjent"} har meldt seg av ${exisitingRegistration.happening.title}`,
+        DeregistrationNotificationEmail({
+          happeningTitle: exisitingRegistration.happening.title,
+          name: user.name ?? "Ukjent",
+          reason: data.reason,
+        }),
+      );
+    }
 
     return {
       success: true,
