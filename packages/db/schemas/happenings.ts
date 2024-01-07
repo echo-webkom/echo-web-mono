@@ -1,13 +1,5 @@
 import { relations } from "drizzle-orm";
-import {
-  index,
-  json,
-  pgTable,
-  primaryKey,
-  timestamp,
-  uniqueIndex,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
@@ -27,8 +19,8 @@ export const happenings = pgTable(
   },
   (e) => ({
     pk: primaryKey({ columns: [e.id] }),
-    typeIdx: index("type_idx").on(e.type),
-    slugIdx: uniqueIndex("slug_idx").on(e.slug),
+    // typeIdx: index("type_idx").on(e.type),
+    // slugIdx: uniqueIndex("slug_idx").on(e.slug),
   }),
 );
 

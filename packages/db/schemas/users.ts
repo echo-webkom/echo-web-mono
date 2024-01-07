@@ -1,13 +1,5 @@
 import { relations } from "drizzle-orm";
-import {
-  integer,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-  uniqueIndex,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, usersToGroups, userTypeEnum } from ".";
@@ -27,10 +19,6 @@ export const users = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
-    uniqueEmailIdx: uniqueIndex("unique_email_idx").on(table.email),
-    unqiueAlternativeEmailIdx: uniqueIndex("unique_alternative_email_idx").on(
-      table.alternativeEmail,
-    ),
   }),
 );
 

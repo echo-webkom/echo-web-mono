@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
@@ -22,11 +22,6 @@ export const spotRanges = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
-    indexes: uniqueIndex("happening_id_min_year_max_year").on(
-      table.happeningId,
-      table.minYear,
-      table.maxYear,
-    ),
   }),
 );
 

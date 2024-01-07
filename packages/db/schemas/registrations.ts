@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, registrationStatusEnum, users } from ".";
@@ -23,7 +23,6 @@ export const registrations = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId] }),
-    statusIdx: index("status_idx").on(table.status),
   }),
 );
 
