@@ -7,7 +7,7 @@ import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { fetchPostsByPage } from "@/sanity/posts";
+import { fetchPostsByPage } from "@/sanity/posts/requests";
 
 type Props = {
   searchParams: {

@@ -9,3 +9,7 @@ export const minuteSchema = z.object({
 });
 
 export type Minute = z.infer<typeof minuteSchema>;
+
+export const idSchema = z.object({
+  id: z.string(),
+});

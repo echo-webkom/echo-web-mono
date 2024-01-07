@@ -7,7 +7,7 @@ import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchHappeningBySlug } from "@/sanity/happening";
+import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { shortDate } from "@/utils/date";
 
 type Props = {

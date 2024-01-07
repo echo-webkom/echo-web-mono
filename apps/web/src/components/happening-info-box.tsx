@@ -1,7 +1,7 @@
 import { isAfter, isBefore } from "date-fns";
 
 import { maxCapacityBySlug } from "@/lib/queries/happening";
-import { fetchHappeningBySlug } from "@/sanity/happening";
+import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { norwegianDateString } from "@/utils/date";
 import { capitalize } from "@/utils/string";
 

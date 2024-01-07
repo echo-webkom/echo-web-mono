@@ -6,7 +6,8 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { isBoard } from "@/lib/is-board";
-import { fetchPostBySlug, fetchPostParams, type Author } from "@/sanity/posts";
+import { type Author } from "@/sanity/posts";
+import { fetchPostBySlug, fetchPostParams } from "@/sanity/posts/requests";
 import { urlFor } from "@/utils/image-builder";
 
 type Props = {

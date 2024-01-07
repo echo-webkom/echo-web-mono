@@ -1,10 +1,11 @@
 import { cache } from "react";
 import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes";
+import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes/requests";
 
 type Props = {
   params: {
@@ -13,7 +14,13 @@ type Props = {
 };
 
 const getData = cache(async (id: string) => {
-  return await fetchMinuteById(id);
+  const minute = await fetchMinuteById(id);
+
+  if (!minute) {
+    return notFound();
+  }
+
+  return minute;
 });
 
 export async function generateStaticParams() {

@@ -23,6 +23,10 @@ type Props = {
 const getData = cache(async (slug: string) => {
   const group = await fetchStudentGroupBySlug(slug);
 
+  if (!group) {
+    return notFound();
+  }
+
   if (group.groupType === "hidden") {
     return notFound();
   }
