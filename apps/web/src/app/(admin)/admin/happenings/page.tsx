@@ -60,7 +60,7 @@ export default async function AdminHappeningsPage() {
         </p>
       </div>
 
-      <code className="rounded-md bg-slate-100 p-2 font-mono">
+      <code className="rounded-md bg-card p-2 font-mono text-card-foreground">
         <pre>{JSON.stringify(h, null, 2)}</pre>
       </code>
     </Container>
