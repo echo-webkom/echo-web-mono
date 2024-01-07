@@ -1,28 +1,40 @@
 import { sanityFetch } from "../client";
 import { pageTypeToUrl } from "./mappers";
-import { staticInfoBySlugQuery, staticInfoPathsQuery } from "./queries";
+import { staticInfoQuery } from "./queries";
 import { staticInfoSchema } from "./schemas";
 
 /**
- * Fetches the paths for all static info pages.
- *
- * @returns
+ * Fetches all static info pages.
  */
-export async function fetchStaticInfoPaths() {
+export async function fetchStaticInfo() {
   try {
-    const staticPaths = await sanityFetch({
-      query: staticInfoPathsQuery,
-      tags: ["static-info-paths"],
-    }).then((res) => staticInfoSchema.pick({ slug: true, pageType: true }).array().parse(res));
-
-    return staticPaths.map((staticInfo) => ({
-      slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
-    }));
+    return await sanityFetch({
+      query: staticInfoQuery,
+      tags: ["static-info"],
+    }).then((res) => staticInfoSchema.array().parse(res));
   } catch {
     return [];
   }
 }
 
+/**
+ * Fetches the paths for all static info pages.
+ */
+export async function fetchStaticInfoPaths() {
+  return fetchStaticInfo().then((res) =>
+    res.map((staticInfo) => ({
+      slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
+    })),
+  );
+}
+
+/**
+ * Fetches a static info page by its slug.
+ *
+ * @param pageType the page type to fetch
+ * @param slug the slug of the page to fetch
+ * @returns
+ */
 export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
   const parsedPageType = Object.keys(pageTypeToUrl).find(
     (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === pageType,
@@ -32,16 +44,7 @@ export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
     return null;
   }
 
-  try {
-    return await sanityFetch({
-      query: staticInfoBySlugQuery,
-      params: {
-        slug,
-        pageType: parsedPageType,
-      },
-      tags: [`static-info-${slug}`],
-    }).then((res) => staticInfoSchema.parse(res));
-  } catch {
-    return null;
-  }
+  return await fetchStaticInfo().then((res) =>
+    res.find((staticInfo) => staticInfo.slug === slug && staticInfo.pageType === parsedPageType),
+  );
 }

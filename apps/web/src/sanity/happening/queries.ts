@@ -48,27 +48,10 @@ export const happeningPartial = groq`
   body
 `;
 
-export const upcomingHappeningQuery = groq`
+export const allHappeningsQuery = groq`
 *[_type == "happening"
-  && happeningType == $type
-  && !(_id in path('drafts.**'))
-  && date >= now()]
-  | order(date asc)
-  [0...$n] {
+  && !(_id in path('drafts.**'))]
+  | order(date asc) {
   ${happeningPartial}
 }
-`;
-
-export const happeningBySlugQuery = groq`
-*[_type == "happening"
-  && slug.current == $slug
-  && !(_id in path('drafts.**'))] {
-${happeningPartial}
-}[0]
-`;
-
-export const happeningTypeBySlugQuery = groq`
-*[_type == "happening" && slug.current == $slug] {
-  happeningType,
-}.happeningType
 `;

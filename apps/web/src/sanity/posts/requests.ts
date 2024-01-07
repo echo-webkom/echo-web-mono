@@ -1,7 +1,24 @@
 import { sanityFetch } from "../client";
-import { slugSchema } from "../utils/slug";
-import { allPostsQuery, postBySlugQuery, postSlugsQuery } from "./queries";
+import { allPostsQuery } from "./queries";
 import { postSchema, type Post } from "./schemas";
+
+/**
+ * Fetches all posts.
+ */
+export async function fetchAllPosts() {
+  return await sanityFetch<Array<Post>>({
+    query: allPostsQuery,
+    tags: ["posts"],
+  })
+    .then((res) => postSchema.array().parse(res))
+    .catch(() => []);
+}
+
+export async function fetchPosts(n?: number) {
+  const posts = await fetchAllPosts();
+
+  return n ? posts.slice(0, n) : posts;
+}
 
 /**
  * Get all slugs for posts.
@@ -9,37 +26,7 @@ import { postSchema, type Post } from "./schemas";
  * @returns an array of slugs
  */
 export async function fetchPostParams() {
-  try {
-    return await sanityFetch<Array<string>>({
-      query: postSlugsQuery,
-      tags: ["post-params"],
-    }).then((res) =>
-      slugSchema
-        .array()
-        .parse(res)
-        .map(({ slug }) => slug),
-    );
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Get the n posts in descending order.
- *
- * @param n how many posts to retrieve. -1 for all
- */
-export async function fetchPosts(n: number | undefined) {
-  try {
-    const posts = await sanityFetch<Array<Post>>({
-      query: allPostsQuery,
-      tags: ["posts"],
-    }).then((res) => postSchema.array().parse(res));
-
-    return n === -1 || n === undefined ? posts : posts.slice(0, n);
-  } catch {
-    return [];
-  }
+  return await fetchPosts().then((res) => res.map((post) => post.slug));
 }
 
 /**
@@ -54,13 +41,11 @@ export async function fetchPostsByPage(page: number, pageSize = 10) {
   const start = (page - 1) * pageSize;
   const end = page * pageSize;
 
-  const posts = await fetchPosts(-1).then((res) => res.slice(start, end));
-
-  const hasMore = posts.length === pageSize;
+  const posts = await fetchPosts();
 
   return {
-    posts,
-    hasMore,
+    posts: posts.slice(start, end),
+    hasMore: Boolean(posts[end + 1]),
   };
 }
 
@@ -71,15 +56,5 @@ export async function fetchPostsByPage(page: number, pageSize = 10) {
  * @returns the post or null if not found
  */
 export async function fetchPostBySlug(slug: string) {
-  try {
-    return await sanityFetch<Post | null>({
-      query: postBySlugQuery,
-      params: {
-        slug,
-      },
-      tags: [`post-${slug}`],
-    }).then((res) => postSchema.parse(res));
-  } catch {
-    return null;
-  }
+  return await fetchPosts().then((res) => res.find((post) => post.slug === slug));
 }

@@ -1,28 +1,6 @@
 import { sanityFetch } from "../client";
-import { slugSchema } from "../utils/slug";
-import { availableJobAdsQuery, jobAdBySlugQuery, jobAdSlugsQuery, jobAdsQuery } from "./queries";
-import { jobAdSchema, type JobAd } from "./schemas";
-
-/**
- * Fetches all slugs for job ads
- *
- * @returns an array of slugs for all job ads
- */
-export async function fetchJobAdPaths() {
-  try {
-    return await sanityFetch<Array<string>>({
-      query: jobAdSlugsQuery,
-      tags: ["job-ad-paths"],
-    }).then((res) =>
-      slugSchema
-        .array()
-        .parse(res)
-        .map(({ slug }) => slug),
-    );
-  } catch {
-    return [];
-  }
-}
+import { jobAdsQuery } from "./queries";
+import { jobAdSchema } from "./schemas";
 
 /**
  * Fetches a number of job ads
@@ -30,18 +8,22 @@ export async function fetchJobAdPaths() {
  * @param n number of job ads to fetch
  * @returns job ads or null if not found
  */
-export async function fetchJobAds(n: number) {
-  try {
-    return await sanityFetch<Array<JobAd>>({
-      query: jobAdsQuery,
-      params: {
-        n,
-      },
-      tags: ["job-ads"],
-    }).then((res) => jobAdSchema.array().parse(res));
-  } catch {
-    return [];
-  }
+export async function fetchJobAds() {
+  return await sanityFetch({
+    query: jobAdsQuery,
+    tags: ["job-ads"],
+  })
+    .then((res) => jobAdSchema.array().parse(res))
+    .catch(() => []);
+}
+
+/**
+ * Fetches all slugs for job ads
+ *
+ * @returns an array of slugs for all job ads
+ */
+export async function fetchJobAdPaths() {
+  return await fetchJobAds().then((res) => res.map((jobAd) => jobAd.slug));
 }
 
 /**
@@ -51,17 +33,9 @@ export async function fetchJobAds(n: number) {
  * @returns job ads or an empty array if error
  */
 export async function fetchAvailableJobAds(n: number) {
-  try {
-    return await sanityFetch<Array<JobAd>>({
-      query: availableJobAdsQuery,
-      params: {
-        n,
-      },
-      tags: ["job-ads"],
-    }).then((res) => jobAdSchema.array().parse(res));
-  } catch {
-    return [];
-  }
+  return await fetchJobAds().then((res) =>
+    res.filter((jobAd) => new Date(jobAd.deadline) > new Date()).slice(0, n),
+  );
 }
 
 /**
@@ -71,15 +45,5 @@ export async function fetchAvailableJobAds(n: number) {
  * @returns the job ad or null if not found
  */
 export async function fetchJobAdBySlug(slug: string) {
-  try {
-    return await sanityFetch<JobAd | null>({
-      query: jobAdBySlugQuery,
-      params: {
-        slug,
-      },
-      tags: [`job-ad-${slug}`],
-    }).then((res) => jobAdSchema.parse(res));
-  } catch {
-    return null;
-  }
+  return await fetchJobAds().then((res) => res.find((jobAd) => jobAd.slug === slug));
 }

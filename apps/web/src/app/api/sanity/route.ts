@@ -21,14 +21,6 @@ import { type SanityHappening } from "./sync/query";
 export const dynamic = "force-dynamic";
 
 /**
- * Revalidates the cache based on the changes being made in Sanity.
- */
-function revalidate(slug: string) {
-  revalidateTag(`happening-${slug}`);
-  revalidateTag("upcoming-happenings");
-}
-
-/**
  * Endpoint for syncing happenings from Sanity to the database.
  * Gets triggered by a webhook from Sanity, on create, update and delete of a happening.
  *
@@ -67,10 +59,9 @@ function revalidate(slug: string) {
  * ```
  */
 export const POST = withBasicAuth(async (req) => {
-  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
+  const { operation, documentId, data } = (await req.json()) as unknown as {
     operation: "create" | "update" | "delete";
     documentId: string;
-    pastSlug: string | null; // Is null on create and string on delete and update
     data: SanityHappening | null; // Is null on delete
   };
 
@@ -87,11 +78,7 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  if (data?.slug) {
-    revalidate(data.slug);
-  } else if (pastSlug) {
-    revalidate(pastSlug);
-  }
+  revalidateTag("happenings");
 
   /**
    * If the happening is external, we don't want to do anything. Since

@@ -1,41 +1,41 @@
-import { groq } from "next-sanity";
-
 import { type QueryParams } from "@/components/event-filter";
 import { type ErrorMessage } from "@/utils/error";
-import { sanityClient, sanityFetch } from "../client";
-import {
-  happeningBySlugQuery,
-  happeningPartial,
-  happeningTypeBySlugQuery,
-  upcomingHappeningQuery,
-} from "./queries";
-import {
-  happeningSchema,
-  happeningTypeSchema,
-  type Happening,
-  type HappeningType,
-} from "./schemas";
+import { sanityFetch } from "../client";
+import { allHappeningsQuery } from "./queries";
+import { happeningSchema, type Happening, type HappeningType } from "./schemas";
+
+/**
+ * Fetches all happenings
+ *
+ * @returns all happenings
+ */
+export async function fetchAllHappenings() {
+  return await sanityFetch<Array<Happening>>({
+    query: allHappeningsQuery,
+    tags: ["happenings"],
+  })
+    .then((res) => happeningSchema.array().parse(res))
+    .catch(() => []);
+}
 
 /**
  * Fetches the upcoming happenings of a given type
- *
- * @param type type of happenings
- * @param n number of happenings to fetch. -1 for all
- * @returns upcoming happenings
  */
 export async function fetchUpcomingHappening(type: HappeningType, n: number) {
-  try {
-    return await sanityFetch<Array<Happening>>({
-      query: upcomingHappeningQuery,
-      params: {
-        n: n > 0 ? n : -1,
-        type,
-      },
-      tags: ["upcoming-happenings"],
-    }).then((res) => happeningSchema.array().parse(res));
-  } catch (error) {
-    return null;
-  }
+  return await fetchAllHappenings().then((happening) =>
+    happening
+      .filter(
+        ({ happeningType, date }) => happeningType === type && date && new Date(date) > new Date(),
+      )
+      .sort((a, b) => {
+        if (!a.date || !b.date) {
+          return 0;
+        }
+
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      })
+      .slice(0, n),
+  );
 }
 
 /**
@@ -45,17 +45,7 @@ export async function fetchUpcomingHappening(type: HappeningType, n: number) {
  * @returns the happening or null if not found
  */
 export async function fetchHappeningBySlug(slug: string) {
-  try {
-    return await sanityFetch<Happening>({
-      query: happeningBySlugQuery,
-      params: {
-        slug,
-      },
-      tags: [`happening-${slug}`],
-    }).then((res) => happeningSchema.parse(res));
-  } catch (error) {
-    return null;
-  }
+  return await fetchAllHappenings().then((res) => res.find((happening) => happening.slug === slug));
 }
 
 /**
@@ -67,29 +57,41 @@ export async function fetchHappeningBySlug(slug: string) {
 export const fetchFilteredHappening = async (
   q: QueryParams,
 ): Promise<Array<Happening> | ErrorMessage> => {
-  const conditions = [
-    `_type == "happening"`,
-    `!(_id in path('drafts.**'))`,
-    q.type === "all" ? null : `happeningType == "${q.type}"`,
-    q.open ? `registrationStart <= now() && registrationEnd > now()` : null,
-    q.past ? `date < now()` : `date >= now()`,
-    q.search ? `title match "*${q.search}*"` : null,
-  ].filter(Boolean);
+  return await fetchAllHappenings().then((res) =>
+    res
+      .filter((happening) => {
+        const { title } = happening;
 
-  const query = groq`
-*[${conditions.join(" && ")}] {
-  ${happeningPartial}
-}
-`;
+        const search = q.search ?? "";
 
-  try {
-    return await sanityClient.fetch(query).then((res) => happeningSchema.array().parse(res));
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Could not fetch happening.",
-    };
-  }
+        return title.toLowerCase().includes(search.toLowerCase());
+      })
+      .filter((happening) => {
+        const { happeningType } = happening;
+
+        return happeningType === q.type || q.type === "all";
+      })
+      .filter((happening) => {
+        const { date } = happening;
+
+        if (!date) {
+          return false;
+        }
+
+        return q.past ? new Date(date) < new Date() : new Date(date) >= new Date();
+      })
+      .filter((happening) => {
+        const { registrationStart, registrationEnd } = happening;
+
+        if (!registrationStart || !registrationEnd) {
+          return false;
+        }
+
+        return q.open
+          ? new Date(registrationStart) <= new Date() && new Date(registrationEnd) > new Date()
+          : true;
+      }),
+  );
 };
 
 /**
@@ -99,15 +101,7 @@ export const fetchFilteredHappening = async (
  * @returns the happening type or null if not found
  */
 export async function getHappeningTypeBySlug(slug: string) {
-  try {
-    return await sanityFetch<string>({
-      query: happeningTypeBySlugQuery,
-      params: {
-        slug,
-      },
-      tags: [`happening-${slug}`],
-    }).then((res) => happeningTypeSchema.parse(res));
-  } catch {
-    return null;
-  }
+  return await fetchHappeningBySlug(slug).then((happening) =>
+    happening ? happening.happeningType : null,
+  );
 }
