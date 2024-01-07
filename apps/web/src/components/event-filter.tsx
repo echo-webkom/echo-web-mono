@@ -7,32 +7,32 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
-import { isBefore, isThisWeek, isWithinInterval, nextMonday, startOfDay } from "date-fns";
-import { AiOutlineLoading } from "react-icons/ai";
 
-import { fetchFilteredHappening } from "@/sanity/happening/requests";
-import { type Happening } from "@/sanity/happening/schemas";
-import { isErrorMessage } from "@/utils/error";
-import { CombinedHappeningPreview } from "./happening-preview-box";
+import EventsView from "./events-view";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-// For querying Sanity
-export type QueryParams = {
-  type: "all" | "event" | "bedpres";
+export type Query = {
   search?: string;
-  open?: string;
-  past?: string;
+  type: "all" | "event" | "bedpres";
+  open?: "true";
+  past?: "true";
+  thisWeek?: "true";
+  nextWeek?: "true";
+  later?: "true";
 };
 
 // For handling state
 export type SearchParams = {
   type: "all" | "event" | "bedpres";
   search?: string;
-  open: boolean;
-  past: boolean;
+  open?: boolean;
+  past?: boolean;
+  thisWeek?: boolean;
+  nextWeek?: boolean;
+  later?: boolean;
 };
 
 // Makes it so URLs can be shared with filters intact
@@ -42,10 +42,23 @@ function URLtoSearchParams(url: ReadonlyURLSearchParams) {
     search: url.get("search") ?? undefined,
     open: url.get("open") === "true" ? true : false,
     past: url.get("past") === "true" ? true : false,
+    thisWeek: url.get("thisWeek") === "true" ? true : false,
+    nextWeek: url.get("nextWeek") === "true" ? true : false,
+    later: url.get("later") === "true" ? true : false,
   };
 
   if (params.open && params.past) {
     params.open = false;
+    params.past = false;
+  }
+
+  if (params.past) {
+    params.thisWeek = false;
+    params.nextWeek = false;
+    params.later = false;
+  }
+
+  if (params.thisWeek ?? params.nextWeek ?? params.later) {
     params.past = false;
   }
 
@@ -57,12 +70,15 @@ function URLtoSearchParams(url: ReadonlyURLSearchParams) {
 }
 
 // Sanitizes the query params before fetching data
-function validateParamsToQuery(params: SearchParams) {
-  const query: QueryParams = {
+function generateQuery(params: SearchParams) {
+  const query: Query = {
     search: params.search ?? undefined,
     type: params.type ?? "all",
     open: params.open ? "true" : undefined,
     past: params.past ? "true" : undefined,
+    thisWeek: params.thisWeek ? "true" : undefined,
+    nextWeek: params.nextWeek ? "true" : undefined,
+    later: params.later ? "true" : undefined,
   };
 
   if (!(query.type === "all" || query.type === "event" || query.type === "bedpres")) {
@@ -82,22 +98,6 @@ function removeInvalidChars(str: string) {
   return str.replace(/[^ a-zæøåÆØÅ0-9-]/g, "");
 }
 
-function EventsView({ happenings, show }: { happenings: Array<Happening>; show: boolean }) {
-  return (
-    <>
-      {happenings.length > 0 && show && (
-        <div>
-          {happenings.map((event) => (
-            <ul key={event._id} className="py-1">
-              <CombinedHappeningPreview happening={event} />
-            </ul>
-          ))}
-        </div>
-      )}
-    </>
-  );
-}
-
 export default function EventFilter() {
   const router = useRouter();
   const pathname = usePathname();
@@ -105,76 +105,26 @@ export default function EventFilter() {
 
   const [searchParams, setSearchParams] = useState(URLtoSearchParams(params));
   const [input, setInput] = useState(searchParams.search ?? "");
-
-  const [happenings, setHappenings] = useState<Array<Happening>>([]);
-  const [isLoading, setLoading] = useState(true);
-
-  const [showThisWeek, setShowThisWeek] = useState(true);
-  const [showNextWeek, setShowNextWeek] = useState(true);
-  const [showLater, setShowLater] = useState(true);
+  const [validQuery, setValidQuery] = useState<Query>({ type: "all" });
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const p = URLtoSearchParams(params);
-      const validQuery = validateParamsToQuery(p);
-      const happenings = await fetchFilteredHappening(validQuery);
-
-      if (isErrorMessage(happenings)) {
-        return new Response("Error fetching data from Sanity", {
-          status: 500,
-        });
-      }
-
-      const combinedHappenings = happenings.sort((a, b) => {
-        if (a.date && b.date) {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        }
-        return 0;
-      });
-
-      setHappenings(combinedHappenings);
-      setLoading(false);
-    };
-    fetchData().catch(console.error);
+    const p = URLtoSearchParams(params);
+    setValidQuery(generateQuery(p));
   }, [params]);
 
   useEffect(() => {
-    const query: QueryParams = { type: "all" };
+    const query: Query = { type: searchParams.type };
 
-    if (searchParams.type) query.type = searchParams.type;
     if (searchParams.search) query.search = searchParams.search;
     if (searchParams.open) query.open = "true";
     if (searchParams.past) query.past = "true";
+    if (searchParams.thisWeek) query.thisWeek = "true";
+    if (searchParams.nextWeek) query.nextWeek = "true";
+    if (searchParams.later) query.later = "true";
 
     const queryString = new URLSearchParams(query).toString();
     router.push(`${pathname}${queryString ? `?${queryString}` : ``}`);
   }, [searchParams, pathname, router]);
-
-  const currentDate = new Date();
-
-  const earlier: Array<Happening> = [];
-  const thisWeek: Array<Happening> = [];
-  const nextWeek: Array<Happening> = [];
-  const later: Array<Happening> = [];
-
-  happenings.forEach((event) => {
-    if (event.date) {
-      if (isBefore(new Date(event.date), currentDate)) {
-        return earlier.push(event);
-      } else if (isThisWeek(new Date(event.date))) {
-        return thisWeek.push(event);
-      } else if (
-        isWithinInterval(new Date(event.date), {
-          start: startOfDay(nextMonday(currentDate)),
-          end: startOfDay(nextMonday(nextMonday(currentDate))),
-        })
-      ) {
-        return nextWeek.push(event);
-      }
-    }
-    return later.push(event);
-  });
 
   return (
     <div className="mt-4 flex min-h-full flex-col gap-5">
@@ -260,56 +210,43 @@ export default function EventFilter() {
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={showThisWeek}
-                onCheckedChange={() => setShowThisWeek((prev) => !prev)}
+                onCheckedChange={() => {
+                  setSearchParams({
+                    ...searchParams,
+                    thisWeek: !searchParams.thisWeek,
+                  });
+                }}
               />
-              <Label className="ml-2 text-base">Denne uken ({thisWeek.length})</Label>
+              <Label className="ml-2 text-base">Denne uken ()</Label>
             </div>
 
             <div className="mb-2 flex items-center">
               <Checkbox
-                checked={showNextWeek}
-                onCheckedChange={() => setShowNextWeek((prev) => !prev)}
+                onCheckedChange={() => {
+                  setSearchParams({
+                    ...searchParams,
+                    nextWeek: !searchParams.nextWeek,
+                  });
+                }}
               />
-              <Label className="ml-2 text-base">Neste uke ({nextWeek.length})</Label>
+              <Label className="ml-2 text-base">Neste uke ()</Label>
             </div>
 
             <div className="flex items-center">
-              <Checkbox checked={showLater} onCheckedChange={() => setShowLater((prev) => !prev)} />
-              <Label className="ml-2 text-base">Senere ({later.length})</Label>
+              <Checkbox
+                onCheckedChange={() => {
+                  setSearchParams({
+                    ...searchParams,
+                    later: !searchParams.later,
+                  });
+                }}
+              />
+              <Label className="ml-2 text-base">Senere ()</Label>
             </div>
           </div>
         </div>
         <div className="right-panel w-3/4 md:w-3/4">
-          {isLoading && (
-            <div className="flex h-full items-center justify-center">
-              <AiOutlineLoading className="animate-spin" />
-            </div>
-          )}
-
-          {!isLoading &&
-            happenings.length !== 0 &&
-            (showThisWeek ? thisWeek.length : 0) +
-              (showNextWeek ? nextWeek.length : 0) +
-              (showLater ? later.length : 0) +
-              earlier.length ===
-              0 && (
-              <div className="px-3 py-5 text-center text-lg font-medium">
-                <p>Her var det tomt gitt!</p>
-              </div>
-            )}
-
-          {happenings.length === 0 && !isLoading && (
-            <div className="px-3 py-5 text-center text-lg font-medium">
-              <p>Ingen arrangementer funnet</p>
-              <p>Prøv å endre søket ditt</p>
-            </div>
-          )}
-
-          <EventsView happenings={earlier} show={searchParams.past} />
-          <EventsView happenings={thisWeek} show={showThisWeek} />
-          <EventsView happenings={nextWeek} show={showNextWeek} />
-          <EventsView happenings={later} show={showLater} />
+          <EventsView {...validQuery} />
         </div>
       </div>
     </div>
