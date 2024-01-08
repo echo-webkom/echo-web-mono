@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDownIcon, Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
@@ -79,14 +80,20 @@ const CloseMenuButton = () => {
 const MenuContent = ({ children }: { children: React.ReactNode }) => {
   const { isOpen } = useNavigation();
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background px-6 pb-24 pt-6 dark:text-foreground">
-      {children}
-    </div>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ y: -1000 }}
+          animate={{ y: 0 }}
+          exit={{ y: -1000 }}
+          transition={{ duration: 0.5 }}
+          className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background px-6 pb-24 pt-6 dark:text-foreground"
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -116,14 +123,25 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
         <span className="text-2xl">{label}</span>
         <span>
           <ChevronDownIcon
-            className={cn("h-4 w-4 transition duration-200 ease-in-out", {
+            className={cn("h-7 w-7 text-gray-400 transition duration-200 ease-in-out", {
               "rotate-180 transform": isOpen,
             })}
           />
         </span>
       </button>
 
-      {isOpen && children}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
