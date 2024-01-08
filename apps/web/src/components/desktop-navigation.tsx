@@ -33,7 +33,7 @@ const useNavigation = () => {
   return context;
 };
 
-const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
+export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const [activeDropdown, setActiveDropdown] = useState<{
     id: string;
     children: React.ReactNode;
@@ -46,7 +46,7 @@ const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
-      <nav ref={navRef} className="mt-auto hidden px-6 py-2 md:block">
+      <nav ref={navRef} className="hidden md:block">
         {children}
       </nav>
     </NavigationContext.Provider>
@@ -54,7 +54,7 @@ const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
 };
 
 const NavigationList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="flex items-center">{children}</ul>;
+  return <ul className="flex items-center px-6 pt-2">{children}</ul>;
 };
 
 const NavigationItem = ({ label, children }: { label: string; children: React.ReactNode }) => {
@@ -114,17 +114,24 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
   return <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-2 lg:grid-cols-3">{children}</ul>;
 };
 
-const NavigationViewport = () => {
+export const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {activeDropdown && (
         <motion.div
-          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background p-4 shadow-lg"
-          initial={{ height: 0 }}
-          animate={{ height: "auto" }}
-          exit={{ height: activeDropdown ? 0 : "auto" }}
+          key={activeDropdown.id}
+          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background px-4"
+          initial={{
+            height: 0,
+          }}
+          animate={{
+            height: "auto",
+          }}
+          exit={{
+            height: 0,
+          }}
         >
           {activeDropdown.children}
         </motion.div>
@@ -135,36 +142,33 @@ const NavigationViewport = () => {
 
 export function DesktopNavigation() {
   return (
-    <NavigationRoot>
-      <NavigationList>
-        {headerRoutes.map((route) => {
-          if ("href" in route) {
-            return (
-              <NavigationLink key={route.label} to={route.href}>
-                {route.label}
-              </NavigationLink>
-            );
-          }
-
+    <NavigationList>
+      {headerRoutes.map((route) => {
+        if ("href" in route) {
           return (
-            <NavigationItem key={route.label} label={route.label}>
-              <NavigationDropdown>
-                {route.links.map((link) => (
-                  <IconLink
-                    key={link.label}
-                    href={link.href}
-                    label={link.label}
-                    description={link.description}
-                    icon={link.icon}
-                  />
-                ))}
-              </NavigationDropdown>
-            </NavigationItem>
+            <NavigationLink key={route.label} to={route.href}>
+              {route.label}
+            </NavigationLink>
           );
-        })}
-      </NavigationList>
-      <NavigationViewport />
-    </NavigationRoot>
+        }
+
+        return (
+          <NavigationItem key={route.label} label={route.label}>
+            <NavigationDropdown>
+              {route.links.map((link) => (
+                <IconLink
+                  key={link.label}
+                  href={link.href}
+                  label={link.label}
+                  description={link.description}
+                  icon={link.icon}
+                />
+              ))}
+            </NavigationDropdown>
+          </NavigationItem>
+        );
+      })}
+    </NavigationList>
   );
 }
 

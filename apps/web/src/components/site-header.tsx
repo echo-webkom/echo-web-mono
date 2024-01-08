@@ -3,7 +3,7 @@ import Link from "next/link";
 import { auth } from "@echo-webkom/auth";
 
 import { getDatabaseStatus } from "@/utils/database-status";
-import { DesktopNavigation } from "./desktop-navigation";
+import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import ModeToggle from "./theme-switch-button";
 import { Button } from "./ui/button";
@@ -18,23 +18,27 @@ export async function SiteHeader() {
       <DatabaseStatusBar />
 
       <div className="border-b bg-background">
-        <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
-          <div className="flex items-center">
-            <HeaderLogo />
-            <DesktopNavigation />
-          </div>
-          <div className="flex items-center space-x-2">
-            <ModeToggle />
-            {user ? (
-              <UserMenu user={user} />
-            ) : (
-              <Button variant="secondary" asChild>
-                <Link href="/auth/logg-inn">Logg inn</Link>
-              </Button>
-            )}
-            <MobileNavigation />
-          </div>
-        </header>
+        <NavigationRoot>
+          <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
+            <div className="flex items-center">
+              <HeaderLogo />
+              <DesktopNavigation />
+            </div>
+            <div className="flex items-center space-x-2">
+              <ModeToggle />
+              {user ? (
+                <UserMenu user={user} />
+              ) : (
+                <Button variant="secondary" asChild>
+                  <Link href="/auth/logg-inn">Logg inn</Link>
+                </Button>
+              )}
+              <MobileNavigation />
+            </div>
+          </header>
+
+          <NavigationViewport />
+        </NavigationRoot>
       </div>
     </div>
   );
