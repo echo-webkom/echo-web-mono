@@ -1,0 +1,1 @@
+ALTER TABLE "answer" ADD COLUMN "hello" json;

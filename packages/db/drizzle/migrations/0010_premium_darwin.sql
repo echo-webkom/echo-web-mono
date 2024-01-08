@@ -1,0 +1,1 @@
+ALTER TABLE "answer" DROP COLUMN IF EXISTS "hello";
