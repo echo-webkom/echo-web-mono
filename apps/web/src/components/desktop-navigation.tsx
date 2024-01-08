@@ -46,15 +46,13 @@ export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
-      <nav ref={navRef} className="hidden md:block">
-        {children}
-      </nav>
+      {children}
     </NavigationContext.Provider>
   );
 };
 
 const NavigationList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="flex items-center px-6 pt-2">{children}</ul>;
+  return <ul className="hidden items-center px-6 pt-2 md:flex">{children}</ul>;
 };
 
 const NavigationItem = ({ label, children }: { label: string; children: React.ReactNode }) => {
@@ -81,7 +79,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
+        className="flex h-10 flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -102,7 +100,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
     <li>
       <Link
         href={to}
-        className="rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+        className="h-10 rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
       >
         {children}
       </Link>
@@ -111,7 +109,11 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
 };
 
 const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-2 lg:grid-cols-3">{children}</ul>;
+  return (
+    <ul className="mx-auto hidden max-w-6xl grid-cols-2 gap-2 px-4 py-2 md:grid lg:grid-cols-3">
+      {children}
+    </ul>
+  );
 };
 
 export const NavigationViewport = () => {
@@ -122,7 +124,7 @@ export const NavigationViewport = () => {
       {activeDropdown && (
         <motion.div
           key={activeDropdown.id}
-          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background px-4"
+          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background"
           initial={{
             height: 0,
           }}

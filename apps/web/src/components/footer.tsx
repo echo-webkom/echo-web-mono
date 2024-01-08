@@ -73,10 +73,8 @@ export const Footer = ({ className }: FooterProps) => {
               <h3 className="mb-4 py-2 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
-                  src={BekkLogo}
-                  className="invert dark:invert-0"
-                  height={100}
-                  width={250}
+                  src={BekkLogo as StaticImport}
+                  className="h-28 w-auto invert dark:invert-0"
                   alt="Bekk logo"
                 />
               </Link>
@@ -91,10 +89,8 @@ export const Footer = ({ className }: FooterProps) => {
                     <Link href={href} target="_blank" rel="noreferrer">
                       <Image
                         src={imageSrc as StaticImport}
-                        height={30}
-                        width={150}
                         alt={`${label} logo`}
-                        className={cn(label === "Vercel" && "invert-0 dark:invert")}
+                        className={cn("h-8 w-auto", label === "Vercel" && "invert-0 dark:invert")}
                       />
                     </Link>
                   </li>
