@@ -1,7 +1,6 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-import { type QueryParams } from "@/components/event-filter";
-import { type ErrorMessage } from "@/utils/error";
+import { type FilteredHappeningQuery } from "@/components/event-filter";
 import { sanityFetch } from "../client";
 import {
   allHappeningsQuery,
@@ -72,9 +71,7 @@ export async function fetchHappeningBySlug(slug: string) {
  * @param q query parameters
  * @returns happenings matching the query parameters or an error message
  */
-export const fetchFilteredHappening = async (
-  q: QueryParams,
-): Promise<Array<Happening> | ErrorMessage> => {
+export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
   return await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
@@ -90,27 +87,33 @@ export const fetchFilteredHappening = async (
         return happeningType === q.type || q.type === "all";
       })
       .filter((happening) => {
+        if (!q.dateFilterStart && !q.dateFilterEnd) {
+          return false;
+        }
+
         const { date } = happening;
 
         if (!date) {
           return false;
         }
 
-        return q.past ? new Date(date) < new Date() : new Date(date) >= new Date();
+        return (
+          ((q.dateFilterStart && new Date(date) >= q.dateFilterStart) ?? !q.dateFilterStart) &&
+          ((q.dateFilterEnd && new Date(date) < q.dateFilterEnd) ?? !q.dateFilterEnd)
+        );
       })
       .filter((happening) => {
         const { registrationStart, registrationEnd } = happening;
 
-        if (!registrationStart || !registrationEnd) {
-          return false;
-        }
-
         return q.open
-          ? new Date(registrationStart) <= new Date() && new Date(registrationEnd) > new Date()
+          ? registrationStart &&
+              registrationEnd &&
+              new Date(registrationStart) <= new Date() &&
+              new Date(registrationEnd) > new Date()
           : true;
       }),
   );
-};
+}
 
 /**
  * Gets the happening type of a happening by its slug

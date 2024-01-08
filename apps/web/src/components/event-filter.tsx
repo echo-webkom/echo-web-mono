@@ -14,14 +14,12 @@ import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export type Query = {
+export type FilteredHappeningQuery = {
   search?: string;
   type: "all" | "event" | "bedpres";
-  open?: "true";
-  past?: "true";
-  thisWeek?: "true";
-  nextWeek?: "true";
-  later?: "true";
+  open: boolean;
+  dateFilterStart?: Date;
+  dateFilterEnd?: Date;
 };
 
 // For handling state
