@@ -21,15 +21,6 @@ export async function fetchPosts(n?: number) {
 }
 
 /**
- * Get all slugs for posts.
- *
- * @returns an array of slugs
- */
-export async function fetchPostParams() {
-  return await fetchPosts().then((res) => res.map((post) => post.slug));
-}
-
-/**
  * Get the posts for a given page. Default page size is 10.
  * Uses the `fetchPosts` under the hood.
  *
