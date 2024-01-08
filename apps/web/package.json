@@ -47,7 +47,7 @@
     "clsx": "2.1.0",
     "date-fns": "3.0.6",
     "drizzle-orm": "0.29.3",
-    "framer-motion": "10.17.6",
+    "framer-motion": "10.17.8",
     "lucide-react": "0.304.0",
     "next": "14.0.4",
     "next-auth": "4.24.5",
