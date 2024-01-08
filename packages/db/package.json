@@ -14,7 +14,7 @@
     "db:generate": "pnpm with-env drizzle-kit generate:pg",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
     "db:seed": "pnpm with-env tsx ./drizzle/seed.ts",
-    "db:check": "pnpm with-env tsx ./drizzle/check.ts",
+    "db:check": "pnpm with-env drizzle-kit check:pg && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "dev": "pnpm with-env drizzle-kit studio",
@@ -42,6 +42,9 @@
     "root": true,
     "extends": [
       "webkom/base"
+    ],
+    "ignorePatterns": [
+      "scripts"
     ]
   }
 }
