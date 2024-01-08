@@ -9,6 +9,12 @@ const config = {
     "@echo-webkom/email",
   ],
 
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+
   images: {
     remotePatterns: [
       {

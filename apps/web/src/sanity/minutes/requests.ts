@@ -1,19 +1,17 @@
 import { sanityFetch } from "../client";
-import { allMeetingMinuteQuery, meetingMinuteByIdQuery, meetingMinuteIdsQuery } from "./queries";
-import { idSchema, minuteSchema, type Minute } from "./schema";
+import { allMeetingMinuteQuery } from "./queries";
+import { minuteSchema, type Minute } from "./schema";
 
 /**
  * Get all meeting minutes.
  */
 export async function fetchMinutes() {
-  try {
-    return await sanityFetch<Array<Minute>>({
-      query: allMeetingMinuteQuery,
-      tags: ["minutes"],
-    }).then((res) => minuteSchema.array().parse(res));
-  } catch {
-    return [];
-  }
+  return await sanityFetch<Array<Minute>>({
+    query: allMeetingMinuteQuery,
+    tags: ["minutes"],
+  })
+    .then((res) => minuteSchema.array().parse(res))
+    .catch(() => []);
 }
 
 /**
@@ -22,19 +20,7 @@ export async function fetchMinutes() {
  * @returns
  */
 export async function fetchMinuteParams() {
-  try {
-    return await sanityFetch({
-      query: meetingMinuteIdsQuery,
-      tags: ["minute-params"],
-    }).then((res) =>
-      idSchema
-        .array()
-        .parse(res)
-        .map(({ id }) => id),
-    );
-  } catch {
-    return [];
-  }
+  return await fetchMinutes().then((res) => res.map((minute) => minute._id));
 }
 
 /**
@@ -44,15 +30,5 @@ export async function fetchMinuteParams() {
  * @returns the meeting minute or null if not found
  */
 export async function fetchMinuteById(id: string) {
-  try {
-    return await sanityFetch<Minute>({
-      query: meetingMinuteByIdQuery,
-      params: {
-        id,
-      },
-      tags: ["minute"],
-    }).then((res) => minuteSchema.parse(res));
-  } catch {
-    return null;
-  }
+  return await fetchMinutes().then((res) => res.find((minute) => minute._id === id));
 }

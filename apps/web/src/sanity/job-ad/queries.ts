@@ -1,7 +1,5 @@
 import { groq } from "next-sanity";
 
-export const jobAdSlugsQuery = groq`*[_type == "job"]{ "slug": slug.current }`;
-
 export const jobAdPartial = groq`
 _id,
 _createdAt,
@@ -30,22 +28,5 @@ export const jobAdsQuery = groq`
   && !(_id in path('drafts.**'))]
   | order(_createdAt desc) {
   ${jobAdPartial}
-}[0..$n]
+}
 `;
-
-export const availableJobAdsQuery = groq`
-*[_type == "job"
-  && !(_id in path('drafts.**'))
-  && deadline >= now()]
-  | order(_createdAt desc) {
-  ${jobAdPartial}
-}[0..$n]
-`;
-
-export const jobAdBySlugQuery = groq`
-*[_type == "job"
-  && slug.current == $slug
-  && !(_id in path('drafts.**'))] {
-  ${jobAdPartial}
-}[0]
-      `;
