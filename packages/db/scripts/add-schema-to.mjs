@@ -9,26 +9,25 @@ import { promises as fs } from "fs";
 const META_FOLDER = "./drizzle/migrations/meta";
 
 void (async () => {
-  // Read all the files in `./drizzle/meta`
   const snapshots = await fs.readdir(META_FOLDER).then((files) => {
     return files.filter((file) => file.endsWith("snapshot.json"));
   });
 
   snapshots.forEach(async (snapshot) => {
-    // Read the snapshot file
-    const snapshotFile = await fs.readFile(`${META_FOLDER}/${snapshot}`, "utf-8");
-    const snapshotJson = JSON.parse(snapshotFile);
+    const snapshotFile = await fs
+      .readFile(`${META_FOLDER}/${snapshot}`, "utf-8")
+      .then((file) => JSON.parse(file));
 
-    const tables = Object.keys(snapshotJson.tables);
+    const tables = Object.keys(snapshotFile.tables);
 
     tables.forEach((table) => {
-      const foreignKeys = Object.keys(snapshotJson["tables"][table]?.foreignKeys ?? {});
+      const foreignKeys = Object.keys(snapshotFile["tables"][table]?.foreignKeys ?? {});
 
       foreignKeys.forEach((foreignKey) => {
-        snapshotJson["tables"][table]["foreignKeys"][foreignKey]["schemaTo"] = "public";
+        snapshotFile["tables"][table]["foreignKeys"][foreignKey]["schemaTo"] = "public";
       });
     });
 
-    await fs.writeFile(`${META_FOLDER}/${snapshot}`, `${JSON.stringify(snapshotJson, null, 2)}\n`);
+    await fs.writeFile(`${META_FOLDER}/${snapshot}`, `${JSON.stringify(snapshotFile, null, 2)}\n`);
   });
 })();
