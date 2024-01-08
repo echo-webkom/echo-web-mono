@@ -7,7 +7,7 @@ import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { isBoard } from "@/lib/is-board";
 import { type Author } from "@/sanity/posts";
-import { fetchPostBySlug, fetchPostParams } from "@/sanity/posts/requests";
+import { fetchPostBySlug } from "@/sanity/posts/requests";
 import { urlFor } from "@/utils/image-builder";
 
 type Props = {
@@ -25,10 +25,6 @@ const getData = cache(async (slug: string) => {
 
   return post;
 });
-
-export const generateStaticParams = async () => {
-  return await fetchPostParams();
-};
 
 export async function generateMetadata({ params }: Props) {
   const post = await getData(params.slug);
