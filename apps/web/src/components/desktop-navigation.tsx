@@ -46,7 +46,7 @@ export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
-      {children}
+      <div ref={navRef}>{children}</div>
     </NavigationContext.Provider>
   );
 };
