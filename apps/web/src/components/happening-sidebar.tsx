@@ -14,9 +14,10 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { doesArrayIntersect } from "@/lib/array";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
-import { norwegianDateString, time } from "@/utils/date";
+import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { mailTo } from "@/utils/prefixes";
 
@@ -68,15 +69,35 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     (registration) => registration.status === "waiting",
   ).length;
 
-  const hasRegistration = happening?.registrationStart && happening?.registrationEnd;
+  const isNormalRegistrationOpen = Boolean(
+    happening?.registrationStart &&
+      happening?.registrationEnd &&
+      isBetween(happening.registrationStart, happening.registrationEnd),
+  );
 
-  // Must use "!" because of the check above
-  const isRegistrationOpen =
-    hasRegistration && isPast(happening.registrationStart!) && isFuture(happening.registrationEnd!);
+  const isGroupRegistrationOpen = Boolean(
+    happening?.registrationStartGroups &&
+      happening?.registrationEnd &&
+      isBetween(happening.registrationStartGroups, happening.registrationEnd),
+  );
 
   const isHost = user && happening ? _isHost(user, happening) : false;
 
   const isUserComplete = user?.degreeId && user.year;
+
+  const canEarlyRegister = Boolean(
+    user &&
+      happening &&
+      doesArrayIntersect(
+        happening.registrationGroups ?? [],
+        user.memberships.map((membership) => membership.group.id),
+      ),
+  );
+
+  const isRegistrationOpen = canEarlyRegister ? isGroupRegistrationOpen : isNormalRegistrationOpen;
+  const userRegistrationStart = canEarlyRegister
+    ? happening?.registrationStartGroups
+    : happening?.registrationStart;
 
   return (
     <Sidebar>
@@ -174,6 +195,19 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
+       * Show registered count if:
+       * - People can reigster
+       */}
+      {spotRanges.length > 0 && (
+        <SidebarItem>
+          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+          <SidebarItemContent>
+            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
+
+      {/**
        * Show location if:
        * - There is a location set
        */}
@@ -217,20 +251,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
-       * Show registered count if:
-       * - Registration is open
-       * - People are registered
-       */}
-      {isRegistrationOpen && spotRanges.length > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
-      {/**
        * Show waitlist count if:
        * - Registration is open
        * - There is a waitlist
@@ -247,7 +267,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Registration is open
        * - Registration end date is set
        */}
-      {isRegistrationOpen && happening.registrationEnd && (
+      {isRegistrationOpen && happening?.registrationEnd && (
         <SidebarItem>
           <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
           <SidebarItemContent>
@@ -261,7 +281,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Registration is not open
        * - Registration start date is set
        */}
-      {!isRegistrationOpen && happening?.registrationStart && (
+      {!isNormalRegistrationOpen && happening?.registrationStart && (
         <SidebarItem>
           <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
           <SidebarItemContent>
@@ -269,6 +289,24 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
+
+      {/**
+       * Show registration start date for groups if:
+       * - Registration is not open
+       * - Can early register
+       * - Registration start date for groups is set
+       */}
+      {!isNormalRegistrationOpen &&
+        canEarlyRegister &&
+        isGroupRegistrationOpen &&
+        happening?.registrationStartGroups && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
+            <SidebarItemContent>
+              {norwegianDateString(happening.registrationStartGroups)}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
 
       {/**
        * Show deregister button if:
@@ -291,12 +329,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {!isRegistered &&
         isUserComplete &&
         spotRanges.length > 0 &&
-        happening?.registrationStart &&
-        (happening.registrationEnd ? isFuture(new Date(happening.registrationEnd)) : true) &&
-        isPast(new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
+        userRegistrationStart &&
+        (happening?.registrationEnd ? isFuture(new Date(happening.registrationEnd)) : true) &&
+        isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
           <SidebarItem className="relative">
-            <RegisterButton id={event._id} questions={happening.questions} />
-            <Countdown toDate={happening.registrationStart} />
+            <RegisterButton id={event._id} questions={happening?.questions ?? []} />
+            <Countdown toDate={userRegistrationStart} />
           </SidebarItem>
         )}
 
@@ -305,7 +343,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - User is logged in
        * - Registration is closed
        */}
-      {user && !isRegistrationOpen && hasRegistration && (
+      {user && happening?.registrationEnd && isPast(happening.registrationEnd) && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -329,6 +367,26 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
               </Link>
             </div>
           </div>
+        </SidebarItem>
+      )}
+
+      {/**
+       * Show warning for not being in group if:
+       * - User is logged in
+       * - User is not in any of the groups that can early register
+       * - Registration start for groups is set
+       */}
+      {user && !canEarlyRegister && happening?.registrationStartGroups && (
+        <SidebarItem>
+          <Callout type="warning" noIcon>
+            {happening.registrationStart ? (
+              <p className="font-semibold">Du kan ikke melde deg på enda.</p>
+            ) : (
+              <p className="font-semibold">
+                Bare medlemmer av inviterte grupper kan melde seg på nå.
+              </p>
+            )}
+          </Callout>
         </SidebarItem>
       )}
 
