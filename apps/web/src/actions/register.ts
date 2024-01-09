@@ -122,11 +122,25 @@ export async function register(id: string, payload: z.infer<typeof registrationF
     });
 
     /**
+     * Get groups that host the happening
+     */
+    const hostGroups = await db.query.happeningsToGroups
+      .findMany({
+        where: (happeningToGroup) => eq(happeningToGroup.happeningId, id),
+      })
+      .then((groups) => groups.map((group) => group.groupId));
+
+    const canSkipSpotRange = doesArrayIntersect(
+      hostGroups,
+      user.memberships.map((membership) => membership.group.id),
+    );
+
+    /**
      * Get correct spot range for user
      *
      * If user is not in any spot range, return error
      */
-    const userSpotRange = getCorrectSpotrange(user.year, spotRanges);
+    const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
 
     if (!userSpotRange) {
       return {
@@ -277,9 +291,17 @@ export async function register(id: string, payload: z.infer<typeof registrationF
   }
 }
 
-function getCorrectSpotrange(year: number, spotRanges: Array<SpotRange>) {
+function getCorrectSpotrange(
+  year: number,
+  spotRanges: Array<SpotRange>,
+  canSkipSpotRange: boolean,
+) {
   return (
     spotRanges.find((spotRange) => {
+      if (canSkipSpotRange) {
+        return true;
+      }
+
       return year >= spotRange.minYear && year <= spotRange.maxYear;
     }) ?? null
   );
