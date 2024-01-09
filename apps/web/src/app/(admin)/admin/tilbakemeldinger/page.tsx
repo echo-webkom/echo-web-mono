@@ -26,7 +26,7 @@ export default async function FeedbackOverview() {
 
 function Feedback({ feedback }: { feedback: SiteFeedback }) {
   return (
-    <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-card px-4 py-5 text-card-foreground shadow sm:p-6 dark:border">
+    <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-card px-4 py-5 text-card-foreground shadow dark:border sm:p-6">
       <p className="text-xs text-muted-foreground">
         {feedback.createdAt.toLocaleTimeString("nb-NO", {
           day: "2-digit",
