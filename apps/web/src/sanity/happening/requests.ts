@@ -105,3 +105,13 @@ export async function getHappeningTypeBySlug(slug: string) {
     happening ? happening.happeningType : null,
   );
 }
+
+export async function fetchHappeningParams(types: Array<HappeningType>) {
+  return await fetchAllHappenings().then((res) =>
+    res
+      .filter((happening) => types.includes(happening.happeningType))
+      .map((happening) => ({
+        slug: happening.slug,
+      })),
+  );
+}

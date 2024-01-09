@@ -14,10 +14,23 @@ export async function fetchAllPosts() {
     .catch(() => []);
 }
 
+/**
+ *
+ * @param n the amount of posts you want to fetch
+ * @returns
+ */
 export async function fetchPosts(n?: number) {
   const posts = await fetchAllPosts();
 
   return n ? posts.slice(0, n) : posts;
+}
+
+export async function fetchPostParams() {
+  return await fetchAllPosts().then((res) =>
+    res.map((post) => ({
+      slug: post.slug,
+    })),
+  );
 }
 
 /**
