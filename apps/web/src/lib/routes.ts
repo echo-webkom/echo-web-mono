@@ -11,6 +11,7 @@ import {
   Megaphone,
   Presentation,
   Scale,
+  ScrollText,
   StickyNote,
   Users,
   Wallet,
@@ -88,6 +89,12 @@ export const headerRoutes: Array<
         href: "/for-studenter/grupper/idrettslag",
         description: "Oversikt over idrettslag",
         icon: Users,
+      },
+      {
+        label: "Møtereferater",
+        href: "/for-studenter/motereferater",
+        description: "Referater fra møter og generalforsamlinger i echo",
+        icon: ScrollText,
       },
       {
         label: "Masterinfo",
