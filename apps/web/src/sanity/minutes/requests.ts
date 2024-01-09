@@ -20,7 +20,11 @@ export async function fetchMinutes() {
  * @returns
  */
 export async function fetchMinuteParams() {
-  return await fetchMinutes().then((res) => res.map((minute) => minute._id));
+  return await fetchMinutes().then((res) =>
+    res.map((minute) => ({
+      id: minute._id,
+    })),
+  );
 }
 
 /**

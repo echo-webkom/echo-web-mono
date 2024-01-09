@@ -29,6 +29,7 @@ export const dynamic = "force-dynamic";
  * {
  *   "operation": delta::operation(),
  *   "documentId": _id,
+ *   "pastSlug": before().slug.current,
  *   "data": after(){
  *     _id,
  *     title,
@@ -59,9 +60,10 @@ export const dynamic = "force-dynamic";
  * ```
  */
 export const POST = withBasicAuth(async (req) => {
-  const { operation, documentId, data } = (await req.json()) as unknown as {
+  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
     operation: "create" | "update" | "delete";
     documentId: string;
+    pastSlug: string | null;
     data: SanityHappening | null; // Is null on delete
   };
 
@@ -78,7 +80,9 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  revalidateTag("happenings");
+  revalidateTag("happening-params");
+  revalidateTag("home-happenings");
+  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
 
   /**
    * If the happening is external, we don't want to do anything. Since

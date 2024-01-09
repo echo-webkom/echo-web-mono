@@ -55,3 +55,48 @@ export const allHappeningsQuery = groq`
   ${happeningPartial}
 }
 `;
+
+export const happeningQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))
+  && slug.current == $slug
+][0] {
+  ${happeningPartial}
+}
+`;
+
+export const homeHappeningsQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))
+  && date >= now()
+  && happeningType in $happeningTypes
+ ] | order(date asc) {
+  _id,
+  title,
+  happeningType,
+  date,
+  "slug": slug.current,
+  "image": company->image,
+  "organizers": organizers[]->{
+    name
+  }.name
+}[0...$n]
+`;
+
+export const happeningParamsQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))
+  && happeningType in $happeningTypes
+ ] {
+  "slug": slug.current,
+}.slug
+`;
+
+export const happeningTypeQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))
+  && slug.current == $slug
+ ] {
+  happeningType,
+}[0].happeningType
+`;

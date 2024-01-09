@@ -7,7 +7,7 @@ import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { fetchHappeningBySlug, fetchHappeningParams } from "@/sanity/happening/requests";
 import { shortDate } from "@/utils/date";
 
 type Props = {
@@ -33,6 +33,10 @@ export async function generateMetadata({ params }: Props) {
     title: event.title,
   };
 }
+
+export const generateStaticParams = async () => {
+  return await fetchHappeningParams(["event", "external"]);
+};
 
 export default async function EventPage({ params }: Props) {
   const event = await getData(params.slug);
