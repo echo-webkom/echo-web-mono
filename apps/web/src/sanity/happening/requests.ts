@@ -1,6 +1,6 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-import { type FilteredHappeningQuery } from "@/components/event-filter";
+import { type FilteredHappeningQuery } from "@/components/events-view";
 import { sanityFetch } from "../client";
 import {
   allHappeningsQuery,
@@ -72,6 +72,7 @@ export async function fetchHappeningBySlug(slug: string) {
  * @returns happenings matching the query parameters or an error message
  */
 export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
+  console.log(q);
   return await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
@@ -87,7 +88,7 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
         return happeningType === q.type || q.type === "all";
       })
       .filter((happening) => {
-        if (!q.dateFilterStart && !q.dateFilterEnd) {
+        if (!q.dateFilter) {
           return false;
         }
 
@@ -97,10 +98,13 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
           return false;
         }
 
-        return (
-          ((q.dateFilterStart && new Date(date) >= q.dateFilterStart) ?? !q.dateFilterStart) &&
-          ((q.dateFilterEnd && new Date(date) < q.dateFilterEnd) ?? !q.dateFilterEnd)
-        );
+        return q.dateFilter.some((f) => {
+          return (
+            (f.start ?? f.end) &&
+            (!f.start || new Date(date) >= f.start) &&
+            (!f.end || new Date(date) < f.end)
+          );
+        });
       })
       .filter((happening) => {
         const { registrationStart, registrationEnd } = happening;
