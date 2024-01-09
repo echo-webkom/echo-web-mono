@@ -18,6 +18,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { mailTo } from "@/utils/prefixes";
 import { RouteGroup } from "./route-builder";
 
 export const headerRoutes: Array<
@@ -195,7 +196,7 @@ const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
   .build();
 
 const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
-  .link("mailto:echo@uib.no", {
+  .link(mailTo("echo@uib.no"), {
     label: "echo@uib.no",
     isExternal: true,
   })

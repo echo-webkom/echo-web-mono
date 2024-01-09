@@ -3,6 +3,7 @@ import { isAfter, isBefore } from "date-fns";
 import { maxCapacityBySlug } from "@/lib/queries/happening";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { norwegianDateString } from "@/utils/date";
+import { mailTo } from "@/utils/prefixes";
 import { capitalize } from "@/utils/string";
 
 async function fetchMaxCapacity(slug: string) {
@@ -44,13 +45,15 @@ export async function HappeningInfoBox({ happeningId }: HappeningInfoBoxProps) {
           <div>Sist oppdatert: {norwegianDateString(happening._updatedAt)}</div>
           <div>
             Kontakt:{" "}
-            {happening.contacts && happening.contacts.length > 0 ? (
-              <a className="hover:underline" href={"mailto:" + happening.contacts[0]?.email}>
-                {happening.contacts[0]?.email}
+            {happening.contacts?.map((oregano) => (
+              <a
+                key={oregano.profile._id}
+                href={mailTo(oregano.email)}
+                className="text-blue-600 hover:underline"
+              >
+                {oregano.profile.name}
               </a>
-            ) : (
-              "Ikke angitt"
-            )}
+            )) ?? "Ikke angitt"}
           </div>
           <div>
             Påmelding:{" "}

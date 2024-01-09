@@ -18,6 +18,7 @@ import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
 import { norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
+import { mailTo } from "@/utils/prefixes";
 
 type EventSidebarProps = {
   event: Happening;
@@ -194,7 +195,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <ul>
               {event.contacts.map((contact) => (
                 <li key={contact.profile._id}>
-                  <a className="hover:underline" href={"mailto:" + contact.email}>
+                  <a className="hover:underline" href={mailTo(contact.email)}>
                     {contact.profile.name}
                   </a>
                 </li>

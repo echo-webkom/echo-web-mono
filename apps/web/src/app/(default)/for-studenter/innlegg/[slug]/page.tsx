@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { initials } from "@/lib/initials";
 import { isBoard } from "@/lib/is-board";
 import { type Author } from "@/sanity/posts";
 import { fetchPostBySlug, fetchPostParams } from "@/sanity/posts/requests";
@@ -64,17 +65,11 @@ function Authors({ authors }: { authors: Array<Author> }) {
 
       <div className="flex flex-col flex-wrap gap-5 md:flex-row">
         {authors.map((author) => {
-          const initials = author.name
-            .split(" ")
-            .map((name) => name[0])
-            .join("")
-            .slice(0, 2);
-
           return (
             <div key={author._id} className="flex items-center gap-3">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={author.image ? urlFor(author.image).url() : undefined} />
-                <AvatarFallback>{initials}</AvatarFallback>
+                <AvatarFallback>{initials(author.name)}</AvatarFallback>
               </Avatar>
 
               <p>{isBoard(author.name) ? "Hovedstyret" : author.name}</p>

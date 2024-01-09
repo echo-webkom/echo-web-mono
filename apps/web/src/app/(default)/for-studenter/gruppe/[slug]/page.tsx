@@ -1,4 +1,5 @@
 import { cache } from "react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
@@ -13,6 +14,7 @@ import {
   studentGroupTypeName,
 } from "@/sanity/student-group";
 import { urlFor } from "@/utils/image-builder";
+import { mailTo } from "@/utils/prefixes";
 
 type Props = {
   params: {
@@ -45,9 +47,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const params = await fetchStudentGroupParams();
-
-  return params;
+  return await fetchStudentGroupParams();
 }
 
 export default async function GroupPage({ params }: Props) {
@@ -68,7 +68,7 @@ export default async function GroupPage({ params }: Props) {
         <section className="flex items-center gap-4">
           {group.socials?.email && (
             <a
-              href={`mailto:${group.socials.email}`}
+              href={mailTo(group.socials.email)}
               className="flex items-center gap-2 hover:underline"
             >
               <span>
@@ -102,6 +102,12 @@ export default async function GroupPage({ params }: Props) {
             </a>
           )}
         </section>
+      )}
+
+      {group.image && (
+        <div className="relative overflow-hidden rounded-lg">
+          <Image width={700} height={475} src={urlFor(group.image).url()} alt={group.name} />
+        </div>
       )}
 
       <section>
