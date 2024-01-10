@@ -11,6 +11,6 @@ describe("initials", () => {
     expect(initials("b")).toBe("B");
     expect(initials("")).toBe("");
     expect(initials(" ")).toBe("");
-    expect(initials("Programmerbar 🍸")).toBe("");
+    expect(initials("Programmerbar 🍸")).toBe("PR");
   });
 });
