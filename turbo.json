@@ -25,11 +25,6 @@
       "persistent": true,
       "cache": false
     },
-    "test:e2e:update": {
-      "dependsOn": ["^build"],
-      "persistent": true,
-      "cache": false
-    },
     "email:preview": {
       "persistent": true,
       "cache": false

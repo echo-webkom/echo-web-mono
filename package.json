@@ -32,8 +32,7 @@
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
     "test:e2e": "turbo run test:e2e",
-    "test:e2e:ui": "turbo run test:e2e:ui",
-    "test:e2e:update": "turbo run test:e2e:update"
+    "test:e2e:ui": "turbo run test:e2e:ui"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
