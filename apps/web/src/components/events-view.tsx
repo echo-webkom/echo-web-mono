@@ -69,9 +69,11 @@ export default async function EventsView({ params }: { params: SearchParams }) {
     return <div>Ingen arrangementer funnet</div>;
   }
 
+  if (params.order === "ASC") happenings.reverse();
+
   return (
     <>
-      <div className="bg-red-700">
+      <div>
         {happenings.map((event) => (
           <ul key={event._id} className="py-1">
             <CombinedHappeningPreview happening={event} />

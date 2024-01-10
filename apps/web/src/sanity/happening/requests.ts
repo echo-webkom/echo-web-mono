@@ -72,7 +72,6 @@ export async function fetchHappeningBySlug(slug: string) {
  * @returns happenings matching the query parameters or an error message
  */
 export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
-  console.log(q);
   return await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
