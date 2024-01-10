@@ -101,7 +101,7 @@ export function EventSearchAndOrderBar() {
   const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
   const [isAsc, setIsAsc] = useState(params.get("order") === "ASC" ?? false);
 
-  const [search] = useDebounce(searchInput, 500);
+  const [search] = useDebounce(searchInput, 300);
 
   useEffect(() => {
     const newURL = new URLSearchParams(params);
