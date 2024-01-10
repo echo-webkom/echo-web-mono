@@ -165,7 +165,15 @@ export function EventSearchAndOrderBar() {
   );
 }
 
-export function EventDateFilterSidebar() {
+export function EventDateFilterSidebar({
+  numOfEvents: { numThisWeek, numNextWeek, numLater },
+}: {
+  numOfEvents: {
+    numThisWeek: number;
+    numNextWeek: number;
+    numLater: number;
+  };
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -216,7 +224,7 @@ export function EventDateFilterSidebar() {
                 });
               }}
             />
-            <Label className="ml-2 text-base">Denne uken ()</Label>
+            <Label className="ml-2 text-base">Denne uken ({numThisWeek})</Label>
           </div>
 
           <div className="mb-2 flex items-center">
@@ -229,7 +237,7 @@ export function EventDateFilterSidebar() {
                 });
               }}
             />
-            <Label className="ml-2 text-base">Neste uke ()</Label>
+            <Label className="ml-2 text-base">Neste uke ({numNextWeek})</Label>
           </div>
 
           <div className="flex items-center">
@@ -242,7 +250,7 @@ export function EventDateFilterSidebar() {
                 });
               }}
             />
-            <Label className="ml-2 text-base">Senere ()</Label>
+            <Label className="ml-2 text-base">Senere ({numLater})</Label>
           </div>
         </div>
       </div>

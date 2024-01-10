@@ -1,6 +1,6 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-import { type FilteredHappeningQuery } from "@/components/events-view";
+import { type FilteredHappeningQuery } from "@/app/(default)/for-studenter/arrangementer/page";
 import { sanityFetch } from "../client";
 import {
   allHappeningsQuery,
