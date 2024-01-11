@@ -128,6 +128,15 @@ async function seed() {
   });
 
   await createUser({
+    id: "student2",
+    name: "Student2",
+    email: "student2@echo.uib.no",
+    type: "student",
+    token: "student2",
+    year: 2,
+  });
+
+  await createUser({
     id: "student5",
     name: "Student5",
     email: "student5@echo.uib.no",
@@ -180,7 +189,7 @@ async function seed() {
       id: "party-med-webkom-spotrange",
       maxYear: 3,
       minYear: 1,
-      spots: 5,
+      spots: 1,
     })
     .onConflictDoNothing();
 
