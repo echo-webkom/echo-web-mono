@@ -48,6 +48,29 @@ function generateQuery(params: SearchParams) {
   return query;
 }
 
+function validateParams(params: SearchParams | undefined) {
+  if (!params) return { type: "all" };
+
+  const validParams: SearchParams = {
+    type: (params.type as "event" | "bedpres" | "all") ?? "all",
+    order: params.order === "ASC" ? "ASC" : undefined,
+    search: params.search ?? undefined,
+    thisWeek: params.thisWeek === "false" ? "false" : undefined,
+    nextWeek: params.nextWeek === "false" ? "false" : undefined,
+    later: params.later === "false" ? "false" : undefined,
+  };
+
+  if (params.open === "true" && params.past === "true") {
+    validParams.open = undefined;
+    validParams.past = undefined;
+  } else {
+    validParams.open = params.open === "true" ? "true" : undefined;
+    validParams.past = params.past === "true" ? "true" : undefined;
+  }
+
+  return validParams;
+}
+
 function getDateInterval(params: SearchParams) {
   const currentDate = new Date();
 
@@ -79,14 +102,12 @@ function getDateInterval(params: SearchParams) {
 }
 
 export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
-  const params = searchParams ?? {
-    type: "all",
-  };
+  const validParams = validateParams(searchParams);
 
-  const query = generateQuery(params);
+  const query = generateQuery(validParams);
   const happenings = await fetchFilteredHappening(query);
 
-  if (params.order === "ASC") happenings.reverse();
+  if (validParams.order === "ASC") happenings.reverse();
 
   const { numThisWeek, numNextWeek, numLater } = happenings.reduce(
     (acc: { numThisWeek: number; numNextWeek: number; numLater: number }, happening) => {
@@ -119,14 +140,17 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     <Container>
       <section>
         <div>
-          <EventFilterBar />
+          <EventFilterBar params={validParams} />
         </div>
         <div>
-          <EventSearchAndOrderBar />
+          <EventSearchAndOrderBar params={validParams} />
         </div>
         <div>
           <div>
-            <EventDateFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
+            <EventDateFilterSidebar
+              params={validParams}
+              numOfEvents={{ numThisWeek, numNextWeek, numLater }}
+            />
           </div>
           <div>
             <Suspense fallback={<p>Laster...</p>}>
