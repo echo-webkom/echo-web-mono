@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowDownNarrowWide } from "lucide-react";
 import { useDebounce } from "use-debounce";
 
@@ -15,6 +15,7 @@ import { Label } from "./ui/label";
 export function EventFilterBar({ params }: { params: SearchParams }) {
   const router = useRouter();
   const pathname = usePathname();
+  const url = useSearchParams();
 
   const [eventParams, setEventParams] = useState({
     type: params.type,
@@ -46,8 +47,12 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
       newURL.delete("past");
     }
 
-    router.push(`${pathname}?${newURL.toString()}`);
-  }, [pathname, router, eventParams, params]);
+    const route = newURL.toString();
+
+    if (route !== url.toString()) {
+      router.push(`${pathname}?${newURL.toString()}`);
+    }
+  }, [pathname, router, eventParams, url, params]);
 
   return (
     <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
@@ -96,6 +101,7 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
 export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
   const router = useRouter();
   const pathname = usePathname();
+  const url = useSearchParams();
 
   const [searchInput, setSearchInput] = useState(params.search ?? "");
   const [isAsc, setIsAsc] = useState(params.order === "ASC" ? true : false);
@@ -117,8 +123,12 @@ export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
       newURL.delete("order");
     }
 
-    router.push(`${pathname}?${newURL.toString()}`);
-  }, [pathname, router, search, isAsc, params]);
+    const route = newURL.toString();
+
+    if (route !== url.toString()) {
+      router.push(`${pathname}?${newURL.toString()}`);
+    }
+  }, [pathname, router, search, isAsc, url, params]);
 
   return (
     <div className="flex justify-between">
@@ -177,6 +187,7 @@ export function EventDateFilterSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const url = useSearchParams();
 
   const [dateParams, setDateParams] = useState({
     thisWeek: params.thisWeek === "false" ? false : true,
@@ -205,8 +216,12 @@ export function EventDateFilterSidebar({
       newURL.delete("later");
     }
 
-    router.push(`${pathname}?${newURL.toString()}`);
-  }, [pathname, router, dateParams, params]);
+    const route = newURL.toString();
+
+    if (route !== url.toString()) {
+      router.push(`${pathname}?${newURL.toString()}`);
+    }
+  }, [pathname, router, dateParams, url, params]);
 
   return (
     <div className="container flex flex-col gap-5 md:flex-row md:gap-0">
