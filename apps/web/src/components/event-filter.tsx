@@ -47,7 +47,7 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
     }
 
     router.push(`${pathname}?${newURL.toString()}`);
-  }, [pathname, router, eventParams]);
+  }, [pathname, router, eventParams, params]);
 
   return (
     <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
@@ -118,7 +118,7 @@ export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
     }
 
     router.push(`${pathname}?${newURL.toString()}`);
-  }, [pathname, router, search, isAsc]);
+  }, [pathname, router, search, isAsc, params]);
 
   return (
     <div className="flex justify-between">
