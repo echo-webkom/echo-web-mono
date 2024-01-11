@@ -27,7 +27,7 @@ type DateInterval = {
 };
 
 export type SearchParams = {
-  type: string;
+  type?: string;
   order?: string;
   search?: string;
   open?: string;
@@ -41,7 +41,7 @@ export type SearchParams = {
 function generateQuery(params: SearchParams) {
   const query: FilteredHappeningQuery = {
     search: params.search ?? undefined,
-    type: (params.type as "event" | "bedpres" | "all") ?? "all",
+    type: (params.type as "event" | "bedpres") ?? "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
     dateFilter: getDateInterval(params),
@@ -54,7 +54,7 @@ function validateParams(params: SearchParams | undefined) {
   if (!params) return { type: "all" };
 
   const validParams: SearchParams = {
-    type: (params.type as "event" | "bedpres" | "all") ?? "all",
+    type: (params.type as "event" | "bedpres") ?? undefined,
     order: params.order === "ASC" ? "ASC" : undefined,
     search: params.search ?? undefined,
     thisWeek: params.thisWeek === "false" ? "false" : undefined,
@@ -125,17 +125,17 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <div>
           <EventFilterBar params={validParams} />
         </div>
-        <div>
+        <div className="p-3">
           <EventSearchAndOrderBar params={validParams} />
         </div>
-        <div>
-          <div>
+        <div className="flex">
+          <div className="w-1/4">
             <EventDateFilterSidebar
               params={validParams}
               numOfEvents={{ numThisWeek, numNextWeek, numLater }}
             />
           </div>
-          <div>
+          <div className="w-3/4">
             <EventsView happenings={happenings} />
           </div>
         </div>

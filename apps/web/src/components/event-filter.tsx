@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ArrowDownNarrowWide } from "lucide-react";
 import { useDebounce } from "use-debounce";
 
@@ -15,10 +15,9 @@ import { Label } from "./ui/label";
 export function EventFilterBar({ params }: { params: SearchParams }) {
   const router = useRouter();
   const pathname = usePathname();
-  const url = useSearchParams();
 
   const [eventParams, setEventParams] = useState({
-    type: params.type,
+    type: params.type === "event" || params.type === "bedpres" ? params.type : "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
   });
@@ -26,14 +25,10 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
   useEffect(() => {
     const newURL = new URLSearchParams(params);
 
-    if (
-      eventParams.type === "event" ||
-      eventParams.type === "bedpres" ||
-      eventParams.type === "all"
-    ) {
+    if (eventParams.type === "event" || eventParams.type === "bedpres") {
       newURL.set("type", eventParams.type);
     } else {
-      newURL.set("type", "all");
+      newURL.delete("type");
     }
 
     if (eventParams.open === true) {
@@ -49,10 +44,10 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
 
     const route = newURL.toString();
 
-    if (route !== url.toString()) {
-      router.push(`${pathname}?${newURL.toString()}`);
+    if (route !== new URLSearchParams(params).toString()) {
+      router.push(`${pathname}?${route}`);
     }
-  }, [pathname, router, eventParams, url, params]);
+  }, [pathname, router, eventParams, params]);
 
   return (
     <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
@@ -101,7 +96,6 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
 export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
   const router = useRouter();
   const pathname = usePathname();
-  const url = useSearchParams();
 
   const [searchInput, setSearchInput] = useState(params.search ?? "");
   const [isAsc, setIsAsc] = useState(params.order === "ASC" ? true : false);
@@ -125,10 +119,10 @@ export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
 
     const route = newURL.toString();
 
-    if (route !== url.toString()) {
-      router.push(`${pathname}?${newURL.toString()}`);
+    if (route !== new URLSearchParams(params).toString()) {
+      router.push(`${pathname}?${route}`);
     }
-  }, [pathname, router, search, isAsc, url, params]);
+  }, [pathname, router, search, isAsc, params]);
 
   return (
     <div className="flex justify-between">
@@ -187,7 +181,6 @@ export function EventDateFilterSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const url = useSearchParams();
 
   const [dateParams, setDateParams] = useState({
     thisWeek: params.thisWeek === "false" ? false : true,
@@ -218,55 +211,53 @@ export function EventDateFilterSidebar({
 
     const route = newURL.toString();
 
-    if (route !== url.toString()) {
-      router.push(`${pathname}?${newURL.toString()}`);
+    if (route !== new URLSearchParams(params).toString()) {
+      router.push(`${pathname}?${route}`);
     }
-  }, [pathname, router, dateParams, url, params]);
+  }, [pathname, router, dateParams, params]);
 
   return (
-    <div className="container flex flex-col gap-5 md:flex-row md:gap-0">
-      <div className="left-panel flex w-full flex-col md:w-1/4">
-        <div className="p-4">
-          <div className="mb-2 text-xl font-semibold">Tidspunkt</div>
+    <div className="flex w-full flex-col">
+      <div className="p-4">
+        <div className="mb-2 text-xl font-semibold">Tidspunkt</div>
 
-          <div className="mb-2 flex items-center">
-            <Checkbox
-              checked={dateParams.thisWeek}
-              onCheckedChange={() => {
-                setDateParams({
-                  ...dateParams,
-                  thisWeek: !dateParams.thisWeek,
-                });
-              }}
-            />
-            <Label className="ml-2 text-base">Denne uken ({numThisWeek})</Label>
-          </div>
+        <div className="mb-2 flex items-center">
+          <Checkbox
+            checked={dateParams.thisWeek}
+            onCheckedChange={() => {
+              setDateParams({
+                ...dateParams,
+                thisWeek: !dateParams.thisWeek,
+              });
+            }}
+          />
+          <Label className="ml-2 text-base">Denne uken ({numThisWeek})</Label>
+        </div>
 
-          <div className="mb-2 flex items-center">
-            <Checkbox
-              checked={dateParams.nextWeek}
-              onCheckedChange={() => {
-                setDateParams({
-                  ...dateParams,
-                  nextWeek: !dateParams.nextWeek,
-                });
-              }}
-            />
-            <Label className="ml-2 text-base">Neste uke ({numNextWeek})</Label>
-          </div>
+        <div className="mb-2 flex items-center">
+          <Checkbox
+            checked={dateParams.nextWeek}
+            onCheckedChange={() => {
+              setDateParams({
+                ...dateParams,
+                nextWeek: !dateParams.nextWeek,
+              });
+            }}
+          />
+          <Label className="ml-2 text-base">Neste uke ({numNextWeek})</Label>
+        </div>
 
-          <div className="flex items-center">
-            <Checkbox
-              checked={dateParams.later}
-              onCheckedChange={() => {
-                setDateParams({
-                  ...dateParams,
-                  later: !dateParams.later,
-                });
-              }}
-            />
-            <Label className="ml-2 text-base">Senere ({numLater})</Label>
-          </div>
+        <div className="flex items-center">
+          <Checkbox
+            checked={dateParams.later}
+            onCheckedChange={() => {
+              setDateParams({
+                ...dateParams,
+                later: !dateParams.later,
+              });
+            }}
+          />
+          <Label className="ml-2 text-base">Senere ({numLater})</Label>
         </div>
       </div>
     </div>
