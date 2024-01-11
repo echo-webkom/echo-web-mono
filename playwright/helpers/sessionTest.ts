@@ -3,6 +3,7 @@ import { test as baseTest } from "@playwright/test";
 const userCookies = {
   Admin: "admin",
   Student: "student",
+  Student5: "student5",
 };
 
 type User = keyof typeof userCookies;
