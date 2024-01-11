@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { nextMonday, subMinutes } from "date-fns";
 
 import { Container } from "@/components/container";
@@ -8,6 +7,7 @@ import {
   EventSearchAndOrderBar,
 } from "@/components/event-filter";
 import EventsView from "@/components/events-view";
+import { Callout } from "@/components/typography/callout";
 import { fetchFilteredHappening } from "@/sanity/happening/requests";
 
 /**
@@ -109,6 +109,14 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   const query = generateQuery(validParams);
   const { numThisWeek, numNextWeek, numLater, happenings } = await fetchFilteredHappening(query);
 
+  if (!happenings)
+    return (
+      <Callout type="danger" className="mx-auto my-8 w-full max-w-lg">
+        <p className="font-bold">En feil har oppstått...</p>
+        <p>Prøv igjen senere</p>
+      </Callout>
+    );
+
   if (validParams.order === "ASC") happenings.reverse();
 
   return (
@@ -128,9 +136,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
             />
           </div>
           <div>
-            <Suspense fallback={<p>Laster...</p>}>
-              <EventsView happenings={happenings} />
-            </Suspense>
+            <EventsView happenings={happenings} />
           </div>
         </div>
       </section>
