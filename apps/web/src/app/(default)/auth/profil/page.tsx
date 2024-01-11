@@ -53,6 +53,7 @@ export default async function ProfilePage() {
                 <li key={group.id}>
                   <Link href={`/gruppe/${group.id}`}>
                     <Chip
+                      data-testid="group-chip"
                       key={group.id}
                       className="bg-secondary text-secondary-foreground hover:underline"
                     >
