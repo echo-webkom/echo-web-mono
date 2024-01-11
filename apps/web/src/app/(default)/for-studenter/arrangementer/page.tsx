@@ -17,6 +17,7 @@ export type FilteredHappeningQuery = {
   search?: string;
   type: "all" | "event" | "bedpres";
   open: boolean;
+  past: boolean;
   dateFilter?: Array<DateInterval>;
 };
 
@@ -42,6 +43,7 @@ function generateQuery(params: SearchParams) {
     search: params.search ?? undefined,
     type: (params.type as "event" | "bedpres" | "all") ?? "all",
     open: params.open === "true" ? true : false,
+    past: params.past === "true" ? true : false,
     dateFilter: getDateInterval(params),
   };
 
@@ -105,36 +107,9 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   const validParams = validateParams(searchParams);
 
   const query = generateQuery(validParams);
-  const happenings = await fetchFilteredHappening(query);
+  const { numThisWeek, numNextWeek, numLater, happenings } = await fetchFilteredHappening(query);
 
   if (validParams.order === "ASC") happenings.reverse();
-
-  const { numThisWeek, numNextWeek, numLater } = happenings.reduce(
-    (acc: { numThisWeek: number; numNextWeek: number; numLater: number }, happening) => {
-      const { date } = happening;
-
-      if (!date) {
-        return acc;
-      }
-
-      const happeningDate = new Date(date);
-
-      const thisWeek = subMinutes(new Date(), 30);
-      const nextWeek = nextMonday(thisWeek);
-      const later = nextMonday(nextWeek);
-
-      if (happeningDate >= thisWeek && happeningDate < nextWeek) {
-        acc.numThisWeek += 1;
-      } else if (happeningDate >= nextWeek && happeningDate < later) {
-        acc.numNextWeek += 1;
-      } else if (happeningDate >= later) {
-        acc.numLater += 1;
-      }
-
-      return acc;
-    },
-    { numThisWeek: 0, numNextWeek: 0, numLater: 0 },
-  );
 
   return (
     <Container>

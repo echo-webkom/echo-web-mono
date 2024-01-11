@@ -1,4 +1,5 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { nextMonday, subMinutes } from "date-fns";
 
 import { type FilteredHappeningQuery } from "@/app/(default)/for-studenter/arrangementer/page";
 import { sanityFetch } from "../client";
@@ -72,7 +73,7 @@ export async function fetchHappeningBySlug(slug: string) {
  * @returns happenings matching the query parameters or an error message
  */
 export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
-  return await fetchAllHappenings().then((res) =>
+  const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
         const { title } = happening;
@@ -87,23 +88,15 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
         return happeningType === q.type || q.type === "all";
       })
       .filter((happening) => {
-        if (!q.dateFilter) {
-          return false;
-        }
-
         const { date } = happening;
 
         if (!date) {
           return false;
         }
 
-        return q.dateFilter.some((f) => {
-          return (
-            (f.start ?? f.end) &&
-            (!f.start || new Date(date) >= f.start) &&
-            (!f.end || new Date(date) < f.end)
-          );
-        });
+        if (q.past) return new Date(date) < new Date();
+
+        return new Date(date) >= subMinutes(new Date(), 30);
       })
       .filter((happening) => {
         const { registrationStart, registrationEnd } = happening;
@@ -116,6 +109,60 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
           : true;
       }),
   );
+
+  const { numThisWeek, numNextWeek, numLater } = filteredHappenings.reduce(
+    (acc: { numThisWeek: number; numNextWeek: number; numLater: number }, happening) => {
+      const { date } = happening;
+
+      if (!date) {
+        return acc;
+      }
+
+      const happeningDate = new Date(date);
+
+      const thisWeek = subMinutes(new Date(), 30);
+      const nextWeek = nextMonday(thisWeek);
+      const later = nextMonday(nextWeek);
+
+      if (happeningDate >= thisWeek && happeningDate < nextWeek) {
+        acc.numThisWeek += 1;
+      } else if (happeningDate >= nextWeek && happeningDate < later) {
+        acc.numNextWeek += 1;
+      } else if (happeningDate >= later) {
+        acc.numLater += 1;
+      }
+
+      return acc;
+    },
+    { numThisWeek: 0, numNextWeek: 0, numLater: 0 },
+  );
+
+  return {
+    numThisWeek,
+    numNextWeek,
+    numLater,
+    happenings: q.past
+      ? filteredHappenings
+      : filteredHappenings.filter((happening) => {
+          if (!q.dateFilter) {
+            return false;
+          }
+
+          const { date } = happening;
+
+          if (!date) {
+            return false;
+          }
+
+          return q.dateFilter.some((f) => {
+            return (
+              (f.start ?? f.end) &&
+              (!f.start || new Date(date) >= f.start) &&
+              (!f.end || new Date(date) < f.end)
+            );
+          });
+        }),
+  };
 }
 
 /**
