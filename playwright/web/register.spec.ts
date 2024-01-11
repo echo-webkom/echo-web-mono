@@ -13,7 +13,7 @@ baseTest.describe("Register", () => {
     await sql`DELETE FROM registration WHERE happening_id = ${ID}`;
   });
 
-  test("Student")("register to event", async ({ page }) => {
+  test("Student")("register and deregister to event", async ({ page }) => {
     await page.goto(`/arrangement/${SLUG}`);
 
     await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
@@ -22,5 +22,35 @@ baseTest.describe("Register", () => {
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
     await expect(page.getByTestId("toast")).toContainText("Du er nå påmeldt arrangementet");
+
+    await page.getByRole("button", { name: "Meld av" }).click();
+
+    await page.getByRole("textbox").fill("Jeg vil ikke lenger delta på arrangementet");
+    await page.getByRole("checkbox").check();
+    await page.getByRole("button", { name: "Send" }).click();
+
+    await expect(page.getByTestId("toast")).toContainText("Du er nå avmeldt");
+  });
+
+  test("Student5")("should not be able to register to event", async ({ page }) => {
+    await page.goto(`/arrangement/${SLUG}`);
+
+    await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
+    await expect(page.getByText("Velkommen til party med Webkom!", { exact: true })).toBeVisible();
+
+    await page.getByRole("button", { name: "One-click påmelding" }).click();
+
+    await expect(page.getByTestId("toast")).toContainText(
+      "Du kan ikke melde deg på dette arrangementet",
+    );
+  });
+
+  test("Admin")("see admin dashboard link", async ({ page }) => {
+    await page.goto(`/arrangement/${SLUG}`);
+
+    await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
+    await expect(page.getByText("Velkommen til party med Webkom!", { exact: true })).toBeVisible();
+
+    await expect(page.getByRole("link", { name: "Admin dashbord" })).toBeVisible();
   });
 });

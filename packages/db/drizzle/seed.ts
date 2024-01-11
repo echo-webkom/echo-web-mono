@@ -128,12 +128,22 @@ async function seed() {
   });
 
   await createUser({
+    id: "student5",
+    name: "Student5",
+    email: "student5@echo.uib.no",
+    type: "student",
+    token: "student5",
+    year: 5,
+  });
+
+  await createUser({
     id: "alum",
     name: "Andreas Aanes",
     email: "alum@echo.uib.on",
     type: "alum",
     token: "alum",
   });
+
   await createUser({
     id: "admin",
     name: "Bo Salhus",
@@ -168,7 +178,7 @@ async function seed() {
     .values({
       happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
       id: "party-med-webkom-spotrange",
-      maxYear: 5,
+      maxYear: 3,
       minYear: 1,
       spots: 5,
     })
