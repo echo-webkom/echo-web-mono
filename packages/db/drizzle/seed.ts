@@ -6,7 +6,9 @@ import {
   accounts,
   degrees,
   groups,
+  happenings,
   sessions,
+  spotRanges,
   users,
   usersToGroups,
   type UserType,
@@ -145,6 +147,34 @@ async function seed() {
     groupId: "webkom",
     isLeader: true,
   });
+
+  await db
+    .insert(happenings)
+    .values({
+      id: "5cbb5337-a6e6-4eff-a821-a73722594f47",
+      slug: "party-med-webkom",
+      title: "Party med Webkom",
+      date: new Date("2030-01-01"),
+      registrationEnd: new Date("2029-12-31"),
+      registrationStart: new Date("2024-01-01"),
+      type: "event",
+    })
+    .onConflictDoNothing();
+
+  console.log("Inserted happening Party med Webkom with id 5cbb5337-a6e6-4eff-a821-a73722594f47");
+
+  await db
+    .insert(spotRanges)
+    .values({
+      happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
+      id: "party-med-webkom-spotrange",
+      maxYear: 5,
+      minYear: 1,
+      spots: 5,
+    })
+    .onConflictDoNothing();
+
+  console.log("Inserted spot range for Party med Webkom");
 }
 
 async function createUser({
@@ -153,12 +183,16 @@ async function createUser({
   email,
   type,
   token,
+  year = 1,
+  degreeId = "dtek",
 }: {
   id: string;
   name: string;
   email: string;
   type: UserType;
   token: string;
+  year?: number;
+  degreeId?: string;
 }) {
   console.log(`Inserted user ${name} with id ${id}`);
   await db
@@ -168,6 +202,8 @@ async function createUser({
       name,
       email,
       type,
+      year,
+      degreeId,
     })
     .onConflictDoNothing();
 

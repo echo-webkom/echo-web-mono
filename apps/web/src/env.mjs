@@ -1,5 +1,5 @@
-import {createEnv} from "@t3-oss/env-nextjs";
-import {z} from "zod";
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
 
 export const env = createEnv({
   server: {
@@ -9,7 +9,7 @@ export const env = createEnv({
     UPSTASH_REDIS_REST_TOKEN: z.string().default(""),
   },
   client: {
-    NEXT_PUBLIC_SANITY_DATASET: z.enum(["production", "develop"]).default("develop"),
+    NEXT_PUBLIC_SANITY_DATASET: z.enum(["production", "develop", "testing"]).default("develop"),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
