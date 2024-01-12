@@ -128,14 +128,14 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <div className="p-3">
           <EventSearchAndOrderBar params={validParams} />
         </div>
-        <div className="flex">
-          <div className="w-1/4">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:max-w-[300px]">
             <EventDateFilterSidebar
               params={validParams}
               numOfEvents={{ numThisWeek, numNextWeek, numLater }}
             />
           </div>
-          <div className="w-3/4">
+          <div>
             <EventsView happenings={happenings} />
           </div>
         </div>

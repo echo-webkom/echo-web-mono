@@ -23,7 +23,7 @@ export default function EventsView({ happenings }: { happenings: Array<Happening
 
   return (
     <>
-      <div>
+      <div className="w-full">
         {happenings.map((event) => (
           <ul key={event._id} className="py-1">
             <CombinedHappeningPreview happening={event} />
