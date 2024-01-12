@@ -119,23 +119,38 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
 export const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
+  const [contentHeight, setContentHeight] = useState(0);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!activeDropdown?.children) {
+      setContentHeight(0);
+      return;
+    }
+
+    setContentHeight(ref.current?.clientHeight ?? 0);
+  }, [activeDropdown]);
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {activeDropdown && (
         <motion.div
-          key={activeDropdown.id}
           className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background"
           initial={{
             height: 0,
           }}
           animate={{
-            height: "auto",
+            height: contentHeight,
           }}
           exit={{
             height: 0,
           }}
+          transition={{
+            duration: 0.3,
+          }}
         >
-          {activeDropdown.children}
+          <div ref={ref}>{activeDropdown.children}</div>
         </motion.div>
       )}
     </AnimatePresence>
