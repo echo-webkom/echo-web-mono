@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon } from "@radix-ui/react-icons";
+import { BookPlus } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
@@ -62,6 +63,19 @@ export function UserMenu({ user }: UserMenuProps) {
                 <LockClosedIcon className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+
+        {user.memberships.length > 0 && (
+          <>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <a href="/sanity">
+                <BookPlus className="mr-2 h-4 w-4" />
+                <span>Sanity</span>
+              </a>
             </DropdownMenuItem>
           </>
         )}
