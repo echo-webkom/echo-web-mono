@@ -24,7 +24,7 @@ export async function Content() {
       {/* Events  */}
       <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
         <Link
-          href="/for-studenter/arrangementer?type=all"
+          href="/for-studenter/arrangementer?type=event"
           className="group mx-auto flex items-center underline-offset-4 hover:underline"
         >
           <h2 className="text-center text-3xl font-medium">Arrangementer</h2>
@@ -46,7 +46,7 @@ export async function Content() {
       {/* Bedpresses */}
       <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
         <Link
-          href="/for-studenter/arrangementer?type=all"
+          href="/for-studenter/arrangementer?type=bedpres"
           className="group mx-auto flex items-center underline-offset-4 hover:underline"
         >
           <h2 className="text-center text-3xl font-medium">Bedriftspresentasjoner</h2>
