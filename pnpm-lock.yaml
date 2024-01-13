@@ -428,8 +428,8 @@ importers:
   packages/email:
     dependencies:
       jsx-email:
-        specifier: 1.7.1
-        version: 1.7.1(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0)
+        specifier: 1.7.2
+        version: 1.7.2(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4531,7 +4531,7 @@ packages:
   /@radix-ui/primitive@1.0.1:
     resolution: {integrity: sha512-yQ8oGX2GVsEYMWGxcovu1uGWPCxV5BFfeeYxqPmuAzUyLT9qmaMXSAhXpb0WrspIeqYzdJpkh2vHModJPgRIaw==}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
     dev: false
 
   /@radix-ui/react-accordion@1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
@@ -4675,7 +4675,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@radix-ui/primitive': 1.0.1
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.47)(react@18.2.0)
       '@radix-ui/react-context': 1.0.1(@types/react@18.2.47)(react@18.2.0)
@@ -4703,7 +4703,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.47)(react@18.2.0)
       '@radix-ui/react-context': 1.0.1(@types/react@18.2.47)(react@18.2.0)
       '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
@@ -4723,7 +4723,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@types/react': 18.2.47
       react: 18.2.0
     dev: false
@@ -4737,7 +4737,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@types/react': 18.2.47
       react: 18.2.0
     dev: false
@@ -4785,7 +4785,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@types/react': 18.2.47
       react: 18.2.0
     dev: false
@@ -4896,7 +4896,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@radix-ui/react-use-layout-effect': 1.0.1(@types/react@18.2.47)(react@18.2.0)
       '@types/react': 18.2.47
       react: 18.2.0
@@ -5115,7 +5115,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.47)(react@18.2.0)
       '@types/react': 18.2.47
       '@types/react-dom': 18.2.18
@@ -5420,7 +5420,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@radix-ui/react-use-callback-ref': 1.0.1(@types/react@18.2.47)(react@18.2.0)
       '@types/react': 18.2.47
       react: 18.2.0
@@ -7218,7 +7218,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       get-intrinsic: 1.2.1
       is-string: 1.0.7
@@ -7262,7 +7262,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       es-shim-unscopables: 1.0.0
 
@@ -7280,7 +7280,7 @@ packages:
     resolution: {integrity: sha512-pZYPXPRl2PqWcsUs6LOMn+1f1532nEoPTYowBtqLwAW+W8vSVhkIGnmOX1t/UQjD6YGI0vcD2B1U7ZFGQH9jnQ==}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       es-shim-unscopables: 1.0.0
       get-intrinsic: 1.2.1
@@ -8734,13 +8734,6 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /define-properties@1.2.0:
-    resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==}
-    engines: {node: '>= 0.4'}
-    dependencies:
-      has-property-descriptors: 1.0.0
-      object-keys: 1.1.1
-
   /define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
@@ -9254,7 +9247,7 @@ packages:
     dependencies:
       asynciterator.prototype: 1.0.0
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       es-set-tostringtag: 2.0.1
       function-bind: 1.1.2
@@ -11348,7 +11341,7 @@ packages:
   /iterator.prototype@1.1.0:
     resolution: {integrity: sha512-rjuhAk1AJ1fssphHD0IFV6TWL40CwRZ53FrztKx43yk2v6rguBYsY4Bj1VU4HmoMmKwZUlx7mfnhDf9cOp4YTw==}
     dependencies:
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       get-intrinsic: 1.2.1
       has-symbols: 1.0.3
       has-tostringtag: 1.0.0
@@ -11518,8 +11511,8 @@ packages:
       object.assign: 4.1.4
       object.values: 1.1.7
 
-  /jsx-email@1.7.1(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0):
-    resolution: {integrity: sha512-xPJm9mpbfMiHgrXQ1XHglXPYmUY91Y6F/TyyOqYLUR6XgygWdhpX5hN+1W2W8cFb+AkiGI+JHakqkl6zbn6PtQ==}
+  /jsx-email@1.7.2(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0):
+    resolution: {integrity: sha512-7Lr8uiFSbMagZmQL/Z7cURbHBmqhXZPVHnbLVP2+wXb07J8EsRubpj2b9zhVsR+v6oucZaxR+4/jcDPU3Bym5A==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -13470,7 +13463,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
 
   /object.entries@1.1.7:
@@ -13487,7 +13480,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
 
   /object.fromentries@2.0.7:
@@ -13511,7 +13504,7 @@ packages:
   /object.hasown@1.1.2:
     resolution: {integrity: sha512-B5UIT3J1W+WuWIU55h0mjlwaqxiE5vYENJXIXZ4VFe05pNYrkKuK0U/6aFcb0pKywYJh7IhfoqUfKVmrJJHZHw==}
     dependencies:
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
 
   /object.values@1.1.6:
@@ -13519,7 +13512,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
 
   /object.values@1.1.7:
@@ -16252,7 +16245,7 @@ packages:
     resolution: {integrity: sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       get-intrinsic: 1.2.1
       has-symbols: 1.0.3
