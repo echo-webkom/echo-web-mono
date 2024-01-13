@@ -6,6 +6,7 @@ import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "reac
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { happeningTypeToPathname } from "@echo-webkom/lib";
 
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
@@ -22,15 +23,16 @@ import { urlFor } from "@/utils/image-builder";
 import { mailTo } from "@/utils/prefixes";
 
 type EventSidebarProps = {
-  event: Happening;
+  sHappening: Happening;
 };
 
-export async function HappeningSidebar({ event }: EventSidebarProps) {
+/** Named sHappening to not conflict with happening from DB */
+export async function HappeningSidebar({ sHappening }: EventSidebarProps) {
   const user = await auth();
 
   const happening = await db.query.happenings
     .findFirst({
-      where: (happening) => eq(happening.id, event._id),
+      where: (happening) => eq(happening.id, sHappening._id),
       with: {
         questions: true,
         groups: {
@@ -43,12 +45,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     .catch(() => null);
   const spotRanges = await db.query.spotRanges
     .findMany({
-      where: (spotRange) => eq(spotRange.happeningId, event._id),
+      where: (spotRange) => eq(spotRange.happeningId, sHappening._id),
     })
     .catch(() => []);
   const registrations = await db.query.registrations
     .findMany({
-      where: (registration) => eq(registration.happeningId, event._id),
+      where: (registration) => eq(registration.happeningId, sHappening._id),
       with: {
         user: true,
       },
@@ -110,7 +112,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Event is not happening
        * - Event is not external
        */}
-      {!happening && event.happeningType !== "external" && (
+      {!happening && sHappening.happeningType !== "external" && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Fant ikke arrangementet.</p>
@@ -123,14 +125,14 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show company logo if:
        * - There is a company
        */}
-      {event.company && (
+      {sHappening.company && (
         <SidebarItem>
-          <Link href={event.company.website}>
+          <Link href={sHappening.company.website}>
             <div className="overflow-hidden">
               <div className="relative aspect-square w-full">
                 <Image
-                  src={urlFor(event.company.image).url()}
-                  alt={`${event.company.name} logo`}
+                  src={urlFor(sHappening.company.image).url()}
+                  alt={`${sHappening.company.name} logo`}
                   fill
                 />
               </div>
@@ -139,12 +141,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      {event.company && (
+      {sHappening.company && (
         <SidebarItem>
           <SidebarItemTitle>Bedrift:</SidebarItemTitle>
           <SidebarItemContent>
-            <Link className="hover:underline" href={event.company.website}>
-              {event.company.name}
+            <Link className="hover:underline" href={sHappening.company.website}>
+              {sHappening.company.name}
               <ExternalLink className="ml-1 inline-block h-4 w-4" />
             </Link>
           </SidebarItemContent>
@@ -155,11 +157,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show date if:
        * - There is a date set
        */}
-      {event.date && (
+      {sHappening.date && (
         <SidebarItem>
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
-            <AddToCalender date={new Date(event.date)} title={event.title} />
+            <AddToCalender date={new Date(sHappening.date)} title={sHappening.title} />
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -168,10 +170,10 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show time if:
        * - There is a date set
        */}
-      {event.date && (
+      {sHappening.date && (
         <SidebarItem>
           <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
-          <SidebarItemContent>{time(event.date)}</SidebarItemContent>
+          <SidebarItemContent>{time(sHappening.date)}</SidebarItemContent>
         </SidebarItem>
       )}
 
@@ -215,10 +217,10 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show location if:
        * - There is a location set
        */}
-      {event.location && (
+      {sHappening.location && (
         <SidebarItem>
           <SidebarItemTitle>Sted:</SidebarItemTitle>
-          <SidebarItemContent>{event.location.name}</SidebarItemContent>
+          <SidebarItemContent>{sHappening.location.name}</SidebarItemContent>
         </SidebarItem>
       )}
 
@@ -226,12 +228,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show hosts if:
        * - There are hosts
        */}
-      {event.contacts && event.contacts.length > 0 && (
+      {sHappening.contacts && sHappening.contacts.length > 0 && (
         <SidebarItem>
           <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
           <SidebarItemContent>
             <ul>
-              {event.contacts.map((contact) => (
+              {sHappening.contacts.map((contact) => (
                 <li key={contact.profile._id}>
                   <a className="hover:underline" href={mailTo(contact.email)}>
                     {contact.profile.name}
@@ -247,10 +249,10 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show deductable if:
        * - There is a deductable
        */}
-      {Boolean(event.cost) && (
+      {Boolean(sHappening.cost) && (
         <SidebarItem>
           <SidebarItemTitle>Pris:</SidebarItemTitle>
-          <SidebarItemContent>{event.cost} kr</SidebarItemContent>
+          <SidebarItemContent>{sHappening.cost} kr</SidebarItemContent>
         </SidebarItem>
       )}
 
@@ -322,7 +324,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        */}
       {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
         <SidebarItem>
-          <DeregisterButton id={event._id} />
+          <DeregisterButton id={sHappening._id} />
         </SidebarItem>
       )}
 
@@ -341,7 +343,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         !isClosed &&
         isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
           <SidebarItem className="relative">
-            <RegisterButton id={event._id} questions={happening?.questions ?? []} />
+            <RegisterButton id={sHappening._id} questions={happening?.questions ?? []} />
             <Countdown toDate={userRegistrationStart} />
           </SidebarItem>
         )}
@@ -429,7 +431,13 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {isHost && (
         <SidebarItem>
           <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
+            <Link
+              href={`/${happeningTypeToPathname[sHappening.happeningType]}/${
+                sHappening.slug
+              }/admin`}
+            >
+              Admin dashbord
+            </Link>
           </Button>
         </SidebarItem>
       )}

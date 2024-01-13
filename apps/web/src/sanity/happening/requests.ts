@@ -1,6 +1,8 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { nextMonday, subMinutes } from "date-fns";
 
+import { happeningTypeToPathname } from "@echo-webkom/lib";
+
 import { type FilteredHappeningQuery } from "@/app/(default)/for-studenter/arrangementer/page";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";

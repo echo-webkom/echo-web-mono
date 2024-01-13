@@ -1,52 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
+import { ChevronLeft } from "lucide-react";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { happeningTypeToPathname } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
-import { isHost as _isHost } from "@/lib/is-host";
+import { isHost } from "@/lib/is-host";
 import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {
+    happeningType: string;
     slug: string;
   };
 };
 
-export default async function EventDashboard({ params }: Props) {
-  const { slug } = params;
-
-  const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
-    with: {
-      questions: true,
-      groups: {
-        with: {
-          group: true,
-        },
-      },
-    },
-  });
-
-  if (!happening) {
-    return notFound();
-  }
-
-  const user = await auth();
-
-  const isHost = user ? _isHost(user, happening) : false;
-
-  if (!isHost) {
-    return notFound();
-  }
-
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, happening.id),
+const getRegistrationsStmt = db.query.registrations
+  .findMany({
+    where: (registration) => eq(registration.happeningId, sql.placeholder("id")),
     with: {
       user: {
         with: {
@@ -58,9 +35,54 @@ export default async function EventDashboard({ params }: Props) {
         },
       },
     },
+  })
+  .prepare("getRegistrations");
+
+const getHappeningStmt = db.query.happenings
+  .findFirst({
+    where: (happening) => eq(happening.slug, sql.placeholder("slug")),
+    with: {
+      questions: true,
+      groups: {
+        with: {
+          group: true,
+        },
+      },
+    },
+  })
+  .prepare("getHappening");
+
+async function getData(params: Props["params"]) {
+  const happening = await getHappeningStmt.execute({
+    slug: params.slug,
   });
 
-  const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
+  if (!happening || happeningTypeToPathname[happening.type] !== params.happeningType) {
+    return notFound();
+  }
+
+  const [registrations, studentGroups] = await Promise.all([
+    getRegistrationsStmt.execute({
+      id: happening.id,
+    }),
+    getStudentGroups(),
+  ]);
+
+  return {
+    happening,
+    registrations,
+    studentGroups,
+  };
+}
+
+export default async function HappeningDashboard({ params }: Props) {
+  const { happening, registrations, studentGroups } = await getData(params);
+
+  const user = await auth();
+
+  if (!user || !isHost(user, happening)) {
+    return notFound();
+  }
 
   const registered = registrations.filter((registration) => registration.status === "registered");
   const waitlist = registrations.filter((registration) => registration.status === "waiting");
@@ -69,13 +91,11 @@ export default async function EventDashboard({ params }: Props) {
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
 
-  const groups = await getStudentGroups();
-
   return (
     <Container className="flex flex-col gap-10">
       <div className="m-2">
-        <Link href={`/${happeningType}/${happening.slug}`}>
-          <span className="p-2">⇐</span>
+        <Link href={`/${happeningTypeToPathname[happening.type]}/${happening.slug}`}>
+          <ChevronLeft className="mr-2 inline-block h-6 w-6" />
           <span className="underline">Tilbake</span>
         </Link>
       </div>
@@ -108,7 +128,7 @@ export default async function EventDashboard({ params }: Props) {
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable registrations={registrations} studentGroups={groups} />
+          <RegistrationTable registrations={registrations} studentGroups={studentGroups} />
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">

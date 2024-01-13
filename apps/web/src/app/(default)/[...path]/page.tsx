@@ -11,11 +11,11 @@ export const dynamicParams = false;
 
 type Props = {
   params: {
-    slug: Array<string> | undefined;
+    path: Array<string> | undefined;
   };
 };
 
-const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
+const getData = cache(async (slugs: Props["params"]["path"] = []) => {
   const [pageType, slug] = slugs;
 
   if (typeof pageType !== "string" || typeof slug !== "string") {
@@ -32,7 +32,7 @@ const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
 });
 
 export async function generateMetadata({ params }: Props) {
-  const page = await getData(params.slug);
+  const page = await getData(params.path);
 
   return {
     title: page.title,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function StaticPage({ params }: Props) {
-  const page = await getData(params.slug);
+  const page = await getData(params.path);
 
   return (
     <Container>

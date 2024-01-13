@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@echo-webkom/auth";
 import {
-  happeningTypeToPath,
+  happeningTypeToPathname,
   happeningTypeToString,
   registrationStatusToString,
 } from "@echo-webkom/lib";
@@ -31,11 +31,9 @@ export default async function UserHappenings() {
             <li key={registration.happening.slug}>
               <div className="py-3">
                 <Link
-                  href={
-                    happeningTypeToPath[registration.happening.type] +
-                    "/" +
+                  href={`/${happeningTypeToPathname[registration.happening.type]}/${
                     registration.happening.slug
-                  }
+                  }/admin`}
                   className="text-lg font-semibold hover:underline"
                 >
                   {registration.happening.title}
