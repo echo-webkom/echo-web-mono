@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AvatarIcon, ExitIcon, LockClosedIcon, PersonIcon } from "@radix-ui/react-icons";
-import { BookPlus } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { LuBookPlus } from "react-icons/lu";
+import {
+  RxAvatar as Avatar,
+  RxExit as Exit,
+  RxLockClosed as LockClosed,
+  RxPerson as Person,
+} from "react-icons/rx";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
@@ -35,7 +40,7 @@ export function UserMenu({ user }: UserMenuProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button data-testid="user-menu">
-          <AvatarIcon className="h-7 w-7" />
+          <Avatar className="h-7 w-7" />
         </button>
       </DropdownMenuTrigger>
 
@@ -49,7 +54,7 @@ export function UserMenu({ user }: UserMenuProps) {
 
         <DropdownMenuItem asChild>
           <Link href="/auth/profil">
-            <PersonIcon className="mr-2 h-4 w-4" />
+            <Person className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
         </DropdownMenuItem>
@@ -60,7 +65,7 @@ export function UserMenu({ user }: UserMenuProps) {
 
             <DropdownMenuItem asChild>
               <Link href="/admin">
-                <LockClosedIcon className="mr-2 h-4 w-4" />
+                <LockClosed className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
             </DropdownMenuItem>
@@ -73,7 +78,7 @@ export function UserMenu({ user }: UserMenuProps) {
 
             <DropdownMenuItem asChild>
               <a href="/sanity">
-                <BookPlus className="mr-2 h-4 w-4" />
+                <LuBookPlus className="mr-2 h-4 w-4" />
                 <span>Sanity</span>
               </a>
             </DropdownMenuItem>
@@ -91,7 +96,7 @@ export function UserMenu({ user }: UserMenuProps) {
               })
             }
           >
-            <ExitIcon className="mr-2 h-4 w-4" />
+            <Exit className="mr-2 h-4 w-4" />
             <span>Logg ut</span>
           </button>
         </DropdownMenuItem>

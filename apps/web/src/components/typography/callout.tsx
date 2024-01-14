@@ -1,5 +1,8 @@
 import React from "react";
-import { ExclamationTriangleIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import {
+  RxExclamationTriangle as Exclamation,
+  RxQuestionMarkCircled as QuestionMark,
+} from "react-icons/rx";
 
 import { cn } from "@/utils/cn";
 
@@ -27,8 +30,8 @@ export const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
       >
         {!noIcon && (
           <div>
-            {type === "info" && <QuestionMarkCircledIcon className="h-5 w-5" />}
-            {type !== "info" && <ExclamationTriangleIcon className="h-5 w-5" />}
+            {type === "info" && <QuestionMark className="h-5 w-5" />}
+            {type !== "info" && <Exclamation className="h-5 w-5" />}
           </div>
         )}
         <div>{children}</div>

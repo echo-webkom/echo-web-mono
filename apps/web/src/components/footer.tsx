@@ -1,7 +1,7 @@
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import BekkLogo from "@/assets/images/bekk.png";
 import { footerRoutes } from "@/lib/routes";
@@ -56,7 +56,7 @@ export const Footer = ({ className }: FooterProps) => {
 
                             {isExternal && (
                               <span>
-                                <ExternalLinkIcon />
+                                <ExternalLink />
                               </span>
                             )}
                           </Link>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { differenceInDays, isToday } from "date-fns";
+import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
@@ -30,7 +30,7 @@ export async function Content() {
         >
           <h2 className="text-center text-3xl font-medium">Arrangementer</h2>
 
-          <ArrowRightIcon className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
+          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
         <hr />
         <ul>
@@ -52,7 +52,7 @@ export async function Content() {
         >
           <h2 className="text-center text-2xl font-medium md:text-3xl">Bedriftspresentasjoner</h2>
 
-          <ArrowRightIcon className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
+          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
         <hr />
         <ul>
@@ -71,7 +71,7 @@ export async function Content() {
         <Link href="/for-studenter/innlegg">
           <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
             Siste nytt
-            <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+            <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
           </h2>
         </Link>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { RxArrowRight } from "react-icons/rx";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -23,12 +23,12 @@ export default async function MinuteOverview() {
 
                   <div className="flex items-center gap-2">
                     <p>{shortDateNoTime(minute.date)}</p>
-                    <ArrowRightIcon className="hidden h-8 w-8 rounded border p-2 sm:block" />
+                    <RxArrowRight className="hidden h-8 w-8 rounded border p-2 sm:block" />
                   </div>
                 </div>
 
                 <div className="block sm:hidden">
-                  <ArrowRightIcon className="h-10 w-10 rounded border p-2" />
+                  <RxArrowRight className="h-10 w-10 rounded border p-2" />
                 </div>
               </div>
             </Link>
