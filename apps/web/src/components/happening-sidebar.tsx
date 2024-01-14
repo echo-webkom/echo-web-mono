@@ -385,26 +385,30 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Normal registration is not open.
        * - Registration is not closed
        */}
-      {user && !canEarlyRegister && !isNormalRegistrationOpen && !isClosed && (
-        <SidebarItem>
-          <Callout type="warning" noIcon>
-            {isGroupRegistrationOpen && happening?.registrationStart ? (
-              <p className="font-semibold">
-                Kun medlemmer av inviterte grupper kan melde seg på for øyeblikket.
-              </p>
-            ) : (
-              <p className="font-semibold">Kun medlemmer av inviterte grupper kan melde seg på.</p>
-            )}
-          </Callout>
-        </SidebarItem>
-      )}
+      {user &&
+        !canEarlyRegister &&
+        happening?.registrationStartGroups &&
+        !isNormalRegistrationOpen &&
+        !isClosed && (
+          <SidebarItem>
+            <Callout type="warning" noIcon>
+              {happening?.registrationStart ? (
+                <p className="font-semibold">Du kan ikke melde deg på enda.</p>
+              ) : (
+                <p className="font-semibold">
+                  Kun medlemmer av inviterte grupper kan melde seg på.
+                </p>
+              )}
+            </Callout>
+          </SidebarItem>
+        )}
 
       {/**
        * Show login warning if:
        * - User is not logged in
        * - Registration start is set
        */}
-      {!user && happening?.registrationStart && (
+      {!user && happening?.registrationStart && !isClosed && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
