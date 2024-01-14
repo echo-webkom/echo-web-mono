@@ -99,6 +99,10 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     ? happening?.registrationStartGroups
     : happening?.registrationStart;
 
+  const isClosed = Boolean(
+    happening?.registrationEnd && isPast(new Date(happening.registrationEnd)),
+  );
+
   return (
     <Sidebar>
       {/**
@@ -271,7 +275,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         <SidebarItem>
           <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
           <SidebarItemContent>
-            {happening?.registrationEnd.toLocaleDateString("nb-NO")}
+            {happening.registrationEnd.toLocaleDateString("nb-NO")}
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -280,8 +284,9 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show registration start date if:
        * - Registration is not open
        * - Registration start date is set
+       * - Registration is not closed
        */}
-      {!isNormalRegistrationOpen && happening?.registrationStart && (
+      {!isNormalRegistrationOpen && happening?.registrationStart && !isClosed && (
         <SidebarItem>
           <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
           <SidebarItemContent>
@@ -295,11 +300,13 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Registration is not open
        * - Can early register
        * - Registration start date for groups is set
+       * - Registration is not closed
        */}
       {!isNormalRegistrationOpen &&
         canEarlyRegister &&
-        isGroupRegistrationOpen &&
-        happening?.registrationStartGroups && (
+        !isGroupRegistrationOpen &&
+        happening?.registrationStartGroups &&
+        !isClosed && (
           <SidebarItem>
             <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
             <SidebarItemContent>
@@ -311,8 +318,9 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {/**
        * Show deregister button if:
        * - User is registered to happening
+       * - Happening has not passed
        */}
-      {isRegistered && (
+      {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
         <SidebarItem>
           <DeregisterButton id={event._id} />
         </SidebarItem>
@@ -330,7 +338,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         isUserComplete &&
         spotRanges.length > 0 &&
         userRegistrationStart &&
-        (happening?.registrationEnd ? isFuture(new Date(happening.registrationEnd)) : true) &&
+        !isClosed &&
         isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
           <SidebarItem className="relative">
             <RegisterButton id={event._id} questions={happening?.questions ?? []} />
@@ -343,7 +351,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - User is logged in
        * - Registration is closed
        */}
-      {user && happening?.registrationEnd && isPast(happening.registrationEnd) && (
+      {user && isClosed && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -374,17 +382,18 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show warning for not being in group if:
        * - User is logged in
        * - User is not in any of the groups that can early register
-       * - Registration start for groups is set
+       * - Normal registration is not open.
+       * - Registration is not closed
        */}
-      {user && !canEarlyRegister && happening?.registrationStartGroups && (
+      {user && !canEarlyRegister && !isNormalRegistrationOpen && !isClosed && (
         <SidebarItem>
           <Callout type="warning" noIcon>
-            {happening.registrationStart ? (
-              <p className="font-semibold">Du kan ikke melde deg på enda.</p>
-            ) : (
+            {isGroupRegistrationOpen && happening?.registrationStart ? (
               <p className="font-semibold">
-                Bare medlemmer av inviterte grupper kan melde seg på nå.
+                Kun medlemmer av inviterte grupper kan melde seg på for øyeblikket.
               </p>
+            ) : (
+              <p className="font-semibold">Kun medlemmer av inviterte grupper kan melde seg på.</p>
             )}
           </Callout>
         </SidebarItem>
