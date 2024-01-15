@@ -6,12 +6,11 @@ import { CombinedHappeningPreview } from "./happening-preview-box";
 export default function EventsView({ happenings }: { happenings: Array<Happening> }) {
   if (happenings.length === 0) {
     return (
-      <div className="flex flex-col gap-8 p-5">
-        <h3 className="mx-auto text-xl font-medium">
-          Her var det tomt! Prøv å oppdatere søket ditt.
-        </h3>
+      <div className="m-5 flex flex-col">
+        <h3 className="mx-auto text-xl font-medium">Her var det tomt!</h3>
+        <h3 className="mx-auto font-medium">Prøv å oppdatere søket ditt.</h3>
         <Image
-          className="mx-auto rounded-lg"
+          className="m-5 mx-auto rounded-lg"
           src="/gif/fresh-prince-room.gif"
           alt="Fresh prince empty room"
           width={400}
@@ -23,7 +22,7 @@ export default function EventsView({ happenings }: { happenings: Array<Happening
 
   return (
     <>
-      <div className="w-full">
+      <div>
         {happenings.map((event) => (
           <ul key={event._id} className="py-1">
             <CombinedHappeningPreview happening={event} />

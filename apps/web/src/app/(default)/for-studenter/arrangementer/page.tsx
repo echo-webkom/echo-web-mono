@@ -111,22 +111,20 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container>
-      <section>
-        <div>
-          <EventFilter params={validParams} />
+      <div>
+        <EventFilter params={validParams} />
+      </div>
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:max-w-[250px]">
+          <EventFilterSidebar
+            params={validParams}
+            numOfEvents={{ numThisWeek, numNextWeek, numLater }}
+          />
         </div>
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:max-w-[300px]">
-            <EventFilterSidebar
-              params={validParams}
-              numOfEvents={{ numThisWeek, numNextWeek, numLater }}
-            />
-          </div>
-          <div>
-            <EventsView happenings={happenings} />
-          </div>
+        <div className="w-full">
+          <EventsView happenings={happenings} />
         </div>
-      </section>
+      </div>
     </Container>
   );
 }

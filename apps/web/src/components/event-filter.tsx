@@ -62,33 +62,34 @@ export function EventFilter({ params }: { params: SearchParams }) {
   }, [pathname, router, eventParams, search, isAsc, params]);
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
-        <div className="flex flex-col flex-wrap space-x-0 sm:flex-row lg:space-x-3">
+    <div className="space-y-5 border-b-2 border-solid border-opacity-20 pb-3">
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <div className="flex flex-col items-center sm:flex-row sm:space-x-2">
           <Button
-            className="w-full sm:w-auto"
+            className="w-60 sm:w-auto"
             variant={eventParams.type === "all" ? "default" : "outline"}
             onClick={() => setEventParams({ ...eventParams, type: "all" })}
           >
             Alle
           </Button>
           <Button
-            className="w-full sm:w-auto"
+            className="w-60 sm:w-auto"
             variant={eventParams.type === "event" ? "default" : "outline"}
             onClick={() => setEventParams({ ...eventParams, type: "event" })}
           >
             Arrangementer
           </Button>
           <Button
-            className="w-full sm:w-auto"
+            className="w-60 sm:w-auto"
             variant={eventParams.type === "bedpres" ? "default" : "outline"}
             onClick={() => setEventParams({ ...eventParams, type: "bedpres" })}
           >
             Bedriftspresentasjoner
           </Button>
         </div>
-        <div className="flex w-48 flex-col flex-wrap justify-end sm:w-auto sm:flex-row lg:space-x-3">
+        <div className="flex flex-col items-center">
           <Button
+            className="w-60 sm:w-auto"
             variant={"outline"}
             onClick={() => setEventParams((prev) => ({ ...prev, past: !prev.past }))}
           >
@@ -96,17 +97,17 @@ export function EventFilter({ params }: { params: SearchParams }) {
           </Button>
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="flex rounded-lg border border-border hover:border-gray-500 focus:ring-0">
+      <div className="flex items-center justify-between">
+        <div className="relative flex rounded-lg border hover:border-gray-500">
           <Input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             type="text"
-            placeholder="Søk etter arrangement..."
-            className="appearance-none border-none bg-transparent outline-none focus:ring-0 focus:ring-offset-0"
+            placeholder="Søk..."
+            className="border-none bg-transparent pr-6"
           />
           {searchInput !== "" && (
-            <button className="p-1">
+            <button className="absolute inset-y-0 right-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-gray-400 hover:text-gray-600"
@@ -127,7 +128,7 @@ export function EventFilter({ params }: { params: SearchParams }) {
             </button>
           )}
         </div>
-        <span>
+        <span className="mr-2">
           <ArrowDownNarrowWide
             className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
               "rotate-180 transform": isAsc,
@@ -197,23 +198,14 @@ export function EventFilterSidebar({
   }, [pathname, router, dateParams, showOpen, params]);
 
   return (
-    <Sidebar>
+    <Sidebar className="mb-5 mt-5 space-y-3">
       <SidebarItem>
-        <SidebarItemContent>
-          <Checkbox
-            checked={showOpen}
-            onCheckedChange={() => {
-              setShowOpen(!showOpen);
-            }}
-          />
-          <Label>Vis kun åpne for påmelding</Label>
-        </SidebarItemContent>
-      </SidebarItem>
-      <SidebarItem>
-        <SidebarItemTitle>Tidspunkt:</SidebarItemTitle>
+        <SidebarItemTitle className="mb-2">Tidspunkt:</SidebarItemTitle>
 
-        <SidebarItemContent>
+        <SidebarItemContent className="mb-2 flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="thisWeek"
             checked={dateParams.thisWeek}
             onCheckedChange={() => {
               setDateParams({
@@ -222,11 +214,15 @@ export function EventFilterSidebar({
               });
             }}
           />
-          <Label>Denne uken ({numThisWeek})</Label>
+          <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-sm">
+            Denne uken ({numThisWeek})
+          </Label>
         </SidebarItemContent>
 
-        <SidebarItemContent>
+        <SidebarItemContent className="mb-2 flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="nextWeek"
             checked={dateParams.nextWeek}
             onCheckedChange={() => {
               setDateParams({
@@ -235,11 +231,15 @@ export function EventFilterSidebar({
               });
             }}
           />
-          <Label>Neste uke ({numNextWeek})</Label>
+          <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-sm">
+            Neste uke ({numNextWeek})
+          </Label>
         </SidebarItemContent>
 
-        <SidebarItemContent>
+        <SidebarItemContent className="flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="later"
             checked={dateParams.later}
             onCheckedChange={() => {
               setDateParams({
@@ -248,7 +248,26 @@ export function EventFilterSidebar({
               });
             }}
           />
-          <Label>Senere ({numLater})</Label>
+          <Label htmlFor="later" className="ml-2 cursor-pointer text-sm">
+            Senere ({numLater})
+          </Label>
+        </SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle className="mb-2">Vis kun:</SidebarItemTitle>
+
+        <SidebarItemContent className="flex items-center">
+          <Checkbox
+            className="hover:bg-blue-100"
+            id="showOpen"
+            checked={showOpen}
+            onCheckedChange={() => {
+              setShowOpen(!showOpen);
+            }}
+          />
+          <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-sm">
+            Åpne for påmelding
+          </Label>
         </SidebarItemContent>
       </SidebarItem>
     </Sidebar>
