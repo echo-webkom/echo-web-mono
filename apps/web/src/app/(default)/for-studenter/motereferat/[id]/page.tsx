@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { fetchMinuteById, fetchMinuteParams } from "@/sanity/minutes/requests";
+import { fetchMinuteById } from "@/sanity/minutes/requests";
 
 type Props = {
   params: {
@@ -22,10 +22,6 @@ const getData = cache(async (id: string) => {
 
   return minute;
 });
-
-export async function generateStaticParams() {
-  return await fetchMinuteParams();
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { title } = await getData(params.id);

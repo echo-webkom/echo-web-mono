@@ -3,6 +3,8 @@ import { db } from "@echo-webkom/db";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminHappeningsPage() {
   const happenings = await db.query.happenings.findMany({
     columns: {

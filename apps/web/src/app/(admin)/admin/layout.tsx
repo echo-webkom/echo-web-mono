@@ -38,6 +38,10 @@ const adminRoutes = [
     label: "Grupper",
   },
   {
+    href: "/admin/sanity-requests",
+    label: "Sanity Requests",
+  },
+  {
     href: "/admin/studieretninger",
     label: "Studieretninger",
   },

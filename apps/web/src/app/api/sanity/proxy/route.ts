@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import kv from "@vercel/kv";
+import { format } from "date-fns";
 import { z } from "zod";
 
 import { client } from "@/sanity/client";
@@ -38,7 +39,10 @@ export const POST = async (request: NextRequest) => {
   }
 
   if (process.env.VERCEL_ENV === "production") {
-    await kv.append("queries", JSON.stringify({ query, params: parsedParams, date: new Date() }));
+    await kv.lpush(
+      `requests:${format(new Date(), "yyyy-MM-dd")}`,
+      JSON.stringify({ query, params: parsedParams, date: new Date() }),
+    );
   }
 
   return NextResponse.json(response);
