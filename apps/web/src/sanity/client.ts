@@ -35,44 +35,6 @@ export const client = createClient({
   useCdn: false,
 });
 
-const baseURL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
-
-/**
- * Used to communicate with the proxy server
- */
-export const proxyFetch = async <T>(
-  query: string,
-  params: QueryParams,
-  options: RequestInit,
-): Promise<T> => {
-  const url = new URL(baseURL);
-  url.pathname = "/api/sanity/proxy";
-  url.searchParams.append("query", query);
-  url.searchParams.append("params", JSON.stringify(params));
-
-  // eslint-disable-next-line no-console
-  console.log(
-    `Proxying request to ${url} with params ${JSON.stringify(params)} and options ${JSON.stringify(
-      options,
-    )}`,
-  );
-
-  const result = await fetch(url, {
-    ...options,
-    method: "POST",
-  })
-    .then((res) => res.json() as T)
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
-
-  // eslint-disable-next-line no-console
-  console.log(`Response from proxy ${JSON.stringify(result)} at ${new Date().toISOString()}`);
-
-  return result;
-};
-
 const DEFAULT_PARAMS = {} as QueryParams;
 const DEFAULT_TAGS = [] as Array<string>;
 
@@ -85,7 +47,7 @@ export async function sanityFetch<QueryResponse>({
   params?: QueryParams;
   tags: Array<string>;
 }): Promise<QueryResponse> {
-  return await proxyFetch<QueryResponse>(query, params, {
+  return await client.fetch<QueryResponse>(query, params, {
     cache: "force-cache",
     next: {
       tags,
