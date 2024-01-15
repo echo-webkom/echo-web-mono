@@ -103,7 +103,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     return (
       <Callout type="danger" className="mx-auto my-8 w-full max-w-lg">
         <p className="font-bold">En feil har oppstått...</p>
-        <p>Prøv igjen senere</p>
+        <p>Ta kontakt med Webkom</p>
       </Callout>
     );
 
