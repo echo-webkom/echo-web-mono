@@ -35,7 +35,9 @@ export const client = createClient({
   useCdn: false,
 });
 
-const baseURL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+const baseURL = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : `http://localhost:${process.env.PORT ?? 3000}`;
 
 /**
  * Used to communicate with the proxy server
