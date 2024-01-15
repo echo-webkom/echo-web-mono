@@ -55,7 +55,7 @@ export const createAuthOptions = (
         }
 
         const whitelistEntry = await db.query.whitelist.findFirst({
-          where: eq(whitelist.email, profile.email),
+          where: eq(whitelist.email, profile.email.toLowerCase()),
         });
 
         const today = new Date();
