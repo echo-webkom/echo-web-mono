@@ -57,7 +57,7 @@ export function EventFilter({ params }: { params: SearchParams }) {
     const route = newURL.toString();
 
     if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`);
+      router.push(`${pathname}?${route}`, { scroll: false });
     }
   }, [pathname, router, eventParams, search, isAsc, params]);
 
@@ -193,7 +193,7 @@ export function EventFilterSidebar({
     const route = newURL.toString();
 
     if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`);
+      router.push(`${pathname}?${route}`, { scroll: false });
     }
   }, [pathname, router, dateParams, showOpen, params]);
 
