@@ -7,20 +7,25 @@ import { useDebounce } from "use-debounce";
 
 import { type SearchParams } from "@/app/(default)/for-studenter/arrangementer/page";
 import { cn } from "@/utils/cn";
+import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export function EventFilterBar({ params }: { params: SearchParams }) {
+export function EventFilter({ params }: { params: SearchParams }) {
   const router = useRouter();
   const pathname = usePathname();
 
   const [eventParams, setEventParams] = useState({
     type: params.type === "event" || params.type === "bedpres" ? params.type : "all",
-    open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
   });
+
+  const [searchInput, setSearchInput] = useState(params.search ?? "");
+  const [isAsc, setIsAsc] = useState(params.order === "ASC" ? true : false);
+
+  const [search] = useDebounce(searchInput, 300);
 
   useEffect(() => {
     const newURL = new URLSearchParams(params);
@@ -31,79 +36,11 @@ export function EventFilterBar({ params }: { params: SearchParams }) {
       newURL.delete("type");
     }
 
-    if (eventParams.open === true) {
-      newURL.set("open", "true");
-      newURL.delete("past");
-    } else if (eventParams.past === true) {
+    if (eventParams.past === true) {
       newURL.set("past", "true");
-      newURL.delete("open");
     } else {
-      newURL.delete("open");
       newURL.delete("past");
     }
-
-    const route = newURL.toString();
-
-    if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`);
-    }
-  }, [pathname, router, eventParams, params]);
-
-  return (
-    <div className="flex flex-col items-center gap-10 border-b-2 border-solid border-border border-opacity-20 pb-8 sm:flex-row sm:justify-between sm:pb-4">
-      <div className="flex flex-col flex-wrap space-x-0 sm:flex-row lg:space-x-3">
-        <Button
-          className="w-full sm:w-auto"
-          variant={eventParams.type === "all" ? "default" : "outline"}
-          onClick={() => setEventParams({ ...eventParams, type: "all" })}
-        >
-          Alle
-        </Button>
-        <Button
-          className="w-full sm:w-auto"
-          variant={eventParams.type === "event" ? "default" : "outline"}
-          onClick={() => setEventParams({ ...eventParams, type: "event" })}
-        >
-          Arrangementer
-        </Button>
-        <Button
-          className="w-full sm:w-auto"
-          variant={eventParams.type === "bedpres" ? "default" : "outline"}
-          onClick={() => setEventParams({ ...eventParams, type: "bedpres" })}
-        >
-          Bedriftspresentasjoner
-        </Button>
-      </div>
-      <div className="flex w-48 flex-col flex-wrap justify-end sm:w-auto sm:flex-row lg:space-x-3">
-        <Button
-          className="overflow-hidden truncate overflow-ellipsis whitespace-nowrap"
-          variant={eventParams.open ? "default" : "outline"}
-          onClick={() => setEventParams((prev) => ({ ...prev, open: !prev.open, past: false }))}
-        >
-          Åpen for påmelding
-        </Button>
-        <Button
-          variant={eventParams.past ? "default" : "outline"}
-          onClick={() => setEventParams((prev) => ({ ...prev, past: !prev.past, open: false }))}
-        >
-          Vis tidligere
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const [searchInput, setSearchInput] = useState(params.search ?? "");
-  const [isAsc, setIsAsc] = useState(params.order === "ASC" ? true : false);
-
-  const [search] = useDebounce(searchInput, 300);
-
-  useEffect(() => {
-    const newURL = new URLSearchParams(params);
 
     if (search) {
       newURL.set("search", search);
@@ -120,55 +57,91 @@ export function EventSearchAndOrderBar({ params }: { params: SearchParams }) {
     const route = newURL.toString();
 
     if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`);
+      router.push(`${pathname}?${route}`, { scroll: false });
     }
-  }, [pathname, router, search, isAsc, params]);
+  }, [pathname, router, eventParams, search, isAsc, params]);
 
   return (
-    <div className="flex justify-between">
-      <div className="flex rounded-lg border border-border hover:border-gray-500 focus:ring-0">
-        <Input
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          type="text"
-          placeholder="Søk etter arrangement..."
-          className="appearance-none border-none bg-transparent outline-none focus:ring-0 focus:ring-offset-0"
-        />
-        {searchInput !== "" && (
-          <button className="p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-gray-400 hover:text-gray-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              onClick={() => {
-                setSearchInput("");
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        )}
+    <div className="space-y-5 border-b-2 border-solid border-opacity-20 pb-3">
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <div className="flex flex-col items-center sm:flex-row sm:space-x-2">
+          <Button
+            className="w-60 sm:w-auto"
+            variant={eventParams.type === "all" ? "default" : "outline"}
+            onClick={() => setEventParams({ ...eventParams, type: "all" })}
+          >
+            Alle
+          </Button>
+          <Button
+            className="w-60 sm:w-auto"
+            variant={eventParams.type === "event" ? "default" : "outline"}
+            onClick={() => setEventParams({ ...eventParams, type: "event" })}
+          >
+            Arrangementer
+          </Button>
+          <Button
+            className="w-60 sm:w-auto"
+            variant={eventParams.type === "bedpres" ? "default" : "outline"}
+            onClick={() => setEventParams({ ...eventParams, type: "bedpres" })}
+          >
+            Bedriftspresentasjoner
+          </Button>
+        </div>
+        <div className="flex flex-col items-center">
+          <Button
+            className="w-60 sm:w-auto"
+            variant={"outline"}
+            onClick={() => setEventParams((prev) => ({ ...prev, past: !prev.past }))}
+          >
+            {eventParams.past ? "Vis kommende" : "Vis tidligere"}
+          </Button>
+        </div>
       </div>
-      <span>
-        <ArrowDownNarrowWide
-          className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
-            "rotate-180 transform": isAsc,
-          })}
-          onClick={() => setIsAsc(!isAsc)}
-        />
-      </span>
+      <div className="flex items-center justify-between">
+        <div className="relative flex rounded-lg border hover:border-gray-500">
+          <Input
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            type="text"
+            placeholder="Søk..."
+            className="border-none bg-transparent pr-6"
+          />
+          {searchInput !== "" && (
+            <button className="absolute inset-y-0 right-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-gray-400 hover:text-gray-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                onClick={() => {
+                  setSearchInput("");
+                }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        <span className="mr-2">
+          <ArrowDownNarrowWide
+            className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
+              "rotate-180 transform": isAsc,
+            })}
+            onClick={() => setIsAsc(!isAsc)}
+          />
+        </span>
+      </div>
     </div>
   );
 }
 
-export function EventDateFilterSidebar({
+export function EventFilterSidebar({
   params,
   numOfEvents: { numThisWeek, numNextWeek, numLater },
 }: {
@@ -187,6 +160,8 @@ export function EventDateFilterSidebar({
     nextWeek: params.nextWeek === "false" ? false : true,
     later: params.later === "false" ? false : true,
   });
+
+  const [showOpen, setShowOpen] = useState(params.open === "true" ? true : false);
 
   useEffect(() => {
     const newURL = new URLSearchParams(params);
@@ -209,20 +184,28 @@ export function EventDateFilterSidebar({
       newURL.delete("later");
     }
 
+    if (showOpen === true) {
+      newURL.set("open", "true");
+    } else {
+      newURL.delete("open");
+    }
+
     const route = newURL.toString();
 
     if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`);
+      router.push(`${pathname}?${route}`, { scroll: false });
     }
-  }, [pathname, router, dateParams, params]);
+  }, [pathname, router, dateParams, showOpen, params]);
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="p-4">
-        <div className="mb-2 text-xl font-semibold">Tidspunkt</div>
+    <Sidebar className="mb-5 mt-5 space-y-3">
+      <SidebarItem>
+        <SidebarItemTitle className="mb-2">Tidspunkt:</SidebarItemTitle>
 
-        <div className="mb-2 flex items-center">
+        <SidebarItemContent className="mb-2 flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="thisWeek"
             checked={dateParams.thisWeek}
             onCheckedChange={() => {
               setDateParams({
@@ -231,11 +214,15 @@ export function EventDateFilterSidebar({
               });
             }}
           />
-          <Label className="ml-2 text-base">Denne uken ({numThisWeek})</Label>
-        </div>
+          <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-sm">
+            Denne uken ({numThisWeek})
+          </Label>
+        </SidebarItemContent>
 
-        <div className="mb-2 flex items-center">
+        <SidebarItemContent className="mb-2 flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="nextWeek"
             checked={dateParams.nextWeek}
             onCheckedChange={() => {
               setDateParams({
@@ -244,11 +231,15 @@ export function EventDateFilterSidebar({
               });
             }}
           />
-          <Label className="ml-2 text-base">Neste uke ({numNextWeek})</Label>
-        </div>
+          <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-sm">
+            Neste uke ({numNextWeek})
+          </Label>
+        </SidebarItemContent>
 
-        <div className="flex items-center">
+        <SidebarItemContent className="flex items-center">
           <Checkbox
+            className="hover:bg-blue-100"
+            id="later"
             checked={dateParams.later}
             onCheckedChange={() => {
               setDateParams({
@@ -257,9 +248,28 @@ export function EventDateFilterSidebar({
               });
             }}
           />
-          <Label className="ml-2 text-base">Senere ({numLater})</Label>
-        </div>
-      </div>
-    </div>
+          <Label htmlFor="later" className="ml-2 cursor-pointer text-sm">
+            Senere ({numLater})
+          </Label>
+        </SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle className="mb-2">Vis kun:</SidebarItemTitle>
+
+        <SidebarItemContent className="flex items-center">
+          <Checkbox
+            className="hover:bg-blue-100"
+            id="showOpen"
+            checked={showOpen}
+            onCheckedChange={() => {
+              setShowOpen(!showOpen);
+            }}
+          />
+          <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-sm">
+            Åpne for påmelding
+          </Label>
+        </SidebarItemContent>
+      </SidebarItem>
+    </Sidebar>
   );
 }

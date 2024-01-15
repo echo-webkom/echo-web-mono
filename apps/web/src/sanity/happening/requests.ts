@@ -76,11 +76,14 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
-        const { title } = happening;
+        const { title, organizers } = happening;
 
         const search = q.search ?? "";
 
-        return title.toLowerCase().includes(search.toLowerCase());
+        return (
+          title.toLowerCase().includes(search.toLowerCase()) ||
+          organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+        );
       })
       .filter((happening) => {
         const { happeningType } = happening;
