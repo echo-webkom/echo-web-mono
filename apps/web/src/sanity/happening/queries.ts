@@ -75,6 +75,7 @@ export const homeHappeningsQuery = groq`
   title,
   happeningType,
   date,
+  registrationStart,
   "slug": slug.current,
   "image": company->image,
   "organizers": organizers[]->{

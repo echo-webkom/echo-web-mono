@@ -37,6 +37,7 @@ export async function fetchHomeHappenings<T extends HappeningType>(types: Array<
       happeningType: T;
       date: string;
       slug: string;
+      registrationStart: string;
       image: T extends "bedpres" ? SanityImageSource : null;
       organizers: Array<string>;
     }>
