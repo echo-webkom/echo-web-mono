@@ -21,8 +21,9 @@ export default defineType({
       type: "happeningType",
     },
     prepare: ({ title, type }) => {
-      const typeTitle = HAPPENING_TYPES.find((happeningType) => happeningType.value === type)
-        ?.title;
+      const typeTitle = HAPPENING_TYPES.find(
+        (happeningType) => happeningType.value === type,
+      )?.title;
       return {
         title: `${title}`,
         subtitle: typeTitle,
