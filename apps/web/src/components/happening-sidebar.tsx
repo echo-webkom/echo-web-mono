@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
 import { isFuture, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
+import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
@@ -145,7 +145,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>
             <Link className="hover:underline" href={event.company.website}>
               {event.company.name}
-              <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
+              <ExternalLink className="ml-1 inline-block h-4 w-4" />
             </Link>
           </SidebarItemContent>
         </SidebarItem>
@@ -371,7 +371,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <div className="group flex items-center">
               <Link href="/auth/profil" className="hover:underline">
                 Her
-                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
             </div>
           </div>
@@ -415,7 +415,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <div className="group flex items-center">
               <Link href="/auth/logg-inn" className="hover:underline">
                 Logg inn her
-                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
             </div>
           </Callout>

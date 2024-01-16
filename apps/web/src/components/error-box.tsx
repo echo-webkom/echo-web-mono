@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CaretUpIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
+import { RxCaretUp as CaretUp } from "react-icons/rx";
 
 import { cn } from "@/utils/cn";
 
@@ -19,7 +19,7 @@ export function ErrorBox({ error }: { error: Error }) {
       <button onClick={toggleOpen} className="flex items-center justify-between">
         <h2 className="text-xl font-bold">For utviklere</h2>
 
-        <CaretUpIcon
+        <CaretUp
           className={cn("h-7 w-7 transform transition-transform duration-300", {
             "rotate-180": isOpen,
             "rotate-0": !isOpen,

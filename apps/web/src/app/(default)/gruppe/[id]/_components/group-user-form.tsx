@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { EditIcon, Trash } from "lucide-react";
+import { LuTrash as Trash } from "react-icons/lu";
+import { TbUserEdit } from "react-icons/tb";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -64,7 +65,7 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
-          <EditIcon className="h-4 w-4" />
+          <TbUserEdit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

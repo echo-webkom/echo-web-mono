@@ -3,8 +3,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDownIcon, Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  RxChevronDown as ChevronDown,
+  RxCross2 as Cross,
+  RxHamburgerMenu as HamburgerMenu,
+} from "react-icons/rx";
 
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
@@ -58,7 +62,7 @@ const MenuButton = () => {
       onClick={() => setIsOpen(!isOpen)}
     >
       <span className="sr-only">Meny</span>
-      <HamburgerMenuIcon className="h-7 w-7" />
+      <HamburgerMenu className="h-7 w-7" />
     </button>
   );
 };
@@ -72,7 +76,7 @@ const CloseMenuButton = () => {
       onClick={() => setIsOpen(false)}
     >
       <span className="sr-only">Lukk meny</span>
-      <Cross2Icon className="h-7 w-7" />
+      <Cross className="h-7 w-7" />
     </button>
   );
 };
@@ -122,7 +126,7 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
       >
         <span className="text-2xl">{label}</span>
         <span>
-          <ChevronDownIcon
+          <ChevronDown
             className={cn("h-7 w-7 text-gray-400 transition duration-200 ease-in-out", {
               "rotate-180 transform": isOpen,
             })}

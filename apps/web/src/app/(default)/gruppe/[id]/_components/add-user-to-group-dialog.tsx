@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
+import { RxPlus as Plus } from "react-icons/rx";
 import { type z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -65,7 +65,7 @@ export function AddUserToGroupDialog({ group }: AddUserToGroupDialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
-          <PlusIcon className="h-4 w-4" />
+          <Plus className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

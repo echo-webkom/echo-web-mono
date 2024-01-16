@@ -1,7 +1,7 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { LuMoon, LuSun } from "react-icons/lu";
 
 export default function ModeToggle() {
   const { theme, setTheme } = useTheme();
@@ -13,8 +13,8 @@ export default function ModeToggle() {
 
   return (
     <button onClick={toggleTheme} className="h-8 w-8">
-      <Moon className="block h-full w-full p-1 dark:hidden" />
-      <Sun className="hidden h-full w-full p-1 dark:block" />
+      <LuMoon className="block h-full w-full p-1 dark:hidden" />
+      <LuSun className="hidden h-full w-full p-1 dark:block" />
       <span className="sr-only">Toggle theme</span>
     </button>
   );

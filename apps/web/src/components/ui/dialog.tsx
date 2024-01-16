@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import { LuX as X } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState, type FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { type LucideIcon } from "lucide-react";
+import { type IconBaseProps } from "react-icons";
+import { RxChevronDown as ChevronDown } from "react-icons/rx";
 
 import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
@@ -84,7 +84,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
       >
         <span>{label}</span>
         <span>
-          <ChevronDownIcon
+          <ChevronDown
             className={cn("h-4 w-4 transition duration-200 ease-in-out", {
               "rotate-180 transform": isActive,
             })}
@@ -193,7 +193,7 @@ type IconLinkProps = {
   href: string;
   label: string;
   description: string;
-  icon: LucideIcon;
+  icon: FC<IconBaseProps>;
 };
 
 function IconLink({ icon, ...props }: IconLinkProps) {

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
+import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
 import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
 import { cn } from "@/utils/cn";
@@ -32,7 +32,7 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
       <Link href={typeToLink[type]}>
         <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
           {capitalize(happeningTypeToString[type])}
-          <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+          <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
         </h2>
       </Link>
       <hr className="my-3" />
