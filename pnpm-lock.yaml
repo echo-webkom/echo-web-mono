@@ -431,8 +431,8 @@ importers:
   packages/email:
     dependencies:
       jsx-email:
-        specifier: 1.7.3
-        version: 1.7.3(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0)
+        specifier: 1.8.0
+        version: 1.8.0(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -11391,8 +11391,8 @@ packages:
       object.assign: 4.1.4
       object.values: 1.1.7
 
-  /jsx-email@1.7.3(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0):
-    resolution: {integrity: sha512-skSM0j8d7MXurrX9dAUtwUpxZCturPdwXYanUTtmYPoymoOuh/0GJI8FXcXbAe+C5yHokNLue+aFp0VA1tykyQ==}
+  /jsx-email@1.8.0(@types/node@18.19.6)(@types/react@18.2.47)(react@18.2.0):
+    resolution: {integrity: sha512-AfOu0mZ0Ee05ySxtOBsB/V5QrmvhzW1wSjKDmUZ8ADQqyc1niTAPcy1H8ZseeUGljI2+djwWG82Sj95oow9BLw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
