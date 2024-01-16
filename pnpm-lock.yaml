@@ -433,6 +433,9 @@ importers:
       react:
         specifier: 18.2.0
         version: 18.2.0
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
     devDependencies:
       '@types/node':
         specifier: 18.19.6

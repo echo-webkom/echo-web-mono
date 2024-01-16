@@ -4,7 +4,8 @@
   "private": true,
   "main": "./index.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./client": "./client.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -18,7 +19,8 @@
   },
   "dependencies": {
     "jsx-email": "1.7.2",
-    "react": "18.2.0"
+    "react": "18.2.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "18.19.6",

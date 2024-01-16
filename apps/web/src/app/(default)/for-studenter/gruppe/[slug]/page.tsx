@@ -8,11 +8,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  fetchStudentGroupBySlug,
-  fetchStudentGroupParams,
-  studentGroupTypeName,
-} from "@/sanity/student-group";
+import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
 import { urlFor } from "@/utils/image-builder";
 import { mailTo } from "@/utils/prefixes";
 
@@ -44,10 +40,6 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: group.name,
   };
-}
-
-export async function generateStaticParams() {
-  return await fetchStudentGroupParams();
 }
 
 export default async function GroupPage({ params }: Props) {

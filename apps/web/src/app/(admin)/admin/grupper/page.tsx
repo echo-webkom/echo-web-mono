@@ -3,6 +3,8 @@ import { db } from "@echo-webkom/db";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminGroupsPage() {
   const groups = await db.query.groups.findMany({
     with: {

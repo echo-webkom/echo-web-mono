@@ -84,15 +84,6 @@ export const homeHappeningsQuery = groq`
 }[0...$n]
 `;
 
-export const happeningParamsQuery = groq`
-*[_type == "happening"
-  && !(_id in path('drafts.**'))
-  && happeningType in $happeningTypes
- ] {
-  "slug": slug.current,
-}.slug
-`;
-
 export const happeningTypeQuery = groq`
 *[_type == "happening"
   && !(_id in path('drafts.**'))

@@ -1,35 +1,8 @@
 import { type StudentGroupType } from "@echo-webkom/lib";
 
 import { sanityFetch } from "../client";
-import { studentGroupTypeName } from "./mappers";
-import {
-  studentGroupBySlugQuery,
-  studentGroupPathsQuery,
-  studentGroupsByTypeQuery,
-} from "./queries";
-import { studentGroupSchema, studentGroupSlugSchema } from "./schemas";
-
-/**
- *
- * @returns
- */
-export async function fetchStudentGroupParams() {
-  try {
-    const allPaths = await sanityFetch({
-      query: studentGroupPathsQuery,
-      tags: ["student-group-params"],
-    }).then((res) => studentGroupSlugSchema.array().parse(res));
-
-    return allPaths
-      .filter((path) => path.groupType !== "hidden")
-      .map((path) => ({
-        groupType: studentGroupTypeName[path.groupType],
-        slug: path.slug,
-      }));
-  } catch {
-    return [];
-  }
-}
+import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "./queries";
+import { studentGroupSchema } from "./schemas";
 
 export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
   const orderDir = type === "board" ? "desc" : "asc";
