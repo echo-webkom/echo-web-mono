@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { HappeningCalendar } from "@/components/calendar/happening-calendar";
 import { Container } from "@/components/container";
 import {
   EventFilter,
@@ -7,8 +8,10 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import EventsView, { type SearchParams } from "@/components/events-view";
+import { fetchAllHappenings } from "@/sanity/happening";
 
-export default function Page({ searchParams }: { searchParams?: SearchParams }) {
+export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
+  const allHappenings = await fetchAllHappenings();
   if (!searchParams) searchParams = { type: "all" };
 
   // Serialize searchParams to a JSON string as a key for the Suspense component.
@@ -17,6 +20,7 @@ export default function Page({ searchParams }: { searchParams?: SearchParams }) 
 
   return (
     <Container>
+      <HappeningCalendar happenings={allHappenings} />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
       </div>
