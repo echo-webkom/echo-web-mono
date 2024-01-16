@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { differenceInDays, isToday } from "date-fns";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
@@ -8,7 +9,7 @@ import { PostPreview } from "@/components/post-preview";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDate } from "@/utils/date";
+import { shortDate, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
@@ -136,8 +137,18 @@ function TempPreview({
 
           <ul className="text-muted-foreground">
             <li>
-              <time>{shortDate(happening.date)}</time>
+              <span className="font-medium">Dato:</span> <time>{shortDate(happening.date)}</time>
             </li>
+            {differenceInDays(new Date(), happening.registrationStart) < 1 && (
+              <li>
+                <span className="font-medium">Påmelding: </span>{" "}
+                {isToday(happening.registrationStart) ? (
+                  `I dag kl ${time(happening.registrationStart)}`
+                ) : (
+                  <time>{shortDate(happening.registrationStart)}</time>
+                )}
+              </li>
+            )}
           </ul>
         </div>
       </div>
