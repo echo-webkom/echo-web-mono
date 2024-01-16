@@ -18,17 +18,6 @@ export async function fetchStaticInfo() {
 }
 
 /**
- * Fetches the paths for all static info pages.
- */
-export async function fetchStaticInfoPaths() {
-  return fetchStaticInfo().then((res) =>
-    res.map((staticInfo) => ({
-      slug: [pageTypeToUrl[staticInfo.pageType], staticInfo.slug],
-    })),
-  );
-}
-
-/**
  * Fetches a static info page by its slug.
  *
  * @param pageType the page type to fetch

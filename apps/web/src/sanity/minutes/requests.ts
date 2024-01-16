@@ -15,19 +15,6 @@ export async function fetchMinutes() {
 }
 
 /**
- * Get all meeting minutes ids.
- *
- * @returns
- */
-export async function fetchMinuteParams() {
-  return await fetchMinutes().then((res) =>
-    res.map((minute) => ({
-      id: minute._id,
-    })),
-  );
-}
-
-/**
  * Fetches a meeting minute by id.
  *
  * @param id the id of the meeting minute you want to fetch

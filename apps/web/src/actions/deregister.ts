@@ -7,9 +7,9 @@ import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
+import { emailClient } from "@echo-webkom/email/client";
 
 import { getContactsBySlug } from "@/sanity/utils/contacts";
-import { sendEmail } from "@/utils/send-email";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -57,7 +57,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
     const contacts = await getContactsBySlug(exisitingRegistration.happening.slug);
 
     if (contacts.length > 0) {
-      await sendEmail(
+      await emailClient.sendEmail(
         contacts.map((contact) => contact.email),
         `${user.name ?? "Ukjent"} har meldt seg av ${exisitingRegistration.happening.title}`,
         DeregistrationNotificationEmail({

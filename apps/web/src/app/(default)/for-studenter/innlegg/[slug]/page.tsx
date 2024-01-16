@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { initials } from "@/lib/initials";
 import { isBoard } from "@/lib/is-board";
 import { type Author } from "@/sanity/posts";
-import { fetchPostBySlug, fetchPostParams } from "@/sanity/posts/requests";
+import { fetchPostBySlug } from "@/sanity/posts/requests";
 import { urlFor } from "@/utils/image-builder";
 
 type Props = {
@@ -26,10 +26,6 @@ const getData = cache(async (slug: string) => {
 
   return post;
 });
-
-export async function generateStaticParams() {
-  return await fetchPostParams();
-}
 
 export async function generateMetadata({ params }: Props) {
   const post = await getData(params.slug);

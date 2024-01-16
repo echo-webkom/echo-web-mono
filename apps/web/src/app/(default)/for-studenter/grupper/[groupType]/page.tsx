@@ -24,12 +24,6 @@ export function generateMetadata({ params }: Props) {
   };
 }
 
-export function generateStaticParams() {
-  return Object.values(studentGroupTypeName).map((groupType) => ({
-    groupType: groupType.toLowerCase(),
-  }));
-}
-
 export default async function StudentGroupOverview({ params }: Props) {
   const { groupType } = params;
   const groupTypeFromPath = pathToGroupType(groupType);

@@ -1,7 +1,5 @@
 import { groq } from "next-sanity";
 
-export const studentGroupPathsQuery = groq`*[_type == "studentGroup" && groupType != "hidden"]{ "slug": slug.current, groupType }`;
-
 export const studentGroupPartial = groq`
 _id,
 _createdAt,

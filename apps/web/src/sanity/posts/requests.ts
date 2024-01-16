@@ -29,11 +29,3 @@ export async function fetchPosts(n?: number) {
 export async function fetchPostBySlug(slug: string) {
   return await fetchPosts().then((res) => res.find((post) => post.slug === slug));
 }
-
-export async function fetchPostParams() {
-  return await fetchPosts().then((res) =>
-    res.map((post) => ({
-      slug: post.slug,
-    })),
-  );
-}

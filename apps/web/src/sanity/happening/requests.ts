@@ -3,12 +3,7 @@ import { nextMonday, subMinutes } from "date-fns";
 
 import { type FilteredHappeningQuery } from "@/app/(default)/for-studenter/arrangementer/page";
 import { sanityFetch } from "../client";
-import {
-  allHappeningsQuery,
-  happeningParamsQuery,
-  happeningQuery,
-  homeHappeningsQuery,
-} from "./queries";
+import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
 import { happeningSchema, type Happening, type HappeningType } from "./schemas";
 
 /**
@@ -179,16 +174,4 @@ export async function getHappeningTypeBySlug(slug: string) {
   return await fetchHappeningBySlug(slug)
     .then((happening) => (happening ? happening.happeningType : null))
     .catch(() => null);
-}
-
-export async function fetchHappeningParams(types: Array<HappeningType>) {
-  return await sanityFetch<Array<string>>({
-    query: happeningParamsQuery,
-    params: {
-      happeningTypes: types,
-    },
-    tags: ["happening-params"],
-  })
-    .then((slugs) => slugs.map((slug) => ({ slug })))
-    .catch(() => []);
 }
