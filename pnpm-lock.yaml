@@ -69,8 +69,8 @@ importers:
         specifier: 3.22.0
         version: 3.22.0(@types/node@18.19.6)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       sanity-plugin-markdown:
-        specifier: 4.1.0
-        version: 4.1.0(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.22.0)(styled-components@6.0.7)
+        specifier: 4.1.1
+        version: 4.1.1(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.22.0)(styled-components@6.0.7)
       sanity-plugin-media:
         specifier: 2.2.5
         version: 2.2.5(@sanity/ui@1.9.3)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)(sanity@3.22.0)(styled-components@6.0.7)
@@ -15554,8 +15554,8 @@ packages:
       '@sanity/diff-match-patch': 3.1.1
     dev: false
 
-  /sanity-plugin-markdown@4.1.0(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.22.0)(styled-components@6.0.7):
-    resolution: {integrity: sha512-GYJOeYbvjZ2BOCYrK3Dyp+zQ+5FIHsjrFYHw+aIZw7E47VyW6tfsmW5wOfTR+YG/Dv2n+5h5+sPIMUUNXSDTJA==}
+  /sanity-plugin-markdown@4.1.1(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.22.0)(styled-components@6.0.7):
+    resolution: {integrity: sha512-yPKFMTbhWV1aJ674NwJl5YOaTkoej2nPI+J1etYASt1cBGkQ1G98bpdw0C3s0TsERZtoswJO58sagp1NcZTwPw==}
     engines: {node: '>=14'}
     peerDependencies:
       easymde: ^2
