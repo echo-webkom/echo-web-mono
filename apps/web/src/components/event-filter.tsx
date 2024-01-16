@@ -137,14 +137,6 @@ export function EventFilter({ params }: { params: SearchParams }) {
           />
         </span>
       </div>
-      <span>
-        <ArrowDownNarrowWide
-          className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
-            "rotate-180 transform": isAsc,
-          })}
-          onClick={() => setIsAsc(!isAsc)}
-        />
-      </span>
     </div>
   );
 }
