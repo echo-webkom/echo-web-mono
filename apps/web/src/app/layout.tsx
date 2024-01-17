@@ -2,6 +2,9 @@ import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import NextTopLoader from "nextjs-toploader";
 
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -57,7 +60,16 @@ export const metadata = {
 } satisfies Metadata;
 
 export const viewport = {
-  themeColor: "#ffeabb",
+  themeColor: [
+    {
+      media: "(prefers-color-scheme: dark)",
+      color: "#151210",
+    },
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "#ffeabb",
+    },
+  ],
   width: "device-width",
   height: "device-height",
   initialScale: 1.0,
@@ -67,7 +79,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" suppressHydrationWarning>
       <head />
-
       <body
         className={cn(
           "min-h-screen bg-background font-primary antialiased",
@@ -77,6 +88,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
+        <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
         <Providers>
           {children}
           <Toaster />
@@ -84,6 +96,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <FeedbackBlob />
           <TailwindIndicator />
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

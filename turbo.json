@@ -25,6 +25,10 @@
       "persistent": true,
       "cache": false
     },
+    "email:preview": {
+      "persistent": true,
+      "cache": false
+    },
     "test:unit": {},
     "lint": {},
     "typecheck": {
@@ -48,8 +52,6 @@
     "NEXTAUTH_URL",
     "FEIDE_CLIENT_ID",
     "FEIDE_CLIENT_SECRET",
-    "UPSTASH_REDIS_REST_URL",
-    "UPSTASH_REDIS_REST_TOKEN",
     "ADMIN_KEY",
     "NEXT_PUBLIC_SANITY_DATASET",
     "SKIP_ENV_VALIDATION",
@@ -57,6 +59,11 @@
     "VERCEL",
     "VERCEL_URL",
     "PORT",
-    "SANITY_TOKEN"
+    "SANITY_TOKEN",
+    "KV_URL",
+    "KV_REST_API_URL",
+    "KV_REST_API_TOKEN",
+    "KV_REST_API_READ_ONLY_TOKEN",
+    "RESEND_API_KEY"
   ]
 }

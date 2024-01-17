@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.12.1",
+  "packageManager": "pnpm@8.14.1",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -21,6 +21,10 @@
     "db:check": "pnpm --filter=db db:check",
     "db:up": "pnpm --filter=db db:up",
     "db:down": "pnpm --filter=db db:down",
+    "db:remove": "pnpm db:down && rm -rf packages/db/postgres-data",
+    "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate && pnpm db:seed",
+    "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
+    "email:preview": "pnpm --filter=email preview",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
@@ -33,11 +37,12 @@
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
     "@types/prettier": "2.7.3",
-    "prettier": "3.1.1",
+    "prettier": "3.2.2",
     "prettier-plugin-organize-imports": "3.2.4",
-    "prettier-plugin-tailwindcss": "0.5.9",
+    "prettier-plugin-tailwindcss": "0.5.11",
     "start-server-and-test": "2.0.3",
-    "turbo": "1.11.2",
-    "typescript": "5.3.3"
+    "turbo": "1.11.3",
+    "typescript": "5.3.3",
+    "use-debounce": "^10.0.0"
   }
 }

@@ -10,7 +10,7 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function JobAdsOverviewPage() {
-  const jobAds = await fetchJobAds(-1);
+  const jobAds = await fetchJobAds();
 
   return (
     <Container>

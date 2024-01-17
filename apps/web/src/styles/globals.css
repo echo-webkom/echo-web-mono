@@ -13,11 +13,11 @@
     --popover: #f9fafb;
     --popover-foreground: #171923;
 
-    --card: #f9fafb;
+    --card: #fff;
     --card-foreground: #171923;
 
     --border: #e2e8f0;
-    --input: #e2e8f0;
+    --input: #f1f5f9;
 
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
@@ -44,6 +44,7 @@
     --banner: #53adbd;
 
     --wave: #ffeabb;
+    --wave-foreground: #171923;
 
     --ring: #94a3b8;
 
@@ -51,53 +52,54 @@
 
     --radius: 0.5rem;
   }
-  
+
   .dark {
-    --background: #121212;
+    --background: #151210;
     --foreground: #f9fafb;
 
     --muted: #181818;
-    --muted-foreground: #f9fafb;
-    
-    --popover: #f9fafb;
-    --popover-foreground: #171923;
-    
-    --card: #f9fafb;
-    --card-foreground: #171923;
-    
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    
+    --muted-foreground: #5a5a5a;
+
+    --popover: #181818;
+    --popover-foreground: #eeeeee;
+
+    --card: #171717;
+    --card-foreground: #eeeeee;
+
+    --border: #2a2a2a;
+    --input: #171717;
+
     --primary: #008fa3;
     --primary-foreground: #f9fafb;
     --primary-hover: #32a5b5;
-    
+
     --secondary: #fed879;
     --secondary-foreground: #24292e;
-    
+
     --accent: #14171a;
     --accent-foreground: #f9fafb;
-    
+
     --success: #48bb78;
     --success-foreground: #f9fafb;
-    
+
     --destructive: #e53e3e;
     --destructive-foreground: #f9fafb;
-    
+
     --warning: #f6ad55;
     --warning-foreground: #14171a;
-    
+
     --info: #3182ce;
     --info-foreground: #f9fafb;
-    
+
     --banner: #53adbd;
-    
-    --wave: #ffeabb;
+
+    --wave: #171717;
+    --wave-foreground: #f9fafb;
 
     --ring: #94a3b8;
 
     --selected: #008fa3;
-    
+
     --radius: 0.5rem;
   }
 
@@ -112,7 +114,7 @@
   ::-moz-selection {
     background: var(--selected);
   }
-  
+
   ::selection {
     background: var(--selected);
   }

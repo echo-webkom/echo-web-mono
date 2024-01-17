@@ -10,7 +10,7 @@ import {
   Section,
   Tailwind,
   Text,
-} from "@react-email/components";
+} from "jsx-email";
 
 type RegistrationConfirmationEmailProps = {
   title?: string;

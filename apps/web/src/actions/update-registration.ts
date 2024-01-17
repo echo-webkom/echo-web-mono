@@ -3,7 +3,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
 
@@ -18,7 +18,7 @@ export async function updateRegistration(
   payload: z.infer<typeof updateRegistrationPayloadSchema>,
 ) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return {

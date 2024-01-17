@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test:e2e": "TESTING=\"true\" pnpm with-env playwright test",
-    "test:e2e:ui": "TESTING=\"true\" pnpm with-env playwright test --ui-port 5000",
+    "test:e2e:ui": "TESTING=\"true\" pnpm with-env playwright test --ui-port 5555",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
     "lint": "eslint web --ext .ts",
@@ -15,10 +15,11 @@
   },
   "devDependencies": {
     "@playwright/test": "1.40.1",
-    "@types/node": "18.19.3",
+    "@types/node": "18.19.7",
     "dotenv-cli": "7.3.0",
-    "eslint": "8.55.0",
+    "eslint": "8.56.0",
     "eslint-config-webkom": "workspace:*",
+    "postgres": "3.4.3",
     "typescript": "5.3.3"
   },
   "eslintConfig": {

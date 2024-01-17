@@ -5,7 +5,7 @@ import { imageSchema } from "../utils/image";
 export const profileSchema = z.object({
   _id: z.string(),
   name: z.string(),
-  image: imageSchema.nullable(),
+  picture: imageSchema.nullable(),
   socials: z
     .object({
       email: z.string().optional(),

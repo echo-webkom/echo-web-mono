@@ -6,7 +6,7 @@ const happeningQueryPartial = groq`
   "slug": slug.current,
   "date": date,
   happeningType,
-  "registrationStartGroups": registrationStartGroups[]->slug.current,
+  "registrationStartGroups": registrationStartGroups,
   "registrationGroups": registrationGroups[]->slug.current,
   "registrationStart": registrationStart,
   "registrationEnd": registrationEnd,

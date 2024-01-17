@@ -3,6 +3,8 @@ import { db } from "@echo-webkom/db";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDegreePage() {
   const degrees = await db.query.degrees.findMany();
 
@@ -18,7 +20,7 @@ export default async function AdminDegreePage() {
         </p>
       </div>
 
-      <code className="rounded-md bg-slate-100 p-2 font-mono">
+      <code className="rounded-md bg-card p-2 font-mono text-card-foreground">
         <pre>{JSON.stringify(degrees, null, 2)}</pre>
       </code>
     </Container>

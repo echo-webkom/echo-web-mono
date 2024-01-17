@@ -1,38 +1,21 @@
 import { cache } from "react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { type Metadata } from "next/types";
 
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/ui/button";
-import { fetchPostsByPage } from "@/sanity/posts";
-
-type Props = {
-  searchParams: {
-    page?: string;
-  };
-};
+import { fetchAllPosts } from "@/sanity/posts/requests";
 
 export const metadata = {
   title: "Innlegg",
 } satisfies Metadata;
 
-const getData = cache(async (page: number) => {
-  const resp = await fetchPostsByPage(page, 6);
-
-  if (resp.posts.length === 0) {
-    return notFound();
-  }
-
-  return resp;
+const getData = cache(async () => {
+  return await fetchAllPosts();
 });
 
-export default async function PostsOverviewPage({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
-
-  const { posts, hasMore } = await getData(page);
+export default async function PostsOverviewPage() {
+  const posts = await getData();
 
   return (
     <Container className="space-y-8">
@@ -44,20 +27,6 @@ export default async function PostsOverviewPage({ searchParams }: Props) {
             <PostPreview post={post} withBorder />
           </div>
         ))}
-      </div>
-
-      <div className="flex justify-center gap-2">
-        {page > 1 && (
-          <Button asChild>
-            <Link href={`/for-studenter/innlegg?page=${page - 1}`}>Forrige side</Link>
-          </Button>
-        )}
-
-        {hasMore && (
-          <Button asChild>
-            <Link href={`/for-studenter/innlegg?page=${page + 1}`}>Neste side</Link>
-          </Button>
-        )}
       </div>
     </Container>
   );

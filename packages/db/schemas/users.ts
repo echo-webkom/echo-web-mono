@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { degrees, groups, usersToGroups, userTypeEnum } from ".";
+import { degrees, usersToGroups, userTypeEnum } from ".";
 
 export const users = pgTable(
   "user",
@@ -27,7 +27,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.degreeId],
     references: [degrees.id],
   }),
-  groupLeader: many(groups),
   memberships: many(usersToGroups),
 }));
 

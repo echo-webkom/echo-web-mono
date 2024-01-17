@@ -1,9 +1,11 @@
 "use server";
 
+import * as va from "@vercel/analytics/server";
+import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   answers,
@@ -13,22 +15,23 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
+import { doesArrayIntersect } from "@/lib/array";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
+  /**
+   * Check if user is signed in
+   */
+  const user = await auth();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "Du er ikke logget inn",
+    };
+  }
+
   try {
-    /**
-     * Check if user is signed in
-     */
-    const user = await getAuth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
     /**
      * Check if user has filled out necessary information
      */
@@ -79,20 +82,32 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
+    const canEarlyRegister = doesArrayIntersect(
+      happening.registrationGroups ?? [],
+      user.memberships.map((membership) => membership.group.id),
+    );
+
     /**
-     * Check if registration is open
+     * Check if registration is open for user that can not early register
      */
-    if (happening.registrationStart && new Date() < happening.registrationStart) {
+    if (!canEarlyRegister && happening.registrationStart && isFuture(happening.registrationStart)) {
       return {
         success: false,
         message: "Påmeldingen har ikke startet",
       };
     }
 
+    if (!canEarlyRegister && !happening.registrationStart) {
+      return {
+        success: false,
+        message: "Påmelding er bare for inviterte undergrupper",
+      };
+    }
+
     /**
-     * Check if registration is closed
+     * Check if registration is closed for user that can not early register
      */
-    if (happening.registrationEnd && new Date() > happening.registrationEnd) {
+    if (happening.registrationEnd && isPast(happening.registrationEnd)) {
       return {
         success: false,
         message: "Påmeldingen har allerede stengt",
@@ -107,11 +122,25 @@ export async function register(id: string, payload: z.infer<typeof registrationF
     });
 
     /**
+     * Get groups that host the happening
+     */
+    const hostGroups = await db.query.happeningsToGroups
+      .findMany({
+        where: (happeningToGroup) => eq(happeningToGroup.happeningId, id),
+      })
+      .then((groups) => groups.map((group) => group.groupId));
+
+    const canSkipSpotRange = doesArrayIntersect(
+      hostGroups,
+      user.memberships.map((membership) => membership.group.id),
+    );
+
+    /**
      * Get correct spot range for user
      *
      * If user is not in any spot range, return error
      */
-    const userSpotRange = getCorrectSpotrange(user.year, spotRanges);
+    const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
 
     if (!userSpotRange) {
       return {
@@ -230,6 +259,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
+    await va.track("Successful reigstration", {
+      userId: user.id,
+      happeningId: happening.id,
+    });
+
     return {
       success: true,
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
@@ -244,6 +278,12 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
+    await va.track("Failed registration", {
+      userId: user?.id ?? null,
+      happeningId: id ?? null,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
     return {
       success: false,
       message: "En feil har oppstått",
@@ -251,9 +291,17 @@ export async function register(id: string, payload: z.infer<typeof registrationF
   }
 }
 
-function getCorrectSpotrange(year: number, spotRanges: Array<SpotRange>) {
+function getCorrectSpotrange(
+  year: number,
+  spotRanges: Array<SpotRange>,
+  canSkipSpotRange: boolean,
+) {
   return (
     spotRanges.find((spotRange) => {
+      if (canSkipSpotRange) {
+        return true;
+      }
+
       return year >= spotRange.minYear && year <= spotRange.maxYear;
     }) ?? null
   );

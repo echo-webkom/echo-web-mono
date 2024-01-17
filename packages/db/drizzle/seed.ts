@@ -6,7 +6,9 @@ import {
   accounts,
   degrees,
   groups,
+  happenings,
   sessions,
+  spotRanges,
   users,
   usersToGroups,
   type UserType,
@@ -126,12 +128,31 @@ async function seed() {
   });
 
   await createUser({
+    id: "student2",
+    name: "Student2",
+    email: "student2@echo.uib.no",
+    type: "student",
+    token: "student2",
+    year: 2,
+  });
+
+  await createUser({
+    id: "student5",
+    name: "Student5",
+    email: "student5@echo.uib.no",
+    type: "student",
+    token: "student5",
+    year: 5,
+  });
+
+  await createUser({
     id: "alum",
     name: "Andreas Aanes",
     email: "alum@echo.uib.on",
     type: "alum",
     token: "alum",
   });
+
   await createUser({
     id: "admin",
     name: "Bo Salhus",
@@ -145,6 +166,34 @@ async function seed() {
     groupId: "webkom",
     isLeader: true,
   });
+
+  await db
+    .insert(happenings)
+    .values({
+      id: "5cbb5337-a6e6-4eff-a821-a73722594f47",
+      slug: "party-med-webkom",
+      title: "Party med Webkom",
+      date: new Date("2030-01-01"),
+      registrationEnd: new Date("2029-12-31"),
+      registrationStart: new Date("2024-01-01"),
+      type: "event",
+    })
+    .onConflictDoNothing();
+
+  console.log("Inserted happening Party med Webkom with id 5cbb5337-a6e6-4eff-a821-a73722594f47");
+
+  await db
+    .insert(spotRanges)
+    .values({
+      happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
+      id: "party-med-webkom-spotrange",
+      maxYear: 3,
+      minYear: 1,
+      spots: 1,
+    })
+    .onConflictDoNothing();
+
+  console.log("Inserted spot range for Party med Webkom");
 }
 
 async function createUser({
@@ -153,12 +202,16 @@ async function createUser({
   email,
   type,
   token,
+  year = 1,
+  degreeId = "dtek",
 }: {
   id: string;
   name: string;
   email: string;
   type: UserType;
   token: string;
+  year?: number;
+  degreeId?: string;
 }) {
   console.log(`Inserted user ${name} with id ${id}`);
   await db
@@ -168,6 +221,8 @@ async function createUser({
       name,
       email,
       type,
+      year,
+      degreeId,
     })
     .onConflictDoNothing();
 

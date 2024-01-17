@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeftIcon } from "@radix-ui/react-icons";
+import { RxArrowLeft as ArrowLeft } from "react-icons/rx";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
@@ -78,7 +78,7 @@ export function SidebarLayout({ routes, children }: SidebarLayoutProps) {
       >
         <div className="flex gap-3 border-b p-5 md:hidden">
           <button onClick={handleBackClick} className="block md:hidden">
-            <ArrowLeftIcon className="h-6 w-6" />
+            <ArrowLeft className="h-6 w-6" />
           </button>
           <h1 className="text-xl font-semibold">Meny</h1>
         </div>

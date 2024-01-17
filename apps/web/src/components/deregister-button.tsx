@@ -106,6 +106,7 @@ export function DeregisterButton({ id }: DeregisterButtonProps) {
                   render={({ field }) => (
                     <Checkbox
                       id="hasVerified"
+                      name="hasVerified"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />

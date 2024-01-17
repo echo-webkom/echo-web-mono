@@ -3,6 +3,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
   content: ["./src/**/*.{ts,js,tsx,jsx}"],
+  darkMode: "class",
   theme: {
     fontFamily: {
       primary: ["var(--inter-font)", ...fontFamily.sans],
@@ -18,8 +19,11 @@ export default {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
-        wave: "var(--wave)",
         banner: "var(--banner)",
+        wave: {
+          DEFAULT: "var(--wave)",
+          foreground: "var(--wave-foreground)",
+        },
         primary: {
           DEFAULT: "var(--primary)",
           foreground: "var(--primary-foreground)",

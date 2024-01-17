@@ -2,6 +2,8 @@ import { InfoOutlineIcon } from "@sanity/icons";
 import { nanoid } from "nanoid";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { IdInput } from "../../components/id-input";
+
 export default defineType({
   name: "question",
   title: "Spørsmål",
@@ -11,8 +13,30 @@ export default defineType({
       name: "id",
       title: "ID",
       type: "string",
+      components: {
+        input: IdInput,
+      },
       initialValue: () => nanoid(),
-      hidden: true,
+      validation: (Rule) =>
+        Rule.custom(async (input, context) => {
+          if (!input) {
+            return "ID er påkrevd";
+          }
+
+          const { getClient } = context;
+
+          const query =
+            "count(*[_type == 'happening' && !(_id in path('drafts.**')) && $id in additionalQuestions[].id]{_id})";
+          const params = { id: input };
+
+          const count: number = await getClient({ apiVersion: "2021-04-10" }).fetch(query, params);
+
+          if (count > 1) {
+            return "Spørsmål med denne ID-en finnes allerede i en annen hendelse";
+          }
+
+          return true;
+        }),
     }),
     defineField({
       name: "title",

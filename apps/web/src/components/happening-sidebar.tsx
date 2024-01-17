@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
 import { isFuture, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
+import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { AddToCalender } from "@/components/add-to-calender";
@@ -14,38 +14,46 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { doesArrayIntersect } from "@/lib/array";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
-import { norwegianDateString } from "@/utils/date";
+import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
+import { mailTo } from "@/utils/prefixes";
 
 type EventSidebarProps = {
   event: Happening;
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {
-  const user = await getAuth();
+  const user = await auth();
 
-  const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.id, event._id),
-    with: {
-      questions: true,
-      groups: {
-        with: {
-          group: true,
+  const happening = await db.query.happenings
+    .findFirst({
+      where: (happening) => eq(happening.id, event._id),
+      with: {
+        questions: true,
+        groups: {
+          with: {
+            group: true,
+          },
         },
       },
-    },
-  });
-  const spotRanges = await db.query.spotRanges.findMany({
-    where: (spotRange) => eq(spotRange.happeningId, event._id),
-  });
-  const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, event._id),
-    with: {
-      user: true,
-    },
-  });
+    })
+    .catch(() => null);
+  const spotRanges = await db.query.spotRanges
+    .findMany({
+      where: (spotRange) => eq(spotRange.happeningId, event._id),
+    })
+    .catch(() => []);
+  const registrations = await db.query.registrations
+    .findMany({
+      where: (registration) => eq(registration.happeningId, event._id),
+      with: {
+        user: true,
+      },
+    })
+    .catch(() => []);
 
   const isRegistered = registrations.some(
     (registration) =>
@@ -61,15 +69,39 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     (registration) => registration.status === "waiting",
   ).length;
 
-  const isRegistrationOpen =
+  const isNormalRegistrationOpen = Boolean(
     happening?.registrationStart &&
-    happening?.registrationEnd &&
-    isPast(happening.registrationStart) &&
-    isFuture(happening.registrationEnd);
+      happening?.registrationEnd &&
+      isBetween(happening.registrationStart, happening.registrationEnd),
+  );
+
+  const isGroupRegistrationOpen = Boolean(
+    happening?.registrationStartGroups &&
+      happening?.registrationEnd &&
+      isBetween(happening.registrationStartGroups, happening.registrationEnd),
+  );
 
   const isHost = user && happening ? _isHost(user, happening) : false;
 
   const isUserComplete = user?.degreeId && user.year;
+
+  const canEarlyRegister = Boolean(
+    user &&
+      happening &&
+      doesArrayIntersect(
+        happening.registrationGroups ?? [],
+        user.memberships.map((membership) => membership.group.id),
+      ),
+  );
+
+  const isRegistrationOpen = canEarlyRegister ? isGroupRegistrationOpen : isNormalRegistrationOpen;
+  const userRegistrationStart = canEarlyRegister
+    ? happening?.registrationStartGroups
+    : happening?.registrationStart;
+
+  const isClosed = Boolean(
+    happening?.registrationEnd && isPast(new Date(happening.registrationEnd)),
+  );
 
   return (
     <Sidebar>
@@ -92,31 +124,31 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - There is a company
        */}
       {event.company && (
-        <>
-          <SidebarItem>
-            <Link href={event.company.website}>
-              <div className="overflow-hidden">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={urlFor(event.company.image).url()}
-                    alt={`${event.company.name} logo`}
-                    fill
-                  />
-                </div>
+        <SidebarItem>
+          <Link href={event.company.website}>
+            <div className="overflow-hidden">
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={urlFor(event.company.image).url()}
+                  alt={`${event.company.name} logo`}
+                  fill
+                />
               </div>
-            </Link>
-          </SidebarItem>
+            </div>
+          </Link>
+        </SidebarItem>
+      )}
 
-          <SidebarItem>
-            <SidebarItemTitle>Bedrift:</SidebarItemTitle>
-            <SidebarItemContent>
-              <Link className="hover:underline" href={event.company.website}>
-                {event.company.name}
-                <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
-              </Link>
-            </SidebarItemContent>
-          </SidebarItem>
-        </>
+      {event.company && (
+        <SidebarItem>
+          <SidebarItemTitle>Bedrift:</SidebarItemTitle>
+          <SidebarItemContent>
+            <Link className="hover:underline" href={event.company.website}>
+              {event.company.name}
+              <ExternalLink className="ml-1 inline-block h-4 w-4" />
+            </Link>
+          </SidebarItemContent>
+        </SidebarItem>
       )}
 
       {/**
@@ -129,6 +161,17 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>
             <AddToCalender date={new Date(event.date)} title={event.title} />
           </SidebarItemContent>
+        </SidebarItem>
+      )}
+
+      {/**
+       * Show time if:
+       * - There is a date set
+       */}
+      {event.date && (
+        <SidebarItem>
+          <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
+          <SidebarItemContent>{time(event.date)}</SidebarItemContent>
         </SidebarItem>
       )}
 
@@ -156,6 +199,19 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
+       * Show registered count if:
+       * - People can reigster
+       */}
+      {spotRanges.length > 0 && (
+        <SidebarItem>
+          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+          <SidebarItemContent>
+            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
+
+      {/**
        * Show location if:
        * - There is a location set
        */}
@@ -177,7 +233,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <ul>
               {event.contacts.map((contact) => (
                 <li key={contact.profile._id}>
-                  <a className="hover:underline" href={"mailto:" + contact.email}>
+                  <a className="hover:underline" href={mailTo(contact.email)}>
                     {contact.profile.name}
                   </a>
                 </li>
@@ -199,20 +255,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
-       * Show registered count if:
-       * - Registration is open
-       * - People are registered
-       */}
-      {isRegistrationOpen && spotRanges.length > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-
-      {/**
        * Show waitlist count if:
        * - Registration is open
        * - There is a waitlist
@@ -229,11 +271,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Registration is open
        * - Registration end date is set
        */}
-      {isRegistrationOpen && happening.registrationEnd && (
+      {isRegistrationOpen && happening?.registrationEnd && (
         <SidebarItem>
           <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
           <SidebarItemContent>
-            {happening?.registrationEnd.toLocaleDateString("nb-NO")}
+            {happening.registrationEnd.toLocaleDateString("nb-NO")}
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -242,8 +284,9 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * Show registration start date if:
        * - Registration is not open
        * - Registration start date is set
+       * - Registration is not closed
        */}
-      {!isRegistrationOpen && happening?.registrationStart && (
+      {!isNormalRegistrationOpen && happening?.registrationStart && !isClosed && (
         <SidebarItem>
           <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
           <SidebarItemContent>
@@ -253,10 +296,31 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
+       * Show registration start date for groups if:
+       * - Registration is not open
+       * - Can early register
+       * - Registration start date for groups is set
+       * - Registration is not closed
+       */}
+      {!isNormalRegistrationOpen &&
+        canEarlyRegister &&
+        !isGroupRegistrationOpen &&
+        happening?.registrationStartGroups &&
+        !isClosed && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
+            <SidebarItemContent>
+              {norwegianDateString(happening.registrationStartGroups)}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+
+      {/**
        * Show deregister button if:
        * - User is registered to happening
+       * - Happening has not passed
        */}
-      {isRegistered && (
+      {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
         <SidebarItem>
           <DeregisterButton id={event._id} />
         </SidebarItem>
@@ -273,12 +337,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {!isRegistered &&
         isUserComplete &&
         spotRanges.length > 0 &&
-        happening?.registrationStart &&
-        (happening.registrationEnd ? isFuture(new Date(happening.registrationEnd)) : true) &&
-        isPast(new Date(happening.registrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
+        userRegistrationStart &&
+        !isClosed &&
+        isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
           <SidebarItem className="relative">
-            <RegisterButton id={event._id} questions={happening.questions} />
-            <Countdown toDate={happening.registrationStart} />
+            <RegisterButton id={event._id} questions={happening?.questions ?? []} />
+            <Countdown toDate={userRegistrationStart} />
           </SidebarItem>
         )}
 
@@ -287,7 +351,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - User is logged in
        * - Registration is closed
        */}
-      {user && !isRegistrationOpen && (
+      {user && isClosed && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
@@ -307,7 +371,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <div className="group flex items-center">
               <Link href="/auth/profil" className="hover:underline">
                 Her
-                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
             </div>
           </div>
@@ -315,18 +379,43 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
 
       {/**
+       * Show warning for not being in group if:
+       * - User is logged in
+       * - User is not in any of the groups that can early register
+       * - Normal registration is not open.
+       * - Registration is not closed
+       */}
+      {user &&
+        !canEarlyRegister &&
+        happening?.registrationStartGroups &&
+        !isNormalRegistrationOpen &&
+        !isClosed && (
+          <SidebarItem>
+            <Callout type="warning" noIcon>
+              {happening?.registrationStart ? (
+                <p className="font-semibold">Du kan ikke melde deg på enda.</p>
+              ) : (
+                <p className="font-semibold">
+                  Kun medlemmer av inviterte grupper kan melde seg på.
+                </p>
+              )}
+            </Callout>
+          </SidebarItem>
+        )}
+
+      {/**
        * Show login warning if:
        * - User is not logged in
        * - Registration start is set
        */}
-      {!user && happening?.registrationStart && (
+      {!user && happening?.registrationStart && !isClosed && (
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
             <div className="group flex items-center">
               <Link href="/auth/logg-inn" className="hover:underline">
                 Logg inn her
-                <ArrowRightIcon className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
               </Link>
             </div>
           </Callout>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Cross1Icon } from "@radix-ui/react-icons";
+import { RxCross1 as Cross } from "react-icons/rx";
 
 import { hideCookieBanner } from "@/actions/cookies";
 
@@ -32,7 +32,7 @@ export function CookieBannerClient() {
         </Link>
       </div>
       <button onClick={() => void handleClose(true)} className="absolute right-0 top-0 m-4">
-        <Cross1Icon />
+        <Cross />
       </button>
     </div>
   );

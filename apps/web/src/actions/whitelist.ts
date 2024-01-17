@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 
@@ -10,7 +10,7 @@ import { isWebkom } from "@/lib/user";
 
 export async function upsertWhitelist(email: string, reason: string, days: number) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return {
@@ -64,7 +64,7 @@ export async function upsertWhitelist(email: string, reason: string, days: numbe
 
 export async function removeWhitelist(email: string) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return {

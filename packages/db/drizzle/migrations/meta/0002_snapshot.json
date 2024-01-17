@@ -88,7 +88,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -152,7 +153,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
@@ -165,7 +167,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "answer_question_id_question_id_fk": {
           "name": "answer_question_id_question_id_fk",
@@ -178,7 +181,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -258,7 +262,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -460,7 +465,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -531,7 +537,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "registration_happening_id_happening_id_fk": {
           "name": "registration_happening_id_happening_id_fk",
@@ -544,7 +551,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -594,7 +602,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -726,7 +735,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -776,7 +786,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "users_to_groups_group_id_group_id_fk": {
           "name": "users_to_groups_group_id_group_id_fk",
@@ -789,7 +800,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -876,7 +888,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {

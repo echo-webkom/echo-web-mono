@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Logo from "@/assets/echo-logo.png";
+import Logo from "@/assets/images/echo-logo.png";
 import { cn } from "@/utils/cn";
 
 type HeaderLogoProps = {

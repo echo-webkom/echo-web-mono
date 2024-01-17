@@ -8,8 +8,8 @@ export const Select = React.forwardRef<HTMLSelectElement, React.ComponentPropsWi
     <select
       ref={ref}
       className={clsx(
-        "flex h-10 w-full items-center justify-between rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-2 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-50",
-        value ? "text-slate-900" : "text-slate-400",
+        "flex h-10 w-full items-center justify-between rounded-md border border-border bg-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        value ? "text-foreground" : "text-muted-foreground",
       )}
       defaultValue={value}
       {...props}
