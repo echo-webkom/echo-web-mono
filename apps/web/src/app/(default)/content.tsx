@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { differenceInDays, format, isPast, isToday } from "date-fns";
+import { differenceInDays, isPast, isToday } from "date-fns";
 import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
@@ -13,7 +13,7 @@ import { PostPreview } from "@/components/post-preview";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDate, shortDateNoTime, shortDateNoTimeNoYear, time } from "@/utils/date";
+import { shortDateNoTimeNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
