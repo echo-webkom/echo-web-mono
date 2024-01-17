@@ -23,7 +23,7 @@ export default async function HyggkomHandleliste() {
   )
   .groupBy(shoppingListItems.id);
 
-  const colors = getColor(items.map((item) => item.id));
+  const colors = await getColor(items.map((item) => item.id));
   console.log(colors);
 
   return (
