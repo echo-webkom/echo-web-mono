@@ -4,6 +4,7 @@ import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
+import { getColor } from "@/actions/get_color_like_button";
 
 
 export default async function HyggkomHandleliste() {
@@ -22,10 +23,13 @@ export default async function HyggkomHandleliste() {
   )
   .groupBy(shoppingListItems.id);
 
+  const colors = getColor(items.map((item) => item.id));
+  console.log(colors);
+
   return (
     <Container className="max-w-5xl">
       <h1 className="text-4xl bold py-3">Hyggkoms handleliste</h1>
-      <HyggkomShoppingList items={items.sort((a, b) => a.likesCount < b.likesCount ? 1 : -1)} />
+      <HyggkomShoppingList items={items.sort((a, b) => a.likesCount < b.likesCount ? 1 : -1)} colors= {colors} />
       <HyggkomShoppingForm></HyggkomShoppingForm>
     </Container>
   );
