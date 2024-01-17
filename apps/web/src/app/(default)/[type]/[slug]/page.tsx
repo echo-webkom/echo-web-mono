@@ -1,6 +1,9 @@
 import { cache } from "react";
+import { type Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+
+import { happeningTypeToPathname } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
 import { HappeningSidebar } from "@/components/happening-sidebar";
@@ -19,26 +22,27 @@ type Props = {
 
 export const dynamicParams = false;
 
-const getData = cache(async (slug: string) => {
-  const event = await fetchHappeningBySlug(slug);
+const getData = cache(async ({ params }: Props) => {
+  const happening = await fetchHappeningBySlug(params.slug);
 
-  if (!event) {
+  if (!happening || happeningTypeToPathname[happening.happeningType] !== params.type) {
     return notFound();
   }
 
-  return event;
+  return happening;
 });
 
 export async function generateMetadata({ params }: Props) {
-  const event = await getData(params.slug);
+  const happening = await getData({ params });
 
   return {
-    title: event.title,
-  };
+    title: happening.title,
+    keywords: ["echo", "universitetet i bergen", "studentforening", "student", "arrangement"],
+  } satisfies Metadata;
 }
 
 export default async function EventPage({ params }: Props) {
-  const happening = await getData(params.slug);
+  const happening = await getData({ params });
 
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
