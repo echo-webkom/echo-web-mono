@@ -12,42 +12,45 @@ import { shortDate } from "@/utils/date";
 
 type Props = {
   params: {
+    type: string;
     slug: string;
   };
 };
 
-const getData = cache(async (slug: string) => {
-  const bedpres = await fetchHappeningBySlug(slug);
+export const dynamicParams = false;
 
-  if (!bedpres) {
+const getData = cache(async (slug: string) => {
+  const event = await fetchHappeningBySlug(slug);
+
+  if (!event) {
     return notFound();
   }
 
-  return bedpres;
+  return event;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
-  const bedpres = await getData(params.slug);
+export async function generateMetadata({ params }: Props) {
+  const event = await getData(params.slug);
 
   return {
-    title: bedpres.title,
+    title: event.title,
   };
-};
+}
 
-export default async function BedpresPage({ params }: Props) {
-  const bedpres = await getData(params.slug);
+export default async function EventPage({ params }: Props) {
+  const happening = await getData(params.slug);
 
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <HappeningSidebar event={bedpres} />
+        <HappeningSidebar sHappening={happening} />
 
         {/* Content */}
         <article className="w-full">
-          <Heading>{bedpres.title}</Heading>
+          <Heading>{happening.title}</Heading>
 
-          {bedpres.body ? (
-            <Markdown content={bedpres.body} />
+          {happening.body ? (
+            <Markdown content={happening.body} />
           ) : (
             <div className="mx-auto flex w-fit flex-col gap-8 p-5">
               <h3 className="text-center text-xl font-medium">Mer informasjon kommer!</h3>
@@ -65,10 +68,10 @@ export default async function BedpresPage({ params }: Props) {
 
       <div className="pt-10 text-center text-muted-foreground lg:mt-auto">
         <Text size="sm" className="p-0">
-          Publisert: {shortDate(bedpres._createdAt)}
+          Publisert: {shortDate(happening._createdAt)}
         </Text>
         <Text size="sm" className="p-0">
-          Sist oppdatert: {shortDate(bedpres._updatedAt)}
+          Sist oppdatert: {shortDate(happening._updatedAt)}
         </Text>
       </div>
     </Container>

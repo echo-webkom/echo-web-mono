@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq, sql } from "drizzle-orm";
-import { ChevronLeft } from "lucide-react";
+import { LuChevronLeft as ChevronLeft } from "react-icons/lu";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
@@ -16,7 +16,7 @@ import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {
-    happeningType: string;
+    type: string;
     slug: string;
   };
 };
@@ -57,7 +57,7 @@ async function getData(params: Props["params"]) {
     slug: params.slug,
   });
 
-  if (!happening || happeningTypeToPathname[happening.type] !== params.happeningType) {
+  if (!happening || happeningTypeToPathname[happening.type] !== params.type) {
     return notFound();
   }
 
