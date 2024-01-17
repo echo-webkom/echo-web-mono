@@ -1,16 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import { differenceInDays, isToday } from "date-fns";
-import { RxArrowRight as ArrowRight } from "react-icons/rx";
+import { differenceInDays, format, isPast, isToday } from "date-fns";
+import { eq } from "drizzle-orm";
+import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
+
+import { db } from "@echo-webkom/db";
+import { Registration } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
-import { HappeningPreviewBox } from "@/components/happening-preview-box-server";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDate, time } from "@/utils/date";
+import { shortDate, shortDateNoTime, shortDateNoTimeNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
@@ -109,7 +112,21 @@ export async function Content() {
   );
 }
 
-function TempPreview({
+const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
+  spotRanges: Array<TSpotRange>,
+  registrations: Array<Registration>,
+) => {
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "registered",
+  ).length;
+  return {
+    maxCapacity,
+    registeredCount,
+  };
+};
+
+async function TempPreview({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
@@ -117,6 +134,21 @@ function TempPreview({
   const href = isBedpres(happening)
     ? `/bedpres/${happening.slug}`
     : `/arrangement/${happening.slug}`;
+
+  const spotRanges = await db.query.spotRanges
+    .findMany({
+      where: (spotRange) => eq(spotRange.happeningId, happening._id),
+    })
+    .catch(() => []);
+  const registrations = await db.query.registrations
+    .findMany({
+      where: (registration) => eq(registration.happeningId, happening._id),
+      with: {
+        user: true,
+      },
+    })
+    .catch(() => []);
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
 
   return (
     <Link href={href}>
@@ -133,22 +165,35 @@ function TempPreview({
           </div>
         )}
 
-        <div>
-          <h1 className="line-clamp-1 text-2xl">{happening.title}</h1>
+        <div className="flex w-full justify-between">
+          <h1 className="my-auto text-2xl">{happening.title}</h1>
 
-          <ul className="text-muted-foreground">
-            <li>
-              <span className="font-medium">Dato:</span> <time>{shortDate(happening.date)}</time>
+          <ul className="my-auto flex-none text-right text-muted-foreground">
+            <li className="flex justify-end">
+              <span className="flex-none font-medium">
+                <RxCalendar className="mx-1 h-full" />
+              </span>{" "}
+              <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
-            {differenceInDays(new Date(), happening.registrationStart) < 1 && (
-              <li>
-                <span className="font-medium">Påmelding: </span>{" "}
+            {differenceInDays(new Date(), happening.registrationStart) < 1 ? (
+              <li className="mt-1">
+                <span className="font-medium">
+                  Påmelding: <br />
+                </span>{" "}
                 {isToday(happening.registrationStart) ? (
                   `I dag kl ${time(happening.registrationStart)}`
                 ) : (
-                  <time>{shortDate(happening.registrationStart)}</time>
+                  <time>{shortDateNoTimeNoYear(happening.registrationStart)}</time>
                 )}
               </li>
+            ) : (
+              isPast(new Date(happening.registrationStart)) && (
+                <li>
+                  <span className="font-medium">
+                    {registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"))}
+                  </span>
+                </li>
+              )
             )}
           </ul>
         </div>

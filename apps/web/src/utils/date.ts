@@ -41,6 +41,15 @@ export function shortDateNoTime(date: Date | string) {
     timeZone: "Europe/Oslo",
   });
 }
+export function shortDateNoTimeNoYear(date: Date | string) {
+  const d = new Date(date);
+
+  return d.toLocaleDateString("nb-NO", {
+    day: "numeric",
+    month: "short",
+    timeZone: "Europe/Oslo",
+  });
+}
 
 export function time(date: Date | string) {
   const d = new Date(date);
