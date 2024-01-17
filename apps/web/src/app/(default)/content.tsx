@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { differenceInDays, isPast, isToday } from "date-fns";
+import { differenceInDays, isFuture } from "date-fns";
 import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
 import { db } from "@echo-webkom/db";
-import { Registration } from "@echo-webkom/db/schemas";
+import type { Registration } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
@@ -13,7 +13,7 @@ import { PostPreview } from "@/components/post-preview";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDateNoTimeNoYear, time } from "@/utils/date";
+import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
@@ -165,36 +165,40 @@ async function TempPreview({
           </div>
         )}
 
-        <div className="flex w-full justify-between">
-          <h1 className="my-auto text-2xl">{happening.title}</h1>
+        <div className="flex w-full justify-between gap-2">
+          <div>
+            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
+              {happening.title}
+            </h1>
+            <div className="text-muted-foreground">
+              {happening.registrationStart ? (
+                differenceInDays(new Date(), happening.registrationStart) < 1 &&
+                isFuture(new Date(happening.registrationStart)) ? (
+                  <li>{`Påmelding i dag kl ${time(happening.registrationStart)}`}</li>
+                ) : isFuture(new Date(happening.registrationStart)) ? (
+                  <time>{shortDateNoYear(happening.registrationStart)}</time>
+                ) : (
+                  "Påmelding er åpen"
+                )
+              ) : (
+                "Ingen påmelding"
+              )}
+            </div>
+          </div>
 
-          <ul className="my-auto flex-none text-right text-muted-foreground">
+          <ul className="sm:text-md text-md my-auto flex-none text-right">
             <li className="flex justify-end">
               <span className="flex-none font-medium">
                 <RxCalendar className="mx-1 h-full" />
               </span>{" "}
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
-            {differenceInDays(new Date(), happening.registrationStart) < 1 ? (
-              <li className="mt-1">
-                <span className="font-medium">
-                  Påmelding: <br />
-                </span>{" "}
-                {isToday(happening.registrationStart) ? (
-                  `I dag kl ${time(happening.registrationStart)}`
-                ) : (
-                  <time>{shortDateNoTimeNoYear(happening.registrationStart)}</time>
-                )}
-              </li>
-            ) : (
-              isPast(new Date(happening.registrationStart)) && (
-                <li>
-                  <span className="font-medium">
-                    {registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"))}
-                  </span>
-                </li>
-              )
-            )}
+            <li>
+              <span className="font-medium tracking-widest">
+                {happening.registrationStart &&
+                  registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"))}
+              </span>
+            </li>
           </ul>
         </div>
       </div>
