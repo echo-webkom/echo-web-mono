@@ -42,28 +42,6 @@ export function shortDateNoTime(date: Date | string) {
   });
 }
 
-export function shortDateNoYear(date: Date | string) {
-  const d = new Date(date);
-
-  return d.toLocaleDateString("nb-NO", {
-    day: "numeric",
-    month: "long",
-    hour: "numeric",
-    minute: "numeric",
-    timeZone: "Europe/Oslo",
-  });
-}
-
-export function shortDateNoTimeNoYear(date: Date | string) {
-  const d = new Date(date);
-
-  return d.toLocaleDateString("nb-NO", {
-    day: "numeric",
-    month: "short",
-    timeZone: "Europe/Oslo",
-  });
-}
-
 export function time(date: Date | string) {
   const d = new Date(date);
 

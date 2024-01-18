@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { isFuture, isToday } from "date-fns";
-import { eq } from "drizzle-orm";
-import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
-
-import { db } from "@echo-webkom/db";
-import type { Registration } from "@echo-webkom/db/schemas";
+import { differenceInDays, isToday } from "date-fns";
+import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
@@ -13,7 +9,7 @@ import { PostPreview } from "@/components/post-preview";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
+import { shortDate, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
@@ -112,21 +108,7 @@ export async function Content() {
   );
 }
 
-const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
-  spotRanges: Array<TSpotRange>,
-  registrations: Array<Registration>,
-) => {
-  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
-  const registeredCount = registrations.filter(
-    (registration) => registration.status === "registered",
-  ).length;
-  return {
-    maxCapacity,
-    registeredCount,
-  };
-};
-
-async function TempPreview({
+function TempPreview({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
@@ -134,21 +116,6 @@ async function TempPreview({
   const href = isBedpres(happening)
     ? `/bedpres/${happening.slug}`
     : `/arrangement/${happening.slug}`;
-
-  const spotRanges = await db.query.spotRanges
-    .findMany({
-      where: (spotRange) => eq(spotRange.happeningId, happening._id),
-    })
-    .catch(() => []);
-  const registrations = await db.query.registrations
-    .findMany({
-      where: (registration) => eq(registration.happeningId, happening._id),
-      with: {
-        user: true,
-      },
-    })
-    .catch(() => []);
-  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
 
   return (
     <Link href={href}>
@@ -165,35 +132,23 @@ async function TempPreview({
           </div>
         )}
 
-        <div className="flex w-full justify-between gap-2">
-          <div className="my-auto flex flex-col">
-            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
-              {happening.title}
-            </h1>
-            <div className=" items-center text-muted-foreground">
-              {happening.registrationStart &&
-                isFuture(new Date(happening.registrationStart)) &&
-                (isToday(new Date(happening.registrationStart)) ? (
-                  <p>{`Påmelding i dag kl ${time(happening.registrationStart)}`}</p>
-                ) : (
-                  <time>{`Påmelding ${shortDateNoYear(happening.registrationStart)}`}</time>
-                ))}
-            </div>
-          </div>
+        <div>
+          <h1 className="line-clamp-1 text-2xl">{happening.title}</h1>
 
-          <ul className="sm:text-md text-md my-auto flex-none text-right">
-            <li className="flex justify-end">
-              <span className="flex-none font-medium">
-                <RxCalendar className="mx-1 h-full" />
-              </span>{" "}
-              <time>{shortDateNoTimeNoYear(happening.date)}</time>
-            </li>
+          <ul className="text-muted-foreground">
             <li>
-              <span className="font-medium tracking-widest">
-                {happening.registrationStart &&
-                  registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"))}
-              </span>
+              <span className="font-medium">Dato:</span> <time>{shortDate(happening.date)}</time>
             </li>
+            {differenceInDays(new Date(), happening.registrationStart) < 1 && (
+              <li>
+                <span className="font-medium">Påmelding: </span>{" "}
+                {isToday(happening.registrationStart) ? (
+                  `I dag kl ${time(happening.registrationStart)}`
+                ) : (
+                  <time>{shortDate(happening.registrationStart)}</time>
+                )}
+              </li>
+            )}
           </ul>
         </div>
       </div>
