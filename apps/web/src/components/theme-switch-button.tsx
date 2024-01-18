@@ -19,7 +19,7 @@ export default function ModeToggle() {
 
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 500);
+    }, 250);
   };
 
   return (
