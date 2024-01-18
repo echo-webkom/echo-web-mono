@@ -37,6 +37,11 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
   const router = useRouter();
   const { toast } = useToast();
 
+  /**
+   * The user can't be registered if there is no available spot for the user, or something is wrong with the users registration
+   */
+  const registerDisabled = !registration.canPromote && registration.status !== "registered";
+
   const form = useForm<editRegistrationForm>({
     resolver: zodResolver(editRegistrationSchema),
     defaultValues: {
@@ -47,20 +52,28 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
+    if (registerDisabled && selectedStatus === "registered") {
+      toast({
+        title: "Kunne ikke påmelde brukeren",
+        description: "Noen må meldes av, eller antall plasser må økes i Sanity.",
+        variant: "warning",
+      });
+    } else {
+      setIsLoading(true);
 
-    await updateRegistration(id, registration.user.id, {
-      status: selectedStatus,
-      reason: data.reason ?? "",
-    });
+      await updateRegistration(id, registration.user.id, {
+        status: selectedStatus,
+        reason: data.reason ?? "",
+      });
 
-    setIsLoading(false);
+      setIsLoading(false);
 
-    toast({
-      title: "Påmeldingen er endret",
-      description: "Påmeldingen er endret.",
-      variant: "success",
-    });
+      toast({
+        title: "Påmeldingen er endret",
+        description: "Påmeldingen er endret.",
+        variant: "success",
+      });
+    }
 
     router.refresh();
     form.reset();

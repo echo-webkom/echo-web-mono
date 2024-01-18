@@ -7,16 +7,11 @@ import { z } from "zod";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import {
-  answers,
-  registrations,
-  users,
-  type AnswerInsert,
-  type SpotRange,
-} from "@echo-webkom/db/schemas";
+import { answers, registrations, users, type AnswerInsert } from "@echo-webkom/db/schemas";
 
 import { doesArrayIntersect } from "@/lib/array";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { getUserSpotRange } from "@/utils/getUserSpotRange";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   /**
@@ -67,18 +62,18 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         and(
           eq(registration.happeningId, id),
           eq(registration.userId, user.id),
-          or(eq(registration.status, "registered"), eq(registration.status, "waiting")),
+          or(
+            eq(registration.status, "registered"),
+            eq(registration.status, "waiting"),
+            eq(registration.status, "pending"),
+          ),
         ),
     });
 
     if (exisitingRegistration) {
-      const status =
-        exisitingRegistration.status === "registered"
-          ? "Du er allerede påmeldt dette arrangementet"
-          : "Du er allerede på venteliste til dette arrangementet";
       return {
-        success: false,
-        message: status,
+        success: "false",
+        message: "Du er allerede påmeldt dette arrangementet",
       };
     }
 
@@ -130,17 +125,17 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       })
       .then((groups) => groups.map((group) => group.groupId));
 
+    /**
+     * Users who are member of the hostgroup can skip the
+     * validation of their study year
+     */
+
     const canSkipSpotRange = doesArrayIntersect(
       hostGroups,
       user.memberships.map((membership) => membership.group.id),
     );
 
-    /**
-     * Get correct spot range for user
-     *
-     * If user is not in any spot range, return error
-     */
-    const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
+    const userSpotRange = getUserSpotRange(user.year, spotRanges, canSkipSpotRange);
 
     if (!userSpotRange) {
       return {
@@ -289,20 +284,4 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: "En feil har oppstått",
     };
   }
-}
-
-function getCorrectSpotrange(
-  year: number,
-  spotRanges: Array<SpotRange>,
-  canSkipSpotRange: boolean,
-) {
-  return (
-    spotRanges.find((spotRange) => {
-      if (canSkipSpotRange) {
-        return true;
-      }
-
-      return year >= spotRange.minYear && year <= spotRange.maxYear;
-    }) ?? null
-  );
 }

@@ -23,12 +23,11 @@ import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
-  user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
-  };
+  user: UserWithMemberships;
+  canPromote: boolean;
 };
+
+export type UserWithMemberships = User & { memberships: Array<{ group: Group | null }> };
 
 export function RegistrationTable({
   registrations,

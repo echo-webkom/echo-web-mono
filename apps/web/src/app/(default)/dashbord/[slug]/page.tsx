@@ -5,12 +5,15 @@ import { eq } from "drizzle-orm";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { type Registration, type SpotRange, type User } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
-import { RegistrationTable } from "@/components/registration-table";
+import { RegistrationTable, type UserWithMemberships } from "@/components/registration-table";
+import { doesArrayIntersect } from "@/lib/array";
 import { isHost as _isHost } from "@/lib/is-host";
 import { getStudentGroups } from "@/lib/queries/student-groups";
+import { getUserSpotRange } from "@/utils/getUserSpotRange";
 
 type Props = {
   params: {
@@ -60,6 +63,13 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
+  /**
+   * Get spot ranges for happening
+   */
+  const spotRanges = await db.query.spotRanges.findMany({
+    where: (spotRange) => eq(spotRange.happeningId, happening.id),
+  });
+
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
 
   const registered = registrations.filter((registration) => registration.status === "registered");
@@ -70,6 +80,16 @@ export default async function EventDashboard({ params }: Props) {
   const removed = registrations.filter((registration) => registration.status === "removed");
 
   const groups = await getStudentGroups();
+
+  const regsWithCanPromote = registrations.map((reg) => ({
+    ...reg,
+    canPromote: canRegisterUser(
+      reg.user,
+      spotRanges,
+      happening.groups.map((group) => group.groupId),
+      registered,
+    ),
+  }));
 
   return (
     <Container className="flex flex-col gap-10">
@@ -108,7 +128,7 @@ export default async function EventDashboard({ params }: Props) {
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable registrations={registrations} studentGroups={groups} />
+          <RegistrationTable registrations={regsWithCanPromote} studentGroups={groups} />
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">
@@ -124,4 +144,41 @@ export default async function EventDashboard({ params }: Props) {
       )}
     </Container>
   );
+}
+
+/**
+ * Checks if there is an available spot for the given user
+ */
+function canRegisterUser(
+  user: UserWithMemberships,
+  spotRanges: Array<SpotRange>,
+  hostGroups: Array<string>,
+  registrations: Array<
+    Registration & {
+      user: User;
+    }
+  >,
+) {
+  if (!user.year) {
+    return false;
+  }
+
+  const canSkipSpotRange = doesArrayIntersect(
+    hostGroups,
+    user.memberships.map((m) => (m.group ? m.group.id : "")),
+  );
+
+  const userSpotRanges = getUserSpotRange(user.year, spotRanges, canSkipSpotRange);
+
+  if (!userSpotRanges) {
+    return false;
+  }
+
+  const regsInSpotRange = registrations.filter((reg) => {
+    reg.user.year &&
+      reg.user.year <= userSpotRanges.maxYear &&
+      reg.user.year >= userSpotRanges.minYear;
+  }).length;
+
+  return userSpotRanges.spots - regsInSpotRange > 0;
 }
