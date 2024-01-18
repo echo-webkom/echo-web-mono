@@ -63,8 +63,8 @@ export function EventFilter({ params }: { params: SearchParams }) {
 
   return (
     <div className="space-y-5 border-b-2 border-solid border-opacity-20 pb-3">
-      <div className="flex flex-col sm:flex-row sm:justify-between">
-        <div className="flex flex-col items-center sm:flex-row sm:space-x-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between space-y-2 md:space-y-0">
+        <div className="flex flex-col items-center sm:flex-row sm:space-x-2 space-y-2 md:space-y-0">
           <Button
             className="w-60 sm:w-auto"
             variant={eventParams.type === "all" ? "default" : "outline"}
