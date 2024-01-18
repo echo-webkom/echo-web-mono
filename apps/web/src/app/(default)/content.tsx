@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { differenceInDays, isFuture } from "date-fns";
+import { isFuture, isToday } from "date-fns";
 import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
@@ -166,23 +166,18 @@ async function TempPreview({
         )}
 
         <div className="flex w-full justify-between gap-2">
-          <div>
+          <div className="my-auto flex flex-col">
             <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
               {happening.title}
             </h1>
-            <div className="text-muted-foreground">
-              {happening.registrationStart ? (
-                differenceInDays(new Date(), happening.registrationStart) < 1 &&
-                isFuture(new Date(happening.registrationStart)) ? (
-                  <li>{`Påmelding i dag kl ${time(happening.registrationStart)}`}</li>
-                ) : isFuture(new Date(happening.registrationStart)) ? (
-                  <time>{shortDateNoYear(happening.registrationStart)}</time>
+            <div className=" items-center text-muted-foreground">
+              {happening.registrationStart &&
+                isFuture(new Date(happening.registrationStart)) &&
+                (isToday(new Date(happening.registrationStart)) ? (
+                  <p>{`Påmelding i dag kl ${time(happening.registrationStart)}`}</p>
                 ) : (
-                  "Påmelding er åpen"
-                )
-              ) : (
-                "Ingen påmelding"
-              )}
+                  <time>{`Påmelding ${shortDateNoYear(happening.registrationStart)}`}</time>
+                ))}
             </div>
           </div>
 
