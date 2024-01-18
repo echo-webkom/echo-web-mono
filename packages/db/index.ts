@@ -19,7 +19,10 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 function createPool() {
-  return postgres(process.env.DATABASE_URL!);
+  return postgres(process.env.DATABASE_URL!, {
+    max: 40,
+    connect_timeout: 1000,
+  });
 }
 
 export const db = drizzle(pool, {
