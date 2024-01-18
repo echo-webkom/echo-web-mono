@@ -189,9 +189,10 @@ async function TempPreview({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li>
-              <span className="font-medium tracking-widest">
-                {happening.registrationStart &&
-                  registeredCount + "/" + (maxCapacity || ("Uendelig" && "∞"))}
+              <span className="tracking-wider">
+                {happening.registrationStart && (
+                  <p>{`${registeredCount}/${maxCapacity || ("Uendelig" && "∞")}`}</p>
+                )}
               </span>
             </li>
           </ul>
