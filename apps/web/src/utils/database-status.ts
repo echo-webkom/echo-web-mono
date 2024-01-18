@@ -12,8 +12,9 @@ export const getDatabaseStatus = cache(
       return false;
     }
   },
-  undefined,
+  ["database-status"],
   {
-    revalidate: 120,
+    tags: ["database-status"],
+    revalidate: 300,
   },
 );
