@@ -18,7 +18,7 @@ export function ModeToggle() {
 
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 500);
+    }, 250);
   };
 
   return (
