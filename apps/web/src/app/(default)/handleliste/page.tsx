@@ -23,14 +23,14 @@ export default async function HyggkomHandleliste() {
   )
   .groupBy(shoppingListItems.id);
 
-  const colors = await getColor(items.map((item) => item.id));
-  console.log(colors);
+  const itemsLiked = await getColor(items);
+  itemsLiked.sort((a, b) => b.item.likesCount - a.item.likesCount);
 
   return (
     <Container className="max-w-5xl">
       <h1 className="text-4xl bold py-3">Hyggkoms handleliste</h1>
-      <HyggkomShoppingList items={items.sort((a, b) => a.likesCount < b.likesCount ? 1 : -1)} colors= {colors} />
-      <HyggkomShoppingForm></HyggkomShoppingForm>
+      <HyggkomShoppingList items={itemsLiked} />
+      <HyggkomShoppingForm />
     </Container>
   );
 }

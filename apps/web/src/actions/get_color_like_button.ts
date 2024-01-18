@@ -2,31 +2,45 @@
 
 import { getAuth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
+import { usersToShoppingListItems } from "@echo-webkom/db/schemas";
 import { and, eq } from "drizzle-orm";
 
-export async function getColor(payload: Array<string>) {
+export type Item = {
+    id: string,
+    name: string,
+    userId: string,
+    createdAt: Date,
+    likesCount: number,
+  }
+
+export async function getColor(payload: Array<Item>) {
     const user = await getAuth();
 
     if (!user) {
-        return {
-            success: false,
-            message: "Du er ikke logget inn",
-          };
+        return payload.map((item) => ({
+            item,
+            isLiked: false
+        }))
     }
-    const likes = payload.map(async (id) =>
-        await checkIfExists(id, user.id)
+    const likes = Promise.all(payload.map(async (id) =>
+        await checkIfExists(id, user.id))
     );
     return likes
 };
 
-async function checkIfExists(id: string, userId : string) {
+async function checkIfExists(item: Item, userId : string) {
     const like = await db
-    .select({id: shoppingListItems.id})
+    .select()
     .from(usersToShoppingListItems)
-    .where( and (eq (usersToShoppingListItems.itemId, id), (eq (usersToShoppingListItems.userId, userId))))
+    .where( and (eq (usersToShoppingListItems.itemId, item.id), (eq (usersToShoppingListItems.userId, userId))))
 
     if (like.length > 0) {
-        return true
-    } return false
+        return {
+            item,
+            isLiked: true
+        }
+    } return {
+        item,
+        isLiked: false
+    }
 }
