@@ -139,7 +139,10 @@ async function TempPreview({
     .findMany({
       where: (spotRange) => eq(spotRange.happeningId, happening._id),
     })
-    .catch(() => []);
+    .catch(() => {
+      console.error("Failed to fetch spot ranges for happening", happening._id);
+      return [];
+    });
   const registrations = await db.query.registrations
     .findMany({
       where: (registration) => eq(registration.happeningId, happening._id),
@@ -147,7 +150,10 @@ async function TempPreview({
         user: true,
       },
     })
-    .catch(() => []);
+    .catch(() => {
+      console.error("Failed to fetch registrations for happening", happening._id);
+      return [];
+    });
   const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
 
   return (
