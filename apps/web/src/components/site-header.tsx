@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { auth } from "@echo-webkom/auth";
 
-import { getDatabaseStatus } from "@/utils/database-status";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import ModeToggle from "./theme-switch-button";
@@ -15,7 +14,7 @@ export async function SiteHeader() {
 
   return (
     <div className="sticky top-0 z-20">
-      <DatabaseStatusBar />
+      <VercelPreviewNotify />
 
       <div className="border-b bg-background">
         <NavigationRoot>
@@ -44,15 +43,13 @@ export async function SiteHeader() {
   );
 }
 
-async function DatabaseStatusBar() {
-  const status = await getDatabaseStatus();
+function VercelPreviewNotify() {
+  const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
-  if (!status) {
+  if (isVercelPreview) {
     return (
       <div className="bg-red-400 p-2 text-center text-sm font-medium">
-        <p>
-          Webkom har mistet kontakt med databasen. Dette er ikke bra. Vi jobber med å fikse det.
-        </p>
+        <p>Dette er en forhåndsvisning av nettsiden. Databasen er ikke tilgjengelig.</p>
       </div>
     );
   }
