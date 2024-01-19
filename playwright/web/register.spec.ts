@@ -3,7 +3,7 @@ import postgres from "postgres";
 
 import { test } from "../helpers/sessionTest";
 
-const SLUG = "party-med-webkom";
+const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
 
 const sql = postgres(process.env.DATABASE_URL!);
@@ -16,8 +16,10 @@ baseTest.describe("Register", () => {
   test("Student")("register and deregister to event", async ({ page }) => {
     await page.goto(`/arrangement/${SLUG}`);
 
-    await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
-    await expect(page.getByText("Velkommen til party med Webkom!", { exact: true })).toBeVisible();
+    await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
+    await expect(
+      page.getByText("Velkommen til testing i prod med Webkom!", { exact: true }),
+    ).toBeVisible();
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
@@ -67,7 +69,7 @@ baseTest.describe("Register", () => {
 
     await Promise.all(
       [page1, page2].map((page) =>
-        expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible(),
+        expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible(),
       ),
     );
 
@@ -99,8 +101,10 @@ baseTest.describe("Register", () => {
   test("Student5")("should not be able to register to event", async ({ page }) => {
     await page.goto(`/arrangement/${SLUG}`);
 
-    await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
-    await expect(page.getByText("Velkommen til party med Webkom!", { exact: true })).toBeVisible();
+    await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
+    await expect(
+      page.getByText("Velkommen til testing i prod med Webkom!", { exact: true }),
+    ).toBeVisible();
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
@@ -112,8 +116,10 @@ baseTest.describe("Register", () => {
   test("Admin")("see admin dashboard link", async ({ page }) => {
     await page.goto(`/arrangement/${SLUG}`);
 
-    await expect(page.getByText("Party med Webkom", { exact: true })).toBeVisible();
-    await expect(page.getByText("Velkommen til party med Webkom!", { exact: true })).toBeVisible();
+    await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
+    await expect(
+      page.getByText("Velkommen til testing i prod med Webkom!", { exact: true }),
+    ).toBeVisible();
 
     await expect(page.getByRole("link", { name: "Admin dashbord" })).toBeVisible();
   });
