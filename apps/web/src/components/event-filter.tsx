@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
-import { useDebounce } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
 
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
@@ -117,8 +117,6 @@ export function EventFilterSidebar({
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const inputRef = useRef(false);
-
   const filterSet =
     params.has("order") ||
     params.has("search") ||
@@ -135,19 +133,13 @@ export function EventFilterSidebar({
     open: params.get("open") === "true" ? true : false,
   };
 
-  const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
-  const [search] = useDebounce(searchInput, 300);
+  const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    if (inputRef.current) {
-      const searchParams = new URLSearchParams(params.toString());
-      search ? searchParams.set("search", search) : searchParams.delete("search");
-      router.push(`${pathname}?${searchParams}`, { scroll: false });
-      inputRef.current = false;
-    } else {
-      setSearchInput(params.get("search") ?? "");
-    }
-  }, [router, pathname, params, search]);
+  const debouncedSearch = useDebouncedCallback((search: string) => {
+    const searchParams = new URLSearchParams(params);
+    search ? searchParams.set("search", search) : searchParams.delete("search");
+    router.push(`${pathname}?${searchParams}`, { scroll: false });
+  }, 500);
 
   function updateFilter(element: string) {
     const searchParams = new URLSearchParams(params.toString());
@@ -186,7 +178,7 @@ export function EventFilterSidebar({
               value={searchInput}
               onChange={(e) => {
                 setSearchInput(e.target.value);
-                inputRef.current = true;
+                debouncedSearch(e.target.value);
               }}
               type="text"
               placeholder="Søk..."
@@ -202,7 +194,6 @@ export function EventFilterSidebar({
                   stroke="currentColor"
                   onClick={() => {
                     setSearchInput("");
-                    inputRef.current = true;
                   }}
                 >
                   <path
