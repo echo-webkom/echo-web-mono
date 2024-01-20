@@ -22,7 +22,7 @@ type DateInterval = {
   end?: Date;
 };
 
-export type SearchParams = {
+type SearchParams = {
   type?: string;
   order?: string;
   search?: string;
@@ -102,7 +102,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <EventFilter />
       </div>
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:max-w-[250px]">
+        <div className="w-full pr-16 md:max-w-[250px]">
           <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
         </div>
         <div className="w-full">
