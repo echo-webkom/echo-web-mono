@@ -274,12 +274,12 @@ export function EventFilterSidebar({
       <SidebarItem className="pt-6">
         <SidebarItemContent>
           <Label
-            className={cn("hoved:text-primary-hover cursor-pointer text-base text-primary", {
+            className={cn("cursor-pointer text-base text-primary hover:text-primary-hover", {
               invisible: !filterSet,
             })}
             onClick={() => resetFilter()}
           >
-            Nullstill alle
+            Nullstill alle filtere
           </Label>
         </SidebarItemContent>
       </SidebarItem>
