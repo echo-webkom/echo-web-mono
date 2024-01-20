@@ -19,7 +19,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
   return (
-    <Container>
+    <Container className="space-y-4">
       <HappeningCalendar happenings={allHappenings} />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />

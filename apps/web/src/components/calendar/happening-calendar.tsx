@@ -16,7 +16,7 @@ interface Props {
 const getInterval = (width: number) => {
   if (width < 640) return 1;
   if (width < 1024) return 3;
-  return 7;
+  return 5;
 };
 
 export function HappeningCalendar({ happenings }: Props) {
@@ -27,7 +27,19 @@ export function HappeningCalendar({ happenings }: Props) {
     interval === 1 ? new Date() : startOfWeek(new Date(), { weekStartsOn: 1 }),
   );
 
-  const week = getWeek(date);
+  const days = Array.from({ length: interval }, (_, i) => addDays(date, i));
+
+  const week = () => {
+    const firstWeek = getWeek(days[0]!);
+
+    if (days.length === 1) return firstWeek;
+
+    const lastWeek = getWeek(days[days.length - 1]!);
+
+    if (firstWeek === lastWeek) return firstWeek;
+
+    return `${firstWeek} - ${lastWeek}`;
+  };
 
   const handleNextWeek = () => {
     setDate((prev) => addDays(prev, interval));
@@ -53,9 +65,9 @@ export function HappeningCalendar({ happenings }: Props) {
   }, []);
 
   return (
-    <div ref={ref}>
-      <div className="mb-4 flex flex-col justify-between md:flex-row">
-        <Heading level={2}>Uke {week}</Heading>
+    <div ref={ref} className="space-y-4">
+      <div ref={ref} className="mb-4 flex flex-col justify-between md:flex-row">
+        <Heading level={2}>Uke {week()}</Heading>
 
         <div className="flex justify-center gap-3">
           <Button onClick={handlePrevWeek} size="sm">
@@ -89,9 +101,7 @@ export function HappeningCalendar({ happenings }: Props) {
             gridTemplateColumns: `repeat(${interval}, 1fr)`,
           }}
         >
-          {Array.from({ length: interval }, (_, i) => {
-            const day = addDays(date, i);
-
+          {days.map((day) => {
             const isToday = isSameDay(day, new Date());
 
             const happeningsThisDay = happenings.filter((happening) => {
@@ -100,9 +110,9 @@ export function HappeningCalendar({ happenings }: Props) {
             });
 
             return (
-              <div key={i}>
+              <div key={day.toString()}>
                 <div className="flex flex-col gap-2">
-                  <div className="border-b py-2 text-center font-medium">
+                  <div className="flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
@@ -113,11 +123,13 @@ export function HappeningCalendar({ happenings }: Props) {
                     )}
                   </div>
 
-                  {happeningsThisDay.map((happening) => (
-                    <div key={happening._id} className="rounded-lg border p-2 text-sm font-medium">
-                      {happening.title}
-                    </div>
-                  ))}
+                  <div className="px-1">
+                    {happeningsThisDay.map((happening) => (
+                      <div key={happening._id} className="overflow-hidden rounded-lg border p-2">
+                        <p className="line-clamp-1 text-sm font-medium">{happening.title}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             );
