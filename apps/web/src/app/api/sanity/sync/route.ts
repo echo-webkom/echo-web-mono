@@ -1,6 +1,6 @@
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
+import { inArray, sql } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 import {
@@ -39,95 +39,118 @@ export const GET = withBasicAuth(async () => {
       groups: h.groups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
     }));
 
-  if (formattedHappenings.length > 0) {
-    await db
-      .insert(happenings)
-      .values(
-        formattedHappenings.map(
-          (h) =>
-            ({
-              id: h._id,
-              slug: h.slug,
-              title: h.title,
-              type: h.happeningType,
-              date: h.date,
-              registrationStart: h.registrationStart,
-              registrationEnd: h.registrationEnd,
-              registrationStartGroups: h.registrationStartGroups,
-              registrationGroups: h.registrationGroups,
-            }) satisfies HappeningInsert,
+  await db.transaction(async (tx) => {
+    if (formattedHappenings.length > 0) {
+      await tx
+        .insert(happenings)
+        .values(
+          formattedHappenings.map(
+            (h) =>
+              ({
+                id: h._id,
+                slug: h.slug,
+                title: h.title,
+                type: h.happeningType,
+                date: h.date,
+                registrationStart: h.registrationStart,
+                registrationEnd: h.registrationEnd,
+                registrationStartGroups: h.registrationStartGroups,
+                registrationGroups: h.registrationGroups,
+              }) satisfies HappeningInsert,
+          ),
+        )
+        .onConflictDoUpdate({
+          target: [happenings.slug],
+          set: {
+            title: sql`excluded."title"`,
+            type: sql`excluded."type"`,
+            date: sql`excluded."date"`,
+            registrationStart: sql`excluded."registration_start"`,
+            registrationEnd: sql`excluded."registration_end"`,
+            registrationStartGroups: sql`excluded."registration_start_groups"`,
+            registrationGroups: sql`excluded."registration_groups"`,
+            slug: sql`excluded."slug"`,
+          },
+        });
+
+      await tx.delete(happeningsToGroups).where(
+        inArray(
+          happeningsToGroups.happeningId,
+          formattedHappenings.map((h) => h._id),
         ),
-      )
-      .onConflictDoUpdate({
-        target: [happenings.slug],
-        set: {
-          title: sql`excluded."title"`,
-          type: sql`excluded."type"`,
-          date: sql`excluded."date"`,
-          registrationStart: sql`excluded."registration_start"`,
-          registrationEnd: sql`excluded."registration_end"`,
-          registrationStartGroups: sql`excluded."registration_start_groups"`,
-          registrationGroups: sql`excluded."registration_groups"`,
-          slug: sql`excluded."slug"`,
-        },
+      );
+
+      const validGroups = await tx.query.groups.findMany();
+
+      const groupsToInsert = formattedHappenings.flatMap((h) => {
+        return (h.groups ?? [])
+          .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+          .map((groupId) => ({
+            happeningId: h._id,
+            groupId,
+          }));
       });
 
-    await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
+      if (groupsToInsert.length > 0) {
+        await tx.insert(happeningsToGroups).values(groupsToInsert);
+      }
 
-    const validGroups = await db.query.groups.findMany();
-
-    const groupsToInsert = formattedHappenings.flatMap((h) => {
-      return (h.groups ?? [])
-        .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
-        .map((groupId) => ({
-          happeningId: h._id,
-          groupId,
-        }));
-    });
-
-    if (groupsToInsert.length > 0) {
-      await db.insert(happeningsToGroups).values(groupsToInsert);
+      for (const happening of formattedHappenings) {
+        revalidateTag(`happening-${happening.slug}`);
+      }
     }
-  }
 
-  await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);
+    await tx.delete(spotRanges).where(
+      inArray(
+        spotRanges.happeningId,
+        formattedHappenings.map((h) => h._id),
+      ),
+    );
 
-  const spotRangesToInsert = formattedHappenings.flatMap((h) => {
-    return (h.spotRanges ?? []).map((sr) => {
-      return {
-        happeningId: h._id,
-        spots: sr.spots,
-        minYear: sr.minYear,
-        maxYear: sr.maxYear,
-      };
+    const spotRangesToInsert = formattedHappenings.flatMap((h) => {
+      return (h.spotRanges ?? []).map((sr) => {
+        return {
+          happeningId: h._id,
+          spots: sr.spots,
+          minYear: sr.minYear,
+          maxYear: sr.maxYear,
+        };
+      });
     });
+
+    if (spotRangesToInsert.length > 0) {
+      await tx.insert(spotRanges).values(spotRangesToInsert);
+    }
+
+    await tx.delete(questions).where(
+      inArray(
+        questions.happeningId,
+        formattedHappenings.map((h) => h._id),
+      ),
+    );
+
+    const questionsToInsert: Array<QuestionInsert> = formattedHappenings.flatMap((h) => {
+      return (h.questions ?? []).map((q) => {
+        return {
+          id: q.id,
+          happeningId: h._id,
+          title: q.title,
+          required: q.required,
+          isSensitive: q.isSensitive,
+          type: q.type,
+          options: (q.options ?? []).map((o) => ({ id: o, value: o })),
+        };
+      });
+    });
+
+    if (questionsToInsert.length > 0) {
+      await tx.insert(questions).values(questionsToInsert);
+    }
   });
 
-  if (spotRangesToInsert.length > 0) {
-    await db.insert(spotRanges).values(spotRangesToInsert);
-  }
-
-  await db.execute(sql`TRUNCATE TABLE ${questions} CASCADE;`);
-
-  const questionsToInsert: Array<QuestionInsert> = formattedHappenings.flatMap((h) => {
-    return (h.questions ?? []).map((q) => {
-      return {
-        id: q.id,
-        happeningId: h._id,
-        title: q.title,
-        required: q.required,
-        isSensitive: q.isSensitive,
-        type: q.type,
-        options: (q.options ?? []).map((o) => ({ id: o, value: o })),
-      };
-    });
-  });
-
-  if (questionsToInsert.length > 0) {
-    await db.insert(questions).values(questionsToInsert);
-  }
-
-  revalidatePath("/");
+  revalidateTag("happening-params");
+  revalidateTag("home-happenings");
+  revalidateTag("happenings");
 
   return NextResponse.json({
     message: "OK",
