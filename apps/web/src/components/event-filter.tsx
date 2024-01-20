@@ -117,8 +117,6 @@ export function EventFilterSidebar({
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const inputRef = useRef(false);
-
   const filterSet =
     params.has("order") ||
     params.has("search") ||
@@ -141,17 +139,15 @@ export function EventFilterSidebar({
     const searchParams = new URLSearchParams(params);
     search ? searchParams.set("search", search) : searchParams.delete("search");
     router.push(`${pathname}?${searchParams}`, { scroll: false });
-    inputRef.current = false;
   }, 400);
 
   /**
    * This useEffect sets the search input to the value in the URL when the user navigates back, etc.
    */
+  const paramSearch = params.get("search") ?? "";
   useEffect(() => {
-    if (!inputRef.current) {
-      setSearchInput(params.get("search") ?? "");
-    }
-  }, [params]);
+    setSearchInput(paramSearch);
+  }, [paramSearch]);
 
   function updateFilter(element: string) {
     const searchParams = new URLSearchParams(params);
@@ -189,7 +185,6 @@ export function EventFilterSidebar({
             <Input
               value={searchInput}
               onChange={(e) => {
-                inputRef.current = true;
                 setSearchInput(e.target.value);
                 debouncedSearch(e.target.value);
               }}
