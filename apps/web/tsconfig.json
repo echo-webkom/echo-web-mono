@@ -21,7 +21,6 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts",
-    "src/data/registrations",
   ],
   "exclude": ["node_modules"],
 }
