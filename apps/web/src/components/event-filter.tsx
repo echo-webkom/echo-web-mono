@@ -279,7 +279,7 @@ export function EventFilterSidebar({
             })}
             onClick={() => resetFilter()}
           >
-            Nullstill alle filtere
+            Nullstill alle filtre
           </Label>
         </SidebarItemContent>
       </SidebarItem>
