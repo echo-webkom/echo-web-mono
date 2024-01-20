@@ -5,25 +5,6 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./cache-keys";
 
-export async function getRegistrationsByHappeningId(happeningId: string) {
-  return cache(
-    async () => {
-      return await db.query.registrations
-        .findMany({
-          where: (registration) => eq(registration.happeningId, happeningId),
-          with: {
-            user: true,
-          },
-        })
-        .catch(() => []);
-    },
-    [cacheKeyFactory.registrations(happeningId)],
-    {
-      tags: [cacheKeyFactory.registrations(happeningId)],
-    },
-  )();
-}
-
 export async function getSpotRangeByHappeningId(happeningId: string) {
   return cache(
     async () => {
