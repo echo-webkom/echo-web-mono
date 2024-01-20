@@ -134,20 +134,6 @@ async function HappeningPreview({
     ? `/bedpres/${happening.slug}`
     : `/arrangement/${happening.slug}`;
 
-  /* const spotRanges = await db.query.spotRanges
-    .findMany({
-      where: (spotRange) => eq(spotRange.happeningId, happening._id),
-    })
-    .catch(() => []);
-  const registrations = await db.query.registrations
-    .findMany({
-      where: (registration) => eq(registration.happeningId, happening._id),
-      with: {
-        user: true,
-      },
-    })
-    .catch(() => []); */
-
   const registrations = await getRegistrationsByHappeningId(happening._id);
   const spotRange = await getSpotRangeByHappeningId(happening._id);
 
