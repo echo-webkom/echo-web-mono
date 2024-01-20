@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
 import { useDebouncedCallback } from "use-debounce";
