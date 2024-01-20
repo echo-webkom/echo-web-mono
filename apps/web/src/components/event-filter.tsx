@@ -119,7 +119,14 @@ export function EventFilterSidebar({
 
   const inputRef = useRef(false);
 
-  const filterSet = params.toString() !== "";
+  const filterSet =
+    params.has("order") ||
+    params.has("search") ||
+    params.has("open") ||
+    params.has("past") ||
+    params.has("thisWeek") ||
+    params.has("nextWeek") ||
+    params.has("later");
 
   const { thisWeek, nextWeek, later, open } = {
     thisWeek: params.get("thisWeek") === "false" ? false : true,
@@ -160,6 +167,13 @@ export function EventFilterSidebar({
         break;
     }
 
+    router.push(`${pathname}?${searchParams}`, { scroll: false });
+  }
+
+  function resetFilter() {
+    const searchParams = new URLSearchParams();
+    const type = params.get("type");
+    if (type === "bedpres" || type === "event") searchParams.set("type", type);
     router.push(`${pathname}?${searchParams}`, { scroll: false });
   }
 
@@ -263,7 +277,7 @@ export function EventFilterSidebar({
             className={cn("hoved:text-primary-hover cursor-pointer text-base text-primary", {
               invisible: !filterSet,
             })}
-            onClick={() => router.push(`${pathname}`, { scroll: false })}
+            onClick={() => resetFilter()}
           >
             Nullstill alle
           </Label>
