@@ -89,9 +89,9 @@ export function EventFilter() {
         </div>
       </div>
       <div className="flex items-center justify-end pb-2 pt-4">
-        <span className="mr-2">
+        <span>
           <ArrowDownNarrowWide
-            className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
+            className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
               "rotate-180 transform": asc,
             })}
             onClick={() => updateFilter("order")}
