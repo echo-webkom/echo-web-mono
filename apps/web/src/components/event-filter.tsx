@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
 import { useDebounce } from "use-debounce";
 
-import { type SearchParams } from "@/app/(default)/for-studenter/arrangementer/page";
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
@@ -13,53 +12,43 @@ import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export function EventFilter({ params }: { params: SearchParams }) {
+export function EventFilter() {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useSearchParams();
 
-  const [eventParams, setEventParams] = useState({
-    type: params.type === "event" || params.type === "bedpres" ? params.type : "all",
-    past: params.past === "true" ? true : false,
-  });
+  const filter = {
+    type:
+      params.get("type") === "event" || params.get("type") === "bedpres"
+        ? params.get("type")
+        : "all",
+    past: params.get("past") === "true" ? true : false,
+    showAsc: params.get("order") === "ASC" ? true : false,
+  };
 
-  const [searchInput, setSearchInput] = useState(params.search ?? "");
-  const [isAsc, setIsAsc] = useState(params.order === "ASC" ? true : false);
+  function updateFilter(element: string) {
+    const searchParams = new URLSearchParams(params.toString());
 
-  const [search] = useDebounce(searchInput, 300);
-
-  useEffect(() => {
-    const newURL = new URLSearchParams(params);
-
-    if (eventParams.type === "event" || eventParams.type === "bedpres") {
-      newURL.set("type", eventParams.type);
-    } else {
-      newURL.delete("type");
+    switch (element) {
+      case "all":
+        searchParams.delete("type");
+        break;
+      case "event":
+        searchParams.set("type", "event");
+        break;
+      case "bedpres":
+        searchParams.set("type", "bedpres");
+        break;
+      case "past":
+        filter.past ? searchParams.delete("past") : searchParams.set("past", "true");
+        break;
+      case "order":
+        filter.showAsc ? searchParams.delete("order") : searchParams.set("order", "ASC");
+        break;
     }
 
-    if (eventParams.past === true) {
-      newURL.set("past", "true");
-    } else {
-      newURL.delete("past");
-    }
-
-    if (search) {
-      newURL.set("search", search);
-    } else {
-      newURL.delete("search");
-    }
-
-    if (isAsc) {
-      newURL.set("order", "ASC");
-    } else {
-      newURL.delete("order");
-    }
-
-    const route = newURL.toString();
-
-    if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`, { scroll: false });
-    }
-  }, [pathname, router, eventParams, search, isAsc, params]);
+    router.push(`${pathname}?${searchParams}`, { scroll: false });
+  }
 
   return (
     <div className="space-y-5 border-b-2 border-solid border-opacity-20 pb-3">
@@ -67,22 +56,22 @@ export function EventFilter({ params }: { params: SearchParams }) {
         <div className="flex flex-col items-center sm:flex-row sm:space-x-2">
           <Button
             className="w-60 sm:w-auto"
-            variant={eventParams.type === "all" ? "default" : "outline"}
-            onClick={() => setEventParams({ ...eventParams, type: "all" })}
+            variant={filter.type === "all" ? "default" : "outline"}
+            onClick={() => updateFilter("all")}
           >
             Alle
           </Button>
           <Button
             className="w-60 sm:w-auto"
-            variant={eventParams.type === "event" ? "default" : "outline"}
-            onClick={() => setEventParams({ ...eventParams, type: "event" })}
+            variant={filter.type === "event" ? "default" : "outline"}
+            onClick={() => updateFilter("event")}
           >
             Arrangementer
           </Button>
           <Button
             className="w-60 sm:w-auto"
-            variant={eventParams.type === "bedpres" ? "default" : "outline"}
-            onClick={() => setEventParams({ ...eventParams, type: "bedpres" })}
+            variant={filter.type === "bedpres" ? "default" : "outline"}
+            onClick={() => updateFilter("bedpres")}
           >
             Bedriftspresentasjoner
           </Button>
@@ -91,49 +80,19 @@ export function EventFilter({ params }: { params: SearchParams }) {
           <Button
             className="w-60 sm:w-auto"
             variant={"outline"}
-            onClick={() => setEventParams((prev) => ({ ...prev, past: !prev.past }))}
+            onClick={() => updateFilter("past")}
           >
-            {eventParams.past ? "Vis kommende" : "Vis tidligere"}
+            {filter.past ? "Vis kommende" : "Vis tidligere"}
           </Button>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <div className="relative flex rounded-lg border hover:border-gray-500">
-          <Input
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            type="text"
-            placeholder="Søk..."
-            className="border-none bg-transparent pr-6"
-          />
-          {searchInput !== "" && (
-            <button className="absolute inset-y-0 right-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-gray-400 hover:text-gray-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                onClick={() => {
-                  setSearchInput("");
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
         <span className="mr-2">
           <ArrowDownNarrowWide
             className={cn("h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
-              "rotate-180 transform": isAsc,
+              "rotate-180 transform": filter.showAsc,
             })}
-            onClick={() => setIsAsc(!isAsc)}
+            onClick={() => updateFilter("order")}
           />
         </span>
       </div>
@@ -142,10 +101,8 @@ export function EventFilter({ params }: { params: SearchParams }) {
 }
 
 export function EventFilterSidebar({
-  params,
   numOfEvents: { numThisWeek, numNextWeek, numLater },
 }: {
-  params: SearchParams;
   numOfEvents: {
     numThisWeek: number;
     numNextWeek: number;
@@ -154,51 +111,93 @@ export function EventFilterSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useSearchParams();
 
-  const [dateParams, setDateParams] = useState({
-    thisWeek: params.thisWeek === "false" ? false : true,
-    nextWeek: params.nextWeek === "false" ? false : true,
-    later: params.later === "false" ? false : true,
-  });
+  const inputRef = useRef(false);
 
-  const [showOpen, setShowOpen] = useState(params.open === "true" ? true : false);
+  const filter = {
+    search: params.get("search") ?? "",
+    thisWeek: params.get("thisWeek") === "false" ? false : true,
+    nextWeek: params.get("nextWeek") === "false" ? false : true,
+    later: params.get("later") === "false" ? false : true,
+    open: params.get("open") === "true" ? true : false,
+  };
+
+  const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
+  const [search] = useDebounce(searchInput, 300);
 
   useEffect(() => {
-    const newURL = new URLSearchParams(params);
-
-    if (dateParams.thisWeek === false) {
-      newURL.set("thisWeek", "false");
+    if (inputRef.current) {
+      const searchParams = new URLSearchParams(params.toString());
+      search ? searchParams.set("search", search) : searchParams.delete("search");
+      router.push(`${pathname}?${searchParams}`, { scroll: false });
+      inputRef.current = false;
     } else {
-      newURL.delete("thisWeek");
+      setSearchInput(params.get("search") ?? "");
+    }
+  }, [router, pathname, params, search]);
+
+  function updateFilter(element: string) {
+    const searchParams = new URLSearchParams(params.toString());
+
+    switch (element) {
+      case "thisWeek":
+        filter.thisWeek ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
+        break;
+      case "nextWeek":
+        filter.nextWeek ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
+        break;
+      case "later":
+        filter.later ? searchParams.set("later", "false") : searchParams.delete("later");
+        break;
+      case "open":
+        filter.open ? searchParams.delete("open") : searchParams.set("open", "true");
+        break;
     }
 
-    if (dateParams.nextWeek === false) {
-      newURL.set("nextWeek", "false");
-    } else {
-      newURL.delete("nextWeek");
-    }
-
-    if (dateParams.later === false) {
-      newURL.set("later", "false");
-    } else {
-      newURL.delete("later");
-    }
-
-    if (showOpen === true) {
-      newURL.set("open", "true");
-    } else {
-      newURL.delete("open");
-    }
-
-    const route = newURL.toString();
-
-    if (route !== new URLSearchParams(params).toString()) {
-      router.push(`${pathname}?${route}`, { scroll: false });
-    }
-  }, [pathname, router, dateParams, showOpen, params]);
+    router.push(`${pathname}?${searchParams}`, { scroll: false });
+  }
 
   return (
     <Sidebar className="mb-5 mt-5 space-y-3">
+      <SidebarItem>
+        <SidebarItemContent>
+          <div className="relative flex rounded-lg border hover:border-gray-500">
+            <Input
+              value={searchInput}
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+                inputRef.current = true;
+              }}
+              type="text"
+              placeholder="Søk..."
+              className="border-none bg-transparent pr-6"
+            />
+            {searchInput !== "" && (
+              <button className="absolute inset-y-0 right-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-gray-400 hover:text-gray-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={() => {
+                    setSearchInput("");
+                    inputRef.current = true;
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+        </SidebarItemContent>
+      </SidebarItem>
       <SidebarItem>
         <SidebarItemTitle className="mb-2">Tidspunkt:</SidebarItemTitle>
 
@@ -206,13 +205,8 @@ export function EventFilterSidebar({
           <Checkbox
             className="hover:bg-blue-100"
             id="thisWeek"
-            checked={dateParams.thisWeek}
-            onCheckedChange={() => {
-              setDateParams({
-                ...dateParams,
-                thisWeek: !dateParams.thisWeek,
-              });
-            }}
+            checked={filter.thisWeek}
+            onCheckedChange={() => updateFilter("thisWeek")}
           />
           <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-sm">
             Denne uken ({numThisWeek})
@@ -223,13 +217,8 @@ export function EventFilterSidebar({
           <Checkbox
             className="hover:bg-blue-100"
             id="nextWeek"
-            checked={dateParams.nextWeek}
-            onCheckedChange={() => {
-              setDateParams({
-                ...dateParams,
-                nextWeek: !dateParams.nextWeek,
-              });
-            }}
+            checked={filter.nextWeek}
+            onCheckedChange={() => updateFilter("nextWeek")}
           />
           <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-sm">
             Neste uke ({numNextWeek})
@@ -240,13 +229,8 @@ export function EventFilterSidebar({
           <Checkbox
             className="hover:bg-blue-100"
             id="later"
-            checked={dateParams.later}
-            onCheckedChange={() => {
-              setDateParams({
-                ...dateParams,
-                later: !dateParams.later,
-              });
-            }}
+            checked={filter.later}
+            onCheckedChange={() => updateFilter("later")}
           />
           <Label htmlFor="later" className="ml-2 cursor-pointer text-sm">
             Senere ({numLater})
@@ -260,13 +244,11 @@ export function EventFilterSidebar({
           <Checkbox
             className="hover:bg-blue-100"
             id="showOpen"
-            checked={showOpen}
-            onCheckedChange={() => {
-              setShowOpen(!showOpen);
-            }}
+            checked={filter.open}
+            onCheckedChange={() => updateFilter("open")}
           />
           <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-sm">
-            Åpne for påmelding
+            Åpen for påmelding
           </Label>
         </SidebarItemContent>
       </SidebarItem>
