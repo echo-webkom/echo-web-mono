@@ -98,9 +98,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container>
-      <div>
-        <EventFilter />
-      </div>
+      <EventFilter />
       <div className="flex flex-col md:flex-row">
         <div className="w-full pr-16 md:max-w-[250px]">
           <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
