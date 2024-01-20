@@ -1,15 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
-import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
-import { db } from "@echo-webkom/db";
 import type { Registration } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
+import { getRegistrationsByHappeningId, getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
@@ -41,7 +40,7 @@ export async function Content() {
           {events.map((event) => {
             return (
               <li key={event._id}>
-                <TempPreview happening={event} />
+                <HappeningPreview happening={event} />
               </li>
             );
           })}
@@ -63,7 +62,7 @@ export async function Content() {
           {bedpresses.map((bedpres) => {
             return (
               <li key={bedpres._id}>
-                <TempPreview happening={bedpres} />
+                <HappeningPreview happening={bedpres} />
               </li>
             );
           })}
@@ -126,7 +125,7 @@ const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; m
   };
 };
 
-async function TempPreview({
+async function HappeningPreview({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
@@ -135,7 +134,7 @@ async function TempPreview({
     ? `/bedpres/${happening.slug}`
     : `/arrangement/${happening.slug}`;
 
-  const spotRanges = await db.query.spotRanges
+  /* const spotRanges = await db.query.spotRanges
     .findMany({
       where: (spotRange) => eq(spotRange.happeningId, happening._id),
     })
@@ -147,9 +146,12 @@ async function TempPreview({
         user: true,
       },
     })
-    .catch(() => []);
-  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRanges ?? [], registrations);
+    .catch(() => []); */
 
+  const registrations = await getRegistrationsByHappeningId(happening._id);
+  const spotRange = await getSpotRangeByHappeningId(happening._id);
+
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRange ?? [], registrations);
   return (
     <Link href={href}>
       <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
