@@ -33,37 +33,26 @@ export type SearchParams = {
   later?: string;
 };
 
-// Sanitizes the query params before fetching data
-function generateQuery(params: SearchParams) {
-  const query: FilteredHappeningQuery = {
+/**
+ * Sanitizes the SearchParams before fetching data
+ */
+function createFilteredHappeningQuery(params: SearchParams | undefined) {
+  if (!params) params = { type: "all" };
+
+  return {
     search: params.search ?? undefined,
     type: (params.type as "event" | "bedpres") ?? "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
-    dateFilter: getDateInterval(params),
+    dateFilter: getDateIntervals(params),
   };
-
-  return query;
 }
 
-function validateParams(params: SearchParams | undefined) {
-  if (!params) return { type: "all" };
-
-  const validParams: SearchParams = {
-    type: (params.type as "event" | "bedpres") ?? undefined,
-    order: params.order === "ASC" ? "ASC" : undefined,
-    search: params.search ?? undefined,
-    thisWeek: params.thisWeek === "false" ? "false" : undefined,
-    nextWeek: params.nextWeek === "false" ? "false" : undefined,
-    later: params.later === "false" ? "false" : undefined,
-    open: params.open === "true" ? "true" : undefined,
-    past: params.past === "true" ? "true" : undefined,
-  };
-
-  return validParams;
-}
-
-function getDateInterval(params: SearchParams) {
+/**
+ * This function creates an array of DateIntervals.
+ * Will be useful in the future to allow the user to enter custom dates.
+ */
+function getDateIntervals(params: SearchParams) {
   const currentDate = new Date();
 
   const past = params.past === "true" ? true : false;
@@ -94,9 +83,7 @@ function getDateInterval(params: SearchParams) {
 }
 
 export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
-  const validParams = validateParams(searchParams);
-
-  const query = generateQuery(validParams);
+  const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
   const { numThisWeek, numNextWeek, numLater, happenings } = await fetchFilteredHappening(query);
 
   if (!happenings)
@@ -107,7 +94,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
       </Callout>
     );
 
-  if (validParams.order === "ASC") happenings.reverse();
+  if (searchParams?.order === "ASC") happenings.reverse();
 
   return (
     <Container>
