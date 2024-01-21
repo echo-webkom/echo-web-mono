@@ -38,7 +38,7 @@
     "@tanstack/react-table": "8.11.6",
     "@types/remove-markdown": "0.3.4",
     "@upstash/ratelimit": "1.0.0",
-    "@vercel/analytics": "1.1.1",
+    "@vercel/analytics": "1.1.2",
     "@vercel/kv": "1.0.1",
     "@vercel/speed-insights": "1.0.4",
     "calendar-link": "2.6.0",
