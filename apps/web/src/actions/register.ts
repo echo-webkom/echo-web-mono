@@ -15,6 +15,7 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
+import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { doesArrayIntersect } from "@/lib/array";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 
@@ -233,6 +234,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         isolationLevel: "read committed",
       },
     );
+
+    revalidateRegistrations(id, user.id);
 
     if (!registration) {
       throw new Error("Failed to update registration");

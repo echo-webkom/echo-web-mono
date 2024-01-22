@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -36,7 +35,6 @@ type RegisterButtonProps = {
 export function RegisterButton({ id, questions }: RegisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registrationFormSchema>>({
@@ -65,8 +63,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
       title: message,
       variant: success ? "success" : "warning",
     });
-
-    router.refresh();
   });
 
   const handleOneClickRegister = async () => {
@@ -80,8 +76,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
     });
 
     setIsLoading(false);
-
-    router.refresh();
   };
 
   if (questions.length === 0) {

@@ -14,6 +14,8 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { doesArrayIntersect } from "@/lib/array";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
@@ -41,19 +43,8 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       },
     })
     .catch(() => null);
-  const spotRanges = await db.query.spotRanges
-    .findMany({
-      where: (spotRange) => eq(spotRange.happeningId, event._id),
-    })
-    .catch(() => []);
-  const registrations = await db.query.registrations
-    .findMany({
-      where: (registration) => eq(registration.happeningId, event._id),
-      with: {
-        user: true,
-      },
-    })
-    .catch(() => []);
+  const spotRanges = await getSpotRangeByHappeningId(event._id);
+  const registrations = await getRegistrationsByHappeningId(event._id);
 
   const isRegistered = registrations.some(
     (registration) =>
