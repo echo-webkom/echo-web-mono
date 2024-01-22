@@ -8,7 +8,7 @@
     "lint": "SKIP_ENV_VALIDATION=1 next lint",
     "start": "pnpm run with-env next start",
     "clean": "rm -rf .next .turbo node_modules",
-    "test:unit": "vitest",
+    "test:unit": "TZ=UTC-1 vitest",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
     "typecheck": "tsc --noEmit"
