@@ -16,11 +16,11 @@ import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { doesArrayIntersect } from "@/lib/array";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
+import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 
 type EventSidebarProps = {
@@ -79,7 +79,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
   const canEarlyRegister = Boolean(
     user &&
       happening &&
-      doesArrayIntersect(
+      doesIntersect(
         happening.registrationGroups ?? [],
         user.memberships.map((membership) => membership.group.id),
       ),

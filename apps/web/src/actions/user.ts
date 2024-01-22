@@ -7,7 +7,7 @@ import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/user";
+import { isWebkom } from "@/lib/memberships";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
