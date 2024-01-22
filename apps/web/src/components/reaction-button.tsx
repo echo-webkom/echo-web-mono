@@ -4,7 +4,18 @@ import React, { useState } from "react";
 
 import { Button } from "./ui/button";
 
-export default function ReactionButton({ emoji }: { emoji: string }) {
+export default function ReactionButtons() {
+  return (
+    <div className="flex gap-2">
+      <ReactionButton emoji="👍" />
+      <ReactionButton emoji="👎" />
+      <ReactionButton emoji="👏" />
+      <ReactionButton emoji="🤔" />
+    </div>
+  );
+}
+
+function ReactionButton({ emoji }: { emoji: string }) {
   const [isClicked, setIsClicked] = useState(false);
   const [count, setCount] = useState(0);
 

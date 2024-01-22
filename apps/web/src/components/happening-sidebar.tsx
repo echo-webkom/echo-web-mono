@@ -22,7 +22,7 @@ import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import ReactionButton from "./reaction-button";
+import ReactionButtons from "./reaction-button";
 
 type EventSidebarProps = {
   event: Happening;
@@ -305,10 +305,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
 
       {user && (
         <SidebarItem className="flex gap-2 lg:justify-between">
-          <ReactionButton emoji="👍" />
-          <ReactionButton emoji="🚀" />
-          <ReactionButton emoji="✨" />
-          <ReactionButton emoji="🍻" />
+          <ReactionButtons />
         </SidebarItem>
       )}
 

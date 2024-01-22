@@ -1,5 +1,5 @@
 {
-  "id": "56cced97-9b85-434d-933f-92e3561de962",
+  "id": "e66eb925-ea3b-41c2-872a-48399a6a3ba0",
   "prevId": "73a1a849-bd80-4d93-993e-1f6910ab791e",
   "version": "5",
   "dialect": "pg",
@@ -890,120 +890,6 @@
       },
       "uniqueConstraints": {}
     },
-    "shopping_list_item": {
-      "name": "shopping_list_item",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "shopping_list_item_user_id_user_id_fk": {
-          "name": "shopping_list_item_user_id_user_id_fk",
-          "tableFrom": "shopping_list_item",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "users_to_shopping_list_items": {
-      "name": "users_to_shopping_list_items",
-      "schema": "",
-      "columns": {
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "item_id": {
-          "name": "item_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "users_to_shopping_list_items_user_id_user_id_fk": {
-          "name": "users_to_shopping_list_items_user_id_user_id_fk",
-          "tableFrom": "users_to_shopping_list_items",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "users_to_shopping_list_items_item_id_shopping_list_item_id_fk": {
-          "name": "users_to_shopping_list_items_item_id_shopping_list_item_id_fk",
-          "tableFrom": "users_to_shopping_list_items",
-          "tableTo": "shopping_list_item",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "users_to_shopping_list_items_user_id_item_id_pk": {
-          "name": "users_to_shopping_list_items_user_id_item_id_pk",
-          "columns": [
-            "user_id",
-            "item_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
     "whitelist": {
       "name": "whitelist",
       "schema": "",
@@ -1034,6 +920,62 @@
           "name": "whitelist_email_pk",
           "columns": [
             "email"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "reaction": {
+      "name": "reaction",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reaction_id": {
+          "name": "reaction_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reaction_user_id_user_id_fk": {
+          "name": "reaction_user_id_user_id_fk",
+          "tableFrom": "reaction",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reaction_id_pk": {
+          "name": "reaction_id_pk",
+          "columns": [
+            "id"
           ]
         }
       },
