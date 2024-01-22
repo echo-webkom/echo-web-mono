@@ -11,7 +11,7 @@ export async function hyggkomLikeSubmit(payload: string) {
   if (!user) {
     return {
       success: false,
-      message: "Du er ikke logget inn",
+      message: "Du er ikke logget inn.",
     };
   }
 
@@ -20,10 +20,16 @@ export async function hyggkomLikeSubmit(payload: string) {
             {userId: user.id,
             itemId: payload},
         ]);
-        return true;
+        return {
+          success: true,
+          message: "Forslaget ble liket."
+        };
       } catch {
           await db.delete(usersToShoppingListItems)
           .where(and (eq (usersToShoppingListItems.itemId, payload), eq (usersToShoppingListItems.userId, user.id)));
           }
-          return false;
+          return {
+            success: true,
+            message: "Din like er blitt fjernet."
+          };
       }

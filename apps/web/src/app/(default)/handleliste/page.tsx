@@ -5,9 +5,13 @@ import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
 import { getColor } from "@/actions/get_color_like_button";
+import { getAuth } from "@echo-webkom/auth";
 
 
 export default async function HyggkomHandleliste() {
+
+  const user = await getAuth();
+
   const items = await db
   .select({
     id: shoppingListItems.id,
@@ -29,7 +33,7 @@ export default async function HyggkomHandleliste() {
   return (
     <Container className="max-w-5xl">
       <h1 className="text-4xl bold py-3">Hyggkoms handleliste</h1>
-      <HyggkomShoppingList items={itemsLiked} />
+      <HyggkomShoppingList items={itemsLiked} user={user}/>
       <HyggkomShoppingForm />
     </Container>
   );
