@@ -107,7 +107,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
               <FormLabel htmlFor="degree">Studieretning</FormLabel>
               <FormControl>
                 <Select id="degree" {...field}>
-                  <option hidden>Velg studieretning</option>
+                  <option hidden>Velg studieretning </option>
                   {degrees.map((degree) => (
                     <option key={degree.id} value={degree.id}>
                       {degree.name}

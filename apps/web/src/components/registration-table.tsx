@@ -44,6 +44,29 @@ export function RegistrationTable({
   const [groupFilter, setGroupFilter] = useState("");
   const [showIndex, setShowIndex] = useState(false);
 
+  // const mockRegistrations : Array<RegistrationWithUser> = [
+  //   {
+  //     // Remove the 'id' property from the object literal
+  //     // id: "1",
+  //     happeningId: "1",
+  //     status: "registered",
+  //     unregisterReason: "",
+  //     createdAt: new Date(), // Add the 'createdAt' property
+  //     user: {
+  //       memberships: [],
+  //       id: "1",
+  //       name: "Ola Nordmann",
+  //       email: "ola@jaja.no",
+  //       emailVerified: null,
+  //       image: null,
+  //       alternativeEmail: null,
+  //       degreeId: null,
+  //       year: null,
+  //       type: "student",
+  //     }
+  //   },
+  // ]
+
   const filteredRegistrations = registrations.filter((registration) => {
     const matchesSearchTerm =
       (registration.user.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -164,7 +187,7 @@ export function RegistrationTable({
 
         <div className="overflow-x-auto">
           <table className="w-full table-auto text-left text-sm text-gray-500">
-            <thead className="bg-gray-200 text-xs uppercase">
+            <thead className="bg-table-header-background text-table-header-foreground text-xs uppercase">
               <tr>
                 {showIndex && (
                   <th scope="col" className="px-6 py-4 text-left">
@@ -227,8 +250,8 @@ const RegistrationRow = ({
   return (
     <tr
       key={registration.user.id}
-      className={cn("border-b", {
-        "bg-white": index % 2 === 0,
+      className={cn("border-b bg-table-background text-table-foreground", {
+        "bg-table-background-alt": index % 2 === 0,
       })}
     >
       {showIndex && <td className="px-6 py-4">{index + 1}</td>}
