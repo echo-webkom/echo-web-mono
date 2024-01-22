@@ -1,21 +1,21 @@
-import { Registration, RegistrationInsert } from "@echo-webkom/db/schemas";
+import { type RegistrationInsert, registrations } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db";
 import { revalidateRegistrations } from "./revalidate";
 
-export async function createRegistration(registrations: Omit<RegistrationInsert, "createdAt">) {
+export async function createRegistration(newRegistrations: Omit<RegistrationInsert, "createdAt">) {
   const [insertedRegistration] = await db
-    .insert(Registration)
+    .insert(registrations)
     .values({
-      ...registrations,
+      ...newRegistrations,
       createdAt: new Date(),
     })
-    .returning({ id: Registration });
+    .returning({ userId: registrations.userId, happeningId: registrations.happeningId});
 
   if (!insertedRegistration) {
     throw new Error("Registration failed");
   }
 
-  revalidateRegistrations(registrations.happeningId);
+  revalidateRegistrations(newRegistrations.happeningId, newRegistrations.userId);
 
   return insertedRegistration;
 }

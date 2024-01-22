@@ -27,4 +27,5 @@ function createPool() {
 
 export const db = drizzle(pool, {
   schema,
+  logger: true
 });

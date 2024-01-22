@@ -1,5 +1,6 @@
 export const cacheKeyFactory = {
-  registrations: (id: string) => `registration-${id}`,
+  registrationsHappening: (id: string) => `registration-happening-${id}`,
+  registrationsUser: (id: string) => `registration-user-${id}`,
 };
 
 
