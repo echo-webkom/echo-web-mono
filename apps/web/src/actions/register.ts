@@ -15,9 +15,9 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
+import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { doesArrayIntersect } from "@/lib/array";
 import { registrationFormSchema } from "@/lib/schemas/registration";
-import { revalidateRegistrations } from "@/data/registrations/revalidate";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   /**
