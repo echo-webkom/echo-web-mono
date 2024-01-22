@@ -1,3 +1,3 @@
 export const cacheKeyFactory = {
-  happeningSpotrange: (happeningId: string) => `spotrange-happening-${id}`,
+  happeningSpotrange: (happeningId: string) => `spotrange-happening-${happeningId}`,
 };

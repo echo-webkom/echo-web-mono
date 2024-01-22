@@ -14,9 +14,9 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
         })
         .catch(() => []);
     },
-    [cacheKeyFactory.spots],
+    [cacheKeyFactory.happeningSpotrange(happeningId)],
     {
-      tags: [cacheKeyFactory.spots],
+      tags: [cacheKeyFactory.happeningSpotrange(happeningId)],
     },
   )();
 }
