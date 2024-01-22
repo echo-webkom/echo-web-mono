@@ -6,6 +6,8 @@ import { Text } from "@/components/typography/text";
 import WhitelistButton from "@/components/whitelist-button";
 import { shortDateNoTime } from "@/utils/date";
 
+export const dynamic = "force-dynamic";
+
 export default async function WhitelistPage() {
   const whitelisted = await db.query.whitelist.findMany();
 

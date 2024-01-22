@@ -1,31 +1,18 @@
 import Link from "next/link";
 
-import { getAuthSession } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await getAuthSession();
+  const session = await auth();
 
   return (
     <>
       <Container className="relative pb-40" layout="full">
-        {/* New website announcment */}
-        <div className="mx-auto mb-10 flex w-fit flex-row items-center gap-5 text-center">
-          <span className="text-3xl">🎊</span>
-          <div className="flex flex-col gap-1">
-            <p className="text-2xl font-bold">Vi har fått ny nettside!</p>
-            <p>
-              <Link className="underline hover:no-underline" href="/tilbakemelding">
-                Gjerne gi oss tilbakemeldinger på den nye nettsiden her.
-              </Link>
-            </p>
-          </div>
-          <span className="text-3xl">🎊</span>
-        </div>
-        <div className="mx-auto w-full max-w-screen-xl">
+        <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>
               <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>

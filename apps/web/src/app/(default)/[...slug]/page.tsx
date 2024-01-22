@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchStaticInfoBySlug, fetchStaticInfoPaths } from "@/sanity/static-info";
+import { fetchStaticInfoBySlug } from "@/sanity/static-info";
 
 export const revalidate = 86400; // 24 hours
 export const dynamicParams = false;
@@ -15,8 +15,8 @@ type Props = {
   };
 };
 
-const getData = cache(async (slugs: Props["params"]["slug"]) => {
-  const [pageType, slug] = slugs ?? [];
+const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
+  const [pageType, slug] = slugs;
 
   if (typeof pageType !== "string" || typeof slug !== "string") {
     return notFound();
@@ -30,10 +30,6 @@ const getData = cache(async (slugs: Props["params"]["slug"]) => {
 
   return page;
 });
-
-export async function generateStaticParams() {
-  return await fetchStaticInfoPaths();
-}
 
 export async function generateMetadata({ params }: Props) {
   const page = await getData(params.slug);

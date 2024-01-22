@@ -3,7 +3,9 @@ import { getServerSession as _getServerSession } from "next-auth/next";
 
 import { db } from "@echo-webkom/db";
 
-import { authOptions } from "./auth-options";
+import { createAuthOptions } from "./auth-options";
+
+const authOptions = createAuthOptions();
 
 /**
  *
@@ -40,7 +42,7 @@ const getUserById = db.query.users
  *
  * @returns user of currently signed in user
  */
-export async function getAuth() {
+export async function auth() {
   const session = await getAuthSession();
 
   if (!session) {

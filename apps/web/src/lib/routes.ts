@@ -1,34 +1,193 @@
+import { type IconType } from "react-icons";
+import {
+  LuAtom,
+  LuBriefcase,
+  LuBuilding2,
+  LuCalendarDays,
+  LuCircleDollarSign,
+  LuGraduationCap,
+  LuHeart,
+  LuHeartHandshake,
+  LuMailOpen,
+  LuMegaphone,
+  LuPresentation,
+  LuScale,
+  LuScrollText,
+  LuStickyNote,
+  LuUsers,
+  LuWallet,
+} from "react-icons/lu";
+
+import { mailTo } from "@/utils/prefixes";
 import { RouteGroup } from "./route-builder";
 
-const forStudentsRoutes = new RouteGroup("/for-studenter", { label: "For studenter" })
-  .link("/arrangementer", { label: "Arrangementer" })
-  .link("/jobber", { label: "Stillingsannonser" })
-  .link("/innlegg", { label: "Innlegg" })
-  .link("/grupper/hovedstyre", { label: "Hovedstyre" })
-  .link("/grupper/undergrupper", { label: "Undergrupper" })
-  .link("/grupper/underorganisasjoner", { label: "Underorganisasjoner" })
-  .link("/grupper/interessegrupper", { label: "Interessegrupper" })
-  .link("/grupper/idrettslag", { label: "Idrettslag" })
-  .link("/motereferater", { label: "Møtereferater" })
-  .link("/masterinfo", { label: "Masterinfo" })
-  .link("/okonomisk-stotte", { label: "Økonomisk støtte" })
-  .link("/anonyme-tilbakemeldinger", { label: "Tilbakemeldinger" })
-  .link("/utlegg", { label: "Utlegg" })
-  .link("/si-ifra", { label: "Si ifra" })
-  .build();
-
-const forCompaniesRoutes = new RouteGroup("/for-bedrifter", { label: "For bedrifter" })
-  .link("/bedriftspresentasjon", { label: "Bedriftspresentasjon" })
-  .link("/stillingsutlysninger", { label: "Stillingsutlysninger" })
-  .build();
-
-const aboutRoutes = new RouteGroup("/om", { label: "Om echo" })
-  .link("/echo", { label: "Hvem er vi" })
-  .link("/instituttradet", { label: "Instituttrådet" })
-  .link("/vedtekter", { label: "Vedtekter" })
-  .link("/bekk", { label: "Bekk" })
-  .link("/brosjyre", { label: "Brosjyre" })
-  .build();
+export const headerRoutes: Array<
+  | {
+      label: string;
+      href: string;
+    }
+  | {
+      label: string;
+      links: Array<{
+        label: string;
+        href: string;
+        description: string;
+        icon: IconType;
+      }>;
+    }
+> = [
+  {
+    label: "Hjem",
+    href: "/",
+  },
+  {
+    label: "For studenter",
+    links: [
+      {
+        label: "Arrangementer",
+        href: "/for-studenter/arrangementer",
+        description: "Oversikt over kommende og tidligere arrangementer",
+        icon: LuCalendarDays,
+      },
+      {
+        label: "Jobber",
+        href: "/for-studenter/jobber",
+        description: "Se hvilke jobber som er tilgjengelig for studenter",
+        icon: LuCircleDollarSign,
+      },
+      {
+        label: "Innlegg",
+        href: "/for-studenter/innlegg",
+        description: "Nyheter og oppdateringer fra echo",
+        icon: LuMailOpen,
+      },
+      {
+        label: "Hovedstyre",
+        href: "/for-studenter/grupper/hovedstyre",
+        description: "Oversikt over hovedstyret",
+        icon: LuUsers,
+      },
+      {
+        label: "Undergrupper",
+        href: "/for-studenter/grupper/undergrupper",
+        description: "Oversikt over undergrupper",
+        icon: LuUsers,
+      },
+      {
+        label: "Underorganisasjoner",
+        href: "/for-studenter/grupper/underorganisasjoner",
+        description: "Oversikt over underorganisasjoner",
+        icon: LuUsers,
+      },
+      {
+        label: "Interessegrupper",
+        href: "/for-studenter/grupper/interessegrupper",
+        description: "Oversikt over interessegrupper",
+        icon: LuUsers,
+      },
+      {
+        label: "Idrettslag",
+        href: "/for-studenter/grupper/idrettslag",
+        description: "Oversikt over idrettslag",
+        icon: LuUsers,
+      },
+      {
+        label: "Møtereferater",
+        href: "/for-studenter/motereferater",
+        description: "Referater fra møter og generalforsamlinger i echo",
+        icon: LuScrollText,
+      },
+      {
+        label: "Masterinfo",
+        href: "/for-studenter/masterinfo",
+        description: "Informasjon til deg som tar master",
+        icon: LuGraduationCap,
+      },
+      {
+        label: "Økonomisk støtte",
+        href: "/for-studenter/okonomisk-stotte",
+        description: "Økonmisk støtte for arrangementer og aktiviteter",
+        icon: LuCircleDollarSign,
+      },
+      {
+        label: "Anonyme tilbakemeldinger",
+        href: "/for-studenter/anonyme-tilbakemeldinger",
+        description: "Send anonyme tilbakemeldinger",
+        icon: LuMegaphone,
+      },
+      {
+        label: "Utlegg",
+        href: "/for-studenter/utlegg",
+        description: "Sende inn faktura og utlegg",
+        icon: LuWallet,
+      },
+      {
+        label: "Si ifra",
+        href: "/for-studenter/si-ifra",
+        description: "Opplevd noe kjipt? Si ifra!",
+        icon: LuHeart,
+      },
+    ],
+  },
+  {
+    label: "For bedrifter",
+    links: [
+      {
+        label: "Bedriftspresentasjon",
+        href: "/for-bedrifter/bedriftspresentasjon",
+        description: "Ønsker du å presentere bedriften din?",
+        icon: LuPresentation,
+      },
+      {
+        label: "Stillingsannonser",
+        href: "/for-bedrifter/stillingsutlysninger",
+        description: "Informasjon om stillingsutlysninger på våre nettsider",
+        icon: LuBriefcase,
+      },
+    ],
+  },
+  {
+    label: "Om echo",
+    links: [
+      {
+        label: "Om oss",
+        href: "/om/echo",
+        description: "Om echo",
+        icon: LuAtom,
+      },
+      {
+        label: "Instituttrådet",
+        href: "/om/instituttradet",
+        description: "Om instituttrådet",
+        icon: LuBuilding2,
+      },
+      {
+        label: "Vedtekter",
+        href: "/om/vedtekter",
+        description: "Vedtekter",
+        icon: LuScale,
+      },
+      {
+        label: "Bekk",
+        href: "/om/bekk",
+        description: "Om Bekk, vår hovedsponsor",
+        icon: LuHeartHandshake,
+      },
+      {
+        label: "Brosjyre",
+        href: "/om/brosjyre",
+        description: "Brosjyre med informasjon om echo",
+        icon: LuStickyNote,
+      },
+      {
+        label: "Programstyrene",
+        href: "/om/programstyrene",
+        description: "Oversikt over programstyrene",
+        icon: LuUsers,
+      },
+    ],
+  },
+];
 
 const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
   .link("/", { label: "Dashboard" })
@@ -37,7 +196,7 @@ const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
   .build();
 
 const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
-  .link("mailto:echo@uib.no", {
+  .link(mailTo("echo@uib.no"), {
     label: "echo@uib.no",
     isExternal: true,
   })
@@ -70,6 +229,5 @@ const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   })
   .build();
 
-export const headerRoutes = [forStudentsRoutes, forCompaniesRoutes, aboutRoutes];
 export const adminRoutes = [sidebarRoutes];
 export const footerRoutes = [contactUsRoutes, followUsRoutes];

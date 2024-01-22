@@ -127,7 +127,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
               <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <p>{JSON.stringify(form.watch(), null, 2)}</p>
               {questions.map((question, index) => (
                 <FormField
                   key={question.id}

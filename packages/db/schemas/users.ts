@@ -28,7 +28,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.degreeId],
     references: [degrees.id],
   }),
-  groupLeader: many(groups),
   memberships: many(usersToGroups),
   strikes: many(strikes),
   bannedFromStrike: one(strikes, {

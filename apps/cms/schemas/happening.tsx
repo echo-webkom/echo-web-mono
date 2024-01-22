@@ -21,8 +21,9 @@ export default defineType({
       type: "happeningType",
     },
     prepare: ({ title, type }) => {
-      const typeTitle = HAPPENING_TYPES.find((happeningType) => happeningType.value === type)
-        ?.title;
+      const typeTitle = HAPPENING_TYPES.find(
+        (happeningType) => happeningType.value === type,
+      )?.title;
       return {
         title: `${title}`,
         subtitle: typeTitle,
@@ -71,7 +72,7 @@ export default defineType({
       name: "organizers",
       title: "Arrangør",
       description:
-        "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden. (Funker ikke enda)",
+        "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden.",
       type: "array",
       of: [
         {
@@ -135,8 +136,7 @@ export default defineType({
     defineField({
       name: "registrationGroups",
       title: "Undergrupper",
-      description:
-        "Hvilke undergrupper som kan melde seg på med påmeldingsdato for undergrupper. Hvis ikke satt, vil alle undergrupper kunne melde seg på.",
+      description: "Hvilke undergrupper som kan melde seg på med påmeldingsdato for undergrupper.",
       type: "array",
       of: [
         {

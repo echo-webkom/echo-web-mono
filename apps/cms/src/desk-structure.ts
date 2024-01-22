@@ -1,7 +1,7 @@
 import { CogIcon } from "@sanity/icons";
 import { type StructureBuilder } from "sanity/desk";
 
-const hiddenDocuments = ["siteSettings", "media.tag"];
+const hiddenDocuments = ["settings", "media.tag"];
 
 export const deskStructure = (S: StructureBuilder) =>
   S.list()

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import {
   happeningTypeToPath,
   happeningTypeToString,
@@ -13,7 +13,7 @@ import { Heading } from "@/components/typography/heading";
 import { getUserRegistrations } from "@/lib/queries/user";
 
 export default async function UserHappenings() {
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");

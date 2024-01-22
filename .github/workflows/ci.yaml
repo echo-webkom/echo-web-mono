@@ -5,8 +5,9 @@ on:
     types: [opened, synchronize]
 
 env:
+  ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
-  NEXT_PUBLIC_SANITY_DATASET: "develop"
+  NEXT_PUBLIC_SANITY_DATASET: "testing"
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
@@ -59,7 +60,7 @@ jobs:
         run: pnpm test:e2e
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report

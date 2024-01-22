@@ -14,7 +14,7 @@
     "db:generate": "pnpm with-env drizzle-kit generate:pg",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
     "db:seed": "pnpm with-env tsx ./drizzle/seed.ts",
-    "db:check": "pnpm with-env tsx ./drizzle/check.ts",
+    "db:check": "pnpm with-env drizzle-kit check:pg && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "dev": "pnpm with-env drizzle-kit studio",
@@ -22,7 +22,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "0.29.1",
+    "drizzle-orm": "0.29.3",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.0.4",
     "next-auth": "4.24.5",
@@ -30,18 +30,21 @@
     "postgres": "3.4.3"
   },
   "devDependencies": {
-    "@types/node": "18.19.3",
+    "@types/node": "18.19.8",
     "@types/pg": "8.10.9",
     "dotenv-cli": "7.3.0",
-    "drizzle-kit": "0.20.6",
+    "drizzle-kit": "0.20.13",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.6.2",
+    "tsx": "4.7.0",
     "typescript": "5.3.3"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
       "webkom/base"
+    ],
+    "ignorePatterns": [
+      "scripts"
     ]
   }
 }

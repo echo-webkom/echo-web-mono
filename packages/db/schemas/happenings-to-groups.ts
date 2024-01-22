@@ -9,10 +9,14 @@ export const happeningsToGroups = pgTable(
   {
     happeningId: varchar("happening_id", { length: 255 })
       .notNull()
-      .references(() => happenings.id),
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
     groupId: varchar("group_id", { length: 255 })
       .notNull()
-      .references(() => groups.id),
+      .references(() => groups.id, {
+        onDelete: "cascade",
+      }),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.happeningId, table.groupId] }),

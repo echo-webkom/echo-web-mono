@@ -3,10 +3,13 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
+import { DeregistrationNotificationEmail } from "@echo-webkom/email";
+import { emailClient } from "@echo-webkom/email/client";
 
+import { getContactsBySlug } from "@/sanity/utils/contacts";
 import { automaticAddStrike, type StrikeType } from "./strikes";
 
 const deregisterPayloadSchema = z.object({
@@ -15,7 +18,7 @@ const deregisterPayloadSchema = z.object({
 
 export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return {
@@ -69,6 +72,20 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         user.id,
         user.bannedFromStrike,
         strikeType,
+      );
+    }
+
+    const contacts = await getContactsBySlug(exisitingRegistration.happening.slug);
+
+    if (contacts.length > 0) {
+      await emailClient.sendEmail(
+        contacts.map((contact) => contact.email),
+        `${user.name ?? "Ukjent"} har meldt seg av ${exisitingRegistration.happening.title}`,
+        DeregistrationNotificationEmail({
+          happeningTitle: exisitingRegistration.happening.title,
+          name: user.name ?? "Ukjent",
+          reason: data.reason,
+        }),
       );
     }
 

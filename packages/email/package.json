@@ -4,7 +4,8 @@
   "private": true,
   "main": "./index.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./client": "./client.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -12,20 +13,20 @@
     "lint": "eslint",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
-    "broken:dev": "pnpm with-env email dev --port 3003",
+    "preview": "pnpm with-env email preview ./emails",
     "export": "pnpm with-env email export",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@react-email/components": "0.0.12",
+    "jsx-email": "1.8.0",
     "react": "18.2.0",
-    "react-email": "1.10.0"
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@types/node": "18.19.3",
-    "@types/react": "18.2.45",
+    "@types/node": "18.19.8",
+    "@types/react": "18.2.48",
     "dotenv-cli": "7.3.0",
-    "eslint": "8.55.0",
+    "eslint": "8.56.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.3.3"
   },

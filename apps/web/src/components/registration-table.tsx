@@ -14,6 +14,7 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
+import { mailTo } from "@/utils/prefixes";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -235,7 +236,7 @@ const RegistrationRow = ({
         {registration.user.name}
       </th>
       <td className="px-6 py-4">
-        <Link className="hover:underline" href={"mailto:" + email}>
+        <Link className="hover:underline" href={mailTo(email)}>
           {email}
         </Link>
       </td>

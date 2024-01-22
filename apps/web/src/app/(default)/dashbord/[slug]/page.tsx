@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
@@ -37,7 +37,7 @@ export default async function EventDashboard({ params }: Props) {
     return notFound();
   }
 
-  const user = await getAuth();
+  const user = await auth();
 
   const isHost = user ? _isHost(user, happening) : false;
 

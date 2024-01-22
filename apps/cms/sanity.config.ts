@@ -19,7 +19,7 @@ const defaultConfig = {
     markdownSchema(),
   ],
   schema: { types: schemaTypes },
-  projectId: "nnumy1ga",
+  projectId: "pgq2pd26",
 };
 
 const prodConfig = {
@@ -56,6 +56,7 @@ const testConfig = {
 };
 
 const getConfigs = () => {
+  // @ts-expect-error Something with Vite
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (import.meta.env.DEV) {
     return [prodConfig, devConfig, testConfig];

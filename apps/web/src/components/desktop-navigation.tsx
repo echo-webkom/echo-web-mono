@@ -1,16 +1,24 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState, type FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "framer-motion";
+import { type IconBaseProps } from "react-icons";
+import { RxChevronDown as ChevronDown } from "react-icons/rx";
 
+import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
 type NavigationContextType = {
-  activeDropdown: React.ReactNode | null;
-  setActiveDropdown: React.Dispatch<React.SetStateAction<React.ReactNode | null>>;
+  activeDropdown: { id: string; children: React.ReactNode } | null;
+  setActiveDropdown: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      children: React.ReactNode;
+    } | null>
+  >;
 };
 
 const NavigationContext = createContext<NavigationContextType | null>(null);
@@ -25,28 +33,43 @@ const useNavigation = () => {
   return context;
 };
 
-const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
-  const [activeDropdown, setActiveDropdown] = useState<React.ReactNode | null>(null);
+export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
+  const [activeDropdown, setActiveDropdown] = useState<{
+    id: string;
+    children: React.ReactNode;
+  } | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(() => {
+    setActiveDropdown(null);
+  }, [navRef]);
 
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
-      <nav className="mt-auto hidden px-6 py-2 md:block">{children}</nav>
+      <div ref={navRef}>{children}</div>
     </NavigationContext.Provider>
   );
 };
 
 const NavigationList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="flex items-center">{children}</ul>;
+  return <ul className="hidden items-center px-6 pt-2 md:flex">{children}</ul>;
 };
 
 const NavigationItem = ({ label, children }: { label: string; children: React.ReactNode }) => {
   const pathname = usePathname();
   const { activeDropdown, setActiveDropdown } = useNavigation();
 
-  const isActive = activeDropdown === children;
+  const isActive = activeDropdown?.id === label;
 
   const handleClick = () => {
-    setActiveDropdown(isActive ? null : children);
+    setActiveDropdown(
+      isActive
+        ? null
+        : {
+            id: label,
+            children,
+          },
+    );
   };
 
   useEffect(() => {
@@ -56,12 +79,12 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+        className="flex h-10 flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={handleClick}
       >
         <span>{label}</span>
         <span>
-          <ChevronDownIcon
+          <ChevronDown
             className={cn("h-4 w-4 transition duration-200 ease-in-out", {
               "rotate-180 transform": isActive,
             })}
@@ -74,49 +97,115 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
 
 const NavigationLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
   return (
-    <Link href={to} className="p-2 text-gray-600 hover:text-gray-900 hover:underline">
-      {children}
-    </Link>
+    <li>
+      <Link
+        href={to}
+        className="h-10 rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+      >
+        {children}
+      </Link>
+    </li>
   );
 };
 
 const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
-  return <div className="mx-auto grid max-w-4xl grid-cols-2 gap-2">{children}</div>;
+  return (
+    <ul className="mx-auto hidden max-w-6xl grid-cols-2 gap-2 px-4 py-2 md:grid lg:grid-cols-3">
+      {children}
+    </ul>
+  );
 };
 
-const NavigationViewport = () => {
+export const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
-  if (!activeDropdown) {
-    return null;
-  }
+  const [contentHeight, setContentHeight] = useState(0);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!activeDropdown?.children) {
+      setContentHeight(0);
+      return;
+    }
+
+    setContentHeight(ref.current?.clientHeight ?? 0);
+  }, [activeDropdown]);
 
   return (
-    <div className="absolute left-0 z-20 w-full border-b bg-background p-4 shadow-lg">
-      {activeDropdown}
-    </div>
+    <AnimatePresence>
+      {activeDropdown && (
+        <motion.div
+          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background"
+          initial={{
+            height: 0,
+          }}
+          animate={{
+            height: contentHeight,
+          }}
+          exit={{
+            height: 0,
+          }}
+          transition={{
+            duration: 0.3,
+          }}
+        >
+          <div ref={ref}>{activeDropdown.children}</div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
 export function DesktopNavigation() {
   return (
-    <NavigationRoot>
-      <NavigationList>
-        <NavigationLink to="/">Hjem</NavigationLink>
-        {headerRoutes.map((route) => (
+    <NavigationList>
+      {headerRoutes.map((route) => {
+        if ("href" in route) {
+          return (
+            <NavigationLink key={route.label} to={route.href}>
+              {route.label}
+            </NavigationLink>
+          );
+        }
+
+        return (
           <NavigationItem key={route.label} label={route.label}>
             <NavigationDropdown>
-              {route.sublinks.map((subroute) => (
-                <Link key={subroute.label} className="p-2 hover:bg-gray-100" href={subroute.href}>
-                  {subroute.label}
-                </Link>
+              {route.links.map((link) => (
+                <IconLink
+                  key={link.label}
+                  href={link.href}
+                  label={link.label}
+                  description={link.description}
+                  icon={link.icon}
+                />
               ))}
             </NavigationDropdown>
           </NavigationItem>
-        ))}
-      </NavigationList>
+        );
+      })}
+    </NavigationList>
+  );
+}
 
-      <NavigationViewport />
-    </NavigationRoot>
+type IconLinkProps = {
+  href: string;
+  label: string;
+  description: string;
+  icon: FC<IconBaseProps>;
+};
+
+function IconLink({ icon, ...props }: IconLinkProps) {
+  return (
+    <Link className="flex items-center rounded-lg p-4 hover:bg-muted" href={props.href}>
+      <div className="flex items-center gap-6">
+        {React.createElement(icon, { className: "h-6 w-6" })}
+        <div>
+          <p>{props.label}</p>
+          <p className="text-sm text-muted-foreground">{props.description}</p>
+        </div>
+      </div>
+    </Link>
   );
 }

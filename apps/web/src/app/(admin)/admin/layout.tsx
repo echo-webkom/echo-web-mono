@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { type Metadata } from "next/types";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 import { Footer } from "@/components/footer";
 import { SidebarLayout } from "@/components/sidebar-layout";
@@ -48,7 +48,7 @@ const adminRoutes = [
 ];
 
 export default async function AdminDashboardLayout({ children }: Props) {
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user || !isWebkom(user)) {
     return redirect("/");
