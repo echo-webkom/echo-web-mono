@@ -68,7 +68,7 @@
 
     --table-foreground: #f3f0f0;
     --table-background: #151210;
-    --table-bakcground-alt: #1f1a17;
+    --table-background-alt: #1f1a17;
     --table-header-background: #221b18;
     --table-header-foreground: #d8d8e4;
 
@@ -78,7 +78,7 @@
     --card: #171717;
     --card-foreground: #eeeeee;
 
-    --border: hsl(0, 0%, 30%);
+    --border: #4d4d4d;
     --input: #171717;
 
     --primary: #008fa3;
