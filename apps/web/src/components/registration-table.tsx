@@ -44,29 +44,6 @@ export function RegistrationTable({
   const [groupFilter, setGroupFilter] = useState("");
   const [showIndex, setShowIndex] = useState(false);
 
-  // const mockRegistrations : Array<RegistrationWithUser> = [
-  //   {
-  //     // Remove the 'id' property from the object literal
-  //     // id: "1",
-  //     happeningId: "1",
-  //     status: "registered",
-  //     unregisterReason: "",
-  //     createdAt: new Date(), // Add the 'createdAt' property
-  //     user: {
-  //       memberships: [],
-  //       id: "1",
-  //       name: "Ola Nordmann",
-  //       email: "ola@jaja.no",
-  //       emailVerified: null,
-  //       image: null,
-  //       alternativeEmail: null,
-  //       degreeId: null,
-  //       year: null,
-  //       type: "student",
-  //     }
-  //   },
-  // ]
-
   const filteredRegistrations = registrations.filter((registration) => {
     const matchesSearchTerm =
       (registration.user.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
