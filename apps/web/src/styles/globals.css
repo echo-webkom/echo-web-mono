@@ -11,10 +11,10 @@
     --muted-foreground: #64748b;
 
     --table-foreground: #010408;
-    --table-background: #f9f7f7;
-    --table-background-alt: #655f5f;
-    --table-header-background: #989b9d;
-    --table-header-foreground: #0c0f20;
+    --table-background: #e6e2e2;
+    --table-background-alt: #f1f5f9;
+    --table-header-background: #dbdde0;
+    --table-header-foreground: #16100b;
 
     --popover: #f9fafb;
     --popover-foreground: #171923;
@@ -66,11 +66,11 @@
     --muted: #181818;
     --muted-foreground: #999999;
 
-    --table-foreground: #999999;
-    --table-background: #181818;
-    --table-bakcground-alt: #424141;
-    --table-header-background: #84888b;
-    --table-header-foreground: #0d0d0e;
+    --table-foreground: #f3f0f0;
+    --table-background: #151210;
+    --table-bakcground-alt: #1f1a17;
+    --table-header-background: #221b18;
+    --table-header-foreground: #d8d8e4;
 
     --popover: #181818;
     --popover-foreground: #eeeeee;
