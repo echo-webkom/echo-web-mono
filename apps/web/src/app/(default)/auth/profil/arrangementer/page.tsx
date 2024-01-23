@@ -10,7 +10,7 @@ import {
 
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
-import { getUserRegistrations } from "@/lib/queries/user";
+import { getRegistrationsByUserId } from "@/data/registrations/queries";
 
 export default async function UserHappenings() {
   const user = await auth();
@@ -18,7 +18,7 @@ export default async function UserHappenings() {
   if (!user) {
     return redirect("/auth/logg-inn");
   }
-  const registrations = await getUserRegistrations(user.id);
+  const registrations = await getRegistrationsByUserId(user.id);
 
   return (
     <div className="max-w-2xl">

@@ -15,8 +15,9 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
-import { doesArrayIntersect } from "@/lib/array";
+import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { doesIntersect } from "@/utils/list";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
   /**
@@ -82,7 +83,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    const canEarlyRegister = doesArrayIntersect(
+    const canEarlyRegister = doesIntersect(
       happening.registrationGroups ?? [],
       user.memberships.map((membership) => membership.group.id),
     );
@@ -130,7 +131,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       })
       .then((groups) => groups.map((group) => group.groupId));
 
-    const canSkipSpotRange = doesArrayIntersect(
+    const canSkipSpotRange = doesIntersect(
       hostGroups,
       user.memberships.map((membership) => membership.group.id),
     );
@@ -233,6 +234,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         isolationLevel: "read committed",
       },
     );
+
+    revalidateRegistrations(id, user.id);
 
     if (!registration) {
       throw new Error("Failed to update registration");

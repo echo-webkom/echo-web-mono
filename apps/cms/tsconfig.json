@@ -2,5 +2,5 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.json",
   "include": [".eslintrc.cjs", "**/*.ts", "**/*.tsx", "src/", "schemas/"],
-  "exclude": ["node_modules/", "dist/", ".sanity/", "migrations/"]
+  "exclude": ["node_modules/", "dist/", ".sanity/", "migrations/"],
 }

@@ -22,7 +22,7 @@
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "6.11.1",
     "@sanity/icons": "2.8.0",
-    "@sanity/ui": "2.0.0",
+    "@sanity/ui": "2.0.1",
     "@sanity/vision": "3.25.0",
     "nanoid": "5.0.4",
     "react": "18.2.0",
@@ -38,10 +38,9 @@
     "@sanity/eslint-config-studio": "3.0.1",
     "@types/react": "18.2.48",
     "@types/styled-components": "5.1.34",
-    "dotenv": "16.3.1",
+    "dotenv": "16.3.2",
     "eslint": "8.56.0",
     "eslint-config-webkom": "workspace:*",
-    "prettier": "3.2.2",
     "typescript": "5.3.3"
   },
   "eslintConfig": {
