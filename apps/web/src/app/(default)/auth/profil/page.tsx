@@ -34,7 +34,7 @@ export default async function ProfilePage() {
   const imageURL = await echoGram.getImageByUserId(user.id);
 
   return (
-    <div className="max-w-2xl space-y-4">
+    <div className="max-w-2xl">
       <Heading level={2}>Din profil</Heading>
 
       <ProfileImage userId={user.id} imageURL={imageURL} />
