@@ -81,6 +81,7 @@ export function RegistrationTable({
     setGroupFilter("");
   };
 
+  //TODO: gjere registrerte tablen litt bredare
   return (
     <div className="overflow-x-auto rounded-lg border shadow-md">
       <div className="overflow-x-auto">
