@@ -27,6 +27,6 @@ export const jobAdsQuery = groq`
 *[_type == "job"
   && !(_id in path('drafts.**'))]
   | order(_createdAt desc) {
-  ${jobAdPartial}
+${jobAdPartial}
 }
 `;

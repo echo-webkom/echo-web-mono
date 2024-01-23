@@ -6,7 +6,7 @@ import { auth } from "@echo-webkom/auth";
 import { Footer } from "@/components/footer";
 import { SidebarLayout } from "@/components/sidebar-layout";
 import { SiteHeader } from "@/components/site-header";
-import { isWebkom } from "@/lib/user";
+import { isWebkom } from "@/lib/memberships";
 
 type Props = {
   children: React.ReactNode;

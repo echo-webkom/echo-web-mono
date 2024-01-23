@@ -1,15 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import { differenceInDays, isToday } from "date-fns";
-import { RxArrowRight as ArrowRight } from "react-icons/rx";
+import { isFuture, isToday } from "date-fns";
+import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
+
+import type { Registration } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
+import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
-import { shortDate, time } from "@/utils/date";
+import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
@@ -37,7 +41,7 @@ export async function Content() {
           {events.map((event) => {
             return (
               <li key={event._id}>
-                <TempPreview happening={event} />
+                <HappeningPreview happening={event} />
               </li>
             );
           })}
@@ -59,7 +63,7 @@ export async function Content() {
           {bedpresses.map((bedpres) => {
             return (
               <li key={bedpres._id}>
-                <TempPreview happening={bedpres} />
+                <HappeningPreview happening={bedpres} />
               </li>
             );
           })}
@@ -108,7 +112,21 @@ export async function Content() {
   );
 }
 
-function TempPreview({
+const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
+  spotRanges: Array<TSpotRange>,
+  registrations: Array<Registration>,
+) => {
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "registered",
+  ).length;
+  return {
+    maxCapacity,
+    registeredCount,
+  };
+};
+
+async function HappeningPreview({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
@@ -117,6 +135,10 @@ function TempPreview({
     ? `/bedpres/${happening.slug}`
     : `/arrangement/${happening.slug}`;
 
+  const registrations = await getRegistrationsByHappeningId(happening._id);
+  const spotRange = await getSpotRangeByHappeningId(happening._id);
+
+  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRange ?? [], registrations);
   return (
     <Link href={href}>
       <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
@@ -132,23 +154,36 @@ function TempPreview({
           </div>
         )}
 
-        <div>
-          <h1 className="line-clamp-1 text-2xl">{happening.title}</h1>
-
-          <ul className="text-muted-foreground">
-            <li>
-              <span className="font-medium">Dato:</span> <time>{shortDate(happening.date)}</time>
-            </li>
-            {differenceInDays(new Date(), happening.registrationStart) < 1 && (
-              <li>
-                <span className="font-medium">Påmelding: </span>{" "}
-                {isToday(happening.registrationStart) ? (
-                  `I dag kl ${time(happening.registrationStart)}`
+        <div className="flex w-full justify-between gap-2">
+          <div className="my-auto flex flex-col">
+            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
+              {happening.title}
+            </h1>
+            <div className=" items-center text-muted-foreground">
+              {happening.registrationStart &&
+                isFuture(new Date(happening.registrationStart)) &&
+                (isToday(new Date(happening.registrationStart)) ? (
+                  <p>{`Påmelding i dag kl ${time(happening.registrationStart)}`}</p>
                 ) : (
-                  <time>{shortDate(happening.registrationStart)}</time>
+                  <time>{`Påmelding ${shortDateNoYear(happening.registrationStart)}`}</time>
+                ))}
+            </div>
+          </div>
+
+          <ul className="sm:text-md text-md my-auto flex-none text-right">
+            <li className="flex justify-end">
+              <span className="flex-none font-medium">
+                <RxCalendar className="mx-1 h-full" />
+              </span>{" "}
+              <time>{shortDateNoTimeNoYear(happening.date)}</time>
+            </li>
+            <li>
+              <span className="tracking-wider">
+                {happening.registrationStart && (
+                  <p>{`${registeredCount}/${maxCapacity || ("Uendelig" && "∞")}`}</p>
                 )}
-              </li>
-            )}
+              </span>
+            </li>
           </ul>
         </div>
       </div>

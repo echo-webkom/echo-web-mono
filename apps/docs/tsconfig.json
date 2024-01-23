@@ -5,11 +5,11 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+    },
   },
   "mdx": {
-    "plugins": ["remark-gfm"]
+    "plugins": ["remark-gfm"],
   },
   "include": [
     "next-env.d.ts",
@@ -19,7 +19,7 @@
     "src",
     "*.cjs",
     "*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

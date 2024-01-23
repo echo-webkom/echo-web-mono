@@ -1,6 +1,6 @@
 import { type Group, type UsersToGroups } from "@echo-webkom/db/schemas";
 
-type Userable = {
+export type Userable = {
   memberships: Array<
     UsersToGroups & {
       group: Group;

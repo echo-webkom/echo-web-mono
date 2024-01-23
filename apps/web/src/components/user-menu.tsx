@@ -13,7 +13,7 @@ import {
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/user";
+import { isWebkom } from "@/lib/memberships";
 import {
   DropdownMenu,
   DropdownMenuContent,
