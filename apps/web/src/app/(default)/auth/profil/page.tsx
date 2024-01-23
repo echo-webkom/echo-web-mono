@@ -38,7 +38,7 @@ export default async function ProfilePage() {
           <Text>{user.name}</Text>
         </div>
         <div>
-          <Label>E-post:</Label>
+          <Label>E-post</Label>
           <Text>{user.email}</Text>
         </div>
 
