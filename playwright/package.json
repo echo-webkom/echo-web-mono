@@ -14,7 +14,7 @@
     "with-env": "dotenv -e ../.env --"
   },
   "devDependencies": {
-    "@playwright/test": "1.41.0",
+    "@playwright/test": "1.41.1",
     "@types/node": "18.19.8",
     "dotenv-cli": "7.3.0",
     "eslint": "8.56.0",
