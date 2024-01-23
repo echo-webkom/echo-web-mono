@@ -164,7 +164,7 @@ export function RegistrationTable({
 
         <div className="overflow-x-auto">
           <table className="w-full table-auto text-left text-sm text-gray-500">
-            <thead className="bg-table-header-background text-table-header-foreground text-xs uppercase">
+            <thead className="bg-table-header-background text-xs uppercase text-table-header-foreground">
               <tr>
                 {showIndex && (
                   <th scope="col" className="px-6 py-4 text-left">
