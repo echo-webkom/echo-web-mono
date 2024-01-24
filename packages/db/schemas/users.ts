@@ -2,9 +2,7 @@ import { relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { degrees, groups, usersToGroups, userTypeEnum } from ".";
-import { usersToShoppingListItems } from "./users_to_shopping_list_items";
-import { degrees, usersToGroups, userTypeEnum } from ".";
+import { degrees, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
 
 export const users = pgTable(
   "user",

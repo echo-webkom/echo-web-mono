@@ -73,38 +73,10 @@
       "breakpoints": true
     },
     {
-      "idx": 1,
+      "idx": 10,
       "version": "5",
-      "when": 1698751389762,
-      "tag": "0001_chubby_wild_pack",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1699464663726,
-      "tag": "0002_glamorous_the_hand",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1702484920869,
-      "tag": "0003_careless_calypso",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1702501404907,
-      "tag": "0004_majestic_carlie_cooper",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1706115127279,
-      "tag": "0005_omniscient_manta",
+      "when": 1706117755997,
+      "tag": "0010_chunky_sauron",
       "breakpoints": true
     }
   ]

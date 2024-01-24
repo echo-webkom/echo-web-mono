@@ -71,7 +71,7 @@ export function HyggkomShoppingList(payload: hyggkomShoppingListProps) {
           <li className={`grid grid-cols-5 py-2 px-2 ${index%2 === 0? "bg-white" : "bg-slate-100"} `}  key={i.item.id}>
             <p className="col-span-4">{i.item.name}</p>
             <button className={`col-span-1 border rounded-xl ${i.isLiked? "bg-red-400" : "bg-white"} hover:bg-red-200`} onClick={() => handleButtonClick(i.item.id)}>{i.item.likesCount}</button>
-            {payload.user !== null && payload.user.type == "admin"? return (<p>nfvol</p>) : undefined}
+            {/* {payload.user !== null && payload.user.type == "admin"? return (<p>nfvol</p>) : undefined} */}
           </li>)
         })}
       </ul>
