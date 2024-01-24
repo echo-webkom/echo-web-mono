@@ -78,6 +78,7 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
       open={isOpen}
       onOpenChange={(newIsOpen) => {
         if (!newIsOpen) {
+          setIsOpen(false);
           form.reset();
         }
       }}
