@@ -163,7 +163,7 @@ export function RegistrationTable({
         </div>
 
         <div>
-          <table className="w-full table-fixed text-left text-sm text-gray-500">
+          <table className="w-full text-left text-sm text-gray-500 lg:table-fixed">
             <thead className="bg-table-header-background text-xs uppercase text-table-header-foreground">
               <tr>
                 {showIndex && (
