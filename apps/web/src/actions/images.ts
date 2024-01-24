@@ -1,10 +1,12 @@
 "use server";
 
+import { PROFILE_IMAGE_FUNCTION_URL } from "@/config";
+
 export async function uploadImage(userId: string, formData: FormData) {
   try {
     const file = formData.get("image") as File;
 
-    if (file.size === 0 || file === undefined) {
+    if (file.size === 0 || typeof file.size === "undefined") {
       return {
         success: false,
         message: "Kan ikke laste opp et tomt bilde",
@@ -19,7 +21,6 @@ export async function uploadImage(userId: string, formData: FormData) {
       };
     }
 
-    // valid image types are jpg, jpeg, png, gif
     if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
       return {
         success: false,
@@ -27,14 +28,12 @@ export async function uploadImage(userId: string, formData: FormData) {
       };
     }
 
-    // http because of CORS
-    const response = await fetch("http://echo-images.azurewebsites.net/api/images", {
+    const response = await fetch(PROFILE_IMAGE_FUNCTION_URL, {
       method: "POST",
       headers: {
         "User-ID": userId,
       },
       body: formData,
-      cache: "no-store",
     });
 
     switch (response.status) {
@@ -66,13 +65,12 @@ export async function uploadImage(userId: string, formData: FormData) {
 
 export async function getImageByUserId(userId: string) {
   try {
-    const response = await fetch(
-      `https://echo-images.azurewebsites.net/api/images?userId=${userId}`,
-    );
+    const response = await fetch(`${PROFILE_IMAGE_FUNCTION_URL}?userId=${userId}`, {
+      method: "GET",
+      cache: "no-store",
+    });
 
-    return response.status === 200
-      ? `https://echo-images.azurewebsites.net/api/images?userId=${userId}`
-      : "";
+    return response.status === 200 ? `${PROFILE_IMAGE_FUNCTION_URL}?userId=${userId}` : "";
   } catch (err) {
     return "";
   }
