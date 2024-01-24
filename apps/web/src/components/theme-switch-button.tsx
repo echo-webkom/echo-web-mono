@@ -24,7 +24,7 @@ export function ModeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className={`h-8 w-8 transition-opacity ${isTransitioning ? 'opacity-20' : 'opacity-100'}`}
+      className={`h-8 w-8 transition ${isTransitioning ? 'opacity-20' : 'opacity-100'}`}
       style={{ transition: 'opacity 0.5s ease' }}
     >
       <LuMoon

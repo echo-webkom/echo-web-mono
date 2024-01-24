@@ -119,6 +119,7 @@
 
   * {
     @apply border-border;
+    transition: background-color 150ms ease-in-out;
   }
 
   body {
