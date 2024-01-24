@@ -102,6 +102,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container>
+<<<<<<< HEAD
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
       </div>
@@ -111,6 +112,14 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         </div>
         <div className="w-full space-y-2">
           <FilterStatusAndOrderBar />
+=======
+      <EventFilter />
+      <div className="flex flex-row">
+        <div className="h-full w-full pr-16 md:sticky md:top-24 md:max-w-[250px]">
+          <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
+        </div>
+        <div className="w-[calc(100%-250px)]">
+>>>>>>> 2398aecf (EchoGram class)
           <EventsView happenings={happenings} />
         </div>
       </div>

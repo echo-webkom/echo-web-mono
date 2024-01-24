@@ -11,7 +11,11 @@
   },
   "devDependencies": {
     "eslint": "8.56.0",
+<<<<<<< HEAD
     "@types/node": "18.19.10",
+=======
+    "@types/node": "18.19.8",
+>>>>>>> 2398aecf (EchoGram class)
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.3.3"
   },
