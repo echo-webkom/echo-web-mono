@@ -25,6 +25,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
+import { cn } from "@/utils/cn";
 
 type EditRegistrationButtonProps = {
   id: string;
@@ -119,54 +120,42 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
               <Label></Label>
             </div>
             <div className="grid w-full grid-cols-4 gap-1">
-              <button
-                className={`rounded-lg border px-2 py-4 text-center text-xs
-                ${
-                  selectedStatus === "registered"
-                    ? "border border-black bg-primary font-bold text-white"
-                    : "hover:bg-secondary"
-                }
-                  `}
+              <Button
+                variant={selectedStatus === "registered" ? "secondary" : "outline"}
+                className={cn("text-xs", {
+                  "border border-black": selectedStatus === "registered",
+                })}
                 onClick={() => handleStatusChange("registered")}
               >
                 Påmeldt
-              </button>
-              <button
-                className={`rounded-lg border px-2 py-4 text-center text-xs
-                  ${
-                    selectedStatus === "waiting"
-                      ? "border border-black bg-primary font-bold text-white"
-                      : "hover:bg-secondary"
-                  }
-                  `}
+              </Button>
+              <Button
+                variant={selectedStatus === "waiting" ? "secondary" : "outline"}
+                className={cn("text-xs", {
+                  "border border-black": selectedStatus === "waiting",
+                })}
                 onClick={() => handleStatusChange("waiting")}
               >
                 Venteliste
-              </button>
-              <button
-                className={`rounded-lg border px-2 py-4 text-center text-xs
-                  ${
-                    selectedStatus === "unregistered"
-                      ? "border border-black bg-primary font-bold text-white"
-                      : "hover:bg-secondary"
-                  }
-                `}
+              </Button>
+              <Button
+                variant={selectedStatus === "unregistered" ? "secondary" : "outline"}
+                className={cn("text-xs", {
+                  "border border-black": selectedStatus === "unregistered",
+                })}
                 onClick={() => handleStatusChange("unregistered")}
               >
                 Avmeldt
-              </button>
-              <button
-                className={`rounded-lg border px-2 py-4 text-center text-xs
-                  ${
-                    selectedStatus === "removed"
-                      ? "border border-black bg-primary font-bold text-white"
-                      : "hover:bg-secondary"
-                  }
-                `}
+              </Button>
+              <Button
+                variant={selectedStatus === "removed" ? "secondary" : "outline"}
+                className={cn("text-xs", {
+                  "border border-black": selectedStatus === "removed",
+                })}
                 onClick={() => handleStatusChange("removed")}
               >
                 Fjernet
-              </button>
+              </Button>
             </div>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-3">
