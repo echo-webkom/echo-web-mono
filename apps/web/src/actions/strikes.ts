@@ -2,7 +2,7 @@
 
 import { and, eq, gt, or } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { strikes, users, type StrikeInsert } from "@echo-webkom/db/schemas";
 import { strikeInfo, type StrikeInfoInsert } from "@echo-webkom/db/schemas/strike-info";
@@ -124,7 +124,7 @@ export async function manualAddStrike(
   amount: number,
   type: StrikeType,
 ) {
-  const issuer = await getAuth();
+  const issuer = await auth();
 
   if (!issuer) {
     return {
@@ -135,7 +135,7 @@ export async function manualAddStrike(
 
   const isAllowed = await db.query.usersToGroups.findFirst({
     where: (user) =>
-      eq(user.userId, userId) && or(eq(user.groupId, "bedkom"), eq(user.groupId, "webkom")),
+      eq(user.userId, issuer.id) && or(eq(user.groupId, "bedkom"), eq(user.groupId, "webkom")),
   });
 
   if (!isAllowed) {
