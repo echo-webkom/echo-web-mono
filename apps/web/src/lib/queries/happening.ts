@@ -11,3 +11,25 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
     },
   });
 }
+
+export async function atMaxCapacity(id: string) {
+  const max = await maxCapacityBySlug(id);
+  const registrations = await db.query.registrations.findMany({
+    where: (registration) => eq(registration.happeningId, id),
+    with: {
+      happening: true,
+    },
+  });
+  return registrations.length >= max;
+}
+
+export async function maxCapacityBySlug(id: string) {
+  return (
+    await db.query.spotRanges.findMany({
+      where: (spotRange) => eq(spotRange.happeningId, id),
+      with: {
+        event: true,
+      },
+    })
+  ).reduce((acc, curr) => acc + curr.spots, 0);
+}

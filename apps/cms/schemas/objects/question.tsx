@@ -1,11 +1,43 @@
 import { InfoOutlineIcon } from "@sanity/icons";
+import { nanoid } from "nanoid";
 import { defineArrayMember, defineField, defineType } from "sanity";
+
+import { IdInput } from "../../components/id-input";
 
 export default defineType({
   name: "question",
   title: "Spørsmål",
   type: "object",
   fields: [
+    defineField({
+      name: "id",
+      title: "ID",
+      type: "string",
+      components: {
+        input: IdInput,
+      },
+      initialValue: () => nanoid(),
+      validation: (Rule) =>
+        Rule.custom(async (input, context) => {
+          if (!input) {
+            return "ID er påkrevd";
+          }
+
+          const { getClient } = context;
+
+          const query =
+            "count(*[_type == 'happening' && !(_id in path('drafts.**')) && $id in additionalQuestions[].id]{_id})";
+          const params = { id: input };
+
+          const count: number = await getClient({ apiVersion: "2021-04-10" }).fetch(query, params);
+
+          if (count > 1) {
+            return "Spørsmål med denne ID-en finnes allerede i en annen hendelse";
+          }
+
+          return true;
+        }),
+    }),
     defineField({
       name: "title",
       title: "Spørsmål",
@@ -26,6 +58,7 @@ export default defineType({
       name: "type",
       title: "Spørsmålstype",
       type: "string",
+      initialValue: "text",
       options: {
         list: [
           { title: "Tekstfelt", value: "text" },
@@ -35,6 +68,17 @@ export default defineType({
         ],
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "isSensitive",
+      title: "Er dette et sensitivt spørsmål?",
+      description:
+        "Sensitive spørsmål er spørsmål om helse, allergier, osv. Disse spørsmålene vil også regelmessig bli slettet fra databasen.",
+      type: "boolean",
+      initialValue: false,
+      options: {
+        layout: "checkbox",
+      },
     }),
     defineField({
       name: "options",

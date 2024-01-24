@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
+import { RxDotsHorizontal } from "react-icons/rx";
 import { type z } from "zod";
 
 import { type Group } from "@echo-webkom/db/schemas";
@@ -38,7 +38,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { capitalize } from "@/utils/string";
 import { type AllUsers } from "./page";
@@ -93,7 +92,7 @@ export const columns: Array<
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
+              <RxDotsHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -121,7 +120,6 @@ function UserForm({ user, groups }: UserFormProps) {
     resolver: zodResolver(userFormSchema),
     defaultValues: {
       memberships: user.memberships.map((membership) => membership.group.id),
-      type: user.type,
     },
   });
 
@@ -163,28 +161,6 @@ function UserForm({ user, groups }: UserFormProps) {
           <Form {...form}>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <form onSubmit={onSubmit} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Administrator</FormLabel>
-                      <FormDescription>
-                        Skal brukeren ha tilgang til admin dashboard?
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value === "admin"}
-                        onCheckedChange={(checked) => {
-                          return checked ? field.onChange("admin") : field.onChange("user");
-                        }}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="memberships"

@@ -1,16 +1,16 @@
+import { cache } from "react";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
+import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heading } from "@/components/ui/heading";
-import {
-  fetchStudentGroupBySlug,
-  fetchStudentGroupParams,
-  studentGroupTypeName,
-} from "@/sanity/student-group";
+import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
 import { urlFor } from "@/utils/image-builder";
+import { mailTo } from "@/utils/prefixes";
 
 type Props = {
   params: {
@@ -18,9 +18,19 @@ type Props = {
   };
 };
 
-async function getData(slug: string) {
-  return await fetchStudentGroupBySlug(slug);
-}
+const getData = cache(async (slug: string) => {
+  const group = await fetchStudentGroupBySlug(slug);
+
+  if (!group) {
+    return notFound();
+  }
+
+  if (group.groupType === "hidden") {
+    return notFound();
+  }
+
+  return group;
+});
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = params;
@@ -30,12 +40,6 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: group.name,
   };
-}
-
-export async function generateStaticParams() {
-  const params = await fetchStudentGroupParams();
-
-  return params;
 }
 
 export default async function GroupPage({ params }: Props) {
@@ -56,7 +60,7 @@ export default async function GroupPage({ params }: Props) {
         <section className="flex items-center gap-4">
           {group.socials?.email && (
             <a
-              href={`mailto:${group.socials.email}`}
+              href={mailTo(group.socials.email)}
               className="flex items-center gap-2 hover:underline"
             >
               <span>
@@ -92,6 +96,12 @@ export default async function GroupPage({ params }: Props) {
         </section>
       )}
 
+      {group.image && (
+        <div className="relative overflow-hidden rounded-lg">
+          <Image width={700} height={475} src={urlFor(group.image).url()} alt={group.name} />
+        </div>
+      )}
+
       <section>
         <article>
           <Markdown content={group.description} />
@@ -104,7 +114,7 @@ export default async function GroupPage({ params }: Props) {
 
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {group.members.map((member) => {
-              const image = member.profile?.image;
+              const image = member.profile?.picture;
               const initials = member.profile?.name
                 .split(" ")
                 .map((name) => name[0])

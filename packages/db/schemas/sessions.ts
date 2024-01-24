@@ -1,16 +1,22 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
-export const sessions = pgTable("session", {
-  sessionToken: text("session_token").notNull().primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  expires: timestamp("expires", { mode: "date" }).notNull(),
-});
+export const sessions = pgTable(
+  "session",
+  {
+    sessionToken: text("session_token").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.sessionToken] }),
+  }),
+);
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {

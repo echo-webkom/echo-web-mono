@@ -1,8 +1,10 @@
-import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
-
 import "@/styles/globals.css";
 
-import { type Metadata } from "next";
+import { type Metadata, type Viewport } from "next";
+import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import NextTopLoader from "nextjs-toploader";
 
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -52,12 +54,26 @@ export const metadata = {
     shortcut: "/favicon16x16.png",
   },
   manifest: "/site.webmanifest",
-  viewport: "width=device-width, initial-scale=1.0",
-  themeColor: "#ffeabb",
   appleWebApp: {
     title: "echo",
   },
 } satisfies Metadata;
+
+export const viewport = {
+  themeColor: [
+    {
+      media: "(prefers-color-scheme: dark)",
+      color: "#151210",
+    },
+    {
+      media: "(prefers-color-scheme: light)",
+      color: "#ffeabb",
+    },
+  ],
+  width: "device-width",
+  height: "device-height",
+  initialScale: 1.0,
+} satisfies Viewport;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
@@ -72,12 +88,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
+        <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
         <Providers>
           {children}
           <Toaster />
+          {/* <CookieBanner /> */}
           <FeedbackBlob />
+          <TailwindIndicator />
         </Providers>
-        <TailwindIndicator />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

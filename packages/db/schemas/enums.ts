@@ -12,10 +12,19 @@ export const registrationStatusEnum = pgEnum("registration_status", [
   "unregistered",
   "removed",
   "waiting",
+  "pending",
 ]);
 
 export type QuestionType = (typeof questionTypeEnum)["enumValues"][number];
 export const questionTypeEnum = pgEnum("question_type", ["text", "textarea", "radio", "checkbox"]);
 
 export type UserType = (typeof userTypeEnum)["enumValues"][number];
-export const userTypeEnum = pgEnum("user_type", ["student", "company", "admin"]);
+export const userTypeEnum = pgEnum("user_type", ["student", "company", "guest", "alum"]);
+
+export type FeedbackCategory = (typeof feedbackCategoryEnum)["enumValues"][number];
+export const feedbackCategoryEnum = pgEnum("feedback_category", [
+  "bug",
+  "feature",
+  "login",
+  "other",
+]);

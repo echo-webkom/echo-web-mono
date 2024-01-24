@@ -2,28 +2,25 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import {
-  happeningTypeToPath,
-  happeningTypeToString,
-  registrationStatusToString,
-} from "@echo-webkom/lib";
 
-import { Container } from "@/components/container";
+import { Chip } from "@/components/typography/chip";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
+import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
-import { getUserRegistrations } from "@/lib/queries/user";
+import { getAllDegrees } from "@/data/degrees/queries";
 
 export default async function ProfilePage() {
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");
   }
 
-  const [registrations, degrees, memberships] = await Promise.all([
-    getUserRegistrations(user.id),
-    db.query.degrees.findMany(),
+  const [degrees, memberships] = await Promise.all([
+    getAllDegrees(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, user.id),
       with: {
@@ -33,75 +30,52 @@ export default async function ProfilePage() {
   ]);
 
   return (
-    <Container className="max-w-2xl gap-10">
-      <div className="flex flex-col gap-3">
-        <h2 className="mb-3 text-2xl font-bold">Din profil</h2>
+    <div className="max-w-2xl space-y-4">
+      <Heading level={2}>Din profil</Heading>
+
+      <div className="flex flex-col gap-4">
         <div>
-          <p className="font-semibold">Navn:</p>
-          <p>{user.name}</p>
+          <Label>Navn</Label>
+          <Text>{user.name}</Text>
         </div>
         <div>
-          <p className="font-semibold">E-post:</p>
-          <p>{user.email}</p>
+          <Label>E-post</Label>
+          <Text>{user.email}</Text>
         </div>
+
         {memberships.length > 0 && (
           <div>
-            <p className="font-semibold">Grupper:</p>
-            <p>{memberships.map((membership) => membership.group.name).join(", ")}</p>
+            <Text size="sm" className="mb-2 font-semibold">
+              Grupper:
+            </Text>
+
+            <ul className="flex flex-wrap gap-1">
+              {memberships.map(({ group }) => (
+                <li key={group.id}>
+                  <Link href={`/gruppe/${group.id}`}>
+                    <Chip
+                      key={group.id}
+                      className="bg-secondary text-secondary-foreground hover:underline"
+                    >
+                      {group.name}
+                    </Chip>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>
 
-      <div>
-        <UserForm
-          user={{
-            id: user.id,
-            degree: user.degree ?? undefined,
-            year: user.year ?? undefined,
-            alternativeEmail: user.alternativeEmail ?? undefined,
-          }}
-          degrees={degrees}
-        />
-      </div>
-
-      <div>
-        <h2 className="mb-3 text-2xl font-bold">Dine arrangementer</h2>
-        {registrations.length > 0 ? (
-          <ul className="flex flex-col divide-y">
-            {registrations.map((registration) => (
-              <li key={registration.happening.slug}>
-                <div className="py-3">
-                  <Link
-                    href={
-                      happeningTypeToPath[registration.happening.type] +
-                      "/" +
-                      registration.happening.slug
-                    }
-                    className="text-lg font-semibold hover:underline"
-                  >
-                    {registration.happening.title}
-                  </Link>
-
-                  <div className="mt-3 flex items-center gap-3">
-                    <Tag>
-                      <p>{happeningTypeToString[registration.happening.type]}</p>
-                    </Tag>
-                    <Tag>
-                      <p>{registrationStatusToString[registration.status]}</p>
-                    </Tag>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Du er ikke påmeldt noen arrangementer.</p>
-        )}
-      </div>
-    </Container>
+      <UserForm
+        user={{
+          id: user.id,
+          degree: user.degree ?? undefined,
+          year: user.year ?? undefined,
+          alternativeEmail: user.alternativeEmail ?? undefined,
+        }}
+        degrees={degrees}
+      />
+    </div>
   );
-}
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-full bg-wave px-3 py-1 text-sm font-semibold">{children}</div>;
 }

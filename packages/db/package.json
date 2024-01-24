@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "exports": {
     ".": "./index.ts",
-    "./schemas": "./schemas"
+    "./schemas": "./schemas",
+    "./utils": "./utils"
   },
   "license": "MIT",
   "scripts": {
@@ -11,35 +12,39 @@
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
     "db:generate": "pnpm with-env drizzle-kit generate:pg",
-    "db:migrate": "pnpm with-env tsx ./drizzle/migrate",
-    "db:seed": "pnpm with-env tsx ./drizzle/seed",
+    "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
+    "db:seed": "pnpm with-env tsx ./drizzle/seed.ts",
+    "db:check": "pnpm with-env drizzle-kit check:pg && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "dev": "pnpm with-env drizzle-kit studio --port 4000",
+    "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@auth/core": "^0.17.0",
-    "drizzle-orm": "^0.28.6",
-    "drizzle-zod": "^0.5.1",
-    "nanoid": "^5.0.2",
-    "postgres": "^3.4.0"
+    "drizzle-orm": "0.29.3",
+    "drizzle-zod": "0.5.1",
+    "nanoid": "5.0.4",
+    "next-auth": "4.24.5",
+    "pg": "8.11.3",
+    "postgres": "3.4.3"
   },
   "devDependencies": {
-    "@types/node": "^20.8.7",
-    "@types/pg": "^8.10.7",
+    "@types/node": "18.19.8",
+    "@types/pg": "8.10.9",
     "dotenv-cli": "7.3.0",
-    "drizzle-kit": "^0.19.13",
+    "drizzle-kit": "0.20.13",
     "eslint-config-webkom": "workspace:*",
-    "pg": "^8.11.3",
-    "tsx": "^3.14.0",
-    "typescript": "5.2.2"
+    "tsx": "4.7.0",
+    "typescript": "5.3.3"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
       "webkom/base"
+    ],
+    "ignorePatterns": [
+      "scripts"
     ]
   }
 }

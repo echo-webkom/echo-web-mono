@@ -1,42 +1,50 @@
 import { relations } from "drizzle-orm";
-import { foreignKey, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happenings, questions, registrations, users } from ".";
 
+type AnswerCol = {
+  answer: string | Array<string>;
+};
+
 export const answers = pgTable(
   "answer",
   {
-    questionId: varchar("question_id", { length: 21 }).notNull(),
-    userId: text("user_id").notNull(),
-    happeningSlug: text("happening_slug").notNull(),
-    answer: text("answer"),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
+    happeningId: varchar("happening_id", { length: 255 })
+      .notNull()
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
+    questionId: varchar("question_id", { length: 255 })
+      .notNull()
+      .references(() => questions.id, {
+        onDelete: "cascade",
+      }),
+    answer: json("answer").$type<AnswerCol>(),
   },
   (table) => ({
-    pk: primaryKey(table.questionId),
-    fk: foreignKey({
-      columns: [table.happeningSlug, table.userId],
-      foreignColumns: [registrations.happeningSlug, registrations.userId],
-    }),
+    pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
   }),
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({
+  user: one(registrations, {
+    fields: [answers.userId, answers.happeningId],
+    references: [registrations.userId, registrations.happeningId],
+  }),
+  happening: one(happenings, {
+    fields: [answers.happeningId],
+    references: [happenings.id],
+  }),
   question: one(questions, {
     fields: [answers.questionId],
     references: [questions.id],
-  }),
-  registration: one(registrations, {
-    fields: [answers.happeningSlug, answers.userId],
-    references: [registrations.happeningSlug, registrations.userId],
-  }),
-  happening: one(happenings, {
-    fields: [answers.happeningSlug],
-    references: [happenings.slug],
-  }),
-  user: one(users, {
-    fields: [answers.userId],
-    references: [users.id],
   }),
 }));
 

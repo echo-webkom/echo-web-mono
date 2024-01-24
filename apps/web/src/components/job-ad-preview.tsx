@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import nb from "date-fns/locale/nb";
+import { nb } from "date-fns/locale/nb";
 
 import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";

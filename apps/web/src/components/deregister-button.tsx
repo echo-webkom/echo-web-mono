@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -24,13 +23,12 @@ import { useToast } from "@/hooks/use-toast";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
 type DeregisterButtonProps = {
-  slug: string;
+  id: string;
 };
 
-export function DeregisterButton({ slug }: DeregisterButtonProps) {
+export function DeregisterButton({ id }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<DeregistrationForm>({
@@ -44,19 +42,17 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await deregister(slug, {
+    const { success, message } = await deregister(id, {
       reason: data.reason,
     });
 
     setIsLoading(false);
 
     toast({
-      title: "Du er nå meldt av",
-      description: "Du er nå meldt av arrangementet.",
-      variant: "success",
+      title: message,
+      variant: success ? "success" : "warning",
     });
 
-    router.refresh();
     form.reset();
     setIsOpen(false);
   });
@@ -107,6 +103,7 @@ export function DeregisterButton({ slug }: DeregisterButtonProps) {
                   render={({ field }) => (
                     <Checkbox
                       id="hasVerified"
+                      name="hasVerified"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />

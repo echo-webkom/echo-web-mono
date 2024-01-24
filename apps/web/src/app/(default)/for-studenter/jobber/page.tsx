@@ -2,7 +2,7 @@ import { type Metadata } from "next/types";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { fetchJobAds } from "@/sanity/job-ad";
 
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function JobAdsOverviewPage() {
-  const jobAds = await fetchJobAds(-1);
+  const jobAds = await fetchJobAds();
 
   return (
     <Container>

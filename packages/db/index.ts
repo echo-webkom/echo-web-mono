@@ -3,21 +3,28 @@ import postgres from "postgres";
 
 import * as schema from "./schemas";
 
-const globalForPg = globalThis as unknown as {
-  pg: ReturnType<typeof postgres> | undefined;
+const globalForPool = globalThis as unknown as {
+  pool: ReturnType<typeof postgres> | undefined;
 };
 
-let pg;
+let pool;
 
 if (process.env.NODE_ENV !== "production") {
-  if (!globalForPg.pg) {
-    globalForPg.pg = postgres(process.env.DATABASE_URL!);
+  if (!globalForPool.pool) {
+    globalForPool.pool = createPool();
   }
-  pg = globalForPg.pg;
+  pool = globalForPool.pool;
 } else {
-  pg = postgres(process.env.DATABASE_URL!);
+  pool = createPool();
 }
 
-export const db = drizzle(pg, {
+function createPool() {
+  return postgres(process.env.DATABASE_URL!, {
+    max: 40,
+  });
+}
+
+export const db = drizzle(pool, {
   schema,
+  logger: process.env.NODE_ENV !== "production",
 });

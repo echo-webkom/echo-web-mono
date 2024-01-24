@@ -1,8 +1,9 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { fetchJobAdBySlug } from "@/sanity/job-ad";
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
   };
 };
 
-async function getData(slug: Props["params"]["slug"]) {
+const getData = cache(async (slug: Props["params"]["slug"]) => {
   const jobAd = await fetchJobAdBySlug(slug);
 
   if (!jobAd) {
@@ -19,7 +20,7 @@ async function getData(slug: Props["params"]["slug"]) {
   }
 
   return jobAd;
-}
+});
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = params;
@@ -36,11 +37,8 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <article className="flex flex-col gap-10">
-        <Heading>{jobAd.title}</Heading>
-
-        <Markdown content={jobAd.body} />
-      </article>
+      <Heading className="mb-4">{jobAd.title}</Heading>
+      <Markdown content={jobAd.body} />
     </Container>
   );
 }

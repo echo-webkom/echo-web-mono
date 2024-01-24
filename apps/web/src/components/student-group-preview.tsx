@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
 import { type StudentGroup } from "@/sanity/student-group";
@@ -22,13 +22,15 @@ export function StudentGroupPreview({ group, withBorder = false }: StudentGroupP
         <h2 className="text-2xl font-bold">{group.name}</h2>
 
         {group.description && (
-          <p className="line-clamp-3 flex-1 text-slate-700">{removeMd(group.description ?? "")}</p>
+          <p className="line-clamp-3 flex-1 text-slate-700 dark:text-foreground">
+            {removeMd(group.description ?? "")}
+          </p>
         )}
 
         <p className="flex items-center gap-1">
           Les mer
           <span className="transition-all duration-150 group-hover:pl-1">
-            <ArrowRightIcon />
+            <ArrowRight />
           </span>
         </p>
       </div>

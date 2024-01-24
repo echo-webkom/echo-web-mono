@@ -1,102 +1,340 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { happenings, happeningsToGroups, questions, spotRanges } from "@echo-webkom/db/schemas";
+import {
+  happenings,
+  happeningsToGroups,
+  questions,
+  spotRanges,
+  type HappeningInsert,
+  type QuestionInsert,
+} from "@echo-webkom/db/schemas";
 
+import { revalidateSpotRange } from "@/data/spotrange/revalidate";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
-import { client } from "@/sanity/client";
-import { happeningQuery, type HappeningQueryType } from "./query";
+import { isBoard } from "@/lib/is-board";
+import { toDateOrNull } from "@/utils/date";
+import { makeListUnique } from "@/utils/list";
+import { type SanityHappening } from "./sync/query";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
-export const GET = withBasicAuth(async () => {
-  const startTime = new Date().getTime();
+/**
+ * Endpoint for syncing happenings from Sanity to the database.
+ * Gets triggered by a webhook from Sanity, on create, update and delete of a happening.
+ *
+ * Data is sent from a GROQ projection in Sanity:
+ * ```
+ * {
+ *   "operation": delta::operation(),
+ *   "documentId": _id,
+ *   "pastSlug": before().slug.current,
+ *   "data": after(){
+ *     _id,
+ *     title,
+ *     body,
+ *     "slug": slug.current,
+ *     date,
+ *     happeningType,
+ *     "registrationStartGroups": registrationStartGroups[]->slug.current,
+ *     "registrationGroups": registrationGroups[]->slug.current,
+ *     "registrationStart": registrationStart,
+ *     "registrationEnd": registrationEnd,
+ *     "groups": organizers[]->slug.current,
+ *     "spotRanges": spotRanges[] {
+ *       spots,
+ *       minYear,
+ *       maxYear
+ *     },
+ *     "questions": additionalQuestions[] {
+ *       id,
+ *       title,
+ *       required,
+ *       type,
+ *       isSensitive,
+ *       options
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export const POST = withBasicAuth(async (req) => {
+  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
+    operation: "create" | "update" | "delete";
+    documentId: string;
+    pastSlug: string | null;
+    data: SanityHappening | null; // Is null on delete
+  };
 
-  const res = await client.fetch<HappeningQueryType>(happeningQuery);
+  // eslint-disable-next-line no-console
+  console.log(operation, documentId, JSON.stringify(data));
 
-  const formattedHappenings = res.map((h) => ({
-    ...h,
-    date: new Date(h.date),
-    registrationStart: new Date(h.registrationStart),
-    registrationEnd: new Date(h.registrationEnd),
-  }));
-
-  await db
-    .insert(happenings)
-    .values(
-      formattedHappenings.map((h) => ({
-        slug: h.slug,
-        title: h.title,
-        type: h._type,
-        date: h.date,
-        registrationStart: h.registrationStart,
-        registrationEnd: h.registrationEnd,
-      })),
-    )
-    .onConflictDoUpdate({
-      target: [happenings.slug],
-      set: {
-        title: sql`excluded."title"`,
-        type: sql`excluded."type"`,
-        date: sql`excluded."date"`,
-        registrationStart: sql`excluded."registration_start"`,
-        registrationEnd: sql`excluded."registration_end"`,
-        slug: sql`excluded."slug"`,
+  if (!["create", "update", "delete"].includes(operation)) {
+    return NextResponse.json(
+      {
+        status: "error",
+        message: `Unknown action ${operation}`,
       },
+      { status: 400 },
+    );
+  }
+
+  // Revalidate happening data from Sanity
+  revalidateTag("happening-params");
+  revalidateTag("home-happenings");
+  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
+  revalidateTag("happenings");
+
+  /**
+   * If the happening is external, we don't want to do anything. Since
+   * we are not responsible for the registrations of external happenings.
+   */
+  if (data?.happeningType === "external") {
+    return NextResponse.json(
+      {
+        message: `Happening with id ${data._id} is external. Nothing done.`,
+      },
+      { status: 200 },
+    );
+  }
+
+  if (operation === "delete") {
+    /**
+     * Delete the happening. Tables with foreign keys will be deleted automatically.
+     */
+    await db.delete(happenings).where(eq(happenings.id, documentId));
+
+    return NextResponse.json(
+      {
+        status: "success",
+        message: `Deleted happening with id ${documentId}`,
+      },
+      { status: 200 },
+    );
+  }
+
+  /**
+   * If no data is provided and the operation is not delete, we can't do anything.
+   * Most likely a sanity bug.
+   */
+  if (!data) {
+    console.error("Can't update or insert happening without data");
+    console.error({
+      operation,
+      documentId,
+      data,
+    });
+    return NextResponse.json(
+      {
+        status: "error",
+        message: `No data provided`,
+      },
+      { status: 400 },
+    );
+  }
+
+  if (operation === "create") {
+    const happening = mapHappening(data);
+
+    await db.insert(happenings).values(happening);
+
+    const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
+
+    if (happeningToGroupsToInsert.length > 0) {
+      await db.insert(happeningsToGroups).values(
+        happeningToGroupsToInsert.map((groupId) => ({
+          happeningId: happening.id,
+          groupId,
+        })),
+      );
+    }
+
+    const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
+      happeningId: happening.id,
+      spots: sr.spots,
+      minYear: sr.minYear,
+      maxYear: sr.maxYear,
+    }));
+
+    if (spotRangesToInsert.length > 0) {
+      await db.insert(spotRanges).values(spotRangesToInsert);
+    }
+
+    revalidateSpotRange(happening.id);
+
+    const questionsToInsert = (data.questions ?? []).map((q) => ({
+      id: q.id,
+      happeningId: happening.id,
+      title: q.title,
+      required: q.required,
+      type: q.type,
+      options: q.options?.map((o) => ({
+        id: o,
+        value: o,
+      })),
+    })) satisfies Array<QuestionInsert>;
+
+    if (questionsToInsert.length > 0) {
+      await db.insert(questions).values(questionsToInsert);
+    }
+
+    return NextResponse.json(
+      {
+        status: "success",
+        message: `Happening with id ${data._id} inserted`,
+      },
+      { status: 200 },
+    );
+  }
+
+  if (operation === "update") {
+    const happening = mapHappening(data);
+
+    await db.update(happenings).set(happening).where(eq(happenings.id, happening.id));
+
+    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
+
+    const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
+
+    if (happeningToGroupsToInsert.length > 0) {
+      await db.insert(happeningsToGroups).values(
+        happeningToGroupsToInsert.map((groupId) => ({
+          happeningId: happening.id,
+          groupId,
+        })),
+      );
+    }
+
+    await db.delete(spotRanges).where(eq(spotRanges.happeningId, happening.id));
+
+    const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
+      happeningId: happening.id,
+      spots: sr.spots,
+      minYear: sr.minYear,
+      maxYear: sr.maxYear,
+    }));
+
+    if (spotRangesToInsert.length > 0) {
+      await db.insert(spotRanges).values(spotRangesToInsert);
+    }
+
+    revalidateSpotRange(happening.id);
+
+    const oldQuestions = await db.query.questions.findMany({
+      where: eq(questions.happeningId, happening.id),
     });
 
-  await db.execute(sql`TRUNCATE TABLE ${happeningsToGroups} CASCADE;`);
+    const incomingQuestions = (data.questions ?? []).map((q) => ({
+      id: q.id,
+      happeningId: happening.id,
+      title: q.title,
+      required: q.required,
+      type: q.type,
+      options: q.options?.map((o) => ({
+        id: o,
+        value: o,
+      })),
+    })) satisfies Array<QuestionInsert>;
 
-  await db.insert(happeningsToGroups).values(
-    formattedHappenings.flatMap((h) => {
-      return (h.groups ?? []).map((g) => ({
-        happeningSlug: h.slug,
-        groupId: h._type === "bedpres" ? "bedkom" : g,
-      }));
-    }),
+    /**
+     * Questions to delete are questions that are in the database, but not in the incoming data
+     */
+    const questionsToDelete = oldQuestions.filter(
+      (oldQuestion) => !incomingQuestions.map((q) => q.id).includes(oldQuestion.id),
+    );
+
+    /**
+     * Questions to update are questions that are in the database, and also in the incoming data
+     */
+    const questionsToUpdate = incomingQuestions.filter((newQuestion) =>
+      oldQuestions.map((q) => q.id).includes(newQuestion.id),
+    );
+
+    /**
+     * Questions to insert are questions that are not in the database, but are in the incoming data
+     */
+    const questionsToInsert = incomingQuestions.filter(
+      (newQuestion) => !questionsToUpdate.map((q) => q.id).includes(newQuestion.id),
+    );
+
+    if (questionsToDelete.length > 0) {
+      await db.delete(questions).where(
+        and(
+          eq(questions.happeningId, happening.id),
+          inArray(
+            questions.id,
+            questionsToDelete.map((q) => q.id),
+          ),
+        ),
+      );
+    }
+
+    if (questionsToInsert.length > 0) {
+      await db.insert(questions).values(questionsToInsert);
+    }
+
+    if (questionsToUpdate.length > 0) {
+      await Promise.all(
+        questionsToUpdate.map((question) =>
+          db.update(questions).set(question).where(eq(questions.id, question.id)),
+        ),
+      );
+    }
+
+    return NextResponse.json(
+      {
+        status: "success",
+        message: `Happening with id ${data._id} updated`,
+      },
+      { status: 200 },
+    );
+  }
+
+  return NextResponse.json(
+    {
+      status: "error",
+      message: `Unknown action ${operation}`,
+    },
+    { status: 400 },
   );
-
-  await db.execute(sql`TRUNCATE TABLE ${spotRanges} CASCADE;`);
-
-  const spotRangesToInsert = formattedHappenings.flatMap((h) => {
-    return (h.spotRanges ?? []).map((sr) => {
-      return {
-        happeningSlug: h.slug,
-        spots: sr.spots,
-        minYear: sr.minYear,
-        maxYear: sr.maxYear,
-      };
-    });
-  });
-
-  if (spotRangesToInsert.length > 0) {
-    await db.insert(spotRanges).values(spotRangesToInsert);
-  }
-
-  await db.execute(sql`TRUNCATE TABLE question CASCADE;`);
-
-  const questionsToInsert = formattedHappenings.flatMap((h) => {
-    return (h.questions ?? []).map((q) => {
-      return {
-        happeningSlug: h.slug,
-        title: q.title,
-        required: q.required,
-        type: q.type,
-        options: (q.options ?? []).map((o) => ({ id: o, value: o })),
-      };
-    });
-  });
-
-  if (questionsToInsert.length > 0) {
-    await db.insert(questions).values(questionsToInsert);
-  }
-
-  const endTime = new Date().getTime();
-  const totalSeconds = (endTime - startTime) / 1000;
-
-  return NextResponse.json({
-    message: "OK",
-    timeInSeconds: totalSeconds,
-  });
 });
+
+/**
+ * Maps a SanityHappening to a HappeningInsert with the correct types
+ *
+ * @param document the document to map
+ * @returns an insertable happening
+ */
+function mapHappening(document: SanityHappening) {
+  return {
+    id: document._id,
+    date: new Date(document.date),
+    registrationStartGroups: toDateOrNull(document.registrationStartGroups),
+    registrationStart: toDateOrNull(document.registrationStart),
+    registrationEnd: toDateOrNull(document.registrationEnd),
+    registrationGroups:
+      document.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
+    slug: document.slug,
+    title: document.title,
+    type: document.happeningType,
+  } satisfies HappeningInsert;
+}
+
+/**
+ * Maps an array of group ids to an array of valid group ids.
+ * Removes invalid groups and maps board to hovedstyre
+ *
+ * @param groups groups to map
+ * @returns insertable happeningToGroups
+ */
+async function mapHappeningToGroups(groups: Array<string>) {
+  const validGroups = await db.query.groups.findMany();
+
+  return makeListUnique(
+    groups
+      .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+      .map((groupId) => (isBoard(groupId) ? "hovedstyre" : groupId)),
+  );
+}

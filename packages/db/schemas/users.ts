@@ -1,9 +1,10 @@
-import { relations, sql } from "drizzle-orm";
-import { check, integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, groups, usersToGroups, userTypeEnum } from ".";
 import { usersToShoppingListItems } from "./users_to_shopping_list_items";
+import { degrees, usersToGroups, userTypeEnum } from ".";
 
 export const users = pgTable(
   "user",
@@ -14,13 +15,12 @@ export const users = pgTable(
     emailVerified: timestamp("email_verified", { mode: "date" }),
     image: text("image"),
     alternativeEmail: varchar("alternative_email", { length: 255 }),
-    degreeId: varchar("degree_id", { length: 21 }).references(() => degrees.id),
+    degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
   },
   (table) => ({
-    pk: primaryKey(table.id),
-    yearCheck: check("year_check", sql`${table.year} >= 1 AND ${table.year} <= 5`),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 
@@ -29,7 +29,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.degreeId],
     references: [degrees.id],
   }),
-  groupLeader: many(groups),
   memberships: many(usersToGroups),
   likes: many(usersToShoppingListItems)
 }));

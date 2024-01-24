@@ -1,7 +1,9 @@
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminGroupsPage() {
   const groups = await db.query.groups.findMany({
@@ -15,11 +17,6 @@ export default async function AdminGroupsPage() {
           },
         },
       },
-      leaderUser: {
-        columns: {
-          name: true,
-        },
-      },
     },
   });
 
@@ -27,7 +24,6 @@ export default async function AdminGroupsPage() {
     return {
       "id/slug": group.id,
       name: group.name,
-      leader: group.leaderUser?.name ?? "Ingen",
       members: group.members.map((member) => member.user.name),
     };
   });
@@ -52,7 +48,7 @@ export default async function AdminGroupsPage() {
         </p>
       </div>
 
-      <code className="rounded-md bg-slate-100 p-2 font-mono">
+      <code className="rounded-md bg-card p-2 font-mono text-card-foreground">
         <pre>{JSON.stringify(g, null, 2)}</pre>
       </code>
     </Container>

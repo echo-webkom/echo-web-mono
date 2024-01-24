@@ -1,11 +1,14 @@
+import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
+import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
-import { Heading } from "@/components/ui/heading";
-import { fetchBedpresBySlug } from "@/sanity/bedpres";
-import { BedpresSidebar } from "./bedpres-sidebar";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
+import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { shortDate } from "@/utils/date";
 
 type Props = {
   params: {
@@ -13,15 +16,15 @@ type Props = {
   };
 };
 
-async function getData(slug: string) {
-  const bedpres = await fetchBedpresBySlug(slug);
+const getData = cache(async (slug: string) => {
+  const bedpres = await fetchHappeningBySlug(slug);
 
   if (!bedpres) {
     return notFound();
   }
 
   return bedpres;
-}
+});
 
 export const generateMetadata = async ({ params }: Props) => {
   const bedpres = await getData(params.slug);
@@ -37,11 +40,12 @@ export default async function BedpresPage({ params }: Props) {
   return (
     <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <BedpresSidebar slug={params.slug} bedpres={bedpres} />
+        <HappeningSidebar event={bedpres} />
 
         {/* Content */}
         <article className="w-full">
           <Heading>{bedpres.title}</Heading>
+
           {bedpres.body ? (
             <Markdown content={bedpres.body} />
           ) : (
@@ -59,9 +63,13 @@ export default async function BedpresPage({ params }: Props) {
         </article>
       </div>
 
-      <div className="flex flex-col gap-3 pt-10 text-center text-sm text-muted-foreground lg:mt-auto">
-        <p>Publisert: {new Date(bedpres._createdAt).toLocaleDateString()}</p>
-        <p>Sist oppdatert: {new Date(bedpres._updatedAt).toLocaleDateString()}</p>
+      <div className="pt-10 text-center text-muted-foreground lg:mt-auto">
+        <Text size="sm" className="p-0">
+          Publisert: {shortDate(bedpres._createdAt)}
+        </Text>
+        <Text size="sm" className="p-0">
+          Sist oppdatert: {shortDate(bedpres._updatedAt)}
+        </Text>
       </div>
     </Container>
   );

@@ -4,14 +4,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
-    "allowJs": true,
     "plugins": [
       {
-        "name": "next"
-      }
-    ]
+        "name": "next",
+      },
+    ],
   },
   "include": [
     "next-env.d.ts",
@@ -20,7 +19,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

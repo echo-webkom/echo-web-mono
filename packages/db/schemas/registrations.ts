@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, registrationStatusEnum, users } from ".";
@@ -9,24 +9,27 @@ export const registrations = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
-    happeningSlug: text("happening_slug")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
+    happeningId: text("happening_id")
       .notNull()
-      .references(() => happenings.slug),
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.happeningSlug),
-    statusIdx: index("status_idx").on(table.status),
+    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
   }),
 );
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({
   happening: one(happenings, {
-    fields: [registrations.happeningSlug],
-    references: [happenings.slug],
+    fields: [registrations.happeningId],
+    references: [happenings.id],
   }),
   user: one(users, {
     fields: [registrations.userId],

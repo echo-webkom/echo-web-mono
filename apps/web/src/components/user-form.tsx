@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
@@ -11,17 +11,23 @@ import { type Degree } from "@echo-webkom/db/schemas";
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Select } from "./ui/select";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
   degree: z.string().optional(),
-  year: z.number().min(1).max(5).optional(),
+  year: z.coerce.number().min(1).max(5).optional(),
 });
-
-type FormData = z.infer<typeof userSchema>;
 
 type UserFormProps = {
   user: {
@@ -38,7 +44,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
 
   const { toast } = useToast();
   const router = useRouter();
-  const methods = useForm<FormData>({
+  const form = useForm<z.infer<typeof userSchema>>({
     defaultValues: {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
@@ -47,7 +53,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
     resolver: zodResolver(userSchema),
   });
 
-  const onSubmit = methods.handleSubmit(
+  const onSubmit = form.handleSubmit(
     async (data) => {
       setIsLoading(true);
 
@@ -75,65 +81,70 @@ export function UserForm({ user, degrees }: UserFormProps) {
   );
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="alternativeEmail">Alternativ e-post</Label>
-        <Input placeholder="Din e-post" type="email" {...methods.register("alternativeEmail")} />
-      </div>
+    <Form {...form}>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={onSubmit} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="alternativeEmail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="alternativeEmail">Alternativ e-post</FormLabel>
+              <FormControl>
+                <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
+              </FormControl>
+              <FormDescription>Om du ønsker å få e-post tilsendt en annen mail.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="degree">Studieretning</Label>
-        <Controller
+        <FormField
+          control={form.control}
           name="degree"
-          control={methods.control}
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Velg studieretning" />
-              </SelectTrigger>
-              <SelectContent>
-                {degrees.map((degree) => (
-                  <SelectItem key={degree.id} value={degree.id}>
-                    {degree.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FormItem>
+              <FormLabel htmlFor="degree">Studieretning</FormLabel>
+              <FormControl>
+                <Select id="degree" {...field}>
+                  <option hidden>Velg studieretning</option>
+                  {degrees.map((degree) => (
+                    <option key={degree.id} value={degree.id}>
+                      {degree.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-      </div>
 
-      <div className="flex flex-col gap-1">
-        <Label htmlFor="year">Årstrinn</Label>
-        <Controller
+        <FormField
+          control={form.control}
           name="year"
-          control={methods.control}
           render={({ field }) => (
-            <Select
-              value={field.value?.toString()}
-              onValueChange={(e) => field.onChange(Number(e))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Velg årstrinn" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1. trinn</SelectItem>
-                <SelectItem value="2">2. trinn</SelectItem>
-                <SelectItem value="3">3. trinn</SelectItem>
-                <SelectItem value="4">4. trinn</SelectItem>
-                <SelectItem value="5">5. trinn</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormItem>
+              <FormLabel htmlFor="year">Årstrinn</FormLabel>
+              <FormControl>
+                <Select id="year" {...field}>
+                  <option hidden>Velg årstrinn</option>
+                  {Array.from({ length: 5 }, (_, i) => i + 1).map((year) => (
+                    <option key={year} value={year}>
+                      {year}. trinn
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-      </div>
 
-      <div>
-        <Button disabled={!methods.formState.isDirty || isLoading} type="submit">
-          {isLoading ? "Lagrer..." : "Lagre"}
-        </Button>
-      </div>
-    </form>
+        <div>
+          <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
+        </div>
+      </form>
+    </Form>
   );
 }

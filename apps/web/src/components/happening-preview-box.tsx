@@ -1,47 +1,48 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import nb from "date-fns/locale/nb";
+import { nb } from "date-fns/locale/nb";
+import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
-import { type Bedpres } from "@/sanity/bedpres";
-import { type Event } from "@/sanity/event";
+import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
-import { type Happening } from "./event-filter";
-
-type HappeningPreviewBoxProps =
-  | {
-      type: "EVENT";
-      happenings: Array<Event>;
-    }
-  | {
-      type: "BEDPRES";
-      happenings: Array<Bedpres>;
-    };
-
-type HappeningType = HappeningPreviewBoxProps["type"];
 
 const happeningTypeToString: Record<HappeningType, string> = {
-  EVENT: "arrangementer",
-  BEDPRES: "bedriftspresentasjoner",
+  external: "arrangementer",
+  event: "arrangementer",
+  bedpres: "bedriftspresentasjoner",
+};
+
+const typeToLink: Record<HappeningType, string> = {
+  external: "/for-studenter/arrangementer?type=external",
+  event: "/for-studenter/arrangementer?type=arrangement",
+  bedpres: "/for-studenter/arrangementer?type=bedpres",
+};
+
+type HappeningPreviewBoxProps = {
+  type: HappeningType;
+  happenings: Array<Happening>;
 };
 
 export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxProps) {
   return (
     <div>
-      <h2 className="text-center text-xl font-semibold md:text-3xl">
-        {capitalize(happeningTypeToString[type])}
-      </h2>
-
+      <Link href={typeToLink[type]}>
+        <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
+          {capitalize(happeningTypeToString[type])}
+          <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+        </h2>
+      </Link>
       <hr className="my-3" />
 
       {happenings.length > 0 ? (
         <ul className="flex h-full flex-col divide-y">
           {happenings.map((happening) => (
             <li key={happening._id} className="py-3">
-              {type === "EVENT" && <EventPreview event={happening as Event} />}
-              {type === "BEDPRES" && <BedpresPreview bedpres={happening as Bedpres} />}
+              {type === "event" && <EventPreview event={happening} />}
+              {type === "bedpres" && <BedpresPreview bedpres={happening} />}
             </li>
           ))}
         </ul>
@@ -56,13 +57,13 @@ export function HappeningPreviewBox({ type, happenings }: HappeningPreviewBoxPro
 }
 
 type EventPreviewProps = {
-  event: Event;
+  event: Happening;
 };
 
 export function EventPreview({ event }: EventPreviewProps) {
   return (
     <Link href={`/arrangement/${event.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
+      <div className={cn("flex h-full items-center gap-5 rounded-md p-5", "hover:bg-muted")}>
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-lg font-semibold md:text-2xl">{event.title}</h3>
           <ul className="text-sm md:text-base">
@@ -79,9 +80,7 @@ export function EventPreview({ event }: EventPreviewProps) {
             <li>
               <span className="font-semibold">Påmelding:</span>{" "}
               {event.registrationStart
-                ? format(new Date(event.registrationStart), "d. MMMM yyyy", {
-                    locale: nb,
-                  })
+                ? format(new Date(event.registrationStart), "d. MMMM yyyy")
                 : "Påmelding åpner snart"}
             </li>
           </ul>
@@ -92,20 +91,22 @@ export function EventPreview({ event }: EventPreviewProps) {
 }
 
 type BedpresPreviewProps = {
-  bedpres: Bedpres;
+  bedpres: Happening;
 };
 
 export function BedpresPreview({ bedpres }: BedpresPreviewProps) {
   return (
     <Link href={`/bedpres/${bedpres.slug}`}>
-      <div className={cn("flex h-full items-center gap-5 p-5", "hover:bg-muted")}>
+      <div className={cn("flex h-full items-center gap-5 rounded-md p-5", "hover:bg-muted")}>
         <div className="overflow-hidden rounded-full border">
           <div className="relative aspect-square h-20 w-20">
-            <Image
-              src={urlFor(bedpres.company.image).url()}
-              alt={`${bedpres.company.name} logo`}
-              fill
-            />
+            {bedpres.company && (
+              <Image
+                src={urlFor(bedpres.company.image).url()}
+                alt={`${bedpres.company.name} logo`}
+                fill
+              />
+            )}
           </div>
         </div>
         <div className="overflow-x-hidden">
@@ -137,13 +138,20 @@ type CombinedHappeningPreviewProps = {
 };
 
 export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
+  const parentPath = happening.happeningType === "bedpres" ? "bedpres" : "arrangement";
+
   return (
-    <Link href={`/${happening.type}/${happening.slug}`}>
-      <div className={cn("flex h-full items-center justify-between gap-5 p-5", "hover:bg-muted")}>
+    <Link href={`/${parentPath}/${happening.slug}`}>
+      <div
+        className={cn(
+          "flex h-full items-center justify-between gap-5 rounded-md p-5",
+          "hover:bg-muted",
+        )}
+      >
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
-            {happening.type === "arrangement" && (
+            {happening.happeningType === "event" && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
                 {capitalize(happening.organizers.map((o) => o.name).join(", "))}
@@ -165,14 +173,16 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
             </li>
           </ul>
         </div>
-        {happening.type === "bedpres" && (
+        {happening.happeningType === "bedpres" && (
           <div className="hidden overflow-hidden rounded-full border sm:block">
             <div className="relative aspect-square h-20 w-20">
-              <Image
-                src={urlFor(happening.company.image).url()}
-                alt={`${happening.company.name} logo`}
-                fill
-              />
+              {happening.company && (
+                <Image
+                  src={urlFor(happening.company.image).url()}
+                  alt={`${happening.company.name} logo`}
+                  fill
+                />
+              )}
             </div>
           </div>
         )}

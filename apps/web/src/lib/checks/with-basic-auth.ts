@@ -1,6 +1,7 @@
 import { env } from "@/env.mjs";
 
-type HandlerFunction = (request: Request) => Promise<Response> | Response;
+type Promiseable<T> = T | Promise<T>;
+type HandlerFunction = (request: Request) => Promiseable<Response>;
 
 export function withBasicAuth(handler: HandlerFunction) {
   return async (request: Request): Promise<Response> => {

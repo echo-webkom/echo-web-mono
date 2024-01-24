@@ -1,18 +1,18 @@
 import Link from "next/link";
 
-import { getAuthSession } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await getAuthSession();
+  const session = await auth();
 
   return (
     <>
-      <Container className="relative pb-40 pt-24" layout="full">
-        <div className="mx-auto w-full max-w-screen-xl">
+      <Container className="relative pb-40" layout="full">
+        <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>
               <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>
@@ -25,7 +25,12 @@ export default async function HomePage() {
               Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
               arrangere sosiale og faglige arrangementer.
               <br /> Les mer{" "}
-              <Link className="font-semibold" href="/om/echo">her.</Link>
+              <Link
+                className="font-semibold underline underline-offset-2 hover:text-primary"
+                href="/om/echo"
+              >
+                her.
+              </Link>
             </p>
             <div>
               <Button asChild variant="secondary">

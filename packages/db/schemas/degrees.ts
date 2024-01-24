@@ -8,13 +8,13 @@ import { users } from ".";
 export const degrees = pgTable(
   "degree",
   {
-    id: varchar("id", { length: 21 })
+    id: varchar("id", { length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
     name: varchar("name", { length: 255 }).notNull(),
   },
   (table) => ({
-    pk: primaryKey(table.id),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 

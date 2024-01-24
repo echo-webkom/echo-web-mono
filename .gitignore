@@ -10,6 +10,9 @@ package-lock.json
 # db
 postgres-data/
 
+# email
+.react-email/
+
 # Env
 .env*
 !.env.example

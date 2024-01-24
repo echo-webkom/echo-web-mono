@@ -22,7 +22,7 @@ export default function NotFound() {
   });
 
   return (
-    <div className="font-block min-h-screen bg-[#000088] text-[#dddddd] selection:bg-gray-800/60">
+    <div className="min-h-screen bg-[#000088] font-block text-[#dddddd] selection:bg-gray-800/60">
       <main className="mx-auto max-w-3xl space-y-10 px-4 py-20 text-xl md:text-3xl">
         <h1 className="text-4xl md:text-6xl">Finner ikke siden du ser etter...</h1>
 

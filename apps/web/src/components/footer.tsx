@@ -1,7 +1,9 @@
+import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
+import BekkLogo from "@/assets/images/bekk.png";
 import { footerRoutes } from "@/lib/routes";
 import { sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
@@ -31,7 +33,7 @@ export const Footer = ({ className }: FooterProps) => {
       </svg>
 
       {/* Footer */}
-      <footer className="bg-wave px-10 py-10">
+      <footer className="bg-wave px-10 py-10 text-wave-foreground">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
             {footerRoutes.map((section) => {
@@ -43,7 +45,7 @@ export const Footer = ({ className }: FooterProps) => {
                       return (
                         <li key={label}>
                           <Link
-                            className="flex items-center gap-2 text-black/80 hover:underline"
+                            className="flex items-center gap-2 hover:underline"
                             href={href}
                             {...(isExternal && {
                               target: "_blank",
@@ -54,7 +56,7 @@ export const Footer = ({ className }: FooterProps) => {
 
                             {isExternal && (
                               <span>
-                                <ExternalLinkIcon />
+                                <ExternalLink />
                               </span>
                             )}
                           </Link>
@@ -68,13 +70,11 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Main sponsor */}
             <div>
-              <h3 className="mb-4 py-2 text-xl font-bold">💘 Hovedsamarbeidspartner</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
-                  src="/images/bekk.png"
-                  className="invert"
-                  height={250}
-                  width={250}
+                  src={BekkLogo as StaticImport}
+                  className="h-28 w-auto invert dark:invert-0"
                   alt="Bekk logo"
                 />
               </Link>
@@ -82,12 +82,16 @@ export const Footer = ({ className }: FooterProps) => {
 
             {/* Other sponsors */}
             <div>
-              <h3 className="mb-4 py-2 text-xl font-bold">🔧 Powered by</h3>
+              <h3 className="mb-4 py-2 text-xl font-bold">Powered by 🔧</h3>
               <ul className="space-y-5">
                 {sponsors.map(({ label, href, imageSrc }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
-                      <Image src={imageSrc} height={150} width={150} alt={`${label} logo`} />
+                      <Image
+                        src={imageSrc as StaticImport}
+                        alt={`${label} logo`}
+                        className={cn("h-8 w-auto", label === "Vercel" && "invert-0 dark:invert")}
+                      />
                     </Link>
                   </li>
                 ))}

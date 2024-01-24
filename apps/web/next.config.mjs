@@ -1,28 +1,75 @@
-import NextBundleAnalyzer from "@next/bundle-analyzer";
-
 import "./src/env.mjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  transpilePackages: [
+    "@echo-webkom/auth",
+    "@echo-webkom/db",
+    "@echo-webkom/lib",
+    "@echo-webkom/email",
+  ],
 
-  experimental: {
-    serverActions: true,
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
-
-  transpilePackages: ["@echo-webkom/auth", "@echo-webkom/db", "@echo-webkom/lib"],
 
   images: {
-    domains: ["cdn.sanity.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+    ],
   },
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  redirects: async () => [
+    {
+      source: "/events/:path",
+      destination: "/event/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/jobb",
+      destination: "/for-studenter/jobber",
+      statusCode: 301,
+    },
+    {
+      source: "/jobb/:path",
+      destination: "/for-studenter/jobb/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/om-echo/:path",
+      destination: "/om/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/posts",
+      destination: "/for-studenter/innlegg",
+      statusCode: 301,
+    },
+    {
+      source: "/posts/:path",
+      destination: "/for-studenter/innlegg/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/om-echo/studentgrupper/:path",
+      destination: "/for-studenter/gruppe/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/arrangementer",
+      destination: "/for-studenter/arrangementer",
+      statusCode: 301,
+    },
+  ],
 
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
-const withBundleAnalyzer = NextBundleAnalyzer({
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  enabled: process.env.ANALYZE === "true",
-});
-
-export default withBundleAnalyzer(config);
+export default config;

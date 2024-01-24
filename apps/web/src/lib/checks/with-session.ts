@@ -1,7 +1,7 @@
 import { type NextRequest, type NextResponse } from "next/server";
 import { type ZodType } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { type User } from "@echo-webkom/db/schemas";
 
 type TRequest = Request | NextRequest;
@@ -23,7 +23,7 @@ export function withSession<TContext, TInput>(
   inputValidator?: ZodType<TInput>,
 ) {
   return async (request: TRequest, context: TContext): Promise<TResponse> => {
-    const user = await getAuth();
+    const user = await auth();
 
     if (!user) {
       return new Response("Unauthorized", {

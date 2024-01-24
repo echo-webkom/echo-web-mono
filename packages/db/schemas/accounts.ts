@@ -1,6 +1,6 @@
-import type { AdapterAccount } from "@auth/core/adapters";
 import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import type { AdapterAccount } from "next-auth/adapters";
 
 import { users } from ".";
 
@@ -22,7 +22,7 @@ export const accounts = pgTable(
     session_state: text("session_state"),
   },
   (account) => ({
-    pk: primaryKey(account.provider, account.providerAccountId),
+    pk: primaryKey({ columns: [account.provider, account.providerAccountId] }),
   }),
 );
 

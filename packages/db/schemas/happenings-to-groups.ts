@@ -7,20 +7,26 @@ import { groups, happenings } from ".";
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",
   {
-    // Don't use `.refrences` to avoid foreign key constraints
-    happeningSlug: varchar("happening_slug", { length: 255 }).notNull(),
-    // Don't use `.refrences` to avoid foreign key constraints
-    groupId: varchar("group_id", { length: 21 }).notNull(),
+    happeningId: varchar("happening_id", { length: 255 })
+      .notNull()
+      .references(() => happenings.id, {
+        onDelete: "cascade",
+      }),
+    groupId: varchar("group_id", { length: 255 })
+      .notNull()
+      .references(() => groups.id, {
+        onDelete: "cascade",
+      }),
   },
   (table) => ({
-    pk: primaryKey(table.happeningSlug, table.groupId),
+    pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
   }),
 );
 
 export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({
   happening: one(happenings, {
-    fields: [happeningsToGroups.happeningSlug],
-    references: [happenings.slug],
+    fields: [happeningsToGroups.happeningId],
+    references: [happenings.id],
   }),
   group: one(groups, {
     fields: [happeningsToGroups.groupId],

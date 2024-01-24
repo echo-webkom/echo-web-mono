@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { type z } from "zod";
 
@@ -22,32 +20,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
+import { Select } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Checkbox } from "./ui/checkbox";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { Textarea } from "./ui/textarea";
 
 type RegisterButtonProps = {
-  slug: string;
+  id: string;
   questions: Array<Question>;
 };
 
-export function RegisterButton({ slug, questions }: RegisterButtonProps) {
+export function RegisterButton({ id, questions }: RegisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registrationFormSchema>>({
     resolver: zodResolver(registrationFormSchema),
     defaultValues: {
       questions: questions.map((question) => ({
         questionId: question.id,
-        answer: undefined,
+        answer: question.type === "checkbox" ? [] : undefined,
       })),
     },
   });
@@ -55,8 +50,11 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await register(slug, {
-      questions: data.questions,
+    const { success, message } = await register(id, {
+      questions: data.questions.map((question) => ({
+        ...question,
+        answer: question.answer ?? "",
+      })),
     });
 
     setIsLoading(false);
@@ -65,21 +63,25 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
       title: message,
       variant: success ? "success" : "warning",
     });
-
-    router.refresh();
   });
+
+  const handleOneClickRegister = async () => {
+    setIsLoading(true);
+
+    const { success, message } = await register(id, { questions: [] });
+
+    toast({
+      title: message,
+      variant: success ? "success" : "warning",
+    });
+
+    setIsLoading(false);
+  };
 
   if (questions.length === 0) {
     return (
-      <Button
-        onClick={() => {
-          void register(slug, {
-            questions: [],
-          });
-        }}
-        disabled={isLoading}
-        fullWidth
-      >
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (
           <>
             <span>
@@ -111,69 +113,103 @@ export function RegisterButton({ slug, questions }: RegisterButtonProps) {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={onSubmit}>
-          <DialogHeader>
-            <DialogTitle>Tilleggsspørsmål</DialogTitle>
-            <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            {questions.map((question, index) => (
-              <div key={question.id} className="flex flex-col gap-2">
-                <Label>
-                  {question.title}
-                  {question.required && <span className="ml-1 text-red-500">*</span>}
-                </Label>
+        <Form {...form}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={onSubmit} className="space-y-4">
+            <DialogHeader>
+              <DialogTitle>Tilleggsspørsmål</DialogTitle>
+              <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              {questions.map((question, index) => (
+                <FormField
+                  key={question.id}
+                  control={form.control}
+                  name={`questions.${index}.answer`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel required={question.required}>{question.title}</FormLabel>
+                      {question.type === "text" && (
+                        <FormControl>
+                          <Input
+                            placeholder="Ditt svar..."
+                            autoComplete="off"
+                            {...field}
+                            value={field.value ?? ""}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                      )}
 
-                {question.type === "text" && (
-                  <Controller
-                    name={`questions.${index}.answer`}
-                    control={form.control}
-                    render={({ field }) => (
-                      <Input
-                        placeholder="Ditt svar..."
-                        autoComplete="off"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={field.onChange}
-                      />
-                    )}
-                  />
-                )}
+                      {question.type === "radio" && (
+                        <div>
+                          asrtarst
+                          <FormControl>
+                            <Select {...field}>
+                              <option hidden>Velg...</option>
+                              {question?.options?.map((option) => (
+                                <option key={option.id} value={option.value}>
+                                  {option.value}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </div>
+                      )}
 
-                {question.type === "radio" && (
-                  <Controller
-                    name={`questions.${index}.answer`}
-                    control={form.control}
-                    render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Velg svar..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {question?.options?.map((option) => (
-                            <SelectItem key={option.id} value={option.value}>
-                              {option.value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                )}
+                      {question.type === "textarea" && (
+                        <FormControl>
+                          <Textarea
+                            placeholder="Ditt svar..."
+                            {...field}
+                            value={field.value ?? ""}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                      )}
 
-                {form.formState.errors.questions?.[index]?.answer && (
-                  <p className="text-red-500">
-                    {form.formState.errors.questions?.[index]?.answer?.message}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-          <DialogFooter>
-            <Button type="submit">Send inn</Button>
-          </DialogFooter>
-        </form>
+                      {question.type === "checkbox" &&
+                        question.options?.map((option) => (
+                          <FormField
+                            key={option.id}
+                            control={form.control}
+                            name={`questions.${index}.answer`}
+                            render={({ field }) => (
+                              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(option.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...(field.value as Array<string>),
+                                            option.id,
+                                          ])
+                                        : field.onChange(
+                                            (field.value as Array<string>).filter(
+                                              (value) => value !== option.id,
+                                            ),
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel>{option.value}</FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+            <DialogFooter>
+              <Button type="submit">Send inn</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

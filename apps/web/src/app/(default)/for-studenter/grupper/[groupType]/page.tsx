@@ -1,10 +1,11 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/typography/heading";
 import { fetchStudentGroupsByType, studentGroupTypeName } from "@/sanity/student-group";
 
 type Props = {
@@ -21,12 +22,6 @@ export function generateMetadata({ params }: Props) {
   return {
     title: studentGroupTypeName[groupTypeFromPath],
   };
-}
-
-export function generateStaticParams() {
-  return Object.values(studentGroupTypeName).map((groupType) => ({
-    groupType: groupType.toLowerCase(),
-  }));
 }
 
 export default async function StudentGroupOverview({ params }: Props) {
@@ -50,7 +45,7 @@ export default async function StudentGroupOverview({ params }: Props) {
   );
 }
 
-function pathToGroupType(path: string) {
+const pathToGroupType = cache((path: string) => {
   const groupType = Object.entries(studentGroupTypeName).find(
     ([_, url]) => url.toLowerCase() === path,
   )?.[0];
@@ -60,4 +55,4 @@ function pathToGroupType(path: string) {
   }
 
   return groupType as StudentGroupType;
-}
+});
