@@ -11,8 +11,8 @@ import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
-import { echoGram } from "@/lib/echogram";
 import { getAllDegrees } from "@/data/degrees/queries";
+import { echoGram } from "@/lib/echogram";
 
 export default async function ProfilePage() {
   const user = await auth();
