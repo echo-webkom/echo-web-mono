@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -30,7 +29,6 @@ type DeregisterButtonProps = {
 export function DeregisterButton({ id }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<DeregistrationForm>({
@@ -55,7 +53,6 @@ export function DeregisterButton({ id }: DeregisterButtonProps) {
       variant: success ? "success" : "warning",
     });
 
-    router.refresh();
     form.reset();
     setIsOpen(false);
   });

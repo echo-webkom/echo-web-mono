@@ -44,6 +44,16 @@ export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
     setActiveDropdown(null);
   }, [navRef]);
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (activeDropdown && event.key === "Escape") {
+        setActiveDropdown(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+  }, [activeDropdown]);
+
   return (
     <NavigationContext.Provider value={{ activeDropdown, setActiveDropdown }}>
       <div ref={navRef}>{children}</div>

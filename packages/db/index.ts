@@ -26,5 +26,5 @@ function createPool() {
 
 export const db = drizzle(pool, {
   schema,
-  logger: true,
+  logger: process.env.NODE_ENV !== "production",
 });

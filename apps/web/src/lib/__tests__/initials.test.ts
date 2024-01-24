@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { initials } from "./initials";
+import { initials } from "../initials";
 
 describe("initials", () => {
   it("should get initials", () => {

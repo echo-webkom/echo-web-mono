@@ -82,8 +82,8 @@ export function RegistrationTable({
   };
 
   return (
-    <div className="overflow-x-auto rounded-lg border shadow-md">
-      <div className="overflow-x-auto">
+    <div className="w-full overflow-y-auto rounded-lg border shadow-md">
+      <div className="overflow-y-auto">
         <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
           <div className="flex w-full flex-col gap-1">
             <Label htmlFor="search">Søk:</Label>
@@ -162,9 +162,9 @@ export function RegistrationTable({
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto text-left text-sm text-gray-500">
-            <thead className="bg-gray-200 text-xs uppercase">
+        <div>
+          <table className="w-full table-fixed text-left text-sm text-gray-500">
+            <thead className="bg-table-header-background text-xs uppercase text-table-header-foreground">
               <tr>
                 {showIndex && (
                   <th scope="col" className="px-6 py-4 text-left">
@@ -223,29 +223,33 @@ const RegistrationRow = ({
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
   const statusClass = getStatusClassColor(registration.status);
+  const reason =
+    registration.unregisterReason && registration.unregisterReason.length > 200
+      ? registration.unregisterReason.substring(0, 200) + "..."
+      : registration.unregisterReason;
 
   return (
     <tr
       key={registration.user.id}
-      className={cn("border-b", {
-        "bg-white": index % 2 === 0,
+      className={cn("border-b bg-table-background text-table-foreground", {
+        "bg-table-background-alt": index % 2 === 0,
       })}
     >
       {showIndex && <td className="px-6 py-4">{index + 1}</td>}
-      <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">
+      <th scope="row" className=" overflow-wrap px-6 py-4 font-medium">
         {registration.user.name}
       </th>
-      <td className="px-6 py-4">
+      <td className="truncate px-6 py-4">
         <Link className="hover:underline" href={mailTo(email)}>
           {email}
         </Link>
       </td>
-      <td className={`px-6 py-4`}>
+      <td className={`overflow-wrap px-6 py-4`}>
         <span className={`${statusClass}`}>{registrationStatusToString[registration.status]}</span>
       </td>
-      <td className="px-6 py-4">{registration.unregisterReason}</td>
+      <td className="break-words px-6 py-4">{reason}</td>
       <td className="px-6 py-4">{registration.user.year}</td>
-      <td className="px-6 py-4">
+      <td className="overflow-wrap px-6 py-4">
         {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
         {registration.user.memberships.length === 0 && "Ingen"}
       </td>

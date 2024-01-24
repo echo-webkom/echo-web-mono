@@ -33,6 +33,17 @@ export default {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
         },
+        table: {
+          foreground: "var(--table-foreground)",
+          background: {
+            DEFAULT: "var(--table-background)",
+            alt: "var(--table-background-alt)",
+          },
+          header: {
+            foreground: "var(--table-header-foreground)",
+            background: "var(--table-header-background)",
+          },
+        },
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",

@@ -5,7 +5,7 @@ import {
   type usersToGroups,
 } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "./user";
+import { isWebkom } from "./memberships";
 
 type TUser = User & {
   memberships: Array<
