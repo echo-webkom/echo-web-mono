@@ -21,7 +21,7 @@ const imageSchema = z.object({
 
 type ImageFormProps = {
   userId: string;
-  imageURL: string;
+  imageURL: string | null;
 };
 
 export function ProfileImage({ userId, imageURL }: ImageFormProps) {
@@ -118,7 +118,13 @@ export function ProfileImage({ userId, imageURL }: ImageFormProps) {
 
   return (
     <div className="mx-auto flex w-64 flex-col items-center gap-2 pt-4">
-      <button className="relative h-64 w-full rounded-full" onClick={openFilePicker}>
+      <div
+        role="button"
+        tabIndex={-1}
+        className="relative h-64 w-full rounded-full"
+        onClick={openFilePicker}
+        onKeyDown={() => null}
+      >
         {imageURL ? (
           <div
             className="h-full w-full overflow-hidden rounded-full"
@@ -164,7 +170,7 @@ export function ProfileImage({ userId, imageURL }: ImageFormProps) {
             )}
           </div>
         )}
-      </button>
+      </div>
 
       <Form {...form}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
