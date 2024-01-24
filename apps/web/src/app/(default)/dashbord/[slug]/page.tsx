@@ -72,7 +72,7 @@ export default async function EventDashboard({ params }: Props) {
   const groups = await getStudentGroups();
 
   return (
-    <Container className="flex flex-col gap-10">
+    <Container layout="larger" className="flex flex-col gap-10 ">
       <div className="m-2">
         <Link href={`/${happeningType}/${happening.slug}`}>
           <span className="p-2">⇐</span>
