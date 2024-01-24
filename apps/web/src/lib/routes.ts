@@ -170,7 +170,7 @@ export const headerRoutes: Array<
       {
         label: "Bekk",
         href: "/om/bekk",
-        description: "Om Bekk, vår hovedsponsor",
+        description: "Om Bekk, vår samarbeidspartner",
         icon: LuHeartHandshake,
       },
       {

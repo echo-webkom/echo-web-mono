@@ -12,6 +12,7 @@ import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { echoGram } from "@/lib/echogram";
+import { getAllDegrees } from "@/data/degrees/queries";
 
 export default async function ProfilePage() {
   const user = await auth();
@@ -21,7 +22,7 @@ export default async function ProfilePage() {
   }
 
   const [degrees, memberships] = await Promise.all([
-    db.query.degrees.findMany(),
+    getAllDegrees(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, user.id),
       with: {
@@ -44,7 +45,7 @@ export default async function ProfilePage() {
           <Text>{user.name}</Text>
         </div>
         <div>
-          <Label>E-post:</Label>
+          <Label>E-post</Label>
           <Text>{user.email}</Text>
         </div>
 

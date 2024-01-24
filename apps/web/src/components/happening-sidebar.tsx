@@ -14,11 +14,13 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { doesArrayIntersect } from "@/lib/array";
+import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isHost as _isHost } from "@/lib/is-host";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
+import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 
 type EventSidebarProps = {
@@ -41,19 +43,8 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       },
     })
     .catch(() => null);
-  const spotRanges = await db.query.spotRanges
-    .findMany({
-      where: (spotRange) => eq(spotRange.happeningId, event._id),
-    })
-    .catch(() => []);
-  const registrations = await db.query.registrations
-    .findMany({
-      where: (registration) => eq(registration.happeningId, event._id),
-      with: {
-        user: true,
-      },
-    })
-    .catch(() => []);
+  const spotRanges = await getSpotRangeByHappeningId(event._id);
+  const registrations = await getRegistrationsByHappeningId(event._id);
 
   const isRegistered = registrations.some(
     (registration) =>
@@ -88,7 +79,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
   const canEarlyRegister = Boolean(
     user &&
       happening &&
-      doesArrayIntersect(
+      doesIntersect(
         happening.registrationGroups ?? [],
         user.memberships.map((membership) => membership.group.id),
       ),

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isBoard } from "./is-board";
+import { isBoard } from "../is-board";
 
 describe("isBoard", () => {
   it("should return true for a valid board", () => {
