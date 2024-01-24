@@ -1,4 +1,4 @@
-import { maxCapacityBySlug } from "@/lib/queries/happening";
+import { maxCapacityBySlug } from "@/data/happenings/queries";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { isBetween, norwegianDateString } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";

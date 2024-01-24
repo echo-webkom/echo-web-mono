@@ -2,8 +2,9 @@
 
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
-import { insertSiteFeedbackSchema, siteFeedback } from "@echo-webkom/db/schemas";
+import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
+
+import { createFeedback } from "@/data/site-feedbacks/mutations";
 
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   email: true,
@@ -16,20 +17,7 @@ export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSc
   try {
     const data = await sendFeedbackPayloadSchema.parseAsync(payload);
 
-    const feedback = await db
-      .insert(siteFeedback)
-      .values({
-        ...data,
-      })
-      .returning()
-      .then((res) => res[0] ?? null);
-
-    if (!feedback) {
-      return {
-        success: false,
-        message: "Fikk ikke til å sende tilbakemeldingen",
-      };
-    }
+    await createFeedback(data);
 
     return {
       success: true,

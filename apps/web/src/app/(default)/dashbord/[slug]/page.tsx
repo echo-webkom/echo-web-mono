@@ -9,8 +9,8 @@ import { db } from "@echo-webkom/db";
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
+import { getStudentGroups } from "@/data/groups/queries";
 import { isHost as _isHost } from "@/lib/is-host";
-import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {

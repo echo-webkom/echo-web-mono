@@ -42,6 +42,7 @@ export default async function WhitelistPage() {
             <TableHead>E-post</TableHead>
             <TableHead>Utløper</TableHead>
             <TableHead>Grunn</TableHead>
+            <TableHead>{/* Actions */}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
