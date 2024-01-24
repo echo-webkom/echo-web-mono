@@ -5,12 +5,12 @@ import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
 import { getColor } from "@/actions/get_color_like_button";
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 
 
 export default async function HyggkomHandleliste() {
 
-  const user = await getAuth();
+  const user = await auth();
 
   const items = await db
   .select({

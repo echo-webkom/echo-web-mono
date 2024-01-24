@@ -1,12 +1,12 @@
 "use server";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { usersToShoppingListItems } from "@echo-webkom/db/schemas";
 import { and, eq } from "drizzle-orm";
 
 export async function hyggkomLikeSubmit(payload: string) {
-  const user = await getAuth();
+  const user = await auth();
 
   if (!user) {
     return {

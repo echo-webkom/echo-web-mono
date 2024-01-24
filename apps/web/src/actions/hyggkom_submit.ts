@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 
-import { getAuth } from "@echo-webkom/auth";
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { shoppingListItems } from "@echo-webkom/db/schemas";
 
@@ -12,7 +12,7 @@ const shoppingListSchema = z.object({
 
 export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>) {
   try {
-    const user = await getAuth();
+    const user = await auth();
 
     const data = await shoppingListSchema.parseAsync(payload);
 
