@@ -157,6 +157,9 @@ importers:
       '@echo-webkom/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@echo-webkom/echogram':
+        specifier: workspace:*
+        version: link:../../packages/echogram
       '@echo-webkom/email':
         specifier: workspace:*
         version: link:../../packages/email
@@ -329,6 +332,9 @@ importers:
       postcss:
         specifier: 8.4.33
         version: 8.4.33
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       tailwindcss:
         specifier: 3.4.1
         version: 3.4.1
@@ -415,6 +421,21 @@ importers:
       tsx:
         specifier: 4.7.0
         version: 4.7.0
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
+  packages/echogram:
+    devDependencies:
+      '@types/node':
+        specifier: 18.19.8
+        version: 18.19.8
+      eslint:
+        specifier: 8.56.0
+        version: 8.56.0
+      eslint-config-webkom:
+        specifier: workspace:*
+        version: link:../eslint
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -8079,7 +8100,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -15756,7 +15776,6 @@ packages:
 
   /server-only@0.0.1:
     resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
 
   /set-function-name@2.0.1:
     resolution: {integrity: sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==}

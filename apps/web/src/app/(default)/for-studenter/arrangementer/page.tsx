@@ -99,11 +99,11 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   return (
     <Container>
       <EventFilter />
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full pr-16 md:max-w-[250px]">
+      <div className="flex flex-row">
+        <div className="h-full w-full pr-16 md:sticky md:top-24 md:max-w-[250px]">
           <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
         </div>
-        <div className="w-full">
+        <div className="w-[calc(100%-250px)]">
           <EventsView happenings={happenings} />
         </div>
       </div>
