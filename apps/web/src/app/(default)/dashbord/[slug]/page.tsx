@@ -2,11 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { json2csv } from "json-2-csv";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
+import DownloadCsv from "@/components/download-csv";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { isHost as _isHost } from "@/lib/is-host";
@@ -60,6 +62,14 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
+  const csv = json2csv(registrations, {
+    excelBOM: true,
+    emptyFieldValue: "",
+    excludeKeys: ["id", "happeningId", "userId", "createdAt", "updatedAt"],
+    expandNestedObjects: true,
+    expandArrayObjects: true,
+  });
+
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
 
   const registered = registrations.filter((registration) => registration.status === "registered");
@@ -109,6 +119,7 @@ export default async function EventDashboard({ params }: Props) {
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
           <RegistrationTable registrations={registrations} studentGroups={groups} />
+          <DownloadCsv csv={csv} title={happening.title} />
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">
