@@ -223,6 +223,10 @@ const RegistrationRow = ({
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
   const statusClass = getStatusClassColor(registration.status);
+  const reason =
+    registration.unregisterReason && registration.unregisterReason.length > 200
+      ? registration.unregisterReason.substring(0, 200) + "..."
+      : registration.unregisterReason;
 
   return (
     <tr
@@ -243,7 +247,7 @@ const RegistrationRow = ({
       <td className={`overflow-wrap px-6 py-4`}>
         <span className={`${statusClass}`}>{registrationStatusToString[registration.status]}</span>
       </td>
-      <td className="break-words px-6 py-4">{registration.unregisterReason}</td>
+      <td className="break-words px-6 py-4">{reason}</td>
       <td className="px-6 py-4">{registration.user.year}</td>
       <td className="overflow-wrap px-6 py-4">
         {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
