@@ -1,8 +1,6 @@
-import { isAfter, isBefore } from "date-fns";
-
 import { maxCapacityBySlug } from "@/lib/queries/happening";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
-import { norwegianDateString } from "@/utils/date";
+import { isBetween, norwegianDateString } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { capitalize } from "@/utils/string";
 
@@ -12,11 +10,11 @@ async function fetchMaxCapacity(slug: string) {
 }
 
 type HappeningInfoBoxProps = {
-  happeningId: string;
+  slug: string;
 };
 
-export async function HappeningInfoBox({ happeningId }: HappeningInfoBoxProps) {
-  const happening = await fetchHappeningBySlug(happeningId);
+export async function HappeningInfoBox({ slug }: HappeningInfoBoxProps) {
+  const happening = await fetchHappeningBySlug(slug);
 
   if (!happening) {
     return null;
@@ -25,13 +23,12 @@ export async function HappeningInfoBox({ happeningId }: HappeningInfoBoxProps) {
   const isRegistrationOpen =
     happening.registrationStart &&
     happening.registrationEnd &&
-    isAfter(new Date(), new Date(happening.registrationStart)) &&
-    isBefore(new Date(), new Date(happening.registrationEnd));
+    isBetween(new Date(happening.registrationStart), new Date(happening.registrationEnd));
 
   const capacity = await fetchMaxCapacity(happening.slug);
 
   return (
-    <div className="flex h-full items-center gap-5 overflow-x-auto rounded-xl border bg-card p-5 sm:rounded-lg">
+    <div className="flex h-full items-center gap-5 overflow-x-auto rounded-xl border p-5 sm:rounded-lg">
       <div className="overflow-x-hidden">
         <h1 className="line-clamp-1 text-lg font-semibold md:text-2xl">
           {capitalize(happening.title)}

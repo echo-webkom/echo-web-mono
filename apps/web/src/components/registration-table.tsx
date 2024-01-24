@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Confetti from "react-confetti";
 
 import {
   type Group,
@@ -21,6 +20,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -37,7 +37,6 @@ export function RegistrationTable({
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
 }) {
-  const [showConfetti, setShowConfetti] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -137,14 +136,7 @@ export function RegistrationTable({
         </div>
         <div className="flex flex-row justify-between px-4 py-2">
           <div className="mt-auto w-full">
-            <RandomPersonButton registrations={registrations} setShowConfetti={setShowConfetti} />
-            {showConfetti && (
-              <Confetti
-                className="fixed left-0 top-0"
-                width={window.window.innerWidth}
-                height={window.window.innerHeight}
-              />
-            )}
+            <RandomPersonButton registrations={registrations} />
           </div>
         </div>
 
@@ -162,54 +154,42 @@ export function RegistrationTable({
           </div>
         </div>
 
-        <div>
-          <table className="w-full text-left text-sm text-gray-500 lg:table-fixed">
-            <thead className="bg-table-header-background text-xs uppercase text-table-header-foreground">
-              <tr>
-                {showIndex && (
-                  <th scope="col" className="px-6 py-4 text-left">
-                    Index
-                  </th>
-                )}
-                <th scope="col" className="px-6 py-4 text-left">
-                  Navn
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  E-post
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  Grunn
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  Årstrinn
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  Medlem av
-                </th>
-                <th scope="col" className="px-6 py-4 text-left">
-                  Handling
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRegistrations.map((registration, i) => (
-                <RegistrationRow
-                  key={registration.user.id}
-                  registration={registration}
-                  index={i}
-                  showIndex={showIndex}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {showIndex && <TableHead scope="col">#</TableHead>}
+              <TableHead scope="col">Navn</TableHead>
+              <TableHead scope="col">E-post</TableHead>
+              <TableHead scope="col">Status</TableHead>
+              <TableHead scope="col">Grunn</TableHead>
+              <TableHead scope="col">Årstrinn</TableHead>
+              <TableHead scope="col">Medlem av</TableHead>
+              <TableHead scope="col">Handling</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredRegistrations.map((registration, i) => (
+              <RegistrationRow
+                key={registration.user.id}
+                registration={registration}
+                index={i}
+                showIndex={showIndex}
+              />
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
 }
+
+export const statusColor = {
+  registered: "text-green-600",
+  waiting: "text-yellow-600",
+  unregistered: "text-red-600",
+  removed: "text-red-600",
+  pending: "text-blue-600",
+} satisfies Record<RegistrationStatus, string>;
 
 const RegistrationRow = ({
   registration,
@@ -222,57 +202,32 @@ const RegistrationRow = ({
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
-  const statusClass = getStatusClassColor(registration.status);
   const reason =
     registration.unregisterReason && registration.unregisterReason.length > 200
       ? registration.unregisterReason.substring(0, 200) + "..."
       : registration.unregisterReason;
 
   return (
-    <tr
-      key={registration.user.id}
-      className={cn("border-b bg-table-background text-table-foreground", {
-        "bg-table-background-alt": index % 2 === 0,
-      })}
-    >
-      {showIndex && <td className="px-6 py-4">{index + 1}</td>}
-      <th scope="row" className=" overflow-wrap px-6 py-4 font-medium">
-        {registration.user.name}
-      </th>
-      <td className="truncate px-6 py-4">
+    <TableRow key={registration.user.id}>
+      {showIndex && <TableCell>{index + 1}</TableCell>}
+      <TableCell scope="row">{registration.user.name}</TableCell>
+      <TableCell className="truncate">
         <Link className="hover:underline" href={mailTo(email)}>
           {email}
         </Link>
-      </td>
-      <td className={`overflow-wrap px-6 py-4`}>
-        <span className={`${statusClass}`}>{registrationStatusToString[registration.status]}</span>
-      </td>
-      <td className="break-words px-6 py-4">{reason}</td>
-      <td className="px-6 py-4">{registration.user.year}</td>
-      <td className="overflow-wrap px-6 py-4">
+      </TableCell>
+      <TableCell className={cn(statusColor[registration.status])}>
+        {registrationStatusToString[registration.status]}
+      </TableCell>
+      <TableCell>{reason}</TableCell>
+      <TableCell>{registration.user.year}</TableCell>
+      <TableCell>
         {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
         {registration.user.memberships.length === 0 && "Ingen"}
-      </td>
-      <td className="px-6 py-4">
+      </TableCell>
+      <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
-
-function getStatusClassColor(status: RegistrationStatus): string {
-  switch (status) {
-    case "registered":
-      return "text-green-600";
-    case "waiting":
-      return "text-yellow-600";
-    case "unregistered":
-      return "text-red-600";
-    case "removed":
-      return "text-red-600";
-    case "pending":
-      return "text-blue-600";
-    default:
-      return "";
-  }
-}
