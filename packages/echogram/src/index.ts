@@ -1,9 +1,9 @@
 export const PROFILE_IMAGE_FUNCTION_URL = "https://echo-images.azurewebsites.net/api/images";
 
 export class EchoGram {
-  #apiKey: string;
+  #apiKey: string | undefined;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string | undefined) {
     this.#apiKey = apiKey;
   }
 
