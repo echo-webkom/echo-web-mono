@@ -2,20 +2,30 @@ import * as React from "react";
 
 import { cn } from "@/utils/cn";
 
-const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-  ({ className, ...props }, ref) => (
-    <div className="w-full overflow-auto">
-      <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
-    </div>
-  ),
-);
+type TableProps = React.HTMLAttributes<HTMLTableElement> & {
+  wrapperClassName?: string;
+};
+
+const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, ...props }, ref) => (
+  <div className="min-w-screen-md w-full overflow-y-auto rounded border">
+    <table
+      ref={ref}
+      className={cn("w-full caption-bottom text-sm lg:table-fixed", className)}
+      {...props}
+    />
+  </div>
+));
 Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+  <thead
+    ref={ref}
+    className={cn("bg-table-header-background [&_tr]:border-b", className)}
+    {...props}
+  />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -23,7 +33,14 @@ const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
+  <tbody
+    ref={ref}
+    className={cn(
+      "bg-table-background [&_tr:last-child]:border-0 odd:[&_tr]:bg-table-background-alt",
+      className,
+    )}
+    {...props}
+  />
 ));
 TableBody.displayName = "TableBody";
 
@@ -43,10 +60,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
   ({ className, ...props }, ref) => (
     <tr
       ref={ref}
-      className={cn(
-        "hover:bg-muted/50 border-b transition-colors data-[state=selected]:bg-muted",
-        className,
-      )}
+      className={cn("border-b transition-colors data-[state=selected]:bg-muted", className)}
       {...props}
     />
   ),
@@ -60,7 +74,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "h-12 px-4 text-left align-middle font-semibold text-table-header-foreground [&:has([role=checkbox])]:pr-0",
       className,
     )}
     {...props}

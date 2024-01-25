@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { Button } from "@/components/ui/button";
@@ -9,10 +10,10 @@ import { type RegistrationWithUser } from "./registration-table";
 
 type RandomPersonButtonProps = {
   registrations: Array<RegistrationWithUser>;
-  setShowConfetti: (show: boolean) => void;
 };
 
-export function RandomPersonButton({ registrations, setShowConfetti }: RandomPersonButtonProps) {
+export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [randomUserName, setRandomUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +28,8 @@ export function RandomPersonButton({ registrations, setShowConfetti }: RandomPer
     const registeredUsers = getRegisteredUsers();
     const randomIndex = Math.floor(Math.random() * registeredUsers.length);
     const randomUser = registeredUsers[randomIndex];
-    const name = randomUser?.user.name;
+    const name = randomUser?.user.name ?? randomUser?.user.email ?? null;
+
     if (!name) {
       toast({
         title: "Ingen registrerte brukere",
@@ -46,22 +48,15 @@ export function RandomPersonButton({ registrations, setShowConfetti }: RandomPer
     }, 1500); // 1.5 sekund delay
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      setShowConfetti(false);
-    }
-
-    return () => {
-      setShowConfetti(false);
-    };
-  }, [isOpen, setShowConfetti]);
-
   const closeDialog = () => {
     setIsOpen(false);
+    setShowConfetti(false);
   };
 
   return (
     <>
+      <Confetti className="fixed left-0 top-0 z-[60] min-h-screen w-full" hidden={!showConfetti} />
+
       <Button onClick={pickRandomRegisteredUser}>
         {isLoading ? (
           <>

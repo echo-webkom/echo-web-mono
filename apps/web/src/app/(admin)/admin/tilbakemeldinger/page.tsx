@@ -2,9 +2,7 @@ import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
-import { getAllFeedback } from "@/lib/queries/feedback";
-
-export const dynamic = "force-dynamic";
+import { getAllFeedback } from "@/data/site-feedbacks/queries";
 
 export default async function FeedbackOverview() {
   const feedback = await getAllFeedback();
