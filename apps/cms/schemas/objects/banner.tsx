@@ -1,4 +1,11 @@
-import { defineField, defineType } from "sanity";
+import { ValidationContext, defineField, defineType } from "sanity";
+
+type BannerDocument = {
+  showBanner: boolean;
+  title?: string;
+  subtitle?: string;
+  link?: string;
+};
 
 export default defineType({
   name: "banner",
@@ -18,7 +25,14 @@ export default defineType({
       name: "title",
       title: "Tittel",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const banner: BannerDocument = (context as ValidationContext & { banner: BannerDocument }).banner;
+          if (banner.showBanner === true && !value) {
+            return 'Title is required when showBanner is checked';
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "subtitle",

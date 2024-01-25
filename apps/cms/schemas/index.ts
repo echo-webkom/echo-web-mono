@@ -12,6 +12,7 @@ import profile from "./profile";
 import settings from "./settings";
 import staticInfo from "./static-info";
 import studentgroup from "./student-group";
+import notification from "./notification";
 
 export const schemaTypes = [
   happening,
@@ -28,4 +29,5 @@ export const schemaTypes = [
   question,
   banner,
   settings,
+  notification,
 ];
