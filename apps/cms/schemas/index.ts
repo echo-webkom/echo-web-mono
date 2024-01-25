@@ -10,6 +10,7 @@ import post from "./post";
 import profile from "./profile";
 import staticInfo from "./static-info";
 import studentgroup from "./student-group";
+import notification from "./notification";
 
 export const schemaTypes = [
   happening,
@@ -24,4 +25,10 @@ export const schemaTypes = [
   spotRange,
   contactProfile,
   question,
+<<<<<<< HEAD
+=======
+  banner,
+  settings,
+  notification,
+>>>>>>> 28fc9cad (start notification schema)
 ];
