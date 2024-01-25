@@ -40,7 +40,7 @@
     "@upstash/ratelimit": "1.0.0",
     "@vercel/analytics": "1.1.2",
     "@vercel/kv": "1.0.1",
-    "@vercel/speed-insights": "1.0.6",
+    "@vercel/speed-insights": "1.0.7",
     "calendar-link": "2.6.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.0",
