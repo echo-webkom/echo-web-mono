@@ -8,7 +8,11 @@ type TableProps = React.HTMLAttributes<HTMLTableElement> & {
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, ...props }, ref) => (
   <div className="min-w-screen-md w-full overflow-y-auto rounded border">
-    <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
+    <table
+      ref={ref}
+      className={cn("w-full caption-bottom text-sm lg:table-fixed", className)}
+      {...props}
+    />
   </div>
 ));
 Table.displayName = "Table";

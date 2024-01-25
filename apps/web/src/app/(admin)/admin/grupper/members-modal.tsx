@@ -25,7 +25,7 @@ export function MembersModal({ group, users }: MembersModalProps) {
     <Dialog>
       <DialogTrigger>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="pr-10">
-          Endre rolle
+          Se detaljer
         </DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
