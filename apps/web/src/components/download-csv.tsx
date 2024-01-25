@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button } from "./ui/button";
+
 type DownloadCsvProps = {
   csv: string;
   title?: string;
@@ -7,12 +9,14 @@ type DownloadCsvProps = {
 
 const DownloadCsv = ({ csv, title }: DownloadCsvProps) => {
   return (
-    <a
-      href={`data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`}
-      download={`${title?.replace(" ", "-") ?? "registration"}.csv`}
-    >
-      Last ned CSV
-    </a>
+    <Button asChild>
+      <a
+        href={`data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`}
+        download={`${title?.replace(" ", "-") ?? "registration"}.csv`}
+      >
+        Last ned CSV
+      </a>
+    </Button>
   );
 };
 

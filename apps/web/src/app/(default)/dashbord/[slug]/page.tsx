@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { json2csv } from "json-2-csv";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
@@ -13,6 +12,7 @@ import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { isHost as _isHost } from "@/lib/is-host";
 import { getStudentGroups } from "@/lib/queries/student-groups";
+import toCsv from "@/utils/csv";
 
 type Props = {
   params: {
@@ -62,13 +62,14 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
-  const csv = json2csv(registrations, {
-    excelBOM: true,
-    emptyFieldValue: "",
-    excludeKeys: ["id", "happeningId", "userId", "createdAt", "updatedAt"],
-    expandNestedObjects: true,
-    expandArrayObjects: true,
-  });
+  const csv = toCsv(registrations, [
+    "user.name",
+    "user.email",
+    "user.year",
+    "user.memberships",
+    "status",
+    "unregisterReason",
+  ]);
 
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
 
