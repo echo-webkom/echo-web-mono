@@ -5,12 +5,13 @@ import { eq } from "drizzle-orm";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
+import { getStudentGroups } from "@/data/groups/queries";
 import { isHost as _isHost } from "@/lib/is-host";
-import { getStudentGroups } from "@/lib/queries/student-groups";
 
 type Props = {
   params: {
@@ -60,6 +61,18 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
+  registrations.sort((a, b) => {
+    const statusOrder: Record<RegistrationStatus, number> = {
+      registered: 0,
+      waiting: 1,
+      unregistered: 2,
+      removed: 3,
+      pending: 4,
+    };
+
+    return statusOrder[a.status] - statusOrder[b.status];
+  });
+
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
 
   const registered = registrations.filter((registration) => registration.status === "registered");
@@ -72,7 +85,7 @@ export default async function EventDashboard({ params }: Props) {
   const groups = await getStudentGroups();
 
   return (
-    <Container className="flex flex-col gap-10">
+    <Container layout="larger" className="flex flex-col gap-10 ">
       <div className="m-2">
         <Link href={`/${happeningType}/${happening.slug}`}>
           <span className="p-2">⇐</span>
@@ -82,7 +95,6 @@ export default async function EventDashboard({ params }: Props) {
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border px-3 py-8 text-center">
           <p>Antall påmeldte</p>
-
           <p className="text-7xl">{registered.length}</p>
         </div>
 
@@ -102,9 +114,8 @@ export default async function EventDashboard({ params }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <HappeningInfoBox happeningId={happening.id} />
-      </div>
+      <HappeningInfoBox slug={happening.slug} />
+
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>

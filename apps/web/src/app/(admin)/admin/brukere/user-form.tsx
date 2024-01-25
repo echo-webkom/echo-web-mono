@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type ColumnDef } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
-import { RxDotsHorizontal } from "react-icons/rx";
 import { type z } from "zod";
 
 import { type Group } from "@echo-webkom/db/schemas";
@@ -20,14 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {
   Form,
   FormControl,
@@ -39,79 +30,15 @@ import {
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { capitalize } from "@/utils/string";
 import { type AllUsers } from "./page";
 import { userFormSchema } from "./schemas";
-
-export const columns: Array<
-  ColumnDef<{
-    user: AllUsers[number];
-    groups: Array<Group>;
-  }>
-> = [
-  {
-    accessorKey: "name",
-    header: "Navn",
-    cell: ({ row }) => {
-      const { user } = row.original;
-
-      return <div>{user.name}</div>;
-    },
-  },
-  {
-    accessorKey: "memberships",
-    header: "Studentgrupper",
-    cell: ({ row }) => {
-      const { user } = row.original;
-
-      return (
-        <div>
-          {user.memberships.length
-            ? user.memberships.map((membership) => membership.group.name).join(", ")
-            : "Ingen grupper"}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "type",
-    header: "Brukertype",
-    cell: ({ row }) => {
-      const { user } = row.original;
-
-      return <div>{capitalize(user.type)}</div>;
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { user, groups } = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <RxDotsHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <UserForm user={user} groups={groups} />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
 
 type UserFormProps = {
   user: AllUsers[number];
   groups: Array<Group>;
 };
 
-function UserForm({ user, groups }: UserFormProps) {
+export function UserForm({ user, groups }: UserFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +46,7 @@ function UserForm({ user, groups }: UserFormProps) {
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      memberships: user.memberships.map((membership) => membership.group.id),
+      memberships: user.memberships.map((membership) => membership.groupId),
     },
   });
 
@@ -150,14 +77,35 @@ function UserForm({ user, groups }: UserFormProps) {
           <DialogTitle className="text-xl font-bold">Detaljer for {user.name}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <div className="mb-2">
+          <div>
+            <Label>ID</Label>
+            <p className="text-sm text-muted-foreground">{user.id}</p>
+          </div>
+
+          <div>
+            <Label>Rolle</Label>
+            <p className="text-sm text-muted-foreground">{user.alternativeEmail}</p>
+          </div>
+
+          <div>
+            <Label>Studieretning</Label>
+            <p className="text-sm text-muted-foreground">{user.degree?.name ?? "Ikke valgt"}</p>
+          </div>
+
+          <div>
+            <Label>År</Label>
+            <p className="text-sm text-muted-foreground">{user.year ?? "Ikke valgt"}</p>
+          </div>
+
+          <div>
             <Label>Navn</Label>
-            <p className="text-sm text-slate-500">{user.name}</p>
+            <p className="text-sm text-muted-foreground">{user.name}</p>
           </div>
-          <div className="mb-2">
+          <div>
             <Label>E-post</Label>
-            <p className="text-sm text-slate-500">{user.email}</p>
+            <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
+
           <Form {...form}>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <form onSubmit={onSubmit} className="space-y-8">
@@ -166,8 +114,8 @@ function UserForm({ user, groups }: UserFormProps) {
                 name="memberships"
                 render={() => (
                   <FormItem>
-                    <div className="mb-4">
-                      <FormLabel className="text-base">Undergrupper</FormLabel>
+                    <div className="mb-2">
+                      <FormLabel>Undergrupper</FormLabel>
                       <FormDescription>
                         Velg de undergruppene brukeren er en del av.
                       </FormDescription>
@@ -182,7 +130,7 @@ function UserForm({ user, groups }: UserFormProps) {
                           return (
                             <FormItem
                               key={id}
-                              className="flex flex-row items-start space-x-3 space-y-0"
+                              className="flex flex-row items-center space-x-3 space-y-0"
                             >
                               <FormControl>
                                 <Checkbox
@@ -196,7 +144,7 @@ function UserForm({ user, groups }: UserFormProps) {
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel className="text-sm font-normal">{name}</FormLabel>
+                              <FormLabel className="text-sm">{name}</FormLabel>
                             </FormItem>
                           );
                         }}

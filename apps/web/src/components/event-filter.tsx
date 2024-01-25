@@ -54,8 +54,8 @@ export function EventFilter() {
 
   return (
     <div>
-      <div className="flex flex-col border-b-2 border-solid border-opacity-20 pb-4 sm:flex-row sm:justify-between">
-        <div className="flex flex-col items-center sm:flex-row sm:space-x-2">
+      <div className="flex flex-col space-y-2 border-b-2 border-solid border-opacity-20 pb-4 sm:flex-row sm:justify-between md:space-y-0">
+        <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-2 md:space-y-0">
           <Button
             className="w-60 sm:w-auto"
             variant={type === "all" ? "default" : "outline"}
