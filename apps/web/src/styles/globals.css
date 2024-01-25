@@ -16,12 +16,19 @@
     --table-header-background: #dbdde0;
     --table-header-foreground: #16100b;
 
+    --table-foreground: #010408;
+    --table-background: #f9f7f7;
+    --table-background-alt: #655f5f;
+    --table-header-background: #989b9d;
+    --table-header-foreground: #0c0f20;
+
     --popover: #f9fafb;
     --popover-foreground: #171923;
 
     --card: #fff;
     --card-foreground: #171923;
 
+    --border: #9db2cd;
     --border: #9db2cd;
     --input: #f1f5f9;
 
@@ -61,7 +68,7 @@
 
   .dark {
     --background: #151210;
-    --foreground: #f9fafb;
+    --foreground: #eeeeee;
 
     --muted: #181818;
     --muted-foreground: #999999;
@@ -71,6 +78,13 @@
     --table-background-alt: #1f1a17;
     --table-header-background: #221b18;
     --table-header-foreground: #d8d8e4;
+    --muted-foreground: #999999;
+
+    --table-foreground: #999999;
+    --table-background: #151210;
+    --table-background-alt: #181818;
+    --table-header-background: #242424;
+    --table-header-foreground: #eeeeee;
 
     --popover: #181818;
     --popover-foreground: #eeeeee;
@@ -78,6 +92,7 @@
     --card: #171717;
     --card-foreground: #eeeeee;
 
+    --border: #4d4d4d;
     --border: #4d4d4d;
     --input: #171717;
 
