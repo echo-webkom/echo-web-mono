@@ -61,16 +61,16 @@
 
   .dark {
     --background: #151210;
-    --foreground: #f9fafb;
+    --foreground: #eeeeee;
 
     --muted: #181818;
     --muted-foreground: #999999;
 
     --table-foreground: #999999;
-    --table-background: #181818;
-    --table-bakcground-alt: #424141;
-    --table-header-background: #84888b;
-    --table-header-foreground: #0d0d0e;
+    --table-background: #151210;
+    --table-background-alt: #181818;
+    --table-header-background: #242424;
+    --table-header-foreground: #eeeeee;
 
     --popover: #181818;
     --popover-foreground: #eeeeee;
@@ -78,7 +78,7 @@
     --card: #171717;
     --card-foreground: #eeeeee;
 
-    --border: hsl(0, 0%, 30%);
+    --border: #4d4d4d;
     --input: #171717;
 
     --primary: #008fa3;

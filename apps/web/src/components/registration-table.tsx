@@ -163,7 +163,7 @@ export function RegistrationTable({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full table-auto text-left text-sm text-gray-500">
+          <table className="w-full table-auto text-left text-sm">
             <thead className="bg-table-header-background text-xs uppercase text-table-header-foreground">
               <tr>
                 {showIndex && (
