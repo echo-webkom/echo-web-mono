@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
@@ -58,6 +59,18 @@ export default async function EventDashboard({ params }: Props) {
         },
       },
     },
+  });
+
+  registrations.sort((a, b) => {
+    const statusOrder: Record<RegistrationStatus, number> = {
+      registered: 0,
+      waiting: 1,
+      unregistered: 2,
+      removed: 3,
+      pending: 4,
+    };
+
+    return statusOrder[a.status] - statusOrder[b.status];
   });
 
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";

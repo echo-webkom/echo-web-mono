@@ -1,13 +1,9 @@
-import { maxCapacityBySlug } from "@/data/happenings/queries";
+import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { isBetween, norwegianDateString } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { capitalize } from "@/utils/string";
-
-async function fetchMaxCapacity(slug: string) {
-  const capacity = await maxCapacityBySlug(slug);
-  return capacity === 0 ? "Uendelig" : capacity;
-}
 
 type HappeningInfoBoxProps = {
   slug: string;
@@ -25,7 +21,11 @@ export async function HappeningInfoBox({ slug }: HappeningInfoBoxProps) {
     happening.registrationEnd &&
     isBetween(new Date(happening.registrationStart), new Date(happening.registrationEnd));
 
-  const capacity = await fetchMaxCapacity(happening.slug);
+  const spotRanges = await getSpotRangeByHappeningId(happening._id);
+  const registrations = await getRegistrationsByHappeningId(happening._id);
+
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const capacity = `${registrations.length}/${maxCapacity}`;
 
   return (
     <div className="flex h-full items-center gap-5 overflow-x-auto rounded-xl border p-5 sm:rounded-lg">
