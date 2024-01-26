@@ -26,6 +26,7 @@ function toCsv<TObj extends object>(
     excludeKeys,
     expandNestedObjects: true,
     expandArrayObjects: true,
+    unwindArrays: true,
   });
 }
 
@@ -37,6 +38,7 @@ function getExcludeKeys<TObj extends object>(
   includeKeys: Array<NestedKeyOf<TObj>>,
   objList: Array<TObj>,
 ): typeof includeKeys {
+  // TODO this function may need to be ran for every object in the list?
   if (!objList[0]) {
     throw new Error("Obj is empty");
   }
@@ -51,18 +53,15 @@ function getExcludeKeys<TObj extends object>(
   return excludeKeys;
 }
 
-// TODO this function is not working as expected. It causes an error.
+/**
+ * This function takes in an object and returns a list of all keys, including nested keys.
+ */
 function getNestedObjectKeys<TObj extends object>(obj: TObj): Array<NestedKeyOf<TObj>> {
   const objectKeys: Array<string> = [];
   const stack = [{ obj, path: "" }];
 
-  console.log("obj", obj);
   while (stack.length > 0) {
     const { obj: currentObj, path: currentPath } = stack.pop()!;
-
-    console.log("\n\n\n stack -----------------------------------------");
-    // console.log("currentObj", currentObj);
-    console.log(stack);
     Object.keys(currentObj).forEach((key) => {
       const newPath = currentPath ? `${currentPath}.${key}` : key;
       const newObject = currentObj[key as keyof typeof currentObj];
@@ -73,13 +72,6 @@ function getNestedObjectKeys<TObj extends object>(obj: TObj): Array<NestedKeyOf<
       } else {
         objectKeys.push(newPath);
       }
-
-      // if (typeof newObject !== "object") {
-      //   objectKeys.push(newPath);
-      // } else {
-      //   objectKeys.push(newPath);
-      //   stack.push({ obj: newObject as TObj, path: newPath });
-      // }
     });
   }
 

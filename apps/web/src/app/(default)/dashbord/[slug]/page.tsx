@@ -62,14 +62,28 @@ export default async function EventDashboard({ params }: Props) {
     },
   });
 
-  const csv = toCsv(registrations, [
-    "user.name",
-    "user.email",
-    "user.year",
-    "user.memberships",
-    "status",
-    "unregisterReason",
-  ]);
+  const csv = toCsv(
+    registrations.map((registration) => {
+      return {
+        ...registration,
+        user: {
+          ...registration.user,
+          memberships: registration.user.memberships
+            .map((membership) => membership.group?.name ?? "Ukjent gruppe")
+            .join(", "),
+        },
+      };
+    }),
+    [
+      "status",
+      "unregisterReason",
+      "user.name",
+      "user.email",
+      "user.alternativeEmail",
+      "user.year",
+      "user.memberships",
+    ],
+  );
 
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
 
