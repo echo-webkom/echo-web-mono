@@ -3,14 +3,14 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
-import { cacheKeyFactory } from "./cache-keys";
+import { cacheKeyFactory } from "./revalidate";
 
 export async function getReactionByHappeningId(happeningId: string) {
   return cache(
     async () => {
-      return await db.query.spotRanges
+      return await db.query.reactions
         .findMany({
-          where: (spotRange) => eq(spotRange.happeningId, happeningId),
+          where: (reaction) => eq(reaction.happeningId, happeningId),
         })
         .catch(() => []);
     },

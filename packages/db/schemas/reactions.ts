@@ -1,13 +1,17 @@
 /* import { relations } from "drizzle-orm"; */
 import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { nanoid } from "nanoid";
 
 import { users } from "./users";
 
 export const reactions = pgTable(
   "reaction",
   {
-    reactionId: text("id").notNull(),
-    emojiId: integer("reaction_id").notNull(),
+    id: text("id")
+      .notNull()
+      .$defaultFn(() => nanoid()),
+    happeningId: text("happening_id").notNull(),
+    emojiId: integer("emoji_id").notNull(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, {
@@ -16,7 +20,7 @@ export const reactions = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.reactionId] }),
+    pk: primaryKey({ columns: [table.id] }),
   }),
 );
 

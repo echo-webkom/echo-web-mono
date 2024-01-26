@@ -4,19 +4,15 @@ import { reactions, type ReactionInsert } from "@echo-webkom/db/schemas";
 import { revalidateReactions } from "./revalidate";
 
 export async function registerReaction(newReaction: Omit<ReactionInsert, "createdAt">) {
-  const [insertedReaction] = await db
-    .insert(reactions)
-    .values({
-      ...newReaction,
-      createdAt: new Date(),
-    })
-    .returning({ reactionsId: reactions.reactionId });
+  const [insertedReaction] = await db.insert(reactions).values({
+    ...newReaction,
+    createdAt: new Date(),
+  });
 
   if (!insertedReaction) {
     throw new Error("Reaction failed");
   }
-
-  revalidateReactions(newReaction.reactionId);
+  revalidateReactions(newReaction.happeningId);
 }
 
 /* export async function createRegistration(newRegistrations: Omit<RegistrationInsert, "createdAt">) {

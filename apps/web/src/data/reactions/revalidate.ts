@@ -1,6 +1,8 @@
 import { revalidateTag } from "next/cache";
 
-import { cacheKeyFactory } from "./cache-keys";
+export const cacheKeyFactory = {
+  reactions: (id: string) => `reactions-${id}`,
+};
 
 export function revalidateReactions(happeningId: string) {
   revalidateTag(cacheKeyFactory.reactions(happeningId));
