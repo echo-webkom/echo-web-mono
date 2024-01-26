@@ -11,7 +11,7 @@ import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
-import { isHost as _isHost } from "@/lib/is-host";
+import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
   params: {
@@ -26,11 +26,7 @@ export default async function EventDashboard({ params }: Props) {
     where: (happening) => eq(happening.slug, slug),
     with: {
       questions: true,
-      groups: {
-        with: {
-          group: true,
-        },
-      },
+      groups: true,
     },
   });
 
