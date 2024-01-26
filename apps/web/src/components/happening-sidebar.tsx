@@ -16,7 +16,7 @@ import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { isHost as _isHost } from "@/lib/is-host";
+import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
@@ -35,11 +35,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       where: (happening) => eq(happening.id, event._id),
       with: {
         questions: true,
-        groups: {
-          with: {
-            group: true,
-          },
-        },
+        groups: true,
       },
     })
     .catch(() => null);
