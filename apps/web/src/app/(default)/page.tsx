@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <p>webkom 404</p>
+      <p className="text-center">GRATULERE BEDKOM <3</p>
     </>
   );
 }
