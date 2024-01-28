@@ -11,7 +11,40 @@ export default async function HomePage() {
 
   return (
     <>
-      <p className="text-center">GRATULERE BEDKOM {"<3"}</p>
+      <Container className="relative pb-40" layout="full">
+        <div className="mx-auto w-full max-w-screen-xl py-10">
+          <div className="max-w-xl space-y-8">
+            <h1>
+              <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>
+              <br />
+              <span className="text-4xl font-bold sm:text-5xl">
+                echo – Linjeforeningen for informatikk
+              </span>
+            </h1>
+            <p>
+              Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
+              arrangere sosiale og faglige arrangementer.
+              <br /> Les mer{" "}
+              <Link
+                className="font-semibold underline underline-offset-2 hover:text-primary"
+                href="/om/echo"
+              >
+                her.
+              </Link>
+            </p>
+            <div>
+              <Button asChild variant="secondary">
+                {session ? (
+                  <Link href="/auth/profil">Min profil</Link>
+                ) : (
+                  <Link href="/auth/logg-inn">Logg inn</Link>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Container>
+      <Content />
     </>
   );
 }
