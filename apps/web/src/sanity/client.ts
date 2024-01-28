@@ -42,18 +42,15 @@ export async function sanityFetch<QueryResponse>({
   query,
   params = DEFAULT_PARAMS,
   tags = DEFAULT_TAGS,
-  revalidate = false,
 }: {
   query: string;
   params?: QueryParams;
   tags: Array<string>;
-  revalidate?: NextFetchRequestConfig["revalidate"];
 }): Promise<QueryResponse> {
   return await client.fetch<QueryResponse>(query, params, {
     cache: "force-cache",
     next: {
       tags,
-      revalidate,
     },
   });
 }
