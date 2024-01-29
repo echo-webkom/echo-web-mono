@@ -27,6 +27,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "publishedAt",
+      title: "Publisert",
+      type: "datetime",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "body",
       title: "Brødtekst",
       description:
