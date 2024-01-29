@@ -139,7 +139,7 @@ export function EventFilterSidebar({
     const searchParams = new URLSearchParams(params);
     search ? searchParams.set("search", search) : searchParams.delete("search");
     router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }, 400);
+  }, 500);
 
   /**
    * This useEffect sets the search input to the value in the URL when the user navigates back, etc.
