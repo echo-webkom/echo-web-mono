@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS "reaction" (
-	"id" text NOT NULL,
-	"reaction_id" integer NOT NULL,
+	"happening_id" text NOT NULL,
+	"emoji_id" integer NOT NULL,
 	"user_id" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "reaction_id_pk" PRIMARY KEY("id")
+	CONSTRAINT "reaction_happening_id_emoji_id_user_id_pk" PRIMARY KEY("happening_id","emoji_id","user_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN

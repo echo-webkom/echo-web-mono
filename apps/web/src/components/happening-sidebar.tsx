@@ -14,7 +14,6 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { registerReaction } from "@/data/reactions/mutations";
 import { getReactionByHappeningId } from "@/data/reactions/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
@@ -24,7 +23,7 @@ import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import ReactionButtons from "./reaction-button";
+import { ReactionButtons } from "./reaction-button";
 
 type EventSidebarProps = {
   event: Happening;
@@ -95,13 +94,19 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
 
   const reactions = await getReactionByHappeningId(event._id);
 
-  const handleReaction = async (emoji: number) => {
-    await registerReaction({
-      happeningId: event._id,
-      emojiId: emoji,
-      userId: "3",
-    });
-  };
+  type Reactions = Record<number, { hasReacted: boolean; count: number }>;
+
+  const userReactions = reactions.reduce((acc, curr) => {
+    const count = acc[curr.emojiId]?.count ?? 0;
+
+    return {
+      ...acc,
+      [curr.emojiId]: {
+        count: count + 1,
+        hasReacted: curr.userId === user?.id,
+      },
+    };
+  }, {} as Reactions);
 
   return (
     <Sidebar>
@@ -315,12 +320,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItem>
         )}
 
-      {user && (
-        <SidebarItem className="flex gap-2 lg:justify-between">
-          <ReactionButtons reactions={reactions} handleReaction={handleReaction} />
-        </SidebarItem>
-      )}
-
       {/**
        * Show deregister button if:
        * - User is registered to happening
@@ -439,6 +438,10 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </Button>
         </SidebarItem>
       )}
+
+      <SidebarItem>
+        <ReactionButtons reactions={userReactions} happeningId={event._id} />
+      </SidebarItem>
     </Sidebar>
   );
 }

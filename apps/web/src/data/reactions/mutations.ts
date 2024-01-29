@@ -1,17 +1,44 @@
+import { and, eq } from "drizzle-orm";
+
 import { db } from "@echo-webkom/db";
 import { reactions, type ReactionInsert } from "@echo-webkom/db/schemas";
 
 import { revalidateReactions } from "./revalidate";
 
 export async function registerReaction(newReaction: Omit<ReactionInsert, "createdAt">) {
-  const [insertedReaction] = await db.insert(reactions).values({
-    ...newReaction,
-    createdAt: new Date(),
+  const existingReaction = await db.query.reactions.findFirst({
+    where: (reaction, { eq, and }) =>
+      and(
+        eq(reaction.happeningId, newReaction.happeningId),
+        eq(reaction.emojiId, newReaction.emojiId),
+        eq(reaction.userId, newReaction.userId),
+      ),
   });
 
-  if (!insertedReaction) {
-    throw new Error("Reaction failed");
+  if (existingReaction) {
+    await db
+      .delete(reactions)
+      .where(
+        and(
+          eq(reactions.happeningId, newReaction.happeningId),
+          eq(reactions.emojiId, newReaction.emojiId),
+          eq(reactions.userId, newReaction.userId),
+        ),
+      );
+  } else {
+    const [insertedReaction] = await db
+      .insert(reactions)
+      .values({
+        ...newReaction,
+        createdAt: new Date(),
+      })
+      .returning({ happeningId: reactions.happeningId });
+
+    if (!insertedReaction) {
+      throw new Error("Reaction failed");
+    }
   }
+
   revalidateReactions(newReaction.happeningId);
 }
 

@@ -1,57 +1,45 @@
-"use client";
-
-import React, { useState } from "react";
-
-import { type Reaction } from "@echo-webkom/db/schemas";
-
+import { handleReact } from "@/actions/reactions";
 import { Button } from "./ui/button";
 
 type ReactionButtonProps = {
-  reactions: Array<Reaction>;
-  // happeningId: string;
-  handleReaction: (emoji: number) => Promise<void>;
+  happeningId: string;
+  reactions: Record<
+    number,
+    {
+      count: number;
+      hasReacted: boolean;
+    }
+  >;
 };
 
-// eslint-disable-next-line @next/next/no-async-client-component
-export default function ReactionButtons({ reactions, handleReaction }: ReactionButtonProps) {
-  console.log(reactions);
+const idToEmoji: Record<number, string> = {
+  0: "🥳",
+  1: "🔥",
+  2: "🚀",
+  3: "🍕",
+};
+
+export function ReactionButtons({ reactions, happeningId }: ReactionButtonProps) {
   return (
     <div className="flex gap-2">
-      <ReactionButton emoji="👍" handleReaction={handleReaction} />
-      {/* <ReactionButton emoji="👎" />
-      <ReactionButton emoji="👏" />
-      <ReactionButton emoji="🤔" /> */}
+      {Object.entries(idToEmoji).map(([key, value]) => {
+        return (
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          <form key={key} action={handleReact}>
+            <input type="hidden" name="emojiId" value={key} />
+            <input type="hidden" name="happeningId" value={happeningId} />
+            <Button
+              type="submit"
+              className={`${reactions[Number(key)]?.hasReacted ? "bg-wave hover:bg-wave" : "bg-muted hover:bg-muted"} h-8 w-14 rounded-full text-foreground`}
+            >
+              <div className="flex gap-1 font-normal">
+                <p>{value}</p>
+                <p>{reactions[Number(key)]?.count ?? 0}</p>
+              </div>
+            </Button>
+          </form>
+        );
+      })}
     </div>
-  );
-}
-
-function ReactionButton({
-  emoji,
-  handleReaction,
-}: {
-  emoji: string;
-  handleReaction: (emoji: number) => Promise<void>;
-}) {
-  const [isClicked, setIsClicked] = useState(false);
-  const [count, setCount] = useState(0);
-
-  const handleClick = () => {
-    setIsClicked(!isClicked);
-    setCount(isClicked ? count - 1 : count + 1);
-    handleReaction(0).catch((err) => {
-      console.log(err);
-    });
-  };
-
-  return (
-    <Button
-      onClick={handleClick}
-      className={`${isClicked ? "bg-wave hover:bg-wave" : "bg-muted hover:bg-muted"} h-8 w-14 rounded-full text-foreground`}
-    >
-      <div className="flex gap-1 font-normal">
-        <p>{emoji}</p>
-        <p>{count}</p>
-      </div>
-    </Button>
   );
 }

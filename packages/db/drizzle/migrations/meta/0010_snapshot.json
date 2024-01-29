@@ -1,5 +1,5 @@
 {
-  "id": "e66eb925-ea3b-41c2-872a-48399a6a3ba0",
+  "id": "9a9f950c-aa16-4275-9254-cc6b343b59a3",
   "prevId": "73a1a849-bd80-4d93-993e-1f6910ab791e",
   "version": "5",
   "dialect": "pg",
@@ -451,6 +451,64 @@
           "name": "question_id_pk",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "reaction": {
+      "name": "reaction",
+      "schema": "",
+      "columns": {
+        "happening_id": {
+          "name": "happening_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emoji_id": {
+          "name": "emoji_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reaction_user_id_user_id_fk": {
+          "name": "reaction_user_id_user_id_fk",
+          "tableFrom": "reaction",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reaction_happening_id_emoji_id_user_id_pk": {
+          "name": "reaction_happening_id_emoji_id_user_id_pk",
+          "columns": [
+            "happening_id",
+            "emoji_id",
+            "user_id"
           ]
         }
       },
@@ -920,62 +978,6 @@
           "name": "whitelist_email_pk",
           "columns": [
             "email"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "reaction": {
-      "name": "reaction",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reaction_id": {
-          "name": "reaction_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "reaction_user_id_user_id_fk": {
-          "name": "reaction_user_id_user_id_fk",
-          "tableFrom": "reaction",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "reaction_id_pk": {
-          "name": "reaction_id_pk",
-          "columns": [
-            "id"
           ]
         }
       },
