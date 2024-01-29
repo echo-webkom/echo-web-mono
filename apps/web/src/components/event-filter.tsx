@@ -9,6 +9,13 @@ import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
@@ -52,26 +59,69 @@ export function EventFilter() {
     router.push(`${pathname}?${searchParams}`, { scroll: false });
   }
 
+  function getButtonLabel(type: string) {
+    switch (type) {
+      case "all":
+        return "Alle";
+      case "event":
+        return "Arrangementer";
+      case "bedpres":
+        return "Bedriftspresentasjoner";
+    }
+  }
+
+  const firstButton = type === "all" ? "event" : "all";
+  const secondButton = type === "bedpres" ? "event" : "bedpres";
+
   return (
     <div>
       <div className="flex flex-col space-y-2 border-b-2 border-solid border-opacity-20 pb-4 sm:flex-row sm:justify-between md:space-y-0">
-        <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-2 md:space-y-0">
+        <div className="flex flex-col items-center space-y-2 sm:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button className="w-96">{getButtonLabel(type)}</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuContent className="sm:hidden">
+                <DropdownMenuItem>
+                  <Button
+                    className="w-96"
+                    variant="outline"
+                    onClick={() => updateFilter(firstButton)}
+                  >
+                    {getButtonLabel(firstButton)}
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Button
+                    className="w-96"
+                    variant="outline"
+                    onClick={() => updateFilter(secondButton)}
+                  >
+                    {getButtonLabel(secondButton)}
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenuPortal>
+          </DropdownMenu>
+        </div>
+        <div className="hidden flex-col items-center space-y-2 sm:flex sm:flex-row sm:space-x-2 md:space-y-0">
           <Button
-            className="w-60 sm:w-auto"
+            className="w-auto"
             variant={type === "all" ? "default" : "outline"}
             onClick={() => updateFilter("all")}
           >
             Alle
           </Button>
           <Button
-            className="w-60 sm:w-auto"
+            className="w-auto"
             variant={type === "event" ? "default" : "outline"}
             onClick={() => updateFilter("event")}
           >
             Arrangementer
           </Button>
           <Button
-            className="w-60 sm:w-auto"
+            className="w-auto"
             variant={type === "bedpres" ? "default" : "outline"}
             onClick={() => updateFilter("bedpres")}
           >
@@ -80,7 +130,7 @@ export function EventFilter() {
         </div>
         <div className="flex flex-col items-center">
           <Button
-            className="w-60 sm:w-auto"
+            className="w-96 sm:w-auto"
             variant={"outline"}
             onClick={() => updateFilter("past")}
           >
