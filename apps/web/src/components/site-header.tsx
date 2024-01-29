@@ -9,6 +9,7 @@ import { ModeToggle } from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
+import NotificationButton from "./notifications";
 
 export async function SiteHeader() {
   const user = await auth();
@@ -29,6 +30,7 @@ export async function SiteHeader() {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
+              {user && <NotificationButton />}
               <ModeToggle />
               {user ? (
                 <UserMenu user={user} />
