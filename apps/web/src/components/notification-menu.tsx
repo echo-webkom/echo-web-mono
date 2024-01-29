@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { RxBell } from "react-icons/rx";
 
-import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
+import { fetchAllNotifications } from "@/sanity/notifications/requests";
 
 import {
   DropdownMenu,
@@ -14,12 +14,15 @@ import {
 
 type NotificationButtonProps = {};
 
-export default function NotificationButton() {
+export default async function NotificationButton() {
+  
+  // const notifications = await fetchAllNotifications();
+
+  
   function displayNotifications() {
-    const notifications = [];
     return (
     <DropdownMenuItem asChild>
-      <span>Her kommer det vars12312312p938712893712980371929083217ler del3</span>
+    
     </DropdownMenuItem>);
   }
 
@@ -34,21 +37,16 @@ export default function NotificationButton() {
         <DropdownMenuLabel>
           <p className="font-normal">Varsler</p>
         </DropdownMenuLabel>
-        {displayNotifications()}
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem asChild>
-          <Link href="/auth/profil">
-            <span>Her kommer det varsler</span>
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem asChild>
-          <span>Her kommer det varsler2</span>
-        </DropdownMenuItem>
-
+        {/* {
+          notifications.map((notification) => {
+            return (
+            <DropdownMenuItem asChild>
+              <span>{notification.title}</span>
+              <span>test</span>
+            </DropdownMenuItem>);
+          })
+        } */}
 
       </DropdownMenuContent>
     </DropdownMenu>
