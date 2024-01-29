@@ -34,10 +34,5 @@ export default defineType({
       type: "markdown",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "banner",
-      title: "Banner",
-      type: "banner",
-    }),
   ]
 });
