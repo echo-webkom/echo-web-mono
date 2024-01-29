@@ -51,7 +51,7 @@ export async function updateRegistration(
       };
     }
 
-    if (isHost(user, exisitingRegistration.happening)) {
+    if (!isHost(user, exisitingRegistration.happening)) {
       return {
         success: false,
         message: "Du kan ikke endre påmeldingen til en arrangør",
@@ -60,16 +60,15 @@ export async function updateRegistration(
 
     const data = await updateRegistrationPayloadSchema.parseAsync(payload);
 
-    const [registration] = await db
+    await db
       .update(registrations)
       .set({
         status: data.status,
         unregisterReason: data.reason,
       })
-      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningId, id)))
-      .returning();
+      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningId, id)));
 
-    if (registration?.status === "registered") {
+    if (data.status === "registered") {
       const sendTo =
         exisitingRegistration.user.alternativeEmail ?? exisitingRegistration.user.email;
 
