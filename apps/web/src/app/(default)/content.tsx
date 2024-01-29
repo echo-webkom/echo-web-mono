@@ -1,17 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
+import { eq, sql } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
-import type { Registration } from "@echo-webkom/db/schemas";
-
+import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import {
+  shoppingListItems,
+  usersToShoppingListItems,
+  type Registration,
+} from "@echo-webkom/db/schemas";
 
+import { getColor } from "@/actions/get_color_like_button";
 import { Container } from "@/components/container";
+import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
 import { Button } from "@/components/ui/button";
-import { type ShoppingListItems } from "@echo-webkom/db/schemas";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
@@ -21,6 +27,8 @@ import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
+  const user = await auth();
+
   const [events, bedpresses, posts, jobAds] = await Promise.all([
     fetchHomeHappenings(["event", "external"], 4),
     fetchHomeHappenings(["bedpres"], 4),
@@ -28,10 +36,22 @@ export async function Content() {
     fetchAvailableJobAds(4),
   ]);
 
-  const itemNames = await db.query.shoppingListItems.findMany({
-    orderBy: (shoppingListItems, {desc}) => [desc(shoppingListItems.createdAt)],
-    limit: 5,
-  });
+  const items = await db
+    .select({
+      id: shoppingListItems.id,
+      name: shoppingListItems.name,
+      userId: shoppingListItems.userId,
+      createdAt: shoppingListItems.createdAt,
+      likesCount: sql<number>`COUNT(${usersToShoppingListItems.itemId})`,
+    })
+    .from(shoppingListItems)
+    .leftJoin(usersToShoppingListItems, eq(shoppingListItems.id, usersToShoppingListItems.itemId))
+    .groupBy(shoppingListItems.id);
+
+  const itemsLiked = await getColor(items);
+  const itemsLikedSorted = itemsLiked
+    .sort((a, b) => b.item.likesCount - a.item.likesCount)
+    .slice(0, 5);
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -118,24 +138,17 @@ export async function Content() {
         </section>
       )}
 
-      {/* Hyggkom */}
-      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
+      {/* Hyggkom handleliste */}
+      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
         <Link href="/handleliste">
           <h2 className="text-center text-xl font-semibold md:text-3xl">Hyggkom Handleliste</h2>
         </Link>
 
         <hr />
-
-        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-          {itemNames.map((item: ShoppingListItems) => (
-            <li key={item.id} className="grid grid-cols-2">
-              <p>{item.name}</p>
-          </li>
-          ))}
-        </ul>
-        <Button>
-          <Link href="/handleliste">Se mer</Link>
-        </Button>
+        <HyggkomShoppingList items={itemsLikedSorted} user={user} />
+        <Link href="/handleliste">
+          <Button>Se mer</Button>
+        </Link>
       </section>
     </Container>
   );

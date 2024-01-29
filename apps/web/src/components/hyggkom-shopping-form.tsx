@@ -34,6 +34,8 @@ export function HyggkomShoppingForm() {
           variant: "success",
         });
 
+        form.reset();
+
         router.refresh();
       } else {
         toast({
@@ -52,8 +54,10 @@ export function HyggkomShoppingForm() {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={onSubmit} className="py-5">
       <fieldset className="flex flex-col gap-2 py-2">
-        <Label htmlFor="" className="text-lg">Legg til ditt eget forslag!</Label>
-        <Input type="text" {...form.register("name")} className=""/>
+        <Label htmlFor="" className="text-lg">
+          Legg til ditt eget forslag!
+        </Label>
+        <Input type="text" {...form.register("name")} className="" />
       </fieldset>
       <Button type="submit">Legg til</Button>
     </form>
