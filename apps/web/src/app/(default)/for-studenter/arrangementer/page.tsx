@@ -97,10 +97,10 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   if (searchParams?.order === "ASC") happenings.reverse();
 
   return (
-    <Container>
+    <Container className="space-y-6 sm:space-y-0">
       <EventFilter />
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full pr-16 md:max-w-[250px]">
+      <div className="flex flex-col sm:flex-row">
+        <div className="w-full sm:pr-16 md:max-w-[250px]">
           <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
         </div>
         <div className="w-full">

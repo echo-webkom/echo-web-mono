@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@radix-ui/react-accordion": "1.1.2",
     "@types/prettier": "2.7.3",
     "prettier": "3.2.4",
     "prettier-plugin-organize-imports": "3.2.4",
