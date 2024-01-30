@@ -1,6 +1,6 @@
 {
-  "id": "c9bb2659-7709-4efa-97fb-2a04bbfc03e2",
-  "prevId": "73a1a849-bd80-4d93-993e-1f6910ab791e",
+  "id": "7cae0878-7213-4158-aee7-f57b28eef738",
+  "prevId": "a407deeb-b6a7-4a5b-a992-77a1998d42e6",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -88,7 +88,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -131,7 +132,15 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "question_idx": {
+          "name": "question_idx",
+          "columns": [
+            "question_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "answer_user_id_user_id_fk": {
           "name": "answer_user_id_user_id_fk",
@@ -144,7 +153,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
@@ -157,7 +167,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "answer_question_id_question_id_fk": {
           "name": "answer_question_id_question_id_fk",
@@ -170,7 +181,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -273,7 +285,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "happenings_to_groups_group_id_group_id_fk": {
           "name": "happenings_to_groups_group_id_group_id_fk",
@@ -286,7 +299,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -360,7 +374,22 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "type_idx": {
+          "name": "type_idx",
+          "columns": [
+            "type"
+          ],
+          "isUnique": false
+        },
+        "slug_idx": {
+          "name": "slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "happening_id_pk": {
@@ -370,15 +399,7 @@
           ]
         }
       },
-      "uniqueConstraints": {
-        "happening_slug_unique": {
-          "name": "happening_slug_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "question": {
       "name": "question",
@@ -430,7 +451,16 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_title": {
+          "name": "happening_id_title",
+          "columns": [
+            "title",
+            "happening_id"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "question_happening_id_happening_id_fk": {
           "name": "question_happening_id_happening_id_fk",
@@ -443,7 +473,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -493,7 +524,15 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "status_idx": {
+          "name": "status_idx",
+          "columns": [
+            "status"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "registration_user_id_user_id_fk": {
           "name": "registration_user_id_user_id_fk",
@@ -506,7 +545,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "registration_happening_id_happening_id_fk": {
           "name": "registration_happening_id_happening_id_fk",
@@ -519,7 +559,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -569,7 +610,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -678,7 +720,17 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "happening_id_min_year_max_year": {
+          "name": "happening_id_min_year_max_year",
+          "columns": [
+            "happening_id",
+            "min_year",
+            "max_year"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "spot_range_happening_id_happening_id_fk": {
           "name": "spot_range_happening_id_happening_id_fk",
@@ -691,7 +743,8 @@
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -741,7 +794,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         },
         "users_to_groups_group_id_group_id_fk": {
           "name": "users_to_groups_group_id_group_id_fk",
@@ -754,7 +808,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -841,7 +896,8 @@
             "id"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "schemaTo": "public"
         }
       },
       "compositePrimaryKeys": {
@@ -885,120 +941,6 @@
           "columns": [
             "identifier",
             "token"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "shopping_list_item": {
-      "name": "shopping_list_item",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "shopping_list_item_user_id_user_id_fk": {
-          "name": "shopping_list_item_user_id_user_id_fk",
-          "tableFrom": "shopping_list_item",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "users-to-shopping-list-items": {
-      "name": "users-to-shopping-list-items",
-      "schema": "",
-      "columns": {
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "item": {
-          "name": "item",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "users-to-shopping-list-items_user_id_user_id_fk": {
-          "name": "users-to-shopping-list-items_user_id_user_id_fk",
-          "tableFrom": "users-to-shopping-list-items",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "users-to-shopping-list-items_item_shopping_list_item_id_fk": {
-          "name": "users-to-shopping-list-items_item_shopping_list_item_id_fk",
-          "tableFrom": "users-to-shopping-list-items",
-          "tableTo": "shopping_list_item",
-          "columnsFrom": [
-            "item"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "users-to-shopping-list-items_user_id_item_pk": {
-          "name": "users-to-shopping-list-items_user_id_item_pk",
-          "columns": [
-            "user_id",
-            "item"
           ]
         }
       },
@@ -1098,8 +1040,8 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
   }
 }
