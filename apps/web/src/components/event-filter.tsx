@@ -23,14 +23,13 @@ export function EventFilter() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const { type, past, asc } = {
+  const { type, asc } = {
     type:
       params.get("type") === "event"
         ? "event"
         : params.get("type") === "bedpres"
           ? "bedpres"
           : "all",
-    past: params.get("past") === "true" ? true : false,
     asc: params.get("order") === "ASC" ? true : false,
   };
 
@@ -46,9 +45,6 @@ export function EventFilter() {
         break;
       case "bedpres":
         searchParams.set("type", "bedpres");
-        break;
-      case "past":
-        past ? searchParams.delete("past") : searchParams.set("past", "true");
         break;
       case "order":
         asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
@@ -117,15 +113,6 @@ export function EventFilter() {
             Bedriftspresentasjoner
           </Button>
         </div>
-        <div className="flex flex-col items-center">
-          <Button
-            className="w-96 sm:w-auto"
-            variant={"outline"}
-            onClick={() => updateFilter("past")}
-          >
-            {past ? "Vis kommende" : "Vis tidligere"}
-          </Button>
-        </div>
       </div>
       <div className="hidden items-center justify-end pb-2 pt-4 sm:flex">
         <span>
@@ -165,11 +152,12 @@ export function EventFilterSidebar({
     params.has("nextWeek") ||
     params.has("later");
 
-  const { thisWeek, nextWeek, later, open, asc } = {
+  const { thisWeek, nextWeek, later, open, past, asc } = {
     thisWeek: params.get("thisWeek") === "false" ? false : true,
     nextWeek: params.get("nextWeek") === "false" ? false : true,
     later: params.get("later") === "false" ? false : true,
     open: params.get("open") === "true" ? true : false,
+    past: params.get("past") === "true" ? true : false,
     asc: params.get("order") === "ASC" ? true : false,
   };
 
@@ -204,6 +192,9 @@ export function EventFilterSidebar({
         break;
       case "open":
         open ? searchParams.delete("open") : searchParams.set("open", "true");
+        break;
+      case "past":
+        past ? searchParams.delete("past") : searchParams.set("past", "true");
         break;
       case "order":
         asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
@@ -276,7 +267,7 @@ export function EventFilterSidebar({
 
           <SidebarItemContent className="flex items-center">
             <Checkbox
-              className="hover:bg-blue-100"
+              className="hover:bg-muted"
               id="thisWeek"
               checked={thisWeek}
               onCheckedChange={() => updateFilter("thisWeek")}
@@ -288,7 +279,7 @@ export function EventFilterSidebar({
 
           <SidebarItemContent className="flex items-center">
             <Checkbox
-              className="hover:bg-blue-100"
+              className="hover:bg-muted"
               id="nextWeek"
               checked={nextWeek}
               onCheckedChange={() => updateFilter("nextWeek")}
@@ -300,7 +291,7 @@ export function EventFilterSidebar({
 
           <SidebarItemContent className="flex items-center">
             <Checkbox
-              className="hover:bg-blue-100"
+              className="hover:bg-muted"
               id="later"
               checked={later}
               onCheckedChange={() => updateFilter("later")}
@@ -310,12 +301,23 @@ export function EventFilterSidebar({
             </Label>
           </SidebarItemContent>
         </SidebarItem>
-        <SidebarItem>
+        <SidebarItem className="mb-5 space-y-2">
           <SidebarItemTitle className="mb-3">Vis kun:</SidebarItemTitle>
 
           <SidebarItemContent className="flex items-center">
             <Checkbox
-              className="hover:bg-blue-100"
+              className="hover:bg-muted"
+              id="showPast"
+              checked={past}
+              onCheckedChange={() => updateFilter("past")}
+            />
+            <Label htmlFor="showPast" className="ml-2 cursor-pointer text-base">
+              Tidligere
+            </Label>
+          </SidebarItemContent>
+          <SidebarItemContent className="flex items-center">
+            <Checkbox
+              className="hover:bg-muted"
               id="showOpen"
               checked={open}
               onCheckedChange={() => updateFilter("open")}
@@ -326,7 +328,7 @@ export function EventFilterSidebar({
           </SidebarItemContent>
         </SidebarItem>
       </SidebarItem>
-      <SidebarItem className="pt-3">
+      <SidebarItem>
         <SidebarItemContent>
           <Button
             size={"sm"}
