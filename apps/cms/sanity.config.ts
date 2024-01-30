@@ -2,7 +2,7 @@ import { RobotIcon, RocketIcon, TerminalIcon } from "@sanity/icons";
 import { visionTool } from "@sanity/vision";
 import { markdownSchema } from "sanity-plugin-markdown";
 import { media } from "sanity-plugin-media";
-import { deskTool } from "sanity/desk";
+import { structureTool } from "sanity/structure";
 
 import { schemaTypes } from "./schemas";
 import { deskStructure } from "./src/desk-structure";
@@ -11,7 +11,7 @@ import { deskStructure } from "./src/desk-structure";
 
 const defaultConfig = {
   plugins: [
-    deskTool({
+    structureTool({
       structure: (S) => deskStructure(S),
     }),
     visionTool(),
