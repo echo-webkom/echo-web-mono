@@ -8,7 +8,7 @@ export default function EventsView({ happenings }: { happenings: Array<Happening
     return (
       <div className="m-5 flex flex-col">
         <h3 className="mx-auto text-xl font-medium">Her var det tomt!</h3>
-        <h3 className="mx-auto font-medium">Prøv å oppdatere søket ditt.</h3>
+        <h3 className="mx-auto font-medium">Prøv å oppdatere filtrene.</h3>
         <Image
           className="m-5 mx-auto rounded-lg"
           src="/gif/fresh-prince-room.gif"

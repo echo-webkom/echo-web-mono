@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
-import { cacheKeyFactory } from "./cache-keys";
+import { cacheKeyFactory } from "./revalidate";
 
 export async function getSpotRangeByHappeningId(happeningId: string) {
   return cache(

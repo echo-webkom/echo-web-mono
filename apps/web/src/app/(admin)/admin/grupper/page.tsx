@@ -1,7 +1,26 @@
+import { RxDotsHorizontal as Dots } from "react-icons/rx";
+
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { MembersModal } from "./members-modal";
 
 export const dynamic = "force-dynamic";
 
@@ -12,20 +31,13 @@ export default async function AdminGroupsPage() {
         with: {
           user: {
             columns: {
+              id: true,
               name: true,
             },
           },
         },
       },
     },
-  });
-
-  const g = groups.map((group) => {
-    return {
-      "id/slug": group.id,
-      name: group.name,
-      members: group.members.map((member) => member.user.name),
-    };
   });
 
   return (
@@ -41,16 +53,48 @@ export default async function AdminGroupsPage() {
           se de som er påmeldt på arrangmentet sitt, så må {"id"} i databasen matche {"slug"} i
           Sanity på undergruppen.
         </p>
-
-        <p>
-          <i>(Ikke implementert enda)</i> Det er tenkt at en leder av en gruppe skal ha muligheten
-          til å legge til nye personer i de gruppene personen er leder av.
-        </p>
       </div>
 
-      <code className="rounded-md bg-card p-2 font-mono text-card-foreground">
-        <pre>{JSON.stringify(g, null, 2)}</pre>
-      </code>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Navn</TableHead>
+            <TableHead>id</TableHead>
+            <TableHead>{/* Actions */}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {groups.map((group) => {
+            return (
+              <TableRow key={group.id}>
+                <TableCell>{group.name}</TableCell>
+                <TableCell>{group.id}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <Dots className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <MembersModal
+                        group={group}
+                        users={group.members.map((m) => ({
+                          id: m.user.id,
+                          name: m.user.name ?? m.user.id,
+                        }))}
+                      />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </Container>
   );
 }

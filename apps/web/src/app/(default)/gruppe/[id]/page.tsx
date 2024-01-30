@@ -7,6 +7,14 @@ import { db } from "@echo-webkom/db";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { AddUserToGroupDialog } from "./_components/add-user-to-group-dialog";
 import { GroupUserForm } from "./_components/group-user-form";
 
@@ -96,52 +104,38 @@ export default async function ManageGroup({ params }: Props) {
           {isGroupAdmin && <AddUserToGroupDialog group={group} />}
         </div>
 
-        <div className="relative overflow-x-auto rounded-lg border">
-          <table className="w-full min-w-[700px]">
-            <thead className="bg-muted text-muted-foreground">
-              <tr className="p-4 text-left">
-                <th scope="col" className="p-4">
-                  Navn
-                </th>
-                <th scope="col" className="p-4">
-                  E-post
-                </th>
-                <th scope="col" className="p-4">
-                  Leder
-                </th>
+        <Table wrapperClassName="border-none rounded-none">
+          <TableHeader>
+            <TableRow>
+              <TableHead scope="col">Navn</TableHead>
+              <TableHead scope="col">E-post</TableHead>
+              <TableHead scope="col">Leder</TableHead>
+              {isGroupAdmin && <TableHead scope="col">Endre</TableHead>}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {group.members.map((member) => (
+              <TableRow key={member.userId}>
+                <TableCell>{member.user.name}</TableCell>
+                <TableCell className="p-4">{member.user.email}</TableCell>
+                <TableCell className="p-4">{member.isLeader ? "Ja" : "Nei"}</TableCell>
                 {isGroupAdmin && (
-                  <th scope="col" className="p-4">
-                    Endre
-                  </th>
+                  <TableCell className="p-4">
+                    <GroupUserForm
+                      user={{
+                        email: member.user.email,
+                        id: member.userId,
+                        name: member.user.name ?? member.user.email,
+                      }}
+                      group={group}
+                      isLeader={member.isLeader}
+                    />
+                  </TableCell>
                 )}
-              </tr>
-            </thead>
-            <tbody>
-              {group.members.map((member) => (
-                <tr key={member.userId}>
-                  <th scope="row" className="p-4 text-left font-medium">
-                    {member.user.name}
-                  </th>
-                  <td className="p-4">{member.user.email}</td>
-                  <td className="p-4">{member.isLeader ? "Ja" : "Nei"}</td>
-                  {isGroupAdmin && (
-                    <td className="p-4">
-                      <GroupUserForm
-                        user={{
-                          email: member.user.email,
-                          id: member.userId,
-                          name: member.user.name ?? member.user.email,
-                        }}
-                        group={group}
-                        isLeader={member.isLeader}
-                      />
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </Container>
   );
