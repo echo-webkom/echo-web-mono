@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import {  pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
@@ -19,7 +19,7 @@ export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, m
     fields: [shoppingListItems.userId],
     references: [users.id],
   }),
-  likes: many(usersToShoppingListItems)
+  likes: many(usersToShoppingListItems),
 }));
 
 export type ShoppingListItems = (typeof shoppingListItems)["$inferSelect"];

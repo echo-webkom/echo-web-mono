@@ -28,7 +28,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [degrees.id],
   }),
   memberships: many(usersToGroups),
-  likes: many(usersToShoppingListItems)
+  likes: many(usersToShoppingListItems),
 }));
 
 export type User = (typeof users)["$inferSelect"];
