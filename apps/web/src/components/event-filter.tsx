@@ -69,61 +69,104 @@ export function EventFilter() {
   const secondButton = type === "bedpres" ? "event" : "bedpres";
 
   return (
-    <div>
-      <div className="flex flex-col space-y-3 border-solid border-opacity-20 pb-7 sm:flex-row sm:justify-between sm:space-y-0 sm:border-b-2 sm:pb-4">
-        <div className="relative flex flex-col items-center sm:hidden">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="w-96">
-              <Button fullWidth>{getButtonLabel(type)}</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="sm:hidden">
-              <DropdownMenuItem className="w-96 text-base">
-                <Button fullWidth variant="ghost" onClick={() => updateFilter(firstButton)}>
-                  {getButtonLabel(firstButton)}
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="w-96 text-base">
-                <Button fullWidth variant="ghost" onClick={() => updateFilter(secondButton)}>
-                  {getButtonLabel(secondButton)}
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="hidden sm:flex sm:flex-row sm:space-x-2">
-          <Button
-            className="w-auto"
-            variant={type === "all" ? "default" : "outline"}
-            onClick={() => updateFilter("all")}
-          >
-            Alle
-          </Button>
-          <Button
-            className="w-auto"
-            variant={type === "event" ? "default" : "outline"}
-            onClick={() => updateFilter("event")}
-          >
-            Arrangementer
-          </Button>
-          <Button
-            className="w-auto"
-            variant={type === "bedpres" ? "default" : "outline"}
-            onClick={() => updateFilter("bedpres")}
-          >
-            Bedriftspresentasjoner
-          </Button>
-        </div>
+    <>
+      <div className="flex flex-col items-center sm:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="w-96">
+            <Button fullWidth>{getButtonLabel(type)}</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="sm:hidden">
+            <DropdownMenuItem className="w-96 text-base">
+              <Button fullWidth variant="ghost" onClick={() => updateFilter(firstButton)}>
+                {getButtonLabel(firstButton)}
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="w-96 text-base">
+              <Button fullWidth variant="ghost" onClick={() => updateFilter(secondButton)}>
+                {getButtonLabel(secondButton)}
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      <div className="hidden items-center justify-end pb-2 pt-4 sm:flex">
-        <span>
-          <ArrowDownNarrowWide
-            className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
-              "rotate-180 transform": asc,
-            })}
-            onClick={() => updateFilter("order")}
-          />
-        </span>
+      <div className="hidden sm:flex sm:flex-row sm:space-x-2">
+        <Button
+          className="w-auto"
+          variant={type === "all" ? "default" : "outline"}
+          onClick={() => updateFilter("all")}
+        >
+          Alle
+        </Button>
+        <Button
+          className="w-auto"
+          variant={type === "event" ? "default" : "outline"}
+          onClick={() => updateFilter("event")}
+        >
+          Arrangementer
+        </Button>
+        <Button
+          className="w-auto"
+          variant={type === "bedpres" ? "default" : "outline"}
+          onClick={() => updateFilter("bedpres")}
+        >
+          Bedriftspresentasjoner
+        </Button>
       </div>
+    </>
+  );
+}
+
+export function FilterStatusAndOrderBar() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+
+  const asc = params.get("order") === "ASC" ? true : false;
+
+  const filterSet =
+    params.has("order") ||
+    params.has("search") ||
+    params.has("open") ||
+    params.has("past") ||
+    params.has("thisWeek") ||
+    params.has("nextWeek") ||
+    params.has("later");
+
+  function updateFilter(element: string) {
+    if (element === "reset") {
+      const searchParams = new URLSearchParams();
+      const type = params.get("type");
+      if (type === "bedpres" || type === "event") searchParams.set("type", type);
+      router.push(`${pathname}?${searchParams}`, { scroll: false });
+    } else if (element === "order") {
+      const searchParams = new URLSearchParams(params);
+
+      asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
+      router.push(`${pathname}?${searchParams}`, { scroll: false });
+    }
+  }
+
+  return (
+    <div className="flex items-center justify-between">
+      <Button
+        size={"sm"}
+        variant={"outline"}
+        className={cn("rounded-full text-sm", {
+          invisible: !filterSet,
+        })}
+        onClick={() => updateFilter("reset")}
+      >
+        Tøm alle filtre
+      </Button>
+
+      <span>
+        <ArrowDownNarrowWide
+          className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
+            "rotate-180 transform": asc,
+          })}
+          onClick={() => updateFilter("order")}
+        />
+      </span>
     </div>
   );
 }
@@ -143,22 +186,12 @@ export function EventFilterSidebar({
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const filterSet =
-    params.has("order") ||
-    params.has("search") ||
-    params.has("open") ||
-    params.has("past") ||
-    params.has("thisWeek") ||
-    params.has("nextWeek") ||
-    params.has("later");
-
-  const { thisWeek, nextWeek, later, open, past, asc } = {
+  const { thisWeek, nextWeek, later, open, past } = {
     thisWeek: params.get("thisWeek") === "false" ? false : true,
     nextWeek: params.get("nextWeek") === "false" ? false : true,
     later: params.get("later") === "false" ? false : true,
     open: params.get("open") === "true" ? true : false,
     past: params.get("past") === "true" ? true : false,
-    asc: params.get("order") === "ASC" ? true : false,
   };
 
   const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
@@ -196,18 +229,8 @@ export function EventFilterSidebar({
       case "past":
         past ? searchParams.delete("past") : searchParams.set("past", "true");
         break;
-      case "order":
-        asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
-        break;
     }
 
-    router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }
-
-  function resetFilter() {
-    const searchParams = new URLSearchParams();
-    const type = params.get("type");
-    if (type === "bedpres" || type === "event") searchParams.set("type", type);
     router.push(`${pathname}?${searchParams}`, { scroll: false });
   }
 
@@ -215,7 +238,7 @@ export function EventFilterSidebar({
     <Sidebar className="space-y-3 ">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
-          <div className="relative flex flex-grow rounded-lg border border-gray-300 hover:border-gray-500">
+          <div className="relative flex w-96 rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
             <Input
               value={searchInput}
               onChange={(e) => {
@@ -251,14 +274,6 @@ export function EventFilterSidebar({
               </button>
             )}
           </div>
-          <span className="ml-5 sm:hidden">
-            <ArrowDownNarrowWide
-              className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
-                "rotate-180 transform": asc,
-              })}
-              onClick={() => updateFilter("order")}
-            />
-          </span>
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
@@ -327,20 +342,6 @@ export function EventFilterSidebar({
             </Label>
           </SidebarItemContent>
         </SidebarItem>
-      </SidebarItem>
-      <SidebarItem>
-        <SidebarItemContent>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className={cn("rounded-full text-sm", {
-              invisible: !filterSet,
-            })}
-            onClick={() => resetFilter()}
-          >
-            Tøm alle filtre
-          </Button>
-        </SidebarItemContent>
       </SidebarItem>
     </Sidebar>
   );
