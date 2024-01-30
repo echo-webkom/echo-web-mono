@@ -1,25 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
-import { eq, sql } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db";
-import {
-  shoppingListItems,
-  usersToShoppingListItems,
-  type Registration,
-} from "@echo-webkom/db/schemas";
+import { type Registration } from "@echo-webkom/db/schemas";
 
-import { getColor } from "@/actions/get_color_like_button";
 import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
 import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
+import { isMemberOf } from "@/lib/memberships";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
@@ -29,29 +24,25 @@ import { urlFor } from "@/utils/image-builder";
 export async function Content() {
   const user = await auth();
 
-  const [events, bedpresses, posts, jobAds] = await Promise.all([
+  const [events, bedpresses, posts, jobAds, items] = await Promise.all([
     fetchHomeHappenings(["event", "external"], 4),
     fetchHomeHappenings(["bedpres"], 4),
     fetchPosts(2),
     fetchAvailableJobAds(4),
+    getAllShoppinglistItems(),
   ]);
 
-  const items = await db
-    .select({
-      id: shoppingListItems.id,
-      name: shoppingListItems.name,
-      userId: shoppingListItems.userId,
-      createdAt: shoppingListItems.createdAt,
-      likesCount: sql<number>`COUNT(${usersToShoppingListItems.itemId})`,
-    })
-    .from(shoppingListItems)
-    .leftJoin(usersToShoppingListItems, eq(shoppingListItems.id, usersToShoppingListItems.itemId))
-    .groupBy(shoppingListItems.id);
-
-  const itemsLiked = await getColor(items);
-  const itemsLikedSorted = itemsLiked
-    .sort((a, b) => b.item.likesCount - a.item.likesCount)
+  const mappedItems = items
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      likes: item.likes.length,
+      hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
+    }))
+    .sort((a, b) => b.likes - a.likes)
     .slice(0, 5);
+
+  const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -145,7 +136,7 @@ export async function Content() {
         </Link>
 
         <hr />
-        <HyggkomShoppingList items={itemsLikedSorted} user={user} />
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
         <Link href="/handleliste">
           <Button>Se mer</Button>
         </Link>

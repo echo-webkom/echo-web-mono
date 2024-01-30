@@ -1,5 +1,5 @@
 {
-  "id": "12ee6589-ffaf-468c-945e-753710657827",
+  "id": "56cced97-9b85-434d-933f-92e3561de962",
   "prevId": "73a1a849-bd80-4d93-993e-1f6910ab791e",
   "version": "5",
   "dialect": "pg",
@@ -940,8 +940,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users-to-shopping-list-items": {
-      "name": "users-to-shopping-list-items",
+    "users_to_shopping_list_items": {
+      "name": "users_to_shopping_list_items",
       "schema": "",
       "columns": {
         "user_id": {
@@ -950,8 +950,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "item": {
-          "name": "item",
+        "item_id": {
+          "name": "item_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -966,9 +966,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "users-to-shopping-list-items_user_id_user_id_fk": {
-          "name": "users-to-shopping-list-items_user_id_user_id_fk",
-          "tableFrom": "users-to-shopping-list-items",
+        "users_to_shopping_list_items_user_id_user_id_fk": {
+          "name": "users_to_shopping_list_items_user_id_user_id_fk",
+          "tableFrom": "users_to_shopping_list_items",
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
@@ -979,26 +979,26 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "users-to-shopping-list-items_item_shopping_list_item_id_fk": {
-          "name": "users-to-shopping-list-items_item_shopping_list_item_id_fk",
-          "tableFrom": "users-to-shopping-list-items",
+        "users_to_shopping_list_items_item_id_shopping_list_item_id_fk": {
+          "name": "users_to_shopping_list_items_item_id_shopping_list_item_id_fk",
+          "tableFrom": "users_to_shopping_list_items",
           "tableTo": "shopping_list_item",
           "columnsFrom": [
-            "item"
+            "item_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "users-to-shopping-list-items_user_id_item_pk": {
-          "name": "users-to-shopping-list-items_user_id_item_pk",
+        "users_to_shopping_list_items_user_id_item_id_pk": {
+          "name": "users_to_shopping_list_items_user_id_item_id_pk",
           "columns": [
             "user_id",
-            "item"
+            "item_id"
           ]
         }
       },

@@ -5,27 +5,27 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { shoppingListItems, users } from ".";
 
 export const usersToShoppingListItems = pgTable(
-  "users-to-shopping-list-items",
+  "users_to_shopping_list_items",
   {
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    itemId: uuid("item")
+    itemId: uuid("item_id")
       .notNull()
-      .references(() => shoppingListItems.id),
+      .references(() => shoppingListItems.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey(table.userId, table.itemId),
+    pk: primaryKey({ columns: [table.userId, table.itemId] }),
   }),
 );
 
 export const usersToShoppingListItemsRelations = relations(usersToShoppingListItems, ({ one }) => ({
-  userId: one(users, {
+  user: one(users, {
     fields: [usersToShoppingListItems.userId],
     references: [users.id],
   }),
-  itemId: one(shoppingListItems, {
+  item: one(shoppingListItems, {
     fields: [usersToShoppingListItems.itemId],
     references: [shoppingListItems.id],
   }),

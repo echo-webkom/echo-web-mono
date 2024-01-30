@@ -1,31 +1,22 @@
-import { eq, sql } from "drizzle-orm";
-
 import { auth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db";
-import { shoppingListItems, usersToShoppingListItems } from "@echo-webkom/db/schemas";
 
-import { getColor } from "@/actions/get_color_like_button";
 import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
+import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { isMemberOf } from "@/lib/memberships";
 
 export default async function HyggkomHandleliste() {
-  const user = await auth();
+  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
 
-  const items = await db
-    .select({
-      id: shoppingListItems.id,
-      name: shoppingListItems.name,
-      userId: shoppingListItems.userId,
-      createdAt: shoppingListItems.createdAt,
-      likesCount: sql<number>`COUNT(${usersToShoppingListItems.itemId})`,
-    })
-    .from(shoppingListItems)
-    .leftJoin(usersToShoppingListItems, eq(shoppingListItems.id, usersToShoppingListItems.itemId))
-    .groupBy(shoppingListItems.id);
+  const mappedItems = items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    likes: item.likes.length,
+    hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
+  }));
 
-  const itemsLiked = await getColor(items);
-  itemsLiked.sort((a, b) => b.item.likesCount - a.item.likesCount);
+  const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
     <Container className="max-w-5xl ">
@@ -34,7 +25,7 @@ export default async function HyggkomHandleliste() {
         <h1 className="py-3 text-xl">
           Like de tingene du mener vi bør kjøpe inn, eller legg til ditt eget forslag under!
         </h1>
-        <HyggkomShoppingList items={itemsLiked} user={user} />
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
       </div>
       <HyggkomShoppingForm />
     </Container>

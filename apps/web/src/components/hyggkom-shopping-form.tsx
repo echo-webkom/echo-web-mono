@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { hyggkomSubmit } from "@/actions/hyggkom_submit";
+import { hyggkomSubmit } from "@/actions/shopping-list";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -17,7 +16,6 @@ const shoppingListSchema = z.object({
 
 export function HyggkomShoppingForm() {
   const { toast } = useToast();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof shoppingListSchema>>({
     resolver: zodResolver(shoppingListSchema),
@@ -35,8 +33,6 @@ export function HyggkomShoppingForm() {
         });
 
         form.reset();
-
-        router.refresh();
       } else {
         toast({
           title: "Noe gikk galt",

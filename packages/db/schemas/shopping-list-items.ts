@@ -3,7 +3,7 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
-import { usersToShoppingListItems } from "./users_to_shopping_list_items";
+import { usersToShoppingListItems } from "./users-to-shopping-list-items";
 
 export const shoppingListItems = pgTable("shopping_list_item", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -15,7 +15,7 @@ export const shoppingListItems = pgTable("shopping_list_item", {
 });
 
 export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({
-  userId: one(users, {
+  user: one(users, {
     fields: [shoppingListItems.userId],
     references: [users.id],
   }),
