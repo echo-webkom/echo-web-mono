@@ -9,6 +9,11 @@ export default defineType({
   title: "Notifikasjoner",
   type: "document",
   icon: BellIcon,
+  preview: {
+    select: {
+      title: "title",
+    },
+  },
   fields: [
     defineField({
       name: "title",
@@ -17,22 +22,33 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
-      options: {
-        source: "title",
-        maxLength: 96,
-      },
+      name: "subtitle", 
+      title: "Undertittel",
+      description: "Her kan det legges inn en bedre og lengre beskrivelse av notifikasjonen.",
+      type: "string",
+    }),
+    defineField({
+      name: "publishedAt",
+      title: "Publisert",
+      type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "body",
-      title: "Brødtekst",
-      description:
-        "Innholdet på siden. Ikke bruk overskrifter her. Vi bruker h1-overskrifter fra tittelen. Bruker heller h2 (##).",
-      type: "markdown",
+      name: "validTo",
+      title: "Gyldig til",
+      description: "Velg hvor lenge notifikasjonen skal være synlig.",
+      type: "datetime",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "showBanner",
+      title: "Vis banner",
+      type: "boolean",
+      description: "Velg dette KUN om det er viktig at så mange som mulig ser denne varslingen.",
+      initialValue: false,
+      options: {
+        layout: "checkbox",
+      },
     }),
   ]
 });
