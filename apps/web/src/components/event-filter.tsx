@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+  type ReadonlyURLSearchParams,
+} from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -18,55 +24,79 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
+type FilterType =
+  | "ALL"
+  | "EVENT"
+  | "BEDPRES"
+  | "ASC"
+  | "THIS_WEEK"
+  | "NEXT_WEEK"
+  | "LATER"
+  | "PAST"
+  | "OPEN";
+
+function updateFilter(
+  type: FilterType,
+  router: AppRouterInstance,
+  pathname: string,
+  params: ReadonlyURLSearchParams,
+  condition?: boolean,
+) {
+  const searchParams = new URLSearchParams(params);
+
+  switch (type) {
+    case "ALL":
+      searchParams.delete("type");
+      break;
+    case "EVENT":
+      searchParams.set("type", "event");
+      break;
+    case "BEDPRES":
+      searchParams.set("type", "bedpres");
+      break;
+    case "ASC":
+      condition ? searchParams.delete("order") : searchParams.set("order", "ASC");
+      break;
+    case "THIS_WEEK":
+      condition ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
+      break;
+    case "NEXT_WEEK":
+      condition ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
+      break;
+    case "LATER":
+      condition ? searchParams.set("later", "false") : searchParams.delete("later");
+      break;
+    case "OPEN":
+      condition ? searchParams.delete("open") : searchParams.set("open", "true");
+      break;
+    case "PAST":
+      condition ? searchParams.delete("past") : searchParams.set("past", "true");
+      break;
+  }
+  router.push(`${pathname}?${searchParams}`, { scroll: false });
+}
+
 export function EventFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const { type, asc } = {
-    type:
-      params.get("type") === "event"
-        ? "event"
-        : params.get("type") === "bedpres"
-          ? "bedpres"
-          : "all",
-    asc: params.get("order") === "ASC" ? true : false,
-  };
+  const type =
+    params.get("type") === "event" ? "EVENT" : params.get("type") === "bedpres" ? "BEDPRES" : "ALL";
 
-  function updateFilter(element: string) {
-    const searchParams = new URLSearchParams(params);
-
-    switch (element) {
-      case "all":
-        searchParams.delete("type");
-        break;
-      case "event":
-        searchParams.set("type", "event");
-        break;
-      case "bedpres":
-        searchParams.set("type", "bedpres");
-        break;
-      case "order":
-        asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
-        break;
-    }
-
-    router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }
-
-  function getButtonLabel(type: string) {
+  function getButtonLabel(type: FilterType) {
     switch (type) {
-      case "all":
+      case "ALL":
         return "Alle";
-      case "event":
+      case "EVENT":
         return "Arrangementer";
-      case "bedpres":
+      case "BEDPRES":
         return "Bedriftspresentasjoner";
     }
   }
 
-  const firstButton = type === "all" ? "event" : "all";
-  const secondButton = type === "bedpres" ? "event" : "bedpres";
+  const firstButton = type === "ALL" ? "EVENT" : "ALL";
+  const secondButton = type === "BEDPRES" ? "EVENT" : "BEDPRES";
 
   return (
     <>
@@ -77,12 +107,20 @@ export function EventFilter() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="sm:hidden">
             <DropdownMenuItem className="w-96 text-base">
-              <Button fullWidth variant="ghost" onClick={() => updateFilter(firstButton)}>
+              <Button
+                fullWidth
+                variant="ghost"
+                onClick={() => updateFilter(firstButton, router, pathname, params)}
+              >
                 {getButtonLabel(firstButton)}
               </Button>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-96 text-base">
-              <Button fullWidth variant="ghost" onClick={() => updateFilter(secondButton)}>
+              <Button
+                fullWidth
+                variant="ghost"
+                onClick={() => updateFilter(secondButton, router, pathname, params)}
+              >
                 {getButtonLabel(secondButton)}
               </Button>
             </DropdownMenuItem>
@@ -92,22 +130,22 @@ export function EventFilter() {
       <div className="hidden sm:flex sm:flex-row sm:space-x-2">
         <Button
           className="w-auto"
-          variant={type === "all" ? "default" : "outline"}
-          onClick={() => updateFilter("all")}
+          variant={type === "ALL" ? "default" : "outline"}
+          onClick={() => updateFilter("ALL", router, pathname, params)}
         >
           Alle
         </Button>
         <Button
           className="w-auto"
-          variant={type === "event" ? "default" : "outline"}
-          onClick={() => updateFilter("event")}
+          variant={type === "EVENT" ? "default" : "outline"}
+          onClick={() => updateFilter("EVENT", router, pathname, params)}
         >
           Arrangementer
         </Button>
         <Button
           className="w-auto"
-          variant={type === "bedpres" ? "default" : "outline"}
-          onClick={() => updateFilter("bedpres")}
+          variant={type === "BEDPRES" ? "default" : "outline"}
+          onClick={() => updateFilter("BEDPRES", router, pathname, params)}
         >
           Bedriftspresentasjoner
         </Button>
@@ -132,18 +170,11 @@ export function FilterStatusAndOrderBar() {
     params.has("nextWeek") ||
     params.has("later");
 
-  function updateFilter(element: string) {
-    if (element === "reset") {
-      const searchParams = new URLSearchParams();
-      const type = params.get("type");
-      if (type === "bedpres" || type === "event") searchParams.set("type", type);
-      router.push(`${pathname}?${searchParams}`, { scroll: false });
-    } else if (element === "order") {
-      const searchParams = new URLSearchParams(params);
-
-      asc ? searchParams.delete("order") : searchParams.set("order", "ASC");
-      router.push(`${pathname}?${searchParams}`, { scroll: false });
-    }
+  function resetFilter() {
+    const searchParams = new URLSearchParams();
+    const type = params.get("type");
+    if (type === "bedpres" || type === "event") searchParams.set("type", type);
+    router.push(`${pathname}?${searchParams}`, { scroll: false });
   }
 
   return (
@@ -154,7 +185,7 @@ export function FilterStatusAndOrderBar() {
         className={cn("rounded-full text-sm", {
           invisible: !filterSet,
         })}
-        onClick={() => updateFilter("reset")}
+        onClick={() => resetFilter()}
       >
         Tøm alle filtre
       </Button>
@@ -164,7 +195,7 @@ export function FilterStatusAndOrderBar() {
           className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
             "rotate-180 transform": asc,
           })}
-          onClick={() => updateFilter("order")}
+          onClick={() => updateFilter("ASC", router, pathname, params, asc)}
         />
       </span>
     </div>
@@ -209,30 +240,6 @@ export function EventFilterSidebar({
   useEffect(() => {
     setSearchInput(paramSearch);
   }, [paramSearch]);
-
-  function updateFilter(element: string) {
-    const searchParams = new URLSearchParams(params);
-
-    switch (element) {
-      case "thisWeek":
-        thisWeek ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
-        break;
-      case "nextWeek":
-        nextWeek ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
-        break;
-      case "later":
-        later ? searchParams.set("later", "false") : searchParams.delete("later");
-        break;
-      case "open":
-        open ? searchParams.delete("open") : searchParams.set("open", "true");
-        break;
-      case "past":
-        past ? searchParams.delete("past") : searchParams.set("past", "true");
-        break;
-    }
-
-    router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }
 
   return (
     <Sidebar className="space-y-3 ">
@@ -285,7 +292,7 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="thisWeek"
               checked={thisWeek}
-              onCheckedChange={() => updateFilter("thisWeek")}
+              onCheckedChange={() => updateFilter("THIS_WEEK", router, pathname, params, thisWeek)}
             />
             <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-base">
               Denne uken ({numThisWeek})
@@ -297,7 +304,7 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="nextWeek"
               checked={nextWeek}
-              onCheckedChange={() => updateFilter("nextWeek")}
+              onCheckedChange={() => updateFilter("NEXT_WEEK", router, pathname, params, nextWeek)}
             />
             <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-base">
               Neste uke ({numNextWeek})
@@ -309,7 +316,7 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="later"
               checked={later}
-              onCheckedChange={() => updateFilter("later")}
+              onCheckedChange={() => updateFilter("LATER", router, pathname, params, later)}
             />
             <Label htmlFor="later" className="ml-2 cursor-pointer text-base">
               Senere ({numLater})
@@ -324,7 +331,7 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="showPast"
               checked={past}
-              onCheckedChange={() => updateFilter("past")}
+              onCheckedChange={() => updateFilter("PAST", router, pathname, params, past)}
             />
             <Label htmlFor="showPast" className="ml-2 cursor-pointer text-base">
               Tidligere
@@ -335,7 +342,7 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="showOpen"
               checked={open}
-              onCheckedChange={() => updateFilter("open")}
+              onCheckedChange={() => updateFilter("OPEN", router, pathname, params, open)}
             />
             <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-base">
               Åpen for påmelding
