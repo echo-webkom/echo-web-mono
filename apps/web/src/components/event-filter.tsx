@@ -13,7 +13,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
@@ -76,33 +75,23 @@ export function EventFilter() {
   return (
     <div>
       <div className="flex flex-col space-y-3 border-solid border-opacity-20 pb-7 sm:flex-row sm:justify-between sm:space-y-0 sm:border-b-2 sm:pb-4">
-        <div className="flex flex-col items-center sm:hidden">
+        <div className="relative flex flex-col items-center sm:hidden">
           <DropdownMenu>
-            <DropdownMenuTrigger className="w-full">
-              <Button className="w-full">{getButtonLabel(type)}</Button>
+            <DropdownMenuTrigger className="w-96">
+              <Button fullWidth>{getButtonLabel(type)}</Button>
             </DropdownMenuTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuContent className="sm:hidden">
-                <DropdownMenuItem>
-                  <Button
-                    className="w-96"
-                    variant="ghost"
-                    onClick={() => updateFilter(firstButton)}
-                  >
-                    {getButtonLabel(firstButton)}
-                  </Button>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Button
-                    className="w-96"
-                    variant="ghost"
-                    onClick={() => updateFilter(secondButton)}
-                  >
-                    {getButtonLabel(secondButton)}
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenuPortal>
+            <DropdownMenuContent className="sm:hidden">
+              <DropdownMenuItem className="w-96 text-base">
+                <Button fullWidth variant="ghost" onClick={() => updateFilter(firstButton)}>
+                  {getButtonLabel(firstButton)}
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="w-96 text-base">
+                <Button fullWidth variant="ghost" onClick={() => updateFilter(secondButton)}>
+                  {getButtonLabel(secondButton)}
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
         <div className="hidden sm:flex sm:flex-row sm:space-x-2">
@@ -130,7 +119,7 @@ export function EventFilter() {
         </div>
         <div className="flex flex-col items-center">
           <Button
-            className="w-full sm:w-auto"
+            className="w-96 sm:w-auto"
             variant={"outline"}
             onClick={() => updateFilter("past")}
           >
@@ -234,7 +223,7 @@ export function EventFilterSidebar({
   return (
     <Sidebar className="space-y-3 ">
       <SidebarItem>
-        <SidebarItemContent className="flex items-center">
+        <SidebarItemContent className="flex items-center justify-center">
           <div className="relative flex flex-grow rounded-lg border border-gray-300 hover:border-gray-500">
             <Input
               value={searchInput}
