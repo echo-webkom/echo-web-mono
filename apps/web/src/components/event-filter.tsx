@@ -7,7 +7,6 @@ import { useDebouncedCallback } from "use-debounce";
 
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -76,11 +75,11 @@ export function EventFilter() {
 
   return (
     <div>
-      <div className="flex flex-col space-y-3 border-b-2 border-solid border-opacity-20 pb-4 sm:flex-row sm:justify-between sm:space-y-0">
+      <div className="flex flex-col space-y-3 border-solid border-opacity-20 pb-7 sm:flex-row sm:justify-between sm:space-y-0 sm:border-b-2 sm:pb-4">
         <div className="flex flex-col items-center sm:hidden">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button className="w-96">{getButtonLabel(type)}</Button>
+            <DropdownMenuTrigger className="w-full">
+              <Button className="w-full">{getButtonLabel(type)}</Button>
             </DropdownMenuTrigger>
             <DropdownMenuPortal>
               <DropdownMenuContent className="sm:hidden">
@@ -131,7 +130,7 @@ export function EventFilter() {
         </div>
         <div className="flex flex-col items-center">
           <Button
-            className="w-96 sm:w-auto"
+            className="w-full sm:w-auto"
             variant={"outline"}
             onClick={() => updateFilter("past")}
           >
@@ -233,7 +232,7 @@ export function EventFilterSidebar({
   }
 
   return (
-    <Sidebar className="space-y-3">
+    <Sidebar className="space-y-3 ">
       <SidebarItem>
         <SidebarItemContent className="flex items-center">
           <div className="relative flex flex-grow rounded-lg border border-gray-300 hover:border-gray-500">
@@ -272,9 +271,9 @@ export function EventFilterSidebar({
               </button>
             )}
           </div>
-          <span className="pl-5 sm:hidden">
+          <span className="ml-5 sm:hidden">
             <ArrowDownNarrowWide
-              className={cn(" h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
+              className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
                 "rotate-180 transform": asc,
               })}
               onClick={() => updateFilter("order")}
@@ -283,78 +282,73 @@ export function EventFilterSidebar({
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
-        <Accordion type="single" collapsible defaultValue="item-1" className="sm:hidden">
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Vis flere filtre</AccordionTrigger>
-            <AccordionContent>
-              <SidebarItem>
-                <SidebarItemTitle className="mb-2">Tidspunkt:</SidebarItemTitle>
+        <SidebarItem className="mb-5 space-y-2">
+          <SidebarItemTitle className="mb-3">Tidspunkt:</SidebarItemTitle>
 
-                <SidebarItemContent className="mb-2 flex items-center">
-                  <Checkbox
-                    className="hover:bg-blue-100"
-                    id="thisWeek"
-                    checked={thisWeek}
-                    onCheckedChange={() => updateFilter("thisWeek")}
-                  />
-                  <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-sm">
-                    Denne uken ({numThisWeek})
-                  </Label>
-                </SidebarItemContent>
+          <SidebarItemContent className="flex items-center">
+            <Checkbox
+              className="hover:bg-blue-100"
+              id="thisWeek"
+              checked={thisWeek}
+              onCheckedChange={() => updateFilter("thisWeek")}
+            />
+            <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-base">
+              Denne uken ({numThisWeek})
+            </Label>
+          </SidebarItemContent>
 
-                <SidebarItemContent className="mb-2 flex items-center">
-                  <Checkbox
-                    className="hover:bg-blue-100"
-                    id="nextWeek"
-                    checked={nextWeek}
-                    onCheckedChange={() => updateFilter("nextWeek")}
-                  />
-                  <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-sm">
-                    Neste uke ({numNextWeek})
-                  </Label>
-                </SidebarItemContent>
+          <SidebarItemContent className="flex items-center">
+            <Checkbox
+              className="hover:bg-blue-100"
+              id="nextWeek"
+              checked={nextWeek}
+              onCheckedChange={() => updateFilter("nextWeek")}
+            />
+            <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-base">
+              Neste uke ({numNextWeek})
+            </Label>
+          </SidebarItemContent>
 
-                <SidebarItemContent className="flex items-center">
-                  <Checkbox
-                    className="hover:bg-blue-100"
-                    id="later"
-                    checked={later}
-                    onCheckedChange={() => updateFilter("later")}
-                  />
-                  <Label htmlFor="later" className="ml-2 cursor-pointer text-sm">
-                    Senere ({numLater})
-                  </Label>
-                </SidebarItemContent>
-              </SidebarItem>
-              <SidebarItem>
-                <SidebarItemTitle className="mb-2">Vis kun:</SidebarItemTitle>
+          <SidebarItemContent className="flex items-center">
+            <Checkbox
+              className="hover:bg-blue-100"
+              id="later"
+              checked={later}
+              onCheckedChange={() => updateFilter("later")}
+            />
+            <Label htmlFor="later" className="ml-2 cursor-pointer text-base">
+              Senere ({numLater})
+            </Label>
+          </SidebarItemContent>
+        </SidebarItem>
+        <SidebarItem>
+          <SidebarItemTitle className="mb-3">Vis kun:</SidebarItemTitle>
 
-                <SidebarItemContent className="flex items-center">
-                  <Checkbox
-                    className="hover:bg-blue-100"
-                    id="showOpen"
-                    checked={open}
-                    onCheckedChange={() => updateFilter("open")}
-                  />
-                  <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-sm">
-                    Åpen for påmelding
-                  </Label>
-                </SidebarItemContent>
-              </SidebarItem>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+          <SidebarItemContent className="flex items-center">
+            <Checkbox
+              className="hover:bg-blue-100"
+              id="showOpen"
+              checked={open}
+              onCheckedChange={() => updateFilter("open")}
+            />
+            <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-base">
+              Åpen for påmelding
+            </Label>
+          </SidebarItemContent>
+        </SidebarItem>
       </SidebarItem>
-      <SidebarItem className="pt-6">
+      <SidebarItem className="pt-3">
         <SidebarItemContent>
-          <Label
-            className={cn("cursor-pointer text-base text-primary hover:text-primary-hover", {
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            className={cn("rounded-full text-sm", {
               invisible: !filterSet,
             })}
             onClick={() => resetFilter()}
           >
-            Nullstill alle filtre
-          </Label>
+            Tøm alle filtre
+          </Button>
         </SidebarItemContent>
       </SidebarItem>
     </Sidebar>
