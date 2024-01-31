@@ -126,6 +126,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "duration",
+      title: "Varighet",
+      description: "Skal arrangementet vare over flere dager?",
+      type: "boolean",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "registrationStartGroups",
       title: "Påmeldingsdato for undergrupper",
       description:
