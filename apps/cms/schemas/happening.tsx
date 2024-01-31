@@ -130,7 +130,14 @@ export default defineType({
       title: "Varighet",
       description: "Skal arrangementet vare over flere dager?",
       type: "boolean",
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "toDate",
+      title: "Sluttdato",
+      description: "Sluttdato og tid for arrangementet",
+      type: "datetime",
+      validation: (Rule) => Rule.min(Rule.valueOfField("date")),
+      hidden: ({document}) => !document?.duration,
     }),
     defineField({
       name: "registrationStartGroups",
