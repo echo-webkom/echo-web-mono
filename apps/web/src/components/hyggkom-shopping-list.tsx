@@ -5,6 +5,7 @@ import { IoHeartOutline, IoHeartSharp, IoTrashBinOutline } from "react-icons/io5
 import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list";
 import { useToast } from "@/hooks/use-toast";
 import { Text } from "./typography/text";
+import { RxDotsHorizontal } from "react-icons/rx";
 
 type itemProps = {
   id: string;
@@ -16,9 +17,10 @@ type itemProps = {
 type hyggkomShoppingListProps = {
   items: Array<itemProps>;
   isAdmin: boolean;
+  withDots: boolean;
 };
 
-export function HyggkomShoppingList({ isAdmin, items }: hyggkomShoppingListProps) {
+export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppingListProps) {
   const { toast } = useToast();
 
   const handleLikeButtonClick = (item: string) => {
@@ -74,6 +76,7 @@ export function HyggkomShoppingList({ isAdmin, items }: hyggkomShoppingListProps
       {items
         .sort((a, b) => b.likes - a.likes)
         .map((item, index) => {
+          if (withDots && index === (items.length-1)) return;
           return (
             <li
               className={`flex justify-between ${index === items.length - 1 ? "rounded-b-md" : ""} ${index % 2 === 0 ? "bg-transparent" : "bg-muted"} px-6 py-1`}
@@ -96,6 +99,14 @@ export function HyggkomShoppingList({ isAdmin, items }: hyggkomShoppingListProps
             </li>
           );
         })}
+        {withDots && (
+            <li
+              className={`flex justify-center items-center rounded-b-md ${items.length % 2 === 1 ? "bg-transparent" : "bg-muted"} px-6 h-10`}
+              key="dots"
+            >
+              <RxDotsHorizontal />
+            </li>
+        )}
     </ul>
   );
 }

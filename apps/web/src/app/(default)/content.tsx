@@ -10,7 +10,6 @@ import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
-import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
@@ -131,15 +130,16 @@ export async function Content() {
 
       {/* Hyggkom handleliste */}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-        <Link href="/handleliste">
-          <h2 className="text-center text-xl font-semibold md:text-3xl">Hyggkom Handleliste</h2>
+        <Link
+          href="/handleliste"
+          className="group mx-auto flex items-center underline-offset-4 hover:underline"
+        >
+          <h2 className="text-center text-3xl font-medium">Hyggkom Handleliste</h2>
+          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
 
         <hr />
-        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
-        <Link href="/handleliste">
-          <Button>Se mer</Button>
-        </Link>
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots/>
       </section>
     </Container>
   );
