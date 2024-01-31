@@ -16,6 +16,7 @@
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
+    "@echo-webkom/echogram": "workspace:*",
     "@echo-webkom/email": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@hookform/resolvers": "3.3.4",
@@ -79,6 +80,7 @@
     "eslint-config-webkom": "workspace:*",
     "jsdom": "24.0.0",
     "postcss": "8.4.33",
+    "server-only": "^0.0.1",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.3.3",
