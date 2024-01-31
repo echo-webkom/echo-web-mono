@@ -23,7 +23,7 @@ export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) 
           <form key={key} action={reactToPage}>
             <Button
               type="submit"
-              className={`${reactions[Number(key)]?.hasReacted ? "bg-wave hover:bg-wave" : "bg-muted hover:bg-muted"} h-8 w-14 rounded-full text-foreground`}
+              className={`${reactions[Number(key)]?.hasReacted ? "bg-wave hover:bg-wave text-wave-foreground" : "bg-muted hover:bg-muted text-foreground"} h-8 w-14 rounded-full`}
             >
               <div className="flex gap-1 font-normal">
                 <p>{value}</p>
