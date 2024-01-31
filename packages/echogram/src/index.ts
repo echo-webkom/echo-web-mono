@@ -66,7 +66,7 @@ export class EchoGram {
         case 500:
           return {
             success: false,
-            message: `Det skjedde en feil: ${await response.text()}`,
+            message: `Det skjedde en feil 500: ${await response.text()}`,
           };
       }
 
