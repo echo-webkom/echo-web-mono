@@ -25,6 +25,8 @@ export async function uploadImage(userId: string, formData: FormData) {
 
     return await echoGram.uploadImage(userId, formData);
   } catch (err) {
+    console.error(err);
+
     return {
       success: false,
       message: `Det skjedde en feil: ${err}`,
