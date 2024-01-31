@@ -14,7 +14,7 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { getReactionByHappeningId } from "@/data/reactions/queries";
+import { getReactionByReactToKey } from "@/data/reactions/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isHost as _isHost } from "@/lib/memberships";
@@ -92,7 +92,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     happening?.registrationEnd && isPast(new Date(happening.registrationEnd)),
   );
 
-  const reactions = await getReactionByHappeningId(event._id);
+  const reactions = await getReactionByReactToKey(event._id);
 
   type Reactions = Record<number, { hasReacted: boolean; count: number }>;
 

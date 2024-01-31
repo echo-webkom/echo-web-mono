@@ -5,18 +5,18 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getReactionByHappeningId(happeningId: string) {
+export async function getReactionByReactToKey(reactToKey: string) {
   return cache(
     async () => {
       return await db.query.reactions
         .findMany({
-          where: (reaction) => eq(reaction.happeningId, happeningId),
+          where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
         .catch(() => []);
     },
-    [cacheKeyFactory.reactions(happeningId)],
+    [cacheKeyFactory.reactions(reactToKey)],
     {
-      tags: [cacheKeyFactory.reactions(happeningId)],
+      tags: [cacheKeyFactory.reactions(reactToKey)],
     },
   )();
 }

@@ -6,7 +6,7 @@ import { registerReaction } from "@/data/reactions/mutations";
 
 export async function handleReact(formData: FormData) {
   const user = await auth();
-
+  console.log("testetts");
   if (!user) {
     return {
       status: 401,
@@ -20,6 +20,9 @@ export async function handleReact(formData: FormData) {
   if (!reactToKey || !emojiId) {
     throw new Error("Missing data");
   }
+
+  console.log("reactToKey", reactToKey);
+  console.log("emojiId", emojiId);
 
   const reactionId = await registerReaction({
     reactToKey: reactToKey as string,
