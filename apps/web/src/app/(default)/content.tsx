@@ -139,7 +139,7 @@ export async function Content() {
         </Link>
 
         <hr />
-        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots/>
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={mappedItems.length===5}/>
       </section>
     </Container>
   );
