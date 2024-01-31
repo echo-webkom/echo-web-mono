@@ -7,7 +7,6 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import EventsView, { type SearchParams } from "@/components/events-view";
-import Loading from "./loading";
 
 export default function Page({ searchParams }: { searchParams?: SearchParams }) {
   if (!searchParams) searchParams = { type: "all" };
@@ -27,7 +26,7 @@ export default function Page({ searchParams }: { searchParams?: SearchParams }) 
         </div>
         <div className="w-full space-y-2">
           <FilterStatusAndOrderBar />
-          <Suspense key={searchParamsKey} fallback={<Loading />}>
+          <Suspense key={searchParamsKey} fallback={<></>}>
             <EventsView searchParams={searchParams} />
           </Suspense>
         </div>

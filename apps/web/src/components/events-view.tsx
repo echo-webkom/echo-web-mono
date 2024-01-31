@@ -13,10 +13,9 @@ export type FilteredHappeningQuery = {
   type: "all" | "event" | "bedpres";
   open: boolean;
   past: boolean;
-  dateFilter?: Array<DateInterval>;
 };
 
-type DateInterval = {
+export type DateInterval = {
   start?: Date;
   end?: Date;
 };
@@ -41,7 +40,6 @@ function createFilteredHappeningQuery(params: SearchParams) {
     type: (params.type as "event" | "bedpres") ?? "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
-    dateFilter: getDateIntervals(params),
   };
 }
 
@@ -52,25 +50,21 @@ function createFilteredHappeningQuery(params: SearchParams) {
 function getDateIntervals(params: SearchParams) {
   const currentDate = new Date();
 
-  const past = params.past === "true" ? true : false;
   const hideThisWeek = params.thisWeek === "false" ? true : false;
   const hideNextWeek = params.nextWeek === "false" ? true : false;
   const hideLater = params.later === "false" ? true : false;
 
-  if (past) {
-    return [{ end: currentDate }];
-  }
-  if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 30) }];
+  if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 5) }];
   if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: nextMonday(currentDate) }];
   if (!hideThisWeek && hideNextWeek && !hideLater)
     return [
-      { start: subMinutes(currentDate, 30), end: nextMonday(currentDate) },
+      { start: subMinutes(currentDate, 5), end: nextMonday(currentDate) },
       { start: nextMonday(nextMonday(currentDate)) },
     ];
   if (!hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 30), end: nextMonday(nextMonday(currentDate)) }];
+    return [{ start: subMinutes(currentDate, 5), end: nextMonday(nextMonday(currentDate)) }];
   if (!hideThisWeek && hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 30), end: nextMonday(currentDate) }];
+    return [{ start: subMinutes(currentDate, 5), end: nextMonday(currentDate) }];
   if (hideThisWeek && !hideNextWeek && hideLater)
     return [{ start: nextMonday(currentDate), end: nextMonday(nextMonday(currentDate)) }];
   if (hideThisWeek && hideNextWeek && !hideLater)
@@ -80,10 +74,9 @@ function getDateIntervals(params: SearchParams) {
 }
 
 export default async function EventsView({ searchParams }: { searchParams: SearchParams }) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
   const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
 
-  const { happenings } = await fetchFilteredHappening(query);
+  const { happenings } = await fetchFilteredHappening(query, getDateIntervals(searchParams));
 
   if (!happenings)
     return (

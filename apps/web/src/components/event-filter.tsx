@@ -29,13 +29,13 @@ type FilterType =
   | "EVENT"
   | "BEDPRES"
   | "ASC"
+  | "PAST"
+  | "OPEN"
   | "THIS_WEEK"
   | "NEXT_WEEK"
-  | "LATER"
-  | "PAST"
-  | "OPEN";
+  | "LATER";
 
-function updateFilter(
+export function updateFilter(
   type: FilterType,
   router: AppRouterInstance,
   pathname: string,
@@ -102,11 +102,11 @@ export function EventFilter() {
     <>
       <div className="flex flex-col items-center sm:hidden">
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-96">
+          <DropdownMenuTrigger className="w-full" asChild>
             <Button fullWidth>{getButtonLabel(type)}</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="sm:hidden">
-            <DropdownMenuItem className="w-96 text-base">
+          <DropdownMenuContent className="w-full sm:hidden">
+            <DropdownMenuItem className="w-full text-base">
               <Button
                 fullWidth
                 variant="ghost"
@@ -115,7 +115,7 @@ export function EventFilter() {
                 {getButtonLabel(firstButton)}
               </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem className="w-96 text-base">
+            <DropdownMenuItem className="w-full text-base">
               <Button
                 fullWidth
                 variant="ghost"
@@ -203,10 +203,6 @@ export function FilterStatusAndOrderBar() {
 }
 
 export function EventFilterSidebar() {
-  const numThisWeek = 10;
-  const numNextWeek = 10;
-  const numLater = 10;
-
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -239,7 +235,7 @@ export function EventFilterSidebar() {
     <Sidebar className="space-y-3 ">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
-          <div className="relative flex w-96 rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
+          <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
             <Input
               value={searchInput}
               onChange={(e) => {
@@ -289,7 +285,7 @@ export function EventFilterSidebar() {
               onCheckedChange={() => updateFilter("THIS_WEEK", router, pathname, params, thisWeek)}
             />
             <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-base">
-              Denne uken ({numThisWeek})
+              Denne uken
             </Label>
           </SidebarItemContent>
 
@@ -301,7 +297,7 @@ export function EventFilterSidebar() {
               onCheckedChange={() => updateFilter("NEXT_WEEK", router, pathname, params, nextWeek)}
             />
             <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-base">
-              Neste uke ({numNextWeek})
+              Neste uke
             </Label>
           </SidebarItemContent>
 
@@ -313,7 +309,7 @@ export function EventFilterSidebar() {
               onCheckedChange={() => updateFilter("LATER", router, pathname, params, later)}
             />
             <Label htmlFor="later" className="ml-2 cursor-pointer text-base">
-              Senere ({numLater})
+              Senere
             </Label>
           </SidebarItemContent>
         </SidebarItem>
