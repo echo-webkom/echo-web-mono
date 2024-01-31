@@ -9,7 +9,7 @@ export function getAllShoppinglistItems() {
     async () => {
       return await db.query.shoppingListItems
         .findMany({
-          with: { likes: true },
+          with: { likes: true, user: true },
         })
         .catch(() => []);
     },
