@@ -202,17 +202,11 @@ export function FilterStatusAndOrderBar() {
   );
 }
 
-type EventFilterSidebarProps = {
-  numOfEvents: {
-    numThisWeek: number;
-    numNextWeek: number;
-    numLater: number;
-  };
-};
+export function EventFilterSidebar() {
+  const numThisWeek = 10;
+  const numNextWeek = 10;
+  const numLater = 10;
 
-export function EventFilterSidebar({
-  numOfEvents: { numThisWeek, numNextWeek, numLater },
-}: EventFilterSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
