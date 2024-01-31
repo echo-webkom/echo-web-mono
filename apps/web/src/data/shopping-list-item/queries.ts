@@ -7,9 +7,11 @@ import { cacheKeyFactory } from "./revalidations";
 export function getAllShoppinglistItems() {
   return cache(
     async () => {
-      return await db.query.shoppingListItems.findMany({
-        with: { likes: true },
-      }).catch(() => []);
+      return await db.query.shoppingListItems
+        .findMany({
+          with: { likes: true },
+        })
+        .catch(() => []);
     },
     [cacheKeyFactory.shoppinglistItems()],
     {
