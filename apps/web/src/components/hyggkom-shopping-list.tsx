@@ -83,21 +83,25 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
               className={`flex justify-between ${index === items.length - 1 ? "rounded-b-md" : ""} ${index % 2 === 0 ? "bg-transparent" : "bg-muted"} px-6 py-1`}
               key={item.id}
             >
-              <div className="">
-                <Text>{item.name}</Text>
-                {isAdmin && <Text className="text-xs font-light">{item.user}</Text>}
+              <div className="flex flex-col">
+                <Text className="pb-0 pt-2">{item.name}</Text>
+                {isAdmin && <Text className="py-0 text-xs font-light">{item.user}</Text>}
               </div>
-              <div className="flex justify-end gap-4">
-                <div className="flex gap-3">
+              <div className="flex items-center justify-end gap-8">
+                <div className="flex gap-4">
                   <Text className="">{item.likes}</Text>
                   <button onClick={() => handleLikeButtonClick(item.id)}>
                     {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
                   </button>
                 </div>
+
                 {isAdmin && (
-                  <button onClick={() => handleRemoveButtonClick(item.id)}>
-                    <IoTrashBinOutline />
-                  </button>
+                  <>
+                    <div className="h-2/3 w-[1px] bg-slate-300" />
+                    <button onClick={() => handleRemoveButtonClick(item.id)}>
+                      <IoTrashBinOutline />
+                    </button>
+                  </>
                 )}
               </div>
             </li>
