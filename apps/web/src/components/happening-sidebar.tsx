@@ -14,6 +14,7 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { getReactionByReactToKey } from "@/data/reactions/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isHost as _isHost } from "@/lib/memberships";
@@ -22,6 +23,7 @@ import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
+import { ReactionButtons } from "./reaction-button";
 
 type EventSidebarProps = {
   event: Happening;
@@ -89,6 +91,22 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
   const isClosed = Boolean(
     happening?.registrationEnd && isPast(new Date(happening.registrationEnd)),
   );
+
+  const reactions = await getReactionByReactToKey(event._id);
+
+  type Reactions = Record<number, { hasReacted: boolean; count: number }>;
+
+  const userReactions = reactions.reduce((acc, curr) => {
+    const count = acc[curr.emojiId]?.count ?? 0;
+
+    return {
+      ...acc,
+      [curr.emojiId]: {
+        count: count + 1,
+        hasReacted: curr.userId === user?.id,
+      },
+    };
+  }, {} as Reactions);
 
   return (
     <Sidebar>
@@ -418,6 +436,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <Button variant="link" className="w-full" asChild>
             <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
+        </SidebarItem>
+      )}
+
+      {user && (
+        <SidebarItem>
+          <ReactionButtons reactions={userReactions} reactToKey={event._id} />
         </SidebarItem>
       )}
     </Sidebar>

@@ -1,6 +1,6 @@
 {
-  "id": "56cced97-9b85-434d-933f-92e3561de962",
-  "prevId": "73a1a849-bd80-4d93-993e-1f6910ab791e",
+  "id": "b488748b-d6ae-4596-b745-24e98a1a1358",
+  "prevId": "56cced97-9b85-434d-933f-92e3561de962",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -451,6 +451,64 @@
           "name": "question_id_pk",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "reaction": {
+      "name": "reaction",
+      "schema": "",
+      "columns": {
+        "react_to_key": {
+          "name": "react_to_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emoji_id": {
+          "name": "emoji_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reaction_user_id_user_id_fk": {
+          "name": "reaction_user_id_user_id_fk",
+          "tableFrom": "reaction",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reaction_react_to_key_emoji_id_user_id_pk": {
+          "name": "reaction_react_to_key_emoji_id_user_id_pk",
+          "columns": [
+            "react_to_key",
+            "emoji_id",
+            "user_id"
           ]
         }
       },
