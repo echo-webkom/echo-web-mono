@@ -443,13 +443,8 @@ importers:
   packages/echogram:
     devDependencies:
       '@types/node':
-<<<<<<< HEAD
         specifier: 18.19.10
         version: 18.19.10
-=======
-        specifier: 18.19.8
-        version: 18.19.8
->>>>>>> 2398aecf (EchoGram class)
       eslint:
         specifier: 8.56.0
         version: 8.56.0
@@ -14743,7 +14738,6 @@ packages:
 
   /server-only@0.0.1:
     resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-<<<<<<< HEAD
 
   /set-function-length@1.2.0:
     resolution: {integrity: sha512-4DBHDoyHlM1IRPGYcoxexgh67y4ueR53FKV1yyxwFMY7aCqcN/38M1+SwZ/qJQ8iLv7+ck385ot4CcisOAPT9w==}
@@ -14754,8 +14748,6 @@ packages:
       get-intrinsic: 1.2.2
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
-=======
->>>>>>> 2398aecf (EchoGram class)
 
   /set-function-name@2.0.1:
     resolution: {integrity: sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==}

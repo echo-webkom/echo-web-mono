@@ -77,7 +77,7 @@ export class EchoGram {
     } catch (err) {
       return {
         success: false,
-        message: `Det skjedde en feil: ${err}`,
+        message: `Det skjedde en feil catch: ${err}`,
       };
     }
   }
