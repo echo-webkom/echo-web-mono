@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { degrees, usersToGroups, userTypeEnum } from ".";
+import { degrees, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
 
 export const users = pgTable(
   "user",
@@ -28,6 +28,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [degrees.id],
   }),
   memberships: many(usersToGroups),
+  likes: many(usersToShoppingListItems),
 }));
 
 export type User = (typeof users)["$inferSelect"];

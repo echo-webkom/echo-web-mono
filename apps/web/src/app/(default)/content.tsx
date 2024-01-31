@@ -3,13 +3,18 @@ import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
 import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
-import type { Registration } from "@echo-webkom/db/schemas";
+import { auth } from "@echo-webkom/auth";
+import { type Registration } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
+import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
+import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
+import { isMemberOf } from "@/lib/memberships";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
@@ -17,12 +22,27 @@ import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
 export async function Content() {
-  const [events, bedpresses, posts, jobAds] = await Promise.all([
+  const user = await auth();
+
+  const [events, bedpresses, posts, jobAds, items] = await Promise.all([
     fetchHomeHappenings(["event", "external"], 4),
     fetchHomeHappenings(["bedpres"], 4),
-    fetchPosts(4),
+    fetchPosts(2),
     fetchAvailableJobAds(4),
+    getAllShoppinglistItems(),
   ]);
+
+  const mappedItems = items
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      likes: item.likes.length,
+      hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
+    }))
+    .sort((a, b) => b.likes - a.likes)
+    .slice(0, 5);
+
+  const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -70,26 +90,6 @@ export async function Content() {
         </ul>
       </section>
 
-      {/* Posts */}
-      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-        <Link href="/for-studenter/innlegg">
-          <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
-            Siste nytt
-            <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
-          </h2>
-        </Link>
-
-        <hr />
-
-        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4 lg:grid-cols-2">
-          {posts.map((post) => (
-            <li key={post._id}>
-              <PostPreview post={post} className="shadow-none" />
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* Job ads */}
       {jobAds.length > 0 && (
         <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
@@ -108,6 +108,39 @@ export async function Content() {
           </ul>
         </section>
       )}
+
+      {/* Posts */}
+      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
+        <Link href="/for-studenter/innlegg">
+          <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
+            Siste nytt
+            <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+          </h2>
+        </Link>
+
+        <hr />
+
+        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4 lg:grid-cols-2">
+          {posts.map((post) => (
+            <li key={post._id}>
+              <PostPreview post={post} className="shadow-none" />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Hyggkom handleliste */}
+      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
+        <Link href="/handleliste">
+          <h2 className="text-center text-xl font-semibold md:text-3xl">Hyggkom Handleliste</h2>
+        </Link>
+
+        <hr />
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
+        <Link href="/handleliste">
+          <Button>Se mer</Button>
+        </Link>
+      </section>
     </Container>
   );
 }

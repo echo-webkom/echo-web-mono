@@ -31,7 +31,8 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
     const resp = await db
       .update(users)
       .set({
-        alternativeEmail: data.alternativeEmail ?? null,
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        alternativeEmail: data.alternativeEmail?.trim() || null,
         degreeId: data.degreeId,
         year: data.year,
       })

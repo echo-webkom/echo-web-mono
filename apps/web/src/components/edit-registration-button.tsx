@@ -50,7 +50,7 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    await updateRegistration(id, registration.user.id, {
+    const { message, success } = await updateRegistration(id, registration.user.id, {
       status: selectedStatus,
       reason: data.reason ?? "",
     });
@@ -59,8 +59,8 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
 
     toast({
       title: "Påmeldingen er endret",
-      description: "Påmeldingen er endret.",
-      variant: "success",
+      description: message,
+      variant: success ? "success" : "destructive",
     });
 
     router.refresh();

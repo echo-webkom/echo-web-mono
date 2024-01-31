@@ -3,12 +3,10 @@ import { createClient, type QueryParams } from "next-sanity";
 import { env } from "@/env.mjs";
 
 /**
- * Project IDS:
- * Old sanity: "pgq2pd26",
- * New sanity: "nnumy1ga",
+ * Project ID: "pgq2pd26",
  *
  * Datasets:
- * "production" and "development"
+ * "production", "develop", "testing"
  */
 
 export const projectId = "pgq2pd26";
@@ -35,22 +33,34 @@ export const client = createClient({
   useCdn: false,
 });
 
-const DEFAULT_PARAMS = {} as QueryParams;
-const DEFAULT_TAGS = [] as Array<string>;
-
-export async function sanityFetch<QueryResponse>({
-  query,
-  params = DEFAULT_PARAMS,
-  tags = DEFAULT_TAGS,
-}: {
+type SanityFetchOptions = {
   query: string;
   params?: QueryParams;
-  tags: Array<string>;
-}): Promise<QueryResponse> {
-  return await client.fetch<QueryResponse>(query, params, {
+} & (
+  | {
+      tags?: Array<string>;
+    }
+  | {
+      revalidate?: NextFetchRequestConfig["revalidate"];
+    }
+);
+
+export async function sanityFetch<T>({ query, params, ...rest }: SanityFetchOptions): Promise<T> {
+  const tags = "tags" in rest ? rest.tags : undefined;
+  const revalidate = "revalidate" in rest ? rest.revalidate : undefined;
+
+  if (revalidate !== undefined) {
+    return await client.fetch(query, params ?? {}, {
+      next: {
+        revalidate,
+      },
+    });
+  }
+
+  return await client.fetch(query, params, {
     cache: "force-cache",
     next: {
-      tags,
+      tags: tags ?? [],
     },
   });
 }

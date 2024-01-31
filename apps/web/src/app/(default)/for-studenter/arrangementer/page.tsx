@@ -1,7 +1,11 @@
 import { nextMonday, subMinutes } from "date-fns";
 
 import { Container } from "@/components/container";
-import { EventFilter, EventFilterSidebar } from "@/components/event-filter";
+import {
+  EventFilter,
+  EventFilterSidebar,
+  FilterStatusAndOrderBar,
+} from "@/components/event-filter";
 import EventsView from "@/components/events-view";
 import { Callout } from "@/components/typography/callout";
 import { fetchFilteredHappening } from "@/sanity/happening/requests";
@@ -98,12 +102,15 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container>
-      <EventFilter />
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full pr-16 md:max-w-[250px]">
+      <div className="pb-4 sm:mb-8 sm:border-b-2">
+        <EventFilter />
+      </div>
+      <div className="flex flex-col sm:flex-row">
+        <div className="mb-5 w-full sm:mb-0 sm:max-w-[250px] sm:pr-14">
           <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
         </div>
-        <div className="w-full">
+        <div className="w-full space-y-2">
+          <FilterStatusAndOrderBar />
           <EventsView happenings={happenings} />
         </div>
       </div>

@@ -11,7 +11,7 @@ test("Student")("update profile", async ({ page }) => {
   await page.getByLabel("Studieretning").selectOption("Datateknologi");
   await page.getByLabel("Årstrinn").selectOption("3. trinn");
 
-  await page.getByRole("button", { name: "Lagre" }).click();
+  await page.getByRole("button", { name: "Lagre" }).nth(1).click();
 
   await expect(page.getByTestId("toast").getByText("Brukeren ble oppdatert")).toBeVisible();
 });
