@@ -89,7 +89,7 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
               </div>
               <div className=" flex justify-end gap-4">
                 <div className="flex justify-around gap-3">
-                  <Text className="flex justify-between">{item.likes}</Text>
+                  <Text className="py-4">{item.likes}</Text>
                   <button onClick={() => handleLikeButtonClick(item.id)}>
                     {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
                   </button>
