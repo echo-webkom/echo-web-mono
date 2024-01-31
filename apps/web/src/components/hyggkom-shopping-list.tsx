@@ -76,7 +76,7 @@ export function HyggkomShoppingList({ isAdmin, items }: hyggkomShoppingListProps
         .map((item, index) => {
           return (
             <li
-              className={`flex justify-between ${index === items.length - 1 ? "rounded-b-md" : ""} ${index % 2 === 0 ? "bg-transparent" : "bg-slate-100"} px-6 py-1`}
+              className={`flex justify-between ${index === items.length - 1 ? "rounded-b-md" : ""} ${index % 2 === 0 ? "bg-transparent" : "bg-muted"} px-6 py-1`}
               key={item.id}
             >
               <Text>{item.name}</Text>
