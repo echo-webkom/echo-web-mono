@@ -1,4 +1,4 @@
-import { nextMonday, subMinutes } from "date-fns";
+import { Suspense } from "react";
 
 import { Container } from "@/components/container";
 import {
@@ -6,99 +6,14 @@ import {
   EventFilterSidebar,
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
-import EventsView from "@/components/events-view";
-import { Callout } from "@/components/typography/callout";
-import { fetchFilteredHappening } from "@/sanity/happening/requests";
+import EventsView, { type SearchParams } from "@/components/events-view";
 
-/**
- * This is a type definition for the query that is sent to Sanity.
- */
-export type FilteredHappeningQuery = {
-  search?: string;
-  type: "all" | "event" | "bedpres";
-  open: boolean;
-  past: boolean;
-  dateFilter?: Array<DateInterval>;
-};
+export default function Page({ searchParams }: { searchParams?: SearchParams }) {
+  if (!searchParams) searchParams = { type: "all" };
 
-type DateInterval = {
-  start?: Date;
-  end?: Date;
-};
-
-type SearchParams = {
-  type?: string;
-  order?: string;
-  search?: string;
-  open?: string;
-  past?: string;
-  thisWeek?: string;
-  nextWeek?: string;
-  later?: string;
-};
-
-/**
- * Sanitizes the SearchParams before fetching data
- */
-function createFilteredHappeningQuery(params: SearchParams | undefined) {
-  if (!params) params = { type: "all" };
-
-  return {
-    search: params.search ?? undefined,
-    type: (params.type as "event" | "bedpres") ?? "all",
-    open: params.open === "true" ? true : false,
-    past: params.past === "true" ? true : false,
-    dateFilter: getDateIntervals(params),
-  };
-}
-
-/**
- * This function creates an array of DateIntervals.
- * Will be useful in the future to allow the user to enter custom dates.
- */
-function getDateIntervals(params: SearchParams) {
-  const currentDate = new Date();
-
-  const past = params.past === "true" ? true : false;
-  const hideThisWeek = params.thisWeek === "false" ? true : false;
-  const hideNextWeek = params.nextWeek === "false" ? true : false;
-  const hideLater = params.later === "false" ? true : false;
-
-  if (past) {
-    return [{ end: currentDate }];
-  }
-  if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 30) }];
-  if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: nextMonday(currentDate) }];
-  if (!hideThisWeek && hideNextWeek && !hideLater)
-    return [
-      { start: subMinutes(currentDate, 30), end: nextMonday(currentDate) },
-      { start: nextMonday(nextMonday(currentDate)) },
-    ];
-  if (!hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 30), end: nextMonday(nextMonday(currentDate)) }];
-  if (!hideThisWeek && hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 30), end: nextMonday(currentDate) }];
-  if (hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: nextMonday(currentDate), end: nextMonday(nextMonday(currentDate)) }];
-  if (hideThisWeek && hideNextWeek && !hideLater)
-    return [{ start: nextMonday(nextMonday(currentDate)) }];
-
-  return undefined;
-}
-
-export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
-  const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
-  const { numThisWeek, numNextWeek, numLater, happenings } = await fetchFilteredHappening(query);
-
-  if (!happenings)
-    return (
-      <Callout type="danger" className="mx-auto my-8 w-full max-w-lg">
-        <p className="font-bold">En feil har oppstått...</p>
-        <p>Ta kontakt med Webkom</p>
-      </Callout>
-    );
-
-  if (searchParams?.order === "ASC") happenings.reverse();
+  // Serialize searchParams to a JSON string as a key for the Suspense component.
+  // Ensure a stable key by stringifying a sorted object if the order may vary.
+  const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
   return (
     <Container>
@@ -107,11 +22,13 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
       </div>
       <div className="flex flex-col sm:flex-row">
         <div className="mb-5 w-full sm:mb-0 sm:max-w-[250px] sm:pr-14">
-          <EventFilterSidebar numOfEvents={{ numThisWeek, numNextWeek, numLater }} />
+          <EventFilterSidebar />
         </div>
         <div className="w-full space-y-2">
           <FilterStatusAndOrderBar />
-          <EventsView happenings={happenings} />
+          <Suspense key={searchParamsKey} fallback={<></>}>
+            <EventsView searchParams={searchParams} />
+          </Suspense>
         </div>
       </div>
     </Container>
