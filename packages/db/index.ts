@@ -1,10 +1,10 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
 import * as schema from "./schemas";
 
 const globalForPool = globalThis as unknown as {
-  pool: Pool | undefined;
+  pool: ReturnType<typeof postgres> | undefined;
 };
 
 let pool;
@@ -19,9 +19,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 function createPool() {
-  return new Pool({
+  return postgres(process.env.DATABASE_URL!, {
     max: 40,
-    connectionString: process.env.DATABASE_URL,
   });
 }
 
