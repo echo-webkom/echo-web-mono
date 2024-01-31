@@ -53,9 +53,7 @@ export function ProfileImage({ userId, imageURL }: ImageFormProps) {
         return;
       }
 
-      const formData = new FormData();
-      formData.append("image", file);
-      const { success, message } = await uploadImage(userId, formData);
+      const { success, message } = await uploadImage(userId, file);
 
       setIsLoading(false);
 

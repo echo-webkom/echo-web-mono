@@ -21,9 +21,9 @@ export class EchoGram {
     }
   }
 
-  async uploadImage(userId: string, formData: FormData) {
+  async uploadImage(userId: string, file: File) {
     try {
-      const file = formData.get("image") as File;
+      // const file = formData.get("image") as File;
 
       if (file.size === 0 || typeof file.size === "undefined") {
         return {
@@ -46,6 +46,9 @@ export class EchoGram {
           message: "Bildet har feil format",
         };
       }
+
+      const formData = new FormData();
+      formData.append("image", file);
 
       const response = await fetch(PROFILE_IMAGE_FUNCTION_URL, {
         method: "POST",
