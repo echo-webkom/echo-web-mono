@@ -2,9 +2,8 @@ import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
-import { getAllFeedback } from "@/lib/queries/feedback";
-
-export const dynamic = "force-dynamic";
+import { getAllFeedback } from "@/data/site-feedbacks/queries";
+import { shortDate } from "@/utils/date";
 
 export default async function FeedbackOverview() {
   const feedback = await getAllFeedback();
@@ -25,17 +24,18 @@ export default async function FeedbackOverview() {
 }
 
 function Feedback({ feedback }: { feedback: SiteFeedback }) {
+  // Site used to crash. This is a quick fix to find the bad date
+  const parseDate = (date: Date) => {
+    try {
+      return shortDate(date);
+    } catch (e) {
+      return "Dårlig";
+    }
+  };
+
   return (
     <div className="h-full w-full max-w-xl overflow-hidden rounded-lg bg-card px-4 py-5 text-card-foreground shadow dark:border sm:p-6">
-      <p className="text-xs text-muted-foreground">
-        {feedback.createdAt.toLocaleTimeString("nb-NO", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </p>
+      <p className="text-xs text-muted-foreground">{parseDate(feedback.createdAt)}</p>
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
       <h3 className="font-medium">Navn: {feedback.name || "Ukjent"}</h3>
       <p className="text-sm font-medium text-muted-foreground">

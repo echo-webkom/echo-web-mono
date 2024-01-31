@@ -71,6 +71,13 @@
       "when": 1705442979217,
       "tag": "0009_burly_wind_dancer",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1706626165443,
+      "tag": "0010_lucky_karen_page",
+      "breakpoints": true
     }
   ]
 }

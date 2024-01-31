@@ -1,3 +1,4 @@
+import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
@@ -12,24 +13,19 @@ export async function getUserById(id: User["id"]) {
   });
 }
 
-export async function getUserRegistrations(id: User["id"]) {
-  return await db.query.registrations.findMany({
-    where: (registration) => eq(registration.userId, id),
-    with: {
-      happening: true,
-    },
-  });
-}
-
 export async function getAllUsers() {
-  return await db.query.users.findMany({
-    with: {
-      degree: true,
-      memberships: {
+  return await cache(
+    async () => {
+      return await db.query.users.findMany({
         with: {
-          group: true,
+          degree: true,
+          memberships: true,
         },
-      },
+      });
     },
-  });
+    ["users"],
+    {
+      revalidate: 60,
+    },
+  )();
 }

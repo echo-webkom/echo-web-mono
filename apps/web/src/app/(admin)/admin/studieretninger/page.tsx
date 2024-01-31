@@ -1,5 +1,13 @@
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { getAllDegrees } from "@/data/degrees/queries";
 
 export const dynamic = "force-dynamic";
@@ -19,9 +27,24 @@ export default async function AdminDegreePage() {
         </p>
       </div>
 
-      <code className="rounded-md bg-card p-2 font-mono text-card-foreground">
-        <pre>{JSON.stringify(degrees, null, 2)}</pre>
-      </code>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Navn</TableHead>
+            <TableHead>id</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {degrees.map((degree) => {
+            return (
+              <TableRow key={degree.id}>
+                <TableCell>{degree.name}</TableCell>
+                <TableCell>{degree.id}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </Container>
   );
 }

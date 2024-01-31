@@ -93,7 +93,7 @@ export function ProfileImage({ userId, imageURL }: ImageFormProps) {
     // 4MB is max
     if (newFile.size > 4 * 1024 * 1024) {
       toast({
-        title: `Bildet er for stort. Maks er 4MB`,
+        title: `Bildet er for stort. Maksimal størrelse er 4MB`,
         variant: "warning",
       });
       return;
