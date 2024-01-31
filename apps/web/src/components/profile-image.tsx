@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { z } from "zod";
 
-import { uploadImage } from "@/actions/images";
 import { useToast } from "@/hooks/use-toast";
 import { Text } from "./typography/text";
 import { Button } from "./ui/button";
@@ -53,13 +52,18 @@ export function ProfileImage({ userId, imageURL }: ImageFormProps) {
         return;
       }
 
-      const { success, message } = await uploadImage(userId, file);
+      const formData = new FormData();
+      formData.append("image", file);
+      const response = await fetch("/api/images", {
+        method: "POST",
+        body: formData,
+      });
 
       setIsLoading(false);
 
       toast({
-        title: message,
-        variant: success ? "success" : "warning",
+        title: response.ok ? "Bildet ble lastet opp" : "Noe gikk galt",
+        variant: response.ok ? "success" : "warning",
       });
 
       setFile(null);
