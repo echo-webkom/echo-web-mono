@@ -1,8 +1,9 @@
 import { handleReact } from "@/actions/reactions";
+import { idToEmoji } from "@/lib/emojis";
 import { Button } from "./ui/button";
 
 type ReactionButtonProps = {
-  happeningId: string;
+  reactToKey: string;
   reactions: Record<
     number,
     {
@@ -12,14 +13,7 @@ type ReactionButtonProps = {
   >;
 };
 
-const idToEmoji: Record<number, string> = {
-  0: "🥳",
-  1: "🔥",
-  2: "🚀",
-  3: "🍕",
-};
-
-export function ReactionButtons({ reactions, happeningId }: ReactionButtonProps) {
+export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) {
   return (
     <div className="flex gap-2">
       {Object.entries(idToEmoji).map(([key, value]) => {
@@ -27,7 +21,7 @@ export function ReactionButtons({ reactions, happeningId }: ReactionButtonProps)
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           <form key={key} action={handleReact}>
             <input type="hidden" name="emojiId" value={key} />
-            <input type="hidden" name="happeningId" value={happeningId} />
+            <input type="hidden" name="react_to_key" value={reactToKey} />
             <Button
               type="submit"
               className={`${reactions[Number(key)]?.hasReacted ? "bg-wave hover:bg-wave" : "bg-muted hover:bg-muted"} h-8 w-14 rounded-full text-foreground`}

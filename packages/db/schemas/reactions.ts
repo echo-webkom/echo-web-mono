@@ -6,7 +6,7 @@ import { users } from "./users";
 export const reactions = pgTable(
   "reaction",
   {
-    happeningId: text("happening_id").notNull(),
+    reactToKey: text("react_to_key").notNull(),
     emojiId: integer("emoji_id").notNull(),
     userId: text("user_id")
       .notNull()
@@ -16,7 +16,7 @@ export const reactions = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.happeningId, table.emojiId, table.userId] }),
+    pk: primaryKey({ columns: [table.reactToKey, table.emojiId, table.userId] }),
   }),
 );
 

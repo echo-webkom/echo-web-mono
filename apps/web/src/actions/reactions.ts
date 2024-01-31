@@ -14,15 +14,15 @@ export async function handleReact(formData: FormData) {
     };
   }
 
-  const happeningId = formData.get("happeningId");
+  const reactToKey = formData.get("react_to_key");
   const emojiId = formData.get("emojiId");
 
-  if (!happeningId || !emojiId) {
+  if (!reactToKey || !emojiId) {
     throw new Error("Missing data");
   }
 
   const reactionId = await registerReaction({
-    happeningId: happeningId as string,
+    reactToKey: reactToKey as string,
     emojiId: parseInt(emojiId as string),
     userId: user.id,
   });

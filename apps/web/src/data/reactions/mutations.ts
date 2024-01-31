@@ -9,7 +9,7 @@ export async function registerReaction(newReaction: Omit<ReactionInsert, "create
   const existingReaction = await db.query.reactions.findFirst({
     where: (reaction, { eq, and }) =>
       and(
-        eq(reaction.happeningId, newReaction.happeningId),
+        eq(reaction.reactToKey, newReaction.reactToKey),
         eq(reaction.emojiId, newReaction.emojiId),
         eq(reaction.userId, newReaction.userId),
       ),
@@ -20,7 +20,7 @@ export async function registerReaction(newReaction: Omit<ReactionInsert, "create
       .delete(reactions)
       .where(
         and(
-          eq(reactions.happeningId, newReaction.happeningId),
+          eq(reactions.reactToKey, newReaction.reactToKey),
           eq(reactions.emojiId, newReaction.emojiId),
           eq(reactions.userId, newReaction.userId),
         ),
@@ -32,30 +32,12 @@ export async function registerReaction(newReaction: Omit<ReactionInsert, "create
         ...newReaction,
         createdAt: new Date(),
       })
-      .returning({ happeningId: reactions.happeningId });
+      .returning({ reactToKey: reactions.reactToKey });
 
     if (!insertedReaction) {
       throw new Error("Reaction failed");
     }
   }
 
-  revalidateReactions(newReaction.happeningId);
+  revalidateReactions(newReaction.reactToKey);
 }
-
-/* export async function createRegistration(newRegistrations: Omit<RegistrationInsert, "createdAt">) {
-  const [insertedRegistration] = await db
-    .insert(registrations)
-    .values({
-      ...newRegistrations,
-      createdAt: new Date(),
-    })
-    .returning({ userId: registrations.userId, happeningId: registrations.happeningId});
-
-  if (!insertedRegistration) {
-    throw new Error("Registration failed");
-  }
-
-  revalidateReactions(newRegistrations.happeningId);
-
-  return insertedRegistration;
-} */

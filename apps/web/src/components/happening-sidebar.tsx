@@ -439,9 +439,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         </SidebarItem>
       )}
 
-      <SidebarItem>
-        <ReactionButtons reactions={userReactions} happeningId={event._id} />
-      </SidebarItem>
+      {user && (
+        <SidebarItem>
+          <ReactionButtons reactions={userReactions} reactToKey={event._id} />
+        </SidebarItem>
+      )}
     </Sidebar>
   );
 }
