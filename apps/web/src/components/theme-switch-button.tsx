@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { LuMoon, LuSun } from "react-icons/lu";
 
-export default function ModeToggle() {
+export function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === "dark";
 
