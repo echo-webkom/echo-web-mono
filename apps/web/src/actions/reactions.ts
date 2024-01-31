@@ -3,10 +3,10 @@
 import { auth } from "@echo-webkom/auth";
 
 import { registerReaction } from "@/data/reactions/mutations";
+import { idToEmoji } from "@/lib/emojis";
 
-export async function handleReact(formData: FormData) {
+export async function handleReact(reactToKey: string, emojiId: number) {
   const user = await auth();
-  console.log("testetts");
   if (!user) {
     return {
       status: 401,
@@ -14,19 +14,16 @@ export async function handleReact(formData: FormData) {
     };
   }
 
-  const reactToKey = formData.get("react_to_key");
-  const emojiId = formData.get("emojiId");
-
-  if (!reactToKey || !emojiId) {
-    throw new Error("Missing data");
+  if (emojiId < 0 || emojiId > Object.keys(idToEmoji).length) {
+    return {
+      status: 400,
+      message: "Invalid emojiId",
+    };
   }
 
-  console.log("reactToKey", reactToKey);
-  console.log("emojiId", emojiId);
-
   const reactionId = await registerReaction({
-    reactToKey: reactToKey as string,
-    emojiId: parseInt(emojiId as string),
+    reactToKey: reactToKey,
+    emojiId: emojiId,
     userId: user.id,
   });
 
