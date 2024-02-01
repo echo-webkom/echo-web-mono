@@ -27,8 +27,8 @@ export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) 
               className={cn(
                 "h-8 w-14 rounded-full",
                 reactions[Number(key)]?.hasReacted
-                  ? "bg-reaction text-foreground hover:bg-reaction"
-                  : "bg-muted text-foreground hover:bg-muted",
+                  ? "bg-reaction text-foreground hover:bg-muted"
+                  : "hover:bg-reaction bg-muted text-foreground",
               )}
             >
               <div className="flex gap-1 font-normal">
