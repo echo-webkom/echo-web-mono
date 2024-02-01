@@ -61,7 +61,7 @@
   }
 
   .dark {
-    --background: #03011ec0;
+    --background: #03011ead;
     --foreground: #eeeeee;
 
     --muted: #181818;
@@ -107,7 +107,7 @@
 
     --banner: #53adbd;
 
-    --wave: #171717;
+    --wave: #090723fb;
     --wave-foreground: #f9fafb;
 
     --ring: #94a3b8;
