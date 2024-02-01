@@ -8,7 +8,6 @@
     "build": "turbo run build",
     "dev": "turbo run dev --filter=web",
     "web:dev": "turbo run dev --filter=web",
-    "docs:dev": "turbo run dev --filter=docs",
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "start": "turbo run start",
