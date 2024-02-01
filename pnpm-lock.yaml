@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -249,9 +245,6 @@ importers:
       tailwind-merge:
         specifier: 2.2.1
         version: 2.2.1
-      use-debounce:
-        specifier: 10.0.0
-        version: 10.0.0(react@18.2.0)
       zod:
         specifier: 3.22.4
         version: 3.22.4
@@ -4284,7 +4277,7 @@ packages:
       chalk: 4.1.2
       esbuild: 0.19.11
       esbuild-register: 3.5.0(esbuild@0.19.11)
-      get-it: 8.4.5
+      get-it: 8.4.6
       golden-fleece: 1.0.9
       node-machine-id: 1.1.12
       pkg-dir: 5.0.0
@@ -4360,7 +4353,7 @@ packages:
     dependencies:
       archiver: 5.3.2
       debug: 3.2.7
-      get-it: 8.4.5
+      get-it: 8.4.6
       lodash: 4.17.21
       mississippi: 4.0.0
       p-queue: 2.4.2
@@ -4406,7 +4399,7 @@ packages:
       '@sanity/uuid': 3.0.2
       debug: 3.2.7
       file-url: 2.0.2
-      get-it: 8.4.5
+      get-it: 8.4.6
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -6618,7 +6611,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -8205,24 +8197,6 @@ packages:
       has-proto: 1.0.1
       has-symbols: 1.0.3
       hasown: 2.0.0
-
-  /get-it@8.4.5:
-    resolution: {integrity: sha512-hOoAwSfJXy86QJPEsZFDtBsFBagyTAlYwLJkKZJN5q7ppXRQjq0Wies4d14icDSpVs7QVm4Wtt0XQzjxXlUdgg==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      debug: 4.3.4
-      decompress-response: 7.0.0
-      follow-redirects: 1.15.5(debug@4.3.4)
-      into-stream: 6.0.0
-      is-plain-object: 5.0.0
-      is-retry-allowed: 2.2.0
-      is-stream: 2.0.1
-      parse-headers: 2.0.5
-      progress-stream: 2.0.0
-      tunnel-agent: 0.6.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /get-it@8.4.6:
     resolution: {integrity: sha512-omefjdbyRb2rRt0tnrZlbeWx9oZJm66o88K8JlYn13xELn+0+d6mJZOQHrJAdC3vxeJ4t/NHa4wh7Wlh+nvEJA==}
@@ -12824,7 +12798,7 @@ packages:
       execa: 2.1.0
       exif-component: 1.0.1
       framer-motion: 10.18.0(react-dom@18.2.0)(react@18.2.0)
-      get-it: 8.4.5
+      get-it: 8.4.6
       get-random-values-esm: 1.0.0
       groq-js: 1.4.0
       hashlru: 2.3.0
@@ -12839,7 +12813,7 @@ packages:
       json5: 2.2.3
       lodash: 4.17.21
       log-symbols: 2.2.0
-      mendoza: 3.0.3
+      mendoza: 3.0.4
       module-alias: 2.2.3
       nano-pubsub: 2.0.1
       nanoid: 3.3.7
@@ -14117,15 +14091,6 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /use-debounce@10.0.0(react@18.2.0):
-    resolution: {integrity: sha512-XRjvlvCB46bah9IBXVnq/ACP2lxqXyZj0D9hj4K5OzNroMDpTEBg8Anuh1/UfRTRs7pLhQ+RiNxxwZu9+MVl1A==}
-    engines: {node: '>= 16.0.0'}
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /use-device-pixel-ratio@1.1.2(react@18.2.0):
     resolution: {integrity: sha512-nFxV0HwLdRUt20kvIgqHYZe6PK/v4mU1X8/eLsT1ti5ck0l2ob0HDRziaJPx+YWzBo6dMm4cTac3mcyk68Gh+A==}
     peerDependencies:
@@ -14665,3 +14630,7 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
