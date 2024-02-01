@@ -120,6 +120,9 @@ importers:
       '@hookform/resolvers':
         specifier: 3.3.4
         version: 3.3.4(react-hook-form@7.49.3)
+      '@json2csv/plainjs':
+        specifier: ^7.0.5
+        version: 7.0.5
       '@radix-ui/react-accordion':
         specifier: 1.1.2
         version: 1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
@@ -2817,6 +2820,17 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /@json2csv/formatters@7.0.5:
+    resolution: {integrity: sha512-ihONIB8S1ZG0ji5nDFpfCUPphVLnEKlLxDmDqRMjmPhzw8WCvyLX2trIrNHCf1t2IV8rx+1tNYaDb1dh87jHgA==}
+    dev: false
+
+  /@json2csv/plainjs@7.0.5:
+    resolution: {integrity: sha512-iJsYEzgRZUhRb8LltCeuBQyexQVUbovRZFF73Lo0iIvi5SUWsfXGTtbriIROsOKgfZPtYxmkZV+FYlsnBu9ybQ==}
+    dependencies:
+      '@json2csv/formatters': 7.0.5
+      '@streamparser/json': 0.0.19
+    dev: false
+
   /@jsx-email/app-preview@1.2.5(@types/node@18.19.10)(@types/react@18.2.48)(react@18.2.0):
     resolution: {integrity: sha512-aInVfl0x88/x1pE7DX7Wvf4WD0qPUeHj0w5N16w+Fs1mVuOpMXf2qan0OrxdZbhcpMheDfDsjrYxEF5d7eUyUw==}
     engines: {node: '>=18.0.0'}
@@ -4705,6 +4719,10 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
+
+  /@streamparser/json@0.0.19:
+    resolution: {integrity: sha512-VTxtZGME6ZSWNCSjZ0Zd2LNNodx62XvmARb/liHIwGlInuuvoDzioLuRP8ajV8iLBknsTrsqpRDGlvzKSzpNEw==}
+    dev: false
 
   /@swc/helpers@0.5.2:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
@@ -6618,7 +6636,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
