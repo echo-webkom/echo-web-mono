@@ -22,6 +22,7 @@ function createPool() {
   return new Pool({
     max: 40,
     connectionString: process.env.DATABASE_URL,
+    ssl: false,
   });
 }
 
