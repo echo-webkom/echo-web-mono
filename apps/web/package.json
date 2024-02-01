@@ -20,6 +20,7 @@
     "@echo-webkom/email": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@hookform/resolvers": "3.3.4",
+    "@json2csv/plainjs": "^7.0.5",
     "@radix-ui/react-accordion": "1.1.2",
     "@radix-ui/react-alert-dialog": "1.0.5",
     "@radix-ui/react-avatar": "1.0.4",

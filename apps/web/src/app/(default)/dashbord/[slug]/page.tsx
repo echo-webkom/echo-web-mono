@@ -115,7 +115,11 @@ export default async function EventDashboard({ params }: Props) {
       {registrations.length > 0 ? (
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable registrations={registrations} studentGroups={groups} />
+          <RegistrationTable
+            registrations={registrations}
+            studentGroups={groups}
+            happeningId={happening.id}
+          />
         </div>
       ) : (
         <div className="mx-auto flex w-fit flex-col gap-8 p-5">
