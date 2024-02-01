@@ -16,12 +16,17 @@ export async function getUserById(id: User["id"]) {
 export async function getAllUsers() {
   return await cache(
     async () => {
-      return await db.query.users.findMany({
-        with: {
-          degree: true,
-          memberships: true,
-        },
-      });
+      return await db.query.users
+        .findMany({
+          with: {
+            degree: true,
+            memberships: true,
+          },
+        })
+        .catch(() => {
+          console.error("Failed to fetch users");
+          return [];
+        });
     },
     ["users"],
     {

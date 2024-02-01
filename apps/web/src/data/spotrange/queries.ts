@@ -12,7 +12,10 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
         .findMany({
           where: (spotRange) => eq(spotRange.happeningId, happeningId),
         })
-        .catch(() => []);
+        .catch(() => {
+          console.error("Failed to fetch spot ranges");
+          return [];
+        });
     },
     [cacheKeyFactory.happeningSpotrange(happeningId)],
     {

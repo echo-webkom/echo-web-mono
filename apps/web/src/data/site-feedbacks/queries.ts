@@ -7,9 +7,14 @@ import { cacheKeyFactory } from "./revalidate";
 export async function getAllFeedback() {
   return await cache(
     async () => {
-      return await db.query.siteFeedback.findMany({
-        orderBy: (feedback, { desc }) => [desc(feedback.createdAt)],
-      });
+      return await db.query.siteFeedback
+        .findMany({
+          orderBy: (feedback, { desc }) => [desc(feedback.createdAt)],
+        })
+        .catch(() => {
+          console.error("Failed to fetch site feedbacks");
+          return [];
+        });
     },
     [cacheKeyFactory.siteFeedbacks],
     {

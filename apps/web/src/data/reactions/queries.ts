@@ -12,7 +12,10 @@ export async function getReactionByReactToKey(reactToKey: string) {
         .findMany({
           where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
-        .catch(() => []);
+        .catch(() => {
+          console.error("Failed to fetch reactions");
+          return [];
+        });
     },
     [cacheKeyFactory.reactions(reactToKey)],
     {

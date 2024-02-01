@@ -11,7 +11,10 @@ export function getAllShoppinglistItems() {
         .findMany({
           with: { likes: true, user: true },
         })
-        .catch(() => []);
+        .catch(() => {
+          console.error("Failed to fetch shoppinglist items");
+          return [];
+        });
     },
     [cacheKeyFactory.shoppinglistItems()],
     {

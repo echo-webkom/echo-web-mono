@@ -15,7 +15,10 @@ export async function getRegistrationsByHappeningId(happeningId: string) {
             user: true,
           },
         })
-        .catch(() => []);
+        .catch(() => {
+          console.error("Failed to fetch registrations");
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsHappening(happeningId)],
     {
@@ -34,7 +37,10 @@ export async function getRegistrationsByUserId(userId: string) {
             happening: true,
           },
         })
-        .catch(() => []);
+        .catch(() => {
+          console.error("Failed to fetch registrations");
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsUser(userId)],
     {
