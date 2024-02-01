@@ -236,11 +236,13 @@ export function EventFilterSidebar() {
           <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
             <Input
               value={searchInput}
+              maxLength={50}
               onChange={(e) => {
                 setSearchInput(e.target.value);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
+                  e.currentTarget.blur();
                   updateFilter("SEARCH", router, pathname, params, undefined, searchInput);
                 }
               }}
