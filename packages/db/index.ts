@@ -22,11 +22,11 @@ function createPool() {
   return new Pool({
     max: 40,
     connectionString: process.env.DATABASE_URL,
-    ssl: false,
+    ssl: process.env.VERCEL_ENV === "production" && !process.env.CI,
   });
 }
 
 export const db = drizzle(pool, {
   schema,
-  logger: process.env.NODE_ENV !== "production",
+  logger: process.env.VERCEL_ENV !== "production",
 });

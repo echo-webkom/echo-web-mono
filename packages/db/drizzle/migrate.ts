@@ -4,9 +4,10 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 
 import { db } from "..";
 
-if (process.env.VERCEL_ENV === "preview") {
-  process.exit(0);
-}
+// TODO: Uncomment this when pushing to main
+// if (process.env.VERCEL_ENV === "preview") {
+//   process.exit(0);
+// }
 
 console.log("🚚 Starting migration...");
 
