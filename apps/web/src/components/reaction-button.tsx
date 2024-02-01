@@ -16,7 +16,7 @@ type ReactionButtonProps = {
 
 export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-3">
       {Object.entries(idToEmoji).map(([key, value]) => {
         const reactToPage = handleReact.bind(null, reactToKey, parseInt(key));
         return (
@@ -27,7 +27,7 @@ export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) 
               className={cn(
                 "h-8 w-14 rounded-full",
                 reactions[Number(key)]?.hasReacted
-                  ? "bg-wave text-wave-foreground hover:bg-wave"
+                  ? "bg-reaction text-foreground hover:bg-reaction"
                   : "bg-muted text-foreground hover:bg-muted",
               )}
             >
