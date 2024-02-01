@@ -22,7 +22,7 @@ function createPool() {
   return new Pool({
     max: 40,
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.VERCEL_ENV === "production" && !process.env.CI,
+    ssl: process.env.VERCEL_ENV === "preview" && !process.env.CI,
   });
 }
 
