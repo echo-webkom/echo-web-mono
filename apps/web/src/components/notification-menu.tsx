@@ -16,15 +16,17 @@ type NotificationButtonProps = {};
 
 export default async function NotificationButton() {
   
-  // const notifications = await fetchAllNotifications();
+  const notifications = await fetchAllNotifications();
 
   
-  function displayNotifications() {
-    return (
-    <DropdownMenuItem asChild>
+  // function displayNotifications() {
+  //   return (
+  //   <DropdownMenuItem asChild>
     
-    </DropdownMenuItem>);
-  }
+  //   </DropdownMenuItem>);
+  // }
+
+  console.log(notifications);
 
   return (
     <DropdownMenu>
@@ -35,19 +37,18 @@ export default async function NotificationButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-3 w-56">
         <DropdownMenuLabel>
-          <p className="font-normal">Varsler</p>
+          <p className="font-normal">Varslinger</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* {
+        {
           notifications.map((notification) => {
             return (
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem>
               <span>{notification.title}</span>
-              <span>test</span>
-            </DropdownMenuItem>);
+            </DropdownMenuItem>
+            );
           })
-        } */}
-
+        }
       </DropdownMenuContent>
     </DropdownMenu>
   );
