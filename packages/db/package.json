@@ -17,6 +17,7 @@
     "db:check": "pnpm with-env drizzle-kit check:pg && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
+    "db:down-volumes": "docker compose down --volumes",
     "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"

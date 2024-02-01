@@ -10,11 +10,9 @@ import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { PostPreview } from "@/components/post-preview";
-import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { isMemberOf } from "@/lib/memberships";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
@@ -32,17 +30,20 @@ export async function Content() {
     getAllShoppinglistItems(),
   ]);
 
+  const withDots = items.length > 5 ? true : false;
+
   const mappedItems = items
     .map((item) => ({
       id: item.id,
       name: item.name,
+      user: null,
       likes: item.likes.length,
       hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
     }))
     .sort((a, b) => b.likes - a.likes)
-    .slice(0, 5);
+    .slice(0, 6);
 
-  const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
+  const isAdmin = false;
 
   return (
     <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
@@ -131,15 +132,16 @@ export async function Content() {
 
       {/* Hyggkom handleliste */}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-        <Link href="/handleliste">
-          <h2 className="text-center text-xl font-semibold md:text-3xl">Hyggkom Handleliste</h2>
+        <Link
+          href="/for-studenter/handleliste"
+          className="group mx-auto flex items-center underline-offset-4 hover:underline"
+        >
+          <h2 className="text-center text-3xl font-medium">Hyggkom Handleliste</h2>
+          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
 
         <hr />
-        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
-        <Link href="/handleliste">
-          <Button>Se mer</Button>
-        </Link>
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
       </section>
     </Container>
   );

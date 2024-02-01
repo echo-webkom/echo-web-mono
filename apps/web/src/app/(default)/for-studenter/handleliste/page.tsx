@@ -12,6 +12,7 @@ export default async function HyggkomHandleliste() {
   const mappedItems = items.map((item) => ({
     id: item.id,
     name: item.name,
+    user: item.user.name,
     likes: item.likes.length,
     hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
   }));
@@ -25,7 +26,7 @@ export default async function HyggkomHandleliste() {
         <h1 className="py-3 text-xl">
           Like de tingene du mener vi bør kjøpe inn, eller legg til ditt eget forslag under!
         </h1>
-        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} />
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={false} />
       </div>
       <HyggkomShoppingForm />
     </Container>
