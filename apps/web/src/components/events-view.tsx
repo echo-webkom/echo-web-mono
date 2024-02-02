@@ -86,7 +86,7 @@ export default async function EventsView({ searchParams }: { searchParams: Searc
       </Callout>
     );
 
-  if (searchParams?.order === "ASC") happenings.reverse();
+  if (searchParams?.order === "DESC") happenings.reverse();
 
   if (happenings.length === 0) {
     return (
