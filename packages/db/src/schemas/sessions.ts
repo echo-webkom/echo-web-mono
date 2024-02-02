@@ -1,17 +1,17 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
-export const sessions = pgTable(
+export const sessions = sqliteTable(
   "session",
   {
     sessionToken: text("session_token").notNull(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
+    expires: integer("expires", { mode: "timestamp" }).notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.sessionToken] }),

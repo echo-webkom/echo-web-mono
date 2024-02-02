@@ -1,10 +1,10 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, users } from ".";
 
-export const usersToGroups = pgTable(
+export const usersToGroups = sqliteTable(
   "users_to_groups",
   {
     userId: text("user_id")
@@ -12,12 +12,12 @@ export const usersToGroups = pgTable(
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    groupId: varchar("group_id", { length: 255 })
+    groupId: text("group_id")
       .notNull()
       .references(() => groups.id, {
         onDelete: "cascade",
       }),
-    isLeader: boolean("is_leader").notNull().default(false),
+    isLeader: integer("is_leader", { mode: "boolean" }).notNull().default(false),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.groupId] }),

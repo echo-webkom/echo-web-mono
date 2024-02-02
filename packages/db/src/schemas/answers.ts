@@ -1,5 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { blob, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happenings, questions, registrations, users } from ".";
@@ -8,7 +8,7 @@ type AnswerCol = {
   answer: string | Array<string>;
 };
 
-export const answers = pgTable(
+export const answers = sqliteTable(
   "answer",
   {
     userId: text("user_id")
@@ -16,17 +16,17 @@ export const answers = pgTable(
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    happeningId: varchar("happening_id", { length: 255 })
+    happeningId: text("happening_id")
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    questionId: varchar("question_id", { length: 255 })
+    questionId: text("question_id")
       .notNull()
       .references(() => questions.id, {
         onDelete: "cascade",
       }),
-    answer: json("answer").$type<AnswerCol>(),
+    answer: blob("answer", { mode: "json" }).$type<AnswerCol>(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),

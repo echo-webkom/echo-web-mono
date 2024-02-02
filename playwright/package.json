@@ -13,13 +13,14 @@
     "with-env": "dotenv -e ../.env --"
   },
   "devDependencies": {
+    "@echo-webkom/db": "workspace:*",
     "@echo-webkom/tsconfig": "workspace:*",
     "@playwright/test": "1.45.3",
     "@types/node": "20.14.10",
     "dotenv-cli": "7.4.2",
+    "drizzle-orm": "0.32.0",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "postgres": "3.4.4",
     "typescript": "5.5.3"
   },
   "eslintConfig": {

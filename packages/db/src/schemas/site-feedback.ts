@@ -1,22 +1,22 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { feedbackCategoryEnum } from "./enums";
 
-export const siteFeedback = pgTable(
+export const siteFeedback = sqliteTable(
   "site_feedback",
   {
-    id: varchar("id")
-      .notNull()
-      .$defaultFn(() => nanoid()),
-    name: varchar("name", { length: 255 }),
-    email: varchar("email", { length: 255 }),
+    id: text("id").notNull().$defaultFn(nanoid),
+    name: text("name"),
+    email: text("email"),
     message: text("message").notNull(),
-    category: feedbackCategoryEnum("category").notNull(),
-    isRead: boolean("is_read").notNull().default(false),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    category: text("category", { enum: feedbackCategoryEnum }).notNull(),
+    isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

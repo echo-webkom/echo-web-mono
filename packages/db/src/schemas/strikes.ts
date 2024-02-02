@@ -1,22 +1,22 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, index, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { strikeInfos, users } from ".";
 
-export const strikes = pgTable(
+export const strikes = sqliteTable(
   "strike",
   {
-    id: serial("id").notNull().primaryKey(),
+    id: integer("id").notNull().primaryKey(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    strikeInfoId: uuid("strike_info_id")
+    strikeInfoId: text("strike_info_id")
       .notNull()
       .references(() => strikeInfos.id, { onDelete: "cascade" }),
-    isDeleted: boolean("is_deleted").notNull().default(false),
+    isDeleted: integer("is_deleted", { mode: "boolean" }).notNull().default(false),
   },
   (table) => ({
     userIdx: index("user_idx").on(table.userId, table.id),

@@ -1,9 +1,10 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { now } from "../utils";
 import { users } from "./users";
 
-export const reactions = pgTable(
+export const reactions = sqliteTable(
   "reaction",
   {
     reactToKey: text("react_to_key").notNull(),
@@ -11,7 +12,7 @@ export const reactions = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "no action" }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(now),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.reactToKey, table.emojiId, table.userId] }),

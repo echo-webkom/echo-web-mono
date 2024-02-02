@@ -1,18 +1,17 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
+import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happeningsToGroups } from ".";
-import { usersToGroups } from "./users-to-groups";
+import { happeningsToGroups, usersToGroups } from ".";
 
-export const groups = pgTable(
+export const groups = sqliteTable(
   "group",
   {
-    id: varchar("id", { length: 255 })
+    id: text("id", { length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
-    name: varchar("name", { length: 255 }).notNull(),
+    name: text("name", { length: 255 }).notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

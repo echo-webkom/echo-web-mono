@@ -9,6 +9,7 @@ package-lock.json
 
 # db
 postgres-data/
+*.db
 
 # email
 .react-email/

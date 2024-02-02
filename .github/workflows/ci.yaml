@@ -6,7 +6,7 @@ on:
 
 env:
   ADMIN_KEY: foobar
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+  DATABASE_URL: file:./dev.db
   NEXT_PUBLIC_SANITY_DATASET: "testing"
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
@@ -17,17 +17,6 @@ env:
 jobs:
   ci:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15.1
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: echo-web
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v4

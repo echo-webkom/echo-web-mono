@@ -1,10 +1,13 @@
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { json, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { blob, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const kv = pgTable("kv", {
+export const kv = sqliteTable("kv", {
   key: text("key").notNull().primaryKey(),
-  value: json("value"),
-  ttl: timestamp("ttl").default(sql`now() + interval '1 day'`),
+  value: blob("value", { mode: "json" }),
+  // ttl: timestamp("ttl").default(sql`now() + interval '1 day'`),
+  ttl: integer("ttl", { mode: "timestamp" }).$defaultFn(
+    () => new Date(new Date().getTime() + 60 * 60 * 24 * 1000),
+  ),
 });
 
 export type KV = InferSelectModel<typeof kv>;

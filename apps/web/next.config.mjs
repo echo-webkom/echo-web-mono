@@ -15,6 +15,10 @@ const config = {
     },
   },
 
+  experimental: {
+    esmExternals: false,
+  },
+
   images: {
     remotePatterns: [
       {

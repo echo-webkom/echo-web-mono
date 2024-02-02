@@ -1,17 +1,15 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { happenings } from ".";
 
-export const spotRanges = pgTable(
+export const spotRanges = sqliteTable(
   "spot_range",
   {
-    id: varchar("id", { length: 255 })
-      .notNull()
-      .$defaultFn(() => nanoid()),
-    happeningId: varchar("happening_id", { length: 255 })
+    id: text("id").notNull().$defaultFn(nanoid),
+    happeningId: text("happening_id")
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",

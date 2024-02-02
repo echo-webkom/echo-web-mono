@@ -1,1 +1,0 @@
-CREATE INDEX IF NOT EXISTS "slug_idx" ON "happening" ("slug");

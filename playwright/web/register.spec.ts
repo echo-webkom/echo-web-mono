@@ -1,16 +1,17 @@
 import { expect, test } from "@playwright/test";
-import postgres from "postgres";
+import { eq } from "drizzle-orm";
+
+import { db } from "@echo-webkom/db";
+import { registrations } from "@echo-webkom/db/schemas";
 
 import { loginAs } from "../helpers/sessionTest";
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
 
-const sql = postgres(process.env.DATABASE_URL!);
-
 test.describe("Register", () => {
   test.beforeEach(async () => {
-    await sql`DELETE FROM registration WHERE happening_id = ${ID}`;
+    await db.delete(registrations).where(eq(registrations.happeningId, ID));
   });
 
   test("register and deregister to event", async ({ page }) => {

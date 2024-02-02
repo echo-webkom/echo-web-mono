@@ -1,12 +1,12 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const whitelist = pgTable(
+export const whitelist = sqliteTable(
   "whitelist",
   {
     email: text("email").notNull(),
-    expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
     reason: text("reason").notNull(),
   },
   (table) => ({

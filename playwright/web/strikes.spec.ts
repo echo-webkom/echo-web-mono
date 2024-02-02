@@ -1,16 +1,16 @@
 import { expect, test } from "@playwright/test";
-import postgres from "postgres";
+
+import { db } from "@echo-webkom/db";
+import { strikeInfos, strikes } from "@echo-webkom/db/schemas";
 
 import { loginAs } from "../helpers/sessionTest";
 
 const user = { id: "alum", name: "Andreas Aanes" };
 
-const sql = postgres(process.env.DATABASE_URL!);
-
 test.describe("Strikes", () => {
   test.beforeEach(async () => {
-    await sql`DELETE FROM strike`;
-    await sql`DELETE FROM strike_info`;
+    await db.delete(strikes);
+    await db.delete(strikeInfos);
     await fetch("http://localhost:3000/api/revalidate", {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.ADMIN_KEY!}` },

@@ -1,0 +1,25 @@
+name: Staging environment
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+
+jobs:
+  setup-db:
+    if: !always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: ./.github/actions/pnpm-install
+
+      - name: Create Database
+        uses: tursodatabase/create-database-action@v1
+        with:
+          organization_name: ${{ secrets.TURSO_ORGANIZATION_NAME }}
+          api_token: ${{ secrets.TURSO_API_TOKEN }}
+          existing_database_name: ${{ secrets.TURSO_DATABASE_NAME }}
+          new_database_name: ${{ github.ref_name }}
