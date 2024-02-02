@@ -1,5 +1,6 @@
 import { handleReact } from "@/actions/reactions";
 import { idToEmoji } from "@/lib/emojis";
+import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 
 type ReactionButtonProps = {
@@ -15,7 +16,7 @@ type ReactionButtonProps = {
 
 export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-3">
       {Object.entries(idToEmoji).map(([key, value]) => {
         const reactToPage = handleReact.bind(null, reactToKey, parseInt(key));
         return (
@@ -23,7 +24,12 @@ export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) 
           <form key={key} action={reactToPage}>
             <Button
               type="submit"
-              className={`${reactions[Number(key)]?.hasReacted ? "bg-wave hover:bg-wave" : "bg-muted hover:bg-muted"} h-8 w-14 rounded-full text-foreground`}
+              className={cn(
+                "h-8 w-14 rounded-full",
+                reactions[Number(key)]?.hasReacted
+                  ? "bg-reaction text-foreground hover:bg-muted"
+                  : "bg-muted text-foreground hover:bg-reaction",
+              )}
             >
               <div className="flex gap-1 font-normal">
                 <p>{value}</p>

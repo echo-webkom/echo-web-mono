@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.14.3",
+  "packageManager": "pnpm@8.15.1",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=web",
     "web:dev": "turbo run dev --filter=web",
-    "docs:dev": "turbo run dev --filter=docs",
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
     "start": "turbo run start",

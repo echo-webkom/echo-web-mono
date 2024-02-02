@@ -320,6 +320,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItem>
         )}
 
+      {user && (
+        <SidebarItem>
+          <ReactionButtons reactions={userReactions} reactToKey={event._id} />
+        </SidebarItem>
+      )}
+
       {/**
        * Show deregister button if:
        * - User is registered to happening
@@ -436,12 +442,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <Button variant="link" className="w-full" asChild>
             <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
-        </SidebarItem>
-      )}
-
-      {user && (
-        <SidebarItem>
-          <ReactionButtons reactions={userReactions} reactToKey={event._id} />
         </SidebarItem>
       )}
     </Sidebar>

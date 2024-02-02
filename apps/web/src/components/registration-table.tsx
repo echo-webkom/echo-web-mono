@@ -14,6 +14,7 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { mailTo } from "@/utils/prefixes";
+import { DownloadCsvButton } from "./download-csv-button";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -33,9 +34,11 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
 export function RegistrationTable({
   registrations,
   studentGroups,
+  happeningId,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
+  happeningId: string;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -135,8 +138,9 @@ export function RegistrationTable({
           </div>
         </div>
         <div className="flex flex-row justify-between px-4 py-2">
-          <div className="mt-auto w-full">
+          <div className="mt-auto w-full space-x-2">
             <RandomPersonButton registrations={registrations} />
+            <DownloadCsvButton id={happeningId} />
           </div>
         </div>
 

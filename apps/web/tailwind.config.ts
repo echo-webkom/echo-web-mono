@@ -76,6 +76,10 @@ export default {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
+        reaction: {
+          DEFAULT: "var(--selected)",
+          foreground: "var(--text-foreground)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

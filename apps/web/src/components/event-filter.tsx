@@ -9,7 +9,6 @@ import {
   type ReadonlyURLSearchParams,
 } from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
-import { useDebouncedCallback } from "use-debounce";
 
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
@@ -28,6 +27,7 @@ type FilterType =
   | "ALL"
   | "EVENT"
   | "BEDPRES"
+  | "SEARCH"
   | "ASC"
   | "PAST"
   | "OPEN"
@@ -41,6 +41,7 @@ export function updateFilter(
   pathname: string,
   params: ReadonlyURLSearchParams,
   condition?: boolean,
+  search?: string,
 ) {
   const searchParams = new URLSearchParams(params);
 
@@ -53,6 +54,9 @@ export function updateFilter(
       break;
     case "BEDPRES":
       searchParams.set("type", "bedpres");
+      break;
+    case "SEARCH":
+      search ? searchParams.set("search", search) : searchParams.delete("search");
       break;
     case "ASC":
       condition ? searchParams.delete("order") : searchParams.set("order", "ASC");
@@ -217,12 +221,6 @@ export function EventFilterSidebar() {
 
   const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
 
-  const debouncedSearch = useDebouncedCallback((search: string) => {
-    const searchParams = new URLSearchParams(params);
-    search ? searchParams.set("search", search) : searchParams.delete("search");
-    router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }, 500);
-
   /**
    * This useEffect sets the search input to the value in the URL when the user navigates back, etc.
    */
@@ -238,9 +236,15 @@ export function EventFilterSidebar() {
           <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
             <Input
               value={searchInput}
+              maxLength={50}
               onChange={(e) => {
                 setSearchInput(e.target.value);
-                debouncedSearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.currentTarget.blur();
+                  updateFilter("SEARCH", router, pathname, params, undefined, searchInput);
+                }
               }}
               type="text"
               placeholder="Søk..."
@@ -256,9 +260,7 @@ export function EventFilterSidebar() {
                   stroke="currentColor"
                   onClick={() => {
                     setSearchInput("");
-                    const searchParams = new URLSearchParams(params);
-                    searchParams.delete("search");
-                    router.push(`${pathname}?${searchParams}`, { scroll: false });
+                    updateFilter("SEARCH", router, pathname, params);
                   }}
                 >
                   <path
