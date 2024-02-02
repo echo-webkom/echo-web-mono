@@ -187,8 +187,8 @@ importers:
         specifier: 1.0.1
         version: 1.0.1
       '@vercel/speed-insights':
-        specifier: 1.0.8
-        version: 1.0.8(next@14.1.0)(react@18.2.0)
+        specifier: 1.0.9
+        version: 1.0.9(next@14.1.0)(react@18.2.0)
       calendar-link:
         specifier: 2.6.0
         version: 2.6.0
@@ -5510,8 +5510,8 @@ packages:
       '@upstash/redis': 1.25.1
     dev: false
 
-  /@vercel/speed-insights@1.0.8(next@14.1.0)(react@18.2.0):
-    resolution: {integrity: sha512-x1V9MHUMGkaNafmgY0qRbmbr+jfeU+Cvo5KgreeEGo63SFuBYRg9RS52GUJ9p82nEL6NBzc9HNru6fkcvufYcQ==}
+  /@vercel/speed-insights@1.0.9(next@14.1.0)(react@18.2.0):
+    resolution: {integrity: sha512-f+XFP0O+aZ4Olj9h+BitkB1b4NJQaxtyCb69wWuDxytJHY6Pa4QtZPdBUftHOcajUCHRVeq062fk3MKXKtjNVQ==}
     requiresBuild: true
     peerDependencies:
       '@sveltejs/kit': ^1 || ^2
