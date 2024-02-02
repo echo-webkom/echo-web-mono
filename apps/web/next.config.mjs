@@ -15,6 +15,10 @@ const config = {
     },
   },
 
+  experimental: {
+    serverComponentsExternalPackages: ["@libsql/client"],
+  },
+
   images: {
     remotePatterns: [
       {

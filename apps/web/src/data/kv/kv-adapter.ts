@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { isPostgresIshError, type Database } from "@echo-webkom/db";
+import { type Database } from "@echo-webkom/db";
+import { isDatabaseError, SQLITE_CONSTRAINT_UNIQUE } from "@echo-webkom/db/error";
 import { kv } from "@echo-webkom/db/schemas";
 
 import { isExpired } from "./utils";
@@ -63,9 +64,9 @@ export class KVDrizzleAdapter implements KVAdapter {
         ttl,
       });
     } catch (e) {
-      if (isPostgresIshError(e)) {
+      if (isDatabaseError(e)) {
         // If the key already exists, update the value
-        if (e.code === "23505") {
+        if (e.code === SQLITE_CONSTRAINT_UNIQUE) {
           await this.db
             .update(kv)
             .set({

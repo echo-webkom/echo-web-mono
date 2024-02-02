@@ -1,14 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import {
-  boolean,
-  index,
-  integer,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import {
@@ -21,24 +12,24 @@ import {
 } from ".";
 import { now } from "../utils";
 
-export const users = pgTable(
+export const users = sqliteTable(
   "user",
   {
     id: text("id").notNull(),
     name: text("name"),
     email: text("email").notNull(),
-    emailVerified: timestamp("email_verified", { mode: "date" }),
+    emailVerified: integer("email_verified", { mode: "timestamp" }),
     image: text("image"),
-    alternativeEmail: varchar("alternative_email", { length: 255 }),
-    degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
+    alternativeEmail: text("alternative_email"),
+    degreeId: text("degree_id").references(() => degrees.id),
     year: integer("year"),
-    type: userTypeEnum("type").notNull().default("student"),
-    isBanned: boolean("is_banned").notNull().default(false),
+    type: text("type", { enum: userTypeEnum }).notNull().default("student"),
+    isBanned: integer("is_banned", { mode: "boolean" }).notNull().default(false),
     bannedFromStrike: integer("banned_from_strike"),
-    lastSignInAt: timestamp("last_sign_in_at"),
-    updatedAt: timestamp("updated_at").$onUpdate(now),
-    createdAt: timestamp("created_at").$defaultFn(now),
-    hasReadTerms: boolean("has_read_terms").notNull().default(false),
+    lastSignInAt: integer("last_sign_in_at", { mode: "timestamp" }),
+    updatedAt: integer("updated_at", { mode: "timestamp" }).$onUpdate(now),
+    createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(now),
+    hasReadTerms: integer("has_read_terms", { mode: "boolean" }).notNull().default(false),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

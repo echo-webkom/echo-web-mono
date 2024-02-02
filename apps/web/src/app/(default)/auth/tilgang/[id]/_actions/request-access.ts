@@ -3,7 +3,8 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
 
-import { db, isPostgresIshError } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { isDatabaseError, SQLITE_CONSTRAINT_UNIQUE } from "@echo-webkom/db/error";
 import { accessRequests } from "@echo-webkom/db/schemas";
 import { AccessRequestNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
@@ -59,8 +60,8 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
       };
     }
 
-    if (isPostgresIshError(e)) {
-      if (e.code === "23505") {
+    if (isDatabaseError(e)) {
+      if (e.code === SQLITE_CONSTRAINT_UNIQUE) {
         return {
           success: false,
           message: "Du har allerede sendt en forespørsel",

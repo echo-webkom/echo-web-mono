@@ -8,7 +8,7 @@ const createHappening = (happening: Partial<FullHappening>): FullHappening => {
   return {
     date: null,
     id: "1",
-    type: happeningTypeEnum.enumValues[1],
+    type: happeningTypeEnum[1],
     slug: "",
     title: "",
     registrationGroups: null,

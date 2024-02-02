@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 import { and, eq } from "drizzle-orm";
-import { type PgDatabase } from "drizzle-orm/pg-core";
+import { type BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
 import { type Adapter } from "next-auth/adapters";
 
 import { accounts, sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 
-export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter => {
+export const DrizzleAdapter = (client: InstanceType<typeof BaseSQLiteDatabase>): Adapter => {
   return {
     async createUser(data) {
       return await client

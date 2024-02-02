@@ -1,21 +1,21 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { index, json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+import { blob, index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
 
-export const happenings = pgTable(
+export const happenings = sqliteTable(
   "happening",
   {
-    id: varchar("id", { length: 255 }).notNull(),
-    slug: varchar("slug", { length: 255 }).notNull().unique(),
-    title: varchar("title", { length: 255 }).notNull(),
-    type: happeningTypeEnum("type").notNull().default("event"),
-    date: timestamp("date"),
-    registrationGroups: json("registration_groups").$type<Array<string>>(),
-    registrationStartGroups: timestamp("registration_start_groups"),
-    registrationStart: timestamp("registration_start"),
-    registrationEnd: timestamp("registration_end"),
+    id: text("id").notNull(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    type: text("type", { enum: happeningTypeEnum }).notNull().default("event"),
+    date: integer("date", { mode: "timestamp" }),
+    registrationGroups: blob("registration_groups", { mode: "json" }).$type<Array<string>>(),
+    registrationStartGroups: integer("registration_start_groups", { mode: "timestamp" }),
+    registrationStart: integer("registration_start", { mode: "timestamp" }),
+    registrationEnd: integer("registration_end", { mode: "timestamp" }),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

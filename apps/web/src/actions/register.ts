@@ -1,7 +1,7 @@
 "use server";
 
 import { isFuture, isPast } from "date-fns";
-import { and, eq, gte, lte, or, sql } from "drizzle-orm";
+import { and, eq, gte, lte, or } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
@@ -186,52 +186,45 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    const { registration, isWaitlisted } = await db.transaction(
-      async (tx) => {
-        await tx.execute(sql`LOCK TABLE ${registrations} IN EXCLUSIVE MODE`);
+    const { registration, isWaitlisted } = await db.transaction(async (tx) => {
+      const regs = await tx
+        .select()
+        .from(registrations)
+        .where(
+          and(
+            eq(registrations.happeningId, id),
+            lte(users.year, userSpotRange.maxYear),
+            gte(users.year, userSpotRange.minYear),
+            or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
+          ),
+        )
+        .leftJoin(users, eq(registrations.userId, users.id));
 
-        const regs = await tx
-          .select()
-          .from(registrations)
-          .where(
-            and(
-              eq(registrations.happeningId, id),
-              lte(users.year, userSpotRange.maxYear),
-              gte(users.year, userSpotRange.minYear),
-              or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
-            ),
-          )
-          .leftJoin(users, eq(registrations.userId, users.id));
+      const isInfiniteSpots = userSpotRange.spots === 0;
+      const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
 
-        const isInfiniteSpots = userSpotRange.spots === 0;
-        const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
-
-        const registration = await tx
-          .insert(registrations)
-          .values({
+      const registration = await tx
+        .insert(registrations)
+        .values({
+          status: isWaitlisted ? "waiting" : "registered",
+          happeningId: id,
+          userId: user.id,
+          changedBy: null,
+        })
+        .returning()
+        .onConflictDoUpdate({
+          target: [registrations.happeningId, registrations.userId],
+          set: {
             status: isWaitlisted ? "waiting" : "registered",
-            happeningId: id,
-            userId: user.id,
-            changedBy: null,
-          })
-          .returning()
-          .onConflictDoUpdate({
-            target: [registrations.happeningId, registrations.userId],
-            set: {
-              status: isWaitlisted ? "waiting" : "registered",
-            },
-          })
-          .then((res) => res[0] ?? null);
+          },
+        })
+        .then((res) => res[0] ?? null);
 
-        return {
-          registration,
-          isWaitlisted,
-        };
-      },
-      {
-        isolationLevel: "read committed",
-      },
-    );
+      return {
+        registration,
+        isWaitlisted,
+      };
+    });
 
     revalidateRegistrations(id, user.id);
 

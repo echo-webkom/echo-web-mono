@@ -2,7 +2,8 @@
 
 import { eq } from "drizzle-orm";
 
-import { db, isPostgresIshError } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db";
+import { isDatabaseError, SQLITE_CONSTRAINT_UNIQUE } from "@echo-webkom/db/error";
 import { accessRequests, whitelist } from "@echo-webkom/db/schemas";
 import { AccessGrantedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
@@ -42,8 +43,8 @@ export const grantAccessAction = async (accessRequestId: string) => {
 
     await db.delete(accessRequests).where(eq(accessRequests.id, accessRequestId));
   } catch (e) {
-    if (isPostgresIshError(e)) {
-      if (e.code === "23505") {
+    if (isDatabaseError(e)) {
+      if (e.code === SQLITE_CONSTRAINT_UNIQUE) {
         return {
           success: false,
           message: "E-posten er allerede i whitelist",

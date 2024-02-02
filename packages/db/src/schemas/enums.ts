@@ -1,30 +1,23 @@
-import { pgEnum } from "drizzle-orm/pg-core";
+export const degreeTypeEnum = ["bachelors", "masters", "integrated", "year"] as const;
+export type DegreeType = (typeof degreeTypeEnum)[number];
 
-export type DegreeType = (typeof degreeTypeEnum)["enumValues"][number];
-export const degreeTypeEnum = pgEnum("degree_type", ["bachelors", "masters", "integrated", "year"]);
+export const happeningTypeEnum = ["bedpres", "event", "external"] as const;
+export type HappeningType = (typeof happeningTypeEnum)[number];
 
-export type HappeningType = (typeof happeningTypeEnum)["enumValues"][number];
-export const happeningTypeEnum = pgEnum("happening_type", ["bedpres", "event", "external"]);
-
-export type RegistrationStatus = (typeof registrationStatusEnum)["enumValues"][number];
-export const registrationStatusEnum = pgEnum("registration_status", [
+export const registrationStatusEnum = [
   "registered",
   "unregistered",
   "removed",
   "waiting",
   "pending",
-]);
+] as const;
+export type RegistrationStatus = (typeof registrationStatusEnum)[number];
 
-export type QuestionType = (typeof questionTypeEnum)["enumValues"][number];
-export const questionTypeEnum = pgEnum("question_type", ["text", "textarea", "radio", "checkbox"]);
+export const questionTypeEnum = ["text", "textarea", "radio", "checkbox"] as const;
+export type QuestionType = (typeof questionTypeEnum)[number];
 
-export type UserType = (typeof userTypeEnum)["enumValues"][number];
-export const userTypeEnum = pgEnum("user_type", ["student", "company", "guest", "alum"]);
+export const userTypeEnum = ["student", "company", "guest", "alum"] as const;
+export type UserType = (typeof userTypeEnum)[number];
 
-export type FeedbackCategory = (typeof feedbackCategoryEnum)["enumValues"][number];
-export const feedbackCategoryEnum = pgEnum("feedback_category", [
-  "bug",
-  "feature",
-  "login",
-  "other",
-]);
+export const feedbackCategoryEnum = ["bug", "feature", "login", "other"] as const;
+export type FeedbackCategory = (typeof feedbackCategoryEnum)[number];

@@ -1,10 +1,11 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, registrationStatusEnum, users } from ".";
+import { now } from "../utils";
 
-export const registrations = pgTable(
+export const registrations = sqliteTable(
   "registration",
   {
     userId: text("user_id")
@@ -15,11 +16,11 @@ export const registrations = pgTable(
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    status: registrationStatusEnum("status").notNull().default("waiting"),
+    status: text("status", { enum: registrationStatusEnum }).notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    prevStatus: registrationStatusEnum("prev_status"),
-    changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(now),
+    prevStatus: text("prev_status", { enum: registrationStatusEnum }),
+    changedAt: integer("changed_at", { mode: "timestamp" }).$onUpdate(now),
     changedBy: text("changed_by"),
   },
   (table) => ({

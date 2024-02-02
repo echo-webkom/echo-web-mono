@@ -1,19 +1,21 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { nanoid } from "nanoid";
 
 import { happenings, users } from ".";
+import { now } from "../utils";
 
-export const strikeInfos = pgTable("strike_info", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  happeningId: varchar("happening_id", { length: 255 })
+export const strikeInfos = sqliteTable("strike_info", {
+  id: text("id").notNull().primaryKey().$defaultFn(nanoid),
+  happeningId: text("happening_id")
     .notNull()
     .references(() => happenings.id),
   issuerId: text("issuer_id")
     .notNull()
     .references(() => users.id),
   reason: text("reason").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(now),
 });
 
 export const strikeInfoRelations = relations(strikeInfos, ({ one }) => ({

@@ -1,18 +1,18 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
+import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, happenings } from ".";
 
-export const happeningsToGroups = pgTable(
+export const happeningsToGroups = sqliteTable(
   "happenings_to_groups",
   {
-    happeningId: varchar("happening_id", { length: 255 })
+    happeningId: text("happening_id")
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    groupId: varchar("group_id", { length: 255 })
+    groupId: text("group_id")
       .notNull()
       .references(() => groups.id, {
         onDelete: "cascade",

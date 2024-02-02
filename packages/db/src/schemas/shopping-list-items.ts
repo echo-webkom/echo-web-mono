@@ -1,19 +1,22 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { nanoid } from "nanoid";
 
 import { users } from ".";
 import { usersToShoppingListItems } from "./users-to-shopping-list-items";
 
-export const shoppingListItems = pgTable("shopping_list_item", {
-  id: uuid("id").defaultRandom().primaryKey(),
+export const shoppingListItems = sqliteTable("shopping_list_item", {
+  id: text("id").primaryKey().$defaultFn(nanoid),
   userId: text("user_id")
     .notNull()
     .references(() => users.id, {
       onDelete: "cascade",
     }),
   name: text("name").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
 });
 
 export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({

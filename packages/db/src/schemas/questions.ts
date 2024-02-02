@@ -1,5 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { blob, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, questionTypeEnum } from ".";
@@ -9,16 +9,16 @@ type Option = {
   value: string;
 };
 
-export const questions = pgTable(
+export const questions = sqliteTable(
   "question",
   {
-    id: varchar("id", { length: 255 }).notNull(),
+    id: text("id").notNull(),
     title: text("title").notNull(),
-    required: boolean("required").notNull().default(false),
-    type: questionTypeEnum("type").notNull().default("text"),
-    isSensitive: boolean("is_sensitive").notNull().default(false),
-    options: json("options").$type<Array<Option>>(),
-    happeningId: varchar("happening_id", { length: 255 })
+    required: integer("required", { mode: "boolean" }).notNull().default(false),
+    type: text("type", { enum: questionTypeEnum }).notNull().default("text"),
+    isSensitive: integer("is_sensitive", { mode: "boolean" }).notNull().default(false),
+    options: blob("options", { mode: "json" }).$type<Array<Option>>(),
+    happeningId: text("happening_id")
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",

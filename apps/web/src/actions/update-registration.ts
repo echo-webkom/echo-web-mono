@@ -13,7 +13,7 @@ import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 
 const updateRegistrationPayloadSchema = z.object({
-  status: z.enum(registrationStatusEnum.enumValues),
+  status: z.enum(registrationStatusEnum),
   reason: z.string(),
 });
 

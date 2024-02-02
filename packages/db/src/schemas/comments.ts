@@ -1,10 +1,11 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { nanoid } from "nanoid";
 
 import { users } from ".";
+import { now } from "../utils";
 
-export const comments = pgTable(
+export const comments = sqliteTable(
   "comment",
   {
     id: text("id").notNull().primaryKey().$defaultFn(nanoid),
@@ -14,10 +15,8 @@ export const comments = pgTable(
       onDelete: "set null",
     }),
     content: text("content").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at")
-      .notNull()
-      .$onUpdateFn(() => new Date()),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(now),
+    updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$onUpdateFn(now),
   },
   (t) => ({
     postIdx: index("post_idx").on(t.postId),

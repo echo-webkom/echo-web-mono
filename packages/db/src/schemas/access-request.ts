@@ -1,11 +1,13 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const accessRequests = pgTable("access_request", {
-  id: text("id").primaryKey(),
+import { now } from "../utils";
+
+export const accessRequests = sqliteTable("access_request", {
+  id: text("id").notNull().primaryKey(),
   email: text("email").unique().notNull(),
   reason: text("reason").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(now),
 });
 
 export type AccessRequest = InferSelectModel<typeof accessRequests>;
