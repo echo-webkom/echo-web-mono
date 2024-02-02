@@ -1,44 +1,35 @@
-import { handleReact } from "@/actions/reactions";
-import { idToEmoji } from "@/lib/emojis";
+"use client";
+
+import { useOptimistic } from "react";
+
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 
 type ReactionButtonProps = {
-  reactToKey: string;
-  reactions: Record<
-    number,
-    {
-      count: number;
-      hasReacted: boolean;
-    }
-  >;
+  value: string;
+  hasReacted: boolean;
+  count: number;
 };
 
-export function ReactionButtons({ reactions, reactToKey }: ReactionButtonProps) {
+export default function ReactionButton({ value, hasReacted, count }: ReactionButtonProps) {
+  const [optimisticCount, addOptimisticCount] = useOptimistic(count, (currentCount, newCount) => {
+    return currentCount + 2;
+  });
+
   return (
-    <div className="flex gap-3">
-      {Object.entries(idToEmoji).map(([key, value]) => {
-        const reactToPage = handleReact.bind(null, reactToKey, parseInt(key));
-        return (
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          <form key={key} action={reactToPage}>
-            <Button
-              type="submit"
-              className={cn(
-                "h-8 w-14 rounded-full",
-                reactions[Number(key)]?.hasReacted
-                  ? "bg-reaction text-foreground hover:bg-muted"
-                  : "bg-muted text-foreground hover:bg-reaction",
-              )}
-            >
-              <div className="flex gap-1 font-normal">
-                <p>{value}</p>
-                <p>{reactions[Number(key)]?.count ?? 0}</p>
-              </div>
-            </Button>
-          </form>
-        );
-      })}
-    </div>
+    <Button
+      type="submit"
+      className={cn(
+        "h-8 w-14 rounded-full",
+        hasReacted
+          ? "bg-reaction hover:bg-reaction text-foreground"
+          : "hover:bg-reaction bg-muted text-foreground",
+      )}
+    >
+      <div className="flex gap-1 font-normal">
+        <p>{value}</p>
+        <p>{optimisticCount ?? 0}</p>
+      </div>
+    </Button>
   );
 }

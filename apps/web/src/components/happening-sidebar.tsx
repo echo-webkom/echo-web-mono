@@ -23,7 +23,7 @@ import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import { ReactionButtons } from "./reaction-button";
+import { ReactionButtonGroup } from "./reaction-button-group";
 
 type EventSidebarProps = {
   event: Happening;
@@ -320,12 +320,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItem>
         )}
 
-      {user && (
-        <SidebarItem>
-          <ReactionButtons reactions={userReactions} reactToKey={event._id} />
-        </SidebarItem>
-      )}
-
       {/**
        * Show deregister button if:
        * - User is registered to happening
@@ -442,6 +436,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <Button variant="link" className="w-full" asChild>
             <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
+        </SidebarItem>
+      )}
+
+      {user && (
+        <SidebarItem>
+          <ReactionButtonGroup reactions={userReactions} reactToKey={event._id} />
         </SidebarItem>
       )}
     </Sidebar>
