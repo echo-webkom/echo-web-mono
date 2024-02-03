@@ -1,15 +1,29 @@
 import { defineField, defineType } from "sanity";
 
 export default defineType({
-  name: "settings",
-  title: "Innstillinger",
+  name: "banner", 
+  title: "Banner",
   type: "document",
-  description: "Innstillinger for nettsiden",
   fields: [
     defineField({
-      name: "banner",
-      title: "Banner",
-      type: "banner",
+      name: "showBanner",
+      title: "Vis banner",
+      type: "boolean",
+      initialValue: true,
+      options: {
+        layout: "checkbox",
+      },
+    }),
+    defineField({
+      name: "title",
+      title: "Tittel",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "subtitle",
+      title: "Undertittel",
+      type: "string",
     }),
   ],
 });

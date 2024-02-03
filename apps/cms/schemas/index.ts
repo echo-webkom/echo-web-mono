@@ -10,8 +10,10 @@ import post from "./post";
 import profile from "./profile";
 import staticInfo from "./static-info";
 import studentgroup from "./student-group";
+import settings from "./settings";
 
 export const schemaTypes = [
+  settings,
   happening,
   post,
   company,
