@@ -1,8 +1,6 @@
 import { handleReact } from "@/actions/reactions";
 import { idToEmoji } from "@/lib/emojis";
-import { cn } from "@/utils/cn";
 import ReactionButton from "./reaction-button";
-import { Button } from "./ui/button";
 
 type ReactionButtonGroupProps = {
   reactToKey: string;
