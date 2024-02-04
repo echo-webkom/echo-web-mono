@@ -19,7 +19,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/node": "18.19.11",
+    "@types/node": "18.19.14",
     "eslint": "8.56.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.3.3"
