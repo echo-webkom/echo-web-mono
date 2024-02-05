@@ -16,26 +16,34 @@ export function JobAdPreview({ jobAd }: JobAdPreviewProps) {
     <Link href={`/for-studenter/jobb/${jobAd.slug}`}>
       <div
         className={cn(
-          "flex h-full flex-row items-center gap-5 rounded-lg p-5",
+          "flex h-full flex-col gap-5 rounded-lg border p-5",
           "hover:bg-muted",
           "transition-colors duration-200 ease-in-out",
         )}
       >
-        <div className="hidden md:block">
-          <div className="relative h-32 w-32 overflow-hidden rounded-full border bg-[#FFF]">
-            <Image
-              src={urlFor(jobAd.company.image).url()}
-              alt={`${jobAd.company.name} logo`}
-              fill
-            />
+        <div className=" flex sm:space-x-8">
+          <div className="hidden h-32 min-w-32 overflow-hidden rounded-full border sm:block">
+            <div className="relative aspect-square ">
+              {jobAd.company && (
+                <Image
+                  src={urlFor(jobAd.company.image).url()}
+                  alt={`${jobAd.company.name} logo`}
+                  fill
+                />
+              )}
+            </div>
+          </div>
+          <div className="relative flex w-auto flex-col">
+            <h3 className="truncate text-2xl font-semibold">{jobAd.title}</h3>
+            <p className="max- line-clamp-3 overflow-hidden text-ellipsis">{jobAd.body}</p>
           </div>
         </div>
         <div className="flex w-full flex-col gap-1 overflow-x-hidden">
-          <h3 className="truncate text-lg font-semibold md:text-2xl">{jobAd.title}</h3>
           <hr />
-          <ul>
+          <ul className="flex justify-evenly space-x-2 pt-2 text-[10px] sm:text-sm">
             <li>
-              <span className="font-semibold">Bedrift:</span> {jobAd.company.name}
+              <span className="font-semibold">Bedrift:</span>
+              {jobAd.company.name}
             </li>
             <li>
               <span className="font-semibold">Sted:</span>{" "}
