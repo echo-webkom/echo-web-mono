@@ -172,8 +172,8 @@ importers:
         specifier: 0.8.0
         version: 0.8.0(typescript@5.3.3)(zod@3.22.4)
       '@tanstack/react-table':
-        specifier: 8.11.7
-        version: 8.11.7(react-dom@18.2.0)(react@18.2.0)
+        specifier: 8.11.8
+        version: 8.11.8(react-dom@18.2.0)(react@18.2.0)
       '@types/remove-markdown':
         specifier: 0.3.4
         version: 0.3.4
@@ -412,8 +412,8 @@ importers:
   packages/email:
     dependencies:
       jsx-email:
-        specifier: 1.10.6
-        version: 1.10.6(@jsx-email/app-preview@1.2.5)(@types/node@18.19.14)(@types/react@18.2.51)(react@18.2.0)
+        specifier: 1.10.9
+        version: 1.10.9(@jsx-email/app-preview@1.2.5)(@types/node@18.19.14)(@types/react@18.2.51)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4795,14 +4795,14 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/react-table@8.11.7(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ZbzfMkLjxUTzNPBXJYH38pv2VpC9WUA+Qe5USSHEBz0dysDTv4z/ARI3csOed/5gmlmrPzVUN3UXGuUMbod3Jg==}
+  /@tanstack/react-table@8.11.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NEwvIq4iSiDQozEyvbdiSdCOiLa+g5xHmdEnvwDb98FObcK6YkBOkRrs/CNqrKdDy+/lqoIllIWHk+M80GW6+g==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@tanstack/table-core': 8.11.7
+      '@tanstack/table-core': 8.11.8
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -4816,8 +4816,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@tanstack/table-core@8.11.7:
-    resolution: {integrity: sha512-N3ksnkbPbsF3PjubuZCB/etTqvctpXWRHIXTmYfJFnhynQKjeZu8BCuHvdlLPpumKbA+bjY4Ay9AELYLOXPWBg==}
+  /@tanstack/table-core@8.11.8:
+    resolution: {integrity: sha512-DECHvtq4YW4U/gqg6etup7ydt/RB1Bi1pJaMpHUXl65ooW1d71Nv7BzD66rUdHrBSNdyiW3PLTPUQlpXjAgDeA==}
     engines: {node: '>=12'}
     dev: false
 
@@ -9452,8 +9452,8 @@ packages:
       object.assign: 4.1.5
       object.values: 1.1.7
 
-  /jsx-email@1.10.6(@jsx-email/app-preview@1.2.5)(@types/node@18.19.14)(@types/react@18.2.51)(react@18.2.0):
-    resolution: {integrity: sha512-T3tRZ4URxlN1O8B6Kdmkas49uVjdVo7ex+wZil5WL5X2kdG9ado6rfNuOuAHT8KkUALzlYupmE71AFZ97M39sw==}
+  /jsx-email@1.10.9(@jsx-email/app-preview@1.2.5)(@types/node@18.19.14)(@types/react@18.2.51)(react@18.2.0):
+    resolution: {integrity: sha512-zxfpd78ITR1XA33wvAoB3IuLxOzqNQRxmIomfp44ChWOK+P0vIaGwAaO8pL+oqY79SFL+Q96a8QanpI01F+Fjw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
