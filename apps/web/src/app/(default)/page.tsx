@@ -13,7 +13,9 @@ export default async function HomePage() {
   return (
     <>
       <Container className="relative pb-40" layout="full">
-        <LaunchPartyBanner />
+        <Link href="/arrangement/launch-party">
+          <LaunchPartyBanner />
+        </Link>
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>
