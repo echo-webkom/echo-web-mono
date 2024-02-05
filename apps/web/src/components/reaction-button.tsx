@@ -6,6 +6,11 @@ import { handleReact } from "@/actions/reactions";
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 
+type Reaction = {
+  count: number;
+  hasReacted: boolean;
+};
+
 type ReactionButtonProps = {
   reactToKey: string;
   hasReacted: boolean;
@@ -21,14 +26,12 @@ export default function ReactionButton({
   emojiId,
   children,
 }: ReactionButtonProps) {
-  const [reactionState, setOptimisticReaction] = useOptimistic(
+  const [reactionState, setOptimisticReaction] = useOptimistic<Reaction, Reaction>(
     {
       count,
       hasReacted,
     },
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    (currentState, optimisticValue) => {
+    (_, optimisticValue) => {
       return optimisticValue;
     },
   );
