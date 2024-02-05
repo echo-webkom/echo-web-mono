@@ -1,42 +1,61 @@
 "use client";
 
-import { useOptimistic, useState } from "react";
+import React, { useOptimistic } from "react";
 
+import { handleReact } from "@/actions/reactions";
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 
 type ReactionButtonProps = {
-  value: string;
+  reactToKey: string;
   hasReacted: boolean;
   count: number;
+  emojiId: number;
+  children: React.ReactNode;
 };
 
-export default function ReactionButton({ value, hasReacted, count }: ReactionButtonProps) {
-  const [isClicked, setIsClicked] = useState(hasReacted ? true : false);
+export default function ReactionButton({
+  reactToKey,
+  hasReacted,
+  count,
+  emojiId,
+  children,
+}: ReactionButtonProps) {
+  const [reactionState, setOptimisticReaction] = useOptimistic(
+    {
+      count,
+      hasReacted,
+    },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    (currentState, optimisticValue) => {
+      return optimisticValue;
+    },
+  );
 
-  const setBacgroundColor = (state: boolean) => {
-    return state
-      ? "bg-reaction hover:bg-reaction text-foreground"
-      : "sm:hover:bg-reaction hover:bg-muted bg-muted text-foreground";
+  const formAction = async () => {
+    setOptimisticReaction({
+      hasReacted: !reactionState.hasReacted,
+      count: !reactionState.hasReacted ? reactionState.count + 1 : reactionState.count - 1,
+    });
+    await handleReact(reactToKey, emojiId);
   };
-
-  const handleButtonClick = () => {
-    setIsClicked(!isClicked);
-    isClicked ? addOptimisticCount(1) : addOptimisticCount(-1);
-  };
-
-  const [optimisticCount, addOptimisticCount] = useOptimistic(count, (currentCount) => {
-    return isClicked ? currentCount + 1 : currentCount - 1;
-  });
 
   return (
-    <div onClick={handleButtonClick}>
-      <Button type="submit" className={cn("h-8 w-14 rounded-full", setBacgroundColor(isClicked))}>
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    <form action={formAction}>
+      <Button
+        type="submit"
+        className={cn("h-8 w-14 rounded-full", {
+          "bg-reaction text-foreground hover:bg-reaction": reactionState.hasReacted,
+          "bg-muted text-foreground hover:bg-muted sm:hover:bg-reaction": !reactionState.hasReacted,
+        })}
+      >
         <div className="flex gap-1 font-normal">
-          <p>{value}</p>
-          <p>{optimisticCount ?? 0}</p>
+          <p>{children}</p>
+          <p>{reactionState.count ?? 0}</p>
         </div>
       </Button>
-    </div>
+    </form>
   );
 }

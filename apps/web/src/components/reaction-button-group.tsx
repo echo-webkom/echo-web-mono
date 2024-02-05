@@ -1,4 +1,3 @@
-import { handleReact } from "@/actions/reactions";
 import { idToEmoji } from "@/lib/emojis";
 import ReactionButton from "./reaction-button";
 
@@ -17,16 +16,17 @@ export function ReactionButtonGroup({ reactions, reactToKey }: ReactionButtonGro
   return (
     <div className="flex gap-3">
       {Object.entries(idToEmoji).map(([key, value]) => {
-        const reactToPage = handleReact.bind(null, reactToKey, parseInt(key));
         const reaction = reactions[Number(key)];
         return (
-          <form key={key} action={reactToPage}>
-            <ReactionButton
-              value={value}
-              hasReacted={reaction?.hasReacted ?? false}
-              count={reaction?.count ?? 0}
-            />
-          </form>
+          <ReactionButton
+            key={reactToKey}
+            reactToKey={reactToKey}
+            hasReacted={reaction?.hasReacted ?? false}
+            emojiId={Number(key)}
+            count={reaction?.count ?? 0}
+          >
+            {value}
+          </ReactionButton>
         );
       })}
     </div>
