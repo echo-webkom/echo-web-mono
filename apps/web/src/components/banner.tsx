@@ -38,17 +38,19 @@ export default function LaunchPartyBanner() {
 
   return (
     <div
-      className="flex h-full w-full items-center justify-center gap-1 space-x-5 rounded-md bg-primary bg-gradient-to-r from-red-500 to-red-700 py-4 text-2xl font-semibold text-white"
+      className="flex h-full w-full items-center justify-center space-x-3 rounded-md bg-primary bg-gradient-to-r from-red-500 to-red-700 py-4 text-base font-semibold text-white sm:space-x-5 sm:text-2xl"
       suppressHydrationWarning
     >
       <span>🎉 LAUNCH PARTY 🎉</span>
-      <span>{timeLeft.days}</span>
-      <span>:</span>
-      <span>{timeLeft.hours}</span>
-      <span>:</span>
-      <span>{timeLeft.minutes}</span>
-      <span>:</span>
-      <span>{timeLeft.seconds}</span>
+      <span className="space-x-1 sm:space-x-2">
+        <span>{timeLeft.days}</span>
+        <span>:</span>
+        <span>{timeLeft.hours}</span>
+        <span>:</span>
+        <span>{timeLeft.minutes}</span>
+        <span>:</span>
+        <span>{timeLeft.seconds}</span>
+      </span>
     </div>
   );
 }
