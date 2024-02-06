@@ -34,7 +34,7 @@ export default function DeregistrationNotificationEmail({
           <Container className="mx-auto my-8 w-full max-w-screen-sm border border-solid border-gray-200">
             <Section className="px-8 py-12 text-center">
               <Img
-                src="https://cdn.sanity.io/images/nnumy1ga/production/bdd61d39436a25c6fae33b4c22875e52bd650fad-512x512.png"
+                src="https://cdn.sanity.io/images/pgq2pd26/production/b3eacd94f92e9041f7ece0346f27db0c9e520f60-512x512.png"
                 width="75"
                 height="75"
                 alt="echo"

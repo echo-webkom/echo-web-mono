@@ -9,7 +9,6 @@ import {
   type ReadonlyURLSearchParams,
 } from "next/navigation";
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
-import { useDebouncedCallback } from "use-debounce";
 
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
@@ -28,51 +27,69 @@ type FilterType =
   | "ALL"
   | "EVENT"
   | "BEDPRES"
-  | "ASC"
+  | "SEARCH"
+  | "DESC"
+  | "PAST"
+  | "OPEN"
   | "THIS_WEEK"
   | "NEXT_WEEK"
-  | "LATER"
-  | "PAST"
-  | "OPEN";
+  | "LATER";
 
-function updateFilter(
-  type: FilterType,
+type UpdateType = {
+  type: FilterType;
+  condition?: boolean;
+  search?: string;
+};
+export function updateFilter(
+  updates: Array<UpdateType> | UpdateType | FilterType,
   router: AppRouterInstance,
   pathname: string,
   params: ReadonlyURLSearchParams,
-  condition?: boolean,
 ) {
   const searchParams = new URLSearchParams(params);
 
-  switch (type) {
-    case "ALL":
-      searchParams.delete("type");
-      break;
-    case "EVENT":
-      searchParams.set("type", "event");
-      break;
-    case "BEDPRES":
-      searchParams.set("type", "bedpres");
-      break;
-    case "ASC":
-      condition ? searchParams.delete("order") : searchParams.set("order", "ASC");
-      break;
-    case "THIS_WEEK":
-      condition ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
-      break;
-    case "NEXT_WEEK":
-      condition ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
-      break;
-    case "LATER":
-      condition ? searchParams.set("later", "false") : searchParams.delete("later");
-      break;
-    case "OPEN":
-      condition ? searchParams.delete("open") : searchParams.set("open", "true");
-      break;
-    case "PAST":
-      condition ? searchParams.delete("past") : searchParams.set("past", "true");
-      break;
+  if (!Array.isArray(updates)) {
+    if (typeof updates === "string") {
+      updates = [{ type: updates }];
+    } else {
+      updates = [updates];
+    }
   }
+
+  updates.forEach(({ type, condition, search }) => {
+    switch (type) {
+      case "ALL":
+        searchParams.delete("type");
+        break;
+      case "EVENT":
+        searchParams.set("type", "event");
+        break;
+      case "BEDPRES":
+        searchParams.set("type", "bedpres");
+        break;
+      case "SEARCH":
+        search ? searchParams.set("search", search) : searchParams.delete("search");
+        break;
+      case "DESC":
+        condition ? searchParams.delete("order") : searchParams.set("order", "DESC");
+        break;
+      case "THIS_WEEK":
+        condition ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
+        break;
+      case "NEXT_WEEK":
+        condition ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
+        break;
+      case "LATER":
+        condition ? searchParams.set("later", "false") : searchParams.delete("later");
+        break;
+      case "OPEN":
+        condition ? searchParams.delete("open") : searchParams.set("open", "true");
+        break;
+      case "PAST":
+        condition ? searchParams.delete("past") : searchParams.set("past", "true");
+        break;
+    }
+  });
   router.push(`${pathname}?${searchParams}`, { scroll: false });
 }
 
@@ -102,11 +119,11 @@ export function EventFilter() {
     <>
       <div className="flex flex-col items-center sm:hidden">
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-96">
+          <DropdownMenuTrigger className="w-full" asChild>
             <Button fullWidth>{getButtonLabel(type)}</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="sm:hidden">
-            <DropdownMenuItem className="w-96 text-base">
+          <DropdownMenuContent className="w-full sm:hidden">
+            <DropdownMenuItem className="w-full text-base">
               <Button
                 fullWidth
                 variant="ghost"
@@ -115,7 +132,7 @@ export function EventFilter() {
                 {getButtonLabel(firstButton)}
               </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem className="w-96 text-base">
+            <DropdownMenuItem className="w-full text-base">
               <Button
                 fullWidth
                 variant="ghost"
@@ -159,7 +176,7 @@ export function FilterStatusAndOrderBar() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const asc = params.get("order") === "ASC" ? true : false;
+  const asc = params.get("order") === "DESC" ? true : false;
 
   const filterSet =
     params.has("order") ||
@@ -195,24 +212,14 @@ export function FilterStatusAndOrderBar() {
           className={cn("mr-2 h-6 w-6 cursor-pointer transition duration-200 ease-in-out", {
             "rotate-180 transform": asc,
           })}
-          onClick={() => updateFilter("ASC", router, pathname, params, asc)}
+          onClick={() => updateFilter({ type: "DESC", condition: asc }, router, pathname, params)}
         />
       </span>
     </div>
   );
 }
 
-type EventFilterSidebarProps = {
-  numOfEvents: {
-    numThisWeek: number;
-    numNextWeek: number;
-    numLater: number;
-  };
-};
-
-export function EventFilterSidebar({
-  numOfEvents: { numThisWeek, numNextWeek, numLater },
-}: EventFilterSidebarProps) {
+export function EventFilterSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -227,12 +234,6 @@ export function EventFilterSidebar({
 
   const [searchInput, setSearchInput] = useState(params.get("search") ?? "");
 
-  const debouncedSearch = useDebouncedCallback((search: string) => {
-    const searchParams = new URLSearchParams(params);
-    search ? searchParams.set("search", search) : searchParams.delete("search");
-    router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }, 500);
-
   /**
    * This useEffect sets the search input to the value in the URL when the user navigates back, etc.
    */
@@ -245,12 +246,18 @@ export function EventFilterSidebar({
     <Sidebar className="space-y-3 ">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
-          <div className="relative flex w-96 rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
+          <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
             <Input
               value={searchInput}
+              maxLength={50}
               onChange={(e) => {
                 setSearchInput(e.target.value);
-                debouncedSearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.currentTarget.blur();
+                  updateFilter({ type: "SEARCH", search: searchInput }, router, pathname, params);
+                }
               }}
               type="text"
               placeholder="Søk..."
@@ -266,9 +273,7 @@ export function EventFilterSidebar({
                   stroke="currentColor"
                   onClick={() => {
                     setSearchInput("");
-                    const searchParams = new URLSearchParams(params);
-                    searchParams.delete("search");
-                    router.push(`${pathname}?${searchParams}`, { scroll: false });
+                    updateFilter("SEARCH", router, pathname, params);
                   }}
                 >
                   <path
@@ -292,10 +297,12 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="thisWeek"
               checked={thisWeek}
-              onCheckedChange={() => updateFilter("THIS_WEEK", router, pathname, params, thisWeek)}
+              onCheckedChange={() =>
+                updateFilter({ type: "THIS_WEEK", condition: thisWeek }, router, pathname, params)
+              }
             />
             <Label htmlFor="thisWeek" className="ml-2 cursor-pointer text-base">
-              Denne uken ({numThisWeek})
+              Denne uken
             </Label>
           </SidebarItemContent>
 
@@ -304,10 +311,12 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="nextWeek"
               checked={nextWeek}
-              onCheckedChange={() => updateFilter("NEXT_WEEK", router, pathname, params, nextWeek)}
+              onCheckedChange={() =>
+                updateFilter({ type: "NEXT_WEEK", condition: nextWeek }, router, pathname, params)
+              }
             />
             <Label htmlFor="nextWeek" className="ml-2 cursor-pointer text-base">
-              Neste uke ({numNextWeek})
+              Neste uke
             </Label>
           </SidebarItemContent>
 
@@ -316,10 +325,12 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="later"
               checked={later}
-              onCheckedChange={() => updateFilter("LATER", router, pathname, params, later)}
+              onCheckedChange={() =>
+                updateFilter({ type: "LATER", condition: later }, router, pathname, params)
+              }
             />
             <Label htmlFor="later" className="ml-2 cursor-pointer text-base">
-              Senere ({numLater})
+              Senere
             </Label>
           </SidebarItemContent>
         </SidebarItem>
@@ -331,7 +342,17 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="showPast"
               checked={past}
-              onCheckedChange={() => updateFilter("PAST", router, pathname, params, past)}
+              onCheckedChange={() => {
+                updateFilter(
+                  [
+                    { type: "PAST", condition: past },
+                    { type: "DESC", condition: past },
+                  ],
+                  router,
+                  pathname,
+                  params,
+                );
+              }}
             />
             <Label htmlFor="showPast" className="ml-2 cursor-pointer text-base">
               Tidligere
@@ -342,7 +363,9 @@ export function EventFilterSidebar({
               className="hover:bg-muted"
               id="showOpen"
               checked={open}
-              onCheckedChange={() => updateFilter("OPEN", router, pathname, params, open)}
+              onCheckedChange={() =>
+                updateFilter({ type: "OPEN", condition: open }, router, pathname, params)
+              }
             />
             <Label htmlFor="showOpen" className="ml-2 cursor-pointer text-base">
               Åpen for påmelding

@@ -22,6 +22,7 @@ import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
+import { ReactionButtonGroup } from "./reaction-button-group";
 
 type EventSidebarProps = {
   event: Happening;
@@ -418,6 +419,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <Button variant="link" className="w-full" asChild>
             <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
           </Button>
+        </SidebarItem>
+      )}
+
+      {user && (
+        <SidebarItem>
+          <ReactionButtonGroup reactToKey={event._id} />
         </SidebarItem>
       )}
     </Sidebar>

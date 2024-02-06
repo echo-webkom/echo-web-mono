@@ -6,6 +6,7 @@ export * from "./groups";
 export * from "./happenings-to-groups";
 export * from "./happenings";
 export * from "./questions";
+export * from "./reactions";
 export * from "./registrations";
 export * from "./sessions";
 export * from "./site-feedback";
