@@ -12,21 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-type NotificationButtonProps = {};
-
 export default async function NotificationButton() {
   
   const notifications = await fetchAllNotifications();
-
-  
-  // function displayNotifications() {
-  //   return (
-  //   <DropdownMenuItem asChild>
-    
-  //   </DropdownMenuItem>);
-  // }
-
-  console.log(notifications);
 
   return (
     <DropdownMenu>
