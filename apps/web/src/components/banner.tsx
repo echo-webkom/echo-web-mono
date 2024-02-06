@@ -23,10 +23,12 @@ const calculateTimeLeft = (date: Date) => {
   };
 };
 
-export default function LaunchPartyBanner() {
-  const targetDate = new Date("2024-02-09T20:00:00");
+const targetDate = new Date("2024-02-09T20:00:00");
 
+export default function LaunchPartyBanner() {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
+
+  const { days, hours, minutes, seconds } = timeLeft;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -34,7 +36,11 @@ export default function LaunchPartyBanner() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, []);
+
+  if (new Date() > targetDate) {
+    return null;
+  }
 
   return (
     <div
@@ -43,13 +49,13 @@ export default function LaunchPartyBanner() {
     >
       <span>🎉 LAUNCH PARTY 🎉</span>
       <span className="space-x-1 sm:space-x-2">
-        <span>{timeLeft.days}</span>
+        <span>{days}</span>
         <span>:</span>
-        <span>{timeLeft.hours}</span>
+        <span>{hours}</span>
         <span>:</span>
-        <span>{timeLeft.minutes}</span>
+        <span>{minutes}</span>
         <span>:</span>
-        <span>{timeLeft.seconds}</span>
+        <span>{seconds}</span>
       </span>
     </div>
   );
