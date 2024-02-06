@@ -6,6 +6,7 @@ import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchJobAdBySlug } from "@/sanity/job-ad";
 
+
 type Props = {
   params: {
     slug: string;
@@ -40,5 +41,5 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
       <Heading className="mb-4">{jobAd.title}</Heading>
       <Markdown content={jobAd.body} />
     </Container>
-  );
+  ); 
 }
