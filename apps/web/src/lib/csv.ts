@@ -7,10 +7,9 @@ import { type getHappeningCsvData } from "@/data/happenings/queries";
 const parser = new Parser({
   withBOM: true,
 });
-
-export const toCsv = (
+export const toMap = (
   happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
-): string => {
+): Array<Record<string, string>> => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
@@ -52,5 +51,12 @@ export const toCsv = (
     );
   });
 
-  return parser.parse(registrations);
+  return registrations;
+};
+
+export const toCsv = (
+  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
+): string => {
+
+  return parser.parse(toMap(happening));
 };
