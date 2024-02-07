@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Checkbox } from "./ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -27,6 +28,7 @@ const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(5).optional(),
+  isPublic: z.boolean().default(false).optional(),
 });
 
 type UserFormProps = {
@@ -34,6 +36,7 @@ type UserFormProps = {
     alternativeEmail?: string;
     degree?: Degree;
     year?: number;
+    isPublic: boolean;
     id: string;
   };
   degrees: Array<Degree>;
@@ -44,11 +47,13 @@ export function UserForm({ user, degrees }: UserFormProps) {
 
   const { toast } = useToast();
   const router = useRouter();
+
   const form = useForm<z.infer<typeof userSchema>>({
     defaultValues: {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
       year: user.year,
+      isPublic: user.isPublic,
     },
     resolver: zodResolver(userSchema),
   });
@@ -61,6 +66,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
         alternativeEmail: data.alternativeEmail,
         degreeId: data.degree,
         year: data.year,
+        isPublic: data.isPublic,
       });
 
       setIsLoading(false);
@@ -137,6 +143,22 @@ export function UserForm({ user, degrees }: UserFormProps) {
                 </Select>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-4">
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} className=""/>
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Gjør profil offentlig</FormLabel>
+                <FormDescription>Du kan endre tilbake</FormDescription>
+              </div>
             </FormItem>
           )}
         />

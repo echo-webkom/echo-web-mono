@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable, primaryKey, text, timestamp, varchar, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
@@ -16,6 +16,7 @@ export const users = pgTable(
     degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
+    isPublic: boolean("is_public").notNull().default(false),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

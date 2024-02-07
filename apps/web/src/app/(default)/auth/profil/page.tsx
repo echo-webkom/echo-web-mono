@@ -21,6 +21,8 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
+
+
   const [degrees, memberships] = await Promise.all([
     getAllDegrees(),
     db.query.usersToGroups.findMany({
@@ -48,6 +50,7 @@ export default async function ProfilePage() {
           <Label>E-post</Label>
           <Text>{user.email}</Text>
         </div>
+
 
         {memberships.length > 0 && (
           <div>
@@ -79,6 +82,7 @@ export default async function ProfilePage() {
           degree: user.degree ?? undefined,
           year: user.year ?? undefined,
           alternativeEmail: user.alternativeEmail ?? undefined,
+          isPublic: user.isPublic ?? false,
         }}
         degrees={degrees}
       />
