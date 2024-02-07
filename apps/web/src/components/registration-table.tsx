@@ -6,7 +6,9 @@ import { RxChevronDown } from "react-icons/rx";
 
 import {
   selectUserSchema,
+  selectUserSchema,
   type Group,
+  type Question,
   type Question,
   type Registration,
   type RegistrationStatus,
@@ -15,6 +17,13 @@ import {
 import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationButton } from "@/components/edit-registration-button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { zodKeys } from "@/sanity/utils/zod";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -107,6 +116,16 @@ export function RegistrationTable({
   const addKey = (id: string) => {
     setSelectedHeaders((prev) => [...prev, id]);
   };
+  // const userColumns = Object.keys(selectUserSchema._type);
+  const obj = zodKeys(selectUserSchema);
+  const columns = [...obj, ...questions.map((question) => question.title)];
+  const [selectedHeaders, setSelectedHeaders] = useState(columns);
+  const removeKey = (id: string) => {
+    setSelectedHeaders((prev) => prev.filter((key) => key !== id));
+  };
+  const addKey = (id: string) => {
+    setSelectedHeaders((prev) => [...prev, id]);
+  };
 
   return (
     <div className="w-full overflow-y-auto rounded-lg border shadow-md">
@@ -164,7 +183,37 @@ export function RegistrationTable({
         </div>
         <div className="flex flex-row justify-between px-4 py-2">
           <div className="mb:flex-row mb:w-auto mt-auto flex w-full flex-col items-center space-x-2">
+          <div className="mb:flex-row mb:w-auto mt-auto flex w-full flex-col items-center space-x-2">
             <RandomPersonButton registrations={registrations} />
+            <DropdownMenu modal>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto flex gap-2">
+                  Columns
+                  <RxChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {columns.map((header) => {
+                  const isChecked = selectedHeaders.includes(header);
+                  return (
+                    <DropdownMenuCheckboxItem
+                      onSelect={(e) => e.preventDefault()}
+                      key={header + "checkbox"}
+                      checked={isChecked}
+                      onCheckedChange={() => {
+                        if (isChecked) {
+                          removeKey(header);
+                        } else {
+                          addKey(header);
+                        }
+                      }}
+                    >
+                      {header}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <DropdownMenu modal>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="ml-auto flex gap-2">
