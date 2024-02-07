@@ -1,28 +1,36 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { createPool, db as vercelDb, type VercelPool } from "@vercel/postgres";
+import { drizzle } from "drizzle-orm/vercel-postgres";
 
 import * as schema from "./schemas";
 
-const globalForPool = globalThis as unknown as {
-  pool: ReturnType<typeof postgres> | undefined;
-};
+declare global {
+  // eslint-disable-next-line no-var
+  var __pool: VercelPool | undefined;
+}
 
-let pool;
+function _createPool() {
+  let pool;
 
-if (process.env.NODE_ENV !== "production") {
-  if (!globalForPool.pool) {
-    globalForPool.pool = createPool();
+  if (process.env.VERCEL === "1") {
+    pool = vercelDb;
+  } else {
+    pool = createPool({
+      connectionString: process.env.DATABASE_URL,
+    });
   }
-  pool = globalForPool.pool;
-} else {
-  pool = createPool();
+
+  return pool;
 }
 
-function createPool() {
-  return postgres(process.env.DATABASE_URL!, {
-    max: 40,
-  });
+function getCachedPool() {
+  if (!global.__pool) {
+    global.__pool = _createPool();
+  }
+
+  return global.__pool;
 }
+
+const pool = getCachedPool();
 
 export const db = drizzle(pool, {
   schema,
