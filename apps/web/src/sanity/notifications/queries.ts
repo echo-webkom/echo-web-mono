@@ -7,6 +7,5 @@ export const allNotificationsQuery = groq`
   subtitle,
   publishedAt,
   validTo,
-  showBanner,
 }
 `;
