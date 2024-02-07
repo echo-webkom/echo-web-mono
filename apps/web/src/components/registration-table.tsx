@@ -46,12 +46,15 @@ export function RegistrationTable({
   studentGroups,
   happeningId,
   questions,
+  registrationRecords,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   happeningId: string;
   questions: Array<Question>;
+  registrationRecords: Array<Record<string, string>>;
 }) {
+  console.log(registrationRecords);
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -212,13 +215,19 @@ export function RegistrationTable({
           <TableHeader>
             <TableRow>
               {showIndex && <TableHead scope="col">#</TableHead>}
-              <TableHead scope="col">Navn</TableHead>
+              {selectedHeaders.map((header) => (
+                <TableHead key={header} scope="col">
+                  {header}
+                </TableHead>
+              ))}
+              ;
+              {/* <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">E-post</TableHead>
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
               <TableHead scope="col">Årstrinn</TableHead>
               <TableHead scope="col">Medlem av</TableHead>
-              <TableHead scope="col">Handling</TableHead>
+              <TableHead scope="col">Handling</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -249,10 +258,12 @@ const RegistrationRow = ({
   registration,
   index,
   showIndex,
+  selecedHeaders,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
+  selectedHeaders: Array<string>;
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
@@ -264,7 +275,7 @@ const RegistrationRow = ({
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      <TableCell scope="row">{registration.user.name}</TableCell>
+      {/* <TableCell scope="row">{registration.user.name}</TableCell>
       <TableCell className="truncate">
         <Link className="hover:underline" href={mailTo(email)}>
           {email}
@@ -281,7 +292,7 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
-      </TableCell>
+      </TableCell> */}
     </TableRow>
   );
 };
