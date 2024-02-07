@@ -46,15 +46,5 @@ export default defineType({
       type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "showBanner",
-      title: "Vis banner",
-      type: "boolean",
-      description: "Velg dette KUN om det er viktig at så mange som mulig ser denne varslingen.",
-      initialValue: false,
-      options: {
-        layout: "checkbox",
-      },
-    }),
   ]
 });
