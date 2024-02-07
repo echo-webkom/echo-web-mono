@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { RxBell } from "react-icons/rx";
 
 import { fetchAllNotifications } from "@/sanity/notifications/requests";
