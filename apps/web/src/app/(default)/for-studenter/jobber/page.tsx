@@ -20,17 +20,23 @@ export default async function JobAdsOverviewPage() {
   return (
     <Container>
       <Heading>Stillingsannonser</Heading>
-      <JobAdFilter />
-      <JobAdFilterSidebar />
-      <FilterStatusAndOrderBar />
-
-      <ul className="max-w-2xl space-y-4 pt-4">
-        {jobAds.map((jobAd) => (
-          <li key={jobAd._id}>
-            <JobAdPreview jobAd={jobAd} />
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col  pt-4 sm:flex-row">
+        <div>
+          <div>
+            <JobAdFilterSidebar />
+            <FilterStatusAndOrderBar />
+          </div>
+        </div>
+        <div className="pt-4 mx-auto sm:pt-0">
+          <ul className="max-w-2xl space-y-4">
+            {jobAds.map((jobAd) => (
+              <li key={jobAd._id}>
+                <JobAdPreview jobAd={jobAd} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </Container>
   );
 }
