@@ -26,13 +26,13 @@ export function PostPreview({ post, withBorder = false, className }: PostPreview
       >
         <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
 
-        <p className="text-sm text-gray-500 sm:absolute sm:right-2 sm:top-2">
+        <p className="right-1 top-1 text-sm text-gray-500 sm:absolute">
           {format(new Date(post._createdAt), "d. MMMM yyyy", {
             locale: nb,
           })}
         </p>
 
-        <p className="my-2 line-clamp-3 italic">{removeMd(post.body)}</p>
+        <p className="my-2 line-clamp-2 italic">{removeMd(post.body)}</p>
 
         {post.authors && (
           <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-3 sm:left-4">

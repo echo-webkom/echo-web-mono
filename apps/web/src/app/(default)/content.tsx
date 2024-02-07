@@ -115,13 +115,13 @@ export async function Content() {
         <Link href="/for-studenter/innlegg">
           <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
             Siste nytt
-            <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+            <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </h2>
         </Link>
 
         <hr />
 
-        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4 lg:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4">
           {posts.map((post) => (
             <li key={post._id}>
               <PostPreview post={post} className="shadow-none" />
