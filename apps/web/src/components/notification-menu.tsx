@@ -13,8 +13,9 @@ import {
 
 export default async function NotificationButton() {
   
-  const notifications = await fetchAllNotifications();
-
+  const notifications = await fetchAllNotifications(5);
+  
+  // dette trenger bedre styling
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

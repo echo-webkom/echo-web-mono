@@ -28,6 +28,12 @@ export default defineType({
       type: "string",
     }),
     defineField({
+      name: "link",
+      title: "Lenke",
+      description: "Lenke til et arrangement eller facebook side med mer informasjon.",
+      type: "url",
+    }),
+    defineField({
       name: "publishedAt",
       title: "Publisert",
       type: "datetime",
