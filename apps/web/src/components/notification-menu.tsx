@@ -14,8 +14,7 @@ import {
 function isActive(notification: Notification) {
   const now = new Date().getTime();
   const start = new Date(notification.validTo).getTime();
-  console.log(start);
-  return true;
+  return now < start;
 }
 
 export default async function NotificationButton() {
