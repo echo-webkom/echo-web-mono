@@ -22,7 +22,7 @@ export default async function NotificationButton() {
           <RxBell className="h-7 w-7" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mx-3 w-56">
+      <DropdownMenuContent className="mx-3 min-w-[30rem]">
         <DropdownMenuLabel>
           <p className="font-bold">Varslinger</p>
         </DropdownMenuLabel>
