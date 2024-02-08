@@ -23,9 +23,9 @@ const calculateTimeLeft = (date: Date) => {
   };
 };
 
-export default function LaunchPartyBanner() {
-  const targetDate = new Date("2024-02-09T20:00:00");
+const targetDate = new Date("2024-02-09T20:00:00");
 
+export default function LaunchPartyBanner() {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function LaunchPartyBanner() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, []);
 
   return (
     <div
