@@ -13,7 +13,7 @@ import {
 
 export default async function NotificationButton() {
   
-  const notifications = await fetchAllNotifications(5);
+  const notifications = await fetchAllNotifications();
   
   // dette trenger bedre styling
   return (
