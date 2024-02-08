@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { add, format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
@@ -15,7 +15,7 @@ type PostPreviewProps = {
 };
 
 export function PostPreview({ post, withBorder = false, className }: PostPreviewProps) {
-  const isNew = add(new Date(post._createdAt), { days: 3 }) > new Date();
+  const isNew = addDays(new Date(post._createdAt), 3) > new Date();
 
   return (
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
