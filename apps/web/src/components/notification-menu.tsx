@@ -15,7 +15,6 @@ export default async function NotificationButton() {
   
   const notifications = await fetchAllNotifications();
   
-  // dette trenger bedre styling
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,7 +24,7 @@ export default async function NotificationButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-3 w-56">
         <DropdownMenuLabel>
-          <p className="font-normal">Varslinger</p>
+          <p className="font-bold">Varslinger</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {
