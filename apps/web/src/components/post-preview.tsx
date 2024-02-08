@@ -15,7 +15,7 @@ type PostPreviewProps = {
 };
 
 export function PostPreview({ post, withBorder = false, className }: PostPreviewProps) {
-  const isNew = add(new Date(post._createdAt), { days: 2 }) > new Date();
+  const isNew = add(new Date(post._createdAt), { days: 3 }) > new Date();
 
   return (
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
