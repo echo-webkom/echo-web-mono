@@ -35,7 +35,7 @@ export const POST = withBasicAuth(async (req) => {
     }
 
     if (type === "jobAds") {
-      revalidateTags(["jobAds"]);
+      revalidateTags(["job-ads"]);
     }
 
     if (type === "posts") {
