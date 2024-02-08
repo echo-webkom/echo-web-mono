@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { format } from "date-fns";
+import { add, format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
@@ -12,18 +12,25 @@ type PostPreviewProps = {
   post: Post;
   withBorder?: boolean;
   className?: string;
+  isFirst: boolean;
 };
 
-export function PostPreview({ post, withBorder = false, className }: PostPreviewProps) {
+export function PostPreview({ post, withBorder = false, className, isFirst }: PostPreviewProps) {
+  const isNew = isFirst && add(new Date(post._createdAt), { days: 2 }) > new Date();
+
   return (
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
           "relative flex h-full flex-col gap-1 rounded-lg p-5 shadow-lg transition-colors duration-200 ease-in-out hover:bg-muted",
           withBorder && "border",
+          isNew && "bg-muted",
           className,
         )}
       >
+        {isNew && (
+          <Chip className="absolute -top-1 left-2 animate-bounce bg-primary text-white">NY</Chip>
+        )}
         <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
 
         <p className="right-1 top-1 text-sm text-gray-500 sm:absolute">
