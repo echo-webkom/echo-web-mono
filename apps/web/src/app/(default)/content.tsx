@@ -124,7 +124,7 @@ export async function Content() {
         <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4">
           {posts.map((post) => (
             <li key={post._id}>
-              <PostPreview post={post} className="shadow-none" isFirst={post === posts[0]} />
+              <PostPreview post={post} className="shadow-none" />
             </li>
           ))}
         </ul>
