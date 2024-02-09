@@ -5,7 +5,7 @@ import { Container } from "@/components/container";
 import { JobAdSidebar } from "@/components/job-ad-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchJobAdBySlug, fetchJobAds } from "@/sanity/job-ad";
+import { fetchJobAdBySlug} from "@/sanity/job-ad";
 
 type Props = {
   params: {

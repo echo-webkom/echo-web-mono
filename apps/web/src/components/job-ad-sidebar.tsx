@@ -6,7 +6,6 @@ import { nb } from "date-fns/locale/nb";
 import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
-import { Heading } from "./typography/heading";
 import { Button } from "./ui/button";
 
 type JobAdSidebarProps = {
