@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Confetti from "react-confetti";
+
+
 
 const calculateTimeLeft = (date: Date) => {
   const now = new Date().getTime();
@@ -28,6 +31,8 @@ const targetDate = new Date("2024-02-09T20:00:00");
 export default function LaunchPartyBanner() {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
 
+  const itsTime = new Date() >= targetDate;
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft(targetDate));
@@ -41,6 +46,9 @@ export default function LaunchPartyBanner() {
       className="flex h-full w-full items-center justify-center space-x-3 rounded-md bg-primary bg-gradient-to-r from-red-500 to-red-700 py-4 text-base font-semibold text-white sm:space-x-5 sm:text-2xl"
       suppressHydrationWarning
     >
+      <Confetti className="fixed left-0 top-0 z-[60] min-h-screen w-full" hidden={!itsTime} />
+       {itsTime ? (<div className="text-center">🎉 WOOOO NY NETTSIDE!!!!! (lat som du aldri har sett den før og gå helt crazy) 🎉</div>) : (
+      <>
       <span>🎉 LAUNCH PARTY 🎉</span>
       <span className="space-x-1 sm:space-x-2">
         <span>{timeLeft.days}</span>
@@ -51,6 +59,8 @@ export default function LaunchPartyBanner() {
         <span>:</span>
         <span>{timeLeft.seconds}</span>
       </span>
+      </>
+      )}
     </div>
   );
 }
