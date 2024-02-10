@@ -39,7 +39,7 @@
     "@t3-oss/env-nextjs": "0.8.0",
     "@tanstack/react-table": "8.11.8",
     "@types/remove-markdown": "0.3.4",
-    "@upstash/ratelimit": "1.0.0",
+    "@upstash/ratelimit": "1.0.1",
     "@vercel/analytics": "1.1.3",
     "@vercel/kv": "1.0.1",
     "@vercel/speed-insights": "1.0.9",
