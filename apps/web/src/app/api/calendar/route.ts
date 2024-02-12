@@ -49,10 +49,14 @@ export async function GET(req: NextRequest) {
       ),
       description: event.body ? removeMarkdown(event.body) : undefined,
       categories: [happeningTypeToString[event.happeningType]],
+
+      method: "REQUEST",
     } satisfies EventAttributes);
   }
 
-  const { error, value } = createEvents(mappedEvents);
+  const { error, value } = createEvents(mappedEvents, {
+    calName: "Kalender for echo.uib.no",
+  });
 
   if (error) {
     return new Response("Failed to create ics file", {
