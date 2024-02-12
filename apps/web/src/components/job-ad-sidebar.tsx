@@ -41,6 +41,10 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
             })}
           </li>
           <li>
+            <span className="font-semibold">Årstrinn: </span>
+            degreeYearText({jobAd.degreeYears})
+          </li>
+          <li>
             <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}
           </li>
           <li>
