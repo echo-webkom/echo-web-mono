@@ -1,7 +1,6 @@
 import { RxBell } from "react-icons/rx";
 
 import { fetchValidNotifications } from "@/sanity/notifications/requests";
-import { Notification } from "@/sanity/notifications/schemas";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,13 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
-function isActive(notification: Notification) {
-  const now = new Date().getTime();
-  const start = new Date(notification.validTo).getTime();
-  return true;
-  // return now < start;
-}
 
 export default async function NotificationButton() {
   const notifications = await fetchValidNotifications();
@@ -33,17 +25,15 @@ export default async function NotificationButton() {
           <p className="font-bold">Varslinger</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {notifications.map((notification) => {
-          if (isActive(notification)) {
-            return (
-              <div>
+        {notifications.map((notification) => {          
+          return (
+            <div>
               <DropdownMenuItem>
                 <span>{notification.title}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              </div>
-            );
-          }
+            </div>
+          );
         })}
       </DropdownMenuContent>
     </DropdownMenu>
