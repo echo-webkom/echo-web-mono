@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
       description: event.body ? removeMarkdown(event.body) : undefined,
       categories: [happeningTypeToString[event.happeningType]],
 
-      method: "REQUEST",
+      method: "PUBLISH",
     } satisfies EventAttributes);
   }
 
