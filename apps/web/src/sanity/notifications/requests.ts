@@ -11,7 +11,7 @@ type Notification = {
 
 export async function fetchValidNotifications() {
     // return await sanityFetch<Array<Notification>>({
-    //   query: allNotificationsQuery,
+    //   query: validNotificationsQuery,
     //   tags: ["notifications"],
     // });
     return await sanityClient.fetch<Array<Notification>>(validNotificationsQuery);
