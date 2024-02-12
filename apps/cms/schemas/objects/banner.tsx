@@ -25,11 +25,15 @@ export default defineType({
       title: "Undertittel",
       type: "string",
     }),
+<<<<<<< HEAD
     defineField({
       name: "link",
       title: "Lenke",
       type: "string",
     }),
+=======
+ 
+>>>>>>> da021fab7a8793e569b4ac949b401401985b34be
   ],
   preview: {
     select: {

@@ -9,7 +9,7 @@ import { ModeToggle } from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
-import NotificationButton from "./notifications";
+import NotificationButton from "./notification-menu";
 
 export async function SiteHeader() {
   const user = await auth();

@@ -25,10 +25,5 @@ export const schemaTypes = [
   spotRange,
   contactProfile,
   question,
-<<<<<<< HEAD
-=======
-  banner,
-  settings,
   notification,
->>>>>>> 28fc9cad (start notification schema)
 ];
