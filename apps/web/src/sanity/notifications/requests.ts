@@ -1,5 +1,5 @@
 import { sanityClient, sanityFetch } from "../client";
-import { validNotificationsQuery } from "./queries";
+import { allNotificationsQuery, validNotificationsQuery } from "./queries";
 
 type Notification = {
   _id: string;
@@ -10,9 +10,17 @@ type Notification = {
 };
 
 export async function fetchValidNotifications() {
-    // return await sanityFetch<Array<Notification>>({
-    //   query: validNotificationsQuery,
-    //   tags: ["notifications"],
-    // });
-    return await sanityClient.fetch<Array<Notification>>(validNotificationsQuery);
-  }
+  // return await sanityFetch<Array<Notification>>({
+  //   query: validNotificationsQuery,
+  //   tags: ["notifications"],
+  // });
+  return await sanityClient.fetch<Array<Notification>>(validNotificationsQuery);
+}
+
+export async function fetchAllNotifications() {
+  // return await sanityFetch<Array<Notification>>({
+  //   query: allNotificationsQuery,
+  //   tags: ["notifications"],
+  // })
+  return await sanityClient.fetch<Array<Notification>>(allNotificationsQuery);
+}
