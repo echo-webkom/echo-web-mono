@@ -311,7 +311,7 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.1.0
+        specifier: ^5.1.1
         version: 5.1.1(@types/node@18.19.15)
       vite-tsconfig-paths:
         specifier: 4.3.1
@@ -6707,7 +6707,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
