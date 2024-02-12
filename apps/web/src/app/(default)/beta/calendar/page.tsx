@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 const eventTypes = [
   {
     name: "Arrangement",
-    value: "events",
+    value: "event",
   },
   {
     name: "Bedriftspresentasjon",
