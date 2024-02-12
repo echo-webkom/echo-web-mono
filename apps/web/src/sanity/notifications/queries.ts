@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-export const allNotificationsQuery = groq`
+export const validNotificationsQuery = groq`
 *[_type == "notification" && !(_id in path('drafts.**')) && validTo > now()] | order(_createdAt desc) {
   _id,
   title,

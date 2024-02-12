@@ -1,6 +1,6 @@
 import { RxBell } from "react-icons/rx";
 
-import { fetchAllNotifications } from "@/sanity/notifications/requests";
+import { fetchValidNotifications } from "@/sanity/notifications/requests";
 import { Notification } from "@/sanity/notifications/schemas";
 import {
   DropdownMenu,
@@ -14,11 +14,12 @@ import {
 function isActive(notification: Notification) {
   const now = new Date().getTime();
   const start = new Date(notification.validTo).getTime();
-  return now < start;
+  return true;
+  // return now < start;
 }
 
 export default async function NotificationButton() {
-  const notifications = await fetchAllNotifications();
+  const notifications = await fetchValidNotifications();
 
   return (
     <DropdownMenu>
@@ -35,9 +36,12 @@ export default async function NotificationButton() {
         {notifications.map((notification) => {
           if (isActive(notification)) {
             return (
+              <div>
               <DropdownMenuItem>
                 <span>{notification.title}</span>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              </div>
             );
           }
         })}

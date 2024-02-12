@@ -1,10 +1,18 @@
 import { sanityClient, sanityFetch } from "../client";
-import { allNotificationsQuery } from "./queries";
+import { validNotificationsQuery } from "./queries";
 
-export async function fetchAllNotifications() {
+type Notification = {
+  _id: string;
+  title: string;
+  subtitle: string;
+  publishedAt: string;
+  validTo: string;
+};
+
+export async function fetchValidNotifications() {
     // return await sanityFetch<Array<Notification>>({
     //   query: allNotificationsQuery,
     //   tags: ["notifications"],
     // });
-    return await sanityClient.fetch<Array<Notification>>(allNotificationsQuery);
+    return await sanityClient.fetch<Array<Notification>>(validNotificationsQuery);
   }
