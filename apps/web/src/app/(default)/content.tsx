@@ -96,8 +96,7 @@ export async function Content() {
         <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
           <Link href="/for-studenter/jobber">
             <h2 className="text-center text-xl font-semibold md:text-3xl">Jobbannonser</h2>
-          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-
+            <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </Link>
 
           <hr />
