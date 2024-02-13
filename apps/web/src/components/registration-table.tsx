@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { RxCross1, RxDotsVertical } from "react-icons/rx";
+import { RxInfoCircled } from "react-icons/rx";
 
 import {
   type Group,
@@ -221,12 +220,12 @@ const RegistrationRow = ({
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell scope="row" className="flex">
         <Button
-          variant="outline"
-          className="h-8 p-1"
+          className="p-0"
+          variant="ghost"
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
         >
-          <RxDotsVertical />
+          <RxInfoCircled className="size-5" />
         </Button>
         {isHover && <HoverProfileView user={registration.user} group={group} reason={reason} />}
         <p className="mx-3 my-auto">{registration.user.name}</p>

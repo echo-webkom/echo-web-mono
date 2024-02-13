@@ -17,7 +17,7 @@ export function HoverProfileView({
 
   return (
     <div className="">
-      <div className="absolute left-16 flex flex-col gap-2 rounded-lg border bg-background p-4 text-foreground  sm:left-20 ">
+      <div className="absolute left-16 flex flex-col gap-2 rounded-lg border bg-background p-4 text-foreground sm:left-20 ">
         <div className="flex w-full justify-between">
           <p>
             <span className="font-bold">Årstrinn:</span> {user.year}
