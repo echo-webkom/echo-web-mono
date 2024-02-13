@@ -16,6 +16,7 @@ import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { mailTo } from "@/utils/prefixes";
 import { DownloadCsvButton } from "./download-csv-button";
+import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -194,61 +195,6 @@ export const statusColor = {
   pending: "text-blue-600",
 } satisfies Record<RegistrationStatus, string>;
 
-export function HoverProfileView({
-  user,
-  group,
-  reason,
-}: {
-  user: User;
-  group: string;
-  reason: string;
-}) {
-  const [isHover, setIsHover] = useState(false);
-  const email = user.alternativeEmail ?? user.email ?? "";
-
-  return (
-    <div className="my-auto flex h-full">
-      <Button variant="outline" className=" h-8 p-1" onClick={() => setIsHover(true)}>
-        <RxDotsVertical />
-      </Button>
-      {isHover && (
-        <div className="absolute left-16 flex flex-col justify-center gap-2 rounded-lg border bg-background p-4 text-foreground shadow-md sm:left-20 ">
-          <div className="flex w-full justify-between">
-            <p>
-              <span className="font-bold">Årstrinn:</span> {user.year}
-            </p>
-            <Button
-              variant="outline"
-              className="absolute right-2 top-2 h-6 p-1"
-              onClick={() => setIsHover(false)}
-            >
-              <RxCross1 className="text-foreground" />
-            </Button>
-          </div>
-          <p>
-            <span className="font-bold">E-post:</span>{" "}
-            <Link className="hover:underline" href={mailTo(email)}>
-              {user.email}
-            </Link>
-          </p>
-          {group.length > 0 && (
-            <p>
-              <span className="font-bold">Medlem av:</span>
-              {group}
-            </p>
-          )}
-          {reason.length > 0 && (
-            <p>
-              <span className="font-bold">Grunn: </span>
-              {reason}
-            </p>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
 const RegistrationRow = ({
   registration,
   index,
@@ -268,11 +214,16 @@ const RegistrationRow = ({
     .map((membership) => " " + membership.group?.name)
     .join(",");
 
+  const [isHover, setIsHover] = useState(false);
+
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      <TableCell scope="row" className="my-auto mt-1 flex">
-        <HoverProfileView user={registration.user} group={group} reason={reason} />
+      <TableCell scope="row" className="flex">
+        <Button variant="outline" className="h-8 p-1" onClick={() => setIsHover(!isHover)}>
+          {isHover ? <RxCross1 /> : <RxDotsVertical />}
+        </Button>
+        {isHover && <HoverProfileView user={registration.user} group={group} reason={reason} />}
         <p className="mx-3 my-auto">{registration.user.name}</p>
       </TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
