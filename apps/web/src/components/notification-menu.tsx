@@ -9,9 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Notification } from "@/sanity/notifications/schemas";
 
 export default async function NotificationButton() {
   const notifications = await fetchValidNotifications();
+
+  function handleClick() {
+    // notification.viewed = true;
+  }
 
   return (
     <DropdownMenu>
@@ -28,10 +33,15 @@ export default async function NotificationButton() {
         {notifications.map((notification) => {          
           return (
             <div>
-              <DropdownMenuItem>
-                <span>{notification.title}</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {notification.viewed ? (
+                <DropdownMenuItem>
+                  <span>{notification.title}</span>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem  className=" bg-red-200">
+                  <span>{notification.title}</span>
+                </DropdownMenuItem>
+              )}
             </div>
           );
         })}
@@ -39,3 +49,19 @@ export default async function NotificationButton() {
     </DropdownMenu>
   );
 }
+
+              {/* <DropdownMenuItem>
+                {notification.viewed ? (
+                  <span>{notification.title}</span>
+                ) : (
+                  <span className=" bg-red-300">{notification.title}</span>
+                )}
+              </DropdownMenuItem> */}
+
+
+            // <div>
+            //   <DropdownMenuItem onClick={() => handleClick(notification)}>
+            //     <span>{notification.title}</span>
+            //   </DropdownMenuItem>
+            //   // <DropdownMenuSeparator />
+            // </div>

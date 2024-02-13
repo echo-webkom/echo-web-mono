@@ -4,4 +4,5 @@ export type Notification = {
     subtitle: string;
     publishedAt: string;
     validTo: string;
+    viewed: boolean;
 };
