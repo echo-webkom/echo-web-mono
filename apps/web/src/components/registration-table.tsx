@@ -13,7 +13,6 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
-import { mailTo } from "@/utils/prefixes";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";

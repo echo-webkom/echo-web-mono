@@ -16,7 +16,7 @@ export function HoverProfileView({
   const email = user.alternativeEmail ?? user.email ?? "";
 
   return (
-    <div className="">
+    <div>
       <div className="absolute left-16 flex flex-col gap-2 rounded-lg border bg-background p-4 text-foreground sm:left-20 ">
         <div className="flex w-full justify-between">
           <p>
