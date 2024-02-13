@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { RxCross1, RxDotsVertical } from "react-icons/rx";
 
 import {
   type Group,
@@ -84,7 +85,7 @@ export function RegistrationTable({
   };
 
   return (
-    <div className="w-full overflow-y-auto rounded-lg border shadow-md">
+    <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
         <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
           <div className="flex w-full flex-col gap-1">
@@ -162,12 +163,10 @@ export function RegistrationTable({
           <TableHeader>
             <TableRow>
               {showIndex && <TableHead scope="col">#</TableHead>}
-              <TableHead scope="col">Navn</TableHead>
-              <TableHead scope="col">E-post</TableHead>
+              <TableHead scope="col" className="pl-14">
+                Navn
+              </TableHead>
               <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col">Grunn</TableHead>
-              <TableHead scope="col">Årstrinn</TableHead>
-              <TableHead scope="col">Medlem av</TableHead>
               <TableHead scope="col">Handling</TableHead>
             </TableRow>
           </TableHeader>
@@ -195,6 +194,61 @@ export const statusColor = {
   pending: "text-blue-600",
 } satisfies Record<RegistrationStatus, string>;
 
+export function HoverProfileView({
+  user,
+  group,
+  reason,
+}: {
+  user: User;
+  group: string;
+  reason: string;
+}) {
+  const [isHover, setIsHover] = useState(false);
+  const email = user.alternativeEmail ?? user.email ?? "";
+
+  return (
+    <div className="my-auto flex h-full">
+      <Button variant="outline" className=" h-8 p-1" onClick={() => setIsHover(true)}>
+        <RxDotsVertical />
+      </Button>
+      {isHover && (
+        <div className="absolute left-16 flex flex-col justify-center gap-2 rounded-lg border bg-background p-4 text-foreground shadow-md sm:left-20 ">
+          <div className="flex w-full justify-between">
+            <p>
+              <span className="font-bold">Årstrinn:</span> {user.year}
+            </p>
+            <Button
+              variant="outline"
+              className="absolute right-2 top-2 h-6 p-1"
+              onClick={() => setIsHover(false)}
+            >
+              <RxCross1 className="text-foreground" />
+            </Button>
+          </div>
+          <p>
+            <span className="font-bold">E-post:</span>{" "}
+            <Link className="hover:underline" href={mailTo(email)}>
+              {user.email}
+            </Link>
+          </p>
+          {group.length > 0 && (
+            <p>
+              <span className="font-bold">Medlem av:</span>
+              {group}
+            </p>
+          )}
+          {reason.length > 0 && (
+            <p>
+              <span className="font-bold">Grunn: </span>
+              {reason}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const RegistrationRow = ({
   registration,
   index,
@@ -204,30 +258,25 @@ const RegistrationRow = ({
   index: number;
   showIndex: boolean;
 }) => {
-  const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
-  const reason =
-    registration.unregisterReason && registration.unregisterReason.length > 200
-      ? registration.unregisterReason.substring(0, 200) + "..."
-      : registration.unregisterReason;
+  const reason = registration.unregisterReason
+    ? registration.unregisterReason.length > 200
+      ? " " + registration.unregisterReason.substring(0, 200) + "..."
+      : " " + registration.unregisterReason
+    : "";
+  const group = registration.user.memberships
+    .map((membership) => " " + membership.group?.name)
+    .join(",");
 
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      <TableCell scope="row">{registration.user.name}</TableCell>
-      <TableCell className="truncate">
-        <Link className="hover:underline" href={mailTo(email)}>
-          {email}
-        </Link>
+      <TableCell scope="row" className="my-auto mt-1 flex">
+        <HoverProfileView user={registration.user} group={group} reason={reason} />
+        <p className="mx-3 my-auto">{registration.user.name}</p>
       </TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
         {registrationStatusToString[registration.status]}
-      </TableCell>
-      <TableCell>{reason}</TableCell>
-      <TableCell>{registration.user.year}</TableCell>
-      <TableCell>
-        {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
-        {registration.user.memberships.length === 0 && "Ingen"}
       </TableCell>
       <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
