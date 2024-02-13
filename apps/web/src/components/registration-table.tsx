@@ -220,8 +220,13 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell scope="row" className="flex">
-        <Button variant="outline" className="h-8 p-1" onClick={() => setIsHover(!isHover)}>
-          {isHover ? <RxCross1 /> : <RxDotsVertical />}
+        <Button
+          variant="outline"
+          className="h-8 p-1"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+        >
+          <RxDotsVertical />
         </Button>
         {isHover && <HoverProfileView user={registration.user} group={group} reason={reason} />}
         <p className="mx-3 my-auto">{registration.user.name}</p>
