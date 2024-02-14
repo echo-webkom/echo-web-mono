@@ -54,7 +54,7 @@ export function RegistrationTable({
   questions: Array<Question>;
   registrationRecords: Array<Record<string, string>>;
 }) {
-  console.log(registrationRecords);
+  // console.log(registrationRecords);
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -97,7 +97,6 @@ export function RegistrationTable({
     setStatusFilter("");
     setGroupFilter("");
   };
-  // const userColumns = Object.keys(selectUserSchema._type);
   const obj = zodKeys(selectUserSchema);
   const columns = [...obj, ...questions.map((question) => question.title)];
   const [selectedHeaders, setSelectedHeaders] = useState(columns);
@@ -215,19 +214,19 @@ export function RegistrationTable({
           <TableHeader>
             <TableRow>
               {showIndex && <TableHead scope="col">#</TableHead>}
-              {selectedHeaders.map((header) => (
+              {/* {selectedHeaders.map((header) => (
                 <TableHead key={header} scope="col">
                   {header}
                 </TableHead>
               ))}
-              ;
-              {/* <TableHead scope="col">Navn</TableHead>
+              ; */}
+              <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">E-post</TableHead>
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
               <TableHead scope="col">Årstrinn</TableHead>
               <TableHead scope="col">Medlem av</TableHead>
-              <TableHead scope="col">Handling</TableHead> */}
+              <TableHead scope="col">Handling</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -258,12 +257,12 @@ const RegistrationRow = ({
   registration,
   index,
   showIndex,
-  selecedHeaders,
+  // selectedHeaders,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
-  selectedHeaders: Array<string>;
+  // selectedHeaders: Array<string>;
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
@@ -275,7 +274,7 @@ const RegistrationRow = ({
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      {/* <TableCell scope="row">{registration.user.name}</TableCell>
+      <TableCell scope="row">{registration.user.name}</TableCell>
       <TableCell className="truncate">
         <Link className="hover:underline" href={mailTo(email)}>
           {email}
@@ -292,7 +291,7 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
-      </TableCell> */}
+      </TableCell>
     </TableRow>
   );
 };

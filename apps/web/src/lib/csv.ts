@@ -1,13 +1,16 @@
 import { Parser } from "@json2csv/plainjs";
 
-import { type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { questions, selectUserSchema, type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { type getHappeningCsvData } from "@/data/happenings/queries";
+import { zodKeys } from "@/sanity/utils/zod";
+import { useState } from "react";
 
 const parser = new Parser({
   withBOM: true,
-});
-export const toMap = (
+})
+;
+export const toCsv = (
   happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
 ): Array<Record<string, string>> => {
   const registrations = happening.registrations.map((r) => {
@@ -51,12 +54,12 @@ export const toMap = (
     );
   });
 
-  return registrations;
+  return parser.parse(registrations);
 };
 
 export const toCsv = (
   happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
 ): string => {
 
-  return parser.parse(toMap(happening));
+  return parser.parse(toCsv(happening));
 };

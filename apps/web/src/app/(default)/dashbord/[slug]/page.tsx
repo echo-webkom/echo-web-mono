@@ -12,7 +12,7 @@ import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
 import { getHappeningCsvData } from "@/data/happenings/queries";
-import { toMap } from "@/lib/csv";
+import { toCsv } from "@/lib/csv";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
@@ -63,7 +63,7 @@ export default async function EventDashboard({ params }: Props) {
     return notFound();
   }
 
-  const registrationRecords = toMap(getCsvData);
+  const registrationRecords = toCsv(getCsvData);
 
   registrations.sort((a, b) => {
     const statusOrder: Record<RegistrationStatus, number> = {
