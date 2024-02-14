@@ -36,12 +36,12 @@ export const POST = withBasicAuth(async (req) => {
       revalidateTags(["static-info"]);
     }
 
-    if (type === "jobAds") {
+    if (type === "job") {
       console.log("Revalidating job-ads");
       revalidateTags(["job-ads"]);
     }
 
-    if (type === "posts") {
+    if (type === "post") {
       console.log("Revalidating posts");
       revalidateTags(["posts"]);
     }
@@ -60,7 +60,7 @@ export const POST = withBasicAuth(async (req) => {
       }
     }
 
-    return new Response(`Revalidated type: "${type}".`, {
+    return new Response(`Revalidated type: "${type}". Slug: "${slug}"`, {
       status: 200,
     });
   } catch (error) {
