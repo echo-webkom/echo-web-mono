@@ -1,24 +1,28 @@
-export function degreeYearText(degreeYears: Array <number>): string {
-    let degreeYearTextSidebar = "";
+import { number } from "zod";
 
-    if (degreeYears.length == 0){
-        return "alle"
+export function degreeYearText(degreeYears: Array<number>): string {
+  if (degreeYears.length == 0) {
+    return "alle";
+  }
+
+  let result = "";
+  let start = degreeYears[0];
+  let end = degreeYears[0];
+
+  if (typeof(end) === "number"){
+    if (degreeYears.length === 1){
+      result += degreeYears[0]
+      return result;
     }
-
-    let tempNum = degreeYears[0];
 
     for (let i = 1; i < degreeYears.length; i++){
-
-        
+      if (degreeYears[i] == end + 1){
+        end = degreeYears[i]
+      }
     }
-
-
-
-    return degreeYearTextSidebar;
-} 
-
-function findSequence(){
-
+  } else{
+    return "error"
+  }
 }
 
-
+function findSequence() {}
