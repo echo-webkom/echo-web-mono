@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { RxInfoCircled } from "react-icons/rx";
+import { RxCrossCircled, RxInfoCircled } from "react-icons/rx";
 
 import {
   type Group,
@@ -161,12 +161,19 @@ export function RegistrationTable({
         <Table>
           <TableHeader>
             <TableRow>
-              {showIndex && <TableHead scope="col">#</TableHead>}
-              <TableHead scope="col" className="pl-14">
-                Navn
+              {showIndex && (
+                <TableHead scope="col" className="w-12">
+                  #
+                </TableHead>
+              )}
+              <TableHead scope="col" className="w-12">
+                Info
               </TableHead>
+              <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col">Handling</TableHead>
+              <TableHead scope="col" className="sm:w-48">
+                Handling
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -212,23 +219,22 @@ const RegistrationRow = ({
     .map((membership) => " " + membership.group?.name)
     .join(",");
 
-  const [isHover, setIsHover] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      <TableCell scope="row" className="flex">
-        <Button
-          className="p-0"
-          variant="ghost"
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        >
-          <RxInfoCircled className="size-5" />
+      <TableCell>
+        <Button className="p-0" variant="ghost" onClick={() => setIsClicked(!isClicked)}>
+          {isClicked ? (
+            <RxCrossCircled className="size-5 origin-center transition-all hover:size-6" />
+          ) : (
+            <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
+          )}
         </Button>
-        {isHover && <HoverProfileView user={registration.user} group={group} reason={reason} />}
-        <p className="mx-3 my-auto">{registration.user.name}</p>
+        {isClicked && <HoverProfileView user={registration.user} group={group} reason={reason} />}
       </TableCell>
+      <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
         {registrationStatusToString[registration.status]}
       </TableCell>
