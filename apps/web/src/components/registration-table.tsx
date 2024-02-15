@@ -171,6 +171,7 @@ export function RegistrationTable({
               </TableHead>
               <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">Status</TableHead>
+              <TableHead scope="col">Grunn</TableHead>
               <TableHead scope="col" className="sm:w-48">
                 Handling
               </TableHead>
@@ -226,11 +227,12 @@ const RegistrationRow = ({
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
         <Button className="p-0" variant="ghost" onClick={() => setIsClicked(!isClicked)}>
-          {isClicked ? (
+          <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
+          {/* {isClicked ? (
             <RxCrossCircled className="size-5 origin-center transition-all hover:size-6" />
           ) : (
             <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
-          )}
+          )} */}
         </Button>
         {isClicked && <HoverProfileView user={registration.user} group={group} reason={reason} />}
       </TableCell>
@@ -238,6 +240,7 @@ const RegistrationRow = ({
       <TableCell className={cn(statusColor[registration.status])}>
         {registrationStatusToString[registration.status]}
       </TableCell>
+      <TableCell>{reason}</TableCell>
       <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
       </TableCell>
