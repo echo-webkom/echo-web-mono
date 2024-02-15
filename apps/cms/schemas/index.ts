@@ -9,7 +9,7 @@ import spotRange from "./objects/spot-range";
 import post from "./post";
 import profile from "./profile";
 import staticInfo from "./static-info";
-import studentgroup from "./student-group";
+import studentGroup from "./student-group";
 
 export const schemaTypes = [
   happening,
@@ -19,7 +19,7 @@ export const schemaTypes = [
   profile,
   staticInfo,
   location,
-  studentgroup,
+  studentGroup,
   meetingMinute,
   spotRange,
   contactProfile,

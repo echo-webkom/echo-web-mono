@@ -24,7 +24,7 @@ const revalidateTags = (tags: Array<string>) => {
  */
 export const POST = withBasicAuth(async (req) => {
   try {
-    const { type, slug } = (await req.json()) as {
+    const { type } = (await req.json()) as {
       operation: "create" | "update" | "delete";
       documentId: string;
       type: string;
@@ -36,12 +36,12 @@ export const POST = withBasicAuth(async (req) => {
       revalidateTags(["static-info"]);
     }
 
-    if (type === "jobAds") {
+    if (type === "job") {
       console.log("Revalidating job-ads");
       revalidateTags(["job-ads"]);
     }
 
-    if (type === "posts") {
+    if (type === "post") {
       console.log("Revalidating posts");
       revalidateTags(["posts"]);
     }
@@ -54,10 +54,6 @@ export const POST = withBasicAuth(async (req) => {
     if (type === "studentGroup") {
       console.log("Revalidating student-groups");
       revalidateTags(["student-groups"]);
-      if (slug) {
-        console.log(`Revalidating student-group-${slug}`);
-        revalidateTags([`student-group-${slug}`]);
-      }
     }
 
     return new Response(`Revalidated type: "${type}".`, {

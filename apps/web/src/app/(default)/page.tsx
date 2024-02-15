@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { auth } from "@echo-webkom/auth";
 
-import VervBanner from "@/components/banner";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Content } from "./content";
@@ -13,7 +12,6 @@ export default async function HomePage() {
   return (
     <>
       <Container className="relative pb-40" layout="full">
-        <VervBanner />
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>
