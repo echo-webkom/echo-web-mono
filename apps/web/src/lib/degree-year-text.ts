@@ -1,28 +1,28 @@
-import { number } from "zod";
-
 export function degreeYearText(degreeYears: Array<number>): string {
-  if (degreeYears.length == 0) {
-    return "alle";
+  
+  if (degreeYears.length === 1) {
+    return degreeYears[0]?.toString() ?? "noe gikk galt"
   }
 
-  let result = "";
+  if (typeof degreeYears[0] === "undefined"){
+    return "alle"
+  }
+  
   let start = degreeYears[0];
-  let end = degreeYears[0];
+  let curr = degreeYears[0];
 
-  if (typeof(end) === "number"){
-    if (degreeYears.length === 1){
-      result += degreeYears[0]
-      return result;
-    }
+  const seqs: Array<string> = []
+    
+    for (const year of degreeYears) {
+      if (year != curr + 1){
+        if(start === curr) {
+          seqs.push(start)
 
-    for (let i = 1; i < degreeYears.length; i++){
-      if (degreeYears[i] == end + 1){
-        end = degreeYears[i]
+        }        
       }
     }
-  } else{
-    return "error"
-  }
-}
 
-function findSequence() {}
+
+
+  
+}
