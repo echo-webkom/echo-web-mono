@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { RxChevronDown } from "react-icons/rx";
+import { ZodObject } from "zod";
 
 import {
   selectUserSchema,
@@ -41,6 +42,18 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   };
 };
 
+export function useTableColumns(questions: Array<Question>, selectUserSchema) {
+  const [columns, setColumns] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    const obj = zodKeys(selectUserSchema);
+    const columns = [...obj, ...questions.map((question) => question.title)];
+    setColumns(columns);
+  }, [questions, selectUserSchema]);
+
+  return columns;
+}
+
 export function RegistrationTable({
   registrations,
   studentGroups,
@@ -54,7 +67,6 @@ export function RegistrationTable({
   questions: Array<Question>;
   registrationRecords: Array<Record<string, string>>;
 }) {
-  // console.log(registrationRecords);
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -97,8 +109,9 @@ export function RegistrationTable({
     setStatusFilter("");
     setGroupFilter("");
   };
+
   const obj = zodKeys(selectUserSchema);
-  const columns = [...obj, ...questions.map((question) => question.title)];
+  const columns: Array<string> = [...obj, ...questions.map((question) => question.title)];
   const [selectedHeaders, setSelectedHeaders] = useState(columns);
   const removeKey = (id: string) => {
     setSelectedHeaders((prev) => prev.filter((key) => key !== id));
@@ -214,12 +227,6 @@ export function RegistrationTable({
           <TableHeader>
             <TableRow>
               {showIndex && <TableHead scope="col">#</TableHead>}
-              {/* {selectedHeaders.map((header) => (
-                <TableHead key={header} scope="col">
-                  {header}
-                </TableHead>
-              ))}
-              ; */}
               <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">E-post</TableHead>
               <TableHead scope="col">Status</TableHead>
@@ -257,12 +264,10 @@ const RegistrationRow = ({
   registration,
   index,
   showIndex,
-  // selectedHeaders,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
-  // selectedHeaders: Array<string>;
 }) => {
   const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;

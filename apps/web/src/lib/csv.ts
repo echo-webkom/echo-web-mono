@@ -1,18 +1,19 @@
 import { Parser } from "@json2csv/plainjs";
 
-import { questions, selectUserSchema, type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { type getHappeningCsvData } from "@/data/happenings/queries";
-import { zodKeys } from "@/sanity/utils/zod";
-import { useState } from "react";
+
+import { selectedHeaders } from "@/lib/components/registration-table";
 
 const parser = new Parser({
   withBOM: true,
-})
-;
+});
+.map(selectedHeaders => {)
+
 export const toCsv = (
   happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
-): Array<Record<string, string>> => {
+): string => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
@@ -55,11 +56,4 @@ export const toCsv = (
   });
 
   return parser.parse(registrations);
-};
-
-export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
-): string => {
-
-  return parser.parse(toCsv(happening));
 };
