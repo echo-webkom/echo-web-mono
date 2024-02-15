@@ -11,7 +11,5 @@ describe("degreeYearText", () => {
         expect(degreeYearText([1, 2, 4, 5])).toBe("1 - 2 og 4 - 5")
         expect(degreeYearText([1])).toBe("1")
         expect(degreeYearText([])).toBe("alle")
-
-
     })
 })
