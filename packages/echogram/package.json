@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "eslint": "8.56.0",
-    "@types/node": "18.19.15",
+    "@types/node": "18.19.16",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.3.3"
   },
