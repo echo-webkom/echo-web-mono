@@ -7,6 +7,7 @@ import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { Button } from "./ui/button";
+import { degreeYearText } from "@/lib/degree-year-text";
 
 type JobAdSidebarProps = {
   jobAd: JobAd;
@@ -42,7 +43,7 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
           </li>
           <li>
             <span className="font-semibold">Årstrinn: </span>
-            {degreeYearText({jobAd.degreeYears})}
+            {degreeYearText(jobAd.degreeYears)}
           </li>
           <li>
             <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}
