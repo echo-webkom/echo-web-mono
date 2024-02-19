@@ -1,14 +1,10 @@
 export function degreeYearText(degreeYears: Array<number>): string {
-
-  
   if (degreeYears.length === 0) {
     return "ingen";
   }
   if (degreeYears.length === 5) {
     return "alle";
   }
-
-
 
   const first = degreeYears[0]!;
 
