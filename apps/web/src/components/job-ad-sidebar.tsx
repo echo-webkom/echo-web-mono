@@ -8,7 +8,6 @@ import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { Button } from "./ui/button";
-import { degreeYearText } from "@/lib/degree-year-text";
 
 type JobAdSidebarProps = {
   jobAd: JobAd;
