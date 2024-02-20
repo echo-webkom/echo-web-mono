@@ -18,7 +18,7 @@ export function degreeYearText(degreeYears: Array<number>): string {
   const seqs: Array<string> = [];
 
   for (const year of degreeYears.slice(1)) {
-    if (year != curr + 1) {
+    if (year !== curr + 1) {
       if (start === curr) {
         seqs.push(start.toString());
       } else {
