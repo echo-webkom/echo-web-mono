@@ -3,6 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
+import { degreeYearText } from "@/lib/degree-year-text";
 import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
@@ -39,6 +40,10 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
             {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
               locale: nb,
             })}
+          </li>
+          <li>
+            <span className="font-semibold">Årstrinn: </span>
+            {degreeYearText(jobAd.degreeYears)}
           </li>
           <li>
             <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}

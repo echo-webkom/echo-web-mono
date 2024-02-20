@@ -25,7 +25,9 @@ export const jobAdSchema = z.object({
   jobType: jobTypeSchema,
   link: z.string(),
   deadline: z.string(),
-  degreeYears: degreeYearsSchema.transform((v) => Object.values(v).filter(Boolean)),
+  degreeYears: degreeYearsSchema.transform(
+    (v) => Object.values(v).filter(Boolean) as Array<number>,
+  ),
   body: z.string(),
 });
 
