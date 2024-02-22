@@ -10,13 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Notification } from "@/sanity/notifications/schemas";
+import { cookies } from "next/headers";
+
 
 export default async function NotificationButton() {
-  const notifications = await fetchValidNotifications();
-
-  function handleClick() {
-    // notification.viewed = true;
-  }
+  const notifications[Notification] = await fetchValidNotifications();
 
   return (
     <DropdownMenu>
