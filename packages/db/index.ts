@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== "production") {
 
 function createPool() {
   return postgres(process.env.DATABASE_URL!, {
-    max: 40,
+    max: 90,
   });
 }
 
