@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
 import { degreeYearText } from "@/lib/degree-year-text";
-import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
+import { jobTypeString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 import { Button } from "./ui/button";
@@ -46,7 +46,7 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
             {degreeYearText(jobAd.degreeYears)}
           </li>
           <li>
-            <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}
+            <span className="font-semibold">Stillingstype:</span> {jobTypeString(jobAd.jobType)}
           </li>
           <li>
             <Button className="hover:underline" asChild>
