@@ -38,14 +38,12 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <div className="flex flex-col space-x-0 sm:flex-row sm:space-x-8">
-        <div>
-          <JobAdSidebar jobAd={jobAd} />
-        </div>
+      <div className="flex flex-col-reverse gap-8 sm:flex-row">
         <div className="pt-4 sm:pt-0">
           <Heading className="mb-4">{jobAd.title}</Heading>
           <Markdown content={jobAd.body} />
         </div>
+        <JobAdSidebar jobAd={jobAd} />
       </div>
     </Container>
   );
