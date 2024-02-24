@@ -274,7 +274,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
     };
   } catch (error) {
-    console.error(error);
+    console.error(`Error in register: ${error}`);
 
     if (error instanceof z.ZodError) {
       return {
