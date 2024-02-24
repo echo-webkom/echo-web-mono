@@ -18,4 +18,4 @@ export * from "./shopping-list-items";
 export * from "./users-to-shopping-list-items";
 export * from "./whitelist";
 export * from "./strikes";
-export * from "./strike-info";
+export * from "./strike-infos";

@@ -2,26 +2,24 @@ import { relations } from "drizzle-orm";
 import { boolean, index, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { strikeInfo, users } from ".";
+import { strikeInfos, users } from ".";
 
 export const strikes = pgTable(
   "strike",
   {
     id: serial("id").notNull().primaryKey(),
-    userId: text("user-id")
+    userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    strikeInfoId: uuid("info")
+    strikeInfoId: uuid("strike_info_id")
       .notNull()
-      .references(() => strikeInfo.id, { onDelete: "cascade" }),
-    isBannable: boolean("isBannable").notNull().default(false),
-    isDeleted: boolean("isDeleted").notNull().default(false),
+      .references(() => strikeInfos.id, { onDelete: "cascade" }),
+    isBannable: boolean("is_bannable").notNull().default(false),
+    isDeleted: boolean("is_deleted").notNull().default(false),
   },
-  (table) => {
-    return {
-      userIdx: index("userIdx").on(table.userId, table.id),
-    };
-  },
+  (table) => ({
+    userIdx: index("user_idx").on(table.userId, table.id),
+  }),
 );
 
 export const strikesRelations = relations(strikes, ({ one }) => ({
@@ -29,9 +27,9 @@ export const strikesRelations = relations(strikes, ({ one }) => ({
     fields: [strikes.userId],
     references: [users.id],
   }),
-  strikeInfo: one(strikeInfo, {
+  strikeInfo: one(strikeInfos, {
     fields: [strikes.strikeInfoId],
-    references: [strikeInfo.id],
+    references: [strikeInfos.id],
   }),
 }));
 
