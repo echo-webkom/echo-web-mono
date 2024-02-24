@@ -235,6 +235,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       },
     );
 
+    console.log(`Status after transaction: ${registration?.status ?? "error"}`);
+
     revalidateRegistrations(id, user.id);
 
     if (!registration) {
