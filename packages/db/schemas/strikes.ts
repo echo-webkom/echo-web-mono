@@ -14,7 +14,6 @@ export const strikes = pgTable(
     strikeInfoId: uuid("strike_info_id")
       .notNull()
       .references(() => strikeInfos.id, { onDelete: "cascade" }),
-    isBannable: boolean("is_bannable").notNull().default(false),
     isDeleted: boolean("is_deleted").notNull().default(false),
   },
   (table) => ({
