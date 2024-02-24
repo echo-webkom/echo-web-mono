@@ -235,6 +235,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       },
     );
 
+    // eslint-disable-next-line no-console
     console.log(`Status after transaction: ${registration?.status ?? "error"}`);
 
     revalidateRegistrations(id, user.id);
