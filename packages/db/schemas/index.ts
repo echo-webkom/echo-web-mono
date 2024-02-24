@@ -17,3 +17,5 @@ export * from "./verification-tokens";
 export * from "./shopping-list-items";
 export * from "./users-to-shopping-list-items";
 export * from "./whitelist";
+export * from "./strikes";
+export * from "./strike-info";
