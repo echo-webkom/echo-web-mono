@@ -1,4 +1,4 @@
-import { eq, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { boolean, index, pgTable, serial, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -19,10 +19,7 @@ export const strikes = pgTable(
   },
   (table) => {
     return {
-      bannableIdx: index("bannableIdx")
-        .on(table.userId, table.id)
-        .desc()
-        .where(eq(table.isBannable, true)),
+      userIdx: index("userIdx").on(table.userId, table.id),
     };
   },
 );
