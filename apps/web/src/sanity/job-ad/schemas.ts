@@ -1,9 +1,16 @@
 import { z } from "zod";
 
+import { JOB_TYPES, type JobType } from "@echo-webkom/lib";
+
 import { companySchema } from "../company";
 import { locationSchema } from "../location";
 
-const jobTypeSchema = z.enum(["fulltime", "parttime", "internship", "summerjob"]);
+const jobTypeSchema = z.custom<JobType>(
+  (value) => JOB_TYPES.map((t) => t.value).includes(value as Readonly<JobType>),
+  {
+    message: "Invalid job type",
+  },
+);
 
 // This is ugly?
 export const degreeYearsSchema = z.object({
@@ -31,5 +38,4 @@ export const jobAdSchema = z.object({
   body: z.string(),
 });
 
-export type JobType = z.infer<typeof jobTypeSchema>;
 export type JobAd = z.infer<typeof jobAdSchema>;

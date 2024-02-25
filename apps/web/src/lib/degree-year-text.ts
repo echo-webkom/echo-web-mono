@@ -1,9 +1,9 @@
 export function degreeYearText(degreeYears: Array<number>): string {
   if (degreeYears.length === 0) {
-    return "ingen";
+    return "Ingen";
   }
   if (degreeYears.length === 5) {
-    return "alle";
+    return "Alle";
   }
 
   const first = degreeYears[0]!;
