@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { RxCrossCircled, RxInfoCircled } from "react-icons/rx";
+import { RxInfoCircled } from "react-icons/rx";
 
 import {
   type Group,
@@ -226,15 +226,14 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <Button className="p-0" variant="ghost" onClick={() => setIsClicked(!isClicked)}>
+        <Button
+          className="p-0 hover:bg-transparent"
+          variant="ghost"
+          onClick={() => setIsClicked(!isClicked)}
+        >
           <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
-          {/* {isClicked ? (
-            <RxCrossCircled className="size-5 origin-center transition-all hover:size-6" />
-          ) : (
-            <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
-          )} */}
         </Button>
-        {isClicked && <HoverProfileView user={registration.user} group={group} reason={reason} />}
+        {isClicked && <HoverProfileView user={registration.user} group={group} />}
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
