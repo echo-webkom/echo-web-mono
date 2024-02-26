@@ -1,12 +1,7 @@
 import { CaseIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-const JOB_TYPES = [
-  { title: "Fulltid", value: "fulltime" },
-  { title: "Deltid", value: "parttime" },
-  { title: "Internship", value: "internship" },
-  { title: "Sommerjobb", value: "summerjob" },
-];
+import { JOB_TYPES } from "@echo-webkom/lib";
 
 const YEARS = [
   { title: "1. året", value: "FIRST" },
@@ -57,7 +52,9 @@ export default defineType({
       title: "Stillingstype",
       type: "string",
       options: {
-        list: JOB_TYPES,
+        list: JOB_TYPES.map(({ title, value }) => {
+          return { title, value };
+        }),
         layout: "dropdown",
       },
       validation: (Rule) => Rule.required(),

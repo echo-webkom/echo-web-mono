@@ -3,9 +3,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
-import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
-import { cn } from "@/utils/cn";
+import { degreeYearText } from "@/lib/degree-year-text";
+import { jobTypeString, type JobAd } from "@/sanity/job-ad";
 import { urlFor } from "@/utils/image-builder";
+import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
 type JobAdSidebarProps = {
@@ -14,42 +15,52 @@ type JobAdSidebarProps = {
 
 export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
   return (
-    <div className="flex flex-col">
-      <div className="relative hidden h-48 w-48 overflow-hidden sm:block">
-        <Image src={urlFor(jobAd.company.image).url()} alt={`${jobAd.company.name} logo`} fill />
-      </div>
+    <Sidebar>
+      <SidebarItem>
+        <Link href={jobAd.company.website}>
+          <div className="overflow-hidden">
+            <div className="relative aspect-square w-full">
+              <Image
+                src={urlFor(jobAd.company.image).url()}
+                alt={`${jobAd.company.name} logo`}
+                fill
+              />
+            </div>
+          </div>
+        </Link>
+      </SidebarItem>
 
-      <div>
-        <ul className="grid grid-cols-2 gap-4 sm:flex sm:flex-col sm:pt-8">
-          <li>
-            <span className="font-semibold">Bedrift:</span> {jobAd.company.name}
-          </li>
-          <li>
-            <span className=" font-semibold">Sted: </span>
-            {jobAd.locations.map((location) => location.name).join(", ")}
-          </li>
-          <li>
-            <span
-              className={cn("font-semibold", {
-                "line-through": new Date(jobAd.deadline) < new Date(),
-              })}
-            >
-              Søknadsfrist:
-            </span>{" "}
-            {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
-              locale: nb,
-            })}
-          </li>
-          <li>
-            <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}
-          </li>
-          <li>
-            <Button className="hover:underline" asChild>
-              <Link href={jobAd.link}>Søk her!</Link>
-            </Button>
-          </li>
-        </ul>
-      </div>
-    </div>
+      <SidebarItem>
+        <SidebarItemTitle>Bedrift</SidebarItemTitle>
+        <SidebarItemContent>{jobAd.company.name}</SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle>Sted</SidebarItemTitle>
+        <SidebarItemContent>
+          {jobAd.locations.map((location) => location.name).join(", ")}
+        </SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle>Søknadsfrist</SidebarItemTitle>
+        <SidebarItemContent>
+          {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
+            locale: nb,
+          })}
+        </SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle>Årstrinn</SidebarItemTitle>
+        <SidebarItemContent>{degreeYearText(jobAd.degreeYears)}</SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <SidebarItemTitle>Stillingstype</SidebarItemTitle>
+        <SidebarItemContent>{jobTypeString(jobAd.jobType)}</SidebarItemContent>
+      </SidebarItem>
+      <SidebarItem>
+        <Button className="w-full hover:underline" asChild>
+          <Link href={jobAd.link}>Søk her!</Link>
+        </Button>
+      </SidebarItem>
+    </Sidebar>
   );
 }
