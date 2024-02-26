@@ -31,6 +31,7 @@ export const JOB_TYPES = [
   { title: "Internship", value: "internship" },
   { title: "Sommerjobb", value: "summerjob" },
   { title: "Event", value: "event" },
+  { title: "Annonse", value: "ad" },
 ] as const;
 
 export type JobType = (typeof JOB_TYPES)[number]["value"];
