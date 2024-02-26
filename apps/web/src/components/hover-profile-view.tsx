@@ -1,19 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
 import { RxInfoCircled } from "react-icons/rx";
 
 import { type User } from "@echo-webkom/db/schemas";
 
+import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { mailTo } from "@/utils/prefixes";
 import { Button } from "./ui/button";
 
 export function HoverProfileView({ user, group }: { user: User; group: string }) {
-  const email = user.alternativeEmail ?? user.email ?? "";
   const [isClicked, setIsClicked] = useState(false);
+  const profileRef = useRef(null);
+
+  useOutsideClick(() => setIsClicked(false), [profileRef]);
 
   return (
-    <>
+    <div className="flex">
       <Button
         className="p-0 hover:bg-transparent"
         variant="ghost"
@@ -22,7 +25,10 @@ export function HoverProfileView({ user, group }: { user: User; group: string })
         <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
       </Button>
       {isClicked && (
-        <div className="absolute left-16 flex flex-row gap-4 rounded-lg border bg-background p-4 text-foreground sm:left-20 ">
+        <div
+          ref={profileRef}
+          className="absolute left-16 flex flex-row gap-4 rounded-lg border bg-background p-4 text-foreground sm:left-24 "
+        >
           <div className="flex flex-col gap-1">
             <p className="font-bold">{user.name}</p>
             {user.year && user.degreeId && (
@@ -39,13 +45,13 @@ export function HoverProfileView({ user, group }: { user: User; group: string })
             )}
             <p className="flex text-muted-foreground">
               <LuMail className="my-auto mr-2" />
-              <Link className="hover:underline" href={mailTo(email)}>
+              <Link className="hover:underline" href={mailTo(user.email)}>
                 {user.email}
               </Link>
             </p>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
