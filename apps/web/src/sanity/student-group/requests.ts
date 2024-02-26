@@ -28,7 +28,7 @@ export async function fetchStudentGroupBySlug(slug: string) {
       params: {
         slug,
       },
-      tags: [`student-group-${slug}`],
+      tags: [`student-groups`],
     }).then((res) => studentGroupSchema.parse(res));
   } catch {
     return null;

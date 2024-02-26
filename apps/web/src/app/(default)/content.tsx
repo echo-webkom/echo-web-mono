@@ -94,8 +94,14 @@ export async function Content() {
       {/* Job ads */}
       {jobAds.length > 0 && (
         <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-          <Link href="/for-studenter/jobber">
-            <h2 className="text-center text-xl font-semibold md:text-3xl">Jobbannonser</h2>
+          <Link
+            href="/for-studenter/jobber"
+            className="group mx-auto flex items-center underline-offset-4 hover:underline"
+          >
+            <h2 className="text-center text-xl font-semibold md:text-3xl">
+              Jobbannonser
+              <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
+            </h2>
           </Link>
 
           <hr />
@@ -112,8 +118,11 @@ export async function Content() {
 
       {/* Posts */}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-        <Link href="/for-studenter/innlegg">
-          <h2 className="group text-center text-xl font-semibold decoration-1 underline-offset-8 hover:underline md:text-3xl">
+        <Link
+          href="/for-studenter/innlegg"
+          className="group mx-auto flex items-center underline-offset-4 hover:underline"
+        >
+          <h2 className="group text-center text-xl font-semibold decoration-1 md:text-3xl">
             Siste nytt
             <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </h2>
