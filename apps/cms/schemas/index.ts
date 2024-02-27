@@ -10,6 +10,7 @@ import post from "./post";
 import profile from "./profile";
 import staticInfo from "./static-info";
 import studentGroup from "./student-group";
+import movies from "./movies";
 
 export const schemaTypes = [
   happening,
@@ -24,4 +25,5 @@ export const schemaTypes = [
   spotRange,
   contactProfile,
   question,
+  movies,
 ];
