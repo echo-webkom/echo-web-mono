@@ -19,7 +19,7 @@ export default async function HomePage() {
               background: "radial-gradient(50% 50% at 50% 50%, #FFC0CB 0%, #FFC0CB 100%)",
             }}
           >
-            <p className="text-center text-3xl">Meld deg på generalforsamlingen nå!</p>
+            <p className="text-center text-lg sm:text-3xl">Meld deg på generalforsamlingen nå!</p>
           </div>
         </div>
       </Link>
