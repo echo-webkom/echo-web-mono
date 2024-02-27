@@ -16,6 +16,7 @@ const baseMessages = [
   "Dubkom",
   "1337",
   ":(){ :|:& };:",
+  "go func() { urself }()",
 ];
 
 function getCurrentRandomMessages(now: Date) {
