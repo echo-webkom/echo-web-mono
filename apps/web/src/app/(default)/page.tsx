@@ -11,6 +11,19 @@ export default async function HomePage() {
 
   return (
     <>
+      <Link className="text-black hover:underline" href="/arrangement/generalforsamling">
+        <div className="px-4">
+          <div
+            className="mx-auto w-full max-w-7xl rounded-lg p-6 shadow-lg"
+            style={{
+              background: "radial-gradient(50% 50% at 50% 50%, #FFC0CB 0%, #FFC0CB 100%)",
+            }}
+          >
+            <p className="text-center text-3xl">Meld deg på generalforsamlingen nå!</p>
+          </div>
+        </div>
+      </Link>
+
       <Container className="relative pb-40" layout="full">
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
