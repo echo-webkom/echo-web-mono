@@ -15,6 +15,7 @@ const baseMessages = [
   "JAJ FOR FAJ",
   "Dubkom",
   "1337",
+  ":(){ :|:& };:",
 ];
 
 function getCurrentRandomMessages(now: Date) {
