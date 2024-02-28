@@ -4,12 +4,12 @@ import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { type getHappeningCsvData } from "@/data/happenings/queries";
 
-import { selectedHeaders } from "@/lib/components/registration-table";
+import { selectedHeaders } from "@/components/registration-table";
 
 const parser = new Parser({
   withBOM: true,
 });
-.map(selectedHeaders => {)
+selectedHeaders.map(headers => {)
 
 export const toCsv = (
   happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
