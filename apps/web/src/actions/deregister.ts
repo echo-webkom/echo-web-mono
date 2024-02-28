@@ -50,6 +50,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         .set({
           status: "unregistered",
           unregisterReason: data.reason,
+          deregisteredAt: new Date(),
         })
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),

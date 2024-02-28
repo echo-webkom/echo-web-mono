@@ -13,11 +13,11 @@ import { Button } from "./ui/button";
 export function HoverProfileView({
   user,
   group,
-  createdAt,
+  deregisteredAt,
 }: {
   user: User;
   group: string;
-  createdAt: Date;
+  deregisteredAt: Date;
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const profileRef = useRef(null);
@@ -25,7 +25,7 @@ export function HoverProfileView({
   useOutsideClick(() => setIsClicked(false), [profileRef]);
 
   return (
-    <div className="flex">
+    <div className="flex" ref={profileRef}>
       <Button
         className="p-0 hover:bg-transparent"
         variant="ghost"
@@ -34,10 +34,7 @@ export function HoverProfileView({
         <RxInfoCircled className="size-5 origin-center transition-all hover:size-6" />
       </Button>
       {isClicked && (
-        <div
-          ref={profileRef}
-          className="absolute left-16 flex flex-row gap-4 rounded-lg border bg-background p-4 text-foreground sm:left-24 "
-        >
+        <div className="absolute left-16 flex flex-row gap-4 rounded-lg border bg-background p-4 text-foreground sm:left-24 ">
           <div className="flex flex-col gap-1">
             <p className="font-bold">{user.name}</p>
             {user.year && user.degreeId && (
@@ -60,7 +57,7 @@ export function HoverProfileView({
             </p>
             <p className="flex text-muted-foreground">
               <LuClock className="my-auto mr-2" />
-              {shortDateNoYear(createdAt)}
+              {shortDateNoYear(deregisteredAt)}
             </p>
           </div>
         </div>
