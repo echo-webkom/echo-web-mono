@@ -1,8 +1,12 @@
-export type Notification = {
-    _id: string;
-    title: string;
-    subtitle: string;
-    publishedAt: string;
-    validTo: string;
-    viewed: boolean;
-};
+import { z } from "zod";
+
+export const NotificationSchema = z.object({
+    _id: z.string(),
+    title: z.string(),
+    subtitle: z.string(),
+    publishedAt: z.string(),
+    validTo: z.string(),
+    viewed: z.boolean(),
+})
+
+export type Notification = z.infer<typeof NotificationSchema>;

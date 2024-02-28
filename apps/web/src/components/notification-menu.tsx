@@ -14,7 +14,7 @@ import { cookies } from "next/headers";
 
 
 export default async function NotificationButton() {
-  const notifications[Notification] = await fetchValidNotifications();
+  const notifications: Notification[] = await fetchValidNotifications();
 
   return (
     <DropdownMenu>
