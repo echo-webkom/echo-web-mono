@@ -11,6 +11,8 @@ import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
+import { getHappeningCsvData } from "@/data/happenings/queries";
+import { toCsv } from "@/lib/csv";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
@@ -56,6 +58,13 @@ export default async function EventDashboard({ params }: Props) {
       },
     },
   });
+
+  const getCsvData = await getHappeningCsvData(happening.id);
+  if (!getCsvData) {
+    return notFound();
+  }
+
+  // const registrationRecords = toCsv(getCsvData);
 
   registrations.sort((a, b) => {
     const statusOrder: Record<RegistrationStatus, number> = {
@@ -116,6 +125,8 @@ export default async function EventDashboard({ params }: Props) {
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
           <RegistrationTable
+            // registrationRecords={getCsvData}
+            questions={happening.questions}
             registrations={registrations}
             studentGroups={groups}
             happeningId={happening.id}
