@@ -47,19 +47,3 @@ export default async function NotificationButton() {
     </DropdownMenu>
   );
 }
-
-              {/* <DropdownMenuItem>
-                {notification.viewed ? (
-                  <span>{notification.title}</span>
-                ) : (
-                  <span className=" bg-red-300">{notification.title}</span>
-                )}
-              </DropdownMenuItem> */}
-
-
-            // <div>
-            //   <DropdownMenuItem onClick={() => handleClick(notification)}>
-            //     <span>{notification.title}</span>
-            //   </DropdownMenuItem>
-            //   // <DropdownMenuSeparator />
-            // </div>

@@ -6,7 +6,7 @@ export const NotificationSchema = z.object({
     subtitle: z.string(),
     publishedAt: z.string(),
     validTo: z.string(),
-    viewed: z.boolean(),
+    viewed: z.boolean().default(false),
 })
 
 export type Notification = z.infer<typeof NotificationSchema>;

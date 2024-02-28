@@ -10,7 +10,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { degrees, strikes, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
+import { degrees, notifications, strikes, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
+import { userToNotification } from "./users-to-notification";
 
 export const users = pgTable(
   "user",
@@ -44,6 +45,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.bannedFromStrike],
     references: [strikes.id],
   }),
+  notification: many(userToNotification),
 }));
 
 export type User = (typeof users)["$inferSelect"];
