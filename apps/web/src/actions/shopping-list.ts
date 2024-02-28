@@ -28,10 +28,17 @@ export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>)
         message: "Du er ikke logget inn",
       };
     }
-    await createShoppinglistItem({
+    const itemId = await createShoppinglistItem({
       name: data.name,
       userId: user.id,
     });
+
+    if (itemId) {
+      await addShoppinglistLike({
+        userId: user.id,
+        itemId: itemId.id,
+      });
+    }
 
     return {
       success: true,

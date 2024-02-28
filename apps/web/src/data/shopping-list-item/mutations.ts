@@ -13,8 +13,13 @@ import {
 import { revalidateShoppingListItems } from "./revalidations";
 
 export async function createShoppinglistItem(newItem: ShoppingListItemsInsert) {
-  await db.insert(shoppingListItems).values(newItem);
+  const [insertedShoppingListItem] = await db
+    .insert(shoppingListItems)
+    .values(newItem)
+    .returning({ id: shoppingListItems.id });
   revalidateShoppingListItems();
+
+  return insertedShoppingListItem;
 }
 
 export async function deleteShoppinglistItems(id: ShoppingListItems["id"]) {

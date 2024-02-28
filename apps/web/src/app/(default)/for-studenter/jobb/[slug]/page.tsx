@@ -2,6 +2,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
+import { JobAdSidebar } from "@/components/job-ad-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchJobAdBySlug } from "@/sanity/job-ad";
@@ -37,8 +38,13 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container>
-      <Heading className="mb-4">{jobAd.title}</Heading>
-      <Markdown content={jobAd.body} />
+      <div className="flex flex-col-reverse gap-8 sm:flex-row">
+        <div className="pt-4 sm:pt-0">
+          <Heading className="mb-4">{jobAd.title}</Heading>
+          <Markdown content={jobAd.body} />
+        </div>
+        <JobAdSidebar jobAd={jobAd} />
+      </div>
     </Container>
   );
 }

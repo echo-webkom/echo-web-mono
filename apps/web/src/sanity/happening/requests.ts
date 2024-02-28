@@ -1,7 +1,7 @@
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { nextMonday, subMinutes } from "date-fns";
+import { subMinutes } from "date-fns";
 
-import { type FilteredHappeningQuery } from "@/app/(default)/for-studenter/arrangementer/page";
+import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
 import { happeningSchema, type Happening, type HappeningType } from "./schemas";
@@ -68,24 +68,12 @@ export async function fetchHappeningBySlug(slug: string) {
  * @param q query parameters
  * @returns happenings matching the query parameters or an error message
  */
-export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
+export async function fetchFilteredHappening(
+  q: FilteredHappeningQuery,
+  dateFilter?: Array<DateInterval>,
+) {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
-      .filter((happening) => {
-        const { title, organizers } = happening;
-
-        const search = q.search ?? "";
-
-        return (
-          title.toLowerCase().includes(search.toLowerCase()) ||
-          organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
-        );
-      })
-      .filter((happening) => {
-        const { happeningType } = happening;
-
-        return happeningType === q.type || q.type === "all";
-      })
       .filter((happening) => {
         const { date } = happening;
 
@@ -93,9 +81,16 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
           return false;
         }
 
+        if (!q.past && !dateFilter) return false;
+
         if (q.past) return new Date(date) < new Date();
 
-        return new Date(date) >= subMinutes(new Date(), 30);
+        return new Date(date) >= subMinutes(new Date(), 5);
+      })
+      .filter((happening) => {
+        const { happeningType } = happening;
+
+        return happeningType === q.type || q.type === "all";
       })
       .filter((happening) => {
         const { registrationStart, registrationEnd } = happening;
@@ -106,61 +101,38 @@ export async function fetchFilteredHappening(q: FilteredHappeningQuery) {
               new Date(registrationStart) <= new Date() &&
               new Date(registrationEnd) > new Date()
           : true;
+      })
+      .filter((happening) => {
+        const { title, organizers } = happening;
+
+        const search = q.search ?? "";
+
+        return (
+          title.toLowerCase().includes(search.toLowerCase()) ||
+          organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+        );
       }),
   );
 
-  const { numThisWeek, numNextWeek, numLater } = filteredHappenings.reduce(
-    (acc: { numThisWeek: number; numNextWeek: number; numLater: number }, happening) => {
-      const { date } = happening;
-
-      if (!date) {
-        return acc;
-      }
-
-      const happeningDate = new Date(date);
-
-      const thisWeek = subMinutes(new Date(), 30);
-      const nextWeek = nextMonday(thisWeek);
-      const later = nextMonday(nextWeek);
-
-      if (happeningDate >= thisWeek && happeningDate < nextWeek) {
-        acc.numThisWeek += 1;
-      } else if (happeningDate >= nextWeek && happeningDate < later) {
-        acc.numNextWeek += 1;
-      } else if (happeningDate >= later) {
-        acc.numLater += 1;
-      }
-
-      return acc;
-    },
-    { numThisWeek: 0, numNextWeek: 0, numLater: 0 },
-  );
-
   return {
-    numThisWeek,
-    numNextWeek,
-    numLater,
-    happenings: q.past
-      ? filteredHappenings
-      : filteredHappenings.filter((happening) => {
-          if (!q.dateFilter) {
-            return false;
-          }
+    happenings:
+      dateFilter && !q.past
+        ? filteredHappenings.filter((happening) => {
+            const { date } = happening;
 
-          const { date } = happening;
+            if (!date) {
+              return false;
+            }
 
-          if (!date) {
-            return false;
-          }
-
-          return q.dateFilter.some((f) => {
-            return (
-              (f.start ?? f.end) &&
-              (!f.start || new Date(date) >= f.start) &&
-              (!f.end || new Date(date) < f.end)
-            );
-          });
-        }),
+            return dateFilter.some((f) => {
+              return (
+                (f.start ?? f.end) &&
+                (!f.start || new Date(date) >= f.start) &&
+                (!f.end || new Date(date) < f.end)
+              );
+            });
+          })
+        : filteredHappenings,
   };
 }
 

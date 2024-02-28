@@ -21,9 +21,9 @@ export class EchoGram {
     }
   }
 
-  async uploadImage(userId: string, formData: FormData) {
+  async uploadImage(userId: string, file: File) {
     try {
-      const file = formData.get("image") as File;
+      // const file = formData.get("image") as File;
 
       if (file.size === 0 || typeof file.size === "undefined") {
         return {
@@ -47,6 +47,9 @@ export class EchoGram {
         };
       }
 
+      const formData = new FormData();
+      formData.append("image", file);
+
       const response = await fetch(PROFILE_IMAGE_FUNCTION_URL, {
         method: "POST",
         headers: {
@@ -66,7 +69,7 @@ export class EchoGram {
         case 500:
           return {
             success: false,
-            message: `Det skjedde en feil: ${await response.text()}`,
+            message: `Det skjedde en feil 500: ${await response.text()}`,
           };
       }
 
@@ -77,7 +80,7 @@ export class EchoGram {
     } catch (err) {
       return {
         success: false,
-        message: `Det skjedde en feil: ${err}`,
+        message: `Det skjedde en feil catch: ${err}`,
       };
     }
   }

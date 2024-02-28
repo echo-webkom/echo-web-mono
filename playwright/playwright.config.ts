@@ -38,12 +38,5 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       cwd: "../",
     },
-    {
-      command: "pnpm --filter=docs run start",
-      url: "http://localhost:3001",
-      timeout: 120 * 1000,
-      reuseExistingServer: !process.env.CI,
-      cwd: "../",
-    },
   ],
 });

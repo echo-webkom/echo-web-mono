@@ -13,6 +13,7 @@ import {
   LuPresentation,
   LuScale,
   LuScrollText,
+  LuShoppingCart,
   LuStickyNote,
   LuUsers,
   LuWallet,
@@ -114,6 +115,12 @@ export const headerRoutes: Array<
         href: "/for-studenter/anonyme-tilbakemeldinger",
         description: "Send anonyme tilbakemeldinger",
         icon: LuMegaphone,
+      },
+      {
+        label: "Hyggkoms handleliste",
+        href: "/for-studenter/handleliste",
+        description: "Si hva du synes hyggkom burde kjøpe inn til lesesalen",
+        icon: LuShoppingCart,
       },
       {
         label: "Utlegg",

@@ -2,9 +2,10 @@ import Link from "next/link";
 
 import { auth } from "@echo-webkom/auth";
 
+import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
-import ModeToggle from "./theme-switch-button";
+import { ModeToggle } from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
@@ -19,6 +20,10 @@ export async function SiteHeader() {
       <div className="border-b bg-background">
         <NavigationRoot>
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
+            <div className="left-30 absolute -bottom-3 z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
+              <p>{getRandomMessage()}</p>
+            </div>
+
             <div className="flex items-center">
               <HeaderLogo />
               <DesktopNavigation />
