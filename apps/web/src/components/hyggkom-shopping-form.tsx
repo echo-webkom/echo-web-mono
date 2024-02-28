@@ -59,6 +59,12 @@ export function HyggkomShoppingForm() {
               </FormItem>
             )}
           />
+          <div>
+            <small>
+              Forslagene er ikke anonyme.
+            </small>
+
+          </div>
           <Button type="submit">Legg til</Button>
         </div>
       </form>

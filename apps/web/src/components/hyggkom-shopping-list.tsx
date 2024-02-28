@@ -6,6 +6,7 @@ import { RxDotsHorizontal } from "react-icons/rx";
 import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list";
 import { useToast } from "@/hooks/use-toast";
 import { Text } from "./typography/text";
+import { cn } from "@/utils/cn";
 
 type itemProps = {
   id: string;
@@ -71,7 +72,6 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
       variant: "success",
     });
   };
-
   return (
     <ul className="rounded-md border capitalize">
       {items
@@ -80,25 +80,32 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
           if (withDots && index === items.length - 1) return;
           return (
             <li
-              className={`flex justify-between ${index === items.length - 1 ? "rounded-b-md" : ""} ${index % 2 === 0 ? "bg-transparent" : "bg-muted"} px-6 py-1`}
+              className={cn(
+              "flex justify-between px-6 py-1 bg-transparent",
+              {
+              "bg-muted": index % 2 === 1,
+              "rounded-b-md": index === items.length-1,
+              })}
               key={item.id}
             >
               <div className="flex flex-col">
                 <Text className="pb-0 pt-2">{item.name}</Text>
-                {isAdmin && <Text className="py-0 text-xs font-light">{item.user}</Text>}
+                {isAdmin && <Text className="py-1 text-xs font-light">{item.user}</Text>}
               </div>
-              <div className="flex items-center justify-end gap-8">
-                <div className="flex gap-4">
-                  <Text className="">{item.likes}</Text>
-                  <button onClick={() => handleLikeButtonClick(item.id)}>
+              <div className="flex items-center justify-end gap-4">
+                <div className="flex gap-4 items-center">
+                  <Text>{item.likes}</Text>
+                  <button onClick={(e) => {
+                  handleLikeButtonClick(item.id)
+                  }} className="p-3 rounded-md hover:bg-reaction dark:hover:bg-gray-600 h-min">
                     {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
                   </button>
                 </div>
 
                 {isAdmin && (
                   <>
-                    <div className="h-2/3 w-[1px] bg-slate-300" />
-                    <button onClick={() => handleRemoveButtonClick(item.id)}>
+                    <div className="h-2/3 w-px bg-slate-300" />
+                    <button onClick={() => handleRemoveButtonClick(item.id)} className="p-3 rounded-md hover:bg-reaction dark:hover:bg-gray-600 h-min">
                       <IoTrashBinOutline />
                     </button>
                   </>
