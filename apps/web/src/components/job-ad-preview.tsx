@@ -3,7 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
-import { jobTypeToString, type JobAd } from "@/sanity/job-ad";
+import { jobTypeString, type JobAd } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { urlFor } from "@/utils/image-builder";
 
@@ -54,7 +54,7 @@ export function JobAdPreview({ jobAd }: JobAdPreviewProps) {
               })}
             </li>
             <li>
-              <span className="font-semibold">Stillingstype:</span> {jobTypeToString[jobAd.jobType]}
+              <span className="font-semibold">Stillingstype:</span> {jobTypeString(jobAd.jobType)}
             </li>
           </ul>
         </div>

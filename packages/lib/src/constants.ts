@@ -24,3 +24,14 @@ export const HAPPENING_TYPES = [
 ] as const;
 
 export type HappeningType = (typeof HAPPENING_TYPES)[number]["value"];
+
+export const JOB_TYPES = [
+  { title: "Fulltid", value: "fulltime" },
+  { title: "Deltid", value: "parttime" },
+  { title: "Internship", value: "internship" },
+  { title: "Sommerjobb", value: "summerjob" },
+  { title: "Event", value: "event" },
+  { title: "Annonse", value: "ad" },
+] as const;
+
+export type JobType = (typeof JOB_TYPES)[number]["value"];
