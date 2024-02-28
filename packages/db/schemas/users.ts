@@ -10,7 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { degrees, notifications, strikes, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
+import { degrees, strikes, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
 import { userToNotification } from "./users-to-notification";
 
 export const users = pgTable(
