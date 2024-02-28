@@ -169,28 +169,10 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    const pendingReg = await db
-      .insert(registrations)
-      .values({
-        happeningId: id,
-        userId: user.id,
-        status: "pending",
-      })
-      .onConflictDoUpdate({
-        target: [registrations.happeningId, registrations.userId],
-        set: {
-          status: sql`excluded.status`,
-        },
-      })
-      .returning()
-      .then((res) => res[0] ?? null);
-
-    if (!pendingReg) {
-      throw new Error("Could not create registration");
-    }
-
     const { registration, isWaitlisted } = await db.transaction(
       async (tx) => {
+        await tx.execute(sql`LOCK TABLE ${registrations} IN EXCLUSIVE MODE;`);
+
         const regs = await tx
           .select()
           .from(registrations)
@@ -199,29 +181,30 @@ export async function register(id: string, payload: z.infer<typeof registrationF
               eq(registrations.happeningId, id),
               lte(users.year, userSpotRange.maxYear),
               gte(users.year, userSpotRange.minYear),
-              or(
-                eq(registrations.status, "registered"),
-                eq(registrations.status, "waiting"),
-                eq(registrations.status, "pending"),
-              ),
+              //or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
             ),
           )
-          .leftJoin(users, eq(registrations.userId, users.id))
-          .for("update");
+          .leftJoin(users, eq(registrations.userId, users.id));
 
-        const pendings = regs.filter((reg) => reg.registration.status === "pending");
-
-        const isWaitlisted = regs.length - pendings.length >= userSpotRange.spots;
+        const isWaitlisted =
+          regs.filter(
+            (reg) =>
+              reg.registration.status === "registered" || reg.registration.status === "waiting",
+          ).length >= userSpotRange.spots;
 
         const registration = await tx
-          .update(registrations)
-          .set({ status: isWaitlisted ? "waiting" : "registered" })
-          .where(
-            and(
-              eq(registrations.happeningId, pendingReg.happeningId),
-              eq(registrations.userId, pendingReg.userId),
-            ),
-          )
+          .insert(registrations)
+          .values({
+            happeningId: id,
+            userId: user.id,
+            status: isWaitlisted ? "waiting" : "registered",
+          })
+          .onConflictDoUpdate({
+            target: [registrations.happeningId, registrations.userId],
+            set: {
+              status: sql`excluded.status`,
+            },
+          })
           .returning()
           .then((res) => res[0] ?? null);
 
@@ -277,18 +260,18 @@ export async function register(id: string, payload: z.infer<typeof registrationF
   } catch (error) {
     console.error(`Error in register: ${error}`);
 
+    await va.track("Failed registration", {
+      userId: user?.id ?? null,
+      happeningId: id ?? null,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
     if (error instanceof z.ZodError) {
       return {
         success: false,
         message: "Skjemaet er ikke i riktig format",
       };
     }
-
-    await va.track("Failed registration", {
-      userId: user?.id ?? null,
-      happeningId: id ?? null,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
 
     return {
       success: false,
