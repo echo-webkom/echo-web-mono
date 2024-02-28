@@ -1,15 +1,24 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
+import { LuClock, LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
 import { RxInfoCircled } from "react-icons/rx";
 
 import { type User } from "@echo-webkom/db/schemas";
 
 import { useOutsideClick } from "@/hooks/use-outsideclick";
+import { shortDateNoYear } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { Button } from "./ui/button";
 
-export function HoverProfileView({ user, group }: { user: User; group: string }) {
+export function HoverProfileView({
+  user,
+  group,
+  createdAt,
+}: {
+  user: User;
+  group: string;
+  createdAt: Date;
+}) {
   const [isClicked, setIsClicked] = useState(false);
   const profileRef = useRef(null);
 
@@ -48,6 +57,10 @@ export function HoverProfileView({ user, group }: { user: User; group: string })
               <Link className="hover:underline" href={mailTo(user.email)}>
                 {user.email}
               </Link>
+            </p>
+            <p className="flex text-muted-foreground">
+              <LuClock className="my-auto mr-2" />
+              {shortDateNoYear(createdAt)}
             </p>
           </div>
         </div>

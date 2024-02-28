@@ -223,7 +223,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView user={registration.user} group={group} />
+        <HoverProfileView
+          user={registration.user}
+          group={group}
+          createdAt={registration.createdAt}
+        />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
