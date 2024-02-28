@@ -181,7 +181,6 @@ export async function register(id: string, payload: z.infer<typeof registrationF
               eq(registrations.happeningId, id),
               lte(users.year, userSpotRange.maxYear),
               gte(users.year, userSpotRange.minYear),
-              //or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
             ),
           )
           .leftJoin(users, eq(registrations.userId, users.id));
