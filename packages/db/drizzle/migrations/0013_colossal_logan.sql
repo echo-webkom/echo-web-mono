@@ -1,0 +1,1 @@
+ALTER TABLE "registration" ADD COLUMN "deregistered_at" timestamp;

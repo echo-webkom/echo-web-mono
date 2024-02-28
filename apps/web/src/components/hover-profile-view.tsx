@@ -13,11 +13,11 @@ import { Button } from "./ui/button";
 export function HoverProfileView({
   user,
   group,
-  deregisteredAt,
+  registrationChangedAt,
 }: {
   user: User;
   group: string;
-  deregisteredAt: Date;
+  registrationChangedAt: Date;
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const profileRef = useRef(null);
@@ -55,12 +55,10 @@ export function HoverProfileView({
                 {user.email}
               </Link>
             </p>
-            {deregisteredAt && (
-              <p className="flex text-muted-foreground">
-                <LuClock className="my-auto mr-2" />
-                {shortDateNoYear(deregisteredAt)}
-              </p>
-            )}
+            <p className="flex text-muted-foreground">
+              <LuClock className="my-auto mr-2" />
+              {shortDateNoYear(registrationChangedAt)}
+            </p>
           </div>
         </div>
       )}

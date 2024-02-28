@@ -1,5 +1,5 @@
 {
-  "id": "3999946c-2775-45e3-9fce-86114a1c4c05",
+  "id": "063af900-0682-405a-b94d-0f9e6a270672",
   "prevId": "5e84880d-f0bf-405b-9d5c-c336616800c0",
   "version": "5",
   "dialect": "pg",
@@ -554,8 +554,7 @@
           "name": "deregistered_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": false
         }
       },
       "indexes": {},
