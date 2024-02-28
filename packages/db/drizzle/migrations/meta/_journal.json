@@ -99,6 +99,13 @@
       "when": 1709138962259,
       "tag": "0013_same_wiccan",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "5",
+      "when": 1709145596355,
+      "tag": "0014_parched_the_fury",
+      "breakpoints": true
     }
   ]
 }

@@ -55,10 +55,12 @@ export function HoverProfileView({
                 {user.email}
               </Link>
             </p>
-            <p className="flex text-muted-foreground">
-              <LuClock className="my-auto mr-2" />
-              {shortDateNoYear(deregisteredAt)}
-            </p>
+            {deregisteredAt && (
+              <p className="flex text-muted-foreground">
+                <LuClock className="my-auto mr-2" />
+                {shortDateNoYear(deregisteredAt)}
+              </p>
+            )}
           </div>
         </div>
       )}

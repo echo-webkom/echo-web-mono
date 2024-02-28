@@ -1,0 +1,1 @@
+ALTER TABLE "registration" ALTER COLUMN "deregistered_at" DROP NOT NULL;
