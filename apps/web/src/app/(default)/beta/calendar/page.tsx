@@ -9,11 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { type HappeningType } from "@/sanity/happening";
 
-const eventTypes = [
+const eventTypes: Array<{
+  name: string;
+  value: HappeningType;
+}> = [
   {
     name: "Arrangement",
-    value: "events",
+    value: "event",
   },
   {
     name: "Bedriftspresentasjon",
@@ -22,13 +26,10 @@ const eventTypes = [
 ];
 
 export default function Calendar() {
-  const [types, setTypes] = useState<Array<(typeof eventTypes)[number]["value"]>>([
-    "bedpres",
-    "events",
-  ]);
+  const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
   const [includePast, setIncludePast] = useState<boolean>(false);
 
-  const addToTypes = (type: string) => {
+  const addToTypes = (type: HappeningType) => {
     if (!types.includes(type)) {
       setTypes([...types, type]);
     }
