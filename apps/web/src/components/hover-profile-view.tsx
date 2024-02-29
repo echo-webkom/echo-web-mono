@@ -6,18 +6,17 @@ import { RxInfoCircled } from "react-icons/rx";
 import { type User } from "@echo-webkom/db/schemas";
 
 import { useOutsideClick } from "@/hooks/use-outsideclick";
-import { shortDateNoYear } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { Button } from "./ui/button";
 
 export function HoverProfileView({
   user,
   group,
-  registrationChangedAt,
+  changedAt,
 }: {
   user: User;
   group: string;
-  registrationChangedAt: Date;
+  changedAt: string | null;
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const profileRef = useRef(null);
@@ -55,10 +54,12 @@ export function HoverProfileView({
                 {user.email}
               </Link>
             </p>
-            <p className="flex text-muted-foreground">
-              <LuClock className="my-auto mr-2" />
-              {shortDateNoYear(registrationChangedAt)}
-            </p>
+            {changedAt && (
+              <p className="flex text-muted-foreground">
+                <LuClock className="my-auto mr-2" />
+                {changedAt}
+              </p>
+            )}
           </div>
         </div>
       )}

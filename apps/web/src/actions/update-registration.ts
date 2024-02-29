@@ -10,6 +10,19 @@ import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
 import { isHost } from "@/lib/memberships";
+import { shortDateNoYear } from "@/utils/date";
+
+function registrationStatusToString(oldStatus: string, newStatus: string) {
+  const status =
+    oldStatus === "waiting" ? "venteliste" : oldStatus === "registered" ? "påmeldt" : "avmeldt";
+  if (oldStatus === "waiting" && newStatus === "registered") {
+    return `Flyttet fra venteliste ${shortDateNoYear(new Date())}`;
+  } else if (newStatus === "removed") {
+    return `Fjernet ${shortDateNoYear(new Date())}`;
+  } else {
+    return `Flyttet fra ${status} ${shortDateNoYear(new Date())}`;
+  }
+}
 
 const updateRegistrationPayloadSchema = z.object({
   status: z.enum(registrationStatusEnum.enumValues),
@@ -63,6 +76,10 @@ export async function updateRegistration(
     await db
       .update(registrations)
       .set({
+        registrationChangedAt: registrationStatusToString(
+          exisitingRegistration.status,
+          data.status,
+        ),
         status: data.status,
         unregisterReason: data.reason,
       })

@@ -11,6 +11,19 @@ import { emailClient } from "@echo-webkom/email/client";
 
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
+import { shortDateNoYear } from "@/utils/date";
+
+function registrationStatusToString(status: string) {
+  if (status === "waiting") {
+    return `Avmeldt fra venteliste ${shortDateNoYear(new Date())}`;
+  } else if (status === "registered") {
+    return `Avmeldt ${shortDateNoYear(new Date())}`;
+  } else if (status === "removed") {
+    return `Fjernet ${shortDateNoYear(new Date())}`;
+  } else {
+    return `Endret ${shortDateNoYear(new Date())}`;
+  }
+}
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -48,9 +61,9 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
       db
         .update(registrations)
         .set({
+          registrationChangedAt: registrationStatusToString(exisitingRegistration.status),
           status: "unregistered",
           unregisterReason: data.reason,
-          deregisteredAt: new Date(),
         })
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),

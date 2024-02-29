@@ -1,5 +1,5 @@
 {
-  "id": "063af900-0682-405a-b94d-0f9e6a270672",
+  "id": "5a364031-f03a-4668-b1a6-d4581b79e04d",
   "prevId": "5e84880d-f0bf-405b-9d5c-c336616800c0",
   "version": "5",
   "dialect": "pg",
@@ -550,9 +550,9 @@
           "notNull": true,
           "default": "now()"
         },
-        "deregistered_at": {
-          "name": "deregistered_at",
-          "type": "timestamp",
+        "registration_changed_at": {
+          "name": "registration_changed_at",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }

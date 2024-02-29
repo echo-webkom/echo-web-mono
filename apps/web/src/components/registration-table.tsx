@@ -226,7 +226,7 @@ const RegistrationRow = ({
         <HoverProfileView
           user={registration.user}
           group={group}
-          registrationChangedAt={registration.deregisteredAt ?? registration.createdAt}
+          changedAt={registration.registrationChangedAt}
         />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
