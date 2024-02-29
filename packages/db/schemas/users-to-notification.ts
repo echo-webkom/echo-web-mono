@@ -1,7 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
-import { notifications } from "./notifications";
 import { users } from "./users";
 
 export const userToNotification = pgTable(
@@ -11,8 +10,7 @@ export const userToNotification = pgTable(
       .notNull()
       .references(() => users.id),
     notificationId: text("notification_id")
-      .notNull()
-      .references(() => notifications.id, { onDelete: "cascade" }),
+      .notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
@@ -24,9 +22,5 @@ export const userToNotificationRelations = relations(userToNotification, ({ one,
   user: one(users, {
     fields: [userToNotification.userId],
     references: [users.id],
-  }),
-  notification: one(notifications, {
-    fields: [userToNotification.notificationId],
-    references: [notifications.id],
   }),
 }));
