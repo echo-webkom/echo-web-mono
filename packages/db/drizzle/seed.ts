@@ -196,6 +196,17 @@ async function seed() {
     .onConflictDoNothing();
 
   console.log("Inserted spot range for Test i prod med Webkom");
+
+  // Uncomment to add 100 fake students
+  // for (let i = 0; i < 100; i++) {
+  //   await createUser({
+  //     id: `student${i}`,
+  //     name: `Student ${i}`,
+  //     email: "a@b.com",
+  //     type: "student",
+  //     token: `student${i}`,
+  //   });
+  // }
 }
 
 async function createUser({
