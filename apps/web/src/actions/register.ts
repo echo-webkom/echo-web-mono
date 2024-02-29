@@ -17,6 +17,7 @@ import {
 
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { shortDateNoYear } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
@@ -215,7 +216,12 @@ export async function register(id: string, payload: z.infer<typeof registrationF
 
         const registration = await tx
           .update(registrations)
-          .set({ status: isWaitlisted ? "waiting" : "registered" })
+          .set({
+            registrationChangedAt: isWaitlisted
+              ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
+              : `Påmeldt ${shortDateNoYear(new Date())}`,
+            status: isWaitlisted ? "waiting" : "registered",
+          })
           .where(
             and(
               eq(registrations.happeningId, pendingReg.happeningId),

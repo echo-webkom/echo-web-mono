@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 
 import {
   type Group,
@@ -13,8 +12,8 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationButton } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
-import { mailTo } from "@/utils/prefixes";
 import { DownloadCsvButton } from "./download-csv-button";
+import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -84,7 +83,7 @@ export function RegistrationTable({
   };
 
   return (
-    <div className="w-full overflow-y-auto rounded-lg border shadow-md">
+    <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
         <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
           <div className="flex w-full flex-col gap-1">
@@ -161,14 +160,20 @@ export function RegistrationTable({
         <Table>
           <TableHeader>
             <TableRow>
-              {showIndex && <TableHead scope="col">#</TableHead>}
+              {showIndex && (
+                <TableHead scope="col" className="w-12">
+                  #
+                </TableHead>
+              )}
+              <TableHead scope="col" className="w-12">
+                Info
+              </TableHead>
               <TableHead scope="col">Navn</TableHead>
-              <TableHead scope="col">E-post</TableHead>
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
-              <TableHead scope="col">Årstrinn</TableHead>
-              <TableHead scope="col">Medlem av</TableHead>
-              <TableHead scope="col">Handling</TableHead>
+              <TableHead scope="col" className="sm:w-48">
+                Handling
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -204,31 +209,31 @@ const RegistrationRow = ({
   index: number;
   showIndex: boolean;
 }) => {
-  const email = registration.user.alternativeEmail ?? registration.user.email ?? "";
   const id = registration.happeningId;
-  const reason =
-    registration.unregisterReason && registration.unregisterReason.length > 200
-      ? registration.unregisterReason.substring(0, 200) + "..."
-      : registration.unregisterReason;
+  const reason = registration.unregisterReason
+    ? registration.unregisterReason.length > 200
+      ? " " + registration.unregisterReason.substring(0, 200) + "..."
+      : " " + registration.unregisterReason
+    : "";
+  const group = registration.user.memberships
+    .map((membership) => " " + membership.group?.name)
+    .join(",");
 
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
-      <TableCell scope="row">{registration.user.name}</TableCell>
-      <TableCell className="truncate">
-        <Link className="hover:underline" href={mailTo(email)}>
-          {email}
-        </Link>
+      <TableCell>
+        <HoverProfileView
+          user={registration.user}
+          group={group}
+          changedAt={registration.registrationChangedAt}
+        />
       </TableCell>
+      <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
         {registrationStatusToString[registration.status]}
       </TableCell>
       <TableCell>{reason}</TableCell>
-      <TableCell>{registration.user.year}</TableCell>
-      <TableCell>
-        {registration.user.memberships.map((membership) => membership.group?.name).join(", ")}
-        {registration.user.memberships.length === 0 && "Ingen"}
-      </TableCell>
       <TableCell>
         <EditRegistrationButton id={id} registration={registration} />
       </TableCell>
