@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ACTION=$1
 PATH_OR_TAG=$2
 
