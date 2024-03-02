@@ -7,6 +7,8 @@ import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list"
 import { useToast } from "@/hooks/use-toast";
 import { Text } from "./typography/text";
 import { cn } from "@/utils/cn";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 type itemProps = {
   id: string;
@@ -24,6 +26,7 @@ type hyggkomShoppingListProps = {
 
 export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppingListProps) {
   const { toast } = useToast();
+  const [showConfirmRemove, setShowConfirmRemove] = useState<string | null>(null);
 
   const handleLikeButtonClick = (item: string) => {
     handleLikeClick(item).catch((error) => {
@@ -34,8 +37,15 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
       });
     });
   };
+  const toggleConfirmRemove = (item: string) => {
+    if (showConfirmRemove === item) {
+      setShowConfirmRemove(null);
+    } else {
+      setShowConfirmRemove(item);
+    }
+  }
 
-  const handleRemoveButtonClick = (item: string) => {
+  const confirmDelete = (item: string) => {
     handleRemoveClick(item).catch((error) => {
       toast({
         title: "Noe gikk galt",
@@ -72,8 +82,10 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
       variant: "success",
     });
   };
+
+
   return (
-    <ul className="rounded-md border capitalize">
+    <ul className="rounded-s border capitalize">
       {items
         .sort((a, b) => b.likes - a.likes)
         .map((item, index) => {
@@ -96,6 +108,9 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
                 <div className="flex gap-4 items-center">
                   <Text>{item.likes}</Text>
                   <button onClick={(e) => {
+                  e.nativeEvent.preventDefault();
+                  e.nativeEvent.stopImmediatePropagation();
+                  e.stopPropagation();
                   handleLikeButtonClick(item.id)
                   }} className="p-3 rounded-md hover:bg-reaction dark:hover:bg-gray-600 h-min">
                     {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
@@ -105,9 +120,29 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
                 {isAdmin && (
                   <>
                     <div className="h-2/3 w-px bg-slate-300" />
-                    <button onClick={() => handleRemoveButtonClick(item.id)} className="p-3 rounded-md hover:bg-reaction dark:hover:bg-gray-600 h-min">
-                      <IoTrashBinOutline />
-                    </button>
+
+                    {showConfirmRemove !== item.id ? (
+                      <button onClick={() => toggleConfirmRemove(item.id)} className="p-3 rounded-md hover:bg-reaction dark:hover:bg-gray-600 h-min">
+                        <IoTrashBinOutline />
+                      </button>
+                        ) : (
+                      <div className="flex gap-2 transition-all flex-col md:flex-row">
+                        <Button
+                          variant="destructive"
+                          onClick={() => confirmDelete(item.id)}
+                        >
+                          Slett
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          className="hover:bg-reaction dark:hover:bg-gray-600"
+                          onClick={() => toggleConfirmRemove(item.id)}
+                        >
+                          Avbryt
+                        </Button>
+                      </div>
+                    )
+                    }
                   </>
                 )}
               </div>
