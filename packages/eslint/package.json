@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@next/eslint-plugin-next": "14.1.0",
-    "@types/eslint": "8.56.3",
+    "@types/eslint": "8.56.4",
     "@types/node": "18.19.19",
     "@typescript-eslint/eslint-plugin": "7.0.2",
     "@typescript-eslint/parser": "7.0.2",
