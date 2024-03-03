@@ -9,6 +9,7 @@ import { type Registration } from "@echo-webkom/db/schemas";
 import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
+import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
@@ -18,7 +19,6 @@ import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
-import MovieClubCard from "@/components/movie-club-card";
 
 export async function Content() {
   const user = await auth();
@@ -156,16 +156,14 @@ export async function Content() {
 
       {/*Filmklubb*/}
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-            <h2 className="text-center text-3xl font-medium">Mandags Visning</h2>
+        <div className="group mx-auto flex items-center">
+          <h2 className="text-center text-3xl font-medium">Mandagens Visning</h2>
+        </div>
+        <hr />
+        <MovieClubCard />
       </section>
-      
-      <MovieClubCard/>
-
-
     </Container>
   );
-    
-
 }
 
 const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
