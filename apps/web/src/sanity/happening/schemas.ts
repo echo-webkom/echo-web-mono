@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { companySchema } from "../company";
 import { locationSchema } from "../location";
 import { contactProfileSchema } from "../profile/schemas";
 import { studentGroupSchema } from "../student-group";
@@ -23,7 +22,6 @@ export const happeningSchema = z.object({
     .array()
     .nullable()
     .transform((groups) => groups ?? []),
-  company: companySchema.omit({ description: true }).nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   cost: z.number().nullable(),
