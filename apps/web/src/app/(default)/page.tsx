@@ -32,7 +32,7 @@ export default async function HomePage() {
               <br />
               <span className="text-4xl font-bold sm:text-5xl">
                 echo – Linjeforeningen for informatikk
-                </span>
+              </span>
             </h1>
             <p>
               Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
