@@ -5,6 +5,7 @@ import { contactProfileSchema } from "../profile/schemas";
 import { studentGroupSchema } from "../student-group";
 import { questionSchema } from "../utils/question";
 import { spotRangeSchema } from "../utils/spot-range";
+import { companySchema } from "../company";
 
 export const happeningTypeSchema = z.enum(["event", "bedpres", "external"]);
 
@@ -22,6 +23,7 @@ export const happeningSchema = z.object({
     .array()
     .nullable()
     .transform((groups) => groups ?? []),
+  company: companySchema.nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   cost: z.number().nullable(),
