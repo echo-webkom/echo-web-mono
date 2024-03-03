@@ -1,6 +1,6 @@
-import { sanityClient, sanityFetch } from "../client";
+import { sanityClient } from "../client";
 import { moviesQuery } from "./queries";
-import { Movies, moviesSchema } from "./schemas";
+import { Movies } from "./schemas";
 
 /**
  * Fetches a number of movies
@@ -10,11 +10,5 @@ import { Movies, moviesSchema } from "./schemas";
  */
 
 export async function fetchMovies() {
-  // return await sanityFetch({
-  // query: moviesQuery,
-  //tags: ["movies"],
-  //})
-  //.then((res) => moviesSchema.array().parse(res))
-  //.catch(() => []);
   return await sanityClient.fetch<Array<Movies>>(moviesQuery);
 }
