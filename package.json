@@ -6,7 +6,7 @@
   "packageManager": "pnpm@8.15.4",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=web",
     "web:dev": "turbo run dev --filter=web",
     "cms:dev": "turbo run dev --filter=cms",
     "db:dev": "turbo run dev --filter=db",
