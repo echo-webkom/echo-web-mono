@@ -48,7 +48,7 @@ export async function HappeningInfoBox({ slug }: HappeningInfoBoxProps) {
                 href={mailTo(oregano.email)}
                 className="text-blue-600 hover:underline"
               >
-                {oregano.profile.name} 
+                {oregano.profile.name}{" "}
               </a>
             )) ?? "Ikke angitt"}
           </div>
