@@ -1,11 +1,11 @@
 import { z } from "zod";
 
+import { companySchema } from "../company";
 import { locationSchema } from "../location";
 import { contactProfileSchema } from "../profile/schemas";
 import { studentGroupSchema } from "../student-group";
 import { questionSchema } from "../utils/question";
 import { spotRangeSchema } from "../utils/spot-range";
-import { companySchema } from "../company";
 
 export const happeningTypeSchema = z.enum(["event", "bedpres", "external"]);
 
