@@ -13,7 +13,7 @@
     --table-foreground: #010408;
     --table-background: #f1f2f3;
     --table-background-alt: #eaeaea;
-    --table-header-background: #E3EEFF;
+    --table-header-background: #e3eeff;
     --table-header-foreground: #16100b;
 
     --popover: #f9fafb;
@@ -131,5 +131,73 @@
 
   ::selection {
     background: var(--selected);
+  }
+
+  .rainbow {
+    animation: rainbow 5s linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes rainbow {
+    100%,
+    0% {
+      background-color: #ffadad;
+    }
+    10% {
+      background-color: #ffd6a5;
+    }
+    20% {
+      background-color: #fdffb6;
+    }
+    30% {
+      background-color: #caffbf;
+    }
+    40% {
+      background-color: #9bf6ff;
+    }
+    50% {
+      background-color: #a0c4ff;
+    }
+    60% {
+      background-color: #bdb2ff;
+    }
+    70% {
+      background-color: #ffc6ff;
+    }
+    80% {
+      background-color: #fffffc;
+    }
+  }
+
+  .animate-bounce-left {
+    animation: bounce-left 1s infinite;
+  }
+
+  @keyframes bounce-left {
+    0%,
+    100% {
+      transform: translateX(25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .animate-bounce-right {
+    animation: bounce-right 1s infinite;
+  }
+
+  @keyframes bounce-right {
+    0%,
+    100% {
+      transform: translateX(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
   }
 }
