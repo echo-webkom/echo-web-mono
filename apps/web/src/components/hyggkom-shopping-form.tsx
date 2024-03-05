@@ -60,10 +60,7 @@ export function HyggkomShoppingForm() {
             )}
           />
           <div>
-            <small>
-              Forslagene er ikke anonyme.
-            </small>
-
+            <small>Forslagene er ikke anonyme.</small>
           </div>
           <Button type="submit">Legg til</Button>
         </div>
