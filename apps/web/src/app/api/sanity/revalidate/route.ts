@@ -31,6 +31,11 @@ export const POST = withBasicAuth(async (req) => {
       slug: string | null;
     };
 
+    if (type === "settings") {
+      console.log("Revalidating settings");
+      revalidateTags(["settings"]);
+    }
+
     if (type === "staticInfo") {
       console.log("Revalidating static-info");
       revalidateTags(["static-info"]);
