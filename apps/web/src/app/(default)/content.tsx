@@ -151,9 +151,7 @@ export async function Content() {
         </Link>
 
         <hr />
-        <Link href="/for-studenter/handleliste">
-          <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
-        </Link>
+        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
       </section>
     </Container>
   );

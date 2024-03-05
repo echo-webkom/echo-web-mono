@@ -45,7 +45,7 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
     }
   };
 
-  const confirmDelete = (item: string) => {
+  const confirmRemove = (item: string) => {
     handleRemoveClick(item).catch((error) => {
       toast({
         title: "Noe gikk galt",
@@ -105,10 +105,7 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
                 <div className="flex items-center gap-4">
                   <Text>{item.likes}</Text>
                   <button
-                    onClick={(e) => {
-                      e.nativeEvent.preventDefault();
-                      e.nativeEvent.stopImmediatePropagation();
-                      e.stopPropagation();
+                    onClick={() => {
                       handleLikeButtonClick(item.id);
                     }}
                     className="h-min rounded-md p-3 hover:bg-reaction dark:hover:bg-gray-600"
@@ -129,7 +126,7 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
                       </button>
                     ) : (
                       <div className="flex flex-col gap-2 py-2 md:flex-row">
-                        <Button variant="destructive" onClick={() => confirmDelete(item.id)}>
+                        <Button variant="destructive" onClick={() => confirmRemove(item.id)}>
                           Slett
                         </Button>
                         <Button
