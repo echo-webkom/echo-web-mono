@@ -11,6 +11,17 @@ export default async function HomePage() {
 
   return (
     <>
+      <a
+        className="mx-auto w-full max-w-7xl text-white hover:underline"
+        href="https://forms.gle/sAw58gwzG36MVrGK8 "
+      >
+        <div className="px-4">
+          <div className="rounded-lg bg-[#a43ab8] p-6 shadow-lg">
+            <p className="text-center text-lg font-medium sm:text-3xl">Søk hovedstyret nå!</p>
+          </div>
+        </div>
+      </a>
+
       <Container className="relative pb-40" layout="full">
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
