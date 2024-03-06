@@ -1,10 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import { isPast } from "date-fns/isPast";
 
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDate } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
-import Link from "next/link";
 
 export default async function MovieClubCard() {
   const movies = await fetchNewestMovie(1);
@@ -29,12 +29,12 @@ export default async function MovieClubCard() {
       <div className="relative h-96 w-64">
         <div>
           <Link href={thisWeekMovie.link}>
-          <Image
-            className="rounded-md border"
-            fill
-            src={urlFor(thisWeekMovie?.image).url()}
-            alt={`${thisWeekMovie.title} logo`}
-          />
+            <Image
+              className="rounded-md border"
+              fill
+              src={urlFor(thisWeekMovie?.image).url()}
+              alt={`${thisWeekMovie.title} logo`}
+            />
           </Link>
           <div className="absolute inset-0 flex flex-col-reverse rounded-md border p-2">
             <div className="rounded-md bg-background p-2 opacity-90">
