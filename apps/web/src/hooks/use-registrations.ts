@@ -22,6 +22,10 @@ export function useRegistrations(
       setWaitlistCount(message.waitlistCount);
     };
 
+    ws.onerror = (event) => {
+      console.error("WebSocket error:", event);
+    };
+
     return () => {
       ws.close();
     };
