@@ -23,6 +23,7 @@ import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";
+import { RegistrationCount } from "./registration-count";
 
 type EventSidebarProps = {
   event: Happening;
@@ -194,7 +195,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         <SidebarItem>
           <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
           <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            <RegistrationCount
+              happeningId={event._id}
+              maxCapacity={maxCapacity}
+              initialRegistaredCount={registeredCount}
+              initialWaitlistCount={waitlistCount}
+            />
           </SidebarItemContent>
         </SidebarItem>
       )}
