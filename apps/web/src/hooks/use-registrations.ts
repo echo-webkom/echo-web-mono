@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import useWebSocket from "react-use-websocket";
 
 const BASE_WS_URL = `${process.env.NODE_ENV === "production" ? "wss" : "ws"}://${process.env.NEXT_PUBLIC_BOOMTOWN_HOSTNAME}`;
 
@@ -10,38 +11,18 @@ export function useRegistrations(
   const [registeredCount, setRegisteredCount] = useState(initialRegistrationCount);
   const [waitlistCount, setWaitlistCount] = useState(initialWaitlistCount);
 
-  const ws = useMemo(() => new WebSocket(`${BASE_WS_URL}/ws/${happeningId}`), [happeningId]);
+  const socketUrl = useMemo(() => `${BASE_WS_URL}/ws/${happeningId}`, [happeningId]);
+  const { lastJsonMessage } = useWebSocket<{
+    registerCount: number;
+    waitlistCount: number;
+  }>(socketUrl);
 
   useEffect(() => {
-    ws.onopen = () => {
-      // eslint-disable-next-line no-console
-      console.log("WebSocket connected");
-    };
-
-    ws.onclose = () => {
-      // eslint-disable-next-line no-console
-      console.log("WebSocket disconnected");
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [ws]);
-
-  ws.onmessage = (event) => {
-    const message = JSON.parse(event.data as string) as {
-      registerCount: number;
-      waitlistCount: number;
-    };
-    // eslint-disable-next-line no-console
-    console.log(message);
-    setRegisteredCount(message.registerCount);
-    setWaitlistCount(message.waitlistCount);
-  };
-
-  ws.onerror = (event) => {
-    console.error("WebSocket error:", event);
-  };
+    if (lastJsonMessage !== null) {
+      setRegisteredCount(lastJsonMessage.registerCount);
+      setWaitlistCount(lastJsonMessage.waitlistCount);
+    }
+  }, [lastJsonMessage]);
 
   if (!BASE_WS_URL) {
     return {
