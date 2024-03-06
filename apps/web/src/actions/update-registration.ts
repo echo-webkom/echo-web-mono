@@ -9,7 +9,21 @@ import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
 import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
+import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isHost } from "@/lib/memberships";
+import { shortDateNoYear } from "@/utils/date";
+
+function registrationStatusToString(oldStatus: string, newStatus: string) {
+  const status =
+    oldStatus === "waiting" ? "venteliste" : oldStatus === "registered" ? "påmeldt" : "avmeldt";
+  if (oldStatus === "waiting" && newStatus === "registered") {
+    return `Flyttet fra venteliste ${shortDateNoYear(new Date())}`;
+  } else if (newStatus === "removed") {
+    return `Fjernet ${shortDateNoYear(new Date())}`;
+  } else {
+    return `Flyttet fra ${status} ${shortDateNoYear(new Date())}`;
+  }
+}
 
 const updateRegistrationPayloadSchema = z.object({
   status: z.enum(registrationStatusEnum.enumValues),
@@ -17,7 +31,7 @@ const updateRegistrationPayloadSchema = z.object({
 });
 
 export async function updateRegistration(
-  id: string,
+  happeningId: string,
   registrationUserId: string,
   payload: z.infer<typeof updateRegistrationPayloadSchema>,
 ) {
@@ -33,7 +47,7 @@ export async function updateRegistration(
 
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
-        and(eq(registration.happeningId, id), eq(registration.userId, registrationUserId)),
+        and(eq(registration.happeningId, happeningId), eq(registration.userId, registrationUserId)),
       with: {
         happening: {
           with: {
@@ -63,10 +77,19 @@ export async function updateRegistration(
     await db
       .update(registrations)
       .set({
+        registrationChangedAt: registrationStatusToString(
+          exisitingRegistration.status,
+          data.status,
+        ),
         status: data.status,
         unregisterReason: data.reason,
       })
-      .where(and(eq(registrations.userId, registrationUserId), eq(registrations.happeningId, id)));
+      .where(
+        and(
+          eq(registrations.userId, registrationUserId),
+          eq(registrations.happeningId, happeningId),
+        ),
+      );
 
     if (data.status === "registered") {
       const sendTo =
@@ -81,6 +104,8 @@ export async function updateRegistration(
         }),
       );
     }
+
+    revalidateRegistrations(happeningId, user.id);
 
     return {
       success: true,

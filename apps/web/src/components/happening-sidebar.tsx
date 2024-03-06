@@ -312,7 +312,14 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        */}
       {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
         <SidebarItem>
+
           <DeregisterButton id={event._id} isWaiting={isWaiting}/>
+            Meld av
+            {registrations.find((registration) => registration.user.id === user?.id)?.status ===
+            "waiting"
+              ? " venteliste"
+              : ""}
+          </DeregisterButton>
         </SidebarItem>
       )}
 

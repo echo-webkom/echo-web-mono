@@ -17,6 +17,7 @@ import {
 
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { shortDateNoYear } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
@@ -169,28 +170,10 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    const pendingReg = await db
-      .insert(registrations)
-      .values({
-        happeningId: id,
-        userId: user.id,
-        status: "pending",
-      })
-      .onConflictDoUpdate({
-        target: [registrations.happeningId, registrations.userId],
-        set: {
-          status: sql`excluded.status`,
-        },
-      })
-      .returning()
-      .then((res) => res[0] ?? null);
-
-    if (!pendingReg) {
-      throw new Error("Could not create registration");
-    }
-
     const { registration, isWaitlisted } = await db.transaction(
       async (tx) => {
+        await tx.execute(sql`LOCK TABLE ${registrations} IN EXCLUSIVE MODE`);
+
         const regs = await tx
           .select()
           .from(registrations)
@@ -199,30 +182,33 @@ export async function register(id: string, payload: z.infer<typeof registrationF
               eq(registrations.happeningId, id),
               lte(users.year, userSpotRange.maxYear),
               gte(users.year, userSpotRange.minYear),
-              or(
-                eq(registrations.status, "registered"),
-                eq(registrations.status, "waiting"),
-                eq(registrations.status, "pending"),
-              ),
+              or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
             ),
           )
-          .leftJoin(users, eq(registrations.userId, users.id))
-          .for("update");
+          .leftJoin(users, eq(registrations.userId, users.id));
 
-        const pendings = regs.filter((reg) => reg.registration.status === "pending");
-
-        const isWaitlisted = regs.length - pendings.length >= userSpotRange.spots;
+        const isWaitlisted = regs.length >= userSpotRange.spots;
 
         const registration = await tx
-          .update(registrations)
-          .set({ status: isWaitlisted ? "waiting" : "registered" })
-          .where(
-            and(
-              eq(registrations.happeningId, pendingReg.happeningId),
-              eq(registrations.userId, pendingReg.userId),
-            ),
-          )
+          .insert(registrations)
+          .values({
+            registrationChangedAt: isWaitlisted
+              ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
+              : `Påmeldt ${shortDateNoYear(new Date())}`,
+            status: isWaitlisted ? "waiting" : "registered",
+            happeningId: id,
+            userId: user.id,
+          })
           .returning()
+          .onConflictDoUpdate({
+            target: [registrations.happeningId, registrations.userId],
+            set: {
+              registrationChangedAt: isWaitlisted
+                ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
+                : `Påmeldt ${shortDateNoYear(new Date())}`,
+              status: isWaitlisted ? "waiting" : "registered",
+            },
+          })
           .then((res) => res[0] ?? null);
 
         return {
@@ -234,9 +220,6 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         isolationLevel: "read committed",
       },
     );
-
-    // eslint-disable-next-line no-console
-    console.log(`Status after transaction: ${registration?.status ?? "error"}`);
 
     revalidateRegistrations(id, user.id);
 
