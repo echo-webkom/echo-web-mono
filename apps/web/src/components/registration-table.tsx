@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { RxChevronDown } from "react-icons/rx";
 
 import {
   selectUserSchema,
@@ -174,7 +175,7 @@ export function RegistrationTable({
         <div className="flex flex-row justify-between px-4 py-2">
           <div className="mb:flex-row mb:w-auto mt-auto flex w-full flex-col items-center space-x-2">
             <RandomPersonButton registrations={registrations} />
-            <DropdownMenu modal>
+            {/* <DropdownMenu modal>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="ml-auto flex gap-2">
                   Columns
@@ -202,8 +203,14 @@ export function RegistrationTable({
                   );
                 })}
               </DropdownMenuContent>
-            </DropdownMenu>
-            <DownloadCsvButton id={happeningId} />
+            </DropdownMenu> */}
+            <DownloadCsvButton
+              id={happeningId}
+              columns={columns}
+              removeKey={removeKey}
+              addKey={addKey}
+              selectedHeaders={selectedHeaders}
+            />
           </div>
         </div>
 

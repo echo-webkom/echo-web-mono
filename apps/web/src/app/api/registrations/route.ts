@@ -20,6 +20,9 @@ export async function GET(req: NextRequest) {
     return new Response("Missing happeningId", { status: 400 });
   }
 
+  const encodedHeaders = req.nextUrl.searchParams.get("selectedHeaders") ?? "";
+  const selectedHeaders = decodeURIComponent(encodedHeaders).split(",");
+
   const happening = await getHappeningCsvData(happeningId);
 
   if (!happening) {
@@ -30,7 +33,7 @@ export async function GET(req: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  return new Response(toCsv(happening), {
+  return new Response(toCsv(happening, selectedHeaders), {
     status: 200,
     headers: {
       "Content-Disposition": `attachment; filename=${slugify(happening.title)}-registrations.csv`,

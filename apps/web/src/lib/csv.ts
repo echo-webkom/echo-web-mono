@@ -8,15 +8,16 @@ const parser = new Parser({
   withBOM: true,
 });
 
-export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
-): string => {
+export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>, selectedHeaders: Array<string>): string => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
       question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
       answer: a.answer?.answer,
     }));
+
+    // bruk selected headers til å filtrere csv objectet
+    console.log(selectedHeaders)
 
     const obj: Record<string, string> = {};
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
@@ -34,7 +35,6 @@ export const toCsv = (
 
       obj[question.title] = formattedAnswer;
     }
-
     return obj;
   });
 
