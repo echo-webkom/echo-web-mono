@@ -155,7 +155,6 @@ export async function Content() {
       </section>
 
       {/*Filmklubb*/}
-      
       <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
         <div className="group mx-auto flex items-center">
           <h2 className="text-center text-3xl font-medium">Mandagens Visning</h2>
