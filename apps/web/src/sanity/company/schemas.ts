@@ -7,5 +7,4 @@ export const companySchema = z.object({
   name: z.string(),
   website: z.string(),
   image: imageSchema,
-  description: z.string(),
 });

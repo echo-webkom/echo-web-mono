@@ -10,8 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "eslint": "8.56.0",
-    "@types/node": "18.19.18",
+    "eslint": "8.57.0",
+    "@types/node": "18.19.21",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.3.3"
   },

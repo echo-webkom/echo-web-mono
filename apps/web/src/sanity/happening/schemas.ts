@@ -23,7 +23,7 @@ export const happeningSchema = z.object({
     .array()
     .nullable()
     .transform((groups) => groups ?? []),
-  company: companySchema.omit({ description: true }).nullable(),
+  company: companySchema.nullable(),
   contacts: contactProfileSchema.array().nullable(),
   date: z.string().nullable(),
   cost: z.number().nullable(),

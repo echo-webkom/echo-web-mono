@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 EMAIL=$1
 
 source .env

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -24,9 +24,10 @@ import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/der
 
 type DeregisterButtonProps = {
   id: string;
+  children: React.ReactNode;
 };
 
-export function DeregisterButton({ id }: DeregisterButtonProps) {
+export function DeregisterButton({ id, children }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -69,7 +70,7 @@ export function DeregisterButton({ id }: DeregisterButtonProps) {
               <span className="ml-2">Melder av...</span>
             </>
           ) : (
-            <span>Meld av</span>
+            <>{children}</>
           )}
         </Button>
       </DialogTrigger>

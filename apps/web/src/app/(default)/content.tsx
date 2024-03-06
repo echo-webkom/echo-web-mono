@@ -145,7 +145,8 @@ export async function Content() {
           href="/for-studenter/handleliste"
           className="group mx-auto flex items-center underline-offset-4 hover:underline"
         >
-          <h2 className="text-center text-3xl font-medium">Hyggkom Handleliste</h2>
+          <h2 className="text-center text-2xl font-medium md:text-3xl">Hyggkom Handleliste</h2>
+
           <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
 

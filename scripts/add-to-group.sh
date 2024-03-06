@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 USER_ID=$1
 GROUP_ID=$2
 
