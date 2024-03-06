@@ -34,7 +34,7 @@ const POST_DESCRIPTION_LENGTH = 70;
 
 function formatPostToXML(post: Awaited<ReturnType<typeof fetchAllPosts>>[number]) {
   const title = post.title;
-  const link = `https://echo.uib.no/innlegg/${post.slug}`;
+  const link = `https://echo.uib.no/for-studenter/innlegg/${post.slug}`;
   const creator = post.authors ? post.authors?.map((author) => author.name).join(", ") : "echo";
   const pubDate = new Date(post._createdAt).toUTCString();
   const description =
