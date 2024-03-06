@@ -13,23 +13,35 @@ export function useRegistrations(
   const ws = useMemo(() => new WebSocket(`${BASE_WS_URL}/ws/${happeningId}`), [happeningId]);
 
   useEffect(() => {
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data as string) as {
-        registerCount: number;
-        waitlistCount: number;
-      };
-      setRegisteredCount(message.registerCount);
-      setWaitlistCount(message.waitlistCount);
+    ws.onopen = () => {
+      // eslint-disable-next-line no-console
+      console.log("WebSocket connected");
     };
 
-    ws.onerror = (event) => {
-      console.error("WebSocket error:", event);
+    ws.onclose = () => {
+      // eslint-disable-next-line no-console
+      console.log("WebSocket disconnected");
     };
 
     return () => {
       ws.close();
     };
   }, [ws]);
+
+  ws.onmessage = (event) => {
+    const message = JSON.parse(event.data as string) as {
+      registerCount: number;
+      waitlistCount: number;
+    };
+    // eslint-disable-next-line no-console
+    console.log(message);
+    setRegisteredCount(message.registerCount);
+    setWaitlistCount(message.waitlistCount);
+  };
+
+  ws.onerror = (event) => {
+    console.error("WebSocket error:", event);
+  };
 
   if (!BASE_WS_URL) {
     return {
