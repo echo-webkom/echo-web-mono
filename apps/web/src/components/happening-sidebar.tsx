@@ -44,10 +44,12 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
   const registrations = await getRegistrationsByHappeningId(event._id);
 
   const isRegistered = registrations.some(
-    (registration) =>
-      registration.user.id === user?.id &&
-      (registration.status === "registered" || registration.status === "waiting"),
-  );
+    (registration) => registration.user.id === user?.id && registration.status === "registered" || registration.status === "waiting",
+  )
+
+  const isWaiting = registrations.some(
+    (registration) => registration.user.id === user?.id && registration.status === "waiting",
+  )
 
   const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
   const registeredCount = registrations.filter(
@@ -310,7 +312,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        */}
       {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
         <SidebarItem>
-          <DeregisterButton id={event._id} />
+          <DeregisterButton id={event._id} isWaiting={isWaiting}/>
         </SidebarItem>
       )}
 

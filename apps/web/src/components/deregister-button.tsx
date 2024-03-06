@@ -24,9 +24,10 @@ import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/der
 
 type DeregisterButtonProps = {
   id: string;
+  isWaiting: boolean;
 };
 
-export function DeregisterButton({ id }: DeregisterButtonProps) {
+export function DeregisterButton({ id, isWaiting }: DeregisterButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -69,7 +70,7 @@ export function DeregisterButton({ id }: DeregisterButtonProps) {
               <span className="ml-2">Melder av...</span>
             </>
           ) : (
-            <span>Meld av</span>
+            <span>{isWaiting ? "Forlat venteliste" : "Meld deg av"}</span>
           )}
         </Button>
       </DialogTrigger>
