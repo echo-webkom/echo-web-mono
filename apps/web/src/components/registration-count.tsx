@@ -32,7 +32,8 @@ export function RegistrationCount({
         <div className="h-4 w-full overflow-hidden rounded-md border">
           <div
             style={{
-              width: `${(registeredCount / (maxCapacity || 1)) * 100}%`,
+              width: `${precent}%`,
+              transition: "width 0.5s",
             }}
             className={cn("h-full", {
               "bg-red-500": precent >= 100,
