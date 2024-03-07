@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import { Heading } from "@/components/typography/heading";
@@ -54,7 +54,16 @@ export default function StrikesTable({
               onCheckedChange={() => setShowBanned(!showBanned)}
             />
           </div>
-          <StrikesTableInput search={search} setSearch={setSearch} />
+          <Input
+            value={search}
+            maxLength={50}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            type="text"
+            placeholder="Søk etter navn..."
+            className="max-w-60 bg-transparent"
+          />
         </div>
       </div>
       <Table>
@@ -82,26 +91,5 @@ export default function StrikesTable({
         </TableBody>
       </Table>
     </>
-  );
-}
-
-function StrikesTableInput({
-  search,
-  setSearch,
-}: {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-}) {
-  return (
-    <Input
-      value={search}
-      maxLength={50}
-      onChange={(e) => {
-        setSearch(e.target.value);
-      }}
-      type="text"
-      placeholder="Søk etter navn..."
-      className="max-w-60 bg-transparent"
-    />
   );
 }
