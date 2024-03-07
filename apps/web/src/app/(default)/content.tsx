@@ -16,6 +16,7 @@ import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
+import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
@@ -165,9 +166,13 @@ const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; m
   const registeredCount = registrations.filter(
     (registration) => registration.status === "registered",
   ).length;
+  const waitingListCount = registrations.filter(
+    (registration) => registration.status === "waiting",
+  ).length;
   return {
     maxCapacity,
     registeredCount,
+    waitingListCount,
   };
 };
 
@@ -183,7 +188,10 @@ async function HappeningPreview({
   const registrations = await getRegistrationsByHappeningId(happening._id);
   const spotRange = await getSpotRangeByHappeningId(happening._id);
 
-  const { maxCapacity, registeredCount } = getSpotRangeInfo(spotRange ?? [], registrations);
+  const { maxCapacity, registeredCount, waitingListCount } = getSpotRangeInfo(
+    spotRange ?? [],
+    registrations,
+  );
   return (
     <Link href={href}>
       <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
@@ -225,7 +233,13 @@ async function HappeningPreview({
             <li>
               <span className="tracking-wider">
                 {happening.registrationStart && (
-                  <p>{`${registeredCount}/${maxCapacity || ("Uendelig" && "∞")}`}</p>
+                  <p>
+                    {cn(
+                      registeredCount + waitingListCount >= maxCapacity
+                        ? "Fullt"
+                        : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
+                    )}
+                  </p>
                 )}
               </span>
             </li>
