@@ -15,6 +15,7 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
+import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { shortDateNoYear } from "@/utils/date";
@@ -252,6 +253,10 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       userId: user.id,
       happeningId: happening.id,
     });
+
+    void (async () => {
+      await pingBoomtown(id);
+    })();
 
     return {
       success: true,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { auth } from "@echo-webkom/auth";
 
@@ -11,18 +12,18 @@ export default async function HomePage() {
 
   return (
     <>
-      <Link className="text-black hover:underline" href="/arrangement/generalforsamling">
+      <a
+        className="mx-auto w-full max-w-7xl text-black hover:underline"
+        href="https://forms.gle/sAw58gwzG36MVrGK8 "
+      >
         <div className="px-4">
-          <div
-            className="mx-auto w-full max-w-7xl rounded-lg p-6 shadow-lg"
-            style={{
-              background: "radial-gradient(50% 50% at 50% 50%, #FFC0CB 0%, #FFC0CB 100%)",
-            }}
-          >
-            <p className="text-center text-lg sm:text-3xl">Meld deg på generalforsamlingen nå!</p>
+          <div className="rainbow flex items-center justify-between rounded-lg p-6 shadow-lg">
+            <FaArrowRight className="animate-bounce-right h-6 w-6" />
+            <p className="text-center text-lg font-medium sm:text-3xl">Søk hovedstyret nå!</p>
+            <FaArrowLeft className="animate-bounce-right h-6 w-6" />
           </div>
         </div>
-      </Link>
+      </a>
 
       <Container className="relative pb-40" layout="full">
         <div className="mx-auto w-full max-w-screen-xl py-10">
