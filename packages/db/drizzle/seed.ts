@@ -167,6 +167,12 @@ async function seed() {
     isLeader: true,
   });
 
+  await db.insert(usersToGroups).values({
+    userId: "admin",
+    groupId: "bedkom",
+    isLeader: true,
+  });
+
   await db
     .insert(happenings)
     .values({
@@ -183,6 +189,23 @@ async function seed() {
   console.log(
     "Inserted happening Test i prod med Webkom with id 5cbb5337-a6e6-4eff-a821-a73722594f47",
   );
+
+  const currentTime = new Date();
+
+  await db
+    .insert(happenings)
+    .values({
+      id: "f707bdb8-817d-40ae-a3f0-745bc344c14e",
+      slug: "tidligere-bedpres",
+      title: "Tidligere bedpres!",
+      date: new Date(currentTime.getTime() - 24 * 60 * 60 * 1000), // 24h ago
+      registrationEnd: new Date(currentTime.getTime() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      registrationStart: new Date(currentTime.getTime() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
+      type: "bedpres",
+    })
+    .onConflictDoNothing();
+
+  console.log("Inserted bedpres Tidligere bedpres! with id f707bdb8-817d-40ae-a3f0-745bc344c14e");
 
   await db
     .insert(spotRanges)
