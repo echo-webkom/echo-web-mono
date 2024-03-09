@@ -12,11 +12,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import WhitelistButton from "@/components/whitelist-button";
+import { createWebkomPage } from "@/lib/factories/page";
 import { shortDateNoTime } from "@/utils/date";
 
 export const dynamic = "force-dynamic";
 
-export default async function WhitelistPage() {
+export default createWebkomPage(async () => {
   const whitelisted = await db.query.whitelist.findMany();
 
   return (
@@ -62,4 +63,4 @@ export default async function WhitelistPage() {
       </Table>
     </Container>
   );
-}
+});

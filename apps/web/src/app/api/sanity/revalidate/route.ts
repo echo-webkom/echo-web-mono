@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { revalidateTag } from "next/cache";
 
-import { withBasicAuth } from "@/lib/checks/with-basic-auth";
+import { withBasicAuth } from "@/lib/factories/with-basic-auth";
 
 const revalidateTags = (tags: Array<string>) => {
   for (const tag of tags) {

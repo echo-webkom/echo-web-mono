@@ -13,7 +13,7 @@ import {
 } from "@echo-webkom/db/schemas";
 
 import { revalidateSpotRange } from "@/data/spotrange/revalidate";
-import { withBasicAuth } from "@/lib/checks/with-basic-auth";
+import { createBasicAuthRoute } from "@/lib/factories/route";
 import { isBoard } from "@/lib/is-board";
 import { toDateOrNull } from "@/utils/date";
 import { makeListUnique } from "@/utils/list";
@@ -60,18 +60,240 @@ export const dynamic = "force-dynamic";
  * }
  * ```
  */
-export const POST = withBasicAuth(async (req) => {
-  const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
-    operation: "create" | "update" | "delete";
-    documentId: string;
-    pastSlug: string | null;
-    data: SanityHappening | null; // Is null on delete
-  };
+export const POST = createBasicAuthRoute({
+  adminKey: process.env.ADMIN_KEY ?? "",
+  handler: async (req) => {
+    const { operation, documentId, pastSlug, data } = (await req.json()) as unknown as {
+      operation: "create" | "update" | "delete";
+      documentId: string;
+      pastSlug: string | null;
+      data: SanityHappening | null; // Is null on delete
+    };
 
-  // eslint-disable-next-line no-console
-  console.log(operation, documentId, JSON.stringify(data));
+    // eslint-disable-next-line no-console
+    console.log(operation, documentId, JSON.stringify(data));
 
-  if (!["create", "update", "delete"].includes(operation)) {
+    if (!["create", "update", "delete"].includes(operation)) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: `Unknown action ${operation}`,
+        },
+        { status: 400 },
+      );
+    }
+
+    // Revalidate happening data from Sanity
+    revalidateTag("happening-params");
+    revalidateTag("home-happenings");
+    revalidateTag(`happening-${data?.slug ?? pastSlug}`);
+    revalidateTag("happenings");
+
+    /**
+     * If the happening is external, we don't want to do anything. Since
+     * we are not responsible for the registrations of external happenings.
+     */
+    if (data?.happeningType === "external") {
+      return NextResponse.json(
+        {
+          message: `Happening with id ${data._id} is external. Nothing done.`,
+        },
+        { status: 200 },
+      );
+    }
+
+    if (operation === "delete") {
+      /**
+       * Delete the happening. Tables with foreign keys will be deleted automatically.
+       */
+      await db.delete(happenings).where(eq(happenings.id, documentId));
+
+      return NextResponse.json(
+        {
+          status: "success",
+          message: `Deleted happening with id ${documentId}`,
+        },
+        { status: 200 },
+      );
+    }
+
+    /**
+     * If no data is provided and the operation is not delete, we can't do anything.
+     * Most likely a sanity bug.
+     */
+    if (!data) {
+      console.error("Can't update or insert happening without data");
+      console.error({
+        operation,
+        documentId,
+        data,
+      });
+      return NextResponse.json(
+        {
+          status: "error",
+          message: `No data provided`,
+        },
+        { status: 400 },
+      );
+    }
+
+    if (operation === "create") {
+      const happening = mapHappening(data);
+
+      await db.insert(happenings).values(happening);
+
+      const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
+
+      if (happeningToGroupsToInsert.length > 0) {
+        await db.insert(happeningsToGroups).values(
+          happeningToGroupsToInsert.map((groupId) => ({
+            happeningId: happening.id,
+            groupId,
+          })),
+        );
+      }
+
+      const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
+        happeningId: happening.id,
+        spots: sr.spots,
+        minYear: sr.minYear,
+        maxYear: sr.maxYear,
+      }));
+
+      if (spotRangesToInsert.length > 0) {
+        await db.insert(spotRanges).values(spotRangesToInsert);
+      }
+
+      revalidateSpotRange(happening.id);
+
+      const questionsToInsert = (data.questions ?? []).map((q) => ({
+        id: q.id,
+        happeningId: happening.id,
+        title: q.title,
+        required: q.required,
+        type: q.type,
+        options: q.options?.map((o) => ({
+          id: o,
+          value: o,
+        })),
+      })) satisfies Array<QuestionInsert>;
+
+      if (questionsToInsert.length > 0) {
+        await db.insert(questions).values(questionsToInsert);
+      }
+
+      return NextResponse.json(
+        {
+          status: "success",
+          message: `Happening with id ${data._id} inserted`,
+        },
+        { status: 200 },
+      );
+    }
+
+    if (operation === "update") {
+      const happening = mapHappening(data);
+
+      await db.update(happenings).set(happening).where(eq(happenings.id, happening.id));
+
+      await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
+
+      const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
+
+      if (happeningToGroupsToInsert.length > 0) {
+        await db.insert(happeningsToGroups).values(
+          happeningToGroupsToInsert.map((groupId) => ({
+            happeningId: happening.id,
+            groupId,
+          })),
+        );
+      }
+
+      await db.delete(spotRanges).where(eq(spotRanges.happeningId, happening.id));
+
+      const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
+        happeningId: happening.id,
+        spots: sr.spots,
+        minYear: sr.minYear,
+        maxYear: sr.maxYear,
+      }));
+
+      if (spotRangesToInsert.length > 0) {
+        await db.insert(spotRanges).values(spotRangesToInsert);
+      }
+
+      revalidateSpotRange(happening.id);
+
+      const oldQuestions = await db.query.questions.findMany({
+        where: eq(questions.happeningId, happening.id),
+      });
+
+      const incomingQuestions = (data.questions ?? []).map((q) => ({
+        id: q.id,
+        happeningId: happening.id,
+        title: q.title,
+        required: q.required,
+        type: q.type,
+        options: q.options?.map((o) => ({
+          id: o,
+          value: o,
+        })),
+      })) satisfies Array<QuestionInsert>;
+
+      /**
+       * Questions to delete are questions that are in the database, but not in the incoming data
+       */
+      const questionsToDelete = oldQuestions.filter(
+        (oldQuestion) => !incomingQuestions.map((q) => q.id).includes(oldQuestion.id),
+      );
+
+      /**
+       * Questions to update are questions that are in the database, and also in the incoming data
+       */
+      const questionsToUpdate = incomingQuestions.filter((newQuestion) =>
+        oldQuestions.map((q) => q.id).includes(newQuestion.id),
+      );
+
+      /**
+       * Questions to insert are questions that are not in the database, but are in the incoming data
+       */
+      const questionsToInsert = incomingQuestions.filter(
+        (newQuestion) => !questionsToUpdate.map((q) => q.id).includes(newQuestion.id),
+      );
+
+      if (questionsToDelete.length > 0) {
+        await db.delete(questions).where(
+          and(
+            eq(questions.happeningId, happening.id),
+            inArray(
+              questions.id,
+              questionsToDelete.map((q) => q.id),
+            ),
+          ),
+        );
+      }
+
+      if (questionsToInsert.length > 0) {
+        await db.insert(questions).values(questionsToInsert);
+      }
+
+      if (questionsToUpdate.length > 0) {
+        await Promise.all(
+          questionsToUpdate.map((question) =>
+            db.update(questions).set(question).where(eq(questions.id, question.id)),
+          ),
+        );
+      }
+
+      return NextResponse.json(
+        {
+          status: "success",
+          message: `Happening with id ${data._id} updated`,
+        },
+        { status: 200 },
+      );
+    }
+
     return NextResponse.json(
       {
         status: "error",
@@ -79,226 +301,7 @@ export const POST = withBasicAuth(async (req) => {
       },
       { status: 400 },
     );
-  }
-
-  // Revalidate happening data from Sanity
-  revalidateTag("happening-params");
-  revalidateTag("home-happenings");
-  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
-  revalidateTag("happenings");
-
-  /**
-   * If the happening is external, we don't want to do anything. Since
-   * we are not responsible for the registrations of external happenings.
-   */
-  if (data?.happeningType === "external") {
-    return NextResponse.json(
-      {
-        message: `Happening with id ${data._id} is external. Nothing done.`,
-      },
-      { status: 200 },
-    );
-  }
-
-  if (operation === "delete") {
-    /**
-     * Delete the happening. Tables with foreign keys will be deleted automatically.
-     */
-    await db.delete(happenings).where(eq(happenings.id, documentId));
-
-    return NextResponse.json(
-      {
-        status: "success",
-        message: `Deleted happening with id ${documentId}`,
-      },
-      { status: 200 },
-    );
-  }
-
-  /**
-   * If no data is provided and the operation is not delete, we can't do anything.
-   * Most likely a sanity bug.
-   */
-  if (!data) {
-    console.error("Can't update or insert happening without data");
-    console.error({
-      operation,
-      documentId,
-      data,
-    });
-    return NextResponse.json(
-      {
-        status: "error",
-        message: `No data provided`,
-      },
-      { status: 400 },
-    );
-  }
-
-  if (operation === "create") {
-    const happening = mapHappening(data);
-
-    await db.insert(happenings).values(happening);
-
-    const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
-
-    if (happeningToGroupsToInsert.length > 0) {
-      await db.insert(happeningsToGroups).values(
-        happeningToGroupsToInsert.map((groupId) => ({
-          happeningId: happening.id,
-          groupId,
-        })),
-      );
-    }
-
-    const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
-      happeningId: happening.id,
-      spots: sr.spots,
-      minYear: sr.minYear,
-      maxYear: sr.maxYear,
-    }));
-
-    if (spotRangesToInsert.length > 0) {
-      await db.insert(spotRanges).values(spotRangesToInsert);
-    }
-
-    revalidateSpotRange(happening.id);
-
-    const questionsToInsert = (data.questions ?? []).map((q) => ({
-      id: q.id,
-      happeningId: happening.id,
-      title: q.title,
-      required: q.required,
-      type: q.type,
-      options: q.options?.map((o) => ({
-        id: o,
-        value: o,
-      })),
-    })) satisfies Array<QuestionInsert>;
-
-    if (questionsToInsert.length > 0) {
-      await db.insert(questions).values(questionsToInsert);
-    }
-
-    return NextResponse.json(
-      {
-        status: "success",
-        message: `Happening with id ${data._id} inserted`,
-      },
-      { status: 200 },
-    );
-  }
-
-  if (operation === "update") {
-    const happening = mapHappening(data);
-
-    await db.update(happenings).set(happening).where(eq(happenings.id, happening.id));
-
-    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
-
-    const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
-
-    if (happeningToGroupsToInsert.length > 0) {
-      await db.insert(happeningsToGroups).values(
-        happeningToGroupsToInsert.map((groupId) => ({
-          happeningId: happening.id,
-          groupId,
-        })),
-      );
-    }
-
-    await db.delete(spotRanges).where(eq(spotRanges.happeningId, happening.id));
-
-    const spotRangesToInsert = (data.spotRanges ?? []).map((sr) => ({
-      happeningId: happening.id,
-      spots: sr.spots,
-      minYear: sr.minYear,
-      maxYear: sr.maxYear,
-    }));
-
-    if (spotRangesToInsert.length > 0) {
-      await db.insert(spotRanges).values(spotRangesToInsert);
-    }
-
-    revalidateSpotRange(happening.id);
-
-    const oldQuestions = await db.query.questions.findMany({
-      where: eq(questions.happeningId, happening.id),
-    });
-
-    const incomingQuestions = (data.questions ?? []).map((q) => ({
-      id: q.id,
-      happeningId: happening.id,
-      title: q.title,
-      required: q.required,
-      type: q.type,
-      options: q.options?.map((o) => ({
-        id: o,
-        value: o,
-      })),
-    })) satisfies Array<QuestionInsert>;
-
-    /**
-     * Questions to delete are questions that are in the database, but not in the incoming data
-     */
-    const questionsToDelete = oldQuestions.filter(
-      (oldQuestion) => !incomingQuestions.map((q) => q.id).includes(oldQuestion.id),
-    );
-
-    /**
-     * Questions to update are questions that are in the database, and also in the incoming data
-     */
-    const questionsToUpdate = incomingQuestions.filter((newQuestion) =>
-      oldQuestions.map((q) => q.id).includes(newQuestion.id),
-    );
-
-    /**
-     * Questions to insert are questions that are not in the database, but are in the incoming data
-     */
-    const questionsToInsert = incomingQuestions.filter(
-      (newQuestion) => !questionsToUpdate.map((q) => q.id).includes(newQuestion.id),
-    );
-
-    if (questionsToDelete.length > 0) {
-      await db.delete(questions).where(
-        and(
-          eq(questions.happeningId, happening.id),
-          inArray(
-            questions.id,
-            questionsToDelete.map((q) => q.id),
-          ),
-        ),
-      );
-    }
-
-    if (questionsToInsert.length > 0) {
-      await db.insert(questions).values(questionsToInsert);
-    }
-
-    if (questionsToUpdate.length > 0) {
-      await Promise.all(
-        questionsToUpdate.map((question) =>
-          db.update(questions).set(question).where(eq(questions.id, question.id)),
-        ),
-      );
-    }
-
-    return NextResponse.json(
-      {
-        status: "success",
-        message: `Happening with id ${data._id} updated`,
-      },
-      { status: 200 },
-    );
-  }
-
-  return NextResponse.json(
-    {
-      status: "error",
-      message: `Unknown action ${operation}`,
-    },
-    { status: 400 },
-  );
+  },
 });
 
 /**

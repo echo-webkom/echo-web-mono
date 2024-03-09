@@ -1,15 +1,7 @@
-import type { NextRequest } from "next/server";
-
-import { auth } from "@echo-webkom/auth";
-
 import { echoGram } from "@/lib/echogram";
+import { createAuthedRoute } from "@/lib/factories/route";
 
-export async function POST(req: NextRequest) {
-  const user = await auth();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-
+export const GET = createAuthedRoute(async (req, _ctx, { user }) => {
   const formData = await req.formData();
   const file = formData.get("image") as File;
 
@@ -22,4 +14,4 @@ export async function POST(req: NextRequest) {
   return new Response("OK", {
     status: response.success ? 200 : 400,
   });
-}
+});

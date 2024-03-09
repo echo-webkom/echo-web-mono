@@ -4,6 +4,7 @@ import { type Metadata } from "next/types";
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
+import { createPage } from "@/lib/factories/page";
 import { fetchAllPosts } from "@/sanity/posts/requests";
 
 export const metadata = {
@@ -14,7 +15,7 @@ const getData = cache(async () => {
   return await fetchAllPosts();
 });
 
-export default async function PostsOverviewPage() {
+export default createPage(async () => {
   const posts = await getData();
 
   return (
@@ -30,4 +31,4 @@ export default async function PostsOverviewPage() {
       </div>
     </Container>
   );
-}
+});

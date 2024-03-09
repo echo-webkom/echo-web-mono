@@ -9,10 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getAllDegrees } from "@/data/degrees/queries";
+import { createWebkomPage } from "@/lib/factories/page";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminDegreePage() {
+export default createWebkomPage(async () => {
   const degrees = await getAllDegrees();
 
   return (
@@ -47,4 +48,4 @@ export default async function AdminDegreePage() {
       </Table>
     </Container>
   );
-}
+});

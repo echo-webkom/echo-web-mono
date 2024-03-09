@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Content } from "./content";
 
 export default async function HomePage() {
-  const session = await auth();
+  const user = await auth();
 
   return (
     <>
@@ -45,7 +45,7 @@ export default async function HomePage() {
             </p>
             <div>
               <Button asChild variant="secondary">
-                {session ? (
+                {user ? (
                   <Link href="/auth/profil">Min profil</Link>
                 ) : (
                   <Link href="/auth/logg-inn">Logg inn</Link>

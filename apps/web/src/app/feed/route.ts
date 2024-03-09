@@ -1,6 +1,7 @@
+import { createRoute } from "@/lib/factories/route";
 import { fetchAllPosts } from "@/sanity/posts";
 
-export async function GET() {
+export const GET = createRoute(async () => {
   const posts = await fetchAllPosts();
 
   const latestPostDate = posts[0] ? new Date(posts[0]._createdAt) : new Date();
@@ -28,7 +29,7 @@ export async function GET() {
       "Content-Type": "application/xml",
     },
   });
-}
+});
 
 const POST_DESCRIPTION_LENGTH = 70;
 

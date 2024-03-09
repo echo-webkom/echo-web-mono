@@ -21,13 +21,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getAllUsers } from "@/data/users/queries";
+import { createWebkomPage } from "@/lib/factories/page";
 import { UserForm } from "./user-form";
 
 export const dynamic = "force-dynamic";
 
 export type AllUsers = Awaited<ReturnType<typeof getAllUsers>>;
 
-export default async function UsersOverview() {
+export default createWebkomPage(async () => {
   const [users, groups] = await Promise.all([getAllUsers(), db.query.groups.findMany()]);
 
   return (
@@ -76,4 +77,4 @@ export default async function UsersOverview() {
       </Table>
     </Container>
   );
-}
+});

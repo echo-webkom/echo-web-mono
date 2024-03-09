@@ -20,11 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { createWebkomPage } from "@/lib/factories/page";
 import { MembersModal } from "./members-modal";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminGroupsPage() {
+export default createWebkomPage(async () => {
   const groups = await db.query.groups.findMany({
     with: {
       members: {
@@ -97,4 +98,4 @@ export default async function AdminGroupsPage() {
       </Table>
     </Container>
   );
-}
+});

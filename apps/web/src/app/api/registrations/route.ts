@@ -1,20 +1,12 @@
-import { type NextRequest } from "next/server";
-
-import { auth } from "@echo-webkom/auth";
-
 import { getHappeningCsvData } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
+import { createAuthedRoute } from "@/lib/factories/route";
 import { isHost } from "@/lib/memberships";
 import { slugify } from "@/utils/slugify";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest) {
-  const user = await auth();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-
+export const GET = createAuthedRoute(async (req, _ctx, { user }) => {
   const happeningId = req.nextUrl.searchParams.get("happeningId");
   if (!happeningId) {
     return new Response("Missing happeningId", { status: 400 });
@@ -37,4 +29,4 @@ export async function GET(req: NextRequest) {
       "Content-Type": "text/csv; charset=utf-8",
     },
   });
-}
+});

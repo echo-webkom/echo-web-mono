@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { type Metadata } from "next/types";
 
 import { auth } from "@echo-webkom/auth";
@@ -51,7 +51,7 @@ export default async function AdminDashboardLayout({ children }: Props) {
   const user = await auth();
 
   if (!user || !isWebkom(user)) {
-    return redirect("/");
+    return notFound();
   }
 
   return (

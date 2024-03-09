@@ -3,9 +3,10 @@ import { type SiteFeedback } from "@echo-webkom/db/schemas";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { getAllFeedback } from "@/data/site-feedbacks/queries";
+import { createWebkomPage } from "@/lib/factories/page";
 import { shortDate } from "@/utils/date";
 
-export default async function FeedbackOverview() {
+export default createWebkomPage(async () => {
   const feedback = await getAllFeedback();
 
   return (
@@ -21,7 +22,7 @@ export default async function FeedbackOverview() {
       </ul>
     </Container>
   );
-}
+});
 
 function Feedback({ feedback }: { feedback: SiteFeedback }) {
   // Site used to crash. This is a quick fix to find the bad date
