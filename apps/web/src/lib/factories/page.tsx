@@ -22,8 +22,14 @@ import { isWebkom } from "../memberships";
  *   </div>
  * })
  */
-export const createPage = <TProps extends Record<string, unknown>>(Component: NextPage<TProps>) => {
-  return Component;
+export const createPage = <
+  TProps extends Record<string, unknown>,
+  TPayload extends Record<string, unknown>,
+>(
+  Component: NextPage<TProps>,
+  payload?: TPayload,
+) => {
+  return <Component {...(payload as TProps)} />;
 };
 
 export const createAuthedPage = <P extends Record<string, unknown>>(

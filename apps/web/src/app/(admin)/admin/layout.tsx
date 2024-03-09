@@ -50,6 +50,10 @@ const adminRoutes = [
 export default async function AdminDashboardLayout({ children }: Props) {
   const user = await auth();
 
+  /**
+   * NB: This is only to prevent the loading spinner from showing up.
+   * It should not be used to protect the nested routes.
+   */
   if (!user || !isWebkom(user)) {
     return notFound();
   }

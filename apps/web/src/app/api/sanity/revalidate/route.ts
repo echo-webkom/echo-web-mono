@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { revalidateTag } from "next/cache";
 
-import { withBasicAuth } from "@/lib/factories/with-basic-auth";
+import { createBasicAuthRoute } from "@/lib/factories/route";
 
 const revalidateTags = (tags: Array<string>) => {
   for (const tag of tags) {
@@ -22,49 +22,52 @@ const revalidateTags = (tags: Array<string>) => {
  * }
  * ```
  */
-export const POST = withBasicAuth(async (req) => {
-  try {
-    const { type } = (await req.json()) as {
-      operation: "create" | "update" | "delete";
-      documentId: string;
-      type: string;
-      slug: string | null;
-    };
+export const POST = createBasicAuthRoute({
+  adminKey: process.env.ADMIN_KEY ?? "",
+  handler: async (req) => {
+    try {
+      const { type } = (await req.json()) as {
+        operation: "create" | "update" | "delete";
+        documentId: string;
+        type: string;
+        slug: string | null;
+      };
 
-    if (type === "staticInfo") {
-      console.log("Revalidating static-info");
-      revalidateTags(["static-info"]);
-    }
+      if (type === "staticInfo") {
+        console.log("Revalidating static-info");
+        revalidateTags(["static-info"]);
+      }
 
-    if (type === "job") {
-      console.log("Revalidating job-ads");
-      revalidateTags(["job-ads"]);
-    }
+      if (type === "job") {
+        console.log("Revalidating job-ads");
+        revalidateTags(["job-ads"]);
+      }
 
-    if (type === "post") {
-      console.log("Revalidating posts");
-      revalidateTags(["posts"]);
-    }
+      if (type === "post") {
+        console.log("Revalidating posts");
+        revalidateTags(["posts"]);
+      }
 
-    if (type === "meetingMinute") {
-      console.log("Revalidating minutes");
-      revalidateTags(["minutes"]);
-    }
+      if (type === "meetingMinute") {
+        console.log("Revalidating minutes");
+        revalidateTags(["minutes"]);
+      }
 
-    if (type === "studentGroup") {
-      console.log("Revalidating student-groups");
-      revalidateTags(["student-groups"]);
-    }
+      if (type === "studentGroup") {
+        console.log("Revalidating student-groups");
+        revalidateTags(["student-groups"]);
+      }
 
-    return new Response(`Revalidated type: "${type}".`, {
-      status: 200,
-    });
-  } catch (error) {
-    console.error(error);
-    if (error instanceof SyntaxError) {
+      return new Response(`Revalidated type: "${type}".`, {
+        status: 200,
+      });
+    } catch (error) {
+      console.error(error);
+      if (error instanceof SyntaxError) {
+        return new Response("Invalid request", { status: 400 });
+      }
+
       return new Response("Invalid request", { status: 400 });
     }
-
-    return new Response("Invalid request", { status: 400 });
-  }
+  },
 });
