@@ -1,18 +1,17 @@
 import { z } from "zod";
 
 export const addStrikesSchema = z.object({
-  happeningId: z.string({ required_error: "Du må velge et bedriftspresentasjon" }),
+  happeningId: z.string().trim().min(1, { message: "Du må velge en bedriftspresentasjon" }),
   amount: z
-    .string()
-    .min(1, { message: "Du må gi minst 1 prikk" })
-    .max(10, { message: "Du kan maks gi 10 prikker om gangen" }),
+    .number()
+    .gte(1, { message: "Du må gi minst 1 prikk" })
+    .lte(5, { message: "Du kan maks gi 5 prikker om gangen" }),
   reason: z
     .string()
+    .trim()
     .min(5, { message: "Du må skrive en begrunnelse på minst 5 bokstaver" })
     .max(500, { message: "Begrunnelsen kan ikke være mer enn 500 bokstaver" }),
-  hasVerified: z.literal<boolean>(true, {
-    required_error: "Du må bekrefte at du er kjent med Bedkom sine retningslinjer for prikker",
-  }),
+  hasVerified: z.literal<boolean>(true),
 });
 
 export type AddStrikeForm = z.infer<typeof addStrikesSchema>;

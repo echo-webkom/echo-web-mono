@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, type ChangeEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { type Happening } from "@echo-webkom/db/schemas";
+import {
+  STRIKE_TYPE_AMOUNT,
+  STRIKE_TYPE_MESSAGE,
+  type StrikeType,
+} from "@echo-webkom/lib/src/constants";
 
-import { manualAddStrike, remvoveStrike } from "@/actions/strikes";
+import { addStrike, remvoveStrike } from "@/actions/strikes";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,10 +25,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast, useToast } from "@/hooks/use-toast";
 import { addStrikesSchema, type AddStrikeForm } from "@/lib/schemas/addStrike";
+import { mailTo } from "@/utils/prefixes";
 import {
   Form,
   FormControl,
@@ -34,26 +40,12 @@ import {
 import { Input } from "../../../../components/ui/input";
 import { Select } from "../../../../components/ui/select";
 
-export type ManualStrikeType = "NO_SHOW" | "WRONG_INFO" | "TOO_LATE" | "NO_FEEDBACK" | "OTHER";
-
-const STRIKE_TYPE_MESSAGE: Record<ManualStrikeType, string> = {
-  NO_SHOW: "Du møtte ikke opp.",
-  WRONG_INFO: "Du ga feil informasjon.",
-  TOO_LATE: "Du kom for sent.",
-  NO_FEEDBACK: "Du ga ikke tilbakemelding.",
-  OTHER: "",
-};
-
-const STRIKE_TYPE_AMOUNT: Record<ManualStrikeType, string> = {
-  NO_SHOW: "1",
-  WRONG_INFO: "1",
-  TOO_LATE: "1",
-  NO_FEEDBACK: "1",
-  OTHER: "1",
-};
-
 type AddStrikeButtonProps = {
-  user: { id: string; name: string | null; email: string };
+  user: {
+    id: string;
+    name: string | null;
+    email: string;
+  };
   happenings: Array<Happening>;
   currentAmount: number;
 } & ButtonProps;
@@ -68,27 +60,26 @@ export function AddStrikeButton({
   const router = useRouter();
   const { toast } = useToast();
 
-  const [selectedType, setSelectedType] = useState<ManualStrikeType>("OTHER");
+  const [selectedType, setSelectedType] = useState<StrikeType>("OTHER");
 
   const form = useForm<AddStrikeForm>({
     resolver: zodResolver(addStrikesSchema),
     defaultValues: {
       happeningId: "",
-      amount: "",
+      amount: 1,
       reason: "",
       hasVerified: false,
     },
   });
 
-  console.log(selectedType);
-
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await manualAddStrike(
+    const { success, message } = await addStrike(
       user.id,
       data.happeningId,
       data.reason,
-      parseInt(data.amount),
+      data.amount,
       currentAmount,
+      selectedType,
     );
 
     toast({
@@ -102,11 +93,14 @@ export function AddStrikeButton({
   });
 
   function handleTypeChange(choice: ChangeEvent<HTMLSelectElement>) {
-    const type = choice.target.value as ManualStrikeType;
+    const type = choice.target.value as StrikeType;
     setSelectedType(type);
 
     form.setValue("amount", STRIKE_TYPE_AMOUNT[type]);
     form.setValue("reason", STRIKE_TYPE_MESSAGE[type]);
+
+    form.clearErrors("amount");
+    if (form.getValues("reason") !== "") form.clearErrors("reason");
   }
 
   return (
@@ -117,16 +111,10 @@ export function AddStrikeButton({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Gi prikker</DialogTitle>
-          <DialogDescription>
-            Merk at brukeren kan bli utestengt fra kommende bedriftspresentasjoner. Brukeren har
-            oversikt over sine egne prikker og begrunnelser for dem.
-          </DialogDescription>
-          <div className="flex flex-col gap-2">
-            <Label className="text-bold">Navn: </Label>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>e-post:</Label>
-            <Label></Label>
+          <DialogDescription>Brukeren blir utestengt av 5 gyldige prikker.</DialogDescription>
+          <div>Navn: {user.name}</div>
+          <div>
+            E-post: <Link href={mailTo(user.email)}>{user.email}</Link>
           </div>
         </DialogHeader>
         <Form {...form}>
@@ -167,11 +155,13 @@ export function AddStrikeButton({
                         <option selected value={"OTHER"}>
                           Egendefinert
                         </option>
-                        {Object.entries(STRIKE_TYPE_MESSAGE).map(([key, value]) => (
-                          <option key={key} value={key}>
-                            {value}
-                          </option>
-                        ))}
+                        {Object.entries(STRIKE_TYPE_MESSAGE)
+                          .filter(([key, _]) => key !== "OTHER")
+                          .map(([key, value]) => (
+                            <option key={key} value={key}>
+                              {value}
+                            </option>
+                          ))}
                       </Select>
                     </FormControl>
                     <FormMessage />
@@ -181,22 +171,28 @@ export function AddStrikeButton({
               <FormField
                 control={form.control}
                 name="amount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="amount">Antall prikker</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="amount"
-                        type="number"
-                        placeholder="Antall prikker..."
-                        min={1}
-                        max={10}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const { onChange, ...restField } = field;
+                  return (
+                    <FormItem>
+                      <FormLabel htmlFor="amount">Antall prikker</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="amount"
+                          type="number"
+                          placeholder="Antall prikker..."
+                          min={1}
+                          max={5}
+                          onChange={(e) => {
+                            onChange(parseInt(e.target.value));
+                          }}
+                          {...restField}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
               <FormField
                 control={form.control}
@@ -218,32 +214,23 @@ export function AddStrikeButton({
                 name="hasVerified"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="hasVerified" required>
-                      Jeg er kjent med Bedkom sine retningslinjer for prikker.
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        id="hasVerified"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
+                    <div className="flex items-center">
+                      <FormLabel htmlFor="hasVerified" required>
+                        Jeg er kjent med Bedkom sine retningslinjer for prikker.
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          id="hasVerified"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </div>
                   </FormItem>
                 )}
               />
             </div>
             <DialogFooter className="mt-5 flex flex-col gap-2">
-              <Button
-                className="w-full sm:w-auto"
-                variant="secondary"
-                onClick={() => {
-                  setIsOpen(false);
-                  form.reset();
-                }}
-              >
-                Avbryt
-              </Button>
               <Button className="w-full sm:w-auto" type="submit">
                 Send
               </Button>
@@ -273,14 +260,14 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" className="text-red-500">
-          Slett prikk
-        </Button>
+      <DialogTrigger>
+        <div className="text-destructive hover:underline">Slett prikk</div>
       </DialogTrigger>
       <DialogContent>
         <DialogDescription>
-          Merk at en eventuell utestening ikke blir automatisk fjernet. Dette må gjøres manuelt.
+          <div className="font-bold ">Merk:</div>
+          <div>Utestengelser blir ikke automatisk fjernet ved å slette prikker.</div>
+          <div>Det må gjøres manuelt.</div>
         </DialogDescription>
         <DialogFooter>
           <Button variant="destructive" onClick={() => void handleDelete()}>

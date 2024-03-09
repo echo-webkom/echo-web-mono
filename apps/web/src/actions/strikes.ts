@@ -1,18 +1,21 @@
-import { eq } from "drizzle-orm";
+"use server";
+
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
+import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
 import { isMemberOf } from "@/lib/memberships";
 
-const BAN_AMOUNT = 5;
+function getBannableStrikeNumber(current: number, added: number) {
+  const BAN_AMOUNT = 5;
 
-function getBannableStrikeIndex(current: number, added: number) {
   if (current + added >= BAN_AMOUNT) {
-    return current + added - BAN_AMOUNT - 1;
+    return BAN_AMOUNT - current;
   }
 }
 
@@ -42,7 +45,7 @@ export async function remvoveStrike(strikeId: number) {
     if (!strike) {
       return {
         success: false,
-        message: "Fant ikke prikken i databasen",
+        message: "Fant ikke prikken",
       };
     }
 
@@ -50,7 +53,7 @@ export async function remvoveStrike(strikeId: number) {
 
     return {
       success: true,
-      message: "Prikken er slettet",
+      message: "Prikken ble slettet",
     };
   } catch (error) {
     return {
@@ -60,12 +63,13 @@ export async function remvoveStrike(strikeId: number) {
   }
 }
 
-export async function manualAddStrike(
+export async function addStrike(
   userId: string,
   happeningId: string,
   reason: string,
   amount: number,
   currentAmount: number,
+  type: StrikeType,
 ) {
   try {
     const issuer = await auth();
@@ -105,7 +109,7 @@ export async function manualAddStrike(
     }
 
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => eq(happening.id, happeningId),
+      where: (happening) => and(eq(happening.id, happeningId), eq(happening.type, "bedpres")),
     });
 
     if (!happening) {
@@ -115,7 +119,8 @@ export async function manualAddStrike(
       };
     }
 
-    const bannableStrikeNumber = getBannableStrikeIndex(currentAmount, amount);
+    const bannableStrikeNumber =
+      type === ("NO_SHOW" as StrikeType) ? 1 : getBannableStrikeNumber(currentAmount, amount);
 
     const data = {
       happeningId: happening.id,
@@ -123,11 +128,15 @@ export async function manualAddStrike(
       reason: reason,
     } satisfies StrikeInfoInsert;
 
-    await createStrikes(data, userId, amount, bannableStrikeNumber);
+    await createStrikes(data, user.id, amount, bannableStrikeNumber);
+
+    const message = bannableStrikeNumber
+      ? "Prikker lagt til. Brukeren er utestengt"
+      : "Prikker lagt til";
 
     return {
       success: true,
-      message: "Prikker lagt til",
+      message: message,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

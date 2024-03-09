@@ -50,7 +50,7 @@ export async function createStrikes(
     }
 
     if (bannableStrikeNumber) {
-      const bannableStrike = issuedStrikes.at(bannableStrikeNumber);
+      const bannableStrike = issuedStrikes.at(bannableStrikeNumber - 1);
 
       if (!bannableStrike) {
         throw new Error("Failed to get bannable strike");
@@ -72,11 +72,12 @@ export async function createStrikes(
 }
 
 export async function deleteStrike(userId: string, strikeId: number) {
-  const [strike] = await db
+  const strike = await db
     .update(strikes)
     .set({ isDeleted: true })
     .where(eq(strikes.id, strikeId))
-    .returning({ id: strikes.id });
+    .returning({ id: strikes.id })
+    .then((res) => res[0] ?? null);
 
   if (!strike) {
     throw new Error("Delete failed");

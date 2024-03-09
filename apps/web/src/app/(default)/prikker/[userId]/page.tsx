@@ -26,12 +26,16 @@ type Props = {
   };
 };
 
-export default async function AdminUserStrikesPage({ params }: Props) {
+export default async function UserStrikesPage({ params }: Props) {
   const { userId } = params;
 
   const user = await db.query.users.findFirst({
     where: (user) => eq(user.id, userId),
-    columns: { name: true, email: true, bannedFromStrike: true },
+    columns: {
+      name: true,
+      email: true,
+      bannedFromStrike: true,
+    },
   });
 
   if (!user) {
@@ -40,7 +44,7 @@ export default async function AdminUserStrikesPage({ params }: Props) {
 
   const strikes = await getAllUserStrikes(userId);
 
-  const { trueA: validStrikes, falseA: earlierStrikes } = split(
+  const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
     strikes,
     (strike) => strike.id > (user.bannedFromStrike ?? -1),
   );
@@ -50,7 +54,7 @@ export default async function AdminUserStrikesPage({ params }: Props) {
   return (
     <Container>
       <div className="flex justify-between">
-        <Heading>{user.name} sine prikker</Heading>
+        <Heading>{user.name}</Heading>
         <AddStrikeButton
           happenings={prevBedpresses}
           user={{
@@ -60,6 +64,7 @@ export default async function AdminUserStrikesPage({ params }: Props) {
           }}
           currentAmount={validStrikes.length}
           variant="destructive"
+          className="min-w-28"
         />
       </div>
       <Text>
