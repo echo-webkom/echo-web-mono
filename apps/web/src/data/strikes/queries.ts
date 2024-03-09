@@ -34,3 +34,37 @@ export async function getAllUsersWithValidStrikes() {
     },
   )();
 }
+
+export async function getAllUserStrikes(userId: string) {
+  return cache(
+    async () => {
+      return await db.query.strikes.findMany({
+        with: {
+          strikeInfo: {
+            with: {
+              happening: {
+                columns: {
+                  id: true,
+                  title: true,
+                  slug: true,
+                },
+              },
+              issuer: {
+                columns: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+        where: (strike) => and(eq(strike.isDeleted, false), eq(strike.userId, userId)),
+      });
+    },
+    [cacheKeyFactory.singleUserStrikes(userId)],
+    {
+      tags: [cacheKeyFactory.singleUserStrikes(userId)],
+    },
+  )();
+}
