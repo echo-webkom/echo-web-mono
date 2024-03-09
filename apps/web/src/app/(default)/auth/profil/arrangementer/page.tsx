@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@echo-webkom/auth";
+import type { Happening } from "@echo-webkom/db/schemas";
 import {
   happeningTypeToPath,
   happeningTypeToString,
@@ -11,6 +12,7 @@ import {
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { getRegistrationsByUserId } from "@/data/registrations/queries";
+import { shortDateNoTime } from "@/utils/date";
 
 export default async function UserHappenings() {
   const user = await auth();
@@ -20,38 +22,79 @@ export default async function UserHappenings() {
   }
   const registrations = await getRegistrationsByUserId(user.id);
 
+  const pastRegistrations = registrations
+    .slice()
+    .reverse()
+    .filter(
+      (registration) =>
+        !registration.happening.date || new Date(registration.happening.date) < new Date(),
+    );
+  const futureRegistrations = registrations
+    .slice()
+    .reverse()
+    .filter(
+      (registration) =>
+        registration.happening.date && new Date(registration.happening.date) >= new Date(),
+    );
+
   return (
     <div className="max-w-2xl">
       <Heading level={2} className="mb-4">
         Dine arrangementer
       </Heading>
       {registrations.length > 0 ? (
-        <ul className="flex flex-col divide-y">
-          {registrations.map((registration) => (
-            <li key={registration.happening.slug}>
-              <div className="py-3">
-                <Link
-                  href={
-                    happeningTypeToPath[registration.happening.type] +
-                    "/" +
-                    registration.happening.slug
-                  }
-                  className="text-lg font-semibold hover:underline"
-                >
-                  {registration.happening.title}
-                </Link>
-
-                <div className="mt-3 flex gap-1">
-                  <Chip>{happeningTypeToString[registration.happening.type]}</Chip>
-                  <Chip>{registrationStatusToString[registration.status]}</Chip>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="w-fit">
+          <EventCards registrations={futureRegistrations}>Kommende arrangementer</EventCards>
+          <EventCards registrations={pastRegistrations}>Tidligere arrangementer</EventCards>
+        </div>
       ) : (
         <p>Du er ikke påmeldt noen arrangementer.</p>
       )}
     </div>
+  );
+}
+
+function EventCards<
+  TRegistration extends {
+    happening: Happening;
+    status: "registered" | "unregistered" | "removed" | "waiting" | "pending";
+  },
+>({
+  registrations,
+  children,
+}: {
+  registrations: Array<TRegistration>;
+  children?: React.ReactNode;
+}) {
+  return (
+    <>
+      <Heading level={3} className="mt-14 pb-5 font-semibold">
+        {children}
+      </Heading>
+      <div className="flex flex-col">
+        {registrations.map((registration) => (
+          <Link
+            href={
+              happeningTypeToPath[registration.happening.type] + "/" + registration.happening.slug
+            }
+            key={registration.happening.slug}
+            className="rounded-md p-4 hover:bg-muted"
+          >
+            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
+              {registration.happening.title}
+            </h1>
+            {registration.happening.date && (
+              <p className="text-sm text-muted-foreground">
+                {shortDateNoTime(registration.happening.date)}
+              </p>
+            )}
+            <div className="mt-3 flex gap-1">
+              <Chip>{happeningTypeToString[registration.happening.type]}</Chip>
+              <Chip>{registrationStatusToString[registration.status]}</Chip>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }
