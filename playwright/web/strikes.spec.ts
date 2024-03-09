@@ -21,14 +21,14 @@ baseTest.describe("Strikes", () => {
   test("Admin")("should be able to add and remove strike", async ({ page }) => {
     await page.goto(`/prikker/${user.id}`);
 
-    await expect(page.getByText(`${user.name} sine prikker`, { exact: true })).toBeVisible();
+    await expect(page.getByText(`${user.name}`, { exact: true })).toBeVisible();
     await expect(page.getByText("Gyldige prikker: 0", { exact: true })).toBeVisible();
     await expect(page.getByText("Totalt antall prikker: 0", { exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: "Gi prikker" }).click();
 
     await page.getByLabel("Velg bedpres").selectOption("Tidligere bedpres!");
-    await page.getByLabel("Type prikk").selectOption("Du møtte ikke opp.");
+    await page.getByLabel("Type prikk").selectOption("Du ga feil informasjon.");
 
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Send" }).click();
@@ -41,7 +41,7 @@ baseTest.describe("Strikes", () => {
     await page.getByRole("button", { name: "Slett prikk" }).click();
     await page.getByRole("button", { name: "Bekreft sletting" }).click();
 
-    await expect(page.getByTestId("toast")).toContainText("Prikken er slettet");
+    await expect(page.getByTestId("toast")).toContainText("Prikken ble slettet");
   });
 
   test("Student5")("should not be able to access /prikker", async ({ page }) => {
