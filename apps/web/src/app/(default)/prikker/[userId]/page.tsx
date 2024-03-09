@@ -18,7 +18,7 @@ import {
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { split } from "@/utils/list";
-import { AddStrikeButton, RemoveStrikeButton } from "./strike-buttons";
+import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
 
 type Props = {
   params: {
