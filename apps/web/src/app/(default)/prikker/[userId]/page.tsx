@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/table";
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
+import { unbanUser } from "@/data/users/mutations";
+import { remainingBanNumber } from "@/lib/remainingBanNumber";
 import { split } from "@/utils/list";
 import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
 
@@ -31,11 +33,6 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const user = await db.query.users.findFirst({
     where: (user) => eq(user.id, userId),
-    columns: {
-      name: true,
-      email: true,
-      bannedFromStrike: true,
-    },
   });
 
   if (!user) {
@@ -50,6 +47,12 @@ export default async function UserStrikesPage({ params }: Props) {
   );
 
   const prevBedpresses = await getPastHappenings(10, "bedpres");
+
+  const banData = user.isBanned ? await remainingBanNumber(user) : null;
+
+  const stillBanned = banData && banData.remainingBan <= 0 ? false : true;
+
+  if (!stillBanned) await unbanUser(user.id);
 
   return (
     <Container>
@@ -67,6 +70,18 @@ export default async function UserStrikesPage({ params }: Props) {
           className="min-w-28"
         />
       </div>
+
+      {stillBanned && banData?.nextBedpres && (
+        <div>
+          Brukeren er utestengt til:{" "}
+          <Link href={`/bedpres/${banData.nextBedpres.slug}`}>{banData.nextBedpres.title}</Link>
+        </div>
+      )}
+
+      {stillBanned && !banData?.nextBedpres && (
+        <div>Antall gjenværende utestengelser: {banData?.remainingBan}</div>
+      )}
+
       <Text>
         <div>Gyldige prikker: {validStrikes.length}</div>
         <div> Totalt antall prikker: {strikes.length}</div>
