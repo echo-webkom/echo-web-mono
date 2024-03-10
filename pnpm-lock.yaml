@@ -193,8 +193,8 @@ importers:
         specifier: 14.1.2
         version: 14.1.2(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: 4.24.6
-        version: 4.24.6(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 4.24.7
+        version: 4.24.7(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: 8.2.1
         version: 8.2.1(@sanity/client@6.15.3)(@sanity/icons@2.10.3)(@sanity/types@3.32.0)(@sanity/ui@2.0.7)(next@14.1.2)(react@18.2.0)(sanity@3.32.0)(styled-components@6.0.7)
@@ -314,8 +314,8 @@ importers:
         specifier: 14.1.2
         version: 14.1.2(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: 4.24.6
-        version: 4.24.6(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 4.24.7
+        version: 4.24.7(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -348,8 +348,8 @@ importers:
         specifier: 5.0.6
         version: 5.0.6
       next-auth:
-        specifier: 4.24.6
-        version: 4.24.6(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 4.24.7
+        version: 4.24.7(next@14.1.2)(react-dom@18.2.0)(react@18.2.0)
       pg:
         specifier: 8.11.3
         version: 8.11.3
@@ -9517,8 +9517,8 @@ packages:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
 
-  /jose@4.15.4:
-    resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
+  /jose@4.15.5:
+    resolution: {integrity: sha512-jc7BFxgKPKi94uOvEmzlSWFFe2+vASyXaKUpdQKatWAESU2MWjDfFf0fdfc83CDKcA5QecabZeNLyfhe3yKNkg==}
     dev: false
 
   /js-beautify@1.14.11:
@@ -10658,8 +10658,8 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  /next-auth@4.24.6(next@14.1.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-djQt3ZEaWEIxcsuh3HTW2uuzLfXMRjHH+ugAsichlQSbH4iA5MRcgMA2HvTNvsDTDLh44tyU72+/gWsxgTbAKg==}
+  /next-auth@4.24.7(next@14.1.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-iChjE8ov/1K/z98gdKbn2Jw+2vLgJtVV39X+rCP5SGnVQuco7QOr19FRNGMIrD8d3LYhHWV9j9sKLzq1aDWWQQ==}
     peerDependencies:
       next: ^12.2.5 || ^13 || ^14
       nodemailer: ^6.6.5
@@ -10672,7 +10672,7 @@ packages:
       '@babel/runtime': 7.23.8
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
-      jose: 4.15.4
+      jose: 4.15.5
       next: 14.1.2(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.6.4
@@ -11039,7 +11039,7 @@ packages:
   /openid-client@5.6.4:
     resolution: {integrity: sha512-T1h3B10BRPKfcObdBklX639tVz+xh34O7GjofqrqiAQdm7eHsQ00ih18x6wuJ/E6FxdtS2u3FmUGPDeEcMwzNA==}
     dependencies:
-      jose: 4.15.4
+      jose: 4.15.5
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
