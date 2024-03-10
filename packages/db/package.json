@@ -31,7 +31,7 @@
     "postgres": "3.4.3"
   },
   "devDependencies": {
-    "@types/node": "18.19.21",
+    "@types/node": "18.19.22",
     "@types/pg": "8.11.2",
     "dotenv-cli": "7.3.0",
     "drizzle-kit": "0.20.14",
