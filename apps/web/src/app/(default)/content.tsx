@@ -9,6 +9,7 @@ import { type Registration } from "@echo-webkom/db/schemas";
 import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
+import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
@@ -153,6 +154,15 @@ export async function Content() {
 
         <hr />
         <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
+      </section>
+
+      {/*Filmklubb*/}
+      <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
+        <div className="group mx-auto flex items-center">
+          <h2 className="text-center text-3xl font-medium">Mandagens Visning</h2>
+        </div>
+        <hr />
+        <MovieClubCard />
       </section>
     </Container>
   );
