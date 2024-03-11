@@ -12,18 +12,15 @@ export default async function HomePage() {
 
   return (
     <>
-      <a
-        className="mx-auto w-full max-w-7xl text-black hover:underline"
-        href="https://forms.gle/sAw58gwzG36MVrGK8 "
-      >
-        <div className="px-4">
-          <div className="rainbow flex items-center justify-between rounded-lg p-6 shadow-lg">
-            <FaArrowRight className="animate-bounce-right h-6 w-6" />
-            <p className="text-center text-lg font-medium sm:text-3xl">Søk hovedstyret nå!</p>
-            <FaArrowLeft className="animate-bounce-right h-6 w-6" />
-          </div>
+      <div className="px-4">
+        <div className="rainbow flex items-center justify-between rounded-lg p-6 shadow-lg">
+          <FaArrowRight className="animate-bounce-left h-6 w-6" />
+          <p className="text-center text-lg font-medium sm:text-3xl">
+            Husk å stemme i hovedstyre-valget!!
+          </p>
+          <FaArrowLeft className="animate-bounce-right h-6 w-6" />
         </div>
-      </a>
+      </div>
 
       <Container className="relative pb-40" layout="full">
         <div className="mx-auto w-full max-w-screen-xl py-10">
