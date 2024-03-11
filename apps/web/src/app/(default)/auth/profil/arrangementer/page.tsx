@@ -52,7 +52,7 @@ export default async function UserHappenings() {
           Kommende arrangement
         </Heading>
         {futureRegistrations.length > 0 ? (
-          <EventCards registrations={futureRegistrations}></EventCards>
+          <EventCards registrations={futureRegistrations} />
         ) : (
           <p>Du er ikke påmeldt noen kommende arrangementer.</p>
         )}
@@ -62,7 +62,7 @@ export default async function UserHappenings() {
           Tidligere arrangement
         </Heading>
         {pastRegistrations.length > 0 ? (
-          <EventCards registrations={pastRegistrations}></EventCards>
+          <EventCards registrations={pastRegistrations} />
         ) : (
           <p>Du har ingen tidligere arrangementer.</p>
         )}
@@ -76,13 +76,7 @@ function EventCards<
     happening: Happening;
     status: "registered" | "unregistered" | "removed" | "waiting" | "pending";
   },
->({
-  registrations,
-  children,
-}: {
-  registrations: Array<TRegistration>;
-  children?: React.ReactNode;
-}) {
+>({ registrations }: { registrations: Array<TRegistration>; children?: React.ReactNode }) {
   return (
     <>
       <div className="flex flex-col">
