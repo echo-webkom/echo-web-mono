@@ -27,18 +27,14 @@ export default async function UserHappenings() {
     .reverse()
     .filter(
       (registration) =>
-        !registration.happening.date ||
-        (new Date(registration.happening.date) < new Date() &&
-          registration.status !== "unregistered"),
+        !registration.happening.date || new Date(registration.happening.date) < new Date(),
     );
   const futureRegistrations = registrations
     .slice()
     .reverse()
     .filter(
       (registration) =>
-        registration.happening.date &&
-        new Date(registration.happening.date) >= new Date() &&
-        registration.status !== "unregistered",
+        registration.happening.date && new Date(registration.happening.date) >= new Date(),
     );
 
   return (
@@ -46,14 +42,20 @@ export default async function UserHappenings() {
       <Heading level={2} className="mb-4">
         Dine arrangementer
       </Heading>
-      {registrations.length > 0 ? (
-        <div className="w-fit">
+      <div>
+        {futureRegistrations.length > 0 ? (
           <EventCards registrations={futureRegistrations}>Kommende arrangementer</EventCards>
+        ) : (
+          <p>Du er ikke påmeldt noen kommende arrangementer.</p>
+        )}
+      </div>
+      <div>
+        {pastRegistrations.length > 0 ? (
           <EventCards registrations={pastRegistrations}>Tidligere arrangementer</EventCards>
-        </div>
-      ) : (
-        <p>Du er ikke påmeldt noen arrangementer.</p>
-      )}
+        ) : (
+          <p>Du er ikke ingen tidligere arrangementer.</p>
+        )}
+      </div>
     </div>
   );
 }
