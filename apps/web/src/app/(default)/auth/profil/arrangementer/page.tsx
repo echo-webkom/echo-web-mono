@@ -48,17 +48,23 @@ export default async function UserHappenings() {
         Dine arrangementer
       </Heading>
       <div>
+        <Heading level={3} className="mt-14 pb-6 font-semibold">
+          Kommende arrangement
+        </Heading>
         {futureRegistrations.length > 0 ? (
-          <EventCards registrations={futureRegistrations}>Kommende arrangementer</EventCards>
+          <EventCards registrations={futureRegistrations}></EventCards>
         ) : (
           <p>Du er ikke påmeldt noen kommende arrangementer.</p>
         )}
       </div>
       <div>
+        <Heading level={3} className="mt-14 pb-6 font-semibold">
+          Tidligere arrangement
+        </Heading>
         {pastRegistrations.length > 0 ? (
-          <EventCards registrations={pastRegistrations}>Tidligere arrangementer</EventCards>
+          <EventCards registrations={pastRegistrations}></EventCards>
         ) : (
-          <p>Du er ikke ingen tidligere arrangementer.</p>
+          <p>Du har ingen tidligere arrangementer.</p>
         )}
       </div>
     </div>
@@ -79,9 +85,6 @@ function EventCards<
 }) {
   return (
     <>
-      <Heading level={3} className="mt-14 pb-5 font-semibold">
-        {children}
-      </Heading>
       <div className="flex flex-col">
         {registrations.map((registration) => (
           <Link
