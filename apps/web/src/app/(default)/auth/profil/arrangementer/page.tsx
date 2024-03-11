@@ -27,14 +27,19 @@ export default async function UserHappenings() {
     .reverse()
     .filter(
       (registration) =>
-        !registration.happening.date || new Date(registration.happening.date) < new Date(),
+        !registration.happening.date ||
+        (new Date(registration.happening.date) < new Date() &&
+          registration.status !== "unregistered"),
     );
+
   const futureRegistrations = registrations
     .slice()
     .reverse()
     .filter(
       (registration) =>
-        registration.happening.date && new Date(registration.happening.date) >= new Date(),
+        registration.happening.date &&
+        new Date(registration.happening.date) >= new Date() &&
+        registration.status !== "unregistered",
     );
 
   return (
