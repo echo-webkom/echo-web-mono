@@ -31,6 +31,7 @@ export default async function UserHappenings() {
         (new Date(registration.happening.date) < new Date() &&
           registration.status !== "unregistered"),
     );
+
   const futureRegistrations = registrations
     .slice()
     .reverse()
@@ -46,14 +47,26 @@ export default async function UserHappenings() {
       <Heading level={2} className="mb-4">
         Dine arrangementer
       </Heading>
-      {registrations.length > 0 ? (
-        <div className="w-fit">
-          <EventCards registrations={futureRegistrations}>Kommende arrangementer</EventCards>
-          <EventCards registrations={pastRegistrations}>Tidligere arrangementer</EventCards>
-        </div>
-      ) : (
-        <p>Du er ikke påmeldt noen arrangementer.</p>
-      )}
+      <div>
+        <Heading level={3} className="mt-14 pb-6 font-semibold">
+          Kommende arrangement
+        </Heading>
+        {futureRegistrations.length > 0 ? (
+          <EventCards registrations={futureRegistrations}></EventCards>
+        ) : (
+          <p>Du er ikke påmeldt noen kommende arrangementer.</p>
+        )}
+      </div>
+      <div>
+        <Heading level={3} className="mt-14 pb-6 font-semibold">
+          Tidligere arrangement
+        </Heading>
+        {pastRegistrations.length > 0 ? (
+          <EventCards registrations={pastRegistrations}></EventCards>
+        ) : (
+          <p>Du har ingen tidligere arrangementer.</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -72,9 +85,6 @@ function EventCards<
 }) {
   return (
     <>
-      <Heading level={3} className="mt-14 pb-5 font-semibold">
-        {children}
-      </Heading>
       <div className="flex flex-col">
         {registrations.map((registration) => (
           <Link
