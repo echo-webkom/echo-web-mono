@@ -14,10 +14,10 @@ export async function fetchMovies() {
 }
 
 /**
- * Fetches a number of job ads where the deadline hasn't expired
+ * Fettches latest movies
  *
- * @param n the number of job ads to fetch
- * @returns job ads or an empty array if error
+ * @param n the number of movies to fetch
+ * @returns newest movies or an empty array if error
  */
 export async function fetchNewestMovie(n: number) {
   return await fetchMovies().then((res) =>

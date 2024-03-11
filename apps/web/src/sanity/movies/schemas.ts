@@ -5,7 +5,7 @@ import { imageSchema } from "../utils/image";
 export const moviesSchema = z.object({
   title: z.string(),
   date: z.string(),
-  link: z.string(),
+  link: z.string().nullable(),
   image: imageSchema,
 });
 
