@@ -12,7 +12,6 @@ class EchoGram {
     try {
       const response = await fetch(`${PROFILE_IMAGE_FUNCTION_URL}?userId=${userId}`, {
         method: "GET",
-        cache: "no-store",
       });
 
       return response.status === 200 ? `${PROFILE_IMAGE_FUNCTION_URL}?userId=${userId}` : null;

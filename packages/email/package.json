@@ -22,6 +22,7 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
+    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "18.19.24",
     "@types/react": "18.2.66",
     "dotenv-cli": "7.4.1",

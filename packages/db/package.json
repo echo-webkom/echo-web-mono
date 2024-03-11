@@ -29,6 +29,7 @@
     "postgres": "3.4.3"
   },
   "devDependencies": {
+    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "18.19.24",
     "@types/pg": "8.11.2",
     "dotenv-cli": "7.4.1",

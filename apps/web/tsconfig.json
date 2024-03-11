@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../../tsconfig.json",
+  "extends": "@echo-webkom/tsconfig/nextjs.json",
   "compilerOptions": {
     "lib": ["es2022", "dom", "dom.iterable"],
     "baseUrl": ".",
