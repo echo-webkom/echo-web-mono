@@ -1,8 +1,10 @@
-import { expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-import { test } from "../helpers/sessionTest";
+import { loginAs } from "../helpers/sessionTest";
 
-test("Student")("update profile", async ({ page }) => {
+test("update profile", async ({ page }) => {
+  await loginAs(page, "Student");
+
   await page.goto("/auth/profil");
 
   await expect(page.getByText("Student", { exact: true })).toBeVisible();
@@ -16,7 +18,9 @@ test("Student")("update profile", async ({ page }) => {
   await expect(page.getByTestId("toast").getByText("Brukeren ble oppdatert")).toBeVisible();
 });
 
-test("Admin")("see admin dashboard", async ({ page }) => {
+test("see admin dashboard", async ({ page }) => {
+  await loginAs(page, "Admin");
+
   await page.goto("/");
 
   await page.getByTestId("user-menu").click();

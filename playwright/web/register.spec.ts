@@ -1,19 +1,21 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
-import { test } from "../helpers/sessionTest";
+import { loginAs } from "../helpers/sessionTest";
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
 
 const sql = postgres(process.env.DATABASE_URL!);
 
-baseTest.describe("Register", () => {
-  baseTest.beforeEach(async () => {
+test.describe("Register", () => {
+  test.beforeEach(async () => {
     await sql`DELETE FROM registration WHERE happening_id = ${ID}`;
   });
 
-  test("Student")("register and deregister to event", async ({ page }) => {
+  test("register and deregister to event", async ({ page }) => {
+    await loginAs(page, "Student");
+
     await page.goto(`/arrangement/${SLUG}`);
 
     await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
@@ -34,7 +36,7 @@ baseTest.describe("Register", () => {
     await expect(page.getByTestId("toast")).toContainText("Du er nå avmeldt");
   });
 
-  baseTest("only one should be able to register", async ({ browser }) => {
+  test("only one should be able to register", async ({ browser }) => {
     const ctx1 = await browser.newContext();
     const ctx2 = await browser.newContext();
 
@@ -98,7 +100,9 @@ baseTest.describe("Register", () => {
     await ctx2.close();
   });
 
-  test("Student5")("should not be able to register to event", async ({ page }) => {
+  test("should not be able to register to event", async ({ page }) => {
+    await loginAs(page, "Student5");
+
     await page.goto(`/arrangement/${SLUG}`);
 
     await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
@@ -113,7 +117,9 @@ baseTest.describe("Register", () => {
     );
   });
 
-  test("Admin")("see admin dashboard link", async ({ page }) => {
+  test("see admin dashboard link", async ({ page }) => {
+    await loginAs(page, "Admin");
+
     await page.goto(`/arrangement/${SLUG}`);
 
     await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();

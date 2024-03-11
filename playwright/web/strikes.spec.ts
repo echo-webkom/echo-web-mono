@@ -1,14 +1,14 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
-import { test } from "../helpers/sessionTest";
+import { loginAs } from "../helpers/sessionTest";
 
 const user = { id: "alum", name: "Andreas Aanes" };
 
 const sql = postgres(process.env.DATABASE_URL!);
 
-baseTest.describe("Strikes", () => {
-  baseTest.beforeEach(async () => {
+test.describe("Strikes", () => {
+  test.beforeEach(async () => {
     await sql`DELETE FROM strike`;
     await sql`DELETE FROM strike_info`;
     await fetch("http://localhost:3000/api/revalidate", {
@@ -18,7 +18,9 @@ baseTest.describe("Strikes", () => {
     });
   });
 
-  test("Admin")("should be able to add and remove strike", async ({ page }) => {
+  test("should be able to add and remove strike", async ({ page }) => {
+    await loginAs(page, "Admin");
+
     await page.goto(`/prikker/${user.id}`);
 
     await expect(page.getByText(`${user.name}`, { exact: true })).toBeVisible();
@@ -44,7 +46,9 @@ baseTest.describe("Strikes", () => {
     await expect(page.getByTestId("toast")).toContainText("Prikken ble slettet");
   });
 
-  test("Student5")("should not be able to access /prikker", async ({ page }) => {
+  test("should not be able to access /prikker", async ({ page }) => {
+    await loginAs(page, "Student");
+
     await page.goto("/prikker");
     await expect(page).toHaveTitle("echo – Linjeforeningen for informatikk");
 
