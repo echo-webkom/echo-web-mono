@@ -14,7 +14,7 @@ export const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
       <p
         ref={ref}
         className={cn(
-          "py-2 leading-relaxed",
+          "break-words py-2 leading-relaxed",
           {
             "text-sm": size === "sm",
             "text-lg": size === "md",
