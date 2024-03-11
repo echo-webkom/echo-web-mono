@@ -1,4 +1,4 @@
-import { sanityClient } from "../client";
+import { sanityFetch } from "../client";
 import { moviesQuery } from "./queries";
 import { type Movies } from "./schemas";
 
@@ -10,7 +10,11 @@ import { type Movies } from "./schemas";
  */
 
 export async function fetchMovies() {
-  return await sanityClient.fetch<Array<Movies>>(moviesQuery);
+  // return await sanityClient.fetch<Array<Movies>>(moviesQuery);
+  return await sanityFetch<Array<Movies>>({
+    query: moviesQuery,
+    tags: ["movies"],
+  });
 }
 
 /**
