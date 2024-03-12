@@ -1,23 +1,21 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as va from "@vercel/analytics";
+import { useForm } from "react-hook-form";
+import { type z } from "zod";
+
+import { submitForm } from "@/actions/subject-reviews";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { type z } from "zod";
-import { submitApplication } from "./actions";
-
-import { reviewForm } from "@/lib/schemas/review";
 import { useToast } from "@/hooks/use-toast";
+import { reviewForm } from "@/lib/schemas/review";
 import { Textarea } from "./ui/textarea";
 
 export const ReviewForm = () => {
@@ -29,37 +27,38 @@ export const ReviewForm = () => {
       difficulty: 5,
       usefullness: 5,
       enjoyment: 5,
+    },
+  });
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    const resp = await submitForm(data);
+
+    if (resp.result === "success") {
+      va.track("");
+
+      form.reset();
+
+      toast({
+        title: "Vurdering sendt!",
+      });
     }
-  })
 
-  const resp = await submitForm();
+    if (resp.result === "error") {
+      va.track("", {
+        message: resp.message,
+      });
 
-  if (resp.result === "success") {
-    va.track("");
-
-    form.reset();
-
-    toast({
-      title: "Søknad sendt!",
-      description: "Vi vil kontakte deg om intervju.",
-    });
-  }
-
-  if (resp.result === "error") {
-    va.track("", {
-      message: resp.message,
-    });
-
-    toast({
-      title: "Noe gikk galt",
-      description: resp.message,
-      variant: "destructive",
-    });
-  }
+      toast({
+        title: "Noe gikk galt",
+        description: resp.message,
+        variant: "destructive",
+      });
+    }
+  });
 
   return (
     <Form {...form}>
-      <form onSubmit={onsubmit} className="space-y4">
+      <form onSubmit={onSubmit} className="space-y4">
         <FormField
           control={form.control}
           name="subjectCode"
