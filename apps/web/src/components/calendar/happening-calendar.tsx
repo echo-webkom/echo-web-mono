@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ComponentProps } from "react";
+import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
+import removeMarkdown from "remove-markdown";
 
+import { createHappeningLink } from "@/lib/create-link";
 import { type Happening } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import { dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 interface Props {
   happenings: Array<Happening>;
@@ -93,7 +97,7 @@ export function HappeningCalendar({ happenings }: Props) {
         </div>
       </div>
 
-      <div className="mb-10 h-72 rounded-lg border">
+      <div className="mb-10 h-72 overflow-hidden rounded-lg border">
         <div
           className="h-full divide-x"
           style={{
@@ -112,7 +116,7 @@ export function HappeningCalendar({ happenings }: Props) {
             return (
               <div key={day.toString()}>
                 <div className="flex flex-col gap-2">
-                  <div className="flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
+                  <div className="flex h-16 flex-col items-center justify-center border-b bg-muted py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
@@ -123,13 +127,46 @@ export function HappeningCalendar({ happenings }: Props) {
                     )}
                   </div>
 
-                  <div className="px-1">
-                    {happeningsThisDay.map((happening) => (
-                      <div key={happening._id} className="overflow-hidden rounded-lg border p-2">
-                        <p className="line-clamp-1 text-sm font-medium">{happening.title}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <ul className="flex flex-col gap-1 px-1">
+                    {happeningsThisDay.map((happening) => {
+                      const bodyNoMarkdown = removeMarkdown(happening.body ?? "");
+                      const link = createHappeningLink(happening.slug, happening.happeningType);
+
+                      return (
+                        <HoverCard key={happening._id}>
+                          <HoverCardTrigger>
+                            <div className="overflow-hidden rounded-lg border p-2">
+                              <p className="line-clamp-1 text-sm font-medium">{happening.title}</p>
+                            </div>
+                          </HoverCardTrigger>
+                          <HoverCardContent>
+                            <div className="space-y-2">
+                              <p className="font-medium">
+                                <Link className="hover:underline" href={link ?? ""}>
+                                  {happening.title}
+                                </Link>
+                              </p>
+
+                              {bodyNoMarkdown && (
+                                <p className="text-sm">
+                                  {bodyNoMarkdown.slice(0, 250)}
+                                  {(bodyNoMarkdown.length ?? 0) > 250 && "..."}
+                                </p>
+                              )}
+                              <div>
+                                <Link
+                                  href={link ?? ""}
+                                  className="text-sm font-medium italic hover:underline"
+                                >
+                                  Les mer
+                                </Link>
+                              </div>
+                            </div>
+                          </HoverCardContent>
+                        </HoverCard>
+                      );
+                    })}
+                  </ul>
                 </div>
               </div>
             );
