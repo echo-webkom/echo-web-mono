@@ -1,16 +1,17 @@
-import { pgTable, primaryKey, text } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const subjects = pgTable(
-  "subject",
-  {
-    subjectCode: text("subject_code").notNull(),
-    subjectName: text("subject_name").notNull(),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.subjectCode] }),
-  }),
-);
+import { subjectReviews } from "./subject-reviews";
+
+export const subjects = pgTable("subject", {
+  subjectCode: text("subject_code").primaryKey(),
+  subjectName: text("subject_name").notNull(),
+});
+
+export const subjectsRelations = relations(subjects, ({ many }) => ({
+  reviews: many(subjectReviews),
+}));
 
 export type Subject = (typeof subjects)["$inferSelect"];
 export type SubjectInsert = (typeof subjects)["$inferInsert"];

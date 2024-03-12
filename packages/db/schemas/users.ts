@@ -11,6 +11,7 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { degrees, strikes, usersToGroups, usersToShoppingListItems, userTypeEnum } from ".";
+import { subjectReviews } from "./subject-reviews";
 
 export const users = pgTable(
   "user",
@@ -39,6 +40,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   }),
   memberships: many(usersToGroups),
   likes: many(usersToShoppingListItems),
+  reviews: many(subjectReviews),
   strikes: many(strikes),
   bannedFromStrike: one(strikes, {
     fields: [users.bannedFromStrike],
