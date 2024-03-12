@@ -1,0 +1,2 @@
+- Slette denne fila før merge
+- Constraints for input i db
