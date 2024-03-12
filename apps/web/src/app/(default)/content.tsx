@@ -242,7 +242,7 @@ async function HappeningPreview({
             </li>
             <li>
               <span className="tracking-wider">
-                {happening.registrationStart && (
+                {happening.registrationStart && maxCapacity > 0 && (
                   <p>
                     {cn(
                       registeredCount + waitingListCount >= maxCapacity
