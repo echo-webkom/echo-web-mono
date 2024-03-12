@@ -51,8 +51,8 @@ export const submitApplication = async (
         message: "En ukjent feil oppstod",
         };
     }
-    
-    revalidatePath(`/for-studenter/fagvurdering/review/`);
+
+    revalidatePath(`/for-studenter/fagvurdering/review`);
     
     return {
         result: "success",
