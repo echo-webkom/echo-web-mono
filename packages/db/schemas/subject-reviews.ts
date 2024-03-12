@@ -7,7 +7,7 @@ export const subjectReviews = pgTable(
   "subject_review",
   {
     id: text("id").notNull(),
-    subjectCode: text("subject_")
+    subjectCode: text("subject_review")
       .notNull()
       .references(() => subjects.subjectCode),
     difficulty: integer("difficulty").notNull(),
