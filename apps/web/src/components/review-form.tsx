@@ -8,13 +8,12 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { type z } from "zod";
 import { submitApplication } from "./actions";
 
 import { reviewForm } from "@/lib/schemas/review";
@@ -33,7 +32,7 @@ export const ReviewForm = () => {
     }
   })
 
-  const resp = await submitApplication();
+  const resp = await submitForm();
 
   if (resp.result === "success") {
     va.track("");
