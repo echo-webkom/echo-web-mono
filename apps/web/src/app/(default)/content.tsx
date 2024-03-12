@@ -25,8 +25,8 @@ export async function Content() {
   const user = await auth();
 
   const [events, bedpresses, posts, jobAds, items] = await Promise.all([
-    fetchHomeHappenings(["event", "external"], 4),
-    fetchHomeHappenings(["bedpres"], 4),
+    fetchHomeHappenings(["event", "external"], 5),
+    fetchHomeHappenings(["bedpres"], 5),
     fetchPosts(2),
     fetchAvailableJobAds(4),
     getAllShoppinglistItems(),
