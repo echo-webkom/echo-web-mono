@@ -35,7 +35,7 @@ export const subjectReviewsRelations = relations(subjectReviews, ({ one }) => ({
 }));
 
 export type subjectReview = (typeof subjectReviews)["$inferSelect"];
-export type SubjecReviewtInsert = (typeof subjectReviews)["$inferInsert"];
+export type SubjectReviewtInsert = (typeof subjectReviews)["$inferInsert"];
 
 export const selectSubjectReviewSchema = createSelectSchema(subjectReviews);
 export const insertSubjectReviewSchema = createInsertSchema(subjectReviews);

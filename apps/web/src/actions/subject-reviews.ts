@@ -1,12 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getSession } from "next-auth/react";
-import { z } from "zod";
+import { type z } from "zod";
 
-import { db } from "@echo-webkom/db";
-import { subjectReviews } from "@echo-webkom/db/schemas/subject-reviews";
+import { auth } from "@echo-webkom/auth";
 
+import { createSubjectReview } from "@/data/fag-vurdering/mutations";
 import { reviewForm } from "@/lib/schemas/review";
 
 type Result =
@@ -18,30 +17,18 @@ type Result =
       message: string;
     };
 
-export const submitForm = async (data: z.infer<typeof reviewForm>): Promise<Result> => {
-  const parsedForm = reviewForm.safeParse(data);
-
-  if (!parsedForm.success) {
+export async function submitForm(payload: z.infer<typeof reviewForm>) {
+  const user = await auth();
+  const data = await reviewForm.parseAsync(payload);
+  if (!user) {
     return {
-      result: "error",
-      message: "Ugyldig data",
-    };
-  }
-
-  const session = await getSession();
-
-  if (!session) {
-    return {
-      result: "error",
-      message: "Du må logge inn for å søke",
+      success: false,
+      message: "Du er ikke logget inn",
     };
   }
 
   try {
-    await db.insert(subjectReviews).values({
-      ...parsedForm.data,
-      userId: session.user.id,
-    });
+    await createSubjectReview(data);
   } catch (error) {
     // Unknown error
     console.error(error);
@@ -57,4 +44,4 @@ export const submitForm = async (data: z.infer<typeof reviewForm>): Promise<Resu
   return {
     result: "success",
   };
-};
+}

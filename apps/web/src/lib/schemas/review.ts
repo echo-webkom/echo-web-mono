@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const reviewForm = z.object({
+  userId: z.string(),
   subjectCode: z.string(),
   difficulty: z
     .number()

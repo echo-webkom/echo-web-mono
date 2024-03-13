@@ -10,7 +10,7 @@ import {
   type UsersToShoppingListItemsInsert,
 } from "@echo-webkom/db/schemas";
 
-import { revalidateShoppingListItems } from "./revalidations";
+import { revalidateShoppingListItems } from "./revalidate";
 
 export async function createShoppinglistItem(newItem: ShoppingListItemsInsert) {
   const [insertedShoppingListItem] = await db
