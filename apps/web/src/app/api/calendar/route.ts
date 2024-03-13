@@ -5,13 +5,18 @@ import removeMarkdown from "remove-markdown";
 
 import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 
+import {
+  HAPPENING_TYPE_PARAM,
+  INCLUDE_MOVIES_PARAM,
+  INCLUDE_PAST_PARAM,
+} from "@/lib/calendar-url-builder";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
 export async function GET(req: NextRequest) {
-  const includePast = req.nextUrl.searchParams.get("includePast") === "true";
-  const happeningType = req.nextUrl.searchParams.getAll("happeningType");
-  const includeMovies = req.nextUrl.searchParams.get("includeMovies") === "true";
+  const includePast = req.nextUrl.searchParams.has(INCLUDE_PAST_PARAM);
+  const happeningType = req.nextUrl.searchParams.getAll(HAPPENING_TYPE_PARAM);
+  const includeMovies = req.nextUrl.searchParams.has(INCLUDE_MOVIES_PARAM);
 
   const happenings = await fetchAllHappenings();
   const movies = await fetchMovies();
@@ -20,22 +25,12 @@ export async function GET(req: NextRequest) {
     .filter((happening) => {
       return happeningType.includes(happening.happeningType);
     })
-    .filter((happening) => {
-      if (!happening.date) {
-        return false;
-      }
-
-      if (includePast) {
-        return true;
-      }
-
-      return isFuture(new Date(happening.date));
-    });
+    .filter((happening) => Boolean(happening.date));
 
   const mappedEvents: Array<EventAttributes> = [];
 
   for (const event of filteredHappenings) {
-    if (!event.date) {
+    if (!event.date || (!includePast && !isFuture(new Date(event.date)))) {
       continue;
     }
 
@@ -59,6 +54,10 @@ export async function GET(req: NextRequest) {
 
   if (includeMovies) {
     for (const movie of movies) {
+      if (!movie.date || (!includePast && !isFuture(new Date(movie.date)))) {
+        continue;
+      }
+
       mappedEvents.push({
         title: movie.title,
         duration: { hours: 2 },
