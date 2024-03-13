@@ -3,6 +3,7 @@
   "display": "Next.js",
   "extends": "./react.json",
   "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
     "plugins": [{ "name": "next" }]
   }
 }
