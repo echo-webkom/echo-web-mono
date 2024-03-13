@@ -1,6 +1,11 @@
+import { and, eq, inArray } from "drizzle-orm";
 import { RxBell } from "react-icons/rx";
 
+import { auth } from "@echo-webkom/auth";
+import { db } from "@echo-webkom/db";
+
 import { fetchValidNotifications } from "@/sanity/notifications/requests";
+import { type Notification } from "@/sanity/notifications/schemas";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +14,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Notification } from "@/sanity/notifications/schemas";
-import { cookies } from "next/headers";
-
 
 export default async function NotificationButton() {
-  const notifications: Notification[] = await fetchValidNotifications();
+  const user = await auth();
+
+  if (!user) {
+    return null;
+  }
+
+  const notifications = await fetchValidNotifications();
+
+  const usersToNotifications = await db.query.usersToNotifications.findMany({
+    where: (userToNotification) =>
+      and(
+        inArray(
+          userToNotification.notificationId,
+          notifications.map((notification) => notification._id),
+        ),
+        eq(userToNotification.userId, user.id),
+      ),
+  });
+
+  const viewedNotifications = usersToNotifications.map(
+    (userToNotification) => userToNotification.notificationId,
+  );
+
+  const hasViewed = (notification: Notification) => {
+    return viewedNotifications.includes(notification._id);
+  };
 
   return (
     <DropdownMenu>
@@ -28,15 +55,16 @@ export default async function NotificationButton() {
           <p className="font-bold">Varslinger</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {notifications.map((notification) => {          
+        {notifications.map((notification) => {
+          const viewed = hasViewed(notification);
           return (
-            <div>
-              {notification.viewed ? (
+            <div key={notification._id}>
+              {viewed ? (
                 <DropdownMenuItem>
                   <span>{notification.title}</span>
                 </DropdownMenuItem>
               ) : (
-                <DropdownMenuItem  className=" bg-red-200">
+                <DropdownMenuItem className="bg-red-200">
                   <span>{notification.title}</span>
                 </DropdownMenuItem>
               )}
