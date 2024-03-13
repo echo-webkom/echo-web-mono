@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
+import { BAN_LENGTH } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -18,7 +19,7 @@ import {
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { unbanUser } from "@/data/users/mutations";
-import { remainingBanNumber } from "@/lib/remainingBanNumber";
+import { getBedpresFromBan } from "@/lib/bedpresFromBan";
 import { split } from "@/utils/list";
 import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
 
@@ -48,11 +49,21 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const prevBedpresses = await getPastHappenings(10, "bedpres");
 
-  const banData = user.isBanned ? await remainingBanNumber(user) : null;
+  const availableBedpresFromBan = user.isBanned ? await getBedpresFromBan(user) : null;
 
-  const stillBanned = banData && banData.remainingBan <= 0 ? false : true;
+  const now = new Date();
 
-  if (!stillBanned) await unbanUser(user.id);
+  const untilNow = availableBedpresFromBan
+    ? availableBedpresFromBan.filter((happening) => happening.date && happening.date < now)
+    : null;
+
+  if (untilNow && untilNow.length >= BAN_LENGTH) {
+    await unbanUser(user.id);
+  }
+
+  const nextNumber = untilNow && untilNow.length < BAN_LENGTH ? BAN_LENGTH - untilNow.length : null;
+
+  const nextBedpres = nextNumber && untilNow?.at(nextNumber) ? untilNow.at(nextNumber) : null;
 
   return (
     <Container>
@@ -71,16 +82,14 @@ export default async function UserStrikesPage({ params }: Props) {
         />
       </div>
 
-      {stillBanned && banData?.nextBedpres && (
+      {nextBedpres && (
         <div>
-          Brukeren er utestengt til:{" "}
-          <Link href={`/bedpres/${banData.nextBedpres.slug}`}>{banData.nextBedpres.title}</Link>
+          Brukeren er utestengt til:
+          <Link href={`/bedpres/${nextBedpres.slug}`}>{nextBedpres.title}</Link>
         </div>
       )}
 
-      {stillBanned && !banData?.nextBedpres && (
-        <div>Antall gjenværende utestengelser: {banData?.remainingBan}</div>
-      )}
+      {nextNumber && !nextBedpres && <div>Antall gjenværende utestengelser: {nextNumber}</div>}
 
       <Text>
         <div>Gyldige prikker: {validStrikes.length}</div>
