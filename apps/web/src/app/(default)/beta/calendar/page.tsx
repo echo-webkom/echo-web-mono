@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   CalendarUrlBuilder,
+  INCLUDE_BEDPRES_REGISTRATION_PARAM,
   INCLUDE_MOVIES_PARAM,
   INCLUDE_PAST_PARAM,
 } from "@/lib/calendar-url-builder";
@@ -34,6 +35,7 @@ export default function Calendar() {
   const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
   const [includePast, setIncludePast] = useState<boolean>(false);
   const [includeMovies, setIncludeMovies] = useState<boolean>(false);
+  const [includeBedpresRegistration, setIncludeBedpresRegistration] = useState<boolean>(false);
 
   const addToTypes = (type: HappeningType) => {
     if (!types.includes(type)) {
@@ -49,6 +51,7 @@ export default function Calendar() {
   calendarBuilder.setIncludePast(includePast);
   calendarBuilder.setHappeningType(types);
   calendarBuilder.setIncludeMovies(includeMovies);
+  calendarBuilder.setIncludeBedpresRegistration(includeBedpresRegistration);
   const calendarUrl = calendarBuilder.build();
 
   return (
@@ -108,6 +111,21 @@ export default function Calendar() {
         />
         <div className="space-y-1 leading-none">
           <Label htmlFor={INCLUDE_MOVIES_PARAM}>Inkluder filmer i kalenderen</Label>
+        </div>
+      </div>
+
+      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <Checkbox
+          id={INCLUDE_BEDPRES_REGISTRATION_PARAM}
+          checked={includeBedpresRegistration}
+          onCheckedChange={(checked) =>
+            setIncludeBedpresRegistration(checked === "indeterminate" ? true : checked)
+          }
+        />
+        <div className="space-y-1 leading-none">
+          <Label htmlFor={INCLUDE_BEDPRES_REGISTRATION_PARAM}>
+            Inkluder registrering for bedriftspresentasjoner
+          </Label>
         </div>
       </div>
 
