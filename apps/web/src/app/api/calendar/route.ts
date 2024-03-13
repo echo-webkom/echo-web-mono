@@ -6,12 +6,15 @@ import removeMarkdown from "remove-markdown";
 import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 
 import { fetchAllHappenings } from "@/sanity/happening";
+import { fetchMovies } from "@/sanity/movies";
 
 export async function GET(req: NextRequest) {
   const includePast = req.nextUrl.searchParams.get("includePast") === "true";
   const happeningType = req.nextUrl.searchParams.getAll("happeningType");
+  const includeMovies = req.nextUrl.searchParams.get("includeMovies") === "true";
 
   const happenings = await fetchAllHappenings();
+  const movies = await fetchMovies();
 
   const filteredHappenings = happenings
     .filter((happening) => {
@@ -52,6 +55,24 @@ export async function GET(req: NextRequest) {
 
       method: "PUBLISH",
     } satisfies EventAttributes);
+  }
+
+  if (includeMovies) {
+    for (const movie of movies) {
+      mappedEvents.push({
+        title: movie.title,
+        duration: { hours: 2 },
+        location: "Høyteknologisenteret, Stort auditorium",
+        start: new Date(movie.date).getTime(),
+        startInputType: "utc",
+        busyStatus: "BUSY",
+        url: movie.link,
+        description: `Se ${movie.title} sammen med echo! ${movie.link}`,
+        categories: ["Film"],
+
+        method: "PUBLISH",
+      } satisfies EventAttributes);
+    }
   }
 
   const { error, value } = createEvents(mappedEvents, {

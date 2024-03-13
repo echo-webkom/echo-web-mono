@@ -25,9 +25,13 @@ const eventTypes: Array<{
   },
 ];
 
+const baseUrl =
+  process.env.NODE_ENV === "production" ? "https://echo.uib.no" : "http://localhost:3000";
+
 export default function Calendar() {
   const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
   const [includePast, setIncludePast] = useState<boolean>(false);
+  const [includeMovies, setIncludeMovies] = useState<boolean>(false);
 
   const addToTypes = (type: HappeningType) => {
     if (!types.includes(type)) {
@@ -39,10 +43,8 @@ export default function Calendar() {
     setTypes(types.filter((t) => t !== type));
   };
 
-  // Bad code
-  const url = new URL(
-    `${process.env.NODE_ENV === "production" ? "https://echo.uib.no" : "http://localhost:3000"}/api/calendar`,
-  );
+  // Bad code below, fix later idk
+  const url = new URL(`${baseUrl}/api/calendar`);
 
   if (includePast) {
     url.searchParams.set("includePast", "true");
@@ -52,6 +54,12 @@ export default function Calendar() {
 
   for (const type of types) {
     url.searchParams.append("happeningType", type);
+  }
+
+  if (includeMovies) {
+    url.searchParams.set("includeMovies", "true");
+  } else {
+    url.searchParams.delete("includeMovies");
   }
 
   return (
@@ -98,6 +106,19 @@ export default function Calendar() {
         />
         <div className="space-y-1 leading-none">
           <Label htmlFor="includePast">Inkluder hendelser som allerede har skjedd</Label>
+        </div>
+      </div>
+
+      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <Checkbox
+          id="includeMovies"
+          checked={includeMovies}
+          onCheckedChange={(checked) =>
+            setIncludeMovies(checked === "indeterminate" ? true : checked)
+          }
+        />
+        <div className="space-y-1 leading-none">
+          <Label htmlFor="includeMovies">Inkluder filmer i kalenderen</Label>
         </div>
       </div>
 
