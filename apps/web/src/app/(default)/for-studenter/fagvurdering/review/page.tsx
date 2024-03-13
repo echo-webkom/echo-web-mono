@@ -1,3 +1,5 @@
+import { ReviewForm } from "@/components/review-form";
+
 export default function Review() {
-  return <div>Legg til din review:3</div>;
+  return <ReviewForm/>
 }
