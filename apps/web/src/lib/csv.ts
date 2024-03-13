@@ -15,28 +15,8 @@ export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningC
       question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
       answer: a.answer?.answer,
     }));
-
-    const headersObj: Record<string, string> = {};
-    for (const header of selectedHeaders) {
-      headersObj[header] = r.user.find((a)) ?? "";
-    }
-
-    headersObj.id = r.user.id;
-    headersObj.Navn = r.user.name ?? "Ingen navn";
-    headersObj.Epost = r.user.alternativeEmail ?? r.user.email;
-    headersObj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
-    headersObj.År = r.user.year?.toString() || "Ingen år";
-    headersObj.Grunn = r.unregisterReason ?? "";
-
-    for (const question of happening.questions) {
-      const answer = answers.find((a) => a.questionId === question.id)?.answer;
-
-      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-
-      headersObj[question.title] = formattedAnswer;
-
     // bruk selected headers til å filtrere csv objectet
-    console.log(selectedHeaders)
+    console.log(selectedHeaders);
 
     const obj: Record<string, string> = {};
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
@@ -47,14 +27,19 @@ export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningC
     obj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
     obj.Grunn = r.unregisterReason ?? "";
 
-    for (const question of happening.questions) {
-      const answer = answers.find((a) => a.questionId === question.id)?.answer;
+    const filteredObj: Record<string, string> = {};
+    selectedHeaders.forEach((header) => {
+      if (Object.prototype.hasOwnProperty.call(obj, header)) {
+        filteredObj[header] = obj[header] ?? "";
+      }});
 
-      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-
-      obj[question.title] = formattedAnswer;
-    }
-    return obj;
+      for (const question of happening.questions) {
+        const answer = answers.find((a) => a.questionId === question.id)?.answer;
+        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+        filteredObj[question.title] = formattedAnswer;
+      }
+      //TODO: filter questions based on selected headers
+    return filteredObj;
   });
 
   registrations.sort((a, b) => {

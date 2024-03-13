@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { type ZodTypeAny } from "zod";
 
 import {
   selectUserSchema,
@@ -43,7 +44,7 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   };
 };
 
-export function useTableColumns(questions: Array<Question>, selectUserSchema) {
+export function useTableColumns(questions: Array<Question>, selectUserSchema: ZodTypeAny) {
   const [columns, setColumns] = useState<Array<string>>([]);
 
   useEffect(() => {
@@ -112,14 +113,14 @@ export function RegistrationTable({
   };
 
   const obj = zodKeys(selectUserSchema);
-  // const columns: Array<string> = [...obj, ...questions.map((question) => question.title)];
   const columns: Array<string> = [];
   for (const header of obj) {
     const formattedHeader = formatHeaders[header as HeaderType];
     columns.push(formattedHeader);
   }
   columns.push(...questions.map((question) => question.title));
-  const [selectedHeaders, setSelectedHeaders] = useState(columns);
+  const nonEmptyColumns = columns.filter((header) => header && header.trim() !== "");
+  const [selectedHeaders, setSelectedHeaders] = useState(nonEmptyColumns);
   const removeKey = (id: string) => {
     setSelectedHeaders((prev) => prev.filter((key) => key !== id));
   };
