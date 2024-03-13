@@ -24,6 +24,8 @@ export function DownloadCsvButton({
   addKey,
   selectedHeaders,
 }: DownloadCsvButtonProps) {
+  const filteredColumns = columns.filter((header) => header && header.trim() !== "");
+
   return (
     <div>
       <DropdownMenu modal>
@@ -34,7 +36,7 @@ export function DownloadCsvButton({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {columns.map((header) => {
+          {filteredColumns.map((header) => {
             const isChecked = selectedHeaders.includes(header);
             return (
               <DropdownMenuCheckboxItem

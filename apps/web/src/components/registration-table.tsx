@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { RxChevronDown } from "react-icons/rx";
 
 import {
   selectUserSchema,
@@ -14,12 +13,6 @@ import {
 import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationButton } from "@/components/edit-registration-button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
@@ -31,6 +24,16 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+
+type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year";
+
+export const formatHeaders: Record<HeaderType, string> = {
+  email: "Epost",
+  alternativeEmail: "Alternativ Epost",
+  name: "Navn",
+  year: "År",
+  degreeId: "Studieretning",
+};
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -109,7 +112,13 @@ export function RegistrationTable({
   };
 
   const obj = zodKeys(selectUserSchema);
-  const columns: Array<string> = [...obj, ...questions.map((question) => question.title)];
+  // const columns: Array<string> = [...obj, ...questions.map((question) => question.title)];
+  const columns: Array<string> = [];
+  for (const header of obj) {
+    const formattedHeader = formatHeaders[header as HeaderType];
+    columns.push(formattedHeader);
+  }
+  columns.push(...questions.map((question) => question.title));
   const [selectedHeaders, setSelectedHeaders] = useState(columns);
   const removeKey = (id: string) => {
     setSelectedHeaders((prev) => prev.filter((key) => key !== id));
@@ -175,35 +184,6 @@ export function RegistrationTable({
         <div className="flex flex-row justify-between px-4 py-2">
           <div className="mb:flex-row mb:w-auto mt-auto flex w-full flex-col items-center space-x-2">
             <RandomPersonButton registrations={registrations} />
-            {/* <DropdownMenu modal>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto flex gap-2">
-                  Columns
-                  <RxChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {columns.map((header) => {
-                  const isChecked = selectedHeaders.includes(header);
-                  return (
-                    <DropdownMenuCheckboxItem
-                      onSelect={(e) => e.preventDefault()}
-                      key={header + "checkbox"}
-                      checked={isChecked}
-                      onCheckedChange={() => {
-                        if (isChecked) {
-                          removeKey(header);
-                        } else {
-                          addKey(header);
-                        }
-                      }}
-                    >
-                      {header}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu> */}
             <DownloadCsvButton
               id={happeningId}
               columns={columns}

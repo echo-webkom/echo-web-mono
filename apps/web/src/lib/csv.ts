@@ -16,6 +16,25 @@ export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningC
       answer: a.answer?.answer,
     }));
 
+    const headersObj: Record<string, string> = {};
+    for (const header of selectedHeaders) {
+      headersObj[header] = r.user.find((a)) ?? "";
+    }
+
+    headersObj.id = r.user.id;
+    headersObj.Navn = r.user.name ?? "Ingen navn";
+    headersObj.Epost = r.user.alternativeEmail ?? r.user.email;
+    headersObj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
+    headersObj.År = r.user.year?.toString() || "Ingen år";
+    headersObj.Grunn = r.unregisterReason ?? "";
+
+    for (const question of happening.questions) {
+      const answer = answers.find((a) => a.questionId === question.id)?.answer;
+
+      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+
+      headersObj[question.title] = formattedAnswer;
+
     // bruk selected headers til å filtrere csv objectet
     console.log(selectedHeaders)
 

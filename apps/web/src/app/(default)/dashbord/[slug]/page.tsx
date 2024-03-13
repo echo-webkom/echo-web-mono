@@ -12,7 +12,6 @@ import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
 import { getHappeningCsvData } from "@/data/happenings/queries";
-import { toCsv } from "@/lib/csv";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
