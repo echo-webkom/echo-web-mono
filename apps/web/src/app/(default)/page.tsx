@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { auth } from "@echo-webkom/auth";
 
@@ -12,16 +11,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="px-4">
-        <div className="rainbow flex items-center justify-between rounded-lg p-6 shadow-lg">
-          <FaArrowRight className="animate-bounce-left h-6 w-6" />
-          <p className="text-center text-lg font-medium sm:text-3xl">
-            Husk å stemme i hovedstyre-valget!!
-          </p>
-          <FaArrowLeft className="animate-bounce-right h-6 w-6" />
-        </div>
-      </div>
-
       <Container className="relative pb-40" layout="full">
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
