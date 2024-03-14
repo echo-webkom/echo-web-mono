@@ -1,3 +1,5 @@
+import "server-only";
+
 export const BOOMTOWN_HOSTNAME = process.env.NEXT_PUBLIC_BOOMTOWN_HOSTNAME;
 
 export async function pingBoomtown(happeningId: string) {
