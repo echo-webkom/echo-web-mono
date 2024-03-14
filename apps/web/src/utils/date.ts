@@ -1,4 +1,5 @@
-import { isFuture, isPast } from "date-fns";
+import { format, isFuture, isPast } from "date-fns";
+import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";
 
@@ -97,4 +98,14 @@ export function toDateOrNull(date: string | Date | null) {
  */
 export function isBetween(startDate: Date, endDate: Date): boolean {
   return isPast(startDate) && isFuture(endDate);
+}
+
+export function dayStr(date: Date | string) {
+  const d = new Date(date);
+
+  return capitalize(
+    format(d, "EEEE", {
+      locale: nb,
+    }),
+  );
 }
