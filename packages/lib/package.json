@@ -17,7 +17,7 @@
     "eslint": "8.57.0",
     "@types/node": "18.19.22",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.3.3"
+    "typescript": "5.4.2"
   },
   "eslintConfig": {
     "root": true,
