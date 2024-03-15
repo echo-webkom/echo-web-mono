@@ -1,7 +1,10 @@
+import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 import { type User } from "@echo-webkom/db/schemas";
+
+import { cacheKeyFactory } from "./revalidate";
 
 export async function getUserStudentGroups(userId: User["id"]) {
   return await db.query.usersToGroups.findMany({
@@ -10,5 +13,15 @@ export async function getUserStudentGroups(userId: User["id"]) {
 }
 
 export async function getStudentGroups() {
-  return await db.query.groups.findMany();
+  return await cache(
+    async () => {
+      return await db.query.groups.findMany({
+        orderBy: (group, { asc }) => [asc(group.name)],
+      });
+    },
+    [cacheKeyFactory.groups],
+    {
+      tags: [cacheKeyFactory.groups],
+    },
+  )();
 }
