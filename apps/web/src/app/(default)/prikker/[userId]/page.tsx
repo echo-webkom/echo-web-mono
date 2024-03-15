@@ -18,7 +18,7 @@ import {
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { unbanUser } from "@/data/users/mutations";
-import { getBanInfo } from "@/lib/banInfo";
+import { getBanInfo } from "@/lib/ban-info";
 import { split } from "@/utils/list";
 import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
