@@ -196,8 +196,8 @@ importers:
         specifier: 0.30.1
         version: 0.30.1(@types/react@18.2.64)(react@18.2.0)
       framer-motion:
-        specifier: 11.0.8
-        version: 11.0.8(react-dom@18.2.0)(react@18.2.0)
+        specifier: 11.0.12
+        version: 11.0.12(react-dom@18.2.0)(react@18.2.0)
       ics:
         specifier: ^3.7.2
         version: 3.7.2
@@ -7156,7 +7156,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -8848,6 +8847,25 @@ packages:
       tslib: 2.6.2
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /framer-motion@11.0.12(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1VW4pk+4EH8RwWHdqntWTwF9peranyHn/BczvMzF9TGh/FwMKxoRZzkig8Nak9BQA8GymfIyCGo5adXwRuXDXA==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.6.2
     dev: false
 
   /framer-motion@11.0.5(react-dom@18.2.0)(react@18.2.0):
