@@ -46,19 +46,11 @@ export async function getPastHappenings(n: number, type: HappeningType) {
 }
 
 export async function getHappeningsFromDate(date: Date, type: HappeningType) {
-  return await cache(
-    async () => {
-      return await db.query.happenings.findMany({
-        where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
-        with: {
-          spotRanges: true,
-        },
-        orderBy: (happening) => [asc(happening.date)],
-      });
+  return await db.query.happenings.findMany({
+    where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
+    with: {
+      spotRanges: true,
     },
-    ["happeningsFromDate"],
-    {
-      revalidate: 60,
-    },
-  )();
+    orderBy: (happening) => [asc(happening.date)],
+  });
 }

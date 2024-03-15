@@ -64,5 +64,3 @@ export const STRIKE_TYPE_AMOUNT: Record<StrikeType, number> = {
   NO_FEEDBACK: 1,
   OTHER: 1,
 };
-
-export const BAN_LENGTH = 3;

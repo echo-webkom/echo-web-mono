@@ -1,3 +1,5 @@
+"use server";
+
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
@@ -12,6 +14,14 @@ export async function unbanUser(userId: string) {
     .then((res) => res[0] ?? null);
 
   if (!user) {
-    throw new Error("Failed to unban user");
+    return {
+      success: false,
+      message: "Fikk ikke fjernet utestengelsen",
+    };
   }
+
+  return {
+    success: true,
+    message: "Brukeren er ikke lenger utestengt",
+  };
 }

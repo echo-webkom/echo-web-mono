@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { BAN_LENGTH } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -19,9 +18,9 @@ import {
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { unbanUser } from "@/data/users/mutations";
-import { getBedpresFromBan } from "@/lib/bedpresFromBan";
+import { getBanInfo } from "@/lib/banInfo";
 import { split } from "@/utils/list";
-import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
+import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
 type Props = {
   params: {
@@ -40,7 +39,7 @@ export default async function UserStrikesPage({ params }: Props) {
     return notFound();
   }
 
-  const strikes = await getAllUserStrikes(userId);
+  const strikes = (await getAllUserStrikes(userId)).reverse();
 
   const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
     strikes,
@@ -49,78 +48,90 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const prevBedpresses = await getPastHappenings(10, "bedpres");
 
-  const availableBedpresFromBan = user.isBanned ? await getBedpresFromBan(user) : null;
+  try {
+    const banInfo = user.isBanned ? await getBanInfo(user) : undefined;
 
-  const now = new Date();
+    if (banInfo && banInfo?.remainingBan <= 0) {
+      await unbanUser(user.id);
+    }
 
-  const untilNow = availableBedpresFromBan
-    ? availableBedpresFromBan.filter((happening) => happening.date && happening.date < now)
-    : null;
+    return (
+      <Container>
+        <div className="justify-between sm:flex">
+          <div>
+            <Heading>{user.name}</Heading>
 
-  if (untilNow && untilNow.length >= BAN_LENGTH) {
-    await unbanUser(user.id);
-  }
+            {banInfo && banInfo.remainingBan >= 0 && (
+              <div className="text-lg text-destructive">
+                Brukeren er utestengt{" "}
+                {banInfo.nextBedpres && (
+                  <>
+                    til:{" "}
+                    <Link className="hover:underline" href={`/bedpres/${banInfo.nextBedpres.slug}`}>
+                      {banInfo.nextBedpres.title}
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
 
-  const nextNumber = untilNow && untilNow.length < BAN_LENGTH ? BAN_LENGTH - untilNow.length : null;
-
-  const nextBedpres = nextNumber && untilNow?.at(nextNumber) ? untilNow.at(nextNumber) : null;
-
-  return (
-    <Container>
-      <div className="flex justify-between">
-        <Heading>{user.name}</Heading>
-        <AddStrikeButton
-          happenings={prevBedpresses}
-          user={{
-            id: userId,
-            name: user.name,
-            email: user.email,
-          }}
-          currentAmount={validStrikes.length}
-          variant="destructive"
-          className="min-w-28"
-        />
-      </div>
-
-      {nextBedpres && (
-        <div>
-          Brukeren er utestengt til:
-          <Link href={`/bedpres/${nextBedpres.slug}`}>{nextBedpres.title}</Link>
+            <Text>
+              <div>Gyldige prikker: {validStrikes.length}</div>
+              <div> Totalt antall prikker: {strikes.length}</div>
+            </Text>
+          </div>
+          <div className="flex flex-col gap-4">
+            <AddStrikeButton
+              happenings={prevBedpresses}
+              user={{
+                id: userId,
+                name: user.name,
+                email: user.email,
+              }}
+              currentAmount={validStrikes.length}
+              variant="destructive"
+              className="min-w-28 "
+            />
+            {banInfo && banInfo?.remainingBan >= 0 && (
+              <RemoveBanButton userId={userId} variant="default" className="min-w-28" />
+            )}
+          </div>
         </div>
-      )}
 
-      {nextNumber && !nextBedpres && <div>Antall gjenværende utestengelser: {nextNumber}</div>}
+        {validStrikes.length === 0 && earlierStrikes.length === 0 && (
+          <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
+        )}
 
-      <Text>
-        <div>Gyldige prikker: {validStrikes.length}</div>
-        <div> Totalt antall prikker: {strikes.length}</div>
-      </Text>
+        {validStrikes.length > 0 && (
+          <>
+            <Heading className="mt-8" level={3}>
+              Gyldige prikker
+            </Heading>
+            <Text size="sm">Prikker siden forrige gang brukeren ble utestengt.</Text>
+            <StrikeTable strikes={validStrikes} userId={userId} />
+          </>
+        )}
 
-      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
-        <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
-      )}
-
-      {validStrikes.length > 0 && (
-        <>
-          <Heading className="mt-8" level={3}>
-            Gyldige prikker
-          </Heading>
-          <Text size="sm">Prikker siden forrige gang brukeren ble utestengt.</Text>
-          <StrikeTable strikes={validStrikes} userId={userId} />
-        </>
-      )}
-
-      {earlierStrikes.length > 0 && (
-        <>
-          <Heading level={3} className="mt-8">
-            Tidligere prikker
-          </Heading>
-          <Text size="sm">Disse prikkene regnes ikke med i neste utestengelse.</Text>
-          <StrikeTable strikes={earlierStrikes} userId={userId} />
-        </>
-      )}
-    </Container>
-  );
+        {earlierStrikes.length > 0 && (
+          <>
+            <Heading level={3} className="mt-8">
+              Tidligere prikker
+            </Heading>
+            <Text size="sm">Disse prikkene regnes ikke med i neste utestengelse.</Text>
+            <StrikeTable strikes={earlierStrikes} userId={userId} />
+          </>
+        )}
+      </Container>
+    );
+  } catch (error) {
+    console.error(error);
+    return (
+      <Container>
+        <Heading>{user.name}</Heading>
+        <Text className="text-destructive">En feil har skjedd. Ta kontakt med Webkom.</Text>
+      </Container>
+    );
+  }
 }
 
 function StrikeTable({
