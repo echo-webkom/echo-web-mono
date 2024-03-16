@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2022", "dom", "dom.iterable", "WebWorker"],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -11,8 +11,7 @@
       {
         "name": "next"
       }
-    ],
-    "types": ["@serwist/next/typings"]
+    ]
   },
   "include": [
     "next-env.d.ts",
