@@ -1,5 +1,5 @@
 import { unstable_cache as cache } from "next/cache";
-import { and, desc, eq, lt } from "drizzle-orm";
+import { and, asc, desc, eq, gt, lt } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
@@ -43,4 +43,14 @@ export async function getPastHappenings(n: number, type: HappeningType) {
       revalidate: 60,
     },
   )();
+}
+
+export async function getHappeningsFromDate(date: Date, type: HappeningType) {
+  return await db.query.happenings.findMany({
+    where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
+    with: {
+      spotRanges: true,
+    },
+    orderBy: (happening) => [asc(happening.date)],
+  });
 }

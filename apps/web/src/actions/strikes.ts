@@ -130,13 +130,9 @@ export async function addStrike(
 
     await createStrikes(data, user.id, amount, bannableStrikeNumber);
 
-    const message = bannableStrikeNumber
-      ? "Prikker lagt til. Brukeren er utestengt"
-      : "Prikker lagt til";
-
     return {
       success: true,
-      message: message,
+      message: "Prikker lagt til",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

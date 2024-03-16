@@ -17,8 +17,10 @@ import {
 } from "@/components/ui/table";
 import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
+import { unbanUser } from "@/data/users/mutations";
+import { getBanInfo } from "@/lib/ban-info";
 import { split } from "@/utils/list";
-import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
+import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
 type Props = {
   params: {
@@ -31,18 +33,13 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const user = await db.query.users.findFirst({
     where: (user) => eq(user.id, userId),
-    columns: {
-      name: true,
-      email: true,
-      bannedFromStrike: true,
-    },
   });
 
   if (!user) {
     return notFound();
   }
 
-  const strikes = await getAllUserStrikes(userId);
+  const strikes = (await getAllUserStrikes(userId)).reverse();
 
   const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
     strikes,
@@ -51,52 +48,90 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const prevBedpresses = await getPastHappenings(10, "bedpres");
 
-  return (
-    <Container>
-      <div className="flex justify-between">
+  try {
+    const banInfo = user.isBanned ? await getBanInfo(user) : undefined;
+
+    if (banInfo && banInfo?.remainingBan <= 0) {
+      await unbanUser(user.id);
+    }
+
+    return (
+      <Container>
+        <div className="justify-between sm:flex">
+          <div>
+            <Heading>{user.name}</Heading>
+
+            {banInfo && banInfo.remainingBan >= 0 && (
+              <div className="text-lg text-destructive">
+                Brukeren er utestengt{" "}
+                {banInfo.nextBedpres && (
+                  <>
+                    til:{" "}
+                    <Link className="hover:underline" href={`/bedpres/${banInfo.nextBedpres.slug}`}>
+                      {banInfo.nextBedpres.title}
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+
+            <Text>
+              <div>Gyldige prikker: {validStrikes.length}</div>
+              <div> Totalt antall prikker: {strikes.length}</div>
+            </Text>
+          </div>
+          <div className="flex flex-col gap-4">
+            <AddStrikeButton
+              happenings={prevBedpresses}
+              user={{
+                id: userId,
+                name: user.name,
+                email: user.email,
+              }}
+              currentAmount={validStrikes.length}
+              variant="destructive"
+              className="min-w-28 "
+            />
+            {banInfo && banInfo?.remainingBan >= 0 && (
+              <RemoveBanButton userId={userId} variant="default" className="min-w-28" />
+            )}
+          </div>
+        </div>
+
+        {validStrikes.length === 0 && earlierStrikes.length === 0 && (
+          <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
+        )}
+
+        {validStrikes.length > 0 && (
+          <>
+            <Heading className="mt-8" level={3}>
+              Gyldige prikker
+            </Heading>
+            <Text size="sm">Prikker siden forrige gang brukeren ble utestengt.</Text>
+            <StrikeTable strikes={validStrikes} userId={userId} />
+          </>
+        )}
+
+        {earlierStrikes.length > 0 && (
+          <>
+            <Heading level={3} className="mt-8">
+              Tidligere prikker
+            </Heading>
+            <Text size="sm">Disse prikkene regnes ikke med i neste utestengelse.</Text>
+            <StrikeTable strikes={earlierStrikes} userId={userId} />
+          </>
+        )}
+      </Container>
+    );
+  } catch (error) {
+    console.error(error);
+    return (
+      <Container>
         <Heading>{user.name}</Heading>
-        <AddStrikeButton
-          happenings={prevBedpresses}
-          user={{
-            id: userId,
-            name: user.name,
-            email: user.email,
-          }}
-          currentAmount={validStrikes.length}
-          variant="destructive"
-          className="min-w-28"
-        />
-      </div>
-      <Text>
-        <div>Gyldige prikker: {validStrikes.length}</div>
-        <div> Totalt antall prikker: {strikes.length}</div>
-      </Text>
-
-      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
-        <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
-      )}
-
-      {validStrikes.length > 0 && (
-        <>
-          <Heading className="mt-8" level={3}>
-            Gyldige prikker
-          </Heading>
-          <Text size="sm">Prikker siden forrige gang brukeren ble utestengt.</Text>
-          <StrikeTable strikes={validStrikes} userId={userId} />
-        </>
-      )}
-
-      {earlierStrikes.length > 0 && (
-        <>
-          <Heading level={3} className="mt-8">
-            Tidligere prikker
-          </Heading>
-          <Text size="sm">Disse prikkene regnes ikke med i neste utestengelse.</Text>
-          <StrikeTable strikes={earlierStrikes} userId={userId} />
-        </>
-      )}
-    </Container>
-  );
+        <Text className="text-destructive">En feil har skjedd. Ta kontakt med Webkom.</Text>
+      </Container>
+    );
+  }
 }
 
 function StrikeTable({
