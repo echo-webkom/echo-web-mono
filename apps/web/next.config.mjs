@@ -1,13 +1,5 @@
 import "./src/env.mjs";
 
-import withSerwistInit from "@serwist/next";
-
-const withSerwist = withSerwistInit({
-  swSrc: "src/sw.ts",
-  swDest: "public/sw.js",
-  disable: process.env.NODE_ENV === "development",
-});
-
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: [
@@ -89,4 +81,4 @@ const config = {
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
-export default withSerwist(config);
+export default config;
