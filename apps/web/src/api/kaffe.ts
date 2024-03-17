@@ -1,14 +1,22 @@
-export const KAFFE_URL = "https://kaffe.omfj.workers.dev";
+type KaffeOptions = {
+  url: string;
+};
+
+export const DEFAULT_KAFFE_OPTIONS = {
+  url: "https://kaffe.omfj.workers.dev",
+};
 
 class Kaffe {
   apiKey?: string;
+  options: KaffeOptions;
 
-  constructor(apiKey?: string) {
+  constructor(apiKey?: string, options: KaffeOptions = DEFAULT_KAFFE_OPTIONS) {
     this.apiKey = apiKey;
+    this.options = options;
   }
 
   async getStrikes() {
-    return await fetch(`${KAFFE_URL}/`, {
+    return await fetch(`${this.options.url}/`, {
       cache: "no-store",
     }).then((response) => response.text());
   }
@@ -18,7 +26,7 @@ class Kaffe {
       throw new Error("No API key provided");
     }
 
-    return await fetch(`${KAFFE_URL}/strike`, {
+    return await fetch(`${this.options.url}/strike`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
@@ -34,8 +42,7 @@ class Kaffe {
       throw new Error("No API key provided");
     }
 
-    return await fetch(`${KAFFE_URL}/reset`, {
-      method: "POST",
+    return await fetch(`${this.options.url}/reset`, {
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
       },
@@ -43,4 +50,7 @@ class Kaffe {
   }
 }
 
-export const kaffeApi = new Kaffe(process.env.KAFFE_API_KEY);
+export const kaffeApi = new Kaffe(
+  process.env.KAFFE_API_KEY,
+  process.env.KAFFE_URL ? { url: process.env.KAFFE_URL } : undefined,
+);
