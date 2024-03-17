@@ -11,15 +11,40 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
+import { isBoard } from "@echo-webkom/lib";
 
 import { revalidateSpotRange } from "@/data/spotrange/revalidate";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
-import { isBoard } from "@/lib/is-board";
 import { toDateOrNull } from "@/utils/date";
 import { makeListUnique } from "@/utils/list";
-import { type SanityHappening } from "./sync/query";
 
 export const dynamic = "force-dynamic";
+
+export type SanityHappening = {
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  happeningType: "event" | "bedpres" | "external";
+  registrationStartGroups: string | null;
+  registrationGroups: Array<string> | null;
+  registrationStart: string | null;
+  registrationEnd: string | null;
+  groups: Array<string> | null;
+  spotRanges: Array<{
+    spots: number;
+    minYear: number;
+    maxYear: number;
+  }> | null;
+  questions: Array<{
+    id: string;
+    title: string;
+    required: boolean;
+    type: "text" | "textarea" | "checkbox" | "radio";
+    isSensitive: boolean;
+    options: Array<string> | null;
+  }> | null;
+};
 
 /**
  * Endpoint for syncing happenings from Sanity to the database.
