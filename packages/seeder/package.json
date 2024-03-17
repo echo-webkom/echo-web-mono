@@ -1,0 +1,44 @@
+{
+  "name": "@echo-webkom/seeder",
+  "version": "0.1.0",
+  "main": "./src/index.ts",
+  "scripts": {
+    "start": "pnpm with-env tsx ./src/index.ts",
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint src",
+    "lint:fix": "eslint lint --fix",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "devDependencies": {
+    "@types/node": "18.19.23",
+    "dotenv-cli": "7.4.1",
+    "eslint": "8.57.0",
+    "eslint-config-webkom": "workspace:*",
+    "tsx": "4.7.1",
+    "typescript": "5.4.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "webkom/base"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "no-console": "off"
+        }
+      }
+    ]
+  },
+  "dependencies": {
+    "@echo-webkom/db": "workspace:*",
+    "@echo-webkom/lib": "workspace:*",
+    "@sanity/client": "6.15.4",
+    "drizzle-orm": "0.30.2",
+    "groq": "^3.34.0"
+  }
+}

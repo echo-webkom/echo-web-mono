@@ -2,7 +2,6 @@
   "name": "@echo-webkom/echogram",
   "version": "0.1.0",
   "main": "./src/index.ts",
-  "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",

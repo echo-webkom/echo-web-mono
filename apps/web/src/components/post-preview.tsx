@@ -3,7 +3,8 @@ import { addDays, format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import removeMd from "remove-markdown";
 
-import { isBoard } from "@/lib/is-board";
+import { isBoard } from "@echo-webkom/lib";
+
 import { type Post } from "@/sanity/posts";
 import { cn } from "@/utils/cn";
 import { Chip } from "./typography/chip";

@@ -1,5 +1,3 @@
-import { revalidateTag } from "next/cache";
-import { NextResponse } from "next/server";
 import { inArray, sql } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
@@ -11,17 +9,12 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
+import { isBoard } from "@echo-webkom/lib";
 
-import { withBasicAuth } from "@/lib/checks/with-basic-auth";
-import { isBoard } from "@/lib/is-board";
-import { client } from "@/sanity/client";
+import { client } from "./client";
 import { happeningQueryList, type SanityHappening } from "./query";
 
-export const dynamic = "force-dynamic";
-
-export const GET = withBasicAuth(async () => {
-  const startTime = new Date().getTime();
-
+export const seed = async () => {
   const res = await client.fetch<Array<SanityHappening>>(happeningQueryList);
 
   const formattedHappenings = res
@@ -94,10 +87,6 @@ export const GET = withBasicAuth(async () => {
       if (groupsToInsert.length > 0) {
         await tx.insert(happeningsToGroups).values(groupsToInsert);
       }
-
-      for (const happening of formattedHappenings) {
-        revalidateTag(`happening-${happening.slug}`);
-      }
     }
 
     await tx.delete(spotRanges).where(
@@ -147,13 +136,4 @@ export const GET = withBasicAuth(async () => {
       await tx.insert(questions).values(questionsToInsert);
     }
   });
-
-  revalidateTag("happening-params");
-  revalidateTag("home-happenings");
-  revalidateTag("happenings");
-
-  return NextResponse.json({
-    message: "OK",
-    time: (new Date().getTime() - startTime) / 1000,
-  });
-});
+};

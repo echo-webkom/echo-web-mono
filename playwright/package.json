@@ -2,7 +2,6 @@
   "name": "@echo-webkom/playwright",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "scripts": {
     "test:e2e": "TESTING=\"true\" pnpm with-env playwright test",
     "test:e2e:ui": "TESTING=\"true\" pnpm with-env playwright test --ui-port 5555",
