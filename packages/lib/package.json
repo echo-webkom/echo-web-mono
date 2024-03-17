@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
-    "@types/node": "18.19.23"
+    "@types/node": "18.19.24"
   },
   "devDependencies": {
     "eslint": "8.57.0",
-    "@types/node": "18.19.23",
+    "@types/node": "18.19.24",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.4.2"
   },

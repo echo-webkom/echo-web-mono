@@ -23,7 +23,7 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@types/node": "18.19.23",
+    "@types/node": "18.19.24",
     "@types/react": "18.2.65",
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
