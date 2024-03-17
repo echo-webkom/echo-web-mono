@@ -1,6 +1,6 @@
-export const KAFFE_URL = "https://kaffe.deno.dev";
+export const KAFFE_URL = "https://kaffe.omfj.workers.dev";
 
-export class Kaffe {
+class Kaffe {
   apiKey?: string;
 
   constructor(apiKey?: string) {
@@ -13,7 +13,7 @@ export class Kaffe {
     }).then((response) => response.text());
   }
 
-  async strike(userId: string) {
+  async strike(reporter: string) {
     if (!this.apiKey) {
       throw new Error("No API key provided");
     }
@@ -24,7 +24,7 @@ export class Kaffe {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        userId,
+        reporter,
       }),
     }).then((response) => response.status === 200);
   }
@@ -42,3 +42,5 @@ export class Kaffe {
     }).then((response) => response.status === 200);
   }
 }
+
+export const kaffeApi = new Kaffe(process.env.KAFFE_API_KEY);
