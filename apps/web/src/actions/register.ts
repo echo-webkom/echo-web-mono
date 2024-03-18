@@ -17,6 +17,7 @@ import {
 
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
+import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { shortDateNoYear } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
@@ -59,6 +60,21 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       return {
         success: false,
         message: "Arrangementet finnes ikke",
+      };
+    }
+
+    /**
+     * Check if user is banned
+     */
+    const isBanned =
+      user.isBanned && happening.type === "bedpres"
+        ? await isUserBannedFromBedpres(user, happening)
+        : false;
+
+    if (isBanned) {
+      return {
+        success: false,
+        message: "Du er utestengt fra denne bedriftspresentasjonen",
       };
     }
 

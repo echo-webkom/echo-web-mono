@@ -4,7 +4,7 @@ import { type Metadata } from "next/types";
 import { auth } from "@echo-webkom/auth";
 
 import { SidebarLayout } from "@/components/sidebar-layout";
-import { isWebkom } from "@/lib/memberships";
+import { isBedkom } from "@/lib/memberships";
 
 type Props = {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ const strikesRoutes = [
 export default async function StrikesDashboardLayout({ children }: Props) {
   const user = await auth();
 
-  if (!(user && isWebkom(user))) {
+  if (!(user && isBedkom(user))) {
     return redirect("/");
   }
 

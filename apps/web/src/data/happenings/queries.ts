@@ -54,3 +54,18 @@ export async function getHappeningsFromDate(date: Date, type: HappeningType) {
     orderBy: (happening) => [asc(happening.date)],
   });
 }
+
+export async function getHappeningsFromDateToDate(
+  fromDate: Date,
+  toDate: Date,
+  type: HappeningType,
+) {
+  return await db.query.happenings.findMany({
+    where: (happening) =>
+      and(eq(happening.type, type), gt(happening.date, fromDate), lt(happening.date, toDate)),
+    with: {
+      spotRanges: true,
+    },
+    orderBy: (happening) => [asc(happening.date)],
+  });
+}
