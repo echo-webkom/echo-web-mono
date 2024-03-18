@@ -120,15 +120,13 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {event.company && (
         <SidebarItem>
           <Link href={event.company.website}>
-            <div className="overflow-hidden">
-              <div className="relative aspect-square w-full">
-                <Image
-                  src={urlFor(event.company.image).url()}
-                  alt={`${event.company.name} logo`}
-                  fill
-                />
-              </div>
-            </div>
+            <Image
+              src={urlFor(event.company.image).url()}
+              alt={`${event.company.name} logo`}
+              width={700}
+              height={475}
+              className="h-auto w-full"
+            />
           </Link>
         </SidebarItem>
       )}

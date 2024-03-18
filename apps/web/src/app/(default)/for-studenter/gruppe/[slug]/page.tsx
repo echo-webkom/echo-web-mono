@@ -47,7 +47,7 @@ export default async function GroupPage({ params }: Props) {
 
   const group = await getData(slug);
 
-  const hasSocials = Object.values(group.socials ?? {}).some((social) => social);
+  const hasSocials = Object.values(group.socials ?? {}).some((value) => value);
 
   return (
     <Container className="space-y-8">
@@ -97,9 +97,13 @@ export default async function GroupPage({ params }: Props) {
       )}
 
       {group.image && (
-        <div className="relative overflow-hidden rounded-lg">
-          <Image width={700} height={475} src={urlFor(group.image).url()} alt={group.name} />
-        </div>
+        <Image
+          width={700}
+          height={475}
+          src={urlFor(group.image).url()}
+          alt={group.name}
+          className="rounded-lg"
+        />
       )}
 
       <section>
