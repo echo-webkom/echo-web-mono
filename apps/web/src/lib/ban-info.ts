@@ -28,6 +28,29 @@ async function getDateBanned(bannedFromStrike: number) {
   return dateBanned;
 }
 
+/** Retruns true if the user should be unbanned */
+export async function isReadyToUnban(user: User) {
+  if (!user.year) {
+    throw new Error("User year not found");
+  }
+
+  if (!user.bannedFromStrike || !user.isBanned) {
+    throw new Error("User is not banned");
+  }
+
+  const dateBanned = await getDateBanned(user.bannedFromStrike);
+
+  const happenings = await getHappeningsFromDateToDate(dateBanned, new Date(), "bedpres");
+
+  const available = happenings.filter((happening) =>
+    happening.spotRanges.some(
+      (spotRange) => user.year! >= spotRange.minYear && user.year! <= spotRange.maxYear,
+    ),
+  );
+
+  return available.length >= BAN_LENGTH;
+}
+
 export async function getNextBedpresAfterBan(user: User) {
   if (!user.year) {
     throw new Error("User year not found");
@@ -93,5 +116,5 @@ export async function isUserBannedFromBedpres(user: User, bedpres: Happening) {
     )
     .filter((happening) => happening !== bedpres);
 
-  return available.length >= BAN_LENGTH ? false : true;
+  return available.length < BAN_LENGTH;
 }
