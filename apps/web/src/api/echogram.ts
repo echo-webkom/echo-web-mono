@@ -1,14 +1,14 @@
 export const PROFILE_IMAGE_FUNCTION_URL = "https://echo-images.azurewebsites.net/api/images";
 
-export class EchoGram {
-  #apiKey: string | undefined;
+class EchoGram {
+  apiKey: string | undefined;
 
   constructor(apiKey: string | undefined) {
-    this.#apiKey = apiKey;
+    this.apiKey = apiKey;
   }
 
+  // TODO: handle errors
   async getImageByUserId(userId: string) {
-    // TODO: handle errors
     try {
       const response = await fetch(`${PROFILE_IMAGE_FUNCTION_URL}?userId=${userId}`, {
         method: "GET",
@@ -23,8 +23,6 @@ export class EchoGram {
 
   async uploadImage(userId: string, file: File) {
     try {
-      // const file = formData.get("image") as File;
-
       if (file.size === 0 || typeof file.size === "undefined") {
         return {
           success: false,
@@ -54,6 +52,7 @@ export class EchoGram {
         method: "POST",
         headers: {
           "User-ID": userId,
+          Authorization: `Bearer ${this.apiKey}`,
         },
         body: formData,
       });
@@ -85,3 +84,5 @@ export class EchoGram {
     }
   }
 }
+
+export const echoGram = new EchoGram(process.env.ECHOGRAM_API_KEY);

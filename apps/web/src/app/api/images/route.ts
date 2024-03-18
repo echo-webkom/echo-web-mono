@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 
 import { auth } from "@echo-webkom/auth";
 
-import { echoGram } from "@/lib/echogram";
+import { echoGram } from "@/api/echogram";
 
 export async function POST(req: NextRequest) {
   const user = await auth();
