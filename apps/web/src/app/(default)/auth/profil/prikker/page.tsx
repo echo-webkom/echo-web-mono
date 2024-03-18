@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db";
 
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -16,9 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getAllUserStrikes } from "@/data/strikes/queries";
+import { getNextBedpresAfterBan } from "@/lib/ban-info";
+import { split } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-
-//import { getNextBedpresAfterBan } from "@/data/happenings/queries";
 
 export default async function UserStrikePagez() {
   const user = await auth();
@@ -27,20 +26,14 @@ export default async function UserStrikePagez() {
     return redirect("/auth/logg-inn");
   }
 
-  //const nextBedpres = user.isBanned ? await getNextBedpresAfterBan(user) : null;
+  const strikes = (await getAllUserStrikes(user.id)).reverse();
 
-  const strikes = await db.query.strikes.findMany({
-    where: (strike) => eq(strike.userId, user.id),
-    with: {
-      strikeInfo: {
-        with: {
-          happening: true,
-          issuer: true,
-        },
-      },
-    },
-  });
-  //  {nextBedpres && <h1>Du er utestengt til: {nextBedpres}</h1>}
+  const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
+    strikes,
+    (strike) => strike.id > (user.bannedFromStrike ?? -1),
+  );
+
+  const nextBedpresAfterBan = user.isBanned ? await getNextBedpresAfterBan(user) : null;
 
   return (
     <div className="max-w-4xl">
@@ -66,37 +59,80 @@ export default async function UserStrikePagez() {
         </Text>
       </div>
 
-      {strikes.length > 0 ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead scope="col">Bedpres</TableHead>
-              <TableHead scope="col">Årsak</TableHead>
-              <TableHead scope="col">Dato utstedt</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {strikes.map((strike) => {
-              return (
-                <TableRow key={strike.id}>
-                  <TableCell>
-                    <Link
-                      className="hover:underline"
-                      href={`/bedpres/${strike.strikeInfo.happening.slug}`}
-                    >
-                      {strike.strikeInfo.happening.title}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{strike.strikeInfo.reason}</TableCell>
-                  <TableCell>{strike.strikeInfo.createdAt.toDateString()}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      ) : (
+      {user.isBanned && (
+        <div className="text-lg text-destructive">
+          Du er utestengt{" "}
+          {nextBedpresAfterBan && (
+            <>
+              til:{" "}
+              <Link className="hover:underline" href={`/bedpres/${nextBedpresAfterBan.slug}`}>
+                {nextBedpresAfterBan.title}
+              </Link>
+            </>
+          )}
+        </div>
+      )}
+
+      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
         <p className="text-2xl">Du har ingen prikker. Fortsett sånn!</p>
       )}
+
+      {validStrikes.length > 0 && (
+        <>
+          <Heading className="mt-8" level={3}>
+            Gyldige prikker
+          </Heading>
+          <Text size="sm">
+            Får du 5 gyldige prikker vil du bli utestengt fra 3 bedriftspresentasjoner.
+          </Text>
+          <StrikeTable strikes={validStrikes} />
+        </>
+      )}
+
+      {earlierStrikes.length > 0 && (
+        <>
+          <Heading level={3} className="mt-8">
+            Tidligere prikker
+          </Heading>
+          <Text size="sm">
+            Disse prikkene er ikke lenger gyldige, og regnes ikke med i en eventuell neste
+            utestengelse.
+          </Text>
+          <StrikeTable strikes={earlierStrikes} />
+        </>
+      )}
     </div>
+  );
+}
+
+function StrikeTable({ strikes }: { strikes: Awaited<ReturnType<typeof getAllUserStrikes>> }) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead scope="col">Bedpres</TableHead>
+          <TableHead scope="col">Årsak</TableHead>
+          <TableHead scope="col">Dato utstedt</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {strikes.map((strike) => {
+          return (
+            <TableRow key={strike.id}>
+              <TableCell>
+                <Link
+                  className="hover:underline"
+                  href={`/bedpres/${strike.strikeInfo.happening.slug}`}
+                >
+                  {strike.strikeInfo.happening.title}
+                </Link>
+              </TableCell>
+              <TableCell>{strike.strikeInfo.reason}</TableCell>
+              <TableCell>{new Date(strike.strikeInfo.createdAt).toDateString()}</TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 }

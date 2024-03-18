@@ -7,11 +7,6 @@ import { getHappeningsFromDate, getHappeningsFromDateToDate } from "@/data/happe
 
 export const BAN_LENGTH = 3;
 
-export type BanInfo = {
-  remainingBan: number;
-  nextBedpres?: Happening;
-};
-
 async function getDateBanned(bannedFromStrike: number) {
   const dateBanned = await db.query.strikes
     .findFirst({
@@ -33,7 +28,7 @@ async function getDateBanned(bannedFromStrike: number) {
   return dateBanned;
 }
 
-export async function getBanInfo(user: User) {
+export async function getNextBedpresAfterBan(user: User) {
   if (!user.year) {
     throw new Error("User year not found");
   }
@@ -52,24 +47,21 @@ export async function getBanInfo(user: User) {
     ),
   );
 
+  if (available.length < BAN_LENGTH) return null;
+
   const now = new Date();
 
   const untilNow = available.filter(
     (happening) => happening.date && new Date(happening.date) < now,
   );
 
-  if (untilNow.length > BAN_LENGTH) {
-    return {
-      remainingBan: BAN_LENGTH - untilNow.length,
-    } satisfies BanInfo;
-  }
+  const index = BAN_LENGTH - untilNow.length;
+
+  if (index < 0) return null;
 
   const fromNow = available.filter((happening) => happening.date && new Date(happening.date) > now);
 
-  return {
-    remainingBan: BAN_LENGTH - untilNow.length,
-    nextBedpres: fromNow[Math.max(0, BAN_LENGTH - untilNow.length)],
-  } satisfies BanInfo;
+  return fromNow[index];
 }
 
 export async function isUserBannedFromBedpres(user: User, bedpres: Happening) {

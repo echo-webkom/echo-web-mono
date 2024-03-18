@@ -42,20 +42,8 @@ export async function getAllUserStrikes(userId: string) {
         with: {
           strikeInfo: {
             with: {
-              happening: {
-                columns: {
-                  id: true,
-                  title: true,
-                  slug: true,
-                },
-              },
-              issuer: {
-                columns: {
-                  id: true,
-                  name: true,
-                  email: true,
-                },
-              },
+              happening: true,
+              issuer: true,
             },
           },
         },
