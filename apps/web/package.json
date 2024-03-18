@@ -16,7 +16,6 @@
   "dependencies": {
     "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@echo-webkom/echogram": "workspace:*",
     "@echo-webkom/email": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@hookform/resolvers": "3.3.4",

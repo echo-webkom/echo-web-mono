@@ -105,9 +105,6 @@ importers:
       '@echo-webkom/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@echo-webkom/echogram':
-        specifier: workspace:*
-        version: link:../../packages/echogram
       '@echo-webkom/email':
         specifier: workspace:*
         version: link:../../packages/email
@@ -378,21 +375,6 @@ importers:
       tsx:
         specifier: 4.7.1
         version: 4.7.1
-      typescript:
-        specifier: 5.4.2
-        version: 5.4.2
-
-  packages/echogram:
-    devDependencies:
-      '@types/node':
-        specifier: 18.19.24
-        version: 18.19.24
-      eslint:
-        specifier: 8.57.0
-        version: 8.57.0
-      eslint-config-webkom:
-        specifier: workspace:*
-        version: link:../eslint
       typescript:
         specifier: 5.4.2
         version: 5.4.2
