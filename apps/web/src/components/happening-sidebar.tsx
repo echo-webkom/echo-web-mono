@@ -327,14 +327,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
        * - Registration is not closed
        */}
 
-      {console.log(
-        isRegistered,
-        isUserComplete,
-        isBannedFromBedpres,
-        spotRanges.length > 0,
-        userRegistrationStart,
-        isClosed,
-      )}
       {!isRegistered &&
         isUserComplete &&
         !isBannedFromBedpres &&
