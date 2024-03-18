@@ -243,17 +243,18 @@ async function HappeningPreview({
             <li>
               <span className="tracking-wider">
                 {happening.registrationStart &&
-                  (isFuture(new Date(happening.registrationStart))
-                    ? maxCapacity + " plasser"
-                    : maxCapacity > 0 && (
-                        <p>
-                          {cn(
-                            registeredCount + waitingListCount >= maxCapacity
-                              ? "Fullt"
-                              : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
-                          )}
-                        </p>
-                      ))}
+                  maxCapacity > 0 &&
+                  (isFuture(new Date(happening.registrationStart)) ? (
+                    maxCapacity + " plasser"
+                  ) : (
+                    <p>
+                      {cn(
+                        registeredCount + waitingListCount >= maxCapacity
+                          ? "Fullt"
+                          : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
+                      )}
+                    </p>
+                  ))}
               </span>
             </li>
           </ul>
