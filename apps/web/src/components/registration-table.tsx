@@ -264,16 +264,21 @@ const RegistrationRow = ({
             {isBedpres && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onSelect={(e) => {
-                    e.preventDefault();
-                  }}
-                  className="pr-10"
+
+                <Link
+                  target="_blank"
+                  className="hover:cursor-default"
+                  href={`/prikker/${registration.user.id}`}
                 >
-                  <Link className="hover:cursor-default" href={`/prikker/${registration.user.id}`}>
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                    }}
+                    className="pr-10"
+                  >
                     Prikker
-                  </Link>
-                </DropdownMenuItem>
+                  </DropdownMenuItem>
+                </Link>
               </>
             )}
           </DropdownMenuContent>
