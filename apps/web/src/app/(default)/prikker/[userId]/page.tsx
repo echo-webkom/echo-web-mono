@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { RxArrowRight as ArrowRight, RxCalendar } from "react-icons/rx";
 
 import { db } from "@echo-webkom/db";
 
@@ -149,7 +150,7 @@ function StrikeTable({
           <TableHead scope="col">Årsak</TableHead>
           <TableHead scope="col">Dato gitt</TableHead>
           <TableHead scope="col">Gitt av</TableHead>
-          <TableHead scope="col">Handling</TableHead>
+          <TableHead scope="col">{/** Actions */}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
