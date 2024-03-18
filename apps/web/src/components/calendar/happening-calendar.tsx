@@ -130,7 +130,7 @@ export function HappeningCalendar({ happenings }: Props) {
                   <ul className="flex flex-col gap-1 px-1">
                     {happeningsThisDay.map((happening) => {
                       const bodyNoMarkdown = removeMarkdown(happening.body ?? "");
-                      const link = createHappeningLink(happening.slug, happening.happeningType);
+                      const link = createHappeningLink(happening);
 
                       return (
                         <HoverCard key={happening._id}>

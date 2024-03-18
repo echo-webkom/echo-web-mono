@@ -14,6 +14,7 @@ import { PostPreview } from "@/components/post-preview";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
+import { createHappeningLink } from "@/lib/create-link";
 import { fetchHomeHappenings } from "@/sanity/happening/requests";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts/requests";
@@ -191,9 +192,7 @@ async function HappeningPreview({
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) {
-  const href = isBedpres(happening)
-    ? `/bedpres/${happening.slug}`
-    : `/arrangement/${happening.slug}`;
+  const href = createHappeningLink(happening);
 
   const registrations = await getRegistrationsByHappeningId(happening._id);
   const spotRange = await getSpotRangeByHappeningId(happening._id);
@@ -206,14 +205,11 @@ async function HappeningPreview({
     <Link href={href}>
       <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
         {isBedpres(happening) && (
-          <div className="overflow-hidden rounded-full border">
-            <Image
-              src={urlFor(happening.image).url()}
-              width={80}
-              height={80}
-              objectFit="cover"
-              alt={""}
-            />
+          // Outer div is needed to that the image is not squished
+          <div>
+            <div className="relative h-16 w-16 overflow-hidden rounded-full border md:h-20 md:w-20">
+              <Image src={urlFor(happening.image).url()} alt={happening.title} fill />
+            </div>
           </div>
         )}
 
