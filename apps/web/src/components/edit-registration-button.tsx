@@ -26,13 +26,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 import { cn } from "@/utils/cn";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
 
-type EditRegistrationButtonProps = {
+type EditRegistrationFormProps = {
   id: string;
   registration: RegistrationWithUser;
 };
 
-export function EditRegistrationButton({ id, registration }: EditRegistrationButtonProps) {
+export function EditRegistrationForm({ id, registration }: EditRegistrationFormProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -85,10 +86,17 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
       }}
     >
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)} variant="secondary" fullWidth>
+        <DropdownMenuItem
+          onSelect={(e) => {
+            e.preventDefault();
+            setIsOpen(true);
+          }}
+          className="pr-10"
+        >
           Endre
-        </Button>
+        </DropdownMenuItem>
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Endre registrering</DialogTitle>
@@ -199,16 +207,6 @@ export function EditRegistrationButton({ id, registration }: EditRegistrationBut
           </div>
 
           <DialogFooter className="mt-5 flex flex-col gap-2">
-            <Button
-              className="w-full sm:w-auto"
-              variant="secondary"
-              onClick={() => {
-                setIsOpen(false);
-                form.reset();
-              }}
-            >
-              Avbryt
-            </Button>
             <Button className="w-full sm:w-auto" type="submit">
               {isLoading ? (
                 <>
