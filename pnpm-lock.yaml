@@ -505,6 +505,9 @@ importers:
       '@sanity/client':
         specifier: 6.15.5
         version: 6.15.5
+      commander:
+        specifier: ^12.0.0
+        version: 12.0.0
       drizzle-orm:
         specifier: 0.30.2
         version: 0.30.2(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
@@ -6612,6 +6615,11 @@ packages:
   /commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
+    dev: false
+
+  /commander@12.0.0:
+    resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
+    engines: {node: '>=18'}
     dev: false
 
   /commander@2.20.3:
