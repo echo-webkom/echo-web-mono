@@ -1,5 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@echo-webkom/tsconfig/base.json",
   "include": ["src"],
   "exclude": ["node_modules"]
 }

@@ -18,6 +18,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "18.19.24",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
