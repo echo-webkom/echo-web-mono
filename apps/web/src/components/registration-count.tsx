@@ -27,7 +27,8 @@ export function RegistrationCount({
 
   return (
     <div className="flex flex-col gap-1">
-      {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+      {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
+      {maxCapacity || <span className="italic">Uendelig</span>}
       {maxCapacity && precent > 0 && (
         <div className="h-4 w-full overflow-hidden rounded-md border">
           <div
