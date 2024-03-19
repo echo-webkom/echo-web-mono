@@ -6,6 +6,8 @@
     "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
     "module": "esnext",
     "jsx": "preserve",
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    "noEmit": true,
+    "incremental": true
   }
 }

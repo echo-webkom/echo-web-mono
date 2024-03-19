@@ -30,7 +30,9 @@
       "cache": false
     },
     "test:unit": {},
-    "lint": {},
+    "lint": {
+      "cache": false
+    },
     "typecheck": {
       "cache": false
     },

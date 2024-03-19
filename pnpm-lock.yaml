@@ -512,6 +512,9 @@ importers:
         specifier: ^3.34.0
         version: 3.34.0
     devDependencies:
+      '@echo-webkom/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
       '@types/node':
         specifier: 18.19.24
         version: 18.19.24
