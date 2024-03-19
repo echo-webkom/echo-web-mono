@@ -22,12 +22,16 @@ import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 import { urlFor } from "@/utils/image-builder";
 
+const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
+  ? Number(process.env.NUM_HAPPENINGS)
+  : 4;
+
 export async function Content() {
   const user = await auth();
 
   const [events, bedpresses, posts, jobAds, items] = await Promise.all([
-    fetchHomeHappenings(["event", "external"], 5),
-    fetchHomeHappenings(["bedpres"], 5),
+    fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS),
+    fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS),
     fetchPosts(2),
     fetchAvailableJobAds(4),
     getAllShoppinglistItems(),
