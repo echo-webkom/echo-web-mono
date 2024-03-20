@@ -1,77 +1,83 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as va from "@vercel/analytics";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { type z } from "zod";
 
 import { submitForm } from "@/actions/subject-reviews";
 import { useToast } from "@/hooks/use-toast";
 import { reviewForm } from "@/lib/schemas/review";
+import { Button } from "./ui/button";
+import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import { Input } from "./ui/input";
 
-export const ReviewForm = () => {
+export function ReviewForm() {
   const { toast } = useToast();
+
   const form = useForm<z.infer<typeof reviewForm>>({
     resolver: zodResolver(reviewForm),
     defaultValues: {
       subjectCode: "",
+      userId: "",
       difficulty: 5,
       usefullness: 5,
       enjoyment: 5,
     },
   });
-  function onSubmit() {
-    form.handleSubmit(async (data) => {
-      const resp = await submitForm(data);
 
-      if (resp.success) {
-        va.track("");
+  const onSubmit = form.handleSubmit(async (data) => {
+    const resp = await submitForm(data);
 
-        form.reset();
+    if (resp.success) {
+      toast({
+        title: "Vurdering sendt!",
+        variant: "success",
+      });
 
-        toast({
-          title: "Vurdering sendt!",
-        });
-      }
+      form.reset();
+    }
 
-      if (resp.success) {
-        va.track("", {
-          // message: resp.message,
-        });
+    if (resp.success) {
+      toast({
+        title: "Noe gikk galt",
+        description: resp.message,
+        variant: "destructive",
+      });
+    }
+  });
 
-        toast({
-          title: "Noe gikk galt",
-          description: resp.message,
-          variant: "destructive",
-        });
-      }
-    });
-  }
-  // const onSubmitc = form.handleSubmit(async (data) => {
-  //   const resp = await submitForm(data);
-
-  //   if (resp.result === "success") {
-  //     va.track("");
-
-  //     form.reset();
-
-  //     toast({
-  //       title: "Vurdering sendt!",
-  //     });
-  //   }
-
-  //   if (resp.result === "error") {
-  //     va.track("", {
-  //       message: resp.message,
-  //     });
-
-  //     toast({
-  //       title: "Noe gikk galt",
-  //       description: resp.message,
-  //       variant: "destructive",
-  //     });
-  //   }
-  // });
-
-  return <div>hei</div>;
-};
+  return (
+    <Form {...form}>
+      {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
+      <form onSubmit={onSubmit}>
+        <div>
+          <FormField
+            control={form.control}
+            name="subjectCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fagkode</FormLabel>
+                <FormControl>
+                  <Input id="subjectCode" type="text" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="difficulty"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fagkode</FormLabel>
+                <FormControl>
+                  <Input id="subjectCode" type="text" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit review</Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
