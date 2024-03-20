@@ -33,7 +33,7 @@
     "test:e2e:ui": "turbo run test:e2e:ui"
   },
   "dependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "4.2.0",
+    "@ianvs/prettier-plugin-sort-imports": "4.2.1",
     "@types/prettier": "2.7.3",
     "prettier": "3.2.5",
     "prettier-plugin-organize-imports": "3.2.4",
