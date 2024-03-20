@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { and, desc, eq, lt } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { getNextBedpresAfterBan } from "@/lib/ban-info";
 import { split } from "@/utils/list";
@@ -45,7 +44,15 @@ export default async function UserStrikesPage({ params }: Props) {
     (strike) => strike.id > (user.bannedFromStrike ?? -1),
   );
 
-  const prevBedpresses = await getPastHappenings(10, "bedpres");
+  const prevBedpresses = await db.query.happenings.findMany({
+    where: (happening) =>
+      and(
+        lt(happening.date, new Date(new Date().getTime() + 14 * 24 * 60 * 60 * 1000)), // 2 weeks from now
+        eq(happening.type, "bedpres"),
+      ),
+    orderBy: (happening) => [desc(happening.date)],
+    limit: 10,
+  });
 
   const nextBedpresAfterBan = user.isBanned ? await getNextBedpresAfterBan(user) : null;
 
