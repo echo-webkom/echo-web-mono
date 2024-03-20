@@ -33,7 +33,7 @@ export const ReviewForm = () => {
   const onSubmit = form.handleSubmit(async (data) => {
     const resp = await submitForm(data);
 
-    if (resp.result === "success") {
+    if (resp.success) {
       va.track("");
 
       form.reset();
@@ -43,7 +43,7 @@ export const ReviewForm = () => {
       });
     }
 
-    if (resp.result === "error") {
+    if (resp.success) {
       va.track("", {
         message: resp.message,
       });

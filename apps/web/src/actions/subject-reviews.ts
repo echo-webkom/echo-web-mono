@@ -1,21 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { type z } from "zod";
 
 import { auth } from "@echo-webkom/auth";
 
 import { createSubjectReview } from "@/data/fag-vurdering/mutations";
 import { reviewForm } from "@/lib/schemas/review";
-
-type Result =
-  | {
-      result: "success";
-    }
-  | {
-      result: "error";
-      message: string;
-    };
 
 export async function submitForm(payload: z.infer<typeof reviewForm>) {
   const user = await auth();
@@ -28,20 +18,25 @@ export async function submitForm(payload: z.infer<typeof reviewForm>) {
   }
 
   try {
-    await createSubjectReview(data);
+    await createSubjectReview({
+      subjectCode: data.subjectCode,
+      userId: data.userId,
+      difficulty: data.difficulty,
+      enjoyment: data.enjoyment,
+      usefullness: data.usefullness,
+    });
+
+    return {
+      success: true,
+      message: "Din review ble lagt til.",
+    };
   } catch (error) {
     // Unknown error
     console.error(error);
 
     return {
-      result: "error",
-      message: "En ukjent feil oppstod",
+      success: false,
+      message: "Det oppstod en feil",
     };
   }
-
-  revalidatePath(`/for-studenter/fagvurdering/review`);
-
-  return {
-    result: "success",
-  };
 }
