@@ -6,17 +6,8 @@ import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
 import { submitForm } from "@/actions/subject-reviews";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { reviewForm } from "@/lib/schemas/review";
-import { Textarea } from "./ui/textarea";
 
 export const ReviewForm = () => {
   const { toast } = useToast();
@@ -32,22 +23,22 @@ export const ReviewForm = () => {
   function onSubmit() {
     form.handleSubmit(async (data) => {
       const resp = await submitForm(data);
-  
-      if (resp.result === "success") {
+
+      if (resp.success) {
         va.track("");
-  
+
         form.reset();
-  
+
         toast({
           title: "Vurdering sendt!",
         });
       }
-  
-      if (resp.result === "error") {
+
+      if (resp.success) {
         va.track("", {
           // message: resp.message,
         });
-  
+
         toast({
           title: "Noe gikk galt",
           description: resp.message,
@@ -82,7 +73,5 @@ export const ReviewForm = () => {
   //   }
   // });
 
-  return (
-    <div>hei</div>
-  );
+  return <div>hei</div>;
 };
