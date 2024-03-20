@@ -29,91 +29,60 @@ export const ReviewForm = () => {
       enjoyment: 5,
     },
   });
+  function onSubmit() {
+    form.handleSubmit(async (data) => {
+      const resp = await submitForm(data);
+  
+      if (resp.result === "success") {
+        va.track("");
+  
+        form.reset();
+  
+        toast({
+          title: "Vurdering sendt!",
+        });
+      }
+  
+      if (resp.result === "error") {
+        va.track("", {
+          // message: resp.message,
+        });
+  
+        toast({
+          title: "Noe gikk galt",
+          description: resp.message,
+          variant: "destructive",
+        });
+      }
+    });
+  }
+  // const onSubmitc = form.handleSubmit(async (data) => {
+  //   const resp = await submitForm(data);
 
-  const onSubmit = form.handleSubmit(async (data) => {
-    const resp = await submitForm(data);
+  //   if (resp.result === "success") {
+  //     va.track("");
 
-    if (resp.success) {
-      va.track("");
+  //     form.reset();
 
-      form.reset();
+  //     toast({
+  //       title: "Vurdering sendt!",
+  //     });
+  //   }
 
-      toast({
-        title: "Vurdering sendt!",
-      });
-    }
+  //   if (resp.result === "error") {
+  //     va.track("", {
+  //       message: resp.message,
+  //     });
 
-    if (resp.success) {
-      va.track("", {
-        message: resp.message,
-      });
-
-      toast({
-        title: "Noe gikk galt",
-        description: resp.message,
-        variant: "destructive",
-      });
-    }
-  });
+  //     toast({
+  //       title: "Noe gikk galt",
+  //       description: resp.message,
+  //       variant: "destructive",
+  //     });
+  //   }
+  // });
 
   return (
-    <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y4">
-        <FormField
-          control={form.control}
-          name="subjectCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fagkode:</FormLabel>
-              <FormControl>
-                <Textarea rows={3} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="difficulty"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fagkode:</FormLabel>
-              <FormControl>
-                <Textarea rows={3} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="usefullness"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fagkode:</FormLabel>
-              <FormControl>
-                <Textarea rows={3} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="enjoyment"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fagkode:</FormLabel>
-              <FormControl>
-                <Textarea rows={3} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+    <div>hei</div>
   );
 };
