@@ -19,13 +19,20 @@ const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
   : 4;
 
 export default async function HomePage() {
+  const authData = auth();
+  const eventData = fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS);
+  const bedpresData = fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS);
+  const postData = fetchPosts(2);
+  const jobData = fetchAvailableJobAds(4);
+  const shoppingListData = getAllShoppinglistItems();
+
   const [user, events, bedpresses, posts, jobAds, items] = await Promise.all([
-    auth(),
-    fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS),
-    fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS),
-    fetchPosts(2),
-    fetchAvailableJobAds(4),
-    getAllShoppinglistItems(),
+    authData,
+    eventData,
+    bedpresData,
+    postData,
+    jobData,
+    shoppingListData,
   ]);
 
   const withDots = items.length > 5 ? true : false;

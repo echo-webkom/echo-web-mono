@@ -8,6 +8,7 @@ import { postSchema, type Post } from "./schemas";
 export async function fetchAllPosts() {
   return await sanityFetch<Array<Post>>({
     query: allPostsQuery,
+    cdn: true,
     tags: ["posts"],
   })
     .then((res) => postSchema.array().parse(res))

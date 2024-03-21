@@ -42,6 +42,7 @@ export async function fetchHomeHappenings<T extends HappeningType>(types: Array<
       happeningTypes: types,
       n,
     },
+    cdn: true,
     revalidate: 120,
   }).catch(() => []);
 }
