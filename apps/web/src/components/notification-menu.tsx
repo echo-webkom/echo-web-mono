@@ -1,3 +1,5 @@
+"use client"
+
 import { and, eq, inArray } from "drizzle-orm";
 import { RxBell } from "react-icons/rx";
 
@@ -5,6 +7,7 @@ import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { fetchValidNotifications } from "@/sanity/notifications/requests";
+import { type User } from "@echo-webkom/db/schemas";
 import { type Notification } from "@/sanity/notifications/schemas";
 import {
   DropdownMenu,
@@ -15,33 +18,41 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-export default async function NotificationButton() {
-  const user = await auth();
+type userProps = {
+  userId: string
+}
 
-  if (!user) {
-    return null;
-  }
+export default async function NotificationButton({ userId }: userProps) {
+  // const user = await auth();
+
+  // if (!user) {
+  //   return null;
+  // }
 
   const notifications = await fetchValidNotifications();
 
-  const usersToNotifications = await db.query.usersToNotifications.findMany({
-    where: (userToNotification) =>
-      and(
-        inArray(
-          userToNotification.notificationId,
-          notifications.map((notification) => notification._id),
-        ),
-        eq(userToNotification.userId, user.id),
-      ),
-  });
+  // const usersToNotifications = await db.query.usersToNotifications.findMany({
+  //   where: (userToNotification) =>
+  //     and(
+  //       inArray(
+  //         userToNotification.notificationId,
+  //         notifications.map((notification) => notification._id),
+  //       ),
+  //       eq(userToNotification.userId, user.id),
+  //     ),
+  // });
 
-  const viewedNotifications = usersToNotifications.map(
-    (userToNotification) => userToNotification.notificationId,
-  );
+  // const viewedNotifications = usersToNotifications.map(
+  //   (userToNotification) => userToNotification.notificationId,
+  // );
 
-  const hasViewed = (notification: Notification) => {
-    return viewedNotifications.includes(notification._id);
-  };
+  // const hasViewed = (notification: Notification) => {
+  //   return viewedNotifications.includes(notification._id);
+  // };
+
+  function handleClick() {
+    console.log("CLICKED");
+  }
 
   return (
     <DropdownMenu>
@@ -56,10 +67,10 @@ export default async function NotificationButton() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {notifications.map((notification) => {
-          const viewed = hasViewed(notification);
+          // const viewed = hasViewed(notification);
           return (
             <div key={notification._id}>
-              {viewed ? (
+              {true ? (
                 <DropdownMenuItem>
                   <span>{notification.title}</span>
                 </DropdownMenuItem>

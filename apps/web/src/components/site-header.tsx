@@ -30,7 +30,7 @@ export async function SiteHeader() {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
-              {user && <NotificationButton />}
+              {user && <NotificationButton userId={user.id}/>}
               <ModeToggle />
               {user ? (
                 <UserMenu user={user} />
