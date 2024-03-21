@@ -114,6 +114,9 @@ importers:
       '@echo-webkom/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@echo-webkom/sanity':
+        specifier: workspace:^
+        version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.3.4
         version: 3.3.4(react-hook-form@7.51.1)
@@ -494,6 +497,31 @@ importers:
         specifier: 1.4.0
         version: 1.4.0(@types/node@18.19.25)(jsdom@24.0.0)
 
+  packages/sanity:
+    dependencies:
+      '@sanity/client':
+        specifier: 6.15.5
+        version: 6.15.5
+      '@sanity/image-url':
+        specifier: 1.0.2
+        version: 1.0.2
+    devDependencies:
+      '@echo-webkom/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
+      '@types/node':
+        specifier: 18.19.24
+        version: 18.19.24
+      eslint:
+        specifier: 8.57.0
+        version: 8.57.0
+      eslint-config-webkom:
+        specifier: workspace:*
+        version: link:../config/eslint
+      typescript:
+        specifier: 5.4.2
+        version: 5.4.2
+
   packages/seeder:
     dependencies:
       '@echo-webkom/db':
@@ -502,9 +530,15 @@ importers:
       '@echo-webkom/lib':
         specifier: workspace:*
         version: link:../lib
+      '@echo-webkom/sanity':
+        specifier: workspace:^
+        version: link:../sanity
       '@sanity/client':
         specifier: 6.15.5
         version: 6.15.5
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
       commander:
         specifier: ^12.0.0
         version: 12.0.0
@@ -6414,7 +6448,6 @@ packages:
   /chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-    dev: true
 
   /character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}

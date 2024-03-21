@@ -7,12 +7,12 @@ import * as message from "./utils";
 
 const program = new Command();
 
-program.name("seeder").version("0.0.1");
+program.name("seeder").version("0.0.1").description("Seed data to database and Sanity");
 
 /**
  * Seed all data
  */
-type AllOptions = SanityOptions & DatabaseOptions;
+type AllOptions = Sanity.Options & Database.Options;
 
 program
   .command("all")
@@ -24,8 +24,15 @@ program
       throw new Error(`Invalid mode: ${options.mode}`);
     }
 
-    await Database.seed({ mode: options.mode });
-    await Sanity.seed();
+    message.start();
+
+    await Database.seed({
+      mode: options.mode,
+    });
+
+    await Sanity.seed({
+      dataset: options.dataset,
+    });
 
     message.complete();
     process.exit(0);
@@ -34,16 +41,14 @@ program
 /**
  * Seed sanity data
  */
-type SanityOptions = {
-  dataset: string;
-};
-
 program
   .command("sanity")
   .description("Sync data from Sanity to database")
   .option("-d, --dataset <dataset>", "Sanity dataset")
-  .action(async (_options: SanityOptions) => {
-    await Sanity.seed();
+  .action(async (options: Sanity.Options) => {
+    message.start();
+
+    await Sanity.seed(options);
 
     message.complete();
     process.exit(0);
@@ -52,18 +57,16 @@ program
 /**
  * Seed database data
  */
-type DatabaseOptions = {
-  mode: string;
-};
-
 program
   .command("database")
   .description("Seed database")
   .option("-m, --mode <mode>", "What data to seed")
-  .action(async (options: DatabaseOptions) => {
+  .action(async (options: Database.Options) => {
     if (!isSeedMode(options.mode)) {
       throw new Error(`Invalid mode: ${options.mode}`);
     }
+
+    message.start();
 
     await Database.seed({ mode: options.mode });
 
@@ -71,4 +74,9 @@ program
     process.exit(0);
   });
 
-program.parse(process.argv);
+let args = process.argv;
+if (args.length === 2) {
+  args = [...args, "all"];
+}
+
+program.parse(args);

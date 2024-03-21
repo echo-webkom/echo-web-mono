@@ -36,6 +36,15 @@ export const JOB_TYPES = [
 
 export type JobType = (typeof JOB_TYPES)[number]["value"];
 
+export const QUESTION_TYPES = [
+  { title: "Tekstfelt", value: "text" },
+  { title: "Stort tekstfelt", value: "textarea" },
+  { title: "Sjekkbokser", value: "checkbox" },
+  { title: "Valg", value: "radio" },
+] as const;
+
+export type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
+
 export type StrikeType =
   | "UNREGISTER_BEFORE_DEADLINE"
   | "UNREGISTER_AFTER_DEADLINE"
