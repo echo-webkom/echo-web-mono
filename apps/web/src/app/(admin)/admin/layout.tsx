@@ -1,12 +1,9 @@
-import { redirect } from "next/navigation";
 import { type Metadata } from "next/types";
-
-import { auth } from "@echo-webkom/auth";
 
 import { Footer } from "@/components/footer";
 import { SidebarLayout } from "@/components/sidebar-layout";
 import { SiteHeader } from "@/components/site-header";
-import { isWebkom } from "@/lib/memberships";
+import { ensureWebkom } from "@/lib/ensure";
 
 type Props = {
   children: React.ReactNode;
@@ -48,11 +45,7 @@ const adminRoutes = [
 ];
 
 export default async function AdminDashboardLayout({ children }: Props) {
-  const user = await auth();
-
-  if (!user || !isWebkom(user)) {
-    return redirect("/");
-  }
+  await ensureWebkom();
 
   return (
     <div className="flex min-h-screen flex-col">
