@@ -12,11 +12,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import WhitelistButton from "@/components/whitelist-button";
+import { ensureWebkom } from "@/lib/ensure";
 import { shortDateNoTime } from "@/utils/date";
 
-export const dynamic = "force-dynamic";
-
 export default async function WhitelistPage() {
+  await ensureWebkom();
   const whitelisted = await db.query.whitelist.findMany();
 
   return (

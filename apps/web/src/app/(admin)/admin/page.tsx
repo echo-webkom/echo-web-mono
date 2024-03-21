@@ -6,7 +6,7 @@ export default function Dashboard() {
     <Container>
       <Heading className="mb-4">Dashboard</Heading>
 
-      <p>Velkommen til dashboardet. Bla blab blabblalb bal</p>
+      <p>Velkommen til dashboardet.</p>
     </Container>
   );
 }
