@@ -22,15 +22,16 @@ type userProps = {
   userId: string
 }
 
-export default async function NotificationButton({ userId }: userProps) {
-  // const user = await auth();
+// Tenker å kjøre "use client" for å kunne bruke onClick i DropdownMenuItem for å oppdatere notifications, 
+// men det kjører ikke bra med async og await. 
 
-  // if (!user) {
-  //   return null;
-  // }
+export default async function NotificationButton({ userId }: userProps) {
+  if (!userId) {
+    return null;
+  }
 
   const notifications = await fetchValidNotifications();
-
+  // console.log(notifications);
   // const usersToNotifications = await db.query.usersToNotifications.findMany({
   //   where: (userToNotification) =>
   //     and(
@@ -38,7 +39,7 @@ export default async function NotificationButton({ userId }: userProps) {
   //         userToNotification.notificationId,
   //         notifications.map((notification) => notification._id),
   //       ),
-  //       eq(userToNotification.userId, user.id),
+  //       eq(userToNotification.userId, userId),
   //     ),
   // });
 
@@ -75,7 +76,7 @@ export default async function NotificationButton({ userId }: userProps) {
                   <span>{notification.title}</span>
                 </DropdownMenuItem>
               ) : (
-                <DropdownMenuItem className="bg-red-200">
+                <DropdownMenuItem className="bg-red-200" onClick={handleClick}>
                   <span>{notification.title}</span>
                 </DropdownMenuItem>
               )}
