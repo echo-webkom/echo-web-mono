@@ -39,7 +39,7 @@
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "6.15.5",
-    "drizzle-orm": "0.30.3",
+    "drizzle-orm": "0.30.4",
     "groq": "^3.34.0"
   }
 }
