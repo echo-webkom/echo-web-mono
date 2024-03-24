@@ -38,7 +38,7 @@
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "6.15.5",
+    "@sanity/client": "6.15.7",
     "drizzle-orm": "0.30.4",
     "groq": "^3.34.0"
   }
