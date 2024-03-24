@@ -34,25 +34,25 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
    cp .env.example .env
    ```
 
-2. Last ned "dependencies"
+1. Last ned "dependencies"
 
    ```sh
    pnpm install
    ```
 
-3. Start databasen
+1. Sette opp databasen
 
    ```sh
-   pnpm db:up
+   pnpm db:setup
    ```
 
-4. Bruk migrasjoner for å oppdatere databasen
+1. Synce og seede databasen
 
    ```sh
-   pnpm db:migrate
+   pnpm seed
    ```
 
-5. Start utviklingsmiljøet
+1. Start utviklingsmiljøet
 
    ```sh
     pnpm dev
@@ -61,11 +61,17 @@ Først forventer vi at du har installert alle "dependencies" og lagt til `.env` 
 Sidene som starter er:
 
 - [http://localhost:3000](http://localhost:3000) for nettsiden
-- [http://localhost:3001](http://localhost:3001) for dokumentasjon
 - [http://localhost:3333](http://localhost:3333) for Sanity Studio
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
+
+## Relaterte prosjekter
+
+- [echogram](https://github.com/echo-webkom/echo-images) - Systemet for å laste opp bilder til echo sin nettside.
+- [boomtown](https://github.com/echo-webkom/boomtown) - Systemet for live oppdatering av påmeldinger på arrangementer.
+- [ews](https://github.com/echo-webkom/ews) - CRON-jobber for nettsiden.
+- [kaffe](https://github.com/echo-webkom/kaffe)
 
 ## Dokumentasjon
 
