@@ -15,30 +15,31 @@ export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningC
       question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
       answer: a.answer?.answer,
     }));
-    // bruk selected headers til å filtrere csv objectet
-    console.log(selectedHeaders);
-
     const obj: Record<string, string> = {};
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
     obj.Navn = r.user.name ?? "Ingen navn";
     obj.Status = r.status;
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    obj.År = r.user.year?.toString() || "Ingen år";
+    obj.År = r.user.year?.toString() ?? "Ingen år";
     obj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
     obj.Grunn = r.unregisterReason ?? "";
 
     const filteredObj: Record<string, string> = {};
     selectedHeaders.forEach((header) => {
+      if (header === "Alternativ Epost") {
+        header = "Epost";
+      }
       if (Object.prototype.hasOwnProperty.call(obj, header)) {
         filteredObj[header] = obj[header] ?? "";
       }});
 
-      for (const question of happening.questions) {
-        const answer = answers.find((a) => a.questionId === question.id)?.answer;
-        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-        filteredObj[question.title] = formattedAnswer;
+      happening.questions.forEach((question) => {
+        if (selectedHeaders.includes(question.title)) {
+          const answer = answers.find((a) => a.questionId === question.id)?.answer;
+          const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+          filteredObj[question.title] = formattedAnswer;
       }
-      //TODO: filter questions based on selected headers
+  });
+
     return filteredObj;
   });
 
