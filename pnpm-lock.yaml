@@ -315,7 +315,7 @@ importers:
         version: link:../db
       drizzle-orm:
         specifier: 0.30.4
-        version: 0.30.4(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
+        version: 0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
       next:
         specifier: 14.1.3
         version: 14.1.3(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
@@ -393,7 +393,7 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.30.4
-        version: 0.30.4(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
+        version: 0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
       drizzle-zod:
         specifier: 0.5.1
         version: 0.5.1(drizzle-orm@0.30.4)(zod@3.22.4)
@@ -417,8 +417,8 @@ importers:
         specifier: 18.19.25
         version: 18.19.25
       '@types/pg':
-        specifier: 8.11.2
-        version: 8.11.2
+        specifier: 8.11.4
+        version: 8.11.4
       dotenv-cli:
         specifier: 7.4.1
         version: 7.4.1
@@ -507,7 +507,7 @@ importers:
         version: 6.15.5
       drizzle-orm:
         specifier: 0.30.4
-        version: 0.30.4(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
+        version: 0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
       groq:
         specifier: ^3.34.0
         version: 3.34.0
@@ -5094,8 +5094,8 @@ packages:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
     dev: false
 
-  /@types/pg@8.11.2:
-    resolution: {integrity: sha512-G2Mjygf2jFMU/9hCaTYxJrwdObdcnuQde1gndooZSOHsNSaCehAuwc7EIuSA34Do8Jx2yZ19KtvW8P0j4EuUXw==}
+  /@types/pg@8.11.4:
+    resolution: {integrity: sha512-yw3Bwbda6vO+NvI1Ue/YKOwtl31AYvvd/e73O3V4ZkNzuGpTDndLSyc0dQRB2xrQqDePd20pEGIfqSp/GH3pRw==}
     dependencies:
       '@types/node': 18.19.25
       pg-protocol: 1.6.0
@@ -7302,7 +7302,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.4(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0):
+  /drizzle-orm@0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0):
     resolution: {integrity: sha512-kWoSMGbrOFkmkAweLTFtHJMpN+nwhx89q0mLELqT2aEU+1szNV8jrnBmJwZ0WGNp7J7yQn/ezEtxBI/qzTSElQ==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -7379,7 +7379,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@types/pg': 8.11.2
+      '@types/pg': 8.11.4
       pg: 8.11.3
       postgres: 3.4.3
       react: 18.2.0
@@ -7472,7 +7472,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.30.4(@types/pg@8.11.2)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
+      drizzle-orm: 0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.3)(react@18.2.0)
       zod: 3.22.4
     dev: false
 
