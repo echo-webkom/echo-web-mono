@@ -1,7 +1,7 @@
-import { eq } from "drizzle-orm";
+import { and, asc, eq, gt, lt } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { type Happening } from "@echo-webkom/db/schemas";
+import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
 
 export async function getHappeningCsvData(happeningId: string) {
   return await db.query.happenings.findFirst({
@@ -25,5 +25,30 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
     with: {
       questions: true,
     },
+  });
+}
+
+export async function getHappeningsFromDate(date: Date, type: HappeningType) {
+  return await db.query.happenings.findMany({
+    where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
+    with: {
+      spotRanges: true,
+    },
+    orderBy: (happening) => [asc(happening.date)],
+  });
+}
+
+export async function getHappeningsFromDateToDate(
+  fromDate: Date,
+  toDate: Date,
+  type: HappeningType,
+) {
+  return await db.query.happenings.findMany({
+    where: (happening) =>
+      and(eq(happening.type, type), gt(happening.date, fromDate), lt(happening.date, toDate)),
+    with: {
+      spotRanges: true,
+    },
+    orderBy: (happening) => [asc(happening.date)],
   });
 }

@@ -16,6 +16,7 @@ import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
+import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
@@ -23,25 +24,31 @@ import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";
+import { RegistrationCount } from "./registration-count";
 
 type EventSidebarProps = {
   event: Happening;
 };
 
-export async function HappeningSidebar({ event }: EventSidebarProps) {
-  const user = await auth();
-
-  const happening = await db.query.happenings
+const getHappening = async (id: string) => {
+  return await db.query.happenings
     .findFirst({
-      where: (happening) => eq(happening.id, event._id),
+      where: (happening) => eq(happening.id, id),
       with: {
         questions: true,
         groups: true,
       },
     })
     .catch(() => null);
-  const spotRanges = await getSpotRangeByHappeningId(event._id);
-  const registrations = await getRegistrationsByHappeningId(event._id);
+};
+
+export async function HappeningSidebar({ event }: EventSidebarProps) {
+  const [user, happening, spotRanges, registrations] = await Promise.all([
+    auth(),
+    getHappening(event._id),
+    getSpotRangeByHappeningId(event._id),
+    getRegistrationsByHappeningId(event._id),
+  ]);
 
   const isRegistered = registrations.some(
     (registration) =>
@@ -91,6 +98,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
     happening?.registrationEnd && isPast(new Date(happening.registrationEnd)),
   );
 
+  const isBannedFromBedpres =
+    happening && user && happening.type === "bedpres" && user.isBanned
+      ? await isUserBannedFromBedpres(user, happening)
+      : false;
+
   return (
     <Sidebar>
       {/**
@@ -106,7 +118,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </Callout>
         </SidebarItem>
       )}
-
       {/**
        * Show company logo if:
        * - There is a company
@@ -114,19 +125,16 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {event.company && (
         <SidebarItem>
           <Link href={event.company.website}>
-            <div className="overflow-hidden">
-              <div className="relative aspect-square w-full">
-                <Image
-                  src={urlFor(event.company.image).url()}
-                  alt={`${event.company.name} logo`}
-                  fill
-                />
-              </div>
-            </div>
+            <Image
+              src={urlFor(event.company.image).url()}
+              alt={`${event.company.name} logo`}
+              width={700}
+              height={475}
+              className="h-auto w-full"
+            />
           </Link>
         </SidebarItem>
       )}
-
       {event.company && (
         <SidebarItem>
           <SidebarItemTitle>Bedrift:</SidebarItemTitle>
@@ -138,7 +146,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show date if:
        * - There is a date set
@@ -151,7 +158,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show time if:
        * - There is a date set
@@ -162,7 +168,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>{time(event.date)}</SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show spot ranges if:
        * - There are spot ranges
@@ -185,7 +190,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           ))}
         </SidebarItem>
       )}
-
       {/**
        * Show registered count if:
        * - People can reigster
@@ -194,11 +198,15 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         <SidebarItem>
           <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
           <SidebarItemContent>
-            {registeredCount} / {maxCapacity || <span className="italic">Uendelig</span>}
+            <RegistrationCount
+              happeningId={event._id}
+              maxCapacity={maxCapacity}
+              initialRegistaredCount={registeredCount}
+              initialWaitlistCount={waitlistCount}
+            />
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show location if:
        * - There is a location set
@@ -209,7 +217,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>{event.location.name}</SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show hosts if:
        * - There are hosts
@@ -230,7 +237,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show deductable if:
        * - There is a deductable
@@ -241,7 +247,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>{event.cost} kr</SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show waitlist count if:
        * - Registration is open
@@ -253,7 +258,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           <SidebarItemContent>{waitlistCount}</SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show registration end date if:
        * - Registration is open
@@ -267,7 +271,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show registration start date if:
        * - Registration is not open
@@ -282,7 +285,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </SidebarItemContent>
         </SidebarItem>
       )}
-
       {/**
        * Show registration start date for groups if:
        * - Registration is not open
@@ -302,7 +304,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             </SidebarItemContent>
           </SidebarItem>
         )}
-
       {/**
        * Show deregister button if:
        * - User is registered to happening
@@ -319,17 +320,19 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </DeregisterButton>
         </SidebarItem>
       )}
-
       {/**
        * Show registration button if:
        * - User is logged in
        * - User has completed profile
+       * - User is not banned
        * - There is a spot range (you can register to this event)
        * - Registration is open
        * - Registration is not closed
        */}
+
       {!isRegistered &&
         isUserComplete &&
+        !isBannedFromBedpres &&
         spotRanges.length > 0 &&
         userRegistrationStart &&
         !isClosed &&
@@ -339,7 +342,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             <Countdown toDate={userRegistrationStart} />
           </SidebarItem>
         )}
-
       {/**
        * Show warning closed happening warning if:
        * - User is logged in
@@ -349,6 +351,19 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         <SidebarItem>
           <Callout type="warning" noIcon>
             <p className="font-semibold">Påmelding er stengt.</p>
+          </Callout>
+        </SidebarItem>
+      )}
+      {/**
+       * Show banned warning if:
+       * - User is logged in
+       * - User is banned
+       * - User is complete
+       */}
+      {user && isBannedFromBedpres && isUserComplete && (
+        <SidebarItem>
+          <Callout type="warning" noIcon>
+            <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
           </Callout>
         </SidebarItem>
       )}
@@ -371,7 +386,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </div>
         </SidebarItem>
       )}
-
       {/**
        * Show warning for not being in group if:
        * - User is logged in
@@ -396,7 +410,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             </Callout>
           </SidebarItem>
         )}
-
       {/**
        * Show login warning if:
        * - User is not logged in
@@ -415,7 +428,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </Callout>
         </SidebarItem>
       )}
-
       {/**
        * Show link to admin dashbord if:
        * - User is host
@@ -427,7 +439,6 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
           </Button>
         </SidebarItem>
       )}
-
       {user && (
         <SidebarItem>
           <ReactionButtonGroup reactToKey={event._id} />

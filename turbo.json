@@ -30,7 +30,9 @@
       "cache": false
     },
     "test:unit": {},
-    "lint": {},
+    "lint": {
+      "cache": false
+    },
     "typecheck": {
       "cache": false
     },
@@ -65,6 +67,10 @@
     "KV_REST_API_TOKEN",
     "KV_REST_API_READ_ONLY_TOKEN",
     "RESEND_API_KEY",
-    "ECHOGRAM_API_KEY"
+    "ECHOGRAM_API_KEY",
+    "NEXT_PUBLIC_BOOMTOWN_HOSTNAME",
+    "KAFFE_URL",
+    "KAFFE_API_KEY",
+    "NUM_HAPPENINGS"
   ]
 }

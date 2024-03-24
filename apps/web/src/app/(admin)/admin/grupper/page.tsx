@@ -20,11 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ensureWebkom } from "@/lib/ensure";
 import { MembersModal } from "./members-modal";
 
-export const dynamic = "force-dynamic";
-
 export default async function AdminGroupsPage() {
+  await ensureWebkom();
+
   const groups = await db.query.groups.findMany({
     with: {
       members: {

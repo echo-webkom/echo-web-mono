@@ -35,6 +35,7 @@ export const client = createClient({
 
 type SanityFetchOptions = {
   query: string;
+  cdn?: boolean;
   params?: QueryParams;
 } & (
   | {
@@ -45,19 +46,26 @@ type SanityFetchOptions = {
     }
 );
 
-export async function sanityFetch<T>({ query, params, ...rest }: SanityFetchOptions): Promise<T> {
+export async function sanityFetch<T>({
+  query,
+  params,
+  cdn = false,
+  ...rest
+}: SanityFetchOptions): Promise<T> {
   const tags = "tags" in rest ? rest.tags : undefined;
   const revalidate = "revalidate" in rest ? rest.revalidate : undefined;
 
+  const c = cdn ? sanityClient : client;
+
   if (revalidate !== undefined) {
-    return await client.fetch(query, params ?? {}, {
+    return await c.fetch(query, params ?? {}, {
       next: {
         revalidate,
       },
     });
   }
 
-  return await client.fetch(query, params, {
+  return await c.fetch(query, params, {
     cache: "force-cache",
     next: {
       tags: tags ?? [],

@@ -73,6 +73,9 @@ export default async function EventDashboard({ params }: Props) {
       removed: 3,
       pending: 4,
     };
+    if (a.status === b.status) {
+      return a.createdAt.getTime() - b.createdAt.getTime();
+    }
 
     return statusOrder[a.status] - statusOrder[b.status];
   });
@@ -129,6 +132,7 @@ export default async function EventDashboard({ params }: Props) {
             registrations={registrations}
             studentGroups={groups}
             happeningId={happening.id}
+            isBedpres={happeningType === "bedpres"}
           />
         </div>
       ) : (

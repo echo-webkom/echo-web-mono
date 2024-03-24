@@ -1,9 +1,11 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-import { test } from "../helpers/sessionTest";
+import { loginAs } from "../helpers/sessionTest";
 
-baseTest.describe("Gruppe", () => {
-  test("Admin")("see group dashboard", async ({ page }) => {
+test.describe("Gruppe", () => {
+  test("see group dashboard", async ({ page }) => {
+    await loginAs(page, "Admin");
+
     await page.goto("/auth/profil");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
@@ -15,7 +17,9 @@ baseTest.describe("Gruppe", () => {
     await expect(page.getByText("Administrer Webkom")).toBeVisible();
   });
 
-  test("Student")("not see group dashboard", async ({ page }) => {
+  test("not see group dashboard", async ({ page }) => {
+    await loginAs(page, "Student");
+
     await page.goto("/auth/profil");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });

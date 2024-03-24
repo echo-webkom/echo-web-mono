@@ -3,9 +3,11 @@ import { type SiteFeedback } from "@echo-webkom/db/schemas";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { getAllFeedback } from "@/data/site-feedbacks/queries";
+import { ensureWebkom } from "@/lib/ensure";
 import { shortDate } from "@/utils/date";
 
 export default async function FeedbackOverview() {
+  await ensureWebkom();
   const feedback = await getAllFeedback();
 
   return (

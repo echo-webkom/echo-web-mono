@@ -16,6 +16,10 @@ export const isWebkom = <U extends TUser>(user: U) => {
   return isMemberOf(user, ["webkom"]);
 };
 
+export const isBedkom = <U extends TUser>(user: U) => {
+  return isMemberOf(user, ["bedkom"]);
+};
+
 export function isHost<U extends TUser, H extends Hostable>(user: U, happening: H) {
   return (
     isMemberOf(

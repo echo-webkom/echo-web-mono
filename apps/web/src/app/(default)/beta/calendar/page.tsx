@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  CalendarUrlBuilder,
+  INCLUDE_BEDPRES_REGISTRATION_PARAM,
+  INCLUDE_MOVIES_PARAM,
+  INCLUDE_PAST_PARAM,
+} from "@/lib/calendar-url-builder";
 import { type HappeningType } from "@/sanity/happening";
 
 const eventTypes: Array<{
@@ -28,6 +34,8 @@ const eventTypes: Array<{
 export default function Calendar() {
   const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
   const [includePast, setIncludePast] = useState<boolean>(false);
+  const [includeMovies, setIncludeMovies] = useState<boolean>(false);
+  const [includeBedpresRegistration, setIncludeBedpresRegistration] = useState<boolean>(false);
 
   const addToTypes = (type: HappeningType) => {
     if (!types.includes(type)) {
@@ -39,20 +47,12 @@ export default function Calendar() {
     setTypes(types.filter((t) => t !== type));
   };
 
-  // Bad code
-  const url = new URL(
-    `${process.env.NODE_ENV === "production" ? "https://echo.uib.no" : "http://localhost:3000"}/api/calendar`,
-  );
-
-  if (includePast) {
-    url.searchParams.set("includePast", "true");
-  } else {
-    url.searchParams.delete("includePast");
-  }
-
-  for (const type of types) {
-    url.searchParams.append("happeningType", type);
-  }
+  const calendarBuilder = new CalendarUrlBuilder();
+  calendarBuilder.setIncludePast(includePast);
+  calendarBuilder.setHappeningType(types);
+  calendarBuilder.setIncludeMovies(includeMovies);
+  calendarBuilder.setIncludeBedpresRegistration(includeBedpresRegistration);
+  const calendarUrl = calendarBuilder.build();
 
   return (
     <Container className="max-w-screen-sm space-y-4">
@@ -90,24 +90,52 @@ export default function Calendar() {
 
       <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
         <Checkbox
-          id="includePast"
+          id={INCLUDE_PAST_PARAM}
           checked={includePast}
           onCheckedChange={(checked) =>
             setIncludePast(checked === "indeterminate" ? true : checked)
           }
         />
         <div className="space-y-1 leading-none">
-          <Label htmlFor="includePast">Inkluder hendelser som allerede har skjedd</Label>
+          <Label htmlFor={INCLUDE_PAST_PARAM}>Inkluder hendelser som allerede har skjedd</Label>
+        </div>
+      </div>
+
+      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <Checkbox
+          id={INCLUDE_MOVIES_PARAM}
+          checked={includeMovies}
+          onCheckedChange={(checked) =>
+            setIncludeMovies(checked === "indeterminate" ? true : checked)
+          }
+        />
+        <div className="space-y-1 leading-none">
+          <Label htmlFor={INCLUDE_MOVIES_PARAM}>Inkluder filmer i kalenderen</Label>
+        </div>
+      </div>
+
+      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <Checkbox
+          id={INCLUDE_BEDPRES_REGISTRATION_PARAM}
+          checked={includeBedpresRegistration}
+          onCheckedChange={(checked) =>
+            setIncludeBedpresRegistration(checked === "indeterminate" ? true : checked)
+          }
+        />
+        <div className="space-y-1 leading-none">
+          <Label htmlFor={INCLUDE_BEDPRES_REGISTRATION_PARAM}>
+            Inkluder registrering for bedriftspresentasjoner
+          </Label>
         </div>
       </div>
 
       <Text>Kopier link eller last ned .ics-fil</Text>
 
-      <Input type="text" value={url.toString()} readOnly />
+      <Input type="text" value={calendarUrl} readOnly />
 
       <Button asChild>
         {/* eslint-disable-next-line react/jsx-no-target-blank */}
-        <a href={url.toString()} download target="_blank">
+        <a href={calendarUrl} download target="_blank">
           Last ned .ics
         </a>
       </Button>

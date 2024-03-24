@@ -2,7 +2,6 @@
   "name": "@echo-webkom/lib",
   "version": "0.1.0",
   "main": "./src/index.ts",
-  "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",
@@ -10,14 +9,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/db": "workspace:*",
-    "@types/node": "18.19.21"
+    "@echo-webkom/db": "workspace:*"
   },
   "devDependencies": {
+    "@echo-webkom/tsconfig": "workspace:*",
+    "@types/node": "18.19.25",
     "eslint": "8.57.0",
-    "@types/node": "18.19.21",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.3.3"
+    "typescript": "5.4.2",
+    "vitest": "1.4.0"
   },
   "eslintConfig": {
     "root": true,
