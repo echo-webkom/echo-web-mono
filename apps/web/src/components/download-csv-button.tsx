@@ -28,43 +28,51 @@ export function DownloadCsvButton({
 
   return (
     <div>
-      <DropdownMenu modal>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto flex gap-2">
-            Columns
-            <RxChevronDown />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {filteredColumns.map((header) => {
-            const isChecked = selectedHeaders.includes(header);
-            return (
-              <DropdownMenuCheckboxItem
-                onSelect={(e) => e.preventDefault()}
-                key={header + "checkbox"}
-                checked={isChecked}
-                onCheckedChange={() => {
-                  if (isChecked) {
-                    removeKey(header);
-                  } else {
-                    addKey(header);
-                  }
-                }}
+      <div className="overflow-y-auto">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full py-2">
+            <Button asChild>
+              <a
+                href={`/api/registrations?happeningId=${id}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
+                download
               >
-                {header}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <Button asChild>
-        <a
-          href={`/api/registrations?happeningId=${id}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
-          download
-        >
-          Last ned csv
-        </a>
-      </Button>
+                Last ned csv
+              </a>
+            </Button>
+          </div>
+          <div className="w-full">
+            <DropdownMenu modal>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto flex gap-2">
+                  Csv Kolonner
+                  <RxChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {filteredColumns.map((header) => {
+                  const isChecked = selectedHeaders.includes(header);
+                  return (
+                    <DropdownMenuCheckboxItem
+                      onSelect={(e) => e.preventDefault()}
+                      key={header + "checkbox"}
+                      checked={isChecked}
+                      onCheckedChange={() => {
+                        if (isChecked) {
+                          removeKey(header);
+                        } else {
+                          addKey(header);
+                        }
+                      }}
+                    >
+                      {header}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

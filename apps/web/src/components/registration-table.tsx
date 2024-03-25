@@ -59,7 +59,7 @@ export function useTableColumns(questions: Array<Question>, selectUserSchema: Zo
 
   useEffect(() => {
     const obj = zodKeys(selectUserSchema);
-    const columns = [...obj, ...questions.map((question) => question.title)];
+    const columns = [...Object.keys(obj), ...questions.map((question) => question.title)];
     setColumns(columns);
   }, [questions, selectUserSchema]);
 
@@ -70,16 +70,14 @@ export function RegistrationTable({
   registrations,
   studentGroups,
   happeningId,
-  isBedpres,
   questions,
-  // registrationRecords,
+  isBedpres,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   happeningId: string;
-  isBedpres: boolean;
   questions: Array<Question>;
-  // registrationRecords: Array<Record<string, string>>;
+  isBedpres: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -194,8 +192,8 @@ export function RegistrationTable({
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
         </div>
-        <div className="flex flex-row justify-between px-4 py-2">
-          <div className="mb:flex-row mb:w-auto mt-auto flex w-full flex-col items-center space-x-2">
+        <div className="mt-auto flex flex-col justify-between px-4 py-2 md:flex-row">
+          <div className="mt-auto flex w-full flex-col items-center space-x-2 md:w-auto md:flex-row">
             <RandomPersonButton registrations={registrations} />
             <DownloadCsvButton
               id={happeningId}

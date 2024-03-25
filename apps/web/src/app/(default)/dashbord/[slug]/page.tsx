@@ -63,8 +63,6 @@ export default async function EventDashboard({ params }: Props) {
     return notFound();
   }
 
-  // const registrationRecords = toCsv(getCsvData);
-
   registrations.sort((a, b) => {
     const statusOrder: Record<RegistrationStatus, number> = {
       registered: 0,
