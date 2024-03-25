@@ -26,7 +26,7 @@
     "nanoid": "5.0.6",
     "next-auth": "4.24.7",
     "pg": "8.11.3",
-    "postgres": "3.4.3"
+    "postgres": "3.4.4"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
