@@ -26,11 +26,11 @@
     "nanoid": "5.0.6",
     "next-auth": "4.24.7",
     "pg": "8.11.3",
-    "postgres": "3.4.3"
+    "postgres": "3.4.4"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "18.19.25",
+    "@types/node": "18.19.26",
     "@types/pg": "8.11.4",
     "dotenv-cli": "7.4.1",
     "drizzle-kit": "0.20.14",
