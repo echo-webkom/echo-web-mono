@@ -500,8 +500,8 @@ importers:
   packages/sanity:
     dependencies:
       '@sanity/client':
-        specifier: 6.15.5
-        version: 6.15.5
+        specifier: 6.15.7
+        version: 6.15.7
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -4633,18 +4633,6 @@ packages:
       pkg-dir: 5.0.0
       semver: 7.5.4
       validate-npm-package-name: 3.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@sanity/client@6.15.5:
-    resolution: {integrity: sha512-IGJPfk0bHRASPxSWEq5jY4MxECLbMVPqT3Nz0dfyZp2Pw9sIeYp528I9BQXI4dlEVWE/fEHbyvluagHn/HFqWQ==}
-    engines: {node: '>=14.18'}
-    dependencies:
-      '@sanity/eventsource': 5.0.1
-      '@vercel/stega': 0.1.0
-      get-it: 8.4.16
-      rxjs: 7.8.1
     transitivePeerDependencies:
       - supports-color
     dev: false
