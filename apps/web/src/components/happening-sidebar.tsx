@@ -6,6 +6,7 @@ import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "reac
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
@@ -20,7 +21,6 @@ import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
-import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";

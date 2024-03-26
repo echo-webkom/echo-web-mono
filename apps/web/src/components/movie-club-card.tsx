@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { isPast } from "date-fns/isPast";
 
+import { urlFor } from "@echo-webkom/sanity";
+
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
-import { urlFor } from "@/utils/image-builder";
 
 export default async function MovieClubCard() {
   const movies = await fetchNewestMovie(3);

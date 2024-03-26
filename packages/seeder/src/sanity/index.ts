@@ -10,12 +10,21 @@ import {
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
 import { isBoard } from "@echo-webkom/lib";
+import { clientWith, type Dataset } from "@echo-webkom/sanity";
 
-import { client } from "./client";
+import * as message from "../utils";
 import { happeningQueryList, type SanityHappening } from "./query";
 
-export const seed = async () => {
-  const res = await client.fetch<Array<SanityHappening>>(happeningQueryList);
+export type Options = {
+  dataset: Dataset;
+};
+
+export const seed = async ({ dataset }: Options) => {
+  message.lines();
+  console.log(`🌱 Seeding Sanity data...`);
+  message.lines();
+
+  const res = await clientWith(dataset).fetch<Array<SanityHappening>>(happeningQueryList);
 
   const formattedHappenings = res
     .filter((happening) => happening.happeningType !== "external")

@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "18.19.25",
+    "@types/node": "18.19.26",
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.7.1",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   },
   "eslintConfig": {
     "root": true,
@@ -38,8 +38,11 @@
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "6.15.5",
+    "@echo-webkom/sanity": "workspace:^",
+    "@sanity/client": "6.15.7",
+    "chalk": "5.3.0",
+    "commander": "12.0.0",
     "drizzle-orm": "0.30.4",
-    "groq": "^3.34.0"
+    "groq": "3.34.0"
   }
 }

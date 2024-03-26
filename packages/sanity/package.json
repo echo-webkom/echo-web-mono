@@ -1,28 +1,23 @@
 {
-  "name": "@echo-webkom/auth",
+  "name": "@echo-webkom/sanity",
   "version": "0.1.0",
-  "private": true,
   "main": "./src/index.ts",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
+    "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/db": "workspace:*",
-    "drizzle-orm": "0.30.4",
-    "next": "14.1.4",
-    "next-auth": "4.24.7",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@sanity/client": "6.15.7",
+    "@sanity/image-url": "1.0.2"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "18.19.26",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.4.3"
+    "typescript": "5.4.2"
   },
   "eslintConfig": {
     "root": true,
