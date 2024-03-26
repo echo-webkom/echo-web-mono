@@ -1,6 +1,12 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 
-import { client } from "@/sanity/client";
+import { urlFor } from "@echo-webkom/sanity";
+
+import { baseURL } from "@/config";
+import { fetchHappeningBySlug } from "@/sanity/happening";
+import EchoLogo from "../../../../assets/images/echo-logo.png";
 
 export const runtime = "edge";
 export const contentType = "image/png";
@@ -11,47 +17,46 @@ type Props = {
   };
 };
 
-export default async function Image({ params }: Props) {
+export default async function BedpresOpenGraphImage({ params }: Props) {
   const { slug } = params;
 
-  const title = await client.fetch<string | null>(
-    '*[_type == "bedpres" && slug.current == $slug][0].company->name',
-    { slug },
-  );
+  const bedpres = await fetchHappeningBySlug(slug);
 
-  if (!title) {
+  if (!bedpres?.company) {
     return new Response("Not found", { status: 404 });
   }
 
   return new ImageResponse(
     (
       <div
+        tw="h-full w-full p-8 flex flex-col"
         style={{
-          height: "100%",
-          width: "100%",
-          padding: "30px",
-          display: "flex",
-          flexDirection: "column",
           backgroundImage: "linear-gradient(60deg, #fff, #ffeabb)",
-          fontSize: 50,
-          letterSpacing: -2,
-          gap: "30px",
         }}
       >
-        <div
+        <img tw="h-32 w-32" src={`${baseURL}/${EchoLogo.src}`} alt="Webkom logo" />
+        <p
           style={{
             fontWeight: 400,
+            fontSize: 40,
           }}
         >
-          Bedpres med...
-        </div>
-        <div
-          style={{
-            fontWeight: 600,
-            fontSize: 80,
-          }}
-        >
-          {title}
+          Bedriftpresentasjon med...
+        </p>
+        <div tw="flex justify-between">
+          <p
+            style={{
+              fontWeight: 600,
+              fontSize: 110,
+            }}
+          >
+            {bedpres.company.name}
+          </p>
+          <img
+            tw="h-[300px] w-[300px]"
+            src={urlFor(bedpres.company.image).url()}
+            alt={bedpres.company.name}
+          />
         </div>
       </div>
     ),
