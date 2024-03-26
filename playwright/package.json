@@ -20,7 +20,7 @@
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "postgres": "3.4.4",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   },
   "eslintConfig": {
     "root": true,
