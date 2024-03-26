@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
+import { urlFor } from "@echo-webkom/sanity";
+
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
-import { urlFor } from "@/utils/image-builder";
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {

@@ -114,6 +114,9 @@ importers:
       '@echo-webkom/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@echo-webkom/sanity':
+        specifier: workspace:^
+        version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.3.4
         version: 3.3.4(react-hook-form@7.51.1)
@@ -494,6 +497,31 @@ importers:
         specifier: 1.4.0
         version: 1.4.0(@types/node@18.19.26)(jsdom@24.0.0)
 
+  packages/sanity:
+    dependencies:
+      '@sanity/client':
+        specifier: 6.15.5
+        version: 6.15.5
+      '@sanity/image-url':
+        specifier: 1.0.2
+        version: 1.0.2
+    devDependencies:
+      '@echo-webkom/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
+      '@types/node':
+        specifier: 18.19.24
+        version: 18.19.24
+      eslint:
+        specifier: 8.57.0
+        version: 8.57.0
+      eslint-config-webkom:
+        specifier: workspace:*
+        version: link:../config/eslint
+      typescript:
+        specifier: 5.4.2
+        version: 5.4.2
+
   packages/seeder:
     dependencies:
       '@echo-webkom/db':
@@ -502,14 +530,23 @@ importers:
       '@echo-webkom/lib':
         specifier: workspace:*
         version: link:../lib
+      '@echo-webkom/sanity':
+        specifier: workspace:^
+        version: link:../sanity
       '@sanity/client':
         specifier: 6.15.7
         version: 6.15.7
+      chalk:
+        specifier: 5.3.0
+        version: 5.3.0
+      commander:
+        specifier: 12.0.0
+        version: 12.0.0
       drizzle-orm:
         specifier: 0.30.4
         version: 0.30.4(@types/pg@8.11.4)(pg@8.11.3)(postgres@3.4.4)(react@18.2.0)
       groq:
-        specifier: ^3.34.0
+        specifier: 3.34.0
         version: 3.34.0
     devDependencies:
       '@echo-webkom/tsconfig':
@@ -4590,12 +4627,24 @@ packages:
       decompress: 4.2.1
       esbuild: 0.19.11
       esbuild-register: 3.5.0(esbuild@0.19.11)
-      get-it: 8.4.13
+      get-it: 8.4.16
       golden-fleece: 1.0.9
       node-machine-id: 1.1.12
       pkg-dir: 5.0.0
       semver: 7.5.4
       validate-npm-package-name: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@sanity/client@6.15.5:
+    resolution: {integrity: sha512-IGJPfk0bHRASPxSWEq5jY4MxECLbMVPqT3Nz0dfyZp2Pw9sIeYp528I9BQXI4dlEVWE/fEHbyvluagHn/HFqWQ==}
+    engines: {node: '>=14.18'}
+    dependencies:
+      '@sanity/eventsource': 5.0.1
+      '@vercel/stega': 0.1.0
+      get-it: 8.4.16
+      rxjs: 7.8.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4669,7 +4718,7 @@ packages:
       '@sanity/util': 3.34.0
       archiver: 7.0.0
       debug: 4.3.4
-      get-it: 8.4.13
+      get-it: 8.4.16
       lodash: 4.17.21
       mississippi: 4.0.0
       p-queue: 2.4.2
@@ -4715,7 +4764,7 @@ packages:
       '@sanity/uuid': 3.0.2
       debug: 4.3.4
       file-url: 2.0.2
-      get-it: 8.4.13
+      get-it: 8.4.16
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -5305,6 +5354,12 @@ packages:
   /@types/ms@0.7.34:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
     dev: false
+
+  /@types/node@18.19.24:
+    resolution: {integrity: sha512-eghAz3gnbQbvnHqB+mgB2ZR3aH6RhdEmHGS48BnV75KceQPHqabkxKI0BbUSsqhqy2Ddhc2xD/VAR9ySZd57Lw==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
 
   /@types/node@18.19.26:
     resolution: {integrity: sha512-+wiMJsIwLOYCvUqSdKTrfkS8mpTp+MPINe6+Np4TAGFWWRWiBQ5kSq9nZGCSPkzx9mvT+uEukzpX4MOSCydcvw==}
@@ -6631,7 +6686,6 @@ packages:
   /chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-    dev: true
 
   /character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
@@ -6832,6 +6886,11 @@ packages:
   /commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
+    dev: false
+
+  /commander@12.0.0:
+    resolution: {integrity: sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==}
+    engines: {node: '>=18'}
     dev: false
 
   /commander@2.20.3:
@@ -8853,24 +8912,6 @@ packages:
 
   /get-it@8.4.11:
     resolution: {integrity: sha512-Df2JuuYVldgAxHTGYLysz1q+FFVYMRElcOMLaFalH1O3SvRpuGTRccB0kmVY0MIdumc4rzinXN694mMhytkbdw==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      debug: 4.3.4
-      decompress-response: 7.0.0
-      follow-redirects: 1.15.6(debug@4.3.4)
-      into-stream: 6.0.0
-      is-plain-object: 5.0.0
-      is-retry-allowed: 2.2.0
-      is-stream: 2.0.1
-      parse-headers: 2.0.5
-      progress-stream: 2.0.0
-      tunnel-agent: 0.6.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /get-it@8.4.13:
-    resolution: {integrity: sha512-uY9sMQmiG3RCXqzfpIwt7uI6FuL0XNHgO1U8DhWbpxWgOZ8cCNJOAwr+xkLZxpYRcQ6jFEwdr6oTG55l8u415g==}
     engines: {node: '>=14.0.0'}
     dependencies:
       debug: 4.3.4
