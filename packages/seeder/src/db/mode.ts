@@ -6,6 +6,6 @@ export const SeedMode = {
 
 export type SeedMode = (typeof SeedMode)[keyof typeof SeedMode];
 
-export const isSeedMode = (mode: string): mode is SeedMode => {
+export const isSeedMode = (mode: string) => {
   return Object.values(SeedMode).includes(mode as SeedMode);
 };
