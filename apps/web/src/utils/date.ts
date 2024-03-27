@@ -100,6 +100,11 @@ export function isBetween(startDate: Date, endDate: Date): boolean {
   return isPast(startDate) && isFuture(endDate);
 }
 
+export function hoursBetween(startDate: Date | null, endDate: Date | null): number {
+  if (!startDate || !endDate) return 0;
+  return Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
+}
+
 export function dayStr(date: Date | string) {
   const d = new Date(date);
 

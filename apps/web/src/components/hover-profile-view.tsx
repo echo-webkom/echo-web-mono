@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LuClock, LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
+import { LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
 import { RxInfoCircled } from "react-icons/rx";
 
 import { type User } from "@echo-webkom/db/schemas";
@@ -7,15 +7,7 @@ import { type User } from "@echo-webkom/db/schemas";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { mailTo } from "@/utils/prefixes";
 
-export function HoverProfileView({
-  user,
-  group,
-  changedAt,
-}: {
-  user: User;
-  group: string;
-  changedAt: string | null;
-}) {
+export function HoverProfileView({ user, group }: { user: User; group: string }) {
   return (
     <Popover>
       <PopoverTrigger className="my-auto p-1">
@@ -41,12 +33,6 @@ export function HoverProfileView({
             {user.alternativeEmail ?? user.email}
           </Link>
         </p>
-        {changedAt && (
-          <p className="flex text-muted-foreground">
-            <LuClock className="my-auto mr-2" />
-            {changedAt}
-          </p>
-        )}
       </PopoverContent>
     </Popover>
   );
