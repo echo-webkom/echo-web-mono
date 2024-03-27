@@ -12,14 +12,15 @@ import {
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
+import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
+import { hoursBetween } from "@/utils/date";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
-import getRegistrationStatus from "./registration-format";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -60,12 +61,14 @@ export function RegistrationTable({
   slug,
   questions,
   isBedpres,
+  happeningDate,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   slug: string;
   questions: Array<Question>;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -233,6 +236,7 @@ export function RegistrationTable({
                 index={i}
                 showIndex={showIndex}
                 isBedpres={isBedpres}
+                happeningDate={happeningDate}
               />
             ))}
           </TableBody>
@@ -255,11 +259,13 @@ const RegistrationRow = ({
   index,
   showIndex,
   isBedpres,
+  happeningDate,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -279,7 +285,7 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {getRegistrationStatus(registration)}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>
@@ -320,3 +326,16 @@ const RegistrationRow = ({
     </TableRow>
   );
 };
+
+function getRegistrationStatus(registration: RegistrationWithUser, happeningDate: Date | null) {
+  if (registration.changedBy && registration.changedAt && registration.prevStatus) {
+    const hours = Math.floor(hoursBetween(registration.changedAt, happeningDate));
+    return cn(
+      registrationStatusToString[registration.status],
+      registration.prevStatus === "waiting" &&
+        `fra ${registrationStatusToString[registration.prevStatus].toLowerCase()}`,
+      hours < 24 && `${hours} t før`,
+    );
+  }
+  return registrationStatusToString[registration.status];
+}
