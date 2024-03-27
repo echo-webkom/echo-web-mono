@@ -302,7 +302,7 @@ importers:
         specifier: 5.4.3
         version: 5.4.3
       vite:
-        specifier: ^5.2.5
+        specifier: ^5.2.6
         version: 5.2.6(@types/node@18.19.26)
       vite-tsconfig-paths:
         specifier: 4.3.1
