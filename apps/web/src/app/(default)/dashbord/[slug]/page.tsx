@@ -123,6 +123,7 @@ export default async function EventDashboard({ params }: Props) {
             studentGroups={groups}
             happeningId={happening.id}
             isBedpres={happeningType === "bedpres"}
+            happeningDate={happening.date}
           />
         </div>
       ) : (
