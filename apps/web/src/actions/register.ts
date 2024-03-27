@@ -19,7 +19,6 @@ import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { getUser } from "@/lib/get-user";
 import { registrationFormSchema } from "@/lib/schemas/registration";
-import { shortDateNoYear } from "@/utils/date";
 import { isErrorMessage } from "@/utils/error";
 import { doesIntersect } from "@/utils/list";
 
@@ -211,9 +210,6 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         const registration = await tx
           .insert(registrations)
           .values({
-            registrationChangedAt: isWaitlisted
-              ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
-              : `Påmeldt ${shortDateNoYear(new Date())}`,
             status: isWaitlisted ? "waiting" : "registered",
             happeningId: id,
             userId: user.id,
@@ -222,9 +218,6 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           .onConflictDoUpdate({
             target: [registrations.happeningId, registrations.userId],
             set: {
-              registrationChangedAt: isWaitlisted
-                ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
-                : `Påmeldt ${shortDateNoYear(new Date())}`,
               status: isWaitlisted ? "waiting" : "registered",
             },
           })

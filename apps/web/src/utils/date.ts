@@ -173,3 +173,8 @@ export function dayStr(date: Date | string) {
     }),
   );
 }
+
+export function hoursBetween(startDate: Date | null, endDate: Date | null): number {
+  if (!startDate || !endDate) return 0;
+  return Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
+}

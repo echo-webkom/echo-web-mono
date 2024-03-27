@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
@@ -12,7 +12,6 @@ import {
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { zodKeys } from "@/sanity/utils/zod";
@@ -20,6 +19,7 @@ import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
+import getRegistrationStatus from "./registration-format";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -275,15 +275,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView
-          user={registration.user}
-          group={group}
-          changedAt={registration.registrationChangedAt}
-        />
+        <HoverProfileView user={registration.user} group={group} />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {registrationStatusToString[registration.status]}
+        {getRegistrationStatus(registration)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>

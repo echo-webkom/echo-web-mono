@@ -20,7 +20,9 @@ export const registrations = pgTable(
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    registrationChangedAt: text("registration_changed_at"),
+    prevStatus: registrationStatusEnum("prev_status"),
+    changedAt: timestamp("changed_at"),
+    changedBy: text("changed_by"),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId] }),

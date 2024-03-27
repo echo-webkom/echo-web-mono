@@ -31,6 +31,7 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
   });
 }
 
+<<<<<<< HEAD
 export async function getHappeningById(id: string) {
   return await db.query.happenings
     .findFirst({
@@ -65,6 +66,12 @@ export async function getHappeningSpotRangeAndRegistrations(happeningId: string)
         spotRanges: result?.spotRanges ?? [],
       };
     });
+=======
+export async function getHappeningById(id: Happening["id"]) {
+  return await db.query.happenings.findFirst({
+    where: (happening) => eq(happening.id, id),
+  });
+>>>>>>> 6872f872f (added function, but get server-client error)
 }
 
 export async function getHappeningsFromDate(date: Date, type: HappeningType) {
