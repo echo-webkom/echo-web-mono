@@ -7,7 +7,6 @@
     ".": "./index.ts",
     "./client": "./client.ts"
   },
-  "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint",
@@ -23,12 +22,13 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@types/node": "18.19.22",
-    "@types/react": "18.2.64",
+    "@echo-webkom/tsconfig": "workspace:*",
+    "@types/node": "20.11.30",
+    "@types/react": "18.2.69",
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   },
   "eslintConfig": {
     "root": true,

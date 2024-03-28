@@ -1,4 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["**/*.ts"]
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@echo-webkom/tsconfig/base.json",
+  "include": ["**/*.ts"],
+  "exclude": ["postgres-data"]
 }

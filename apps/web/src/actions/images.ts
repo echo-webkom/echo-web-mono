@@ -2,7 +2,7 @@
 
 import { auth } from "@echo-webkom/auth";
 
-import { echoGram } from "@/lib/echogram";
+import { echoGram } from "@/api/echogram";
 
 export async function uploadImage(userId: string, file: File) {
   try {

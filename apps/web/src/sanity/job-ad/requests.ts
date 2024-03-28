@@ -11,6 +11,7 @@ import { jobAdSchema } from "./schemas";
 export async function fetchJobAds() {
   return await sanityFetch({
     query: jobAdsQuery,
+    cdn: true,
     tags: ["job-ads"],
   })
     .then((res) => jobAdSchema.array().parse(res))

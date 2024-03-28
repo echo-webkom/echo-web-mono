@@ -29,3 +29,9 @@ export async function getAllUsers() {
     },
   )();
 }
+
+export async function getBannedUsers() {
+  return await db.query.users.findMany({
+    where: (user) => eq(user.isBanned, true),
+  });
+}

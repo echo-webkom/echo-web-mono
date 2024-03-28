@@ -3,9 +3,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
+import { urlFor } from "@echo-webkom/sanity";
+
 import { degreeYearText } from "@/lib/degree-year-text";
 import { jobTypeString, type JobAd } from "@/sanity/job-ad";
-import { urlFor } from "@/utils/image-builder";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 

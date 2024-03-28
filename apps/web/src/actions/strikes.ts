@@ -9,7 +9,7 @@ import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
 import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
-import { isMemberOf } from "@/lib/memberships";
+import { isBedkom } from "@/lib/memberships";
 
 function getBannableStrikeNumber(current: number, added: number) {
   const BAN_AMOUNT = 5;
@@ -30,7 +30,7 @@ export async function remvoveStrike(strikeId: number) {
       };
     }
 
-    const isAllowed = isMemberOf(issuer, ["bedkom"]);
+    const isAllowed = isBedkom(issuer);
 
     if (!isAllowed) {
       return {
@@ -81,7 +81,7 @@ export async function addStrike(
       };
     }
 
-    const isAllowed = isMemberOf(issuer, ["bedkom"]);
+    const isAllowed = isBedkom(issuer);
 
     if (!isAllowed) {
       return {
@@ -130,13 +130,9 @@ export async function addStrike(
 
     await createStrikes(data, user.id, amount, bannableStrikeNumber);
 
-    const message = bannableStrikeNumber
-      ? "Prikker lagt til. Brukeren er utestengt"
-      : "Prikker lagt til";
-
     return {
       success: true,
-      message: message,
+      message: "Prikker lagt til",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -10,10 +10,11 @@ import {
   RxLockClosed as LockClosed,
   RxPerson as Person,
 } from "react-icons/rx";
+import { TbGavel } from "react-icons/tb";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/memberships";
+import { isBedkom, isWebkom } from "@/lib/memberships";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,6 +68,19 @@ export function UserMenu({ user }: UserMenuProps) {
               <Link href="/admin">
                 <LockClosed className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+
+        {isBedkom(user) && (
+          <>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <Link href="/prikker">
+                <TbGavel className="mr-2 h-4 w-4" />
+                <span>Prikker</span>
               </Link>
             </DropdownMenuItem>
           </>

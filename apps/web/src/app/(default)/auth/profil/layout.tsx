@@ -9,6 +9,10 @@ const routes = [
     label: "Arrangementer",
     href: "/auth/profil/arrangementer",
   },
+  {
+    label: "Prikker",
+    href: "/auth/profil/prikker",
+  },
 ];
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {

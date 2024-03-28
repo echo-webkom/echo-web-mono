@@ -3,19 +3,24 @@
 import { useEffect, useMemo, useRef, useState, type ComponentProps } from "react";
 import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
-import removeMarkdown from "remove-markdown";
 
-import { createHappeningLink } from "@/lib/create-link";
-import { type Happening } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import { dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
-interface Props {
-  happenings: Array<Happening>;
-}
+type CalendarEvent = {
+  id: string;
+  title: string;
+  date: Date;
+  body: string;
+  link: string;
+};
+
+type CalendarProps = {
+  events: Array<CalendarEvent>;
+};
 
 const getInterval = (width: number) => {
   if (width < 640) return 1;
@@ -23,7 +28,7 @@ const getInterval = (width: number) => {
   return 5;
 };
 
-export function HappeningCalendar({ happenings }: Props) {
+export function Calendar({ events }: CalendarProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(0);
   const interval = useMemo(() => getInterval(calendarWidth), [calendarWidth]);
@@ -108,9 +113,8 @@ export function HappeningCalendar({ happenings }: Props) {
           {days.map((day) => {
             const isToday = isSameDay(day, new Date());
 
-            const happeningsThisDay = happenings.filter((happening) => {
-              if (!happening.date) return false;
-              return isSameDay(happening.date, day);
+            const eventsThisDay = events.filter((event) => {
+              return isSameDay(event.date, day);
             });
 
             return (
@@ -128,34 +132,29 @@ export function HappeningCalendar({ happenings }: Props) {
                   </div>
 
                   <ul className="flex flex-col gap-1 px-1">
-                    {happeningsThisDay.map((happening) => {
-                      const bodyNoMarkdown = removeMarkdown(happening.body ?? "");
-                      const link = createHappeningLink(happening.slug, happening.happeningType);
-
+                    {eventsThisDay.map((event) => {
                       return (
-                        <HoverCard key={happening._id}>
+                        <HoverCard key={event.id}>
                           <HoverCardTrigger>
                             <div className="overflow-hidden rounded-lg border p-2">
-                              <p className="line-clamp-1 text-sm font-medium">{happening.title}</p>
+                              <p className="line-clamp-1 text-sm font-medium">{event.title}</p>
                             </div>
                           </HoverCardTrigger>
                           <HoverCardContent>
                             <div className="space-y-2">
                               <p className="font-medium">
-                                <Link className="hover:underline" href={link ?? ""}>
-                                  {happening.title}
+                                <Link className="hover:underline" href={event.link}>
+                                  {event.title}
                                 </Link>
                               </p>
 
-                              {bodyNoMarkdown && (
-                                <p className="text-sm">
-                                  {bodyNoMarkdown.slice(0, 250)}
-                                  {(bodyNoMarkdown.length ?? 0) > 250 && "..."}
-                                </p>
-                              )}
+                              <p className="text-sm">
+                                {event.body.slice(0, 250)}
+                                {(event.body.length ?? 0) > 250 && "..."}
+                              </p>
                               <div>
                                 <Link
-                                  href={link ?? ""}
+                                  href={event.link}
                                   className="text-sm font-medium italic hover:underline"
                                 >
                                   Les mer

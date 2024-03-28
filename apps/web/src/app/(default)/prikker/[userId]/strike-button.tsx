@@ -26,6 +26,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { unbanUser } from "@/data/users/mutations";
 import { toast, useToast } from "@/hooks/use-toast";
 import { addStrikesSchema, type AddStrikeForm } from "@/lib/schemas/addStrike";
 import { mailTo } from "@/utils/prefixes";
@@ -272,6 +273,47 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
         <DialogFooter>
           <Button variant="destructive" onClick={() => void handleDelete()}>
             Bekreft sletting
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+type RemoveBanButtonProps = {
+  userId: string;
+} & ButtonProps;
+
+export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps) {
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+
+  async function handleUnban() {
+    const { success, message } = await unbanUser(userId);
+
+    toast({
+      title: message,
+      variant: success ? "success" : "destructive",
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button {...buttonProps}>Fjern utestengelse</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogDescription>
+          <div className="font-bold ">Merk:</div>
+          <div>Gyldige prikker blir ikke slettet av å fjerne utestengelsen.</div>
+          <div>De må eventuelt fjernes manuelt.</div>
+        </DialogDescription>
+        <DialogFooter>
+          <Button variant="destructive" onClick={() => void handleUnban()}>
+            Bekreft
           </Button>
         </DialogFooter>
       </DialogContent>

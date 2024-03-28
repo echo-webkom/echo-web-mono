@@ -1,8 +1,14 @@
 import { type HappeningType } from "@echo-webkom/lib";
 
-export const createHappeningLink = (slug: string, type: HappeningType) => {
-  if (type === "bedpres") return `/bedpres/${slug}`;
-  if (type === "event") return `/arrangementer/${slug}`;
+interface Linkable {
+  slug: string;
+  happeningType: HappeningType;
+}
 
-  return null;
+export const createHappeningLink = <T extends Linkable>({ slug, happeningType }: T) => {
+  if (happeningType === "bedpres") return `/bedpres/${slug}`;
+  if (happeningType === "event") return `/arrangement/${slug}`;
+
+  // TODO: External events should have an external link attached to it.
+  return "";
 };

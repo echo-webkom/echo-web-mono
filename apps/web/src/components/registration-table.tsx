@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
 import {
   type Group,
@@ -10,13 +12,21 @@ import {
 } from "@echo-webkom/db/schemas";
 import { registrationStatusToString } from "@echo-webkom/lib";
 
-import { EditRegistrationButton } from "@/components/edit-registration-button";
+import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
@@ -34,10 +44,12 @@ export function RegistrationTable({
   registrations,
   studentGroups,
   happeningId,
+  isBedpres,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   happeningId: string;
+  isBedpres: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -172,7 +184,7 @@ export function RegistrationTable({
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
               <TableHead scope="col" className="sm:w-48">
-                Handling
+                {/* Actions */}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -183,6 +195,7 @@ export function RegistrationTable({
                 registration={registration}
                 index={i}
                 showIndex={showIndex}
+                isBedpres={isBedpres}
               />
             ))}
           </TableBody>
@@ -204,10 +217,12 @@ const RegistrationRow = ({
   registration,
   index,
   showIndex,
+  isBedpres,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
+  isBedpres: boolean;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -235,7 +250,39 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>
-        <EditRegistrationButton id={id} registration={registration} />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <Dots className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <EditRegistrationForm id={id} registration={registration} />
+            {isBedpres && (
+              <>
+                <DropdownMenuSeparator />
+
+                <Link
+                  target="_blank"
+                  className="hover:cursor-default"
+                  href={`/prikker/${registration.user.id}`}
+                >
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                    }}
+                    className="pr-10"
+                  >
+                    Prikker
+                  </DropdownMenuItem>
+                </Link>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   );
