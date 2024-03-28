@@ -28,6 +28,12 @@ export async function getHappeningBySlug(slug: Happening["slug"]) {
   });
 }
 
+export async function getHappeningById(id: Happening["id"]) {
+  return await db.query.happenings.findFirst({
+    where: (happening) => eq(happening.id, id),
+  });
+}
+
 export async function getHappeningsFromDate(date: Date, type: HappeningType) {
   return await db.query.happenings.findMany({
     where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),

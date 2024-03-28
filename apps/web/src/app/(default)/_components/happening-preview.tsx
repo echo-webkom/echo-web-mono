@@ -86,21 +86,19 @@ export async function HappeningPreview({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li>
-              <span className="tracking-wider">
-                {happening.registrationStart &&
-                  maxCapacity > 0 &&
-                  (isFuture(new Date(happening.registrationStart)) ? (
-                    maxCapacity + " plasser"
-                  ) : (
-                    <p>
-                      {cn(
-                        registeredCount + waitingListCount >= maxCapacity
-                          ? "Fullt"
-                          : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
-                      )}
-                    </p>
-                  ))}
-              </span>
+              {happening.registrationStart &&
+                maxCapacity > 0 &&
+                (isFuture(new Date(happening.registrationStart)) ? (
+                  maxCapacity + " plasser"
+                ) : (
+                  <p className="tracking-wider">
+                    {cn(
+                      registeredCount + waitingListCount >= maxCapacity
+                        ? "Fullt"
+                        : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
+                    )}
+                  </p>
+                ))}
             </li>
           </ul>
         </div>

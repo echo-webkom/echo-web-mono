@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
@@ -14,6 +14,7 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { cn } from "@/utils/cn";
+import { hoursBetween } from "@/utils/date";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
@@ -45,11 +46,13 @@ export function RegistrationTable({
   studentGroups,
   happeningId,
   isBedpres,
+  happeningDate,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   happeningId: string;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -196,6 +199,7 @@ export function RegistrationTable({
                 index={i}
                 showIndex={showIndex}
                 isBedpres={isBedpres}
+                happeningDate={happeningDate}
               />
             ))}
           </TableBody>
@@ -218,11 +222,13 @@ const RegistrationRow = ({
   index,
   showIndex,
   isBedpres,
+  happeningDate,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -238,15 +244,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView
-          user={registration.user}
-          group={group}
-          changedAt={registration.registrationChangedAt}
-        />
+        <HoverProfileView user={registration.user} group={group} />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {registrationStatusToString[registration.status]}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>
@@ -287,3 +289,16 @@ const RegistrationRow = ({
     </TableRow>
   );
 };
+
+function getRegistrationStatus(registration: RegistrationWithUser, happeningDate: Date | null) {
+  if (registration.changedBy && registration.changedAt && registration.prevStatus) {
+    const hours = Math.floor(hoursBetween(registration.changedAt, happeningDate));
+    return cn(
+      registrationStatusToString[registration.status],
+      registration.prevStatus === "waiting" &&
+        `fra ${registrationStatusToString[registration.prevStatus].toLowerCase()}`,
+      hours < 24 && `${hours} t før`,
+    );
+  }
+  return registrationStatusToString[registration.status];
+}
