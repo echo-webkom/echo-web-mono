@@ -3,13 +3,13 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
-import { type StrikeType } from "@echo-webkom/lib/src/constants";
+import { users, type StrikeInfoInsert } from "@echo-webkom/db/schemas";
+import { STRIKE_TYPES } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
 import { isBedkom } from "@/lib/memberships";
+import { authedAction } from "@/lib/safe-actions";
 
 function getBannableStrikeNumber(current: number, added: number) {
   const BAN_AMOUNT = 5;
@@ -19,132 +19,88 @@ function getBannableStrikeNumber(current: number, added: number) {
   }
 }
 
-export async function remvoveStrike(strikeId: number) {
-  try {
-    const issuer = await auth();
-
-    if (!issuer) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isAllowed = isBedkom(issuer);
-
-    if (!isAllowed) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til å fjerne prikker",
-      };
-    }
-    const strike = await db.query.strikes.findFirst({
-      where: (s) => eq(s.id, strikeId),
-    });
-
-    if (!strike) {
-      return {
-        success: false,
-        message: "Fant ikke prikken",
-      };
-    }
-
-    await deleteStrike(strike.userId, strikeId);
-
-    return {
-      success: true,
-      message: "Prikken ble slettet",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
+export const removeStrike = authedAction.input(z.number()).create(async ({ input, ctx }) => {
+  if (!isBedkom(ctx.user)) {
+    throw new Error("Du har ikke tilgang til å fjerne prikker");
   }
-}
+  const strike = await db.query.strikes.findFirst({
+    where: (s) => eq(s.id, input),
+  });
 
-export async function addStrike(
-  userId: string,
-  happeningId: string,
-  reason: string,
-  amount: number,
-  currentAmount: number,
-  type: StrikeType,
-) {
-  try {
-    const issuer = await auth();
+  if (!strike) {
+    throw new Error("Fant ikke prikken");
+  }
 
-    if (!issuer) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
+  await deleteStrike(strike.userId, input);
+
+  return "Prikken ble slettet";
+});
+
+export const addStrike = authedAction
+  .input(
+    z.object({
+      userId: z.string(),
+      happeningId: z.string(),
+      reason: z.string(),
+      amount: z.number(),
+      currentAmount: z.number(),
+      type: z.enum(STRIKE_TYPES),
+    }),
+  )
+  .create(async ({ input, ctx }) => {
+    if (!isBedkom(ctx.user)) {
+      throw new Error("Du har ikke tilgang til å gi prikker");
     }
 
-    const isAllowed = isBedkom(issuer);
-
-    if (!isAllowed) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til å gi prikker",
-      };
-    }
-
-    if (amount < 1) {
-      return {
-        success: false,
-        message: "Antall prikker tildelt må være større enn 0",
-      };
+    if (input.amount < 1) {
+      throw new Error("Antall prikker tildelt må være større enn 0");
     }
 
     const user = await db.query.users.findFirst({
-      where: (user) => eq(user.id, userId),
+      where: (user) => eq(user.id, input.userId),
     });
 
     if (!user) {
-      return {
-        success: false,
-        message: "Fant ikke brukeren",
-      };
+      throw new Error("Fant ikke brukeren");
     }
 
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => and(eq(happening.id, happeningId), eq(happening.type, "bedpres")),
+      where: (happening) => and(eq(happening.id, input.happeningId), eq(happening.type, "bedpres")),
     });
 
     if (!happening) {
-      return {
-        success: false,
-        message: "Fant ikke bedriftspresentasjonen",
-      };
+      throw new Error("Fant ikke bedriftspresentasjonen");
     }
 
     const bannableStrikeNumber =
-      type === ("NO_SHOW" as StrikeType) ? 1 : getBannableStrikeNumber(currentAmount, amount);
+      input.type === "NO_SHOW" ? 1 : getBannableStrikeNumber(input.currentAmount, input.amount);
 
     const data = {
       happeningId: happening.id,
-      issuerId: issuer.id,
-      reason: reason,
+      issuerId: ctx.user.id,
+      reason: input.reason,
     } satisfies StrikeInfoInsert;
 
-    await createStrikes(data, user.id, amount, bannableStrikeNumber);
+    await createStrikes(data, user.id, input.amount, bannableStrikeNumber);
 
-    return {
-      success: true,
-      message: "Prikker lagt til",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Informasjonen er ikke i riktig format",
-      };
-    }
+    return "Prikker lagt til";
+  });
 
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
+export const unbanUser = authedAction.input(z.string()).create(async ({ input, ctx }) => {
+  if (!isBedkom(ctx.user)) {
+    throw new Error("Du har ikke tilgang til å fjerne utestengelser");
   }
-}
+
+  const user = await db
+    .update(users)
+    .set({ isBanned: false })
+    .where(eq(users.id, input))
+    .returning({ id: users.id })
+    .then((res) => res[0] ?? null);
+
+  if (!user) {
+    throw new Error("Fikk ikke fjernet utestengelsen");
+  }
+
+  return "Brukeren er ikke lenger utestengt";
+});

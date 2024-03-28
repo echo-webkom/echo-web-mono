@@ -45,14 +45,17 @@ export const QUESTION_TYPES = [
 
 export type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
 
-export type StrikeType =
-  | "UNREGISTER_BEFORE_DEADLINE"
-  | "UNREGISTER_AFTER_DEADLINE"
-  | "NO_SHOW"
-  | "WRONG_INFO"
-  | "TOO_LATE"
-  | "NO_FEEDBACK"
-  | "OTHER";
+export const STRIKE_TYPES = [
+  "UNREGISTER_BEFORE_DEADLINE",
+  "UNREGISTER_AFTER_DEADLINE",
+  "NO_SHOW",
+  "WRONG_INFO",
+  "TOO_LATE",
+  "NO_FEEDBACK",
+  "OTHER",
+] as const;
+
+export type StrikeType = (typeof STRIKE_TYPES)[number];
 
 export const STRIKE_TYPE_MESSAGE: Record<StrikeType, string> = {
   UNREGISTER_BEFORE_DEADLINE: "Du meldte deg av før påmeldingsfristen.",

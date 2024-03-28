@@ -34,11 +34,11 @@ export function FeedbackForm() {
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      const { success, message } = await sendFeedback(data);
+      const response = await sendFeedback(data);
 
       toast({
-        title: message,
-        variant: success ? "success" : "destructive",
+        title: response.success ? response.data : response.message,
+        variant: response.success ? "success" : "destructive",
       });
 
       form.reset();

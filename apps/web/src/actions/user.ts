@@ -3,11 +3,10 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/memberships";
+import { authedAction, webkomAction } from "@/lib/safe-actions";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
@@ -15,99 +14,43 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
   year: true,
 });
 
-export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema>) {
-  try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const data = updateSelfPayloadSchema.parse(payload);
-
-    const resp = await db
+export const updateSelf = authedAction
+  .input(updateSelfPayloadSchema)
+  .create(async ({ input, ctx }) => {
+    const response = await db
       .update(users)
       .set({
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        alternativeEmail: data.alternativeEmail?.trim() || null,
-        degreeId: data.degreeId,
-        year: data.year,
+        alternativeEmail: input.alternativeEmail?.trim() || null,
+        degreeId: input.degreeId,
+        year: input.year,
       })
-      .where(eq(users.id, user.id))
+      .where(eq(users.id, ctx.user.id))
       .returning()
       .then((res) => res[0] ?? null);
 
-    if (!resp) {
-      return {
-        success: false,
-        message: "Fikk ikke til å oppdatere brukeren",
-      };
+    if (!response) {
+      throw new Error("Fikk ikke til å oppdatere brukeren");
     }
 
-    return {
-      success: true,
-      message: "Brukeren ble oppdatert",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
+    return "Brukeren ble oppdatert";
+  });
 
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
+export const updateUser = webkomAction
+  .input(
+    z.object({
+      userId: z.string(),
+      memberships: z.array(z.string()),
+    }),
+  )
+  .create(async ({ input }) => {
+    await db.delete(usersToGroups).where(eq(usersToGroups.userId, input.userId));
 
-const updateUserPayloadSchema = z.object({
-  memberships: z.array(z.string()),
-});
-
-export const updateUser = async (
-  userId: string,
-  payload: z.infer<typeof updateUserPayloadSchema>,
-) => {
-  try {
-    const user = await auth();
-
-    if (user === null || !isWebkom(user)) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn som en admin",
-      };
-    }
-
-    const data = await updateUserPayloadSchema.parseAsync(payload);
-
-    await db.delete(usersToGroups).where(eq(usersToGroups.userId, userId));
-    if (data.memberships.length > 0) {
+    if (input.memberships.length > 0) {
       await db
         .insert(usersToGroups)
-        .values(data.memberships.map((groupId) => ({ userId, groupId })));
+        .values(input.memberships.map((groupId) => ({ userId: input.userId, groupId })));
     }
 
-    return {
-      success: true,
-      message: "Bruker oppdatert",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      result: "error",
-      message: "Something went wrong",
-    };
-  }
-};
+    return "Bruker oppdatert";
+  });

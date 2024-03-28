@@ -57,12 +57,19 @@ export default function WhitelistButton({
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await upsertWhitelist(data.email, data.reason, data.days);
+    const response = await upsertWhitelist(data);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "warning",
+      });
+    }
 
     setIsOpen(false);
     router.refresh();
@@ -77,12 +84,19 @@ export default function WhitelistButton({
       return;
     }
 
-    const { success, message } = await removeWhitelist(whitelistEntry.email);
+    const response = await removeWhitelist(whitelistEntry.email);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "warning",
+      });
+    }
 
     setIsOpen(false);
     router.refresh();

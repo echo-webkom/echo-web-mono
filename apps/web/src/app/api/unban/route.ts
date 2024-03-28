@@ -1,4 +1,4 @@
-import { unbanUser } from "@/data/users/mutations";
+import { unbanUser } from "@/actions/strikes";
 import { getBannedUsers } from "@/data/users/queries";
 import { isReadyToUnban } from "@/lib/ban-info";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
