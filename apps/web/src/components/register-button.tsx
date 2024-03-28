@@ -50,30 +50,54 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await register(id, {
-      questions: data.questions.map((question) => ({
-        ...question,
-        answer: question.answer ?? "",
-      })),
+    const response = await register({
+      id,
+      registration: {
+        questions: data.questions.map((question) => ({
+          ...question,
+          answer: question.answer ?? "",
+        })),
+      },
     });
 
     setIsLoading(false);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "warning",
+      });
+    }
+
+    setIsOpen(false);
   });
 
   const handleOneClickRegister = async () => {
     setIsLoading(true);
 
-    const { success, message } = await register(id, { questions: [] });
-
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
+    const response = await register({
+      id,
+      registration: {
+        questions: [],
+      },
     });
+
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "warning",
+      });
+    }
 
     setIsLoading(false);
   };

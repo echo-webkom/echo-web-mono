@@ -43,16 +43,24 @@ export function DeregisterButton({ id, children }: DeregisterButtonProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await deregister(id, {
+    const response = await deregister({
+      id,
       reason: data.reason,
     });
 
     setIsLoading(false);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (response.success) {
+      toast({
+        title: "Du er nå avmeldt.",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "destructive",
+      });
+    }
 
     form.reset();
     setIsOpen(false);

@@ -53,14 +53,14 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
     const { action, ...degreeData } = data;
 
     if (action === "create") {
-      const result = await addDegree(degreeData);
+      const response = await addDegree(degreeData);
 
       toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
+        title: response.success ? "Studieretningen ble lagt til" : response.message,
+        variant: response.success ? "success" : "info",
       });
 
-      if (result.success) {
+      if (response.success) {
         form.reset();
       }
 
@@ -68,11 +68,11 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
     }
 
     if (action === "update") {
-      const result = await editDegree(degreeData);
+      const response = await editDegree(degreeData);
 
       toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
+        title: response.success ? "Studieretningen ble oppdatert" : response.message,
+        variant: response.success ? "success" : "info",
       });
 
       return;
@@ -82,11 +82,11 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
   const handleDelete = async () => {
     if (!initialDegree) return;
 
-    const result = await removeDegree(initialDegree.id);
+    const response = await removeDegree(initialDegree.id);
 
     toast({
-      title: result.message,
-      variant: result.success ? "success" : "info",
+      title: response.success ? "Studieretningen ble slettet" : response.message,
+      variant: response.success ? "success" : "info",
     });
   };
 

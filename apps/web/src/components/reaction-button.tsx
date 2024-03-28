@@ -41,7 +41,10 @@ export default function ReactionButton({
       hasReacted: !reactionState.hasReacted,
       count: !reactionState.hasReacted ? reactionState.count + 1 : reactionState.count - 1,
     });
-    await handleReact(reactToKey, emojiId);
+    await handleReact({
+      reactToKey,
+      emojiId,
+    });
   };
 
   return (

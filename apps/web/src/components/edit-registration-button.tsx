@@ -51,18 +51,30 @@ export function EditRegistrationForm({ id, registration }: EditRegistrationFormP
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { message, success } = await updateRegistration(id, registration.user.id, {
-      status: selectedStatus,
-      reason: data.reason ?? "",
+    const response = await updateRegistration({
+      happeningId: id,
+      registrationUserId: registration.user.id,
+      registration: {
+        status: selectedStatus,
+        reason: data.reason ?? "",
+      },
     });
 
     setIsLoading(false);
 
-    toast({
-      title: "Påmeldingen er endret",
-      description: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (response.success) {
+      toast({
+        title: "Påmeldingen er endret",
+        description: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Påmeldingen er ikke endret",
+        description: response.message,
+        variant: "destructive",
+      });
+    }
 
     router.refresh();
     form.reset();

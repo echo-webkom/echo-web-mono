@@ -1,30 +1,21 @@
 "use server";
 
-import { auth } from "@echo-webkom/auth";
-
 import { kaffeApi } from "@/api/kaffe";
 import { isMemberOf } from "@/lib/memberships";
+import { authedAction } from "@/lib/safe-actions";
 
-export async function addKaffeReport() {
-  const user = await auth();
-
-  if (!user || !isMemberOf(user, ["hovedstyret", "webkom"])) {
-    return false;
+export const addKaffeReport = authedAction.create(async ({ ctx }) => {
+  if (!isMemberOf(ctx.user, ["hovedstyret", "webkom"])) {
+    throw new Error("Du har ikke tilgang til å legge til kaffestrike");
   }
 
-  return await kaffeApi.strike(user.id);
-}
+  return await kaffeApi.strike(ctx.user.id);
+});
 
-export async function resetKaffeStrikes() {
-  const user = await auth();
-
-  if (!user) {
-    return false;
-  }
-
-  if (!isMemberOf(user, ["hovedstyret", "webkom"])) {
-    return false;
+export const resetKaffeStrikes = authedAction.create(async ({ ctx }) => {
+  if (!isMemberOf(ctx.user, ["hovedstyret", "webkom"])) {
+    throw new Error("Du har ikke tilgang til å nullstille kaffestrikes");
   }
 
   return await kaffeApi.reset();
-}
+});

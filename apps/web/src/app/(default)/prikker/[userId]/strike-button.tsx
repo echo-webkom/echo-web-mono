@@ -13,7 +13,7 @@ import {
   type StrikeType,
 } from "@echo-webkom/lib/src/constants";
 
-import { addStrike, remvoveStrike } from "@/actions/strikes";
+import { addStrike, removeStrike, unbanUser } from "@/actions/strikes";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -26,7 +26,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { unbanUser } from "@/data/users/mutations";
 import { toast, useToast } from "@/hooks/use-toast";
 import { addStrikesSchema, type AddStrikeForm } from "@/lib/schemas/addStrike";
 import { mailTo } from "@/utils/prefixes";
@@ -74,19 +73,26 @@ export function AddStrikeButton({
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await addStrike(
-      user.id,
-      data.happeningId,
-      data.reason,
-      data.amount,
+    const response = await addStrike({
+      userId: user.id,
+      happeningId: data.happeningId,
+      reason: data.reason,
+      amount: data.amount,
       currentAmount,
-      selectedType,
-    );
-
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
+      type: selectedType,
     });
+
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "destructive",
+      });
+    }
 
     setIsOpen(false);
     form.reset();
@@ -248,11 +254,11 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
   async function handleDelete() {
-    const { success, message } = await remvoveStrike(strikeId);
+    const response = await removeStrike(strikeId);
 
     toast({
-      title: message,
-      variant: success ? "success" : "destructive",
+      title: response.success ? "Prikken ble slettet" : response.message,
+      variant: response.success ? "success" : "destructive",
     });
 
     setIsOpen(false);
@@ -289,11 +295,11 @@ export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps
   const [isOpen, setIsOpen] = useState(false);
 
   async function handleUnban() {
-    const { success, message } = await unbanUser(userId);
+    const response = await unbanUser(userId);
 
     toast({
-      title: message,
-      variant: success ? "success" : "destructive",
+      title: response.success ? "Brukeren ble fjernet fra utestengelse" : response.message,
+      variant: response.success ? "success" : "destructive",
     });
 
     setIsOpen(false);

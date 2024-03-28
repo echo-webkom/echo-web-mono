@@ -2,12 +2,11 @@
 
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
 
-import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
+import { createFeedback } from "@/data/site-feedbacks/mutations";
 import { getFeedbackById } from "@/data/site-feedbacks/queries";
-import { isWebkom } from "@/lib/memberships";
+import { publicAction, webkomAction } from "@/lib/safe-actions";
 
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   email: true,
@@ -16,77 +15,20 @@ const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   message: true,
 });
 
-export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSchema>) {
-  try {
-    const data = await sendFeedbackPayloadSchema.parseAsync(payload);
+export const sendFeedback = publicAction
+  .input(sendFeedbackPayloadSchema)
+  .create(async ({ input }) => {
+    await createFeedback(input);
 
-    await createFeedback(data);
+    return "Takk for din tilbakemelding!";
+  });
 
-    return {
-      success: true,
-      message: "Takk for tilbakemeldingen!",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
+export const toggleReadFeedback = webkomAction.input(z.string()).create(async ({ input }) => {
+  const feedback = await getFeedbackById(input);
 
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
-
-export async function toggleReadFeedback(id: string) {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
+  if (!feedback) {
+    throw new Error("Fant ikke tilbakemeldingen");
   }
 
-  if (!isWebkom(user)) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
-
-  try {
-    const feedback = await getFeedbackById(id);
-
-    if (!feedback) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen finnes ikke.",
-      };
-    }
-
-    await updateFeedback(id, {
-      isRead: !feedback.isRead,
-    });
-
-    return {
-      success: true,
-      message: "Tilbakemeldingen er oppdatert",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
+  return "Tilbakemeldingen ble markert som lest";
+});

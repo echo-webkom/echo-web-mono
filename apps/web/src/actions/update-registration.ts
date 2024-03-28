@@ -3,7 +3,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
 import { GotSpotNotificationEmail } from "@echo-webkom/email";
@@ -11,6 +10,7 @@ import { emailClient } from "@echo-webkom/email/client";
 
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isHost } from "@/lib/memberships";
+import { authedAction } from "@/lib/safe-actions";
 import { shortDateNoYear } from "@/utils/date";
 
 function registrationStatusToString(oldStatus: string, newStatus: string) {
@@ -25,29 +25,24 @@ function registrationStatusToString(oldStatus: string, newStatus: string) {
   }
 }
 
-const updateRegistrationPayloadSchema = z.object({
-  status: z.enum(registrationStatusEnum.enumValues),
-  reason: z.string(),
-});
-
-export async function updateRegistration(
-  happeningId: string,
-  registrationUserId: string,
-  payload: z.infer<typeof updateRegistrationPayloadSchema>,
-) {
-  try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
+export const updateRegistration = authedAction
+  .input(
+    z.object({
+      happeningId: z.string(),
+      registrationUserId: z.string(),
+      registration: z.object({
+        status: z.enum(registrationStatusEnum.enumValues),
+        reason: z.string(),
+      }),
+    }),
+  )
+  .create(async ({ input, ctx }) => {
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
-        and(eq(registration.happeningId, happeningId), eq(registration.userId, registrationUserId)),
+        and(
+          eq(registration.happeningId, input.happeningId),
+          eq(registration.userId, input.registrationUserId),
+        ),
       with: {
         happening: {
           with: {
@@ -59,39 +54,31 @@ export async function updateRegistration(
     });
 
     if (!exisitingRegistration) {
-      return {
-        success: false,
-        message: "Denne personen er ikke påmeldt arrangementet",
-      };
+      throw new Error("Denne personen er ikke påmeldt arrangementet");
     }
 
-    if (!isHost(user, exisitingRegistration.happening)) {
-      return {
-        success: false,
-        message: "Du kan ikke endre påmeldingen til en arrangør",
-      };
+    if (!isHost(ctx.user, exisitingRegistration.happening)) {
+      throw new Error("Du kan ikke endre påmeldingen til en arrangør");
     }
-
-    const data = updateRegistrationPayloadSchema.parse(payload);
 
     await db
       .update(registrations)
       .set({
         registrationChangedAt: registrationStatusToString(
           exisitingRegistration.status,
-          data.status,
+          input.registration.status,
         ),
-        status: data.status,
-        unregisterReason: data.reason,
+        status: input.registration.status,
+        unregisterReason: input.registration.reason,
       })
       .where(
         and(
-          eq(registrations.userId, registrationUserId),
-          eq(registrations.happeningId, happeningId),
+          eq(registrations.userId, input.registrationUserId),
+          eq(registrations.happeningId, input.happeningId),
         ),
       );
 
-    if (data.status === "registered") {
+    if (input.registration.status === "registered") {
       const sendTo =
         exisitingRegistration.user.alternativeEmail ?? exisitingRegistration.user.email;
 
@@ -105,22 +92,7 @@ export async function updateRegistration(
       );
     }
 
-    revalidateRegistrations(happeningId, user.id);
+    revalidateRegistrations(input.happeningId, input.registrationUserId);
 
-    return {
-      success: true,
-      message: "Påmeldingen er endret",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Grunnen er ikke i riktig format",
-      };
-    }
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
+    return "Påmeldingen er endret";
+  });

@@ -81,19 +81,19 @@ test.describe("Register", () => {
       ),
     );
 
-    const resp1 = await page1.getByTestId("toast").textContent();
-    const resp2 = await page2.getByTestId("toast").textContent();
+    const response1 = await page1.getByTestId("toast").textContent();
+    const response2 = await page2.getByTestId("toast").textContent();
 
-    if (resp1 === resp2) {
+    if (response1 === response2) {
       throw new Error("Both users got the same response");
     }
 
-    if (resp1?.includes("Du er nå påmeldt arrangementet")) {
-      expect(resp2).toContain("Du er nå på venteliste");
+    if (response1?.includes("Du er nå påmeldt arrangementet")) {
+      expect(response2).toContain("Du er nå på venteliste");
     }
 
-    if (resp2?.includes("Du er nå påmeldt arrangementet")) {
-      expect(resp1).toContain("Du er nå på venteliste");
+    if (response2?.includes("Du er nå påmeldt arrangementet")) {
+      expect(response1).toContain("Du er nå på venteliste");
     }
 
     await ctx1.close();

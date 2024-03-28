@@ -57,7 +57,7 @@ export function UserForm({ user, degrees }: UserFormProps) {
     async (data) => {
       setIsLoading(true);
 
-      const { success, message } = await updateSelf({
+      const response = await updateSelf({
         alternativeEmail: data.alternativeEmail,
         degreeId: data.degree,
         year: data.year,
@@ -66,8 +66,8 @@ export function UserForm({ user, degrees }: UserFormProps) {
       setIsLoading(false);
 
       toast({
-        title: message,
-        variant: success ? "success" : "warning",
+        title: response.success ? response.data : response.message,
+        variant: response.success ? "success" : "warning",
       });
 
       router.refresh();
