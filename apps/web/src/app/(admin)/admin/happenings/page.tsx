@@ -13,6 +13,7 @@ export default async function AdminHappeningsPage() {
     columns: {
       slug: true,
       title: true,
+      id: true,
     },
     with: {
       groups: {
@@ -30,7 +31,8 @@ export default async function AdminHappeningsPage() {
 
   const h = happenings.map((happening) => {
     return {
-      "slug/id": happening.slug,
+      id: happening.id,
+      slug: happening.slug,
       title: happening.title,
       groups: happening.groups.map((group) => `${group.group.id}/${group.group.name}`),
     };

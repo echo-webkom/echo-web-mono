@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { type Degree } from "@echo-webkom/db/schemas";
-
-import { addDegree, editDegree, removeDegree } from "@/actions/degree";
-import { Text } from "@/components/typography/text";
+import { addGroup } from "@/actions/groups";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,11 +26,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { groupFormSchema, type GroupForm } from "@/lib/schemas/add-group";
+import { slugify } from "@/utils/slugify";
 
 export default function AddGroupButton({ ...props }: ButtonProps) {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const form = useForm<GroupForm>({
     resolver: zodResolver(groupFormSchema),
@@ -44,19 +41,19 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const result = await todo(degreeData);
+    const { success, message } = await addGroup(data);
 
     toast({
-      title: result.message,
-      variant: result.success ? "success" : "info",
+      title: message,
+      variant: success ? "success" : "destructive",
     });
-
-    if (result.success) {
-      form.reset();
-    }
-
-    return;
   });
+
+  const generateGroupSlug = () => {
+    const name = form.getValues("name");
+
+    form.setValue("id", slugify(name));
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -65,7 +62,7 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Legg til en gruppe</DialogTitle>
+          <DialogTitle>Legg til gruppe</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -94,7 +91,18 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
                   <FormItem>
                     <FormLabel>ID</FormLabel>
                     <FormControl>
-                      <Input id="id" placeholder="webkom" autoComplete="off" {...field} />
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="flex-1"
+                          id="id"
+                          placeholder="webkom"
+                          autoComplete="off"
+                          {...field}
+                        />
+                        <Button variant="outline" onClick={generateGroupSlug}>
+                          Generer ID
+                        </Button>
+                      </div>
                     </FormControl>
                     <FormDescription>
                       En unik ID til studieretningen. Burde være en slugifisert versjon av navnet.

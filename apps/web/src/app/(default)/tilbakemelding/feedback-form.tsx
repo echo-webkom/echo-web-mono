@@ -89,7 +89,10 @@ export function FeedbackForm() {
                 </FormLabel>
                 <FormControl>
                   <Select id="category" {...field}>
-                    <option hidden>Velg en kategori</option>
+                    <option disabled selected>
+                      Velg en kategori
+                    </option>
+                    <hr />
                     <option value="bug">Bug</option>
                     <option value="feature">Funksjonalitet</option>
                     <option value="login">Innlogging</option>

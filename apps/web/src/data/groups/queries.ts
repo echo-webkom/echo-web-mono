@@ -25,3 +25,24 @@ export async function getStudentGroups() {
     },
   )();
 }
+
+export async function getStudentGroupsWithMembers() {
+  return await cache(
+    async () => {
+      return await db.query.groups.findMany({
+        orderBy: (group, { asc }) => [asc(group.name)],
+        with: {
+          members: {
+            with: {
+              user: true,
+            },
+          },
+        },
+      });
+    },
+    [cacheKeyFactory.groups],
+    {
+      tags: [cacheKeyFactory.groups],
+    },
+  )();
+}
