@@ -1,33 +1,30 @@
 "use server";
 
-import { auth } from "@echo-webkom/auth";
+import { z } from "zod";
 
 import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
+import { authedAction } from "@/lib/safe-actions";
 
-export async function handleReact(reactToKey: string, emojiId: number) {
-  const user = await auth();
-  if (!user) {
+export const handleReact = authedAction
+  .input(
+    z.object({
+      reactToKey: z.string(),
+      emojiId: z.number(),
+    }),
+  )
+  .create(async ({ input, ctx }) => {
+    if (input.emojiId < 0 || input.emojiId >= Object.keys(idToEmoji).length) {
+      throw new Error("Ugylig emoji");
+    }
+
+    const reactionId = await registerReaction({
+      reactToKey: input.reactToKey,
+      emojiId: input.emojiId,
+      userId: ctx.user.id,
+    });
+
     return {
-      status: 401,
-      message: "Unauthorized",
+      reactionId,
     };
-  }
-
-  if (emojiId < 0 || emojiId > Object.keys(idToEmoji).length) {
-    return {
-      status: 400,
-      message: "Invalid emojiId",
-    };
-  }
-
-  const reactionId = await registerReaction({
-    reactToKey: reactToKey,
-    emojiId: emojiId,
-    userId: user.id,
   });
-
-  return {
-    reactionId,
-  };
-}

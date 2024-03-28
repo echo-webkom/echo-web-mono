@@ -5,7 +5,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Text } from "@/components/typography/text";
 import { isMemberOf } from "@/lib/memberships";
-import { StrikeButtons } from "./StrikeButtons";
+import { StrikeButtons } from "./coffee-strike-buttons";
 
 export default async function KaffeAdmin() {
   const user = await auth();

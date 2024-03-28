@@ -1,95 +1,49 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
-import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
+import { whitelist } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/memberships";
+import { webkomAction } from "@/lib/safe-actions";
 
-export async function upsertWhitelist(email: string, reason: string, days: number) {
-  try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isWebkom(user)) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
-
+export const upsertWhitelist = webkomAction
+  .input(
+    z.object({
+      email: z.string(),
+      reason: z.string(),
+      days: z.number(),
+    }),
+  )
+  .create(async ({ input }) => {
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + days);
-
-    const data = insertWhitelistSchema.parse({
-      email,
-      reason,
-      expiresAt,
-    });
+    expiresAt.setDate(expiresAt.getDate() + input.days);
 
     const wasInWhitelist = await db.query.whitelist.findFirst({
-      where: eq(whitelist.email, email),
+      where: eq(whitelist.email, input.email),
     });
 
     await db
       .insert(whitelist)
-      .values(data)
+      .values({
+        email: input.email,
+        expiresAt,
+        reason: input.reason,
+      })
       .onConflictDoUpdate({
         target: whitelist.email,
         set: {
-          expiresAt: data.expiresAt,
-          reason: data.reason,
+          expiresAt: expiresAt,
+          reason: input.reason,
         },
       });
 
-    return {
-      success: true,
-      message: wasInWhitelist ? "Brukeren ble oppdatert" : "Brukeren ble lagt til i whitelisten",
-    };
-  } catch (e) {
-    return {
-      success: false,
-      message: "Noe gikk galt",
-    };
-  }
-}
+    return wasInWhitelist ? "Brukeren ble oppdatert" : "Brukeren ble lagt til i whitelisten";
+  });
 
-export async function removeWhitelist(email: string) {
-  try {
-    const user = await auth();
+export const removeWhitelist = webkomAction.input(z.string()).create(async ({ input }) => {
+  await db.delete(whitelist).where(eq(whitelist.email, input));
 
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isWebkom(user)) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
-
-    await db.delete(whitelist).where(eq(whitelist.email, email));
-
-    return {
-      success: true,
-      message: "Brukeren ble fjernet fra whitelisten",
-    };
-  } catch (e) {
-    return {
-      success: false,
-      message: "Noe gikk galt",
-    };
-  }
-}
+  return "Brukeren ble fjernet fra whitelisten";
+});

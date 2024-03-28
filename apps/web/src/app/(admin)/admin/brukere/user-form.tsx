@@ -53,14 +53,24 @@ export function UserForm({ user, groups }: UserFormProps) {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await updateUser(user.id, data);
+    const response = await updateUser({
+      userId: user.id,
+      memberships: data.memberships,
+    });
 
     setIsLoading(false);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "destructive",
+      });
+    }
 
     router.refresh();
   });

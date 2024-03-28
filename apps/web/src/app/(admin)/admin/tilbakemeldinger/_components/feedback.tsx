@@ -15,7 +15,7 @@ const parseDate = (date: Date) => {
   try {
     return shortDate(date);
   } catch (e) {
-    return "Dårlig";
+    return "NaD (Not a Date)";
   }
 };
 
@@ -23,11 +23,11 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
   const { toast } = useToast();
 
   const handleToggleRead = async () => {
-    const { success, message } = await toggleReadFeedback(feedback.id);
+    const response = await toggleReadFeedback(feedback.id);
 
     toast({
-      title: message,
-      variant: success ? "success" : "destructive",
+      title: response.success ? "Tilbakemelding markert som lest" : response.message,
+      variant: response.success ? "success" : "destructive",
     });
   };
 

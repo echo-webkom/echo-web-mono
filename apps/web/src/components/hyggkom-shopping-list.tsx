@@ -61,7 +61,7 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
     if (response.success) {
       toast({
         title: "Takk for din tilbakemelding!",
-        description: response.message,
+        description: response.data,
         variant: "success",
       });
     } else {
@@ -77,9 +77,8 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
     const response = await hyggkomRemoveSubmit(item);
 
     toast({
-      title: "Takk for din tilbakemelding!",
-      description: response.message,
-      variant: "success",
+      title: response.success ? "Varen ble slettet" : response.message,
+      variant: response.success ? "success" : "info",
     });
   };
 

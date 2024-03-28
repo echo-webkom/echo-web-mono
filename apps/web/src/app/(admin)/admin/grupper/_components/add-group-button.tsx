@@ -41,12 +41,21 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await addGroup(data);
+    const response = await addGroup(data);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (response.success) {
+      toast({
+        title: response.data,
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: response.message,
+        variant: "destructive",
+      });
+    }
+
+    form.reset();
   });
 
   const generateGroupSlug = () => {

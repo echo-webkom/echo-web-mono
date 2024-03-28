@@ -1,28 +1,21 @@
 "use server";
 
-import { auth } from "@echo-webkom/auth";
+import { z } from "zod";
 
 import { echoGram } from "@/api/echogram";
+import { authedAction } from "@/lib/safe-actions";
 
-export async function uploadImage(userId: string, file: File) {
-  try {
-    const user = await auth();
-
-    if (!user || user.id !== userId) {
-      return {
-        success: false,
-        message: "Du må være logget inn for å laste opp bilder",
-      };
+export const uploadImage = authedAction
+  .input(
+    z.object({
+      userId: z.string(),
+      file: z.instanceof(File),
+    }),
+  )
+  .create(async ({ input, ctx }) => {
+    if (ctx.user.id !== input.userId) {
+      throw new Error("Du kan ikke laste opp bilder for andre brukere");
     }
 
-    return await echoGram.uploadImage(userId, file);
-  } catch (err) {
-    console.error("HELP");
-    console.error(err);
-
-    return {
-      success: false,
-      message: `Det skjedde en feil: ${err}`,
-    };
-  }
-}
+    return await echoGram.uploadImage(input.userId, input.file);
+  });

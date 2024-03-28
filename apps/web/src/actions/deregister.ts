@@ -3,7 +3,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
@@ -11,6 +10,7 @@ import { emailClient } from "@echo-webkom/email/client";
 
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
+import { authedAction } from "@/lib/safe-actions";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
 import { shortDateNoYear } from "@/utils/date";
 
@@ -26,20 +26,16 @@ function registrationStatusToString(status: string) {
   }
 }
 
-const deregisterPayloadSchema = z.object({
-  reason: z.string(),
-});
-
-export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
-  try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
+export const deregister = authedAction
+  .input(
+    z.object({
+      id: z.string(),
+      reason: z.string(),
+    }),
+  )
+  .create(async ({ input, ctx }) => {
+    const { id, reason } = input;
+    const { user } = ctx;
 
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
@@ -50,13 +46,8 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
     });
 
     if (!exisitingRegistration) {
-      return {
-        success: false,
-        message: "Du er ikke påmeldt dette arrangementet",
-      };
+      throw new Error("Fant ikke registreringen");
     }
-
-    const data = await deregisterPayloadSchema.parseAsync(payload);
 
     await Promise.all([
       db
@@ -64,7 +55,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         .set({
           registrationChangedAt: registrationStatusToString(exisitingRegistration.status),
           status: "unregistered",
-          unregisterReason: data.reason,
+          unregisterReason: reason,
         })
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
@@ -78,7 +69,7 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         DeregistrationNotificationEmail({
           happeningTitle: exisitingRegistration.happening.title,
           name: user.name ?? "Ukjent",
-          reason: data.reason,
+          reason,
         }),
       );
     }
@@ -89,21 +80,5 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
       await pingBoomtown(id);
     })();
 
-    return {
-      success: true,
-      message: "Du er nå avmeldt",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
+    return "Du er nå avmeldt";
+  });

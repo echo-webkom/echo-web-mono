@@ -5,7 +5,6 @@ import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   answers,
@@ -18,64 +17,50 @@ import {
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { authedAction } from "@/lib/safe-actions";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { shortDateNoYear } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 
-export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
-  /**
-   * Check if user is signed in
-   */
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  try {
+export const register = authedAction
+  .input(
+    z.object({
+      id: z.string(),
+      registration: registrationFormSchema,
+    }),
+  )
+  .create(async ({ input, ctx }) => {
     /**
      * Check if user has filled out necessary information
      */
-    if (!user.degreeId || !user.year) {
-      return {
-        success: false,
-        message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
-      };
+    if (!ctx.user.degreeId || !ctx.user.year) {
+      throw new Error("Du må ha fylt ut studieinformasjon for å kunne registrere deg");
     }
 
     /**
      * Get happening, and check if it exists
      */
     const happening = await db.query.happenings.findFirst({
-      where: (happening) => eq(happening.id, id),
+      where: (happening) => eq(happening.id, input.id),
       with: {
         questions: true,
       },
     });
 
     if (!happening) {
-      return {
-        success: false,
-        message: "Arrangementet finnes ikke",
-      };
+      throw new Error("Arrangementet finnes ikke");
     }
 
     /**
      * Check if user is banned
      */
     const isBanned =
-      user.isBanned && happening.type === "bedpres"
-        ? await isUserBannedFromBedpres(user, happening)
+      ctx.user.isBanned && happening.type === "bedpres"
+        ? await isUserBannedFromBedpres(ctx.user, happening)
         : false;
 
     if (isBanned) {
-      return {
-        success: false,
-        message: "Du er utestengt fra denne bedriftspresentasjonen",
-      };
+      throw new Error("Du er utestengt fra denne bedriftspresentasjonen");
     }
 
     /**
@@ -84,8 +69,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
         and(
-          eq(registration.happeningId, id),
-          eq(registration.userId, user.id),
+          eq(registration.happeningId, input.id),
+          eq(registration.userId, ctx.user.id),
           or(eq(registration.status, "registered"), eq(registration.status, "waiting")),
         ),
     });
@@ -95,49 +80,37 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         exisitingRegistration.status === "registered"
           ? "Du er allerede påmeldt dette arrangementet"
           : "Du er allerede på venteliste til dette arrangementet";
-      return {
-        success: false,
-        message: status,
-      };
+      throw new Error(status);
     }
 
     const canEarlyRegister = doesIntersect(
       happening.registrationGroups ?? [],
-      user.memberships.map((membership) => membership.group.id),
+      ctx.user.memberships.map((membership) => membership.group.id),
     );
 
     /**
      * Check if registration is open for user that can not early register
      */
     if (!canEarlyRegister && happening.registrationStart && isFuture(happening.registrationStart)) {
-      return {
-        success: false,
-        message: "Påmeldingen har ikke startet",
-      };
+      throw new Error("Påmeldingen har ikke startet");
     }
 
     if (!canEarlyRegister && !happening.registrationStart) {
-      return {
-        success: false,
-        message: "Påmelding er bare for inviterte undergrupper",
-      };
+      throw new Error("Påmelding er bare for inviterte undergrupper");
     }
 
     /**
      * Check if registration is closed for user that can not early register
      */
     if (happening.registrationEnd && isPast(happening.registrationEnd)) {
-      return {
-        success: false,
-        message: "Påmeldingen har allerede stengt",
-      };
+      throw new Error("Påmeldingen har allerede stengt");
     }
 
     /**
      * Get spot ranges for happening
      */
     const spotRanges = await db.query.spotRanges.findMany({
-      where: (spotRange) => eq(spotRange.happeningId, id),
+      where: (spotRange) => eq(spotRange.happeningId, input.id),
     });
 
     /**
@@ -145,13 +118,13 @@ export async function register(id: string, payload: z.infer<typeof registrationF
      */
     const hostGroups = await db.query.happeningsToGroups
       .findMany({
-        where: (happeningToGroup) => eq(happeningToGroup.happeningId, id),
+        where: (happeningToGroup) => eq(happeningToGroup.happeningId, input.id),
       })
       .then((groups) => groups.map((group) => group.groupId));
 
     const canSkipSpotRange = doesIntersect(
       hostGroups,
-      user.memberships.map((membership) => membership.group.id),
+      ctx.user.memberships.map((membership) => membership.group.id),
     );
 
     /**
@@ -159,32 +132,24 @@ export async function register(id: string, payload: z.infer<typeof registrationF
      *
      * If user is not in any spot range, return error
      */
-    const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
+    const userSpotRange = getCorrectSpotrange(ctx.user.year, spotRanges, canSkipSpotRange);
 
     if (!userSpotRange) {
-      return {
-        success: false,
-        message: "Du kan ikke melde deg på dette arrangementet",
-      };
+      throw new Error("Du kan ikke melde deg på dette arrangementet");
     }
-
-    const data = await registrationFormSchema.parseAsync(payload);
 
     /**
      * Check if all questions are answered
      */
     const allQuestionsAnswered = happening.questions.every((question) => {
-      const questionExists = data.questions.find((q) => q.questionId === question.id);
+      const questionExists = input.registration.questions.find((q) => q.questionId === question.id);
       const questionAnswer = questionExists?.answer;
 
       return question.required ? !!questionAnswer : true;
     });
 
     if (!allQuestionsAnswered) {
-      return {
-        success: false,
-        message: "Du må svare på alle spørsmålene",
-      };
+      throw new Error("Du må svare på alle spørsmålene");
     }
 
     const { registration, isWaitlisted } = await db.transaction(
@@ -196,7 +161,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           .from(registrations)
           .where(
             and(
-              eq(registrations.happeningId, id),
+              eq(registrations.happeningId, input.id),
               lte(users.year, userSpotRange.maxYear),
               gte(users.year, userSpotRange.minYear),
               or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
@@ -213,8 +178,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
               ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
               : `Påmeldt ${shortDateNoYear(new Date())}`,
             status: isWaitlisted ? "waiting" : "registered",
-            happeningId: id,
-            userId: user.id,
+            happeningId: input.id,
+            userId: ctx.user.id,
           })
           .returning()
           .onConflictDoUpdate({
@@ -238,20 +203,23 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       },
     );
 
-    revalidateRegistrations(id, user.id);
-
     if (!registration) {
+      await va.track("Failed registration", {
+        userId: ctx.user.id,
+        happeningId: happening.id,
+      });
+
       throw new Error("Failed to update registration");
     }
 
     /**
      * Insert answers
      */
-    const answersToInsert = data.questions.map(
+    const answersToInsert = input.registration.questions.map(
       (question) =>
         ({
           happeningId: happening.id,
-          userId: user.id,
+          userId: ctx.user.id,
           questionId: question.questionId,
           answer: question.answer
             ? {
@@ -265,41 +233,19 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
+    revalidateRegistrations(input.id, ctx.user.id);
+
     await va.track("Successful reigstration", {
-      userId: user.id,
+      userId: ctx.user.id,
       happeningId: happening.id,
     });
 
     void (async () => {
-      await pingBoomtown(id);
+      await pingBoomtown(input.id);
     })();
 
-    return {
-      success: true,
-      message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
-    };
-  } catch (error) {
-    console.error(`Error in register: ${error}`);
-
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Skjemaet er ikke i riktig format",
-      };
-    }
-
-    await va.track("Failed registration", {
-      userId: user?.id ?? null,
-      happeningId: id ?? null,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-}
+    return isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet";
+  });
 
 function getCorrectSpotrange(
   year: number,
