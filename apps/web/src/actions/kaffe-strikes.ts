@@ -8,11 +8,7 @@ import { isMemberOf } from "@/lib/memberships";
 export async function addKaffeReport() {
   const user = await auth();
 
-  if (!user) {
-    return false;
-  }
-
-  if (!isMemberOf(user, ["hovedstyret", "webkom"])) {
+  if (!user || !isMemberOf(user, ["hovedstyret", "webkom"])) {
     return false;
   }
 

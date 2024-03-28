@@ -84,12 +84,13 @@ export function FeedbackForm() {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel {...form} htmlFor="category" required>
+                <FormLabel htmlFor="category" required>
                   Kategori
                 </FormLabel>
                 <FormControl>
-                  <Select id="category" {...field}>
-                    <option hidden>Velg en kategori</option>
+                  <Select id="category" defaultValue={undefined} {...field}>
+                    <option disabled>Velg en kategori</option>
+                    <hr />
                     <option value="bug">Bug</option>
                     <option value="feature">Funksjonalitet</option>
                     <option value="login">Innlogging</option>

@@ -26,7 +26,7 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
       };
     }
 
-    const data = await updateSelfPayloadSchema.parseAsync(payload);
+    const data = updateSelfPayloadSchema.parse(payload);
 
     const resp = await db
       .update(users)
