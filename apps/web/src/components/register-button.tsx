@@ -142,19 +142,16 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
                       )}
 
                       {question.type === "radio" && (
-                        <div>
-                          asrtarst
-                          <FormControl>
-                            <Select {...field}>
-                              <option hidden>Velg...</option>
-                              {question?.options?.map((option) => (
-                                <option key={option.id} value={option.value}>
-                                  {option.value}
-                                </option>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        </div>
+                        <FormControl>
+                          <Select {...field}>
+                            <option hidden>Velg...</option>
+                            {question?.options?.map((option) => (
+                              <option key={option.id} value={option.value}>
+                                {option.value}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
                       )}
 
                       {question.type === "textarea" && (

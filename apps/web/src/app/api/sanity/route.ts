@@ -93,11 +93,6 @@ export const POST = withBasicAuth(async (req) => {
     data: SanityHappening | null; // Is null on delete
   };
 
-  // Remove me hot fix
-  if (documentId === "98ef9e7f-8b65-4c84-84af-f93e7e2c4240") {
-    return new Response("OK", { status: 200 });
-  }
-
   // eslint-disable-next-line no-console
   console.log(operation, documentId, JSON.stringify(data));
 
