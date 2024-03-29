@@ -1,3 +1,4 @@
+import { Logger } from "@/lib/logger";
 import { sanityFetch } from "../client";
 import { allMeetingMinuteQuery } from "./queries";
 import { minuteSchema, type Minute } from "./schema";
@@ -11,7 +12,11 @@ export async function fetchMinutes() {
     tags: ["minutes"],
   })
     .then((res) => minuteSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      Logger.error(fetchMinutes.name, "Failed to fetch all meeting minutes");
+
+      return [];
+    });
 }
 
 /**

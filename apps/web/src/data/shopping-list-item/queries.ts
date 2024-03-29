@@ -2,6 +2,7 @@ import { unstable_cache as cache } from "next/cache";
 
 import { db } from "@echo-webkom/db";
 
+import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidations";
 
 export function getAllShoppinglistItems() {
@@ -11,7 +12,11 @@ export function getAllShoppinglistItems() {
         .findMany({
           with: { likes: true, user: true },
         })
-        .catch(() => []);
+        .catch(() => {
+          Logger.error(getAllShoppinglistItems.name, "Failed to fetch shopping list items");
+
+          return [];
+        });
     },
     [cacheKeyFactory.shoppinglistItems()],
     {

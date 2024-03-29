@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { Logger } from "@/lib/logger";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
@@ -39,7 +40,11 @@ const getHappening = async (id: string) => {
         groups: true,
       },
     })
-    .catch(() => null);
+    .catch(() => {
+      Logger.error(getHappening.name, `Failed to fetch happening with ID: ${id}`);
+
+      return null;
+    });
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {

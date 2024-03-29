@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
+import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getReactionByReactToKey(reactToKey: string) {
@@ -12,7 +13,14 @@ export async function getReactionByReactToKey(reactToKey: string) {
         .findMany({
           where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
-        .catch(() => []);
+        .catch(() => {
+          Logger.error(
+            getReactionByReactToKey.name,
+            `Failed to fetch reactions for reactToKey: ${reactToKey}`,
+          );
+
+          return [];
+        });
     },
     [cacheKeyFactory.reactions(reactToKey)],
     {
