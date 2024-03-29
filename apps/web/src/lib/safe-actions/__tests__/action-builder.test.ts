@@ -29,7 +29,7 @@ describe("action builder", () => {
     });
 
     expect(func).toBeDefined();
-    expect(await func(undefined)).toStrictEqual({
+    expect(await func()).toStrictEqual({
       success: true,
       data: "context",
     });
@@ -54,7 +54,7 @@ describe("action builder", () => {
     });
 
     expect(func).toBeDefined();
-    expect(await func(undefined)).toStrictEqual({
+    expect(await func()).toStrictEqual({
       success: false,
       message: "An error occurred",
     });

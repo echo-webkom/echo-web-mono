@@ -30,7 +30,7 @@ class Action<TInput, TContext> {
   }
 
   create<T extends Handler<TInput, TContext>>(handler: T) {
-    return async (input: TInput): Promise<ActionResponse<Awaited<ReturnType<T>>>> => {
+    return (async (input) => {
       try {
         const parsedInput = parseData(input, this.schema) as TInput;
         const ctx = (await this.ctxFn?.()) as TContext;
@@ -39,7 +39,13 @@ class Action<TInput, TContext> {
       } catch (error) {
         return this.handleError(error);
       }
-    };
+    }) as TInput extends NonNullable<unknown>
+      ? (input: TInput) => Promise<ActionResponse<Awaited<ReturnType<T>>>>
+      : () => Promise<ActionResponse<Awaited<ReturnType<T>>>>;
+
+    // as (
+    //   input: TInput extends NonNullable<unknown> ? never : TInput,
+    // ) => Promise<ActionResponse<Awaited<ReturnType<T>>>>;
   }
 
   private handleError(error: unknown): ErrorResponse {
@@ -59,12 +65,12 @@ class Action<TInput, TContext> {
 
     return {
       success: false,
-      message: "En ukjent feil oppstod",
+      message: "An unknown error occurred",
     } as const;
   }
 }
 
-class ActionGroup<TInput = undefined, TContext = undefined> {
+class ActionGroup<TInput, TContext> {
   schema: z.ZodTypeAny;
   ctxFn?: () => Promise<TContext>;
 

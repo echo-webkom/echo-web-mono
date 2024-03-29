@@ -11,7 +11,7 @@ export function StrikeButtons() {
   const router = useRouter();
 
   const handleAddReport = async () => {
-    const success = await addKaffeReport(undefined);
+    const success = await addKaffeReport();
 
     const title = success ? "Rapport lagt inn" : "Noe gikk galt";
 
@@ -25,7 +25,7 @@ export function StrikeButtons() {
   };
 
   const handleReset = async () => {
-    const success = await resetKaffeStrikes(undefined);
+    const success = await resetKaffeStrikes();
 
     const title = success ? "Prikker resatt" : "Noe gikk galt";
 

@@ -18,7 +18,7 @@ describe("safe actions", () => {
 
     expect(action).toBeDefined();
 
-    expect(await action(undefined)).toStrictEqual({
+    expect(await action()).toStrictEqual({
       success: true,
       data: "Hello world",
     });
@@ -52,6 +52,19 @@ describe("safe actions", () => {
     expect(result.success).toBe(false);
   });
 
+  it("should throw an error if input is missing", async () => {
+    const action = publicAction.input(z.object({ name: z.string() })).create(({ input }) => {
+      return `Hello, ${input.name}!`;
+    });
+
+    expect(action).toBeDefined();
+
+    // @ts-expect-error Testing missing input
+    const result = await action();
+
+    expect(result.success).toBe(false);
+  });
+
   it("should throw an error if handler throws an error", async () => {
     const action = publicAction.create(() => {
       throw new Error("An error occurred");
@@ -59,7 +72,7 @@ describe("safe actions", () => {
 
     expect(action).toBeDefined();
 
-    const result = await action(undefined);
+    const result = await action();
 
     expect(result).toStrictEqual({
       success: false,
@@ -76,7 +89,7 @@ describe("safe actions", () => {
 
     expect(action).toBeDefined();
 
-    expect(await action(undefined)).toStrictEqual({
+    expect(await action()).toStrictEqual({
       success: true,
       data: "Hello world",
     });
@@ -91,7 +104,7 @@ describe("safe actions", () => {
 
     expect(action).toBeDefined();
 
-    const result = await action(undefined);
+    const result = await action();
 
     expect(result).toStrictEqual({
       success: false,
@@ -108,7 +121,7 @@ describe("safe actions", () => {
 
     expect(action).toBeDefined();
 
-    const result = await action(undefined);
+    const result = await action();
 
     expect(result).toStrictEqual({
       success: false,
