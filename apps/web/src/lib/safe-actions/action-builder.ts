@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+import { isNotFoundError } from "next/dist/client/components/not-found";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { z } from "zod";
 
 import { parseData } from "./utils";
@@ -42,13 +44,13 @@ class Action<TInput, TContext> {
     }) as TInput extends NonNullable<unknown>
       ? (input: TInput) => Promise<ActionResponse<Awaited<ReturnType<T>>>>
       : () => Promise<ActionResponse<Awaited<ReturnType<T>>>>;
-
-    // as (
-    //   input: TInput extends NonNullable<unknown> ? never : TInput,
-    // ) => Promise<ActionResponse<Awaited<ReturnType<T>>>>;
   }
 
   private handleError(error: unknown): ErrorResponse {
+    if (isRedirectError(error) || isNotFoundError(error)) {
+      throw error;
+    }
+
     if (error instanceof Error) {
       return {
         success: false,
