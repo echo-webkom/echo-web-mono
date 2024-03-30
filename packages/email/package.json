@@ -24,7 +24,7 @@
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.11.30",
-    "@types/react": "18.2.69",
+    "@types/react": "18.2.72",
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
