@@ -1,5 +1,3 @@
-import { db } from "@echo-webkom/db";
-
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -12,12 +10,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import WhitelistButton from "@/components/whitelist-button";
-import { ensureWebkom } from "@/lib/ensure";
+import { getWhitelist } from "@/data/whitelist/queries";
+import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function WhitelistPage() {
-  await ensureWebkom();
-  const whitelisted = await db.query.whitelist.findMany();
+  await ensureWebkomOrHovedstyret();
+
+  const whitelisted = await getWhitelist();
 
   return (
     <Container>

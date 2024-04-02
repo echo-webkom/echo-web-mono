@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { getNextBedpresAfterBan } from "@/lib/ban-info";
+import { ensureBedkom } from "@/lib/ensure";
 import { split } from "@/utils/list";
 import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export default async function UserStrikesPage({ params }: Props) {
+  await ensureBedkom();
   const { userId } = params;
 
   const user = await db.query.users.findFirst({

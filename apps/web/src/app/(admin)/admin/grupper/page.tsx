@@ -19,12 +19,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getStudentGroupsWithMembers } from "@/data/groups/queries";
-import { ensureWebkom } from "@/lib/ensure";
+import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import AddGroupButton from "./_components/add-group-button";
 import { MembersModal } from "./members-modal";
 
 export default async function AdminGroupsPage() {
-  await ensureWebkom();
+  await ensureWebkomOrHovedstyret();
 
   const groups = await getStudentGroupsWithMembers();
 
