@@ -11,7 +11,7 @@ import {
 } from "@echo-webkom/db/schemas";
 
 import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutations";
-import { isWebkom } from "@/lib/memberships";
+import { isMemberOf, isWebkom } from "@/lib/memberships";
 
 export async function addDegree(payload: DegreeInsert) {
   const user = await auth();
@@ -23,7 +23,7 @@ export async function addDegree(payload: DegreeInsert) {
     };
   }
 
-  if (!isWebkom(user)) {
+  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
     return {
       success: false,
       message: "Du har ikke tilgang til denne funksjonen",
@@ -66,7 +66,7 @@ export async function removeDegree(id: string) {
     };
   }
 
-  if (!isWebkom(user)) {
+  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
     return {
       success: false,
       message: "Du har ikke tilgang til denne funksjonen",

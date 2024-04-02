@@ -6,7 +6,7 @@ import { auth } from "@echo-webkom/auth";
 import { insertGroupSchema, type GroupInsert } from "@echo-webkom/db/schemas";
 
 import { createGroup } from "@/data/groups/mutations";
-import { isWebkom } from "@/lib/memberships";
+import { isMemberOf } from "@/lib/memberships";
 
 export async function addGroup(group: GroupInsert) {
   const user = await auth();
@@ -18,7 +18,7 @@ export async function addGroup(group: GroupInsert) {
     };
   }
 
-  if (!isWebkom(user)) {
+  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
     return {
       success: false,
       message: "Du har ikke tilgang til denne funksjonen",

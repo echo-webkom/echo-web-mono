@@ -1,4 +1,5 @@
 import type { HappeningsToGroups, UsersToGroups } from "@echo-webkom/db/schemas";
+import { type Group } from "@echo-webkom/lib";
 
 export type TUser = {
   memberships: Array<UsersToGroups>;
@@ -8,7 +9,7 @@ export type Hostable = {
   groups: Array<HappeningsToGroups>;
 };
 
-export const isMemberOf = <U extends TUser>(user: U, groupIds: Array<string>) => {
+export const isMemberOf = <U extends TUser>(user: U, groupIds: Array<Group>) => {
   return user.memberships.some((membership) => groupIds.includes(membership.groupId));
 };
 
