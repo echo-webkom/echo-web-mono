@@ -1,7 +1,10 @@
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { ensureBedkom } from "@/lib/ensure";
 
-export default function StrikesDashboard() {
+export default async function StrikesDashboard() {
+  await ensureBedkom();
+
   return (
     <Container>
       <Heading>Dashboard</Heading>

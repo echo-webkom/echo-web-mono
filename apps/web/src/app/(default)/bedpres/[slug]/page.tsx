@@ -7,6 +7,7 @@ import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { Logger } from "@/lib/logger";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { shortDate } from "@/utils/date";
 
@@ -20,6 +21,7 @@ const getData = cache(async (slug: string) => {
   const bedpres = await fetchHappeningBySlug(slug);
 
   if (!bedpres) {
+    Logger.info("Bedpres not found", `Failed to find bedpres with slug: ${slug}`);
     return notFound();
   }
 

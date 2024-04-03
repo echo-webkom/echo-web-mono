@@ -6,6 +6,7 @@ import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "reac
 
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
@@ -17,10 +18,10 @@ import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { Logger } from "@/lib/logger";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
-import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";
@@ -39,7 +40,11 @@ const getHappening = async (id: string) => {
         groups: true,
       },
     })
-    .catch(() => null);
+    .catch(() => {
+      Logger.error(getHappening.name, `Failed to fetch happening with ID: ${id}`);
+
+      return null;
+    });
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {

@@ -6,7 +6,7 @@ import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 
-import { isWebkom } from "@/lib/memberships";
+import { isMemberOf } from "@/lib/memberships";
 
 export async function upsertWhitelist(email: string, reason: string, days: number) {
   try {
@@ -19,7 +19,7 @@ export async function upsertWhitelist(email: string, reason: string, days: numbe
       };
     }
 
-    if (!isWebkom(user)) {
+    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
       return {
         success: false,
         message: "Du har ikke tilgang til denne funksjonen",
@@ -73,7 +73,7 @@ export async function removeWhitelist(email: string) {
       };
     }
 
-    if (!isWebkom(user)) {
+    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
       return {
         success: false,
         message: "Du har ikke tilgang til denne funksjonen",

@@ -14,7 +14,7 @@ import { TbGavel } from "react-icons/tb";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
-import { isBedkom, isWebkom } from "@/lib/memberships";
+import { isBedkom, isMemberOf } from "@/lib/memberships";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,7 +60,7 @@ export function UserMenu({ user }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
 
-        {isWebkom(user) && (
+        {isMemberOf(user, ["webkom", "hovedstyret"]) && (
           <>
             <DropdownMenuSeparator />
 

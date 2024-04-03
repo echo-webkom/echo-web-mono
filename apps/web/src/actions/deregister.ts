@@ -71,7 +71,6 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
     ]);
 
     const contacts = await getContactsBySlug(exisitingRegistration.happening.slug);
-
     if (contacts.length > 0) {
       await emailClient.sendEmail(
         contacts.map((contact) => contact.email),

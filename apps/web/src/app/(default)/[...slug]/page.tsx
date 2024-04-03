@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
+import { Logger } from "@/lib/logger";
 import { fetchStaticInfoBySlug } from "@/sanity/static-info";
 
 export const revalidate = 86400; // 24 hours
@@ -25,6 +26,7 @@ const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
   const page = await fetchStaticInfoBySlug(pageType, slug);
 
   if (!page) {
+    Logger.info("Page not found", `Failed to find page with slug: ${pageType}/${slug}`);
     return notFound();
   }
 

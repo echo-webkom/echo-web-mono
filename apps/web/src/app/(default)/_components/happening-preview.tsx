@@ -4,6 +4,7 @@ import { isFuture, isToday } from "date-fns";
 import { RxCalendar } from "react-icons/rx";
 
 import { type Registration } from "@echo-webkom/db/schemas";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
@@ -12,7 +13,6 @@ import { isBedpres } from "@/lib/is-bedpres";
 import { type fetchHomeHappenings } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
-import { urlFor } from "@/utils/image-builder";
 
 const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
   spotRanges: Array<TSpotRange>,

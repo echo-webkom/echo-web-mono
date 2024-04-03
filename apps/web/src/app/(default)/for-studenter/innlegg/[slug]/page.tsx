@@ -2,6 +2,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { isBoard } from "@echo-webkom/lib";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
@@ -10,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { initials } from "@/lib/initials";
 import { type Author } from "@/sanity/posts";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
-import { urlFor } from "@/utils/image-builder";
 
 type Props = {
   params: {

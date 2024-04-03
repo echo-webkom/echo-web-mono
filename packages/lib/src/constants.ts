@@ -36,6 +36,15 @@ export const JOB_TYPES = [
 
 export type JobType = (typeof JOB_TYPES)[number]["value"];
 
+export const QUESTION_TYPES = [
+  { title: "Tekstfelt", value: "text" },
+  { title: "Stort tekstfelt", value: "textarea" },
+  { title: "Sjekkbokser", value: "checkbox" },
+  { title: "Valg", value: "radio" },
+] as const;
+
+export type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
+
 export type StrikeType =
   | "UNREGISTER_BEFORE_DEADLINE"
   | "UNREGISTER_AFTER_DEADLINE"
@@ -64,3 +73,20 @@ export const STRIKE_TYPE_AMOUNT: Record<StrikeType, number> = {
   NO_FEEDBACK: 1,
   OTHER: 1,
 };
+
+export const GROUPS = {
+  WEBKOM: "webkom",
+  HOVEDSTYRET: "hovedstyret",
+  BEDKOM: "bedkom",
+  GNIST: "gnist",
+  MAKERSPACE: "makerspace",
+  TILDE: "tilde",
+  HYGGKOM: "hyggkom",
+  ESC: "esc",
+  PROGRAMMERBAR: "programmerbar",
+  ESCSQUASH: "esc-squash",
+  ESCFOTBALL: "esc-fotball",
+  BRYGGELAGET: "bryggelaget",
+} as const;
+
+export type Group = (typeof GROUPS)[keyof typeof GROUPS] | (string & NonNullable<unknown>);
