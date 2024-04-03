@@ -1,4 +1,4 @@
-import { format, isFuture, isPast } from "date-fns";
+import { differenceInHours, format, isFuture, isPast } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";

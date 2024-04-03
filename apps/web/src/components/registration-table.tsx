@@ -12,12 +12,12 @@ import {
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
+import { type TRegistration } from "@/lib/__tests__/registration.test";
+import { getRegistrationStatus } from "@/lib/registrations";
 import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
-import { hoursBetween } from "@/utils/date";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
@@ -49,9 +49,8 @@ export const formatHeaders: Record<HeaderType, string> = {
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
+    memberships: Array<{ group: Group | null }>;
+    changedAt: Date | null;
   };
 };
 
@@ -285,7 +284,12 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {getRegistrationStatus(registration, happeningDate)}
+        {getRegistrationStatus(
+          {
+            ...registration,
+          } as TRegistration,
+          happeningDate,
+        )}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>
@@ -326,16 +330,3 @@ const RegistrationRow = ({
     </TableRow>
   );
 };
-
-function getRegistrationStatus(registration: RegistrationWithUser, happeningDate: Date | null) {
-  if (registration.changedBy && registration.changedAt && registration.prevStatus) {
-    const hours = Math.floor(hoursBetween(registration.changedAt, happeningDate));
-    return cn(
-      registrationStatusToString[registration.status],
-      registration.prevStatus === "waiting" &&
-        `fra ${registrationStatusToString[registration.prevStatus].toLowerCase()}`,
-      hours < 24 && `${hours} t før`,
-    );
-  }
-  return registrationStatusToString[registration.status];
-}

@@ -22,6 +22,7 @@ export const registrations = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
     prevStatus: registrationStatusEnum("prev_status"),
     changedAt: timestamp("changed_at"),
+    // changedAt: timestamp("changed_at", { mode: "date", precision: 3 }).$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
   },
   (table) => ({
@@ -39,6 +40,10 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
     references: [users.id],
   }),
   answers: many(answers),
+  changedBy: one(users, {
+    fields: [registrations.changedBy],
+    references: [users.id],
+  }),
 }));
 
 export type Registration = (typeof registrations)["$inferSelect"];
