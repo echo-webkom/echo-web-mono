@@ -141,7 +141,7 @@ export function RegistrationTable({
   return (
     <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
-        <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
+        <div className="flex flex-col items-center gap-4 pb-2 pt-2 md:flex-row md:pb-4">
           <div className="flex w-full flex-col gap-1">
             <Label htmlFor="search">Søk:</Label>
             <Input
@@ -192,8 +192,8 @@ export function RegistrationTable({
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
         </div>
-        <div className="mt-auto flex flex-col justify-between px-4 py-2 md:flex-row">
-          <div className="mt-auto flex w-full flex-col items-center space-x-2 md:w-auto md:flex-row">
+        <div className="mt-auto flex flex-col justify-between px-4 md:flex-row">
+          <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
             <RandomPersonButton registrations={registrations} />
             <DownloadCsvButton
               id={happeningId}

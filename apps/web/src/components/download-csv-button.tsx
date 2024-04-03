@@ -30,21 +30,11 @@ export function DownloadCsvButton({
     <div>
       <div className="overflow-y-auto">
         <div className="flex flex-col md:flex-row">
-          <div className="w-full py-2">
-            <Button asChild>
-              <a
-                href={`/api/registrations?happeningId=${id}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
-                download
-              >
-                Last ned csv
-              </a>
-            </Button>
-          </div>
           <div className="w-full">
             <DropdownMenu modal>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto flex gap-2">
-                  Csv Kolonner
+                <Button className="ml-auto flex gap-2">
+                  Last ned
                   <RxChevronDown />
                 </Button>
               </DropdownMenuTrigger>
@@ -68,6 +58,16 @@ export function DownloadCsvButton({
                     </DropdownMenuCheckboxItem>
                   );
                 })}
+                <div>
+                  <Button asChild variant="outline" className="mx-2 mb-2 mt-4">
+                    <a
+                      href={`/api/registrations?happeningId=${id}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
+                      download
+                    >
+                      Last ned csv
+                    </a>
+                  </Button>
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
