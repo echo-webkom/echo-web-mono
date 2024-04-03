@@ -2,14 +2,18 @@ import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { ensureWebkom } from "@/lib/ensure";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHappeningsPage() {
+  await ensureWebkom();
+
   const happenings = await db.query.happenings.findMany({
     columns: {
       slug: true,
       title: true,
+      id: true,
     },
     with: {
       groups: {
@@ -27,7 +31,8 @@ export default async function AdminHappeningsPage() {
 
   const h = happenings.map((happening) => {
     return {
-      "slug/id": happening.slug,
+      id: happening.id,
+      slug: happening.slug,
       title: happening.title,
       groups: happening.groups.map((group) => `${group.group.id}/${group.group.name}`),
     };

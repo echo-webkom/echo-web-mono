@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
+import { echoGram } from "@/api/echogram";
 import { ProfileImage } from "@/components/profile-image";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -12,7 +13,6 @@ import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
-import { echoGram } from "@/lib/echogram";
 
 export default async function ProfilePage() {
   const user = await auth();

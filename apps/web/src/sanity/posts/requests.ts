@@ -1,3 +1,4 @@
+import { Logger } from "@/lib/logger";
 import { sanityFetch } from "../client";
 import { allPostsQuery } from "./queries";
 import { postSchema, type Post } from "./schemas";
@@ -8,10 +9,15 @@ import { postSchema, type Post } from "./schemas";
 export async function fetchAllPosts() {
   return await sanityFetch<Array<Post>>({
     query: allPostsQuery,
+    cdn: true,
     tags: ["posts"],
   })
     .then((res) => postSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      Logger.error(fetchAllPosts.name, "Failed to fetch all posts");
+
+      return [];
+    });
 }
 
 export async function fetchPosts(n?: number) {

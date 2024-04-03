@@ -1,7 +1,5 @@
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
-import { db } from "@echo-webkom/db";
-
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
@@ -20,29 +18,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getStudentGroupsWithMembers } from "@/data/groups/queries";
+import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+import AddGroupButton from "./_components/add-group-button";
 import { MembersModal } from "./members-modal";
 
-export const dynamic = "force-dynamic";
-
 export default async function AdminGroupsPage() {
-  const groups = await db.query.groups.findMany({
-    with: {
-      members: {
-        with: {
-          user: {
-            columns: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  await ensureWebkomOrHovedstyret();
+
+  const groups = await getStudentGroupsWithMembers();
 
   return (
     <Container>
-      <Heading>Grupper</Heading>
+      <div className="flex flex-row justify-between">
+        <Heading>Grupper</Heading>
+        <AddGroupButton>Legg til gruppe</AddGroupButton>
+      </div>
 
       <div className="flex flex-col gap-2 py-4">
         <p className="font-semibold">Oversikt over alle grupper og medlemmer.</p>

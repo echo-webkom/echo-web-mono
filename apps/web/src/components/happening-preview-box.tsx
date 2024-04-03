@@ -4,9 +4,10 @@ import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
+import { urlFor } from "@echo-webkom/sanity";
+
 import { type Happening, type HappeningType } from "@/sanity/happening/schemas";
 import { cn } from "@/utils/cn";
-import { urlFor } from "@/utils/image-builder";
 import { capitalize } from "@/utils/string";
 
 const happeningTypeToString: Record<HappeningType, string> = {

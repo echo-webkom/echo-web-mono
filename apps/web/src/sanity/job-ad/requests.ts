@@ -1,3 +1,4 @@
+import { Logger } from "@/lib/logger";
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
 import { jobAdSchema } from "./schemas";
@@ -11,10 +12,15 @@ import { jobAdSchema } from "./schemas";
 export async function fetchJobAds() {
   return await sanityFetch({
     query: jobAdsQuery,
+    cdn: true,
     tags: ["job-ads"],
   })
     .then((res) => jobAdSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      Logger.error(fetchJobAds.name, "Failed to fetch job ads");
+
+      return [];
+    });
 }
 
 /**

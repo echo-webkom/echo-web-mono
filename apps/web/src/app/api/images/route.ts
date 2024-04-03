@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 
 import { auth } from "@echo-webkom/auth";
 
-import { echoGram } from "@/lib/echogram";
+import { echoGram } from "@/api/echogram";
 
 export async function POST(req: NextRequest) {
   const user = await auth();
@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
   }
 
   const formData = await req.formData();
-  const file = formData.get("image") as File;
+  const file = formData.get("image");
 
-  if (!file) {
+  if (!file || typeof file === "string") {
     return new Response("Missing userId or file", { status: 400 });
   }
 

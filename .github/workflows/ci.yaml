@@ -54,7 +54,7 @@ jobs:
         run: pnpm --filter=playwright test:install
 
       - name: Seed database
-        run: pnpm db:seed
+        run: pnpm seed database --mode test
 
       - name: Run playwright tests
         run: pnpm test:e2e

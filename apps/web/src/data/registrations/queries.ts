@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
+import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getRegistrationsByHappeningId(happeningId: string) {
@@ -15,7 +16,14 @@ export async function getRegistrationsByHappeningId(happeningId: string) {
             user: true,
           },
         })
-        .catch(() => []);
+        .catch(() => {
+          Logger.error(
+            getRegistrationsByHappeningId.name,
+            `Failed to fetch registrations for happening with ID: ${happeningId}`,
+          );
+
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsHappening(happeningId)],
     {
@@ -34,7 +42,14 @@ export async function getRegistrationsByUserId(userId: string) {
             happening: true,
           },
         })
-        .catch(() => []);
+        .catch(() => {
+          Logger.error(
+            getRegistrationsByUserId.name,
+            `Failed to fetch registrations for user with ID: ${userId}`,
+          );
+
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsUser(userId)],
     {

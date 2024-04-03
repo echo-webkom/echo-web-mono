@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { and, desc, eq, lt } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
@@ -15,10 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getPastHappenings } from "@/data/happenings/queries";
 import { getAllUserStrikes } from "@/data/strikes/queries";
+import { getNextBedpresAfterBan } from "@/lib/ban-info";
+import { ensureBedkom } from "@/lib/ensure";
 import { split } from "@/utils/list";
-import { AddStrikeButton, RemoveStrikeButton } from "./strike-button";
+import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
 type Props = {
   params: {
@@ -27,50 +28,78 @@ type Props = {
 };
 
 export default async function UserStrikesPage({ params }: Props) {
+  await ensureBedkom();
   const { userId } = params;
 
   const user = await db.query.users.findFirst({
     where: (user) => eq(user.id, userId),
-    columns: {
-      name: true,
-      email: true,
-      bannedFromStrike: true,
-    },
   });
 
   if (!user) {
     return notFound();
   }
 
-  const strikes = await getAllUserStrikes(userId);
+  const strikes = (await getAllUserStrikes(userId)).reverse();
 
   const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
     strikes,
     (strike) => strike.id > (user.bannedFromStrike ?? -1),
   );
 
-  const prevBedpresses = await getPastHappenings(10, "bedpres");
+  const prevBedpresses = await db.query.happenings.findMany({
+    where: (happening) =>
+      and(
+        lt(happening.date, new Date(new Date().getTime() + 14 * 24 * 60 * 60 * 1000)), // 2 weeks from now
+        eq(happening.type, "bedpres"),
+      ),
+    orderBy: (happening) => [desc(happening.date)],
+    limit: 10,
+  });
+
+  const nextBedpresAfterBan = user.isBanned ? await getNextBedpresAfterBan(user) : null;
 
   return (
     <Container>
-      <div className="flex justify-between">
-        <Heading>{user.name}</Heading>
-        <AddStrikeButton
-          happenings={prevBedpresses}
-          user={{
-            id: userId,
-            name: user.name,
-            email: user.email,
-          }}
-          currentAmount={validStrikes.length}
-          variant="destructive"
-          className="min-w-28"
-        />
+      <div className="justify-between sm:flex">
+        <div>
+          <Heading>{user.name}</Heading>
+
+          {user.isBanned && (
+            <div className="text-lg text-destructive">
+              Brukeren er utestengt{" "}
+              {nextBedpresAfterBan && (
+                <>
+                  til:{" "}
+                  <Link className="hover:underline" href={`/bedpres/${nextBedpresAfterBan.slug}`}>
+                    {nextBedpresAfterBan.title}
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
+
+          <Text>
+            <div>Gyldige prikker: {validStrikes.length}</div>
+            <div> Totalt antall prikker: {strikes.length}</div>
+          </Text>
+        </div>
+        <div className="flex flex-col gap-4">
+          <AddStrikeButton
+            happenings={prevBedpresses}
+            user={{
+              id: userId,
+              name: user.name,
+              email: user.email,
+            }}
+            currentAmount={validStrikes.length}
+            variant="destructive"
+            className="min-w-28 "
+          />
+          {user.isBanned && (
+            <RemoveBanButton userId={userId} variant="default" className="min-w-28" />
+          )}
+        </div>
       </div>
-      <Text>
-        <div>Gyldige prikker: {validStrikes.length}</div>
-        <div> Totalt antall prikker: {strikes.length}</div>
-      </Text>
 
       {validStrikes.length === 0 && earlierStrikes.length === 0 && (
         <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
@@ -114,7 +143,7 @@ function StrikeTable({
           <TableHead scope="col">Årsak</TableHead>
           <TableHead scope="col">Dato gitt</TableHead>
           <TableHead scope="col">Gitt av</TableHead>
-          <TableHead scope="col">Handling</TableHead>
+          <TableHead scope="col">{/** Actions */}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

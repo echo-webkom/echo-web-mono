@@ -75,10 +75,10 @@ export default defineType({
         "Hvem som arrangerer arrangementet. Medlemmer av gruppene vil få tilgang til påmeldingssiden.",
       type: "array",
       of: [
-        {
+        defineArrayMember({
           type: "reference",
           to: { type: "studentGroup" },
-        },
+        }),
       ],
       validation: (Rule) =>
         Rule.custom((organizers, context) => {

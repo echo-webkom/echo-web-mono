@@ -2,6 +2,7 @@ import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { subMinutes } from "date-fns";
 
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
+import { Logger } from "@/lib/logger";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
 import { happeningSchema, type Happening, type HappeningType } from "./schemas";
@@ -18,7 +19,11 @@ export async function fetchAllHappenings() {
     tags: ["happenings"],
   })
     .then((res) => happeningSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      Logger.error(fetchAllHappenings.name, "Failed to fetch all happenings");
+
+      return [];
+    });
 }
 
 /**
@@ -42,8 +47,13 @@ export async function fetchHomeHappenings<T extends HappeningType>(types: Array<
       happeningTypes: types,
       n,
     },
+    cdn: true,
     revalidate: 120,
-  }).catch(() => []);
+  }).catch(() => {
+    Logger.error(fetchHomeHappenings.name, "Failed to fetch home happenings");
+
+    return [];
+  });
 }
 
 /**
@@ -59,7 +69,11 @@ export async function fetchHappeningBySlug(slug: string) {
     params: {
       slug,
     },
-  }).catch(() => null);
+  }).catch(() => {
+    Logger.error(fetchHappeningBySlug.name, `Failed to fetch happening with slug: ${slug}`);
+
+    return null;
+  });
 }
 
 /**
@@ -145,5 +159,9 @@ export async function fetchFilteredHappening(
 export async function getHappeningTypeBySlug(slug: string) {
   return await fetchHappeningBySlug(slug)
     .then((happening) => (happening ? happening.happeningType : null))
-    .catch(() => null);
+    .catch(() => {
+      Logger.error(getHappeningTypeBySlug.name, `Failed to fetch happening type for slug: ${slug}`);
+
+      return null;
+    });
 }

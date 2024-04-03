@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { getServerSession as _getServerSession } from "next-auth/next";
 
 import { db } from "@echo-webkom/db";
@@ -22,23 +22,6 @@ export async function getAuthSession() {
 }
 
 /**
- * Prepeared statement for getting the user. This is to speed up database queries.
- */
-const getUserById = db.query.users
-  .findFirst({
-    where: (user) => eq(user.id, sql.placeholder("userId")),
-    with: {
-      degree: true,
-      memberships: {
-        with: {
-          group: true,
-        },
-      },
-    },
-  })
-  .prepare("get-user-by-id");
-
-/**
  *
  * @returns user of currently signed in user
  */
@@ -49,8 +32,16 @@ export async function auth() {
     return null;
   }
 
-  const user = await getUserById.execute({
-    userId: session.user.id,
+  const user = await db.query.users.findFirst({
+    where: (user) => eq(user.id, session.user.id),
+    with: {
+      degree: true,
+      memberships: {
+        with: {
+          group: true,
+        },
+      },
+    },
   });
 
   if (!user) {

@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
+import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getSpotRangeByHappeningId(happeningId: string) {
@@ -12,7 +13,14 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
         .findMany({
           where: (spotRange) => eq(spotRange.happeningId, happeningId),
         })
-        .catch(() => []);
+        .catch(() => {
+          Logger.error(
+            getSpotRangeByHappeningId.name,
+            `Failed to fetch spot range for happening with ID: ${happeningId}`,
+          );
+
+          return [];
+        });
     },
     [cacheKeyFactory.happeningSpotrange(happeningId)],
     {

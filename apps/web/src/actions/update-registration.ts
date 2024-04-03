@@ -72,7 +72,7 @@ export async function updateRegistration(
       };
     }
 
-    const data = await updateRegistrationPayloadSchema.parseAsync(payload);
+    const data = updateRegistrationPayloadSchema.parse(payload);
 
     await db
       .update(registrations)

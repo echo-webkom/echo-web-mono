@@ -1,8 +1,10 @@
 import { Container } from "@/components/container";
 import { getAllUsersWithValidStrikes } from "@/data/strikes/queries";
+import { ensureBedkom } from "@/lib/ensure";
 import StrikesTable from "./table";
 
 export default async function StrikesPage() {
+  await ensureBedkom();
   const usersWithStrikes = await getAllUsersWithValidStrikes();
 
   return (

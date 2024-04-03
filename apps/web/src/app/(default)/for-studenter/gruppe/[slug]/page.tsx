@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
+import { urlFor } from "@echo-webkom/sanity";
+
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
-import { urlFor } from "@/utils/image-builder";
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {
@@ -47,7 +48,7 @@ export default async function GroupPage({ params }: Props) {
 
   const group = await getData(slug);
 
-  const hasSocials = Object.values(group.socials ?? {}).some((social) => social);
+  const hasSocials = Object.values(group.socials ?? {}).some((value) => value);
 
   return (
     <Container className="space-y-8">
@@ -97,9 +98,13 @@ export default async function GroupPage({ params }: Props) {
       )}
 
       {group.image && (
-        <div className="relative overflow-hidden rounded-lg">
-          <Image width={700} height={475} src={urlFor(group.image).url()} alt={group.name} />
-        </div>
+        <Image
+          width={700}
+          height={475}
+          src={urlFor(group.image).url()}
+          alt={group.name}
+          className="rounded-lg"
+        />
       )}
 
       <section>

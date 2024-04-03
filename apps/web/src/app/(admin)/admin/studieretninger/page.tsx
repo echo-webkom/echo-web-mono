@@ -9,22 +9,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getAllDegrees } from "@/data/degrees/queries";
+import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+import AddDegreeButton from "./_components/add-degree-button";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDegreePage() {
+  await ensureWebkomOrHovedstyret();
+
   const degrees = await getAllDegrees();
 
   return (
     <Container>
-      <Heading>Studieretninger</Heading>
+      <div className="flex flex-col justify-between gap-4 sm:flex-row">
+        <Heading>Studieretninger</Heading>
+        <AddDegreeButton>Legg til</AddDegreeButton>
+      </div>
 
       <div className="flex flex-col gap-2 py-4">
         <p className="font-semibold">Oversikt over alle studieretninger</p>
-
-        <p>
-          <i>(Ikke implementert enda)</i> Burde være mulig å legge til flere her.
-        </p>
       </div>
 
       <Table>
@@ -32,6 +35,7 @@ export default async function AdminDegreePage() {
           <TableRow>
             <TableHead>Navn</TableHead>
             <TableHead>id</TableHead>
+            <TableHead>{/* Actions */}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,6 +44,9 @@ export default async function AdminDegreePage() {
               <TableRow key={degree.id}>
                 <TableCell>{degree.name}</TableCell>
                 <TableCell>{degree.id}</TableCell>
+                <TableCell>
+                  <AddDegreeButton initialDegree={degree}>Endre</AddDegreeButton>
+                </TableCell>
               </TableRow>
             );
           })}

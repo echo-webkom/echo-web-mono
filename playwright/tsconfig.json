@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../tsconfig.json",
+  "extends": "@echo-webkom/tsconfig/base.json",
   "include": [".eslintrc.cjs", "**/*.ts"],
   "exclude": ["node_modules"]
 }

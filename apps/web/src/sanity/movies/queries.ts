@@ -1,6 +1,7 @@
 import { groq } from "next-sanity";
 
 export const moviesPartial = groq`
+_id,
 title,
 date,
 link,
