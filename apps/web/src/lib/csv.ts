@@ -8,7 +8,10 @@ const parser = new Parser({
   withBOM: true,
 });
 
-export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>, selectedHeaders: Array<string>): string => {
+export const toCsv = (
+  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
+  selectedHeaders: Array<string>,
+): string => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
@@ -28,17 +31,18 @@ export const toCsv = (happening: Exclude<Awaited<ReturnType<typeof getHappeningC
       if (header === "Alternativ Epost") {
         header = "Epost";
       }
-      if (Object.prototype.hasOwnProperty.call(obj, header)) {
+      if (header in obj) {
         filteredObj[header] = obj[header] ?? "";
-      }});
-
-      happening.questions.forEach((question) => {
-        if (selectedHeaders.includes(question.title)) {
-          const answer = answers.find((a) => a.questionId === question.id)?.answer;
-          const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-          filteredObj[question.title] = formattedAnswer;
       }
-  });
+    });
+
+    happening.questions.forEach((question) => {
+      if (selectedHeaders.includes(question.title)) {
+        const answer = answers.find((a) => a.questionId === question.id)?.answer;
+        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+        filteredObj[question.title] = formattedAnswer;
+      }
+    });
 
     return filteredObj;
   });
