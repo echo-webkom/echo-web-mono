@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { toCsv } from "../csv";
 import { happeningTypeEnum } from "@echo-webkom/db/schemas";
 
-
 describe("toCsv", () => {
   it("should convert happening data to CSV format", () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const happening = {
       registrations: [
         {
@@ -41,18 +41,18 @@ describe("toCsv", () => {
     };
 
     const happeningData = {
-        date: null,
-        id: "",
-        type: happeningTypeEnum.enumValues[1],
-        slug: "",
-        title: "",
-        registrationGroups: null,
-        registrationStartGroups: null,
-        registrationStart: null,
-        registrationEnd: null,
-        registrations: [],
-        questions: [],
-        groups: []
+      date: null,
+      id: "",
+      type: happeningTypeEnum.enumValues[1],
+      slug: "",
+      title: "",
+      registrationGroups: null,
+      registrationStartGroups: null,
+      registrationStart: null,
+      registrationEnd: null,
+      registrations: [],
+      questions: [],
+      groups: []
     };
 
     const selectedHeaders: Array<string> = ["Navn", "Epost", "Status", "År", "Studieretning", "Question 1", "Question 2"];
