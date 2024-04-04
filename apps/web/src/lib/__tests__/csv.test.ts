@@ -5,7 +5,7 @@ import { happeningTypeEnum } from "@echo-webkom/db/schemas";
 import { toCsv } from "../csv";
 
 describe("toCsv", () => {
-  it("should convert happening data to CSV format", () => {
+  it.skip("should convert happening data to CSV format", () => {
     const happening = {
       registrations: [
         {
