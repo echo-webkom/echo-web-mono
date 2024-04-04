@@ -10,7 +10,7 @@ import {
 } from "./ui/dropdown-menu";
 
 type DownloadCsvButtonProps = {
-  id: string;
+  slug: string;
   columns: Array<string>;
   removeKey: (id: string) => void;
   addKey: (id: string) => void;
@@ -18,7 +18,7 @@ type DownloadCsvButtonProps = {
 };
 
 export function DownloadCsvButton({
-  id,
+  slug,
   columns,
   removeKey,
   addKey,
@@ -61,7 +61,7 @@ export function DownloadCsvButton({
                 <div>
                   <Button asChild variant="outline" className="mx-2 mb-2 mt-4">
                     <a
-                      href={`/api/registrations?happeningId=${id}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
+                      href={`/api/registrations?slug=${slug}&selectedHeaders=${encodeURIComponent(selectedHeaders.join(","))}`}
                       download
                     >
                       Last ned csv

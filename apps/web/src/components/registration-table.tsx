@@ -56,13 +56,13 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
 export function RegistrationTable({
   registrations,
   studentGroups,
-  happeningId,
+  slug,
   questions,
   isBedpres,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
-  happeningId: string;
+  slug: string;
   questions: Array<Question>;
   isBedpres: boolean;
 }) {
@@ -183,7 +183,7 @@ export function RegistrationTable({
           <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
             <RandomPersonButton registrations={registrations} />
             <DownloadCsvButton
-              id={happeningId}
+              slug={slug}
               columns={columns}
               removeKey={removeKey}
               addKey={addKey}

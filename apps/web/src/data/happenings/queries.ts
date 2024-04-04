@@ -3,7 +3,7 @@ import { and, asc, eq, gt, lt } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
 
-export async function getFullHappening(slug: string) {
+export async function getFullHappening(slug: Happening["slug"]) {
   return await db.query.happenings.findFirst({
     where: (happening) => eq(happening.slug, slug),
     with: {

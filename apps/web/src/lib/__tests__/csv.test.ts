@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { toCsv } from "../csv";
 import { happeningTypeEnum } from "@echo-webkom/db/schemas";
 
+//TODO: funka de??
 describe("toCsv", () => {
   it("should convert happening data to CSV format", () => {
     const happening = {
