@@ -2,14 +2,14 @@ import { Parser } from "@json2csv/plainjs";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { type getHappeningCsvData } from "@/data/happenings/queries";
+import { type getFullHappening } from "@/data/happenings/queries";
 
 const parser = new Parser({
   withBOM: true,
 });
 
 export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
+  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>,
   selectedHeaders: Array<string>,
 ): string => {
   const registrations = happening.registrations.map((r) => {

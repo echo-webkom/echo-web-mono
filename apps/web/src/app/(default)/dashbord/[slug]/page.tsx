@@ -11,7 +11,7 @@ import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
-import { getHappeningCsvData } from "@/data/happenings/queries";
+import { getFullHappening } from "@/data/happenings/queries";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
@@ -23,13 +23,7 @@ type Props = {
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
 
-  const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
-    with: {
-      questions: true,
-      groups: true,
-    },
-  });
+  const happening = await getFullHappening(slug);
 
   if (!happening) {
     return notFound();
@@ -57,11 +51,6 @@ export default async function EventDashboard({ params }: Props) {
       },
     },
   });
-
-  const getCsvData = await getHappeningCsvData(happening.id);
-  if (!getCsvData) {
-    return notFound();
-  }
 
   registrations.sort((a, b) => {
     const statusOrder: Record<RegistrationStatus, number> = {

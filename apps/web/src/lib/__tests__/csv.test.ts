@@ -4,7 +4,6 @@ import { happeningTypeEnum } from "@echo-webkom/db/schemas";
 
 describe("toCsv", () => {
   it("should convert happening data to CSV format", () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const happening = {
       registrations: [
         {
@@ -41,6 +40,7 @@ describe("toCsv", () => {
     };
 
     const happeningData = {
+      ...happening,
       date: null,
       id: "",
       type: happeningTypeEnum.enumValues[1],
