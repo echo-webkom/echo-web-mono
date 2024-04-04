@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+import { index, json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
@@ -19,6 +19,7 @@ export const happenings = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
+    slugIdx: index("slug_idx").on(table.slug),
   }),
 );
 
