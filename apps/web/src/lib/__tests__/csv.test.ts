@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { toCsv } from "../csv";
+
 import { happeningTypeEnum } from "@echo-webkom/db/schemas";
 
-//TODO: funka de??
+import { toCsv } from "../csv";
+
 describe("toCsv", () => {
   it("should convert happening data to CSV format", () => {
     const happening = {
@@ -53,13 +54,21 @@ describe("toCsv", () => {
       registrationEnd: null,
       registrations: [],
       questions: [],
-      groups: []
+      groups: [],
     };
 
-    const selectedHeaders: Array<string> = ["Navn", "Epost", "Status", "År", "Studieretning", "Question 1", "Question 2"];
+    const selectedHeaders: Array<string> = [
+      "Navn",
+      "Epost",
+      "Status",
+      "År",
+      "Studieretning",
+      "Question 1",
+      "Question 2",
+    ];
     const csv = toCsv(happeningData, selectedHeaders);
 
     expect(csv).toBe(`Navn,Epost,Status,År,Studieretning,Question 1,Question 2
   Petter Kjellberg,supah@gmail.com,registered,2022,Computer Science,yes,no`);
-  })
+  });
 });
