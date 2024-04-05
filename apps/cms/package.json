@@ -36,7 +36,7 @@
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@sanity/eslint-config-studio": "3.0.1",
-    "@types/react": "18.2.73",
+    "@types/react": "18.2.74",
     "@types/styled-components": "5.1.34",
     "dotenv": "16.4.5",
     "eslint": "8.57.0",
