@@ -177,9 +177,6 @@ importers:
       calendar-link:
         specifier: 2.6.0
         version: 2.6.0
-      chalk:
-        specifier: 5.3.0
-        version: 5.3.0
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
@@ -204,6 +201,9 @@ importers:
       next-auth:
         specifier: 4.24.7
         version: 4.24.7(next@14.1.4)(react-dom@18.2.0)(react@18.2.0)
+      next-axiom:
+        specifier: ^1.1.1
+        version: 1.1.1(next@14.1.4)(react@18.2.0)
       next-sanity:
         specifier: 8.5.0
         version: 8.5.0(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.36.1)(@sanity/ui@2.0.12)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
@@ -12261,6 +12261,19 @@ packages:
       uuid: 8.3.2
     dev: false
 
+  /next-axiom@1.1.1(next@14.1.4)(react@18.2.0):
+    resolution: {integrity: sha512-0r/TJ+/zetD+uDc7B+2E7WpC86hEtQ1U+DuWYrP/JNmUz+ZdPFbrZgzOSqaZ6TwYbXP56VVlPfYwq1YsKHTHYQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      next: '>=13.4'
+      react: '>=18.0.0'
+    dependencies:
+      next: 14.1.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      remeda: 1.57.1
+      whatwg-fetch: 3.6.20
+    dev: false
+
   /next-sanity@8.5.0(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.36.1)(@sanity/ui@2.0.12)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
     resolution: {integrity: sha512-hGH4ODDURSJv8uYE+HVRh35oOQ21n+e0v62kZWx+c7gczct0ohqlmcx621QESoQ5uxoF3QBboC/SVyWw7q+jGw==}
     engines: {node: '>=18.17'}
@@ -14339,6 +14352,10 @@ packages:
       unified: 11.0.4
     dev: false
 
+  /remeda@1.57.1:
+    resolution: {integrity: sha512-CHrQFjgGw7y7d5WDDG21nzES2Z3Ae+s1ZjVAYjLOsoCceM1EMzVrSd4dx+Eb3QooR16tbbHeJhzk0q8qsaquTg==}
+    dev: false
+
   /remove-markdown@0.5.0:
     resolution: {integrity: sha512-x917M80K97K5IN1L8lUvFehsfhR8cYjGQ/yAMRI9E7JIKivtl5Emo5iD13DhMr+VojzMCiYk8V2byNPwT/oapg==}
     dev: false
@@ -16392,6 +16409,10 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       iconv-lite: 0.6.3
+
+  /whatwg-fetch@3.6.20:
+    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
+    dev: false
 
   /whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}

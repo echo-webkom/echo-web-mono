@@ -1,6 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 import {
@@ -93,9 +94,6 @@ export const POST = withBasicAuth(async (req) => {
     data: SanityHappening | null; // Is null on delete
   };
 
-  // eslint-disable-next-line no-console
-  console.log(operation, documentId, JSON.stringify(data));
-
   if (!["create", "update", "delete"].includes(operation)) {
     return NextResponse.json(
       {
@@ -105,6 +103,13 @@ export const POST = withBasicAuth(async (req) => {
       { status: 400 },
     );
   }
+
+  log.info("Syncing happening from Sanity", {
+    operation,
+    documentId,
+    pastSlug,
+    data,
+  });
 
   // Revalidate happening data from Sanity
   revalidateTag("happening-params");

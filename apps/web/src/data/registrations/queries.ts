@@ -1,9 +1,9 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getRegistrationsByHappeningId(happeningId: string) {
@@ -17,10 +17,9 @@ export async function getRegistrationsByHappeningId(happeningId: string) {
           },
         })
         .catch(() => {
-          Logger.error(
-            getRegistrationsByHappeningId.name,
-            `Failed to fetch registrations for happening with ID: ${happeningId}`,
-          );
+          log.error("Failed to fetch registrations", {
+            happeningId,
+          });
 
           return [];
         });
@@ -43,10 +42,9 @@ export async function getRegistrationsByUserId(userId: string) {
           },
         })
         .catch(() => {
-          Logger.error(
-            getRegistrationsByUserId.name,
-            `Failed to fetch registrations for user with ID: ${userId}`,
-          );
+          log.error("Failed to fetch registrations", {
+            userId,
+          });
 
           return [];
         });

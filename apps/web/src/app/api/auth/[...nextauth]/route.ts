@@ -1,11 +1,11 @@
-import * as va from "@vercel/analytics/server";
 import NextAuth from "next-auth";
+import { log } from "next-axiom";
 
 import { createAuthOptions } from "@echo-webkom/auth";
 
 const authOptions = createAuthOptions({
-  onSignInFail: async (event) => {
-    await va.track("Sign in failed", {
+  onSignInFail: (event) => {
+    log.info("Sign in failed", {
       ...event,
     });
   },
