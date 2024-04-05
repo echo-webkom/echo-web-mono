@@ -5,7 +5,9 @@ import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
 import {
+  selectUserSchema,
   type Group,
+  type Question,
   type Registration,
   type RegistrationStatus,
   type User,
@@ -13,6 +15,7 @@ import {
 import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
+import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
@@ -32,6 +35,16 @@ import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 
+type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year";
+
+export const formatHeaders: Record<HeaderType, string> = {
+  email: "Epost",
+  alternativeEmail: "Alternativ Epost",
+  name: "Navn",
+  year: "År",
+  degreeId: "Studieretning",
+};
+
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
     memberships: Array<{
@@ -43,12 +56,14 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
 export function RegistrationTable({
   registrations,
   studentGroups,
-  happeningId,
+  slug,
+  questions,
   isBedpres,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
-  happeningId: string;
+  slug: string;
+  questions: Array<Question>;
   isBedpres: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -94,10 +109,26 @@ export function RegistrationTable({
     setGroupFilter("");
   };
 
+  const obj = zodKeys(selectUserSchema);
+  const columns: Array<string> = [];
+  for (const header of obj) {
+    const formattedHeader = formatHeaders[header as HeaderType];
+    columns.push(formattedHeader);
+  }
+  columns.push(...questions.map((question) => question.title));
+  const nonEmptyColumns = columns.filter((header) => header && header.trim() !== "");
+  const [selectedHeaders, setSelectedHeaders] = useState(nonEmptyColumns);
+  const removeKey = (id: string) => {
+    setSelectedHeaders((prev) => prev.filter((key) => key !== id));
+  };
+  const addKey = (id: string) => {
+    setSelectedHeaders((prev) => [...prev, id]);
+  };
+
   return (
     <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
-        <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
+        <div className="flex flex-col items-center gap-4 px-4 pb-2 pt-2 md:flex-row md:pb-4">
           <div className="flex w-full flex-col gap-1">
             <Label htmlFor="search">Søk:</Label>
             <Input
@@ -148,10 +179,16 @@ export function RegistrationTable({
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
         </div>
-        <div className="flex flex-row justify-between px-4 py-2">
-          <div className="mt-auto w-full space-x-2">
+        <div className="mt-auto flex flex-col justify-between px-4 md:flex-row">
+          <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
             <RandomPersonButton registrations={registrations} />
-            <DownloadCsvButton id={happeningId} />
+            <DownloadCsvButton
+              slug={slug}
+              columns={columns}
+              removeKey={removeKey}
+              addKey={addKey}
+              selectedHeaders={selectedHeaders}
+            />
           </div>
         </div>
 

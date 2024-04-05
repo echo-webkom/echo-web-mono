@@ -2,14 +2,15 @@ import { Parser } from "@json2csv/plainjs";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { type getHappeningCsvData } from "@/data/happenings/queries";
+import { type getFullHappening } from "@/data/happenings/queries";
 
 const parser = new Parser({
   withBOM: true,
 });
 
 export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
+  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>,
+  selectedHeaders: Array<string>,
 ): string => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
@@ -17,25 +18,33 @@ export const toCsv = (
       question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
       answer: a.answer?.answer,
     }));
-
     const obj: Record<string, string> = {};
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
     obj.Navn = r.user.name ?? "Ingen navn";
     obj.Status = r.status;
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    obj.År = r.user.year?.toString() || "Ingen år";
+    obj.År = r.user.year?.toString() ?? "Ingen år";
     obj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
     obj.Grunn = r.unregisterReason ?? "";
 
-    for (const question of happening.questions) {
-      const answer = answers.find((a) => a.questionId === question.id)?.answer;
+    const filteredObj: Record<string, string> = {};
+    selectedHeaders.forEach((header) => {
+      if (header === "Alternativ Epost") {
+        header = "Epost";
+      }
+      if (header in obj) {
+        filteredObj[header] = obj[header] ?? "";
+      }
+    });
 
-      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+    happening.questions.forEach((question) => {
+      if (selectedHeaders.includes(question.title)) {
+        const answer = answers.find((a) => a.questionId === question.id)?.answer;
+        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+        filteredObj[question.title] = formattedAnswer;
+      }
+    });
 
-      obj[question.title] = formattedAnswer;
-    }
-
-    return obj;
+    return filteredObj;
   });
 
   registrations.sort((a, b) => {
