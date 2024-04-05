@@ -1,9 +1,9 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getSpotRangeByHappeningId(happeningId: string) {
@@ -14,10 +14,9 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
           where: (spotRange) => eq(spotRange.happeningId, happeningId),
         })
         .catch(() => {
-          Logger.error(
-            getSpotRangeByHappeningId.name,
-            `Failed to fetch spot range for happening with ID: ${happeningId}`,
-          );
+          log.error("Failed to fetch spot range", {
+            happeningId,
+          });
 
           return [];
         });

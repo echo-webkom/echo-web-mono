@@ -1,13 +1,13 @@
 import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { log } from "next-axiom";
 
 import { Container } from "@/components/container";
 import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { Logger } from "@/lib/logger";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { shortDate } from "@/utils/date";
 
@@ -21,7 +21,9 @@ const getData = cache(async (slug: string) => {
   const event = await fetchHappeningBySlug(slug);
 
   if (!event) {
-    Logger.info("Event not found", `Failed to find event with slug: ${slug}`);
+    log.info("Event not found", {
+      slug,
+    });
     return notFound();
   }
 

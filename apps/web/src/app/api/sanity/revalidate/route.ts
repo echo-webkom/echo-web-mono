@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { revalidateTag } from "next/cache";
+import { log } from "next-axiom";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 
@@ -30,6 +31,10 @@ export const POST = withBasicAuth(async (req) => {
       type: string;
       slug: string | null;
     };
+
+    log.info("Revalidating static content", {
+      type,
+    });
 
     if (type === "staticInfo") {
       console.log("Revalidating static-info");

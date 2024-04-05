@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
@@ -18,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
-import { Logger } from "@/lib/logger";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
@@ -41,7 +41,9 @@ const getHappening = async (id: string) => {
       },
     })
     .catch(() => {
-      Logger.error(getHappening.name, `Failed to fetch happening with ID: ${id}`);
+      log.error("Failed to fetch happening", {
+        id,
+      });
 
       return null;
     });

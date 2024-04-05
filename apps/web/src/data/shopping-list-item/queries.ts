@@ -1,8 +1,8 @@
 import { unstable_cache as cache } from "next/cache";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidations";
 
 export function getAllShoppinglistItems() {
@@ -13,7 +13,7 @@ export function getAllShoppinglistItems() {
           with: { likes: true, user: true },
         })
         .catch(() => {
-          Logger.error(getAllShoppinglistItems.name, "Failed to fetch shopping list items");
+          log.error("Failed to fetch shopping list items");
 
           return [];
         });

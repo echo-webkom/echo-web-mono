@@ -1,4 +1,5 @@
-import { Logger } from "@/lib/logger";
+import { log } from "next-axiom";
+
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
 import { jobAdSchema } from "./schemas";
@@ -17,7 +18,7 @@ export async function fetchJobAds() {
   })
     .then((res) => jobAdSchema.array().parse(res))
     .catch(() => {
-      Logger.error(fetchJobAds.name, "Failed to fetch job ads");
+      log.error("Failed to fetch job ads");
 
       return [];
     });

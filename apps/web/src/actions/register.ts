@@ -1,8 +1,8 @@
 "use server";
 
-import * as va from "@vercel/analytics/server";
 import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
+import { log } from "next-axiom";
 import { z } from "zod";
 
 import { auth } from "@echo-webkom/auth";
@@ -20,6 +20,7 @@ import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { shortDateNoYear } from "@/utils/date";
+import { isErrorMessage } from "@/utils/error";
 import { doesIntersect } from "@/utils/list";
 
 export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
@@ -265,9 +266,10 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
-    await va.track("Successful reigstration", {
+    log.info("Successful registration", {
       userId: user.id,
       happeningId: happening.id,
+      isWaitlisted,
     });
 
     void (async () => {
@@ -279,7 +281,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
     };
   } catch (error) {
-    console.error(`Error in register: ${error}`);
+    log.error("Failed to register", {
+      userId: user?.id,
+      happeningId: id,
+      error: isErrorMessage(error) ? error.message : "En ukjent feil har oppstått",
+    });
 
     if (error instanceof z.ZodError) {
       return {
@@ -287,12 +293,6 @@ export async function register(id: string, payload: z.infer<typeof registrationF
         message: "Skjemaet er ikke i riktig format",
       };
     }
-
-    await va.track("Failed registration", {
-      userId: user?.id ?? null,
-      happeningId: id ?? null,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
 
     return {
       success: false,

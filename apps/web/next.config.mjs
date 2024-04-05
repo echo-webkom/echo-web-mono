@@ -1,5 +1,7 @@
 import "./src/env.mjs";
 
+import { withAxiom } from "next-axiom";
+
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: [
@@ -81,4 +83,4 @@ const config = {
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
-export default config;
+export default withAxiom(config);

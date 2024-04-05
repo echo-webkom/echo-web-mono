@@ -1,9 +1,9 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getReactionByReactToKey(reactToKey: string) {
@@ -14,10 +14,9 @@ export async function getReactionByReactToKey(reactToKey: string) {
           where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
         .catch(() => {
-          Logger.error(
-            getReactionByReactToKey.name,
-            `Failed to fetch reactions for reactToKey: ${reactToKey}`,
-          );
+          log.error("Failed to fetch reactions", {
+            reactToKey,
+          });
 
           return [];
         });

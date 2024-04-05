@@ -1,4 +1,5 @@
-import { Logger } from "@/lib/logger";
+import { log } from "next-axiom";
+
 import { sanityFetch } from "../client";
 import { allPostsQuery } from "./queries";
 import { postSchema, type Post } from "./schemas";
@@ -14,7 +15,7 @@ export async function fetchAllPosts() {
   })
     .then((res) => postSchema.array().parse(res))
     .catch(() => {
-      Logger.error(fetchAllPosts.name, "Failed to fetch all posts");
+      log.error("Failed to fetch all posts");
 
       return [];
     });
