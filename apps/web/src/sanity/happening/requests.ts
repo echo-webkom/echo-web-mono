@@ -11,7 +11,6 @@ import { happeningSchema, type Happening, type HappeningType } from "./schemas";
  * Fetches all happenings
  *
  * @returns all happenings
- * @deprecated DO NOT USE
  */
 export async function fetchAllHappenings() {
   return await sanityFetch<Array<Happening>>({

@@ -8,14 +8,25 @@ import { HappeningSidebar } from "@/components/happening-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { fetchAllHappenings, fetchHappeningBySlug } from "@/sanity/happening/requests";
 import { shortDate } from "@/utils/date";
+
+export const dynamicParams = false;
 
 type Props = {
   params: {
     slug: string;
   };
 };
+
+export async function generateStaticParams() {
+  const happenings = await fetchAllHappenings();
+  return happenings
+    .filter((happening) => ["bedpres"].includes(happening.happeningType))
+    .map((happening) => ({
+      slug: happening.slug,
+    }));
+}
 
 const getData = cache(async (slug: string) => {
   const bedpres = await fetchHappeningBySlug(slug);
