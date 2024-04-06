@@ -5,29 +5,29 @@ import { log } from "next-axiom";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchStaticInfoBySlug } from "@/sanity/static-info";
+import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/static-info";
 
-export const revalidate = 86400; // 24 hours
 export const dynamicParams = false;
 
 type Props = {
   params: {
-    slug: Array<string> | undefined;
+    path: Array<string>;
   };
 };
 
-const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
-  const [pageType, slug] = slugs;
+export async function generateStaticParams() {
+  const pages = await fetchStaticInfo();
+  return pages.map((page) => ({
+    path: [pageTypeToUrl[page.pageType], page.slug],
+  }));
+}
 
-  if (typeof pageType !== "string" || typeof slug !== "string") {
-    return notFound();
-  }
-
-  const page = await fetchStaticInfoBySlug(pageType, slug);
+const getData = cache(async (path: Props["params"]["path"]) => {
+  const page = await fetchStaticInfoBySlug(path[0]!, path[1]!);
 
   if (!page) {
     log.info("Page not found", {
-      slug: `${pageType}/${slug}`,
+      path: path.join("/"),
     });
     return notFound();
   }
@@ -36,7 +36,7 @@ const getData = cache(async (slugs: Props["params"]["slug"] = []) => {
 });
 
 export async function generateMetadata({ params }: Props) {
-  const page = await getData(params.slug);
+  const page = await getData(params.path);
 
   return {
     title: page.title,
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function StaticPage({ params }: Props) {
-  const page = await getData(params.slug);
+  const page = await getData(params.path);
 
   return (
     <Container>
