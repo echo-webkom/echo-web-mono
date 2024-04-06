@@ -6,9 +6,24 @@ export const INCLUDE_MOVIES_PARAM = "includeMovies";
 export const INCLUDE_BEDPRES_REGISTRATION_PARAM = "includeBedpresRegistration";
 
 export class CalendarUrlBuilder {
+  /**
+   * The calendar should include past events.
+   */
   includePast = false;
+
+  /**
+   * The types of happenings to include in the calendar.
+   */
   happeningType: Array<string> = [];
+
+  /**
+   * Include movies in the calendar.
+   */
   includeMovies = false;
+
+  /**
+   * Include the registrations of bedpres in the calendar.
+   */
   includeBedpresRegistration = false;
 
   setIncludePast(includePast: boolean) {
@@ -31,6 +46,10 @@ export class CalendarUrlBuilder {
     return this;
   }
 
+  /**
+   *
+   * @returns The url to the calendar endpoint with the specified parameters.
+   */
   build() {
     const url = new URL("https://echo.uib.no/");
     url.pathname = "/api/calendar";

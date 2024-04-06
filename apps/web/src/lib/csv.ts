@@ -3,48 +3,54 @@ import { Parser } from "@json2csv/plainjs";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { type getFullHappening } from "@/data/happenings/queries";
+import { stringify } from "@/utils/string";
 
 const parser = new Parser({
   withBOM: true,
 });
 
-export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>,
-  selectedHeaders: Array<string>,
-): string => {
+type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+
+/**
+ * Converts a happening to a CSV string.
+ * If selectedHeaders is empty, all headers will be included.
+ *
+ * @param happening the happening to convert to CSV
+ * @param selectedHeaders the headers to include in the CSV
+ * @returns the CSV string
+ */
+export function toCsv(happening: FullHappening, selectedHeaders: Array<string> = []) {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
       question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
       answer: a.answer?.answer,
     }));
+
     const obj: Record<string, string> = {};
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
-    obj.Navn = r.user.name ?? "Ingen navn";
+    obj.Navn = stringify(r.user.name);
     obj.Status = r.status;
-    obj.År = r.user.year?.toString() ?? "Ingen år";
-    obj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
+    obj.År = stringify(r.user.year);
+    obj.Studieretning = r.user.degreeId ?? "";
     obj.Grunn = r.unregisterReason ?? "";
 
-    const filteredObj: Record<string, string> = {};
-    selectedHeaders.forEach((header) => {
-      if (header === "Alternativ Epost") {
-        header = "Epost";
-      }
-      if (header in obj) {
-        filteredObj[header] = obj[header] ?? "";
-      }
-    });
-
     happening.questions.forEach((question) => {
-      if (selectedHeaders.includes(question.title)) {
-        const answer = answers.find((a) => a.questionId === question.id)?.answer;
-        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-        filteredObj[question.title] = formattedAnswer;
-      }
+      const answer = answers.find((a) => a.questionId === question.id)?.answer;
+      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+      obj[question.title] = formattedAnswer;
     });
 
-    return filteredObj;
+    // If there are no selected headers, return the full object
+    if (selectedHeaders.length > 0) {
+      for (const key in obj) {
+        if (!selectedHeaders.includes(key)) {
+          delete obj[key];
+        }
+      }
+    }
+
+    return obj;
   });
 
   registrations.sort((a, b) => {
@@ -62,4 +68,4 @@ export const toCsv = (
   });
 
   return parser.parse(registrations);
-};
+}

@@ -22,7 +22,7 @@ import {
 import { mailTo } from "@/utils/prefixes";
 import { RouteGroup } from "./route-builder";
 
-export const headerRoutes: Array<
+type Route =
   | {
       label: string;
       href: string;
@@ -35,8 +35,9 @@ export const headerRoutes: Array<
         description: string;
         icon: IconType;
       }>;
-    }
-> = [
+    };
+
+export const headerRoutes: Array<Route> = [
   {
     label: "Hjem",
     href: "/",

@@ -5,7 +5,7 @@ import { auth } from "@echo-webkom/auth";
 import { getFullHappening } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
 import { isHost } from "@/lib/memberships";
-import { slugify } from "@/utils/slugify";
+import { slugify } from "@/utils/string";
 
 export const dynamic = "force-dynamic";
 

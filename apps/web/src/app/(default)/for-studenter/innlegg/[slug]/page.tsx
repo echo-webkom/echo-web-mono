@@ -8,9 +8,9 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { initials } from "@/lib/initials";
 import { type Author } from "@/sanity/posts";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
+import { initials } from "@/utils/string";
 
 type Props = {
   params: {
