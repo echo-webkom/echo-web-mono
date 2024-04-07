@@ -153,9 +153,7 @@ export function AddStrikeButton({
                     <FormLabel htmlFor="type">Type prikk</FormLabel>
                     <FormControl>
                       <Select id="type" {...field} onChange={(choice) => handleTypeChange(choice)}>
-                        <option selected value={"OTHER"}>
-                          Egendefinert
-                        </option>
+                        <option defaultValue={"OTHER"}>Egendefinert</option>
                         {Object.entries(STRIKE_TYPE_MESSAGE)
                           .filter(([key, _]) => key !== "OTHER")
                           .map(([key, value]) => (
