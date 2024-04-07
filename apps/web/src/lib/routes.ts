@@ -197,12 +197,6 @@ export const headerRoutes: Array<Route> = [
   },
 ];
 
-const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
-  .link("/", { label: "Dashboard" })
-  .link("/feedback", { label: "Tilbakemeldinger" })
-  .link("/users", { label: "Brukere" })
-  .build();
-
 const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
   .link(mailTo("echo@uib.no"), {
     label: "echo@uib.no",
@@ -237,5 +231,4 @@ const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   })
   .build();
 
-export const adminRoutes = [sidebarRoutes];
 export const footerRoutes = [contactUsRoutes, followUsRoutes];
