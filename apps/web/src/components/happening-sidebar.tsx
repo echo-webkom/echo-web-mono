@@ -1,12 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
-import { eq } from "drizzle-orm";
-import { log } from "next-axiom";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db";
 import { urlFor } from "@echo-webkom/sanity";
 
 import { AddToCalender } from "@/components/add-to-calender";
@@ -16,6 +13,7 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { getHappeningById } from "@/data/happenings/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
@@ -31,28 +29,10 @@ type EventSidebarProps = {
   event: Happening;
 };
 
-const getHappening = async (id: string) => {
-  return await db.query.happenings
-    .findFirst({
-      where: (happening) => eq(happening.id, id),
-      with: {
-        questions: true,
-        groups: true,
-      },
-    })
-    .catch(() => {
-      log.error("Failed to fetch happening", {
-        id,
-      });
-
-      return null;
-    });
-};
-
 export async function HappeningSidebar({ event }: EventSidebarProps) {
   const [user, happening, spotRanges, registrations] = await Promise.all([
     auth(),
-    getHappening(event._id),
+    getHappeningById(event._id),
     getSpotRangeByHappeningId(event._id),
     getRegistrationsByHappeningId(event._id),
   ]);
