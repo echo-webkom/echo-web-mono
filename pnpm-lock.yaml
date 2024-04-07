@@ -205,8 +205,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(next@14.1.4)(react@18.2.0)
       next-sanity:
-        specifier: 8.5.0
-        version: 8.5.0(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
+        specifier: 8.5.1
+        version: 8.5.1(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@18.2.0)(react@18.2.0)
@@ -11212,11 +11212,6 @@ packages:
     engines: {node: '>=18'}
     dev: false
 
-  /groq@3.34.0:
-    resolution: {integrity: sha512-Toi6xfpVo1GtL1u56B73MgciTTNERLMYMVREdyv0aGJGjuDSvs4KgKd90xRF+U/QxHhusbhHT3PII9GLRsQBBw==}
-    engines: {node: '>=18'}
-    dev: false
-
   /groq@3.35.2:
     resolution: {integrity: sha512-lh35TLq6KVYg7Sm7wE0UsZs/7BnlcUksx4wX+bdOU7vOl7WymMkrFqxyK1FhZWyxLvxsnItGGHjD5k9WooCy8Q==}
     engines: {node: '>=18'}
@@ -13268,11 +13263,11 @@ packages:
       whatwg-fetch: 3.6.20
     dev: false
 
-  /next-sanity@8.5.0(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
-    resolution: {integrity: sha512-hGH4ODDURSJv8uYE+HVRh35oOQ21n+e0v62kZWx+c7gczct0ohqlmcx621QESoQ5uxoF3QBboC/SVyWw7q+jGw==}
+  /next-sanity@8.5.1(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
+    resolution: {integrity: sha512-jG89odHf0EM5WFFuvreTINbue8gQ5yNocXvVM1UpHaniAdrFug/K+XzrZMN9MyzhZ285PTcpk/NimpgvPFraaA==}
     engines: {node: '>=18.17'}
     peerDependencies:
-      '@sanity/client': ^6.15.7
+      '@sanity/client': ^6.15.9
       '@sanity/icons': ^2.8
       '@sanity/types': ^3.25
       '@sanity/ui': ^1.8 || ^2.0.0-beta || ^2.0
@@ -13289,7 +13284,7 @@ packages:
       '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/visual-editing': 1.8.4(@sanity/client@6.15.9)(next@14.1.4)
       '@sanity/webhook': 4.0.2-bc
-      groq: 3.34.0
+      groq: 3.35.2
       history: 5.3.0
       next: 14.1.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
