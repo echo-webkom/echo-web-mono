@@ -21,7 +21,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "0.30.6",
+    "drizzle-orm": "0.30.7",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.0.6",
     "next-auth": "4.24.7",
