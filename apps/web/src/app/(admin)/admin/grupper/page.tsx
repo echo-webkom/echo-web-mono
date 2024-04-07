@@ -51,7 +51,7 @@ export default async function AdminGroupsPage() {
           <TableRow>
             <TableHead>Navn</TableHead>
             <TableHead>id</TableHead>
-            <TableHead>{/* Actions */}</TableHead>
+            <TableHead>Detaljer</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

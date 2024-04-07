@@ -114,7 +114,6 @@ export default async function EventDashboard({ params }: Props) {
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
           <RegistrationTable
-            // registrationRecords={getCsvData}
             questions={happening.questions}
             registrations={registrations}
             studentGroups={groups}
