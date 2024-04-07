@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
@@ -30,6 +31,9 @@ type EventSidebarProps = {
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {
+  // Opt-out of caching
+  noStore();
+
   const [user, happening, spotRanges, registrations] = await Promise.all([
     auth(),
     getHappeningById(event._id),
