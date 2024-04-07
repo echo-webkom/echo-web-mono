@@ -7,6 +7,15 @@ import { type User } from "@echo-webkom/db/schemas";
 type TRequest = Request | NextRequest;
 type TResponse = Response | NextResponse;
 
+/**
+ * Checks if the user is authenticated and has a valid session.
+ * If the user is authenticated, the handler is run with the user as an argument.
+ *
+ * @param handler the function run after the session is validated
+ * @param contextValidator zod schema to parse the context
+ * @param inputValidator zod schema to parse the input
+ * @returns the handler wrapped in a session check
+ */
 export function withSession<TContext, TInput>(
   handler: ({
     request,

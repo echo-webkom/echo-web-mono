@@ -19,25 +19,43 @@ const baseMessages = [
   "go func() { urself }()",
 ];
 
-function getCurrentRandomMessages(now: Date) {
-  // Month-based messages
-  if (getMonth(now) === 9) return [...baseMessages, "BØ!", "UuUuuUuuUuUu"];
-  if (getMonth(now) === 11) return [...baseMessages, "Ho, ho, ho!"];
+function getExtraMessages(now: Date) {
+  const week = getWeek(now);
+  const month = getWeek(now);
 
-  const currentWeek = getWeek(now);
-  if (currentWeek === 34 || currentWeek === 35)
-    return [...baseMessages, "Velkommen (tilbake)!", "New semester, new me?"];
+  const messages: Array<string> = [];
 
-  // Day-based messages
-  if (isThursday(now)) return [...baseMessages, "Vaffeltorsdag 🧇"];
-  if (isFriday(now)) return [...baseMessages, "Tacofredag 🌯"];
+  if (isThursday(now)) {
+    messages.push("Vaffeltorsdag 🧇");
+  }
 
-  return baseMessages;
+  if (isFriday(now)) {
+    messages.push("Tacofredag 🌯");
+  }
+
+  if (week === 34 || week === 35) {
+    messages.push("Velkommen (tilbake)!", "New semester, new me?");
+  }
+
+  // October
+  if (week === 9) {
+    messages.push("BØ!", "UuUuuUuuUuUu");
+  }
+
+  // December
+  if (month === 11) {
+    messages.push("Ho, ho, ho!");
+  }
+
+  return messages;
 }
 
 export function getRandomMessage() {
   const now = new Date();
 
+  /**
+   * Special messages for specific dates.
+   */
   if (getMonth(now) === 4 && getDate(now) === 17) {
     return "Gralla 🇳🇴";
   } else if ([5, 6].includes(getMonth(now))) {
@@ -52,6 +70,6 @@ export function getRandomMessage() {
     return "New week, new me?";
   }
 
-  const messages = getCurrentRandomMessages(now);
+  const messages = [...baseMessages, ...getExtraMessages(now)];
   return messages[Math.floor(Math.random() * messages.length)];
 }

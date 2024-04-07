@@ -1,3 +1,15 @@
+/**
+ * Convert an array of degree years to a human-readable string.
+ *
+ * @example
+ * ```ts
+ * degreeYearText([1, 2, 3, 4, 5]); // "Alle"
+ * degreeYearText([1, 2, 3, 5]); // "1 - 3 og 5. trinn"
+ * ```
+ *
+ * @param degreeYears an array of degree years
+ * @returns a string representation of the degree years
+ */
 export function degreeYearText(degreeYears: Array<number>): string {
   if (degreeYears.length === 0) {
     return "Ingen";

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { initials } from "../initials";
+import { initials } from "../string";
 
-describe("initials", () => {
+describe("string", () => {
   it("should get initials", () => {
     expect(initials("Programmerbar")).toBe("PR");
     expect(initials("Webkom")).toBe("WE");
