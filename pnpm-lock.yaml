@@ -187,8 +187,8 @@ importers:
         specifier: 3.6.0
         version: 3.6.0
       drizzle-orm:
-        specifier: 0.30.6
-        version: 0.30.6(@types/react@18.2.74)(react@18.2.0)
+        specifier: 0.30.7
+        version: 0.30.7(@types/react@18.2.74)(react@18.2.0)
       framer-motion:
         specifier: 11.0.24
         version: 11.0.24(react-dom@18.2.0)(react@18.2.0)
@@ -320,8 +320,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       drizzle-orm:
-        specifier: 0.30.6
-        version: 0.30.6(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+        specifier: 0.30.7
+        version: 0.30.7(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
       next:
         specifier: 14.1.4
         version: 14.1.4(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
@@ -398,11 +398,11 @@ importers:
   packages/db:
     dependencies:
       drizzle-orm:
-        specifier: 0.30.6
-        version: 0.30.6(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+        specifier: 0.30.7
+        version: 0.30.7(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.6)(zod@3.22.4)
+        version: 0.5.1(drizzle-orm@0.30.7)(zod@3.22.4)
       nanoid:
         specifier: 5.0.6
         version: 5.0.6
@@ -549,8 +549,8 @@ importers:
         specifier: 12.0.0
         version: 12.0.0
       drizzle-orm:
-        specifier: 0.30.6
-        version: 0.30.6(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+        specifier: 0.30.7
+        version: 0.30.7(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
       groq:
         specifier: 3.35.2
         version: 3.35.2
@@ -9723,8 +9723,8 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.6(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0):
-    resolution: {integrity: sha512-8RgNUmY7J03GRuRgBV5SaJNbYgLVPjdSWNS/bRkIMIHt2TFCA439lJsNpqYX8asyKMqkw8ceBiamUnCIXZIt9w==}
+  /drizzle-orm@0.30.7(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0):
+    resolution: {integrity: sha512-9qefSZQlu2fO2qv24piHyWFWcxcOY15//0v4j8qomMqaxzipNoG+fUBrQ7Ftk7PY7APRbRdn/nkEXWxiI4a8mw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -9738,7 +9738,7 @@ packages:
       '@types/pg': '*'
       '@types/react': '>=18'
       '@types/sql.js': '*'
-      '@vercel/postgres': '*'
+      '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
       bun-types: '*'
@@ -9809,8 +9809,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /drizzle-orm@0.30.6(@types/react@18.2.74)(react@18.2.0):
-    resolution: {integrity: sha512-8RgNUmY7J03GRuRgBV5SaJNbYgLVPjdSWNS/bRkIMIHt2TFCA439lJsNpqYX8asyKMqkw8ceBiamUnCIXZIt9w==}
+  /drizzle-orm@0.30.7(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-9qefSZQlu2fO2qv24piHyWFWcxcOY15//0v4j8qomMqaxzipNoG+fUBrQ7Ftk7PY7APRbRdn/nkEXWxiI4a8mw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -9824,7 +9824,7 @@ packages:
       '@types/pg': '*'
       '@types/react': '>=18'
       '@types/sql.js': '*'
-      '@vercel/postgres': '*'
+      '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
       bun-types: '*'
@@ -9893,13 +9893,13 @@ packages:
       react: 18.2.0
     dev: false
 
-  /drizzle-zod@0.5.1(drizzle-orm@0.30.6)(zod@3.22.4):
+  /drizzle-zod@0.5.1(drizzle-orm@0.30.7)(zod@3.22.4):
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.30.6(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
+      drizzle-orm: 0.30.7(@types/pg@8.11.4)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
       zod: 3.22.4
     dev: false
 
