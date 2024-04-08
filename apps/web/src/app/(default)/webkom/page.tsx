@@ -56,6 +56,8 @@ export default function WebkomPage() {
           <ListItem>Hermann Holstad Walaunet</ListItem>
 
           {/* --- V24 --- */}
+          <ListItem>Jesper Kierulf Hammer</ListItem>
+
         </UnorderedList>
       </div>
     </Container>
