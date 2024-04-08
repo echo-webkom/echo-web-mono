@@ -2,7 +2,15 @@ import { and, asc, eq, gt, lt } from "drizzle-orm";
 import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
-import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
+import {
+  happenings,
+  registrations,
+  spotRanges,
+  type Happening,
+  type HappeningType,
+  type Registration,
+  type SpotRange,
+} from "@echo-webkom/db/schemas";
 
 import { isErrorMessage } from "@/utils/error";
 
@@ -48,6 +56,36 @@ export async function getHappeningById(id: string) {
 
       return null;
     });
+}
+
+export async function getHappeningSpotRangeAndRegistrations(happeningId: string) {
+  const result = await db
+    .select()
+    .from(happenings)
+    .leftJoin(spotRanges, eq(spotRanges.happeningId, happeningId))
+    .leftJoin(registrations, eq(registrations.happeningId, happeningId))
+    .where(eq(happenings.id, happeningId));
+
+  return result.reduce(
+    (acc, curr) => {
+      if (curr.spot_range) {
+        acc.spotRanges.push(curr.spot_range);
+      }
+
+      if (curr.registration) {
+        acc.registrations.push(curr.registration);
+      }
+
+      return acc;
+    },
+    {
+      spotRanges: [],
+      registrations: [],
+    } as {
+      spotRanges: Array<SpotRange>;
+      registrations: Array<Registration>;
+    },
+  );
 }
 
 export async function getHappeningsFromDate(date: Date, type: HappeningType) {
