@@ -20,7 +20,7 @@ export default async function HyggkomHandleliste() {
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
-    <Container className="max-w-5xl ">
+    <Container className="max-w-5xl py-10">
       <h1 className="bold py-3 text-4xl">Hyggkoms handleliste</h1>
       <div className="py-5">
         <h1 className="py-3 text-xl">

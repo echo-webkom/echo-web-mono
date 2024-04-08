@@ -79,7 +79,7 @@ export default async function ManageGroup({ params }: Props) {
   const isGroupAdmin = groupUserProfile.isLeader;
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <Heading>Administrer {group.name}</Heading>
 
       <Text>

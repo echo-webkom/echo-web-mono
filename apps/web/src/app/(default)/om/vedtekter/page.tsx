@@ -21,7 +21,7 @@ export default async function Bylaws() {
   ).then((res) => res.text());
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <div>
         <Heading>Vedtekter</Heading>
         <Text>

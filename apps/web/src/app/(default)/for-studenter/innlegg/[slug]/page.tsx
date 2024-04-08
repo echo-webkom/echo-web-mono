@@ -47,7 +47,7 @@ export default async function PostPage({ params }: Props) {
   const post = await getData(params.slug);
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <Heading>{post.title}</Heading>
       {post.authors && <Authors authors={post.authors} />}
       <Markdown content={post.body} />

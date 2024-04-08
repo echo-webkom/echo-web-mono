@@ -55,7 +55,7 @@ export default function Calendar() {
   const calendarUrl = calendarBuilder.build();
 
   return (
-    <Container className="max-w-screen-sm space-y-4">
+    <Container className="max-w-screen-sm space-y-4 py-10">
       <div>
         <Heading>Kalender</Heading>
 
