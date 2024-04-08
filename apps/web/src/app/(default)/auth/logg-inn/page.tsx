@@ -2,7 +2,6 @@ import { isValidSignInError } from "@echo-webkom/auth/src/is-member-of-echo";
 
 import { Container } from "@/components/container";
 import { Callout } from "@/components/typography/callout";
-import { Heading } from "@/components/typography/heading";
 import { SignInButtons } from "./sign-in-buttons";
 
 type Props = {
@@ -22,8 +21,6 @@ export default function SignInPage({ searchParams }: Props) {
           <p>Grunn: {error}</p>
         </Callout>
       )}
-
-      <Heading>Logg inn</Heading>
 
       <SignInButtons />
     </Container>
