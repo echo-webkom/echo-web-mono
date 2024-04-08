@@ -1,5 +1,6 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./src/**/*.{ts,js,tsx,jsx}"],
@@ -106,5 +107,36 @@ export default {
     require("tailwindcss-animate"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
+    plugin(({ matchUtilities }) => {
+      const TIME = 6;
+      matchUtilities({
+        "animate-float-rotate": (value) => {
+          const rotate = Number(value);
+          const startRotate = `${rotate}deg`;
+          const endRotate = `${rotate + 6}deg`;
+
+          return {
+            "@keyframes floatAndRotate": {
+              "0%, 100%": { transform: `translateY(0) rotate(${startRotate})` },
+              "50%": { transform: `translateY(-5%) rotate(${endRotate})` },
+            },
+            animation: `floatAndRotate ${TIME}s infinite ease-in-out`,
+          };
+        },
+        "animate-float-rotate-reverse": (value) => {
+          const rotate = Number(value);
+          const startRotate = `${rotate}deg`;
+          const endRotate = `${rotate - 6}deg`;
+
+          return {
+            "@keyframes floatAndRotateReverse": {
+              "0%, 100%": { transform: `translateY(0) rotate(${startRotate})` },
+              "50%": { transform: `translateY(-5%) rotate(${endRotate})` },
+            },
+            animation: `floatAndRotateReverse ${TIME}s infinite ease-in-out`,
+          };
+        },
+      });
+    }),
   ],
 } satisfies Config;
