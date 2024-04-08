@@ -1,5 +1,4 @@
 import { unstable_cache as cache } from "next/cache";
-import { eq } from "drizzle-orm";
 import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
@@ -11,7 +10,7 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
     async () => {
       return await db.query.spotRanges
         .findMany({
-          where: (spotRange) => eq(spotRange.happeningId, happeningId),
+          where: (spotRange, { eq }) => eq(spotRange.happeningId, happeningId),
         })
         .catch(() => {
           log.error("Failed to fetch spot range", {
