@@ -1,13 +1,11 @@
 import { type Metadata } from "next/types";
 
-import { Footer } from "@/components/footer";
 import {
   Sidebar,
   SidebarItem,
   SidebarLayoutContent,
   SidebarLayoutRoot,
 } from "@/components/sidebar-layout";
-import { SiteHeader } from "@/components/site-header";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -61,25 +59,21 @@ export default async function AdminDashboardLayout({ children }: Props) {
   const user = await ensureWebkomOrHovedstyret();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <SidebarLayoutRoot>
-        <Sidebar>
-          {adminRoutes.map((route) => {
-            if (!isMemberOf(user, route.groups)) {
-              return null;
-            }
+    <SidebarLayoutRoot>
+      <Sidebar>
+        {adminRoutes.map((route) => {
+          if (!isMemberOf(user, route.groups)) {
+            return null;
+          }
 
-            return (
-              <SidebarItem key={route.href} href={route.href}>
-                {route.label}
-              </SidebarItem>
-            );
-          })}
-        </Sidebar>
-        <SidebarLayoutContent className="pt-5">{children}</SidebarLayoutContent>
-      </SidebarLayoutRoot>
-      <Footer />
-    </div>
+          return (
+            <SidebarItem key={route.href} href={route.href}>
+              {route.label}
+            </SidebarItem>
+          );
+        })}
+      </Sidebar>
+      <SidebarLayoutContent className="pt-5">{children}</SidebarLayoutContent>
+    </SidebarLayoutRoot>
   );
 }
