@@ -47,7 +47,7 @@ export default async function StaticPage({ params }: Props) {
   const page = await getData(params.path);
 
   return (
-    <Container>
+    <Container className="py-10">
       <article>
         <Heading className="mb-4">{page.title}</Heading>
 

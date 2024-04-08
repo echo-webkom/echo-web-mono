@@ -53,7 +53,7 @@ export default async function EventPage({ params }: Props) {
   const event = await getData(params.slug);
 
   return (
-    <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
+    <Container className="w-full py-10 md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         <HappeningSidebar event={event} />
 

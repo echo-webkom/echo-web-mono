@@ -51,7 +51,7 @@ export default async function GroupPage({ params }: Props) {
   const hasSocials = Object.values(group.socials ?? {}).some((value) => value);
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>
