@@ -29,9 +29,7 @@ export default function StrikeNotificationEmail({
   return (
     <Html>
       <Head />
-      <Preview>
-        {name} har fått prikk fra {happeningTitle}
-      </Preview>
+      <Preview>Du har fått {amount} ny(e) prikk(er)</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto my-8 w-full max-w-screen-sm border border-solid border-gray-200">
@@ -44,11 +42,14 @@ export default function StrikeNotificationEmail({
                 style={{ margin: "auto" }}
               />
               <Heading className="text-2xl font-bold">
-                {name} har fått {amount > 1 ? "prikker" : "prikk"} fra {happeningTitle}
+                Du har fått {amount > 1 ? "nye prikker" : "ny prikk"}
               </Heading>
 
               <Section>
-                <Text className="text-gray-600">{name} har fått prikk med følgende grunn:</Text>
+                <Text className="text-gray-600">
+                  {name} har fått {amount > 1 ? amount + " nye prikker" : "ny prikk"} fra `
+                  {happeningTitle}` med følgende grunn:
+                </Text>
 
                 <Text className="rounded-md bg-gray-100 p-4 text-gray-600">{reason}</Text>
               </Section>
