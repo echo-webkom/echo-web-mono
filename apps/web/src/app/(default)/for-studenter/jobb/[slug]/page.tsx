@@ -37,7 +37,7 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
   const jobAd = await getData(params.slug);
 
   return (
-    <Container>
+    <Container className="py-10">
       <div className="flex flex-col-reverse gap-8 sm:flex-row">
         <div className="pt-4 sm:pt-0">
           <Heading className="mb-4">{jobAd.title}</Heading>

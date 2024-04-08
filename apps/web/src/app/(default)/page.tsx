@@ -52,7 +52,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Container className="relative pb-40" layout="full">
+      <Container className="relative pb-40">
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>

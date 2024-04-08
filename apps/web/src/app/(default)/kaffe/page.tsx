@@ -21,7 +21,7 @@ export default async function KaffeAdmin() {
   const strikes = await kaffeApi.getStrikes();
 
   return (
-    <Container>
+    <Container className="py-10">
       <Markdown
         content={`
 # Kaffe-admin

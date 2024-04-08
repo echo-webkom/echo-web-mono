@@ -11,7 +11,7 @@ export default async function MinuteOverview() {
   const minutes = await fetchMinutes();
 
   return (
-    <Container>
+    <Container className="py-10">
       <Heading className="mb-4">Møtereferater</Heading>
       <ul className="divide-y border">
         {minutes.map((minute) => (

@@ -19,7 +19,7 @@ importers:
         version: 3.2.5
       prettier-plugin-organize-imports:
         specifier: 3.2.4
-        version: 3.2.4(prettier@3.2.5)(typescript@5.4.3)
+        version: 3.2.4(prettier@3.2.5)(typescript@5.4.4)
       prettier-plugin-tailwindcss:
         specifier: 0.5.13
         version: 0.5.13(@ianvs/prettier-plugin-sort-imports@4.2.1)(prettier-plugin-organize-imports@3.2.4)(prettier@3.2.5)
@@ -27,8 +27,8 @@ importers:
         specifier: 1.13.2
         version: 1.13.2
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   apps/cms:
     dependencies:
@@ -36,14 +36,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: 6.15.9
-        version: 6.15.9
+        specifier: 6.15.10
+        version: 6.15.10
       '@sanity/icons':
-        specifier: 2.11.6
-        version: 2.11.6(react@18.2.0)
+        specifier: 2.11.7
+        version: 2.11.7(react@18.2.0)
       '@sanity/ui':
-        specifier: 2.0.14
-        version: 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+        specifier: 2.0.15
+        version: 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/vision':
         specifier: 3.35.2
         version: 3.35.2(@babel/runtime@7.24.1)(@codemirror/lint@6.4.2)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.2.1)(codemirror@6.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
@@ -67,7 +67,7 @@ importers:
         version: 4.1.1(easymde@2.18.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
       sanity-plugin-media:
         specifier: 2.2.5
-        version: 2.2.5(@sanity/ui@2.0.14)(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
+        version: 2.2.5(@sanity/ui@2.0.15)(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
       slugify:
         specifier: 1.6.6
         version: 1.6.6
@@ -80,7 +80,7 @@ importers:
         version: link:../../packages/config/tsconfig
       '@sanity/eslint-config-studio':
         specifier: 4.0.0
-        version: 4.0.0(eslint@8.57.0)(typescript@5.4.3)
+        version: 4.0.0(eslint@8.57.0)(typescript@5.4.4)
       '@types/react':
         specifier: 18.2.74
         version: 18.2.74
@@ -97,8 +97,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/config/eslint
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   apps/web:
     dependencies:
@@ -164,7 +164,7 @@ importers:
         version: 1.0.2
       '@t3-oss/env-nextjs':
         specifier: 0.8.0
-        version: 0.8.0(typescript@5.4.3)(zod@3.22.4)
+        version: 0.8.0(typescript@5.4.4)(zod@3.22.4)
       '@types/remove-markdown':
         specifier: 0.3.4
         version: 0.3.4
@@ -190,8 +190,8 @@ importers:
         specifier: 0.30.7
         version: 0.30.7(@types/react@18.2.74)(react@18.2.0)
       framer-motion:
-        specifier: 11.0.24
-        version: 11.0.24(react-dom@18.2.0)(react@18.2.0)
+        specifier: 11.0.25
+        version: 11.0.25(react-dom@18.2.0)(react@18.2.0)
       ics:
         specifier: ^3.7.2
         version: 3.7.2
@@ -205,8 +205,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(next@14.1.4)(react@18.2.0)
       next-sanity:
-        specifier: 8.5.1
-        version: 8.5.1(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
+        specifier: 8.5.2
+        version: 8.5.2(@sanity/client@6.15.10)(@sanity/icons@2.11.7)(@sanity/types@3.36.1)(@sanity/ui@2.0.15)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7)
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@18.2.0)(react@18.2.0)
@@ -302,14 +302,14 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
       vite:
         specifier: ^5.2.8
         version: 5.2.8(@types/node@20.12.4)
       vite-tsconfig-paths:
         specifier: 4.3.1
-        version: 4.3.1(typescript@5.4.3)(vite@5.2.8)
+        version: 4.3.1(typescript@5.4.4)(vite@5.2.8)
       vitest:
         specifier: 1.4.0
         version: 1.4.0(@types/node@20.12.4)(jsdom@24.0.0)
@@ -348,8 +348,8 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   packages/config/eslint:
     dependencies:
@@ -364,10 +364,10 @@ importers:
         version: 20.12.4
       '@typescript-eslint/eslint-plugin':
         specifier: 7.5.0
-        version: 7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.3)
+        version: 7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.4)
       '@typescript-eslint/parser':
         specifier: 7.5.0
-        version: 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+        version: 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -390,8 +390,8 @@ importers:
         specifier: 4.6.0
         version: 4.6.0(eslint@8.57.0)
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   packages/config/tsconfig: {}
 
@@ -441,8 +441,8 @@ importers:
         specifier: 4.7.2
         version: 4.7.2
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   packages/email:
     dependencies:
@@ -475,8 +475,8 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   packages/lib:
     dependencies:
@@ -497,8 +497,8 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
       vitest:
         specifier: 1.4.0
         version: 1.4.0(@types/node@20.12.4)(jsdom@24.0.0)
@@ -506,8 +506,8 @@ importers:
   packages/sanity:
     dependencies:
       '@sanity/client':
-        specifier: 6.15.9
-        version: 6.15.9
+        specifier: 6.15.10
+        version: 6.15.10
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -525,8 +525,8 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   packages/seeder:
     dependencies:
@@ -540,8 +540,8 @@ importers:
         specifier: workspace:^
         version: link:../sanity
       '@sanity/client':
-        specifier: 6.15.9
-        version: 6.15.9
+        specifier: 6.15.10
+        version: 6.15.10
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -574,8 +574,8 @@ importers:
         specifier: 4.7.2
         version: 4.7.2
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
   playwright:
     devDependencies:
@@ -583,8 +583,8 @@ importers:
         specifier: workspace:*
         version: link:../packages/config/tsconfig
       '@playwright/test':
-        specifier: 1.42.1
-        version: 1.42.1
+        specifier: 1.43.0
+        version: 1.43.0
       '@types/node':
         specifier: 20.12.4
         version: 20.12.4
@@ -601,8 +601,8 @@ importers:
         specifier: 3.4.4
         version: 3.4.4
       typescript:
-        specifier: 5.4.3
-        version: 5.4.3
+        specifier: 5.4.4
+        version: 5.4.4
 
 packages:
 
@@ -5679,12 +5679,12 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@playwright/test@1.42.1:
-    resolution: {integrity: sha512-Gq9rmS54mjBL/7/MvBaNOBwbfnh7beHvS6oS4srqXFcQHpQCV1+c8JXWE8VLPyRDhgS3H8x8A7hztqI9VnwrAQ==}
+  /@playwright/test@1.43.0:
+    resolution: {integrity: sha512-Ebw0+MCqoYflop7wVKj711ccbNlrwTBCtjY5rlbiY9kHL2bCYxq+qltK6uPsVBGGAOb033H2VO0YobcQVxoW7Q==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.42.1
+      playwright: 1.43.0
     dev: true
 
   /@portabletext/react@3.0.15(react@18.2.0):
@@ -6837,7 +6837,7 @@ packages:
       decompress: 4.2.1
       esbuild: 0.20.2
       esbuild-register: 3.5.0(esbuild@0.20.2)
-      get-it: 8.4.16
+      get-it: 8.4.18
       golden-fleece: 1.0.9
       node-machine-id: 1.1.12
       pkg-dir: 5.0.0
@@ -6847,8 +6847,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.15.9:
-    resolution: {integrity: sha512-fIWKn5wb7HsFxWVPu/yxMjVpivQn2C0iMrxGs0UJa+W0tg+hilrPskWxtFo37rIuY+vhLhzIyDrL4mCGqs+cpg==}
+  /@sanity/client@6.15.10:
+    resolution: {integrity: sha512-yQgeVDErGCLiKOnOT99DjViwBFER9iKd8DcVHA8Y0fE4h4TGSb2SIzSsNtYZzFgaqvXnC5lbZhT0R3ZisaXSjw==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.1
@@ -6907,7 +6907,7 @@ packages:
       '@sanity/diff-match-patch': 3.1.1
     dev: false
 
-  /@sanity/eslint-config-studio@4.0.0(eslint@8.57.0)(typescript@5.4.3):
+  /@sanity/eslint-config-studio@4.0.0(eslint@8.57.0)(typescript@5.4.4):
     resolution: {integrity: sha512-7NLgYv94NofaMV1yPmzjEcMUWgAcOaXOrcrED8Pno1DXDda4y3ux55cIi+Q/0fw5PbWOjsM8AY9lSIm5Oq+w/A==}
     dependencies:
       '@babel/core': 7.24.4
@@ -6915,8 +6915,8 @@ packages:
       '@babel/preset-env': 7.24.4(@babel/core@7.24.4)
       '@babel/preset-react': 7.24.1(@babel/core@7.24.4)
       '@rushstack/eslint-patch': 1.10.1
-      '@typescript-eslint/eslint-plugin': 7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.3)
-      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/eslint-plugin': 7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.4)
+      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       confusing-browser-globals: 1.0.11
       eslint-plugin-jsx-a11y: 6.8.0(eslint@8.57.0)
       eslint-plugin-react: 7.34.1(eslint@8.57.0)
@@ -6943,7 +6943,7 @@ packages:
       '@sanity/util': 3.35.2
       archiver: 7.0.0
       debug: 4.3.4
-      get-it: 8.4.16
+      get-it: 8.4.18
       lodash: 4.17.21
       mississippi: 4.0.0
       p-queue: 2.4.2
@@ -6965,8 +6965,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@sanity/icons@2.11.6(react@18.2.0):
-    resolution: {integrity: sha512-5Su3YQEVZI2F98oYuo1wDXY3X2cAovfutewFHNN8e4LI9StJx+MiojpxG2Lg6qJSTr+YUMlOcHEqyzVOe/QpSA==}
+  /@sanity/icons@2.11.7(react@18.2.0):
+    resolution: {integrity: sha512-F0GkmYfzZFJZmhRRZFyzAVtqU4D+kiXMJCr5MeM9uGgGvFNKUW2amGCiN1528Z60v73hlqHTD9Eb6WEkwhWsiA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: ^18
@@ -6989,7 +6989,7 @@ packages:
       '@sanity/uuid': 3.0.2
       debug: 4.3.4
       file-url: 2.0.2
-      get-it: 8.4.16
+      get-it: 8.4.18
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -7033,7 +7033,7 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       '@bjoerge/mutiny': 0.5.3
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@sanity/types': 3.35.2
       '@sanity/util': 3.35.2
       arrify: 2.0.1
@@ -7081,16 +7081,16 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/presentation@1.11.8(@sanity/client@6.15.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7):
+  /@sanity/presentation@1.11.8(@sanity/client@6.15.10)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7):
     resolution: {integrity: sha512-kRoeNePV5zeltBC1ComTbdLSuDA6oLN3hqKY6GxBuJ+6kx1pC0BrggdQ7qMKql7UmTFvPQXrP24Gy5n1loN9FA==}
     engines: {node: '>=16.14'}
     peerDependencies:
       '@sanity/client': ^6.15.5
     dependencies:
-      '@sanity/client': 6.15.9
-      '@sanity/icons': 2.11.6(react@18.2.0)
-      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.9)
-      '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/client': 6.15.10
+      '@sanity/icons': 2.11.7(react@18.2.0)
+      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.10)
+      '@sanity/ui': 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/uuid': 3.0.2
       '@types/lodash.isequal': 4.5.8
       fast-deep-equal: 3.1.3
@@ -7107,29 +7107,29 @@ packages:
       - styled-components
     dev: false
 
-  /@sanity/preview-kit-compat@1.4.13(@sanity/client@6.15.9)(react@18.2.0):
+  /@sanity/preview-kit-compat@1.4.13(@sanity/client@6.15.10)(react@18.2.0):
     resolution: {integrity: sha512-r81ZK/Ap369YrZx9jYs3/7ytCbg5hBP+e/1mzFdj0FEOUboOCT0O7uYw/EfnEVfUF+XJ/+ea9x8yzInwjNjk0A==}
     engines: {node: '>=18'}
     peerDependencies:
       '@sanity/client': ^6.15.7
       react: ^18.2.0
     dependencies:
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       react: 18.2.0
     dev: false
 
-  /@sanity/preview-kit@5.0.36(@sanity/client@6.15.9)(react@18.2.0):
-    resolution: {integrity: sha512-1o4Hs+0HHpwGw+nvPRyPAkuvV+UQOFRgD1+5gr+jVUTcWjPfJhJ5JR/fHA6apJwFClnyItEm1jZPfixSJ4ouVA==}
+  /@sanity/preview-kit@5.0.37(@sanity/client@6.15.10)(react@18.2.0):
+    resolution: {integrity: sha512-M9gg0/QMiqTRJpiLMt09beCFVnDd9I80+p+tttdQGBkpISE5GbGv1NNR6vPcdnHKU8RbWcEBRGIXh3/RW7qc7A==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@sanity/client': ^6.15.7
+      '@sanity/client': ^6.15.9
       react: ^18.0.0
     peerDependenciesMeta:
       react:
         optional: true
     dependencies:
-      '@sanity/client': 6.15.9
-      '@sanity/preview-kit-compat': 1.4.13(@sanity/client@6.15.9)(react@18.2.0)
+      '@sanity/client': 6.15.10
+      '@sanity/preview-kit-compat': 1.4.13(@sanity/client@6.15.10)(react@18.2.0)
       '@vercel/stega': 0.1.0
       lru-cache: 10.2.0
       mendoza: 3.0.6
@@ -7138,13 +7138,13 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@sanity/preview-url-secret@1.6.5(@sanity/client@6.15.9):
+  /@sanity/preview-url-secret@1.6.5(@sanity/client@6.15.10):
     resolution: {integrity: sha512-zY57ZSKHIgiI/naW18Y7XvLwR1cPra2VIrcZQn2nBuL294fRpZkwBF+M62j6oroU5nKXGQt5P82VM1sXdqXdmw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@sanity/client': ^6.15.7
     dependencies:
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@sanity/uuid': 3.0.2
     dev: false
 
@@ -7177,7 +7177,7 @@ packages:
   /@sanity/types@3.35.2:
     resolution: {integrity: sha512-Kl5T+dwMkLJ+cmGsG5YVQEkL3UkaQ9E560g2dFmalmM/vQjL5fzPMRjKiZuqH+9jYeKP2d0MBiHbSOWi8JqNUg==}
     dependencies:
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@types/react': 18.2.74
     transitivePeerDependencies:
       - supports-color
@@ -7186,7 +7186,7 @@ packages:
   /@sanity/types@3.36.1:
     resolution: {integrity: sha512-OpvwWeser0ft10DKpAW0MbdTBTyk4jw1rEWtLjBb8p2mzMPTovxZwFTINAfH+ar/cFFwKMyWq7z7fD3mMWrb4g==}
     dependencies:
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@types/react': 18.2.74
     transitivePeerDependencies:
       - supports-color
@@ -7203,7 +7203,7 @@ packages:
     dependencies:
       '@floating-ui/react-dom': 2.0.0(react-dom@18.2.0)(react@18.2.0)
       '@sanity/color': 2.2.5
-      '@sanity/icons': 2.11.6(react@18.2.0)
+      '@sanity/icons': 2.11.7(react@18.2.0)
       csstype: 3.1.3
       framer-motion: 10.18.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -7213,8 +7213,8 @@ packages:
       styled-components: 6.0.7(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@sanity/ui@2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7):
-    resolution: {integrity: sha512-MS82W0zGUNbhzyl4jbA2DhmAywHtjtlB8v45AZrf2Mu/FbD9HqW4HfFj9+aKomrVc+toXuKPy4STP/0DKggPhg==}
+  /@sanity/ui@2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7):
+    resolution: {integrity: sha512-oQKq7ffoAxcaRhbbwVHjjrNPXtnunXBWOL0pxGrRwTSRuEZbV2nmbwKrQadFQkQ3w+GwMI97Mr5X88QbT+Bxww==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: ^18
@@ -7224,7 +7224,7 @@ packages:
     dependencies:
       '@floating-ui/react-dom': 2.0.8(react-dom@18.2.0)(react@18.2.0)
       '@sanity/color': 3.0.5
-      '@sanity/icons': 2.11.6(react@18.2.0)
+      '@sanity/icons': 2.11.7(react@18.2.0)
       csstype: 3.1.3
       framer-motion: 11.0.8(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -7238,7 +7238,7 @@ packages:
     resolution: {integrity: sha512-229F0wZixkbhixrg9DPZhwoTw81cDF9vI+wyszSexWAmjEJQ6Cl6Y6H5ACtXb8435g87VvWPLHmsZzkLE8iU9g==}
     engines: {node: '>=18'}
     dependencies:
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@sanity/types': 3.35.2
       get-random-values-esm: 1.0.2
       moment: 2.30.1
@@ -7272,8 +7272,8 @@ packages:
       '@rexxars/react-json-inspector': 8.0.1(react@18.2.0)
       '@rexxars/react-split-pane': 0.1.93(react-dom@18.2.0)(react@18.2.0)
       '@sanity/color': 3.0.0
-      '@sanity/icons': 2.11.6(react@18.2.0)
-      '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/icons': 2.11.7(react@18.2.0)
+      '@sanity/ui': 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@uiw/react-codemirror': 4.21.21(@babel/runtime@7.24.1)(@codemirror/autocomplete@6.12.0)(@codemirror/language@6.10.0)(@codemirror/lint@6.4.2)(@codemirror/search@6.5.5)(@codemirror/state@6.4.0)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.23.0)(codemirror@6.0.1)(react-dom@18.2.0)(react@18.2.0)
       hashlru: 2.3.0
       is-hotkey: 0.2.0
@@ -7291,12 +7291,12 @@ packages:
       - react-is
     dev: false
 
-  /@sanity/visual-editing@1.8.4(@sanity/client@6.15.9)(next@14.1.4):
-    resolution: {integrity: sha512-wqvm26KDFB/Ww0J9XT8caPDWTHhemOWySlF9w3TtDTg5iWVoT6iYjKxi0yVoA7xAEtB0SmDUek6wSZhRhXG1LA==}
+  /@sanity/visual-editing@1.8.5(@sanity/client@6.15.10)(next@14.1.4):
+    resolution: {integrity: sha512-R3Uvq+f/QMgextFspKw/ElrCbKe0+JwMRetfKqehBFZaIDj2ThNyjox5uK9ThqRBRZ18pUae3znojXFHtBxw0A==}
     engines: {node: '>=18'}
     peerDependencies:
       '@remix-run/react': '>= 2'
-      '@sanity/client': ^6.15.7
+      '@sanity/client': ^6.15.9
       '@sveltejs/kit': '>= 2'
       next: '>= 13'
       svelte: '>= 4'
@@ -7312,8 +7312,8 @@ packages:
       svelte:
         optional: true
     dependencies:
-      '@sanity/client': 6.15.9
-      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.9)
+      '@sanity/client': 6.15.10
+      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.10)
       '@vercel/stega': 0.1.0
       next: 14.1.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -7349,7 +7349,7 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@t3-oss/env-core@0.8.0(typescript@5.4.3)(zod@3.22.4):
+  /@t3-oss/env-core@0.8.0(typescript@5.4.4)(zod@3.22.4):
     resolution: {integrity: sha512-Tc1pg0KH/tJeI0Z1s/Isp1VsGDj1N03ZAYFV8GjWgMxytF/ve0Dv+opjmTapHICRv8qiB1Y/fsTjkWNMpKPRCQ==}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -7358,11 +7358,11 @@ packages:
       typescript:
         optional: true
     dependencies:
-      typescript: 5.4.3
+      typescript: 5.4.4
       zod: 3.22.4
     dev: false
 
-  /@t3-oss/env-nextjs@0.8.0(typescript@5.4.3)(zod@3.22.4):
+  /@t3-oss/env-nextjs@0.8.0(typescript@5.4.4)(zod@3.22.4):
     resolution: {integrity: sha512-bJyoE8of4QmqZN7a49iLJAbUq4graScb9ezXzvnuIVr9JP43C093vmy55hT1uZL533CwiPz8zo1INwyAS6qnHw==}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -7371,8 +7371,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@t3-oss/env-core': 0.8.0(typescript@5.4.3)(zod@3.22.4)
-      typescript: 5.4.3
+      '@t3-oss/env-core': 0.8.0(typescript@5.4.4)(zod@3.22.4)
+      typescript: 5.4.4
       zod: 3.22.4
     dev: false
 
@@ -7706,7 +7706,7 @@ packages:
     resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: false
 
-  /@typescript-eslint/eslint-plugin@7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.3):
+  /@typescript-eslint/eslint-plugin@7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.4):
     resolution: {integrity: sha512-HpqNTH8Du34nLxbKgVMGljZMG0rJd2O9ecvr2QLYp+7512ty1j42KnsFwspPXg1Vh8an9YImf6CokUBltisZFQ==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
@@ -7718,10 +7718,10 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.10.0
-      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       '@typescript-eslint/scope-manager': 7.5.0
-      '@typescript-eslint/type-utils': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
-      '@typescript-eslint/utils': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/type-utils': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
+      '@typescript-eslint/utils': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       '@typescript-eslint/visitor-keys': 7.5.0
       debug: 4.3.4
       eslint: 8.57.0
@@ -7729,12 +7729,12 @@ packages:
       ignore: 5.3.0
       natural-compare: 1.4.0
       semver: 7.5.4
-      ts-api-utils: 1.0.3(typescript@5.4.3)
-      typescript: 5.4.3
+      ts-api-utils: 1.0.3(typescript@5.4.4)
+      typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
 
-  /@typescript-eslint/parser@7.5.0(eslint@8.57.0)(typescript@5.4.3):
+  /@typescript-eslint/parser@7.5.0(eslint@8.57.0)(typescript@5.4.4):
     resolution: {integrity: sha512-cj+XGhNujfD2/wzR1tabNsidnYRaFfEkcULdcIyVBYcXjBvBKOes+mpMBP7hMpOyk+gBcfXsrg4NBGAStQyxjQ==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
@@ -7746,11 +7746,11 @@ packages:
     dependencies:
       '@typescript-eslint/scope-manager': 7.5.0
       '@typescript-eslint/types': 7.5.0
-      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.3)
+      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.4)
       '@typescript-eslint/visitor-keys': 7.5.0
       debug: 4.3.4
       eslint: 8.57.0
-      typescript: 5.4.3
+      typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
 
@@ -7761,7 +7761,7 @@ packages:
       '@typescript-eslint/types': 7.5.0
       '@typescript-eslint/visitor-keys': 7.5.0
 
-  /@typescript-eslint/type-utils@7.5.0(eslint@8.57.0)(typescript@5.4.3):
+  /@typescript-eslint/type-utils@7.5.0(eslint@8.57.0)(typescript@5.4.4):
     resolution: {integrity: sha512-A021Rj33+G8mx2Dqh0nMO9GyjjIBK3MqgVgZ2qlKf6CJy51wY/lkkFqq3TqqnH34XyAHUkq27IjlUkWlQRpLHw==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
@@ -7771,12 +7771,12 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.3)
-      '@typescript-eslint/utils': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.4)
+      '@typescript-eslint/utils': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       debug: 4.3.4
       eslint: 8.57.0
-      ts-api-utils: 1.0.3(typescript@5.4.3)
-      typescript: 5.4.3
+      ts-api-utils: 1.0.3(typescript@5.4.4)
+      typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
 
@@ -7784,7 +7784,7 @@ packages:
     resolution: {integrity: sha512-tv5B4IHeAdhR7uS4+bf8Ov3k793VEVHd45viRRkehIUZxm0WF82VPiLgHzA/Xl4TGPg1ZD49vfxBKFPecD5/mg==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  /@typescript-eslint/typescript-estree@7.5.0(typescript@5.4.3):
+  /@typescript-eslint/typescript-estree@7.5.0(typescript@5.4.4):
     resolution: {integrity: sha512-YklQQfe0Rv2PZEueLTUffiQGKQneiIEKKnfIqPIOxgM9lKSZFCjT5Ad4VqRKj/U4+kQE3fa8YQpskViL7WjdPQ==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
@@ -7800,12 +7800,12 @@ packages:
       is-glob: 4.0.3
       minimatch: 9.0.3
       semver: 7.5.4
-      ts-api-utils: 1.0.3(typescript@5.4.3)
-      typescript: 5.4.3
+      ts-api-utils: 1.0.3(typescript@5.4.4)
+      typescript: 5.4.4
     transitivePeerDependencies:
       - supports-color
 
-  /@typescript-eslint/utils@7.5.0(eslint@8.57.0)(typescript@5.4.3):
+  /@typescript-eslint/utils@7.5.0(eslint@8.57.0)(typescript@5.4.4):
     resolution: {integrity: sha512-3vZl9u0R+/FLQcpy2EHyRGNqAS/ofJ3Ji8aebilfJe+fobK8+LbIFmrHciLVDxjDoONmufDcnVSF38KwMEOjzw==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
@@ -7816,7 +7816,7 @@ packages:
       '@types/semver': 7.5.6
       '@typescript-eslint/scope-manager': 7.5.0
       '@typescript-eslint/types': 7.5.0
-      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.3)
+      '@typescript-eslint/typescript-estree': 7.5.0(typescript@5.4.4)
       eslint: 8.57.0
       semver: 7.5.4
     transitivePeerDependencies:
@@ -10309,7 +10309,7 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       debug: 3.2.7
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
@@ -10327,7 +10327,7 @@ packages:
       '@typescript-eslint/parser':
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.3)
+      '@typescript-eslint/parser': 7.5.0(eslint@8.57.0)(typescript@5.4.4)
       array-includes: 3.1.7
       array.prototype.findlastindex: 1.2.3
       array.prototype.flat: 1.3.2
@@ -10857,8 +10857,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /framer-motion@11.0.24(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-l2iM8NR53qtcujgAqYvGPJJGModPNWEVUaATRDLfnaLvUoFpImovBm0AHalSSsY8tW6knP8mfJTW4WYGbnAe4w==}
+  /framer-motion@11.0.25(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mRt7vQGzA7++wTgb+PW1TrlXXgndqR6hCiJ48fXr2X9alte2hPQiAq556HRwDCt0Q5X98MNvcSe4KUa27Gm5Lg==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0
@@ -13263,8 +13263,8 @@ packages:
       whatwg-fetch: 3.6.20
     dev: false
 
-  /next-sanity@8.5.1(@sanity/client@6.15.9)(@sanity/icons@2.11.6)(@sanity/types@3.36.1)(@sanity/ui@2.0.14)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
-    resolution: {integrity: sha512-jG89odHf0EM5WFFuvreTINbue8gQ5yNocXvVM1UpHaniAdrFug/K+XzrZMN9MyzhZ285PTcpk/NimpgvPFraaA==}
+  /next-sanity@8.5.2(@sanity/client@6.15.10)(@sanity/icons@2.11.7)(@sanity/types@3.36.1)(@sanity/ui@2.0.15)(next@14.1.4)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
+    resolution: {integrity: sha512-fjrLCd1xsTZTVbUQ9l/QG9ovw3FEvfXa7GH/362PcMdY4BOCYNw9nJ7Z/f8wzIcmNryObR9AqAAWX08YxMqerQ==}
     engines: {node: '>=18.17'}
     peerDependencies:
       '@sanity/client': ^6.15.9
@@ -13277,12 +13277,12 @@ packages:
       styled-components: ^5.2 || ^6.0
     dependencies:
       '@portabletext/react': 3.0.15(react@18.2.0)
-      '@sanity/client': 6.15.9
-      '@sanity/icons': 2.11.6(react@18.2.0)
-      '@sanity/preview-kit': 5.0.36(@sanity/client@6.15.9)(react@18.2.0)
+      '@sanity/client': 6.15.10
+      '@sanity/icons': 2.11.7(react@18.2.0)
+      '@sanity/preview-kit': 5.0.37(@sanity/client@6.15.10)(react@18.2.0)
       '@sanity/types': 3.36.1
-      '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
-      '@sanity/visual-editing': 1.8.4(@sanity/client@6.15.9)(next@14.1.4)
+      '@sanity/ui': 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/visual-editing': 1.8.5(@sanity/client@6.15.10)(next@14.1.4)
       '@sanity/webhook': 4.0.2-bc
       groq: 3.35.2
       history: 5.3.0
@@ -14117,18 +14117,18 @@ packages:
       pathe: 1.1.2
     dev: true
 
-  /playwright-core@1.42.1:
-    resolution: {integrity: sha512-mxz6zclokgrke9p1vtdy/COWBH+eOZgYUVVU34C73M+4j4HLlQJHtfcqiqqxpP0o8HhMkflvfbquLX5dg6wlfA==}
+  /playwright-core@1.43.0:
+    resolution: {integrity: sha512-iWFjyBUH97+pUFiyTqSLd8cDMMOS0r2ZYz2qEsPjH8/bX++sbIJT35MSwKnp1r/OQBAqC5XO99xFbJ9XClhf4w==}
     engines: {node: '>=16'}
     hasBin: true
     dev: true
 
-  /playwright@1.42.1:
-    resolution: {integrity: sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==}
+  /playwright@1.43.0:
+    resolution: {integrity: sha512-SiOKHbVjTSf6wHuGCbqrEyzlm6qvXcv7mENP+OZon1I07brfZLGdfWV0l/efAzVx7TF3Z45ov1gPEkku9q25YQ==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.42.1
+      playwright-core: 1.43.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -14318,7 +14318,7 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  /prettier-plugin-organize-imports@3.2.4(prettier@3.2.5)(typescript@5.4.3):
+  /prettier-plugin-organize-imports@3.2.4(prettier@3.2.5)(typescript@5.4.4):
     resolution: {integrity: sha512-6m8WBhIp0dfwu0SkgfOxJqh+HpdyfqSSLfKKRZSFbDuEQXDDndb8fTpRWkUrX/uBenkex3MgnVk0J3b3Y5byog==}
     peerDependencies:
       '@volar/vue-language-plugin-pug': ^1.0.4
@@ -14332,7 +14332,7 @@ packages:
         optional: true
     dependencies:
       prettier: 3.2.5
-      typescript: 5.4.3
+      typescript: 5.4.4
     dev: false
 
   /prettier-plugin-tailwindcss@0.5.13(@ianvs/prettier-plugin-sort-imports@4.2.1)(prettier-plugin-organize-imports@3.2.4)(prettier@3.2.5):
@@ -14389,7 +14389,7 @@ packages:
     dependencies:
       '@ianvs/prettier-plugin-sort-imports': 4.2.1(prettier@3.2.5)
       prettier: 3.2.5
-      prettier-plugin-organize-imports: 3.2.4(prettier@3.2.5)(typescript@5.4.3)
+      prettier-plugin-organize-imports: 3.2.4(prettier@3.2.5)(typescript@5.4.4)
     dev: false
 
   /prettier@3.2.5:
@@ -15546,7 +15546,7 @@ packages:
       - react-is
     dev: false
 
-  /sanity-plugin-media@2.2.5(@sanity/ui@2.0.14)(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
+  /sanity-plugin-media@2.2.5(@sanity/ui@2.0.15)(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(sanity@3.35.2)(styled-components@6.0.7):
     resolution: {integrity: sha512-gKmzF+OZCmZ706M2QuvtaC9RaV/NXaMS3oQuuWArfA5zplkV5Q+k7K6ulU/g+3jRUZceZ4TKqROHDcKiM96CbA==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -15559,7 +15559,7 @@ packages:
       '@hookform/resolvers': 3.3.4(react-hook-form@7.49.3)
       '@reduxjs/toolkit': 1.9.7(react-redux@7.2.9)(react@18.2.0)
       '@sanity/incompatible-plugin': 1.0.4(react-dom@18.2.0)(react@18.2.0)
-      '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/ui': 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/uuid': 3.0.2
       '@tanem/react-nprogress': 5.0.51(react-dom@18.2.0)(react@18.2.0)
       copy-to-clipboard: 3.3.3
@@ -15609,7 +15609,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.35.2
       '@sanity/cli': 3.35.2
-      '@sanity/client': 6.15.9
+      '@sanity/client': 6.15.10
       '@sanity/codegen': 3.35.2
       '@sanity/color': 3.0.0
       '@sanity/diff': 3.35.2
@@ -15617,18 +15617,18 @@ packages:
       '@sanity/eventsource': 5.0.1
       '@sanity/export': 3.35.2
       '@sanity/generate-help-url': 3.0.0
-      '@sanity/icons': 2.11.6(react@18.2.0)
+      '@sanity/icons': 2.11.7(react@18.2.0)
       '@sanity/image-url': 1.0.2
       '@sanity/import': 3.35.2
       '@sanity/logos': 2.1.4(@sanity/color@3.0.0)(react@18.2.0)
       '@sanity/migrate': 3.35.2
       '@sanity/mutator': 3.35.2
       '@sanity/portable-text-editor': 3.35.2(react-dom@18.2.0)(react@18.2.0)(rxjs@7.8.1)(styled-components@6.0.7)
-      '@sanity/presentation': 1.11.8(@sanity/client@6.15.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/presentation': 1.11.8(@sanity/client@6.15.10)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/schema': 3.35.2
       '@sanity/telemetry': 0.7.7
       '@sanity/types': 3.35.2
-      '@sanity/ui': 2.0.14(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
+      '@sanity/ui': 2.0.15(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.7)
       '@sanity/util': 3.35.2
       '@sanity/uuid': 3.0.2
       '@tanstack/react-virtual': 3.0.0-beta.54(react@18.2.0)
@@ -16621,18 +16621,18 @@ packages:
     resolution: {integrity: sha512-AqTiAOLcj85xS7vQ8QkAV41hPDIJ71XJB4RCUrzo/1GM2CQwhkJGaf9Hgr7BOugMRpgGUrqRg/DrBDl4H40+8g==}
     dev: false
 
-  /ts-api-utils@1.0.3(typescript@5.4.3):
+  /ts-api-utils@1.0.3(typescript@5.4.4):
     resolution: {integrity: sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==}
     engines: {node: '>=16.13.0'}
     peerDependencies:
       typescript: '>=4.2.0'
     dependencies:
-      typescript: 5.4.3
+      typescript: 5.4.4
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  /tsconfck@3.0.1(typescript@5.4.3):
+  /tsconfck@3.0.1(typescript@5.4.4):
     resolution: {integrity: sha512-7ppiBlF3UEddCLeI1JRx5m2Ryq+xk4JrZuq4EuYXykipebaq1dV0Fhgr1hb7CkmHt32QSgOZlcqVLEtHBG4/mg==}
     engines: {node: ^18 || >=20}
     hasBin: true
@@ -16642,7 +16642,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      typescript: 5.4.3
+      typescript: 5.4.4
     dev: true
 
   /tsconfig-paths@3.15.0:
@@ -16850,8 +16850,8 @@ packages:
       uuidv7: 0.4.4
     dev: false
 
-  /typescript@5.4.3:
-    resolution: {integrity: sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==}
+  /typescript@5.4.4:
+    resolution: {integrity: sha512-dGE2Vv8cpVvw28v8HCPqyb08EzbBURxDpuhJvTrusShUfGnhHBafDsLdS1EhhxyL6BJQE+2cT3dDPAv+MQ6oLw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -17173,7 +17173,7 @@ packages:
       - rollup
     dev: false
 
-  /vite-tsconfig-paths@4.3.1(typescript@5.4.3)(vite@5.2.8):
+  /vite-tsconfig-paths@4.3.1(typescript@5.4.4)(vite@5.2.8):
     resolution: {integrity: sha512-cfgJwcGOsIxXOLU/nELPny2/LUD/lcf1IbfyeKTv2bsupVbTH/xpFtdQlBmIP1GEK2CjjLxYhFfB+QODFAx5aw==}
     peerDependencies:
       vite: '*'
@@ -17183,7 +17183,7 @@ packages:
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      tsconfck: 3.0.1(typescript@5.4.3)
+      tsconfck: 3.0.1(typescript@5.4.4)
       vite: 5.2.8(@types/node@20.12.4)
     transitivePeerDependencies:
       - supports-color

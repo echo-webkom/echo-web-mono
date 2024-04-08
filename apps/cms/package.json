@@ -19,9 +19,9 @@
   ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "6.15.9",
-    "@sanity/icons": "2.11.6",
-    "@sanity/ui": "2.0.14",
+    "@sanity/client": "6.15.10",
+    "@sanity/icons": "2.11.7",
+    "@sanity/ui": "2.0.15",
     "@sanity/vision": "3.35.2",
     "nanoid": "5.0.6",
     "react": "18.2.0",
@@ -41,7 +41,7 @@
     "dotenv": "16.4.5",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   },
   "eslintConfig": {
     "root": true,

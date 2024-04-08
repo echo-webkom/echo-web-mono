@@ -31,7 +31,7 @@ export default async function StudentGroupOverview({ params }: Props) {
   const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);
 
   return (
-    <Container>
+    <Container className="py-10">
       <Heading className="mb-4">{studentGroupTypeName[groupTypeFromPath]}</Heading>
 
       <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
