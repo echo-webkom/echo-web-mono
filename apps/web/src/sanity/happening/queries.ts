@@ -65,23 +65,40 @@ export const happeningQuery = groq`
 }
 `;
 
-export const homeHappeningsQuery = groq`
-*[_type == "happening"
-  && !(_id in path('drafts.**'))
-  && date >= now()
-  && happeningType in $happeningTypes
- ] | order(date asc) {
-  _id,
-  title,
-  happeningType,
-  date,
-  registrationStart,
-  "slug": slug.current,
-  "image": company->image,
-  "organizers": organizers[]->{
-    name
-  }.name
-}[0...$n]
+export const homeHappeningsQuery = groq`{
+  "events": *[_type == "happening"
+    && !(_id in path('drafts.**'))
+    && date >= now()
+    && happeningType in ["external", "event"]
+   ] | order(date asc) {
+    _id,
+    title,
+    happeningType,
+    date,
+    registrationStart,
+    "slug": slug.current,
+    "image": company->image,
+    "organizers": organizers[]->{
+      name
+    }.name
+  }[0...$n],
+  "bedpresses": *[_type == "happening"
+    && !(_id in path('drafts.**'))
+    && date >= now()
+    && happeningType == "bedpres"
+   ] | order(date asc) {
+    _id,
+    title,
+    happeningType,
+    date,
+    registrationStart,
+    "slug": slug.current,
+    "image": company->image,
+    "organizers": organizers[]->{
+      name
+    }.name
+  }[0...$n]
+}
 `;
 
 export const happeningTypeQuery = groq`

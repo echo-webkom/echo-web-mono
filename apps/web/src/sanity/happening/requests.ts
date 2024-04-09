@@ -1,11 +1,10 @@
-import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { subMinutes } from "date-fns";
 import { log } from "next-axiom";
 
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
-import { happeningSchema, type Happening, type HappeningType } from "./schemas";
+import { happeningSchema, type Happening, type HomeHappening } from "./schemas";
 
 /**
  * Fetches all happenings
@@ -28,30 +27,24 @@ export async function fetchAllHappenings() {
 /**
  * Fetches the upcoming happenings of a given type
  */
-export async function fetchHomeHappenings<T extends HappeningType>(types: Array<T>, n: number) {
-  return await sanityFetch<
-    Array<{
-      _id: string;
-      title: string;
-      happeningType: T;
-      date: string;
-      slug: string;
-      registrationStart: string;
-      image: T extends "bedpres" ? SanityImageSource : null;
-      organizers: Array<string>;
-    }>
-  >({
+export async function fetchHomeHappenings(n: number) {
+  return await sanityFetch<{
+    events: Array<HomeHappening<"event">>;
+    bedpresses: Array<HomeHappening<"bedpres">>;
+  }>({
     query: homeHappeningsQuery,
     params: {
-      happeningTypes: types,
       n,
     },
     cdn: true,
-    revalidate: 120,
+    revalidate: 600,
   }).catch(() => {
     log.error("Failed to fetch home happenings");
 
-    return [];
+    return {
+      events: [],
+      bedpresses: [],
+    };
   });
 }
 

@@ -17,16 +17,14 @@ import { HappeningPreview } from "./_components/happening-preview";
 
 export default async function HomePage() {
   const authData = auth();
-  const eventData = fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS);
-  const bedpresData = fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS);
+  const homeHappeningData = fetchHomeHappenings(NUM_HAPPENINGS);
   const postData = fetchPosts(2);
   const jobData = fetchAvailableJobAds(4);
   const shoppingListData = getAllShoppinglistItems();
 
-  const [user, events, bedpresses, posts, jobAds, items] = await Promise.all([
+  const [user, { events, bedpresses }, posts, jobAds, items] = await Promise.all([
     authData,
-    eventData,
-    bedpresData,
+    homeHappeningData,
     postData,
     jobData,
     shoppingListData,

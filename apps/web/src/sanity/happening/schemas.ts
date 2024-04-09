@@ -1,3 +1,4 @@
+import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { z } from "zod";
 
 import { companySchema } from "../company";
@@ -38,3 +39,14 @@ export const happeningSchema = z.object({
 });
 
 export type Happening = z.infer<typeof happeningSchema>;
+
+export type HomeHappening<TType extends HappeningType> = {
+  _id: string;
+  title: string;
+  happeningType: TType;
+  date: string;
+  slug: string;
+  registrationStart: string;
+  image: TType extends "bedpres" ? SanityImageSource : null;
+  organizers: Array<string>;
+};
