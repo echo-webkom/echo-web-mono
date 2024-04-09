@@ -1,24 +1,54 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
 import { RxCalendar } from "react-icons/rx";
 
+import { type Registration } from "@echo-webkom/db/schemas";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { getHappeningSpotRangeAndRegistrations } from "@/data/happenings/queries";
+import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
+import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { createHappeningLink } from "@/lib/create-link";
 import { isBedpres } from "@/lib/is-bedpres";
-import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
+import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 
-export function HappeningPreview({
+const getSpotRangeInfo = <TSpotRange extends { spots: number; minYear: number; maxYear: number }>(
+  spotRanges: Array<TSpotRange>,
+  registrations: Array<Registration>,
+) => {
+  const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
+  const registeredCount = registrations.filter(
+    (registration) => registration.status === "registered",
+  ).length;
+  const waitingListCount = registrations.filter(
+    (registration) => registration.status === "waiting",
+  ).length;
+
+  return {
+    maxCapacity,
+    registeredCount,
+    waitingListCount,
+  };
+};
+
+export async function HappeningPreview({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) {
   const href = createHappeningLink(happening);
+
+  const [registrations, spotRange] = await Promise.all([
+    getRegistrationsByHappeningId(happening._id),
+    getSpotRangeByHappeningId(happening._id),
+  ]);
+
+  const { maxCapacity, registeredCount, waitingListCount } = getSpotRangeInfo(
+    spotRange ?? [],
+    registrations,
+  );
 
   return (
     <Link href={href}>
@@ -56,28 +86,25 @@ export function HappeningPreview({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li>
-              <Suspense fallback={<div className="flex-none" />}>
-                <HappeningRegistrationInfo happening={happening} />
-              </Suspense>
+              <span className="tracking-wider">
+                {happening.registrationStart &&
+                  maxCapacity > 0 &&
+                  (isFuture(new Date(happening.registrationStart)) ? (
+                    maxCapacity + " plasser"
+                  ) : (
+                    <p>
+                      {cn(
+                        registeredCount + waitingListCount >= maxCapacity
+                          ? "Fullt"
+                          : `${registeredCount}/${maxCapacity}` || ("Uendelig" && "∞"),
+                      )}
+                    </p>
+                  ))}
+              </span>
             </li>
           </ul>
         </div>
       </div>
     </Link>
   );
-}
-
-async function HappeningRegistrationInfo({
-  happening,
-}: {
-  happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
-}) {
-  const { spotRanges, registrations } = await getHappeningSpotRangeAndRegistrations(happening._id);
-  const info = getSpotRangeInfo(happening, spotRanges, registrations);
-
-  if (!info) {
-    return null;
-  }
-
-  return <p>{info}</p>;
 }

@@ -26,7 +26,7 @@ export const spotRanges = pgTable(
 );
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
-  happening: one(happenings, {
+  event: one(happenings, {
     fields: [spotRanges.happeningId],
     references: [happenings.id],
   }),
