@@ -17,3 +17,7 @@ export const PROFILE_IMAGE_FUNCTION_URL = "https://echo-images.azurewebsites.net
 export const COOKIE_BANNER = "cookie-banner";
 
 export const BOOMTOWN_HOSTNAME = process.env.NEXT_PUBLIC_BOOMTOWN_HOSTNAME;
+
+export const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
+  ? Number(process.env.NUM_HAPPENINGS)
+  : 4;
