@@ -143,6 +143,7 @@ export async function addStrike(
           name: user.name ?? "Ukjent",
           reason: reason ?? "Ingen grunn oppgitt",
           amount: amount,
+          isBanned: user.isBanned,
         }),
       );
     }

@@ -17,14 +17,15 @@ type StrikeNotificationEmailProps = {
   reason?: string;
   happeningTitle?: string;
   amount?: number;
+  isBanned?: boolean;
 };
 
-//TODO: tell the user if they are banned
 export default function StrikeNotificationEmail({
   name = "Bo Salhus",
   reason = "Jeg har blitt syk",
   happeningTitle = "Workshop med Webkom",
   amount = 1,
+  isBanned = true,
 }: StrikeNotificationEmailProps) {
   return (
     <Html>
@@ -52,6 +53,11 @@ export default function StrikeNotificationEmail({
                 </Text>
 
                 <Text className="rounded-md bg-gray-100 p-4 text-gray-600">{reason}</Text>
+                {isBanned || reason === "Du møtte ikke opp." ? (
+                  <Text className="text-gray-600">
+                    Du har blitt bannet fra de 3 neste bedpressene du kunne ha deltatt i.
+                  </Text>
+                ) : null}
               </Section>
             </Section>
           </Container>
