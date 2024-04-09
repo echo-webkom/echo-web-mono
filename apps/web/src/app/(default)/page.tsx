@@ -8,12 +8,15 @@ import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
-import { NUM_HAPPENINGS } from "@/config";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
 import { HappeningPreview } from "./_components/happening-preview";
+
+const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
+  ? Number(process.env.NUM_HAPPENINGS)
+  : 4;
 
 export default async function HomePage() {
   const authData = auth();
