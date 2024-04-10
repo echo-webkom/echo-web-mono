@@ -200,4 +200,17 @@
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
+
+  .animate-around {
+    animation: around 1s;
+  }
+
+  @keyframes around {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
