@@ -50,6 +50,23 @@ export async function getHappeningById(id: string) {
     });
 }
 
+export async function getHappeningSpotRangeAndRegistrations(happeningId: string) {
+  return await db.query.happenings
+    .findFirst({
+      where: (happening) => eq(happening.id, happeningId),
+      with: {
+        registrations: true,
+        spotRanges: true,
+      },
+    })
+    .then((result) => {
+      return {
+        registrations: result?.registrations ?? [],
+        spotRanges: result?.spotRanges ?? [],
+      };
+    });
+}
+
 export async function getHappeningsFromDate(date: Date, type: HappeningType) {
   return await db.query.happenings.findMany({
     where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
