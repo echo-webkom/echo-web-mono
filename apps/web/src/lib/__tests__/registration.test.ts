@@ -58,37 +58,37 @@ const registration7: TRegistration = {
 };
 const happeningDate = new Date("2002-12-17T11:00");
 
-describe("should format registration status", () => {
+describe("getRegistrationStatus", () => {
   it("too late registration, from waitinglist", () => {
     const str = getRegistrationStatus(registration1, happeningDate);
     expect(str).toBe("Påmeldt fra venteliste 10 t før");
   });
 
-  it("too late registration", () => {
+  it("should format registration status with hours", () => {
     const str = getRegistrationStatus(registration2, happeningDate);
     expect(str).toBe("Påmeldt 19 t før");
   });
 
-  it("registration in time", () => {
+  it("should format registration status only", () => {
     const str = getRegistrationStatus(registration3, happeningDate);
     expect(str).toBe("Påmeldt");
   });
 
-  it("deregistration from waitinglist, under 24 h before", () => {
+  it("should format registration status with previous status and hours", () => {
     const str = getRegistrationStatus(registration4, happeningDate);
     expect(str).toBe("Avmeldt fra venteliste 10 t før");
   });
 
-  it("deregistration from waitinglist", () => {
+  it("should format registration status with previous status", () => {
     const str = getRegistrationStatus(registration5, happeningDate);
     expect(str).toBe("Avmeldt fra venteliste");
   });
 
-  it("registration in time, no previous status", () => {
+  it("should format registration status only", () => {
     const str = getRegistrationStatus(registration6, happeningDate);
     expect(str).toBe("Påmeldt");
   });
-  it("waiting list in time, no previous status", () => {
+  it("should format registration status only", () => {
     const str = getRegistrationStatus(registration7, happeningDate);
     expect(str).toBe("Venteliste");
   });

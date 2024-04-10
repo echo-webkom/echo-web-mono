@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
@@ -38,7 +37,7 @@ export default async function EventDashboard({ params }: Props) {
   }
 
   const registrations = await db.query.registrations.findMany({
-    where: (registration) => eq(registration.happeningId, happening.id),
+    where: (registration, { eq }) => eq(registration.happeningId, happening.id),
     with: {
       user: {
         with: {

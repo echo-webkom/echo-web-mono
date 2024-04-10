@@ -51,7 +51,6 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
         .set({
           prevStatus: exisitingRegistration.status,
           changedBy: user.id,
-          changedAt: new Date(),
           status: "unregistered",
           unregisterReason: data.reason,
         })

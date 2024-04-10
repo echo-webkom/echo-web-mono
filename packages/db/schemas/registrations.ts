@@ -21,8 +21,7 @@ export const registrations = pgTable(
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     prevStatus: registrationStatusEnum("prev_status"),
-    changedAt: timestamp("changed_at"),
-    // changedAt: timestamp("changed_at", { mode: "date", precision: 3 }).$onUpdate(() => new Date()),
+    changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
   },
   (table) => ({

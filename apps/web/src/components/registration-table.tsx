@@ -14,7 +14,6 @@ import {
 } from "@echo-webkom/db/schemas";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
-import { type TRegistration } from "@/lib/__tests__/registration.test";
 import { getRegistrationStatus } from "@/lib/registrations";
 import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
@@ -50,7 +49,6 @@ export const formatHeaders: Record<HeaderType, string> = {
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
     memberships: Array<{ group: Group | null }>;
-    changedAt: Date | null;
   };
 };
 
@@ -275,7 +273,6 @@ const RegistrationRow = ({
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
     .join(",");
-
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
@@ -284,12 +281,7 @@ const RegistrationRow = ({
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {getRegistrationStatus(
-          {
-            ...registration,
-          } as TRegistration,
-          happeningDate,
-        )}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>
