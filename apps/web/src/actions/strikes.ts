@@ -137,7 +137,7 @@ export async function addStrike(
     if (contacts.length > 0) {
       await emailClient.sendEmail(
         contacts.map((contact) => contact.email),
-        `Hei, ${user.name ?? "Ukjent"}. Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fordi ${reason}, i ${happening.title}`,
+        `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
         StrikeNotificationEmail({
           happeningTitle: happening.title,
           name: user.name ?? "Ukjent",

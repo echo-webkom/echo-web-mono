@@ -22,15 +22,15 @@ type StrikeNotificationEmailProps = {
 
 export default function StrikeNotificationEmail({
   name = "Bo Salhus",
-  reason = "Jeg har blitt syk",
+  reason = "Kom for sent",
   happeningTitle = "Workshop med Webkom",
-  amount = 1,
-  isBanned = true,
+  amount = 3,
+  isBanned = false,
 }: StrikeNotificationEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Du har fått {amount} ny(e) prikk(er)</Preview>
+      <Preview>Prikkmelding: {happeningTitle}</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto my-8 w-full max-w-screen-sm border border-solid border-gray-200">
@@ -42,20 +42,23 @@ export default function StrikeNotificationEmail({
                 alt="echo"
                 style={{ margin: "auto" }}
               />
-              <Heading className="text-2xl font-bold">
-                Du har fått {amount > 1 ? "nye prikker" : "ny prikk"}
+              <Heading className="mb-4 text-2xl font-bold">
+                Du har mottatt {amount > 1 ? `${amount} prikker` : "en prikk"}
               </Heading>
 
               <Section>
-                <Text className="text-gray-600">
-                  {name} har fått {amount > 1 ? amount + " nye prikker" : "ny prikk"} fra `
-                  {happeningTitle}` med følgende grunn:
+                <Text className="text-gray-600">Hei, {name}.</Text>
+
+                <Text className="mt-4 text-gray-600">
+                  Du har mottatt {amount > 1 ? `${amount} prikker` : "en prikk"} fordi du{" "}
+                  {reason.toLowerCase()} under `{happeningTitle}`. Ta kontakt med Bedkom dersom
+                  dette er en feil.
                 </Text>
 
-                <Text className="rounded-md bg-gray-100 p-4 text-gray-600">{reason}</Text>
                 {isBanned || reason === "Du møtte ikke opp." ? (
-                  <Text className="text-gray-600">
-                    Du har blitt bannet fra de 3 neste bedpressene du kunne ha deltatt i.
+                  <Text className="mt-4 text-gray-600">
+                    Som en konsekvens har du blitt midlertidig utestengt fra de neste 3
+                    bedriftspresentasjonene du kunne ha deltatt i.
                   </Text>
                 ) : null}
               </Section>
