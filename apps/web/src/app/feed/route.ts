@@ -3,7 +3,7 @@ import { fetchAllPosts } from "@/sanity/posts";
 
 type Post = Awaited<ReturnType<typeof fetchAllPosts>>[number];
 
-const POST_DESCRIPTION_LENGTH = 120;
+const POST_DESCRIPTION_LENGTH = 300;
 
 const postToRSSItem = (post: Post): RSSItem => {
   const title = post.title;
