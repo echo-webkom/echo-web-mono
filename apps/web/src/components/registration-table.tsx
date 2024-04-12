@@ -220,9 +220,7 @@ export function RegistrationTable({
               <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
-              <TableHead scope="col" className="sm:w-48">
-                {/* Actions */}
-              </TableHead>
+              <TableHead scope="col">Mer</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

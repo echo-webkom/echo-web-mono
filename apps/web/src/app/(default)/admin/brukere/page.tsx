@@ -48,7 +48,7 @@ export default async function UsersOverview() {
           <TableRow>
             <TableHead>Navn</TableHead>
             <TableHead>E-post</TableHead>
-            <TableHead>{/* Actions */}</TableHead>
+            <TableHead>Endre</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

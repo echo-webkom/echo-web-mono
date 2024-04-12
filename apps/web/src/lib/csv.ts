@@ -28,8 +28,8 @@ export function toCsv(happening: FullHappening, selectedHeaders: Array<string> =
     }));
 
     const obj: Record<string, string> = {};
-    obj.Epost = r.user.alternativeEmail ?? r.user.email;
     obj.Navn = stringify(r.user.name);
+    obj.Epost = r.user.alternativeEmail ?? r.user.email;
     obj.Status = r.status;
     obj.År = stringify(r.user.year);
     obj.Studieretning = r.user.degreeId ?? "";

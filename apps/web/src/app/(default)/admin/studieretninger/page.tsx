@@ -35,7 +35,7 @@ export default async function AdminDegreePage() {
           <TableRow>
             <TableHead>Navn</TableHead>
             <TableHead>id</TableHead>
-            <TableHead>{/* Actions */}</TableHead>
+            <TableHead>Gjør endringer</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
