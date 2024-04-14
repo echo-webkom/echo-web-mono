@@ -14,7 +14,7 @@
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.12.7",
     "dotenv-cli": "7.4.1",
-    "eslint": "8.57.0",
+    "eslint": "9.0.0",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.7.2",
     "typescript": "5.4.5"
