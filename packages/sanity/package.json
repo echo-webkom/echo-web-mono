@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sanity/client": "6.15.11",
+    "@sanity/client": "6.15.13",
     "@sanity/image-url": "1.0.2"
   },
   "devDependencies": {
