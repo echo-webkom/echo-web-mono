@@ -68,7 +68,7 @@
     "@echo-webkom/tsconfig": "workspace:*",
     "@tailwindcss/forms": "0.5.7",
     "@tailwindcss/typography": "0.5.12",
-    "@testing-library/react": "14.3.0",
+    "@testing-library/react": "15.0.0",
     "@types/node": "20.12.7",
     "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",
