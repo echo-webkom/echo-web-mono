@@ -65,7 +65,7 @@ export async function updateRegistration(
       .update(registrations)
       .set({
         prevStatus: exisitingRegistration.status,
-        changedBy: user.id,
+        changedBy: user.name,
         changedAt: new Date(),
         status: data.status,
         unregisterReason: data.reason,

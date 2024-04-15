@@ -213,6 +213,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
             status: isWaitlisted ? "waiting" : "registered",
             happeningId: id,
             userId: user.id,
+            changedBy: null,
           })
           .returning()
           .onConflictDoUpdate({

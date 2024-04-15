@@ -11,6 +11,7 @@ export type TRegistration = Omit<
   prevStatus: "registered" | "unregistered" | "removed" | "waiting" | "pending" | null;
   changedAt: Date | null;
   createdAt: Date;
+  changedBy: string | null;
 };
 
 const registration1: TRegistration = {
@@ -18,30 +19,35 @@ const registration1: TRegistration = {
   prevStatus: "waiting",
   changedAt: new Date("2002-12-17T01:00"),
   createdAt: new Date("2002-12-16T16:00"),
+  changedBy: "Navn Navnesen",
 };
 const registration2: TRegistration = {
   status: "registered",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-16T16:00"),
+  changedBy: null,
 };
 const registration3: TRegistration = {
   status: "registered",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
+  changedBy: null,
 };
 const registration4: TRegistration = {
   status: "unregistered",
   prevStatus: "waiting",
   changedAt: new Date("2002-12-17T01:00"),
   createdAt: new Date("2002-12-16T16:00"),
+  changedBy: null,
 };
 const registration5: TRegistration = {
   status: "unregistered",
   prevStatus: "waiting",
   changedAt: new Date("2002-12-16T01:00"),
   createdAt: new Date("2002-12-15T16:00"),
+  changedBy: "Navn Navnesen",
 };
 
 const registration6: TRegistration = {
@@ -49,19 +55,21 @@ const registration6: TRegistration = {
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
+  changedBy: null,
 };
 const registration7: TRegistration = {
   status: "waiting",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
+  changedBy: null,
 };
 const happeningDate = new Date("2002-12-17T11:00");
 
 describe("getRegistrationStatus", () => {
   it("too late registration, from waitinglist", () => {
     const str = getRegistrationStatus(registration1, happeningDate);
-    expect(str).toBe("Påmeldt fra venteliste 10 t før");
+    expect(str).toBe("Påmeldt fra venteliste 10 t før, av Navn Navnesen");
   });
 
   it("should format registration status with hours", () => {
@@ -81,7 +89,7 @@ describe("getRegistrationStatus", () => {
 
   it("should format registration status with previous status", () => {
     const str = getRegistrationStatus(registration5, happeningDate);
-    expect(str).toBe("Avmeldt fra venteliste");
+    expect(str).toBe("Avmeldt fra venteliste, av Navn Navnesen");
   });
 
   it("should format registration status only", () => {

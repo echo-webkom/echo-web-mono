@@ -9,6 +9,7 @@ export function getRegistrationStatus<
     prevStatus: RegistrationStatus | null;
     changedAt: Date | null;
     createdAt: Date;
+    changedBy: string | null;
   },
 >(registration: T, happeningDate: Date | null) {
   const status = registrationStatusToString[registration.status];
@@ -16,6 +17,7 @@ export function getRegistrationStatus<
     _differenceInHours(happeningDate, registration.changedAt ?? registration.createdAt),
   );
 
+  const isEdited = registration.changedBy !== null;
   const isToLate = deltaTime < 24 && deltaTime > 0;
 
   const prevStatusText = registration.prevStatus
@@ -27,7 +29,9 @@ export function getRegistrationStatus<
       ? ` fra ${prevStatusText}`
       : "";
 
-  const lateInfo = isToLate ? `${deltaTime} t før` : "";
+  const lateInfo = isToLate ? ` ${deltaTime} t før` : "";
 
-  return `${status}${additionalInfo} ${lateInfo}`.trim();
+  const editInfo = isEdited ? `, av ${registration.changedBy}` : "";
+
+  return `${status}${additionalInfo}${lateInfo}${editInfo}`.trim();
 }
