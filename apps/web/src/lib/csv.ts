@@ -34,6 +34,7 @@ export function toCsv(happening: FullHappening, selectedHeaders: Array<string> =
     obj.År = stringify(r.user.year);
     obj.Studieretning = r.user.degreeId ?? "";
     obj.Grunn = r.unregisterReason ?? "";
+    obj.Status = r.status;
 
     happening.questions.forEach((question) => {
       const answer = answers.find((a) => a.questionId === question.id)?.answer;
@@ -44,7 +45,7 @@ export function toCsv(happening: FullHappening, selectedHeaders: Array<string> =
     // If there are no selected headers, return the full object
     if (selectedHeaders.length > 0) {
       for (const key in obj) {
-        if (!selectedHeaders.includes(key)) {
+        if (!selectedHeaders.includes(key) && key !== "Status") {
           delete obj[key];
         }
       }
