@@ -39,6 +39,7 @@ export default async function EventDashboard({ params }: Props) {
   const registrations = await db.query.registrations.findMany({
     where: (registration, { eq }) => eq(registration.happeningId, happening.id),
     with: {
+      changedByUser: true,
       user: {
         with: {
           memberships: {

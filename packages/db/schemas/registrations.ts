@@ -39,7 +39,7 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
     references: [users.id],
   }),
   answers: many(answers),
-  changedBy: one(users, {
+  changedByUser: one(users, {
     fields: [registrations.changedBy],
     references: [users.id],
   }),

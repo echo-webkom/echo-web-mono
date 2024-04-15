@@ -1,0 +1,1 @@
+ALTER TABLE "registration" ALTER COLUMN "changed_at" SET DATA TYPE timestamp;

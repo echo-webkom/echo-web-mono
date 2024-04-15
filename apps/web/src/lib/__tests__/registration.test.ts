@@ -1,17 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { type RegistrationWithUser } from "@/components/registration-table";
 import { getRegistrationStatus } from "../registrations";
 
-export type TRegistration = Omit<
-  RegistrationWithUser,
-  "userId" | "happeningId" | "unregisterReason" | "answers" | "user" | "changedBy"
-> & {
+export type TRegistration = {
   status: "registered" | "unregistered" | "removed" | "waiting" | "pending";
   prevStatus: "registered" | "unregistered" | "removed" | "waiting" | "pending" | null;
   changedAt: Date | null;
   createdAt: Date;
-  changedBy: string | null;
+  changedByUser: { name: string } | null;
 };
 
 const registration1: TRegistration = {
@@ -19,35 +15,35 @@ const registration1: TRegistration = {
   prevStatus: "waiting",
   changedAt: new Date("2002-12-17T01:00"),
   createdAt: new Date("2002-12-16T16:00"),
-  changedBy: "Navn Navnesen",
+  changedByUser: { name: "Navn Navnesen" },
 };
 const registration2: TRegistration = {
   status: "registered",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-16T16:00"),
-  changedBy: null,
+  changedByUser: null,
 };
 const registration3: TRegistration = {
   status: "registered",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
-  changedBy: null,
+  changedByUser: null,
 };
 const registration4: TRegistration = {
   status: "unregistered",
   prevStatus: "waiting",
   changedAt: new Date("2002-12-17T01:00"),
   createdAt: new Date("2002-12-16T16:00"),
-  changedBy: null,
+  changedByUser: null,
 };
 const registration5: TRegistration = {
   status: "unregistered",
   prevStatus: "waiting",
   changedAt: new Date("2002-12-16T01:00"),
   createdAt: new Date("2002-12-15T16:00"),
-  changedBy: "Navn Navnesen",
+  changedByUser: { name: "Navn Navnesen" },
 };
 
 const registration6: TRegistration = {
@@ -55,14 +51,14 @@ const registration6: TRegistration = {
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
-  changedBy: null,
+  changedByUser: null,
 };
 const registration7: TRegistration = {
   status: "waiting",
   prevStatus: null,
   changedAt: null,
   createdAt: new Date("2002-12-14T16:00"),
-  changedBy: null,
+  changedByUser: null,
 };
 const happeningDate = new Date("2002-12-17T11:00");
 

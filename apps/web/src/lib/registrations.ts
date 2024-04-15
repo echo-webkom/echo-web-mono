@@ -4,12 +4,15 @@ import { registrationStatusToString } from "@echo-webkom/lib";
 import { _differenceInHours } from "@/utils/date";
 
 export function getRegistrationStatus<
+  U extends {
+    name: string;
+  },
   T extends {
     status: RegistrationStatus;
     prevStatus: RegistrationStatus | null;
     changedAt: Date | null;
     createdAt: Date;
-    changedBy: string | null;
+    changedByUser: U | null;
   },
 >(registration: T, happeningDate: Date | null) {
   const status = registrationStatusToString[registration.status];
@@ -17,7 +20,7 @@ export function getRegistrationStatus<
     _differenceInHours(happeningDate, registration.changedAt ?? registration.createdAt),
   );
 
-  const isEdited = registration.changedBy !== null;
+  const isEdited = registration.changedByUser !== null;
   const isToLate = deltaTime < 24 && deltaTime > 0;
 
   const prevStatusText = registration.prevStatus
@@ -31,7 +34,7 @@ export function getRegistrationStatus<
 
   const lateInfo = isToLate ? ` ${deltaTime} t før` : "";
 
-  const editInfo = isEdited ? `, av ${registration.changedBy}` : "";
+  const editInfo = isEdited ? `, av ${registration.changedByUser?.name}` : "";
 
   return `${status}${additionalInfo}${lateInfo}${editInfo}`.trim();
 }
