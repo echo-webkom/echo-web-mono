@@ -45,7 +45,7 @@
     "drizzle-orm": "0.30.8",
     "framer-motion": "11.0.28",
     "ics": "^3.7.2",
-    "next": "14.1.4",
+    "next": "14.2.0",
     "next-auth": "4.24.7",
     "next-axiom": "^1.1.1",
     "next-sanity": "8.5.5",
