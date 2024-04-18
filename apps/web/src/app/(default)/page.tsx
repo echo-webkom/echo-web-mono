@@ -86,15 +86,24 @@ export default async function HomePage() {
             <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </Link>
           <hr />
-          <ul>
-            {events.map((event) => {
-              return (
-                <li key={event._id}>
-                  <HappeningPreview happening={event} />
-                </li>
-              );
-            })}
-          </ul>
+
+          {events.length > 0 ? (
+            <ul>
+              {events.map((event) => {
+                return (
+                  <li key={event._id}>
+                    <HappeningPreview happening={event} />
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="py-4">
+              <p className="text-balance text-center text-xl font-medium">
+                Ingen kommende arrangementer for øyeblikket
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Bedpresses */}
@@ -108,15 +117,23 @@ export default async function HomePage() {
             <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </Link>
           <hr />
-          <ul>
-            {bedpresses.map((bedpres) => {
-              return (
-                <li key={bedpres._id}>
-                  <HappeningPreview happening={bedpres} />
-                </li>
-              );
-            })}
-          </ul>
+          {bedpresses.length > 0 ? (
+            <ul>
+              {bedpresses.map((bedpres) => {
+                return (
+                  <li key={bedpres._id}>
+                    <HappeningPreview happening={bedpres} />
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="py-4">
+              <p className="text-balance text-center text-xl font-medium">
+                Ingen kommende bedriftspresentasjoner for øyeblikket
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Job ads */}
