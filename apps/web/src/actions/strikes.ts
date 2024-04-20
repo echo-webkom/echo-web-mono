@@ -132,20 +132,17 @@ export async function addStrike(
 
     await createStrikes(data, user.id, amount, bannableStrikeNumber);
 
-    const userEmail = [user.alternativeEmail ?? user.email];
-    if (userEmail.length > 0) {
-      await emailClient.sendEmail(
-        userEmail,
-        `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
-        StrikeNotificationEmail({
-          happeningTitle: happening.title,
-          name: user.name ?? "Ukjent",
-          reason: reason ?? "Ingen grunn oppgitt",
-          amount: amount,
-          isBanned: user.isBanned,
-        }),
-      );
-    }
+    await emailClient.sendEmail(
+      [user.alternativeEmail ?? user.email],
+      `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
+      StrikeNotificationEmail({
+        happeningTitle: happening.title,
+        name: user.name ?? "Ukjent",
+        reason: reason ?? "Ingen grunn oppgitt",
+        amount: amount,
+        isBanned: user.isBanned,
+      }),
+    );
 
     return {
       success: true,
