@@ -41,8 +41,8 @@ export const formatHeaders: Record<HeaderType, string> = {
   name: "Navn",
   email: "Epost",
   alternativeEmail: "Alternativ Epost",
-  degreeId: "Studieretning",
   year: "År",
+  degreeId: "Studieretning",
   status: "Status",
 };
 
@@ -117,6 +117,7 @@ export function RegistrationTable({
     columns.push(formattedHeader);
   }
   columns.push(...questions.map((question) => question.title));
+  columns.push("Status");
   const nonEmptyColumns = columns.filter((header) => header && header.trim() !== "");
   const [selectedHeaders, setSelectedHeaders] = useState(nonEmptyColumns);
   const removeKey = (id: string) => {
