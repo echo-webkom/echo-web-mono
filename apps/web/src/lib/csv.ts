@@ -45,7 +45,7 @@ export function toCsv(happening: FullHappening, selectedHeaders: Array<string> =
     // If there are no selected headers, return the full object
     if (selectedHeaders.length > 0) {
       for (const key in obj) {
-        if (!selectedHeaders.includes(key) && key !== "Status") {
+        if (!selectedHeaders.includes(key)) {
           delete obj[key];
         }
       }
