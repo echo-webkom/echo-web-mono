@@ -6,6 +6,8 @@ import { z } from "zod";
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
+import { emailClient } from "@echo-webkom/email/client";
+import StrikeNotificationEmail from "@echo-webkom/email/emails/strike-notification";
 import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
@@ -130,20 +132,20 @@ export async function addStrike(
 
     await createStrikes(data, user.id, amount, bannableStrikeNumber);
 
-    // const contacts = await getContactsBySlug(happening.slug);
-    // if (contacts.length > 0) {
-    //   await emailClient.sendEmail(
-    //     contacts.map((contact) => contact.email),
-    //     `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
-    //     StrikeNotificationEmail({
-    //       happeningTitle: happening.title,
-    //       name: user.name ?? "Ukjent",
-    //       reason: reason ?? "Ingen grunn oppgitt",
-    //       amount: amount,
-    //       isBanned: user.isBanned,
-    //     }),
-    //   );
-    // }
+    const userEmail = [user.alternativeEmail ?? user.email];
+    if (userEmail.length > 0) {
+      await emailClient.sendEmail(
+        userEmail,
+        `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
+        StrikeNotificationEmail({
+          happeningTitle: happening.title,
+          name: user.name ?? "Ukjent",
+          reason: reason ?? "Ingen grunn oppgitt",
+          amount: amount,
+          isBanned: user.isBanned,
+        }),
+      );
+    }
 
     return {
       success: true,
