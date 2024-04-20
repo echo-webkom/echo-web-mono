@@ -35,14 +35,15 @@ import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 
-type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year";
+type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
 
 export const formatHeaders: Record<HeaderType, string> = {
+  name: "Navn",
   email: "Epost",
   alternativeEmail: "Alternativ Epost",
-  name: "Navn",
-  year: "År",
   degreeId: "Studieretning",
+  year: "År",
+  status: "Status",
 };
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
