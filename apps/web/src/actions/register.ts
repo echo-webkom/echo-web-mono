@@ -205,7 +205,8 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           )
           .leftJoin(users, eq(registrations.userId, users.id));
 
-        const isWaitlisted = regs.length >= userSpotRange.spots;
+        const isInfiniteSpots = userSpotRange.spots === 0;
+        const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
 
         const registration = await tx
           .insert(registrations)
