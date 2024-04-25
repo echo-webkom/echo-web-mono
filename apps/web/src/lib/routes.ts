@@ -130,9 +130,9 @@ export const headerRoutes: Array<Route> = [
         icon: LuWallet,
       },
       {
-        label: "Speak up",
+        label: "Speak Up",
         href: "/for-studenter/speak-up",
-        description: "Opplevd noe kjipt? Speak up!",
+        description: "Opplevd noe kjipt? Speak Up!",
         icon: LuHeart,
       },
     ],
