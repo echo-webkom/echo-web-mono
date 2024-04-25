@@ -129,9 +129,9 @@ export const headerRoutes: Array<
         icon: LuWallet,
       },
       {
-        label: "Si ifra",
-        href: "/for-studenter/si-ifra",
-        description: "Opplevd noe kjipt? Si ifra!",
+        label: "Speak up",
+        href: "/for-studenter/speak-up",
+        description: "Opplevd noe kjipt? Speak up!",
         icon: LuHeart,
       },
     ],
@@ -215,8 +215,8 @@ const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
     label: "Organisasjonsnummer: 998 995 035",
     isExternal: true,
   })
-  .link("/for-studenter/si-ifra", {
-    label: "Opplevd noe kjipt? Si ifra!",
+  .link("/for-studenter/speak-up", {
+    label: "Opplevd noe kjipt? Speak up!",
     isExternal: false,
   })
   .build();
