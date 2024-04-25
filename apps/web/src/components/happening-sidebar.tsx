@@ -1,11 +1,11 @@
+import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
-import { eq } from "drizzle-orm";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { auth } from "@echo-webkom/auth";
-import { db } from "@echo-webkom/db";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
@@ -14,13 +14,13 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
+import { getHappeningById } from "@/data/happenings/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
-import { urlFor } from "@/utils/image-builder";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";
@@ -30,22 +30,13 @@ type EventSidebarProps = {
   event: Happening;
 };
 
-const getHappening = async (id: string) => {
-  return await db.query.happenings
-    .findFirst({
-      where: (happening) => eq(happening.id, id),
-      with: {
-        questions: true,
-        groups: true,
-      },
-    })
-    .catch(() => null);
-};
-
 export async function HappeningSidebar({ event }: EventSidebarProps) {
+  // Opt-out of caching
+  noStore();
+
   const [user, happening, spotRanges, registrations] = await Promise.all([
     auth(),
-    getHappening(event._id),
+    getHappeningById(event._id),
     getSpotRangeByHappeningId(event._id),
     getRegistrationsByHappeningId(event._id),
   ]);

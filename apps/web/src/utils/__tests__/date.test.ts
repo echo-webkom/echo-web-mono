@@ -6,6 +6,7 @@ import {
   norwegianDateString,
   shortDate,
   shortDateNoTime,
+  shortDateNoYear,
   time,
   toDateOrNull,
 } from "../date";
@@ -35,6 +36,12 @@ describe("dates", () => {
     const date = new Date("2002-12-17");
     const str = shortDateNoTime(date);
     expect(str).toBe("17. des. 2002");
+  });
+
+  it("should format the date to short date without year", () => {
+    const date = new Date("2002-12-17");
+    const str = shortDateNoYear(date);
+    expect(str).toBe("17. desember kl. 01:00");
   });
 
   it("should format to time string", () => {

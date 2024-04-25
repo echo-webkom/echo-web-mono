@@ -15,12 +15,21 @@ class Kaffe {
     this.options = options;
   }
 
+  /**
+   * @returns The current strikes as a string
+   */
   async getStrikes() {
     return await fetch(`${this.options.url}/`, {
       cache: "no-store",
     }).then((response) => response.text());
   }
 
+  /**
+   * Adds a new report to the strike list
+   *
+   * @param reporter the user id of the reporter
+   * @returns true if the strike was successful
+   */
   async strike(reporter: string) {
     if (!this.apiKey) {
       throw new Error("No API key provided");
@@ -37,6 +46,11 @@ class Kaffe {
     }).then((response) => response.status === 200);
   }
 
+  /**
+   * Resets the strike count and reporter list
+   *
+   * @returns true if the reset was successful
+   */
   async reset() {
     if (!this.apiKey) {
       throw new Error("No API key provided");

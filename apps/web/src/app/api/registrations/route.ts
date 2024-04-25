@@ -2,10 +2,10 @@ import { type NextRequest } from "next/server";
 
 import { auth } from "@echo-webkom/auth";
 
-import { getHappeningCsvData } from "@/data/happenings/queries";
+import { getFullHappening } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
 import { isHost } from "@/lib/memberships";
-import { slugify } from "@/utils/slugify";
+import { slugify } from "@/utils/string";
 
 export const dynamic = "force-dynamic";
 
@@ -15,12 +15,15 @@ export async function GET(req: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const happeningId = req.nextUrl.searchParams.get("happeningId");
-  if (!happeningId) {
-    return new Response("Missing happeningId", { status: 400 });
+  const slug = req.nextUrl.searchParams.get("slug");
+  if (!slug) {
+    return new Response("Missing slug", { status: 400 });
   }
 
-  const happening = await getHappeningCsvData(happeningId);
+  const encodedHeaders = req.nextUrl.searchParams.get("selectedHeaders") ?? "";
+  const selectedHeaders = decodeURIComponent(encodedHeaders).split(",");
+
+  const happening = await getFullHappening(slug);
 
   if (!happening) {
     return new Response("Happening not found", { status: 404 });
@@ -30,7 +33,7 @@ export async function GET(req: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  return new Response(toCsv(happening), {
+  return new Response(toCsv(happening, selectedHeaders), {
     status: 200,
     headers: {
       "Content-Disposition": `attachment; filename=${slugify(happening.title)}-registrations.csv`,

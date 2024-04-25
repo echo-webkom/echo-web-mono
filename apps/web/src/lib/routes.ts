@@ -22,7 +22,7 @@ import {
 import { mailTo } from "@/utils/prefixes";
 import { RouteGroup } from "./route-builder";
 
-export const headerRoutes: Array<
+type Route =
   | {
       label: string;
       href: string;
@@ -35,8 +35,9 @@ export const headerRoutes: Array<
         description: string;
         icon: IconType;
       }>;
-    }
-> = [
+    };
+
+export const headerRoutes: Array<Route> = [
   {
     label: "Hjem",
     href: "/",
@@ -196,12 +197,6 @@ export const headerRoutes: Array<
   },
 ];
 
-const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
-  .link("/", { label: "Dashboard" })
-  .link("/feedback", { label: "Tilbakemeldinger" })
-  .link("/users", { label: "Brukere" })
-  .build();
-
 const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
   .link(mailTo("echo@uib.no"), {
     label: "echo@uib.no",
@@ -236,5 +231,4 @@ const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   })
   .build();
 
-export const adminRoutes = [sidebarRoutes];
 export const footerRoutes = [contactUsRoutes, followUsRoutes];

@@ -13,7 +13,7 @@ export default async function JobAdsOverviewPage() {
   const jobAds = await fetchJobAds();
 
   return (
-    <Container>
+    <Container className="py-10">
       <Heading>Stillingsannonser</Heading>
 
       <ul className="grid grid-cols-1 lg:grid-cols-2">

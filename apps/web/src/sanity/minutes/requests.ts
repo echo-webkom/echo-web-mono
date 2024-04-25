@@ -1,3 +1,5 @@
+import { log } from "next-axiom";
+
 import { sanityFetch } from "../client";
 import { allMeetingMinuteQuery } from "./queries";
 import { minuteSchema, type Minute } from "./schema";
@@ -11,7 +13,11 @@ export async function fetchMinutes() {
     tags: ["minutes"],
   })
     .then((res) => minuteSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      log.error("Failed to fetch meeting minutes");
+
+      return [];
+    });
 }
 
 /**

@@ -2,15 +2,24 @@ import { Parser } from "@json2csv/plainjs";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { type getHappeningCsvData } from "@/data/happenings/queries";
+import { type getFullHappening } from "@/data/happenings/queries";
+import { stringify } from "@/utils/string";
 
 const parser = new Parser({
   withBOM: true,
 });
 
-export const toCsv = (
-  happening: Exclude<Awaited<ReturnType<typeof getHappeningCsvData>>, undefined>,
-): string => {
+type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+
+/**
+ * Converts a happening to a CSV string.
+ * If selectedHeaders is empty, all headers will be included.
+ *
+ * @param happening the happening to convert to CSV
+ * @param selectedHeaders the headers to include in the CSV
+ * @returns the CSV string
+ */
+export function toCsv(happening: FullHappening, selectedHeaders: Array<string> = []) {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
@@ -19,20 +28,27 @@ export const toCsv = (
     }));
 
     const obj: Record<string, string> = {};
+    obj.Navn = stringify(r.user.name);
     obj.Epost = r.user.alternativeEmail ?? r.user.email;
-    obj.Navn = r.user.name ?? "Ingen navn";
     obj.Status = r.status;
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    obj.År = r.user.year?.toString() || "Ingen år";
-    obj.Studieretning = r.user.degreeId ?? "Ingen studieretning";
+    obj.År = stringify(r.user.year);
+    obj.Studieretning = r.user.degreeId ?? "";
     obj.Grunn = r.unregisterReason ?? "";
+    obj.Status = r.status;
 
-    for (const question of happening.questions) {
+    happening.questions.forEach((question) => {
       const answer = answers.find((a) => a.questionId === question.id)?.answer;
-
       const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
-
       obj[question.title] = formattedAnswer;
+    });
+
+    // If there are no selected headers, return the full object
+    if (selectedHeaders.length > 0) {
+      for (const key in obj) {
+        if (!selectedHeaders.includes(key)) {
+          delete obj[key];
+        }
+      }
     }
 
     return obj;
@@ -53,4 +69,4 @@ export const toCsv = (
   });
 
   return parser.parse(registrations);
-};
+}

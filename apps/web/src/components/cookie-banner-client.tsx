@@ -3,11 +3,9 @@
 import Link from "next/link";
 import { RxCross1 as Cross } from "react-icons/rx";
 
-import { hideCookieBanner } from "@/actions/cookies";
-
 export function CookieBannerClient() {
-  const handleClose = async (quickClose: boolean) => {
-    await hideCookieBanner(quickClose);
+  const handleClose = async (_quickClose: boolean) => {
+    // Handle the cookie banner close event
   };
 
   return (

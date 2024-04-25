@@ -17,3 +17,9 @@ export async function getAllFeedback() {
     },
   )();
 }
+
+export async function getFeedbackById(id: string) {
+  return await db.query.siteFeedback.findFirst({
+    where: (feedback, { eq }) => eq(feedback.id, id),
+  });
+}

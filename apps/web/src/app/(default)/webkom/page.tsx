@@ -9,7 +9,7 @@ import { Text } from "@/components/typography/text";
 
 export default function WebkomPage() {
   return (
-    <Container className="text-center">
+    <Container className="py-10 text-center">
       <Image className="mx-auto h-32 w-auto" src={Webkom} alt="Webkom logo" />
       <Heading className="font-display">Webkom</Heading>
 
@@ -54,6 +54,8 @@ export default function WebkomPage() {
           <ListItem>Izaak Sarnecki</ListItem>
           <ListItem>Wengeal Abebe</ListItem>
           <ListItem>Hermann Holstad Walaunet</ListItem>
+
+          {/* --- V24 --- */}
         </UnorderedList>
       </div>
     </Container>

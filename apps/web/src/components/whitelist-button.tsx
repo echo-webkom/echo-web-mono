@@ -22,10 +22,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input";
 
 const whitelistFormSchema = z.object({
-  email: z
-    .string()
-    .email("Ugyldig e-post")
-    .endsWith("@student.uib.no", "Må ende med @student.uib.no"),
+  email: z.string().email("Ugyldig e-post"),
   days: z.coerce.number().positive("Må være et positivt tall"),
   reason: z.string().min(3, "Må være minst 3 tegn"),
 });

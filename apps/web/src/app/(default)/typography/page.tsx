@@ -15,7 +15,7 @@ export default function Typography() {
   }
 
   return (
-    <Container className="space-y-4">
+    <Container className="space-y-4 py-10">
       <div>
         <Heading level={1}>Heading 1</Heading>
         <Heading level={2}>Heading 2</Heading>

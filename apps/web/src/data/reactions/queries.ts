@@ -1,5 +1,6 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
@@ -12,7 +13,13 @@ export async function getReactionByReactToKey(reactToKey: string) {
         .findMany({
           where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
-        .catch(() => []);
+        .catch(() => {
+          log.error("Failed to fetch reactions", {
+            reactToKey,
+          });
+
+          return [];
+        });
     },
     [cacheKeyFactory.reactions(reactToKey)],
     {

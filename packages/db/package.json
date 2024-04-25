@@ -21,22 +21,23 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "0.30.2",
+    "drizzle-orm": "0.30.9",
     "drizzle-zod": "0.5.1",
-    "nanoid": "5.0.6",
+    "nanoid": "5.0.7",
     "next-auth": "4.24.7",
-    "pg": "8.11.3",
-    "postgres": "3.4.3"
+    "pg": "8.11.5",
+    "postgres": "3.4.4",
+    "zod": "3.22.5"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "18.19.24",
-    "@types/pg": "8.11.2",
+    "@types/node": "20.12.7",
+    "@types/pg": "8.11.5",
     "dotenv-cli": "7.4.1",
-    "drizzle-kit": "0.20.14",
+    "drizzle-kit": "0.20.17",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.7.1",
-    "typescript": "5.4.2"
+    "tsx": "4.7.2",
+    "typescript": "5.4.5"
   },
   "eslintConfig": {
     "root": true,

@@ -2,15 +2,15 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { isBoard } from "@echo-webkom/lib";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { initials } from "@/lib/initials";
 import { type Author } from "@/sanity/posts";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
-import { urlFor } from "@/utils/image-builder";
+import { initials } from "@/utils/string";
 
 type Props = {
   params: {
@@ -47,7 +47,7 @@ export default async function PostPage({ params }: Props) {
   const post = await getData(params.slug);
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <Heading>{post.title}</Heading>
       {post.authors && <Authors authors={post.authors} />}
       <Markdown content={post.body} />

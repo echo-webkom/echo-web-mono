@@ -1,3 +1,5 @@
+import { log } from "next-axiom";
+
 import { sanityFetch } from "../client";
 import { allPostsQuery } from "./queries";
 import { postSchema, type Post } from "./schemas";
@@ -12,7 +14,11 @@ export async function fetchAllPosts() {
     tags: ["posts"],
   })
     .then((res) => postSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      log.error("Failed to fetch all posts");
+
+      return [];
+    });
 }
 
 export async function fetchPosts(n?: number) {

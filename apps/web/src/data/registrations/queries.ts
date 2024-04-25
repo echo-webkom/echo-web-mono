@@ -1,8 +1,10 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
+import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
+import { isErrorMessage } from "@/utils/error";
 import { cacheKeyFactory } from "./revalidate";
 
 export async function getRegistrationsByHappeningId(happeningId: string) {
@@ -15,7 +17,14 @@ export async function getRegistrationsByHappeningId(happeningId: string) {
             user: true,
           },
         })
-        .catch(() => []);
+        .catch((error) => {
+          log.error("Failed to fetch registrations", {
+            happeningId,
+            error: isErrorMessage(error) ? error.message : "Unknown error",
+          });
+
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsHappening(happeningId)],
     {
@@ -34,7 +43,13 @@ export async function getRegistrationsByUserId(userId: string) {
             happening: true,
           },
         })
-        .catch(() => []);
+        .catch(() => {
+          log.error("Failed to fetch user registrations", {
+            userId,
+          });
+
+          return [];
+        });
     },
     [cacheKeyFactory.registrationsUser(userId)],
     {

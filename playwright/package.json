@@ -14,13 +14,13 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@playwright/test": "1.42.1",
-    "@types/node": "18.19.24",
+    "@playwright/test": "1.43.1",
+    "@types/node": "20.12.7",
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "postgres": "3.4.3",
-    "typescript": "5.4.2"
+    "postgres": "3.4.4",
+    "typescript": "5.4.5"
   },
   "eslintConfig": {
     "root": true,

@@ -34,7 +34,7 @@ export default async function MinutePage({ params }: Props) {
   const minute = await getData(params.id);
 
   return (
-    <Container>
+    <Container className="py-10">
       <Heading className="mb-4">{minute.title}</Heading>
 
       <div className="flex flex-col gap-5">

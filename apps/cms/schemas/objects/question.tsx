@@ -2,6 +2,8 @@ import { InfoOutlineIcon } from "@sanity/icons";
 import { nanoid } from "nanoid";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { QUESTION_TYPES } from "@echo-webkom/lib";
+
 import { IdInput } from "../../components/id-input";
 
 export default defineType({
@@ -60,12 +62,8 @@ export default defineType({
       type: "string",
       initialValue: "text",
       options: {
-        list: [
-          { title: "Tekstfelt", value: "text" },
-          { title: "Stort tekstfelt", value: "textarea" },
-          { title: "Sjekkbokser", value: "checkbox" },
-          { title: "Valg", value: "radio" },
-        ],
+        // @ts-expect-error sanity
+        list: QUESTION_TYPES,
       },
       validation: (Rule) => Rule.required(),
     }),

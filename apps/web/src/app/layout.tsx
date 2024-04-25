@@ -4,6 +4,7 @@ import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AxiomWebVitals } from "next-axiom";
 import NextTopLoader from "nextjs-toploader";
 
 import { FeedbackBlob } from "@/components/feedback-blob";
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </Providers>
         <Analytics />
         <SpeedInsights />
+        <AxiomWebVitals />
       </body>
     </html>
   );

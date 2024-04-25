@@ -1,6 +1,7 @@
 import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { log } from "next-axiom";
 
 import { Container } from "@/components/container";
 import { HappeningSidebar } from "@/components/happening-sidebar";
@@ -20,6 +21,9 @@ const getData = cache(async (slug: string) => {
   const bedpres = await fetchHappeningBySlug(slug);
 
   if (!bedpres) {
+    log.info("Bedpres not found", {
+      slug,
+    });
     return notFound();
   }
 
@@ -38,7 +42,7 @@ export default async function BedpresPage({ params }: Props) {
   const bedpres = await getData(params.slug);
 
   return (
-    <Container className="w-full md:max-w-[700px] lg:max-w-[1500px]">
+    <Container className="w-full py-10 md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
         <HappeningSidebar event={bedpres} />
 

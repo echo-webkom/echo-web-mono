@@ -1,17 +1,72 @@
+import chalk from "chalk";
+
 import { db } from "@echo-webkom/db";
 import { degrees, groups, spotRanges, usersToGroups } from "@echo-webkom/db/schemas";
 
+import * as message from "../utils";
 import { degrees as defaultDegrees } from "./data/degrees";
 import { groups as defaultGroups } from "./data/groups";
 import { users as defaultUsers } from "./data/users";
+import { type SeedMode } from "./mode";
 import * as Happening from "./repo/happening";
 import * as User from "./repo/user";
 
 const NOW = new Date();
 
-export async function seed() {
+export type Options = {
+  /**
+   * What data to seed
+   *
+   * Default is "dev"
+   *
+   * "prod": Only seed data that should be in production
+   * "dev": Seed data that is useful for development
+   * "test": Seed data that is useful for testing
+   */
+  mode: SeedMode;
+};
+
+export async function seed({ mode }: Options) {
+  if (mode === "prod") {
+    return await seedProd();
+  }
+
+  if (mode === "dev") {
+    return await seedDev();
+  }
+
+  if (mode === "test") {
+    return await seedTest();
+  }
+
+  throw new Error(`Invalid mode: ${mode}`);
+}
+
+async function seedProd() {
+  message.lines();
+  console.log(chalk.blue.underline(`🌱 Seeding prod data...`));
+  message.lines();
+
   await db.insert(degrees).values(defaultDegrees).onConflictDoNothing();
   await db.insert(groups).values(defaultGroups).onConflictDoNothing();
+}
+
+async function seedDev() {
+  await seedProd();
+
+  message.lines();
+  console.log(chalk.blue.underline(`🌱 Seeding dev data...`));
+  message.lines();
+
+  console.log("No dev data to seed");
+}
+
+async function seedTest() {
+  await seedDev();
+
+  message.lines();
+  console.log(chalk.blue.underline(`🌱 Seeding test data...`));
+  message.lines();
 
   await Promise.all(defaultUsers.map(User.create));
 

@@ -8,15 +8,12 @@ import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
+import { NUM_HAPPENINGS } from "@/config";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
 import { HappeningPreview } from "./_components/happening-preview";
-
-const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
-  ? Number(process.env.NUM_HAPPENINGS)
-  : 4;
 
 export default async function HomePage() {
   const authData = auth();
@@ -52,7 +49,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Container className="relative pb-40" layout="full">
+      <Container className="relative pb-40">
         <div className="mx-auto w-full max-w-screen-xl py-10">
           <div className="max-w-xl space-y-8">
             <h1>
@@ -89,15 +86,24 @@ export default async function HomePage() {
             <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </Link>
           <hr />
-          <ul>
-            {events.map((event) => {
-              return (
-                <li key={event._id}>
-                  <HappeningPreview happening={event} />
-                </li>
-              );
-            })}
-          </ul>
+
+          {events.length > 0 ? (
+            <ul>
+              {events.map((event) => {
+                return (
+                  <li key={event._id}>
+                    <HappeningPreview happening={event} />
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="py-4">
+              <p className="text-balance text-center text-xl font-medium">
+                Ingen kommende arrangementer for øyeblikket
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Bedpresses */}
@@ -111,15 +117,23 @@ export default async function HomePage() {
             <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
           </Link>
           <hr />
-          <ul>
-            {bedpresses.map((bedpres) => {
-              return (
-                <li key={bedpres._id}>
-                  <HappeningPreview happening={bedpres} />
-                </li>
-              );
-            })}
-          </ul>
+          {bedpresses.length > 0 ? (
+            <ul>
+              {bedpresses.map((bedpres) => {
+                return (
+                  <li key={bedpres._id}>
+                    <HappeningPreview happening={bedpres} />
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="py-4">
+              <p className="text-balance text-center text-xl font-medium">
+                Ingen kommende bedriftspresentasjoner for øyeblikket
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Job ads */}

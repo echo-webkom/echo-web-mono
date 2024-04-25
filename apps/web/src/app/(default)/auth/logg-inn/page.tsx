@@ -14,7 +14,7 @@ export default function SignInPage({ searchParams }: Props) {
   const { error } = searchParams;
 
   return (
-    <Container>
+    <Container className="py-24">
       {error && isValidSignInError(error) && (
         <Callout type="danger" className="mx-auto my-8 w-full max-w-lg">
           <p className="font-bold">Du har ikke lov til å logge inn...</p>

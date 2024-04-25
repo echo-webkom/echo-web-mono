@@ -11,6 +11,7 @@ import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
+import { getFullHappening } from "@/data/happenings/queries";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
@@ -22,13 +23,7 @@ type Props = {
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
 
-  const happening = await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
-    with: {
-      questions: true,
-      groups: true,
-    },
-  });
+  const happening = await getFullHappening(slug);
 
   if (!happening) {
     return notFound();
@@ -84,7 +79,7 @@ export default async function EventDashboard({ params }: Props) {
   const groups = await getStudentGroups();
 
   return (
-    <Container layout="larger" className="flex flex-col gap-10 ">
+    <Container layout="larger" className="flex flex-col gap-10 py-10">
       <div className="m-2">
         <Link href={`/${happeningType}/${happening.slug}`}>
           <span className="p-2">⇐</span>
@@ -119,9 +114,10 @@ export default async function EventDashboard({ params }: Props) {
         <div className="flex flex-col gap-3">
           <h2 className="text-3xl font-semibold">Registrerte</h2>
           <RegistrationTable
+            questions={happening.questions}
             registrations={registrations}
             studentGroups={groups}
-            happeningId={happening.id}
+            slug={happening.slug}
             isBedpres={happeningType === "bedpres"}
           />
         </div>

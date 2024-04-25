@@ -1,3 +1,5 @@
+import { log } from "next-axiom";
+
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
 import { jobAdSchema } from "./schemas";
@@ -15,7 +17,11 @@ export async function fetchJobAds() {
     tags: ["job-ads"],
   })
     .then((res) => jobAdSchema.array().parse(res))
-    .catch(() => []);
+    .catch(() => {
+      log.error("Failed to fetch job ads");
+
+      return [];
+    });
 }
 
 /**
