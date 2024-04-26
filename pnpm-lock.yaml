@@ -164,7 +164,7 @@ importers:
         version: 1.0.2
       '@t3-oss/env-nextjs':
         specifier: 0.8.0
-        version: 0.8.0(typescript@5.4.5)(zod@3.22.5)
+        version: 0.8.0(typescript@5.4.5)(zod@3.23.4)
       '@types/remove-markdown':
         specifier: 0.3.4
         version: 0.3.4
@@ -247,8 +247,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0
       zod:
-        specifier: 3.22.5
-        version: 3.22.5
+        specifier: 3.23.4
+        version: 3.23.4
     devDependencies:
       '@echo-webkom/tsconfig':
         specifier: workspace:*
@@ -402,7 +402,7 @@ importers:
         version: 0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.22.5)
+        version: 0.5.1(drizzle-orm@0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.23.4)
       nanoid:
         specifier: 5.0.7
         version: 5.0.7
@@ -416,8 +416,8 @@ importers:
         specifier: 3.4.4
         version: 3.4.4
       zod:
-        specifier: 3.22.5
-        version: 3.22.5
+        specifier: 3.23.4
+        version: 3.23.4
     devDependencies:
       '@echo-webkom/tsconfig':
         specifier: workspace:*
@@ -8460,6 +8460,9 @@ packages:
   zod@3.22.5:
     resolution: {integrity: sha512-HqnGsCdVZ2xc0qWPLdO25WnseXThh0kEYKIdV5F/hTHO75hNZFp8thxSeHhiPrHZKrFTo1SOgkAj9po5bexZlw==}
 
+  zod@3.23.4:
+    resolution: {integrity: sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -9755,10 +9758,10 @@ snapshots:
 
   '@hono/node-server@1.11.0': {}
 
-  '@hono/zod-validator@0.2.1(hono@4.2.7)(zod@3.22.5)':
+  '@hono/zod-validator@0.2.1(hono@4.2.7)(zod@3.23.4)':
     dependencies:
       hono: 4.2.7
-      zod: 3.22.5
+      zod: 3.23.4
 
   '@hookform/resolvers@3.3.4(react-hook-form@7.51.3(react@18.2.0))':
     dependencies:
@@ -10752,7 +10755,7 @@ snapshots:
       groq-js: 1.8.0
       json5: 2.2.3
       tsconfig-paths: 4.2.0
-      zod: 3.22.5
+      zod: 3.23.4
     transitivePeerDependencies:
       - supports-color
 
@@ -11162,16 +11165,16 @@ snapshots:
     dependencies:
       tslib: 2.6.2
 
-  '@t3-oss/env-core@0.8.0(typescript@5.4.5)(zod@3.22.5)':
+  '@t3-oss/env-core@0.8.0(typescript@5.4.5)(zod@3.23.4)':
     dependencies:
-      zod: 3.22.5
+      zod: 3.23.4
     optionalDependencies:
       typescript: 5.4.5
 
-  '@t3-oss/env-nextjs@0.8.0(typescript@5.4.5)(zod@3.22.5)':
+  '@t3-oss/env-nextjs@0.8.0(typescript@5.4.5)(zod@3.23.4)':
     dependencies:
-      '@t3-oss/env-core': 0.8.0(typescript@5.4.5)(zod@3.22.5)
-      zod: 3.22.5
+      '@t3-oss/env-core': 0.8.0(typescript@5.4.5)(zod@3.23.4)
+      zod: 3.23.4
     optionalDependencies:
       typescript: 5.4.5
 
@@ -12644,7 +12647,7 @@ snapshots:
     dependencies:
       '@esbuild-kit/esm-loader': 2.6.5
       '@hono/node-server': 1.11.0
-      '@hono/zod-validator': 0.2.1(hono@4.2.7)(zod@3.22.5)
+      '@hono/zod-validator': 0.2.1(hono@4.2.7)(zod@3.23.4)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -12658,7 +12661,7 @@ snapshots:
       minimatch: 7.4.6
       semver: 7.6.0
       superjson: 2.2.1
-      zod: 3.22.5
+      zod: 3.23.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12670,10 +12673,10 @@ snapshots:
       postgres: 3.4.4
       react: 18.2.0
 
-  drizzle-zod@0.5.1(drizzle-orm@0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.22.5):
+  drizzle-zod@0.5.1(drizzle-orm@0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0))(zod@3.23.4):
     dependencies:
       drizzle-orm: 0.30.9(@types/pg@8.11.5)(@types/react@18.2.79)(pg@8.11.5)(postgres@3.4.4)(react@18.2.0)
-      zod: 3.22.5
+      zod: 3.23.4
 
   duplexify@3.7.1:
     dependencies:
@@ -17719,5 +17722,7 @@ snapshots:
       readable-stream: 4.5.2
 
   zod@3.22.5: {}
+
+  zod@3.23.4: {}
 
   zwitch@2.0.4: {}
