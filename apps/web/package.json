@@ -83,7 +83,7 @@
     "tailwindcss": "3.4.3",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.4.5",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vite-tsconfig-paths": "4.3.1",
     "vitest": "1.5.2"
   },
