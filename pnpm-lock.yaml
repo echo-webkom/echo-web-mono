@@ -188,7 +188,7 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: 0.30.10
-        version: 0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+        version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
       framer-motion:
         specifier: 11.1.7
         version: 11.1.7(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -321,7 +321,7 @@ importers:
         version: link:../db
       drizzle-orm:
         specifier: 0.30.10
-        version: 0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+        version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
       next:
         specifier: 14.2.3
         version: 14.2.3(@babel/core@7.24.4)(@playwright/test@1.43.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -399,10 +399,10 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.30.10
-        version: 0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+        version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1))(zod@3.23.6)
+        version: 0.5.1(drizzle-orm@0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1))(zod@3.23.6)
       nanoid:
         specifier: 5.0.7
         version: 5.0.7
@@ -426,8 +426,8 @@ importers:
         specifier: 20.12.8
         version: 20.12.8
       '@types/pg':
-        specifier: 8.11.5
-        version: 8.11.5
+        specifier: 8.11.6
+        version: 8.11.6
       dotenv-cli:
         specifier: 7.4.1
         version: 7.4.1
@@ -550,7 +550,7 @@ importers:
         version: 12.0.0
       drizzle-orm:
         specifier: 0.30.10
-        version: 0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+        version: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
       groq:
         specifier: 3.39.0
         version: 3.39.0
@@ -3165,8 +3165,8 @@ packages:
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
 
-  '@types/pg@8.11.5':
-    resolution: {integrity: sha512-2xMjVviMxneZHDHX5p5S6tsRRs7TpDHeeK7kTTMe/kAC/mRRNjWHjZg0rkiY+e17jXSZV3zJYDxXV8Cy72/Vuw==}
+  '@types/pg@8.11.6':
+    resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
 
   '@types/prettier@3.0.0':
     resolution: {integrity: sha512-mFMBfMOz8QxhYVbuINtswBp9VL2b4Y0QqYHwqLz3YbgtfAcat2Dl6Y1o4e22S/OVE6Ebl9m7wWiMT2lSbAs1wA==}
@@ -11586,7 +11586,7 @@ snapshots:
 
   '@types/parse-json@4.0.2': {}
 
-  '@types/pg@8.11.5':
+  '@types/pg@8.11.6':
     dependencies:
       '@types/node': 20.12.8
       pg-protocol: 1.6.1
@@ -13021,17 +13021,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
-      '@types/pg': 8.11.5
+      '@types/pg': 8.11.6
       '@types/react': 18.3.1
       pg: 8.11.5
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1))(zod@3.23.6):
+  drizzle-zod@0.5.1(drizzle-orm@0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1))(zod@3.23.6):
     dependencies:
-      drizzle-orm: 0.30.10(@types/pg@8.11.5)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.30.10(@types/pg@8.11.6)(@types/react@18.3.1)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.6
 
   duplexify@3.7.1:
