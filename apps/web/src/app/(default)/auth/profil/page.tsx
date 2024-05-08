@@ -5,8 +5,6 @@ import { eq } from "drizzle-orm";
 import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
-import { echoGram } from "@/api/echogram";
-import { ProfileImage } from "@/components/profile-image";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -31,13 +29,9 @@ export default async function ProfilePage() {
     }),
   ]);
 
-  const imageURL = await echoGram.getImageByUserId(user.id);
-
   return (
     <div className="max-w-2xl space-y-4">
       <Heading level={2}>Din profil</Heading>
-
-      <ProfileImage userId={user.id} imageURL={imageURL} />
 
       <div className="flex flex-col gap-4">
         <div>
