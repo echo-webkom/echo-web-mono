@@ -9,6 +9,7 @@ import {
   LuHeart,
   LuHeartHandshake,
   LuMailOpen,
+  LuMartini,
   LuMegaphone,
   LuPresentation,
   LuScale,
@@ -76,10 +77,10 @@ export const headerRoutes: Array<Route> = [
         icon: LuUsers,
       },
       {
-        label: "Underorganisasjoner",
-        href: "/for-studenter/grupper/underorganisasjoner",
-        description: "Oversikt over underorganisasjoner",
-        icon: LuUsers,
+        label: "Programmerbar",
+        href: "https://programmer.bar",
+        description: "Studentbaren for informatikkstudenter",
+        icon: LuMartini,
       },
       {
         label: "Interessegrupper",

@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
-    "drizzle-orm": "0.30.9",
+    "drizzle-orm": "0.30.10",
     "next": "14.2.3",
     "next-auth": "4.24.7",
-    "react": "18.3.0",
-    "react-dom": "18.3.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.12.7",
+    "@types/node": "20.12.8",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.4.5"
