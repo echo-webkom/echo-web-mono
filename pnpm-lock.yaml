@@ -119,7 +119,7 @@ importers:
         version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.3.4
-        version: 3.3.4(react-hook-form@7.51.3(react@18.3.1))
+        version: 3.3.4(react-hook-form@7.51.4(react@18.3.1))
       '@json2csv/plainjs':
         specifier: ^7.0.6
         version: 7.0.6
@@ -223,8 +223,8 @@ importers:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: 7.51.3
-        version: 7.51.3(react@18.3.1)
+        specifier: 7.51.4
+        version: 7.51.4(react@18.3.1)
       react-icons:
         specifier: 5.0.1
         version: 5.0.1(react@18.3.1)
@@ -7065,6 +7065,12 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
 
+  react-hook-form@7.51.4:
+    resolution: {integrity: sha512-V14i8SEkh+V1gs6YtD0hdHYnoL4tp/HX/A45wWQN15CYr9bFRmmRdYStSO5L65lCCZRF+kYiSKhm9alqbcdiVA==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+
   react-i18next@13.5.0:
     resolution: {integrity: sha512-CFJ5NDGJ2MUyBohEHxljOq/39NQ972rh1ajnadG9BjTk+UXbHLq4z5DKEbEQBDoIhUmmbuS/fIMJKo6VOax1HA==}
     peerDependencies:
@@ -9876,6 +9882,10 @@ snapshots:
   '@hookform/resolvers@3.3.4(react-hook-form@7.51.3(react@18.3.1))':
     dependencies:
       react-hook-form: 7.51.3(react@18.3.1)
+
+  '@hookform/resolvers@3.3.4(react-hook-form@7.51.4(react@18.3.1))':
+    dependencies:
+      react-hook-form: 7.51.4(react@18.3.1)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -16201,6 +16211,10 @@ snapshots:
       '@types/react': 18.3.1
 
   react-hook-form@7.51.3(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
+  react-hook-form@7.51.4(react@18.3.1):
     dependencies:
       react: 18.3.1
 
