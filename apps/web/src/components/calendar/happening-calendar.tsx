@@ -16,6 +16,7 @@ type CalendarEvent = {
   date: Date;
   body: string;
   link: string;
+  happeningType: "bedpres" | "event" | "external";
 };
 
 type CalendarProps = {
@@ -98,6 +99,10 @@ export function Calendar({ events }: CalendarProps) {
         </div>
         <div className="flex items-center gap-1">
           <Circle className="bg-blue-400" />
+          Arrangementer
+        </div>
+        <div className="flex items-center gap-1">
+          <Circle className="bg-slate-400" />
           Annet
         </div>
       </div>
@@ -136,7 +141,7 @@ export function Calendar({ events }: CalendarProps) {
                       return (
                         <HoverCard key={event.id}>
                           <HoverCardTrigger>
-                            <div className="overflow-hidden rounded-lg border p-2">
+                            <div className={`overflow-hidden rounded-lg border p-2 ${event.happeningType === "bedpres" ? "bg-red-400" : event.happeningType === "event" ? "bg-blue-400" : "bg-slate-400"}`}>
                               <p className="line-clamp-1 text-sm font-medium">{event.title}</p>
                             </div>
                           </HoverCardTrigger>

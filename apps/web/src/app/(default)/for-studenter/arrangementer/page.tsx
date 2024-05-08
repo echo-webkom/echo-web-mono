@@ -29,6 +29,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
       date: new Date(happening.date!),
       body: removeMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
+      happeningType: happening.happeningType,
     }));
 
   const mappedMovies = movies.map((movie) => ({
@@ -37,6 +38,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     date: new Date(movie.date),
     body: `Se ${movie.title} med filmklubben!`,
     link: movie.link,
+    happeningType: "external",
   }));
 
   return (
