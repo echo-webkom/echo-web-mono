@@ -178,3 +178,8 @@ export function hoursBetween(startDate: Date | null, endDate: Date | null): numb
   if (!startDate || !endDate) return 0;
   return Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
 }
+
+export const _differenceInHours = (dateLeft: Date | null, dateRight: Date | null) => {
+  if (!dateLeft || !dateRight) return 0;
+  return differenceInHours(dateLeft, dateRight);
+};

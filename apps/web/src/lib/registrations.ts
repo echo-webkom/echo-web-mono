@@ -5,7 +5,7 @@ import { _differenceInHours } from "@/utils/date";
 
 export function getRegistrationStatus<
   U extends {
-    name: string;
+    name: string | null;
   },
   T extends {
     status: RegistrationStatus;

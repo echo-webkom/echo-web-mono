@@ -1,6 +1,6 @@
 {
-  "id": "3678558c-21b7-41ed-9838-e3d5d1701c4d",
-  "prevId": "f16025e7-1020-4088-a857-d40cfcdb391e",
+  "id": "286290f7-b422-4715-8127-badff7dfdc2c",
+  "prevId": "d3e883eb-5b83-4a2d-900f-156e5b6ffd8f",
   "version": "6",
   "dialect": "postgresql",
   "tables": {
@@ -211,7 +211,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "content": {
           "name": "content",
@@ -233,8 +233,30 @@
           "notNull": true
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "post_idx": {
+          "name": "post_idx",
+          "columns": [
+            "post_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "comment_user_id_user_id_fk": {
+          "name": "comment_user_id_user_id_fk",
+          "tableFrom": "comment",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -614,8 +636,21 @@
           "notNull": true,
           "default": "now()"
         },
-        "registration_changed_at": {
-          "name": "registration_changed_at",
+        "prev_status": {
+          "name": "prev_status",
+          "type": "registration_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_at": {
+          "name": "changed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_by": {
+          "name": "changed_by",
           "type": "text",
           "primaryKey": false,
           "notNull": false

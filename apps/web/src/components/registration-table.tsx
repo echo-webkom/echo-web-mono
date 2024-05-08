@@ -50,6 +50,7 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
     memberships: Array<{ group: Group | null }>;
   };
+  changedByUser: User | null;
 };
 
 export function RegistrationTable({
@@ -273,6 +274,7 @@ const RegistrationRow = ({
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
     .join(",");
+
   return (
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
