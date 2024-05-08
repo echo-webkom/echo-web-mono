@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import {
   insertDegreeSchema,
   selectDegreeSchema,
@@ -11,10 +10,11 @@ import {
 } from "@echo-webkom/db/schemas";
 
 import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutations";
+import { getUser } from "@/lib/get-user";
 import { isMemberOf, isWebkom } from "@/lib/memberships";
 
 export async function addDegree(payload: DegreeInsert) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {
@@ -57,7 +57,7 @@ export async function addDegree(payload: DegreeInsert) {
 }
 
 export async function removeDegree(id: string) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {
@@ -91,7 +91,7 @@ export async function removeDegree(id: string) {
 }
 
 export async function editDegree(payload: Degree) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {

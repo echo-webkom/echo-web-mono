@@ -3,7 +3,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { answers, registrations } from "@echo-webkom/db/schemas";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
@@ -11,6 +10,7 @@ import { emailClient } from "@echo-webkom/email/client";
 
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
+import { getUser } from "@/lib/get-user";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
 import { shortDateNoYear } from "@/utils/date";
 
@@ -32,7 +32,7 @@ const deregisterPayloadSchema = z.object({
 
 export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return {

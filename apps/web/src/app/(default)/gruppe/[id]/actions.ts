@@ -2,9 +2,10 @@
 
 import { and, eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { usersToGroups } from "@echo-webkom/db/schemas";
+
+import { getUser } from "@/lib/get-user";
 
 /**
  * Makes a user leader of a group. This should only be done if the user is member
@@ -39,7 +40,7 @@ export async function setGroupLeader(groupId: string, userId: string, leader: bo
       };
     }
 
-    const requestUser = await auth();
+    const requestUser = await getUser();
 
     if (!requestUser) {
       return {
@@ -116,7 +117,7 @@ export async function removeFromGroup(userId: string, groupId: string) {
       };
     }
 
-    const requestUser = await auth();
+    const requestUser = await getUser();
 
     if (!requestUser) {
       return {
@@ -199,7 +200,7 @@ export async function addUserToGroup(userEmail: string, groupId: string) {
       };
     }
 
-    const requestUser = await auth();
+    const requestUser = await getUser();
 
     if (!requestUser) {
       return {

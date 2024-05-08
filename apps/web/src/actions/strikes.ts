@@ -3,7 +3,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
 import { StrikeNotificationEmail } from "@echo-webkom/email";
@@ -11,6 +10,7 @@ import { emailClient } from "@echo-webkom/email/client";
 import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
+import { getUser } from "@/lib/get-user";
 import { isBedkom } from "@/lib/memberships";
 
 function getBannableStrikeNumber(current: number, added: number) {
@@ -23,7 +23,7 @@ function getBannableStrikeNumber(current: number, added: number) {
 
 export async function remvoveStrike(strikeId: number) {
   try {
-    const issuer = await auth();
+    const issuer = await getUser();
 
     if (!issuer) {
       return {
@@ -74,7 +74,7 @@ export async function addStrike(
   type: StrikeType,
 ) {
   try {
-    const issuer = await auth();
+    const issuer = await getUser();
 
     if (!issuer) {
       return {

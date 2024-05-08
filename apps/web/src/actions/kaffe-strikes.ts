@@ -1,12 +1,11 @@
 "use server";
 
-import { auth } from "@echo-webkom/auth";
-
 import { kaffeApi } from "@/api/kaffe";
+import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 export async function addKaffeReport() {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user || !isMemberOf(user, ["hovedstyret", "webkom"])) {
     return false;
@@ -16,7 +15,7 @@ export async function addKaffeReport() {
 }
 
 export async function resetKaffeStrikes() {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return false;
