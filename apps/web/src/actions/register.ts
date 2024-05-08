@@ -5,7 +5,6 @@ import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { log } from "next-axiom";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   answers,
@@ -18,6 +17,7 @@ import {
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { getUser } from "@/lib/get-user";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { shortDateNoYear } from "@/utils/date";
 import { isErrorMessage } from "@/utils/error";
@@ -27,7 +27,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
   /**
    * Check if user is signed in
    */
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {

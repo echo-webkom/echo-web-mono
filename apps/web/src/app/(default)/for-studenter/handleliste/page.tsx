@@ -1,13 +1,12 @@
-import { auth } from "@echo-webkom/auth";
-
 import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 export default async function HyggkomHandleliste() {
-  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+  const [user, items] = await Promise.all([getUser(), getAllShoppinglistItems()]);
 
   const mappedItems = items.map((item) => ({
     id: item.id,

@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
 
 import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
 import { getFeedbackById } from "@/data/site-feedbacks/queries";
+import { getUser } from "@/lib/get-user";
 import { isWebkom } from "@/lib/memberships";
 
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
@@ -42,7 +42,7 @@ export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSc
 }
 
 export async function toggleReadFeedback(id: string) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {

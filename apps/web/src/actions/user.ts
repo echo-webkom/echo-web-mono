@@ -3,10 +3,10 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
+import { getUser } from "@/lib/get-user";
 import { isWebkom } from "@/lib/memberships";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
@@ -17,7 +17,7 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
 
 export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema>) {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return {
@@ -75,7 +75,7 @@ export const updateUser = async (
   payload: z.infer<typeof updateUserPayloadSchema>,
 ) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (user === null || !isWebkom(user)) {
       return {

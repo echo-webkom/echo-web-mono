@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
-import { auth } from "@echo-webkom/auth";
-
 import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
@@ -10,13 +8,14 @@ import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
 import { NUM_HAPPENINGS } from "@/config";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { getUser } from "@/lib/get-user";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { fetchPosts } from "@/sanity/posts";
 import { HappeningPreview } from "./_components/happening-preview";
 
 export default async function HomePage() {
-  const authData = auth();
+  const authData = getUser();
   const eventData = fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS);
   const bedpresData = fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS);
   const postData = fetchPosts(2);

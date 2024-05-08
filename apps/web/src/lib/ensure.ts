@@ -2,8 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
-import { auth } from "@echo-webkom/auth";
-
+import { getUser } from "./get-user";
 import { isMemberOf } from "./memberships";
 
 type EnsureOptions = {
@@ -17,7 +16,7 @@ type EnsureOptions = {
  * @returns the user
  */
 export const ensureUser = async (groups?: Array<string>, options: EnsureOptions = {}) => {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return redirect(options.redirectTo ?? "/");
