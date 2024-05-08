@@ -23,10 +23,6 @@ const config = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
-      {
-        protocol: "https",
-        hostname: "echo-images.azurewebsites.net",
-      },
     ],
   },
 
