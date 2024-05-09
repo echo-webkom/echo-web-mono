@@ -27,7 +27,7 @@ export default async function UserStrikePagez() {
 
   const strikes = (await getAllUserStrikes(user.id)).reverse();
 
-  const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
+  const [validStrikes, earlierStrikes] = split(
     strikes,
     (strike) => strike.id > (user.bannedFromStrike ?? -1),
   );
