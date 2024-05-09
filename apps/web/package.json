@@ -47,7 +47,7 @@
     "ics": "^3.7.2",
     "next": "14.2.3",
     "next-auth": "4.24.7",
-    "next-axiom": "^1.1.1",
+    "next-axiom": "^1.2.0",
     "next-sanity": "8.5.5",
     "next-themes": "0.3.0",
     "nextjs-toploader": "1.6.12",
