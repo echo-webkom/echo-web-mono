@@ -16,7 +16,7 @@
     "dotenv-cli": "7.4.1",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.9.1",
+    "tsx": "4.9.3",
     "typescript": "5.4.5"
   },
   "eslintConfig": {
