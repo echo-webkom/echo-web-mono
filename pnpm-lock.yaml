@@ -278,8 +278,8 @@ importers:
         specifier: 10.4.19
         version: 10.4.19(postcss@8.4.38)
       dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 7.4.2
+        version: 7.4.2
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -429,8 +429,8 @@ importers:
         specifier: 8.11.6
         version: 8.11.6
       dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 7.4.2
+        version: 7.4.2
       drizzle-kit:
         specifier: 0.20.18
         version: 0.20.18
@@ -466,8 +466,8 @@ importers:
         specifier: 18.3.1
         version: 18.3.1
       dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 7.4.2
+        version: 7.4.2
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -562,8 +562,8 @@ importers:
         specifier: 20.12.8
         version: 20.12.8
       dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 7.4.2
+        version: 7.4.2
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -589,8 +589,8 @@ importers:
         specifier: 20.12.8
         version: 20.12.8
       dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 7.4.2
+        version: 7.4.2
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -4373,8 +4373,8 @@ packages:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
 
-  dotenv-cli@7.4.1:
-    resolution: {integrity: sha512-fE1aywjRrWGxV3miaiUr3d2zC/VAiuzEGghi+QzgIA9fEf/M5hLMaRSXb4IxbUAwGmaLi0IozdZddnVU96acag==}
+  dotenv-cli@7.4.2:
+    resolution: {integrity: sha512-SbUj8l61zIbzyhIbg0FwPJq6+wjbzdn9oEtozQpZ6kW2ihCcapKVZj49oCT3oPM+mgQm+itgvUQcG5szxVrZTA==}
     hasBin: true
 
   dotenv-expand@10.0.0:
@@ -12993,7 +12993,7 @@ snapshots:
     dependencies:
       is-obj: 2.0.0
 
-  dotenv-cli@7.4.1:
+  dotenv-cli@7.4.2:
     dependencies:
       cross-spawn: 7.0.3
       dotenv: 16.4.5
