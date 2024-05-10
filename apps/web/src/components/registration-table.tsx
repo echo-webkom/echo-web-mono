@@ -20,6 +20,7 @@ import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
 import { RandomPersonButton } from "./random-person-button";
+import { RemoveAllRegistrationsButton } from "./remove-all-registrations-button";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -191,6 +192,7 @@ export function RegistrationTable({
               addKey={addKey}
               selectedHeaders={selectedHeaders}
             />
+            <RemoveAllRegistrationsButton registrations={registrations} slug={slug} />
           </div>
         </div>
 
