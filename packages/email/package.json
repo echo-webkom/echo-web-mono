@@ -17,7 +17,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "jsx-email": "1.12.0",
+    "jsx-email": "1.12.1",
     "react": "18.3.1",
     "server-only": "0.0.1"
   },
@@ -25,7 +25,7 @@
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.12.8",
     "@types/react": "18.3.1",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.4.5"

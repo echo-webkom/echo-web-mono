@@ -4,7 +4,6 @@ import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import { auth } from "@echo-webkom/auth";
 import { urlFor } from "@echo-webkom/sanity";
 
 import { AddToCalender } from "@/components/add-to-calender";
@@ -18,6 +17,7 @@ import { getHappeningById } from "@/data/happenings/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { getUser } from "@/lib/get-user";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type Happening } from "@/sanity/happening/schemas";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
@@ -35,7 +35,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
   noStore();
 
   const [user, happening, spotRanges, registrations] = await Promise.all([
-    auth(),
+    getUser(),
     getHappeningById(event._id),
     getSpotRangeByHappeningId(event._id),
     getRegistrationsByHappeningId(event._id),

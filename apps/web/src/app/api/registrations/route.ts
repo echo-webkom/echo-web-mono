@@ -1,16 +1,16 @@
 import { type NextRequest } from "next/server";
 
-import { auth } from "@echo-webkom/auth";
-
 import { getFullHappening } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
+import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { slugify } from "@/utils/string";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
-  const user = await auth();
+  const user = await getUser();
+
   if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }

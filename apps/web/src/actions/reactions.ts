@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@echo-webkom/auth";
-
 import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
+import { getUser } from "@/lib/get-user";
 
 export async function handleReact(reactToKey: string, emojiId: number) {
-  const user = await auth();
+  const user = await getUser();
+
   if (!user) {
     return {
       status: 401,

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
@@ -12,6 +11,7 @@ import { HappeningInfoBox } from "@/components/happening-info-box";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
 import { getFullHappening } from "@/data/happenings/queries";
+import { getUser } from "@/lib/get-user";
 import { isHost as _isHost } from "@/lib/memberships";
 
 type Props = {
@@ -29,7 +29,7 @@ export default async function EventDashboard({ params }: Props) {
     return notFound();
   }
 
-  const user = await auth();
+  const user = await getUser();
 
   const isHost = user ? _isHost(user, happening) : false;
 

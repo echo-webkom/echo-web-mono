@@ -2,20 +2,18 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
-import { echoGram } from "@/api/echogram";
-import { ProfileImage } from "@/components/profile-image";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
+import { getUser } from "@/lib/get-user";
 
 export default async function ProfilePage() {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return redirect("/auth/logg-inn");
@@ -31,13 +29,9 @@ export default async function ProfilePage() {
     }),
   ]);
 
-  const imageURL = await echoGram.getImageByUserId(user.id);
-
   return (
     <div className="max-w-2xl space-y-4">
       <Heading level={2}>Din profil</Heading>
-
-      <ProfileImage userId={user.id} imageURL={imageURL} />
 
       <div className="flex flex-col gap-4">
         <div>

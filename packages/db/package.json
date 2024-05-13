@@ -10,9 +10,9 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
-    "db:generate": "pnpm with-env drizzle-kit generate:pg",
+    "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
-    "db:check": "pnpm with-env drizzle-kit check:pg && tsx ./drizzle/check.ts",
+    "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:down-volumes": "docker compose down --volumes",
@@ -27,16 +27,16 @@
     "next-auth": "4.24.7",
     "pg": "8.11.5",
     "postgres": "3.4.4",
-    "zod": "3.23.6"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.12.8",
-    "@types/pg": "8.11.5",
-    "dotenv-cli": "7.4.1",
-    "drizzle-kit": "0.20.17",
+    "@types/pg": "8.11.6",
+    "dotenv-cli": "7.4.2",
+    "drizzle-kit": "0.21.1",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.9.0",
+    "tsx": "4.9.3",
     "typescript": "5.4.5"
   },
   "eslintConfig": {
