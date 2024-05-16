@@ -1,5 +1,6 @@
 export * from "./accounts";
 export * from "./answers";
+export * from "./comments";
 export * from "./degrees";
 export * from "./enums";
 export * from "./groups";

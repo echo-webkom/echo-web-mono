@@ -1,16 +1,12 @@
-import { cache } from "react";
+import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 
-import { isBoard } from "@echo-webkom/lib";
-import { urlFor } from "@echo-webkom/sanity";
-
+import { Authors } from "@/components/authors";
+import { CommentSection } from "@/components/comments/comment-section";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { type Author } from "@/sanity/posts";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
-import { initials } from "@/utils/string";
 
 type Props = {
   params: {
@@ -49,31 +45,11 @@ export default async function PostPage({ params }: Props) {
   return (
     <Container className="space-y-8 py-10">
       <Heading>{post.title}</Heading>
-      {post.authors && <Authors authors={post.authors} />}
+      <Authors authors={post.authors ?? []} />
       <Markdown content={post.body} />
+      <Suspense fallback={null}>
+        <CommentSection id={`post_${post._id}`} />
+      </Suspense>
     </Container>
-  );
-}
-
-function Authors({ authors }: { authors: Array<Author> }) {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-lg font-bold">Publisert av:</p>
-
-      <div className="flex flex-col flex-wrap gap-5 md:flex-row">
-        {authors.map((author) => {
-          return (
-            <div key={author._id} className="flex items-center gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={author.image ? urlFor(author.image).url() : undefined} />
-                <AvatarFallback>{initials(author.name)}</AvatarFallback>
-              </Avatar>
-
-              <p>{isBoard(author.name) ? "Hovedstyret" : author.name}</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
   );
 }
