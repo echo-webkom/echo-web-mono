@@ -48,7 +48,7 @@ export const CommentForm = ({ id }: CommentFormProps) => {
         id="content"
         name="content"
         placeholder="Skriv din kommentar her..."
-        className="h-16 w-full"
+        className="h-16 w-full max-w-[400px]"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
