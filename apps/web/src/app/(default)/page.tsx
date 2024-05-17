@@ -74,7 +74,9 @@ export default async function HomePage() {
       </Container>
 
       <Container>
-          <h1 className="p-4 rounded-lg font-medium text-2xl text-white bg-red-500">🇳🇴 Gratulere med dagen! 🇳🇴</h1>
+          <div className="p-4 rounded-lg bg-red-500">
+              <h1 className="font-medium text-2xl text-white">🇳🇴 Gratulere med dagen! 🇳🇴</h1>
+          </div>
       </Container>
 
       <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
