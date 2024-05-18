@@ -33,3 +33,35 @@ export const addCommentAction = async (id: string, content: string) => {
     success: true,
   };
 };
+
+export const addReplyAction = async (id: string, content: string, parentId: string) => {
+  if (
+    !content ||
+    typeof content !== "string" ||
+    !id ||
+    typeof id !== "string" ||
+    !parentId ||
+    typeof parentId !== "string"
+  ) {
+    return null;
+  }
+
+  const user = await getUser();
+
+  if (!user) {
+    return null;
+  }
+
+  await db.insert(comments).values({
+    content,
+    postId: id,
+    userId: user.id,
+    parentCommentId: parentId,
+  });
+
+  revalidateComments(id);
+
+  return {
+    success: true,
+  };
+};

@@ -8,7 +8,9 @@ export const comments = pgTable("comment", {
   id: text("id").notNull().primaryKey().$defaultFn(nanoid),
   postId: text("post_id").notNull(),
   parentCommentId: text("parent_comment_id"),
-  userId: text("user_id").notNull(),
+  userId: text("user_id").references(() => users.id, {
+    onDelete: "set null",
+  }),
   content: text("content").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
@@ -26,7 +28,9 @@ export const commentsInsert = relations(comments, ({ one, many }) => ({
     fields: [comments.userId],
     references: [users.id],
   }),
-  replies: many(comments),
+  replies: many(comments, {
+    relationName: "replies",
+  }),
 }));
 
 export type Comment = (typeof comments)["$inferSelect"];

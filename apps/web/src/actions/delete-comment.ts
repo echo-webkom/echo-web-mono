@@ -10,19 +10,11 @@ import { getUser } from "@/lib/get-user";
 
 export const deleteCommentAction = async (body: FormData) => {
   const id = body.get("id");
-  const postId = body.get("postId");
 
   if (!id || typeof id !== "string") {
     return {
       success: false,
       message: "Invalid id",
-    };
-  }
-
-  if (!postId || typeof postId !== "string") {
-    return {
-      success: false,
-      message: "Invalid postId",
     };
   }
 
@@ -35,9 +27,35 @@ export const deleteCommentAction = async (body: FormData) => {
     };
   }
 
-  await db.delete(comments).where(and(eq(comments.id, id), eq(comments.userId, user.id)));
+  const hasChildren = await db.query.comments
+    .findFirst({
+      where: and(eq(comments.parentCommentId, id)),
+    })
+    .then((res) => !!res);
 
-  revalidateComments(postId);
+  let postId: string | undefined = undefined;
+
+  if (hasChildren) {
+    postId = await db
+      .update(comments)
+      .set({
+        content: "[slettet]",
+        userId: null,
+      })
+      .where(eq(comments.id, id))
+      .returning()
+      .then((res) => res[0]?.postId);
+  } else {
+    postId = await db
+      .delete(comments)
+      .where(eq(comments.id, id))
+      .returning()
+      .then((res) => res[0]?.postId);
+  }
+
+  if (postId) {
+    revalidateComments(postId);
+  }
 
   return {
     success: true,
