@@ -73,12 +73,6 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      <Container>
-          <div className="p-4 rounded-lg bg-red-500">
-              <h1 className="font-medium text-2xl text-white">🇳🇴 Gratulere med dagen! 🇳🇴</h1>
-          </div>
-      </Container>
-
       <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
         {/* Events  */}
         <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
