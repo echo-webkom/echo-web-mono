@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.12.8",
+    "@types/node": "20.12.12",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.4.5"
