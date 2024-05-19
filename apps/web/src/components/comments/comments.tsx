@@ -3,6 +3,7 @@ import { type User } from "@echo-webkom/db/schemas";
 import { getCommentsById } from "@/data/comments/queries";
 import { buildCommentTreeFrom, type CommentTree } from "@/lib/comment-tree";
 import { getUser } from "@/lib/get-user";
+import { cn } from "@/utils/cn";
 import { shortDate } from "@/utils/date";
 import { initials } from "@/utils/string";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -52,13 +53,24 @@ const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
             userId={comment.user?.id ?? null}
             isOpen={false}
           >
-            <Avatar className="h-14 w-14">
+            <Avatar className="hidden h-14 w-14 sm:block">
               <AvatarImage src={undefined} />
-              <AvatarFallback>{initials(comment.user?.name ?? "ON")}</AvatarFallback>
+              <AvatarFallback title={comment.user?.name ?? "Andreas Aanes"}>
+                {initials(comment.user?.name ?? "AA")}
+              </AvatarFallback>
             </Avatar>
 
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+            <div
+              className={cn("flex flex-1 flex-col gap-1 sm:pl-0", {
+                "pl-0": depth === 0,
+                "pl-4": depth === 1,
+                "pl-8": depth === 2,
+                "pl-12": depth === 3,
+                "pl-16": depth === 4,
+                "pl-20": depth > 4,
+              })}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                 <h3 className="text-lg font-medium">{comment.user?.name ?? "[slettet]"}</h3>
                 <p className="text-sm text-muted-foreground">{shortDate(comment.createdAt)}</p>
               </div>

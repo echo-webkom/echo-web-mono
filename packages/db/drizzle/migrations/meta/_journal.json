@@ -120,6 +120,13 @@
       "when": 1716058797709,
       "tag": "0016_thin_wolfpack",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1716150164053,
+      "tag": "0017_light_elektra",
+      "breakpoints": true
     }
   ]
 }

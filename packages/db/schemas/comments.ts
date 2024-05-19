@@ -1,22 +1,28 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 import { users } from ".";
 
-export const comments = pgTable("comment", {
-  id: text("id").notNull().primaryKey().$defaultFn(nanoid),
-  postId: text("post_id").notNull(),
-  parentCommentId: text("parent_comment_id"),
-  userId: text("user_id").references(() => users.id, {
-    onDelete: "set null",
+export const comments = pgTable(
+  "comment",
+  {
+    id: text("id").notNull().primaryKey().$defaultFn(nanoid),
+    postId: text("post_id").notNull(),
+    parentCommentId: text("parent_comment_id"),
+    userId: text("user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    content: text("content").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .$onUpdateFn(() => new Date()),
+  },
+  (t) => ({
+    postIdx: index("post_idx").on(t.postId),
   }),
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
-});
+);
 
 export const commentsInsert = relations(comments, ({ one, many }) => ({
   parentComment: one(comments, {

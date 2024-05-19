@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
 import { addCommentAction } from "@/actions/add-comment";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { CommentTextarea } from "./comment-textarea";
 
 type CommentFormProps = {
   id: string;
@@ -43,18 +43,21 @@ export const CommentForm = ({ id }: CommentFormProps) => {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={handleSumbit} className="flex flex-col gap-4">
-      <Textarea
+    <form onSubmit={handleSumbit} className="flex w-full max-w-[500px] flex-col gap-4">
+      <CommentTextarea
         id="content"
         name="content"
         placeholder="Skriv din kommentar her..."
-        className="h-16 w-full max-w-[400px]"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <Button type="submit" className="w-fit">
-        Send
-      </Button>
+      <button
+        type="submit"
+        className="group flex w-fit items-center px-2 font-medium text-muted-foreground hover:underline"
+      >
+        Legg til kommentar
+        <ArrowRight className="ml-1 inline-block transform opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+      </button>
     </form>
   );
 };
