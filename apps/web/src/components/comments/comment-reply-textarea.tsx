@@ -4,8 +4,8 @@ import { useState } from "react";
 import { LuSend as Send } from "react-icons/lu";
 
 import { addReplyAction } from "@/actions/add-comment";
-import { Textarea } from "../ui/textarea";
 import { useComment } from "./comment-provider";
+import { CommentTextarea } from "./comment-textarea";
 
 export const CommentReplyTextarea = () => {
   const { commentId, postId, isOpen, setIsOpen } = useComment();
@@ -26,8 +26,8 @@ export const CommentReplyTextarea = () => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSubmit}>
-      <Textarea
-        className="h-18 w-full"
+      <CommentTextarea
+        className="max-w-[300px]"
         placeholder="Svar på kommentaren..."
         value={content}
         onChange={(event) => setContent(event.target.value)}
