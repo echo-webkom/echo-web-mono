@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
+import { UploadProfilePicture } from "./_components/upload-profile-picture";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -34,13 +35,19 @@ export default async function ProfilePage() {
       <Heading level={2}>Din profil</Heading>
 
       <div className="flex flex-col gap-4">
-        <div>
-          <Label>Navn</Label>
-          <Text>{user.name}</Text>
-        </div>
-        <div>
-          <Label>E-post</Label>
-          <Text>{user.email}</Text>
+        <div className="flex flex-col gap-6 md:flex-row">
+          <UploadProfilePicture name={user.name ?? "Bo Bakseter"} image={user.image} />
+
+          <div>
+            <div>
+              <Label>Navn</Label>
+              <Text>{user.name}</Text>
+            </div>
+            <div>
+              <Label>E-post</Label>
+              <Text>{user.email}</Text>
+            </div>
+          </div>
         </div>
 
         {memberships.length > 0 && (
