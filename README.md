@@ -68,8 +68,7 @@ NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localh
 ## Relaterte prosjekter
 
 - [boomtown](https://github.com/echo-webkom/boomtown) - Systemet for live oppdatering av påmeldinger på arrangementer.
-- [ews](https://github.com/echo-webkom/ews) - CRON-jobber for nettsiden.
-- [kaffe](https://github.com/echo-webkom/kaffe)
+- [nano](https://github.com/echo-webkom/nano) - Nano-services for siden.
 
 ## Dokumentasjon
 

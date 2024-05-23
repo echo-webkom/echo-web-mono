@@ -54,7 +54,7 @@ const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
             isOpen={false}
           >
             <Avatar className="hidden h-14 w-14 sm:block">
-              <AvatarImage src={undefined} />
+              <AvatarImage src={user?.image ?? ""} />
               <AvatarFallback title={comment.user?.name ?? "Andreas Aanes"}>
                 {initials(comment.user?.name ?? "AA")}
               </AvatarFallback>
