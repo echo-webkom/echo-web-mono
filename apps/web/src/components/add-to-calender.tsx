@@ -1,9 +1,9 @@
 "use client";
 
-import { google, ics, office365, outlook, yahoo, type CalendarEvent } from "calendar-link";
+import { google, ics, outlook, yahoo, type CalendarEvent } from "calendar-link";
 import { BiLogoGoogle } from "react-icons/bi";
-import { FaFileDownload } from "react-icons/fa";
-import { SiMicrosoftoffice, SiMicrosoftoutlook, SiYahoo } from "react-icons/si";
+import { FaFileDownload, FaYahoo } from "react-icons/fa";
+import { SiMicrosoftoutlook } from "react-icons/si";
 
 import { shortDateNoTime } from "@/utils/date";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
@@ -57,8 +57,7 @@ const CalendarButton = ({ title, date, calendarType }: CalendarButtonProps) => {
         <div className="mx-auto">
           {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
           {"Outlook" === calendarType && <SiMicrosoftoutlook className={iconClassNames} />}
-          {"Office" === calendarType && <SiMicrosoftoffice className={iconClassNames} />}
-          {"Yahoo" === calendarType && <SiYahoo className={iconClassNames} />}
+          {"Yahoo" === calendarType && <FaYahoo className={iconClassNames} />}
           {"Ics" === calendarType && <FaFileDownload className={iconClassNames} />}
         </div>
         <p className="text-center">{calendarType}</p>
@@ -73,8 +72,6 @@ const getCalendarLink = (calendarType: CalendarType, event: CalendarEvent): stri
       return google(event);
     case "Outlook":
       return outlook(event);
-    case "Office":
-      return office365(event);
     case "Yahoo":
       return yahoo(event);
     case "Ics":
