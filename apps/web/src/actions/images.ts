@@ -34,7 +34,7 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
   const response = await fetch(ppFor(user.id), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.ECHOGRAM_AUTH_TOKEN}`,
+      Authorization: `Bearer ${process.env.ECHOGRAM_API_KEY}`,
     },
     body: formData,
   });
@@ -69,7 +69,7 @@ export const deleteProfilePictureAction = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_ECHOGRAM_URL}/${user.id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${process.env.ECHOGRAM_AUTH_TOKEN}`,
+      Authorization: `Bearer ${process.env.ECHOGRAM_API_KEY}`,
     },
   });
 
