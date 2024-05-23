@@ -11,7 +11,13 @@ export const getCommentsById = (id: string) =>
         where: (comment, { eq }) => eq(comment.postId, id),
         orderBy: (comment, { desc }) => [desc(comment.createdAt)],
         with: {
-          user: true,
+          user: {
+            columns: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
         },
       });
     },
