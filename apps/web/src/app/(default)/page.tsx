@@ -97,9 +97,9 @@ export default async function HomePage() {
               <p className="mb-4 text-2xl font-medium">Hva er echo?</p>
 
               <p>
-                echo består av frivillige informatikk studenter, og er delt inn i et hovedstyre og
-                en rekke undergrupper, komiteer og interesseorganisasjoner. Hovedstyret vårt består
-                av fem demokratisk valgte studenter og syv representanter fra undergruppere. Vi er
+                echo består av frivillige informatikkstudenter, og er delt inn i et hovedstyre og en
+                rekke undergrupper, komiteer og interesseorganisasjoner. Hovedstyret vårt består av
+                fem demokratisk valgte studenter og syv representanter fra undergruppere. Vi er
                 linjeforeningen for informatikk ved Universitetet i Bergen, men har også et
                 overordnet ansvar for studentsaker som angår det faglige ved instituttet.
               </p>
