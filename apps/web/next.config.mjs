@@ -9,6 +9,10 @@ const config = {
     "@echo-webkom/email",
   ],
 
+  experimental: {
+    reactCompiler: true,
+  },
+
   logging: {
     fetches: {
       fullUrl: true,
