@@ -1,4 +1,4 @@
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { getAllUsersWithValidStrikes } from "@/data/strikes/queries";
 import { ensureBedkom } from "@/lib/ensure";
 import StrikesTable from "./table";

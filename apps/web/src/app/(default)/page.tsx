@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
-import { Container } from "@/components/container";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { JobAdPreview } from "@/components/job-ad-preview";
+import { Container } from "@/components/layout/container";
 import MovieClubCard from "@/components/movie-club-card";
 import { PostPreview } from "@/components/post-preview";
 import { NUM_HAPPENINGS } from "@/config";

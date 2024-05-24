@@ -1,4 +1,4 @@
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 

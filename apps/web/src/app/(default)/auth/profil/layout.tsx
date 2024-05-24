@@ -3,7 +3,7 @@ import {
   SidebarItem,
   SidebarLayoutContent,
   SidebarLayoutRoot,
-} from "@/components/sidebar-layout";
+} from "@/components/layout/sidebar-layout";
 
 const routes = [
   {

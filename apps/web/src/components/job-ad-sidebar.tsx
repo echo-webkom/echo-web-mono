@@ -8,7 +8,7 @@ import { urlFor } from "@echo-webkom/sanity";
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
 import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
-import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
+import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./layout/sidebar";
 import { Button } from "./ui/button";
 
 type JobAdSidebarProps = {

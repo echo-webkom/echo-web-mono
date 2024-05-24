@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import removeMarkdown from "remove-markdown";
 
 import { Calendar } from "@/components/calendar/happening-calendar";
-import { Container } from "@/components/container";
 import {
   EventFilter,
   EventFilterSidebar,
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import EventsView, { type SearchParams } from "@/components/events-view";
+import { Container } from "@/components/layout/container";
 import { createHappeningLink } from "@/lib/create-link";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";

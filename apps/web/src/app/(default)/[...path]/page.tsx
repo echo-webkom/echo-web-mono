@@ -2,7 +2,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 import { log } from "next-axiom";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/static-info";

@@ -6,8 +6,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { Container } from "@/components/container";
-import { HappeningInfoBox } from "@/components/happening-info-box";
+import { HappeningInfoBox } from "@/components/happening/happening-info-box";
+import { Container } from "@/components/layout/container";
 import { RegistrationTable } from "@/components/registration-table";
 import { getStudentGroups } from "@/data/groups/queries";
 import { getFullHappening } from "@/data/happenings/queries";

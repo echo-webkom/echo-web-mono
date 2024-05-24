@@ -4,30 +4,45 @@ import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
 import { getUser } from "@/lib/get-user";
 
-export async function handleReact(reactToKey: string, emojiId: number) {
+type ActionResponse =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      message: string;
+    };
+
+export const reactToAction = async (
+  _previousState: ActionResponse | undefined,
+  formData: FormData,
+): Promise<ActionResponse> => {
   const user = await getUser();
 
   if (!user) {
     return {
-      status: 401,
-      message: "Unauthorized",
+      success: false,
+      message: "Du er ikke logget inn",
     };
   }
+
+  const reactToKey = formData.get("reactToKey") as string;
+  const emojiId = Number(formData.get("emojiId"));
 
   if (emojiId < 0 || emojiId > Object.keys(idToEmoji).length) {
     return {
-      status: 400,
-      message: "Invalid emojiId",
+      success: false,
+      message: "Reaksjon finnes ikke",
     };
   }
 
-  const reactionId = await registerReaction({
+  await registerReaction({
     reactToKey: reactToKey,
     emojiId: emojiId,
     userId: user.id,
   });
 
   return {
-    reactionId,
+    success: true,
   };
-}
+};

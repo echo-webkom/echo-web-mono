@@ -2,30 +2,30 @@ import { Suspense } from "react";
 import Image from "next/image";
 
 import { type fetchHappeningBySlug } from "@/sanity/happening";
-import { CommentSection } from "./comments/comment-section";
-import { Container } from "./container";
+import { CommentSection } from "../comments/comment-section";
+import { Container } from "../layout/container";
+import { Markdown } from "../markdown";
+import { Heading } from "../typography/heading";
 import { HappeningSidebar } from "./happening-sidebar";
-import { Markdown } from "./markdown";
-import { Heading } from "./typography/heading";
 
-type EventPageProps = {
+type HappeningPageProps = {
   // The awaited return type of fetchHappeningBySlug with null excluded from the type
-  event: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
+  happening: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
 };
 
-export const EventPage = ({ event }: EventPageProps) => {
+export const HappeningPage = ({ happening }: HappeningPageProps) => {
   return (
     <Container className="flex w-full py-10 md:max-w-[700px] lg:max-w-[1500px]">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <HappeningSidebar event={event} />
+        <HappeningSidebar event={happening} />
 
         {/* Content */}
         <div className="w-full">
           <article>
-            <Heading>{event.title}</Heading>
+            <Heading>{happening.title}</Heading>
 
-            {event.body ? (
-              <Markdown content={event.body} />
+            {happening.body ? (
+              <Markdown content={happening.body} />
             ) : (
               <div className="mx-auto flex w-fit flex-col gap-8 p-5">
                 <h3 className="text-center text-xl font-medium">Mer informasjon kommer!</h3>
@@ -41,7 +41,7 @@ export const EventPage = ({ event }: EventPageProps) => {
           </article>
 
           <Suspense fallback={null}>
-            <CommentSection className="mt-10" id={`event_${event._id}`} />
+            <CommentSection className="mt-10" id={`event_${happening._id}`} />
           </Suspense>
         </div>
       </div>

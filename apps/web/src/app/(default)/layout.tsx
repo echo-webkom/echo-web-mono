@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
-import { Footer } from "@/components/footer";
-import { SiteHeader } from "@/components/site-header";
+import { Footer } from "@/components/layout/footer";
+import { SiteHeader } from "@/components/layout/site-header";
 
 type DefaultLayoutProps = {
   children: ReactNode;

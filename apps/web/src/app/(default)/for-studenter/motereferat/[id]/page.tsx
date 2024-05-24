@@ -2,7 +2,7 @@ import { cache } from "react";
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
 import { fetchMinuteById } from "@/sanity/minutes/requests";

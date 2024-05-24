@@ -1,6 +1,6 @@
-import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
+import { Container } from "@/components/layout/container";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";

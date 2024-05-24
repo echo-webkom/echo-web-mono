@@ -5,7 +5,7 @@ import {
   SidebarItem,
   SidebarLayoutContent,
   SidebarLayoutRoot,
-} from "@/components/sidebar-layout";
+} from "@/components/layout/sidebar-layout";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { isMemberOf } from "@/lib/memberships";
 

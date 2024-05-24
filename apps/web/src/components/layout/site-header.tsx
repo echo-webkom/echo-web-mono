@@ -2,16 +2,19 @@ import Link from "next/link";
 
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
-import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
-import { MobileNavigation } from "./mobile-navigation";
-import { ModeToggle } from "./theme-switch-button";
-import { Button } from "./ui/button";
-import { HeaderLogo } from "./ui/header-logo";
-import { UserMenu } from "./user-menu";
+import { MobileNavigation } from "../mobile-navigation";
+import {
+  DesktopNavigation,
+  NavigationRoot,
+  NavigationViewport,
+} from "../reactions/desktop-navigation";
+import { ModeToggle } from "../theme-switch-button";
+import { Button } from "../ui/button";
+import { HeaderLogo } from "../ui/header-logo";
+import { UserMenu } from "../user-menu";
 
 export async function SiteHeader() {
   const user = await getUser();
-
   return (
     <div className="sticky top-0 z-20">
       <VercelPreviewNotify />

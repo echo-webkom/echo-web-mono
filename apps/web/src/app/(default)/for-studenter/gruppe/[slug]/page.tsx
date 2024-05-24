@@ -6,7 +6,7 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

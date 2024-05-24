@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import Webkom from "@/assets/images/webkom.png";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { UnorderedList } from "@/components/typography/list";
 import { ListItem } from "@/components/typography/list-item";

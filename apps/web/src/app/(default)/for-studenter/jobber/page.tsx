@@ -1,7 +1,7 @@
 import { type Metadata } from "next/types";
 
-import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { fetchJobAds } from "@/sanity/job-ad";
 

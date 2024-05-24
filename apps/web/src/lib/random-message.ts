@@ -73,3 +73,22 @@ export function getRandomMessage() {
   const messages = [...baseMessages, ...getExtraMessages(now)];
   return messages[Math.floor(Math.random() * messages.length)];
 }
+
+export class RandomMessageSingleton {
+  private static instance: RandomMessageSingleton;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
+  public static getInstance(): RandomMessageSingleton {
+    if (!RandomMessageSingleton.instance) {
+      RandomMessageSingleton.instance = new RandomMessageSingleton();
+    }
+
+    return RandomMessageSingleton.instance;
+  }
+
+  public getRandomMessage() {
+    return getRandomMessage();
+  }
+}

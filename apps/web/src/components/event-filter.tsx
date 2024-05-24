@@ -11,7 +11,7 @@ import {
 import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
-import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
+import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./layout/sidebar";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {

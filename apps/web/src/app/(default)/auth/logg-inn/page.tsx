@@ -1,6 +1,6 @@
 import { isValidSignInError } from "@echo-webkom/auth/src/is-member-of-echo";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Callout } from "@/components/typography/callout";
 import { SignInButtons } from "./sign-in-buttons";
 

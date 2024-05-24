@@ -1,6 +1,6 @@
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
 import {

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Authors } from "@/components/authors";
 import { CommentSection } from "@/components/comments/comment-section";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchPostBySlug } from "@/sanity/posts/requests";

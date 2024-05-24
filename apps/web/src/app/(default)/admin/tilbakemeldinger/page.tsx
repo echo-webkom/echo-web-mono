@@ -1,4 +1,4 @@
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { getAllFeedback } from "@/data/site-feedbacks/queries";
 import { ensureWebkom } from "@/lib/ensure";

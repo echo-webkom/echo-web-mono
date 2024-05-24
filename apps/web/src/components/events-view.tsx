@@ -2,7 +2,7 @@ import Image from "next/image";
 import { nextMonday, subMinutes } from "date-fns";
 
 import { fetchFilteredHappening } from "@/sanity/happening";
-import { CombinedHappeningPreview } from "./happening-preview-box";
+import { CombinedHappeningPreview } from "./happening/happening-preview-box";
 import { Callout } from "./typography/callout";
 
 /**

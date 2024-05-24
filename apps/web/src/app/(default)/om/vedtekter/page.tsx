@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Blockquote } from "@/components/typography/blockquote";
 import { Callout } from "@/components/typography/callout";
 import { Chip } from "@/components/typography/chip";

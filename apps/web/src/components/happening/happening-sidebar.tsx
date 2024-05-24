@@ -9,8 +9,13 @@ import { urlFor } from "@echo-webkom/sanity";
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
+import {
+  Sidebar,
+  SidebarItem,
+  SidebarItemContent,
+  SidebarItemTitle,
+} from "@/components/layout/sidebar";
 import { RegisterButton } from "@/components/register-button";
-import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { getHappeningById } from "@/data/happenings/queries";
@@ -23,8 +28,8 @@ import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import { ReactionButtonGroup } from "./reaction-button-group";
-import { RegistrationCount } from "./registration-count";
+import { Reactions } from "../reactions/reactions";
+import { RegistrationCount } from "../registration-count";
 
 type EventSidebarProps = {
   event: AllHappeningsQueryResult[number];
@@ -432,7 +437,7 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       )}
       {user && (
         <SidebarItem>
-          <ReactionButtonGroup reactToKey={event._id} />
+          <Reactions reactToKey={event._id} />
         </SidebarItem>
       )}
     </Sidebar>

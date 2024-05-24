@@ -7,9 +7,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AxiomWebVitals } from "next-axiom";
 import NextTopLoader from "nextjs-toploader";
 
-import { FeedbackBlob } from "@/components/feedback-blob";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { FeedbackBlob } from "@/components/layout/feedback-blob";
 import { Toaster } from "@/components/toaster";
+import { TailwindIndicator } from "@/components/utils/tailwind-indicator";
 import { baseURL } from "@/config";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";

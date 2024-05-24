@@ -1,5 +1,5 @@
 import { kaffeApi } from "@/api/kaffe";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Markdown } from "@/components/markdown";
 import { Text } from "@/components/typography/text";
 import { getUser } from "@/lib/get-user";

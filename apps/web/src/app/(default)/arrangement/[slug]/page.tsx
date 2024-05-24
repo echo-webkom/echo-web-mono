@@ -2,7 +2,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 import { log } from "next-axiom";
 
-import { EventPage } from "@/components/event-page";
+import { HappeningPage } from "@/components/happening/happening-page";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
 
 type Props = {
@@ -35,5 +35,5 @@ export async function generateMetadata({ params }: Props) {
 export default async function EventPage_({ params }: Props) {
   const event = await getData(params.slug);
 
-  return <EventPage event={event} />;
+  return <HappeningPage happening={event} />;
 }

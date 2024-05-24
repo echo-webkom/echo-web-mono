@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { type Metadata } from "next/types";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
 import { fetchAllPosts } from "@/sanity/posts/requests";
