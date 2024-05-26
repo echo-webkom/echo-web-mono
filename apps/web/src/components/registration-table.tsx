@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
@@ -12,9 +12,9 @@ import {
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
+import { getRegistrationStatus } from "@/lib/registrations";
 import { zodKeys } from "@/sanity/utils/zod";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
@@ -48,10 +48,9 @@ export const formatHeaders: Record<HeaderType, string> = {
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
+    memberships: Array<{ group: Group | null }>;
   };
+  changedByUser: User | null;
 };
 
 export function RegistrationTable({
@@ -60,12 +59,14 @@ export function RegistrationTable({
   slug,
   questions,
   isBedpres,
+  happeningDate,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   slug: string;
   questions: Array<Question>;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
@@ -233,6 +234,7 @@ export function RegistrationTable({
                 index={i}
                 showIndex={showIndex}
                 isBedpres={isBedpres}
+                happeningDate={happeningDate}
               />
             ))}
           </TableBody>
@@ -255,11 +257,13 @@ const RegistrationRow = ({
   index,
   showIndex,
   isBedpres,
+  happeningDate,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -275,15 +279,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView
-          user={registration.user}
-          group={group}
-          changedAt={registration.registrationChangedAt}
-        />
+        <HoverProfileView user={registration.user} group={group} />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {registrationStatusToString[registration.status]}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>

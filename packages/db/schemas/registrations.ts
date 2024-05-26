@@ -20,7 +20,9 @@ export const registrations = pgTable(
     status: registrationStatusEnum("status").notNull().default("waiting"),
     unregisterReason: text("unregister_reason"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    registrationChangedAt: text("registration_changed_at"),
+    prevStatus: registrationStatusEnum("prev_status"),
+    changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
+    changedBy: text("changed_by"),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.happeningId] }),
@@ -37,6 +39,10 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
     references: [users.id],
   }),
   answers: many(answers),
+  changedByUser: one(users, {
+    fields: [registrations.changedBy],
+    references: [users.id],
+  }),
 }));
 
 export type Registration = (typeof registrations)["$inferSelect"];

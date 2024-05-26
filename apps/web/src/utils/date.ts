@@ -1,4 +1,4 @@
-import { format, isFuture, isPast } from "date-fns";
+import { differenceInHours, format, isFuture, isPast } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";
@@ -173,3 +173,13 @@ export function dayStr(date: Date | string) {
     }),
   );
 }
+
+export function hoursBetween(startDate: Date | null, endDate: Date | null): number {
+  if (!startDate || !endDate) return 0;
+  return Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
+}
+
+export const _differenceInHours = (dateLeft: Date | null, dateRight: Date | null) => {
+  if (!dateLeft || !dateRight) return 0;
+  return differenceInHours(dateLeft, dateRight);
+};
