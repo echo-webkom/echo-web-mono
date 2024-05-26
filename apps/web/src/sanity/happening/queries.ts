@@ -1,6 +1,62 @@
-import { groq } from "next-sanity";
+import groq from "groq";
 
-export const happeningPartial = groq`
+export const allHappeningsQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))]
+  | order(date asc) {
+    _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  happeningType,
+  "company": company->{
+    _id,
+    name,
+    website,
+    image,
+  },
+  "organizers": organizers[]->{
+    _id,
+    name,
+    "slug": slug.current
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "date": date,
+  cost,
+  "registrationStartGroups": registrationStartGroups,
+  "registrationGroups": registrationGroups[]->slug.current,
+  "registrationStart": registrationStart,
+  "registrationEnd": registrationEnd,
+  "location": location->{
+    name,
+  },
+  "spotRanges": spotRanges[] {
+    spots,
+    minYear,
+    maxYear,
+  },
+  "additionalQuestions": additionalQuestions[] {
+    title,
+    required,
+    type,
+    options,
+  },
+  body
+}
+`;
+
+export const happeningQuery = groq`
+*[_type == "happening"
+  && !(_id in path('drafts.**'))
+  && slug.current == $slug
+][0] {
   _id,
   _createdAt,
   _updatedAt,
@@ -46,22 +102,6 @@ export const happeningPartial = groq`
     options,
   },
   body
-`;
-
-export const allHappeningsQuery = groq`
-*[_type == "happening"
-  && !(_id in path('drafts.**'))]
-  | order(date asc) {
-  ${happeningPartial}
-}
-`;
-
-export const happeningQuery = groq`
-*[_type == "happening"
-  && !(_id in path('drafts.**'))
-  && slug.current == $slug
-][0] {
-  ${happeningPartial}
 }
 `;
 

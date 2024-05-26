@@ -5,12 +5,12 @@ import removeMd from "remove-markdown";
 
 import { isBoard } from "@echo-webkom/lib";
 
-import { type Post } from "@/sanity/posts";
+import { type AllPostsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
 import { Chip } from "./typography/chip";
 
 type PostPreviewProps = {
-  post: Post;
+  post: AllPostsQueryResult[number];
   withBorder?: boolean;
   className?: string;
 };
@@ -37,7 +37,7 @@ export function PostPreview({ post, withBorder = false, className }: PostPreview
           })}
         </p>
 
-        <p className="my-2 line-clamp-2 italic">{removeMd(post.body)}</p>
+        {post.body && <p className="my-2 line-clamp-2 italic">{removeMd(post.body)}</p>}
 
         {post.authors && (
           <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-1 sm:right-4">

@@ -19,7 +19,7 @@ import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { getUser } from "@/lib/get-user";
 import { isHost as _isHost } from "@/lib/memberships";
-import { type Happening } from "@/sanity/happening/schemas";
+import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { isBetween, norwegianDateString, time } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
@@ -27,7 +27,7 @@ import { ReactionButtonGroup } from "./reaction-button-group";
 import { RegistrationCount } from "./registration-count";
 
 type EventSidebarProps = {
-  event: Happening;
+  event: AllHappeningsQueryResult[number];
 };
 
 export async function HappeningSidebar({ event }: EventSidebarProps) {

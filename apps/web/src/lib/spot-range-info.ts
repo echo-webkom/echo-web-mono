@@ -5,7 +5,7 @@ import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 const INFINITY = "∞";
 
 export function getSpotRangeInfo<
-  H extends { registrationStart?: string },
+  H extends { registrationStart: string | null },
   S extends { spots: number },
   R extends { status: RegistrationStatus },
 >(happening: H, spotRanges: Array<S>, registrations: Array<R>) {

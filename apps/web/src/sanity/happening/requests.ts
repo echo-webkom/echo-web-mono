@@ -1,11 +1,16 @@
-import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { subMinutes } from "date-fns";
 import { log } from "next-axiom";
 
+import { type HappeningType } from "@echo-webkom/lib";
+
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
+import {
+  type AllHappeningsQueryResult,
+  type HappeningQueryResult,
+  type HomeHappeningsQueryResult,
+} from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
-import { happeningSchema, type Happening, type HappeningType } from "./schemas";
 
 /**
  * Fetches all happenings
@@ -13,41 +18,28 @@ import { happeningSchema, type Happening, type HappeningType } from "./schemas";
  * @returns all happenings
  */
 export async function fetchAllHappenings() {
-  return await sanityFetch<Array<Happening>>({
+  return await sanityFetch<AllHappeningsQueryResult>({
     query: allHappeningsQuery,
     tags: ["happenings"],
-  })
-    .then((res) => happeningSchema.array().parse(res))
-    .catch(() => {
-      log.error("Failed to fetch all happenings");
+  }).catch(() => {
+    log.error("Failed to fetch all happenings");
 
-      return [];
-    });
+    return [];
+  });
 }
 
 /**
  * Fetches the upcoming happenings of a given type
  */
-export async function fetchHomeHappenings<T extends HappeningType>(types: Array<T>, n: number) {
-  return await sanityFetch<
-    Array<{
-      _id: string;
-      title: string;
-      happeningType: T;
-      date: string;
-      slug: string;
-      registrationStart: string;
-      image: T extends "bedpres" ? SanityImageSource : null;
-      organizers: Array<string>;
-    }>
-  >({
+export async function fetchHomeHappenings(types: Array<HappeningType>, n: number) {
+  return await sanityFetch<HomeHappeningsQueryResult>({
     query: homeHappeningsQuery,
     params: {
       happeningTypes: types,
       n,
     },
     cdn: true,
-    revalidate: 120,
+    revalidate: 1000,
   }).catch(() => {
     log.error("Failed to fetch home happenings");
 
@@ -62,7 +54,7 @@ export async function fetchHomeHappenings<T extends HappeningType>(types: Array<
  * @returns the happening or null if not found
  */
 export async function fetchHappeningBySlug(slug: string) {
-  return await sanityFetch<Happening>({
+  return await sanityFetch<HappeningQueryResult>({
     query: happeningQuery,
     tags: [`happening-${slug}`],
     params: {
@@ -86,7 +78,7 @@ export async function fetchHappeningBySlug(slug: string) {
 export async function fetchFilteredHappening(
   q: FilteredHappeningQuery,
   dateFilter?: Array<DateInterval>,
-) {
+): Promise<{ happenings: AllHappeningsQueryResult }> {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
@@ -124,7 +116,7 @@ export async function fetchFilteredHappening(
 
         return (
           title.toLowerCase().includes(search.toLowerCase()) ||
-          organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+          organizers?.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
         );
       }),
   );

@@ -8,7 +8,6 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { getHappeningSpotRangeAndRegistrations } from "@/data/happenings/queries";
 import { createHappeningLink } from "@/lib/create-link";
-import { isBedpres } from "@/lib/is-bedpres";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
@@ -23,7 +22,7 @@ export function HappeningPreview({
   return (
     <Link href={href}>
       <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
-        {isBedpres(happening) && (
+        {happening.happeningType === "bedpres" && happening.image && (
           // Outer div is needed to that the image is not squished
           <div>
             <div className="relative h-16 w-16 overflow-hidden rounded-full border md:h-20 md:w-20">

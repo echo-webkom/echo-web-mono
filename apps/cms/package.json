@@ -8,6 +8,8 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
+    "extract": "sanity schema extract --enforce-required-fields",
+    "typegen": "sanity typegen generate",
     "clean": "rm -rf node_modules .sanity dist",
     "deploy-graphql": "sanity graphql deploy",
     "lint": "eslint '**/*.{js,ts,jsx,tsx}'",

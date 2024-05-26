@@ -1,4 +1,4 @@
-import { type QueryParams } from "next-sanity";
+import { type QueryParams } from "@sanity/client";
 
 import { cdnClient, client } from "@echo-webkom/sanity";
 

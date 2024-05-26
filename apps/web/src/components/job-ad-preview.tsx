@@ -5,11 +5,12 @@ import { nb } from "date-fns/locale/nb";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { jobTypeString, type JobAd } from "@/sanity/job-ad";
+import { type JobAdsQueryResult } from "@/sanity.types";
+import { jobTypeString } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 
 type JobAdPreviewProps = {
-  jobAd: JobAd;
+  jobAd: JobAdsQueryResult[number];
 };
 
 export function JobAdPreview({ jobAd }: JobAdPreviewProps) {

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { type HappeningType } from "@echo-webkom/lib";
+
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -15,7 +17,6 @@ import {
   INCLUDE_MOVIES_PARAM,
   INCLUDE_PAST_PARAM,
 } from "@/lib/calendar-url-builder";
-import { type HappeningType } from "@/sanity/happening";
 
 const eventTypes: Array<{
   name: string;

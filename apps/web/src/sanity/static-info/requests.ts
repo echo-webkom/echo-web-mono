@@ -1,17 +1,17 @@
+import { type StaticInfoQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { pageTypeToUrl } from "./mappers";
 import { staticInfoQuery } from "./queries";
-import { staticInfoSchema } from "./schemas";
 
 /**
  * Fetches all static info pages.
  */
 export async function fetchStaticInfo() {
   try {
-    return await sanityFetch({
+    return await sanityFetch<StaticInfoQueryResult>({
       query: staticInfoQuery,
       tags: ["static-info"],
-    }).then((res) => staticInfoSchema.array().parse(res));
+    });
   } catch {
     return [];
   }

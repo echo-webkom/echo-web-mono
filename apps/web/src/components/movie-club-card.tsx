@@ -39,7 +39,7 @@ export default async function MovieClubCard() {
               alt={`${thisWeekMovie.title} logo`}
             />
           </div>
-          <Link href={thisWeekMovie.link}>
+          <Link href={thisWeekMovie.link ?? "#"}>
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
               <div className="rounded-md bg-background p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
                 <ul>

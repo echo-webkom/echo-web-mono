@@ -45,7 +45,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <Container className="space-y-8 py-10">
       <Heading>{post.title}</Heading>
-      <Authors authors={post.authors ?? []} />
+      <Authors authors={post.authors} />
       <Markdown content={post.body} />
       <Suspense fallback={null}>
         <CommentSection id={`post_${post._id}`} />
