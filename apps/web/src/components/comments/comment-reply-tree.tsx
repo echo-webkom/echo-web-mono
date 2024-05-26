@@ -65,13 +65,17 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                 <h3 className="text-lg font-medium">{comment.user?.name ?? "[slettet]"}</h3>
-                <p className="text-sm text-muted-foreground">{shortDate(comment.createdAt)}</p>
-                <button
-                  onClick={toggleCollapsed}
-                  className="text-sm text-muted-foreground hover:underline"
-                >
-                  [{collapsed ? "+" : "-"}]
-                </button>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-muted-foreground">{shortDate(comment.createdAt)}</p>
+                  {comment.children.length > 0 && (
+                    <button
+                      onClick={toggleCollapsed}
+                      className="text-sm text-muted-foreground hover:underline"
+                    >
+                      [{collapsed ? "+" : "-"}]
+                    </button>
+                  )}
+                </div>
               </div>
 
               <p className="mb-1">{comment.content}</p>
@@ -85,7 +89,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
 
               <CommentReplyTextarea />
 
-              <div className={collapsed ? "hidden" : "block"}>
+              <div className={collapsed || !(comment.children.length > 0) ? "hidden" : "block"}>
                 <ReplyTree comments={comment.children} user={user} depth={depth + 1} />
               </div>
             </div>
