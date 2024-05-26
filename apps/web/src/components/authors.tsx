@@ -1,12 +1,16 @@
 import { isBoard } from "@echo-webkom/lib";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { type Author } from "@/sanity/posts";
+import { type AllPostsQueryResult } from "@/sanity.types";
 import { initials } from "@/utils/string";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-export const Authors = ({ authors }: { authors: Array<Author> }) => {
-  if (authors.length === 0) {
+type AuthorsProps = {
+  authors: AllPostsQueryResult[number]["authors"];
+};
+
+export const Authors = ({ authors }: AuthorsProps) => {
+  if (!authors) {
     return null;
   }
 
@@ -15,7 +19,7 @@ export const Authors = ({ authors }: { authors: Array<Author> }) => {
       <p className="text-lg font-bold">Publisert av:</p>
 
       <div className="flex flex-col flex-wrap gap-5 md:flex-row">
-        {authors.map((author) => {
+        {authors?.map((author) => {
           return (
             <div key={author._id} className="flex items-center gap-3">
               <Avatar className="h-12 w-12">

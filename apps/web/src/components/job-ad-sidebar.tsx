@@ -5,13 +5,14 @@ import { nb } from "date-fns/locale/nb";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { degreeYearText } from "@/lib/degree-year-text";
-import { jobTypeString, type JobAd } from "@/sanity/job-ad";
+import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
+import { type JobAdsQueryResult } from "@/sanity.types";
+import { jobTypeString } from "@/sanity/job-ad";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
 type JobAdSidebarProps = {
-  jobAd: JobAd;
+  jobAd: JobAdsQueryResult[number];
 };
 
 export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
@@ -51,7 +52,9 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
       </SidebarItem>
       <SidebarItem>
         <SidebarItemTitle>Årstrinn</SidebarItemTitle>
-        <SidebarItemContent>{degreeYearText(jobAd.degreeYears)}</SidebarItemContent>
+        <SidebarItemContent>
+          {degreeYearText(degreeYearsToList(jobAd.degreeYears))}
+        </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
         <SidebarItemTitle>Stillingstype</SidebarItemTitle>

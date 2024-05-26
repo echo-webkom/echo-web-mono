@@ -1,3 +1,17 @@
+import { type JobAdsQueryResult } from "@/sanity.types";
+
+export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degreeYears"]) => {
+  const list = [];
+
+  for (const [key, value] of Object.entries(degreeYears ?? {})) {
+    if (value) {
+      list.push(parseInt(key));
+    }
+  }
+
+  return list;
+};
+
 /**
  * Convert an array of degree years to a human-readable string.
  *

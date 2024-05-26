@@ -26,7 +26,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     .map((happening) => ({
       id: happening._id,
       title: happening.title,
-      date: new Date(happening.date!),
+      date: new Date(happening.date),
       body: removeMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
     }));
@@ -36,7 +36,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     title: `Film: ${movie.title}`,
     date: new Date(movie.date),
     body: `Se ${movie.title} med filmklubben!`,
-    link: movie.link,
+    link: movie.link ?? "#",
   }));
 
   return (

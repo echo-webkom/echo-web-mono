@@ -1,23 +1,21 @@
 import { log } from "next-axiom";
 
+import { type AllMeetingMinuteQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { allMeetingMinuteQuery } from "./queries";
-import { minuteSchema, type Minute } from "./schema";
 
 /**
  * Get all meeting minutes.
  */
 export async function fetchMinutes() {
-  return await sanityFetch<Array<Minute>>({
+  return await sanityFetch<AllMeetingMinuteQueryResult>({
     query: allMeetingMinuteQuery,
     tags: ["minutes"],
-  })
-    .then((res) => minuteSchema.array().parse(res))
-    .catch(() => {
-      log.error("Failed to fetch meeting minutes");
+  }).catch(() => {
+    log.error("Failed to fetch meeting minutes");
 
-      return [];
-    });
+    return [];
+  });
 }
 
 /**

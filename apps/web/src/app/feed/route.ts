@@ -1,7 +1,8 @@
 import { createRSSFeed, type RSSItem } from "@/lib/rss";
+import { type AllPostsQueryResult } from "@/sanity.types";
 import { fetchAllPosts } from "@/sanity/posts";
 
-type Post = Awaited<ReturnType<typeof fetchAllPosts>>[number];
+type Post = AllPostsQueryResult[number];
 
 const POST_DESCRIPTION_LENGTH = 300;
 
@@ -11,7 +12,7 @@ const postToRSSItem = (post: Post): RSSItem => {
   const creator = post.authors ? post.authors?.map((author) => author.name).join(", ") : "echo";
   const pubDate = new Date(post._createdAt).toUTCString();
   const description =
-    post.body.length > POST_DESCRIPTION_LENGTH
+    post.body && post.body.length > POST_DESCRIPTION_LENGTH
       ? post.body.slice(0, POST_DESCRIPTION_LENGTH) + "..."
       : post.body;
   const content = post.body;

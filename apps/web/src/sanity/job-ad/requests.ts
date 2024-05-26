@@ -1,8 +1,8 @@
 import { log } from "next-axiom";
 
+import { type JobAdsQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
-import { jobAdSchema } from "./schemas";
 
 /**
  * Fetches a number of job ads
@@ -11,17 +11,15 @@ import { jobAdSchema } from "./schemas";
  * @returns job ads or null if not found
  */
 export async function fetchJobAds() {
-  return await sanityFetch({
+  return await sanityFetch<JobAdsQueryResult>({
     query: jobAdsQuery,
     cdn: true,
     tags: ["job-ads"],
-  })
-    .then((res) => jobAdSchema.array().parse(res))
-    .catch(() => {
-      log.error("Failed to fetch job ads");
+  }).catch(() => {
+    log.error("Failed to fetch job ads");
 
-      return [];
-    });
+    return [];
+  });
 }
 
 /**
@@ -39,7 +37,7 @@ export async function fetchJobAdPaths() {
  * @param n the number of job ads to fetch
  * @returns job ads or an empty array if error
  */
-export async function fetchAvailableJobAds(n: number) {
+export async function fetchAvailableJobAds(n: number): Promise<JobAdsQueryResult> {
   return await fetchJobAds().then((res) =>
     res.filter((jobAd) => new Date(jobAd.deadline) > new Date()).slice(0, n),
   );
@@ -51,6 +49,6 @@ export async function fetchAvailableJobAds(n: number) {
  * @param slug the slug of the job ad you want to fetch
  * @returns the job ad or null if not found
  */
-export async function fetchJobAdBySlug(slug: string) {
-  return await fetchJobAds().then((res) => res.find((jobAd) => jobAd.slug === slug));
+export async function fetchJobAdBySlug(slug: string): Promise<JobAdsQueryResult[number] | null> {
+  return await fetchJobAds().then((res) => res.find((jobAd) => jobAd.slug === slug) ?? null);
 }

@@ -1,10 +1,10 @@
-import { groq } from "next-sanity";
+import groq from "groq";
 
 import { client } from "@echo-webkom/sanity";
 
-import { contactProfileSchema } from "../profile/schemas";
+import { type HappeningContactsQueryResult } from "@/sanity.types";
 
-const query = groq`
+const happeningContactsQuery = groq`
 *[_type == "happening" && slug.current == $slug] {
 "contacts": contacts[] {
 email,
@@ -17,11 +17,8 @@ email,
 `;
 
 export async function getContactsBySlug(slug: string) {
-  try {
-    return await client
-      .fetch(query, { slug })
-      .then((res) => contactProfileSchema.array().parse(res));
-  } catch {
-    return [];
-  }
+  return await client
+    .fetch<HappeningContactsQueryResult>(happeningContactsQuery, { slug })
+    .then((data) => data ?? [])
+    .catch(() => []);
 }

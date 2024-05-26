@@ -2,11 +2,11 @@ import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
-import { type StudentGroup } from "@/sanity/student-group";
+import { type StudentGroupsByTypeQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
 
 type StudentGroupPreviewProps = {
-  group: StudentGroup;
+  group: StudentGroupsByTypeQueryResult[number];
   withBorder?: boolean;
 };
 

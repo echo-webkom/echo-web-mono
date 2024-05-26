@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
         start: new Date(movie.date).getTime(),
         startInputType: "utc",
         busyStatus: "BUSY",
-        url: movie.link,
+        url: movie.link ?? undefined,
         description: `Se ${movie.title} sammen med echo! ${movie.link}`,
         categories: ["Film"],
 
