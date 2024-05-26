@@ -65,6 +65,6 @@ class Kaffe {
 }
 
 export const kaffeApi = new Kaffe(
-  process.env.KAFFE_API_KEY,
+  process.env.ADMIN_KEY,
   process.env.NEXT_PUBLIC_KAFFE_URL ? { url: process.env.NEXT_PUBLIC_KAFFE_URL } : undefined,
 );
