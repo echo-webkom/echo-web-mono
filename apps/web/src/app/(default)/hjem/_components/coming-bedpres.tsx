@@ -1,4 +1,6 @@
-import { fetchHomeHappenings, type HappeningType } from "@/sanity/happening";
+import { type HappeningType } from "@echo-webkom/lib";
+
+import { fetchHomeHappenings } from "@/sanity/happening";
 import { BentoBox } from "./bento-box";
 import { HappeningPreview } from "./happening-preview";
 

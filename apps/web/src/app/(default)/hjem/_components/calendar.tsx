@@ -11,7 +11,7 @@ function happeningsToCalendarEvent(happenings: Awaited<ReturnType<typeof fetchAl
     .map((happening) => ({
       id: happening._id,
       title: happening.title,
-      date: new Date(happening.date!),
+      date: new Date(happening.date),
       body: removeMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
     }));
@@ -23,7 +23,7 @@ function moviesToCalendarEvent(movies: Awaited<ReturnType<typeof fetchMovies>>) 
     title: `Film: ${movie.title}`,
     date: new Date(movie.date),
     body: `Se ${movie.title} med filmklubben!`,
-    link: movie.link,
+    link: movie.link ?? "#",
   }));
 }
 
