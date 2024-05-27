@@ -2,25 +2,16 @@ import { kaffeApi } from "@/api/kaffe";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Text } from "@/components/typography/text";
-import { getUser } from "@/lib/get-user";
-import { isMemberOf } from "@/lib/memberships";
+import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { StrikeButtons } from "./StrikeButtons";
 
 export default async function KaffeAdmin() {
-  const user = await getUser();
-
-  if (!user) {
-    return <div>Not logged in</div>;
-  }
-
-  if (!isMemberOf(user, ["hovedstyret", "webkom"])) {
-    return <div>Not authorized</div>;
-  }
+  await ensureWebkomOrHovedstyret();
 
   const strikes = await kaffeApi.getStrikes();
 
   return (
-    <Container className="py-10">
+    <Container>
       <Markdown
         content={`
 # Kaffe-admin
