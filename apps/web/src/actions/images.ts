@@ -34,7 +34,7 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
   const response = await fetch(ppFor(user.id), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.ECHOGRAM_API_KEY}`,
+      Authorization: `Bearer ${process.env.ADMIN_KEY}`,
     },
     body: formData,
   });
