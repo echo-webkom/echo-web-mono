@@ -77,7 +77,7 @@
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "jsdom": "24.0.0",
+    "jsdom": "24.1.0",
     "postcss": "8.4.38",
     "server-only": "^0.0.1",
     "tailwindcss": "3.4.3",
