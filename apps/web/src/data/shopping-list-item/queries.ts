@@ -1,5 +1,4 @@
 import { unstable_cache as cache } from "next/cache";
-import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
@@ -13,7 +12,7 @@ export function getAllShoppinglistItems() {
           with: { likes: true, user: true },
         })
         .catch(() => {
-          log.error("Failed to fetch shopping list items");
+          console.error("Failed to fetch shopping list items");
 
           return [];
         });

@@ -1,5 +1,4 @@
 import { and, asc, eq, gt, lt } from "drizzle-orm";
-import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
@@ -41,7 +40,7 @@ export async function getHappeningById(id: string) {
       },
     })
     .catch((error) => {
-      log.error("Failed to fetch happening", {
+      console.error("Failed to fetch happening", {
         id,
         error: isErrorMessage(error) ? error.message : "Unknown error",
       });

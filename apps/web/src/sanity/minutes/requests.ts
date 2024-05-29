@@ -1,5 +1,3 @@
-import { log } from "next-axiom";
-
 import { type AllMeetingMinuteQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { allMeetingMinuteQuery } from "./queries";
@@ -12,7 +10,7 @@ export async function fetchMinutes() {
     query: allMeetingMinuteQuery,
     tags: ["minutes"],
   }).catch(() => {
-    log.error("Failed to fetch meeting minutes");
+    console.error("Failed to fetch meeting minutes");
 
     return [];
   });

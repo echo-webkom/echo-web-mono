@@ -1,7 +1,6 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
-import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 import {
@@ -104,7 +103,7 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  log.info("Syncing happening from Sanity", {
+  console.info("Syncing happening from Sanity", {
     operation,
     documentId,
     pastSlug,

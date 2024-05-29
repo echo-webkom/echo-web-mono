@@ -1,5 +1,3 @@
-import { log } from "next-axiom";
-
 import { type JobAdsQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
@@ -16,7 +14,7 @@ export async function fetchJobAds() {
     cdn: true,
     tags: ["job-ads"],
   }).catch(() => {
-    log.error("Failed to fetch job ads");
+    console.error("Failed to fetch job ads");
 
     return [];
   });

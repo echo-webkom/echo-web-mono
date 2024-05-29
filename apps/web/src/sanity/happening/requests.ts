@@ -1,5 +1,4 @@
 import { subMinutes } from "date-fns";
-import { log } from "next-axiom";
 
 import { type HappeningType } from "@echo-webkom/lib";
 
@@ -22,7 +21,7 @@ export async function fetchAllHappenings() {
     query: allHappeningsQuery,
     tags: ["happenings"],
   }).catch(() => {
-    log.error("Failed to fetch all happenings");
+    console.error("Failed to fetch all happenings");
 
     return [];
   });
@@ -41,7 +40,7 @@ export async function fetchHomeHappenings(types: Array<HappeningType>, n: number
     cdn: true,
     revalidate: 1000,
   }).catch(() => {
-    log.error("Failed to fetch home happenings");
+    console.error("Failed to fetch home happenings");
 
     return [];
   });
@@ -61,7 +60,7 @@ export async function fetchHappeningBySlug(slug: string) {
       slug,
     },
   }).catch(() => {
-    log.error("Failed to fetch happening by slug", {
+    console.error("Failed to fetch happening by slug", {
       slug,
     });
 
@@ -153,7 +152,7 @@ export async function getHappeningTypeBySlug(slug: string) {
   return await fetchHappeningBySlug(slug)
     .then((happening) => (happening ? happening.happeningType : null))
     .catch(() => {
-      log.error("Failed to fetch happening type by slug", {
+      console.error("Failed to fetch happening type by slug", {
         slug,
       });
 

@@ -1,5 +1,3 @@
-import { log } from "next-axiom";
-
 import { unbanUser } from "@/data/users/mutations";
 import { getBannedUsers } from "@/data/users/queries";
 import { isReadyToUnban } from "@/lib/ban-info";
@@ -11,7 +9,7 @@ export const POST = withBasicAuth(async () => {
     const usersToBan = await Promise.all(users.filter((user) => isReadyToUnban(user)));
     await Promise.all(usersToBan.map((user) => unbanUser(user.id)));
 
-    log.info("Unbanned ${usersToBan.length} users");
+    console.info("Unbanned ${usersToBan.length} users");
 
     return new Response("Success", { status: 200 });
   } catch (error) {

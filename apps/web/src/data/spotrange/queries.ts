@@ -1,5 +1,4 @@
 import { unstable_cache as cache } from "next/cache";
-import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 
@@ -13,7 +12,7 @@ export async function getSpotRangeByHappeningId(happeningId: string) {
           where: (spotRange, { eq }) => eq(spotRange.happeningId, happeningId),
         })
         .catch(() => {
-          log.error("Failed to fetch spot range", {
+          console.error("Failed to fetch spot range", {
             happeningId,
           });
 

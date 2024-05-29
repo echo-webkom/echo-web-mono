@@ -1,6 +1,5 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
-import { log } from "next-axiom";
 
 import { EventPage } from "@/components/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
@@ -15,7 +14,7 @@ const getData = cache(async (slug: string) => {
   const bedpres = await fetchHappeningBySlug(slug);
 
   if (!bedpres) {
-    log.info("Bedpres not found", {
+    console.info("Bedpres not found", {
       slug,
     });
     return notFound();

@@ -2,7 +2,6 @@
 
 import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
-import { log } from "next-axiom";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
@@ -261,7 +260,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
-    log.info("Successful registration", {
+    console.info("Successful registration", {
       userId: user.id,
       happeningId: happening.id,
       isWaitlisted,
@@ -276,7 +275,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
     };
   } catch (error) {
-    log.error("Failed to register", {
+    console.error("Failed to register", {
       userId: user?.id,
       happeningId: id,
       error: isErrorMessage(error) ? error.message : "En ukjent feil har oppstått",

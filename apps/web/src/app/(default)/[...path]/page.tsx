@@ -1,6 +1,5 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
-import { log } from "next-axiom";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
@@ -26,7 +25,7 @@ const getData = cache(async (path: Props["params"]["path"]) => {
   const page = await fetchStaticInfoBySlug(path[0]!, path[1]!);
 
   if (!page) {
-    log.info("Page not found", {
+    console.info("Page not found", {
       path: path.join("/"),
     });
     return notFound();

@@ -1,5 +1,3 @@
-import { log } from "next-axiom";
-
 import { type AllPostsQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { allPostsQuery } from "./queries";
@@ -13,7 +11,7 @@ export async function fetchAllPosts() {
     cdn: true,
     tags: ["posts"],
   }).catch(() => {
-    log.error("Failed to fetch all posts");
+    console.error("Failed to fetch all posts");
 
     return [];
   });
