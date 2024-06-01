@@ -1,12 +1,9 @@
-import { type NextRequest, type NextResponse } from "next/server";
 import { type ZodType } from "zod";
 
 import { type User } from "@echo-webkom/db/schemas";
 
 import { getUser } from "../get-user";
-
-type TRequest = Request | NextRequest;
-type TResponse = Response | NextResponse;
+import { type TRequest, type TResponse } from "./utils";
 
 /**
  * Checks if the user is authenticated and has a valid session.
