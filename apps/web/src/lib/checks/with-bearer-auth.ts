@@ -12,9 +12,8 @@ export function withBearerAuth(handler: HandlerFunction) {
   return async (request: Request): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
-      const bearer = auth?.slice("Bearer ".length);
 
-      if (bearer !== env.ADMIN_KEY) {
+      if (auth !== env.ADMIN_KEY) {
         return new Response("Unauthorized", {
           status: 401,
         });
