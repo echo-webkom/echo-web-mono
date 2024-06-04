@@ -5,10 +5,17 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./",
-  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+
+  /**
+   * We don't want to run tests in parallel because of possible race conditions.
+   *
+   * This should be fixed in the future by using a different approach to testing.
+   */
   workers: 1,
+  fullyParallel: false,
+
   reporter: "html",
 
   use: {
@@ -23,11 +30,7 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    // Commented out because of problems in CI
-    // {
-    //   name: "Mobile Safari",
-    //   use: { ...devices["iPhone 12"] },
-    // },
+    // TODO: Test more viewports.
   ],
 
   webServer: [

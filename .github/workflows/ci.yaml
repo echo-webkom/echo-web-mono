@@ -30,6 +30,18 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      - name: Create .env file
+        shell: bash
+        run: |
+          echo "ADMIN_KEY=${{ env.ADMIN_KEY }}" > .env
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_SANITY_DATASET=${{ env.NEXT_PUBLIC_SANITY_DATASET }}" >> .env
+          echo "FEIDE_CLIENT_ID=${{ env.FEIDE_CLIENT_ID }}" >> .env
+          echo "FEIDE_CLIENT_SECRET=${{ env.FEIDE_CLIENT_SECRET }}" >> .env
+          echo "NEXTAUTH_SECRET=${{ env.NEXTAUTH_SECRET }}" >> .env
+          echo "TURBO_TOKEN=${{ env.TURBO_TOKEN }}" >> .env
+          echo "TURBO_TEAM=${{ env.TURBO_TEAM }}" >> .env
+
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
 

@@ -32,6 +32,10 @@ export const createAuthOptions = (
       signIn: "/auth/logg-inn",
     },
 
+    session: {
+      strategy: "database",
+    },
+
     callbacks: {
       session({ session, user }) {
         if (session.user) {
