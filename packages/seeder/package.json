@@ -42,7 +42,7 @@
     "@sanity/client": "6.19.1",
     "chalk": "5.3.0",
     "commander": "12.1.0",
-    "drizzle-orm": "0.30.10",
+    "drizzle-orm": "0.31.0",
     "groq": "3.43.0"
   }
 }
