@@ -45,7 +45,7 @@
     "date-fns": "3.6.0",
     "drizzle-orm": "0.30.10",
     "framer-motion": "11.2.10",
-    "groq": "3.43.0",
+    "groq": "3.44.0",
     "ics": "^3.7.2",
     "next": "14.2.3",
     "next-auth": "4.24.7",
