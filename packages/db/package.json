@@ -16,12 +16,13 @@
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:down-volumes": "docker compose down --volumes",
+    "kit:up": "drizzle-kit up",
     "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "drizzle-orm": "0.30.10",
+    "drizzle-orm": "0.31.1",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.0.7",
     "next-auth": "4.24.7",
@@ -34,7 +35,7 @@
     "@types/node": "20.14.0",
     "@types/pg": "8.11.6",
     "dotenv-cli": "7.4.2",
-    "drizzle-kit": "0.21.4",
+    "drizzle-kit": "0.22.4",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.11.2",
     "typescript": "5.4.5"

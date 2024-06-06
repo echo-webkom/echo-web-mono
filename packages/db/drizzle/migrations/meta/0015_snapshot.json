@@ -1,7 +1,5 @@
 {
-  "id": "3678558c-21b7-41ed-9838-e3d5d1701c4d",
-  "prevId": "f16025e7-1020-4088-a857-d40cfcdb391e",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.account": {
@@ -80,15 +78,15 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -136,41 +134,41 @@
         "answer_user_id_user_id_fk": {
           "name": "answer_user_id_user_id_fk",
           "tableFrom": "answer",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
           "tableFrom": "answer",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "answer_question_id_question_id_fk": {
           "name": "answer_question_id_question_id_fk",
           "tableFrom": "answer",
-          "tableTo": "question",
           "columnsFrom": [
             "question_id"
           ],
+          "tableTo": "question",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -318,28 +316,28 @@
         "happenings_to_groups_happening_id_happening_id_fk": {
           "name": "happenings_to_groups_happening_id_happening_id_fk",
           "tableFrom": "happenings_to_groups",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "happenings_to_groups_group_id_group_id_fk": {
           "name": "happenings_to_groups_group_id_group_id_fk",
           "tableFrom": "happenings_to_groups",
-          "tableTo": "group",
           "columnsFrom": [
             "group_id"
           ],
+          "tableTo": "group",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -416,11 +414,18 @@
       },
       "indexes": {
         "slug_idx": {
-          "name": "slug_idx",
           "columns": [
-            "slug"
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "slug_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -435,10 +440,10 @@
       "uniqueConstraints": {
         "happening_slug_unique": {
           "name": "happening_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -498,15 +503,15 @@
         "question_happening_id_happening_id_fk": {
           "name": "question_happening_id_happening_id_fk",
           "tableFrom": "question",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -554,15 +559,15 @@
         "reaction_user_id_user_id_fk": {
           "name": "reaction_user_id_user_id_fk",
           "tableFrom": "reaction",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -626,28 +631,28 @@
         "registration_user_id_user_id_fk": {
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "registration_happening_id_happening_id_fk": {
           "name": "registration_happening_id_happening_id_fk",
           "tableFrom": "registration",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -689,15 +694,15 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -812,15 +817,15 @@
         "spot_range_happening_id_happening_id_fk": {
           "name": "spot_range_happening_id_happening_id_fk",
           "tableFrom": "spot_range",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -862,28 +867,28 @@
         "users_to_groups_user_id_user_id_fk": {
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_to_groups_group_id_group_id_fk": {
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
-          "tableTo": "group",
           "columnsFrom": [
             "group_id"
           ],
+          "tableTo": "group",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -976,15 +981,15 @@
         "user_degree_id_degree_id_fk": {
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
-          "tableTo": "degree",
           "columnsFrom": [
             "degree_id"
           ],
+          "tableTo": "degree",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -1069,15 +1074,15 @@
         "shopping_list_item_user_id_user_id_fk": {
           "name": "shopping_list_item_user_id_user_id_fk",
           "tableFrom": "shopping_list_item",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1112,28 +1117,28 @@
         "users_to_shopping_list_items_user_id_user_id_fk": {
           "name": "users_to_shopping_list_items_user_id_user_id_fk",
           "tableFrom": "users_to_shopping_list_items",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_to_shopping_list_items_item_id_shopping_list_item_id_fk": {
           "name": "users_to_shopping_list_items_item_id_shopping_list_item_id_fk",
           "tableFrom": "users_to_shopping_list_items",
-          "tableTo": "shopping_list_item",
           "columnsFrom": [
             "item_id"
           ],
+          "tableTo": "shopping_list_item",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1214,40 +1219,52 @@
       },
       "indexes": {
         "user_idx": {
-          "name": "user_idx",
           "columns": [
-            "user_id",
-            "id"
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "user_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "strike_user_id_user_id_fk": {
           "name": "strike_user_id_user_id_fk",
           "tableFrom": "strike",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "strike_strike_info_id_strike_info_id_fk": {
           "name": "strike_strike_info_id_strike_info_id_fk",
           "tableFrom": "strike",
-          "tableTo": "strike_info",
           "columnsFrom": [
             "strike_info_id"
           ],
+          "tableTo": "strike_info",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -1295,28 +1312,28 @@
         "strike_info_happening_id_happening_id_fk": {
           "name": "strike_info_happening_id_happening_id_fk",
           "tableFrom": "strike_info",
-          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
+          "tableTo": "happening",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "strike_info_issuer_id_user_id_fk": {
           "name": "strike_info_issuer_id_user_id_fk",
           "tableFrom": "strike_info",
-          "tableTo": "user",
           "columnsFrom": [
             "issuer_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1387,8 +1404,10 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "3678558c-21b7-41ed-9838-e3d5d1701c4d",
+  "prevId": "f16025e7-1020-4088-a857-d40cfcdb391e"
 }
