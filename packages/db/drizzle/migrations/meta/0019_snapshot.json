@@ -1,4 +1,6 @@
 {
+  "id": "1bb141af-68d7-4fed-a0db-f33b519a801f",
+  "prevId": "286290f7-b422-4715-8127-badff7dfdc2c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -78,16 +80,15 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -130,64 +131,46 @@
           "notNull": false
         }
       },
-      "indexes": {
-        "question_idx": {
-          "columns": [
-            {
-              "expression": "question_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "name": "question_idx",
-          "isUnique": false,
-          "method": "btree",
-          "concurrently": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "answer_user_id_user_id_fk": {
           "name": "answer_user_id_user_id_fk",
           "tableFrom": "answer",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
           "tableFrom": "answer",
+          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
-          "tableTo": "happening",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "answer_question_id_question_id_fk": {
           "name": "answer_question_id_question_id_fk",
           "tableFrom": "answer",
+          "tableTo": "question",
           "columnsFrom": [
             "question_id"
           ],
-          "tableTo": "question",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -200,6 +183,89 @@
           ]
         }
       },
+      "uniqueConstraints": {}
+    },
+    "public.comment": {
+      "name": "comment",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "post_id": {
+          "name": "post_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_comment_id": {
+          "name": "parent_comment_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "post_idx": {
+          "name": "post_idx",
+          "columns": [
+            {
+              "expression": "post_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "comment_user_id_user_id_fk": {
+          "name": "comment_user_id_user_id_fk",
+          "tableFrom": "comment",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "public.degree": {
@@ -282,30 +348,28 @@
         "happenings_to_groups_happening_id_happening_id_fk": {
           "name": "happenings_to_groups_happening_id_happening_id_fk",
           "tableFrom": "happenings_to_groups",
+          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
-          "tableTo": "happening",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "happenings_to_groups_group_id_group_id_fk": {
           "name": "happenings_to_groups_group_id_group_id_fk",
           "tableFrom": "happenings_to_groups",
+          "tableTo": "group",
           "columnsFrom": [
             "group_id"
           ],
-          "tableTo": "group",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -344,6 +408,7 @@
         "type": {
           "name": "type",
           "type": "happening_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'event'"
@@ -380,21 +445,8 @@
         }
       },
       "indexes": {
-        "type_idx": {
-          "columns": [
-            {
-              "expression": "type",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "name": "type_idx",
-          "isUnique": false,
-          "method": "btree",
-          "concurrently": false
-        },
         "slug_idx": {
+          "name": "slug_idx",
           "columns": [
             {
               "expression": "slug",
@@ -403,10 +455,10 @@
               "nulls": "last"
             }
           ],
-          "name": "slug_idx",
-          "isUnique": true,
+          "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -418,7 +470,15 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "happening_slug_unique": {
+          "name": "happening_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      }
     },
     "public.question": {
       "name": "question",
@@ -446,6 +506,7 @@
         "type": {
           "name": "type",
           "type": "question_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'text'"
@@ -470,42 +531,20 @@
           "notNull": true
         }
       },
-      "indexes": {
-        "happening_id_title": {
-          "columns": [
-            {
-              "expression": "title",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "happening_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "name": "happening_id_title",
-          "isUnique": true,
-          "method": "btree",
-          "concurrently": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "question_happening_id_happening_id_fk": {
           "name": "question_happening_id_happening_id_fk",
           "tableFrom": "question",
+          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
-          "tableTo": "happening",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -513,6 +552,64 @@
           "name": "question_id_pk",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.reaction": {
+      "name": "reaction",
+      "schema": "",
+      "columns": {
+        "react_to_key": {
+          "name": "react_to_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emoji_id": {
+          "name": "emoji_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reaction_user_id_user_id_fk": {
+          "name": "reaction_user_id_user_id_fk",
+          "tableFrom": "reaction",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "reaction_react_to_key_emoji_id_user_id_pk": {
+          "name": "reaction_react_to_key_emoji_id_user_id_pk",
+          "columns": [
+            "react_to_key",
+            "emoji_id",
+            "user_id"
           ]
         }
       },
@@ -537,6 +634,7 @@
         "status": {
           "name": "status",
           "type": "registration_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'waiting'"
@@ -553,52 +651,54 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "prev_status": {
+          "name": "prev_status",
+          "type": "registration_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_at": {
+          "name": "changed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_by": {
+          "name": "changed_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
-      "indexes": {
-        "status_idx": {
-          "columns": [
-            {
-              "expression": "status",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "name": "status_idx",
-          "isUnique": false,
-          "method": "btree",
-          "concurrently": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "registration_user_id_user_id_fk": {
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "registration_happening_id_happening_id_fk": {
           "name": "registration_happening_id_happening_id_fk",
           "tableFrom": "registration",
+          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
-          "tableTo": "happening",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -640,16 +740,15 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -693,6 +792,7 @@
         "category": {
           "name": "category",
           "type": "feedback_category",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -758,48 +858,20 @@
           "notNull": true
         }
       },
-      "indexes": {
-        "happening_id_min_year_max_year": {
-          "columns": [
-            {
-              "expression": "happening_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "min_year",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "max_year",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "name": "happening_id_min_year_max_year",
-          "isUnique": true,
-          "method": "btree",
-          "concurrently": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "spot_range_happening_id_happening_id_fk": {
           "name": "spot_range_happening_id_happening_id_fk",
           "tableFrom": "spot_range",
+          "tableTo": "happening",
           "columnsFrom": [
             "happening_id"
           ],
-          "tableTo": "happening",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -841,30 +913,28 @@
         "users_to_groups_user_id_user_id_fk": {
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
-          "tableTo": "user",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "users_to_groups_group_id_group_id_fk": {
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
+          "tableTo": "group",
           "columnsFrom": [
             "group_id"
           ],
-          "tableTo": "group",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -933,9 +1003,23 @@
         "type": {
           "name": "type",
           "type": "user_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'student'"
+        },
+        "is_banned": {
+          "name": "is_banned",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "banned_from_strike": {
+          "name": "banned_from_strike",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -943,16 +1027,15 @@
         "user_degree_id_degree_id_fk": {
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
+          "tableTo": "degree",
           "columnsFrom": [
             "degree_id"
           ],
-          "tableTo": "degree",
-          "schemaTo": "public",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -1001,6 +1084,120 @@
       },
       "uniqueConstraints": {}
     },
+    "public.shopping_list_item": {
+      "name": "shopping_list_item",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "shopping_list_item_user_id_user_id_fk": {
+          "name": "shopping_list_item_user_id_user_id_fk",
+          "tableFrom": "shopping_list_item",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.users_to_shopping_list_items": {
+      "name": "users_to_shopping_list_items",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "users_to_shopping_list_items_user_id_user_id_fk": {
+          "name": "users_to_shopping_list_items_user_id_user_id_fk",
+          "tableFrom": "users_to_shopping_list_items",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "users_to_shopping_list_items_item_id_shopping_list_item_id_fk": {
+          "name": "users_to_shopping_list_items_item_id_shopping_list_item_id_fk",
+          "tableFrom": "users_to_shopping_list_items",
+          "tableTo": "shopping_list_item",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "users_to_shopping_list_items_user_id_item_id_pk": {
+          "name": "users_to_shopping_list_items_user_id_item_id_pk",
+          "columns": [
+            "user_id",
+            "item_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "public.whitelist": {
       "name": "whitelist",
       "schema": "",
@@ -1034,6 +1231,159 @@
           ]
         }
       },
+      "uniqueConstraints": {}
+    },
+    "public.strike": {
+      "name": "strike",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "strike_info_id": {
+          "name": "strike_info_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "user_idx": {
+          "name": "user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "strike_user_id_user_id_fk": {
+          "name": "strike_user_id_user_id_fk",
+          "tableFrom": "strike",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "strike_strike_info_id_strike_info_id_fk": {
+          "name": "strike_strike_info_id_strike_info_id_fk",
+          "tableFrom": "strike",
+          "tableTo": "strike_info",
+          "columnsFrom": [
+            "strike_info_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.strike_info": {
+      "name": "strike_info",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "issuer_id": {
+          "name": "issuer_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "strike_info_happening_id_happening_id_fk": {
+          "name": "strike_info_happening_id_happening_id_fk",
+          "tableFrom": "strike_info",
+          "tableTo": "happening",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "strike_info_issuer_id_user_id_fk": {
+          "name": "strike_info_issuer_id_user_id_fk",
+          "tableFrom": "strike_info",
+          "tableTo": "user",
+          "columnsFrom": [
+            "issuer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
   },
@@ -1101,10 +1451,8 @@
   },
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "7cae0878-7213-4158-aee7-f57b28eef738",
-  "prevId": "a407deeb-b6a7-4a5b-a992-77a1998d42e6"
+    "tables": {}
+  }
 }
