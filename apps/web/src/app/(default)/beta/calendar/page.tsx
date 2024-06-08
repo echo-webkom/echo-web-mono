@@ -132,11 +132,11 @@ export default function Calendar() {
 
       <Text>Kopier link eller last ned .ics-fil</Text>
 
-      <Input type="text" value={calendarUrl} readOnly />
+      <Input type="text" value={calendarUrl.toString()} readOnly />
 
       <Button asChild>
         {/* eslint-disable-next-line react/jsx-no-target-blank */}
-        <a href={calendarUrl} download target="_blank">
+        <a href={calendarUrl.toString()} download target="_blank">
           Last ned .ics
         </a>
       </Button>

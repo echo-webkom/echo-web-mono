@@ -9,7 +9,7 @@ import NextTopLoader from "nextjs-toploader";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
-import { baseURL } from "@/config";
+import { BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
 
@@ -41,7 +41,7 @@ type RootLayoutProps = {
 };
 
 export const metadata = {
-  metadataBase: new URL(baseURL),
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",

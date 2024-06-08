@@ -8,7 +8,7 @@ export const WS = dev ? "ws" : "wss";
 
 export const PORT = process.env.PORT ?? 3000;
 
-export const baseURL = dev
+export const BASE_URL = dev
   ? `http://localhost:${process.env.PORT ?? 3000}`
   : `https://${PRODUCTION_DOMAIN}`;
 
