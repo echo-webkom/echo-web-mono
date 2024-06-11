@@ -7,6 +7,7 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
+import { shortDateNoTimeWithEndDate } from "@/utils/date";
 import { capitalize } from "@/utils/string";
 
 type CombinedHappeningPreviewProps = {
@@ -15,11 +16,6 @@ type CombinedHappeningPreviewProps = {
 
 export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
   const parentPath = happening.happeningType === "bedpres" ? "bedpres" : "arrangement";
-
-  const fromDate = format(new Date(happening.date), "d. MMMM yyyy", { locale: nb });
-  const dateString = happening.endDate
-    ? `${fromDate} - ${format(new Date(happening.endDate), "d. MMMM yyyy", { locale: nb })}`
-    : fromDate;
 
   return (
     <Link href={`/${parentPath}/${happening.slug}`}>
@@ -40,7 +36,8 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
             )}
             {happening.date && (
               <li>
-                <span className="font-semibold">Dato:</span> {dateString}
+                <span className="font-semibold">Dato:</span>{" "}
+                {shortDateNoTimeWithEndDate(happening.date, happening.endDate ?? undefined)}
               </li>
             )}
             <li>

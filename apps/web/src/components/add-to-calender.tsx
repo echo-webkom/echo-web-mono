@@ -10,10 +10,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 type Props = {
   date: Date;
+  endDate?: Date;
   title: string;
 };
 
-export function AddToCalender({ date, title }: Props) {
+export function AddToCalender({ date, endDate, title }: Props) {
   return (
     <Dialog>
       <DialogTrigger className="text-left hover:underline">{shortDateNoTime(date)}</DialogTrigger>
@@ -23,11 +24,11 @@ export function AddToCalender({ date, title }: Props) {
           <DialogTitle className="pl-5">Legg til i kalender 📅</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col justify-around gap-4 pt-4 sm:flex-row sm:gap-0">
-          <CalendarButton title={title} date={date} calendarType={"Google"} />
-          <CalendarButton title={title} date={date} calendarType={"Outlook"} />
-          <CalendarButton title={title} date={date} calendarType={"Office"} />
-          <CalendarButton title={title} date={date} calendarType={"Yahoo"} />
-          <CalendarButton title={title} date={date} calendarType={"Ics"} />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Google"} />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Outlook"} />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Office"} />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Yahoo"} />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Ics"} />
         </div>
       </DialogContent>
     </Dialog>
@@ -39,15 +40,17 @@ type CalendarType = "Google" | "Outlook" | "Office" | "Yahoo" | "Ics";
 type CalendarButtonProps = {
   title: string;
   date: Date;
+  endDate?: Date;
   calendarType: CalendarType;
 };
 
-const CalendarButton = ({ title, date, calendarType }: CalendarButtonProps) => {
+const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonProps) => {
   const event: CalendarEvent = {
     title,
     description: "",
     start: date,
-    duration: [2, "hour"],
+    end: endDate,
+    duration: endDate ? undefined : [2, "hour"],
   };
   const link = getCalendarLink(calendarType, event);
   const iconClassNames = "h-8 w-8";

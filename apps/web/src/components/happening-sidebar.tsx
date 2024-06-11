@@ -20,7 +20,13 @@ import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { getUser } from "@/lib/get-user";
 import { isHost as _isHost } from "@/lib/memberships";
 import { type AllHappeningsQueryResult } from "@/sanity.types";
-import { isBetween, norwegianDateString, time } from "@/utils/date";
+import {
+  isBetween,
+  isSameDate,
+  norwegianDateString,
+  shortDateNoYear,
+  timeWithEndTime,
+} from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { ReactionButtonGroup } from "./reaction-button-group";
@@ -145,7 +151,11 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
         <SidebarItem>
           <SidebarItemTitle>Dato:</SidebarItemTitle>
           <SidebarItemContent>
-            <AddToCalender date={new Date(event.date)} title={event.title} />
+            <AddToCalender
+              date={new Date(event.date)}
+              endDate={event.endDate ? new Date(event.endDate) : undefined}
+              title={event.title}
+            />
           </SidebarItemContent>
         </SidebarItem>
       )}
@@ -156,7 +166,15 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {event.date && (
         <SidebarItem>
           <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
-          <SidebarItemContent>{time(event.date)}</SidebarItemContent>
+          <SidebarItemContent>
+            {timeWithEndTime(event.date, event.endDate ?? undefined)}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
+      {event.endDate && !isSameDate(event.date, event.endDate) && (
+        <SidebarItem>
+          <SidebarItemTitle>Slutt:</SidebarItemTitle>
+          <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>
         </SidebarItem>
       )}
       {/**

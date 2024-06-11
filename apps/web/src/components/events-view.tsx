@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { nextMonday, startOfDay, subMinutes } from "date-fns";
+import { subMinutes } from "date-fns";
 
 import { fetchFilteredHappening } from "@/sanity/happening";
+import { startOfNextWeek, startOfTheWeekAfterNext } from "@/utils/date";
 import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Callout } from "./typography/callout";
 
@@ -55,28 +56,25 @@ function getDateIntervals(params: SearchParams) {
   const hideLater = params.later === "false" ? true : false;
 
   if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 5) }];
-  if (hideThisWeek && !hideNextWeek && !hideLater)
-    return [{ start: startOfDay(nextMonday(currentDate)) }];
+  if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: startOfNextWeek(currentDate) }];
   if (!hideThisWeek && hideNextWeek && !hideLater)
     return [
-      { start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(currentDate)) },
-      { start: startOfDay(nextMonday(nextMonday(currentDate))) },
+      { start: subMinutes(currentDate, 5), end: startOfNextWeek(currentDate) },
+      { start: startOfTheWeekAfterNext(currentDate) },
     ];
   if (!hideThisWeek && !hideNextWeek && hideLater)
-    return [
-      { start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(nextMonday(currentDate))) },
-    ];
+    return [{ start: subMinutes(currentDate, 5), end: startOfTheWeekAfterNext(currentDate) }];
   if (!hideThisWeek && hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(currentDate)) }];
+    return [{ start: subMinutes(currentDate, 5), end: startOfNextWeek(currentDate) }];
   if (hideThisWeek && !hideNextWeek && hideLater)
     return [
       {
-        start: startOfDay(nextMonday(currentDate)),
-        end: startOfDay(nextMonday(nextMonday(currentDate))),
+        start: startOfNextWeek(currentDate),
+        end: startOfTheWeekAfterNext(currentDate),
       },
     ];
   if (hideThisWeek && hideNextWeek && !hideLater)
-    return [{ start: startOfDay(nextMonday(nextMonday(currentDate))) }];
+    return [{ start: startOfTheWeekAfterNext(currentDate) }];
 
   return undefined;
 }
