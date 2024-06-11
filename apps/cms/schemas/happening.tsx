@@ -123,13 +123,13 @@ export default defineType({
       title: "Dato",
       description: "Dato og tid for arrangementet",
       type: "datetime",
-      validation: (Rule) => Rule.required().max(Rule.valueOfField("endDate")),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "endDate",
       title: "Sluttdato",
-      description: "Dersom hendelsen varer over flere dager, sett en sluttdato",
-      type: "datetime",
+      description: "Sett en sluttdato dersom hendelsen varer over flere dager",
+      type: "date",
       validation: (Rule) => Rule.min(Rule.valueOfField("date")),
     }),
     defineField({
