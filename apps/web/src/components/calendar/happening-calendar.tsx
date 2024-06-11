@@ -14,6 +14,7 @@ type CalendarEvent = {
   id: string;
   title: string;
   date: Date;
+  endDate?: Date;
   body: string;
   link: string;
 };

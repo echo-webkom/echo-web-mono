@@ -16,6 +16,11 @@ type CombinedHappeningPreviewProps = {
 export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
   const parentPath = happening.happeningType === "bedpres" ? "bedpres" : "arrangement";
 
+  const fromDate = format(new Date(happening.date), "d. MMMM yyyy", { locale: nb });
+  const dateString = happening.endDate
+    ? `${fromDate} - ${format(new Date(happening.endDate), "d. MMMM yyyy", { locale: nb })}`
+    : fromDate;
+
   return (
     <Link href={`/${parentPath}/${happening.slug}`}>
       <div
@@ -35,8 +40,7 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
             )}
             {happening.date && (
               <li>
-                <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(happening.date), "d. MMMM yyyy", { locale: nb })}
+                <span className="font-semibold">Dato:</span> {dateString}
               </li>
             )}
             <li>

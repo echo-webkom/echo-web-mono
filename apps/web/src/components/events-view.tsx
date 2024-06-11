@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { nextMonday, subMinutes } from "date-fns";
+import { nextMonday, startOfDay, subMinutes } from "date-fns";
 
 import { fetchFilteredHappening } from "@/sanity/happening";
 import { CombinedHappeningPreview } from "./happening-preview-box";
@@ -55,20 +55,28 @@ function getDateIntervals(params: SearchParams) {
   const hideLater = params.later === "false" ? true : false;
 
   if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 5) }];
-  if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: nextMonday(currentDate) }];
+  if (hideThisWeek && !hideNextWeek && !hideLater)
+    return [{ start: startOfDay(nextMonday(currentDate)) }];
   if (!hideThisWeek && hideNextWeek && !hideLater)
     return [
-      { start: subMinutes(currentDate, 5), end: nextMonday(currentDate) },
-      { start: nextMonday(nextMonday(currentDate)) },
+      { start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(currentDate)) },
+      { start: startOfDay(nextMonday(nextMonday(currentDate))) },
     ];
   if (!hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 5), end: nextMonday(nextMonday(currentDate)) }];
+    return [
+      { start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(nextMonday(currentDate))) },
+    ];
   if (!hideThisWeek && hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 5), end: nextMonday(currentDate) }];
+    return [{ start: subMinutes(currentDate, 5), end: startOfDay(nextMonday(currentDate)) }];
   if (hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: nextMonday(currentDate), end: nextMonday(nextMonday(currentDate)) }];
+    return [
+      {
+        start: startOfDay(nextMonday(currentDate)),
+        end: startOfDay(nextMonday(nextMonday(currentDate))),
+      },
+    ];
   if (hideThisWeek && hideNextWeek && !hideLater)
-    return [{ start: nextMonday(nextMonday(currentDate)) }];
+    return [{ start: startOfDay(nextMonday(nextMonday(currentDate))) }];
 
   return undefined;
 }

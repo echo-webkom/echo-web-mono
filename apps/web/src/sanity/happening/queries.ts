@@ -29,6 +29,7 @@ export const allHappeningsQuery = groq`
     },
   },
   "date": date,
+  "endDate": endDate,
   cost,
   "registrationStartGroups": registrationStartGroups,
   "registrationGroups": registrationGroups[]->slug.current,

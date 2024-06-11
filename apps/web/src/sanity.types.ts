@@ -486,6 +486,7 @@ export type AllHappeningsQueryResult = Array<{
     };
   }> | null;
   date: string;
+  endDate: string | null;
   cost: number | null;
   registrationStartGroups: string | null;
   registrationGroups: Array<string> | null;
