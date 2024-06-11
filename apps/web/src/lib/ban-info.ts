@@ -29,13 +29,7 @@ async function getDateBanned(bannedFromStrike: number) {
 }
 
 export async function isReadyToUnban(user: User) {
-  if (!user.year) {
-    throw new Error("User year not found");
-  }
-
-  if (!user.bannedFromStrike || !user.isBanned) {
-    throw new Error("User is not banned");
-  }
+  if (!user.year || !user.bannedFromStrike || !user.isBanned) return false;
 
   const dateBanned = await getDateBanned(user.bannedFromStrike);
 
