@@ -5,7 +5,7 @@ import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
 
 import { cn } from "@/utils/cn";
-import { dayStr, shortDateNoTime } from "@/utils/date";
+import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
@@ -115,7 +115,9 @@ export function Calendar({ events }: CalendarProps) {
             const isToday = isSameDay(day, new Date());
 
             const eventsThisDay = events.filter((event) => {
-              return isSameDay(event.date, day);
+              return event.endDate
+                ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                : isSameDay(event.date, day);
             });
 
             return (

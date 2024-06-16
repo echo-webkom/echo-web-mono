@@ -1,4 +1,13 @@
-import { differenceInHours, format, isFuture, isPast, nextMonday, startOfDay } from "date-fns";
+import {
+  differenceInHours,
+  format,
+  isAfter,
+  isBefore,
+  isFuture,
+  isPast,
+  nextMonday,
+  startOfDay,
+} from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";
@@ -209,6 +218,16 @@ export function isBetween(startDate: Date, endDate: Date): boolean {
   return isPast(startDate) && isFuture(endDate);
 }
 
+/**
+ * Checks if a given date is between two dates
+ * @param date the date to check
+ * @param startDate earliest date
+ * @param endDate endDate
+ * @returns if the date is between the two dates
+ */
+export function dateIsBetween(date: Date, startDate: Date, endDate: Date): boolean {
+  return isAfter(date, startDate) && isBefore(date, endDate);
+}
 /**
  * Converts the day of the week to a string.
  *
