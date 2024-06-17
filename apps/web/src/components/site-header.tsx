@@ -1,6 +1,8 @@
 import Link from "next/link";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@echo-webkom/auth";
+
+import { getProgrammerbarSatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -10,7 +12,7 @@ import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
-  const user = await getUser();
+  const user = await auth();
 
   return (
     <div className="sticky top-0 z-20">
@@ -19,8 +21,13 @@ export async function SiteHeader() {
       <div className="border-b bg-background">
         <NavigationRoot>
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
-            <div className="left-30 absolute -bottom-3 z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
-              <p>{getRandomMessage()}</p>
+            <div className="absolute -bottom-3 flex">
+              <div className="z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
+                <p>{getRandomMessage()}</p>
+              </div>
+              <div className="-bottom-3 z-50  rounded-md bg-primary px-2 py-1 text-xs text-white">
+                <p>{(await getProgrammerbarSatus()).message}</p>
+              </div>
             </div>
 
             <div className="flex items-center">
