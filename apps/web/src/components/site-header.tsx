@@ -21,11 +21,11 @@ export async function SiteHeader() {
       <div className="border-b bg-background">
         <NavigationRoot>
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
-            <div className="absolute -bottom-3 flex">
+            <div className="absolute -bottom-3 flex space-x-2">
               <div className="z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
                 <p>{getRandomMessage()}</p>
               </div>
-              <div className="-bottom-3 z-50  rounded-md bg-primary px-2 py-1 text-xs text-white">
+              <div className=" z-50  rounded-md bg-primary px-2 py-1 text-xs text-white">
                 <p>{(await getProgrammerbarSatus()).message}</p>
               </div>
             </div>
