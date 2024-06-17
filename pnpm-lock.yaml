@@ -196,8 +196,8 @@ importers:
         specifier: 3.46.0
         version: 3.46.0
       ics:
-        specifier: ^3.7.2
-        version: 3.7.2
+        specifier: ^3.7.6
+        version: 3.7.6
       next:
         specifier: 14.2.3
         version: 14.2.3(@babel/core@7.24.6)(@playwright/test@1.44.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5434,8 +5434,8 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
-  ics@3.7.2:
-    resolution: {integrity: sha512-UC5bBJYKyzkYZv4/AoIV9dsZw+rwFkUOtHHhnxmb0HTUEpfDmfl5sB9DlePKrTxx6SGMXiIQbiElf66viSTB0A==}
+  ics@3.7.6:
+    resolution: {integrity: sha512-Z1QIWoPzyzqKUSj2Ui9vD3ca0AS+uHyiCjkROFx9PiKtJu9vMuMo6KJ4aqFmMAqn5q3fLq/5tLTJRm4zr9jjgw==}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -15019,7 +15019,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  ics@3.7.2:
+  ics@3.7.6:
     dependencies:
       nanoid: 3.3.7
       runes2: 1.1.4
