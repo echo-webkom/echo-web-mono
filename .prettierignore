@@ -8,6 +8,7 @@ node_modules/
 
 # Migrations
 packages/db/drizzle/migrations/
+packages/db/postgres-data
 
 # Builds
 dist/
