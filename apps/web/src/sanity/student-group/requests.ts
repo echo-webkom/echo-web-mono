@@ -18,7 +18,7 @@ export async function fetchStudentGroupsByType(type: StudentGroupType, n: number
       tags: ["student-groups"],
     });
 
-    if (type === "board") {
+    if (type != "board") {
       studentGroups.sort((a, b) => a.name.localeCompare(b.name));
     } else {
       studentGroups.sort((a, b) => b.name.localeCompare(a.name));
