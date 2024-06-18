@@ -243,7 +243,7 @@ export function EventFilterSidebar() {
   }, [paramSearch]);
 
   return (
-    <Sidebar className="space-y-3 ">
+    <Sidebar className="space-y-3">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
           <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">

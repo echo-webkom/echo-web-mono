@@ -93,7 +93,7 @@ export default async function UserStrikesPage({ params }: Props) {
             }}
             currentAmount={validStrikes.length}
             variant="destructive"
-            className="min-w-28 "
+            className="min-w-28"
           />
           {user.isBanned && (
             <RemoveBanButton userId={userId} variant="default" className="min-w-28" />

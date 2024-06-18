@@ -264,7 +264,7 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
       </DialogTrigger>
       <DialogContent>
         <DialogDescription>
-          <div className="font-bold ">Merk:</div>
+          <div className="font-bold">Merk:</div>
           <div>Utestengelser blir ikke automatisk fjernet ved å slette prikker.</div>
           <div>Det må gjøres manuelt.</div>
         </DialogDescription>
@@ -305,7 +305,7 @@ export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps
       </DialogTrigger>
       <DialogContent>
         <DialogDescription>
-          <div className="font-bold ">Merk:</div>
+          <div className="font-bold">Merk:</div>
           <div>Gyldige prikker blir ikke slettet av å fjerne utestengelsen.</div>
           <div>De må eventuelt fjernes manuelt.</div>
         </DialogDescription>
