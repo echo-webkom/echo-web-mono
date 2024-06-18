@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { auth } from "@echo-webkom/auth";
-
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
@@ -10,9 +8,10 @@ import { ModeToggle } from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
+import { getUser } from "@/lib/get-user";
 
 export async function SiteHeader() {
-  const user = await auth();
+  const user = await getUser();
 
   return (
     <div className="sticky top-0 z-20">
