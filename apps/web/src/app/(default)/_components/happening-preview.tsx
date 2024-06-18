@@ -36,7 +36,7 @@ export function HappeningPreview({
             <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
               {happening.title}
             </h1>
-            <div className=" items-center text-muted-foreground">
+            <div className="items-center text-muted-foreground">
               {happening.registrationStart &&
                 isFuture(new Date(happening.registrationStart)) &&
                 (isToday(new Date(happening.registrationStart)) ? (
