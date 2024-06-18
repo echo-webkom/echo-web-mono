@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { auth } from "@echo-webkom/auth";
 
-import { getProgrammerbarSatus } from "@/lib/get-programmerbar-status";
+import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -26,7 +26,7 @@ export async function SiteHeader() {
                 <p>{getRandomMessage()}</p>
               </div>
               <div className=" z-50  rounded-md bg-primary px-2 py-1 text-xs text-white">
-                <p>{(await getProgrammerbarSatus()).message}</p>
+                <p>{(await getProgrammerbarStatus()).message}</p>
               </div>
             </div>
 
