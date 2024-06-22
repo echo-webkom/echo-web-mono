@@ -12,8 +12,7 @@ import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
   const user = await getUser();
-  const programmerbarStatus = (await getProgrammerbarStatus()).message;
-  const sucsessfullCall = (await getProgrammerbarStatus()).success;
+  const message = (await getProgrammerbarStatus()).message;
 
   return (
     <div className="sticky top-0 z-20">
@@ -28,9 +27,9 @@ export async function SiteHeader() {
               </div>
 
               <div
-                className={`z-50 rounded-md bg-primary px-2 py-1 text-xs text-white ${sucsessfullCall ? "hidden" : "block"}`}
+                className={`z-50 rounded-md bg-primary px-2 py-1 text-xs text-white ${message === "" ? "hidden" : "block"}`}
               >
-                <p>{programmerbarStatus}</p>
+                <p>{message}</p>
               </div>
             </div>
 
