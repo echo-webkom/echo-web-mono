@@ -81,7 +81,7 @@ export async function fetchFilteredHappening(
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
-        const { date } = happening;
+        const { date, endDate } = happening;
 
         if (!date) {
           return false;
@@ -89,9 +89,9 @@ export async function fetchFilteredHappening(
 
         if (!q.past && !dateFilter) return false;
 
-        if (q.past) return new Date(date) < new Date();
+        if (q.past) return new Date(endDate ? endDate : date) < new Date();
 
-        return new Date(date) >= subMinutes(new Date(), 5);
+        return new Date(endDate ? endDate : date) >= subMinutes(new Date(), 5);
       })
       .filter((happening) => {
         const { happeningType } = happening;
@@ -124,7 +124,7 @@ export async function fetchFilteredHappening(
     happenings:
       dateFilter && !q.past
         ? filteredHappenings.filter((happening) => {
-            const { date } = happening;
+            const { date, endDate } = happening;
 
             if (!date) {
               return false;
@@ -133,7 +133,9 @@ export async function fetchFilteredHappening(
             return dateFilter.some((f) => {
               return (
                 (f.start ?? f.end) &&
-                (!f.start || new Date(date) >= f.start) &&
+                (!f.start ||
+                  new Date(date) >= f.start ||
+                  (endDate && new Date(endDate) >= f.start)) &&
                 (!f.end || new Date(date) < f.end)
               );
             });

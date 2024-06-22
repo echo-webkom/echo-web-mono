@@ -7,6 +7,7 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
+import { shortDateNoTimeWithEndDate } from "@/utils/date";
 import { capitalize } from "@/utils/string";
 
 type CombinedHappeningPreviewProps = {
@@ -36,7 +37,7 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
             {happening.date && (
               <li>
                 <span className="font-semibold">Dato:</span>{" "}
-                {format(new Date(happening.date), "d. MMMM yyyy", { locale: nb })}
+                {shortDateNoTimeWithEndDate(happening.date, happening.endDate ?? undefined)}
               </li>
             )}
             <li>
