@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
+import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -8,7 +9,6 @@ import { ModeToggle } from "./theme-switch-button";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
-import { getUser } from "@/lib/get-user";
 
 export async function SiteHeader() {
   const user = await getUser();
@@ -24,7 +24,7 @@ export async function SiteHeader() {
               <div className="z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
                 <p>{getRandomMessage()}</p>
               </div>
-              <div className=" z-50  rounded-md bg-primary px-2 py-1 text-xs text-white">
+              <div className="z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
                 <p>{(await getProgrammerbarStatus()).message}</p>
               </div>
             </div>
