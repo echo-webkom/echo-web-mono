@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
-import HappyBoss from "@/assets/images/happy-boss.png";
-import HappyStudents from "@/assets/images/happy-students.png";
+import EchoLogo from "@/assets/images/echo-logo.png";
 import { Reveal } from "@/components/animations/reveal";
 import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
@@ -90,8 +89,9 @@ export default async function HomePage() {
 
         <div className="mx-auto mt-10 max-w-screen-lg space-y-32">
           <div className="grid items-center gap-16 md:grid-cols-2">
-            <Reveal className="flex items-center justify-end" translateX={-200}>
-              <Image src={HappyStudents} alt="Happy students" height={500} width={400} />
+            {/* TODO: Add image of students */}
+            <Reveal className="flex items-center justify-center" translateX={-200}>
+              <Image src={EchoLogo} alt="Happy students" height={300} width={200} />
             </Reveal>
             <Reveal translateX={200}>
               <p className="mb-4 text-2xl font-medium">Hva er echo?</p>
@@ -178,9 +178,10 @@ export default async function HomePage() {
               </Link>
             </Reveal>
 
-            <Reveal className="flex items-center justify-start" translateX={200}>
+            {/* TODO: Add image */}
+            {/* <Reveal className="flex items-center justify-start" translateX={200}>
               <Image src={HappyBoss} alt="Happy boss" height={350} width={350} />
-            </Reveal>
+            </Reveal> */}
           </div>
         </div>
       </Container>
