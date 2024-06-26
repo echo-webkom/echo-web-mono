@@ -38,7 +38,7 @@
     "drizzle-kit": "0.22.7",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.15.7",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "eslintConfig": {
     "root": true,
