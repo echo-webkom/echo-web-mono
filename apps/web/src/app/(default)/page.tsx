@@ -159,6 +159,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid gap-16 md:grid-cols-2">
+            <div></div>
             <Reveal translateX={-200}>
               <p className="mb-4 text-2xl font-medium">For bedrifter</p>
 
