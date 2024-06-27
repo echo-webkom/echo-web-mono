@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "pnpm with-env tsx ./src/index.ts",
+    "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
