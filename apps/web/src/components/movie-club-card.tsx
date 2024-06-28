@@ -16,7 +16,7 @@ export default async function MovieClubCard() {
 
   if (!thisWeekMovie) {
     return (
-      <div className="text-center font-semibold">
+      <div className="text-center font-bold">
         <p>Ingen film denne uken</p>
       </div>
     );
