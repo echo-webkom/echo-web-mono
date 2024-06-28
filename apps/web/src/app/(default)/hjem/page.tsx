@@ -23,7 +23,10 @@ export default async function Home() {
         <Calendar />
       </Container>
 
-      <Container layout="larger" className="grid grid-cols-3 grid-rows-2 gap-8">
+      <Container
+        layout="larger"
+        className="flex space-y-8 md:grid md:grid-cols-3 md:grid-rows-2 md:gap-8 md:space-y-0"
+      >
         <ComingHappenings
           title="Kommende arrangementer"
           href="/for-studenter/arrangementer"
@@ -45,7 +48,7 @@ export default async function Home() {
         <JobAds className="col-span-2 row-span-1" />
       </Container>
 
-      <Container layout="larger" className="grid grid-cols-3 gap-8">
+      <Container layout="larger" className="space-y-8 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
         <FilmklubbMovies className="col-span-1" />
         <HyggkomList className="col-span-2" />
       </Container>

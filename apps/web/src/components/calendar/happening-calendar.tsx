@@ -76,7 +76,7 @@ export function Calendar({ events }: CalendarProps) {
 
   return (
     <div ref={ref} className="space-y-4">
-      <div ref={ref} className="mb-4 flex flex-col justify-between md:flex-row">
+      <div ref={ref} className="mb-4 flex justify-between">
         <Heading level={2}>Uke {week()}</Heading>
 
         <div className="flex justify-center gap-3">
