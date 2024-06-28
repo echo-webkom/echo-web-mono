@@ -58,6 +58,10 @@
     --selected: #ffeabb;
 
     --radius: 0.5rem;
+
+    /* https://www.feide.no/designmanual */
+    --feide: #1f4798;
+    --feide-hover: #88b3e0;
   }
 
   .dark {

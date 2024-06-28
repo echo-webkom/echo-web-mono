@@ -81,6 +81,10 @@ export default {
           DEFAULT: "var(--selected)",
           foreground: "var(--text-foreground)",
         },
+        feide: {
+          DEFAULT: "var(--feide)",
+          hover: "var(--feide-hover)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

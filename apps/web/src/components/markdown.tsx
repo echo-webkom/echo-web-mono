@@ -23,51 +23,84 @@ export function Markdown({ className, content }: MarkdownProps) {
     <div className={cn("max-w-3xl space-y-4", className)}>
       <ReactMarkdown
         components={{
-          h1: ({ children }) => {
-            return <Heading level={1}>{children}</Heading>;
-          },
-          h2: ({ children }) => {
-            return <Heading level={2}>{children}</Heading>;
-          },
-          h3: ({ children }) => {
-            return <Heading level={3}>{children}</Heading>;
-          },
-          h4: ({ children }) => {
-            return <Text className="font-bold">{children}</Text>;
-          },
-          h5: ({ children }) => {
-            return <Text className="font-bold">{children}</Text>;
-          },
-          h6: ({ children }) => {
-            return <Text className="font-bold">{children}</Text>;
-          },
-          p: ({ children }) => {
-            return <Text>{children}</Text>;
-          },
-          code: ({ children }) => {
+          h1: ({ children, ...props }) => {
             return (
-              <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-gray-700 dark:bg-wave dark:text-gray-100">
+              <Heading level={1} {...props} copyable>
+                {children}
+              </Heading>
+            );
+          },
+          h2: ({ children, ...props }) => {
+            return (
+              <Heading level={2} {...props} copyable>
+                {children}
+              </Heading>
+            );
+          },
+          h3: ({ children, ...props }) => {
+            return (
+              <Heading level={3} {...props} copyable>
+                {children}
+              </Heading>
+            );
+          },
+          h4: ({ children, ...props }) => {
+            return (
+              <Text className="font-bold" {...props}>
+                {children}
+              </Text>
+            );
+          },
+          h5: ({ children, ...props }) => {
+            return (
+              <Text className="font-bold" {...props}>
+                {children}
+              </Text>
+            );
+          },
+          h6: ({ children, ...props }) => {
+            return (
+              <Text className="font-bold" {...props}>
+                {children}
+              </Text>
+            );
+          },
+          p: ({ children, ...props }) => {
+            return <Text {...props}>{children}</Text>;
+          },
+          code: ({ children, className, ...props }) => {
+            return (
+              <code
+                className={cn(
+                  "rounded bg-gray-200 px-1 py-0.5 font-mono text-gray-700 dark:bg-wave dark:text-gray-100",
+                  className,
+                )}
+                {...props}
+              >
                 {children}
               </code>
             );
           },
-          blockquote: ({ children }) => {
+          blockquote: ({ children, className, ...props }) => {
             return (
-              <blockquote className="border-l-4 border-gray-300 py-4 pl-4 italic">
+              <blockquote
+                className={cn("border-l-4 border-gray-300 py-4 pl-4 italic", className)}
+                {...props}
+              >
                 {children}
               </blockquote>
             );
           },
-          ul: ({ children }) => {
-            return <UnorderedList>{children}</UnorderedList>;
+          ul: ({ children, ...props }) => {
+            return <UnorderedList {...props}>{children}</UnorderedList>;
           },
-          ol: ({ children }) => {
-            return <OrderedList>{children}</OrderedList>;
+          ol: ({ children, ...props }) => {
+            return <OrderedList {...props}>{children}</OrderedList>;
           },
-          li: ({ children }) => {
-            return <ListItem>{children}</ListItem>;
+          li: ({ children, ...props }) => {
+            return <ListItem {...props}>{children}</ListItem>;
           },
-          a: ({ children, href }) => {
+          a: ({ children, href, ...props }) => {
             const isExternal = href?.startsWith("http");
             const classNames = cn(
               "transition-colors underline font-medium duration-200 after:content-['_↗'] hover:text-blue-500",
@@ -83,6 +116,7 @@ export function Markdown({ className, content }: MarkdownProps) {
                   href={href ?? ""}
                   target="_blank"
                   rel="noopener noreferrer"
+                  {...props}
                 >
                   {children}
                 </a>
@@ -90,24 +124,25 @@ export function Markdown({ className, content }: MarkdownProps) {
             }
 
             return (
-              <Link className={classNames} href={href ?? ""}>
+              <Link className={classNames} href={href ?? ""} {...props}>
                 {children}
               </Link>
             );
           },
-          img: ({ src, alt }) => {
+          img: ({ src, alt, className, ...props }) => {
             return (
               <Image
                 src={src ?? ""}
                 alt={alt ?? ""}
+                {...props}
                 width="600"
                 height="400"
-                className="mx-auto h-auto max-w-full"
+                className={cn("mx-auto h-auto max-w-full", className)}
               />
             );
           },
-          hr: () => {
-            return <hr className="my-8 border-t-gray-300" />;
+          hr: ({ className, ...props }) => {
+            return <hr className={cn("my-8 border-t-gray-300", className)} {...props} />;
           },
         }}
         remarkPlugins={[remarkGfm]}

@@ -1,8 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 
+import EchoLogo from "@/assets/images/echo-logo.png";
+import { Feide } from "@/components/icons/feide";
 import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 
 const providers = [
@@ -14,24 +19,37 @@ const providers = [
 
 export function SignInButtons() {
   return (
-    <div>
-      <Heading className="text-center">Velg en måte å logge inn på</Heading>
+    <div className="mx-auto flex w-full max-w-[380px] flex-col rounded-2xl bg-muted p-8">
+      <Image src={EchoLogo} alt="echo logo" width={100} height={100} className="mx-auto" />
 
-      <div className="my-10 flex flex-col justify-center gap-3">
+      <Heading level={3} className="mb-8 text-center">
+        Velg en måte å logge inn på
+      </Heading>
+
+      <div className="mb-4 flex flex-col justify-center gap-3">
         {providers.map(({ id, name }) => (
-          <div className="mx-auto" key={id}>
+          <div key={id}>
             <Button
+              className="group w-full gap-2 bg-feide hover:bg-feide-hover hover:text-black"
               onClick={() =>
                 void signIn(id, {
                   callbackUrl: "/",
                 })
               }
             >
+              <Feide className="h-5 w-5" />
               Logg inn med {name}
             </Button>
           </div>
         ))}
       </div>
+
+      <Text size="sm" className="text-muted-foreground">
+        For å kunne logge inn må du være medlem av echo.{" "}
+        <Link className="underline" href="/om/vedtekter#§-2-medlemmer">
+          Les mer her.
+        </Link>
+      </Text>
     </div>
   );
 }
