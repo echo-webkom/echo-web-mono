@@ -20,7 +20,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "float-rotate.js"
   ],
   "exclude": ["node_modules"]
 }
