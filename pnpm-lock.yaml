@@ -193,8 +193,8 @@ importers:
         specifier: 11.2.12
         version: 11.2.12(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       groq:
-        specifier: 3.47.1
-        version: 3.47.1
+        specifier: 3.48.0
+        version: 3.48.0
       ics:
         specifier: ^3.7.6
         version: 3.7.6
@@ -549,8 +549,8 @@ importers:
         specifier: 0.31.2
         version: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       groq:
-        specifier: 3.47.1
-        version: 3.47.1
+        specifier: 3.48.0
+        version: 3.48.0
     devDependencies:
       '@echo-webkom/tsconfig':
         specifier: workspace:*
@@ -5423,6 +5423,10 @@ packages:
 
   groq@3.47.1:
     resolution: {integrity: sha512-8yMBfAsvKP8gYA8KQV83SjVgmChvqMNoPo1SmLdkCYs7IWRNsi1nU0l7YM6QsnOj8IWCM1TeEcvyC9iclgoaFQ==}
+    engines: {node: '>=18'}
+
+  groq@3.48.0:
+    resolution: {integrity: sha512-0l4wqGpaT4JPiVD34hlhQ9fV3I6tcj0O1tieJcOF33NcgjhrW7uXYEzWWQ8aHXzGDWhP7kMAz1HGaXNqTo+s4Q==}
     engines: {node: '>=18'}
 
   gunzip-maybe@1.4.2:
@@ -15014,6 +15018,8 @@ snapshots:
   groq@3.42.1: {}
 
   groq@3.47.1: {}
+
+  groq@3.48.0: {}
 
   gunzip-maybe@1.4.2:
     dependencies:
