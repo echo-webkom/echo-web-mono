@@ -7,7 +7,7 @@
     --background: #f9fafb;
     --foreground: #171923;
 
-    --muted: #f1f5f9;
+    --muted: #ebeef4;
     --muted-foreground: #64748b;
 
     --table-foreground: #010408;
@@ -19,7 +19,7 @@
     --popover: #f9fafb;
     --popover-foreground: #171923;
 
-    --card: #fff;
+    --muted: #ebeef4;
     --card-foreground: #171923;
 
     --border: #9db2cd;
