@@ -13,15 +13,15 @@ import {
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
-type NavigationContextType = {
+type MobileNavigationContextType = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const NavigationContext = createContext<NavigationContextType | null>(null);
+const MobileNavigationContext = createContext<MobileNavigationContextType | null>(null);
 
 const useNavigation = () => {
-  const context = useContext(NavigationContext);
+  const context = useContext(MobileNavigationContext);
 
   if (!context) {
     throw new Error("useNavigation must be used within a NavigationProvider");
@@ -30,53 +30,60 @@ const useNavigation = () => {
   return context;
 };
 
-const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
+const MobileNavigationOverlay = () => {
+  const { isOpen, setIsOpen } = useNavigation();
+
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
+      className="fixed left-0 top-0 h-full w-full bg-black bg-opacity-30"
+      onClick={() => setIsOpen(false)}
+    />
+  );
+};
+
+export const MobileNavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
   return (
-    <NavigationContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className="md:hidden">{children}</div>
-    </NavigationContext.Provider>
+    <MobileNavigationContext.Provider value={{ isOpen, setIsOpen }}>
+      {children}
+      <MobileNavigationOverlay />
+    </MobileNavigationContext.Provider>
   );
 };
 
-const MenuButton = () => {
+export const MobileMenuButton = () => {
   const { isOpen, setIsOpen } = useNavigation();
+
+  if (isOpen) {
+    return (
+      <button
+        className="flex flex-row items-center gap-1 rounded-md p-2 hover:bg-muted md:hidden"
+        onClick={() => setIsOpen(false)}
+      >
+        <span className="sr-only">Lukk meny</span>
+        <Cross className="h-7 w-7" />
+      </button>
+    );
+  }
 
   return (
     <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
+      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground md:hidden"
       onClick={() => setIsOpen(!isOpen)}
     >
       <span className="sr-only">Meny</span>
       <HamburgerMenu className="h-7 w-7" />
-    </button>
-  );
-};
-
-const CloseMenuButton = () => {
-  const { setIsOpen } = useNavigation();
-
-  return (
-    <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-muted-foreground hover:bg-muted"
-      onClick={() => setIsOpen(false)}
-    >
-      <span className="sr-only">Lukk meny</span>
-      <Cross className="h-7 w-7" />
     </button>
   );
 };
@@ -88,11 +95,19 @@ const MenuContent = ({ children }: { children: React.ReactNode }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ y: -1000 }}
-          animate={{ y: 0 }}
-          exit={{ y: -1000 }}
-          transition={{ duration: 0.5 }}
-          className="fixed left-0 top-0 z-50 h-full min-h-screen w-full overflow-y-scroll bg-background px-6 pb-24 pt-6 dark:text-foreground"
+          className="absolute left-0 z-20 w-full border-b bg-background px-4 py-8"
+          // initial={{
+          //   height: 0,
+          // }}
+          // animate={{
+          //   height: "auto",
+          // }}
+          // exit={{
+          //   height: 0,
+          // }}
+          // transition={{
+          //   duration: 0.3,
+          // }}
         >
           {children}
         </motion.div>
@@ -107,7 +122,7 @@ const MenuLink = ({ to, children }: { to: string; children: React.ReactNode }) =
   return (
     <Link
       href={to}
-      className="block rounded-md p-4 text-2xl text-gray-600 hover:bg-muted dark:text-foreground"
+      className="block rounded-md p-4 text-xl text-gray-600 hover:bg-muted dark:text-foreground"
       onClick={() => setIsOpen(false)}
     >
       {children}
@@ -124,7 +139,7 @@ const MenuItem = ({ label, children }: { label: string; children: React.ReactNod
         className="flex w-full flex-row items-center gap-1 rounded-md p-4 text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-2xl">{label}</span>
+        <span className="text-xl">{label}</span>
         <span>
           <ChevronDown
             className={cn("h-7 w-7 text-gray-400 transition duration-200 ease-in-out", {
@@ -154,51 +169,43 @@ const MenuDropdown = ({ children }: { children: React.ReactNode }) => {
   return <ul className="w-full items-start">{children}</ul>;
 };
 
-export const MobileNavigation = () => {
+export const MobileNavigationViewport = () => {
   return (
-    <NavigationRoot>
-      <MenuButton />
-
-      <MenuContent>
-        <div className="flex items-center justify-end">
-          <CloseMenuButton />
-        </div>
-
-        {headerRoutes.map((route) => {
-          if ("href" in route) {
-            return (
-              <MenuLink key={route.label} to={route.href}>
-                {route.label}
-              </MenuLink>
-            );
-          }
-
+    <MenuContent>
+      {headerRoutes.map((route) => {
+        if ("href" in route) {
           return (
-            <MenuItem key={route.label} label={route.label}>
-              <MenuDropdown>
-                {route.links.map((link) => (
-                  <li key={link.label} className="w-full">
-                    <Link
-                      className="flex items-center rounded-lg p-4 hover:bg-muted"
-                      href={link.href}
-                    >
-                      <div className="flex items-center gap-4">
-                        {React.createElement(link.icon, { className: "h-6 w-6" })}
+            <MenuLink key={route.label} to={route.href}>
+              {route.label}
+            </MenuLink>
+          );
+        }
+
+        return (
+          <MenuItem key={route.label} label={route.label}>
+            <MenuDropdown>
+              {route.links.map((link) => (
+                <li key={link.label} className="w-full">
+                  <Link
+                    className="flex items-center rounded-lg p-4 hover:bg-muted"
+                    href={link.href}
+                  >
+                    <div className="flex items-center gap-4">
+                      {React.createElement(link.icon, { className: "h-6 w-6" })}
+                      <div>
                         <div>
-                          <div>
-                            <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
-                            <p className="text-sm text-muted-foreground">{link.description}</p>
-                          </div>
+                          <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
+                          <p className="text-sm text-muted-foreground">{link.description}</p>
                         </div>
                       </div>
-                    </Link>
-                  </li>
-                ))}
-              </MenuDropdown>
-            </MenuItem>
-          );
-        })}
-      </MenuContent>
-    </NavigationRoot>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </MenuDropdown>
+          </MenuItem>
+        );
+      })}
+    </MenuContent>
   );
 };
