@@ -1,8 +1,5 @@
-import { redirect } from "next/navigation";
-
-import { auth } from "@echo-webkom/auth";
-
 import { Container } from "@/components/container";
+import { ensureUser } from "@/lib/ensure";
 import { Calendar } from "./_components/calendar";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
@@ -11,11 +8,9 @@ import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
 
 export default async function Home() {
-  const user = await auth();
-
-  if (!user) {
-    return redirect("/");
-  }
+  await ensureUser(undefined, {
+    redirectTo: "/",
+  });
 
   return (
     <div className="space-y-8 py-24">

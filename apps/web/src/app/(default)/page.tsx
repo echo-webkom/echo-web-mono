@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
@@ -10,15 +9,13 @@ import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
-import { getUser } from "@/lib/get-user";
+import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
 
 export default async function HomePage() {
-  const user = await getUser();
-
-  if (user) {
-    return redirect("/hjem");
-  }
+  await ensureAnonymous({
+    redirectTo: "/hjem",
+  });
 
   const [bedpresses, events] = await Promise.all([
     fetchHomeHappenings(["bedpres"], 4),

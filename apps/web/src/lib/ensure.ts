@@ -52,3 +52,16 @@ export const ensureWebkomOrHovedstyret = async () => ensureUser(["webkom", "hove
  * @returns the user
  */
 export const ensureBedkom = async () => ensureUser(["bedkom", "webkom"]);
+
+/**
+ * Ensures that the user is not logged in.
+ *
+ * @param options
+ */
+export const ensureAnonymous = async (options: EnsureOptions = {}) => {
+  const user = await getUser();
+
+  if (user) {
+    redirect(options.redirectTo ?? "/");
+  }
+};
