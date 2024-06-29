@@ -20,7 +20,7 @@
     "db:down": "pnpm --filter=db db:down",
     "db:remove": "pnpm db:down && rm -rf packages/db/postgres-data",
     "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate",
-    "seed": "pnpm --filter=seeder start",
+    "seed": "pnpm --filter=seeder seed:start",
     "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
     "email:preview": "pnpm --filter=email preview",
     "lint": "turbo run lint",
