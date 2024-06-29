@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ComponentProps } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
 
@@ -92,17 +92,6 @@ export function Calendar({ events }: CalendarProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-5">
-        <div className="flex items-center gap-1">
-          <Circle className="bg-red-400" />
-          Bedpres
-        </div>
-        <div className="flex items-center gap-1">
-          <Circle className="bg-blue-400" />
-          Annet
-        </div>
-      </div>
-
       <div className="mb-10 h-72 overflow-hidden rounded-lg border">
         <div
           className="h-full divide-x"
@@ -177,8 +166,4 @@ export function Calendar({ events }: CalendarProps) {
       </div>
     </div>
   );
-}
-
-function Circle({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("h-4 w-4 rounded-full", className)} {...props} />;
 }
