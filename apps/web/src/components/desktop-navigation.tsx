@@ -33,7 +33,7 @@ const useNavigation = () => {
   return context;
 };
 
-export const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
+export const DesktopNavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const [activeDropdown, setActiveDropdown] = useState<{
     id: string;
     children: React.ReactNode;
@@ -126,7 +126,7 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const NavigationViewport = () => {
+export const DesktopNavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
   const [contentHeight, setContentHeight] = useState(0);
