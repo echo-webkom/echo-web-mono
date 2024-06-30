@@ -15,45 +15,33 @@ type EventPageProps = {
 
 export const EventPage = ({ event }: EventPageProps) => {
   return (
-    <Container className="flex w-full py-10 md:max-w-[700px] lg:max-w-[1500px]">
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <HappeningSidebar event={event} />
+    <Container className="flex w-full gap-24 py-10 md:max-w-[700px] lg:max-w-[1500px] lg:flex-row">
+      <HappeningSidebar event={event} />
 
-        {/* Content */}
-        <div className="w-full">
-          <article>
-            <Heading>{event.title}</Heading>
+      <div>
+        <article>
+          <Heading className="mb-4">{event.title}</Heading>
 
-            {event.body ? (
-              <Markdown content={event.body} />
-            ) : (
-              <div className="mx-auto flex w-fit flex-col gap-8 p-5">
-                <h3 className="text-center text-xl font-medium">Mer informasjon kommer!</h3>
-                <Image
-                  className="rounded-lg"
-                  src="/gif/wallace-construction.gif"
-                  alt="Wallace hammering"
-                  width={400}
-                  height={400}
-                />
-              </div>
-            )}
-          </article>
+          {event.body ? (
+            <Markdown content={event.body} />
+          ) : (
+            <div className="mx-auto flex w-fit flex-col gap-8 p-5">
+              <h3 className="text-center text-xl font-medium">Mer informasjon kommer!</h3>
+              <Image
+                className="rounded-lg"
+                src="/gif/wallace-construction.gif"
+                alt="Wallace hammering"
+                width={400}
+                height={400}
+              />
+            </div>
+          )}
+        </article>
 
-          <Suspense fallback={null}>
-            <CommentSection className="mt-10" id={`event_${event._id}`} />
-          </Suspense>
-        </div>
+        <Suspense fallback={null}>
+          <CommentSection className="mt-10" id={`event_${event._id}`} />
+        </Suspense>
       </div>
-
-      {/* <div className="mt-10 text-center text-muted-foreground">
-        <Text size="sm" className="p-0">
-          Publisert: {shortDate(event._createdAt)}
-        </Text>
-        <Text size="sm" className="p-0">
-          Sist oppdatert: {shortDate(event._updatedAt)}
-        </Text>
-      </div> */}
     </Container>
   );
 };

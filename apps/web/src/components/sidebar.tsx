@@ -14,7 +14,10 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex h-full w-full flex-col gap-3 lg:max-w-[250px]", className)}
+        className={cn(
+          "flex w-full flex-col gap-3 rounded-xl bg-muted p-10 lg:max-w-[325px]",
+          className,
+        )}
       >
         {childrenArray.map((child, index) => {
           if (!React.isValidElement(child) || child.type !== SidebarItem) {

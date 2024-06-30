@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
 
-import { cn } from "@/utils/cn";
 import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
