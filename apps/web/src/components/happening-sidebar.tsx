@@ -101,358 +101,359 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       : false;
 
   return (
-    <Sidebar>
+    <div className="flex flex-col gap-4">
       {/**
        * Show warning if:
        * - Event is not happening
        * - Event is not external
        */}
       {!happening && event.happeningType !== "external" && (
-        <SidebarItem>
-          <Callout type="warning" noIcon>
-            <p className="font-semibold">Fant ikke arrangementet.</p>
-            <p>Kontakt Webkom!</p>
-          </Callout>
-        </SidebarItem>
+        <Callout type="warning" noIcon>
+          <p className="font-semibold">Fant ikke arrangementet.</p>
+          <p>Kontakt Webkom!</p>
+        </Callout>
       )}
-      {/**
-       * Show company logo if:
-       * - There is a company
-       */}
-      {event.company && (
-        <SidebarItem>
-          <Link href={event.company.website}>
-            <Image
-              src={urlFor(event.company.image).url()}
-              alt={`${event.company.name} logo`}
-              width={700}
-              height={475}
-              className="h-auto w-full"
-            />
-          </Link>
-        </SidebarItem>
-      )}
-      {event.company && (
-        <SidebarItem>
-          <SidebarItemTitle>Bedrift:</SidebarItemTitle>
-          <SidebarItemContent>
-            <Link className="hover:underline" href={event.company.website}>
-              {event.company.name}
-              <ExternalLink className="ml-1 inline-block h-4 w-4" />
-            </Link>
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show date if:
-       * - There is a date set
-       */}
-      {event.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Dato:</SidebarItemTitle>
-          <SidebarItemContent>
-            <AddToCalender
-              date={new Date(event.date)}
-              endDate={event.endDate ? new Date(event.endDate) : undefined}
-              title={event.title}
-            />
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show time if:
-       * - There is a date set
-       */}
-      {event.date && (
-        <SidebarItem>
-          <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
-          <SidebarItemContent>
-            {timeWithEndTime(event.date, event.endDate ?? undefined)}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {event.endDate && !isSameDate(event.date, event.endDate) && (
-        <SidebarItem>
-          <SidebarItemTitle>Slutt:</SidebarItemTitle>
-          <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show spot ranges if:
-       * - There are spot ranges
-       */}
-      {spotRanges.length > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Plasser:</SidebarItemTitle>
-          {spotRanges.map((range) => (
-            <SidebarItemContent key={range.id}>
-              {range.spots || "Uendelig"} plasser for
-              {range.minYear === range.maxYear ? (
-                <span> {range.minYear}. trinn</span>
-              ) : (
-                <span>
-                  {" "}
-                  {range.minYear} - {range.maxYear}. trinn
-                </span>
-              )}
-            </SidebarItemContent>
-          ))}
-        </SidebarItem>
-      )}
-      {/**
-       * Show registered count if:
-       * - People can reigster
-       */}
-      {spotRanges.length > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
-          <SidebarItemContent>
-            <RegistrationCount
-              happeningId={event._id}
-              maxCapacity={maxCapacity}
-              initialRegistaredCount={registeredCount}
-              initialWaitlistCount={waitlistCount}
-            />
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show location if:
-       * - There is a location set
-       */}
-      {event.location && (
-        <SidebarItem>
-          <SidebarItemTitle>Sted:</SidebarItemTitle>
-          <SidebarItemContent>{event.location.name}</SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show hosts if:
-       * - There are hosts
-       */}
-      {event.contacts && event.contacts.length > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
-          <SidebarItemContent>
-            <ul>
-              {event.contacts.map((contact) => (
-                <li key={contact.profile._id}>
-                  <a className="hover:underline" href={mailTo(contact.email)}>
-                    {contact.profile.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show deductable if:
-       * - There is a deductable
-       */}
-      {Boolean(event.cost) && (
-        <SidebarItem>
-          <SidebarItemTitle>Pris:</SidebarItemTitle>
-          <SidebarItemContent>{event.cost} kr</SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show waitlist count if:
-       * - Registration is open
-       * - There is a waitlist
-       */}
-      {isRegistrationOpen && waitlistCount > 0 && (
-        <SidebarItem>
-          <SidebarItemTitle>Venteliste:</SidebarItemTitle>
-          <SidebarItemContent>{waitlistCount}</SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show registration end date if:
-       * - Registration is open
-       * - Registration end date is set
-       */}
-      {isRegistrationOpen && happening?.registrationEnd && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
-          <SidebarItemContent>
-            {happening.registrationEnd.toLocaleDateString("nb-NO")}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show registration start date if:
-       * - Registration is not open
-       * - Registration start date is set
-       * - Registration is not closed
-       */}
-      {!isNormalRegistrationOpen && happening?.registrationStart && !isClosed && (
-        <SidebarItem>
-          <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
-          <SidebarItemContent>
-            {norwegianDateString(happening?.registrationStart)}
-          </SidebarItemContent>
-        </SidebarItem>
-      )}
-      {/**
-       * Show registration start date for groups if:
-       * - Registration is not open
-       * - Can early register
-       * - Registration start date for groups is set
-       * - Registration is not closed
-       */}
-      {!isNormalRegistrationOpen &&
-        canEarlyRegister &&
-        !isGroupRegistrationOpen &&
-        happening?.registrationStartGroups &&
-        !isClosed && (
+
+      <Sidebar>
+        {/**
+         * Show company logo if:
+         * - There is a company
+         */}
+        {event.company && (
           <SidebarItem>
-            <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
+            <Link href={event.company.website}>
+              <Image
+                src={urlFor(event.company.image).url()}
+                alt={`${event.company.name} logo`}
+                width={700}
+                height={475}
+                className="h-auto w-full"
+              />
+            </Link>
+          </SidebarItem>
+        )}
+        {event.company && (
+          <SidebarItem>
+            <SidebarItemTitle>Bedrift:</SidebarItemTitle>
             <SidebarItemContent>
-              {norwegianDateString(happening.registrationStartGroups)}
+              <Link className="hover:underline" href={event.company.website}>
+                {event.company.name}
+                <ExternalLink className="ml-1 inline-block h-4 w-4" />
+              </Link>
             </SidebarItemContent>
           </SidebarItem>
         )}
-      {/**
-       * Show deregister button if:
-       * - User is registered to happening
-       * - Happening has not passed
-       */}
-      {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
-        <SidebarItem>
-          <DeregisterButton id={event._id}>
-            Meld av
-            {registrations.find((registration) => registration.user.id === user?.id)?.status ===
-            "waiting"
-              ? " venteliste"
-              : ""}
-          </DeregisterButton>
-        </SidebarItem>
-      )}
-      {/**
-       * Show registration button if:
-       * - User is logged in
-       * - User has completed profile
-       * - User is not banned
-       * - There is a spot range (you can register to this event)
-       * - Registration is open
-       * - Registration is not closed
-       */}
-
-      {!isRegistered &&
-        isUserComplete &&
-        !isBannedFromBedpres &&
-        spotRanges.length > 0 &&
-        userRegistrationStart &&
-        !isClosed &&
-        isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
-          <SidebarItem className="relative">
-            <RegisterButton id={event._id} questions={happening?.questions ?? []} />
-            <Countdown toDate={userRegistrationStart} />
+        {/**
+         * Show date if:
+         * - There is a date set
+         */}
+        {event.date && (
+          <SidebarItem>
+            <SidebarItemTitle>Dato:</SidebarItemTitle>
+            <SidebarItemContent>
+              <AddToCalender
+                date={new Date(event.date)}
+                endDate={event.endDate ? new Date(event.endDate) : undefined}
+                title={event.title}
+              />
+            </SidebarItemContent>
           </SidebarItem>
         )}
-      {/**
-       * Show warning closed happening warning if:
-       * - User is logged in
-       * - Registration is closed
-       */}
-      {user && isClosed && (
-        <SidebarItem>
-          <Callout type="warning" noIcon>
-            <p className="font-semibold">Påmelding er stengt.</p>
-          </Callout>
-        </SidebarItem>
-      )}
-      {/**
-       * Show banned warning if:
-       * - User is logged in
-       * - User is banned
-       * - User is complete
-       */}
-      {user && isBannedFromBedpres && isUserComplete && (
-        <SidebarItem>
-          <Callout type="warning" noIcon>
-            <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
-          </Callout>
-        </SidebarItem>
-      )}
+        {/**
+         * Show time if:
+         * - There is a date set
+         */}
+        {event.date && (
+          <SidebarItem>
+            <SidebarItemTitle>Klokkeslett:</SidebarItemTitle>
+            <SidebarItemContent>
+              {timeWithEndTime(event.date, event.endDate ?? undefined)}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+        {event.endDate && !isSameDate(event.date, event.endDate) && (
+          <SidebarItem>
+            <SidebarItemTitle>Slutt:</SidebarItemTitle>
+            <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show spot ranges if:
+         * - There are spot ranges
+         */}
+        {spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Plasser:</SidebarItemTitle>
+            {spotRanges.map((range) => (
+              <SidebarItemContent key={range.id}>
+                {range.spots || "Uendelig"} plasser for
+                {range.minYear === range.maxYear ? (
+                  <span> {range.minYear}. trinn</span>
+                ) : (
+                  <span>
+                    {" "}
+                    {range.minYear} - {range.maxYear}. trinn
+                  </span>
+                )}
+              </SidebarItemContent>
+            ))}
+          </SidebarItem>
+        )}
+        {/**
+         * Show registered count if:
+         * - People can reigster
+         */}
+        {spotRanges.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
+            <SidebarItemContent>
+              <RegistrationCount
+                happeningId={event._id}
+                maxCapacity={maxCapacity}
+                initialRegistaredCount={registeredCount}
+                initialWaitlistCount={waitlistCount}
+              />
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show location if:
+         * - There is a location set
+         */}
+        {event.location && (
+          <SidebarItem>
+            <SidebarItemTitle>Sted:</SidebarItemTitle>
+            <SidebarItemContent>{event.location.name}</SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show hosts if:
+         * - There are hosts
+         */}
+        {event.contacts && event.contacts.length > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Kontaktpersoner:</SidebarItemTitle>
+            <SidebarItemContent>
+              <ul>
+                {event.contacts.map((contact) => (
+                  <li key={contact.profile._id}>
+                    <a className="hover:underline" href={mailTo(contact.email)}>
+                      {contact.profile.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show deductable if:
+         * - There is a deductable
+         */}
+        {Boolean(event.cost) && (
+          <SidebarItem>
+            <SidebarItemTitle>Pris:</SidebarItemTitle>
+            <SidebarItemContent>{event.cost} kr</SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show waitlist count if:
+         * - Registration is open
+         * - There is a waitlist
+         */}
+        {isRegistrationOpen && waitlistCount > 0 && (
+          <SidebarItem>
+            <SidebarItemTitle>Venteliste:</SidebarItemTitle>
+            <SidebarItemContent>{waitlistCount}</SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show registration end date if:
+         * - Registration is open
+         * - Registration end date is set
+         */}
+        {isRegistrationOpen && happening?.registrationEnd && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmeldingsfrist:</SidebarItemTitle>
+            <SidebarItemContent>
+              {happening.registrationEnd.toLocaleDateString("nb-NO")}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show registration start date if:
+         * - Registration is not open
+         * - Registration start date is set
+         * - Registration is not closed
+         */}
+        {!isNormalRegistrationOpen && happening?.registrationStart && !isClosed && (
+          <SidebarItem>
+            <SidebarItemTitle>Påmelding åpner:</SidebarItemTitle>
+            <SidebarItemContent>
+              {norwegianDateString(happening?.registrationStart)}
+            </SidebarItemContent>
+          </SidebarItem>
+        )}
+        {/**
+         * Show registration start date for groups if:
+         * - Registration is not open
+         * - Can early register
+         * - Registration start date for groups is set
+         * - Registration is not closed
+         */}
+        {!isNormalRegistrationOpen &&
+          canEarlyRegister &&
+          !isGroupRegistrationOpen &&
+          happening?.registrationStartGroups &&
+          !isClosed && (
+            <SidebarItem>
+              <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
+              <SidebarItemContent>
+                {norwegianDateString(happening.registrationStartGroups)}
+              </SidebarItemContent>
+            </SidebarItem>
+          )}
+        {/**
+         * Show deregister button if:
+         * - User is registered to happening
+         * - Happening has not passed
+         */}
+        {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
+          <SidebarItem>
+            <DeregisterButton id={event._id}>
+              Meld av
+              {registrations.find((registration) => registration.user.id === user?.id)?.status ===
+              "waiting"
+                ? " venteliste"
+                : ""}
+            </DeregisterButton>
+          </SidebarItem>
+        )}
+        {/**
+         * Show registration button if:
+         * - User is logged in
+         * - User has completed profile
+         * - User is not banned
+         * - There is a spot range (you can register to this event)
+         * - Registration is open
+         * - Registration is not closed
+         */}
 
-      {/**
-       * Show uncomplete user warning if:
-       * - User is logged in
-       * - User has not completed profile
-       */}
-      {user && !isUserComplete && (
-        <SidebarItem>
-          <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
-            <p className="mb-3 font-semibold">Du må fullføre brukeren din.</p>
-            <div className="group flex items-center">
-              <Link href="/auth/profil" className="hover:underline">
-                Her
-                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
-              </Link>
-            </div>
-          </div>
-        </SidebarItem>
-      )}
-      {/**
-       * Show warning for not being in group if:
-       * - User is logged in
-       * - User is not in any of the groups that can early register
-       * - Normal registration is not open.
-       * - Registration is not closed
-       */}
-      {user &&
-        !canEarlyRegister &&
-        happening?.registrationStartGroups &&
-        !isNormalRegistrationOpen &&
-        !isClosed && (
+        {!isRegistered &&
+          isUserComplete &&
+          !isBannedFromBedpres &&
+          spotRanges.length > 0 &&
+          userRegistrationStart &&
+          !isClosed &&
+          isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
+            <SidebarItem className="relative">
+              <RegisterButton id={event._id} questions={happening?.questions ?? []} />
+              <Countdown toDate={userRegistrationStart} />
+            </SidebarItem>
+          )}
+        {/**
+         * Show warning closed happening warning if:
+         * - User is logged in
+         * - Registration is closed
+         */}
+        {user && isClosed && (
           <SidebarItem>
             <Callout type="warning" noIcon>
-              {happening?.registrationStart ? (
-                <p className="font-semibold">Du kan ikke melde deg på enda.</p>
-              ) : (
-                <p className="font-semibold">
-                  Kun medlemmer av inviterte grupper kan melde seg på.
-                </p>
-              )}
+              <p className="font-semibold">Påmelding er stengt.</p>
             </Callout>
           </SidebarItem>
         )}
-      {/**
-       * Show login warning if:
-       * - User is not logged in
-       * - Registration start is set
-       */}
-      {!user && happening?.registrationStart && !isClosed && (
-        <SidebarItem>
-          <Callout type="warning" noIcon>
-            <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
-            <div className="group flex items-center">
-              <Link href="/auth/logg-inn" className="hover:underline">
-                Logg inn her
-                <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
-              </Link>
+        {/**
+         * Show banned warning if:
+         * - User is logged in
+         * - User is banned
+         * - User is complete
+         */}
+        {user && isBannedFromBedpres && isUserComplete && (
+          <SidebarItem>
+            <Callout type="warning" noIcon>
+              <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
+            </Callout>
+          </SidebarItem>
+        )}
+
+        {/**
+         * Show uncomplete user warning if:
+         * - User is logged in
+         * - User has not completed profile
+         */}
+        {user && !isUserComplete && (
+          <SidebarItem>
+            <div className="border-l-4 border-yellow-500 bg-wave p-4 text-yellow-700">
+              <p className="mb-3 font-semibold">Du må fullføre brukeren din.</p>
+              <div className="group flex items-center">
+                <Link href="/auth/profil" className="hover:underline">
+                  Her
+                  <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                </Link>
+              </div>
             </div>
-          </Callout>
-        </SidebarItem>
-      )}
-      {/**
-       * Show link to admin dashbord if:
-       * - User is host
-       */}
-      {isHost && (
-        <SidebarItem>
-          <Button variant="link" className="w-full" asChild>
-            <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
-          </Button>
-        </SidebarItem>
-      )}
-      {user && (
-        <SidebarItem>
-          <ReactionButtonGroup reactToKey={event._id} />
-        </SidebarItem>
-      )}
-    </Sidebar>
+          </SidebarItem>
+        )}
+        {/**
+         * Show warning for not being in group if:
+         * - User is logged in
+         * - User is not in any of the groups that can early register
+         * - Normal registration is not open.
+         * - Registration is not closed
+         */}
+        {user &&
+          !canEarlyRegister &&
+          happening?.registrationStartGroups &&
+          !isNormalRegistrationOpen &&
+          !isClosed && (
+            <SidebarItem>
+              <Callout type="warning" noIcon>
+                {happening?.registrationStart ? (
+                  <p className="font-semibold">Du kan ikke melde deg på enda.</p>
+                ) : (
+                  <p className="font-semibold">
+                    Kun medlemmer av inviterte grupper kan melde seg på.
+                  </p>
+                )}
+              </Callout>
+            </SidebarItem>
+          )}
+        {/**
+         * Show login warning if:
+         * - User is not logged in
+         * - Registration start is set
+         */}
+        {!user && happening?.registrationStart && !isClosed && (
+          <SidebarItem>
+            <Callout type="warning" noIcon>
+              <p className="mb-3 font-semibold">Du må logge inn for å melde deg på.</p>
+              <div className="group flex items-center">
+                <Link href="/auth/logg-inn" className="hover:underline">
+                  Logg inn her
+                  <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
+                </Link>
+              </div>
+            </Callout>
+          </SidebarItem>
+        )}
+        {/**
+         * Show link to admin dashbord if:
+         * - User is host
+         */}
+        {isHost && (
+          <SidebarItem>
+            <Button variant="link" className="w-full" asChild>
+              <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
+            </Button>
+          </SidebarItem>
+        )}
+        {user && (
+          <SidebarItem>
+            <ReactionButtonGroup reactToKey={event._id} />
+          </SidebarItem>
+        )}
+      </Sidebar>
+    </div>
   );
 }

@@ -32,8 +32,9 @@
 
     --secondary: #fed879;
     --secondary-foreground: #171923;
+    --secondary-hover: #ffe195;
 
-    --accent: #f1f5f9;
+    --accent: #ebeef4;
     --accent-foreground: #0f172a;
 
     --success: #48bb78;

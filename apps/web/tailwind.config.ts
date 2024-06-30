@@ -33,6 +33,7 @@ export default {
         secondary: {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
+          hover: "var(--secondary-hover)",
         },
         table: {
           foreground: "var(--table-foreground)",
