@@ -19,7 +19,7 @@ declare module "next-auth" {
 }
 
 type CreateAuthOptionsOptions = {
-  onSignInFail?: ({ email, error }: { email: string; error: string }) => Promise<void> | void;
+  onSignInFail?: ({ email, error }: { email: string; error: string }) => Promise<string> | string;
 };
 
 export const createAuthOptions = (
@@ -70,13 +70,13 @@ export const createAuthOptions = (
         }
 
         if (opts?.onSignInFail) {
-          await opts.onSignInFail({
+          return await opts.onSignInFail({
             email: profile.email,
             error: result,
           });
         }
 
-        return `/auth/logg-inn?error=${result}`;
+        return `/auth/logg-inn`;
       },
     },
 
