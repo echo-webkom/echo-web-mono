@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
@@ -27,5 +27,5 @@ export const reactionsRelations = relations(reactions, ({ one }) => ({
   }),
 }));
 
-export type Reaction = (typeof reactions)["$inferSelect"];
-export type ReactionInsert = (typeof reactions)["$inferInsert"];
+export type Reaction = InferSelectModel<typeof reactions>;
+export type ReactionInsert = InferInsertModel<typeof reactions>;

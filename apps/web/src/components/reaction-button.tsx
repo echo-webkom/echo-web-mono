@@ -45,7 +45,6 @@ export default function ReactionButton({
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form action={formAction}>
       <Button
         type="submit"

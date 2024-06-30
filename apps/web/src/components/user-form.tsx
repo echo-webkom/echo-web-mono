@@ -82,7 +82,6 @@ export function UserForm({ user, degrees }: UserFormProps) {
 
   return (
     <Form {...form}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={onSubmit} className="space-y-4">
         <FormField
           control={form.control}

@@ -25,8 +25,8 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
           "group flex items-center font-semibold tracking-tight",
           {
             "text-4xl": level === 1,
-            "text-3xl": level === 2,
-            "text-2xl": level === 3,
+            "text-2xl": level === 2,
+            "text-xl": level === 3,
           },
           className,
         )}

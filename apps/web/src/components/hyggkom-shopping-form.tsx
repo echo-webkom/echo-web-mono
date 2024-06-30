@@ -41,7 +41,6 @@ export function HyggkomShoppingForm() {
 
   return (
     <Form {...form}>
-      {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
       <form onSubmit={onSubmit} className="py-5">
         <div className="flex flex-col gap-3">
           <FormField

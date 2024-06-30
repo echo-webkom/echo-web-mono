@@ -43,7 +43,6 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
 
         <Button
           size="icon"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={handleToggleRead}
           variant={feedback.isRead ? "outline" : "secondary"}
         >

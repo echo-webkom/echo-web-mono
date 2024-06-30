@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
@@ -28,7 +28,7 @@ export const commentsInsert = relations(comments, ({ one, many }) => ({
   parentComment: one(comments, {
     fields: [comments.parentCommentId],
     references: [comments.id],
-    relationName: "parentComment",
+    relationName: "replies",
   }),
   user: one(users, {
     fields: [comments.userId],
@@ -39,5 +39,5 @@ export const commentsInsert = relations(comments, ({ one, many }) => ({
   }),
 }));
 
-export type Comment = (typeof comments)["$inferSelect"];
-export type CommentInsert = (typeof comments)["$inferInsert"];
+export type Comment = InferSelectModel<typeof comments>;
+export type CommentInsert = InferInsertModel<typeof comments>;

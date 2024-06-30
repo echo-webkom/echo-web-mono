@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -27,8 +27,8 @@ export const strikeInfoRelations = relations(strikeInfos, ({ one }) => ({
   }),
 }));
 
-export type StrikeInfo = (typeof strikeInfos)["$inferSelect"];
-export type StrikeInfoInsert = (typeof strikeInfos)["$inferInsert"];
+export type StrikeInfo = InferSelectModel<typeof strikeInfos>;
+export type StrikeInfoInsert = InferInsertModel<typeof strikeInfos>;
 
 export const selectStrikeInfoSchema = createSelectSchema(strikeInfos);
 export const insertStrikeInfoSchema = createInsertSchema(strikeInfos);

@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -54,8 +54,8 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   comments: many(comments),
 }));
 
-export type User = (typeof users)["$inferSelect"];
-export type UserInsert = (typeof users)["$inferInsert"];
+export type User = InferSelectModel<typeof users>;
+export type UserInsert = InferInsertModel<typeof users>;
 
 export const selectUserSchema = createSelectSchema(users);
 export const insertUserSchema = createInsertSchema(users);

@@ -91,7 +91,6 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
             </p>
           </div>
           <div className="px-4">
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <Switch checked={isLeader} onCheckedChange={handleSetIsLeader} />
           </div>
         </div>
@@ -101,7 +100,6 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
             <Label>Fjern fra gruppe</Label>
           </div>
           <div className="px-4">
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <Button onClick={handleRemoveUser} variant="destructive" size="icon">
               <Trash className="h-4 w-4" />
             </Button>

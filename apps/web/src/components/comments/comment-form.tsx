@@ -42,7 +42,6 @@ export const CommentForm = ({ id }: CommentFormProps) => {
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSumbit} className="flex w-full max-w-[500px] flex-col gap-4">
       <CommentTextarea
         id="content"

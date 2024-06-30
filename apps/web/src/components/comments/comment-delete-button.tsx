@@ -10,7 +10,6 @@ type CommentDeleteButtonProps = {
 
 export const CommentDeleteButton = ({ id }: CommentDeleteButtonProps) => {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form action={deleteCommentAction}>
       <input type="hidden" name="id" value={id} />
       <button

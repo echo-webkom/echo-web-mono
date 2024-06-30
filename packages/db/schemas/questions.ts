@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -37,8 +37,8 @@ export const questionsRelations = relations(questions, ({ one, many }) => ({
   answers: many(answers),
 }));
 
-export type Question = (typeof questions)["$inferSelect"];
-export type QuestionInsert = (typeof questions)["$inferInsert"];
+export type Question = InferSelectModel<typeof questions>;
+export type QuestionInsert = InferInsertModel<typeof questions>;
 
 export const selectQuestionSchema = createSelectSchema(questions);
 export const insertQuestionSchema = createInsertSchema(questions);

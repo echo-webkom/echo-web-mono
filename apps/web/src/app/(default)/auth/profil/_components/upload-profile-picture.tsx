@@ -62,7 +62,6 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
 
       <div>
         <input
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onChange={handleImageChange}
           ref={inputRef}
           type="file"
@@ -79,7 +78,6 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
           </button>
         ) : (
           <button
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={handleRemoveImage}
             type="button"
             className="w-fit text-red-600 hover:underline md:w-full md:text-center"

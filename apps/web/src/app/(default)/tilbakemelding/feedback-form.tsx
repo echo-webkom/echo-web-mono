@@ -50,7 +50,6 @@ export function FeedbackForm() {
 
   return (
     <Form {...form}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="flex flex-col gap-3">
           <FormField

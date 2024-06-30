@@ -103,7 +103,6 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
         </DialogHeader>
 
         <Form {...form}>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form className="grid gap-4 py-4" onSubmit={onSubmit}>
             <div className="flex flex-col gap-3">
               <FormField
@@ -168,7 +167,6 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
                 <Button variant="secondary" onClick={() => setIsConfirmOpen(false)}>
                   Avbryt
                 </Button>
-                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
                 <Button onClick={handleDelete} variant="destructive">
                   Ja, slett
                 </Button>

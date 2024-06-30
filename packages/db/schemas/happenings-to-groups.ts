@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -34,8 +34,8 @@ export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one 
   }),
 }));
 
-export type HappeningsToGroups = (typeof happeningsToGroups)["$inferSelect"];
-export type HappeningsToGroupsInsert = (typeof happeningsToGroups)["$inferInsert"];
+export type HappeningsToGroups = InferSelectModel<typeof happeningsToGroups>;
+export type HappeningsToGroupsInsert = InferInsertModel<typeof happeningsToGroups>;
 
 export const selectHappeningsToGroupsSchema = createSelectSchema(happeningsToGroups);
 export const insertHappeningsToGroupsSchema = createInsertSchema(happeningsToGroups);

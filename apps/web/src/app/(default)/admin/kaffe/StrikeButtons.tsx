@@ -40,9 +40,7 @@ export function StrikeButtons() {
 
   return (
     <div className="flex items-center gap-2">
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <Button onClick={handleAddReport}>Legg inn rapport</Button>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <Button onClick={handleReset} variant="destructive">
         Resett prikker
       </Button>
