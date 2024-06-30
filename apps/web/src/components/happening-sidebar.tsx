@@ -437,23 +437,21 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
             </Callout>
           </SidebarItem>
         )}
-        {/**
-         * Show link to admin dashbord if:
-         * - User is host
-         */}
-        {isHost && (
-          <SidebarItem>
-            <Button variant="link" className="w-full" asChild>
-              <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
-            </Button>
-          </SidebarItem>
-        )}
-        {user && (
-          <SidebarItem>
-            <ReactionButtonGroup reactToKey={event._id} />
-          </SidebarItem>
-        )}
       </Sidebar>
+      {/**
+       * Show link to admin dashbord if:
+       * - User is host
+       */}
+      {isHost && (
+        <Button variant="link" className="w-full" asChild>
+          <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
+        </Button>
+      )}
+      {/**
+       * Show reaction buttons if:
+       * - User is logged in
+       */}
+      {Boolean(user) && <ReactionButtonGroup reactToKey={event._id} />}
     </div>
   );
 }
