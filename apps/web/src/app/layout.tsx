@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
+import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {/* <CookieBanner /> */}
           <FeedbackBlob />
           <TailwindIndicator />
+          <EasterEgg />
         </Providers>
         <Analytics />
         <SpeedInsights />
