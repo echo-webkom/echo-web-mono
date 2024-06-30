@@ -44,3 +44,6 @@ dist
 # Terraform
 **/.terraform/*
 **/terraform.tfvars
+
+# Package
+.package.json
