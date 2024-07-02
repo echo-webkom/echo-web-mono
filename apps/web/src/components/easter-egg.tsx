@@ -22,7 +22,6 @@ export const EasterEgg = () => {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      console.log(e.key);
       setKeys((prev) => [...prev, e.key]);
     };
 
@@ -41,7 +40,7 @@ export const EasterEgg = () => {
     if (keys.join() === konamiCode.join()) {
       router.push("/webkom");
     }
-  }, [keys]);
+  }, [keys, router]);
 
   return null;
 };
