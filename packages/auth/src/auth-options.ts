@@ -1,8 +1,6 @@
-import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
-import { whitelist } from "@echo-webkom/db/schemas";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
@@ -44,18 +42,23 @@ export const createAuthOptions = (
           return false;
         }
 
-        const result = await isMemberOfecho(account.access_token);
+        const { success, error } = await isMemberOfecho(account.access_token);
 
-        if (result === true) {
+        if (success) {
           return true;
         }
 
-        if (!profile?.email) {
+        const email = profile?.email?.toLowerCase();
+        if (!email) {
+          // This should never happen
+          console.error("No email in profile", profile);
+
           return false;
         }
 
         const whitelistEntry = await db.query.whitelist.findFirst({
-          where: eq(whitelist.email, profile.email.toLowerCase()),
+          where: (whitelist, { and, eq, lte }) =>
+            and(lte(whitelist.expiresAt, new Date()), eq(whitelist.email, email)),
         });
 
         const today = new Date();
@@ -64,15 +67,15 @@ export const createAuthOptions = (
         }
 
         if (process.env.TESTING === "true") {
-          if (profile.email === "kjella@test.feide.no") {
+          if (email === "kjella@test.feide.no") {
             return true;
           }
         }
 
         if (opts?.onSignInFail) {
           return await opts.onSignInFail({
-            email: profile.email,
-            error: result,
+            error,
+            email,
           });
         }
 

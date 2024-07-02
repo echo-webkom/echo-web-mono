@@ -1,4 +1,4 @@
-import { SignInError } from "./error";
+import { SignInError, type ISignInError } from "./error";
 
 const FEIDE_GROUPS_ENDPOINT = "https://groups-api.dataporten.no";
 
@@ -29,7 +29,18 @@ const VALID_PROGRAM_IDS = [
   "POST",
 ];
 
-export async function isMemberOfecho(accessToken: string) {
+export type IsMemberOfechoFn = (accessToken: string) => Promise<
+  | {
+      success: true;
+      error: undefined;
+    }
+  | {
+      success: false;
+      error: ISignInError;
+    }
+>;
+
+export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
   try {
     const response = await fetch(`${FEIDE_GROUPS_ENDPOINT}/groups/me/groups`, {
       headers: {
@@ -38,7 +49,10 @@ export async function isMemberOfecho(accessToken: string) {
     });
 
     if (response.status > 200) {
-      return SignInError.INVALID_TOKEN;
+      return {
+        success: false,
+        error: SignInError.INTERNAL_ERROR,
+      };
     }
 
     const groups = (await response.json()) as Array<GroupsResponse>;
@@ -50,15 +64,19 @@ export async function isMemberOfecho(accessToken: string) {
     );
 
     if (!isMemberOfecho) {
-      return SignInError.NOT_MEMBER_OF_ECHO;
+      return {
+        success: false,
+        error: SignInError.NOT_MEMBER_OF_ECHO,
+      };
     }
 
-    return true;
+    return {
+      success: true,
+    };
   } catch (error) {
-    if (error instanceof SyntaxError) {
-      return SignInError.INVALID_TOKEN;
-    }
-
-    return SignInError.INTERNAL_ERROR;
+    return {
+      success: false,
+      error: SignInError.INTERNAL_ERROR,
+    };
   }
-}
+};
