@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -45,8 +45,8 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
   }),
 }));
 
-export type Registration = (typeof registrations)["$inferSelect"];
-export type RegistrationInsert = (typeof registrations)["$inferInsert"];
+export type Registration = InferSelectModel<typeof registrations>;
+export type RegistrationInsert = InferInsertModel<typeof registrations>;
 
 export const selectRegistrationSchema = createSelectSchema(registrations);
 export const insertRegistrationSchema = createInsertSchema(registrations);

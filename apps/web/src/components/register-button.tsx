@@ -80,7 +80,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
 
   if (questions.length === 0) {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (
           <>
@@ -114,7 +113,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form onSubmit={onSubmit} className="space-y-4">
             <DialogHeader>
               <DialogTitle>Tilleggsspørsmål</DialogTitle>

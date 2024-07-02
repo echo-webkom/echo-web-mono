@@ -107,7 +107,6 @@ export function UserForm({ user, groups }: UserFormProps) {
           </div>
 
           <Form {...form}>
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
             <form onSubmit={onSubmit} className="space-y-8">
               <FormField
                 control={form.control}

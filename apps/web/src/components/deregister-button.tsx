@@ -82,7 +82,6 @@ export function DeregisterButton({ id, children }: DeregisterButtonProps) {
             av. Husk at prikken kan medfølge.
           </DialogDescription>
         </DialogHeader>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">

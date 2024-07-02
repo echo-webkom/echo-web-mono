@@ -4,3 +4,4 @@ export { default as RegistrationConfirmationEmail } from "./emails/registration-
 export { default as DeregistrationNotificationEmail } from "./emails/deregistration-notification";
 export { default as GotSpotNotificationEmail } from "./emails/got-spot-notification";
 export { default as StrikeNotificationEmail } from "./emails/strike-notification";
+export { default as AccessGrantedEmail } from "./emails/access-granted";

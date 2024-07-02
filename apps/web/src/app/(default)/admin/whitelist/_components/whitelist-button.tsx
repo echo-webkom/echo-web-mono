@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { removeWhitelist, upsertWhitelist } from "@/actions/whitelist";
-import { useToast } from "@/hooks/use-toast";
-import { Button, type ButtonProps } from "./ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +16,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Input } from "./ui/input";
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 const whitelistFormSchema = z.object({
   email: z.string().email("Ugyldig e-post"),
@@ -35,11 +42,11 @@ type Props = {
   };
 } & ButtonProps;
 
-export default function WhitelistButton({
+export const WhitelistButton = ({
   children,
   whitelistEntry,
   ...buttonProps
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -97,7 +104,6 @@ export default function WhitelistButton({
         </DialogHeader>
 
         <Form {...form}>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form className="grid gap-4 py-4" onSubmit={onSubmit}>
             <div className="flex flex-col gap-3">
               <FormField
@@ -166,4 +172,4 @@ export default function WhitelistButton({
       </DialogContent>
     </Dialog>
   );
-}
+};

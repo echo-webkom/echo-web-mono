@@ -1,3 +1,4 @@
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -13,8 +14,8 @@ export const verificationTokens = pgTable(
   }),
 );
 
-export type VerificationToken = (typeof verificationTokens)["$inferSelect"];
-export type VerificationTokenInsert = (typeof verificationTokens)["$inferInsert"];
+export type VerificationToken = InferSelectModel<typeof verificationTokens>;
+export type VerificationTokenInsert = InferInsertModel<typeof verificationTokens>;
 
 export const selectVerificationTokenSchema = createSelectSchema(verificationTokens);
 export const insertVerificationTokenSchema = createInsertSchema(verificationTokens);

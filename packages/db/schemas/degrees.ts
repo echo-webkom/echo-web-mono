@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
@@ -22,8 +22,8 @@ export const degreesRelations = relations(degrees, ({ many }) => ({
   users: many(users),
 }));
 
-export type Degree = (typeof degrees)["$inferSelect"];
-export type DegreeInsert = (typeof degrees)["$inferInsert"];
+export type Degree = InferSelectModel<typeof degrees>;
+export type DegreeInsert = InferInsertModel<typeof degrees>;
 
 export const selectDegreeSchema = createSelectSchema(degrees);
 export const insertDegreeSchema = createInsertSchema(degrees);

@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -31,8 +31,8 @@ export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
   }),
 }));
 
-export type UsersToGroups = (typeof usersToGroups)["$inferSelect"];
-export type UsersToGroupsInsert = (typeof usersToGroups)["$inferInsert"];
+export type UsersToGroups = InferSelectModel<typeof usersToGroups>;
+export type UsersToGroupsInsert = InferInsertModel<typeof usersToGroups>;
 
 export const selectUsersToGroupsSchema = createSelectSchema(usersToGroups);
 export const insertUsersToGroupsSchema = createInsertSchema(usersToGroups);

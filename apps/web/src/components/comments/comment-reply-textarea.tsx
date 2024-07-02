@@ -24,7 +24,6 @@ export const CommentReplyTextarea = () => {
   }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSubmit}>
       <CommentTextarea
         className="max-w-[300px]"

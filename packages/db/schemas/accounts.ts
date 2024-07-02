@@ -1,3 +1,4 @@
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccount } from "next-auth/adapters";
@@ -26,8 +27,8 @@ export const accounts = pgTable(
   }),
 );
 
-export type Account = (typeof accounts)["$inferSelect"];
-export type AccountInsert = (typeof accounts)["$inferInsert"];
+export type Account = InferSelectModel<typeof accounts>;
+export type AccountInsert = InferInsertModel<typeof accounts>;
 
 export const selectAccountSchema = createSelectSchema(accounts);
 export const insertAccountSchema = createInsertSchema(accounts);

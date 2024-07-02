@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -31,8 +31,8 @@ export const usersToShoppingListItemsRelations = relations(usersToShoppingListIt
   }),
 }));
 
-export type UsersToShoppingListItems = (typeof usersToShoppingListItems)["$inferSelect"];
-export type UsersToShoppingListItemsInsert = (typeof usersToShoppingListItems)["$inferInsert"];
+export type UsersToShoppingListItems = InferSelectModel<typeof usersToShoppingListItems>;
+export type UsersToShoppingListItemsInsert = InferInsertModel<typeof usersToShoppingListItems>;
 
 export const selectUsersToShoppingListItemsSchema = createSelectSchema(usersToShoppingListItems);
 export const insertUsersToShoppingListItemsSchema = createInsertSchema(usersToShoppingListItems);
