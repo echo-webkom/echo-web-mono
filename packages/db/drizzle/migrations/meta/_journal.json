@@ -141,6 +141,13 @@
       "when": 1717709479243,
       "tag": "0019_young_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1719939189981,
+      "tag": "0020_fixed_fabian_cortez",
+      "breakpoints": true
     }
   ]
 }

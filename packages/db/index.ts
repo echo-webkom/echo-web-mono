@@ -3,6 +3,8 @@ import postgres from "postgres";
 
 import * as schema from "./schemas";
 
+export { PostgresError } from "postgres";
+
 const globalForPool = globalThis as unknown as {
   pool: ReturnType<typeof postgres> | undefined;
 };

@@ -1,3 +1,5 @@
+import { SignInError } from "./error";
+
 const FEIDE_GROUPS_ENDPOINT = "https://groups-api.dataporten.no";
 
 type GroupsResponse = {
@@ -26,15 +28,6 @@ const VALID_PROGRAM_IDS = [
   "5MAMN-DSC",
   "POST",
 ];
-
-export const SignInError = {
-  NOT_MEMBER_OF_ECHO: "NOT_MEMBER_OF_ECHO",
-  INVALID_TOKEN: "INVALID_TOKEN",
-  INTERNAL_ERROR: "INTERNAL_ERROR",
-} as const;
-
-export const isValidSignInError = (error: string): error is keyof typeof SignInError =>
-  Object.keys(SignInError).includes(error);
 
 export async function isMemberOfecho(accessToken: string) {
   try {

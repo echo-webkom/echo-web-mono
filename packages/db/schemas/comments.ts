@@ -28,7 +28,7 @@ export const commentsInsert = relations(comments, ({ one, many }) => ({
   parentComment: one(comments, {
     fields: [comments.parentCommentId],
     references: [comments.id],
-    relationName: "parentComment",
+    relationName: "replies",
   }),
   user: one(users, {
     fields: [comments.userId],
