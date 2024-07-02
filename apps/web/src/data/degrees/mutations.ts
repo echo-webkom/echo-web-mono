@@ -5,19 +5,19 @@ import { degrees, type Degree, type DegreeInsert } from "@echo-webkom/db/schemas
 
 import { revalidateDegrees } from "./revalidate";
 
-export async function createDegree(newDegree: DegreeInsert) {
+export const createDegree = async (newDegree: DegreeInsert) => {
   await db.insert(degrees).values(newDegree);
 
   revalidateDegrees();
-}
+};
 
-export async function deleteDegree(id: string) {
+export const deleteDegree = async (id: string) => {
   await db.delete(degrees).where(eq(degrees.id, id));
 
   revalidateDegrees();
-}
+};
 
-export async function updateDegree(updatedDegree: Degree) {
+export const updateDegree = async (updatedDegree: Degree) => {
   await db
     .update(degrees)
     .set({
@@ -26,4 +26,4 @@ export async function updateDegree(updatedDegree: Degree) {
     .where(eq(degrees.id, updatedDegree.id));
 
   revalidateDegrees();
-}
+};

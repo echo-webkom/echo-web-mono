@@ -5,7 +5,7 @@ import { type Adapter } from "next-auth/adapters";
 
 import { accounts, sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 
-export function DrizzleAdapter(client: InstanceType<typeof PgDatabase>): Adapter {
+export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter => {
   return {
     async createUser(data) {
       return await client
@@ -167,4 +167,4 @@ export function DrizzleAdapter(client: InstanceType<typeof PgDatabase>): Adapter
       return { provider, type, providerAccountId, userId };
     },
   };
-}
+};

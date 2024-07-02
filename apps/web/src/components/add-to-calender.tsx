@@ -14,7 +14,7 @@ type Props = {
   title: string;
 };
 
-export function AddToCalender({ date, endDate, title }: Props) {
+export const AddToCalender = ({ date, endDate, title }: Props) => {
   return (
     <Dialog>
       <DialogTrigger className="text-left hover:underline">{shortDateNoTime(date)}</DialogTrigger>
@@ -33,7 +33,7 @@ export function AddToCalender({ date, endDate, title }: Props) {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 type CalendarType = "Google" | "Outlook" | "Office" | "Yahoo" | "Ics";
 

@@ -21,11 +21,11 @@ export const isBedkom = <U extends TUser>(user: U) => {
   return isMemberOf(user, ["bedkom"]);
 };
 
-export function isHost<U extends TUser, H extends Hostable>(user: U, happening: H) {
+export const isHost = <U extends TUser, H extends Hostable>(user: U, happening: H) => {
   return (
     isMemberOf(
       user,
       happening.groups.map((group) => group.groupId),
     ) || isWebkom(user)
   );
-}
+};

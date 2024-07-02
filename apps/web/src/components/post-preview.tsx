@@ -15,7 +15,7 @@ type PostPreviewProps = {
   className?: string;
 };
 
-export function PostPreview({ post, withBorder = false, className }: PostPreviewProps) {
+export const PostPreview = ({ post, withBorder = false, className }: PostPreviewProps) => {
   const isNew = addDays(new Date(post._createdAt), 3) > new Date();
 
   return (
@@ -51,4 +51,4 @@ export function PostPreview({ post, withBorder = false, className }: PostPreview
       </div>
     </Link>
   );
-}
+};

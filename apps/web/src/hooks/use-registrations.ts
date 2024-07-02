@@ -15,11 +15,11 @@ const BASE_WS_URL = `${WS}://${process.env.NEXT_PUBLIC_BOOMTOWN_HOSTNAME}`;
  * @param initialWaitlistCount the initial waitlist count
  * @returns the current registration and waitlist count
  */
-export function useRegistrations(
+export const useRegistrations = (
   happeningId: string,
   initialRegistrationCount: number,
   initialWaitlistCount: number,
-) {
+) => {
   const [registeredCount, setRegisteredCount] = useState(initialRegistrationCount);
   const [waitlistCount, setWaitlistCount] = useState(initialWaitlistCount);
 
@@ -47,4 +47,4 @@ export function useRegistrations(
     registeredCount,
     waitlistCount,
   };
-}
+};

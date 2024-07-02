@@ -14,14 +14,14 @@ type RevealProps = {
   children: React.ReactNode;
 };
 
-export function Reveal({
+export const Reveal = ({
   translateX = 0,
   translateY = 0,
   duration = 0.4,
   delay = 0,
   className,
   children,
-}: RevealProps) {
+}: RevealProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
@@ -38,4 +38,4 @@ export function Reveal({
       {children}
     </div>
   );
-}
+};

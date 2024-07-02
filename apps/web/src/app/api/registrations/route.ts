@@ -8,7 +8,7 @@ import { slugify } from "@/utils/string";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
   const user = await getUser();
 
   if (!user) {
@@ -40,4 +40,4 @@ export async function GET(req: NextRequest) {
       "Content-Type": "text/csv; charset=utf-8",
     },
   });
-}
+};

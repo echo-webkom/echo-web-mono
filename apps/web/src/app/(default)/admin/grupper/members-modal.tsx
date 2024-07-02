@@ -20,7 +20,7 @@ type MembersModalProps = {
   users: Array<{ id: string; name: string }>;
 };
 
-export function MembersModal({ group, users }: MembersModalProps) {
+export const MembersModal = ({ group, users }: MembersModalProps) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -52,4 +52,4 @@ export function MembersModal({ group, users }: MembersModalProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

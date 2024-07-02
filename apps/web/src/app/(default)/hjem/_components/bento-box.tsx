@@ -11,7 +11,7 @@ type BentoBoxProps = {
   className?: string;
 };
 
-export function BentoBox({ title, href, children, className }: BentoBoxProps) {
+export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
   return (
     <section className={cn("flex flex-col gap-5 rounded-md border p-5 shadow-lg", className)}>
       {href ? (
@@ -32,4 +32,4 @@ export function BentoBox({ title, href, children, className }: BentoBoxProps) {
       {children}
     </section>
   );
-}
+};

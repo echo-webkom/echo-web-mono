@@ -7,7 +7,7 @@ import { urlFor } from "@echo-webkom/sanity";
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
 
-export default async function MovieClubCard() {
+export const MovieClubCard = async () => {
   const movies = await fetchNewestMovie(3);
 
   const thisWeekMovie = movies[0];
@@ -95,4 +95,4 @@ export default async function MovieClubCard() {
       )}
     </div>
   );
-}
+};

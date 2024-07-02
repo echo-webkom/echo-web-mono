@@ -12,13 +12,13 @@ type ComingHappeningsProps = {
   className?: string;
 };
 
-export async function ComingHappenings({
+export const ComingHappenings = async ({
   title,
   href,
   types,
   n,
   className,
-}: ComingHappeningsProps) {
+}: ComingHappeningsProps) => {
   const happenings = await fetchHomeHappenings(types, n);
 
   return (
@@ -32,4 +32,4 @@ export async function ComingHappenings({
       </ul>
     </BentoBox>
   );
-}
+};

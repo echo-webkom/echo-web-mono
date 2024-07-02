@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { RxCross1 as Cross } from "react-icons/rx";
 
-export function CookieBannerClient() {
+export const CookieBannerClient = () => {
   const handleClose = async (_quickClose: boolean) => {
     // Handle the cookie banner close event
   };
@@ -34,4 +34,4 @@ export function CookieBannerClient() {
       </button>
     </div>
   );
-}
+};

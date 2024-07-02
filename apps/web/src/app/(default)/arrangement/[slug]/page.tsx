@@ -23,13 +23,13 @@ const getData = cache(async (slug: string) => {
   return event;
 });
 
-export async function generateMetadata({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
   const event = await getData(params.slug);
 
   return {
     title: event.title,
   };
-}
+};
 
 export default async function EventPage_({ params }: Props) {
   const event = await getData(params.slug);

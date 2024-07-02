@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
-export async function SiteHeader() {
+export const SiteHeader = async () => {
   const user = await getUser();
   const message = (await getProgrammerbarStatus()).message;
 
@@ -55,9 +55,9 @@ export async function SiteHeader() {
       </div>
     </div>
   );
-}
+};
 
-function VercelPreviewNotify() {
+const VercelPreviewNotify = () => {
   const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
   if (isVercelPreview) {
@@ -69,4 +69,4 @@ function VercelPreviewNotify() {
   }
 
   return null;
-}
+};

@@ -4,7 +4,7 @@ import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
 import { getUser } from "@/lib/get-user";
 
-export async function handleReact(reactToKey: string, emojiId: number) {
+export const handleReact = async (reactToKey: string, emojiId: number) => {
   const user = await getUser();
 
   if (!user) {
@@ -30,4 +30,4 @@ export async function handleReact(reactToKey: string, emojiId: number) {
   return {
     reactionId,
   };
-}
+};

@@ -19,13 +19,13 @@ type ReactionButtonProps = {
   children: React.ReactNode;
 };
 
-export default function ReactionButton({
+export const ReactionButton = ({
   reactToKey,
   hasReacted,
   count,
   emojiId,
   children,
-}: ReactionButtonProps) {
+}: ReactionButtonProps) => {
   const [reactionState, setOptimisticReaction] = useOptimistic<Reaction, Reaction>(
     {
       count,
@@ -60,4 +60,4 @@ export default function ReactionButton({
       </Button>
     </form>
   );
-}
+};

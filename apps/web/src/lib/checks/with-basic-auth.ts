@@ -8,7 +8,7 @@ import { type HandlerFunction } from "./utils";
  * @param handler the function to run after the basic auth is validated
  * @returns the handler wrapped in a basic auth check
  */
-export function withBasicAuth(handler: HandlerFunction) {
+export const withBasicAuth = (handler: HandlerFunction) => {
   return async (request: Request): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
@@ -24,4 +24,4 @@ export function withBasicAuth(handler: HandlerFunction) {
 
     return handler(request);
   };
-}
+};

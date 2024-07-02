@@ -12,7 +12,7 @@ import {
 
 import { revalidateShoppingListItems } from "./revalidations";
 
-export async function createShoppinglistItem(newItem: ShoppingListItemsInsert) {
+export const createShoppinglistItem = async (newItem: ShoppingListItemsInsert) => {
   const [insertedShoppingListItem] = await db
     .insert(shoppingListItems)
     .values(newItem)
@@ -20,26 +20,26 @@ export async function createShoppinglistItem(newItem: ShoppingListItemsInsert) {
   revalidateShoppingListItems();
 
   return insertedShoppingListItem;
-}
+};
 
-export async function deleteShoppinglistItems(id: ShoppingListItems["id"]) {
+export const deleteShoppinglistItems = async (id: ShoppingListItems["id"]) => {
   await db.delete(shoppingListItems).where(eq(shoppingListItems.id, id));
   revalidateShoppingListItems();
-}
+};
 
-export async function addShoppinglistLike(newLike: UsersToShoppingListItemsInsert) {
+export const addShoppinglistLike = async (newLike: UsersToShoppingListItemsInsert) => {
   await db.insert(usersToShoppingListItems).values(newLike);
   revalidateShoppingListItems();
-}
+};
 
-export async function removeShoppinglistLike(
+export const removeShoppinglistLike = async (
   itemId: UsersToShoppingListItems["itemId"],
   userId: UsersToShoppingListItems["userId"],
-) {
+) => {
   await db
     .delete(usersToShoppingListItems)
     .where(
       and(eq(usersToShoppingListItems.itemId, itemId), eq(usersToShoppingListItems.userId, userId)),
     );
   revalidateShoppingListItems();
-}
+};

@@ -17,11 +17,11 @@ const updateRegistrationPayloadSchema = z.object({
   reason: z.string(),
 });
 
-export async function updateRegistration(
+export const updateRegistration = async (
   happeningId: string,
   registrationUserId: string,
   payload: z.infer<typeof updateRegistrationPayloadSchema>,
-) {
+) => {
   try {
     const user = await getUser();
 
@@ -109,4 +109,4 @@ export async function updateRegistration(
       message: "En feil har oppstått",
     };
   }
-}
+};

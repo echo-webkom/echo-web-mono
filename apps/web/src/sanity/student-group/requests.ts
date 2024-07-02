@@ -7,7 +7,7 @@ import {
 import { sanityFetch } from "../client";
 import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "./queries";
 
-export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
+export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
   try {
     const studentGroups = await sanityFetch<StudentGroupsByTypeQueryResult>({
       query: studentGroupsByTypeQuery,
@@ -28,9 +28,9 @@ export async function fetchStudentGroupsByType(type: StudentGroupType, n: number
   } catch {
     return [];
   }
-}
+};
 
-export async function fetchStudentGroupBySlug(slug: string) {
+export const fetchStudentGroupBySlug = async (slug: string) => {
   try {
     return await sanityFetch<StudentGroupBySlugQueryResult>({
       query: studentGroupBySlugQuery,
@@ -42,4 +42,4 @@ export async function fetchStudentGroupBySlug(slug: string) {
   } catch {
     return null;
   }
-}
+};

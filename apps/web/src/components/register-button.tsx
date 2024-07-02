@@ -32,7 +32,7 @@ type RegisterButtonProps = {
   questions: Array<Question>;
 };
 
-export function RegisterButton({ id, questions }: RegisterButtonProps) {
+export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -208,4 +208,4 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

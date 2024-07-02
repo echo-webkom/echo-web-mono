@@ -39,7 +39,7 @@ type UserFormProps = {
   degrees: Array<Degree>;
 };
 
-export function UserForm({ user, degrees }: UserFormProps) {
+export const UserForm = ({ user, degrees }: UserFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
@@ -146,4 +146,4 @@ export function UserForm({ user, degrees }: UserFormProps) {
       </form>
     </Form>
   );
-}
+};

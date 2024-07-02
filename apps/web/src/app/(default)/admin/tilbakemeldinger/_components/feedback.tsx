@@ -19,7 +19,7 @@ const parseDate = (date: Date) => {
   }
 };
 
-export function Feedback({ feedback }: { feedback: SiteFeedback }) {
+export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
   const { toast } = useToast();
 
   const handleToggleRead = async () => {
@@ -72,9 +72,9 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
       </div>
     </div>
   );
-}
+};
 
-function EmailLink({ email }: { email: string | null }) {
+const EmailLink = ({ email }: { email: string | null }) => {
   if (!email) {
     return <span>Ukjent</span>;
   }
@@ -84,4 +84,4 @@ function EmailLink({ email }: { email: string | null }) {
       {email}
     </a>
   );
-}
+};

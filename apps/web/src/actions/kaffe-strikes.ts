@@ -4,7 +4,7 @@ import { kaffeApi } from "@/api/kaffe";
 import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
-export async function addKaffeReport() {
+export const addKaffeReport = async () => {
   const user = await getUser();
 
   if (!user || !isMemberOf(user, ["hovedstyret", "webkom"])) {
@@ -12,9 +12,9 @@ export async function addKaffeReport() {
   }
 
   return await kaffeApi.strike(user.id);
-}
+};
 
-export async function resetKaffeStrikes() {
+export const resetKaffeStrikes = async () => {
   const user = await getUser();
 
   if (!user) {
@@ -26,4 +26,4 @@ export async function resetKaffeStrikes() {
   }
 
   return await kaffeApi.reset();
-}
+};

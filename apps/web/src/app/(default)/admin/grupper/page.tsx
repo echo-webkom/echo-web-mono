@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { getStudentGroupsWithMembers } from "@/data/groups/queries";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
-import AddGroupButton from "./_components/add-group-button";
+import { AddGroupButton } from "./_components/add-group-button";
 import { MembersModal } from "./members-modal";
 
 export default async function AdminGroupsPage() {

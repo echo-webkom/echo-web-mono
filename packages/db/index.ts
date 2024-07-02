@@ -9,6 +9,13 @@ const globalForPool = globalThis as unknown as {
 
 let pool;
 
+const createPool = () => {
+  return postgres(process.env.DATABASE_URL!, {
+    max: 90,
+    prepare: false,
+  });
+};
+
 if (process.env.NODE_ENV !== "production") {
   if (!globalForPool.pool) {
     globalForPool.pool = createPool();
@@ -16,13 +23,6 @@ if (process.env.NODE_ENV !== "production") {
   pool = globalForPool.pool;
 } else {
   pool = createPool();
-}
-
-function createPool() {
-  return postgres(process.env.DATABASE_URL!, {
-    max: 90,
-    prepare: false,
-  });
 }
 
 export const db = drizzle(pool, {

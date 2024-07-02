@@ -12,7 +12,7 @@ type RandomPersonButtonProps = {
   registrations: Array<RegistrationWithUser>;
 };
 
-export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
+export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [randomUserName, setRandomUserName] = useState("");
@@ -80,4 +80,4 @@ export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
       )}
     </>
   );
-}
+};

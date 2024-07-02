@@ -6,7 +6,7 @@ import { addKaffeReport, resetKaffeStrikes } from "@/actions/kaffe-strikes";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-export function StrikeButtons() {
+export const StrikeButtons = () => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -46,4 +46,4 @@ export function StrikeButtons() {
       </Button>
     </div>
   );
-}
+};

@@ -5,7 +5,7 @@ import { siteFeedback, type SiteFeedbackInsert } from "@echo-webkom/db/schemas";
 
 import { revalidateSiteFeedbacks } from "./revalidate";
 
-export async function createFeedback(feedback: SiteFeedbackInsert) {
+export const createFeedback = async (feedback: SiteFeedbackInsert) => {
   const [insertedFeedback] = await db
     .insert(siteFeedback)
     .values(feedback)
@@ -18,9 +18,9 @@ export async function createFeedback(feedback: SiteFeedbackInsert) {
   revalidateSiteFeedbacks();
 
   return insertedFeedback;
-}
+};
 
-export async function updateFeedback(id: string, updatedFeedback: Partial<SiteFeedbackInsert>) {
+export const updateFeedback = async (id: string, updatedFeedback: Partial<SiteFeedbackInsert>) => {
   const [updated] = await db
     .update(siteFeedback)
     .set(updatedFeedback)
@@ -34,4 +34,4 @@ export async function updateFeedback(id: string, updatedFeedback: Partial<SiteFe
   revalidateSiteFeedbacks();
 
   return updated;
-}
+};

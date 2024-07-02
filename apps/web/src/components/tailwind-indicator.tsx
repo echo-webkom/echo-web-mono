@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export function TailwindIndicator() {
+export const TailwindIndicator = () => {
   const [h, setH] = useState(0);
   const [w, setW] = useState(0);
 
@@ -38,4 +38,4 @@ export function TailwindIndicator() {
       </div>
     </div>
   );
-}
+};

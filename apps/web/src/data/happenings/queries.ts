@@ -5,7 +5,7 @@ import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
 
 import { isErrorMessage } from "@/utils/error";
 
-export async function getFullHappening(slug: Happening["slug"]) {
+export const getFullHappening = async (slug: Happening["slug"]) => {
   return await db.query.happenings.findFirst({
     where: (happening) => eq(happening.slug, slug),
     with: {
@@ -19,18 +19,18 @@ export async function getFullHappening(slug: Happening["slug"]) {
       groups: true,
     },
   });
-}
+};
 
-export async function getHappeningBySlug(slug: Happening["slug"]) {
+export const getHappeningBySlug = async (slug: Happening["slug"]) => {
   return await db.query.happenings.findFirst({
     where: (happening) => eq(happening.slug, slug),
     with: {
       questions: true,
     },
   });
-}
+};
 
-export async function getHappeningById(id: string) {
+export const getHappeningById = async (id: string) => {
   return await db.query.happenings
     .findFirst({
       where: (happening) => eq(happening.id, id),
@@ -47,9 +47,9 @@ export async function getHappeningById(id: string) {
 
       return null;
     });
-}
+};
 
-export async function getHappeningSpotRangeAndRegistrations(happeningId: string) {
+export const getHappeningSpotRangeAndRegistrations = async (happeningId: string) => {
   return await db.query.happenings
     .findFirst({
       where: (happening) => eq(happening.id, happeningId),
@@ -64,9 +64,9 @@ export async function getHappeningSpotRangeAndRegistrations(happeningId: string)
         spotRanges: result?.spotRanges ?? [],
       };
     });
-}
+};
 
-export async function getHappeningsFromDate(date: Date, type: HappeningType) {
+export const getHappeningsFromDate = async (date: Date, type: HappeningType) => {
   return await db.query.happenings.findMany({
     where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
     with: {
@@ -74,13 +74,13 @@ export async function getHappeningsFromDate(date: Date, type: HappeningType) {
     },
     orderBy: (happening) => [asc(happening.date)],
   });
-}
+};
 
-export async function getHappeningsFromDateToDate(
+export const getHappeningsFromDateToDate = async (
   fromDate: Date,
   toDate: Date,
   type: HappeningType,
-) {
+) => {
   return await db.query.happenings.findMany({
     where: (happening) =>
       and(eq(happening.type, type), gt(happening.date, fromDate), lt(happening.date, toDate)),
@@ -89,4 +89,4 @@ export async function getHappeningsFromDateToDate(
     },
     orderBy: (happening) => [asc(happening.date)],
   });
-}
+};

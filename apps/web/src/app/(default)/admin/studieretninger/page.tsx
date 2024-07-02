@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
-import AddDegreeButton from "./_components/add-degree-button";
+import { AddDegreeButton } from "./_components/add-degree-button";
 
 export const dynamic = "force-dynamic";
 

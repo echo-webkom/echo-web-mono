@@ -19,7 +19,7 @@ type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undef
  * @param selectedHeaders the headers to include in the CSV
  * @returns the CSV string
  */
-export function toCsv(happening: FullHappening, selectedHeaders: Array<string> = []) {
+export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> = []) => {
   const registrations = happening.registrations.map((r) => {
     const answers = r.answers.map((a) => ({
       questionId: a.questionId,
@@ -69,4 +69,4 @@ export function toCsv(happening: FullHappening, selectedHeaders: Array<string> =
   });
 
   return parser.parse(registrations);
-}
+};

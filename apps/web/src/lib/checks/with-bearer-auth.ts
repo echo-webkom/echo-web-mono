@@ -8,7 +8,7 @@ import { type HandlerFunction } from "./utils";
  * @param handler - the function to run after the auth is validated
  * @returns - the handler wrapped in a bearer auth check
  */
-export function withBearerAuth(handler: HandlerFunction) {
+export const withBearerAuth = (handler: HandlerFunction) => {
   return async (request: Request): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
@@ -22,4 +22,4 @@ export function withBearerAuth(handler: HandlerFunction) {
 
     return handler(request);
   };
-}
+};

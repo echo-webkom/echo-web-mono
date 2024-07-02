@@ -6,13 +6,13 @@ import { type User } from "@echo-webkom/db/schemas";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getUserStudentGroups(userId: User["id"]) {
+export const getUserStudentGroups = async (userId: User["id"]) => {
   return await db.query.usersToGroups.findMany({
     where: (userToGroup) => eq(userToGroup.userId, userId),
   });
-}
+};
 
-export async function getStudentGroups() {
+export const getStudentGroups = async () => {
   return await cache(
     async () => {
       return await db.query.groups.findMany({
@@ -24,9 +24,9 @@ export async function getStudentGroups() {
       tags: [cacheKeyFactory.groups],
     },
   )();
-}
+};
 
-export async function getStudentGroupsWithMembers() {
+export const getStudentGroupsWithMembers = async () => {
   return await cache(
     async () => {
       return await db.query.groups.findMany({
@@ -45,4 +45,4 @@ export async function getStudentGroupsWithMembers() {
       tags: [cacheKeyFactory.groups],
     },
   )();
-}
+};

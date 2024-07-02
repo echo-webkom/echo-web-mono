@@ -17,7 +17,7 @@ const providers = [
   },
 ];
 
-export function SignInButtons() {
+export const SignInButtons = () => {
   return (
     <div className="mx-auto flex w-full max-w-[380px] flex-col rounded-2xl bg-muted p-8">
       <Image src={EchoLogo} alt="echo logo" width={100} height={100} className="mx-auto" />
@@ -52,4 +52,4 @@ export function SignInButtons() {
       </Text>
     </div>
   );
-}
+};

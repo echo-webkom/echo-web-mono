@@ -14,7 +14,7 @@ type Props = {
   };
 };
 
-export function generateMetadata({ params }: Props) {
+export const generateMetadata = ({ params }: Props) => {
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
@@ -22,7 +22,7 @@ export function generateMetadata({ params }: Props) {
   return {
     title: studentGroupTypeName[groupTypeFromPath],
   };
-}
+};
 
 export default async function StudentGroupOverview({ params }: Props) {
   const { groupType } = params;

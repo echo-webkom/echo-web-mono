@@ -6,7 +6,7 @@ import { db } from "@echo-webkom/db";
 import { isErrorMessage } from "@/utils/error";
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getRegistrationsByHappeningId(happeningId: string) {
+export const getRegistrationsByHappeningId = async (happeningId: string) => {
   return cache(
     async () => {
       return await db.query.registrations
@@ -30,9 +30,9 @@ export async function getRegistrationsByHappeningId(happeningId: string) {
       tags: [cacheKeyFactory.registrationsHappening(happeningId)],
     },
   )();
-}
+};
 
-export async function getRegistrationsByUserId(userId: string) {
+export const getRegistrationsByUserId = async (userId: string) => {
   return cache(
     async () => {
       return await db.query.registrations
@@ -55,4 +55,4 @@ export async function getRegistrationsByUserId(userId: string) {
       tags: [cacheKeyFactory.registrationsUser(userId)],
     },
   )();
-}
+};

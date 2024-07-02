@@ -17,7 +17,7 @@ export type BlurLogoProps = {
     }
 );
 
-export function BlurLogo({ width, height, className, ...rest }: BlurLogoProps) {
+export const BlurLogo = ({ width, height, className, ...rest }: BlurLogoProps) => {
   return (
     <Image
       src={EchoLogo}
@@ -32,4 +32,4 @@ export function BlurLogo({ width, height, className, ...rest }: BlurLogoProps) {
       }}
     />
   );
-}
+};

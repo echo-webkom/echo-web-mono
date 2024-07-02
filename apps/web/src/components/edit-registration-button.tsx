@@ -33,7 +33,7 @@ type EditRegistrationFormProps = {
   registration: RegistrationWithUser;
 };
 
-export function EditRegistrationForm({ id, registration }: EditRegistrationFormProps) {
+export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -224,4 +224,4 @@ export function EditRegistrationForm({ id, registration }: EditRegistrationFormP
       </DialogContent>
     </Dialog>
   );
-}
+};

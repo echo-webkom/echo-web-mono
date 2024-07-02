@@ -36,7 +36,7 @@ type EventSidebarProps = {
   event: AllHappeningsQueryResult[number];
 };
 
-export async function HappeningSidebar({ event }: EventSidebarProps) {
+export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
   // Opt-out of caching
   noStore();
 
@@ -454,4 +454,4 @@ export async function HappeningSidebar({ event }: EventSidebarProps) {
       {Boolean(user) && <ReactionButtonGroup reactToKey={event._id} />}
     </div>
   );
-}
+};

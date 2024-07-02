@@ -34,7 +34,7 @@ type UserMenuProps = {
   };
 };
 
-export function UserMenu({ user }: UserMenuProps) {
+export const UserMenu = ({ user }: UserMenuProps) => {
   const pathname = usePathname();
 
   return (
@@ -117,4 +117,4 @@ export function UserMenu({ user }: UserMenuProps) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};

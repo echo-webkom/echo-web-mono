@@ -9,9 +9,9 @@
  * @param str some string
  * @returns the string with the first letter capitalized
  */
-export function capitalize(str: string) {
+export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 /**
  * Converts a value to a string.
@@ -27,12 +27,12 @@ export function capitalize(str: string) {
  * @param value some value
  * @returns the string representation of the value
  */
-export function stringify(value: unknown) {
+export const stringify = (value: unknown) => {
   if (value === null || value === undefined) {
     return "";
   }
   return String(value);
-}
+};
 
 /**
  * Slugifies a string.
@@ -45,13 +45,13 @@ export function stringify(value: unknown) {
  * @param str the string to slugify
  * @returns the slugified string
  */
-export function slugify(str: string) {
+export const slugify = (str: string) => {
   return str
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
     .replace(/[\s_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
+};
 
 /**
  * Gets the initials of a string.
@@ -70,7 +70,7 @@ export function slugify(str: string) {
  * @param name the string to get the initials of
  * @returns the initials of the string
  */
-export function initials(name: string): string {
+export const initials = (name: string): string => {
   const words = name
     .split("")
     .filter((char) => char.charCodeAt(0) < 128)
@@ -89,4 +89,4 @@ export function initials(name: string): string {
   const [first, second] = words;
 
   return `${first![0]}${second![0]}`.toUpperCase();
-}
+};

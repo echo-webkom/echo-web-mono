@@ -5,7 +5,7 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getReactionByReactToKey(reactToKey: string) {
+export const getReactionByReactToKey = async (reactToKey: string) => {
   return cache(
     async () => {
       return await db.query.reactions
@@ -25,4 +25,4 @@ export async function getReactionByReactToKey(reactToKey: string) {
       tags: [cacheKeyFactory.reactions(reactToKey)],
     },
   )();
-}
+};

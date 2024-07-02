@@ -37,7 +37,7 @@ type AddUserToGroupDialogProps = {
   };
 };
 
-export function AddUserToGroupDialog({ group }: AddUserToGroupDialogProps) {
+export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof addUserToGroupSchema>>({
@@ -103,4 +103,4 @@ export function AddUserToGroupDialog({ group }: AddUserToGroupDialogProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

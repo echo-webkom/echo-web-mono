@@ -9,12 +9,12 @@ import { moviesQuery } from "./queries";
  * @returns movies or null if not found
  */
 
-export async function fetchMovies() {
+export const fetchMovies = async () => {
   return await sanityFetch<MoviesQueryResult>({
     query: moviesQuery,
     tags: ["movies"],
   });
-}
+};
 
 /**
  * Fettches latest movies
@@ -22,8 +22,8 @@ export async function fetchMovies() {
  * @param n the number of movies to fetch
  * @returns newest movies or an empty array if error
  */
-export async function fetchNewestMovie(n: number): Promise<MoviesQueryResult> {
+export const fetchNewestMovie = async (n: number): Promise<MoviesQueryResult> => {
   return await fetchMovies().then((res) =>
     res.filter((movie) => new Date(movie.date) > new Date()).slice(0, n),
   );
-}
+};

@@ -15,7 +15,7 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
   year: true,
 });
 
-export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema>) {
+export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema>) => {
   try {
     const user = await getUser();
 
@@ -64,7 +64,7 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
       message: "En feil har oppstått",
     };
   }
-}
+};
 
 const updateUserPayloadSchema = z.object({
   memberships: z.array(z.string()),

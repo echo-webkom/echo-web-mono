@@ -5,7 +5,7 @@ export const cacheKeyFactory = {
   registrationsUser: (id: string) => `registration-user-${id}`,
 };
 
-export function revalidateRegistrations(happeningId: string, userId: string) {
+export const revalidateRegistrations = (happeningId: string, userId: string) => {
   revalidateTag(cacheKeyFactory.registrationsHappening(happeningId));
   revalidateTag(cacheKeyFactory.registrationsUser(userId));
-}
+};

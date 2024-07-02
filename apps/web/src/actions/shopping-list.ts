@@ -15,7 +15,7 @@ const shoppingListSchema = z.object({
   name: z.string(),
 });
 
-export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>) {
+export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>) => {
   try {
     const user = await getUser();
 
@@ -55,9 +55,9 @@ export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>)
       message: "Noe gikk galt",
     };
   }
-}
+};
 
-export async function hyggkomRemoveSubmit(id: string) {
+export const hyggkomRemoveSubmit = async (id: string) => {
   const user = await getUser();
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
@@ -72,9 +72,9 @@ export async function hyggkomRemoveSubmit(id: string) {
     success: true,
     message: "Forslaget ble fjernet.",
   };
-}
+};
 
-export async function hyggkomLikeSubmit(itemId: string) {
+export const hyggkomLikeSubmit = async (itemId: string) => {
   const user = await getUser();
 
   if (!user) {
@@ -100,4 +100,4 @@ export async function hyggkomLikeSubmit(itemId: string) {
     success: true,
     message: "Din like er blitt fjernet.",
   };
-}
+};

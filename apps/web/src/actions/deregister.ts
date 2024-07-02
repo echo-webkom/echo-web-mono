@@ -17,7 +17,7 @@ const deregisterPayloadSchema = z.object({
   reason: z.string(),
 });
 
-export async function deregister(id: string, payload: z.infer<typeof deregisterPayloadSchema>) {
+export const deregister = async (id: string, payload: z.infer<typeof deregisterPayloadSchema>) => {
   try {
     const user = await getUser();
 
@@ -94,4 +94,4 @@ export async function deregister(id: string, payload: z.infer<typeof deregisterP
       message: "En feil har oppstått",
     };
   }
-}
+};

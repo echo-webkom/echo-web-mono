@@ -38,7 +38,7 @@ type UserFormProps = {
   groups: Array<Group>;
 };
 
-export function UserForm({ user, groups }: UserFormProps) {
+export const UserForm = ({ user, groups }: UserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -160,4 +160,4 @@ export function UserForm({ user, groups }: UserFormProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

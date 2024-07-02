@@ -167,7 +167,7 @@ export const NavigationViewport = () => {
   );
 };
 
-export function DesktopNavigation() {
+export const DesktopNavigation = () => {
   return (
     <NavigationList>
       {headerRoutes.map((route) => {
@@ -197,7 +197,7 @@ export function DesktopNavigation() {
       })}
     </NavigationList>
   );
-}
+};
 
 type IconLinkProps = {
   href: string;
@@ -206,7 +206,7 @@ type IconLinkProps = {
   icon: FC<IconBaseProps>;
 };
 
-function IconLink({ icon, ...props }: IconLinkProps) {
+const IconLink = ({ icon, ...props }: IconLinkProps) => {
   return (
     <Link className="flex items-center rounded-lg p-4 hover:bg-muted" href={props.href}>
       <div className="flex items-center gap-6">
@@ -218,4 +218,4 @@ function IconLink({ icon, ...props }: IconLinkProps) {
       </div>
     </Link>
   );
-}
+};

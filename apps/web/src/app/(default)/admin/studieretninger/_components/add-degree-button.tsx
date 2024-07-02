@@ -34,7 +34,7 @@ type AddDegreeButtonProps = ButtonProps & {
   initialDegree?: Degree;
 };
 
-export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeButtonProps) {
+export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProps) => {
   const isEditing = !!initialDegree?.id;
 
   const { toast } = useToast();
@@ -184,4 +184,4 @@ export default function AddDegreeButton({ initialDegree, ...props }: AddDegreeBu
       </DialogContent>
     </Dialog>
   );
-}
+};

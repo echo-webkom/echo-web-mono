@@ -40,12 +40,12 @@ type UpdateType = {
   condition?: boolean;
   search?: string;
 };
-export function updateFilter(
+export const updateFilter = (
   updates: Array<UpdateType> | UpdateType | FilterType,
   router: AppRouterInstance,
   pathname: string,
   params: ReadonlyURLSearchParams,
-) {
+) => {
   const searchParams = new URLSearchParams(params);
 
   if (!Array.isArray(updates)) {
@@ -91,9 +91,9 @@ export function updateFilter(
     }
   });
   router.push(`${pathname}?${searchParams}`, { scroll: false });
-}
+};
 
-export function EventFilter() {
+export const EventFilter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -101,7 +101,7 @@ export function EventFilter() {
   const type =
     params.get("type") === "event" ? "EVENT" : params.get("type") === "bedpres" ? "BEDPRES" : "ALL";
 
-  function getButtonLabel(type: FilterType) {
+  const getButtonLabel = (type: FilterType) => {
     switch (type) {
       case "ALL":
         return "Alle";
@@ -110,7 +110,7 @@ export function EventFilter() {
       case "BEDPRES":
         return "Bedriftspresentasjoner";
     }
-  }
+  };
 
   const firstButton = type === "ALL" ? "EVENT" : "ALL";
   const secondButton = type === "BEDPRES" ? "EVENT" : "BEDPRES";
@@ -169,9 +169,9 @@ export function EventFilter() {
       </div>
     </>
   );
-}
+};
 
-export function FilterStatusAndOrderBar() {
+export const FilterStatusAndOrderBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -187,12 +187,12 @@ export function FilterStatusAndOrderBar() {
     params.has("nextWeek") ||
     params.has("later");
 
-  function resetFilter() {
+  const resetFilter = () => {
     const searchParams = new URLSearchParams();
     const type = params.get("type");
     if (type === "bedpres" || type === "event") searchParams.set("type", type);
     router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -217,9 +217,9 @@ export function FilterStatusAndOrderBar() {
       </span>
     </div>
   );
-}
+};
 
-export function EventFilterSidebar() {
+export const EventFilterSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -375,4 +375,4 @@ export function EventFilterSidebar() {
       </SidebarItem>
     </Sidebar>
   );
-}
+};

@@ -17,12 +17,12 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
+import { feedbackSchema, type FeedbackForm as TFeedbackForm } from "@/lib/schemas/feedback";
 
-export function FeedbackForm() {
+export const FeedbackForm = () => {
   const { toast } = useToast();
 
-  const form = useForm<FeedbackForm>({
+  const form = useForm<TFeedbackForm>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       email: "",
@@ -132,4 +132,4 @@ export function FeedbackForm() {
       </form>
     </Form>
   );
-}
+};

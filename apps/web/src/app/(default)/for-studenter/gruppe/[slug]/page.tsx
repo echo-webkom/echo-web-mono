@@ -33,7 +33,7 @@ const getData = cache(async (slug: string) => {
   return group;
 });
 
-export async function generateMetadata({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
 
   const group = await getData(slug);
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: group.name,
   };
-}
+};
 
 export default async function GroupPage({ params }: Props) {
   const { slug } = params;

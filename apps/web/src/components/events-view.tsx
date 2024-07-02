@@ -35,20 +35,20 @@ export type SearchParams = {
 /**
  * Sanitizes the SearchParams before fetching data
  */
-function createFilteredHappeningQuery(params: SearchParams) {
+const createFilteredHappeningQuery = (params: SearchParams) => {
   return {
     search: params.search ?? undefined,
     type: (params.type as "event" | "bedpres") ?? "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
   };
-}
+};
 
 /**
  * This function creates an array of DateIntervals.
  * Will be useful in the future to allow the user to enter custom dates.
  */
-function getDateIntervals(params: SearchParams) {
+const getDateIntervals = (params: SearchParams) => {
   const currentDate = new Date();
 
   const hideThisWeek = params.thisWeek === "false" ? true : false;
@@ -77,9 +77,9 @@ function getDateIntervals(params: SearchParams) {
     return [{ start: startOfTheWeekAfterNext(currentDate) }];
 
   return undefined;
-}
+};
 
-export default async function EventsView({ searchParams }: { searchParams: SearchParams }) {
+export const EventsView = async ({ searchParams }: { searchParams: SearchParams }) => {
   const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
 
   const { happenings } = await fetchFilteredHappening(query, getDateIntervals(searchParams));
@@ -121,4 +121,4 @@ export default async function EventsView({ searchParams }: { searchParams: Searc
       </div>
     </>
   );
-}
+};

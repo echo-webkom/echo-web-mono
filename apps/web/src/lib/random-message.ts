@@ -19,7 +19,7 @@ const baseMessages = [
   "go func() { urself }()",
 ];
 
-function getExtraMessages(now: Date) {
+const getExtraMessages = (now: Date) => {
   const week = getWeek(now);
   const month = getWeek(now);
 
@@ -48,9 +48,9 @@ function getExtraMessages(now: Date) {
   }
 
   return messages;
-}
+};
 
-export function getRandomMessage() {
+export const getRandomMessage = () => {
   const now = new Date();
 
   /**
@@ -72,4 +72,4 @@ export function getRandomMessage() {
 
   const messages = [...baseMessages, ...getExtraMessages(now)];
   return messages[Math.floor(Math.random() * messages.length)];
-}
+};

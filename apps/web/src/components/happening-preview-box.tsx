@@ -14,7 +14,7 @@ type CombinedHappeningPreviewProps = {
   happening: AllHappeningsQueryResult[number];
 };
 
-export function CombinedHappeningPreview({ happening }: CombinedHappeningPreviewProps) {
+export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreviewProps) => {
   const parentPath = happening.happeningType === "bedpres" ? "bedpres" : "arrangement";
 
   return (
@@ -66,4 +66,4 @@ export function CombinedHappeningPreview({ happening }: CombinedHappeningPreview
       </div>
     </Link>
   );
-}
+};

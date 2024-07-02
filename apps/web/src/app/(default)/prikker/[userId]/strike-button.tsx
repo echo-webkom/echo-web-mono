@@ -51,12 +51,12 @@ type AddStrikeButtonProps = {
   currentAmount: number;
 } & ButtonProps;
 
-export function AddStrikeButton({
+export const AddStrikeButton = ({
   user,
   happenings,
   currentAmount,
   ...buttonProps
-}: AddStrikeButtonProps) {
+}: AddStrikeButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -93,7 +93,7 @@ export function AddStrikeButton({
     router.refresh();
   });
 
-  function handleTypeChange(choice: ChangeEvent<HTMLSelectElement>) {
+  const handleTypeChange = (choice: ChangeEvent<HTMLSelectElement>) => {
     const type = choice.target.value as StrikeType;
     setSelectedType(type);
 
@@ -102,7 +102,7 @@ export function AddStrikeButton({
 
     form.clearErrors("amount");
     if (form.getValues("reason") !== "") form.clearErrors("reason");
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -239,13 +239,13 @@ export function AddStrikeButton({
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
+export const RemoveStrikeButton = ({ strikeId }: { strikeId: number }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  async function handleDelete() {
+  const handleDelete = async () => {
     const { success, message } = await remvoveStrike(strikeId);
 
     toast({
@@ -255,7 +255,7 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
 
     setIsOpen(false);
     router.refresh();
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -276,17 +276,17 @@ export function RemoveStrikeButton({ strikeId }: { strikeId: number }) {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 type RemoveBanButtonProps = {
   userId: string;
 } & ButtonProps;
 
-export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps) {
+export const RemoveBanButton = ({ userId, ...buttonProps }: RemoveBanButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  async function handleUnban() {
+  const handleUnban = async () => {
     const { success, message } = await unbanUser(userId);
 
     toast({
@@ -296,7 +296,7 @@ export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps
 
     setIsOpen(false);
     router.refresh();
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -317,4 +317,4 @@ export function RemoveBanButton({ userId, ...buttonProps }: RemoveBanButtonProps
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -7,7 +7,7 @@ import { type User } from "@echo-webkom/db/schemas";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { mailTo } from "@/utils/prefixes";
 
-export function HoverProfileView({ user, group }: { user: User; group: string }) {
+export const HoverProfileView = ({ user, group }: { user: User; group: string }) => {
   return (
     <Popover>
       <PopoverTrigger className="my-auto p-1">
@@ -36,4 +36,4 @@ export function HoverProfileView({ user, group }: { user: User; group: string })
       </PopoverContent>
     </Popover>
   );
-}
+};

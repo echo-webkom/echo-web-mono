@@ -1,4 +1,4 @@
-export async function runWithRetries<T>(fn: () => Promise<T> | T, retries: number): Promise<T> {
+export const runWithRetries = async <T>(fn: () => Promise<T> | T, retries: number): Promise<T> => {
   try {
     return await fn();
   } catch (error) {
@@ -7,4 +7,4 @@ export async function runWithRetries<T>(fn: () => Promise<T> | T, retries: numbe
     }
     throw error;
   }
-}
+};

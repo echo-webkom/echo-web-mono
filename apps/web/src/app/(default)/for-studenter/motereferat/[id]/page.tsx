@@ -23,12 +23,12 @@ const getData = cache(async (id: string) => {
   return minute;
 });
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { title } = await getData(params.id);
   return {
     title,
   };
-}
+};
 
 export default async function MinutePage({ params }: Props) {
   const minute = await getData(params.id);

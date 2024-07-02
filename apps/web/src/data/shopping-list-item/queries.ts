@@ -4,7 +4,7 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./revalidations";
 
-export function getAllShoppinglistItems() {
+export const getAllShoppinglistItems = () => {
   return cache(
     async () => {
       return await db.query.shoppingListItems
@@ -22,4 +22,4 @@ export function getAllShoppinglistItems() {
       tags: [cacheKeyFactory.shoppinglistItems()],
     },
   )();
-}
+};

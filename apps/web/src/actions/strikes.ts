@@ -13,15 +13,15 @@ import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
 import { getUser } from "@/lib/get-user";
 import { isBedkom } from "@/lib/memberships";
 
-function getBannableStrikeNumber(current: number, added: number) {
+const getBannableStrikeNumber = (current: number, added: number) => {
   const BAN_AMOUNT = 5;
 
   if (current + added >= BAN_AMOUNT) {
     return BAN_AMOUNT - current;
   }
-}
+};
 
-export async function remvoveStrike(strikeId: number) {
+export const remvoveStrike = async (strikeId: number) => {
   try {
     const issuer = await getUser();
 
@@ -63,16 +63,16 @@ export async function remvoveStrike(strikeId: number) {
       message: "En feil har oppstått",
     };
   }
-}
+};
 
-export async function addStrike(
+export const addStrike = async (
   userId: string,
   happeningId: string,
   reason: string,
   amount: number,
   currentAmount: number,
   type: StrikeType,
-) {
+) => {
   try {
     const issuer = await getUser();
 
@@ -161,4 +161,4 @@ export async function addStrike(
       message: "En feil har oppstått",
     };
   }
-}
+};

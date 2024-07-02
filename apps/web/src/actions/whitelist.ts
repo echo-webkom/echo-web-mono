@@ -8,7 +8,7 @@ import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
-export async function upsertWhitelist(email: string, reason: string, days: number) {
+export const upsertWhitelist = async (email: string, reason: string, days: number) => {
   try {
     const user = await getUser();
 
@@ -60,9 +60,9 @@ export async function upsertWhitelist(email: string, reason: string, days: numbe
       message: "Noe gikk galt",
     };
   }
-}
+};
 
-export async function removeWhitelist(email: string) {
+export const removeWhitelist = async (email: string) => {
   try {
     const user = await getUser();
 
@@ -92,4 +92,4 @@ export async function removeWhitelist(email: string) {
       message: "Noe gikk galt",
     };
   }
-}
+};

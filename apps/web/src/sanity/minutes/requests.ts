@@ -5,7 +5,7 @@ import { allMeetingMinuteQuery } from "./queries";
 /**
  * Get all meeting minutes.
  */
-export async function fetchMinutes() {
+export const fetchMinutes = async () => {
   return await sanityFetch<AllMeetingMinuteQueryResult>({
     query: allMeetingMinuteQuery,
     tags: ["minutes"],
@@ -14,7 +14,7 @@ export async function fetchMinutes() {
 
     return [];
   });
-}
+};
 
 /**
  * Fetches a meeting minute by id.
@@ -22,6 +22,6 @@ export async function fetchMinutes() {
  * @param id the id of the meeting minute you want to fetch
  * @returns the meeting minute or null if not found
  */
-export async function fetchMinuteById(id: string) {
+export const fetchMinuteById = async (id: string) => {
   return await fetchMinutes().then((res) => res.find((minute) => minute._id === id));
-}
+};

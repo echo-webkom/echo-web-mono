@@ -53,7 +53,7 @@ export type RegistrationWithUser = Omit<Registration, "userId"> & {
   changedByUser: User | null;
 };
 
-export function RegistrationTable({
+export const RegistrationTable = ({
   registrations,
   studentGroups,
   slug,
@@ -67,7 +67,7 @@ export function RegistrationTable({
   questions: Array<Question>;
   isBedpres: boolean;
   happeningDate: Date | null;
-}) {
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -242,7 +242,7 @@ export function RegistrationTable({
       </div>
     </div>
   );
-}
+};
 
 export const statusColor = {
   registered: "text-green-600",

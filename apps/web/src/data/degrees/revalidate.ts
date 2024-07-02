@@ -4,6 +4,6 @@ export const cacheKeyFactory = {
   degrees: "degrees",
 };
 
-export function revalidateDegrees() {
+export const revalidateDegrees = () => {
   revalidateTag(cacheKeyFactory.degrees);
-}
+};

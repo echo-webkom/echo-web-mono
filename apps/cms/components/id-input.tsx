@@ -2,7 +2,7 @@ import { Box, Button, Flex, TextInput } from "@sanity/ui";
 import { nanoid } from "nanoid";
 import { set, type StringInputProps, type StringSchemaType } from "sanity";
 
-export function IdInput(props: StringInputProps<StringSchemaType>) {
+export const IdInput = (props: StringInputProps<StringSchemaType>) => {
   const { value, onChange, elementProps } = props;
 
   const handleGenerateId = () => {
@@ -35,4 +35,4 @@ export function IdInput(props: StringInputProps<StringSchemaType>) {
       </Box>
     </Flex>
   );
-}
+};

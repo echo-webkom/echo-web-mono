@@ -12,11 +12,11 @@ import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 
-export function HappeningPreview({
+export const HappeningPreview = ({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
-}) {
+}) => {
   const href = createHappeningLink(happening);
 
   return (
@@ -64,13 +64,13 @@ export function HappeningPreview({
       </div>
     </Link>
   );
-}
+};
 
-async function HappeningRegistrationInfo({
+const HappeningRegistrationInfo = async ({
   happening,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
-}) {
+}) => {
   const { spotRanges, registrations } = await getHappeningSpotRangeAndRegistrations(happening._id);
   const info = getSpotRangeInfo(happening, spotRanges, registrations);
 
@@ -79,4 +79,4 @@ async function HappeningRegistrationInfo({
   }
 
   return <p>{info}</p>;
-}
+};

@@ -6,7 +6,7 @@ import { staticInfoQuery } from "./queries";
 /**
  * Fetches all static info pages.
  */
-export async function fetchStaticInfo() {
+export const fetchStaticInfo = async () => {
   try {
     return await sanityFetch<StaticInfoQueryResult>({
       query: staticInfoQuery,
@@ -15,7 +15,7 @@ export async function fetchStaticInfo() {
   } catch {
     return [];
   }
-}
+};
 
 /**
  * Fetches a static info page by its slug.
@@ -24,7 +24,7 @@ export async function fetchStaticInfo() {
  * @param slug the slug of the page to fetch
  * @returns
  */
-export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
+export const fetchStaticInfoBySlug = async (pageType: string, slug: string) => {
   const parsedPageType = Object.keys(pageTypeToUrl).find(
     (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === pageType,
   );
@@ -36,4 +36,4 @@ export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
   return await fetchStaticInfo().then((res) =>
     res.find((staticInfo) => staticInfo.slug === slug && staticInfo.pageType === parsedPageType),
   );
-}
+};

@@ -4,7 +4,7 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export function getAllDegrees() {
+export const getAllDegrees = () => {
   return cache(
     async () => {
       return await db.query.degrees.findMany({
@@ -16,4 +16,4 @@ export function getAllDegrees() {
       tags: [cacheKeyFactory.degrees],
     },
   )();
-}
+};

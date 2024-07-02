@@ -24,7 +24,7 @@ const getData = cache(async (slug: string) => {
   return post;
 });
 
-export async function generateMetadata({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
   const post = await getData(params.slug);
 
   const authors = post.authors?.map((author) => {
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props) {
     title: post.title,
     authors,
   };
-}
+};
 
 export default async function PostPage({ params }: Props) {
   const post = await getData(params.slug);

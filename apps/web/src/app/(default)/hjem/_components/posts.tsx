@@ -2,7 +2,7 @@ import { PostPreview } from "@/components/post-preview";
 import { fetchPosts } from "@/sanity/posts";
 import { BentoBox } from "./bento-box";
 
-export async function Posts({ className }: { className?: string }) {
+export const Posts = async ({ className }: { className?: string }) => {
   const posts = await fetchPosts(2);
 
   return (
@@ -16,4 +16,4 @@ export async function Posts({ className }: { className?: string }) {
       </ul>
     </BentoBox>
   );
-}
+};

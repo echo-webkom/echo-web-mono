@@ -28,7 +28,7 @@ const getInterval = (width: number) => {
   return 5;
 };
 
-export function Calendar({ events }: CalendarProps) {
+export const Calendar = ({ events }: CalendarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(0);
   const interval = useMemo(() => getInterval(calendarWidth), [calendarWidth]);
@@ -165,4 +165,4 @@ export function Calendar({ events }: CalendarProps) {
       </div>
     </div>
   );
-}
+};

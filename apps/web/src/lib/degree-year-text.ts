@@ -24,7 +24,7 @@ export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degree
  * @param degreeYears an array of degree years
  * @returns a string representation of the degree years
  */
-export function degreeYearText(degreeYears: Array<number>): string {
+export const degreeYearText = (degreeYears: Array<number>): string => {
   if (degreeYears.length === 0) {
     return "Ingen";
   }
@@ -67,4 +67,4 @@ export function degreeYearText(degreeYears: Array<number>): string {
   }
 
   return `${seqs.join(", ")} og ${last}. trinn`;
-}
+};

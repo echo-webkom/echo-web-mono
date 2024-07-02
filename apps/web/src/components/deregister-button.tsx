@@ -27,7 +27,7 @@ type DeregisterButtonProps = {
   children: React.ReactNode;
 };
 
-export function DeregisterButton({ id, children }: DeregisterButtonProps) {
+export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -134,4 +134,4 @@ export function DeregisterButton({ id, children }: DeregisterButtonProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

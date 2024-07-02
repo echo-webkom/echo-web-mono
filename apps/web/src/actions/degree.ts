@@ -13,7 +13,7 @@ import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutatio
 import { getUser } from "@/lib/get-user";
 import { isMemberOf, isWebkom } from "@/lib/memberships";
 
-export async function addDegree(payload: DegreeInsert) {
+export const addDegree = async (payload: DegreeInsert) => {
   const user = await getUser();
 
   if (!user) {
@@ -54,9 +54,9 @@ export async function addDegree(payload: DegreeInsert) {
       message: "En ukjent feil oppstod",
     };
   }
-}
+};
 
-export async function removeDegree(id: string) {
+export const removeDegree = async (id: string) => {
   const user = await getUser();
 
   if (!user) {
@@ -88,9 +88,9 @@ export async function removeDegree(id: string) {
       message: "En ukjent feil oppstod",
     };
   }
-}
+};
 
-export async function editDegree(payload: Degree) {
+export const editDegree = async (payload: Degree) => {
   const user = await getUser();
 
   if (!user) {
@@ -124,4 +124,4 @@ export async function editDegree(payload: Degree) {
       message: "En ukjent feil oppstod",
     };
   }
-}
+};

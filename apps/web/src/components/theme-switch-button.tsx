@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "next-themes";
 import { LuMoon, LuSun } from "react-icons/lu";
 
-export function ModeToggle() {
+export const ModeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isDarkMode = theme === "dark";
@@ -38,4 +38,4 @@ export function ModeToggle() {
       <span className="sr-only">Toggle theme</span>
     </button>
   );
-}
+};

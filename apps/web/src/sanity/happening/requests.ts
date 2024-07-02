@@ -16,7 +16,7 @@ import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queri
  *
  * @returns all happenings
  */
-export async function fetchAllHappenings() {
+export const fetchAllHappenings = async () => {
   return await sanityFetch<AllHappeningsQueryResult>({
     query: allHappeningsQuery,
     tags: ["happenings"],
@@ -25,12 +25,12 @@ export async function fetchAllHappenings() {
 
     return [];
   });
-}
+};
 
 /**
  * Fetches the upcoming happenings of a given type
  */
-export async function fetchHomeHappenings(types: Array<HappeningType>, n: number) {
+export const fetchHomeHappenings = async (types: Array<HappeningType>, n: number) => {
   return await sanityFetch<HomeHappeningsQueryResult>({
     query: homeHappeningsQuery,
     params: {
@@ -44,7 +44,7 @@ export async function fetchHomeHappenings(types: Array<HappeningType>, n: number
 
     return [];
   });
-}
+};
 
 /**
  * Fetches a happening by its slug
@@ -52,7 +52,7 @@ export async function fetchHomeHappenings(types: Array<HappeningType>, n: number
  * @param slug the slug of the happening you want to fetch
  * @returns the happening or null if not found
  */
-export async function fetchHappeningBySlug(slug: string) {
+export const fetchHappeningBySlug = async (slug: string) => {
   return await sanityFetch<HappeningQueryResult>({
     query: happeningQuery,
     tags: [`happening-${slug}`],
@@ -66,7 +66,7 @@ export async function fetchHappeningBySlug(slug: string) {
 
     return null;
   });
-}
+};
 
 /**
  * Fetches happenings matching the query parameters
@@ -74,10 +74,10 @@ export async function fetchHappeningBySlug(slug: string) {
  * @param q query parameters
  * @returns happenings matching the query parameters or an error message
  */
-export async function fetchFilteredHappening(
+export const fetchFilteredHappening = async (
   q: FilteredHappeningQuery,
   dateFilter?: Array<DateInterval>,
-): Promise<{ happenings: AllHappeningsQueryResult }> {
+): Promise<{ happenings: AllHappeningsQueryResult }> => {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
@@ -142,7 +142,7 @@ export async function fetchFilteredHappening(
           })
         : filteredHappenings,
   };
-}
+};
 
 /**
  * Gets the happening type of a happening by its slug
@@ -150,7 +150,7 @@ export async function fetchFilteredHappening(
  * @param slug the slug of the happening you want the type of
  * @returns the happening type or null if not found
  */
-export async function getHappeningTypeBySlug(slug: string) {
+export const getHappeningTypeBySlug = async (slug: string) => {
   return await fetchHappeningBySlug(slug)
     .then((happening) => (happening ? happening.happeningType : null))
     .catch(() => {
@@ -160,4 +160,4 @@ export async function getHappeningTypeBySlug(slug: string) {
 
       return null;
     });
-}
+};

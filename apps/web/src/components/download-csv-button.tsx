@@ -17,13 +17,13 @@ type DownloadCsvButtonProps = {
   selectedHeaders: Array<string>;
 };
 
-export function DownloadCsvButton({
+export const DownloadCsvButton = ({
   slug,
   columns,
   removeKey,
   addKey,
   selectedHeaders,
-}: DownloadCsvButtonProps) {
+}: DownloadCsvButtonProps) => {
   const filteredColumns = columns.filter((header) => header && header.trim() !== "");
 
   return (
@@ -75,4 +75,4 @@ export function DownloadCsvButton({
       </div>
     </div>
   );
-}
+};

@@ -21,7 +21,7 @@ import { registrationFormSchema } from "@/lib/schemas/registration";
 import { isErrorMessage } from "@/utils/error";
 import { doesIntersect } from "@/utils/list";
 
-export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
+export const register = async (id: string, payload: z.infer<typeof registrationFormSchema>) => {
   /**
    * Check if user is signed in
    */
@@ -293,13 +293,13 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: "En feil har oppstått",
     };
   }
-}
+};
 
-function getCorrectSpotrange(
+const getCorrectSpotrange = (
   year: number,
   spotRanges: Array<SpotRange>,
   canSkipSpotRange: boolean,
-) {
+) => {
   return (
     spotRanges.find((spotRange) => {
       if (canSkipSpotRange) {
@@ -309,4 +309,4 @@ function getCorrectSpotrange(
       return year >= spotRange.minYear && year <= spotRange.maxYear;
     }) ?? null
   );
-}
+};

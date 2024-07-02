@@ -32,7 +32,7 @@ type GroupUserFormProps = {
   isLeader: boolean;
 };
 
-export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
+export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -114,4 +114,4 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

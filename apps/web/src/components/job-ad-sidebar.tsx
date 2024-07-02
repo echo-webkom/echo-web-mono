@@ -15,7 +15,7 @@ type JobAdSidebarProps = {
   jobAd: JobAdsQueryResult[number];
 };
 
-export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
+export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
   return (
     <Sidebar>
       <SidebarItem>
@@ -67,4 +67,4 @@ export function JobAdSidebar({ jobAd }: JobAdSidebarProps) {
       </SidebarItem>
     </Sidebar>
   );
-}
+};

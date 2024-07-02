@@ -16,9 +16,9 @@ email,
 }[0].contacts
 `;
 
-export async function getContactsBySlug(slug: string) {
+export const getContactsBySlug = async (slug: string) => {
   return await client
     .fetch<HappeningContactsQueryResult>(happeningContactsQuery, { slug })
     .then((data) => data ?? [])
     .catch(() => []);
-}
+};

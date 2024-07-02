@@ -15,7 +15,7 @@ import { getUser } from "@/lib/get-user";
  * @param userId the id of the user that should be made leader of the group
  * @returns
  */
-export async function setGroupLeader(groupId: string, userId: string, leader: boolean) {
+export const setGroupLeader = async (groupId: string, userId: string, leader: boolean) => {
   try {
     const group = await db.query.groups.findFirst({
       where: (group) => eq(group.id, groupId),
@@ -83,7 +83,7 @@ export async function setGroupLeader(groupId: string, userId: string, leader: bo
       message: "Kunne ikke gjøre bruker leder",
     };
   }
-}
+};
 
 /**
  * Removes a user from a group. This should only be done if the user that made
@@ -92,7 +92,7 @@ export async function setGroupLeader(groupId: string, userId: string, leader: bo
  * @param userId the user to be removed
  * @param groupId the group to remove the user from
  */
-export async function removeFromGroup(userId: string, groupId: string) {
+export const removeFromGroup = async (userId: string, groupId: string) => {
   try {
     const group = await db.query.groups.findFirst({
       where: (group) => eq(group.id, groupId),
@@ -162,7 +162,7 @@ export async function removeFromGroup(userId: string, groupId: string) {
       message: "Kunne ikke fjerne bruker fra gruppen",
     };
   }
-}
+};
 
 /**
  * Adds a user to a group. This should only be done if the user that made the
@@ -171,7 +171,7 @@ export async function removeFromGroup(userId: string, groupId: string) {
  * @param userId the user to be added
  * @param groupId the group to add the user to
  */
-export async function addUserToGroup(userEmail: string, groupId: string) {
+export const addUserToGroup = async (userEmail: string, groupId: string) => {
   try {
     const group = await db.query.groups.findFirst({
       where: (group) => eq(group.id, groupId),
@@ -246,4 +246,4 @@ export async function addUserToGroup(userEmail: string, groupId: string) {
       message: "Kunne ikke legge til bruker i gruppen",
     };
   }
-}
+};

@@ -28,7 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { groupFormSchema, type GroupForm } from "@/lib/schemas/add-group";
 import { slugify } from "@/utils/string";
 
-export default function AddGroupButton({ ...props }: ButtonProps) {
+export const AddGroupButton = ({ ...props }: ButtonProps) => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -123,4 +123,4 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

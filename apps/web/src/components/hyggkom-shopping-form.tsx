@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 
-export function HyggkomShoppingForm() {
+export const HyggkomShoppingForm = () => {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof hyggkomListSchema>>({
@@ -66,4 +66,4 @@ export function HyggkomShoppingForm() {
       </form>
     </Form>
   );
-}
+};

@@ -11,7 +11,7 @@ const authOptions = createAuthOptions();
  *
  * @returns session of currently signed in user
  */
-export async function getAuthSession() {
+export const getAuthSession = async () => {
   const session = await _getServerSession(authOptions);
 
   if (!session) {
@@ -19,13 +19,13 @@ export async function getAuthSession() {
   }
 
   return session;
-}
+};
 
 /**
  *
  * @returns user of currently signed in user
  */
-export async function auth() {
+export const auth = async () => {
   const session = await getAuthSession();
 
   if (!session) {
@@ -50,4 +50,4 @@ export async function auth() {
   }
 
   return user;
-}
+};

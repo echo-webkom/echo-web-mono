@@ -4,8 +4,12 @@ import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { BentoBox } from "./bento-box";
 
-export async function HyggkomList({ className }: { className?: string }) {
+export const HyggkomList = async ({ className }: { className?: string }) => {
   const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+
+  if (!items.length) {
+    return null;
+  }
 
   const withDots = items.length > 5;
 
@@ -21,9 +25,10 @@ export async function HyggkomList({ className }: { className?: string }) {
     .slice(0, 6);
 
   const isAdmin = false;
+
   return (
     <BentoBox title="Hyggkom Handleliste" href="/for-studenter/handleliste" className={className}>
       <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
     </BentoBox>
   );
-}
+};

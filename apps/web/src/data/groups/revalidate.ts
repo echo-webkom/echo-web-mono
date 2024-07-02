@@ -4,6 +4,6 @@ export const cacheKeyFactory = {
   groups: "groups",
 };
 
-export function revalidateGroups() {
+export const revalidateGroups = () => {
   revalidateTag(cacheKeyFactory.groups);
-}
+};

@@ -23,11 +23,11 @@ type UserWithStrikes = {
   strikes: number;
 };
 
-export default function StrikesTable({
+export const StrikesTable = ({
   usersWithStrikes,
 }: {
   usersWithStrikes: Array<UserWithStrikes>;
-}) {
+}) => {
   const [search, setSearch] = useState("");
   const [showBanned, setShowBanned] = useState(false);
 
@@ -92,4 +92,4 @@ export default function StrikesTable({
       </Table>
     </>
   );
-}
+};

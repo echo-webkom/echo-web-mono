@@ -53,6 +53,6 @@ export const clientWith = (dataset: Dataset) =>
   });
 
 const builder = imageUrlBuilder(cdnClient);
-export function urlFor(source: SanityImageSource) {
+export const urlFor = (source: SanityImageSource) => {
   return builder.image(source);
-}
+};

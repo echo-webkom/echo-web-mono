@@ -11,12 +11,12 @@ type RegistrationCountProps = {
   initialWaitlistCount: number;
 };
 
-export function RegistrationCount({
+export const RegistrationCount = ({
   happeningId,
   maxCapacity,
   initialRegistaredCount,
   initialWaitlistCount,
-}: RegistrationCountProps) {
+}: RegistrationCountProps) => {
   const { registeredCount } = useRegistrations(
     happeningId,
     initialRegistaredCount,
@@ -45,4 +45,4 @@ export function RegistrationCount({
       )}
     </div>
   );
-}
+};

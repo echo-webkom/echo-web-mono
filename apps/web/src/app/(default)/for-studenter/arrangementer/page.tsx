@@ -8,7 +8,7 @@ import {
   EventFilterSidebar,
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
-import EventsView, { type SearchParams } from "@/components/events-view";
+import { EventsView, type SearchParams } from "@/components/events-view";
 import { createHappeningLink } from "@/lib/create-link";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";

@@ -1,4 +1,4 @@
-export async function getProgrammerbarStatus() {
+export const getProgrammerbarStatus = async () => {
   try {
     return (await fetch("https://api.programmer.bar").then((res) => res.json())) as {
       message: string;
@@ -8,4 +8,4 @@ export async function getProgrammerbarStatus() {
       message: "",
     };
   }
-}
+};

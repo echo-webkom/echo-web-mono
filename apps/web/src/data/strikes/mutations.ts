@@ -11,12 +11,12 @@ import {
 
 import { revalidateStrikes } from "./revalidate";
 
-export async function createStrikes(
+export const createStrikes = async (
   data: StrikeInfoInsert,
   userId: string,
   amount: number,
   bannableStrikeNumber?: number,
-) {
+) => {
   await db.transaction(async (tx) => {
     const info = await tx
       .insert(strikeInfos)
@@ -69,9 +69,9 @@ export async function createStrikes(
   });
 
   revalidateStrikes(userId);
-}
+};
 
-export async function deleteStrike(userId: string, strikeId: number) {
+export const deleteStrike = async (userId: string, strikeId: number) => {
   const strike = await db
     .update(strikes)
     .set({ isDeleted: true })
@@ -84,4 +84,4 @@ export async function deleteStrike(userId: string, strikeId: number) {
   }
 
   revalidateStrikes(userId);
-}
+};

@@ -14,7 +14,7 @@ import { type TRequest, type TResponse } from "./utils";
  * @param inputValidator zod schema to parse the input
  * @returns the handler wrapped in a session check
  */
-export function withSession<TContext, TInput>(
+export const withSession = <TContext, TInput>(
   handler: ({
     request,
     ctx,
@@ -28,7 +28,7 @@ export function withSession<TContext, TInput>(
   }) => Promise<TResponse> | TResponse,
   contextValidator?: ZodType<TContext>,
   inputValidator?: ZodType<TInput>,
-) {
+) => {
   return async (request: TRequest, context: TContext): Promise<TResponse> => {
     const user = await getUser();
 
@@ -73,4 +73,4 @@ export function withSession<TContext, TInput>(
       input: input as TInput,
     });
   };
-}
+};
