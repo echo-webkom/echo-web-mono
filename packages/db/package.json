@@ -35,7 +35,7 @@
     "@types/node": "20.14.2",
     "@types/pg": "8.11.6",
     "dotenv-cli": "7.4.2",
-    "drizzle-kit": "0.22.7",
+    "drizzle-kit": "0.22.8",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.16.0",
     "typescript": "5.5.2"
