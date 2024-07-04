@@ -1,9 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
-import EchoLogo from "@/assets/images/echo-logo.png";
 import { Reveal } from "@/components/animations/reveal";
 import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
@@ -31,41 +29,63 @@ export default async function HomePage() {
           className="animate-float-rotate-reverse-[-8]"
           width={400}
           height={400}
-          top={10}
-          right={20}
+          style={{
+            top: 10,
+            right: 20,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         />
         <BlurLogo
           className="animate-float-rotate-[6]"
           width={300}
           height={300}
-          top={250}
-          left={30}
+          style={{
+            top: 250,
+            left: 30,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
         />
         <BlurLogo
           className="animate-float-rotate-reverse-[6]"
           width={250}
           height={250}
-          top={450}
-          right={120}
+          style={{
+            top: 450,
+            right: 120,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
         />
 
         <BlurLogo
           className="animate-float-rotate-reverse-[6]"
           width={250}
           height={250}
-          top={750}
-          left={370}
+          style={{
+            top: 750,
+            left: 370,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
         />
       </div>
 
       <Container>
-        <div className="mb-24 mt-32 space-y-6">
+        <div className="mb-24 mt-32 space-y-16">
           <div className="mx-auto max-w-screen-md text-center">
-            <h1 className="mb-8 text-4xl font-medium sm:text-5xl md:text-6xl">
-              echo – Linjeforeningen for informatikk
-            </h1>
+            <div className="mb-8">
+              <h1 className="text-4xl font-semibold text-gray-700 dark:text-gray-200 sm:text-5xl">
+                echo – Linjeforeningen for informatikk
+              </h1>
+            </div>
             <Reveal>
-              <p className="mx-auto max-w-screen-md md:text-xl">
+              <p className="mx-auto max-w-screen-md font-medium text-muted-foreground md:text-xl">
                 Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
                 arrangere sosiale og faglige arrangementer.
               </p>
@@ -74,7 +94,7 @@ export default async function HomePage() {
 
           <Reveal>
             <div className="flex justify-center gap-4">
-              <Button className="hover:" variant="secondary" asChild>
+              <Button variant="secondary" asChild>
                 <Link href="/auth/logg-inn">Logg inn</Link>
               </Button>
               <Button variant="outline" asChild>
@@ -87,11 +107,11 @@ export default async function HomePage() {
         <div className="mx-auto mt-10 max-w-screen-lg space-y-32">
           {/* TODO: REMOVE ME */}
           <Link className="group" href="/for-studenter/innlegg/info-til-nye-studenter">
-            <div className="relative rounded-lg bg-secondary px-6 py-8 shadow-md transition-all group-hover:bg-secondary-hover">
-              <h2 className="mb-4 text-center text-2xl font-medium text-secondary-foreground group-hover:underline">
+            <div className="group relative rounded-xl border-2 border-secondary-dark bg-secondary px-6 py-8 text-center text-wave-foreground shadow-md transition-colors animate-float-rotate-reverse-[0.5] hover:bg-secondary-hover dark:border-wave-dark dark:bg-wave">
+              <h2 className="mb-4 text-2xl font-medium group-hover:underline">
                 👋🏻 Informasjon til nye studenter
               </h2>
-              <p className="text-center text-secondary-foreground">
+              <p>
                 Vi har laget et innlegg med svar på spørsmål du kanskje har om echo. Sjekk det ut!
               </p>
             </div>
@@ -100,11 +120,8 @@ export default async function HomePage() {
 
           <div className="grid items-center gap-16 md:grid-cols-2">
             {/* TODO: Add image of students */}
-            <Reveal className="flex items-center justify-center" translateX={-200}>
-              <Image src={EchoLogo} alt="Happy students" height={300} width={200} />
-            </Reveal>
             <Reveal translateX={200}>
-              <p className="mb-4 text-2xl font-medium">Hva er echo?</p>
+              <p className="mb-4 text-2xl font-semibold">Hva er echo?</p>
 
               <p>
                 echo består av frivillige informatikkstudenter, og er delt inn i et hovedstyre og en
@@ -114,11 +131,30 @@ export default async function HomePage() {
                 overordnet ansvar for studentsaker som angår det faglige ved instituttet.
               </p>
             </Reveal>
+
+            <Reveal translateX={-200}>
+              <p className="mb-4 text-2xl font-semibold">For bedrifter</p>
+
+              <p className="mb-8">
+                Vi tilbyr også muligheten for bedrifter til å presentere seg for
+                informatikkstudentene ved Universitetet i Bergen. Dette kan gjøres gjennom
+                bedriftspresentasjoner, workshops, kurs og andre arrangementer. Vi tilbyr også
+                muligheten for bedrifter å annonsere ledige stillinger og internship på nettsiden
+                vår.
+              </p>
+
+              <Link
+                className="font-medium text-primary hover:underline"
+                href="/for-bedrifter/bedriftspresentasjon"
+              >
+                Les om bedriftspresentasjoner &rarr;
+              </Link>
+            </Reveal>
           </div>
 
           <div className="grid gap-16 sm:grid-cols-2">
             <Reveal translateX={-200}>
-              <h2 className="mb-4 text-xl font-medium">Arrangementer</h2>
+              <h2 className="mb-4 text-xl font-semibold">Arrangementer</h2>
 
               {events.length > 0 ? (
                 <ul>
@@ -141,7 +177,7 @@ export default async function HomePage() {
             </Reveal>
 
             <Reveal translateX={200}>
-              <h2 className="mb-4 text-xl font-medium">Bedriftpresentasjoner</h2>
+              <h2 className="mb-4 text-xl font-semibold">Bedriftpresentasjoner</h2>
 
               {bedpresses.length > 0 ? (
                 <ul>
@@ -166,33 +202,6 @@ export default async function HomePage() {
                 <p>Det er ingen kommende bedriftspresentasjoner</p>
               )}
             </Reveal>
-          </div>
-
-          <div className="grid gap-16 md:grid-cols-2">
-            <div></div>
-            <Reveal translateX={-200}>
-              <p className="mb-4 text-2xl font-medium">For bedrifter</p>
-
-              <p className="mb-8">
-                Vi tilbyr også muligheten for bedrifter til å presentere seg for
-                informatikkstudentene ved Universitetet i Bergen. Dette kan gjøres gjennom
-                bedriftspresentasjoner, workshops, kurs og andre arrangementer. Vi tilbyr også
-                muligheten for bedrifter å annonsere ledige stillinger og internship på nettsiden
-                vår.
-              </p>
-
-              <Link
-                className="font-medium text-primary hover:underline"
-                href="/for-bedrifter/bedriftspresentasjon"
-              >
-                Les om bedriftspresentasjoner &rarr;
-              </Link>
-            </Reveal>
-
-            {/* TODO: Add image */}
-            {/* <Reveal className="flex items-center justify-start" translateX={200}>
-              <Image src={HappyBoss} alt="Happy boss" height={350} width={350} />
-            </Reveal> */}
           </div>
         </div>
       </Container>

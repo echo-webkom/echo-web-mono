@@ -37,7 +37,7 @@ export default async function StudentGroupOverview({ params }: Props) {
       <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {groups.map((group) => (
           <li key={group._id}>
-            <StudentGroupPreview group={group} withBorder />
+            <StudentGroupPreview group={group} />
           </li>
         ))}
       </ul>

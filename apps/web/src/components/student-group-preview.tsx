@@ -3,22 +3,15 @@ import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
 import { type StudentGroupsByTypeQueryResult } from "@/sanity.types";
-import { cn } from "@/utils/cn";
 
 type StudentGroupPreviewProps = {
   group: StudentGroupsByTypeQueryResult[number];
-  withBorder?: boolean;
 };
 
-export const StudentGroupPreview = ({ group, withBorder = false }: StudentGroupPreviewProps) => {
+export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
   return (
     <Link href={`/for-studenter/gruppe/${group.slug}`}>
-      <div
-        className={cn(
-          "group flex h-full flex-col gap-3 rounded-lg p-5 shadow-lg hover:bg-muted",
-          withBorder && "border",
-        )}
-      >
+      <div className="group flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg hover:bg-muted">
         <h2 className="text-2xl font-bold">{group.name}</h2>
 
         {group.description && (
@@ -27,7 +20,7 @@ export const StudentGroupPreview = ({ group, withBorder = false }: StudentGroupP
           </p>
         )}
 
-        <p className="flex items-center gap-1">
+        <p className="flex items-center gap-1 font-medium">
           Les mer
           <span className="transition-all duration-150 group-hover:pl-1">
             <ArrowRight />

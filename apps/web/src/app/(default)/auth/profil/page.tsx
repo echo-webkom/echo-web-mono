@@ -60,10 +60,7 @@ export default async function ProfilePage() {
               {memberships.map(({ group }) => (
                 <li key={group.id}>
                   <Link href={`/gruppe/${group.id}`}>
-                    <Chip
-                      key={group.id}
-                      className="bg-secondary text-secondary-foreground hover:underline"
-                    >
+                    <Chip key={group.id} variant="secondary" className="hover:underline">
                       {group.name}
                     </Chip>
                   </Link>

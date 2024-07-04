@@ -15,7 +15,7 @@ type EventPageProps = {
 
 export const EventPage = ({ event }: EventPageProps) => {
   return (
-    <Container className="flex w-full gap-24 py-10 md:max-w-[700px] lg:max-w-[1500px] lg:flex-row">
+    <Container className="flex w-full gap-24 py-10 lg:max-w-[1500px] lg:flex-row">
       <HappeningSidebar event={event} />
 
       <div>

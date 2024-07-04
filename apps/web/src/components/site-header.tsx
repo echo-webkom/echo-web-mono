@@ -6,6 +6,7 @@ import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ModeToggle } from "./theme-switch-button";
+import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
@@ -18,19 +19,12 @@ export const SiteHeader = async () => {
     <div className="sticky top-0 z-20">
       <VercelPreviewNotify />
 
-      <div className="border-b bg-background">
+      <div className="border-b-2 bg-background">
         <NavigationRoot>
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
             <div className="absolute -bottom-3 flex space-x-2">
-              <div className="z-50 rounded-md bg-primary px-2 py-1 text-xs text-white">
-                <p>{getRandomMessage()}</p>
-              </div>
-
-              <div
-                className={`z-50 rounded-md bg-primary px-2 py-1 text-xs text-white ${message === "" ? "hidden" : "block"}`}
-              >
-                <p>{message}</p>
-              </div>
+              <Chip className="z-50">{getRandomMessage()}</Chip>
+              {message !== "" && <Chip className="z-50">{message}</Chip>}
             </div>
 
             <div className="flex items-center">

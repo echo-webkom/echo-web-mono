@@ -48,6 +48,7 @@ export const ReactionButton = ({
     <form action={formAction}>
       <Button
         type="submit"
+        variant="ghost"
         className={cn("h-8 w-14 rounded-full", {
           "bg-reaction text-foreground hover:bg-reaction": reactionState.hasReacted,
           "bg-muted text-foreground hover:bg-muted sm:hover:bg-reaction": !reactionState.hasReacted,

@@ -15,15 +15,11 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <div
         ref={ref}
         className={cn(
-          "flex w-full flex-col gap-3 rounded-xl bg-muted p-10 lg:max-w-[325px]",
+          "flex w-full flex-col gap-3 rounded-xl border-2 border-muted-dark bg-muted p-6",
           className,
         )}
       >
         {childrenArray.map((child, index) => {
-          if (!React.isValidElement(child) || child.type !== SidebarItem) {
-            return null;
-          }
-
           return <React.Fragment key={index}>{child}</React.Fragment>;
         })}
       </div>
