@@ -20,8 +20,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { SearchInput } from "./ui/search-input";
 
 type FilterType =
   | "ALL"
@@ -246,46 +246,21 @@ export const EventFilterSidebar = () => {
     <Sidebar className="space-y-3">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
-          <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
-            <Input
-              value={searchInput}
-              maxLength={50}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.currentTarget.blur();
-                  updateFilter({ type: "SEARCH", search: searchInput }, router, pathname, params);
-                }
-              }}
-              type="text"
-              placeholder="Søk..."
-              className="border-none bg-transparent pr-6"
-            />
-            {searchInput !== "" && (
-              <button className="absolute inset-y-0 right-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-gray-400 hover:text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  onClick={() => {
-                    setSearchInput("");
-                    updateFilter("SEARCH", router, pathname, params);
-                  }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
+          <SearchInput
+            value={searchInput}
+            onClear={() => setSearchInput("")}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.currentTarget.blur();
+                updateFilter({ type: "SEARCH", search: searchInput }, router, pathname, params);
+              }
+            }}
+            placeholder="Søk..."
+            className="w-full"
+          />
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>

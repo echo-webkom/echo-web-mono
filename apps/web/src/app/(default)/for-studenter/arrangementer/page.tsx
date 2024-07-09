@@ -48,7 +48,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <EventFilter />
       </div>
       <div className="flex flex-col sm:flex-row">
-        <div className="mb-5 w-full sm:mb-0 sm:max-w-[250px] sm:pr-14">
+        <div className="mb-5 w-full sm:mb-0 sm:max-w-[350px] sm:pr-14">
           <EventFilterSidebar />
         </div>
         <div className="w-full space-y-2">
