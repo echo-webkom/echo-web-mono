@@ -16,7 +16,7 @@
     "@types/node": "20.14.10",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.5.2",
+    "typescript": "5.5.3",
     "vitest": "1.6.0"
   },
   "eslintConfig": {
