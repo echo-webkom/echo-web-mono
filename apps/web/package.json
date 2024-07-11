@@ -43,7 +43,7 @@
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "date-fns": "3.6.0",
-    "drizzle-orm": "0.31.2",
+    "drizzle-orm": "0.31.4",
     "framer-motion": "11.2.13",
     "groq": "3.49.0",
     "ics": "^3.7.6",
