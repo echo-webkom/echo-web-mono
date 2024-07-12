@@ -2,9 +2,9 @@
   "name": "@echo-webkom/db",
   "version": "0.1.0",
   "exports": {
-    ".": "./index.ts",
-    "./schemas": "./schemas/index.ts",
-    "./utils": "./utils.ts"
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./utils": "./src/utils.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",

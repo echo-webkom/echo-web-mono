@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 
 import { createAuthOptions } from "@echo-webkom/auth";
 
-import { setSignInAttempt } from "@/data/cache/sign-in-attempt";
+import { signInAttempt } from "@/data/kv/namespaces";
 import { toRelative } from "@/utils/url";
 
 const authOptions = createAuthOptions({
@@ -13,7 +13,10 @@ const authOptions = createAuthOptions({
     });
 
     const id = nanoid();
-    await setSignInAttempt(id, event.email, event.error);
+    await signInAttempt.set(id, {
+      email: event.email,
+      error: event.error,
+    });
 
     const url = new URL("https://abakus.no");
     url.pathname = "/auth/logg-inn";

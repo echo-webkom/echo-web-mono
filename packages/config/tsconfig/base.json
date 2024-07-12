@@ -7,7 +7,6 @@
     "esModuleInterop": true,
     "allowJs": true,
     "resolveJsonModule": true,
-    "moduleDetection": "force",
     "isolatedModules": true,
 
     "strict": true,
@@ -18,10 +17,9 @@
     "lib": ["es2022"],
 
     "composite": true,
-    "declarationMap": true,
 
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true
   },
   "exclude": ["node_modules"]

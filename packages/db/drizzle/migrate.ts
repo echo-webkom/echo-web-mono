@@ -2,7 +2,7 @@
 import process from "node:process";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 
-import { db } from "..";
+import { db } from "../src";
 
 /**
  * Do not run migrations in preview deployments.

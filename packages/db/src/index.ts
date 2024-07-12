@@ -3,6 +3,8 @@ import postgres from "postgres";
 
 import * as schema from "./schemas";
 
+export type Database = ReturnType<typeof createDatabase>;
+
 const globalForPool = globalThis as unknown as {
   pool: ReturnType<typeof postgres> | undefined;
 };
@@ -25,10 +27,14 @@ if (process.env.NODE_ENV !== "production") {
   pool = createPool();
 }
 
-export const db = drizzle(pool, {
-  schema,
-  logger: process.env.DATABASE_LOG === "true",
-});
+const createDatabase = (pool: ReturnType<typeof postgres>) => {
+  return drizzle(pool, {
+    schema,
+    logger: process.env.DATABASE_LOG === "true",
+  });
+};
+
+export const db = createDatabase(pool);
 
 /**
  * PostgresError is hærk to work with. Just check if it has a code property.
