@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Callout } from "@/components/typography/callout";
 import { Text } from "@/components/typography/text";
-import { getSignInAttempt } from "@/data/cache/sign-in-attempt";
+import { signInAttempt } from "@/data/kv/namespaces";
 import { SignInButtons } from "./_components/sign-in-buttons";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 export default async function SignInPage({ searchParams }: Props) {
   const { attemptId } = searchParams;
 
-  const isValidAttemptId = attemptId && (await getSignInAttempt(attemptId));
+  const isValidAttemptId = attemptId && (await signInAttempt.get(attemptId));
 
   return (
     <div className="mx-4 my-14 flex flex-col gap-4">

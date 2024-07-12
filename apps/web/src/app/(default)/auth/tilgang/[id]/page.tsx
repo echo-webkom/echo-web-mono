@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { getSignInAttempt } from "@/data/cache/sign-in-attempt";
+import { signInAttempt } from "@/data/kv/namespaces";
 import { RequestAccessForm } from "./_components/request-access-form";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default async function Access({ params: { id } }: Props) {
-  const attempt = await getSignInAttempt(id);
+  const attempt = await signInAttempt.get(id);
 
   if (!attempt) {
     return notFound();
