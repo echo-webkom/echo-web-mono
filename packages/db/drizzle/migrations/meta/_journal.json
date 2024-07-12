@@ -148,6 +148,13 @@
       "when": 1719939189981,
       "tag": "0020_fixed_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1720452987900,
+      "tag": "0021_daily_moon_knight",
+      "breakpoints": true
     }
   ]
 }
