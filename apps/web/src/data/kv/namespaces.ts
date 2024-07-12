@@ -1,8 +1,13 @@
 import z from "zod";
 
-import { KVNamespace } from ".";
+import { db } from "@echo-webkom/db";
 
-export const signInAttempt = new KVNamespace("sign-in-attempt", {
+import { KVDrizzleAdapter } from "./kv-adapter";
+import { KVNamespace } from "./kv-namespace";
+
+const adapter = new KVDrizzleAdapter(db);
+
+export const signInAttempt = new KVNamespace(adapter, "sign-in-attempt", {
   schema: z.object({
     email: z.string(),
     error: z.string(),
