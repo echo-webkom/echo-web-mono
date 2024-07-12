@@ -1,4 +1,4 @@
-import { type OAuthConfig } from "next-auth/providers";
+import { type OAuthConfig } from "next-auth/providers/index";
 
 type FeideProfile = {
   iss: string;

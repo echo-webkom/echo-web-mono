@@ -15,13 +15,11 @@
   },
   "include": [
     "next-env.d.ts",
-    ".eslintrc.cjs",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.cjs",
-    "**/*.mjs",
     ".next/types/**/*.ts",
-    "float-rotate.js"
+    ".eslintrc.cjs",
+    "./src/env.mjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next"]
 }
