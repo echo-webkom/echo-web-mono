@@ -1,3 +1,4 @@
+import { isFuture } from "date-fns";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
@@ -57,11 +58,10 @@ export const createAuthOptions = (
         }
 
         const whitelistEntry = await db.query.whitelist.findFirst({
-          where: (whitelist, { and, eq, lte }) =>
-            and(lte(whitelist.expiresAt, new Date()), eq(whitelist.email, email)),
+          where: (whitelist, { eq }) => eq(whitelist.email, email),
         });
 
-        if (whitelistEntry) {
+        if (whitelistEntry && isFuture(whitelistEntry.expiresAt)) {
           return true;
         }
 
