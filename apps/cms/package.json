@@ -23,7 +23,7 @@
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "6.21.0",
     "@sanity/icons": "3.3.0",
-    "@sanity/ui": "2.6.1",
+    "@sanity/ui": "2.6.8",
     "@sanity/vision": "3.50.0",
     "nanoid": "5.0.7",
     "react": "18.3.1",
