@@ -61,8 +61,7 @@ export const createAuthOptions = (
             and(lte(whitelist.expiresAt, new Date()), eq(whitelist.email, email)),
         });
 
-        const today = new Date();
-        if (whitelistEntry && whitelistEntry.expiresAt > today) {
+        if (whitelistEntr) {
           return true;
         }
 
