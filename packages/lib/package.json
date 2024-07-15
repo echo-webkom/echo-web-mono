@@ -17,7 +17,7 @@
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.5.3",
-    "vitest": "2.0.1"
+    "vitest": "2.0.2"
   },
   "eslintConfig": {
     "root": true,
