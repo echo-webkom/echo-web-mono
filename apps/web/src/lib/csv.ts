@@ -38,7 +38,7 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
 
     happening.questions.forEach((question) => {
       const answer = answers.find((a) => a.questionId === question.id)?.answer;
-      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : answer ?? "";
+      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : (answer ?? "");
       obj[question.title] = formattedAnswer;
     });
 
