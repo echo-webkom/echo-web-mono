@@ -1,4 +1,3 @@
-import { isFuture } from "date-fns";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
@@ -6,6 +5,7 @@ import { db } from "@echo-webkom/db";
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
 import { isMemberOfecho } from "./is-member-of-echo";
+import { isFuture } from "./utils";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
