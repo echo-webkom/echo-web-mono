@@ -1,3 +1,4 @@
+import { addMinutes } from "date-fns";
 import { nanoid } from "nanoid";
 import NextAuth from "next-auth";
 
@@ -13,10 +14,14 @@ const authOptions = createAuthOptions({
     });
 
     const id = nanoid();
-    await signInAttempt.set(id, {
-      email: event.email,
-      error: event.error,
-    });
+    await signInAttempt.set(
+      id,
+      {
+        email: event.email,
+        error: event.error,
+      },
+      addMinutes(new Date(), 5),
+    );
 
     const url = new URL("https://abakus.no");
     url.pathname = "/auth/logg-inn";
