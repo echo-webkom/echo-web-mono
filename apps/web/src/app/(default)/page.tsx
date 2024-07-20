@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
+import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { Reveal } from "@/components/animations/reveal";
@@ -85,6 +86,19 @@ export default async function HomePage() {
         </div>
 
         <div className="mx-auto mt-10 max-w-screen-lg space-y-32">
+          {/* TODO: REMOVE ME */}
+          <Link className="group" href="/for-studenter/innlegg/info-til-nye-studenter">
+            <div className="relative rounded-lg bg-secondary px-6 py-8 shadow-md transition-all group-hover:bg-secondary-hover">
+              <h2 className="mb-4 text-center text-2xl font-medium text-secondary-foreground group-hover:underline">
+                👋🏻 Informasjon til nye studenter
+              </h2>
+              <p className="text-center text-secondary-foreground">
+                Vi har laget et innlegg med svar på spørsmål du kanskje har om echo. Sjekk det ut!
+              </p>
+            </div>
+          </Link>
+          {/* END REMOVE ME */}
+
           <div className="grid items-center gap-16 md:grid-cols-2">
             {/* TODO: Add image of students */}
             <Reveal className="flex items-center justify-center" translateX={-200}>
