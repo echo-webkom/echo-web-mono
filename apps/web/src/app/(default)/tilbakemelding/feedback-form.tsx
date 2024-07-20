@@ -87,8 +87,10 @@ export const FeedbackForm = () => {
                   Kategori
                 </FormLabel>
                 <FormControl>
-                  <Select id="category" defaultValue={undefined} {...field}>
-                    <option disabled>Velg en kategori</option>
+                  <Select id="category" {...field}>
+                    <option selected disabled>
+                      Velg en kategori
+                    </option>
                     <hr />
                     <option value="bug">Bug</option>
                     <option value="feature">Funksjonalitet</option>
