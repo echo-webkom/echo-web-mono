@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
-import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { Reveal } from "@/components/animations/reveal";
