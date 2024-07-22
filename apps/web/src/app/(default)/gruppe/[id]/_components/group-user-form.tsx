@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuTrash as Trash } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
@@ -35,6 +36,7 @@ type GroupUserFormProps = {
 export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSetIsLeader = async (checked: boolean) => {
     const { message } = await setGroupLeader(group.id, user.id, checked);
@@ -58,11 +60,13 @@ export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => 
       return;
     }
 
+    setIsOpen(false);
+
     router.refresh();
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
           <TbUserEdit className="h-4 w-4" />
