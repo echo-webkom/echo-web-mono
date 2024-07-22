@@ -1,10 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
-import { hyggkomSubmit } from "@/actions/shopping-list";
+import { hyggkomSubmitAction } from "@/actions/shopping-list";
 import { useToast } from "@/hooks/use-toast";
 import { hyggkomListSchema } from "@/lib/schemas/shoppinglist";
 import { Button } from "./ui/button";
@@ -14,15 +15,16 @@ import { Input } from "./ui/input";
 export const HyggkomShoppingForm = () => {
   const { toast } = useToast();
 
+  const { executeAsync } = useAction(hyggkomSubmitAction);
   const form = useForm<z.infer<typeof hyggkomListSchema>>({
     resolver: zodResolver(hyggkomListSchema),
     defaultValues: { name: "" },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const response = await hyggkomSubmit({ name: data.name });
+    const response = await executeAsync(data);
 
-    if (response.success) {
+    if (response?.data?.success) {
       toast({
         title: "Takk for forslaget!",
         description: "Ditt forslag er lagt til i listen.",

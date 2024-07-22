@@ -6,8 +6,7 @@ import { z } from "zod";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
-import { getUser } from "@/lib/get-user";
-import { isWebkom } from "@/lib/memberships";
+import { authActionClient, groupActionClient } from "@/lib/safe-action";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
@@ -15,26 +14,16 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
   year: true,
 });
 
-export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema>) => {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const data = updateSelfPayloadSchema.parse(payload);
+export const updateSelfAction = authActionClient
+  .metadata({ actionName: "updateSelf" })
+  .schema(updateSelfPayloadSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { user } = ctx;
 
     const resp = await db
       .update(users)
       .set({
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        alternativeEmail: data.alternativeEmail?.trim() || null,
-        degreeId: data.degreeId,
-        year: data.year,
+        ...parsedInput,
       })
       .where(eq(users.id, user.id))
       .returning()
@@ -51,63 +40,26 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
       success: true,
       message: "Brukeren ble oppdatert",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-};
+  });
 
 const updateUserPayloadSchema = z.object({
+  userId: z.string(),
   memberships: z.array(z.string()),
 });
 
-export const updateUser = async (
-  userId: string,
-  payload: z.infer<typeof updateUserPayloadSchema>,
-) => {
-  try {
-    const user = await getUser();
-
-    if (user === null || !isWebkom(user)) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn som en admin",
-      };
-    }
-
-    const data = await updateUserPayloadSchema.parseAsync(payload);
+export const updateUserAction = groupActionClient(["webkomk"])
+  .metadata({ actionName: "updateUser" })
+  .schema(updateUserPayloadSchema)
+  .action(async ({ parsedInput }) => {
+    const { userId, memberships } = parsedInput;
 
     await db.delete(usersToGroups).where(eq(usersToGroups.userId, userId));
-    if (data.memberships.length > 0) {
-      await db
-        .insert(usersToGroups)
-        .values(data.memberships.map((groupId) => ({ userId, groupId })));
+    if (memberships.length > 0) {
+      await db.insert(usersToGroups).values(memberships.map((groupId) => ({ userId, groupId })));
     }
 
     return {
       success: true,
       message: "Bruker oppdatert",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      result: "error",
-      message: "Something went wrong",
-    };
-  }
-};
+  });

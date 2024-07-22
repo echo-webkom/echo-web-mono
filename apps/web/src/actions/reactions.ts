@@ -1,33 +1,32 @@
 "use server";
 
+import { z } from "zod";
+
 import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
-import { getUser } from "@/lib/get-user";
+import { authActionClient } from "@/lib/safe-action";
 
-export const handleReact = async (reactToKey: string, emojiId: number) => {
-  const user = await getUser();
+export const reactAction = authActionClient
+  .metadata({ actionName: "react" })
+  .schema(z.object({ reactToKey: z.string(), emojiId: z.number() }))
+  .action(async ({ parsedInput, ctx }) => {
+    const { reactToKey, emojiId } = parsedInput;
+    const { user } = ctx;
 
-  if (!user) {
+    if (emojiId < 0 || emojiId > Object.keys(idToEmoji).length) {
+      return {
+        status: 400,
+        message: "Invalid emojiId",
+      };
+    }
+
+    const reactionId = await registerReaction({
+      reactToKey: reactToKey,
+      emojiId: emojiId,
+      userId: user.id,
+    });
+
     return {
-      status: 401,
-      message: "Unauthorized",
+      reactionId,
     };
-  }
-
-  if (emojiId < 0 || emojiId > Object.keys(idToEmoji).length) {
-    return {
-      status: 400,
-      message: "Invalid emojiId",
-    };
-  }
-
-  const reactionId = await registerReaction({
-    reactToKey: reactToKey,
-    emojiId: emojiId,
-    userId: user.id,
   });
-
-  return {
-    reactionId,
-  };
-};

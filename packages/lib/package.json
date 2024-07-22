@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@echo-webkom/db": "workspace:*"
+    "@echo-webkom/db": "workspace:*",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",

@@ -3,10 +3,11 @@
 import { useState, type PropsWithChildren } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { removeWhitelist, upsertWhitelist } from "@/actions/whitelist";
+import { removeWhitelistAction, upsertWhitelistAction } from "@/actions/whitelist";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,6 +52,28 @@ export const WhitelistButton = ({
   const { toast } = useToast();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const { executeAsync: upsertWhitelist } = useAction(upsertWhitelistAction, {
+    onSuccess: ({ data }) => {
+      if (!data) return;
+      toast({
+        title: data.message,
+        variant: data.success ? "success" : "destructive",
+      });
+      setIsOpen(false);
+      router.refresh();
+    },
+  });
+  const { executeAsync: removeWhitelist } = useAction(removeWhitelistAction, {
+    onSuccess: ({ data }) => {
+      if (!data) return;
+      toast({
+        title: data.message,
+        variant: data.success ? "success" : "destructive",
+      });
+      setIsOpen(false);
+      router.refresh();
+    },
+  });
 
   const form = useForm<WhitelistForm>({
     resolver: zodResolver(whitelistFormSchema),
@@ -62,15 +85,11 @@ export const WhitelistButton = ({
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await upsertWhitelist(data.email, data.reason, data.days);
-
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
+    await upsertWhitelist({
+      email: data.email,
+      reason: data.reason,
+      days: data.days,
     });
-
-    setIsOpen(false);
-    router.refresh();
   });
 
   const handleDelete = async () => {
@@ -82,15 +101,9 @@ export const WhitelistButton = ({
       return;
     }
 
-    const { success, message } = await removeWhitelist(whitelistEntry.email);
-
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
+    await removeWhitelist({
+      email: whitelistEntry.email,
     });
-
-    setIsOpen(false);
-    router.refresh();
   };
 
   return (
@@ -161,7 +174,7 @@ export const WhitelistButton = ({
             </DialogBody>
             <DialogFooter>
               {whitelistEntry && (
-                <Button size="sm" variant="destructive" onClick={() => void handleDelete()}>
+                <Button size="sm" variant="destructive" onClick={handleDelete}>
                   Slett
                 </Button>
               )}

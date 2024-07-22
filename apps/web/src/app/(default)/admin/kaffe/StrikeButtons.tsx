@@ -1,22 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
 
-import { addKaffeReport, resetKaffeStrikes } from "@/actions/kaffe-strikes";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { addKaffeReportAction, resetKaffeStrikesAction } from "./_actions";
 
 export const StrikeButtons = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const { executeAsync: addExecuteAsync } = useAction(addKaffeReportAction);
+  const { executeAsync: resetExecuteAsync } = useAction(resetKaffeStrikesAction);
 
   const handleAddReport = async () => {
-    const success = await addKaffeReport();
-
+    const response = await addExecuteAsync();
+    const success = !!response?.data;
     const title = success ? "Rapport lagt inn" : "Noe gikk galt";
 
     toast({
       title,
+      variant: success ? "success" : "destructive",
     });
 
     if (success) {
@@ -25,12 +29,14 @@ export const StrikeButtons = () => {
   };
 
   const handleReset = async () => {
-    const success = await resetKaffeStrikes();
+    const response = await resetExecuteAsync();
+    const success = !!response?.data;
 
     const title = success ? "Prikker resatt" : "Noe gikk galt";
 
     toast({
       title,
+      variant: success ? "success" : "destructive",
     });
 
     if (success) {

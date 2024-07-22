@@ -8,25 +8,19 @@ import {
   deleteShoppinglistItems,
   removeShoppinglistLike,
 } from "@/data/shopping-list-item/mutations";
-import { getUser } from "@/lib/get-user";
-import { isMemberOf } from "@/lib/memberships";
+import { authActionClient, groupActionClient } from "@/lib/safe-action";
 
 const shoppingListSchema = z.object({
   name: z.string(),
 });
 
-export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>) => {
-  try {
-    const user = await getUser();
+export const hyggkomSubmitAction = authActionClient
+  .metadata({ actionName: "hyggkomSubmit" })
+  .schema(shoppingListSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { user } = ctx;
+    const data = parsedInput;
 
-    const data = await shoppingListSchema.parseAsync(payload);
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
     const itemId = await createShoppinglistItem({
       name: data.name,
       userId: user.id,
@@ -43,61 +37,41 @@ export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>)
       success: true,
       message: "Ditt forslag er lagt til.",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Skjemaet er ikke i riktig format",
-      };
-    }
-    return {
-      success: false,
-      message: "Noe gikk galt",
-    };
-  }
-};
+  });
 
-export const hyggkomRemoveSubmit = async (id: string) => {
-  const user = await getUser();
-  const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
-
-  if (!isAdmin) {
-    return {
-      success: false,
-      message: "Du kan ikke fjerne forslag.",
-    };
-  }
-  await deleteShoppinglistItems(id);
-  return {
-    success: true,
-    message: "Forslaget ble fjernet.",
-  };
-};
-
-export const hyggkomLikeSubmit = async (itemId: string) => {
-  const user = await getUser();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn.",
-    };
-  }
-
-  try {
-    await addShoppinglistLike({
-      itemId: itemId,
-      userId: user.id,
-    });
+export const hyggkomRemoveAction = groupActionClient(["webkom", "hyggkom", "hovedstyret"])
+  .metadata({ actionName: "hyggkomRemove" })
+  .schema(z.string())
+  .action(async ({ parsedInput }) => {
+    await deleteShoppinglistItems(parsedInput);
     return {
       success: true,
-      message: "Forslaget ble liket.",
+      message: "Forslaget ble fjernet.",
     };
-  } catch {
-    await removeShoppinglistLike(itemId, user.id);
-  }
-  return {
-    success: true,
-    message: "Din like er blitt fjernet.",
-  };
-};
+  });
+
+export const hyggkomLikeAction = authActionClient
+  .metadata({ actionName: "hyggkomLike" })
+  .schema(z.string())
+  .action(async ({ parsedInput, ctx }) => {
+    const itemId = parsedInput;
+    const { user } = ctx;
+
+    try {
+      await addShoppinglistLike({
+        itemId: itemId,
+        userId: user.id,
+      });
+
+      return {
+        success: true,
+        message: "Forslaget ble liket.",
+      };
+    } catch {
+      await removeShoppinglistLike(itemId, user.id);
+    }
+    return {
+      success: true,
+      message: "Din like er blitt fjernet.",
+    };
+  });

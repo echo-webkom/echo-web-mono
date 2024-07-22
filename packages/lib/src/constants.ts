@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const PAGE_TYPES = [
   { title: "For studenter", value: "for-students" },
   { title: "For bedrifter", value: "for-companies" },
@@ -45,14 +47,17 @@ export const QUESTION_TYPES = [
 
 export type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
 
-export type StrikeType =
-  | "UNREGISTER_BEFORE_DEADLINE"
-  | "UNREGISTER_AFTER_DEADLINE"
-  | "NO_SHOW"
-  | "WRONG_INFO"
-  | "TOO_LATE"
-  | "NO_FEEDBACK"
-  | "OTHER";
+export const strikeTypeSchema = z.enum([
+  "UNREGISTER_BEFORE_DEADLINE",
+  "UNREGISTER_AFTER_DEADLINE",
+  "NO_SHOW",
+  "WRONG_INFO",
+  "TOO_LATE",
+  "NO_FEEDBACK",
+  "OTHER",
+]);
+
+export type StrikeType = z.infer<typeof strikeTypeSchema>;
 
 export const STRIKE_TYPE_MESSAGE: Record<StrikeType, string> = {
   UNREGISTER_BEFORE_DEADLINE: "Du meldte deg av før påmeldingsfristen.",

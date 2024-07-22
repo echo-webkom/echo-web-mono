@@ -10,23 +10,20 @@ import { emailClient } from "@echo-webkom/email/client";
 
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
-import { getUser } from "@/lib/get-user";
+import { authActionClient } from "@/lib/safe-action";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
 
 const deregisterPayloadSchema = z.object({
+  id: z.string(),
   reason: z.string(),
 });
 
-export const deregister = async (id: string, payload: z.infer<typeof deregisterPayloadSchema>) => {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
+export const deregisterAction = authActionClient
+  .metadata({ actionName: "deregister" })
+  .schema(deregisterPayloadSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { id, reason } = parsedInput;
+    const { user } = ctx;
 
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
@@ -43,8 +40,6 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       };
     }
 
-    const data = await deregisterPayloadSchema.parseAsync(payload);
-
     await Promise.all([
       db
         .update(registrations)
@@ -52,7 +47,7 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
           prevStatus: exisitingRegistration.status,
           changedBy: null,
           status: "unregistered",
-          unregisterReason: data.reason,
+          unregisterReason: reason,
         })
         .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
@@ -66,7 +61,7 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
         DeregistrationNotificationEmail({
           happeningTitle: exisitingRegistration.happening.title,
           name: user.name ?? "Ukjent",
-          reason: data.reason,
+          reason: reason,
         }),
       );
     }
@@ -81,17 +76,4 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       success: true,
       message: "Du er nå avmeldt",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-};
+  });

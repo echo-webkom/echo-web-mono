@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { updateRegistration } from "@/actions/update-registration";
+import { updateRegistrationAction } from "@/actions/update-registration";
 import { type RegistrationWithUser } from "@/components/registration-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,7 +36,7 @@ type EditRegistrationFormProps = {
 
 export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { executeAsync, isExecuting } = useAction(updateRegistrationAction);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -49,14 +50,21 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-
-    const { message, success } = await updateRegistration(id, registration.user.id, {
+    const response = await executeAsync({
+      happeningId: id,
+      registrationUserId: registration.user.id,
       status: selectedStatus,
       reason: data.reason ?? "",
     });
 
-    setIsLoading(false);
+    if (!response?.data?.success) {
+      return toast({
+        title: response?.data?.message ?? "Noe gikk galt",
+        variant: "destructive",
+      });
+    }
+
+    const { success, message } = response.data;
 
     toast({
       title: "Påmeldingen er endret",
@@ -203,7 +211,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
 
           <DialogFooter className="mt-5 flex flex-col gap-2">
             <Button size="sm" className="w-full sm:w-auto" type="submit">
-              {isLoading ? (
+              {isExecuting ? (
                 <>
                   <span>
                     <AiOutlineLoading className="h-4 w-4 animate-spin" />

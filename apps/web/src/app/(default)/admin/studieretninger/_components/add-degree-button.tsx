@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
-import { addDegree, editDegree, removeDegree } from "@/actions/degree";
+import { addDegreeAction, editDegreeAction, removeDegreeAction } from "@/actions/degree";
 import { Text } from "@/components/typography/text";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
@@ -41,6 +42,9 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { executeAsync: executeAddDegree } = useAction(addDegreeAction);
+  const { executeAsync: executeEditDegree } = useAction(editDegreeAction);
+  const { executeAsync: executeRemoveDegree } = useAction(removeDegreeAction);
 
   const form = useForm<DegreeForm>({
     resolver: zodResolver(degreeFormSchema),
@@ -54,27 +58,32 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
     const { action, ...degreeData } = data;
 
     if (action === "create") {
-      const result = await addDegree(degreeData);
+      const resp = await executeAddDegree(degreeData);
+      const message = resp?.data?.message;
 
-      toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
-      });
-
-      if (result.success) {
-        form.reset();
+      if (message) {
+        toast({
+          title: message,
+          variant: "success",
+        });
       }
 
       return;
     }
 
     if (action === "update") {
-      const result = await editDegree(degreeData);
+      const resp = await executeEditDegree(degreeData);
 
-      toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
-      });
+      const message = resp?.data?.message;
+
+      if (message) {
+        toast({
+          title: message,
+          variant: "success",
+        });
+
+        form.reset();
+      }
 
       return;
     }
@@ -83,12 +92,14 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
   const handleDelete = async () => {
     if (!initialDegree) return;
 
-    const result = await removeDegree(initialDegree.id);
+    const result = await executeRemoveDegree(initialDegree.id);
 
-    toast({
-      title: result.message,
-      variant: result.success ? "success" : "info",
-    });
+    if (result?.data) {
+      toast({
+        title: result.data?.message,
+        variant: "success",
+      });
+    }
   };
 
   const actionTitle = isEditing ? "Endre" : "Legg til";
