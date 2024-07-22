@@ -22,7 +22,10 @@ export const CommentForm = ({ id }: CommentFormProps) => {
       return;
     }
 
-    const result = await addCommentAction(id, content);
+    const result = await addCommentAction({
+      postId: id,
+      content,
+    });
 
     if (!result) {
       toast({

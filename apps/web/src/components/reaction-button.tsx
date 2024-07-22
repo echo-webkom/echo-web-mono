@@ -2,7 +2,7 @@
 
 import React, { useOptimistic } from "react";
 
-import { handleReact } from "@/actions/reactions";
+import { reactAction } from "@/actions/reactions";
 import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 
@@ -41,7 +41,10 @@ export const ReactionButton = ({
       hasReacted: !reactionState.hasReacted,
       count: !reactionState.hasReacted ? reactionState.count + 1 : reactionState.count - 1,
     });
-    await handleReact(reactToKey, emojiId);
+    await reactAction({
+      reactToKey,
+      emojiId,
+    });
   };
 
   return (

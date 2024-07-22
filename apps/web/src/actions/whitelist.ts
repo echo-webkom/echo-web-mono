@@ -1,30 +1,24 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 
-import { getUser } from "@/lib/get-user";
-import { isMemberOf } from "@/lib/memberships";
+import { groupActionClient } from "@/lib/safe-action";
 
-export const upsertWhitelist = async (email: string, reason: string, days: number) => {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
+export const upsertWhitelistAction = groupActionClient(["hovedstyret", "webkom"])
+  .metadata({ actionName: "upsertWhitelist" })
+  .schema(
+    z.object({
+      email: z.string().email(),
+      reason: z.string(),
+      days: z.number(),
+    }),
+  )
+  .action(async ({ parsedInput }) => {
+    const { email, reason, days } = parsedInput;
 
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + days);
@@ -54,31 +48,13 @@ export const upsertWhitelist = async (email: string, reason: string, days: numbe
       success: true,
       message: wasInWhitelist ? "Brukeren ble oppdatert" : "Brukeren ble lagt til i whitelisten",
     };
-  } catch (e) {
-    return {
-      success: false,
-      message: "Noe gikk galt",
-    };
-  }
-};
+  });
 
-export const removeWhitelist = async (email: string) => {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
+export const removeWhitelistAction = groupActionClient(["hovedstyret", "webkom"])
+  .metadata({ actionName: "removeWhitelist" })
+  .schema(z.object({ email: z.string().email() }))
+  .action(async ({ parsedInput }) => {
+    const { email } = parsedInput;
 
     await db.delete(whitelist).where(eq(whitelist.email, email));
 
@@ -86,10 +62,4 @@ export const removeWhitelist = async (email: string) => {
       success: true,
       message: "Brukeren ble fjernet fra whitelisten",
     };
-  } catch (e) {
-    return {
-      success: false,
-      message: "Noe gikk galt",
-    };
-  }
-};
+  });

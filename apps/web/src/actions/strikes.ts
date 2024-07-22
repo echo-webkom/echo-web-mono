@@ -4,14 +4,12 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@echo-webkom/db";
-import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
 import { StrikeNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { type StrikeType } from "@echo-webkom/lib/src/constants";
+import { strikeTypeSchema, type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
-import { getUser } from "@/lib/get-user";
-import { isBedkom } from "@/lib/memberships";
+import { groupActionClient } from "@/lib/safe-action";
 
 const getBannableStrikeNumber = (current: number, added: number) => {
   const BAN_AMOUNT = 5;
@@ -21,34 +19,18 @@ const getBannableStrikeNumber = (current: number, added: number) => {
   }
 };
 
-export const remvoveStrike = async (strikeId: number) => {
-  try {
-    const issuer = await getUser();
+export const removeStrikeAction = groupActionClient(["bedkom", "webkom"])
+  .metadata({ actionName: "removeStrike" })
+  .schema(z.object({ strikeId: z.number() }))
+  .action(async ({ parsedInput }) => {
+    const { strikeId } = parsedInput;
 
-    if (!issuer) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isAllowed = isBedkom(issuer);
-
-    if (!isAllowed) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til å fjerne prikker",
-      };
-    }
     const strike = await db.query.strikes.findFirst({
       where: (s) => eq(s.id, strikeId),
     });
 
     if (!strike) {
-      return {
-        success: false,
-        message: "Fant ikke prikken",
-      };
+      throw new Error("Fant ikke prikken");
     }
 
     await deleteStrike(strike.userId, strikeId);
@@ -57,40 +39,23 @@ export const remvoveStrike = async (strikeId: number) => {
       success: true,
       message: "Prikken ble slettet",
     };
-  } catch (error) {
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-};
+  });
 
-export const addStrike = async (
-  userId: string,
-  happeningId: string,
-  reason: string,
-  amount: number,
-  currentAmount: number,
-  type: StrikeType,
-) => {
-  try {
-    const issuer = await getUser();
-
-    if (!issuer) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isAllowed = isBedkom(issuer);
-
-    if (!isAllowed) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til å gi prikker",
-      };
-    }
+export const addStrikeAction = groupActionClient(["webkom"])
+  .metadata({ actionName: "addStrike" })
+  .schema(
+    z.object({
+      userId: z.string(),
+      happeningId: z.string(),
+      reason: z.string(),
+      amount: z.number(),
+      currentAmount: z.number(),
+      type: strikeTypeSchema.default("OTHER"),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const { user: issuer } = ctx;
+    const { userId, happeningId, reason, amount, currentAmount, type } = parsedInput;
 
     if (amount < 1) {
       return {
@@ -124,13 +89,16 @@ export const addStrike = async (
     const bannableStrikeNumber =
       type === ("NO_SHOW" as StrikeType) ? 1 : getBannableStrikeNumber(currentAmount, amount);
 
-    const data = {
-      happeningId: happening.id,
-      issuerId: issuer.id,
-      reason: reason,
-    } satisfies StrikeInfoInsert;
-
-    await createStrikes(data, user.id, amount, bannableStrikeNumber);
+    await createStrikes(
+      {
+        happeningId: happening.id,
+        issuerId: issuer.id,
+        reason: reason,
+      },
+      user.id,
+      amount,
+      bannableStrikeNumber,
+    );
 
     await emailClient.sendEmail(
       [user.alternativeEmail ?? user.email],
@@ -148,17 +116,4 @@ export const addStrike = async (
       success: true,
       message: "Prikker lagt til",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Informasjonen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-};
+  });

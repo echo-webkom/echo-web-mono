@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useAction } from "next-safe-action/hooks";
 import { IoHeartOutline, IoHeartSharp, IoTrashBinOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 
-import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list";
+import { hyggkomLikeAction, hyggkomRemoveAction } from "@/actions/shopping-list";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/utils/cn";
 import { Text } from "./typography/text";
@@ -27,9 +28,11 @@ type HyggkomShoppingListProps = {
 export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppingListProps) => {
   const { toast } = useToast();
   const [showConfirmRemove, setShowConfirmRemove] = useState<string | null>(null);
+  const { executeAsync: executeLikeAction } = useAction(hyggkomLikeAction);
+  const { executeAsync: executeRemoveAction } = useAction(hyggkomRemoveAction);
 
   const handleLikeButtonClick = (item: string) => {
-    handleLikeClick(item).catch((error) => {
+    executeLikeAction(item).catch((error) => {
       toast({
         title: "Noe gikk galt",
         description: `Error: ${error}`,
@@ -37,6 +40,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
       });
     });
   };
+
   const toggleConfirmRemove = (item: string) => {
     if (showConfirmRemove === item) {
       setShowConfirmRemove(null);
@@ -46,40 +50,12 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
   };
 
   const confirmRemove = (item: string) => {
-    handleRemoveClick(item).catch((error) => {
+    executeRemoveAction(item).catch((error) => {
       toast({
         title: "Noe gikk galt",
         description: `Error: ${error}`,
         variant: "destructive",
       });
-    });
-  };
-
-  const handleLikeClick = async (item: string) => {
-    const response = await hyggkomLikeSubmit(item);
-
-    if (response.success) {
-      toast({
-        title: "Takk for din tilbakemelding!",
-        description: response.message,
-        variant: "success",
-      });
-    } else {
-      toast({
-        title: "Din like ble ikke registrert.",
-        description: response.message,
-        variant: "warning",
-      });
-    }
-  };
-
-  const handleRemoveClick = async (item: string) => {
-    const response = await hyggkomRemoveSubmit(item);
-
-    toast({
-      title: "Takk for din tilbakemelding!",
-      description: response.message,
-      variant: "success",
     });
   };
 

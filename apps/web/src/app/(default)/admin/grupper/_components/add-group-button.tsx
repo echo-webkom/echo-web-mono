@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 
-import { addGroup } from "@/actions/groups";
+import { addGroupAction } from "@/actions/groups";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,6 +33,7 @@ import { slugify } from "@/utils/string";
 export const AddGroupButton = ({ ...props }: ButtonProps) => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const { executeAsync } = useAction(addGroupAction);
 
   const form = useForm<GroupForm>({
     resolver: zodResolver(groupFormSchema),
@@ -42,12 +44,14 @@ export const AddGroupButton = ({ ...props }: ButtonProps) => {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await addGroup(data);
+    const response = await executeAsync(data);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (response?.data) {
+      toast({
+        title: response.data.message,
+        variant: response.data.success ? "success" : "destructive",
+      });
+    }
   });
 
   const generateGroupSlug = () => {

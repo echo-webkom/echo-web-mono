@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
 import { type Group } from "@echo-webkom/db/schemas";
 
-import { updateUser } from "@/actions/user";
+import { updateUserAction } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -43,7 +43,7 @@ type UserFormProps = {
 export const UserForm = ({ user, groups }: UserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { executeAsync, isExecuting } = useAction(updateUserAction);
 
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
@@ -53,11 +53,19 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
+    const response = await executeAsync({
+      userId: user.id,
+      memberships: data.memberships,
+    });
 
-    const { success, message } = await updateUser(user.id, data);
+    if (!response?.data?.success) {
+      return toast({
+        title: response?.data?.message ?? "Noe gikk galt",
+        variant: "destructive",
+      });
+    }
 
-    setIsLoading(false);
+    const { success, message } = response.data;
 
     toast({
       title: message,
@@ -162,7 +170,7 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
             </DialogBody>
             <DialogFooter>
               <Button size="sm" type="submit">
-                {isLoading ? "Lagrer..." : "Lagre endringer"}
+                {isExecuting ? "Lagrer..." : "Lagre endringer"}
               </Button>
             </DialogFooter>
           </form>
