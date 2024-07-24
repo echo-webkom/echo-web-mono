@@ -17,6 +17,7 @@ export const getAllUsers = async () => {
   return await cache(
     async () => {
       return await db.query.users.findMany({
+        orderBy: (user, { asc }) => [asc(user.name)],
         with: {
           degree: true,
           memberships: true,
