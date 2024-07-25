@@ -41,7 +41,7 @@ export const Footer = ({ className }: FooterProps) => {
           <p className="text-xs text-muted-foreground">
             <a
               className="hover:underline"
-              href={`https://github.com/echo-webkom/echo-web/commit/${COMMIT_SHA}`}
+              href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
             >
               {humanSha}
             </a>
