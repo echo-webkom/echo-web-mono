@@ -1,0 +1,91 @@
+name: Staging
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+
+jobs:
+  setup-db:
+    if: ${{ github.event.action == 'opened' || github.event.action == 'synchronize' }}
+    runs-on: ubuntu-latest
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      FLY_APP_NAME: echo-web-stg-db-${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Remove previous deployments
+        if: ${{ github.event.action == 'synchronize' }}
+        continue-on-error: true
+        run: flyctl apps destroy ${{ env.FLY_APP_NAME }} --yes
+
+      - name: Create database
+        run: |
+          OUTPUT=$(flyctl postgres create \
+            --org personal \
+            --region arn \
+            --initial-cluster-size 1 \
+            --vm-size shared-cpu-1x \
+            --volume-size 3 \
+            --autostart \
+            --password ${{ secrets.DB_PASSWORD }} \
+            --name echo-web-stg-db-${{ github.event.pull_request.number }})
+
+      - name: Allocate ip v6
+        run: |
+          flyctl ips allocate-v6 --app ${{ env.FLY_APP_NAME }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: setup-db
+
+    env:
+      VERCEL_ACCESS_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+      VERCEL_PROJECT_ID: prj_A27WwLBNQneMw0WPB6uX0Wo10J2c
+      VERCEL_TEAM_ID: ${{ secrets.TURBO_TEAM}}
+      FLY_APP_NAME: echo-web-stg-db-${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: snaplet/vercel-action@v3
+        with:
+          env: |
+            DATABASE_URL=postgres://postgres:${{ secrets.DB_PASSWORD }}@${{ env.FLY_APP_NAME }}.fly.dev:5432/postgres
+
+  teardown:
+    runs-on: ubuntu-latest
+
+    needs: deploy
+
+    if: ${{ github.event.action == 'closed' }}
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      VERCEL_ACCESS_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+      VERCEL_PROJECT_ID: prj_A27WwLBNQneMw0WPB6uX0Wo10J2c
+      VERCEL_TEAM_ID: ${{ secrets.TURBO_TEAM}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Remove database
+        run: flyctl apps destroy echo-web-stg-db-${{ github.event.pull_request.number }} --yes
+
+      - name: Remove deployment
+        uses: snaplet/vercel-action@v3
+        with:
+          delete: true

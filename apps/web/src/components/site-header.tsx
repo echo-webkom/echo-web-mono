@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
+import { cn } from "@/utils/cn";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ModeToggle } from "./theme-switch-button";
@@ -59,11 +60,20 @@ export const SiteHeader = async () => {
 
 const VercelPreviewNotify = () => {
   const isVercelPreview = process.env.VERCEL_ENV === "preview";
+  const hasDatabase = Boolean(process.env.DATABASE_URL);
 
   if (isVercelPreview) {
     return (
-      <div className="bg-red-400 p-2 text-center text-sm font-medium">
-        <p>Dette er en forhåndsvisning av nettsiden. Databasen er ikke tilgjengelig.</p>
+      <div
+        className={cn("p-2 text-center text-sm font-medium", {
+          "bg-yellow-500": hasDatabase,
+          "bg-red-400": !hasDatabase,
+        })}
+      >
+        <p>
+          Dette er en forhåndsvisning av nettsiden.
+          {!hasDatabase && " Databasen er ikke tilgjengelig."}
+        </p>
       </div>
     );
   }
