@@ -1,6 +1,8 @@
+import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
+import { users } from "@echo-webkom/db/schemas";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
@@ -32,13 +34,15 @@ export const createAuthOptions = (
     },
 
     callbacks: {
-      session({ session, user }) {
+      session: async ({ session, user }) => {
         if (session.user) {
           session.user.id = user.id;
+
+          await db.update(users).set({ lastSignInAt: new Date() }).where(eq(users.id, user.id));
         }
         return session;
       },
-      async signIn({ account, profile }) {
+      signIn: async ({ account, profile }) => {
         if (!account?.access_token) {
           return false;
         }

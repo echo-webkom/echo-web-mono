@@ -10,7 +10,9 @@ export const strikes = pgTable(
     id: serial("id").notNull().primaryKey(),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
     strikeInfoId: uuid("strike_info_id")
       .notNull()
       .references(() => strikeInfos.id, { onDelete: "cascade" }),
