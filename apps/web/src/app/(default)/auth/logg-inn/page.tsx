@@ -27,6 +27,13 @@ export default async function SignInPage({ searchParams }: Props) {
               be om tilgang her.
             </Link>
           </Text>
+          <Text size="sm">
+            Du kan også sjekke om du har tilgang ved å logge inn på{" "}
+            <Link className="underline hover:no-underline" href="https://innsyn.feide.no">
+              Feide Innsyn
+            </Link>
+            , og se om du har gruppetilhørighet til studieprogammene på informatikk.
+          </Text>
         </Callout>
       )}
 
