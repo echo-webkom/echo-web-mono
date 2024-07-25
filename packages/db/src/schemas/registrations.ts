@@ -9,9 +9,7 @@ export const registrations = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id, {
-        onDelete: "cascade",
-      }),
+      .references(() => users.id, { onDelete: "no action" }),
     happeningId: text("happening_id")
       .notNull()
       .references(() => happenings.id, {

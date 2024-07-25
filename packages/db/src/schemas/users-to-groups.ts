@@ -9,10 +9,14 @@ export const usersToGroups = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
     groupId: varchar("group_id", { length: 255 })
       .notNull()
-      .references(() => groups.id),
+      .references(() => groups.id, {
+        onDelete: "cascade",
+      }),
     isLeader: boolean("is_leader").notNull().default(false),
   },
   (table) => ({

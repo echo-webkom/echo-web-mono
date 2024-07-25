@@ -8,3 +8,5 @@ export const runWithRetries = async <T>(fn: () => Promise<T> | T, retries: numbe
     throw error;
   }
 };
+
+export const now = () => new Date();

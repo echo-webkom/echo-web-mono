@@ -9,7 +9,9 @@ export const usersToShoppingListItems = pgTable(
   {
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
     itemId: uuid("item_id")
       .notNull()
       .references(() => shoppingListItems.id, { onDelete: "cascade" }),

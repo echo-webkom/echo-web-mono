@@ -9,7 +9,9 @@ export const shoppingListItems = pgTable("shopping_list_item", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

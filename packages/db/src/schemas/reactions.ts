@@ -10,9 +10,7 @@ export const reactions = pgTable(
     emojiId: integer("emoji_id").notNull(),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id, {
-        onDelete: "cascade",
-      }),
+      .references(() => users.id, { onDelete: "no action" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
