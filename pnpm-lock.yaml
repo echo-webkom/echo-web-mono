@@ -36,8 +36,8 @@ importers:
         specifier: 6.21.0
         version: 6.21.0(debug@4.3.5)
       '@sanity/icons':
-        specifier: 3.3.0
-        version: 3.3.0(react@18.3.1)
+        specifier: 3.3.1
+        version: 3.3.1(react@18.3.1)
       '@sanity/ui':
         specifier: 2.6.8
         version: 2.6.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -3193,8 +3193,8 @@ packages:
     peerDependencies:
       react: ^18
 
-  '@sanity/icons@3.3.0':
-    resolution: {integrity: sha512-xLOn1sneanShXXBt/OLasCded5Oe2JLnInqDuEHi0NAQzoYQNHSmRj/yCsrl7f3T8YoiJKxaS2U2jrEvMlmSPw==}
+  '@sanity/icons@3.3.1':
+    resolution: {integrity: sha512-5SYwRmqKpEVABUyLbSBC5Ffr21P2EvtWZtkqMCh3fiMpNMM3c56RFjdQBoPn2w1EuzJXSFit/ZTHMWAXMMlAwA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: ^18.3 || >=19.0.0-rc
@@ -12129,7 +12129,7 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  '@sanity/icons@3.3.0(react@18.3.1)':
+  '@sanity/icons@3.3.1(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
@@ -12194,7 +12194,7 @@ snapshots:
 
   '@sanity/insert-menu@1.0.7(@sanity/types@3.50.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@sanity/icons': 3.3.0(react@18.3.1)
+      '@sanity/icons': 3.3.1(react@18.3.1)
       '@sanity/types': 3.50.0(debug@4.3.5)
       '@sanity/ui': 2.6.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash.startcase: 4.4.0
@@ -12244,7 +12244,7 @@ snapshots:
   '@sanity/presentation@1.16.2(@sanity/client@6.21.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/client': 6.21.0(debug@4.3.5)
-      '@sanity/icons': 3.3.0(react@18.3.1)
+      '@sanity/icons': 3.3.1(react@18.3.1)
       '@sanity/preview-url-secret': 1.6.18(@sanity/client@6.21.0(debug@4.3.5))
       '@sanity/ui': 2.6.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/uuid': 3.0.2
@@ -12322,7 +12322,7 @@ snapshots:
     dependencies:
       '@floating-ui/react-dom': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/color': 3.0.6
-      '@sanity/icons': 3.3.0(react@18.3.1)
+      '@sanity/icons': 3.3.1(react@18.3.1)
       csstype: 3.1.3
       framer-motion: 11.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
@@ -12371,7 +12371,7 @@ snapshots:
       '@rexxars/react-json-inspector': 8.0.1(react@18.3.1)
       '@rexxars/react-split-pane': 0.1.93(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/color': 3.0.6
-      '@sanity/icons': 3.3.0(react@18.3.1)
+      '@sanity/icons': 3.3.1(react@18.3.1)
       '@sanity/ui': 2.6.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@uiw/react-codemirror': 4.21.25(@babel/runtime@7.24.4)(@codemirror/autocomplete@6.16.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.3)(@lezer/common@1.2.1))(@codemirror/language@6.10.1)(@codemirror/lint@6.5.0)(@codemirror/search@6.5.6)(@codemirror/state@6.4.1)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.26.3)(codemirror@6.0.1(@lezer/common@1.2.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       is-hotkey-esm: 1.0.0
@@ -17823,7 +17823,7 @@ snapshots:
       '@sanity/diff-match-patch': 3.1.1
       '@sanity/eventsource': 5.0.2
       '@sanity/export': 3.40.0
-      '@sanity/icons': 3.3.0(react@18.3.1)
+      '@sanity/icons': 3.3.1(react@18.3.1)
       '@sanity/image-url': 1.0.2
       '@sanity/import': 3.37.3
       '@sanity/insert-menu': 1.0.7(@sanity/types@3.50.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
