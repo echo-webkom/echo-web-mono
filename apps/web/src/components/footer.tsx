@@ -12,6 +12,9 @@ type FooterProps = {
   className?: string;
 };
 
+const COMMIT_SHA = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? "AAAAAAAAAAAAAAAAAAAAA";
+const humanSha = COMMIT_SHA.slice(0, 7);
+
 export const Footer = ({ className }: FooterProps) => {
   return (
     <div className={cn("selection:bg-primary", className)}>
@@ -33,7 +36,18 @@ export const Footer = ({ className }: FooterProps) => {
       </svg>
 
       {/* Footer */}
-      <footer className="bg-wave px-10 py-10 text-wave-foreground">
+      <footer className="relative bg-wave px-10 py-10 text-wave-foreground">
+        <div className="absolute bottom-0 left-0 p-1">
+          <p className="text-xs text-muted-foreground">
+            <a
+              className="hover:underline"
+              href={`https://github.com/echo-webkom/echo-web/commit/${COMMIT_SHA}`}
+            >
+              {humanSha}
+            </a>
+          </p>
+        </div>
+
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
             {footerRoutes.map((section) => {
