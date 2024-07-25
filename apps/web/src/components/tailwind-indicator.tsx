@@ -21,7 +21,7 @@ export const TailwindIndicator = () => {
   if (process.env.NODE_ENV === "production") return null;
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 flex items-center justify-center rounded-tr-lg bg-primary font-mono text-xs text-white">
+    <div className="fixed left-0 top-0 z-50 flex items-center justify-center rounded-br-lg bg-primary font-mono text-xs text-white">
       <div className="px-[4px] py-[2px]">
         <span>{String(w)}</span>
         <span>x</span>
