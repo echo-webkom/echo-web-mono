@@ -66,19 +66,12 @@ export const deleteProfilePictureAction = async () => {
     };
   }
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_ECHOGRAM_URL}/${user.id}`, {
+  await fetch(`${process.env.NEXT_PUBLIC_ECHOGRAM_URL}/${user.id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${process.env.ECHOGRAM_API_KEY}`,
     },
   });
-
-  if (!response.ok) {
-    return {
-      success: false,
-      message: "Noe gikk galt.",
-    };
-  }
 
   await db
     .update(users)
