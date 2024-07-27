@@ -49,7 +49,11 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
   };
 
   const handleRemoveImage = async () => {
-    await deleteProfilePictureAction();
+    const { success, message } = await deleteProfilePictureAction();
+    if (!success) {
+      toast({ title: message });
+      return;
+    }
     setImageUrl(null);
   };
 
