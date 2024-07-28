@@ -107,13 +107,16 @@ export default async function HomePage() {
         <div className="mx-auto mt-10 max-w-screen-lg space-y-32">
           {/* TODO: REMOVE ME */}
           <Link className="group" href="/for-studenter/innlegg/info-til-nye-studenter">
-            <div className="group relative rounded-xl border-2 border-secondary-dark bg-secondary px-6 py-8 text-center text-wave-foreground shadow-md transition-colors animate-float-rotate-reverse-[0.5] hover:bg-secondary-hover dark:border-wave-dark dark:bg-wave">
-              <h2 className="mb-4 text-2xl font-medium group-hover:underline">
-                👋🏻 Informasjon til nye studenter
-              </h2>
-              <p>
-                Vi har laget et innlegg med svar på spørsmål du kanskje har om echo. Sjekk det ut!
-              </p>
+            <div className="group relative">
+              <div className="transitiona-all absolute -inset-px rounded-xl bg-gradient-to-r from-primary via-primary-hover to-secondary-hover opacity-70 transition-all duration-1000 group-hover:-inset-1 group-hover:opacity-100 group-hover:blur-lg group-hover:duration-200" />
+              <div className="relative rounded-xl border-2 border-secondary-dark bg-secondary px-6 py-8 text-center text-wave-foreground shadow-md transition-colors hover:bg-secondary-hover dark:border-wave-dark dark:bg-wave">
+                <h2 className="mb-4 text-2xl font-medium group-hover:underline">
+                  👋🏻 Informasjon til nye studenter
+                </h2>
+                <p>
+                  Vi har laget et innlegg med svar på spørsmål du kanskje har om echo. Sjekk det ut!
+                </p>
+              </div>
             </div>
           </Link>
           {/* END REMOVE ME */}
