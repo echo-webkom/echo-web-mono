@@ -13,7 +13,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -73,90 +75,98 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
         </DropdownMenuItem>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Detaljer for {user.name}</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <div>
-            <Label>ID</Label>
-            <p className="text-sm text-muted-foreground">{user.id}</p>
-          </div>
+        <Form {...form}>
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold">Detaljer for {user.name}</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-2">
+                <div>
+                  <Label>ID</Label>
+                  <p className="text-sm text-muted-foreground">{user.id}</p>
+                </div>
 
-          <div>
-            <Label>Rolle</Label>
-            <p className="text-sm text-muted-foreground">{user.alternativeEmail}</p>
-          </div>
+                <div>
+                  <Label>Rolle</Label>
+                  <p className="text-sm text-muted-foreground">{user.alternativeEmail}</p>
+                </div>
 
-          <div>
-            <Label>Studieretning</Label>
-            <p className="text-sm text-muted-foreground">{user.degree?.name ?? "Ikke valgt"}</p>
-          </div>
+                <div>
+                  <Label>Studieretning</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {user.degree?.name ?? "Ikke valgt"}
+                  </p>
+                </div>
 
-          <div>
-            <Label>År</Label>
-            <p className="text-sm text-muted-foreground">{user.year ?? "Ikke valgt"}</p>
-          </div>
+                <div>
+                  <Label>År</Label>
+                  <p className="text-sm text-muted-foreground">{user.year ?? "Ikke valgt"}</p>
+                </div>
 
-          <div>
-            <Label>Navn</Label>
-            <p className="text-sm text-muted-foreground">{user.name}</p>
-          </div>
-          <div>
-            <Label>E-post</Label>
-            <p className="text-sm text-muted-foreground">{user.email}</p>
-          </div>
+                <div>
+                  <Label>Navn</Label>
+                  <p className="text-sm text-muted-foreground">{user.name}</p>
+                </div>
+                <div>
+                  <Label>E-post</Label>
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
+                </div>
 
-          <Form {...form}>
-            <form onSubmit={onSubmit} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="memberships"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-2">
-                      <FormLabel>Undergrupper</FormLabel>
-                      <FormDescription>
-                        Velg de undergruppene brukeren er en del av.
-                      </FormDescription>
-                    </div>
+                <FormField
+                  control={form.control}
+                  name="memberships"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-2">
+                        <FormLabel>Undergrupper</FormLabel>
+                        <FormDescription>
+                          Velg de undergruppene brukeren er en del av.
+                        </FormDescription>
+                      </div>
 
-                    {groups.map(({ id, name }) => (
-                      <FormField
-                        key={id}
-                        control={form.control}
-                        name="memberships"
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={id}
-                              className="flex flex-row items-center space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...field.value, id])
-                                      : field.onChange(
-                                          field.value?.filter((value) => value !== id),
-                                        );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="text-sm">{name}</FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">{isLoading ? "Lagrer..." : "Lagre endringer"}</Button>
-            </form>
-          </Form>
-        </div>
+                      {groups.map(({ id, name }) => (
+                        <FormField
+                          key={id}
+                          control={form.control}
+                          name="memberships"
+                          render={({ field }) => {
+                            return (
+                              <FormItem
+                                key={id}
+                                className="flex flex-row items-center space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([...field.value, id])
+                                        : field.onChange(
+                                            field.value?.filter((value) => value !== id),
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="text-sm">{name}</FormLabel>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      ))}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </DialogBody>
+            <DialogFooter>
+              <Button size="sm" type="submit">
+                {isLoading ? "Lagrer..." : "Lagre endringer"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

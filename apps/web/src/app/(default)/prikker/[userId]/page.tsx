@@ -79,8 +79,8 @@ export default async function UserStrikesPage({ params }: Props) {
           )}
 
           <Text>
-            <div>Gyldige prikker: {validStrikes.length}</div>
-            <div> Totalt antall prikker: {strikes.length}</div>
+            <span>Gyldige prikker: {validStrikes.length}</span>
+            <span>Totalt antall prikker: {strikes.length}</span>
           </Text>
         </div>
         <div className="flex flex-col gap-4">
@@ -128,13 +128,13 @@ export default async function UserStrikesPage({ params }: Props) {
   );
 }
 
-function StrikeTable({
+const StrikeTable = ({
   strikes,
   userId,
 }: {
   strikes: Awaited<ReturnType<typeof getAllUserStrikes>>;
   userId: string;
-}) {
+}) => {
   return (
     <Table>
       <TableHeader>
@@ -175,4 +175,4 @@ function StrikeTable({
       </TableBody>
     </Table>
   );
-}
+};

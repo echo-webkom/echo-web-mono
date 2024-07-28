@@ -3,10 +3,10 @@ import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { type RegistrationWithUser } from "./registration-table";
+import { Text } from "./typography/text";
 
 type RandomPersonButtonProps = {
   registrations: Array<RegistrationWithUser>;
@@ -73,8 +73,12 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
-            <Label className="p-10 text-center text-2xl">{randomUserName}</Label>
-            <Button onClick={closeDialog}>Close</Button>
+            <DialogBody>
+              <Text className="p-10 text-center text-2xl">{randomUserName}</Text>
+            </DialogBody>
+            <DialogFooter>
+              <Button onClick={closeDialog}>Close</Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       )}

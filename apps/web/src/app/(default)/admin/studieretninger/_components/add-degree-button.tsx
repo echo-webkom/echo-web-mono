@@ -11,6 +11,7 @@ import { Text } from "@/components/typography/text";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -98,86 +99,95 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
         <Button {...props} />
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{actionTitle} en studieretning</DialogTitle>
-        </DialogHeader>
-
         <Form {...form}>
-          <form className="grid gap-4 py-4" onSubmit={onSubmit}>
-            <div className="flex flex-col gap-3">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Navn</FormLabel>
-                    <FormControl>
-                      <Input id="name" placeholder="Datasikkerhet" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormDescription>Navn på studieretningen</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle>{actionTitle} en studieretning</DialogTitle>
+            </DialogHeader>
+
+            <DialogBody className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Navn</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="name"
+                          placeholder="Datasikkerhet"
+                          autoComplete="off"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>Navn på studieretningen</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ID</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="id"
+                          placeholder="dsik"
+                          autoComplete="off"
+                          readOnly={isEditing}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        En unik ID til studieretningen. Burde være den offisielle forkortelsen.
+                        F.eks. Datasikkerhet = dsik
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <input
+                type="hidden"
+                {...form.register("action", {
+                  value: isEditing ? "update" : "create",
+                })}
               />
 
-              <FormField
-                control={form.control}
-                name="id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ID</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="id"
-                        placeholder="dsik"
-                        autoComplete="off"
-                        readOnly={isEditing}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      En unik ID til studieretningen. Burde være den offisielle forkortelsen. F.eks.
-                      Datasikkerhet = dsik
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
+              <div className="flex items-center gap-2 py-2">
+                {!isConfirmOpen && isEditing && (
+                  <Button size="sm" variant="destructive" onClick={() => setIsConfirmOpen(true)}>
+                    Slett studieretning
+                  </Button>
                 )}
-              />
-            </div>
 
-            <input
-              type="hidden"
-              {...form.register("action", {
-                value: isEditing ? "update" : "create",
-              })}
-            />
+                {isConfirmOpen && (
+                  <>
+                    <Text className="font-bold">Sikker?</Text>
 
-            {!isConfirmOpen && isEditing && (
-              <div>
-                <Button variant="destructive" onClick={() => setIsConfirmOpen(true)}>
-                  Slett studieretning
-                </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setIsConfirmOpen(false)}>
+                      Avbryt
+                    </Button>
+                    <Button size="sm" onClick={handleDelete} variant="destructive">
+                      Ja, slett
+                    </Button>
+                  </>
+                )}
               </div>
-            )}
-
-            {isConfirmOpen && (
-              <div className="flex items-center gap-2">
-                <Text className="font-bold">Sikker?</Text>
-
-                <Button variant="secondary" onClick={() => setIsConfirmOpen(false)}>
-                  Avbryt
-                </Button>
-                <Button onClick={handleDelete} variant="destructive">
-                  Ja, slett
-                </Button>
-              </div>
-            )}
+            </DialogBody>
 
             <DialogFooter>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
+              <Button size="sm" variant="destructive" onClick={() => setIsOpen(false)}>
                 Avbryt
               </Button>
-              <Button type="submit">Lagre</Button>
+              <Button size="sm" type="submit">
+                Lagre
+              </Button>
             </DialogFooter>
           </form>
         </Form>

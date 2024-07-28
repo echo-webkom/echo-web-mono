@@ -10,6 +10,7 @@ import { removeWhitelist, upsertWhitelist } from "@/actions/whitelist";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -98,74 +99,75 @@ export const WhitelistButton = ({
         <Button {...buttonProps}>{children ?? "åpne"}</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Legg til whitelist</DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
-
         <Form {...form}>
-          <form className="grid gap-4 py-4" onSubmit={onSubmit}>
-            <div className="flex flex-col gap-3">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>E-post</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="email"
-                        placeholder="Din e-post"
-                        disabled={whitelistEntry?.email !== undefined}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle>Legg til whitelist</DialogTitle>
+              <DialogDescription></DialogDescription>
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-3">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>E-post</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="email"
+                          placeholder="Din e-post"
+                          disabled={whitelistEntry?.email !== undefined}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="days"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dager</FormLabel>
-                    <FormControl>
-                      <Input id="days" placeholder="30" {...field} type="number" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="days"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dager</FormLabel>
+                      <FormControl>
+                        <Input id="days" placeholder="30" {...field} type="number" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="reason"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Grunn</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="reason"
-                        placeholder={whitelistEntry?.reason ?? "Grunn for whitelisting"}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                <FormField
+                  control={form.control}
+                  name="reason"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Grunn</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="reason"
+                          placeholder={whitelistEntry?.reason ?? "Grunn for whitelisting"}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </DialogBody>
             <DialogFooter>
-              <Button type="submit" className="">
-                Lagre
-              </Button>
               {whitelistEntry && (
-                <Button variant="destructive" onClick={() => void handleDelete()}>
+                <Button size="sm" variant="destructive" onClick={() => void handleDelete()}>
                   Slett
                 </Button>
               )}
+              <Button size="sm" type="submit">
+                Lagre
+              </Button>
             </DialogFooter>
           </form>
         </Form>

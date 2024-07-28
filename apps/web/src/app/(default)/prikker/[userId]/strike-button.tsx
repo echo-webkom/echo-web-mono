@@ -4,6 +4,7 @@ import { useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogClose } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 
 import { type Happening } from "@echo-webkom/db/schemas";
@@ -14,10 +15,12 @@ import {
 } from "@echo-webkom/lib/src/constants";
 
 import { addStrike, remvoveStrike } from "@/actions/strikes";
+import { Text } from "@/components/typography/text";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -110,127 +113,135 @@ export const AddStrikeButton = ({
         <Button {...buttonProps}>Gi prikker</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Gi prikker</DialogTitle>
-          <DialogDescription>Brukeren blir utestengt av 5 gyldige prikker.</DialogDescription>
-          <div>Navn: {user.name}</div>
-          <div>
-            E-post: <Link href={mailTo(user.email)}>{user.email}</Link>
-          </div>
-        </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void onSubmit();
-            }}
-          >
-            <div className="flex flex-col gap-3">
-              <FormField
-                control={form.control}
-                name="happeningId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="happeningId">Velg bedpres</FormLabel>
-                    <FormControl>
-                      <Select id="happeningId" {...field}>
-                        <option hidden>Velg bedpres...</option>
-                        {happenings.map((bedpres) => (
-                          <option key={bedpres.id} value={bedpres.id}>
-                            {bedpres.title}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="type">Type prikk</FormLabel>
-                    <FormControl>
-                      <Select id="type" {...field} onChange={(choice) => handleTypeChange(choice)}>
-                        <option defaultValue="OTHER">Egendefinert</option>
-                        {Object.entries(STRIKE_TYPE_MESSAGE)
-                          .filter(([key, _]) => key !== "OTHER")
-                          .map(([key, value]) => (
-                            <option key={key} value={key}>
-                              {value}
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle>Gi prikker</DialogTitle>
+              <DialogDescription>Brukeren blir utestengt av 5 gyldige prikker.</DialogDescription>
+            </DialogHeader>
+            <DialogBody className="space-y-4">
+              <div>
+                <Text className="text-muted-foreground">Navn: {user.name}</Text>
+                <Text className="text-muted-foreground">
+                  E-post: <Link href={mailTo(user.email)}>{user.email}</Link>
+                </Text>
+              </div>
+              <div className="flex flex-col gap-3">
+                <FormField
+                  control={form.control}
+                  name="happeningId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="happeningId">Velg bedpres</FormLabel>
+                      <FormControl>
+                        <Select id="happeningId" {...field}>
+                          <option hidden>Velg bedpres...</option>
+                          {happenings.map((bedpres) => (
+                            <option key={bedpres.id} value={bedpres.id}>
+                              {bedpres.title}
                             </option>
                           ))}
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="amount"
-                render={({ field }) => {
-                  const { onChange, ...restField } = field;
-                  return (
-                    <FormItem>
-                      <FormLabel htmlFor="amount">Antall prikker</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="amount"
-                          type="number"
-                          placeholder="Antall prikker..."
-                          min={1}
-                          max={5}
-                          onChange={(e) => {
-                            onChange(parseInt(e.target.value));
-                          }}
-                          {...restField}
-                        />
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="reason"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="reason" required>
-                      Begrunnelse
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea id="reason" placeholder="Skriv begrunnelse..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="hasVerified"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center">
-                      <FormLabel htmlFor="hasVerified" required>
-                        Jeg er kjent med Bedkom sine retningslinjer for prikker.
+                  )}
+                />
+                <FormField
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="type">Type prikk</FormLabel>
+                      <FormControl>
+                        <Select
+                          id="type"
+                          {...field}
+                          onChange={(choice) => handleTypeChange(choice)}
+                        >
+                          <option defaultValue="OTHER">Egendefinert</option>
+                          {Object.entries(STRIKE_TYPE_MESSAGE)
+                            .filter(([key, _]) => key !== "OTHER")
+                            .map(([key, value]) => (
+                              <option key={key} value={key}>
+                                {value}
+                              </option>
+                            ))}
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => {
+                    const { onChange, ...restField } = field;
+                    return (
+                      <FormItem>
+                        <FormLabel htmlFor="amount">Antall prikker</FormLabel>
+                        <FormControl>
+                          <Input
+                            id="amount"
+                            type="number"
+                            placeholder="Antall prikker..."
+                            min={1}
+                            max={5}
+                            onChange={(e) => {
+                              onChange(parseInt(e.target.value));
+                            }}
+                            {...restField}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="reason"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="reason" required>
+                        Begrunnelse
                       </FormLabel>
                       <FormControl>
-                        <Checkbox
-                          id="hasVerified"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
+                        <Textarea id="reason" placeholder="Skriv begrunnelse..." {...field} />
                       </FormControl>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="hasVerified"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-4 rounded-lg border p-3">
+                        <FormControl>
+                          <Checkbox
+                            id="hasVerified"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel htmlFor="hasVerified" required>
+                          Jeg er kjent med Bedkom sine retningslinjer for prikker.
+                        </FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </DialogBody>
             <DialogFooter className="mt-5 flex flex-col gap-2">
-              <Button className="w-full sm:w-auto" type="submit">
+              <DialogClose asChild>
+                <Button variant="destructive" size="sm">
+                  Lukk
+                </Button>
+              </DialogClose>
+              <Button size="sm" className="w-full sm:w-auto" type="submit">
                 Send
               </Button>
             </DialogFooter>
@@ -304,13 +315,13 @@ export const RemoveBanButton = ({ userId, ...buttonProps }: RemoveBanButtonProps
         <Button {...buttonProps}>Fjern utestengelse</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogDescription>
+        <DialogBody>
           <div className="font-bold">Merk:</div>
           <div>Gyldige prikker blir ikke slettet av å fjerne utestengelsen.</div>
           <div>De må eventuelt fjernes manuelt.</div>
-        </DialogDescription>
+        </DialogBody>
         <DialogFooter>
-          <Button variant="destructive" onClick={() => void handleUnban()}>
+          <Button size="sm" variant="destructive" onClick={() => void handleUnban()}>
             Bekreft
           </Button>
         </DialogFooter>

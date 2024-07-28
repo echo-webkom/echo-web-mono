@@ -6,7 +6,14 @@ import { FaFileDownload, FaYahoo } from "react-icons/fa";
 import { SiMicrosoftoutlook } from "react-icons/si";
 
 import { shortDateNoTime } from "@/utils/date";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 
 type Props = {
   date: Date;
@@ -23,13 +30,13 @@ export const AddToCalender = ({ date, endDate, title }: Props) => {
         <DialogHeader>
           <DialogTitle className="pl-5">Legg til i kalender 📅</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col justify-around gap-4 pt-4 sm:flex-row sm:gap-0">
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Google"} />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Outlook"} />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Office"} />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Yahoo"} />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType={"Ics"} />
-        </div>
+        <DialogBody className="flex flex-col justify-around gap-4 sm:flex-row sm:gap-0">
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Google" />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Outlook" />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Office" />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Yahoo" />
+          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Ics" />
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );

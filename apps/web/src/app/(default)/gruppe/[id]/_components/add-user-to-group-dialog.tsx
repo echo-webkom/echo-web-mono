@@ -9,6 +9,7 @@ import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -69,37 +70,39 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Legg til bruker i {group.name}</DialogTitle>
-        </DialogHeader>
-
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-8">
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="email">E-post</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="andreas@student.uib.no" />
-                  </FormControl>
-                  <FormDescription>
-                    Dette er samme e-post som brukeren har på profil-siden sin som slutter med
-                    @student.uib.no.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold">
+                Legg til bruker i {group.name}
+              </DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="email">E-post</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="andreas@student.uib.no" />
+                    </FormControl>
+                    <FormDescription>
+                      Dette er samme e-post som brukeren har på profil-siden sin som slutter med
+                      @student.uib.no.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button size="sm">Lukk</Button>
+              </DialogClose>
+            </DialogFooter>
           </form>
         </Form>
-
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button>Lukk</Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
