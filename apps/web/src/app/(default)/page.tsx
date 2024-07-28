@@ -2,6 +2,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
+import { ParticlesBackdrop } from "@/components/animations/particles";
 import { Reveal } from "@/components/animations/reveal";
 import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
@@ -75,6 +76,8 @@ export default async function HomePage() {
           transition={{ duration: 0.8 }}
         />
       </div>
+
+      <ParticlesBackdrop />
 
       <Container>
         <div className="mb-24 mt-32 space-y-16">
