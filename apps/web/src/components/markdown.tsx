@@ -84,7 +84,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           blockquote: ({ children, className, ...props }) => {
             return (
               <blockquote
-                className={cn("border-l-4 border-gray-300 py-4 pl-4 italic", className)}
+                className={cn("border-l-4 border-muted py-4 pl-4 italic", className)}
                 {...props}
               >
                 {children}
