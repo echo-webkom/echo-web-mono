@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LuBookPlus } from "react-icons/lu";
 import {
   RxAvatar as Avatar,
   RxExit as Exit,
@@ -47,7 +46,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
       <DropdownMenuContent className="mx-3 w-56">
         <DropdownMenuLabel>
-          <p className="font-normal">Logget inn som</p>
+          <p className="font-medium">Logget inn som</p>
           <p className="font-bold">{user.name}</p>
         </DropdownMenuLabel>
 
@@ -61,45 +60,22 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         </DropdownMenuItem>
 
         {isMemberOf(user, ["webkom", "hovedstyret"]) && (
-          <>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild>
-              <Link href="/admin">
-                <LockClosed className="mr-2 h-4 w-4" />
-                <span>Dashboard</span>
-              </Link>
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem asChild>
+            <Link href="/admin">
+              <LockClosed className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
         )}
 
         {isBedkom(user) && (
-          <>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild>
-              <Link href="/prikker">
-                <TbGavel className="mr-2 h-4 w-4" />
-                <span>Prikker</span>
-              </Link>
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem asChild>
+            <Link href="/prikker">
+              <TbGavel className="mr-2 h-4 w-4" />
+              <span>Prikker</span>
+            </Link>
+          </DropdownMenuItem>
         )}
-
-        {user.memberships.length > 0 && (
-          <>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild>
-              <a href="/sanity">
-                <LuBookPlus className="mr-2 h-4 w-4" />
-                <span>Sanity</span>
-              </a>
-            </DropdownMenuItem>
-          </>
-        )}
-
-        <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <button

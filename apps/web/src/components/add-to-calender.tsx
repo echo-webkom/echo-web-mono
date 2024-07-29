@@ -5,7 +5,6 @@ import { BiLogoGoogle } from "react-icons/bi";
 import { FaFileDownload, FaYahoo } from "react-icons/fa";
 import { SiMicrosoftoutlook } from "react-icons/si";
 
-import { shortDateNoTime } from "@/utils/date";
 import {
   Dialog,
   DialogBody,
@@ -19,12 +18,13 @@ type Props = {
   date: Date;
   endDate?: Date;
   title: string;
+  children?: React.ReactNode;
 };
 
-export const AddToCalender = ({ date, endDate, title }: Props) => {
+export const AddToCalender = ({ date, endDate, title, children }: Props) => {
   return (
     <Dialog>
-      <DialogTrigger className="text-left hover:underline">{shortDateNoTime(date)}</DialogTrigger>
+      <DialogTrigger className="text-left hover:underline">{children}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>

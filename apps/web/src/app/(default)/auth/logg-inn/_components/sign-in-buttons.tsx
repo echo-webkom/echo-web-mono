@@ -19,18 +19,18 @@ const providers = [
 
 export const SignInButtons = () => {
   return (
-    <div className="mx-auto flex w-full max-w-[380px] flex-col rounded-2xl bg-muted p-8">
+    <div className="mx-auto flex w-full max-w-[380px] flex-col rounded-xl border-2 border-muted-dark bg-muted p-8">
       <Image src={EchoLogo} alt="echo logo" width={100} height={100} className="mx-auto" />
 
-      <Heading level={3} className="mb-8 text-center">
-        Velg en måte å logge inn på
+      <Heading level={3} className="mx-auto mb-8">
+        Velg en måte å logge inn
       </Heading>
 
       <div className="mb-4 flex flex-col justify-center gap-3">
         {providers.map(({ id, name }) => (
           <div key={id}>
             <Button
-              className="group w-full gap-2 bg-feide hover:bg-feide-hover hover:text-black"
+              className="group w-full gap-2 border-feide-dark bg-feide hover:border-feide hover:bg-feide-hover hover:text-black"
               onClick={() =>
                 void signIn(id, {
                   callbackUrl: "/",

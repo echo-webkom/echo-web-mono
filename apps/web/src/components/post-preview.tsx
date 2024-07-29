@@ -22,16 +22,18 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
-          "relative flex h-full flex-col gap-1 rounded-lg p-5 shadow-lg transition-colors duration-200 ease-in-out hover:bg-muted",
-          withBorder && "border",
-          isNew && "bg-muted hover:bg-transparent",
+          "relative flex h-full flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out hover:border-muted-dark hover:bg-muted",
+          {
+            "border-transparent": !withBorder,
+            "bg-muted hover:bg-transparent": isNew,
+          },
           className,
         )}
       >
         {isNew && <Chip className="absolute -top-2 left-0 bg-primary text-white">NY</Chip>}
         <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
 
-        <p className="right-1 top-1 text-sm text-gray-500 sm:absolute">
+        <p className="right-2 top-2 text-sm text-gray-500 sm:absolute">
           {format(new Date(post._createdAt), "d. MMMM yyyy", {
             locale: nb,
           })}
@@ -40,9 +42,9 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
         {post.body && <p className="my-2 line-clamp-2 italic">{removeMd(post.body)}</p>}
 
         {post.authors && (
-          <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-1 sm:right-4">
+          <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-4 sm:right-4">
             {post.authors.map((author) => (
-              <Chip className="bg-secondary text-secondary-foreground" key={author._id}>
+              <Chip variant="secondary" key={author._id}>
                 {isBoard(author.name) ? "Hovedstyret" : author.name}
               </Chip>
             ))}

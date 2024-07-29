@@ -24,16 +24,19 @@ export default {
         wave: {
           DEFAULT: "var(--wave)",
           foreground: "var(--wave-foreground)",
+          dark: "var(--wave-dark)",
         },
         primary: {
           DEFAULT: "var(--primary)",
           foreground: "var(--primary-foreground)",
           hover: "var(--primary-hover)",
+          dark: "var(--primary-dark)",
         },
         secondary: {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
           hover: "var(--secondary-hover)",
+          dark: "var(--secondary-dark)",
         },
         table: {
           foreground: "var(--table-foreground)",
@@ -49,10 +52,13 @@ export default {
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
+          hover: "var(--destructive-hover)",
+          dark: "var(--destructive-dark)",
         },
         muted: {
           DEFAULT: "var(--muted)",
           foreground: "var(--muted-foreground)",
+          dark: "var(--muted-dark)",
         },
         accent: {
           DEFAULT: "var(--accent)",
@@ -61,14 +67,20 @@ export default {
         success: {
           DEFAULT: "var(--success)",
           foreground: "var(--success-foreground)",
+          hover: "var(--success-hover)",
+          dark: "var(--success-dark)",
         },
         info: {
           DEFAULT: "var(--info)",
           foreground: "var(--info-foreground)",
+          hover: "var(--info-hover)",
+          dark: "var(--info-dark)",
         },
         warning: {
           DEFAULT: "var(--warning)",
           foreground: "var(--warning-foreground)",
+          hover: "var(--warning-hover)",
+          dark: "var(--warning-dark)",
         },
         popover: {
           DEFAULT: "var(--popover)",
@@ -85,6 +97,7 @@ export default {
         feide: {
           DEFAULT: "var(--feide)",
           hover: "var(--feide-hover)",
+          dark: "var(--feide-dark)",
         },
       },
       borderRadius: {

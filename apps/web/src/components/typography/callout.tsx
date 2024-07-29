@@ -19,11 +19,11 @@ export const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-2 rounded-r-lg border-l-4 p-4",
+          "flex items-center gap-2 rounded-xl border-2 p-4",
           {
-            "border-blue-500 bg-blue-400/80 text-blue-700": type === "info",
-            "border-yellow-500 bg-wave text-yellow-700": type === "warning",
-            "border-red-500 bg-red-400/80 text-red-700": type === "danger",
+            "border-info-dark bg-info text-info-foreground": type === "info",
+            "border-warning-dark bg-warning text-warning-foreground": type === "warning",
+            "border-destructive-dark bg-destructive text-destructive-foreground": type === "danger",
           },
           className,
         )}

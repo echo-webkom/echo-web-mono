@@ -13,7 +13,7 @@ type BentoBoxProps = {
 
 export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
   return (
-    <section className={cn("flex flex-col gap-5 rounded-md border p-5 shadow-lg", className)}>
+    <section className={cn("flex flex-col gap-5 rounded-md border-2 p-5", className)}>
       {href ? (
         <Link
           href={href}
@@ -27,7 +27,7 @@ export const BentoBox = ({ title, href, children, className }: BentoBoxProps) =>
         <Heading className="text-center text-3xl font-medium">{title}</Heading>
       )}
 
-      <hr />
+      <hr className="border-b-2" />
 
       {children}
     </section>

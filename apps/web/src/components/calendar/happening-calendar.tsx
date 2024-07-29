@@ -91,7 +91,7 @@ export const Calendar = ({ events }: CalendarProps) => {
         </div>
       </div>
 
-      <div className="mb-10 h-72 overflow-hidden rounded-lg border">
+      <div className="mb-10 h-72 overflow-hidden rounded-lg border-2">
         <div
           className="h-full divide-x"
           style={{
@@ -111,7 +111,7 @@ export const Calendar = ({ events }: CalendarProps) => {
             return (
               <div key={day.toString()}>
                 <div className="flex flex-col gap-2">
-                  <div className="flex h-16 flex-col items-center justify-center border-b bg-muted py-2 font-medium">
+                  <div className="flex h-16 flex-col items-center justify-center border-b-2 bg-muted py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
@@ -127,19 +127,19 @@ export const Calendar = ({ events }: CalendarProps) => {
                       return (
                         <HoverCard key={event.id}>
                           <HoverCardTrigger>
-                            <div className="overflow-hidden rounded-lg border p-2">
-                              <p className="line-clamp-1 text-sm font-medium">{event.title}</p>
+                            <div className="overflow-hidden rounded-xl border-2 p-2">
+                              <p className="line-clamp-1 text-sm font-semibold">{event.title}</p>
                             </div>
                           </HoverCardTrigger>
                           <HoverCardContent>
                             <div className="space-y-2">
-                              <p className="font-medium">
-                                <Link className="hover:underline" href={event.link}>
+                              <Link className="hover:underline" href={event.link}>
+                                <h3 className="line-clamp-1 text-ellipsis font-semibold">
                                   {event.title}
-                                </Link>
-                              </p>
+                                </h3>
+                              </Link>
 
-                              <p className="text-sm">
+                              <p className="text-sm font-medium">
                                 {event.body.slice(0, 250)}
                                 {(event.body.length ?? 0) > 250 && "..."}
                               </p>

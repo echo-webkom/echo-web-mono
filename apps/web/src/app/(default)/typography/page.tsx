@@ -69,13 +69,11 @@ export default function Typography() {
         <Callout type="danger">This is an danger callout</Callout>
       </div>
 
-      <div>
-        <Chip>Chip</Chip>
-        <Chip>Chip</Chip>
-        <Chip>Chip</Chip>
-        <Chip>Chip</Chip>
-        <Chip>Chip</Chip>
-        <Chip>Chip</Chip>
+      <div className="space-x-2">
+        <Chip variant="primary">Chip</Chip>
+        <Chip variant="secondary">Chip</Chip>
+        <Chip variant="destructive">Chip</Chip>
+        <Chip variant="stealth">Chip</Chip>
       </div>
     </Container>
   );

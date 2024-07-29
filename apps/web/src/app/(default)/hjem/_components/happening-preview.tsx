@@ -21,7 +21,7 @@ export const HappeningPreview = ({
 
   return (
     <Link href={href}>
-      <div className="flex h-32 items-center gap-4 rounded-lg p-4 hover:bg-muted">
+      <div className="flex h-32 items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted">
         {happening.happeningType === "bedpres" && happening.image && (
           // Outer div is needed to that the image is not squished
           <div>
@@ -33,10 +33,10 @@ export const HappeningPreview = ({
 
         <div className="flex w-full justify-between gap-2">
           <div className="my-auto flex flex-col">
-            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
+            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg font-medium sm:text-2xl">
               {happening.title}
             </h1>
-            <div className="items-center text-muted-foreground">
+            <div className="items-center text-sm font-medium text-muted-foreground">
               {happening.registrationStart &&
                 isFuture(new Date(happening.registrationStart)) &&
                 (isToday(new Date(happening.registrationStart)) ? (
@@ -48,7 +48,7 @@ export const HappeningPreview = ({
           </div>
 
           <ul className="sm:text-md text-md my-auto flex-none text-right">
-            <li className="flex justify-end">
+            <li className="flex justify-end text-sm">
               <span className="flex-none font-medium">
                 <RxCalendar className="mx-1 h-full" />
               </span>{" "}
@@ -78,5 +78,5 @@ const HappeningRegistrationInfo = async ({
     return null;
   }
 
-  return <p>{info}</p>;
+  return <p className="text-sm font-medium">{info}</p>;
 };

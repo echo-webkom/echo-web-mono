@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/utils/cn";
 
 const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+  "text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
   {
     variants: {
       intent: {
@@ -27,7 +27,7 @@ export const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Roo
     <LabelPrimitive.Root ref={ref} className={cn(labelVariants(), className)} {...props}>
       <span>{children}</span>
       {required && (
-        <span className="ml-1 text-sm text-red-500" aria-hidden="true">
+        <span className="ml-1 text-sm font-semibold text-red-500" aria-hidden="true">
           *
         </span>
       )}

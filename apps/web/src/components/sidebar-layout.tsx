@@ -45,7 +45,7 @@ export const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      className={cn("border-r bg-background p-5 md:block", {
+      className={cn("border-r-2 bg-background p-5 md:block", {
         "hidden md:block": !isOpen,
         "w-full md:w-auto": isOpen,
       })}
@@ -72,9 +72,12 @@ export const SidebarItem = ({ children, href }: { children: React.ReactNode; hre
   return (
     <li key={href}>
       <Link
-        className={cn("flex rounded-lg px-3 py-1 text-lg font-medium hover:bg-muted", {
-          "bg-muted": isActive,
-        })}
+        className={cn(
+          "flex rounded-xl border-2 border-transparent px-3 py-1 text-lg font-medium hover:border-muted-dark hover:bg-muted",
+          {
+            "bg-muted": isActive,
+          },
+        )}
         href={href}
       >
         {children}
