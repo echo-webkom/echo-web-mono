@@ -1,6 +1,7 @@
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
+import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import BekkLogo from "@/assets/images/bekk.png";
@@ -11,9 +12,6 @@ import { cn } from "@/utils/cn";
 type FooterProps = {
   className?: string;
 };
-
-const COMMIT_SHA = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? "AAAAAAAAAAAAAAAAAAAAA";
-const humanSha = COMMIT_SHA.slice(0, 7);
 
 export const Footer = ({ className }: FooterProps) => {
   return (
@@ -37,16 +35,7 @@ export const Footer = ({ className }: FooterProps) => {
 
       {/* Footer */}
       <footer className="relative bg-wave px-10 py-10 text-wave-foreground">
-        <div className="absolute bottom-0 left-0 p-1">
-          <p className="text-xs text-muted-foreground">
-            <a
-              className="hover:underline"
-              href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
-            >
-              {humanSha}
-            </a>
-          </p>
-        </div>
+        <CommitLabel />
 
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap gap-10 sm:gap-20">
@@ -114,6 +103,25 @@ export const Footer = ({ className }: FooterProps) => {
           </div>
         </div>
       </footer>
+    </div>
+  );
+};
+
+const COMMIT_SHA = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? "AAAAAAAAAAAAAAAAAAAAA";
+const humanSha = COMMIT_SHA.slice(0, 7);
+
+const CommitLabel = () => {
+  return (
+    <div className="absolute bottom-0 left-0 p-1.5">
+      <p className="font-mono text-xs text-muted-foreground">
+        <a
+          className="flex items-center gap-1 hover:underline"
+          href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
+        >
+          <MdCommit className="inline-block h-4 w-4" />
+          {humanSha}
+        </a>
+      </p>
     </div>
   );
 };
