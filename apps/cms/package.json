@@ -33,7 +33,7 @@
     "sanity-plugin-markdown": "4.1.2",
     "sanity-plugin-media": "2.3.2",
     "slugify": "1.6.6",
-    "styled-components": "6.1.11"
+    "styled-components": "6.1.12"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
