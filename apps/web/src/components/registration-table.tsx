@@ -15,7 +15,7 @@ import {
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { getRegistrationStatus } from "@/lib/registrations";
-import { zodKeys } from "@/sanity/utils/zod";
+import { zodKeys } from "@/lib/zod-keys";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
