@@ -102,6 +102,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       ? await isUserBannedFromBedpres(user, happening)
       : false;
 
+  const registrationOpensIn24Hours =
+    userRegistrationStart &&
+    isPast(new Date(userRegistrationStart?.getTime() - 24 * 60 * 60 * 1000));
+
+  const currentUserStatus = registrations.find(
+    (registration) => registration.userId === user?.id,
+  )?.status;
+
   return (
     <div className="flex w-full flex-col gap-4 lg:max-w-[320px]">
       {/**
@@ -229,6 +237,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show date if:
            * - There is a date set
@@ -248,6 +257,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show time if:
            * - There is a date set
@@ -260,12 +270,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {event.endDate && !isSameDate(event.date, event.endDate) && (
             <SidebarItem>
               <SidebarItemTitle>Slutt:</SidebarItemTitle>
               <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show spot ranges if:
            * - There are spot ranges
@@ -288,6 +300,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               ))}
             </SidebarItem>
           )}
+
           {/**
            * Show registered count if:
            * - People can reigster
@@ -305,6 +318,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show location if:
            * - There is a location set
@@ -315,6 +329,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               <SidebarItemContent>{event.location.name}</SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show hosts if:
            * - There are hosts
@@ -336,6 +351,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show deductable if:
            * - There is a deductable
@@ -346,6 +362,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               <SidebarItemContent>{event.cost} kr</SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show waitlist count if:
            * - Registration is open
@@ -357,6 +374,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               <SidebarItemContent>{waitlistCount}</SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show registration end date if:
            * - Registration is open
@@ -370,6 +388,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show registration start date if:
            * - Registration is not open
@@ -384,6 +403,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItemContent>
             </SidebarItem>
           )}
+
           {/**
            * Show registration start date for groups if:
            * - Registration is not open
@@ -403,22 +423,23 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
                 </SidebarItemContent>
               </SidebarItem>
             )}
+
           {/**
            * Show deregister button if:
            * - User is registered to happening
            * - Happening has not passed
            */}
-          {isRegistered && happening?.date && isFuture(new Date(happening.date)) && (
-            <SidebarItem>
-              <DeregisterButton id={event._id}>
-                Meld av
-                {registrations.find((registration) => registration.user.id === user?.id)?.status ===
-                "waiting"
-                  ? " venteliste"
-                  : ""}
-              </DeregisterButton>
-            </SidebarItem>
-          )}
+          {isRegistered &&
+            currentUserStatus &&
+            happening?.date &&
+            isFuture(new Date(happening.date)) && (
+              <SidebarItem>
+                <DeregisterButton id={event._id}>
+                  Meld av
+                  {currentUserStatus === "waiting" ? " venteliste" : ""}
+                </DeregisterButton>
+              </SidebarItem>
+            )}
           {/**
            * Show registration button if:
            * - User is logged in
@@ -427,15 +448,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
            * - There is a spot range (you can register to this event)
            * - Registration is open
            * - Registration is not closed
+           * - Registration opens in 24 hours
            */}
-
           {!isRegistered &&
             isUserComplete &&
             !isBannedFromBedpres &&
             spotRanges.length > 0 &&
-            userRegistrationStart &&
             !isClosed &&
-            isPast(new Date(userRegistrationStart.getTime() - 24 * 60 * 60 * 1000)) && (
+            registrationOpensIn24Hours && (
               <SidebarItem className="relative">
                 <RegisterButton id={event._id} questions={happening?.questions ?? []} />
                 <Countdown toDate={userRegistrationStart} />
