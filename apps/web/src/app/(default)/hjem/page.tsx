@@ -26,7 +26,7 @@ export default async function Home() {
           title="Kommende arrangementer"
           href="/for-studenter/arrangementer"
           types={["external", "event"]}
-          n={5}
+          n={7}
           className="col-span-1 row-span-2"
         />
         <ComingHappenings
