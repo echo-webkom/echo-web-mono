@@ -142,7 +142,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             );
           },
           hr: ({ className, ...props }) => {
-            return <hr className={cn("my-8 border-t-gray-300", className)} {...props} />;
+            return <hr className={cn("my-8 border-t-border", className)} {...props} />;
           },
         }}
         remarkPlugins={[remarkGfm]}
