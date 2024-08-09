@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint lint --fix",
     "db:generate": "pnpm with-env drizzle-kit generate",
-    "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
+    "db:migrate": "pnpm with-env drizzle-kit migrate",
     "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
