@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
-import { deregister } from "@/actions/deregister";
+import { deregisterAction } from "@/actions/deregister";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -30,8 +31,8 @@ type DeregisterButtonProps = {
 
 export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { executeAsync, isExecuting } = useAction(deregisterAction);
 
   const form = useForm<DeregistrationForm>({
     resolver: zodResolver(deregistrationSchema),
@@ -42,18 +43,17 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-
-    const { success, message } = await deregister(id, {
+    const result = await executeAsync({
+      id,
       reason: data.reason,
     });
 
-    setIsLoading(false);
-
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (result?.data) {
+      toast({
+        title: result.data.message,
+        variant: "success",
+      });
+    }
 
     form.reset();
     setIsOpen(false);
@@ -63,7 +63,7 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpen(true)} variant="secondary" fullWidth>
-          {isLoading ? (
+          {isExecuting ? (
             <>
               <span>
                 <AiOutlineLoading className="h-4 w-4 animate-spin" />

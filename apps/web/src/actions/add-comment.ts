@@ -1,67 +1,61 @@
 "use server";
 
+import { z } from "zod";
+
 import { db } from "@echo-webkom/db";
 import { comments } from "@echo-webkom/db/schemas";
 
 import { revalidateComments } from "@/data/comments/revalidate";
-import { getUser } from "@/lib/get-user";
+import { authActionClient } from "@/lib/safe-action";
 
-export const addCommentAction = async (id: string, content: string) => {
-  if (!content || typeof content !== "string" || !id || typeof id !== "string") {
-    return null;
-  }
+export const addCommentAction = authActionClient
+  .metadata({ actionName: "addComment" })
+  .schema(
+    z.object({
+      postId: z.string(),
+      content: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const { postId, content } = parsedInput;
+    const { id: userId } = ctx.user;
 
-  const user = await getUser();
+    await db.insert(comments).values({
+      content,
+      postId,
+      userId,
+    });
 
-  if (!user) {
-    return null;
-  }
+    revalidateComments(postId);
 
-  if (!content) {
-    return null;
-  }
-
-  await db.insert(comments).values({
-    content,
-    postId: id,
-    userId: user.id,
+    return {
+      success: true,
+    };
   });
 
-  revalidateComments(id);
+export const addReplyAction = authActionClient
+  .metadata({ actionName: "addReply" })
+  .schema(
+    z.object({
+      postId: z.string(),
+      content: z.string(),
+      parentId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const { postId, content, parentId } = parsedInput;
+    const { id: userId } = ctx.user;
 
-  return {
-    success: true,
-  };
-};
+    await db.insert(comments).values({
+      content,
+      postId,
+      userId,
+      parentCommentId: parentId,
+    });
 
-export const addReplyAction = async (id: string, content: string, parentId: string) => {
-  if (
-    !content ||
-    typeof content !== "string" ||
-    !id ||
-    typeof id !== "string" ||
-    !parentId ||
-    typeof parentId !== "string"
-  ) {
-    return null;
-  }
+    revalidateComments(postId);
 
-  const user = await getUser();
-
-  if (!user) {
-    return null;
-  }
-
-  await db.insert(comments).values({
-    content,
-    postId: id,
-    userId: user.id,
-    parentCommentId: parentId,
+    return {
+      success: true,
+    };
   });
-
-  revalidateComments(id);
-
-  return {
-    success: true,
-  };
-};

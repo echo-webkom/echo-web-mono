@@ -1,10 +1,11 @@
 "use client";
 
+import { useAction } from "next-safe-action/hooks";
 import { RxEnvelopeClosed, RxEnvelopeOpen } from "react-icons/rx";
 
 import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
-import { toggleReadFeedback } from "@/actions/feedback";
+import { toggleReadFeedbackAction } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { shortDate } from "@/utils/date";
@@ -21,14 +22,17 @@ const parseDate = (date: Date) => {
 
 export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
   const { toast } = useToast();
+  const { executeAsync } = useAction(toggleReadFeedbackAction);
 
   const handleToggleRead = async () => {
-    const { success, message } = await toggleReadFeedback(feedback.id);
+    const response = await executeAsync(feedback.id);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (response?.data) {
+      toast({
+        title: response.data.message,
+        variant: response.data.success ? "success" : "destructive",
+      });
+    }
   };
 
   return (

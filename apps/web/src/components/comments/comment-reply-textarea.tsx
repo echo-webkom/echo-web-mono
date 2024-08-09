@@ -14,7 +14,11 @@ export const CommentReplyTextarea = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await addReplyAction(postId, content, commentId);
+    await addReplyAction({
+      postId,
+      content,
+      parentId: commentId,
+    });
     setContent("");
     setIsOpen(false);
   };

@@ -14,8 +14,7 @@ import {
   type StrikeType,
 } from "@echo-webkom/lib/src/constants";
 
-import { addStrike, remvoveStrike } from "@/actions/strikes";
-import { Text } from "@/components/typography/text";
+import { addStrikeAction, removeStrikeAction } from "@/actions/strikes";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -33,6 +32,7 @@ import { unbanUser } from "@/data/users/mutations";
 import { toast, useToast } from "@/hooks/use-toast";
 import { addStrikesSchema, type AddStrikeForm } from "@/lib/schemas/addStrike";
 import { mailTo } from "@/utils/prefixes";
+import { Text } from "../../../../components/typography/text";
 import {
   Form,
   FormControl,
@@ -77,14 +77,23 @@ export const AddStrikeButton = ({
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await addStrike(
-      user.id,
-      data.happeningId,
-      data.reason,
-      data.amount,
-      currentAmount,
-      selectedType,
-    );
+    const response = await addStrikeAction({
+      userId: user.id,
+      happeningId: data.happeningId,
+      reason: data.reason,
+      amount: data.amount,
+      currentAmount: currentAmount,
+      type: selectedType,
+    });
+
+    if (!response?.data?.success) {
+      return toast({
+        title: response?.data?.message ?? "Noe gikk galt",
+        variant: "destructive",
+      });
+    }
+
+    const { success, message } = response.data;
 
     toast({
       title: message,
@@ -257,7 +266,18 @@ export const RemoveStrikeButton = ({ strikeId }: { strikeId: number }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = async () => {
-    const { success, message } = await remvoveStrike(strikeId);
+    const response = await removeStrikeAction({
+      strikeId,
+    });
+
+    if (!response?.data?.success) {
+      return toast({
+        title: response?.data?.message ?? "Noe gikk galt",
+        variant: "destructive",
+      });
+    }
+
+    const { success, message } = response.data;
 
     toast({
       title: message,
@@ -280,7 +300,7 @@ export const RemoveStrikeButton = ({ strikeId }: { strikeId: number }) => {
           <div>Det må gjøres manuelt.</div>
         </DialogDescription>
         <DialogFooter>
-          <Button variant="destructive" onClick={() => void handleDelete()}>
+          <Button variant="destructive" onClick={handleDelete}>
             Bekreft sletting
           </Button>
         </DialogFooter>

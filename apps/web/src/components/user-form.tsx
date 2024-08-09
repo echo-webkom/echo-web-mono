@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
-import { updateSelf } from "@/actions/user";
+import { updateSelfAction } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import {
@@ -40,8 +40,7 @@ type UserFormProps = {
 };
 
 export const UserForm = ({ user, degrees }: UserFormProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { executeAsync, isExecuting } = useAction(updateSelfAction);
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof userSchema>>({
@@ -55,15 +54,20 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      setIsLoading(true);
-
-      const { success, message } = await updateSelf({
+      const response = await executeAsync({
         alternativeEmail: data.alternativeEmail,
         degreeId: data.degree,
         year: data.year,
       });
 
-      setIsLoading(false);
+      if (!response?.data?.success) {
+        return toast({
+          title: response?.data?.message ?? "Noe gikk galt",
+          variant: "warning",
+        });
+      }
+
+      const { success, message } = response.data;
 
       toast({
         title: message,
@@ -141,7 +145,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         />
 
         <div>
-          <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
+          <Button type="submit">{isExecuting ? "Lagrer..." : "Lagre"}</Button>
         </div>
       </form>
     </Form>

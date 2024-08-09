@@ -50,6 +50,7 @@
     "nanoid": "5.0.7",
     "next": "14.2.5",
     "next-auth": "4.24.7",
+    "next-safe-action": "^7.3.0",
     "next-themes": "0.3.0",
     "nextjs-toploader": "1.6.12",
     "react": "18.3.1",
@@ -63,10 +64,10 @@
     "remove-markdown": "0.5.2",
     "sharp": "0.33.0",
     "tailwind-merge": "2.4.0",
-    "zod": "3.23.8"
+    "zod": "3.23.8",
+    "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@tailwindcss/forms": "0.5.7",
     "@tailwindcss/typography": "0.5.13",
     "@testing-library/react": "16.0.0",

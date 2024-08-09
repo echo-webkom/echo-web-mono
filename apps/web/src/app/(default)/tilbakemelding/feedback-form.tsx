@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 
-import { sendFeedback } from "@/actions/feedback";
+import { sendFeedbackAction } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,6 +23,7 @@ import { feedbackSchema, type FeedbackForm as TFeedbackForm } from "@/lib/schema
 export const FeedbackForm = () => {
   const { toast } = useToast();
 
+  const { executeAsync } = useAction(sendFeedbackAction);
   const form = useForm<TFeedbackForm>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
@@ -34,12 +36,14 @@ export const FeedbackForm = () => {
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      const { success, message } = await sendFeedback(data);
+      const result = await executeAsync(data);
 
-      toast({
-        title: message,
-        variant: success ? "success" : "destructive",
-      });
+      if (result?.data) {
+        toast({
+          title: result.data.message,
+          variant: "success",
+        });
+      }
 
       form.reset();
     },

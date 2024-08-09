@@ -9,28 +9,22 @@ import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
-import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
+import { groupActionClient } from "@/lib/safe-action";
 
-const updateRegistrationPayloadSchema = z.object({
+const updateRegistrationSchema = z.object({
+  happeningId: z.string(),
+  registrationUserId: z.string(),
   status: z.enum(registrationStatusEnum.enumValues),
   reason: z.string(),
 });
 
-export const updateRegistration = async (
-  happeningId: string,
-  registrationUserId: string,
-  payload: z.infer<typeof updateRegistrationPayloadSchema>,
-) => {
-  try {
-    const user = await getUser();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
+export const updateRegistrationAction = groupActionClient(["bedkom", "webkom"])
+  .metadata({ actionName: "updateRegistration" })
+  .schema(updateRegistrationSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { happeningId, registrationUserId, status, reason } = parsedInput;
+    const { user } = ctx;
 
     const exisitingRegistration = await db.query.registrations.findFirst({
       where: (registration) =>
@@ -59,16 +53,14 @@ export const updateRegistration = async (
       };
     }
 
-    const data = updateRegistrationPayloadSchema.parse(payload);
-
     await db
       .update(registrations)
       .set({
         prevStatus: exisitingRegistration.status,
         changedBy: user.id,
         changedAt: new Date(),
-        status: data.status,
-        unregisterReason: data.reason,
+        status,
+        unregisterReason: reason,
       })
       .where(
         and(
@@ -77,7 +69,7 @@ export const updateRegistration = async (
         ),
       );
 
-    if (data.status === "registered") {
+    if (status === "registered") {
       const sendTo =
         exisitingRegistration.user.alternativeEmail ?? exisitingRegistration.user.email;
 
@@ -97,16 +89,4 @@ export const updateRegistration = async (
       success: true,
       message: "Påmeldingen er endret",
     };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Grunnen er ikke i riktig format",
-      };
-    }
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
-  }
-};
+  });
