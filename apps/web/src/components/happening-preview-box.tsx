@@ -8,7 +8,6 @@ import { urlFor } from "@echo-webkom/sanity";
 import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeWithEndDate } from "@/utils/date";
-import { capitalize } from "@/utils/string";
 
 type CombinedHappeningPreviewProps = {
   happening: AllHappeningsQueryResult[number];
