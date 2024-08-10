@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
 import {
   Form,
   FormControl,
@@ -31,7 +33,6 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
-import { Checkbox } from "./ui/checkbox";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
@@ -157,7 +158,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         <FormField
           control={form.control}
           name="hasReadTerms"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel htmlFor="hasReadTerms">
                 Les våre retningslinjer for å kunne melde deg på arrangement.
@@ -175,9 +176,12 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     <div className="space-y-4">
                       <div className="flex">
                         <FormControl>
-                          <Checkbox id="hasReadTerms" {...field} />
+                          <Checkbox
+                            value={user.hasReadTerms ? "true" : "false"}
+                            id="hasReadTerms"
+                          />
                         </FormControl>
-                        <FormLabel htmlFor="hasReadTerms" className="px-2 ">
+                        <FormLabel htmlFor="hasReadTerms" className="px-2">
                           Jeg har lest retningslingene
                         </FormLabel>
                       </div>
