@@ -14,6 +14,7 @@ describe("toCsv", () => {
             name: "Petter Kjellberg",
             year: 2022,
             degreeId: "Computer Science",
+            hasReadTerms: true,
           },
           status: "registered",
           unregisterReason: "",

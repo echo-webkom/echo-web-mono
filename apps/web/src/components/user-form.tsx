@@ -9,6 +9,15 @@ import { z } from "zod";
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import {
@@ -22,11 +31,13 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
+import { Checkbox } from "./ui/checkbox";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(5).optional(),
+  hasReadTerms: z.boolean().optional(),
 });
 
 type UserFormProps = {
@@ -34,6 +45,7 @@ type UserFormProps = {
     alternativeEmail?: string;
     degree?: Degree;
     year?: number;
+    hasReadTerms?: boolean;
     id: string;
   };
   degrees: Array<Degree>;
@@ -49,6 +61,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
       year: user.year,
+      hasReadTerms: user.hasReadTerms,
     },
     resolver: zodResolver(userSchema),
   });
@@ -61,6 +74,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         alternativeEmail: data.alternativeEmail,
         degreeId: data.degree,
         year: data.year,
+        hasReadTerms: data.hasReadTerms,
       });
 
       setIsLoading(false);
@@ -135,6 +149,46 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   ))}
                 </Select>
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="hasReadTerms"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="hasReadTerms">
+                Les våre retningslinjer for å kunne melde deg på arrangement.
+              </FormLabel>
+              <br />
+
+              <AlertDialog>
+                <AlertDialogTrigger className="underline-offset-4 hover:underline">
+                  Les retninslinjene her
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>Retninslinjene</AlertDialogHeader>
+                  <p>Du må være kul bro</p>
+                  <AlertDialogFooter>
+                    <div className="space-y-4">
+                      <div className="flex">
+                        <FormControl>
+                          <Checkbox id="hasReadTerms" {...field} />
+                        </FormControl>
+                        <FormLabel htmlFor="hasReadTerms" className="px-2 ">
+                          Jeg har lest retningslingene
+                        </FormLabel>
+                      </div>
+                      <div className="space-x-2">
+                        <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                        <AlertDialogAction>Fortsett</AlertDialogAction>
+                      </div>
+                    </div>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <FormMessage />
             </FormItem>
           )}

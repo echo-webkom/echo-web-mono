@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import BekkLogo from "@/assets/images/bekk.png";
+import BekkLogo from "@/assets/images/bekk.png";  
 import { footerRoutes } from "@/lib/routes";
 import { sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";

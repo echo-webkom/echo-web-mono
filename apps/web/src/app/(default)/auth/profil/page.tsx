@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
@@ -12,6 +14,7 @@ import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
+import { Button } from "@/components/ui/button";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -77,6 +80,7 @@ export default async function ProfilePage() {
           degree: user.degree ?? undefined,
           year: user.year ?? undefined,
           alternativeEmail: user.alternativeEmail ?? undefined,
+          hasReadTerms: user.hasReadTerms ?? undefined,
         }}
         degrees={degrees}
       />

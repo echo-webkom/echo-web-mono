@@ -38,6 +38,7 @@ export const users = pgTable(
     lastSignInAt: timestamp("last_sign_in_at"),
     updatedAt: timestamp("updated_at").$onUpdate(now),
     createdAt: timestamp("created_at").$defaultFn(now),
+    hasReadTerms: boolean("has_read_terms").notNull().default(false),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

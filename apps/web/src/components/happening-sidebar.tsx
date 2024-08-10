@@ -77,7 +77,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const isHost = user && happening ? _isHost(user, happening) : false;
 
-  const isUserComplete = user?.degreeId && user.year;
+  const isUserComplete = user?.degreeId && user.year && user.hasReadTerms;
 
   const canEarlyRegister = Boolean(
     user &&
