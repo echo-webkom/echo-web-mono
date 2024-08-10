@@ -31,7 +31,7 @@ export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreview
             {happening.happeningType === "event" && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
-                {capitalize(happening.organizers?.map((o) => o.name).join(", ") ?? "BO")}
+                {happening.organizers?.map((o) => o.name).join(", ") ?? "Bo"}
               </li>
             )}
             {happening.date && (
