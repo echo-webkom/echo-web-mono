@@ -117,6 +117,23 @@ test.describe("Register", () => {
     );
   });
 
+  // test("should not be able to register to event with unethical user", async ({ page }) => {
+  //   await loginAs(page, "Unethical");
+
+  //   await page.goto(`/arrangement/${SLUG}`);
+
+  //   await expect(page.getByText("Test i prod med Webkom", { exact: true })).toBeVisible();
+  //   await expect(
+  //     page.getByText("Velkommen til testing i prod med Webkom!", { exact: true }),
+  //   ).toBeVisible();
+
+  //   await page.getByRole("button", { name: "One-click påmelding" }).click();
+
+  //   await expect(page.getByTestId("toast")).toContainText(
+  //     "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
+  //   );
+  // });
+
   test("see admin dashboard link", async ({ page }) => {
     await loginAs(page, "Admin");
 

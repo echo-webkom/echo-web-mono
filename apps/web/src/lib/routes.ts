@@ -194,6 +194,12 @@ export const headerRoutes: Array<Route> = [
         description: "Oversikt over programstyrene",
         icon: LuUsers,
       },
+      {
+        label: "Etiske retningslinjer",
+        href: "/om/retningslinjer",
+        description: "Oversikt over etiske retningslinjer",
+        icon: LuScale,
+      },
     ],
   },
 ];

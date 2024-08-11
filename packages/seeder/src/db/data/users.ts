@@ -42,6 +42,15 @@ export const users = [
     type: "student",
     token: "admin",
   },
+  {
+    id: "unethical",
+    name: "Unethical",
+    email: "unethical@echo.uib.on",
+    type: "student",
+    token: "unethical",
+    year: 2,
+    hasReadTerms: false,
+  },
 ] as const;
 
 export const createFakeUsers = async (n: number) => {
@@ -53,6 +62,7 @@ export const createFakeUsers = async (n: number) => {
         email: `student${i}@uib.no`,
         type: "student",
         token: `student${i}`,
+        hasReadTerms: true,
       }),
     ),
   );

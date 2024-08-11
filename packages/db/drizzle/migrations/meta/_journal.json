@@ -162,6 +162,13 @@
       "when": 1721925392240,
       "tag": "0022_powerful_outlaw_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1723223890405,
+      "tag": "0023_happy_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }

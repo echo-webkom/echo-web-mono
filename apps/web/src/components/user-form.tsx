@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,6 +12,7 @@ import { type Degree } from "@echo-webkom/db/schemas";
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
 import {
   Form,
   FormControl,
@@ -27,6 +29,7 @@ const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(5).optional(),
+  hasReadTerms: z.boolean().optional(),
 });
 
 type UserFormProps = {
@@ -34,6 +37,7 @@ type UserFormProps = {
     alternativeEmail?: string;
     degree?: Degree;
     year?: number;
+    hasReadTerms?: boolean;
     id: string;
   };
   degrees: Array<Degree>;
@@ -49,6 +53,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
       year: user.year,
+      hasReadTerms: user.hasReadTerms,
     },
     resolver: zodResolver(userSchema),
   });
@@ -61,6 +66,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         alternativeEmail: data.alternativeEmail,
         degreeId: data.degree,
         year: data.year,
+        hasReadTerms: data.hasReadTerms,
       });
 
       setIsLoading(false);
@@ -82,7 +88,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form onSubmit={onSubmit} className="space-y-8">
         <FormField
           control={form.control}
           name="alternativeEmail"
@@ -136,6 +142,32 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                 </Select>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="hasReadTerms"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start space-y-2">
+              <div className="flex space-x-3">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Jeg bekrefter at jeg har lest{" "}
+                    <Link
+                      className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
+                      href={"/echo-retningslinjer"}
+                    >
+                      de etiske retnlingslinjene
+                    </Link>
+                    .
+                  </FormLabel>
+                </div>
+              </div>
             </FormItem>
           )}
         />
