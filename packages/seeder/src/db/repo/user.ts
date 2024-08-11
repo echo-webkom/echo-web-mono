@@ -9,6 +9,7 @@ export const create = async ({
   token,
   year = 1,
   degreeId = "dtek",
+  hasReadTerms = true,
 }: {
   id: string;
   name: string;
@@ -17,6 +18,7 @@ export const create = async ({
   token: string;
   year?: number;
   degreeId?: string;
+  hasReadTerms?: boolean;
 }) => {
   console.log(`Inserted user ${name} with id ${id}`);
   await db
@@ -28,6 +30,7 @@ export const create = async ({
       type,
       year,
       degreeId,
+      hasReadTerms,
     })
     .onConflictDoNothing();
 

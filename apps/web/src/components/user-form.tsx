@@ -88,7 +88,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form onSubmit={onSubmit} className="space-y-8">
         <FormField
           control={form.control}
           name="alternativeEmail"
@@ -151,18 +151,21 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           name="hasReadTerms"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start space-y-2">
-              <Link
-                className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
-                href={"/echo-retningslinjer"}
-              >
-                Retnlingslinjene
-              </Link>
               <div className="flex space-x-3">
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Jeg bekrefter at jeg har lest retningslinjene.</FormLabel>
+                  <FormLabel>
+                    Jeg bekrefter at jeg har lest{" "}
+                    <Link
+                      className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
+                      href={"/echo-retningslinjer"}
+                    >
+                      de etiske retnlingslinjene
+                    </Link>
+                    .
+                  </FormLabel>
                 </div>
               </div>
             </FormItem>

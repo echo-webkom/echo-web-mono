@@ -7,7 +7,6 @@ import { db } from "@echo-webkom/db";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";

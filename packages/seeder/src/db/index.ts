@@ -107,8 +107,8 @@ const seedTest = async () => {
     .values({
       happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
       id: "test-i-prod-med-webkom-spotrange",
-      maxYear: 3,
       minYear: 1,
+      maxYear: 3,
       spots: 1,
     })
     .onConflictDoNothing();

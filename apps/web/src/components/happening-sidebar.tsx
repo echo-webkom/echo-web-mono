@@ -192,7 +192,9 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
        */}
       {user && !isUserComplete && (
         <Callout type="warning" noIcon>
-          <p className="mb-3 font-semibold">Du må fullføre brukeren din.</p>
+          <p className="mb-3 font-semibold">
+            Du må fylle ut brukeren din og akkseptere de etiske retningslinjene for å melde deg på.
+          </p>
           <div className="group flex items-center">
             <Link href="/auth/profil" className="hover:underline">
               Klikk her for å fullføre
