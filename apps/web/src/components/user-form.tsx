@@ -160,7 +160,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     Jeg bekrefter at jeg har lest{" "}
                     <Link
                       className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
-                      href={"/echo-retningslinjer"}
+                      href="om/retningslinjer"
                     >
                       de etiske retnlingslinjene
                     </Link>
