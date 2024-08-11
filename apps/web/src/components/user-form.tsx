@@ -5,20 +5,10 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-
+import {retningslinjer} from "@assets/pdf/retningslinjer"
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -33,6 +23,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
+import Link from "next/link";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
@@ -155,48 +146,24 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="hasReadTerms"
-          render={() => (
-            <FormItem>
-              <FormLabel htmlFor="hasReadTerms">
-                Les våre retningslinjer for å kunne melde deg på arrangement.
-              </FormLabel>
-              <br />
+        <Link href={retningslinjer} >Retnlingslinjene</Link>
 
-              <AlertDialog>
-                <AlertDialogTrigger className="underline-offset-4 hover:underline">
-                  Les retninslinjene her
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>Retninslinjene</AlertDialogHeader>
-                  <p>Du må være kul bro</p>
-                  <AlertDialogFooter>
-                    <div className="space-y-4">
-                      <div className="flex">
-                        <FormControl>
-                          <Checkbox
-                            value={user.hasReadTerms ? "true" : "false"}
-                            id="hasReadTerms"
-                          />
-                        </FormControl>
-                        <FormLabel htmlFor="hasReadTerms" className="px-2">
-                          Jeg har lest retningslingene
-                        </FormLabel>
-                      </div>
-                      <div className="space-x-2">
-                        <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                        <AlertDialogAction>Fortsett</AlertDialogAction>
-                      </div>
-                    </div>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="hasReadTerms"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Jeg bekrefter at jeg har lest retningslinjene.</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </form>
 
         <div>
           <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
