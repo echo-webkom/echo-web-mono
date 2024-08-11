@@ -150,7 +150,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           control={form.control}
           name="hasReadTerms"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-start  space-y-2">
+            <FormItem className="flex flex-col items-start space-y-2">
               <Link
                 className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
                 href={"/echo-retningslinjer"}

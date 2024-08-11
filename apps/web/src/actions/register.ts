@@ -38,7 +38,7 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     /**
      * Check if user has filled out necessary information
      */
-    if (!user.degreeId || !user.year) {
+    if (!user.degreeId || !user.year || !user.hasReadTerms) {
       return {
         success: false,
         message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",

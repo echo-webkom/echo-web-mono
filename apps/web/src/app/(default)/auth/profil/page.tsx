@@ -1,6 +1,4 @@
 import Link from "next/link";
-
-
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
@@ -9,12 +7,12 @@ import { db } from "@echo-webkom/db";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
-import { Button } from "@/components/ui/button";
 
 export default async function ProfilePage() {
   const user = await getUser();
