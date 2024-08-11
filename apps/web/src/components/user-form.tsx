@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {retningslinjer} from "@assets/pdf/retningslinjer"
+
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
@@ -23,7 +24,6 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
-import Link from "next/link";
 
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
@@ -146,24 +146,28 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
-        <Link href={retningslinjer} >Retnlingslinjene</Link>
-
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="hasReadTerms"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Jeg bekrefter at jeg har lest retningslinjene.</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </form>
+        <FormField
+          control={form.control}
+          name="hasReadTerms"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start  space-y-2">
+              <Link
+                className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
+                href={"/echo-retningslinjer"}
+              >
+                Retnlingslinjene
+              </Link>
+              <div className="flex space-x-3">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Jeg bekrefter at jeg har lest retningslinjene.</FormLabel>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
 
         <div>
           <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
