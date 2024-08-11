@@ -27,6 +27,7 @@ export const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
           },
           className,
         )}
+        data-testid="callout"
       >
         {!noIcon && (
           <div>
