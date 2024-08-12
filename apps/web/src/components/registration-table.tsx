@@ -184,7 +184,11 @@ export const RegistrationTable = ({
         </div>
         <div className="mt-auto flex flex-col justify-between px-4 md:flex-row">
           <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
-            <RandomPersonButton registrations={registrations} />
+            <RandomPersonButton
+              registrations={registrations
+                .filter((r) => r.status === "registered")
+                .map((r) => r.user.name ?? r.user.email)}
+            />
             <DownloadCsvButton
               slug={slug}
               columns={columns}

@@ -24,7 +24,7 @@ export const BentoBox = ({ title, href, children, className }: BentoBoxProps) =>
           <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
         </Link>
       ) : (
-        <Heading className="text-center text-3xl font-medium">{title}</Heading>
+        <Heading className="mx-auto text-center text-3xl font-medium">{title}</Heading>
       )}
 
       <hr className="border-b-2" />
