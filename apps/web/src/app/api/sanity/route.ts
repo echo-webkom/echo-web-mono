@@ -171,6 +171,8 @@ export const POST = withBasicAuth(async (req) => {
 
     const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
 
+    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
+
     if (happeningToGroupsToInsert.length > 0) {
       await db.insert(happeningsToGroups).values(
         happeningToGroupsToInsert.map((groupId) => ({
