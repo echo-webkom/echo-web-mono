@@ -17,9 +17,10 @@ export const ReactionButtonGroup = async ({ reactToKey }: ReactionButtonGroupPro
         const hasReacted = reactions.some(
           (r) => r.emojiId === Number(key) && r.userId === user?.id,
         );
+
         return (
           <ReactionButton
-            key={reactToKey}
+            key={key}
             reactToKey={reactToKey}
             hasReacted={hasReacted}
             emojiId={Number(key)}
