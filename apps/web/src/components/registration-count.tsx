@@ -29,9 +29,11 @@ export const RegistrationCount = ({
   const hasProgressBar = Boolean(maxCapacity && precent > 0);
 
   return (
-    <div className="flex items-center gap-1">
-      {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
-      {maxCapacity || <BiInfinite className="h-5 w-5" />}
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
+        {maxCapacity || <BiInfinite className="h-5 w-5" />}
+      </div>
       {hasProgressBar && (
         <div className="h-4 w-full overflow-hidden rounded-md border">
           <div
