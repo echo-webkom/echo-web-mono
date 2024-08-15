@@ -5,6 +5,8 @@ import { z } from "zod";
 
 import { db, isPostgresIshError } from "@echo-webkom/db";
 import { accessRequests } from "@echo-webkom/db/schemas";
+import { AccessRequestNotificationEmail } from "@echo-webkom/email";
+import { emailClient } from "@echo-webkom/email/client";
 
 import { requestAccessSchema, type IRequestAccessForm } from "../_lib/request-access";
 
@@ -31,6 +33,15 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
       email,
       reason,
     });
+
+    await emailClient.sendEmail(
+      ["echo@uib.no"],
+      `Forespørsel om tilgang til echo.uib.no`,
+      AccessRequestNotificationEmail({
+        email,
+        reason,
+      }),
+    );
 
     return {
       success: true,

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
+    "dev": "pnpm with-env email preview ./emails",
     "lint": "eslint",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
