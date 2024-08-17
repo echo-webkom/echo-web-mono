@@ -1,3 +1,5 @@
+import { type NextRequest } from "next/server";
+
 import { env } from "@/env.mjs";
 import { type HandlerFunction } from "./utils";
 
@@ -9,7 +11,7 @@ import { type HandlerFunction } from "./utils";
  * @returns - the handler wrapped in a bearer auth check
  */
 export const withBearerAuth = (handler: HandlerFunction) => {
-  return async (request: Request): Promise<Response> => {
+  return async (request: NextRequest): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
 
