@@ -1,3 +1,6 @@
+import { headers } from "next/headers";
+import { type NextRequest } from "next/server";
+
 import { env } from "@/env.mjs";
 import { type HandlerFunction } from "./utils";
 
@@ -9,9 +12,9 @@ import { type HandlerFunction } from "./utils";
  * @returns the handler wrapped in a basic auth check
  */
 export const withBasicAuth = (handler: HandlerFunction) => {
-  return async (request: Request): Promise<Response> => {
+  return async (request: NextRequest): Promise<Response> => {
     if (env.NODE_ENV !== "development") {
-      const auth = request.headers.get("Authorization")?.split(" ")[1];
+      const auth = headers().get("Authorization")?.split(" ")[1];
       const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
       const [, password] = decodedAuth.split(":");
 
