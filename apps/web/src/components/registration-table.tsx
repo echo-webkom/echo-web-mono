@@ -5,7 +5,6 @@ import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
 import {
-  selectUserSchema,
   type Group,
   type Question,
   type Registration,
@@ -15,7 +14,6 @@ import {
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { getRegistrationStatus } from "@/lib/registrations";
-import { zodKeys } from "@/lib/zod-keys";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
@@ -34,17 +32,6 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-
-type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
-
-export const formatHeaders: Record<HeaderType, string> = {
-  name: "Navn",
-  email: "Epost",
-  alternativeEmail: "Alternativ Epost",
-  year: "År",
-  degreeId: "Studieretning",
-  status: "Status",
-};
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
@@ -111,23 +98,6 @@ export const RegistrationTable = ({
     setGroupFilter("");
   };
 
-  const obj = zodKeys(selectUserSchema);
-  const columns: Array<string> = [];
-  for (const header of obj) {
-    const formattedHeader = formatHeaders[header as HeaderType];
-    columns.push(formattedHeader);
-  }
-  columns.push(...questions.map((question) => question.title));
-  columns.push("Status");
-  const nonEmptyColumns = columns.filter((header) => header && header.trim() !== "");
-  const [selectedHeaders, setSelectedHeaders] = useState(nonEmptyColumns);
-  const removeKey = (id: string) => {
-    setSelectedHeaders((prev) => prev.filter((key) => key !== id));
-  };
-  const addKey = (id: string) => {
-    setSelectedHeaders((prev) => [...prev, id]);
-  };
-
   return (
     <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
@@ -189,13 +159,7 @@ export const RegistrationTable = ({
                 .filter((r) => r.status === "registered")
                 .map((r) => r.user.name ?? r.user.email)}
             />
-            <DownloadCsvButton
-              slug={slug}
-              columns={columns}
-              removeKey={removeKey}
-              addKey={addKey}
-              selectedHeaders={selectedHeaders}
-            />
+            <DownloadCsvButton slug={slug} questions={questions} />
           </div>
         </div>
 
