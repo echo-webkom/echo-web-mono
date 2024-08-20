@@ -20,8 +20,8 @@ export const GET = async (req: NextRequest) => {
     return new Response("Missing slug", { status: 400 });
   }
 
-  const encodedHeaders = req.nextUrl.searchParams.get("selectedHeaders") ?? "";
-  const selectedHeaders = decodeURIComponent(encodedHeaders).split(",");
+  const encodedHeaders = req.nextUrl.searchParams.getAll("header") ?? [];
+  const selectedHeaders = encodedHeaders.map((header) => decodeURIComponent(header));
 
   const happening = await getFullHappening(slug);
 
