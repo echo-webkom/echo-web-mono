@@ -5,11 +5,7 @@ import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 import { type getFullHappening } from "@/data/happenings/queries";
 import { stringify } from "@/utils/string";
 
-const parser = new Parser({
-  withBOM: true,
-});
-
-type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+export type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
 
 /**
  * Converts a happening to a CSV string.
@@ -20,53 +16,54 @@ type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undef
  * @returns the CSV string
  */
 export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> = []) => {
-  const registrations = happening.registrations.map((r) => {
-    const answers = r.answers.map((a) => ({
-      questionId: a.questionId,
-      question: happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
-      answer: a.answer?.answer,
-    }));
+  const registrations = happening.registrations
+    .map((r) => {
+      const answers = r.answers.map((a) => ({
+        questionId: a.questionId,
+        question:
+          happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
+        answer: a.answer?.answer,
+      }));
 
-    const obj: Record<string, string> = {};
-    obj.Navn = stringify(r.user.name);
-    obj.Epost = r.user.alternativeEmail ?? r.user.email;
-    obj.Status = r.status;
-    obj.År = stringify(r.user.year);
-    obj.Studieretning = r.user.degreeId ?? "";
-    obj.Grunn = r.unregisterReason ?? "";
-    obj.Status = r.status;
+      const obj: Record<string, string> = {};
+      obj.Navn = stringify(r.user.name);
+      obj.Epost = r.user.alternativeEmail ?? r.user.email;
+      obj.Status = r.status;
+      obj.År = stringify(r.user.year);
+      obj.Studieretning = r.user.degreeId ?? "";
+      obj.Grunn = r.unregisterReason ?? "";
 
-    happening.questions.forEach((question) => {
-      const answer = answers.find((a) => a.questionId === question.id)?.answer;
-      const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : (answer ?? "");
-      obj[question.title] = formattedAnswer;
-    });
+      happening.questions.forEach((question) => {
+        const answer = answers.find((a) => a.questionId === question.id)?.answer;
+        const formattedAnswer = Array.isArray(answer) ? answer.join(", ") : (answer ?? "");
+        obj[question.title] = formattedAnswer;
+      });
 
-    // If there are no selected headers, return the full object
-    if (selectedHeaders.length > 0) {
-      for (const key in obj) {
-        if (!selectedHeaders.includes(key)) {
-          delete obj[key];
+      // If there are no selected headers, return the full object
+      if (selectedHeaders.length > 0) {
+        for (const key in obj) {
+          if (!selectedHeaders.includes(key)) {
+            delete obj[key];
+          }
         }
       }
-    }
 
-    return obj;
-  });
+      return obj;
+    })
+    .sort((a, b) => {
+      const statusOrder: Record<RegistrationStatus, number> = {
+        registered: 0,
+        waiting: 1,
+        unregistered: 2,
+        removed: 3,
+        pending: 4,
+      };
 
-  registrations.sort((a, b) => {
-    const statusOrder: Record<RegistrationStatus, number> = {
-      registered: 0,
-      waiting: 1,
-      unregistered: 2,
-      removed: 3,
-      pending: 4,
-    };
+      return (
+        statusOrder[a.Status as RegistrationStatus] - statusOrder[b.Status as RegistrationStatus]
+      );
+    });
 
-    return (
-      statusOrder[a.Status as RegistrationStatus] - statusOrder[b.Status as RegistrationStatus]
-    );
-  });
-
+  const parser = new Parser();
   return parser.parse(registrations);
 };
