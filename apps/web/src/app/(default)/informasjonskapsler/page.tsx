@@ -19,7 +19,7 @@ Informasjonskapslene vi bruker er:
 
 export default function Cookies() {
   return (
-    <Container>
+    <Container className="py-10">
       <Markdown content={content} />
     </Container>
   );

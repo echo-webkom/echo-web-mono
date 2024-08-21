@@ -14,13 +14,12 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex h-full w-full flex-col gap-3 lg:max-w-[250px]", className)}
+        className={cn(
+          "flex w-full flex-col gap-3 rounded-xl border-2 border-muted-dark bg-muted p-6",
+          className,
+        )}
       >
         {childrenArray.map((child, index) => {
-          if (!React.isValidElement(child) || child.type !== SidebarItem) {
-            return null;
-          }
-
           return <React.Fragment key={index}>{child}</React.Fragment>;
         })}
       </div>

@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 
 import { Container } from "@/components/container";
@@ -15,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getUser } from "@/lib/get-user";
 import { AddUserToGroupDialog } from "./_components/add-user-to-group-dialog";
 import { GroupUserForm } from "./_components/group-user-form";
 
@@ -25,7 +25,7 @@ type Props = {
 };
 
 export default async function ManageGroup({ params }: Props) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return (
@@ -79,7 +79,7 @@ export default async function ManageGroup({ params }: Props) {
   const isGroupAdmin = groupUserProfile.isLeader;
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <Heading>Administrer {group.name}</Heading>
 
       <Text>

@@ -1,16 +1,14 @@
-import { auth } from "@echo-webkom/auth";
-
 import { getReactionByReactToKey } from "@/data/reactions/queries";
 import { idToEmoji } from "@/lib/emojis";
-import ReactionButton from "./reaction-button";
+import { getUser } from "@/lib/get-user";
+import { ReactionButton } from "./reaction-button";
 
 type ReactionButtonGroupProps = {
   reactToKey: string;
 };
 
-export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupProps) {
-  const reactions = await getReactionByReactToKey(reactToKey);
-  const user = await auth();
+export const ReactionButtonGroup = async ({ reactToKey }: ReactionButtonGroupProps) => {
+  const [reactions, user] = await Promise.all([getReactionByReactToKey(reactToKey), getUser()]);
 
   return (
     <div className="flex gap-3">
@@ -19,9 +17,10 @@ export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupPro
         const hasReacted = reactions.some(
           (r) => r.emojiId === Number(key) && r.userId === user?.id,
         );
+
         return (
           <ReactionButton
-            key={reactToKey}
+            key={key}
             reactToKey={reactToKey}
             hasReacted={hasReacted}
             emojiId={Number(key)}
@@ -33,4 +32,4 @@ export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupPro
       })}
     </div>
   );
-}
+};

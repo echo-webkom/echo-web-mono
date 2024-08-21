@@ -3,10 +3,9 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getReactionByReactToKey(reactToKey: string) {
+export const getReactionByReactToKey = async (reactToKey: string) => {
   return cache(
     async () => {
       return await db.query.reactions
@@ -14,10 +13,9 @@ export async function getReactionByReactToKey(reactToKey: string) {
           where: (reaction) => eq(reaction.reactToKey, reactToKey),
         })
         .catch(() => {
-          Logger.error(
-            getReactionByReactToKey.name,
-            `Failed to fetch reactions for reactToKey: ${reactToKey}`,
-          );
+          console.error("Failed to fetch reactions", {
+            reactToKey,
+          });
 
           return [];
         });
@@ -27,4 +25,4 @@ export async function getReactionByReactToKey(reactToKey: string) {
       tags: [cacheKeyFactory.reactions(reactToKey)],
     },
   )();
-}
+};

@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "has_read_terms" boolean DEFAULT false NOT NULL;

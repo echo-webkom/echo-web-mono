@@ -19,13 +19,13 @@ type ReactionButtonProps = {
   children: React.ReactNode;
 };
 
-export default function ReactionButton({
+export const ReactionButton = ({
   reactToKey,
   hasReacted,
   count,
   emojiId,
   children,
-}: ReactionButtonProps) {
+}: ReactionButtonProps) => {
   const [reactionState, setOptimisticReaction] = useOptimistic<Reaction, Reaction>(
     {
       count,
@@ -45,10 +45,10 @@ export default function ReactionButton({
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form action={formAction}>
       <Button
         type="submit"
+        variant="ghost"
         className={cn("h-8 w-14 rounded-full", {
           "bg-reaction text-foreground hover:bg-reaction": reactionState.hasReacted,
           "bg-muted text-foreground hover:bg-muted sm:hover:bg-reaction": !reactionState.hasReacted,
@@ -61,4 +61,4 @@ export default function ReactionButton({
       </Button>
     </form>
   );
-}
+};

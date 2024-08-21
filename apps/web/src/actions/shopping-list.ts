@@ -2,23 +2,22 @@
 
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
-
 import {
   addShoppinglistLike,
   createShoppinglistItem,
   deleteShoppinglistItems,
   removeShoppinglistLike,
 } from "@/data/shopping-list-item/mutations";
+import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 const shoppingListSchema = z.object({
   name: z.string(),
 });
 
-export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>) {
+export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     const data = await shoppingListSchema.parseAsync(payload);
 
@@ -56,10 +55,10 @@ export async function hyggkomSubmit(payload: z.infer<typeof shoppingListSchema>)
       message: "Noe gikk galt",
     };
   }
-}
+};
 
-export async function hyggkomRemoveSubmit(id: string) {
-  const user = await auth();
+export const hyggkomRemoveSubmit = async (id: string) => {
+  const user = await getUser();
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   if (!isAdmin) {
@@ -73,10 +72,10 @@ export async function hyggkomRemoveSubmit(id: string) {
     success: true,
     message: "Forslaget ble fjernet.",
   };
-}
+};
 
-export async function hyggkomLikeSubmit(itemId: string) {
-  const user = await auth();
+export const hyggkomLikeSubmit = async (itemId: string) => {
+  const user = await getUser();
 
   if (!user) {
     return {
@@ -101,4 +100,4 @@ export async function hyggkomLikeSubmit(itemId: string) {
     success: true,
     message: "Din like er blitt fjernet.",
   };
-}
+};

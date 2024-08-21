@@ -2,8 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
-import { auth } from "@echo-webkom/auth";
-
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import {
@@ -16,11 +14,12 @@ import {
 } from "@/components/ui/table";
 import { getAllUserStrikes } from "@/data/strikes/queries";
 import { getNextBedpresAfterBan } from "@/lib/ban-info";
+import { getUser } from "@/lib/get-user";
 import { split } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 
 export default async function UserStrikePagez() {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return redirect("/auth/logg-inn");
@@ -28,7 +27,7 @@ export default async function UserStrikePagez() {
 
   const strikes = (await getAllUserStrikes(user.id)).reverse();
 
-  const { trueArray: validStrikes, falseArray: earlierStrikes } = split(
+  const [validStrikes, earlierStrikes] = split(
     strikes,
     (strike) => strike.id > (user.bannedFromStrike ?? -1),
   );

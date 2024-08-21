@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { auth } from "@echo-webkom/auth";
 import type { Happening } from "@echo-webkom/db/schemas";
 import {
   happeningTypeToPath,
@@ -12,10 +11,11 @@ import {
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { getRegistrationsByUserId } from "@/data/registrations/queries";
+import { getUser } from "@/lib/get-user";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function UserHappenings() {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return redirect("/auth/logg-inn");

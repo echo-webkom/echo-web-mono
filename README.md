@@ -1,10 +1,9 @@
 # echo Web
 
-<div aling="center" style="display: flex;gap: 10px; margin: 10px auto;">
+<div aling="center" style="display: flex; align-items: center; gap: 30px; margin: 10px auto; max-height: 150px;">
   <a href="https://sanity.io" target="_blank" rel="noopener">
     <img src="https://cdn.sanity.io/images/3do82whm/next/51af00784c5addcf63ae7f0c416756acca7e63ac-353x71.svg?dl=sanity-logo.svg" width="180" alt="Powered by Sanity" />
   </a>
-
   <a href="https://vercel.com/?utm_source=echo-webkom&utm_campaign=oss" target="_blank" rel="noopener">
     <img src=".github/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
   </a>
@@ -21,7 +20,7 @@ Vi jobber hele tiden med å forbedre den,
 og setter stor pris på om du sier ifra om noe er feil,
 eller du har idéer til nye endringer!
 
-Send oss gjerne en tilbakemelding via skjemaet nederst i høyre hjørne på https://echo.uib.no,
+Send oss gjerne en tilbakemelding via skjemaet på https://echo.uib.no/tilbakemelding,
 eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo.uib.no).
 
 ## Hvordan kjøre?
@@ -68,11 +67,11 @@ NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localh
 
 ## Relaterte prosjekter
 
-- [echogram](https://github.com/echo-webkom/echo-images) - Systemet for å laste opp bilder til echo sin nettside.
 - [boomtown](https://github.com/echo-webkom/boomtown) - Systemet for live oppdatering av påmeldinger på arrangementer.
-- [ews](https://github.com/echo-webkom/ews) - CRON-jobber for nettsiden.
-- [kaffe](https://github.com/echo-webkom/kaffe)
+- [nano](https://github.com/echo-webkom/nano) - Nano-services for siden.
 
 ## Dokumentasjon
 
 [Du kan lese mer på vår wiki!](https://docs.echo-webkom.no)
+
+<img height="150px" style="height: 150px;" src="./.github/wetestinprod.png" />

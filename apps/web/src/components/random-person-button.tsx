@@ -3,32 +3,24 @@ import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { type RegistrationWithUser } from "./registration-table";
+import { Text } from "./typography/text";
 
 type RandomPersonButtonProps = {
-  registrations: Array<RegistrationWithUser>;
+  registrations: Array<string>;
 };
 
-export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
-  const [showConfetti, setShowConfetti] = useState(false);
+export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [randomUserName, setRandomUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const getRegisteredUsers = () => {
-    return registrations.filter((registration) => registration.status === "registered");
-  };
-
   const pickRandomRegisteredUser = () => {
     setIsLoading(true);
-    const registeredUsers = getRegisteredUsers();
-    const randomIndex = Math.floor(Math.random() * registeredUsers.length);
-    const randomUser = registeredUsers[randomIndex];
-    const name = randomUser?.user.name ?? randomUser?.user.email ?? null;
+    const i = Math.floor(Math.random() * registrations.length);
+    const name = registrations[i];
 
     if (!name) {
       toast({
@@ -43,19 +35,17 @@ export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
 
     setTimeout(() => {
       setIsOpen(true);
-      setShowConfetti(true);
       setIsLoading(false);
     }, 1500); // 1.5 sekund delay
   };
 
   const closeDialog = () => {
     setIsOpen(false);
-    setShowConfetti(false);
   };
 
   return (
     <>
-      <Confetti className="fixed left-0 top-0 z-[60] min-h-screen w-full" hidden={!showConfetti} />
+      <Confetti className="fixed inset-0 z-[60] h-full w-full" hidden={!isOpen} />
 
       <Button onClick={pickRandomRegisteredUser}>
         {isLoading ? (
@@ -70,14 +60,16 @@ export function RandomPersonButton({ registrations }: RandomPersonButtonProps) {
         )}
       </Button>
 
-      {isOpen && (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent>
-            <Label className="p-10 text-center text-2xl">{randomUserName}</Label>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogBody>
+            <Text className="p-10 text-center text-2xl">{randomUserName}</Text>
+          </DialogBody>
+          <DialogFooter>
             <Button onClick={closeDialog}>Close</Button>
-          </DialogContent>
-        </Dialog>
-      )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
-}
+};

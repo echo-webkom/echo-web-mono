@@ -1,28 +1,43 @@
-import { isValidSignInError } from "@echo-webkom/auth/src/is-member-of-echo";
+import Link from "next/link";
 
-import { Container } from "@/components/container";
 import { Callout } from "@/components/typography/callout";
-import { SignInButtons } from "./sign-in-buttons";
+import { Text } from "@/components/typography/text";
+import { signInAttempt } from "@/data/kv/namespaces";
+import { SignInButtons } from "./_components/sign-in-buttons";
 
 type Props = {
   searchParams: {
-    error?: string;
+    attemptId?: string;
   };
 };
 
-export default function SignInPage({ searchParams }: Props) {
-  const { error } = searchParams;
+export default async function SignInPage({ searchParams }: Props) {
+  const { attemptId } = searchParams;
+
+  const isValidAttemptId = attemptId && (await signInAttempt.get(attemptId));
 
   return (
-    <Container>
-      {error && isValidSignInError(error) && (
-        <Callout type="danger" className="mx-auto my-8 w-full max-w-lg">
-          <p className="font-bold">Du har ikke lov til å logge inn...</p>
-          <p>Grunn: {error}</p>
+    <div className="mx-4 my-14 flex flex-col gap-4">
+      {Boolean(isValidAttemptId) && (
+        <Callout className="mx-auto max-w-screen-sm" type="warning">
+          <Text size="sm">
+            Noe gikk galt. Dette kan være grunnet til at vi ikke automatisk får til å finne ut om du
+            er medlem. Om du mener dette er feil vennligst{" "}
+            <Link href={`/auth/tilgang/${attemptId}`} className="underline hover:no-underline">
+              be om tilgang her.
+            </Link>
+          </Text>
+          <Text size="sm">
+            Du kan også sjekke om du har tilgang ved å logge inn på{" "}
+            <Link className="underline hover:no-underline" href="https://innsyn.feide.no">
+              Feide Innsyn
+            </Link>
+            , og se om du har gruppetilhørighet til studieprogammene på informatikk.
+          </Text>
         </Callout>
       )}
 
       <SignInButtons />
-    </Container>
+    </div>
   );
 }

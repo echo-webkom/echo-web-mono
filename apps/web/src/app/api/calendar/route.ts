@@ -14,7 +14,7 @@ import {
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
   const includePast = req.nextUrl.searchParams.has(INCLUDE_PAST_PARAM);
   const happeningType = req.nextUrl.searchParams.getAll(HAPPENING_TYPE_PARAM);
   const includeMovies = req.nextUrl.searchParams.has(INCLUDE_MOVIES_PARAM);
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
         start: new Date(movie.date).getTime(),
         startInputType: "utc",
         busyStatus: "BUSY",
-        url: movie.link,
+        url: movie.link ?? undefined,
         description: `Se ${movie.title} sammen med echo! ${movie.link}`,
         categories: ["Film"],
 
@@ -119,4 +119,4 @@ export async function GET(req: NextRequest) {
       "Content-Disposition": `attachment; filename="echo-kalender.ics"`,
     },
   });
-}
+};

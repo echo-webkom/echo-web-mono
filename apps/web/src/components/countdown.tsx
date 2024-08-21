@@ -25,7 +25,7 @@ type CountdownProps = {
   toDate: Date;
 };
 
-export function Countdown({ toDate }: CountdownProps) {
+export const Countdown = ({ toDate }: CountdownProps) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(toDate));
 
   useEffect(() => {
@@ -54,4 +54,4 @@ export function Countdown({ toDate }: CountdownProps) {
       <span>{timeLeft.seconds}</span>
     </div>
   );
-}
+};

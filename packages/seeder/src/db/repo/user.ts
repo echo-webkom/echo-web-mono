@@ -1,7 +1,7 @@
 import { db } from "@echo-webkom/db";
 import { accounts, sessions, users, type UserType } from "@echo-webkom/db/schemas";
 
-export async function create({
+export const create = async ({
   id,
   name,
   email,
@@ -9,6 +9,7 @@ export async function create({
   token,
   year = 1,
   degreeId = "dtek",
+  hasReadTerms = true,
 }: {
   id: string;
   name: string;
@@ -17,7 +18,8 @@ export async function create({
   token: string;
   year?: number;
   degreeId?: string;
-}) {
+  hasReadTerms?: boolean;
+}) => {
   console.log(`Inserted user ${name} with id ${id}`);
   await db
     .insert(users)
@@ -28,6 +30,7 @@ export async function create({
       type,
       year,
       degreeId,
+      hasReadTerms,
     })
     .onConflictDoNothing();
 
@@ -49,4 +52,4 @@ export async function create({
       userId: id,
     })
     .onConflictDoNothing();
-}
+};

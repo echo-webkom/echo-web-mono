@@ -5,7 +5,7 @@ import { promisify } from "node:util";
 
 const execute = promisify(exec);
 
-async function main() {
+const main = async () => {
   const { stdout } = await execute("pnpm db:generate");
 
   const outputLines = stdout.trim().split("\n");
@@ -14,7 +14,7 @@ async function main() {
   if (!lastLine?.startsWith("No schema changes, nothing to migrate")) {
     throw new Error("Database migrations are out of date.");
   }
-}
+};
 
 console.log("🚀 Checking database migrations...");
 

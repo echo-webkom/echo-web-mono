@@ -1,199 +1,216 @@
 import Link from "next/link";
-import { LuArrowRight as ArrowRight } from "react-icons/lu";
+import { format } from "date-fns";
+import { nb } from "date-fns/locale/nb";
 
-import { auth } from "@echo-webkom/auth";
-
+import { ParticlesBackdrop } from "@/components/animations/particles";
+import { Reveal } from "@/components/animations/reveal";
+import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
-import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
-import { JobAdPreview } from "@/components/job-ad-preview";
-import MovieClubCard from "@/components/movie-club-card";
-import { PostPreview } from "@/components/post-preview";
-import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { Button } from "@/components/ui/button";
+import { createHappeningLink } from "@/lib/create-link";
+import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
-import { fetchAvailableJobAds } from "@/sanity/job-ad";
-import { fetchPosts } from "@/sanity/posts";
-import { HappeningPreview } from "./_components/happening-preview";
-
-const NUM_HAPPENINGS = !isNaN(Number(process.env.NUM_HAPPENINGS))
-  ? Number(process.env.NUM_HAPPENINGS)
-  : 4;
 
 export default async function HomePage() {
-  const authData = auth();
-  const eventData = fetchHomeHappenings(["event", "external"], NUM_HAPPENINGS);
-  const bedpresData = fetchHomeHappenings(["bedpres"], NUM_HAPPENINGS);
-  const postData = fetchPosts(2);
-  const jobData = fetchAvailableJobAds(4);
-  const shoppingListData = getAllShoppinglistItems();
+  await ensureAnonymous({
+    redirectTo: "/hjem",
+  });
 
-  const [user, events, bedpresses, posts, jobAds, items] = await Promise.all([
-    authData,
-    eventData,
-    bedpresData,
-    postData,
-    jobData,
-    shoppingListData,
+  const [bedpresses, events] = await Promise.all([
+    fetchHomeHappenings(["bedpres"], 4),
+    fetchHomeHappenings(["event", "external"], 4),
   ]);
 
-  const withDots = items.length > 5 ? true : false;
-
-  const mappedItems = items
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      user: null,
-      likes: item.likes.length,
-      hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
-    }))
-    .sort((a, b) => b.likes - a.likes)
-    .slice(0, 6);
-
-  const isAdmin = false;
-
   return (
-    <>
-      <Container className="relative pb-40" layout="full">
-        <div className="mx-auto w-full max-w-screen-xl py-10">
-          <div className="max-w-xl space-y-8">
-            <h1>
-              <span className="text-xl font-medium sm:text-3xl">Velkommen til</span>
-              <br />
-              <span className="text-4xl font-bold sm:text-5xl">
+    // Prevents scrolling on the body when the blur logo is outside the viewport
+    // No idea why this works, but it does
+    <div className="relative overflow-hidden">
+      <div className="absolute inset-0 left-1/2 -z-10 h-full min-h-screen w-[1200px] -translate-x-1/2">
+        <BlurLogo
+          className="animate-float-rotate-reverse-[-8]"
+          width={400}
+          height={400}
+          style={{
+            top: 10,
+            right: 20,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        <BlurLogo
+          className="animate-float-rotate-[6]"
+          width={300}
+          height={300}
+          style={{
+            top: 250,
+            left: 30,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+        <BlurLogo
+          className="animate-float-rotate-reverse-[6]"
+          width={250}
+          height={250}
+          style={{
+            top: 450,
+            right: 120,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+        />
+
+        <BlurLogo
+          className="animate-float-rotate-reverse-[6]"
+          width={250}
+          height={250}
+          style={{
+            top: 750,
+            left: 370,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+      </div>
+
+      <ParticlesBackdrop />
+
+      <Container>
+        <div className="mb-24 mt-32 space-y-16">
+          <div className="mx-auto max-w-screen-md text-center">
+            <div className="mb-8">
+              <h1 className="text-4xl font-semibold text-gray-700 dark:text-gray-200 sm:text-5xl">
                 echo – Linjeforeningen for informatikk
-              </span>
-            </h1>
-            <p>
-              Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
-              arrangere sosiale og faglige arrangementer.
-              <br /> Les mer{" "}
+              </h1>
+            </div>
+            <Reveal>
+              <p className="mx-auto max-w-screen-md font-medium text-muted-foreground md:text-xl">
+                Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
+                arrangere sosiale og faglige arrangementer.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal>
+            <div className="flex justify-center gap-4">
+              <Button variant="secondary" asChild>
+                <Link href="/auth/logg-inn">Logg inn</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/om/echo">Les mer om echo</Link>
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="mx-auto mt-10 max-w-screen-lg space-y-32">
+          {/* TODO: REMOVE ME */}
+          <Link className="group" href="/for-studenter/innlegg/info-til-nye-studenter">
+            <div className="group relative">
+              <div className="transitiona-all absolute -inset-px rounded-xl bg-gradient-to-r from-primary via-primary-hover to-secondary-hover opacity-70 transition-all duration-1000 group-hover:-inset-1 group-hover:opacity-100 group-hover:blur-lg group-hover:duration-200" />
+              <div className="relative rounded-xl border-2 border-secondary-dark bg-secondary px-6 py-8 text-center text-wave-foreground shadow-md transition-colors hover:bg-secondary-hover dark:border-wave-dark dark:bg-wave">
+                <h2 className="mb-4 text-2xl font-medium group-hover:underline">
+                  👋🏻 Informasjon til nye studenter
+                </h2>
+                <p>
+                  Vi har laget et innlegg med svar på spørsmål du kanskje har om echo. Sjekk det ut!
+                </p>
+              </div>
+            </div>
+          </Link>
+          {/* END REMOVE ME */}
+
+          <div className="grid items-center gap-16 md:grid-cols-2">
+            {/* TODO: Add image of students */}
+            <Reveal translateX={200}>
+              <p className="mb-4 text-2xl font-semibold">Hva er echo?</p>
+
+              <p>
+                echo består av frivillige informatikkstudenter, og er delt inn i et hovedstyre og en
+                rekke undergrupper, komiteer og interesseorganisasjoner. Hovedstyret vårt består av
+                fem demokratisk valgte studenter og syv representanter fra undergruppere. Vi er
+                linjeforeningen for informatikk ved Universitetet i Bergen, men har også et
+                overordnet ansvar for studentsaker som angår det faglige ved instituttet.
+              </p>
+            </Reveal>
+
+            <Reveal translateX={-200}>
+              <p className="mb-4 text-2xl font-semibold">For bedrifter</p>
+
+              <p className="mb-8">
+                Vi tilbyr også muligheten for bedrifter til å presentere seg for
+                informatikkstudentene ved Universitetet i Bergen. Dette kan gjøres gjennom
+                bedriftspresentasjoner, workshops, kurs og andre arrangementer. Vi tilbyr også
+                muligheten for bedrifter å annonsere ledige stillinger og internship på nettsiden
+                vår.
+              </p>
+
               <Link
-                className="font-semibold underline underline-offset-2 hover:text-primary"
-                href="/om/echo"
+                className="font-medium text-primary hover:underline"
+                href="/for-bedrifter/bedriftspresentasjon"
               >
-                her.
+                Les om bedriftspresentasjoner &rarr;
               </Link>
-            </p>
+            </Reveal>
+          </div>
+
+          <div className="grid gap-16 sm:grid-cols-2">
+            <Reveal translateX={-200}>
+              <h2 className="mb-4 text-xl font-semibold">Arrangementer</h2>
+
+              {events.length > 0 ? (
+                <ul>
+                  {events.map((event) => (
+                    <li key={event._id} className="flex items-center justify-between gap-2">
+                      <Link href={createHappeningLink(event)} className="truncate hover:underline">
+                        {event.title}
+                      </Link>
+                      <p className="text-nowrap text-muted-foreground">
+                        {format(new Date(event.date), "EEE. dd.MM", {
+                          locale: nb,
+                        })}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Det er ingen kommende arrangementer</p>
+              )}
+            </Reveal>
+
+            <Reveal translateX={200}>
+              <h2 className="mb-4 text-xl font-semibold">Bedriftpresentasjoner</h2>
+
+              {bedpresses.length > 0 ? (
+                <ul>
+                  {bedpresses.map((bedpres) => (
+                    <li key={bedpres._id} className="flex items-center justify-between gap-2">
+                      <Link
+                        href={createHappeningLink(bedpres)}
+                        className="truncate hover:underline"
+                      >
+                        {bedpres.title}
+                      </Link>
+                      {/* <p className="text-nowrap text-muted-foreground">ti. 02.04</p> */}
+                      <p className="text-nowrap text-muted-foreground">
+                        {format(new Date(bedpres.date), "EEE. dd.MM", {
+                          locale: nb,
+                        })}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Det er ingen kommende bedriftspresentasjoner</p>
+              )}
+            </Reveal>
           </div>
         </div>
       </Container>
-
-      <Container className="relative -top-20 grid grid-cols-1 gap-x-5 gap-y-12 px-3 lg:grid-cols-2">
-        {/* Events  */}
-        <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
-          <Link
-            href="/for-studenter/arrangementer?type=event"
-            className="group mx-auto flex items-center underline-offset-4 hover:underline"
-          >
-            <h2 className="text-center text-3xl font-medium">Arrangementer</h2>
-
-            <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-          </Link>
-          <hr />
-          <ul>
-            {events.map((event) => {
-              return (
-                <li key={event._id}>
-                  <HappeningPreview happening={event} />
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        {/* Bedpresses */}
-        <section className="flex flex-col gap-5 rounded-md border bg-background p-5 shadow-lg transition-shadow hover:shadow-xl">
-          <Link
-            href="/for-studenter/arrangementer?type=bedpres"
-            className="group mx-auto flex items-center underline-offset-4 hover:underline"
-          >
-            <h2 className="text-center text-2xl font-medium md:text-3xl">Bedriftspresentasjoner</h2>
-
-            <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-          </Link>
-          <hr />
-          <ul>
-            {bedpresses.map((bedpres) => {
-              return (
-                <li key={bedpres._id}>
-                  <HappeningPreview happening={bedpres} />
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        {/* Job ads */}
-        {jobAds.length > 0 && (
-          <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-2">
-            <Link
-              href="/for-studenter/jobber"
-              className="group mx-auto flex items-center underline-offset-4 hover:underline"
-            >
-              <h2 className="text-center text-xl font-semibold md:text-3xl">
-                Jobbannonser
-                <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-              </h2>
-            </Link>
-
-            <hr />
-
-            <ul className="grid grid-cols-1 gap-x-3 gap-y-5 lg:grid-cols-2">
-              {jobAds.map((jobAd) => (
-                <li key={jobAd._id}>
-                  <JobAdPreview jobAd={jobAd} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* Posts */}
-        <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-          <Link
-            href="/for-studenter/innlegg"
-            className="group mx-auto flex items-center underline-offset-4 hover:underline"
-          >
-            <h2 className="group text-center text-xl font-semibold decoration-1 md:text-3xl">
-              Siste nytt
-              <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-            </h2>
-          </Link>
-
-          <hr />
-
-          <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4">
-            {posts.map((post) => (
-              <li key={post._id}>
-                <PostPreview post={post} className="shadow-none" />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Hyggkom handleliste */}
-        <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-          <Link
-            href="/for-studenter/handleliste"
-            className="group mx-auto flex items-center underline-offset-4 hover:underline"
-          >
-            <h2 className="text-center text-2xl font-medium md:text-3xl">Hyggkom Handleliste</h2>
-
-            <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-          </Link>
-
-          <hr />
-          <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={withDots} />
-        </section>
-
-        {/*Filmklubb*/}
-        <section className="flex flex-col gap-5 rounded-md border p-5 shadow-lg lg:col-span-1">
-          <div className="group mx-auto flex items-center">
-            <h2 className="text-center text-3xl font-medium">Mandagens Visning</h2>
-          </div>
-          <hr />
-          <MovieClubCard />
-        </section>
-      </Container>
-    </>
+    </div>
   );
 }

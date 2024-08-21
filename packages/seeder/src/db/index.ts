@@ -26,7 +26,7 @@ export type Options = {
   mode: SeedMode;
 };
 
-export async function seed({ mode }: Options) {
+export const seed = async ({ mode }: Options) => {
   if (mode === "prod") {
     return await seedProd();
   }
@@ -40,18 +40,18 @@ export async function seed({ mode }: Options) {
   }
 
   throw new Error(`Invalid mode: ${mode}`);
-}
+};
 
-async function seedProd() {
+const seedProd = async () => {
   message.lines();
   console.log(chalk.blue.underline(`🌱 Seeding prod data...`));
   message.lines();
 
   await db.insert(degrees).values(defaultDegrees).onConflictDoNothing();
   await db.insert(groups).values(defaultGroups).onConflictDoNothing();
-}
+};
 
-async function seedDev() {
+const seedDev = async () => {
   await seedProd();
 
   message.lines();
@@ -59,9 +59,9 @@ async function seedDev() {
   message.lines();
 
   console.log("No dev data to seed");
-}
+};
 
-async function seedTest() {
+const seedTest = async () => {
   await seedDev();
 
   message.lines();
@@ -107,8 +107,8 @@ async function seedTest() {
     .values({
       happeningId: "5cbb5337-a6e6-4eff-a821-a73722594f47",
       id: "test-i-prod-med-webkom-spotrange",
-      maxYear: 3,
       minYear: 1,
+      maxYear: 3,
       spots: 1,
     })
     .onConflictDoNothing();
@@ -117,4 +117,4 @@ async function seedTest() {
 
   // Uncomment to add 100 fake students
   // await createFakeUsers(100);
-}
+};

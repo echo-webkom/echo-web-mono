@@ -1,11 +1,9 @@
 "use server";
 
-import * as va from "@vercel/analytics/server";
 import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import {
   answers,
@@ -18,15 +16,16 @@ import {
 import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
+import { getUser } from "@/lib/get-user";
 import { registrationFormSchema } from "@/lib/schemas/registration";
-import { shortDateNoYear } from "@/utils/date";
+import { isErrorMessage } from "@/utils/error";
 import { doesIntersect } from "@/utils/list";
 
-export async function register(id: string, payload: z.infer<typeof registrationFormSchema>) {
+export const register = async (id: string, payload: z.infer<typeof registrationFormSchema>) => {
   /**
    * Check if user is signed in
    */
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return {
@@ -39,7 +38,7 @@ export async function register(id: string, payload: z.infer<typeof registrationF
     /**
      * Check if user has filled out necessary information
      */
-    if (!user.degreeId || !user.year) {
+    if (!user.degreeId || !user.year || !user.hasReadTerms) {
       return {
         success: false,
         message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
@@ -204,25 +203,21 @@ export async function register(id: string, payload: z.infer<typeof registrationF
           )
           .leftJoin(users, eq(registrations.userId, users.id));
 
-        const isWaitlisted = regs.length >= userSpotRange.spots;
+        const isInfiniteSpots = userSpotRange.spots === 0;
+        const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
 
         const registration = await tx
           .insert(registrations)
           .values({
-            registrationChangedAt: isWaitlisted
-              ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
-              : `Påmeldt ${shortDateNoYear(new Date())}`,
             status: isWaitlisted ? "waiting" : "registered",
             happeningId: id,
             userId: user.id,
+            changedBy: null,
           })
           .returning()
           .onConflictDoUpdate({
             target: [registrations.happeningId, registrations.userId],
             set: {
-              registrationChangedAt: isWaitlisted
-                ? `Påmeldt venteliste ${shortDateNoYear(new Date())}`
-                : `Påmeldt ${shortDateNoYear(new Date())}`,
               status: isWaitlisted ? "waiting" : "registered",
             },
           })
@@ -265,9 +260,10 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       await db.insert(answers).values(answersToInsert).onConflictDoNothing();
     }
 
-    await va.track("Successful reigstration", {
+    console.info("Successful registration", {
       userId: user.id,
       happeningId: happening.id,
+      isWaitlisted,
     });
 
     void (async () => {
@@ -279,7 +275,11 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
     };
   } catch (error) {
-    console.error(`Error in register: ${error}`);
+    console.error("Failed to register", {
+      userId: user?.id,
+      happeningId: id,
+      error: isErrorMessage(error) ? error.message : "En ukjent feil har oppstått",
+    });
 
     if (error instanceof z.ZodError) {
       return {
@@ -288,24 +288,18 @@ export async function register(id: string, payload: z.infer<typeof registrationF
       };
     }
 
-    await va.track("Failed registration", {
-      userId: user?.id ?? null,
-      happeningId: id ?? null,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
-
     return {
       success: false,
       message: "En feil har oppstått",
     };
   }
-}
+};
 
-function getCorrectSpotrange(
+const getCorrectSpotrange = (
   year: number,
   spotRanges: Array<SpotRange>,
   canSkipSpotRange: boolean,
-) {
+) => {
   return (
     spotRanges.find((spotRange) => {
       if (canSkipSpotRange) {
@@ -315,4 +309,4 @@ function getCorrectSpotrange(
       return year >= spotRange.minYear && year <= spotRange.maxYear;
     }) ?? null
   );
-}
+};

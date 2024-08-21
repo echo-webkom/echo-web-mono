@@ -5,7 +5,7 @@ export const cacheKeyFactory = {
   singleUserStrikes: (id: string) => `strikes-user-${id}`,
 };
 
-export function revalidateStrikes(userId: string) {
+export const revalidateStrikes = (userId: string) => {
   revalidateTag(cacheKeyFactory.allUsersStrikes());
   revalidateTag(cacheKeyFactory.singleUserStrikes(userId));
-}
+};

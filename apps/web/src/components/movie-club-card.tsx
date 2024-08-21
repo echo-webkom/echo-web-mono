@@ -7,7 +7,7 @@ import { urlFor } from "@echo-webkom/sanity";
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
 
-export default async function MovieClubCard() {
+export const MovieClubCard = async () => {
   const movies = await fetchNewestMovie(3);
 
   const thisWeekMovie = movies[0];
@@ -16,7 +16,7 @@ export default async function MovieClubCard() {
 
   if (!thisWeekMovie) {
     return (
-      <div className="text-center font-semibold">
+      <div className="text-center font-bold">
         <p>Ingen film denne uken</p>
       </div>
     );
@@ -39,7 +39,7 @@ export default async function MovieClubCard() {
               alt={`${thisWeekMovie.title} logo`}
             />
           </div>
-          <Link href={thisWeekMovie.link}>
+          <Link href={thisWeekMovie.link ?? "#"}>
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
               <div className="rounded-md bg-background p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
                 <ul>
@@ -95,4 +95,4 @@ export default async function MovieClubCard() {
       )}
     </div>
   );
-}
+};

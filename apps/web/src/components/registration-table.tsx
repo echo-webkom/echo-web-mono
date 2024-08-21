@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
 import {
   type Group,
+  type Question,
   type Registration,
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
+import { getRegistrationStatus } from "@/lib/registrations";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
@@ -34,23 +35,26 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
+    memberships: Array<{ group: Group | null }>;
   };
+  changedByUser: User | null;
 };
 
-export function RegistrationTable({
+export const RegistrationTable = ({
   registrations,
   studentGroups,
-  happeningId,
+  slug,
+  questions,
   isBedpres,
+  happeningDate,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
-  happeningId: string;
+  slug: string;
+  questions: Array<Question>;
   isBedpres: boolean;
-}) {
+  happeningDate: Date | null;
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -97,7 +101,7 @@ export function RegistrationTable({
   return (
     <div className="h-full w-full overflow-y-auto rounded-lg border shadow-md">
       <div className="overflow-y-auto">
-        <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
+        <div className="flex flex-col items-center gap-4 px-4 pb-2 pt-2 md:flex-row md:pb-4">
           <div className="flex w-full flex-col gap-1">
             <Label htmlFor="search">Søk:</Label>
             <Input
@@ -148,10 +152,14 @@ export function RegistrationTable({
             <Button onClick={resetFilters}>Nullstill filter</Button>
           </div>
         </div>
-        <div className="flex flex-row justify-between px-4 py-2">
-          <div className="mt-auto w-full space-x-2">
-            <RandomPersonButton registrations={registrations} />
-            <DownloadCsvButton id={happeningId} />
+        <div className="mt-auto flex flex-col justify-between px-4 md:flex-row">
+          <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
+            <RandomPersonButton
+              registrations={registrations
+                .filter((r) => r.status === "registered")
+                .map((r) => r.user.name ?? r.user.email)}
+            />
+            <DownloadCsvButton slug={slug} questions={questions} />
           </div>
         </div>
 
@@ -183,9 +191,7 @@ export function RegistrationTable({
               <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">Status</TableHead>
               <TableHead scope="col">Grunn</TableHead>
-              <TableHead scope="col" className="sm:w-48">
-                {/* Actions */}
-              </TableHead>
+              <TableHead scope="col">Mer</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -196,6 +202,7 @@ export function RegistrationTable({
                 index={i}
                 showIndex={showIndex}
                 isBedpres={isBedpres}
+                happeningDate={happeningDate}
               />
             ))}
           </TableBody>
@@ -203,7 +210,7 @@ export function RegistrationTable({
       </div>
     </div>
   );
-}
+};
 
 export const statusColor = {
   registered: "text-green-600",
@@ -218,11 +225,13 @@ const RegistrationRow = ({
   index,
   showIndex,
   isBedpres,
+  happeningDate,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -238,15 +247,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView
-          user={registration.user}
-          group={group}
-          changedAt={registration.registrationChangedAt}
-        />
+        <HoverProfileView user={registration.user} group={group} />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {registrationStatusToString[registration.status]}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>

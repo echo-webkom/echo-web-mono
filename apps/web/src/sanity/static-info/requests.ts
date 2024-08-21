@@ -1,21 +1,21 @@
+import { type StaticInfoQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { pageTypeToUrl } from "./mappers";
 import { staticInfoQuery } from "./queries";
-import { staticInfoSchema } from "./schemas";
 
 /**
  * Fetches all static info pages.
  */
-export async function fetchStaticInfo() {
+export const fetchStaticInfo = async () => {
   try {
-    return await sanityFetch({
+    return await sanityFetch<StaticInfoQueryResult>({
       query: staticInfoQuery,
       tags: ["static-info"],
-    }).then((res) => staticInfoSchema.array().parse(res));
+    });
   } catch {
     return [];
   }
-}
+};
 
 /**
  * Fetches a static info page by its slug.
@@ -24,7 +24,7 @@ export async function fetchStaticInfo() {
  * @param slug the slug of the page to fetch
  * @returns
  */
-export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
+export const fetchStaticInfoBySlug = async (pageType: string, slug: string) => {
   const parsedPageType = Object.keys(pageTypeToUrl).find(
     (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === pageType,
   );
@@ -36,4 +36,4 @@ export async function fetchStaticInfoBySlug(pageType: string, slug: string) {
   return await fetchStaticInfo().then((res) =>
     res.find((staticInfo) => staticInfo.slug === slug && staticInfo.pageType === parsedPageType),
   );
-}
+};

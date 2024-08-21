@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { type HappeningType } from "@echo-webkom/lib";
+
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -15,7 +17,6 @@ import {
   INCLUDE_MOVIES_PARAM,
   INCLUDE_PAST_PARAM,
 } from "@/lib/calendar-url-builder";
-import { type HappeningType } from "@/sanity/happening";
 
 const eventTypes: Array<{
   name: string;
@@ -55,7 +56,7 @@ export default function Calendar() {
   const calendarUrl = calendarBuilder.build();
 
   return (
-    <Container className="max-w-screen-sm space-y-4">
+    <Container className="max-w-screen-sm space-y-4 py-10">
       <div>
         <Heading>Kalender</Heading>
 
@@ -131,11 +132,11 @@ export default function Calendar() {
 
       <Text>Kopier link eller last ned .ics-fil</Text>
 
-      <Input type="text" value={calendarUrl} readOnly />
+      <Input type="text" value={calendarUrl.toString()} readOnly />
 
       <Button asChild>
         {/* eslint-disable-next-line react/jsx-no-target-blank */}
-        <a href={calendarUrl} download target="_blank">
+        <a href={calendarUrl.toString()} download target="_blank">
           Last ned .ics
         </a>
       </Button>

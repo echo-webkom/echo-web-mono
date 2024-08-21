@@ -23,7 +23,7 @@ const getData = cache(async (slug: Props["params"]["slug"]) => {
   return jobAd;
 });
 
-export async function generateMetadata({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
 
   const jobAd = await getData(slug);
@@ -31,14 +31,14 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: jobAd.title,
   };
-}
+};
 
 export default async function JobAdPage({ params }: { params: { slug: string } }) {
   const jobAd = await getData(params.slug);
 
   return (
-    <Container>
-      <div className="flex flex-col-reverse gap-8 sm:flex-row">
+    <Container className="py-10">
+      <div className="flex w-full flex-col-reverse gap-24 py-10 md:flex-row lg:max-w-[1500px]">
         <div className="pt-4 sm:pt-0">
           <Heading className="mb-4">{jobAd.title}</Heading>
           <Markdown content={jobAd.body} />

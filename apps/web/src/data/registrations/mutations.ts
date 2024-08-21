@@ -3,7 +3,9 @@ import { registrations, type RegistrationInsert } from "@echo-webkom/db/schemas"
 
 import { revalidateRegistrations } from "./revalidate";
 
-export async function createRegistration(newRegistrations: Omit<RegistrationInsert, "createdAt">) {
+export const createRegistration = async (
+  newRegistrations: Omit<RegistrationInsert, "createdAt">,
+) => {
   const [insertedRegistration] = await db
     .insert(registrations)
     .values({
@@ -19,4 +21,4 @@ export async function createRegistration(newRegistrations: Omit<RegistrationInse
   revalidateRegistrations(newRegistrations.happeningId, newRegistrations.userId);
 
   return insertedRegistration;
-}
+};

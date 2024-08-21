@@ -2,15 +2,15 @@
 
 import { eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 
+import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
-export async function upsertWhitelist(email: string, reason: string, days: number) {
+export const upsertWhitelist = async (email: string, reason: string, days: number) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return {
@@ -60,11 +60,11 @@ export async function upsertWhitelist(email: string, reason: string, days: numbe
       message: "Noe gikk galt",
     };
   }
-}
+};
 
-export async function removeWhitelist(email: string) {
+export const removeWhitelist = async (email: string) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return {
@@ -92,4 +92,4 @@ export async function removeWhitelist(email: string) {
       message: "Noe gikk galt",
     };
   }
-}
+};

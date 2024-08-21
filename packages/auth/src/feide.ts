@@ -1,4 +1,4 @@
-import { type OAuthConfig } from "next-auth/providers";
+import { type OAuthConfig } from "next-auth/providers/index";
 
 type FeideProfile = {
   iss: string;
@@ -13,7 +13,7 @@ type FeideProfile = {
   picture: string;
 };
 
-export function Feide(options: Partial<OAuthConfig<FeideProfile>>): OAuthConfig<FeideProfile> {
+export const Feide = (options: Partial<OAuthConfig<FeideProfile>>): OAuthConfig<FeideProfile> => {
   return {
     id: "feide",
     name: "Feide",
@@ -39,4 +39,4 @@ export function Feide(options: Partial<OAuthConfig<FeideProfile>>): OAuthConfig<
     },
     ...options,
   };
-}
+};

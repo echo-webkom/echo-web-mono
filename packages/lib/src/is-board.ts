@@ -1,4 +1,4 @@
-export function isBoard(str: string) {
+export const isBoard = (str: string) => {
   if (!str.includes("/")) {
     return false;
   }
@@ -15,4 +15,4 @@ export function isBoard(str: string) {
   }
 
   return false;
-}
+};

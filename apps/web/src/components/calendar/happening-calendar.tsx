@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ComponentProps } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
 
-import { cn } from "@/utils/cn";
-import { dayStr, shortDateNoTime } from "@/utils/date";
+import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
@@ -14,6 +13,7 @@ type CalendarEvent = {
   id: string;
   title: string;
   date: Date;
+  endDate?: Date;
   body: string;
   link: string;
 };
@@ -28,7 +28,7 @@ const getInterval = (width: number) => {
   return 5;
 };
 
-export function Calendar({ events }: CalendarProps) {
+export const Calendar = ({ events }: CalendarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(0);
   const interval = useMemo(() => getInterval(calendarWidth), [calendarWidth]);
@@ -75,7 +75,7 @@ export function Calendar({ events }: CalendarProps) {
 
   return (
     <div ref={ref} className="space-y-4">
-      <div ref={ref} className="mb-4 flex flex-col justify-between md:flex-row">
+      <div ref={ref} className="mb-4 flex justify-between">
         <Heading level={2}>Uke {week()}</Heading>
 
         <div className="flex justify-center gap-3">
@@ -91,18 +91,7 @@ export function Calendar({ events }: CalendarProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-5">
-        <div className="flex items-center gap-1">
-          <Circle className="bg-red-400" />
-          Bedpres
-        </div>
-        <div className="flex items-center gap-1">
-          <Circle className="bg-blue-400" />
-          Annet
-        </div>
-      </div>
-
-      <div className="mb-10 h-72 overflow-hidden rounded-lg border">
+      <div className="mb-10 h-72 overflow-hidden rounded-lg border-2">
         <div
           className="h-full divide-x"
           style={{
@@ -114,13 +103,15 @@ export function Calendar({ events }: CalendarProps) {
             const isToday = isSameDay(day, new Date());
 
             const eventsThisDay = events.filter((event) => {
-              return isSameDay(event.date, day);
+              return event.endDate
+                ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                : isSameDay(event.date, day);
             });
 
             return (
               <div key={day.toString()}>
                 <div className="flex flex-col gap-2">
-                  <div className="flex h-16 flex-col items-center justify-center border-b bg-muted py-2 font-medium">
+                  <div className="flex h-16 flex-col items-center justify-center border-b-2 bg-muted py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
@@ -136,19 +127,19 @@ export function Calendar({ events }: CalendarProps) {
                       return (
                         <HoverCard key={event.id}>
                           <HoverCardTrigger>
-                            <div className="overflow-hidden rounded-lg border p-2">
-                              <p className="line-clamp-1 text-sm font-medium">{event.title}</p>
+                            <div className="overflow-hidden rounded-xl border-2 p-2">
+                              <p className="line-clamp-1 text-sm font-semibold">{event.title}</p>
                             </div>
                           </HoverCardTrigger>
                           <HoverCardContent>
                             <div className="space-y-2">
-                              <p className="font-medium">
-                                <Link className="hover:underline" href={event.link}>
+                              <Link className="hover:underline" href={event.link}>
+                                <h3 className="line-clamp-1 text-ellipsis font-semibold">
                                   {event.title}
-                                </Link>
-                              </p>
+                                </h3>
+                              </Link>
 
-                              <p className="text-sm">
+                              <p className="text-sm font-medium">
                                 {event.body.slice(0, 250)}
                                 {(event.body.length ?? 0) > 250 && "..."}
                               </p>
@@ -174,8 +165,4 @@ export function Calendar({ events }: CalendarProps) {
       </div>
     </div>
   );
-}
-
-function Circle({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("h-4 w-4 rounded-full", className)} {...props} />;
-}
+};

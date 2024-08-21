@@ -3,25 +3,27 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
+import { StrikeNotificationEmail } from "@echo-webkom/email";
+import { emailClient } from "@echo-webkom/email/client";
 import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
+import { getUser } from "@/lib/get-user";
 import { isBedkom } from "@/lib/memberships";
 
-function getBannableStrikeNumber(current: number, added: number) {
+const getBannableStrikeNumber = (current: number, added: number) => {
   const BAN_AMOUNT = 5;
 
   if (current + added >= BAN_AMOUNT) {
     return BAN_AMOUNT - current;
   }
-}
+};
 
-export async function remvoveStrike(strikeId: number) {
+export const remvoveStrike = async (strikeId: number) => {
   try {
-    const issuer = await auth();
+    const issuer = await getUser();
 
     if (!issuer) {
       return {
@@ -61,18 +63,18 @@ export async function remvoveStrike(strikeId: number) {
       message: "En feil har oppstått",
     };
   }
-}
+};
 
-export async function addStrike(
+export const addStrike = async (
   userId: string,
   happeningId: string,
   reason: string,
   amount: number,
   currentAmount: number,
   type: StrikeType,
-) {
+) => {
   try {
-    const issuer = await auth();
+    const issuer = await getUser();
 
     if (!issuer) {
       return {
@@ -130,6 +132,18 @@ export async function addStrike(
 
     await createStrikes(data, user.id, amount, bannableStrikeNumber);
 
+    await emailClient.sendEmail(
+      [user.alternativeEmail ?? user.email],
+      `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
+      StrikeNotificationEmail({
+        happeningTitle: happening.title,
+        name: user.name ?? "Ukjent",
+        reason: reason ?? "Ingen grunn oppgitt",
+        amount: amount,
+        isBanned: user.isBanned,
+      }),
+    );
+
     return {
       success: true,
       message: "Prikker lagt til",
@@ -147,4 +161,4 @@ export async function addStrike(
       message: "En feil har oppstått",
     };
   }
-}
+};

@@ -3,21 +3,22 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 
+import { getUser } from "@/lib/get-user";
 import { isWebkom } from "@/lib/memberships";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
   degreeId: true,
   year: true,
+  hasReadTerms: true,
 });
 
-export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema>) {
+export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema>) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return {
@@ -35,6 +36,7 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
         alternativeEmail: data.alternativeEmail?.trim() || null,
         degreeId: data.degreeId,
         year: data.year,
+        hasReadTerms: data.hasReadTerms,
       })
       .where(eq(users.id, user.id))
       .returning()
@@ -64,7 +66,7 @@ export async function updateSelf(payload: z.infer<typeof updateSelfPayloadSchema
       message: "En feil har oppstått",
     };
   }
-}
+};
 
 const updateUserPayloadSchema = z.object({
   memberships: z.array(z.string()),
@@ -75,7 +77,7 @@ export const updateUser = async (
   payload: z.infer<typeof updateUserPayloadSchema>,
 ) => {
   try {
-    const user = await auth();
+    const user = await getUser();
 
     if (user === null || !isWebkom(user)) {
       return {

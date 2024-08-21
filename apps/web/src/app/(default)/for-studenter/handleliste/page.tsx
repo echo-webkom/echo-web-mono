@@ -1,13 +1,12 @@
-import { auth } from "@echo-webkom/auth";
-
 import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 export default async function HyggkomHandleliste() {
-  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+  const [user, items] = await Promise.all([getUser(), getAllShoppinglistItems()]);
 
   const mappedItems = items.map((item) => ({
     id: item.id,
@@ -20,7 +19,7 @@ export default async function HyggkomHandleliste() {
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
-    <Container className="max-w-5xl ">
+    <Container className="max-w-5xl py-10">
       <h1 className="bold py-3 text-4xl">Hyggkoms handleliste</h1>
       <div className="py-5">
         <h1 className="py-3 text-xl">

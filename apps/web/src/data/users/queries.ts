@@ -4,19 +4,20 @@ import { eq } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 import { type User } from "@echo-webkom/db/schemas";
 
-export async function getUserById(id: User["id"]) {
+export const getUserById = async (id: User["id"]) => {
   return await db.query.users.findFirst({
     where: (user) => eq(user.id, id),
     with: {
       degree: true,
     },
   });
-}
+};
 
-export async function getAllUsers() {
+export const getAllUsers = async () => {
   return await cache(
     async () => {
       return await db.query.users.findMany({
+        orderBy: (user, { asc }) => [asc(user.name)],
         with: {
           degree: true,
           memberships: true,
@@ -28,10 +29,10 @@ export async function getAllUsers() {
       revalidate: 60,
     },
   )();
-}
+};
 
-export async function getBannedUsers() {
+export const getBannedUsers = async () => {
   return await db.query.users.findMany({
     where: (user) => eq(user.isBanned, true),
   });
-}
+};

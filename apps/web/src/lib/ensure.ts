@@ -2,8 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
-import { auth } from "@echo-webkom/auth";
-
+import { getUser } from "./get-user";
 import { isMemberOf } from "./memberships";
 
 type EnsureOptions = {
@@ -17,7 +16,7 @@ type EnsureOptions = {
  * @returns the user
  */
 export const ensureUser = async (groups?: Array<string>, options: EnsureOptions = {}) => {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     return redirect(options.redirectTo ?? "/");
@@ -53,3 +52,16 @@ export const ensureWebkomOrHovedstyret = async () => ensureUser(["webkom", "hove
  * @returns the user
  */
 export const ensureBedkom = async () => ensureUser(["bedkom", "webkom"]);
+
+/**
+ * Ensures that the user is not logged in.
+ *
+ * @param options
+ */
+export const ensureAnonymous = async (options: EnsureOptions = {}) => {
+  const user = await getUser();
+
+  if (user) {
+    redirect(options.redirectTo ?? "/");
+  }
+};

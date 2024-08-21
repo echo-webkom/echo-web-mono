@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { nextMonday, subMinutes } from "date-fns";
+import { subMinutes } from "date-fns";
 
 import { fetchFilteredHappening } from "@/sanity/happening";
+import { startOfNextWeek, startOfTheWeekAfterNext } from "@/utils/date";
 import { CombinedHappeningPreview } from "./happening-preview-box";
 import { Callout } from "./typography/callout";
 
@@ -34,20 +35,20 @@ export type SearchParams = {
 /**
  * Sanitizes the SearchParams before fetching data
  */
-function createFilteredHappeningQuery(params: SearchParams) {
+const createFilteredHappeningQuery = (params: SearchParams) => {
   return {
     search: params.search ?? undefined,
     type: (params.type as "event" | "bedpres") ?? "all",
     open: params.open === "true" ? true : false,
     past: params.past === "true" ? true : false,
   };
-}
+};
 
 /**
  * This function creates an array of DateIntervals.
  * Will be useful in the future to allow the user to enter custom dates.
  */
-function getDateIntervals(params: SearchParams) {
+const getDateIntervals = (params: SearchParams) => {
   const currentDate = new Date();
 
   const hideThisWeek = params.thisWeek === "false" ? true : false;
@@ -55,25 +56,30 @@ function getDateIntervals(params: SearchParams) {
   const hideLater = params.later === "false" ? true : false;
 
   if (!hideThisWeek && !hideNextWeek && !hideLater) return [{ start: subMinutes(currentDate, 5) }];
-  if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: nextMonday(currentDate) }];
+  if (hideThisWeek && !hideNextWeek && !hideLater) return [{ start: startOfNextWeek(currentDate) }];
   if (!hideThisWeek && hideNextWeek && !hideLater)
     return [
-      { start: subMinutes(currentDate, 5), end: nextMonday(currentDate) },
-      { start: nextMonday(nextMonday(currentDate)) },
+      { start: subMinutes(currentDate, 5), end: startOfNextWeek(currentDate) },
+      { start: startOfTheWeekAfterNext(currentDate) },
     ];
   if (!hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 5), end: nextMonday(nextMonday(currentDate)) }];
+    return [{ start: subMinutes(currentDate, 5), end: startOfTheWeekAfterNext(currentDate) }];
   if (!hideThisWeek && hideNextWeek && hideLater)
-    return [{ start: subMinutes(currentDate, 5), end: nextMonday(currentDate) }];
+    return [{ start: subMinutes(currentDate, 5), end: startOfNextWeek(currentDate) }];
   if (hideThisWeek && !hideNextWeek && hideLater)
-    return [{ start: nextMonday(currentDate), end: nextMonday(nextMonday(currentDate)) }];
+    return [
+      {
+        start: startOfNextWeek(currentDate),
+        end: startOfTheWeekAfterNext(currentDate),
+      },
+    ];
   if (hideThisWeek && hideNextWeek && !hideLater)
-    return [{ start: nextMonday(nextMonday(currentDate)) }];
+    return [{ start: startOfTheWeekAfterNext(currentDate) }];
 
   return undefined;
-}
+};
 
-export default async function EventsView({ searchParams }: { searchParams: SearchParams }) {
+export const EventsView = async ({ searchParams }: { searchParams: SearchParams }) => {
   const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
 
   const { happenings } = await fetchFilteredHappening(query, getDateIntervals(searchParams));
@@ -115,4 +121,4 @@ export default async function EventsView({ searchParams }: { searchParams: Searc
       </div>
     </>
   );
-}
+};

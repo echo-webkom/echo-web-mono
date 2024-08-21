@@ -3,7 +3,7 @@ type KaffeOptions = {
 };
 
 export const DEFAULT_KAFFE_OPTIONS = {
-  url: "https://kaffe.omfj.workers.dev",
+  url: "https://kaffe.echo-webkom.no",
 };
 
 class Kaffe {
@@ -15,12 +15,21 @@ class Kaffe {
     this.options = options;
   }
 
+  /**
+   * @returns The current strikes as a string
+   */
   async getStrikes() {
     return await fetch(`${this.options.url}/`, {
       cache: "no-store",
     }).then((response) => response.text());
   }
 
+  /**
+   * Adds a new report to the strike list
+   *
+   * @param reporter the user id of the reporter
+   * @returns true if the strike was successful
+   */
   async strike(reporter: string) {
     if (!this.apiKey) {
       throw new Error("No API key provided");
@@ -37,6 +46,11 @@ class Kaffe {
     }).then((response) => response.status === 200);
   }
 
+  /**
+   * Resets the strike count and reporter list
+   *
+   * @returns true if the reset was successful
+   */
   async reset() {
     if (!this.apiKey) {
       throw new Error("No API key provided");
@@ -51,6 +65,6 @@ class Kaffe {
 }
 
 export const kaffeApi = new Kaffe(
-  process.env.KAFFE_API_KEY,
-  process.env.KAFFE_URL ? { url: process.env.KAFFE_URL } : undefined,
+  process.env.ADMIN_KEY,
+  process.env.NEXT_PUBLIC_KAFFE_URL ? { url: process.env.NEXT_PUBLIC_KAFFE_URL } : undefined,
 );

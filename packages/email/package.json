@@ -9,6 +9,7 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
+    "dev": "pnpm with-env email preview ./emails",
     "lint": "eslint",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
@@ -17,18 +18,18 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "jsx-email": "1.10.12",
-    "react": "18.2.0",
+    "jsx-email": "1.12.1",
+    "react": "18.3.1",
     "server-only": "0.0.1"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.12.2",
-    "@types/react": "18.2.73",
-    "dotenv-cli": "7.4.1",
+    "@types/node": "20.14.15",
+    "@types/react": "18.3.3",
+    "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.4.3"
+    "typescript": "5.5.4"
   },
   "eslintConfig": {
     "root": true,

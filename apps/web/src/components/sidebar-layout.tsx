@@ -27,15 +27,15 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
   );
 };
 
-export function SidebarLayoutRoot({ children }: { children: React.ReactNode }) {
+export const SidebarLayoutRoot = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <div className="mx-auto flex w-full max-w-[1400px] flex-grow flex-row">{children}</div>
     </SidebarProvider>
   );
-}
+};
 
-export function Sidebar({ children }: { children: React.ReactNode }) {
+export const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const { isOpen, setIsOpen } = useSidebar();
   const pathname = usePathname();
 
@@ -45,7 +45,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={cn("border-r bg-background p-5 md:block", {
+      className={cn("border-r-2 bg-background p-5 md:block", {
         "hidden md:block": !isOpen,
         "w-full md:w-auto": isOpen,
       })}
@@ -63,33 +63,36 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
       </aside>
     </div>
   );
-}
+};
 
-export function SidebarItem({ children, href }: { children: React.ReactNode; href: string }) {
+export const SidebarItem = ({ children, href }: { children: React.ReactNode; href: string }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
   return (
     <li key={href}>
       <Link
-        className={cn("flex rounded-lg px-3 py-1 text-lg font-medium hover:bg-muted", {
-          "bg-muted": isActive,
-        })}
+        className={cn(
+          "flex rounded-xl border-2 border-transparent px-3 py-1 text-lg font-medium hover:border-muted-dark hover:bg-muted",
+          {
+            "bg-muted": isActive,
+          },
+        )}
         href={href}
       >
         {children}
       </Link>
     </li>
   );
-}
+};
 
-export function SidebarLayoutContent({
+export const SidebarLayoutContent = ({
   className,
   children,
 }: {
   className?: string;
   children: React.ReactNode;
-}) {
+}) => {
   const { isOpen, setIsOpen } = useSidebar();
 
   const handleBackClick = () => {
@@ -113,4 +116,4 @@ export function SidebarLayoutContent({
       <main className={cn(className)}>{children}</main>
     </div>
   );
-}
+};

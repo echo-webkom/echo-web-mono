@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Brochure() {
   return (
-    <Container>
+    <Container className="space-y-8 py-10">
       <Heading>Brosjyre</Heading>
       <iframe
         title="echo-brosjyre"

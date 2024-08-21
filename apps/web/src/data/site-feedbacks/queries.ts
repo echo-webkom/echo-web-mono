@@ -4,7 +4,7 @@ import { db } from "@echo-webkom/db";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getAllFeedback() {
+export const getAllFeedback = async () => {
   return await cache(
     async () => {
       return await db.query.siteFeedback.findMany({
@@ -16,10 +16,10 @@ export async function getAllFeedback() {
       tags: [cacheKeyFactory.siteFeedbacks],
     },
   )();
-}
+};
 
-export async function getFeedbackById(id: string) {
+export const getFeedbackById = async (id: string) => {
   return await db.query.siteFeedback.findFirst({
     where: (feedback, { eq }) => eq(feedback.id, id),
   });
-}
+};

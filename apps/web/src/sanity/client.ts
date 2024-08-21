@@ -1,4 +1,4 @@
-import { type QueryParams } from "next-sanity";
+import { type QueryParams } from "@sanity/client";
 
 import { cdnClient, client } from "@echo-webkom/sanity";
 
@@ -15,12 +15,12 @@ type SanityFetchOptions = {
     }
 );
 
-export async function sanityFetch<T>({
+export const sanityFetch = async <T>({
   query,
   params,
   cdn = false,
   ...rest
-}: SanityFetchOptions): Promise<T> {
+}: SanityFetchOptions): Promise<T> => {
   const tags = "tags" in rest ? rest.tags : undefined;
   const revalidate = "revalidate" in rest ? rest.revalidate : undefined;
 
@@ -40,4 +40,4 @@ export async function sanityFetch<T>({
       tags: tags ?? [],
     },
   });
-}
+};

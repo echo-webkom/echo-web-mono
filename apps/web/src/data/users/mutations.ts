@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@echo-webkom/db";
 import { users } from "@echo-webkom/db/schemas";
 
-export async function unbanUser(userId: string) {
+export const unbanUser = async (userId: string) => {
   const user = await db
     .update(users)
     .set({ isBanned: false })
@@ -24,4 +24,4 @@ export async function unbanUser(userId: string) {
     success: true,
     message: "Brukeren er ikke lenger utestengt",
   };
-}
+};

@@ -2,8 +2,13 @@
 import process from "node:process";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 
-import { db } from "..";
+import { db } from "../src";
 
+/**
+ * Do not run migrations in preview deployments.
+ *
+ * There are no database connections available in preview deployments.
+ */
 if (process.env.VERCEL_ENV === "preview") {
   process.exit(0);
 }

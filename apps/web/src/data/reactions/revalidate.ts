@@ -4,6 +4,6 @@ export const cacheKeyFactory = {
   reactions: (id: string) => `reactions-${id}`,
 };
 
-export function revalidateReactions(happeningId: string) {
+export const revalidateReactions = (happeningId: string) => {
   revalidateTag(cacheKeyFactory.reactions(happeningId));
-}
+};

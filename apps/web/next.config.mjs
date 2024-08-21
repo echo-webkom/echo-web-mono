@@ -21,10 +21,6 @@ const config = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
-      {
-        protocol: "https",
-        hostname: "echo-images.azurewebsites.net",
-      },
     ],
   },
 
@@ -73,6 +69,11 @@ const config = {
     {
       source: "/innlegg/:path",
       destination: "/for-studenter/innlegg/:path",
+      statusCode: 301,
+    },
+    {
+      source: "/for-studenter/si-ifra",
+      destination: "/for-studenter/speak-up",
       statusCode: 301,
     },
   ],

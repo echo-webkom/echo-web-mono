@@ -7,7 +7,7 @@ import { getHappeningsFromDate, getHappeningsFromDateToDate } from "@/data/happe
 
 export const BAN_LENGTH = 3;
 
-async function getDateBanned(bannedFromStrike: number) {
+const getDateBanned = async (bannedFromStrike: number) => {
   const dateBanned = await db.query.strikes
     .findFirst({
       where: (strike) => eq(strike.id, bannedFromStrike),
@@ -26,17 +26,10 @@ async function getDateBanned(bannedFromStrike: number) {
   }
 
   return dateBanned;
-}
+};
 
-/** Retruns true if the user should be unbanned */
-export async function isReadyToUnban(user: User) {
-  if (!user.year) {
-    throw new Error("User year not found");
-  }
-
-  if (!user.bannedFromStrike || !user.isBanned) {
-    throw new Error("User is not banned");
-  }
+export const isReadyToUnban = async (user: User) => {
+  if (!user.year || !user.bannedFromStrike || !user.isBanned) return false;
 
   const dateBanned = await getDateBanned(user.bannedFromStrike);
 
@@ -49,9 +42,9 @@ export async function isReadyToUnban(user: User) {
   );
 
   return available.length >= BAN_LENGTH;
-}
+};
 
-export async function getNextBedpresAfterBan(user: User) {
+export const getNextBedpresAfterBan = async (user: User) => {
   if (!user.year) {
     throw new Error("User year not found");
   }
@@ -85,9 +78,9 @@ export async function getNextBedpresAfterBan(user: User) {
   const fromNow = available.filter((happening) => happening.date && new Date(happening.date) > now);
 
   return fromNow[index];
-}
+};
 
-export async function isUserBannedFromBedpres(user: User, bedpres: Happening) {
+export const isUserBannedFromBedpres = async (user: User, bedpres: Happening) => {
   if (bedpres.type !== "bedpres") {
     throw new Error("Happening is not a bedpres");
   }
@@ -117,4 +110,4 @@ export async function isUserBannedFromBedpres(user: User, bedpres: Happening) {
     .filter((happening) => happening !== bedpres);
 
   return available.length < BAN_LENGTH;
-}
+};

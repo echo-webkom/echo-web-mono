@@ -2,10 +2,9 @@ import { unstable_cache as cache } from "next/cache";
 
 import { db } from "@echo-webkom/db";
 
-import { Logger } from "@/lib/logger";
 import { cacheKeyFactory } from "./revalidations";
 
-export function getAllShoppinglistItems() {
+export const getAllShoppinglistItems = () => {
   return cache(
     async () => {
       return await db.query.shoppingListItems
@@ -13,7 +12,7 @@ export function getAllShoppinglistItems() {
           with: { likes: true, user: true },
         })
         .catch(() => {
-          Logger.error(getAllShoppinglistItems.name, "Failed to fetch shopping list items");
+          console.error("Failed to fetch shopping list items");
 
           return [];
         });
@@ -23,4 +22,4 @@ export function getAllShoppinglistItems() {
       tags: [cacheKeyFactory.shoppinglistItems()],
     },
   )();
-}
+};

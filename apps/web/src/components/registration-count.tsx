@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 "use client";
 
+import { BiInfinite } from "react-icons/bi";
+
 import { useRegistrations } from "@/hooks/use-registrations";
 import { cn } from "@/utils/cn";
 
@@ -11,12 +13,12 @@ type RegistrationCountProps = {
   initialWaitlistCount: number;
 };
 
-export function RegistrationCount({
+export const RegistrationCount = ({
   happeningId,
   maxCapacity,
   initialRegistaredCount,
   initialWaitlistCount,
-}: RegistrationCountProps) {
+}: RegistrationCountProps) => {
   const { registeredCount } = useRegistrations(
     happeningId,
     initialRegistaredCount,
@@ -24,12 +26,15 @@ export function RegistrationCount({
   );
 
   const precent = Math.round((registeredCount / (maxCapacity || 1)) * 100);
+  const hasProgressBar = Boolean(maxCapacity && precent > 0);
 
   return (
-    <div className="flex flex-col gap-1">
-      {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
-      {maxCapacity || <span className="italic">Uendelig</span>}
-      {maxCapacity && precent > 0 && (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
+        {maxCapacity || <BiInfinite className="h-5 w-5" />}
+      </div>
+      {hasProgressBar && (
         <div className="h-4 w-full overflow-hidden rounded-md border">
           <div
             style={{
@@ -45,4 +50,4 @@ export function RegistrationCount({
       )}
     </div>
   );
-}
+};

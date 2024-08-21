@@ -9,6 +9,7 @@ import {
   LuHeart,
   LuHeartHandshake,
   LuMailOpen,
+  LuMartini,
   LuMegaphone,
   LuPresentation,
   LuScale,
@@ -22,7 +23,7 @@ import {
 import { mailTo } from "@/utils/prefixes";
 import { RouteGroup } from "./route-builder";
 
-export const headerRoutes: Array<
+type Route =
   | {
       label: string;
       href: string;
@@ -35,8 +36,9 @@ export const headerRoutes: Array<
         description: string;
         icon: IconType;
       }>;
-    }
-> = [
+    };
+
+export const headerRoutes: Array<Route> = [
   {
     label: "Hjem",
     href: "/",
@@ -75,10 +77,10 @@ export const headerRoutes: Array<
         icon: LuUsers,
       },
       {
-        label: "Underorganisasjoner",
-        href: "/for-studenter/grupper/underorganisasjoner",
-        description: "Oversikt over underorganisasjoner",
-        icon: LuUsers,
+        label: "Programmerbar",
+        href: "https://programmer.bar",
+        description: "Studentbaren for informatikkstudenter",
+        icon: LuMartini,
       },
       {
         label: "Interessegrupper",
@@ -129,9 +131,9 @@ export const headerRoutes: Array<
         icon: LuWallet,
       },
       {
-        label: "Si ifra",
-        href: "/for-studenter/si-ifra",
-        description: "Opplevd noe kjipt? Si ifra!",
+        label: "Speak Up",
+        href: "/for-studenter/speak-up",
+        description: "Opplevd noe kjipt? Speak Up!",
         icon: LuHeart,
       },
     ],
@@ -192,15 +194,15 @@ export const headerRoutes: Array<
         description: "Oversikt over programstyrene",
         icon: LuUsers,
       },
+      {
+        label: "Etiske retningslinjer",
+        href: "/om/retningslinjer",
+        description: "Oversikt over etiske retningslinjer",
+        icon: LuScale,
+      },
     ],
   },
 ];
-
-const sidebarRoutes = new RouteGroup("/admin", { label: "Admin" })
-  .link("/", { label: "Dashboard" })
-  .link("/feedback", { label: "Tilbakemeldinger" })
-  .link("/users", { label: "Brukere" })
-  .build();
 
 const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
   .link(mailTo("echo@uib.no"), {
@@ -215,8 +217,8 @@ const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
     label: "Organisasjonsnummer: 998 995 035",
     isExternal: true,
   })
-  .link("/for-studenter/si-ifra", {
-    label: "Opplevd noe kjipt? Si ifra!",
+  .link("/for-studenter/speak-up", {
+    label: "Opplevd noe kjipt? Speak up!",
     isExternal: false,
   })
   .build();
@@ -236,5 +238,4 @@ const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })
   })
   .build();
 
-export const adminRoutes = [sidebarRoutes];
 export const footerRoutes = [contactUsRoutes, followUsRoutes];

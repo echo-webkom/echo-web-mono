@@ -33,7 +33,7 @@ const getData = cache(async (slug: string) => {
   return group;
 });
 
-export async function generateMetadata({ params }: Props) {
+export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
 
   const group = await getData(slug);
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: group.name,
   };
-}
+};
 
 export default async function GroupPage({ params }: Props) {
   const { slug } = params;
@@ -51,7 +51,7 @@ export default async function GroupPage({ params }: Props) {
   const hasSocials = Object.values(group.socials ?? {}).some((value) => value);
 
   return (
-    <Container className="space-y-8">
+    <Container className="space-y-8 py-10">
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>
@@ -127,13 +127,13 @@ export default async function GroupPage({ params }: Props) {
                 .slice(0, 2);
 
               return (
-                <div className="flex flex-col gap-2 p-5 text-center" key={member.profile._id}>
+                <div className="flex flex-col gap-2 p-5 text-center" key={member.profile?._id}>
                   <Avatar className="mx-auto">
                     <AvatarImage src={image ? urlFor(image).url() : undefined} />
                     <AvatarFallback>{initials}</AvatarFallback>
                   </Avatar>
 
-                  <p className="text-lg font-medium">{member.profile.name}</p>
+                  <p className="text-lg font-medium">{member.profile?.name}</p>
                   <p>{member.role}</p>
                   {/* TODO: Add member socials */}
                 </div>

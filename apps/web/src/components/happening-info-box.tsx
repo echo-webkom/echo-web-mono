@@ -9,7 +9,7 @@ type HappeningInfoBoxProps = {
   slug: string;
 };
 
-export async function HappeningInfoBox({ slug }: HappeningInfoBoxProps) {
+export const HappeningInfoBox = async ({ slug }: HappeningInfoBoxProps) => {
   const happening = await fetchHappeningBySlug(slug);
 
   if (!happening) {
@@ -64,4 +64,4 @@ export async function HappeningInfoBox({ slug }: HappeningInfoBoxProps) {
       </div>
     </div>
   );
-}
+};

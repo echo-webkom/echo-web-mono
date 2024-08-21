@@ -1,9 +1,9 @@
 import { type HappeningType } from "@echo-webkom/lib";
 
-interface Linkable {
+type Linkable = {
   slug: string;
   happeningType: HappeningType;
-}
+};
 
 export const createHappeningLink = <T extends Linkable>({ slug, happeningType }: T) => {
   if (happeningType === "bedpres") return `/bedpres/${slug}`;

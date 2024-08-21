@@ -23,26 +23,32 @@ const getData = cache(async (id: string) => {
   return minute;
 });
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { title } = await getData(params.id);
   return {
     title,
   };
-}
+};
 
 export default async function MinutePage({ params }: Props) {
   const minute = await getData(params.id);
 
   return (
-    <Container>
+    <Container className="py-10">
       <Heading className="mb-4">{minute.title}</Heading>
 
       <div className="flex flex-col gap-5">
-        <Button className="w-full md:w-fit" asChild>
-          <a href={minute.document}>Last ned</a>
-        </Button>
+        {minute.document && (
+          <Button className="w-full md:w-fit" asChild>
+            <a href={minute.document}>Last ned</a>
+          </Button>
+        )}
 
-        <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
+        {minute.document ? (
+          <iframe title={minute.title} src={minute.document} className="h-screen w-full" />
+        ) : (
+          <p>Ingen dokumenter tilgjengelig</p>
+        )}
       </div>
     </Container>
   );

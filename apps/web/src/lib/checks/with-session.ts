@@ -1,13 +1,20 @@
-import { type NextRequest, type NextResponse } from "next/server";
 import { type ZodType } from "zod";
 
-import { auth } from "@echo-webkom/auth";
 import { type User } from "@echo-webkom/db/schemas";
 
-type TRequest = Request | NextRequest;
-type TResponse = Response | NextResponse;
+import { getUser } from "../get-user";
+import { type TRequest, type TResponse } from "./utils";
 
-export function withSession<TContext, TInput>(
+/**
+ * Checks if the user is authenticated and has a valid session.
+ * If the user is authenticated, the handler is run with the user as an argument.
+ *
+ * @param handler the function run after the session is validated
+ * @param contextValidator zod schema to parse the context
+ * @param inputValidator zod schema to parse the input
+ * @returns the handler wrapped in a session check
+ */
+export const withSession = <TContext, TInput>(
   handler: ({
     request,
     ctx,
@@ -21,9 +28,9 @@ export function withSession<TContext, TInput>(
   }) => Promise<TResponse> | TResponse,
   contextValidator?: ZodType<TContext>,
   inputValidator?: ZodType<TInput>,
-) {
+) => {
   return async (request: TRequest, context: TContext): Promise<TResponse> => {
-    const user = await auth();
+    const user = await getUser();
 
     if (!user) {
       return new Response("Unauthorized", {
@@ -66,4 +73,4 @@ export function withSession<TContext, TInput>(
       input: input as TInput,
     });
   };
-}
+};

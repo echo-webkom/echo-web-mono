@@ -1,12 +1,15 @@
+import { BOOMTOWN_HOSTNAME, HTTP } from "@/config";
+
 import "server-only";
 
-export const BOOMTOWN_HOSTNAME = process.env.NEXT_PUBLIC_BOOMTOWN_HOSTNAME;
+/**
+ * Ping the Boomtown server to notify that it should broadcast
+ * changes for the given happening.
+ */
+export const pingBoomtown = async (happeningId: string) => {
+  if (!BOOMTOWN_HOSTNAME) return;
 
-export async function pingBoomtown(happeningId: string) {
-  return await fetch(
-    `${process.env.NODE_ENV === "production" ? "https" : "http"}://${BOOMTOWN_HOSTNAME}/${happeningId}`,
-    {
-      method: "POST",
-    },
-  ).then((response) => response.status === 200);
-}
+  return await fetch(`${HTTP}://${BOOMTOWN_HOSTNAME}/${happeningId}`, {
+    method: "POST",
+  }).then((response) => response.status === 200);
+};

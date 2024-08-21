@@ -4,6 +4,6 @@ export const cacheKeyFactory = {
   shoppinglistItems: () => "shopping-list-items",
 };
 
-export function revalidateShoppingListItems() {
+export const revalidateShoppingListItems = () => {
   revalidateTag(cacheKeyFactory.shoppinglistItems());
-}
+};

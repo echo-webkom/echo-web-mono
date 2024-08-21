@@ -20,8 +20,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { SearchInput } from "./ui/search-input";
 
 type FilterType =
   | "ALL"
@@ -40,12 +40,12 @@ type UpdateType = {
   condition?: boolean;
   search?: string;
 };
-export function updateFilter(
+export const updateFilter = (
   updates: Array<UpdateType> | UpdateType | FilterType,
   router: AppRouterInstance,
   pathname: string,
   params: ReadonlyURLSearchParams,
-) {
+) => {
   const searchParams = new URLSearchParams(params);
 
   if (!Array.isArray(updates)) {
@@ -91,9 +91,9 @@ export function updateFilter(
     }
   });
   router.push(`${pathname}?${searchParams}`, { scroll: false });
-}
+};
 
-export function EventFilter() {
+export const EventFilter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -101,7 +101,7 @@ export function EventFilter() {
   const type =
     params.get("type") === "event" ? "EVENT" : params.get("type") === "bedpres" ? "BEDPRES" : "ALL";
 
-  function getButtonLabel(type: FilterType) {
+  const getButtonLabel = (type: FilterType) => {
     switch (type) {
       case "ALL":
         return "Alle";
@@ -110,7 +110,7 @@ export function EventFilter() {
       case "BEDPRES":
         return "Bedriftspresentasjoner";
     }
-  }
+  };
 
   const firstButton = type === "ALL" ? "EVENT" : "ALL";
   const secondButton = type === "BEDPRES" ? "EVENT" : "BEDPRES";
@@ -169,9 +169,9 @@ export function EventFilter() {
       </div>
     </>
   );
-}
+};
 
-export function FilterStatusAndOrderBar() {
+export const FilterStatusAndOrderBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -187,12 +187,12 @@ export function FilterStatusAndOrderBar() {
     params.has("nextWeek") ||
     params.has("later");
 
-  function resetFilter() {
+  const resetFilter = () => {
     const searchParams = new URLSearchParams();
     const type = params.get("type");
     if (type === "bedpres" || type === "event") searchParams.set("type", type);
     router.push(`${pathname}?${searchParams}`, { scroll: false });
-  }
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -217,9 +217,9 @@ export function FilterStatusAndOrderBar() {
       </span>
     </div>
   );
-}
+};
 
-export function EventFilterSidebar() {
+export const EventFilterSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -243,49 +243,24 @@ export function EventFilterSidebar() {
   }, [paramSearch]);
 
   return (
-    <Sidebar className="space-y-3 ">
+    <Sidebar className="space-y-3">
       <SidebarItem>
         <SidebarItemContent className="flex items-center justify-center">
-          <div className="relative flex w-full rounded-lg border border-gray-300 hover:border-gray-500 sm:w-full">
-            <Input
-              value={searchInput}
-              maxLength={50}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.currentTarget.blur();
-                  updateFilter({ type: "SEARCH", search: searchInput }, router, pathname, params);
-                }
-              }}
-              type="text"
-              placeholder="Søk..."
-              className="border-none bg-transparent pr-6"
-            />
-            {searchInput !== "" && (
-              <button className="absolute inset-y-0 right-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-gray-400 hover:text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  onClick={() => {
-                    setSearchInput("");
-                    updateFilter("SEARCH", router, pathname, params);
-                  }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
+          <SearchInput
+            value={searchInput}
+            onClear={() => setSearchInput("")}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.currentTarget.blur();
+                updateFilter({ type: "SEARCH", search: searchInput }, router, pathname, params);
+              }
+            }}
+            placeholder="Søk..."
+            className="w-full"
+          />
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
@@ -375,4 +350,4 @@ export function EventFilterSidebar() {
       </SidebarItem>
     </Sidebar>
   );
-}
+};

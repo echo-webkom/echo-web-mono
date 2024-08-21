@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -27,7 +28,7 @@ type DeregisterButtonProps = {
   children: React.ReactNode;
 };
 
-export function DeregisterButton({ id, children }: DeregisterButtonProps) {
+export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -75,59 +76,60 @@ export function DeregisterButton({ id, children }: DeregisterButtonProps) {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Meld deg av</DialogTitle>
-          <DialogDescription>
-            Er du sikker på at du vil melde deg av? Oppfyll nødvendig informasjon for å melde deg
-            av. Husk at prikken kan medfølge.
-          </DialogDescription>
-        </DialogHeader>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={onSubmit}>
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="reason">Hvorfor melder du deg av?</Label>
-              <Textarea
-                id="reason"
-                {...form.register("reason")}
-                className="w-full"
-                placeholder="Skriv her..."
-              />
-              <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <Controller
-                  name="hasVerified"
-                  control={form.control}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <Checkbox
-                      id="hasVerified"
-                      name="hasVerified"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  )}
+          <DialogHeader>
+            <DialogTitle>Meld deg av</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <DialogDescription className="mb-4">
+              Er du sikker på at du vil melde deg av? Oppfyll nødvendig informasjon for å melde deg
+              av. Husk at prikken kan medfølge.
+            </DialogDescription>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="reason">Hvorfor melder du deg av?</Label>
+                <Textarea
+                  id="reason"
+                  {...form.register("reason")}
+                  className="w-full"
+                  placeholder="Skriv her..."
                 />
-
-                <Label htmlFor="hasVerified">
-                  Jeg er klar over at jeg kan få prikker for dette.
-                </Label>
+                <p className="text-sm text-red-500">{form.formState.errors.reason?.message}</p>
               </div>
-              <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
-            </div>
-          </div>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <Controller
+                    name="hasVerified"
+                    control={form.control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <Checkbox
+                        id="hasVerified"
+                        name="hasVerified"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    )}
+                  />
 
-          <DialogFooter className="mt-5 flex flex-col gap-2">
+                  <Label htmlFor="hasVerified">
+                    Jeg er klar over at jeg kan få prikker for dette.
+                  </Label>
+                </div>
+                <p className="text-sm text-red-500">{form.formState.errors.hasVerified?.message}</p>
+              </div>
+            </div>
+          </DialogBody>
+          <DialogFooter className="flex flex-col gap-2">
             <Button
+              size="sm"
               className="w-full sm:w-auto"
-              variant="secondary"
+              variant="destructive"
               onClick={() => setIsOpen(false)}
             >
               Avbryt
             </Button>
-            <Button className="w-full sm:w-auto" type="submit">
+            <Button size="sm" className="w-full sm:w-auto" type="submit">
               Send
             </Button>
           </DialogFooter>
@@ -135,4 +137,4 @@ export function DeregisterButton({ id, children }: DeregisterButtonProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};
