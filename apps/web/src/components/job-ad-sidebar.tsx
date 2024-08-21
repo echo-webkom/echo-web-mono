@@ -17,7 +17,7 @@ type JobAdSidebarProps = {
 
 export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
   return (
-    <Sidebar>
+    <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-[360px]">
       <SidebarItem>
         <Link href={jobAd.company.website}>
           <div className="overflow-hidden">

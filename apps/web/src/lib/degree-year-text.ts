@@ -1,11 +1,22 @@
 import { type JobAdsQueryResult } from "@/sanity.types";
 
+const YEARS: Record<string, number> = {
+  FIRST: 1,
+  SECOND: 2,
+  THIRD: 3,
+  FOURTH: 4,
+  FIFTH: 5,
+};
+
 export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degreeYears"]) => {
-  const list = [];
+  const list: Array<number> = [];
 
   for (const [key, value] of Object.entries(degreeYears ?? {})) {
-    if (value) {
-      list.push(parseInt(key));
+    if (value === true) {
+      const year = YEARS[key];
+      if (typeof year === "number") {
+        list.push(year);
+      }
     }
   }
 
