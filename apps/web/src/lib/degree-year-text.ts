@@ -20,7 +20,7 @@ export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degree
     }
   }
 
-  return list;
+  return list.sort((a, b) => a - b);
 };
 
 /**
