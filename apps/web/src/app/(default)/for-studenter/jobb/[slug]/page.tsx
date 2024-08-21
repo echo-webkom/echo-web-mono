@@ -38,7 +38,7 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container className="py-10">
-      <div className="flex w-full gap-24 py-10 lg:max-w-[1500px] lg:flex-row">
+      <div className="flex w-full flex-col-reverse gap-24 py-10 md:flex-row lg:max-w-[1500px]">
         <div className="pt-4 sm:pt-0">
           <Heading className="mb-4">{jobAd.title}</Heading>
           <Markdown content={jobAd.body} />
