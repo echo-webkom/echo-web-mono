@@ -1,4 +1,4 @@
-import { toRelative } from "@/utils/url";
+import { BASE_URL } from "@/config";
 
 export const INCLUDE_PAST_PARAM = "includePast";
 export const HAPPENING_TYPE_PARAM = "happeningType";
@@ -51,7 +51,7 @@ export class CalendarUrlBuilder {
    * @returns The url to the calendar endpoint with the specified parameters.
    */
   build() {
-    const url = new URL("https://echo.uib.no/");
+    const url = new URL(BASE_URL);
     url.pathname = "/api/calendar";
 
     for (const type of this.happeningType) {
@@ -62,7 +62,7 @@ export class CalendarUrlBuilder {
     this.toggleParam(url, INCLUDE_MOVIES_PARAM, this.includeMovies);
     this.toggleParam(url, INCLUDE_BEDPRES_REGISTRATION_PARAM, this.includeBedpresRegistration);
 
-    return toRelative(url);
+    return url;
   }
 
   private toggleParam(url: URL, param: string, value: boolean) {

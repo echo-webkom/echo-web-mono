@@ -1,21 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
 import {
-  selectUserSchema,
   type Group,
   type Question,
   type Registration,
   type RegistrationStatus,
   type User,
 } from "@echo-webkom/db/schemas";
-import { registrationStatusToString } from "@echo-webkom/lib";
 
 import { EditRegistrationForm } from "@/components/edit-registration-button";
-import { zodKeys } from "@/sanity/utils/zod";
+import { getRegistrationStatus } from "@/lib/registrations";
 import { cn } from "@/utils/cn";
 import { DownloadCsvButton } from "./download-csv-button";
 import { HoverProfileView } from "./hover-profile-view";
@@ -36,38 +34,28 @@ import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 
-type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
-
-export const formatHeaders: Record<HeaderType, string> = {
-  name: "Navn",
-  email: "Epost",
-  alternativeEmail: "Alternativ Epost",
-  year: "År",
-  degreeId: "Studieretning",
-  status: "Status",
-};
-
 export type RegistrationWithUser = Omit<Registration, "userId"> & {
   user: User & {
-    memberships: Array<{
-      group: Group | null;
-    }>;
+    memberships: Array<{ group: Group | null }>;
   };
+  changedByUser: User | null;
 };
 
-export function RegistrationTable({
+export const RegistrationTable = ({
   registrations,
   studentGroups,
   slug,
   questions,
   isBedpres,
+  happeningDate,
 }: {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<Group>;
   slug: string;
   questions: Array<Question>;
   isBedpres: boolean;
-}) {
+  happeningDate: Date | null;
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -109,23 +97,6 @@ export function RegistrationTable({
     setYearFilter("");
     setStatusFilter("");
     setGroupFilter("");
-  };
-
-  const obj = zodKeys(selectUserSchema);
-  const columns: Array<string> = [];
-  for (const header of obj) {
-    const formattedHeader = formatHeaders[header as HeaderType];
-    columns.push(formattedHeader);
-  }
-  columns.push(...questions.map((question) => question.title));
-  columns.push("Status");
-  const nonEmptyColumns = columns.filter((header) => header && header.trim() !== "");
-  const [selectedHeaders, setSelectedHeaders] = useState(nonEmptyColumns);
-  const removeKey = (id: string) => {
-    setSelectedHeaders((prev) => prev.filter((key) => key !== id));
-  };
-  const addKey = (id: string) => {
-    setSelectedHeaders((prev) => [...prev, id]);
   };
 
   return (
@@ -184,6 +155,12 @@ export function RegistrationTable({
         </div>
         <div className="mt-auto flex flex-col justify-between px-4 md:flex-row">
           <div className="mt-auto flex w-full flex-col items-center gap-2 md:w-auto md:flex-row">
+            <RandomPersonButton
+              registrations={registrations
+                .filter((r) => r.status === "registered")
+                .map((r) => r.user.name ?? r.user.email)}
+            />
+            <DownloadCsvButton slug={slug} questions={questions} />
             <RandomPersonButton registrations={registrations} />
             <DownloadCsvButton
               slug={slug}
@@ -235,6 +212,7 @@ export function RegistrationTable({
                 index={i}
                 showIndex={showIndex}
                 isBedpres={isBedpres}
+                happeningDate={happeningDate}
               />
             ))}
           </TableBody>
@@ -242,7 +220,7 @@ export function RegistrationTable({
       </div>
     </div>
   );
-}
+};
 
 export const statusColor = {
   registered: "text-green-600",
@@ -257,11 +235,13 @@ const RegistrationRow = ({
   index,
   showIndex,
   isBedpres,
+  happeningDate,
 }: {
   registration: RegistrationWithUser;
   index: number;
   showIndex: boolean;
   isBedpres: boolean;
+  happeningDate: Date | null;
 }) => {
   const id = registration.happeningId;
   const reason = registration.unregisterReason
@@ -277,15 +257,11 @@ const RegistrationRow = ({
     <TableRow key={registration.user.id}>
       {showIndex && <TableCell>{index + 1}</TableCell>}
       <TableCell>
-        <HoverProfileView
-          user={registration.user}
-          group={group}
-          changedAt={registration.registrationChangedAt}
-        />
+        <HoverProfileView user={registration.user} group={group} />
       </TableCell>
       <TableCell>{registration.user.name}</TableCell>
       <TableCell className={cn(statusColor[registration.status])}>
-        {registrationStatusToString[registration.status]}
+        {getRegistrationStatus(registration, happeningDate)}
       </TableCell>
       <TableCell>{reason}</TableCell>
       <TableCell>

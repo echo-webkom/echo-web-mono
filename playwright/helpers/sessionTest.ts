@@ -4,6 +4,7 @@ const userCookies = {
   Admin: "admin",
   Student: "student",
   Student5: "student5",
+  Unethical: "unethical",
 };
 
 type User = keyof typeof userCookies;

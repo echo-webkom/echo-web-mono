@@ -1,5 +1,6 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./src/**/*.{ts,js,tsx,jsx}"],
@@ -23,15 +24,19 @@ export default {
         wave: {
           DEFAULT: "var(--wave)",
           foreground: "var(--wave-foreground)",
+          dark: "var(--wave-dark)",
         },
         primary: {
           DEFAULT: "var(--primary)",
           foreground: "var(--primary-foreground)",
           hover: "var(--primary-hover)",
+          dark: "var(--primary-dark)",
         },
         secondary: {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
+          hover: "var(--secondary-hover)",
+          dark: "var(--secondary-dark)",
         },
         table: {
           foreground: "var(--table-foreground)",
@@ -47,10 +52,13 @@ export default {
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
+          hover: "var(--destructive-hover)",
+          dark: "var(--destructive-dark)",
         },
         muted: {
           DEFAULT: "var(--muted)",
           foreground: "var(--muted-foreground)",
+          dark: "var(--muted-dark)",
         },
         accent: {
           DEFAULT: "var(--accent)",
@@ -59,14 +67,20 @@ export default {
         success: {
           DEFAULT: "var(--success)",
           foreground: "var(--success-foreground)",
+          hover: "var(--success-hover)",
+          dark: "var(--success-dark)",
         },
         info: {
           DEFAULT: "var(--info)",
           foreground: "var(--info-foreground)",
+          hover: "var(--info-hover)",
+          dark: "var(--info-dark)",
         },
         warning: {
           DEFAULT: "var(--warning)",
           foreground: "var(--warning-foreground)",
+          hover: "var(--warning-hover)",
+          dark: "var(--warning-dark)",
         },
         popover: {
           DEFAULT: "var(--popover)",
@@ -79,6 +93,11 @@ export default {
         reaction: {
           DEFAULT: "var(--selected)",
           foreground: "var(--text-foreground)",
+        },
+        feide: {
+          DEFAULT: "var(--feide)",
+          hover: "var(--feide-hover)",
+          dark: "var(--feide-dark)",
         },
       },
       borderRadius: {
@@ -106,5 +125,36 @@ export default {
     require("tailwindcss-animate"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
+    plugin(({ matchUtilities }) => {
+      const TIME = 6;
+      matchUtilities({
+        "animate-float-rotate": (value) => {
+          const rotate = Number(value);
+          const startRotate = `${rotate}deg`;
+          const endRotate = `${rotate + 6}deg`;
+
+          return {
+            "@keyframes floatAndRotate": {
+              "0%, 100%": { transform: `translateY(0) rotate(${startRotate})` },
+              "50%": { transform: `translateY(-5%) rotate(${endRotate})` },
+            },
+            animation: `floatAndRotate ${TIME}s infinite ease-in-out`,
+          };
+        },
+        "animate-float-rotate-reverse": (value) => {
+          const rotate = Number(value);
+          const startRotate = `${rotate}deg`;
+          const endRotate = `${rotate - 6}deg`;
+
+          return {
+            "@keyframes floatAndRotateReverse": {
+              "0%, 100%": { transform: `translateY(0) rotate(${startRotate})` },
+              "50%": { transform: `translateY(-5%) rotate(${endRotate})` },
+            },
+            animation: `floatAndRotateReverse ${TIME}s infinite ease-in-out`,
+          };
+        },
+      });
+    }),
   ],
 } satisfies Config;

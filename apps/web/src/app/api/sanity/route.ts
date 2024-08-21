@@ -1,7 +1,6 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
-import { log } from "next-axiom";
 
 import { db } from "@echo-webkom/db";
 import {
@@ -104,7 +103,7 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  log.info("Syncing happening from Sanity", {
+  console.info("Syncing happening from Sanity", {
     operation,
     documentId,
     pastSlug,
@@ -171,6 +170,8 @@ export const POST = withBasicAuth(async (req) => {
     await db.insert(happenings).values(happening);
 
     const happeningToGroupsToInsert = await mapHappeningToGroups(data.groups ?? []);
+
+    await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
 
     if (happeningToGroupsToInsert.length > 0) {
       await db.insert(happeningsToGroups).values(
@@ -337,7 +338,7 @@ export const POST = withBasicAuth(async (req) => {
  * @param document the document to map
  * @returns an insertable happening
  */
-function mapHappening(document: SanityHappening) {
+const mapHappening = (document: SanityHappening) => {
   return {
     id: document._id,
     date: new Date(document.date),
@@ -350,7 +351,7 @@ function mapHappening(document: SanityHappening) {
     title: document.title,
     type: document.happeningType,
   } satisfies HappeningInsert;
-}
+};
 
 /**
  * Maps an array of group ids to an array of valid group ids.
@@ -359,7 +360,7 @@ function mapHappening(document: SanityHappening) {
  * @param groups groups to map
  * @returns insertable happeningToGroups
  */
-async function mapHappeningToGroups(groups: Array<string>) {
+const mapHappeningToGroups = async (groups: Array<string>) => {
   const validGroups = await db.query.groups.findMany();
 
   return makeListUnique(
@@ -367,4 +368,4 @@ async function mapHappeningToGroups(groups: Array<string>) {
       .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
       .map((groupId) => (isBoard(groupId) ? "hovedstyre" : groupId)),
   );
-}
+};

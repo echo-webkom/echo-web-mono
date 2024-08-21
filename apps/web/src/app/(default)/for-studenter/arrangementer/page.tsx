@@ -8,7 +8,7 @@ import {
   EventFilterSidebar,
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
-import EventsView, { type SearchParams } from "@/components/events-view";
+import { EventsView, type SearchParams } from "@/components/events-view";
 import { createHappeningLink } from "@/lib/create-link";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
@@ -26,7 +26,8 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     .map((happening) => ({
       id: happening._id,
       title: happening.title,
-      date: new Date(happening.date!),
+      date: new Date(happening.date),
+      endDate: happening.endDate ? new Date(happening.endDate) : undefined,
       body: removeMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
     }));
@@ -35,8 +36,9 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
     id: movie._id,
     title: `Film: ${movie.title}`,
     date: new Date(movie.date),
+    endDate: undefined,
     body: `Se ${movie.title} med filmklubben!`,
-    link: movie.link,
+    link: movie.link ?? "#",
   }));
 
   return (
@@ -46,7 +48,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <EventFilter />
       </div>
       <div className="flex flex-col sm:flex-row">
-        <div className="mb-5 w-full sm:mb-0 sm:max-w-[250px] sm:pr-14">
+        <div className="mb-5 w-full sm:mb-0 sm:max-w-[350px] sm:pr-14">
           <EventFilterSidebar />
         </div>
         <div className="w-full space-y-2">

@@ -1,4 +1,4 @@
-import { groq } from "next-sanity";
+import groq from "groq";
 
 export const staticInfoQuery = groq`
 *[_type == "staticInfo" && !(_id in path('drafts.**'))] {

@@ -7,6 +7,7 @@ import { type Group } from "@echo-webkom/db/schemas";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -20,7 +21,7 @@ type MembersModalProps = {
   users: Array<{ id: string; name: string }>;
 };
 
-export function MembersModal({ group, users }: MembersModalProps) {
+export const MembersModal = ({ group, users }: MembersModalProps) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -32,24 +33,27 @@ export function MembersModal({ group, users }: MembersModalProps) {
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Detaljer for {group.name}</DialogTitle>
         </DialogHeader>
-
-        <div>
-          {users.length === 0 ? (
-            <p className="text-center text-xl">Ingen medlemmer</p>
-          ) : (
-            <ul>
-              {users.map((user) => (
-                <li key={user.id}>{user.name}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <DialogBody>
+          <div>
+            {users.length === 0 ? (
+              <p className="text-center text-xl">Ingen medlemmer</p>
+            ) : (
+              <ul>
+                {users.map((user) => (
+                  <li key={user.id}>{user.name}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </DialogBody>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Lukk</Button>
+            <Button size="sm" variant="ghost">
+              Lukk
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};

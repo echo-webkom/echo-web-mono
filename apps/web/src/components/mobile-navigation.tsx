@@ -58,7 +58,7 @@ const MenuButton = () => {
 
   return (
     <button
-      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground "
+      className="flex flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
       onClick={() => setIsOpen(!isOpen)}
     >
       <span className="sr-only">Meny</span>

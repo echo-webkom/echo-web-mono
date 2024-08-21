@@ -1,3 +1,5 @@
+import { SignInError, type ISignInError } from "./error";
+
 const FEIDE_GROUPS_ENDPOINT = "https://groups-api.dataporten.no";
 
 type GroupsResponse = {
@@ -27,16 +29,18 @@ const VALID_PROGRAM_IDS = [
   "POST",
 ];
 
-export const SignInError = {
-  NOT_MEMBER_OF_ECHO: "NOT_MEMBER_OF_ECHO",
-  INVALID_TOKEN: "INVALID_TOKEN",
-  INTERNAL_ERROR: "INTERNAL_ERROR",
-} as const;
+export type IsMemberOfechoFn = (accessToken: string) => Promise<
+  | {
+      success: true;
+      error: undefined;
+    }
+  | {
+      success: false;
+      error: ISignInError;
+    }
+>;
 
-export const isValidSignInError = (error: string): error is keyof typeof SignInError =>
-  Object.keys(SignInError).includes(error);
-
-export async function isMemberOfecho(accessToken: string) {
+export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
   try {
     const response = await fetch(`${FEIDE_GROUPS_ENDPOINT}/groups/me/groups`, {
       headers: {
@@ -45,7 +49,10 @@ export async function isMemberOfecho(accessToken: string) {
     });
 
     if (response.status > 200) {
-      return SignInError.INVALID_TOKEN;
+      return {
+        success: false,
+        error: SignInError.INTERNAL_ERROR,
+      };
     }
 
     const groups = (await response.json()) as Array<GroupsResponse>;
@@ -57,15 +64,19 @@ export async function isMemberOfecho(accessToken: string) {
     );
 
     if (!isMemberOfecho) {
-      return SignInError.NOT_MEMBER_OF_ECHO;
+      return {
+        success: false,
+        error: SignInError.NOT_MEMBER_OF_ECHO,
+      };
     }
 
-    return true;
+    return {
+      success: true,
+    };
   } catch (error) {
-    if (error instanceof SyntaxError) {
-      return SignInError.INVALID_TOKEN;
-    }
-
-    return SignInError.INTERNAL_ERROR;
+    return {
+      success: false,
+      error: SignInError.INTERNAL_ERROR,
+    };
   }
-}
+};

@@ -19,7 +19,7 @@ const parseDate = (date: Date) => {
   }
 };
 
-export function Feedback({ feedback }: { feedback: SiteFeedback }) {
+export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
   const { toast } = useToast();
 
   const handleToggleRead = async () => {
@@ -32,7 +32,7 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
   };
 
   return (
-    <div className="h-full w-full max-w-xl space-y-2 overflow-hidden rounded-lg bg-card px-4 py-5 text-card-foreground shadow dark:border sm:p-6">
+    <div className="h-full w-full max-w-xl space-y-2 overflow-hidden rounded-lg border-2 bg-card px-4 py-5 text-card-foreground sm:p-6">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs text-muted-foreground">{parseDate(feedback.createdAt)}</p>
@@ -43,7 +43,6 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
 
         <Button
           size="icon"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={handleToggleRead}
           variant={feedback.isRead ? "outline" : "secondary"}
         >
@@ -73,9 +72,9 @@ export function Feedback({ feedback }: { feedback: SiteFeedback }) {
       </div>
     </div>
   );
-}
+};
 
-function EmailLink({ email }: { email: string | null }) {
+const EmailLink = ({ email }: { email: string | null }) => {
   if (!email) {
     return <span>Ukjent</span>;
   }
@@ -85,4 +84,4 @@ function EmailLink({ email }: { email: string | null }) {
       {email}
     </a>
   );
-}
+};

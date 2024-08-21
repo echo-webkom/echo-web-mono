@@ -1,7 +1,5 @@
 import "./src/env.mjs";
 
-import { withAxiom } from "next-axiom";
-
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: [
@@ -73,10 +71,15 @@ const config = {
       destination: "/for-studenter/innlegg/:path",
       statusCode: 301,
     },
+    {
+      source: "/for-studenter/si-ifra",
+      destination: "/for-studenter/speak-up",
+      statusCode: 301,
+    },
   ],
 
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
 
-export default withAxiom(config);
+export default config;

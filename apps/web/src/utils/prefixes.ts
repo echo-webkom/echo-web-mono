@@ -9,9 +9,9 @@
  * @param email The email address to prefix.
  * @returns The email prefixed with the `mailto:` protocol.
  */
-export function mailTo(email: string) {
+export const mailTo = (email: string) => {
   return `mailto:${email}`;
-}
+};
 
 /**
  * Prefixds a phone number with the `tel:` protocol for use in an anchor tag.
@@ -24,6 +24,6 @@ export function mailTo(email: string) {
  * @param phone The phone number to prefix.
  * @returns The phone number prefixed with the `tel:` protocol.
  */
-export function telTo(phone: string) {
+export const telTo = (phone: string) => {
   return `tel:${phone}`;
-}
+};

@@ -1,13 +1,13 @@
 import { getReactionByReactToKey } from "@/data/reactions/queries";
 import { idToEmoji } from "@/lib/emojis";
 import { getUser } from "@/lib/get-user";
-import ReactionButton from "./reaction-button";
+import { ReactionButton } from "./reaction-button";
 
 type ReactionButtonGroupProps = {
   reactToKey: string;
 };
 
-export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupProps) {
+export const ReactionButtonGroup = async ({ reactToKey }: ReactionButtonGroupProps) => {
   const [reactions, user] = await Promise.all([getReactionByReactToKey(reactToKey), getUser()]);
 
   return (
@@ -17,9 +17,10 @@ export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupPro
         const hasReacted = reactions.some(
           (r) => r.emojiId === Number(key) && r.userId === user?.id,
         );
+
         return (
           <ReactionButton
-            key={reactToKey}
+            key={key}
             reactToKey={reactToKey}
             hasReacted={hasReacted}
             emojiId={Number(key)}
@@ -31,4 +32,4 @@ export async function ReactionButtonGroup({ reactToKey }: ReactionButtonGroupPro
       })}
     </div>
   );
-}
+};

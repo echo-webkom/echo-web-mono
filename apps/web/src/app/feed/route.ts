@@ -1,25 +1,8 @@
-import { createRSSFeed, type RSSItem } from "@/lib/rss";
+import { createRSSFeed } from "@/lib/rss";
 import { fetchAllPosts } from "@/sanity/posts";
+import { postToRSSItem } from "./_lib/mappers";
 
-type Post = Awaited<ReturnType<typeof fetchAllPosts>>[number];
-
-const POST_DESCRIPTION_LENGTH = 300;
-
-const postToRSSItem = (post: Post): RSSItem => {
-  const title = post.title;
-  const link = `https://echo.uib.no/for-studenter/innlegg/${post.slug}`;
-  const creator = post.authors ? post.authors?.map((author) => author.name).join(", ") : "echo";
-  const pubDate = new Date(post._createdAt).toUTCString();
-  const description =
-    post.body.length > POST_DESCRIPTION_LENGTH
-      ? post.body.slice(0, POST_DESCRIPTION_LENGTH) + "..."
-      : post.body;
-  const content = post.body;
-
-  return { title, link, guid: post._id, creator, pubDate, description, content };
-};
-
-export async function GET() {
+export const GET = async () => {
   const posts = await fetchAllPosts();
   const latestPostDate = posts[0] ? new Date(posts[0]._createdAt) : new Date();
 
@@ -41,4 +24,4 @@ export async function GET() {
       "Content-Type": "application/xml",
     },
   });
-}
+};

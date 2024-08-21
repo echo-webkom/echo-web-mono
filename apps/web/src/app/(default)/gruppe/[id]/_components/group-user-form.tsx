@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuTrash as Trash } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
@@ -7,6 +8,7 @@ import { TbUserEdit } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -32,9 +34,10 @@ type GroupUserFormProps = {
   isLeader: boolean;
 };
 
-export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
+export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSetIsLeader = async (checked: boolean) => {
     const { message } = await setGroupLeader(group.id, user.id, checked);
@@ -58,11 +61,13 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
       return;
     }
 
+    setIsOpen(false);
+
     router.refresh();
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
           <TbUserEdit className="h-4 w-4" />
@@ -72,48 +77,47 @@ export function GroupUserForm({ user, group, isLeader }: GroupUserFormProps) {
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Administrer {user.name}</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <div className="mb-2">
-            <Label>Navn</Label>
-            <p className="text-sm text-slate-500">{user.name}</p>
+        <DialogBody className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <div className="mb-2">
+              <Label>Navn</Label>
+              <p className="text-sm text-slate-500">{user.name}</p>
+            </div>
+            <div className="mb-2">
+              <Label>E-post</Label>
+              <p className="text-sm text-slate-500">{user.email}</p>
+            </div>
           </div>
-          <div className="mb-2">
-            <Label>E-post</Label>
-            <p className="text-sm text-slate-500">{user.email}</p>
-          </div>
-        </div>
 
-        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-          <div className="space-y-0.5">
-            <Label>Leder</Label>
-            <p className="text-sm text-muted-foreground">
-              Skal brukeren kunne fjerne og legge til brukere i gruppen?
-            </p>
+          <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+            <div className="space-y-0.5">
+              <Label>Leder</Label>
+              <p className="text-sm text-muted-foreground">
+                Skal brukeren kunne fjerne og legge til brukere i gruppen?
+              </p>
+            </div>
+            <div className="px-4">
+              <Switch checked={isLeader} onCheckedChange={handleSetIsLeader} />
+            </div>
           </div>
-          <div className="px-4">
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-            <Switch checked={isLeader} onCheckedChange={handleSetIsLeader} />
-          </div>
-        </div>
 
-        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-          <div className="space-y-0.5">
-            <Label>Fjern fra gruppe</Label>
+          <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+            <div className="space-y-0.5">
+              <Label>Fjern fra gruppe</Label>
+            </div>
+            <div className="px-4">
+              <Button onClick={handleRemoveUser} variant="destructive" size="icon">
+                <Trash className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-          <div className="px-4">
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-            <Button onClick={handleRemoveUser} variant="destructive" size="icon">
-              <Trash className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-
+        </DialogBody>
         <DialogFooter>
           <DialogClose asChild>
-            <Button>Lukk</Button>
+            <Button size="sm">Lukk</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "pnpm with-env tsx ./src/index.ts",
+    "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.12.8",
+    "@types/node": "20.14.15",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.9.3",
-    "typescript": "5.4.5"
+    "tsx": "4.17.0",
+    "typescript": "5.5.4"
   },
   "eslintConfig": {
     "root": true,
@@ -39,10 +39,10 @@
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:^",
-    "@sanity/client": "6.18.0",
+    "@sanity/client": "6.21.3",
     "chalk": "5.3.0",
-    "commander": "12.0.0",
-    "drizzle-orm": "0.30.10",
-    "groq": "3.41.1"
+    "commander": "12.1.0",
+    "drizzle-orm": "0.32.2",
+    "groq": "3.53.0"
   }
 }

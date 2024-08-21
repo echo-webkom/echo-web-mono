@@ -18,7 +18,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "import"],
   rules: {
     eqeqeq: "error",
-    "no-console": ["warn", { allow: ["warn", "error"] }],
+    "no-console": ["warn", { allow: ["warn", "error", "info"] }],
     "eol-last": "error",
     "no-trailing-spaces": "error",
     "prefer-arrow-callback": ["error"],
@@ -26,6 +26,7 @@ module.exports = {
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

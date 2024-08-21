@@ -1,36 +1,45 @@
 import { type StudentGroupType } from "@echo-webkom/lib";
 
+import {
+  type StudentGroupBySlugQueryResult,
+  type StudentGroupsByTypeQueryResult,
+} from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "./queries";
-import { studentGroupSchema } from "./schemas";
 
-export async function fetchStudentGroupsByType(type: StudentGroupType, n: number) {
-  const orderDir = type === "board" ? "desc" : "asc";
-
+export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
   try {
-    return await sanityFetch({
-      query: studentGroupsByTypeQuery(orderDir),
+    const studentGroups = await sanityFetch<StudentGroupsByTypeQueryResult>({
+      query: studentGroupsByTypeQuery,
       params: {
         type,
         n,
       },
       tags: ["student-groups"],
-    }).then((res) => studentGroupSchema.array().parse(res));
+    });
+
+    if (type !== "board") {
+      studentGroups.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      studentGroups.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    return studentGroups;
   } catch {
     return [];
   }
-}
+};
 
-export async function fetchStudentGroupBySlug(slug: string) {
+export const fetchStudentGroupBySlug = async (slug: string) => {
   try {
-    return await sanityFetch({
+    return await sanityFetch<StudentGroupBySlugQueryResult>({
       query: studentGroupBySlugQuery,
       params: {
         slug,
       },
-      tags: [`student-groups`],
-    }).then((res) => studentGroupSchema.parse(res));
+      tags: ["student-groups"],
+    });
   } catch {
     return null;
   }
-}
+};

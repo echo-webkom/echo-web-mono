@@ -16,7 +16,7 @@ const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   message: true,
 });
 
-export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSchema>) {
+export const sendFeedback = async (payload: z.infer<typeof sendFeedbackPayloadSchema>) => {
   try {
     const data = await sendFeedbackPayloadSchema.parseAsync(payload);
 
@@ -39,9 +39,9 @@ export async function sendFeedback(payload: z.infer<typeof sendFeedbackPayloadSc
       message: "En feil har oppstått",
     };
   }
-}
+};
 
-export async function toggleReadFeedback(id: string) {
+export const toggleReadFeedback = async (id: string) => {
   const user = await getUser();
 
   if (!user) {
@@ -89,4 +89,4 @@ export async function toggleReadFeedback(id: string) {
       message: "En feil har oppstått",
     };
   }
-}
+};

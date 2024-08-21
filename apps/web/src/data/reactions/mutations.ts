@@ -5,7 +5,7 @@ import { reactions, type ReactionInsert } from "@echo-webkom/db/schemas";
 
 import { revalidateReactions } from "./revalidate";
 
-export async function registerReaction(newReaction: Omit<ReactionInsert, "createdAt">) {
+export const registerReaction = async (newReaction: Omit<ReactionInsert, "createdAt">) => {
   try {
     await db
       .insert(reactions)
@@ -27,4 +27,4 @@ export async function registerReaction(newReaction: Omit<ReactionInsert, "create
   }
 
   revalidateReactions(newReaction.reactToKey);
-}
+};

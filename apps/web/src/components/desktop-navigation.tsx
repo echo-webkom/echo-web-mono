@@ -89,7 +89,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex h-10 flex-row items-center gap-1 rounded-md p-2 text-gray-600 hover:bg-muted dark:text-foreground"
+        className="flex h-10 flex-row items-center gap-1 rounded-xl p-2 font-semibold text-gray-600 hover:bg-muted dark:text-foreground"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -110,7 +110,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
     <li>
       <Link
         href={to}
-        className="h-10 rounded-md p-2 text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+        className="h-10 rounded-xl p-2 font-semibold text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
       >
         {children}
       </Link>
@@ -120,7 +120,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
 
 const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ul className="mx-auto hidden max-w-6xl grid-cols-2 gap-2 px-4 py-2 md:grid lg:grid-cols-3">
+    <ul className="mx-auto hidden max-w-6xl grid-cols-2 gap-2 px-4 py-6 md:grid lg:grid-cols-3">
       {children}
     </ul>
   );
@@ -146,7 +146,7 @@ export const NavigationViewport = () => {
     <AnimatePresence>
       {activeDropdown && (
         <motion.div
-          className="absolute left-0 z-20 w-full overflow-hidden border-b bg-background"
+          className="absolute left-0 z-20 w-full overflow-hidden border-b-2 bg-background"
           initial={{
             height: 0,
           }}
@@ -167,7 +167,7 @@ export const NavigationViewport = () => {
   );
 };
 
-export function DesktopNavigation() {
+export const DesktopNavigation = () => {
   return (
     <NavigationList>
       {headerRoutes.map((route) => {
@@ -197,7 +197,7 @@ export function DesktopNavigation() {
       })}
     </NavigationList>
   );
-}
+};
 
 type IconLinkProps = {
   href: string;
@@ -206,16 +206,19 @@ type IconLinkProps = {
   icon: FC<IconBaseProps>;
 };
 
-function IconLink({ icon, ...props }: IconLinkProps) {
+const IconLink = ({ icon, ...props }: IconLinkProps) => {
   return (
-    <Link className="flex items-center rounded-lg p-4 hover:bg-muted" href={props.href}>
+    <Link
+      className="flex items-center rounded-xl border-2 border-transparent p-4 hover:border-border hover:bg-muted"
+      href={props.href}
+    >
       <div className="flex items-center gap-6">
         {React.createElement(icon, { className: "h-6 w-6" })}
         <div>
-          <p>{props.label}</p>
-          <p className="text-sm text-muted-foreground">{props.description}</p>
+          <p className="font-semibold">{props.label}</p>
+          <p className="text-sm font-medium text-muted-foreground">{props.description}</p>
         </div>
       </div>
     </Link>
   );
-}
+};

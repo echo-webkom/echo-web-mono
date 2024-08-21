@@ -4,13 +4,13 @@ import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { AxiomWebVitals } from "next-axiom";
 import NextTopLoader from "nextjs-toploader";
 
+import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
-import { baseURL } from "@/config";
+import { BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
 
@@ -42,7 +42,7 @@ type RootLayoutProps = {
 };
 
 export const metadata = {
-  metadataBase: new URL(baseURL),
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
@@ -96,10 +96,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {/* <CookieBanner /> */}
           <FeedbackBlob />
           <TailwindIndicator />
+          <EasterEgg />
         </Providers>
         <Analytics />
         <SpeedInsights />
-        <AxiomWebVitals />
       </body>
     </html>
   );

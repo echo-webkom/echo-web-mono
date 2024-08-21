@@ -126,6 +126,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "endDate",
+      title: "Sluttdato",
+      description: "Dato og tid for når arrangementet slutter",
+      type: "datetime",
+      validation: (Rule) => Rule.min(Rule.valueOfField("date")),
+    }),
+    defineField({
       name: "registrationStartGroups",
       title: "Påmeldingsdato for undergrupper",
       description:

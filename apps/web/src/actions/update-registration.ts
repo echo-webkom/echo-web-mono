@@ -11,30 +11,17 @@ import { emailClient } from "@echo-webkom/email/client";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
-import { shortDateNoYear } from "@/utils/date";
-
-function registrationStatusToString(oldStatus: string, newStatus: string) {
-  const status =
-    oldStatus === "waiting" ? "venteliste" : oldStatus === "registered" ? "påmeldt" : "avmeldt";
-  if (oldStatus === "waiting" && newStatus === "registered") {
-    return `Flyttet fra venteliste ${shortDateNoYear(new Date())}`;
-  } else if (newStatus === "removed") {
-    return `Fjernet ${shortDateNoYear(new Date())}`;
-  } else {
-    return `Flyttet fra ${status} ${shortDateNoYear(new Date())}`;
-  }
-}
 
 const updateRegistrationPayloadSchema = z.object({
   status: z.enum(registrationStatusEnum.enumValues),
   reason: z.string(),
 });
 
-export async function updateRegistration(
+export const updateRegistration = async (
   happeningId: string,
   registrationUserId: string,
   payload: z.infer<typeof updateRegistrationPayloadSchema>,
-) {
+) => {
   try {
     const user = await getUser();
 
@@ -77,10 +64,9 @@ export async function updateRegistration(
     await db
       .update(registrations)
       .set({
-        registrationChangedAt: registrationStatusToString(
-          exisitingRegistration.status,
-          data.status,
-        ),
+        prevStatus: exisitingRegistration.status,
+        changedBy: user.id,
+        changedAt: new Date(),
         status: data.status,
         unregisterReason: data.reason,
       })
@@ -123,4 +109,4 @@ export async function updateRegistration(
       message: "En feil har oppstått",
     };
   }
-}
+};

@@ -4,11 +4,15 @@ import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 const INFINITY = "∞";
 
-export function getSpotRangeInfo<
-  H extends { registrationStart?: string },
+export const getSpotRangeInfo = <
+  H extends { registrationStart: string | null },
   S extends { spots: number },
   R extends { status: RegistrationStatus },
->(happening: H, spotRanges: Array<S>, registrations: Array<R>) {
+>(
+  happening: H,
+  spotRanges: Array<S>,
+  registrations: Array<R>,
+) => {
   const maxCapacity = spotRanges.reduce((acc, curr) => acc + curr.spots, 0);
   const registeredCount = registrations.filter(
     (registration) => registration.status === "registered",
@@ -32,4 +36,4 @@ export function getSpotRangeInfo<
   }
 
   return `${registeredCount}/${actualCapacity}`;
-}
+};

@@ -1,6 +1,7 @@
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
+import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import BekkLogo from "@/assets/images/bekk.png";
@@ -14,28 +15,12 @@ type FooterProps = {
 
 export const Footer = ({ className }: FooterProps) => {
   return (
-    <div className={cn("selection:bg-primary", className)}>
-      {/* Footer wave */}
-      <svg
-        id="svg"
-        viewBox="0 0 1440 390"
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-40 w-full transition delay-150 duration-300 ease-in-out"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M 0,400 C 0,400 0,200 0,200 C 65.93076923076924,224.9153846153846 131.8615384615385,249.83076923076922 205,242 C 278.1384615384615,234.16923076923078 358.4846153846154,193.59230769230768 451,181 C 543.5153846153846,168.40769230769232 648.2000000000002,183.8 737,203 C 825.7999999999998,222.2 898.7153846153847,245.20769230769233 975,244 C 1051.2846153846153,242.79230769230767 1130.9384615384615,217.36923076923074 1209,206 C 1287.0615384615385,194.63076923076926 1363.5307692307692,197.31538461538463 1440,200 C 1440,200 1440,400 1440,400 Z"
-          stroke="none"
-          strokeWidth="0"
-          fillOpacity="1"
-          className="path-0 bg-wave fill-wave transition-all delay-150 duration-300 ease-in-out"
-        ></path>
-      </svg>
+    <div className={cn("mt-32 selection:bg-primary", className)}>
+      <footer className="relative rounded-t-[40px] border-2 border-secondary-dark bg-secondary px-10 py-24 text-wave-foreground dark:border-wave-dark dark:bg-wave">
+        <CommitLabel />
 
-      {/* Footer */}
-      <footer className="bg-wave px-10 py-10 text-wave-foreground">
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="flex flex-wrap gap-10 sm:gap-20">
+        <div className="mx-auto flex w-full max-w-7xl">
+          <div className="flex w-full flex-wrap justify-between gap-10 sm:gap-20">
             {footerRoutes.map((section) => {
               return (
                 <div key={section.label}>
@@ -100,6 +85,25 @@ export const Footer = ({ className }: FooterProps) => {
           </div>
         </div>
       </footer>
+    </div>
+  );
+};
+
+const COMMIT_SHA = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? "AAAAAAAAAAAAAAAAAAAAA";
+const humanSha = COMMIT_SHA.slice(0, 7);
+
+const CommitLabel = () => {
+  return (
+    <div className="absolute bottom-0 left-0 p-1.5">
+      <p className="font-mono text-xs text-muted-foreground">
+        <a
+          className="flex items-center gap-1 hover:underline"
+          href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
+        >
+          <MdCommit className="inline-block h-4 w-4" />
+          {humanSha}
+        </a>
+      </p>
     </div>
   );
 };

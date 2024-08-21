@@ -6,7 +6,7 @@ import { strikes, users } from "@echo-webkom/db/schemas";
 
 import { cacheKeyFactory } from "./revalidate";
 
-export async function getAllUsersWithValidStrikes() {
+export const getAllUsersWithValidStrikes = async () => {
   return cache(
     async () => {
       return await db
@@ -33,9 +33,9 @@ export async function getAllUsersWithValidStrikes() {
       revalidate: 60, // to be deleted
     },
   )();
-}
+};
 
-export async function getAllUserStrikes(userId: string) {
+export const getAllUserStrikes = async (userId: string) => {
   return cache(
     async () => {
       return await db.query.strikes.findMany({
@@ -55,4 +55,4 @@ export async function getAllUserStrikes(userId: string) {
       tags: [cacheKeyFactory.singleUserStrikes(userId)],
     },
   )();
-}
+};

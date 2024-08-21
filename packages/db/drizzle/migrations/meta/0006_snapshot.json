@@ -1,5 +1,5 @@
 {
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.account": {
@@ -132,11 +132,18 @@
       },
       "indexes": {
         "question_idx": {
-          "name": "question_idx",
           "columns": [
-            "question_id"
+            {
+              "expression": "question_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "question_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
@@ -374,18 +381,32 @@
       },
       "indexes": {
         "type_idx": {
-          "name": "type_idx",
           "columns": [
-            "type"
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "type_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         },
         "slug_idx": {
-          "name": "slug_idx",
           "columns": [
-            "slug"
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "slug_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -451,12 +472,24 @@
       },
       "indexes": {
         "happening_id_title": {
-          "name": "happening_id_title",
           "columns": [
-            "title",
-            "happening_id"
+            {
+              "expression": "title",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "happening_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "happening_id_title",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
@@ -524,11 +557,18 @@
       },
       "indexes": {
         "status_idx": {
-          "name": "status_idx",
           "columns": [
-            "status"
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": false
+          "name": "status_idx",
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
@@ -720,13 +760,30 @@
       },
       "indexes": {
         "happening_id_min_year_max_year": {
-          "name": "happening_id_min_year_max_year",
           "columns": [
-            "happening_id",
-            "min_year",
-            "max_year"
+            {
+              "expression": "happening_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "min_year",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "max_year",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "happening_id_min_year_max_year",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
@@ -883,18 +940,32 @@
       },
       "indexes": {
         "unique_email_idx": {
-          "name": "unique_email_idx",
           "columns": [
-            "email"
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "unique_email_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         },
         "unique_alternative_email_idx": {
-          "name": "unique_alternative_email_idx",
           "columns": [
-            "alternative_email"
+            {
+              "expression": "alternative_email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
           ],
-          "isUnique": true
+          "name": "unique_alternative_email_idx",
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {

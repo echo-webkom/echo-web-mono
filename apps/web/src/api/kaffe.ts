@@ -3,7 +3,7 @@ type KaffeOptions = {
 };
 
 export const DEFAULT_KAFFE_OPTIONS = {
-  url: "https://kaffe.omfj.workers.dev",
+  url: "https://kaffe.echo-webkom.no",
 };
 
 class Kaffe {
@@ -65,6 +65,6 @@ class Kaffe {
 }
 
 export const kaffeApi = new Kaffe(
-  process.env.KAFFE_API_KEY,
-  process.env.KAFFE_URL ? { url: process.env.KAFFE_URL } : undefined,
+  process.env.ADMIN_KEY,
+  process.env.NEXT_PUBLIC_KAFFE_URL ? { url: process.env.NEXT_PUBLIC_KAFFE_URL } : undefined,
 );

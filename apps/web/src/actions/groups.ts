@@ -8,7 +8,7 @@ import { createGroup } from "@/data/groups/mutations";
 import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
-export async function addGroup(group: GroupInsert) {
+export const addGroup = async (group: GroupInsert) => {
   const user = await getUser();
 
   if (!user) {
@@ -47,4 +47,4 @@ export async function addGroup(group: GroupInsert) {
       message: "En feil har oppstått",
     };
   }
-}
+};

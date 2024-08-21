@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaCrown } from "react-icons/fa";
 
 import Webkom from "@/assets/images/webkom.png";
 import { Container } from "@/components/container";
@@ -11,42 +12,54 @@ export default function WebkomPage() {
   return (
     <Container className="py-10 text-center">
       <Image className="mx-auto h-32 w-auto" src={Webkom} alt="Webkom logo" />
-      <Heading className="font-display">Webkom</Heading>
+      <Heading className="mx-auto font-display">Webkom</Heading>
+      {/* Slack ble laget 5. aug 2020 */}
+      <Text className="text-xs text-muted-foreground">EST. 2020</Text>
 
       <Text className="text-muted-foreground">
         Tidligere og nåværende medlemmer av echo Webkom.
       </Text>
 
-      <Text className="text-sm italic text-muted-foreground">EST. 2020</Text>
-
-      <div className="mx-auto my-10 max-w-md">
+      <div className="mx-auto my-10 max-w-md space-y-8">
         <UnorderedList className="list-none p-0 text-lg">
-          <ListItem>Andreas Bakseter (Co-founder)</ListItem>
-          <ListItem>Bo Aanes (Co-founder)</ListItem>
+          <ListItem className="relative mx-auto w-fit">
+            <FaCrown className="absolute -left-6 top-1 text-yellow-400" />
+            <span>Andreas Bakseter (Co-founder)</span>
+          </ListItem>
+          <ListItem className="relative mx-auto w-fit">
+            <FaCrown className="absolute -left-6 top-1 text-yellow-400" />
+            <span>Bo Aanes (Co-founder)</span>
+          </ListItem>
+        </UnorderedList>
 
-          <hr className="my-4" />
-
+        <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Alvar Hønsi</ListItem>
           <ListItem>Øyvind Grutle</ListItem>
           <ListItem>Sander Sigmundstad</ListItem>
           <ListItem>Victoria Valner</ListItem>
+        </UnorderedList>
 
-          {/* --- H21 --- */}
+        {/* --- H21 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Nikolaus Engh</ListItem>
           <ListItem>Ole Magnus Fon Johnsen</ListItem>
           <ListItem>Mathilde Bergenheim</ListItem>
           <ListItem>Thea Jenny Kolnes</ListItem>
           <ListItem>Felix Kaasa</ListItem>
+        </UnorderedList>
 
-          {/* --- H22 --- */}
+        {/* --- H22 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Torger Bocianowski</ListItem>
           <ListItem>Malin Torset Sivertstøl</ListItem>
           <ListItem>Karolina Gil</ListItem>
           <ListItem>Leoul Zinaye Tefera</ListItem>
           <ListItem>Kjetil Alvestad</ListItem>
           <ListItem>Jonas Hammerseth</ListItem>
+        </UnorderedList>
 
-          {/* --- H23 --- */}
+        {/* --- H23 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Johanne Blikberg Herheim</ListItem>
           <ListItem>Kristian Elde Johansen</ListItem>
           <ListItem>Swarnika Sellathurai</ListItem>
@@ -54,9 +67,11 @@ export default function WebkomPage() {
           <ListItem>Izaak Sarnecki</ListItem>
           <ListItem>Wengeal Abebe</ListItem>
           <ListItem>Hermann Holstad Walaunet</ListItem>
-
-          {/* --- V24 --- */}
         </UnorderedList>
+
+        {/* --- V24 --- */}
+
+        {/* --- H24 --- */}
       </div>
     </Container>
   );

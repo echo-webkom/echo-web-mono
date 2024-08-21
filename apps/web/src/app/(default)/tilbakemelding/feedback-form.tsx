@@ -17,12 +17,12 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { feedbackSchema, type FeedbackForm } from "@/lib/schemas/feedback";
+import { feedbackSchema, type FeedbackForm as TFeedbackForm } from "@/lib/schemas/feedback";
 
-export function FeedbackForm() {
+export const FeedbackForm = () => {
   const { toast } = useToast();
 
-  const form = useForm<FeedbackForm>({
+  const form = useForm<TFeedbackForm>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       email: "",
@@ -50,7 +50,6 @@ export function FeedbackForm() {
 
   return (
     <Form {...form}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="flex flex-col gap-3">
           <FormField
@@ -88,8 +87,10 @@ export function FeedbackForm() {
                   Kategori
                 </FormLabel>
                 <FormControl>
-                  <Select id="category" defaultValue={undefined} {...field}>
-                    <option disabled>Velg en kategori</option>
+                  <Select id="category" {...field}>
+                    <option selected disabled>
+                      Velg en kategori
+                    </option>
                     <hr />
                     <option value="bug">Bug</option>
                     <option value="feature">Funksjonalitet</option>
@@ -133,4 +134,4 @@ export function FeedbackForm() {
       </form>
     </Form>
   );
-}
+};

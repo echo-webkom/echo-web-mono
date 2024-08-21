@@ -14,7 +14,7 @@ type Props = {
   };
 };
 
-export function generateMetadata({ params }: Props) {
+export const generateMetadata = ({ params }: Props) => {
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
@@ -22,7 +22,7 @@ export function generateMetadata({ params }: Props) {
   return {
     title: studentGroupTypeName[groupTypeFromPath],
   };
-}
+};
 
 export default async function StudentGroupOverview({ params }: Props) {
   const { groupType } = params;
@@ -37,7 +37,7 @@ export default async function StudentGroupOverview({ params }: Props) {
       <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {groups.map((group) => (
           <li key={group._id}>
-            <StudentGroupPreview group={group} withBorder />
+            <StudentGroupPreview group={group} />
           </li>
         ))}
       </ul>

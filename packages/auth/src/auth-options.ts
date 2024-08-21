@@ -2,11 +2,12 @@ import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
 import { db } from "@echo-webkom/db";
-import { whitelist } from "@echo-webkom/db/schemas";
+import { users } from "@echo-webkom/db/schemas";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
 import { isMemberOfecho } from "./is-member-of-echo";
+import { isFuture } from "./utils";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -19,7 +20,7 @@ declare module "next-auth" {
 }
 
 type CreateAuthOptionsOptions = {
-  onSignInFail?: ({ email, error }: { email: string; error: string }) => Promise<void> | void;
+  onSignInFail?: ({ email, error }: { email: string; error: string }) => Promise<string> | string;
 };
 
 export const createAuthOptions = (
@@ -33,50 +34,55 @@ export const createAuthOptions = (
     },
 
     callbacks: {
-      session({ session, user }) {
+      session: async ({ session, user }) => {
         if (session.user) {
           session.user.id = user.id;
+
+          await db.update(users).set({ lastSignInAt: new Date() }).where(eq(users.id, user.id));
         }
         return session;
       },
-      async signIn({ account, profile }) {
+      signIn: async ({ account, profile }) => {
         if (!account?.access_token) {
           return false;
         }
 
-        const result = await isMemberOfecho(account.access_token);
+        const { success, error } = await isMemberOfecho(account.access_token);
 
-        if (result === true) {
+        if (success) {
           return true;
         }
 
-        if (!profile?.email) {
+        const email = profile?.email?.toLowerCase();
+        if (!email) {
+          // This should never happen
+          console.error("No email in profile", profile);
+
           return false;
         }
 
         const whitelistEntry = await db.query.whitelist.findFirst({
-          where: eq(whitelist.email, profile.email.toLowerCase()),
+          where: (whitelist, { eq }) => eq(whitelist.email, email),
         });
 
-        const today = new Date();
-        if (whitelistEntry && whitelistEntry.expiresAt > today) {
+        if (whitelistEntry && isFuture(whitelistEntry.expiresAt)) {
           return true;
         }
 
         if (process.env.TESTING === "true") {
-          if (profile.email === "kjella@test.feide.no") {
+          if (email === "kjella@test.feide.no") {
             return true;
           }
         }
 
         if (opts?.onSignInFail) {
-          await opts.onSignInFail({
-            email: profile.email,
-            error: result,
+          return await opts.onSignInFail({
+            error,
+            email,
           });
         }
 
-        return `/auth/logg-inn?error=${result}`;
+        return `/auth/logg-inn`;
       },
     },
 

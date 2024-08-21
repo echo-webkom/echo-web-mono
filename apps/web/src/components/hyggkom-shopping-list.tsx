@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 import { Text } from "./typography/text";
 import { Button } from "./ui/button";
 
-type itemProps = {
+type ItemProps = {
   id: string;
   name: string;
   user: string | null;
@@ -18,13 +18,13 @@ type itemProps = {
   hasLiked: boolean;
 };
 
-type hyggkomShoppingListProps = {
-  items: Array<itemProps>;
+type HyggkomShoppingListProps = {
+  items: Array<ItemProps>;
   isAdmin: boolean;
   withDots: boolean;
 };
 
-export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppingListProps) {
+export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppingListProps) => {
   const { toast } = useToast();
   const [showConfirmRemove, setShowConfirmRemove] = useState<string | null>(null);
 
@@ -154,4 +154,4 @@ export function HyggkomShoppingList({ isAdmin, items, withDots }: hyggkomShoppin
       )}
     </ul>
   );
-}
+};

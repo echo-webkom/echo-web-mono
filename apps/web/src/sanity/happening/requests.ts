@@ -1,59 +1,50 @@
-import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { subMinutes } from "date-fns";
-import { log } from "next-axiom";
+
+import { type HappeningType } from "@echo-webkom/lib";
 
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
+import {
+  type AllHappeningsQueryResult,
+  type HappeningQueryResult,
+  type HomeHappeningsQueryResult,
+} from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
-import { happeningSchema, type Happening, type HappeningType } from "./schemas";
 
 /**
  * Fetches all happenings
  *
  * @returns all happenings
  */
-export async function fetchAllHappenings() {
-  return await sanityFetch<Array<Happening>>({
+export const fetchAllHappenings = async () => {
+  return await sanityFetch<AllHappeningsQueryResult>({
     query: allHappeningsQuery,
     tags: ["happenings"],
-  })
-    .then((res) => happeningSchema.array().parse(res))
-    .catch(() => {
-      log.error("Failed to fetch all happenings");
+  }).catch(() => {
+    console.error("Failed to fetch all happenings");
 
-      return [];
-    });
-}
+    return [];
+  });
+};
 
 /**
  * Fetches the upcoming happenings of a given type
  */
-export async function fetchHomeHappenings<T extends HappeningType>(types: Array<T>, n: number) {
-  return await sanityFetch<
-    Array<{
-      _id: string;
-      title: string;
-      happeningType: T;
-      date: string;
-      slug: string;
-      registrationStart: string;
-      image: T extends "bedpres" ? SanityImageSource : null;
-      organizers: Array<string>;
-    }>
-  >({
+export const fetchHomeHappenings = async (types: Array<HappeningType>, n: number) => {
+  return await sanityFetch<HomeHappeningsQueryResult>({
     query: homeHappeningsQuery,
     params: {
       happeningTypes: types,
       n,
     },
     cdn: true,
-    revalidate: 120,
+    revalidate: 1000,
   }).catch(() => {
-    log.error("Failed to fetch home happenings");
+    console.error("Failed to fetch home happenings");
 
     return [];
   });
-}
+};
 
 /**
  * Fetches a happening by its slug
@@ -61,21 +52,21 @@ export async function fetchHomeHappenings<T extends HappeningType>(types: Array<
  * @param slug the slug of the happening you want to fetch
  * @returns the happening or null if not found
  */
-export async function fetchHappeningBySlug(slug: string) {
-  return await sanityFetch<Happening>({
+export const fetchHappeningBySlug = async (slug: string) => {
+  return await sanityFetch<HappeningQueryResult>({
     query: happeningQuery,
     tags: [`happening-${slug}`],
     params: {
       slug,
     },
   }).catch(() => {
-    log.error("Failed to fetch happening by slug", {
+    console.error("Failed to fetch happening by slug", {
       slug,
     });
 
     return null;
   });
-}
+};
 
 /**
  * Fetches happenings matching the query parameters
@@ -83,14 +74,14 @@ export async function fetchHappeningBySlug(slug: string) {
  * @param q query parameters
  * @returns happenings matching the query parameters or an error message
  */
-export async function fetchFilteredHappening(
+export const fetchFilteredHappening = async (
   q: FilteredHappeningQuery,
   dateFilter?: Array<DateInterval>,
-) {
+): Promise<{ happenings: AllHappeningsQueryResult }> => {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
-        const { date } = happening;
+        const { date, endDate } = happening;
 
         if (!date) {
           return false;
@@ -98,9 +89,9 @@ export async function fetchFilteredHappening(
 
         if (!q.past && !dateFilter) return false;
 
-        if (q.past) return new Date(date) < new Date();
+        if (q.past) return new Date(endDate ? endDate : date) < new Date();
 
-        return new Date(date) >= subMinutes(new Date(), 5);
+        return new Date(endDate ? endDate : date) >= subMinutes(new Date(), 5);
       })
       .filter((happening) => {
         const { happeningType } = happening;
@@ -124,7 +115,7 @@ export async function fetchFilteredHappening(
 
         return (
           title.toLowerCase().includes(search.toLowerCase()) ||
-          organizers.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+          organizers?.some((o) => o.name.toLowerCase().includes(search.toLowerCase()))
         );
       }),
   );
@@ -133,7 +124,7 @@ export async function fetchFilteredHappening(
     happenings:
       dateFilter && !q.past
         ? filteredHappenings.filter((happening) => {
-            const { date } = happening;
+            const { date, endDate } = happening;
 
             if (!date) {
               return false;
@@ -142,14 +133,16 @@ export async function fetchFilteredHappening(
             return dateFilter.some((f) => {
               return (
                 (f.start ?? f.end) &&
-                (!f.start || new Date(date) >= f.start) &&
+                (!f.start ||
+                  new Date(date) >= f.start ||
+                  (endDate && new Date(endDate) >= f.start)) &&
                 (!f.end || new Date(date) < f.end)
               );
             });
           })
         : filteredHappenings,
   };
-}
+};
 
 /**
  * Gets the happening type of a happening by its slug
@@ -157,14 +150,14 @@ export async function fetchFilteredHappening(
  * @param slug the slug of the happening you want the type of
  * @returns the happening type or null if not found
  */
-export async function getHappeningTypeBySlug(slug: string) {
+export const getHappeningTypeBySlug = async (slug: string) => {
   return await fetchHappeningBySlug(slug)
     .then((happening) => (happening ? happening.happeningType : null))
     .catch(() => {
-      log.error("Failed to fetch happening type by slug", {
+      console.error("Failed to fetch happening type by slug", {
         slug,
       });
 
       return null;
     });
-}
+};

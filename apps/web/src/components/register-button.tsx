@@ -12,8 +12,8 @@ import { register } from "@/actions/register";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -32,7 +32,7 @@ type RegisterButtonProps = {
   questions: Array<Question>;
 };
 
-export function RegisterButton({ id, questions }: RegisterButtonProps) {
+export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -80,7 +80,6 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
 
   if (questions.length === 0) {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (
           <>
@@ -114,100 +113,102 @@ export function RegisterButton({ id, questions }: RegisterButtonProps) {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form onSubmit={onSubmit} className="space-y-4">
             <DialogHeader>
               <DialogTitle>Tilleggsspørsmål</DialogTitle>
-              <DialogDescription>Svar for å kunne melde deg på.</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              {questions.map((question, index) => (
-                <FormField
-                  key={question.id}
-                  control={form.control}
-                  name={`questions.${index}.answer`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel required={question.required}>{question.title}</FormLabel>
-                      {question.type === "text" && (
-                        <FormControl>
-                          <Input
-                            placeholder="Ditt svar..."
-                            autoComplete="off"
-                            {...field}
-                            value={field.value ?? ""}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      )}
+            <DialogBody>
+              <div className="space-y-4">
+                {questions.map((question, index) => (
+                  <FormField
+                    key={question.id}
+                    control={form.control}
+                    name={`questions.${index}.answer`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel required={question.required}>{question.title}</FormLabel>
+                        {question.type === "text" && (
+                          <FormControl>
+                            <Input
+                              placeholder="Ditt svar..."
+                              autoComplete="off"
+                              {...field}
+                              value={field.value ?? ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        )}
 
-                      {question.type === "radio" && (
-                        <FormControl>
-                          <Select {...field}>
-                            <option hidden>Velg...</option>
-                            {question?.options?.map((option) => (
-                              <option key={option.id} value={option.value}>
-                                {option.value}
-                              </option>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      )}
+                        {question.type === "radio" && (
+                          <FormControl>
+                            <Select {...field}>
+                              <option hidden>Velg...</option>
+                              {question?.options?.map((option) => (
+                                <option key={option.id} value={option.value}>
+                                  {option.value}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        )}
 
-                      {question.type === "textarea" && (
-                        <FormControl>
-                          <Textarea
-                            placeholder="Ditt svar..."
-                            {...field}
-                            value={field.value ?? ""}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      )}
+                        {question.type === "textarea" && (
+                          <FormControl>
+                            <Textarea
+                              placeholder="Ditt svar..."
+                              {...field}
+                              value={field.value ?? ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        )}
 
-                      {question.type === "checkbox" &&
-                        question.options?.map((option) => (
-                          <FormField
-                            key={option.id}
-                            control={form.control}
-                            name={`questions.${index}.answer`}
-                            render={({ field }) => (
-                              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(option.id)}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([
-                                            ...(field.value as Array<string>),
-                                            option.id,
-                                          ])
-                                        : field.onChange(
-                                            (field.value as Array<string>).filter(
-                                              (value) => value !== option.id,
-                                            ),
-                                          );
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel>{option.value}</FormLabel>
-                              </FormItem>
-                            )}
-                          />
-                        ))}
+                        {question.type === "checkbox" &&
+                          question.options?.map((option) => (
+                            <FormField
+                              key={option.id}
+                              control={form.control}
+                              name={`questions.${index}.answer`}
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(option.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...(field.value as Array<string>),
+                                              option.id,
+                                            ])
+                                          : field.onChange(
+                                              (field.value as Array<string>).filter(
+                                                (value) => value !== option.id,
+                                              ),
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel>{option.value}</FormLabel>
+                                </FormItem>
+                              )}
+                            />
+                          ))}
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
+            </DialogBody>
             <DialogFooter>
-              <Button type="submit">Send inn</Button>
+              <Button size="sm" type="submit">
+                Send inn
+              </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
   );
-}
+};

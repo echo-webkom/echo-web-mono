@@ -55,14 +55,12 @@ const testConfig = {
   dataset: "testing",
 };
 
-const getConfigs = () => {
-  // @ts-expect-error Something with Vite
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  if (import.meta.env.DEV) {
+const getConfig = () => {
+  if (process.env.NODE_ENV === "development") {
     return [prodConfig, devConfig, testConfig];
   }
 
   return [prodConfig];
 };
 
-export default getConfigs();
+export default getConfig();

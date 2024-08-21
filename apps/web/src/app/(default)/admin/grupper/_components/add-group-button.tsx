@@ -8,6 +8,7 @@ import { addGroup } from "@/actions/groups";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -28,7 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { groupFormSchema, type GroupForm } from "@/lib/schemas/add-group";
 import { slugify } from "@/utils/string";
 
-export default function AddGroupButton({ ...props }: ButtonProps) {
+export const AddGroupButton = ({ ...props }: ButtonProps) => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,67 +62,69 @@ export default function AddGroupButton({ ...props }: ButtonProps) {
         <Button {...props} />
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Legg til gruppe</DialogTitle>
-        </DialogHeader>
-
         <Form {...form}>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <form className="grid gap-4 py-4" onSubmit={onSubmit}>
-            <div className="flex flex-col gap-3">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Navn</FormLabel>
-                    <FormControl>
-                      <Input id="name" placeholder="Webkom" autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormDescription>Navn på undergruppen</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle>Legg til gruppe</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-3">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Navn</FormLabel>
+                      <FormControl>
+                        <Input id="name" placeholder="Webkom" autoComplete="off" {...field} />
+                      </FormControl>
+                      <FormDescription>Navn på undergruppen</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ID</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          className="flex-1"
-                          id="id"
-                          placeholder="webkom"
-                          autoComplete="off"
-                          {...field}
-                        />
-                        <Button variant="outline" onClick={generateGroupSlug}>
-                          Generer ID
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormDescription>
-                      En unik ID til studieretningen. Burde være en slugifisert versjon av navnet.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                <FormField
+                  control={form.control}
+                  name="id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ID</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            className="flex-1"
+                            id="id"
+                            placeholder="webkom"
+                            autoComplete="off"
+                            {...field}
+                          />
+                          <Button variant="outline" onClick={generateGroupSlug}>
+                            Generer ID
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        En unik ID til studieretningen. Burde være en slugifisert versjon av navnet.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </DialogBody>
 
             <DialogFooter>
-              <Button variant="secondary" onClick={() => setIsOpen(false)}>
+              <Button size="sm" variant="destructive" onClick={() => setIsOpen(false)}>
                 Avbryt
               </Button>
-              <Button type="submit">Lagre</Button>
+              <Button size="sm" type="submit">
+                Lagre
+              </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
   );
-}
+};

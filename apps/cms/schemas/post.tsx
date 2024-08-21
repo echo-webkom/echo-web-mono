@@ -11,6 +11,7 @@ export default defineType({
       name: "title",
       title: "Tittel",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
@@ -20,6 +21,7 @@ export default defineType({
         source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "authors",
@@ -39,6 +41,7 @@ export default defineType({
       name: "body",
       title: "Brødtekst",
       type: "markdown",
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
