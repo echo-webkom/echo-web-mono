@@ -161,14 +161,6 @@ export const RegistrationTable = ({
                 .map((r) => r.user.name ?? r.user.email)}
             />
             <DownloadCsvButton slug={slug} questions={questions} />
-            <RandomPersonButton registrations={registrations} />
-            <DownloadCsvButton
-              slug={slug}
-              columns={columns}
-              removeKey={removeKey}
-              addKey={addKey}
-              selectedHeaders={selectedHeaders}
-            />
             <RemoveAllRegistrationsButton registrations={registrations} slug={slug} />
           </div>
         </div>
