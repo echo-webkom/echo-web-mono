@@ -21,6 +21,17 @@ export const getFullHappening = async (slug: Happening["slug"]) => {
   });
 };
 
+export const getFullHappenings = async () => {
+  return await db.query.happenings.findMany({
+    with: {
+      questions: true,
+      registrations: true,
+      spotRanges: true,
+      groups: true,
+    },
+  });
+};
+
 export const getHappeningBySlug = async (slug: Happening["slug"]) => {
   return await db.query.happenings.findFirst({
     where: (happening) => eq(happening.slug, slug),

@@ -35,7 +35,7 @@ const adminRoutes = [
   },
   {
     href: "/admin/happenings",
-    label: "Happenings",
+    label: "Arrangementer",
     groups: ["webkom"],
   },
   {
