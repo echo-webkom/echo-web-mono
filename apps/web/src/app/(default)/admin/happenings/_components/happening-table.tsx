@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
 
-import { Button } from "@/components/ui/button";
+import { HoldableButton } from "@/components/ui/holdable-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -14,10 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { type getStudentGroups } from "@/data/groups/queries";
 import { type getFullHappenings } from "@/data/happenings/queries";
 
 type HappeningTableProps = {
   happenings: Awaited<ReturnType<typeof getFullHappenings>>;
+  groups: Awaited<ReturnType<typeof getStudentGroups>>;
 };
 
 export const HappeningTable = ({ happenings }: HappeningTableProps) => {
@@ -44,6 +46,20 @@ export const HappeningTable = ({ happenings }: HappeningTableProps) => {
     setPage(page - 1);
   };
 
+  const handleHoldPreviousPage = () => {
+    if (page === 1) return;
+    setPage(1);
+  };
+
+  const handleHoldNextPage = () => {
+    if (page === totalPages) return;
+    setPage(totalPages);
+  };
+
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+
   const paginatedHappenings = happeningsToShow.slice(
     (page - 1) * numberOfHappenings,
     page * numberOfHappenings,
@@ -53,17 +69,29 @@ export const HappeningTable = ({ happenings }: HappeningTableProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex justify-between gap-2">
         <div className="mt-auto flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={handlePreviousPage}>
+          <HoldableButton
+            variant="outline"
+            size="icon"
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+            onHold={handleHoldPreviousPage}
+          >
             <span className="sr-only">Tilbake</span>
             <RxArrowLeft className="h-4 w-4" />
-          </Button>
+          </HoldableButton>
           <span>
             {page} av {totalPages}
           </span>
-          <Button variant="outline" size="icon" onClick={handleNextPage}>
+          <HoldableButton
+            variant="outline"
+            size="icon"
+            onClick={handleNextPage}
+            onHold={handleHoldNextPage}
+            disabled={page === totalPages}
+          >
             <span className="sr-only">Oppdater</span>
             <RxArrowRight className="h-4 w-4" />
-          </Button>
+          </HoldableButton>
         </div>
 
         <div className="flex items-center gap-2">
@@ -113,6 +141,8 @@ export const HappeningTable = ({ happenings }: HappeningTableProps) => {
           )}
         </TableBody>
       </Table>
+
+      <span className="font-medium">Totalt: {happenings.length} arrangementer</span>
     </div>
   );
 };
