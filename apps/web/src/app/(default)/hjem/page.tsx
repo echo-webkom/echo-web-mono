@@ -1,3 +1,5 @@
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
 import { Calendar } from "./_components/calendar";
@@ -7,6 +9,21 @@ import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
 
+const VervBanner = () => {
+  return (
+    <a
+      className="group mx-auto block w-full max-w-[1400px] px-6 text-black hover:underline"
+      href="https://verv.echo-webkom.no"
+    >
+      <div className="rainbow flex items-center justify-between rounded-lg border-2 p-6 transition-all group-hover:shadow-lg">
+        <FaArrowRight className="animate-bounce-right h-6 w-6" />
+        <p className="text-center text-lg font-medium sm:text-3xl">Søk verv nå!</p>
+        <FaArrowLeft className="animate-bounce-right h-6 w-6" />
+      </div>
+    </a>
+  );
+};
+
 export default async function Home() {
   await ensureUser(undefined, {
     redirectTo: "/",
@@ -14,6 +31,8 @@ export default async function Home() {
 
   return (
     <div className="space-y-8 py-24">
+      <VervBanner />
+
       <Container layout="larger">
         <Calendar />
       </Container>
