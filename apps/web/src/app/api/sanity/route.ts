@@ -366,6 +366,12 @@ const mapHappeningToGroups = async (groups: Array<string>) => {
   return makeListUnique(
     groups
       .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
-      .map((groupId) => (isBoard(groupId) ? "hovedstyre" : groupId)),
+      .map((groupId) => {
+        if (isBoard(groupId)) {
+          return "hovedstyret";
+        }
+
+        return groupId;
+      }),
   );
 };
