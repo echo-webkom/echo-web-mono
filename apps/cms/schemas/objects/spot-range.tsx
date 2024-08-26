@@ -10,13 +10,13 @@ export default defineType({
       name: "minYear",
       title: "Minste trinn",
       type: "number",
-      validation: (Rule) => Rule.required().min(1).max(5),
+      validation: (Rule) => Rule.required().min(1).max(6),
     }),
     defineField({
       name: "maxYear",
       title: "Største trinn",
       type: "number",
-      validation: (Rule) => Rule.required().min(Rule.valueOfField("minYear")).max(5),
+      validation: (Rule) => Rule.required().min(Rule.valueOfField("minYear")).max(6),
     }),
     defineField({
       name: "spots",

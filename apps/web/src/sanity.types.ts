@@ -244,6 +244,7 @@ export type Job = {
     THIRD?: boolean;
     FOURTH?: boolean;
     FIFTH?: boolean;
+    SIXTH?: boolean;
   };
   body: string;
 };
@@ -631,6 +632,7 @@ export type JobAdsQueryResult = Array<{
     THIRD?: boolean;
     FOURTH?: boolean;
     FIFTH?: boolean;
+    SIXTH?: boolean;
   } | null;
   body: string;
 }>;

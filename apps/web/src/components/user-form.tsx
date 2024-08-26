@@ -134,7 +134,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
               <FormControl>
                 <Select id="year" {...field}>
                   <option hidden>Velg årstrinn</option>
-                  {Array.from({ length: 5 }, (_, i) => i + 1).map((year) => (
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map((year) => (
                     <option key={year} value={year}>
                       {year}. trinn
                     </option>
