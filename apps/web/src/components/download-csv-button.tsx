@@ -32,6 +32,7 @@ const getColumns = (questions: Array<Question>) => {
     .map((key) => formatHeaders[key as HeaderType]);
 
   columns.push(...questions.map((question) => question.title));
+  columns.push("Status");
 
   return columns;
 };
