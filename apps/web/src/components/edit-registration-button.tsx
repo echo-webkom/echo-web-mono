@@ -9,7 +9,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { updateRegistration } from "@/actions/update-registration";
-import { type RegistrationWithUser } from "@/components/registration-table";
+import { type RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/_lib/types";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
