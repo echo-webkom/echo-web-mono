@@ -2,10 +2,10 @@ import { useState } from "react";
 import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";
 
+import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Text } from "./typography/text";
 
 type RandomPersonButtonProps = {
   registrations: Array<string>;
