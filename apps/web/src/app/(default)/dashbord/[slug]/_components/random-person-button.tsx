@@ -6,6 +6,7 @@ import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useWindowSize } from "@/hooks/use-window-size";
 
 type RandomPersonButtonProps = {
   registrations: Array<string>;
@@ -13,6 +14,7 @@ type RandomPersonButtonProps = {
 
 export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { height, width } = useWindowSize();
   const [randomUserName, setRandomUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -45,7 +47,9 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
 
   return (
     <>
-      <Confetti className="fixed inset-0 z-[60] h-full w-full" hidden={!isOpen} />
+      {isOpen && (
+        <Confetti className="fixed inset-0 z-[60] h-full w-full" height={height} width={width} />
+      )}
 
       <Button onClick={pickRandomRegisteredUser}>
         {isLoading ? (
