@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BiHelpCircle } from "react-icons/bi";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
+import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -36,30 +39,11 @@ export default async function UserStrikePagez() {
 
   return (
     <div className="max-w-4xl">
-      <Heading level={2} className="mb-4">
+      <Heading level={2} className="my-4">
         Oversikt over dine prikker
       </Heading>
-
-      <div className="mb-10">
-        <Text>
-          <Link
-            className="group flex items-center underline-offset-4 hover:underline"
-            href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
-          >
-            <ArrowRight className="inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-            <h2 className="ml-2 text-center">Les om Bedkom sine retningslinjer</h2>
-          </Link>
-        </Text>
-        <Text>
-          For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
-          <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
-            bedkom@echo.uib.no
-          </Link>
-        </Text>
-      </div>
-
       {user.isBanned && (
-        <div className="text-lg text-destructive">
+        <p className="mb-2 font-semibold text-destructive">
           Du er utestengt{" "}
           {nextBedpresAfterBan && (
             <>
@@ -69,13 +53,42 @@ export default async function UserStrikePagez() {
               </Link>
             </>
           )}
-        </div>
+        </p>
       )}
-
       {validStrikes.length === 0 && earlierStrikes.length === 0 && (
-        <p className="text-2xl">Du har ingen prikker. Fortsett sånn!</p>
+        <p className="mb-2">Du har ingen prikker. Fortsett sånn!</p>
       )}
 
+      <div className="relative sm:w-fit">
+        <Popover>
+          <PopoverTrigger className="absolute right-2 top-2">
+            <BiHelpCircle className="size-6" />
+          </PopoverTrigger>
+          <PopoverContent>
+            For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
+            <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
+              bedkom@echo.uib.no
+            </Link>
+          </PopoverContent>
+        </Popover>
+        <div className="rounded-xl bg-muted">
+          <div className="w-fit px-4 pt-1">
+            <Chip variant="secondary" className="my-6 block text-xl">
+              {validStrikes.toString() || 0 + " gyldige prikker"}
+            </Chip>
+            <Chip variant="primary" className="my-6 block text-xl">
+              {validStrikes.toString() || 0 + " tidligere prikker"}
+            </Chip>
+          </div>
+          <Link
+            className="group flex items-center space-x-1 p-2 underline-offset-4 hover:underline"
+            href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
+          >
+            <h2 className="ml-2 text-center">Les om Bedkom sine retningslinjer</h2>
+            <ArrowRight className="inline size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+      </div>
       {validStrikes.length > 0 && (
         <>
           <Heading className="mt-8" level={3}>
@@ -87,7 +100,6 @@ export default async function UserStrikePagez() {
           <StrikeTable strikes={validStrikes} />
         </>
       )}
-
       {earlierStrikes.length > 0 && (
         <>
           <Heading level={3} className="mt-8">
@@ -107,7 +119,7 @@ export default async function UserStrikePagez() {
 function StrikeTable({ strikes }: { strikes: Awaited<ReturnType<typeof getAllUserStrikes>> }) {
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="bg-muted">
         <TableRow>
           <TableHead scope="col">Bedpres</TableHead>
           <TableHead scope="col">Årsak</TableHead>

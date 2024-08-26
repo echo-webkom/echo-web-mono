@@ -33,7 +33,8 @@ export const StrikesTable = ({
 
   const filtered = usersWithStrikes
     .filter((user) => user.name?.toLowerCase().includes(search.toLowerCase()))
-    .filter((user) => (showBanned ? user.isBanned : true));
+    .filter((user) => (showBanned ? user.isBanned : true))
+    .sort((a, b) => b.strikes - a.strikes);
 
   return (
     <>
