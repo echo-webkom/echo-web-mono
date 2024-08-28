@@ -1,19 +1,21 @@
 import { useState } from "react";
+import { eq } from "drizzle-orm";
+
+import { db } from "@echo-webkom/db";
 
 import { getFullHappening } from "@/data/happenings/queries";
+import { getUser } from "@/lib/get-user";
+import { isHost, isWebkom } from "@/lib/memberships";
 import { type RegistrationWithUser } from "./registration-table";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
-import { usersRelations } from "@echo-webkom/db/schemas";
-import { getUser } from "@/lib/get-user";
-import { eq } from "drizzle-orm";
 
 type RemoveAllRegistrationsButtonProps = {
   registrations: Array<RegistrationWithUser>;
   slug: string;
 };
 
-export const RemoveAllRegistrationsButton = ({
+const RemoveAllRegistrationsButton = ({
   registrations,
   slug,
 }: RemoveAllRegistrationsButtonProps) => {
@@ -22,8 +24,6 @@ export const RemoveAllRegistrationsButton = ({
   const getRegisteredUsers = () => {
     return registrations.filter((r) => r.status === "registered");
   };
-
-  const user = await getUser();
 
   const removeAllRegistrations = async () => {
     const registeredUsers = getRegisteredUsers();
@@ -36,13 +36,9 @@ export const RemoveAllRegistrationsButton = ({
         console.error("Happening not found");
         return;
       }
-
-      const userGroupIds = user?.memberships.map((membership) => membership.groupId);
-      const organizerGroupIds = happening.organizers.map((organizer) => organizer.id);
-      const isAuthorized = userGroupIds.includes("webkom") || userGroupIds.some((groupId) => organizerGroupIds.includes(groupId));
-
-      if (!isAuthorized) {
-        console.error("User is not authorized to remove registrations");
+      const user = await getUser();
+      if (!user || !isHost(user, happening) || !isWebkom(user)) {
+        console.error("Invalid user");
         return;
       }
 
@@ -52,6 +48,7 @@ export const RemoveAllRegistrationsButton = ({
       console.error("Error removing registrations:", error);
     }
   };
+
   const closeDialog = () => {
     setIsOpen(false);
   };
@@ -74,3 +71,5 @@ export const RemoveAllRegistrationsButton = ({
     </>
   );
 };
+
+export default RemoveAllRegistrationsButton;
