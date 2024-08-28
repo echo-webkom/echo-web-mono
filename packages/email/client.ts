@@ -4,7 +4,7 @@ import "server-only";
 import { render } from "jsx-email";
 import { Resend } from "resend";
 
-const API_KEY = process.env.RESEND_API_KEY;
+const API_KEY = process.env.RESEND_API_KEY ?? "re_fakekey";
 const FROM_EMAIL = "echo <ikkesvar@echo-webkom.no>";
 
 const resend = new Resend(API_KEY);
