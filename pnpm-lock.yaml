@@ -112,7 +112,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@echo-webkom/sanity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.9.0
@@ -412,9 +412,6 @@ importers:
       pg:
         specifier: 8.12.0
         version: 8.12.0
-      postgres:
-        specifier: 3.4.4
-        version: 3.4.4
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -540,7 +537,7 @@ importers:
         specifier: workspace:*
         version: link:../lib
       '@echo-webkom/sanity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../sanity
       '@sanity/client':
         specifier: 6.21.3
@@ -581,6 +578,10 @@ importers:
         version: 5.5.4
 
   playwright:
+    dependencies:
+      pg:
+        specifier: 8.12.0
+        version: 8.12.0
     devDependencies:
       '@echo-webkom/tsconfig':
         specifier: workspace:*
@@ -591,6 +592,9 @@ importers:
       '@types/node':
         specifier: 20.16.1
         version: 20.16.1
+      '@types/pg':
+        specifier: 8.11.6
+        version: 8.11.6
       dotenv-cli:
         specifier: 7.4.2
         version: 7.4.2
@@ -600,9 +604,6 @@ importers:
       eslint-config-webkom:
         specifier: workspace:*
         version: link:../packages/config/eslint
-      postgres:
-        specifier: 3.4.4
-        version: 3.4.4
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -17287,7 +17288,8 @@ snapshots:
 
   postgres-range@1.1.4: {}
 
-  postgres@3.4.4: {}
+  postgres@3.4.4:
+    optional: true
 
   preact-render-to-string@5.2.6(preact@10.20.2):
     dependencies:
