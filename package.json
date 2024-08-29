@@ -6,9 +6,9 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "web:dev": "turbo run dev --filter=web",
-    "cms:dev": "turbo run dev --filter=cms",
-    "db:dev": "turbo run dev --filter=db",
+    "web:dev": "pnpm run --filter=web dev",
+    "cms:dev": "pnpm run --filter=cms dev",
+    "db:dev": "pnpm run --filter=db dev",
     "start": "turbo run start",
     "setup": "pnpm install && pnpm db:up && pnpm db:migrate",
     "clean": "rm -rf node_modules",
