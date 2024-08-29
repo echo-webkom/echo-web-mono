@@ -1,16 +1,16 @@
 import { expect, test } from "@playwright/test";
+import postgres from "postgres";
 
-import { getDatabase } from "../helpers/db";
 import { loginAs } from "../helpers/sessionTest";
-
-const db = getDatabase();
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
 
+const sql = postgres(process.env.DATABASE_URL!);
+
 test.describe("Register", () => {
   test.beforeEach(async () => {
-    await db.query("DELETE FROM registration WHERE happening_id = $1", [ID]);
+    await sql`DELETE FROM registration WHERE happening_id = ${ID}`;
   });
 
   test("register and deregister to event", async ({ page }) => {
