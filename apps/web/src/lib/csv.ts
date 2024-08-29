@@ -17,6 +17,9 @@ export type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>
  */
 export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> = []) => {
   const registrations = happening.registrations
+    .sort((a, b) => {
+      return a.createdAt.getTime() - b.createdAt.getTime();
+    })
     .map((r) => {
       const answers = r.answers.map((a) => ({
         questionId: a.questionId,
