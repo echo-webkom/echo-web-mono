@@ -1,16 +1,16 @@
 import { expect, test } from "@playwright/test";
-import postgres from "postgres";
 
+import { getDatabase } from "../helpers/db";
 import { loginAs } from "../helpers/sessionTest";
+
+const db = getDatabase();
 
 const user = { id: "alum", name: "Andreas Aanes" };
 
-const sql = postgres(process.env.DATABASE_URL!);
-
 test.describe("Strikes", () => {
   test.beforeEach(async () => {
-    await sql`DELETE FROM strike`;
-    await sql`DELETE FROM strike_info`;
+    await db.query("DELETE FROM strike");
+    await db.query("DELETE FROM strike_info");
     await fetch("http://localhost:3000/api/revalidate", {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.ADMIN_KEY!}` },

@@ -16,10 +16,10 @@
     "@echo-webkom/tsconfig": "workspace:*",
     "@playwright/test": "1.46.1",
     "@types/node": "20.16.1",
+    "@types/pg": "8.11.6",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "postgres": "3.4.4",
     "typescript": "5.5.4"
   },
   "eslintConfig": {
@@ -27,5 +27,8 @@
     "extends": [
       "webkom/base"
     ]
+  },
+  "dependencies": {
+    "pg": "8.12.0"
   }
 }
