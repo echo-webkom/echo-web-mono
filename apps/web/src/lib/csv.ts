@@ -39,15 +39,6 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
         obj[question.title] = formattedAnswer;
       });
 
-      // If there are no selected headers, return the full object
-      if (selectedHeaders.length > 0) {
-        for (const key in obj) {
-          if (!selectedHeaders.includes(key)) {
-            delete obj[key];
-          }
-        }
-      }
-
       return obj;
     })
     .sort((a, b) => {
@@ -62,6 +53,17 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
       return (
         statusOrder[a.Status as RegistrationStatus] - statusOrder[b.Status as RegistrationStatus]
       );
+    })
+    .map((registration) => {
+      const obj: Record<string, string> = registration;
+
+      for (const key in registration) {
+        if (!selectedHeaders.includes(key)) {
+          delete obj[key];
+        }
+      }
+
+      return obj;
     });
 
   const parser = new Parser();
