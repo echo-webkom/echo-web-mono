@@ -28,7 +28,14 @@ export default defineConfig({
   webServer: [
     {
       command: "pnpm --filter=web run start",
-      url: "http://localhost:3000",
+      port: 3000,
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+      cwd: "../",
+    },
+    {
+      command: "pnpm --filter=ars run start",
+      port: 4444,
       timeout: 120 * 1000,
       reuseExistingServer: !process.env.CI,
       cwd: "../",
