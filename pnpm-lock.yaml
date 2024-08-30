@@ -48,9 +48,6 @@ importers:
         specifier: 3.23.8
         version: 3.23.8
     devDependencies:
-      '@flydotio/dockerfile':
-        specifier: 0.5.8
-        version: 0.5.8
       '@types/node':
         specifier: 20.16.1
         version: 20.16.1
@@ -2129,11 +2126,6 @@ packages:
 
   '@floating-ui/utils@0.2.1':
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
-
-  '@flydotio/dockerfile@0.5.8':
-    resolution: {integrity: sha512-119l9s4xUEATRWTQPddE0f+jZjVBhpnJiGA/aHzDiOUet2L7SD3G5jbSGvOXJm1Ks3kGmxUcPdt3BpLQRef+ow==}
-    engines: {node: '>=16.0.0'}
-    hasBin: true
 
   '@hono/node-server@1.12.2':
     resolution: {integrity: sha512-xjzhqhSWUE/OhN0g3KCNVzNsQMlFUAL+/8GgPUr3TKcU7cvgZVBGswFofJ8WwGEHTqobzze1lDpGJl9ZNckDhA==}
@@ -4873,10 +4865,6 @@ packages:
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
-  diff@5.2.0:
-    resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
-    engines: {node: '>=0.3.1'}
-
   diffie-hellman@5.0.3:
     resolution: {integrity: sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg==}
 
@@ -5067,11 +5055,6 @@ packages:
   editorconfig@1.0.4:
     resolution: {integrity: sha512-L9Qe08KWTlqYMVvMcTIvMAdl1cDUubzRNYL+WfA4bLDMHe4nemKkpmYzkznE1FwLKu0EEmy6obgQKzMJrg4x9Q==}
     engines: {node: '>=14'}
-    hasBin: true
-
-  ejs@3.1.10:
-    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
-    engines: {node: '>=0.10.0'}
     hasBin: true
 
   electron-to-chromium@1.4.748:
@@ -5405,9 +5388,6 @@ packages:
   file-url@2.0.2:
     resolution: {integrity: sha512-x3989K8a1jM6vulMigE8VngH7C5nci0Ks5d9kVjUXmNF28gmiZUNujk5HjwaS8dAzN2QmUfX56riJKgN00dNRw==}
     engines: {node: '>=4'}
-
-  filelist@1.0.4:
-    resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
 
   filesize@9.0.11:
     resolution: {integrity: sha512-gTAiTtI0STpKa5xesyTA9hA3LX4ga8sm2nWRcffEa1L/5vQwb4mj2MdzMkoHoGv4QzfDshQZuYscQSf8c4TKOA==}
@@ -6193,11 +6173,6 @@ packages:
   jackspeak@2.3.6:
     resolution: {integrity: sha512-N3yCS/NegsOBokc8GAdM8UcmfsKiSS8cipheD/nivzr700H+nsMOxJjQnvwOcRYVuFkdH0wGUvW2WbXGmrZGbQ==}
     engines: {node: '>=14'}
-
-  jake@10.9.2:
-    resolution: {integrity: sha512-2P4SQ0HrLQ+fw6llpLnOaGAvN2Zu6778SJMrCUwns4fOoG9ayrTiZk3VV8sCPkVZF8ab0zksVpS8FDY5pRCNBA==}
-    engines: {node: '>=10'}
-    hasBin: true
 
   jiti@1.21.0:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
@@ -11168,14 +11143,6 @@ snapshots:
 
   '@floating-ui/utils@0.2.1': {}
 
-  '@flydotio/dockerfile@0.5.8':
-    dependencies:
-      chalk: 5.3.0
-      diff: 5.2.0
-      ejs: 3.1.10
-      shell-quote: 1.8.1
-      yargs: 17.7.2
-
   '@hono/node-server@1.12.2(hono@4.5.9)':
     dependencies:
       hono: 4.5.9
@@ -14367,8 +14334,6 @@ snapshots:
 
   didyoumean@1.2.2: {}
 
-  diff@5.2.0: {}
-
   diffie-hellman@5.0.3:
     dependencies:
       bn.js: 4.12.0
@@ -14493,10 +14458,6 @@ snapshots:
       commander: 10.0.1
       minimatch: 9.0.1
       semver: 7.6.0
-
-  ejs@3.1.10:
-    dependencies:
-      jake: 10.9.2
 
   electron-to-chromium@1.4.748: {}
 
@@ -15097,10 +15058,6 @@ snapshots:
   file-uri-to-path@1.0.0: {}
 
   file-url@2.0.2: {}
-
-  filelist@1.0.4:
-    dependencies:
-      minimatch: 5.1.6
 
   filesize@9.0.11: {}
 
@@ -15967,13 +15924,6 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
-
-  jake@10.9.2:
-    dependencies:
-      async: 3.2.5
-      chalk: 4.1.2
-      filelist: 1.0.4
-      minimatch: 3.1.2
 
   jiti@1.21.0: {}
 

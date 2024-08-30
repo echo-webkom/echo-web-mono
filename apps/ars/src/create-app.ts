@@ -1,8 +1,6 @@
 import { Hono } from "hono";
 
-export type Bindings = {
-  ADMIN_KEY: string;
-};
+export type Bindings = {};
 
 export const createApp = () => {
   const app = new Hono<{

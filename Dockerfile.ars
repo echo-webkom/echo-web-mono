@@ -1,0 +1,52 @@
+# syntax=docker/dockerfile:1
+
+# Stage 1: Base with Node.js and PNPM installed
+ARG NODE_VERSION=20.12.1
+FROM node:${NODE_VERSION}-alpine as base
+
+LABEL fly_launch_runtime="Node.js"
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+ARG PNPM_VERSION=9.0.4
+RUN apk add --no-cache libc6-compat && npm install -g pnpm@$PNPM_VERSION
+
+# Stage 2: Build Stage
+FROM base as build
+
+ENV NODE_ENV=development
+
+# Install build dependencies
+RUN apk add --no-cache build-base python3 pkgconfig
+
+# Copy the entire monorepo into the container
+COPY --link . .
+
+# Install dependencies and create a pruned deployment
+RUN pnpm install && \
+    pnpm --filter=ars deploy /app/prod/ars
+
+# Change to the pruned directory and build the application
+WORKDIR /app/prod/ars
+RUN pnpm run build
+
+# Remove unnecessary build dependencies to save space
+RUN apk del build-base python3 pkgconfig
+
+ENV NODE_ENV=production
+
+# Stage 3: Production Image
+FROM base
+
+WORKDIR /app
+
+# Copy the pruned and built application to the final image
+COPY --from=build /app/prod/ars/dist /app
+
+# Expose the application port
+EXPOSE 4444
+
+# Command to run the application
+CMD ["node", "index.js"]
