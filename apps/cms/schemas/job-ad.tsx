@@ -41,6 +41,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "weight",
+      title: "Vekting",
+      type: "number",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "locations",
       title: "Sted(er)",
       type: "array",
@@ -94,6 +100,9 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
   ],
+  initialValue: {
+    weight: 0,
+  },
   preview: {
     select: {
       title: "title",
