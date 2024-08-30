@@ -7,8 +7,6 @@ import { Resend } from "resend";
 const API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = "echo <ikkesvar@echo-webkom.no>";
 
-const resend = new Resend(API_KEY);
-
 export const emailClient = {
   /**
    * Only sends an email if the NODE_ENV is production and if the RESEND_API_KEY is set
@@ -32,10 +30,7 @@ export const emailClient = {
       return;
     }
 
-    if (!API_KEY) {
-      throw new Error("Missing RESEND_API_KEY");
-    }
-
+    const resend = new Resend(API_KEY);
     return await resend.emails.send({
       from: FROM_EMAIL,
       to,
