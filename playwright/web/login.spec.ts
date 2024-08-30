@@ -18,5 +18,7 @@ test("login as non-member", async ({ page }) => {
 
   await page.waitForLoadState("load");
 
-  await expect(page.getByText("Grunn: NOT_MEMBER_OF_ECHO")).toBeVisible();
+  await expect(page.getByTestId("callout")).toHaveText(
+    "Noe gikk galt. Dette kan være grunnet til at vi ikke automatisk får til å finne ut om du er medlem.",
+  );
 });

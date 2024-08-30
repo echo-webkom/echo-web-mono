@@ -8,33 +8,33 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1,
   reporter: "html",
 
   use: {
     trace: "on-first-retry",
     headless: !!process.env.CI,
-    baseURL: "http://localhost:3000",
+    baseURL: "http://127.0.0.1:3000",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
   },
 
   projects: [
-    /* Test against desktop viewports. */
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    // Commented out because of problems in CI
-    // {
-    //   name: "Mobile Safari",
-    //   use: { ...devices["iPhone 12"] },
-    // },
   ],
 
   webServer: [
     {
       command: "pnpm --filter=web run start",
-      url: "http://localhost:3000",
-      timeout: 120 * 1000,
+      url: "http://127.0.0.1:3000",
+      reuseExistingServer: !process.env.CI,
+      cwd: "../",
+    },
+    {
+      command: "pnpm --filter=ars run start",
+      url: "http://127.0.0.1:4444",
       reuseExistingServer: !process.env.CI,
       cwd: "../",
     },

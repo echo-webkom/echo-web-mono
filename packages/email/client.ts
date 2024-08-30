@@ -2,7 +2,6 @@
 import "server-only";
 
 import { render } from "jsx-email";
-import { Resend } from "resend";
 
 const API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = "echo <ikkesvar@echo-webkom.no>";
@@ -18,24 +17,32 @@ export const emailClient = {
    * @param Email the email component to render
    */
   sendEmail: async (to: Array<string>, subject: string, component: React.ReactElement) => {
-    if (process.env.NODE_ENV !== "production" || !API_KEY) {
-      const text = await render(component, {
-        plainText: true,
-      });
+    const html = await render(component);
 
+    if (process.env.NODE_ENV !== "production" || !API_KEY) {
       console.log("SENDING EMAIL");
       console.log("TO:", to);
       console.log("SUBJECT:", subject);
-      console.log("EMAIL", text);
+      console.log("EMAIL", html);
       return;
     }
 
-    const resend = new Resend(API_KEY);
-    return await resend.emails.send({
-      from: FROM_EMAIL,
-      to,
-      subject,
-      react: component,
+    if (!API_KEY) {
+      throw new Error("Missing RESEND_API_KEY");
+    }
+
+    return await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to,
+        subject,
+        html,
+      }),
     });
   },
 };

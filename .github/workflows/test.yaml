@@ -1,0 +1,60 @@
+name: Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  ADMIN_KEY: foobar
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+  NEXT_PUBLIC_SANITY_DATASET: testing
+  NEXT_PUBLIC_ARS_URL: http://localhost:4444
+  FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+  FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15.7
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: echo-web
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pnpm-install
+
+      - run: pnpm db:migrate
+
+      - name: Install playwright browsers
+        run: pnpm --filter=playwright test:install
+
+      - name: Seed database
+        run: pnpm seed database --mode test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Run unit tests
+        run: pnpm test:unit
+
+      - name: Run playwright tests
+        run: pnpm test:e2e
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright/playwright-report/
+          retention-days: 30

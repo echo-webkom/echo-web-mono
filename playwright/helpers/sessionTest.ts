@@ -16,7 +16,7 @@ export const loginAs = async (page: Page, as: User) => {
       value: userCookies[as],
       domain: "localhost",
       path: "/",
-      expires: -1,
+      expires: 999999,
       secure: false,
       sameSite: "Lax",
     },
