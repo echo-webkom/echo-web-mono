@@ -44,6 +44,7 @@ export default defineType({
       name: "weight",
       title: "Vekting",
       type: "number",
+      initialValue: 0,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -100,9 +101,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
   ],
-  initialValue: {
-    weight: 0,
-  },
   preview: {
     select: {
       title: "title",

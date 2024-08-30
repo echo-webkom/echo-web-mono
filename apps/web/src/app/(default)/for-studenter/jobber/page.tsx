@@ -1,4 +1,4 @@
-  import { type Metadata } from "next/types";
+import { type Metadata } from "next/types";
 
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";

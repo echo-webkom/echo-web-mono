@@ -3,7 +3,7 @@ import groq from "groq";
 export const jobAdsQuery = groq`
 *[_type == "job"
   && !(_id in path('drafts.**'))]
-  | order(deadline desc) | order(weight desc) {
+  | order(weight desc, deadline desc) {
   _id,
   _createdAt,
   _updatedAt,
