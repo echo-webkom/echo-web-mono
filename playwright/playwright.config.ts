@@ -13,21 +13,16 @@ export default defineConfig({
 
   use: {
     trace: "on-first-retry",
+    video: "on-first-retry",
     headless: !!process.env.CI,
     baseURL: "http://localhost:3000",
   },
 
   projects: [
-    /* Test against desktop viewports. */
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    // Commented out because of problems in CI
-    // {
-    //   name: "Mobile Safari",
-    //   use: { ...devices["iPhone 12"] },
-    // },
   ],
 
   webServer: [
