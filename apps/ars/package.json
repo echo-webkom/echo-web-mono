@@ -1,0 +1,30 @@
+{
+  "name": "@echo-webkom/ars",
+  "scripts": {
+    "start": "pnpm with-env node dist/index.js",
+    "build": "pnpm with-env esbuild src/**/*.ts --bundle --platform=node --outdir=dist",
+    "dev": "pnpm with-env tsx watch src/index.ts",
+    "test:unit": "vitest",
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@echo-webkom/db": "workspace:*",
+    "@hono/node-server": "1.12.2",
+    "date-fns": "3.6.0",
+    "drizzle-orm": "0.33.0",
+    "hono": "4.5.9",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "0.5.8",
+    "@types/node": "20.16.1",
+    "dotenv-cli": "7.4.2",
+    "esbuild": "0.23.1",
+    "tsx": "4.17.0",
+    "typescript": "5.5.4",
+    "vitest": "2.0.5"
+  }
+}
