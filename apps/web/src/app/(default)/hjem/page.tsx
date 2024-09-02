@@ -1,5 +1,3 @@
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
 import { Calendar } from "./_components/calendar";
