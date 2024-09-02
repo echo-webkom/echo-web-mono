@@ -1,14 +1,21 @@
-import { startOfMonth } from "date-fns";
-
-import { Calendar } from "@/components/calendar/calendar";
+import { MonthCalendar } from "@/components/calendar/month-calendar";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { fetchAllHappenings } from "@/sanity/happening";
+import { fetchMovies } from "@/sanity/movies";
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "../hjem/_components/_lib/mappers";
 
-export default function CalendarPage() {
+export default async function CalendarPage() {
+  const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
+
+  const calendarEvents = happeningsToCalendarEvent(happenings).concat(
+    moviesToCalendarEvent(movies),
+  );
+
   return (
     <Container className="gap-5">
       <Heading className="pt-10">Kalender</Heading>
-      <Calendar events={[]} month={startOfMonth(new Date())} />
+      <MonthCalendar events={calendarEvents} />
     </Container>
   );
 }
