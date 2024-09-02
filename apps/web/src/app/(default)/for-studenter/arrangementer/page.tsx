@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import removeMarkdown from "remove-markdown";
 
-import { Calendar } from "@/components/calendar/happening-calendar";
+import { DaysCalendar } from "@/components/calendar/days-calendar";
 import { Container } from "@/components/container";
 import {
   EventFilter,
@@ -43,7 +43,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container className="space-y-4 py-10">
-      <Calendar events={mappedHappenings.concat(mappedMovies)} />
+      <DaysCalendar events={mappedHappenings.concat(mappedMovies)} />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
       </div>

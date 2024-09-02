@@ -1,4 +1,4 @@
-import { Calendar as EventCalendar } from "@/components/calendar/happening-calendar";
+import { DaysCalendar as EventCalendar } from "@/components/calendar/days-calendar";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 import { happeningsToCalendarEvent, moviesToCalendarEvent } from "./_lib/mappers";
