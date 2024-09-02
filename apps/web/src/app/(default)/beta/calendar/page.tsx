@@ -32,7 +32,7 @@ const eventTypes: Array<{
   },
 ];
 
-export default function Calendar() {
+export default function CalendarExport() {
   const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
   const [includePast, setIncludePast] = useState<boolean>(false);
   const [includeMovies, setIncludeMovies] = useState<boolean>(false);
