@@ -1,42 +1,9 @@
-# Editors
-.code/
-.idea/
-
-# Package manager
 node_modules/
-yarn.lock
-package-lock.json
-
-# db
-postgres-data/
-
-# email
-.react-email/
-
-# Env
-.env*
+.next
+dist
+build
+.DS_Store
+.env!
 !.env.example
-
-# TypeScript
-*tsbuildinfo
-
-# Turborepo
-.turbo
-
-# Next.js
-.next/
 next-env.d.ts
 
-# Mac
-.DS_Store
-
-# Playwright
-test-results/
-playwright-report/
-playwright/.cache/
-
-
-# Sanity
-.sanity
-.dist
-dist

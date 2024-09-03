@@ -1,0 +1,163 @@
+"use server";
+
+import { and, eq } from "drizzle-orm";
+import { z } from "zod";
+
+import StrikeNotificationEmail from "@/components/emails/strike-notification";
+import { StrikeType } from "@/constants";
+import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
+import { db } from "@/db/drizzle";
+import { StrikeInfoInsert } from "@/db/schemas";
+import { emailClient } from "@/lib/email/client";
+import { getUser } from "@/lib/get-user";
+import { isBedkom, isMemberOf } from "@/lib/memberships";
+
+const getBannableStrikeNumber = (current: number, added: number) => {
+  const BAN_AMOUNT = 5;
+
+  if (current + added >= BAN_AMOUNT) {
+    return BAN_AMOUNT - current;
+  }
+};
+
+export const remvoveStrike = async (strikeId: number) => {
+  try {
+    const issuer = await getUser();
+
+    if (!issuer) {
+      return {
+        success: false,
+        message: "Du er ikke logget inn",
+      };
+    }
+
+    const isAllowed = isBedkom(issuer) || isMemberOf(issuer, ["hovedstyret"]);
+
+    if (!isAllowed) {
+      return {
+        success: false,
+        message: "Du har ikke tilgang til å fjerne prikker",
+      };
+    }
+    const strike = await db.query.strikes.findFirst({
+      where: (s) => eq(s.id, strikeId),
+    });
+
+    if (!strike) {
+      return {
+        success: false,
+        message: "Fant ikke prikken",
+      };
+    }
+
+    await deleteStrike(strike.userId, strikeId);
+
+    return {
+      success: true,
+      message: "Prikken ble slettet",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "En feil har oppstått",
+    };
+  }
+};
+
+export const addStrike = async (
+  userId: string,
+  happeningId: string,
+  reason: string,
+  amount: number,
+  currentAmount: number,
+  type: StrikeType,
+) => {
+  try {
+    const issuer = await getUser();
+
+    if (!issuer) {
+      return {
+        success: false,
+        message: "Du er ikke logget inn",
+      };
+    }
+
+    const isAllowed = isBedkom(issuer);
+
+    if (!isAllowed) {
+      return {
+        success: false,
+        message: "Du har ikke tilgang til å gi prikker",
+      };
+    }
+
+    if (amount < 1) {
+      return {
+        success: false,
+        message: "Antall prikker tildelt må være større enn 0",
+      };
+    }
+
+    const user = await db.query.users.findFirst({
+      where: (user) => eq(user.id, userId),
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        message: "Fant ikke brukeren",
+      };
+    }
+
+    const happening = await db.query.happenings.findFirst({
+      where: (happening) => and(eq(happening.id, happeningId), eq(happening.type, "bedpres")),
+    });
+
+    if (!happening) {
+      return {
+        success: false,
+        message: "Fant ikke bedriftspresentasjonen",
+      };
+    }
+
+    const bannableStrikeNumber =
+      type === ("NO_SHOW" as StrikeType) ? 1 : getBannableStrikeNumber(currentAmount, amount);
+
+    const data = {
+      happeningId: happening.id,
+      issuerId: issuer.id,
+      reason: reason,
+    } satisfies StrikeInfoInsert;
+
+    await createStrikes(data, user.id, amount, bannableStrikeNumber);
+
+    await emailClient.sendEmail(
+      [user.alternativeEmail ?? user.email],
+      `Du har fått ${amount} ${amount > 1 ? "prikker" : "prikk"} fra ${happening.title}`,
+      StrikeNotificationEmail({
+        happeningTitle: happening.title,
+        name: user.name ?? "Ukjent",
+        reason: reason ?? "Ingen grunn oppgitt",
+        amount: amount,
+        isBanned: user.isBanned,
+      }),
+    );
+
+    return {
+      success: true,
+      message: "Prikker lagt til",
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        message: "Informasjonen er ikke i riktig format",
+      };
+    }
+
+    return {
+      success: false,
+      message: "En feil har oppstått",
+    };
+  }
+};
