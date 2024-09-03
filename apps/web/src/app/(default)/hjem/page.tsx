@@ -8,9 +8,7 @@ import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
 
 export default async function Home() {
-  await ensureUser(undefined, {
-    redirectTo: "/",
-  });
+  await ensureUser();
 
   return (
     <div className="space-y-8 py-24">
