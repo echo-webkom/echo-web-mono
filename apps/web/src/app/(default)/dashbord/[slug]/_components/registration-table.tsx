@@ -69,6 +69,7 @@ export const RegistrationTable = ({
                   .map((r) => r.user.name ?? r.user.email)}
               />
               <DownloadCsvButton slug={slug} />
+              <RemoveAllRegistrationsButton slug={slug} />
             </div>
           </div>
 
