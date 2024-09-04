@@ -8,9 +8,7 @@ import { registrations } from "@echo-webkom/db/schemas";
 
 import { getFullHappening } from "@/data/happenings/queries";
 import { getUser } from "@/lib/get-user";
-import { isHost } from "@/lib/memberships";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent } from "./ui/dialog";
+import { isHost, isWebkom } from "@/lib/memberships";
 
 type RemoveAllRegistrationsButtonProps = {
   slug: string;
