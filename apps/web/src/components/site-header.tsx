@@ -6,6 +6,7 @@ import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
+import { GoogleTranslate } from "./translate-button";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
@@ -32,6 +33,7 @@ export const SiteHeader = async () => {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
+              <GoogleTranslate />
               <ThemeSwitchButton />
               {user ? (
                 <UserMenu user={user} />
