@@ -28,6 +28,9 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
   const user = await getUser();
 
   if (!user) {
+    console.error("User not found", {
+      happeningId: id,
+    });
     return {
       success: false,
       message: "Du er ikke logget inn",
@@ -39,6 +42,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
      * Check if user has filled out necessary information
      */
     if (!user.degreeId || !user.year || !user.hasReadTerms) {
+      console.error("User has not filled out necessary information", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
@@ -56,6 +63,9 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     });
 
     if (!happening) {
+      console.error("Happening not found", {
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Arrangementet finnes ikke",
@@ -71,6 +81,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
         : false;
 
     if (isBanned) {
+      console.error("User is banned", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Du er utestengt fra denne bedriftspresentasjonen",
@@ -90,6 +104,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     });
 
     if (exisitingRegistration) {
+      console.error("Registration already exists", {
+        userId: user.id,
+        happeningId: id,
+      });
       const status =
         exisitingRegistration.status === "registered"
           ? "Du er allerede påmeldt dette arrangementet"
@@ -109,6 +127,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
      * Check if registration is open for user that can not early register
      */
     if (!canEarlyRegister && happening.registrationStart && isFuture(happening.registrationStart)) {
+      console.error("Registration is not open", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Påmeldingen har ikke startet",
@@ -116,6 +138,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     }
 
     if (!canEarlyRegister && !happening.registrationStart) {
+      console.error("Registration is not open", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Påmelding er bare for inviterte undergrupper",
@@ -126,6 +152,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
      * Check if registration is closed for user that can not early register
      */
     if (happening.registrationEnd && isPast(happening.registrationEnd)) {
+      console.error("Registration is closed", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Påmeldingen har allerede stengt",
@@ -161,6 +191,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
 
     if (!userSpotRange) {
+      console.error("User is not in any spot range", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Du kan ikke melde deg på dette arrangementet",
@@ -180,6 +214,10 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
     });
 
     if (!allQuestionsAnswered) {
+      console.error("Not all questions are answered", {
+        userId: user.id,
+        happeningId: id,
+      });
       return {
         success: false,
         message: "Du må svare på alle spørsmålene",

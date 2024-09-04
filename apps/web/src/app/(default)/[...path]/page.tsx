@@ -25,9 +25,6 @@ const getData = cache(async (path: Props["params"]["path"]) => {
   const page = await fetchStaticInfoBySlug(path[0]!, path[1]!);
 
   if (!page) {
-    console.info("Page not found", {
-      path: path.join("/"),
-    });
     return notFound();
   }
 

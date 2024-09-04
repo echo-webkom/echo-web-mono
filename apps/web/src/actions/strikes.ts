@@ -11,7 +11,7 @@ import { type StrikeType } from "@echo-webkom/lib/src/constants";
 
 import { createStrikes, deleteStrike } from "@/data/strikes/mutations";
 import { getUser } from "@/lib/get-user";
-import { isBedkom } from "@/lib/memberships";
+import { isBedkom, isMemberOf } from "@/lib/memberships";
 
 const getBannableStrikeNumber = (current: number, added: number) => {
   const BAN_AMOUNT = 5;
@@ -32,7 +32,7 @@ export const remvoveStrike = async (strikeId: number) => {
       };
     }
 
-    const isAllowed = isBedkom(issuer);
+    const isAllowed = isBedkom(issuer) || isMemberOf(issuer, ["hovedstyret"]);
 
     if (!isAllowed) {
       return {

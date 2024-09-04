@@ -112,10 +112,18 @@ describe("toCsv", () => {
     );
   });
 
-  it("should convert selected headers", () => {
-    const selectedHeaders: Array<string> = ["Navn", "Studieretning"];
-    const csv = toCsv(happening, selectedHeaders);
+  it.each([
+    {
+      headers: ["Navn", "Studieretning"],
+      expected: `"Navn","Studieretning"\n"Petter Kjellberg","Computer Science"`,
+    },
+    {
+      headers: ["Navn", "Status"],
+      expected: `"Navn","Status"\n"Petter Kjellberg","registered"`,
+    },
+  ])("should return selected headers", ({ headers, expected }) => {
+    const csv = toCsv(happening, headers);
 
-    expect(csv).toBe(`"Navn","Studieretning"\n"Petter Kjellberg","Computer Science"`);
+    expect(csv).toBe(expected);
   });
 });

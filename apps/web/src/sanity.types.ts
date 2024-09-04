@@ -600,6 +600,7 @@ export type JobAdsQueryResult = Array<{
   _id: string;
   _createdAt: string;
   _updatedAt: string;
+  weight: number;
   title: string;
   slug: string;
   company: {
