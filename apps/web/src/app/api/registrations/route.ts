@@ -5,7 +5,6 @@ import { toCsv } from "@/lib/csv";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { slugify } from "@/utils/string";
-import { removeAllRegistrations } from "@/actions/remove-all-registrations";
 
 export const dynamic = "force-dynamic";
 
@@ -26,18 +25,12 @@ export const GET = async (req: NextRequest) => {
 
   const happening = await getFullHappening(slug);
 
-  const removeRegistrations = await removeAllRegistrations(slug);
-
   if (!happening) {
     return new Response("Happening not found", { status: 404 });
   }
 
   if (!isHost(user, happening)) {
     return new Response("Unauthorized", { status: 401 });
-  }
-
-  if (!removeRegistrations) {
-    return new Response("Unauthorized", { status: 400 });
   }
 
   return new Response(toCsv(happening, selectedHeaders), {

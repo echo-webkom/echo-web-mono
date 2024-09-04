@@ -17,6 +17,7 @@ import { RandomPersonButton } from "./random-person-button";
 import { RegistrationRow } from "./registration-row";
 import { RegistrationTableContext } from "./registration-table-context";
 import { GroupFilter, SearchFilter, StatusFilter, YearFilter } from "./registration-table-filters";
+import { RemoveAllRegistrationsButton } from "./remove-all-registrations-button";
 
 type RegistrationTableProps = {
   registrations: Array<RegistrationWithUser>;

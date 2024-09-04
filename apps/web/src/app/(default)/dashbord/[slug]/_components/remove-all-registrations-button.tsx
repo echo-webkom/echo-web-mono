@@ -23,41 +23,19 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
   };
 
   const handleRemoveAllRegistrations = async () => {
+    await removeAllRegistrations(slug);
     setLoading(true);
     setError(null);
-    try {
-      const response = await fetch("/api/remove-registrations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ slug }),
-      });
-      const result = await response.json();
-      if (!result.success) {
-        setError(result.message);
-      } else {
-        setIsOpen(false);
-      }
-    } catch (err) {
-      setError("An error occurred while removing registrations.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
     <>
       <Button onClick={openDialog}> Fjern alle påmeldinger </Button>
-
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
             {error && <p style={{ color: "red" }}>{error}</p>}
-            <Button onClick={removeAllRegistrations}>Ja, fjern alle</Button>
-            <Button onClick={handleRemoveAllRegistrations} disabled={loading}>
-              {loading ? "Removing..." : "Ja, fjern alle"}
-            </Button>
+            <Button onClick={handleRemoveAllRegistrations} disabled={loading}></Button>
             <Button onClick={closeDialog}>Close</Button>
           </DialogContent>
         </Dialog>
