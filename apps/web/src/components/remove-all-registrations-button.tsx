@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { eq } from "drizzle-orm";
 
-import { deregister } from "@/actions/deregister";
+import { db } from "@echo-webkom/db";
+
 import { getFullHappening } from "@/data/happenings/queries";
+import { getUser } from "@/lib/get-user";
+import { isHost, isWebkom } from "@/lib/memberships";
 import { type RegistrationWithUser } from "./registration-table";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
@@ -11,7 +15,7 @@ type RemoveAllRegistrationsButtonProps = {
   slug: string;
 };
 
-export const RemoveAllRegistrationsButton = ({
+const RemoveAllRegistrationsButton = ({
   registrations,
   slug,
 }: RemoveAllRegistrationsButtonProps) => {
@@ -32,15 +36,19 @@ export const RemoveAllRegistrationsButton = ({
         console.error("Happening not found");
         return;
       }
-
-      for (const regUser of registeredUsers) {
-        await deregister(regUser.user.id, { reason: "Removed by host" });
+      const user = await getUser();
+      if (!user || !isHost(user, happening) || !isWebkom(user)) {
+        console.error("Invalid user");
+        return;
       }
+
+      await db.delete(registrations).where(eq(registrations.happeningId, happening.id));
       setIsOpen(false);
     } catch (error) {
       console.error("Error removing registrations:", error);
     }
   };
+
   const closeDialog = () => {
     setIsOpen(false);
   };
@@ -63,3 +71,5 @@ export const RemoveAllRegistrationsButton = ({
     </>
   );
 };
+
+export default RemoveAllRegistrationsButton;
