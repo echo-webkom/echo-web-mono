@@ -15,7 +15,7 @@ type RemoveAllRegistrationsButtonProps = {
   slug: string;
 };
 
-const RemoveAllRegistrationsButton = ({
+export const RemoveAllRegistrationsButton = ({
   registrations,
   slug,
 }: RemoveAllRegistrationsButtonProps) => {
@@ -26,26 +26,38 @@ const RemoveAllRegistrationsButton = ({
   };
 
   const removeAllRegistrations = async () => {
-    const registeredUsers = getRegisteredUsers();
-    if (registeredUsers.length === 0) {
-      return;
-    }
     try {
       const happening = await getFullHappening(slug);
       if (!happening) {
-        console.error("Happening not found");
-        return;
+        return {
+          success: false,
+          message: "Happening not found",
+        };
       }
+
       const user = await getUser();
       if (!user || !isHost(user, happening) || !isWebkom(user)) {
-        console.error("Invalid user");
-        return;
+        return {
+          success: false,
+          message: "Invalid user",
+        };
+      }
+
+      const registeredUsers = getRegisteredUsers();
+      if (registeredUsers.length === 0) {
+        return {
+          success: false,
+          message: "No registered users",
+        };
       }
 
       await db.delete(registrations).where(eq(registrations.happeningId, happening.id));
       setIsOpen(false);
-    } catch (error) {
-      console.error("Error removing registrations:", error);
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
     }
   };
 
@@ -71,5 +83,3 @@ const RemoveAllRegistrationsButton = ({
     </>
   );
 };
-
-export default RemoveAllRegistrationsButton;
