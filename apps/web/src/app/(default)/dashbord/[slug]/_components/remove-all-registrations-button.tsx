@@ -13,7 +13,6 @@ type RemoveAllRegistrationsButtonProps = {
 export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const closeDialog = () => {
     setIsOpen(false);
@@ -25,7 +24,6 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
   const handleRemoveAllRegistrations = async () => {
     await removeAllRegistrations(slug);
     setLoading(true);
-    setError(null);
   };
 
   return (
@@ -34,7 +32,6 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
-            {error && <p style={{ color: "red" }}>{error}</p>}
             <Button onClick={handleRemoveAllRegistrations} disabled={loading}></Button>
             <Button onClick={closeDialog}>Close</Button>
           </DialogContent>
