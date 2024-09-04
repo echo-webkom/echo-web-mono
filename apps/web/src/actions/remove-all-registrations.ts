@@ -8,6 +8,8 @@ import { registrations } from "@echo-webkom/db/schemas";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { getFullHappening } from "@/data/happenings/queries";
+import { cacheKeyFactory } from "@/data/registrations/revalidate";
+import { revalidateTag } from "next/cache";
 
 
 export const removeAllRegistrations = async (slug: string) => {
@@ -23,6 +25,8 @@ export const removeAllRegistrations = async (slug: string) => {
     }
 
     await db.delete(registrations).where(eq(registrations.happeningId, happening.id));
+    revalidateTag(cacheKeyFactory.registrationsHappening(happening.id));
+
   } catch (error) {
     return {
       success: false,
