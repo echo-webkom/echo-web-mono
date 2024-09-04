@@ -2,6 +2,7 @@ import { useState } from "react";
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
+import { registrations } from "@echo-webkom/db/schemas";
 
 import { getFullHappening } from "@/data/happenings/queries";
 import { getUser } from "@/lib/get-user";
@@ -11,18 +12,18 @@ import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
 
 type RemoveAllRegistrationsButtonProps = {
-  registrations: Array<RegistrationWithUser>;
+  registrationsWithUsers: Array<RegistrationWithUser>;
   slug: string;
 };
 
 export const RemoveAllRegistrationsButton = ({
-  registrations,
+  registrationsWithUsers,
   slug,
 }: RemoveAllRegistrationsButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const getRegisteredUsers = () => {
-    return registrations.filter((r) => r.status === "registered");
+    return registrationsWithUsers.filter((r) => r.status === "registered");
   };
 
   const removeAllRegistrations = async () => {
@@ -53,10 +54,10 @@ export const RemoveAllRegistrationsButton = ({
 
       await db.delete(registrations).where(eq(registrations.happeningId, happening.id));
       setIsOpen(false);
-    } catch (e) {
+    } catch (error) {
       return {
         success: false,
-        message: e.message,
+        message: error.message,
       };
     }
   };

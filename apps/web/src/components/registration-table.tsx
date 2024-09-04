@@ -161,7 +161,7 @@ export const RegistrationTable = ({
                 .map((r) => r.user.name ?? r.user.email)}
             />
             <DownloadCsvButton slug={slug} questions={questions} />
-            <RemoveAllRegistrationsButton registrations={registrations} slug={slug} />
+            <RemoveAllRegistrationsButton registrationsWithUsers={registrations} slug={slug} />
           </div>
         </div>
 
