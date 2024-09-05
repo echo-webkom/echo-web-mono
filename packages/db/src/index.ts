@@ -13,10 +13,9 @@ let pool;
 
 const createPool = () => {
   return postgres(process.env.DATABASE_URL!, {
-    max: 100,
     prepare: false,
     idle_timeout: 10000, // 10 seconds
-    connect_timeout: 1000, // 10 seconds
+    connect_timeout: 1000, // 1 seconds
   });
 };
 
