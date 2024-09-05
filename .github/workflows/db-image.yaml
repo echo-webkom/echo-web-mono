@@ -1,0 +1,40 @@
+name: 🐘 Build and Push PostgreSQL Image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐋 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 📦 Build the PostgreSQL image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/echo-web-db:${{ github.sha }} -f packages/db/Dockerfile .
+
+      - name: 🔑 Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🚀 Push the PostgreSQL image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/echo-web-db:${{ github.sha }}
+
+      - name: 📌 Tag and push latest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag ghcr.io/${{ github.repository }}/echo-web-db:${{ github.sha }} ghcr.io/${{ github.repository }}/echo-web-db:latest
+          docker push ghcr.io/${{ github.repository }}/echo-web-db:latest
