@@ -29,7 +29,7 @@ export default async function Home() {
         />
         <ComingHappenings
           title="Kommende bedpres"
-          href="/for-studenter/arrangementer"
+          href="/for-studenter/arrangementer?type=bedpres"
           types={["bedpres"]}
           n={3}
           className="col-span-2 row-span-1"
