@@ -6,11 +6,13 @@ import {
   addMonths,
   eachDayOfInterval,
   isSameDay,
+  isThisMonth,
   lastDayOfMonth,
   startOfMonth,
   subDays,
 } from "date-fns";
-import { FaArrowLeft, FaArrowRight, FaArrowUp } from "react-icons/fa";
+import { BiReset } from "react-icons/bi";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { cn } from "@/utils/cn";
 import { Heading } from "../typography/heading";
@@ -58,18 +60,23 @@ export const MonthCalendar = ({ events }: Props) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex gap-4">
+      <div className="flex w-full max-w-md">
         <Button variant="outline" onClick={() => handleUpdateMonth(-1)}>
           <FaArrowLeft />
         </Button>
-        <Heading level={2}>
-          {months[month.getMonth()]}, {month.getFullYear()}
+        <Heading level={2} className="flex-1 justify-center">
+          {months[month.getMonth()]} {month.getFullYear()}
         </Heading>
         <Button variant="outline" onClick={() => handleUpdateMonth(1)}>
           <FaArrowRight />
         </Button>
+        {!isThisMonth(month) && (
+          <Button variant="outline" onClick={() => setMonth(startOfMonth(new Date()))}>
+            <BiReset />
+          </Button>
+        )}
       </div>
-      <div className="grid grid-cols-7">
+      <div className="grid w-full max-w-5xl grid-cols-7">
         {weekdays.map((day) => (
           <Heading
             level={2}
@@ -85,11 +92,8 @@ export const MonthCalendar = ({ events }: Props) => {
 
         {Array.from({ length: firstDay }, (_, i) => subDays(month, firstDay - i)).map(
           (day, index) => (
-            <div
-              key={index}
-              className="relative flex min-h-20 flex-col border border-muted-foreground p-2"
-            >
-              <Heading className="absolute right-2 top-2 text-muted-foreground" level={3}>
+            <div key={index} className="flex min-h-20 flex-col border border-muted-foreground p-2">
+              <Heading className="w-full justify-end text-muted-foreground" level={3}>
                 {day.getDate()}
               </Heading>
             </div>
@@ -108,7 +112,7 @@ export const MonthCalendar = ({ events }: Props) => {
               .filter((event) => isSameDay(event.date, day))
               .map((event, _) => (
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
-                  <HoverCardTrigger>
+                  <HoverCardTrigger asChild>
                     <div className="overflow-hidden rounded-xl border-2 p-2 hover:bg-primary-hover">
                       <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
                         {event.title}
@@ -139,12 +143,9 @@ export const MonthCalendar = ({ events }: Props) => {
               ))}
           </div>
         ))}
-        {Array.from({ length: firstDay }).map((_, index) => (
-          <div
-            key={index}
-            className="relative flex min-h-20 flex-col border border-muted-foreground p-2"
-          >
-            <Heading className="absolute right-2 top-2 text-muted-foreground" level={3}>
+        {Array.from({ length: 7 - ((firstDay + daysInMonth.length) % 7) }).map((_, index) => (
+          <div key={index} className="flex min-h-20 flex-col border border-muted-foreground p-2">
+            <Heading className="w-full justify-end text-muted-foreground" level={3}>
               {index + 1}
             </Heading>
           </div>
