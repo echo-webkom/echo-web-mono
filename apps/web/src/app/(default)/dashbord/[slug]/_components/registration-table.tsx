@@ -69,8 +69,8 @@ export const RegistrationTable = ({
                   .filter((r) => r.status === "registered")
                   .map((r) => r.user.name ?? r.user.email)}
               />
-              <DownloadCsvButton slug={slug} />
               <RemoveAllRegistrationsButton slug={slug} />
+              <DownloadCsvButton slug={slug} />
             </div>
           </div>
 

@@ -6,7 +6,6 @@ import { removeAllRegistrations } from "@/actions/remove-all-registrations";
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { useWindowSize } from "@/hooks/use-window-size";
 
 type RemoveAllRegistrationsButtonProps = {
   slug: string;
@@ -34,7 +33,7 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
             <DialogBody>
-              <Text className="p-10 text-center text-2xl">
+              <Text className="border-b-2 p-10 text-center text-2xl">
                 Er du sikker på at du vil fjerne alle påmeldinger?
               </Text>
             </DialogBody>
