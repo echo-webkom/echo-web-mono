@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent } from "@radix-ui/react-dialog";
 
 import { removeAllRegistrations } from "@/actions/remove-all-registrations";
+import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { useWindowSize } from "@/hooks/use-window-size";
 
 type RemoveAllRegistrationsButtonProps = {
   slug: string;
@@ -22,6 +24,7 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
 
   const handleRemoveAllRegistrations = async () => {
     await removeAllRegistrations(slug);
+    closeDialog();
   };
 
   return (
@@ -30,15 +33,21 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <Button onClick={handleRemoveAllRegistrations}>Er du sikker? </Button>
-              <button
-                onClick={closeDialog}
-                className="absolute right-1 top-0 cursor-pointer border-none bg-none text-lg hover:text-red-500"
-              >
-                &times;
-              </button>
-            </div>
+            <DialogBody>
+              <Text className="p-10 text-center text-2xl">
+                Er du sikker på at du vil fjerne alle påmeldinger?
+              </Text>
+            </DialogBody>
+            <DialogFooter>
+              <div className="flex w-full justify-between">
+                <Button onClick={handleRemoveAllRegistrations} variant="default">
+                  Ja, fjern alle
+                </Button>
+                <Button variant="secondary" onClick={closeDialog}>
+                  Avbryt
+                </Button>
+              </div>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       )}
