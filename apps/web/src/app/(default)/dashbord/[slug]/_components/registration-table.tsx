@@ -17,6 +17,7 @@ import { RandomPersonButton } from "./random-person-button";
 import { RegistrationRow } from "./registration-row";
 import { RegistrationTableContext } from "./registration-table-context";
 import { GroupFilter, SearchFilter, StatusFilter, YearFilter } from "./registration-table-filters";
+import { RemoveAllRegistrationsButton } from "./remove-all-registrations-button";
 
 type RegistrationTableProps = {
   registrations: Array<RegistrationWithUser>;
@@ -68,6 +69,7 @@ export const RegistrationTable = ({
                   .filter((r) => r.status === "registered")
                   .map((r) => r.user.name ?? r.user.email)}
               />
+              <RemoveAllRegistrationsButton slug={slug} />
               <DownloadCsvButton slug={slug} />
             </div>
           </div>
