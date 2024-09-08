@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { cva } from "class-variance-authority";
 import {
   addMonths,
   eachDayOfInterval,
   isSameDay,
   isThisMonth,
+  isToday,
   lastDayOfMonth,
   startOfMonth,
   subDays,
@@ -14,23 +16,32 @@ import {
 import { BiReset } from "react-icons/bi";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
+import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
-type CalendarEvent = {
-  id: string;
-  title: string;
-  date: Date;
-  endDate?: Date;
-  body: string;
-  link: string;
-};
-
 type Props = {
   events: Array<CalendarEvent>;
 };
+
+const months = [
+  "Januar",
+  "Februar",
+  "Mars",
+  "April",
+  "Mai",
+  "Juni",
+  "Juli",
+  "August",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+
+const weekdays = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"];
 
 export const MonthCalendar = ({ events }: Props) => {
   const [month, setMonth] = useState(startOfMonth(new Date()));
@@ -39,42 +50,31 @@ export const MonthCalendar = ({ events }: Props) => {
     setMonth((prevMonth) => addMonths(prevMonth, delta));
   };
 
-  const weekdays = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"];
-  const months = [
-    "Januar",
-    "Februar",
-    "Mars",
-    "April",
-    "Mai",
-    "Juni",
-    "Juli",
-    "August",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
-
   const firstDay = month.getDay() > 0 ? month.getDay() - 1 : 6; //getDay goes from sunday, monday, ..., saturday
   const daysInMonth = eachDayOfInterval({ start: month, end: lastDayOfMonth(month) });
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex w-full max-w-md">
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex w-full max-w-md items-center gap-2">
         <Button variant="outline" onClick={() => handleUpdateMonth(-1)}>
           <FaArrowLeft />
         </Button>
         <Heading level={2} className="flex-1 justify-center">
           {months[month.getMonth()]} {month.getFullYear()}
         </Heading>
-        <Button variant="outline" onClick={() => handleUpdateMonth(1)}>
-          <FaArrowRight />
-        </Button>
         {!isThisMonth(month) && (
-          <Button variant="outline" onClick={() => setMonth(startOfMonth(new Date()))}>
+          <Button
+            variant="outline"
+            className=""
+            size="icon"
+            onClick={() => setMonth(startOfMonth(new Date()))}
+          >
             <BiReset />
           </Button>
         )}
+        <Button variant="outline" onClick={() => handleUpdateMonth(1)}>
+          <FaArrowRight />
+        </Button>
       </div>
       <div className="grid w-full max-w-5xl grid-cols-7">
         {weekdays.map((day) => (
@@ -103,7 +103,10 @@ export const MonthCalendar = ({ events }: Props) => {
         {daysInMonth.map((day, index) => (
           <div
             key={index}
-            className="flex min-h-20 flex-col gap-2 border border-muted-foreground p-2"
+            className={cn(
+              "flex min-h-20 flex-col gap-2 border border-muted-foreground p-2",
+              isToday(day) && "bg-accent",
+            )}
           >
             <Heading className="w-full justify-end" level={3}>
               {index + 1}
@@ -113,7 +116,13 @@ export const MonthCalendar = ({ events }: Props) => {
               .map((event, _) => (
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                   <HoverCardTrigger asChild>
-                    <div className="overflow-hidden rounded-xl border-2 p-2 hover:bg-primary-hover">
+                    <div
+                      className={cn("overflow-hidden rounded-xl border-2 p-2", {
+                        "border-blue-500 hover:bg-blue-400": event.type === "bedpres",
+                        "border-green-500 hover:bg-green-400": event.type === "event",
+                        "border-red-500 hover:bg-red-400": event.type === "movie",
+                      })}
+                    >
                       <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
                         {event.title}
                       </Link>
@@ -150,6 +159,24 @@ export const MonthCalendar = ({ events }: Props) => {
             </Heading>
           </div>
         ))}
+      </div>
+      <div className="flex w-full max-w-5xl gap-4 p-5">
+        <div className="mr-2 flex items-center">
+          <div className="mr-1 h-4 w-4 rounded-full bg-blue-500"></div>
+          <div>Bedpres</div>
+        </div>
+        <div className="mr-2 flex items-center">
+          <div className="mr-1 h-4 w-4 rounded-full bg-green-500"></div>
+          <div>Arrangement</div>
+        </div>
+        <div className="mr-2 flex items-center">
+          <div className="mr-1 h-4 w-4 rounded-full bg-red-500"></div>
+          <div>Film</div>
+        </div>
+        <div className="flex items-center">
+          <div className="mr-1 h-4 w-4 rounded-full bg-gray-600"></div>
+          <div>Annet</div>
+        </div>
       </div>
     </div>
   );

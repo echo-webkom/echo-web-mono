@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import removeMarkdown from "remove-markdown";
 
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/components/calendar/calendar";
 import { DaysCalendar } from "@/components/calendar/days-calendar";
 import { Container } from "@/components/container";
 import {
@@ -9,37 +9,19 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import { EventsView, type SearchParams } from "@/components/events-view";
-import { createHappeningLink } from "@/lib/create-link";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
 export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
-  const [happenngs, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
+  const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
   if (!searchParams) searchParams = { type: "all" };
 
   // Serialize searchParams to a JSON string as a key for the Suspense component.
   // Ensure a stable key by stringifying a sorted object if the order may vary.
   const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
-  const mappedHappenings = happenngs
-    .filter((happening) => Boolean(happening.date))
-    .map((happening) => ({
-      id: happening._id,
-      title: happening.title,
-      date: new Date(happening.date),
-      endDate: happening.endDate ? new Date(happening.endDate) : undefined,
-      body: removeMarkdown(happening.body ?? ""),
-      link: createHappeningLink(happening),
-    }));
-
-  const mappedMovies = movies.map((movie) => ({
-    id: movie._id,
-    title: `Film: ${movie.title}`,
-    date: new Date(movie.date),
-    endDate: undefined,
-    body: `Se ${movie.title} med filmklubben!`,
-    link: movie.link ?? "#",
-  }));
+  const mappedHappenings = happeningsToCalendarEvent(happenings);
+  const mappedMovies = moviesToCalendarEvent(movies);
 
   return (
     <Container className="space-y-4 py-10">

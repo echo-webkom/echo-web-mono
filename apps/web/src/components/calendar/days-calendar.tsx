@@ -4,19 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
 
+import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
-
-type CalendarEvent = {
-  id: string;
-  title: string;
-  date: Date;
-  endDate?: Date;
-  body: string;
-  link: string;
-};
 
 type Props = {
   events: Array<CalendarEvent>;
