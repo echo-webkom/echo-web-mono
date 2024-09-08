@@ -12,9 +12,9 @@
     --muted-dark: #9db2cd;
 
     --table-foreground: #010408;
-    --table-background: #f1f2f3;
-    --table-background-alt: #eaeaea;
-    --table-header-background: #e3eeff;
+    --table-background: #ffffff;
+    --table-background-alt: #f1f3f7;
+    --table-header-background: #ebeef4;
     --table-header-foreground: #16100b;
 
     --popover: #f9fafb;

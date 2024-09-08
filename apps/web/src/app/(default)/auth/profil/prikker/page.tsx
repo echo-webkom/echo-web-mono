@@ -59,36 +59,26 @@ export default async function UserStrikePagez() {
         <p className="mb-2">Du har ingen prikker. Fortsett sånn!</p>
       )}
 
-      <div className="relative sm:w-fit">
-        <Popover>
-          <PopoverTrigger className="absolute right-2 top-2">
-            <BiHelpCircle className="size-6" />
-          </PopoverTrigger>
-          <PopoverContent>
-            For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
-            <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
-              bedkom@echo.uib.no
-            </Link>
-          </PopoverContent>
-        </Popover>
-        <div className="rounded-xl bg-muted">
-          <div className="w-fit px-4 pt-1">
-            <Chip variant="secondary" className="my-6 block text-xl">
-              {validStrikes.toString() || 0 + " gyldige prikker"}
-            </Chip>
-            <Chip variant="primary" className="my-6 block text-xl">
-              {validStrikes.toString() || 0 + " tidligere prikker"}
-            </Chip>
-          </div>
-          <Link
-            className="group flex items-center space-x-1 p-2 underline-offset-4 hover:underline"
-            href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
-          >
-            <h2 className="ml-2 text-center">Les om Bedkom sine retningslinjer</h2>
-            <ArrowRight className="inline size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
+      <div className="my-5 rounded-md bg-muted p-5">
+        <Text className="font-semibold">Gyldige prikker: {validStrikes.length}</Text>
+        <Text className="font-semibold">
+          Tidligere prikker: {strikes.length - validStrikes.length}
+        </Text>
+        <Link
+          className="group mt-3 flex items-center space-x-1 underline-offset-4 hover:underline"
+          href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
+        >
+          <h2 className="text-center">Les om Bedkom sine retningslinjer</h2>
+          <ArrowRight className="inline size-4 transition-transform group-hover:translate-x-1" />
+        </Link>
       </div>
+      <Text>
+        For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
+        <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
+          bedkom@echo.uib.no
+        </Link>
+      </Text>
+
       {validStrikes.length > 0 && (
         <>
           <Heading className="mt-8" level={3}>
@@ -119,7 +109,7 @@ export default async function UserStrikePagez() {
 function StrikeTable({ strikes }: { strikes: Awaited<ReturnType<typeof getAllUserStrikes>> }) {
   return (
     <Table>
-      <TableHeader className="bg-muted">
+      <TableHeader>
         <TableRow>
           <TableHead scope="col">Bedpres</TableHead>
           <TableHead scope="col">Årsak</TableHead>

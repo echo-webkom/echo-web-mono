@@ -80,7 +80,9 @@ export const StrikesTable = ({
             return (
               <TableRow key={user.id}>
                 <TableCell>
-                  <Link href={`/prikker/${user.id}`}>{user.name ?? user.id}</Link>
+                  <Link href={`/prikker/${user.id}`} className="hover:underline">
+                    {user.name ?? user.id}
+                  </Link>
                 </TableCell>
                 <TableCell>{user.strikes}</TableCell>
                 <TableCell className="text-destructive">

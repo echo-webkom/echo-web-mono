@@ -77,11 +77,10 @@ export default async function UserStrikesPage({ params }: Props) {
               )}
             </div>
           )}
-
-          <Text>
-            <span>Gyldige prikker: {validStrikes.length}</span>
-            <span>Totalt antall prikker: {strikes.length}</span>
-          </Text>
+          <div className="my-5 rounded-md bg-muted p-5 font-semibold">
+            <Text>Gyldige prikker: {validStrikes.length}</Text>
+            <Text>Tidligere prikker: {strikes.length - validStrikes.length}</Text>
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <AddStrikeButton
@@ -101,9 +100,9 @@ export default async function UserStrikesPage({ params }: Props) {
         </div>
       </div>
 
-      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
+      {/* {validStrikes.length === 0 && earlierStrikes.length === 0 && (
         <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
-      )}
+      )} */}
 
       {validStrikes.length > 0 && (
         <>
