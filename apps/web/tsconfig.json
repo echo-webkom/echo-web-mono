@@ -19,7 +19,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".eslintrc.cjs",
-    "./src/env.mjs"
+    "./src/env.mjs",
+    "./cache-handler.js"
   ],
   "exclude": ["node_modules", ".next"]
 }
