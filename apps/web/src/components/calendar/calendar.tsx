@@ -1,18 +1,9 @@
-"use client"
+"use client";
 
-type CalendarEvent = {
-  id: string;
-  title: string;
-  date: Date;
-  endDate?: Date;
-  body: string;
-  link: string;
-}
+import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 
 type Props = {
   events: Array<CalendarEvent>;
 };
 
-export const Calendar = ({ events }: Props) => {
-
-}
+export const Calendar = ({ events }: Props) => {};

@@ -1,9 +1,9 @@
 import { MonthCalendar } from "@/components/calendar/month-calendar";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar-event-helpers";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
-import { happeningsToCalendarEvent, moviesToCalendarEvent } from "../hjem/_components/_lib/mappers";
 
 export default async function CalendarPage() {
   const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
