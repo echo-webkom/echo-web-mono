@@ -66,6 +66,7 @@ export const createFakeUsers = async (n: number) => {
         type: "student",
         token: `student${i}`,
         hasReadTerms: true,
+        isPublic: true,
         degreeId: pickRandom(["dtek", "dsik", "prog", "inf", "dsc", "dvit"]),
         year: pickRandom([1, 2, 3, 4, 5]),
       }),

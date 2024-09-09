@@ -1,5 +1,5 @@
 {
-  "id": "6284cd05-cc46-4202-b67c-b437bc8907d8",
+  "id": "220ebee6-f148-44a2-92de-d6130865ce98",
   "prevId": "9e46921d-c449-4b15-a371-a2a758d21348",
   "version": "7",
   "dialect": "postgresql",
@@ -223,50 +223,6 @@
             "user_id",
             "happening_id",
             "question_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "public.comments_reactions": {
-      "name": "comments_reactions",
-      "schema": "",
-      "columns": {
-        "comment_id": {
-          "name": "comment_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "comment_action",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "comments_reactions_comment_id_user_id_pk": {
-          "name": "comments_reactions_comment_id_user_id_pk",
-          "columns": [
-            "comment_id",
-            "user_id"
           ]
         }
       },
@@ -1161,6 +1117,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "is_public": {
+          "name": "is_public",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {
@@ -1545,14 +1508,6 @@
     }
   },
   "enums": {
-    "public.comment_action": {
-      "name": "comment_action",
-      "schema": "public",
-      "values": [
-        "like",
-        "dislike"
-      ]
-    },
     "public.degree_type": {
       "name": "degree_type",
       "schema": "public",

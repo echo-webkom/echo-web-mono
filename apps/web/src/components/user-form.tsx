@@ -30,6 +30,7 @@ const userSchema = z.object({
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
+  isPublic: z.boolean().optional(),
   birthday: z.coerce.date().optional(),
 });
 
@@ -39,6 +40,7 @@ type UserFormProps = {
     degree?: Degree;
     year?: number;
     hasReadTerms?: boolean;
+    isPublic?: boolean;
     id: string;
     birthday?: Date;
   };
@@ -56,6 +58,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       degree: user.degree?.id,
       year: user.year,
       hasReadTerms: user.hasReadTerms,
+      isPublic: user.isPublic,
       birthday: user.birthday,
     },
     resolver: zodResolver(userSchema),
@@ -70,6 +73,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         degreeId: data.degree,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
+        isPublic: data.isPublic,
         birthday: data.birthday,
       });
 
@@ -197,6 +201,23 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     </Link>
                     .
                   </FormLabel>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start space-y-2">
+              <div className="flex space-x-3">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Jeg vil at brukeren min skal være offentlig.</FormLabel>
                 </div>
               </div>
             </FormItem>
