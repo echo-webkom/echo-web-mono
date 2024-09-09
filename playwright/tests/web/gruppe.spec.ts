@@ -6,7 +6,8 @@ test.describe("Gruppe", () => {
   test("see group dashboard", async ({ page }) => {
     await loginAs(page, "Admin");
 
-    await page.goto("/auth/profil");
+    //TODO: check dynamic user id
+    await page.goto("/user/1");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 
@@ -20,7 +21,8 @@ test.describe("Gruppe", () => {
   test("not see group dashboard", async ({ page }) => {
     await loginAs(page, "Student");
 
-    await page.goto("/auth/profil");
+    //TODO: check dynamic user id
+    await page.goto("/user/1");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 

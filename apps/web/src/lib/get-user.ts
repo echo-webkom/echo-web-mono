@@ -1,6 +1,9 @@
 import { cache } from "react";
 
-import { auth } from "@/auth/helpers";
+import { auth } from "@echo-webkom/auth";
+import { eq } from "drizzle-orm";
+import { users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db";
 
 /**
  * Wraps the `auth` function in a "cache" to prevent
@@ -10,3 +13,19 @@ import { auth } from "@/auth/helpers";
  * load.
  */
 export const getUser = cache(auth);
+
+export const getUserById = cache(async (id: string) => {
+    const user = await db.query.users.findFirst({
+        where: eq(users.id, id),
+        with: {
+            degree: true,
+            memberships: {
+              with: {
+                group: true,
+              },
+            },
+          },
+    });
+
+    return user;
+});

@@ -12,8 +12,7 @@ import question from "./objects/question";
 import spotRange from "./objects/spot-range";
 import time from "./objects/time";
 import post from "./post";
-import profile from "./profile";
-import repeatingHappening from "./repeating-happening";
+import profile from "./user/[id]/profile";
 import staticInfo from "./static-info";
 import studentGroup from "./student-group";
 

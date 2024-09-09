@@ -5,7 +5,8 @@ import { loginAs } from "../../helpers/sessionTest";
 test("update profile", async ({ page }) => {
   await loginAs(page, "Student");
 
-  await page.goto("/auth/profil");
+  //TODO: check dynamic user id
+  await page.goto("/user/1");
 
   await expect(page.getByText("Student", { exact: true })).toBeVisible();
   await expect(page.getByText("student@echo.uib.no", { exact: true })).toBeVisible();
