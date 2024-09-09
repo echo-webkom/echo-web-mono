@@ -1,12 +1,12 @@
 {
-  "name": "@echo-webkom/web",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "pnpm run with-env next build",
     "dev": "pnpm run with-env next dev",
     "lint": "SKIP_ENV_VALIDATION=1 next lint",
-    "start": "pnpm run with-env next start",
+    "start": "pnpm run with-env node .next/standalone/apps/web/server.js",
     "clean": "rm -rf .next .turbo node_modules",
     "test:unit": "env TZ=UTC-1 vitest",
     "analyze": "ANALYZE=true pnpm build",

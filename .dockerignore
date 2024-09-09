@@ -1,0 +1,10 @@
+node_modules
+.git
+.env
+logs
+.DS_Store
+.vscode
+.github
+postgres-data
+redis-data
+

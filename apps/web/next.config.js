@@ -1,5 +1,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
+  output: "standalone",
+
   transpilePackages: [
     "@echo-webkom/auth",
     "@echo-webkom/db",

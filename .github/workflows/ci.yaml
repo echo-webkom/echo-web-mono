@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize]
 
 env:
+  NEXTAUTH_URL: http://localhost:3000
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
   NEXT_PUBLIC_SANITY_DATASET: "testing"
