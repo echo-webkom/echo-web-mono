@@ -10,11 +10,12 @@ import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
-import { getUser } from "@/lib/get-user";
+import { getUserById } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 
-export default async function ProfilePage() {
-  const user = await getUser();
+export default async function ProfilePage({ params }: { params: { id: string } }) {
+  const userId = params.id;
+  const user = await getUserById(userId);
 
   if (!user) {
     return redirect("/auth/logg-inn");
@@ -78,6 +79,7 @@ export default async function ProfilePage() {
           year: user.year ?? undefined,
           alternativeEmail: user.alternativeEmail ?? undefined,
           hasReadTerms: user.hasReadTerms ?? undefined,
+          isPublic: user.isPublic ?? undefined,
         }}
         degrees={degrees}
       />

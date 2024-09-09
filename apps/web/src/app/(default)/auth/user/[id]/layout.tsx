@@ -4,11 +4,12 @@ import {
   SidebarLayoutContent,
   SidebarLayoutRoot,
 } from "@/components/sidebar-layout";
+import { getUser } from "@/lib/get-user";
 
 const routes = [
   {
     label: "Profil",
-    href: "/auth/profil",
+    href: "/auth/user/[id]/profil",
   },
   {
     label: "Arrangementer",
@@ -20,13 +21,19 @@ const routes = [
   },
 ];
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
+  const user = await getUser();
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <SidebarLayoutRoot>
       <Sidebar>
         {routes.map((route) => {
           return (
-            <SidebarItem key={route.href} href={route.href}>
+            <SidebarItem key={route.href} href={route.href.replace("[id", user.id)}>
               {route.label}
             </SidebarItem>
           );

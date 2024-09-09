@@ -14,6 +14,7 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
   degreeId: true,
   year: true,
   hasReadTerms: true,
+  isPublic: true,
 });
 
 export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema>) => {
@@ -37,6 +38,7 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
         degreeId: data.degreeId,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
+        isPublic: data.isPublic,
       })
       .where(eq(users.id, user.id))
       .returning()

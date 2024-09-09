@@ -63,6 +63,7 @@ export const createFakeUsers = async (n: number) => {
         type: "student",
         token: `student${i}`,
         hasReadTerms: true,
+        isPublic: true,
       }),
     ),
   );
