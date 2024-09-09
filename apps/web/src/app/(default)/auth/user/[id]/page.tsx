@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db/serverless";
+import { db } from "@echo-webkom/db";
 
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
