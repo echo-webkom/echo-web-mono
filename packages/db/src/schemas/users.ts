@@ -39,6 +39,7 @@ export const users = pgTable(
     createdAt: timestamp("created_at").$defaultFn(() => new Date()),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     isPublic: boolean("is_public").notNull().default(false),
+    isPublic: boolean("is_public").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
   },
   (table) => ({

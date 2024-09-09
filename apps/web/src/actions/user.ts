@@ -15,6 +15,7 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
   year: true,
   hasReadTerms: true,
   isPublic: true,
+  isPublic: true,
   birthday: true,
 });
 
@@ -39,6 +40,7 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
         degreeId: data.degreeId,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
+        isPublic: data.isPublic,
         isPublic: data.isPublic,
         birthday: data.birthday,
       })
