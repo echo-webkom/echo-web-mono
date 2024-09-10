@@ -76,7 +76,7 @@ export const MonthCalendar = ({ events }: Props) => {
           <FaArrowRight />
         </Button>
       </div>
-      <div className="grid w-full max-w-5xl grid-cols-7">
+      <div className="grid w-full grid-cols-7">
         {weekdays.map((day) => (
           <Heading
             level={2}
