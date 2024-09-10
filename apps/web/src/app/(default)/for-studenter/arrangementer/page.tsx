@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 
-import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/components/calendar/calendar";
 import { DaysCalendar } from "@/components/calendar/days-calendar";
 import { Container } from "@/components/container";
 import {
@@ -9,6 +8,7 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import { EventsView, type SearchParams } from "@/components/events-view";
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar-event-helpers";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
