@@ -43,7 +43,7 @@ export default async function UserStrikesPage({ params }: Props) {
 
   const [validStrikes, earlierStrikes] = split(
     strikes,
-    (strike) => strike.id > (user.bannedFromStrike ?? -1),
+    (strike) => strike.id >= (user.bannedFromStrike ?? -1),
   );
 
   const prevBedpresses = await db.query.happenings.findMany({
@@ -62,10 +62,10 @@ export default async function UserStrikesPage({ params }: Props) {
     <Container>
       <div className="justify-between sm:flex">
         <div>
-          <Heading>{user.name}</Heading>
+          <Heading className="mb-10">{user.name}</Heading>
 
           {user.isBanned && (
-            <div className="text-lg text-destructive">
+            <div className="text-lg font-semibold text-destructive">
               Brukeren er utestengt{" "}
               {nextBedpresAfterBan && (
                 <>
@@ -77,7 +77,7 @@ export default async function UserStrikesPage({ params }: Props) {
               )}
             </div>
           )}
-          <div className="my-5 rounded-md bg-muted p-5 font-semibold">
+          <div className="my-5 rounded-md border bg-muted p-5 font-semibold">
             <Text>Gyldige prikker: {validStrikes.length}</Text>
             <Text>Tidligere prikker: {strikes.length - validStrikes.length}</Text>
           </div>
@@ -99,10 +99,6 @@ export default async function UserStrikesPage({ params }: Props) {
           )}
         </div>
       </div>
-
-      {/* {validStrikes.length === 0 && earlierStrikes.length === 0 && (
-        <Text className="mt-5 font-semibold">Brukeren har ingen prikker</Text>
-      )} */}
 
       {validStrikes.length > 0 && (
         <>
