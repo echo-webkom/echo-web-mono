@@ -7,26 +7,33 @@ import { UserWithStrikes } from "@/app/(default)/prikker/table";
 import { getAllUsers } from "../users/queries";
 import { cacheKeyFactory } from "./revalidate";
 
-export const getAllUsersWithStrikes = async () => {
-  const users = await getAllUsers();
-  const usersWithStrikes: Array<UserWithStrikes> = [];
+export const getAllUsersWithStrikes = cache(
+  async () => {
+    const users = await getAllUsers();
+    const usersWithStrikes: Array<UserWithStrikes> = [];
 
-  for (const user of users) {
-    const strikes = (await getAllUserStrikes(user.id)).reverse();
+    for (const user of users) {
+      const strikes = (await getAllUserStrikes(user.id)).reverse();
 
-    const validStrikes = strikes.filter((strike) => strike.id >= (user.bannedFromStrike ?? -1));
+      const validStrikes = strikes.filter((strike) => strike.id >= (user.bannedFromStrike ?? -1));
 
-    usersWithStrikes.push({
-      id: user.id,
-      name: user.name,
-      isBanned: Boolean(user.bannedFromStrike),
-      validStrikes: validStrikes.length,
-    });
-  }
+      usersWithStrikes.push({
+        id: user.id,
+        name: user.name,
+        isBanned: Boolean(user.bannedFromStrike),
+        validStrikes: validStrikes.length,
+      });
+    }
 
-  return usersWithStrikes;
-};
+    return usersWithStrikes;
+  },
+  [cacheKeyFactory.allUsersWithStrikes()],
+  {
+    tags: [cacheKeyFactory.allUsersWithStrikes()],
+  },
+);
 
+// Cache the getAllUserStrikes function
 export const getAllUserStrikes = async (userId: string) => {
   return cache(
     async () => {
@@ -42,9 +49,9 @@ export const getAllUserStrikes = async (userId: string) => {
         where: (strike) => and(eq(strike.isDeleted, false), eq(strike.userId, userId)),
       });
     },
-    [cacheKeyFactory.singleUserStrikes(userId)],
+    [cacheKeyFactory.singleUserStrikes(userId)], // Cache key for strikes of the user
     {
-      tags: [cacheKeyFactory.singleUserStrikes(userId)],
+      tags: [cacheKeyFactory.singleUserStrikes(userId)], // Cache tags for invalidation
     },
   )();
 };
