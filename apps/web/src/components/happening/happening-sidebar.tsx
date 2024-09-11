@@ -96,6 +96,11 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const isClosed = Boolean(event?.registrationEnd && isPast(event.registrationEnd));
 
+  const isBannedFromBedpres =
+    event && user && event.happeningType === "bedpres" && user.isBanned
+      ? await isUserBannedFromBedpres(user, event)
+      : false;
+
   const registrationOpensIn24Hours =
     userRegistrationStart &&
     isPast(new Date(new Date(userRegistrationStart).getTime() - 24 * 60 * 60 * 1000));
@@ -111,10 +116,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       })
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .findIndex((registration) => registration.userId === user?.id) + 1;
-
-  const isBanned = user?.banInfo
-    ? isFuture(new Date(user.banInfo.expiresAt)) && event.happeningType === "bedpres"
-    : false;
 
   return (
     <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">

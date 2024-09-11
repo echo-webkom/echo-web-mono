@@ -5,7 +5,6 @@ import { isFuture, isToday } from "date-fns";
 import { urlFor } from "@echo-webkom/sanity";
 
 import { apiServer } from "@/api/server";
-import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
@@ -63,7 +62,7 @@ export const HappeningPreview = ({
             <li className="flex justify-end text-xs text-muted-foreground">
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
-            <li className="text-muted-foreground">
+            <li>
               <HappeningRegistrationInfo happening={happening} />
             </li>
           </ul>

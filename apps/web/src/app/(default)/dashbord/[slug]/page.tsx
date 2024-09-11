@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LuArrowLeft } from "react-icons/lu";
+
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { Container } from "@/components/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getFullHappening } from "@/data/happenings/queries";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
-import { getRegistrations } from "./_lib/get-registrations";
-import { createBackLink } from "./_lib/utils";
-import { RegistrationsTab } from "./_tabs/registrations";
-import { StatisticsTab } from "./_tabs/statistics";
-import { UtilitiesTab } from "./_tabs/utilities";
+import { RegistrationTable } from "./_components/registration-table";
 
 type Props = {
   params: Promise<{
@@ -28,8 +26,10 @@ export default async function EventDashboard(props: Props) {
   }
 
   const user = await getUser();
+
   const hostGroups = happening.groups.map((group) => group.groupId);
   const isHosting = user ? isHost(user, hostGroups) : false;
+
   if (!isHosting) {
     return notFound();
   }

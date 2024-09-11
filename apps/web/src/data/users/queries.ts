@@ -4,8 +4,6 @@ import { eq } from "drizzle-orm";
 import { type User } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { apiServer } from "@/api/server";
-
 export const getUserById = async (id: User["id"]) => {
   return await db.query.users.findFirst({
     where: (user) => eq(user.id, id),

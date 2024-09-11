@@ -41,7 +41,7 @@ export default async function JobAdPage(props: { params: Promise<{ slug: string 
 
   return (
     <Container className="py-10">
-      <Link className="hover:underline" href="/for-studenter/stillingsannonser">
+      <Link className="hover:underline" href="/for-studenter/jobber">
         ← Tilbake til alle stillingsannonser
       </Link>
 

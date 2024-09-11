@@ -11,13 +11,6 @@ export const getCommentsById = (id: string) => {
           name: string;
           image: string;
         };
-      } & {
-        reactions: Array<{
-          commentId: string;
-          userId: string;
-          type: "like" | "dislike";
-          createdAt: string;
-        }>;
       }
     >
   >();

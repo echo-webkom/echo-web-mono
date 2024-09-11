@@ -1587,13 +1587,6 @@
         },
         "optional": false
       },
-      "expiresAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": false
-      },
       "weight": {
         "type": "objectAttribute",
         "value": {
