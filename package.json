@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.3.1",
+    "next": "15.0.0-canary.149",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.0.0",
     "prettier-plugin-tailwindcss": "0.6.6",

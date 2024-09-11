@@ -209,6 +209,11 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "externalLink",
+      type: "url",
+      hidden: ({ document }) => document?.happeningType !== "external",
+    }),
+    defineField({
       name: "body",
       title: "Brødtekst",
       type: "markdown",

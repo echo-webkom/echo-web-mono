@@ -1783,6 +1783,13 @@
         },
         "optional": false
       },
+      "endDate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "registrationStartGroups": {
         "type": "objectAttribute",
         "value": {
@@ -1911,6 +1918,13 @@
               "name": "question"
             }
           }
+        },
+        "optional": true
+      },
+      "externalLink": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       },
