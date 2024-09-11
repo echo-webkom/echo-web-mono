@@ -1015,7 +1015,21 @@ export type MoviesQueryResult = Array<{
   };
 }>;
 
+// Source: ../web/src/sanity/notification/queries.ts
+// Variable: notificationQuery
+// Query: *[_type == "notification" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){  _id,  title,  dateFrom,  dateTo}
+export type NotificationQueryResult = Array<{
+  _id: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+}>;
+
+<<<<<<< HEAD:apps/cms/sanity.types.ts
 // Source: ../../packages/sanity/src/queries/posts.ts
+=======
+// Source: ../web/src/sanity/posts/queries.ts
+>>>>>>> 40bb8592 (display notifications):apps/web/src/sanity.types.ts
 // Variable: allPostsQuery
 // Query: *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "authors": authors[]->{    _id,    name,    image,  },  image,  body}
 export type AllPostsQueryResult = Array<{
@@ -1250,6 +1264,7 @@ declare module "@sanity/client" {
     '\n*[_type == "merch" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  price,\n  image,\n  body\n}\n': AllMerchQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;
     "\n*[_type == \"movie\"\n  && !(_id in path('drafts.**'))]\n  | order(_createdAt desc) {\n  _id,\n  title,\n  date,\n  link,\n  image,\n}\n": MoviesQueryResult;
+    "\n*[_type == \"notification\" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){\n  _id,\n  title,\n  dateFrom,\n  dateTo\n}\n": NotificationQueryResult;
     '\n*[_type == "post" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "authors": authors[]->{\n    _id,\n    name,\n    image,\n  },\n  image,\n  body\n}\n': AllPostsQueryResult;
     '\n*[_type == "repeatingHappening"\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  happeningType,\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "location": location->{\n    name,\n  },\n  dayOfWeek,\n  startTime,\n  endTime,\n  startDate,\n  endDate,\n  interval,\n  cost,\n  ignoredDates,\n  externalLink,\n  body,\n}': AllRepeatingHappeningsQueryResult;
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
