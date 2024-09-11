@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   shoppingListItems,
   usersToShoppingListItems,
@@ -9,27 +8,22 @@ import {
   type UsersToShoppingListItems,
   type UsersToShoppingListItemsInsert,
 } from "@echo-webkom/db/schemas";
-
-import { revalidateShoppingListItems } from "./revalidations";
+import { db } from "@echo-webkom/db/serverless";
 
 export const createShoppinglistItem = async (newItem: ShoppingListItemsInsert) => {
   const [insertedShoppingListItem] = await db
     .insert(shoppingListItems)
     .values(newItem)
     .returning({ id: shoppingListItems.id });
-  revalidateShoppingListItems();
-
   return insertedShoppingListItem;
 };
 
 export const deleteShoppinglistItems = async (id: ShoppingListItems["id"]) => {
   await db.delete(shoppingListItems).where(eq(shoppingListItems.id, id));
-  revalidateShoppingListItems();
 };
 
 export const addShoppinglistLike = async (newLike: UsersToShoppingListItemsInsert) => {
   await db.insert(usersToShoppingListItems).values(newLike);
-  revalidateShoppingListItems();
 };
 
 export const removeShoppinglistLike = async (
@@ -41,5 +35,4 @@ export const removeShoppinglistLike = async (
     .where(
       and(eq(usersToShoppingListItems.itemId, itemId), eq(usersToShoppingListItems.userId, userId)),
     );
-  revalidateShoppingListItems();
 };

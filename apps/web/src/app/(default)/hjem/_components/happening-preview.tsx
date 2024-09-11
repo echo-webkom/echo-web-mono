@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
@@ -6,7 +5,7 @@ import { RxCalendar } from "react-icons/rx";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { getHappeningSpotRangeAndRegistrations } from "@/data/happenings/queries";
+import { apiServer } from "@/api/server";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
@@ -55,9 +54,7 @@ export const HappeningPreview = ({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li>
-              <Suspense fallback={<div className="flex-none" />}>
-                <HappeningRegistrationInfo happening={happening} />
-              </Suspense>
+              <HappeningRegistrationInfo happening={happening} />
             </li>
           </ul>
         </div>
@@ -71,8 +68,20 @@ const HappeningRegistrationInfo = async ({
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) => {
-  const { spotRanges, registrations } = await getHappeningSpotRangeAndRegistrations(happening._id);
-  const info = getSpotRangeInfo(happening, spotRanges, registrations);
+  const { waiting, registered, max } = await apiServer
+    .get(`happening/${happening._id}/registrations/count`)
+    .json<{
+      waiting: number;
+      registered: number;
+      max: number | null;
+    }>();
+
+  const info = getSpotRangeInfo({
+    registrationStart: happening.registrationStart,
+    waiting,
+    registered,
+    max,
+  });
 
   if (!info) {
     return null;

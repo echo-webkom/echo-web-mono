@@ -3,8 +3,8 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
@@ -52,7 +52,8 @@ export const updateRegistration = async (
       };
     }
 
-    if (!isHost(user, exisitingRegistration.happening)) {
+    const groups = exisitingRegistration.happening.groups.map((group) => group.groupId);
+    if (!isHost(user, groups)) {
       return {
         success: false,
         message: "Du kan ikke endre påmeldingen til en arrangør",

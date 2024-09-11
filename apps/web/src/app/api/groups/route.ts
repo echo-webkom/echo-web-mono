@@ -1,4 +1,4 @@
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { withBearerAuth } from "@/lib/checks/with-bearer-auth";
 

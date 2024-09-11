@@ -3,8 +3,8 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { type StrikeInfoInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { StrikeNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 import { type StrikeType } from "@echo-webkom/lib/src/constants";

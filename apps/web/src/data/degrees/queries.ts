@@ -1,19 +1,7 @@
-import { unstable_cache as cache } from "next/cache";
+import { type Degree } from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db";
+import { apiClient } from "@/api/client";
 
-import { cacheKeyFactory } from "./revalidate";
-
-export const getAllDegrees = () => {
-  return cache(
-    async () => {
-      return await db.query.degrees.findMany({
-        orderBy: (degree, { asc }) => [asc(degree.name)],
-      });
-    },
-    [cacheKeyFactory.degrees],
-    {
-      tags: [cacheKeyFactory.degrees],
-    },
-  )();
+export const getAllDegrees = async () => {
+  return await apiClient.get("degrees").json<Array<Degree>>();
 };

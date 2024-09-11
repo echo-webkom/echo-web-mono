@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";

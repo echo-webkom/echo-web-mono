@@ -1,25 +1,11 @@
-import { unstable_cache as cache } from "next/cache";
+import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db";
-
-import { cacheKeyFactory } from "./revalidate";
+import { apiServer } from "@/api/server";
 
 export const getAllFeedback = async () => {
-  return await cache(
-    async () => {
-      return await db.query.siteFeedback.findMany({
-        orderBy: (feedback, { desc }) => [desc(feedback.createdAt)],
-      });
-    },
-    [cacheKeyFactory.siteFeedbacks],
-    {
-      tags: [cacheKeyFactory.siteFeedbacks],
-    },
-  )();
+  return await apiServer.get("feedbacks").json<Array<SiteFeedback>>();
 };
 
 export const getFeedbackById = async (id: string) => {
-  return await db.query.siteFeedback.findFirst({
-    where: (feedback, { eq }) => eq(feedback.id, id),
-  });
+  return await apiServer.get(`feedback/${id}`).json<SiteFeedback>();
 };

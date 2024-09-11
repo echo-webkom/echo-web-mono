@@ -1,5 +1,5 @@
-import { db } from "@echo-webkom/db";
 import { happenings, type HappeningInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 export const create = async (happening: HappeningInsert) => {
   await db.insert(happenings).values(happening).onConflictDoNothing();

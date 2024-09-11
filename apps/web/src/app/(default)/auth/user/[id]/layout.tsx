@@ -6,34 +6,37 @@ import {
 } from "@/components/sidebar-layout";
 import { getUser } from "@/lib/get-user";
 
-const routes = [
-  {
-    label: "Profil",
-    href: "/auth/user/[id]/profil",
-  },
-  {
-    label: "Arrangementer",
-    href: "/auth/profil/arrangementer",
-  },
-  {
-    label: "Prikker",
-    href: "/auth/profil/prikker",
-  },
-];
+const getRoutes = (userId: string) => {
+  return [
+    {
+      label: "Profil",
+      href: `/auth/user/${userId}`,
+    },
+    {
+      label: "Arrangementer",
+      href: `/auth/user/${userId}/arrangementer`,
+    },
+    {
+      label: "Prikker",
+      href: `/auth/user/${userId}/prikker`,
+    },
+  ];
+};
 
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
-
   if (!user) {
     return null;
   }
+
+  const routes = getRoutes(user.id);
 
   return (
     <SidebarLayoutRoot>
       <Sidebar>
         {routes.map((route) => {
           return (
-            <SidebarItem key={route.href} href={route.href.replace("[id", user.id)}>
+            <SidebarItem key={route.href} href={route.href}>
               {route.label}
             </SidebarItem>
           );

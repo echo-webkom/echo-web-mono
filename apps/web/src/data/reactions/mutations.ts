@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { reactions, type ReactionInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { revalidateReactions } from "./revalidate";
 

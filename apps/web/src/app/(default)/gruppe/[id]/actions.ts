@@ -2,8 +2,8 @@
 
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { usersToGroups } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { getUser } from "@/lib/get-user";
 

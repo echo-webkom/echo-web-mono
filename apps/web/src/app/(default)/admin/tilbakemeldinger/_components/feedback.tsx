@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { RxEnvelopeClosed, RxEnvelopeOpen } from "react-icons/rx";
 
 import { type SiteFeedback } from "@echo-webkom/db/schemas";
@@ -20,6 +21,7 @@ const parseDate = (date: Date) => {
 };
 
 export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleToggleRead = async () => {
@@ -29,6 +31,8 @@ export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
       title: message,
       variant: success ? "success" : "destructive",
     });
+
+    router.refresh();
   };
 
   return (

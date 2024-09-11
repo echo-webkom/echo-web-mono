@@ -1,25 +1,25 @@
-import { unstable_cache as cache } from "next/cache";
+import {
+  type ShoppingListItems,
+  type User,
+  type UsersToShoppingListItems,
+} from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db";
-
-import { cacheKeyFactory } from "./revalidations";
+import { apiServer } from "@/api/server";
 
 export const getAllShoppinglistItems = () => {
-  return cache(
-    async () => {
-      return await db.query.shoppingListItems
-        .findMany({
-          with: { likes: true, user: true },
-        })
-        .catch(() => {
-          console.error("Failed to fetch shopping list items");
+  return apiServer
+    .get("shopping")
+    .json<
+      Array<
+        ShoppingListItems & {
+          user: User;
+          likes: Array<UsersToShoppingListItems>;
+        }
+      >
+    >()
+    .catch((err) => {
+      console.error("Error fetching shopping list items", err);
 
-          return [];
-        });
-    },
-    [cacheKeyFactory.shoppinglistItems()],
-    {
-      tags: [cacheKeyFactory.shoppinglistItems()],
-    },
-  )();
+      return [];
+    });
 };

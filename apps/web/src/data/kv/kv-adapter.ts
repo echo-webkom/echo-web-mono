@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { isPostgresIshError, type Database } from "@echo-webkom/db";
+import { type Database } from "@echo-webkom/db/create";
+import { isPostgresIshError } from "@echo-webkom/db/error";
 import { kv } from "@echo-webkom/db/schemas";
 
 import { isExpired } from "./utils";

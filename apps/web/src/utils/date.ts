@@ -12,6 +12,8 @@ import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";
 
+export type Dateish = Date | string | number;
+
 /**
  * Converts a date to a norwegian date string.
  *
@@ -214,7 +216,7 @@ export const toDateOrNull = (date: string | Date | null) => {
  * @param endDate latest date
  * @returns if the current date is between the two dates
  */
-export const isBetween = (startDate: Date, endDate: Date): boolean => {
+export const isBetween = (startDate: Dateish, endDate: Dateish): boolean => {
   return isPast(startDate) && isFuture(endDate);
 };
 

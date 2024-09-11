@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
 import { addCommentAction } from "@/actions/add-comment";
@@ -13,6 +14,7 @@ type CommentFormProps = {
 
 export const CommentForm = ({ id }: CommentFormProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const [content, setContent] = useState("");
 
   const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,6 +37,7 @@ export const CommentForm = ({ id }: CommentFormProps) => {
     }
 
     setContent("");
+    router.refresh();
     toast({
       title: "Kommentar lagt til",
       variant: "success",

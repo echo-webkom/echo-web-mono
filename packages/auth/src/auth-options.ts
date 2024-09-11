@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
-import { db } from "@echo-webkom/db";
 import { users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
@@ -67,12 +67,6 @@ export const createAuthOptions = (
 
         if (whitelistEntry && isFuture(whitelistEntry.expiresAt)) {
           return true;
-        }
-
-        if (process.env.TESTING === "true") {
-          if (email === "kjella@test.feide.no") {
-            return true;
-          }
         }
 
         if (opts?.onSignInFail) {

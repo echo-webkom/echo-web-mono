@@ -1,29 +1,19 @@
-import { eq } from "drizzle-orm";
+import { type Degree, type DegreeInsert } from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db";
-import { degrees, type Degree, type DegreeInsert } from "@echo-webkom/db/schemas";
-
-import { revalidateDegrees } from "./revalidate";
+import { apiServer } from "@/api/server";
 
 export const createDegree = async (newDegree: DegreeInsert) => {
-  await db.insert(degrees).values(newDegree);
-
-  revalidateDegrees();
+  await apiServer.post("degrees", {
+    json: newDegree,
+  });
 };
 
 export const deleteDegree = async (id: string) => {
-  await db.delete(degrees).where(eq(degrees.id, id));
-
-  revalidateDegrees();
+  await apiServer.delete(`degree/${id}`);
 };
 
 export const updateDegree = async (updatedDegree: Degree) => {
-  await db
-    .update(degrees)
-    .set({
-      name: updatedDegree.name,
-    })
-    .where(eq(degrees.id, updatedDegree.id));
-
-  revalidateDegrees();
+  await apiServer.post(`degree/${updatedDegree.id}`, {
+    json: updatedDegree,
+  });
 };

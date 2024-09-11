@@ -1,4 +1,5 @@
 import { cache } from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
@@ -38,6 +39,10 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container className="py-10">
+      <Link className="hover:underline" href="/for-studenter/jobber">
+        ← Tilbake til alle stillingsannonser
+      </Link>
+
       <div className="flex w-full flex-col-reverse gap-24 py-10 md:flex-row lg:max-w-[1500px]">
         <div className="pt-4 sm:pt-0">
           <Heading className="mb-4">{jobAd.title}</Heading>

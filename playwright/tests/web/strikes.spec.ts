@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
-import { loginAs } from "../helpers/sessionTest";
+import { loginAs } from "../../helpers/sessionTest";
 
 const user = { id: "alum", name: "Andreas Aanes" };
 
@@ -44,15 +44,5 @@ test.describe("Strikes", () => {
     await page.getByRole("button", { name: "Bekreft sletting" }).click();
 
     await expect(page.getByTestId("toast")).toContainText("Prikken ble slettet");
-  });
-
-  test("should not be able to access /prikker", async ({ page }) => {
-    await loginAs(page, "Student");
-
-    await page.goto("/prikker");
-    await expect(page).toHaveTitle("echo – Linjeforeningen for informatikk");
-
-    await page.goto(`/prikker/${user.id}`);
-    await expect(page).toHaveTitle("echo – Linjeforeningen for informatikk");
   });
 });

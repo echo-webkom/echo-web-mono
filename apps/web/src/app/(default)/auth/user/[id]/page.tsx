@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -33,8 +33,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
   return (
     <div className="max-w-2xl space-y-4">
-      <Heading level={2}>Din profil</Heading>
-
+      <Heading level={2}>{`${user.name?.split(" ")[0]} sin profil`}</Heading>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-6 md:flex-row">
           <UploadProfilePicture name={user.name ?? "Bo Bakseter"} image={user.image} />

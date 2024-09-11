@@ -44,6 +44,7 @@ export const allHappeningsQuery = groq`
     maxYear,
   },
   "additionalQuestions": additionalQuestions[] {
+    id,
     title,
     required,
     type,
