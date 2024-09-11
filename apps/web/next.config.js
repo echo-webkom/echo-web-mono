@@ -1,6 +1,10 @@
+const path = require("node:path");
+
+const isDocker = process.env.DOCKER === "true";
+
 /** @type {import("next").NextConfig} */
 const config = {
-  output: "standalone",
+  output: isDocker ? "standalone" : undefined,
 
   transpilePackages: [
     "@echo-webkom/auth",
@@ -8,6 +12,10 @@ const config = {
     "@echo-webkom/lib",
     "@echo-webkom/email",
   ],
+
+  experimental: {
+    outputFileTracingRoot: isDocker ? path.join(__dirname, "../../") : undefined,
+  },
 
   logging: {
     fetches: {

@@ -21,6 +21,7 @@ RUN pnpm install
 
 COPY --from=builder /app/out/full/ .
 
+ENV DOCKER=true
 RUN pnpm turbo build --filter=web...
 
 FROM base AS runner

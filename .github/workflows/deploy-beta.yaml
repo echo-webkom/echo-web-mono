@@ -1,0 +1,26 @@
+name: 🚀 Deploy beta
+
+on:
+  push:
+    branches:
+      - beta
+
+jobs:
+  ci:
+    name: 🕸️ Deply beta
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Install dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: 🪰 Setup Fly
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: 🚀 Deploy
+        run: flyctl deploy --config apps/web/fly.toml --dockerfile apps/web/Dockerfile --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

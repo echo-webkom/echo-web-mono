@@ -13,6 +13,7 @@ export default defineConfig({
 
   use: {
     trace: "on-first-retry",
+    video: "retain-on-failure",
     headless: !!process.env.CI,
     baseURL: "http://localhost:3000",
   },

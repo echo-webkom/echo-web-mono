@@ -5,8 +5,9 @@
   "scripts": {
     "build": "pnpm run with-env next build",
     "dev": "pnpm run with-env next dev",
+    "start": "pnpm run with-env next start",
+    "start:docker": "pnpm run with-env node ./.next/standalone/apps/web/server.js",
     "lint": "SKIP_ENV_VALIDATION=1 next lint",
-    "start": "pnpm run with-env node .next/standalone/apps/web/server.js",
     "clean": "rm -rf .next .turbo node_modules",
     "test:unit": "env TZ=UTC-1 vitest",
     "analyze": "ANALYZE=true pnpm build",
