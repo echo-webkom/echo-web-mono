@@ -4,6 +4,7 @@ import job from "./job-ad";
 import location from "./location";
 import meetingMinute from "./meeting-minute";
 import movies from "./movies";
+import notification from "./notification";
 import contactProfile from "./objects/contact-profile";
 import question from "./objects/question";
 import spotRange from "./objects/spot-range";
@@ -26,4 +27,5 @@ export const schemaTypes = [
   contactProfile,
   question,
   movies,
+  notification,
 ];
