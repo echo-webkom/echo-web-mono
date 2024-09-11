@@ -1,3 +1,42 @@
+import { RxBell as Bell } from "react-icons/rx";
+
+import { fetchNotifications } from "@/sanity/notification/requests";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+
+export const NotificationMenu = async () => {
+  const notifications = await fetchNotifications();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button data-testid="notification-menu">
+        <Bell className="h-6 w-6" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mx-3 w-56">
+        <DropdownMenuLabel>Notifikasjoner</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {notifications.length === 0 ? (
+          <DropdownMenuItem>Du har ingen notifikasjoner!</DropdownMenuItem>
+        ) : (
+          notifications.map((notification) => (
+            <DropdownMenuItem key={notification._id}>
+              <DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
+            </DropdownMenuItem>
+          ))
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -26,10 +65,7 @@ export const NotificationMenu = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getNotifications();
-<<<<<<< HEAD
       console.log(result);
-=======
->>>>>>> d63ceba4deea8675a2246b6ff3a29bff2fd654e7
       setNotifications(
         result.map((notification) => ({
           id: notification.id,

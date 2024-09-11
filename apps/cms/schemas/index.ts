@@ -30,9 +30,5 @@ export const schemaTypes = [
   contactProfile,
   question,
   movies,
-<<<<<<< HEAD
-  time,
-=======
   notification,
->>>>>>> ae3c7295 (create displayable bell and sanity notification tab)
 ];
