@@ -3,8 +3,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
 
-import { UserWithStrikes } from "@/app/(default)/prikker/table";
-import { getAllUsers } from "../users/queries";
+import { type UserWithStrikes } from "@/app/(default)/prikker/table";
 import { cacheKeyFactory } from "./revalidate";
 
 export const getAllUsersWithStrikes = cache(
