@@ -4,7 +4,7 @@ import { getUser } from "@/lib/get-user";
 import { BentoBox } from "./bento-box";
 
 export const HyggkomList = async ({ className }: { className?: string }) => {
-  const [user, items] = await Promise.all([getUser(), getAllShoppinglistItems()]);
+  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
 
   const withDots = items.length > 5;
 

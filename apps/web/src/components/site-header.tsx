@@ -34,6 +34,7 @@ export const SiteHeader = async () => {
             </div>
             <div className="flex items-center space-x-2">
               {user && <NotificationMenu />}
+              <NotificationMenu />
               <ThemeSwitchButton />
               {user ? (
                 <UserMenu user={user} />
