@@ -9,23 +9,36 @@ import { cacheKeyFactory } from "./revalidate";
 
 export const getAllUsersWithStrikes = cache(
   async () => {
-    const users = await getAllUsers();
-    const usersWithStrikes: Array<UserWithStrikes> = [];
+    const usersWithStrikes = await db.query.users.findMany({
+      with: {
+        strikes: {
+          with: {
+            strikeInfo: {
+              with: {
+                happening: true,
+                issuer: true,
+              },
+            },
+          },
+          where: (strike) => and(eq(strike.isDeleted, false)),
+        },
+      },
+    });
 
-    for (const user of users) {
-      const strikes = (await getAllUserStrikes(user.id)).reverse();
+    const result: Array<UserWithStrikes> = usersWithStrikes.map((user) => {
+      const validStrikes = user.strikes.filter(
+        (strike) => strike.id >= (user.bannedFromStrike ?? -1),
+      );
 
-      const validStrikes = strikes.filter((strike) => strike.id >= (user.bannedFromStrike ?? -1));
-
-      usersWithStrikes.push({
+      return {
         id: user.id,
         name: user.name,
         isBanned: Boolean(user.bannedFromStrike),
         validStrikes: validStrikes.length,
-      });
-    }
+      };
+    });
 
-    return usersWithStrikes;
+    return result;
   },
   [cacheKeyFactory.allUsersWithStrikes()],
   {
@@ -33,7 +46,6 @@ export const getAllUsersWithStrikes = cache(
   },
 );
 
-// Cache the getAllUserStrikes function
 export const getAllUserStrikes = async (userId: string) => {
   return cache(
     async () => {
@@ -49,9 +61,9 @@ export const getAllUserStrikes = async (userId: string) => {
         where: (strike) => and(eq(strike.isDeleted, false), eq(strike.userId, userId)),
       });
     },
-    [cacheKeyFactory.singleUserStrikes(userId)], // Cache key for strikes of the user
+    [cacheKeyFactory.singleUserStrikes(userId)],
     {
-      tags: [cacheKeyFactory.singleUserStrikes(userId)], // Cache tags for invalidation
+      tags: [cacheKeyFactory.singleUserStrikes(userId)],
     },
   )();
 };
