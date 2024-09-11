@@ -13,10 +13,11 @@
     "with-env": "dotenv -e ../.env --"
   },
   "devDependencies": {
-    "@playwright/test": "1.48.2",
-    "@types/node": "20.17.10",
-    "dotenv-cli": "7.4.4",
-    "eslint": "8.57.1",
+    "@echo-webkom/tsconfig": "workspace:*",
+    "@playwright/test": "1.47.1",
+    "@types/node": "20.16.5",
+    "dotenv-cli": "7.4.2",
+    "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "postgres": "3.4.5",
     "typescript": "5.6.3"

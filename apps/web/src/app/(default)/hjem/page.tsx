@@ -17,10 +17,26 @@ export default async function Home() {
       <Banner />
       <BirthdayBanner />
 
-      <div className="space-y-8 py-24">
-        <Container layout="larger">
-          <FPCalendar />
-        </Container>
+      <Container
+        layout="larger"
+        className="flex space-y-8 md:grid md:grid-cols-3 md:grid-rows-2 md:gap-8 md:space-y-0"
+      >
+        <ComingHappenings
+          title="Arrangementer"
+          href="/for-studenter/arrangementer?type=event"
+          types={["external", "event"]}
+          n={7}
+          className="col-span-1 row-span-2"
+        />
+        <ComingHappenings
+          title="Bedpresser"
+          href="/for-studenter/arrangementer?type=bedpres"
+          types={["bedpres"]}
+          n={3}
+          className="col-span-2 row-span-1"
+        />
+        <Posts className="col-span-2 row-span-1" />
+      </Container>
 
         <Container
           layout="larger"

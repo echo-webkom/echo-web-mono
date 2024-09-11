@@ -25,10 +25,11 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.17.10",
-    "@types/react": "18.3.12",
-    "dotenv-cli": "7.4.4",
-    "eslint": "8.57.1",
+    "@echo-webkom/tsconfig": "workspace:*",
+    "@types/node": "20.16.5",
+    "@types/react": "18.3.5",
+    "dotenv-cli": "7.4.2",
+    "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
     "react-email": "3.0.6",
     "typescript": "5.6.3"
