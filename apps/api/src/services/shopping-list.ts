@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
-import { db } from "@echo-webkom/db/serverless";
-
+import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
 
 const app = new Hono();

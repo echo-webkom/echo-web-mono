@@ -123,17 +123,6 @@ export const POST = withBasicAuth(async (req) => {
   }
   revalidateTag("happenings");
 
-  // Revalidate happening data from Sanity
-  revalidateTag("happening-params");
-  revalidateTag("home-happenings");
-  if (data?.slug) {
-    revalidateTag(`happening-${data.slug}`);
-  }
-  if (pastSlug) {
-    revalidateTag(`happening-${pastSlug}`);
-  }
-  revalidateTag("happenings");
-
   /**
    * If the happening is external, we don't want to do anything. Since
    * we are not responsible for the registrations of external happenings.
