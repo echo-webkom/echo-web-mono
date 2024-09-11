@@ -35,16 +35,16 @@ export const POST = withBasicAuth(async (req) => {
       type,
     });
 
-    await fetch("https://beta.echo-webkom.no/api/sanity/revalidate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ADMIN_KEY}`,
-      },
-      body: JSON.stringify({
-        type,
-      }),
-    });
+    // await fetch("https://beta.echo-webkom.no/api/sanity/revalidate", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${process.env.ADMIN_KEY}`,
+    //   },
+    //   body: JSON.stringify({
+    //     type,
+    //   }),
+    // });
 
     if (type === "staticInfo") {
       console.log("Revalidating static-info");
