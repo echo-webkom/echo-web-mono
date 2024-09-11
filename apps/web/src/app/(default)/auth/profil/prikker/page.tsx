@@ -29,7 +29,7 @@ export default async function UserStrikePagez() {
 
   const [validStrikes, earlierStrikes] = split(
     strikes,
-    (strike) => strike.id > (user.bannedFromStrike ?? -1),
+    (strike) => strike.id >= (user.bannedFromStrike ?? -1),
   );
 
   const nextBedpresAfterBan = user.isBanned ? await getNextBedpresAfterBan(user) : null;
@@ -56,7 +56,7 @@ export default async function UserStrikePagez() {
         <p className="mb-2">Du har ingen prikker. Fortsett sånn!</p>
       )}
 
-      <div className="my-5 rounded-md bg-muted p-5">
+      <div className="my-5 rounded-md border bg-muted p-5">
         <Text className="font-semibold">Gyldige prikker: {validStrikes.length}</Text>
         <Text className="font-semibold">
           Tidligere prikker: {strikes.length - validStrikes.length}

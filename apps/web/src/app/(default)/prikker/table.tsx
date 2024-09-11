@@ -16,11 +16,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type UserWithStrikes = {
+export type UserWithStrikes = {
   id: string;
   name: string | null;
   isBanned: boolean;
-  strikes: number;
+  validStrikes: number;
 };
 
 export const StrikesTable = ({
@@ -34,7 +34,7 @@ export const StrikesTable = ({
   const filtered = usersWithStrikes
     .filter((user) => user.name?.toLowerCase().includes(search.toLowerCase()))
     .filter((user) => (showBanned ? user.isBanned : true))
-    .sort((a, b) => b.strikes - a.strikes);
+    .sort((a, b) => b.validStrikes - a.validStrikes);
 
   return (
     <>
@@ -84,7 +84,7 @@ export const StrikesTable = ({
                     {user.name ?? user.id}
                   </Link>
                 </TableCell>
-                <TableCell>{user.strikes}</TableCell>
+                <TableCell>{user.validStrikes}</TableCell> {/* Use validStrikes */}
                 <TableCell className="text-destructive">
                   {user.isBanned ? "Utestengt" : ""}
                 </TableCell>

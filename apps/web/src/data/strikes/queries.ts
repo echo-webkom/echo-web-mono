@@ -1,38 +1,30 @@
 import { unstable_cache as cache } from "next/cache";
-import { and, count, eq, gt, isNull, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { strikes, users } from "@echo-webkom/db/schemas";
 
+import { UserWithStrikes } from "@/app/(default)/prikker/table";
+import { getAllUsers } from "../users/queries";
 import { cacheKeyFactory } from "./revalidate";
 
-export const getAllUsersWithValidStrikes = async () => {
-  return cache(
-    async () => {
-      return await db
-        .select({
-          id: users.id,
-          name: users.name,
-          isBanned: users.isBanned,
-          strikes: count(strikes.id),
-        })
-        .from(users)
-        .leftJoin(
-          strikes,
-          and(
-            eq(users.id, strikes.userId),
-            eq(strikes.isDeleted, false),
-            or(isNull(users.bannedFromStrike), gt(strikes.id, users.bannedFromStrike)),
-          ),
-        )
-        .groupBy(users.id);
-    },
-    [cacheKeyFactory.allUsersStrikes()],
-    {
-      tags: [cacheKeyFactory.allUsersStrikes()],
-      revalidate: 60, // to be deleted
-    },
-  )();
+export const getAllUsersWithStrikes = async () => {
+  const users = await getAllUsers();
+  const usersWithStrikes: Array<UserWithStrikes> = [];
+
+  for (const user of users) {
+    const strikes = (await getAllUserStrikes(user.id)).reverse();
+
+    const validStrikes = strikes.filter((strike) => strike.id >= (user.bannedFromStrike ?? -1));
+
+    usersWithStrikes.push({
+      id: user.id,
+      name: user.name,
+      isBanned: Boolean(user.bannedFromStrike),
+      validStrikes: validStrikes.length,
+    });
+  }
+
+  return usersWithStrikes;
 };
 
 export const getAllUserStrikes = async (userId: string) => {
