@@ -1,10 +1,12 @@
 import Link from "next/link";
 
+import { getNotifications } from "@/data/notifications/queries";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import { NotificationMenu } from "./notification-menu";
 import { ThemeSwitchButton } from "./theme-switch-button";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
@@ -14,6 +16,7 @@ import { UserMenu } from "./user-menu";
 export const SiteHeader = async () => {
   const user = await getUser();
   const { message } = await getProgrammerbarStatus();
+  const notifications = await getNotifications();
 
   return (
     <div className="sticky top-0 z-20">
@@ -32,6 +35,7 @@ export const SiteHeader = async () => {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
+              {user && <NotificationMenu notifications={notifications} />}
               <ThemeSwitchButton />
               {user ? (
                 <UserMenu user={user} />
