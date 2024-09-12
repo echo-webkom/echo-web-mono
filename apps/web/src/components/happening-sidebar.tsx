@@ -311,12 +311,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             <SidebarItem>
               <SidebarItemTitle>Påmeldte:</SidebarItemTitle>
               <SidebarItemContent>
-                <RegistrationCount
-                  happeningId={event._id}
-                  maxCapacity={maxCapacity}
-                  initialRegistaredCount={registeredCount}
-                  initialWaitlistCount={waitlistCount}
-                />
+                <RegistrationCount registeredCount={registeredCount} maxCapacity={maxCapacity} />
               </SidebarItemContent>
             </SidebarItem>
           )}
