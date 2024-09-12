@@ -20,12 +20,13 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   // Ensure a stable key by stringifying a sorted object if the order may vary.
   const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
-  const mappedHappenings = happeningsToCalendarEvent(happenings);
-  const mappedMovies = moviesToCalendarEvent(movies);
+  const calendarEvents = happeningsToCalendarEvent(happenings).concat(
+    moviesToCalendarEvent(movies),
+  );
 
   return (
     <Container className="space-y-4 py-10">
-      <DaysCalendar events={mappedHappenings.concat(mappedMovies)} />
+      <DaysCalendar events={calendarEvents} isWeek steps={0} />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
       </div>

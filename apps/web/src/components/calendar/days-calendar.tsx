@@ -1,54 +1,58 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { addDays, getWeek, isSameDay, startOfWeek, subDays } from "date-fns";
+import { addDays, getWeek, isSameDay, startOfWeek } from "date-fns";
 
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
-import { Heading } from "../typography/heading";
-import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 type Props = {
   events: Array<CalendarEvent>;
+  steps: number;
+  setWeekText?: (topText: string) => void;
+  isWeek?: boolean;
 };
 
-const getInterval = (width: number) => {
+const getInterval = (width: number, isWeek?: boolean) => {
   if (width < 640) return 1;
   if (width < 1024) return 3;
+  if (isWeek) return 7;
   return 5;
 };
 
-export const DaysCalendar = ({ events }: Props) => {
+const calculateStartDate = (steps: number, interval: number, isWeek?: boolean) => {
+  const contextDate = addDays(new Date(), interval * steps);
+  if (!isWeek) {
+    return contextDate;
+  }
+  return startOfWeek(contextDate, { weekStartsOn: 1 });
+};
+
+export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [calendarWidth, setCalendarWidth] = useState(0);
-  const interval = useMemo(() => getInterval(calendarWidth), [calendarWidth]);
-  const [date, setDate] = useState(
-    interval === 1 ? new Date() : startOfWeek(new Date(), { weekStartsOn: 1 }),
+  const [calendarWidth, setCalendarWidth] = useState(1024);
+  const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
+
+  const startDate = useMemo(
+    () => calculateStartDate(steps, interval, isWeek),
+    [steps, interval, isWeek],
   );
 
-  const days = Array.from({ length: interval }, (_, i) => addDays(date, i));
+  const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 
-  const week = () => {
-    const firstWeek = getWeek(days[0]!);
+  const week = useCallback(() => {
+    const firstWeek = getWeek(days[0]!, { weekStartsOn: 1 });
 
     if (days.length === 1) return firstWeek;
 
-    const lastWeek = getWeek(days[days.length - 1]!);
+    const lastWeek = getWeek(days[days.length - 1]!, { weekStartsOn: 1 });
 
     if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
-  };
-
-  const handleNextWeek = () => {
-    setDate((prev) => addDays(prev, interval));
-  };
-
-  const handlePrevWeek = () => {
-    setDate((prev) => subDays(prev, interval));
-  };
+  }, [days]);
 
   useEffect(() => {
     const onResize = () => {
@@ -65,24 +69,14 @@ export const DaysCalendar = ({ events }: Props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (setWeekText) {
+      setWeekText(`uke ${week()}`);
+    }
+  }, [setWeekText, startDate, steps, week]);
+
   return (
     <div ref={ref} className="space-y-4">
-      <div ref={ref} className="mb-4 flex justify-between">
-        <Heading level={2}>Uke {week()}</Heading>
-
-        <div className="flex justify-center gap-3">
-          <Button onClick={handlePrevWeek} size="sm">
-            Forrige
-          </Button>
-          <Button size="sm" onClick={() => setDate(new Date())}>
-            Idag
-          </Button>
-          <Button onClick={handleNextWeek} size="sm">
-            Neste
-          </Button>
-        </div>
-      </div>
-
       <div className="mb-10 h-72 overflow-hidden rounded-lg border-2">
         <div
           className="h-full divide-x"
@@ -118,10 +112,13 @@ export const DaysCalendar = ({ events }: Props) => {
                     {eventsThisDay.map((event) => {
                       return (
                         <HoverCard key={event.id}>
-                          <HoverCardTrigger>
-                            <div className="overflow-hidden rounded-xl border-2 p-2">
+                          <HoverCardTrigger asChild>
+                            <Link
+                              className="overflow-hidden rounded-xl border-2 p-2"
+                              href={event.link}
+                            >
                               <p className="line-clamp-1 text-sm font-semibold">{event.title}</p>
-                            </div>
+                            </Link>
                           </HoverCardTrigger>
                           <HoverCardContent>
                             <div className="space-y-2">
