@@ -12,7 +12,7 @@ export const Calendar = async ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      <EventCalendar events={calendarEvents} />
+      <EventCalendar events={calendarEvents} steps={0} isWeek />
     </div>
   );
 };

@@ -1,30 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
-import { cva } from "class-variance-authority";
 import {
   addMonths,
   eachDayOfInterval,
+  getMonth,
   isSameDay,
-  isThisMonth,
   isToday,
   lastDayOfMonth,
   startOfMonth,
   subDays,
 } from "date-fns";
-import { BiReset } from "react-icons/bi";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 import { Heading } from "../typography/heading";
-import { Button } from "../ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 type Props = {
   events: Array<CalendarEvent>;
+  steps: number;
+  setMonthText?: (topText: string) => void;
 };
+
+const weekdays = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"];
 
 const months = [
   "Januar",
@@ -41,41 +41,19 @@ const months = [
   "Desember",
 ];
 
-const weekdays = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"];
-
-export const MonthCalendar = ({ events }: Props) => {
-  const [month, setMonth] = useState(startOfMonth(new Date()));
-
-  const handleUpdateMonth = (delta: number) => {
-    setMonth((prevMonth) => addMonths(prevMonth, delta));
-  };
-
+export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
+  const month = useMemo(() => addMonths(startOfMonth(new Date()), steps), [steps]);
   const firstDay = month.getDay() > 0 ? month.getDay() - 1 : 6; //getDay goes from sunday, monday, ..., saturday
   const daysInMonth = eachDayOfInterval({ start: month, end: lastDayOfMonth(month) });
 
+  useEffect(() => {
+    if (setMonthText) {
+      setMonthText(`${months[getMonth(month)]} ${month.getFullYear()}`);
+    }
+  }, [month, setMonthText, steps]);
+
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="flex w-full max-w-md items-center gap-2">
-        <Button variant="outline" onClick={() => handleUpdateMonth(-1)}>
-          <FaArrowLeft />
-        </Button>
-        <Heading level={2} className="flex-1 justify-center">
-          {months[month.getMonth()]} {month.getFullYear()}
-        </Heading>
-        {!isThisMonth(month) && (
-          <Button
-            variant="outline"
-            className=""
-            size="icon"
-            onClick={() => setMonth(startOfMonth(new Date()))}
-          >
-            <BiReset />
-          </Button>
-        )}
-        <Button variant="outline" onClick={() => handleUpdateMonth(1)}>
-          <FaArrowRight />
-        </Button>
-      </div>
       <div className="grid w-full grid-cols-7">
         {weekdays.map((day) => (
           <Heading
