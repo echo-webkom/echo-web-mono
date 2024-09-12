@@ -13,7 +13,6 @@ import {
   type SpotRange,
 } from "@echo-webkom/db/schemas";
 
-import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { getUser } from "@/lib/get-user";
@@ -303,10 +302,6 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
       happeningId: happening.id,
       isWaitlisted,
     });
-
-    void (async () => {
-      await pingBoomtown(id);
-    })();
 
     return {
       success: true,
