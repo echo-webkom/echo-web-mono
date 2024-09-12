@@ -22,7 +22,7 @@ export default async function Home() {
       >
         <ComingHappenings
           title="Kommende arrangementer"
-          href="/for-studenter/arrangementer"
+          href="/for-studenter/arrangementer?type=event"
           types={["external", "event"]}
           n={7}
           className="col-span-1 row-span-2"
