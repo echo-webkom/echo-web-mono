@@ -21,14 +21,14 @@ export default async function Home() {
         className="flex space-y-8 md:grid md:grid-cols-3 md:grid-rows-2 md:gap-8 md:space-y-0"
       >
         <ComingHappenings
-          title="Kommende arrangementer"
+          title="Arrangementer"
           href="/for-studenter/arrangementer?type=event"
           types={["external", "event"]}
           n={7}
           className="col-span-1 row-span-2"
         />
         <ComingHappenings
-          title="Kommende bedpres"
+          title="Bedpresser"
           href="/for-studenter/arrangementer?type=bedpres"
           types={["bedpres"]}
           n={3}
