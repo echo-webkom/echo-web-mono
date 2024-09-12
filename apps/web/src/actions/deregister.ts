@@ -8,7 +8,6 @@ import { answers, registrations } from "@echo-webkom/db/schemas";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { pingBoomtown } from "@/api/boomtown";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { getUser } from "@/lib/get-user";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
@@ -72,10 +71,6 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
     }
 
     revalidateRegistrations(id, user.id);
-
-    void (async () => {
-      await pingBoomtown(id);
-    })();
 
     return {
       success: true,
