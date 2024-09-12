@@ -459,13 +459,15 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
               </SidebarItem>
             )}
 
-            {Boolean(event.externalLink) && (
-              <SidebarItem>
-                  <Button asChild fullWidth>
-                      <a href={event.externalLink} target="_blank" rel="noopener noreferrer">Til påmelding</a>
-                  </Button>
-              </SidebarItem>
-            )}
+          {event.externalLink && (
+            <SidebarItem>
+              <Button asChild fullWidth>
+                <a href={event.externalLink} target="_blank" rel="noopener noreferrer">
+                  Til påmelding
+                </a>
+              </Button>
+            </SidebarItem>
+          )}
         </div>
       </Sidebar>
       {/**
