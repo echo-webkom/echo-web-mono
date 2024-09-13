@@ -458,6 +458,16 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
                 <Countdown toDate={userRegistrationStart} />
               </SidebarItem>
             )}
+
+          {event.externalLink && (
+            <SidebarItem>
+              <Button asChild fullWidth>
+                <a href={event.externalLink} target="_blank" rel="noopener noreferrer">
+                  Til påmelding
+                </a>
+              </Button>
+            </SidebarItem>
+          )}
         </div>
       </Sidebar>
       {/**

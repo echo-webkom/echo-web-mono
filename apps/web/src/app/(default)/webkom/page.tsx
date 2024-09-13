@@ -70,6 +70,9 @@ export default function WebkomPage() {
         </UnorderedList>
 
         {/* --- V24 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
+          <ListItem>Jesper Kierulf Hammer</ListItem>
+        </UnorderedList>
 
         {/* --- H24 --- */}
         <UnorderedList className="list-none p-0 text-lg">

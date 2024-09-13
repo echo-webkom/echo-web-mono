@@ -49,6 +49,7 @@ export const allHappeningsQuery = groq`
     type,
     options,
   },
+  externalLink,
   body
 }
 `;
@@ -103,6 +104,7 @@ export const happeningQuery = groq`
     type,
     options,
   },
+  externalLink,
   body
 }
 `;
