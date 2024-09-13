@@ -36,8 +36,8 @@ importers:
         specifier: 6.21.3
         version: 6.21.3(debug@4.3.5)
       '@sanity/icons':
-        specifier: 3.3.1
-        version: 3.3.1(react@18.3.1)
+        specifier: 3.4.0
+        version: 3.4.0(react@18.3.1)
       '@sanity/ui':
         specifier: 2.8.9
         version: 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -3340,12 +3340,6 @@ packages:
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: ^18
-
-  '@sanity/icons@3.3.1':
-    resolution: {integrity: sha512-5SYwRmqKpEVABUyLbSBC5Ffr21P2EvtWZtkqMCh3fiMpNMM3c56RFjdQBoPn2w1EuzJXSFit/ZTHMWAXMMlAwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: ^18.3 || >=19.0.0-rc
 
   '@sanity/icons@3.4.0':
     resolution: {integrity: sha512-X8BMM68w3y5cuCLpPwV7jGhVNGgAL/FA3UI6JaRCsyVOahA6aBOeKdjFs5MHtKi8cmrKwq1a98h/HbrK56kszA==}
@@ -12394,10 +12388,6 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  '@sanity/icons@3.3.1(react@18.3.1)':
-    dependencies:
-      react: 18.3.1
-
   '@sanity/icons@3.4.0(react@18.3.1)':
     dependencies:
       react: 18.3.1
@@ -12463,7 +12453,7 @@ snapshots:
 
   '@sanity/insert-menu@1.0.8(@sanity/types@3.56.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@sanity/icons': 3.3.1(react@18.3.1)
+      '@sanity/icons': 3.4.0(react@18.3.1)
       '@sanity/types': 3.56.0(debug@4.3.5)
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash.startcase: 4.4.0
@@ -12525,7 +12515,7 @@ snapshots:
   '@sanity/presentation@1.16.4(@sanity/client@6.21.3(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/client': 6.21.3(debug@4.3.5)
-      '@sanity/icons': 3.3.1(react@18.3.1)
+      '@sanity/icons': 3.4.0(react@18.3.1)
       '@sanity/preview-url-secret': 1.6.20(@sanity/client@6.21.3(debug@4.3.5))
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/uuid': 3.0.2
