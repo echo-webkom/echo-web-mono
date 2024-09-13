@@ -28,7 +28,7 @@ import { Select } from "./ui/select";
 const userSchema = z.object({
   alternativeEmail: z.string().email().or(z.literal("")).optional(),
   degree: z.string().optional(),
-  year: z.coerce.number().min(1).max(5).optional(),
+  year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
 });
 
@@ -134,7 +134,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
               <FormControl>
                 <Select id="year" {...field}>
                   <option hidden>Velg årstrinn</option>
-                  {Array.from({ length: 5 }, (_, i) => i + 1).map((year) => (
+                  {Array.from({ length: 6 }, (_, i) => i + 1).map((year) => (
                     <option key={year} value={year}>
                       {year}. trinn
                     </option>

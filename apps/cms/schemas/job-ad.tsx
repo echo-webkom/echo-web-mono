@@ -9,6 +9,7 @@ const YEARS = [
   { title: "3. året", value: "THIRD" },
   { title: "4. året", value: "FOURTH" },
   { title: "5. året", value: "FIFTH" },
+  { title: "phd", value: "PHD" },
 ];
 
 export default defineType({

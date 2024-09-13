@@ -40,6 +40,7 @@ export const YearFilter = ({ yearFilter, setYearFilter }: YearFilterProps) => {
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
+        <option value="6">6</option>
       </Select>
     </div>
   );
