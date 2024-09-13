@@ -74,6 +74,7 @@ export default function WebkomPage() {
         {/* --- H24 --- */}
         <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Andreas Drevdal</ListItem>
+          <ListItem>Birk Monsen</ListItem>
         </UnorderedList>
       </div>
     </Container>
