@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.1",
+    "@types/node": "20.16.5",
     "@types/pg": "8.11.6",
     "dotenv-cli": "7.4.2",
     "drizzle-kit": "0.24.2",
