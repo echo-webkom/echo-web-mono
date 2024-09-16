@@ -315,6 +315,7 @@ export type Happening = {
   };
   cost?: number;
   date: string;
+  endDate?: string;
   registrationStartGroups?: string;
   registrationGroups?: Array<{
     _ref: string;
@@ -340,6 +341,7 @@ export type Happening = {
       _key: string;
     } & Question
   >;
+  externalLink?: string;
   body?: string;
 };
 
@@ -447,10 +449,38 @@ export type Slug = {
   current: string;
   source?: string;
 };
+
+export type AllSanitySchemaTypes =
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | Geopoint
+  | Movie
+  | Question
+  | ContactProfile
+  | SpotRange
+  | MeetingMinute
+  | SanityFileAsset
+  | StudentGroup
+  | StaticInfo
+  | Profile
+  | Job
+  | Post
+  | Happening
+  | Location
+  | Company
+  | SanityImageCrop
+  | SanityImageHotspot
+  | SanityImageAsset
+  | SanityAssetSourceData
+  | SanityImageMetadata
+  | Markdown
+  | MediaTag
+  | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../web/src/sanity/happening/queries.ts
 // Variable: allHappeningsQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))]  | order(date asc) {    _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  body}
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))]  | order(date asc) {    _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  externalLink,  body}
 export type AllHappeningsQueryResult = Array<{
   _id: string;
   _createdAt: string;
@@ -507,10 +537,11 @@ export type AllHappeningsQueryResult = Array<{
     type: "checkbox" | "radio" | "text" | "textarea";
     options: Array<string> | null;
   }> | null;
+  externalLink: string | null;
   body: string | null;
 }>;
 // Variable: happeningQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug][0] {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  body}
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug][0] {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  externalLink,  body}
 export type HappeningQueryResult = {
   _id: string;
   _createdAt: string;
@@ -567,6 +598,7 @@ export type HappeningQueryResult = {
     type: "checkbox" | "radio" | "text" | "textarea";
     options: Array<string> | null;
   }> | null;
+  externalLink: string | null;
   body: string | null;
 } | null;
 // Variable: homeHappeningsQuery
@@ -594,6 +626,7 @@ export type HomeHappeningsQueryResult = Array<{
 // Variable: happeningTypeQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug ] {  happeningType,}[0].happeningType
 export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
+
 // Source: ../web/src/sanity/job-ad/queries.ts
 // Variable: jobAdsQuery
 // Query: *[_type == "job"  && !(_id in path('drafts.**'))]  | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "company": company->{    _id,    name,    website,    image,  },  "locations": locations[]->{    _id,    name,  },  jobType,  link,  deadline,  degreeYears,  body}
@@ -637,6 +670,7 @@ export type JobAdsQueryResult = Array<{
   } | null;
   body: string;
 }>;
+
 // Source: ../web/src/sanity/minutes/queries.ts
 // Variable: allMeetingMinuteQuery
 // Query: *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {  _id,  isAllMeeting,  date,  title,  "document": document.asset->url}
@@ -647,6 +681,7 @@ export type AllMeetingMinuteQueryResult = Array<{
   title: string;
   document: string | null;
 }>;
+
 // Source: ../web/src/sanity/movies/queries.ts
 // Variable: moviesQuery
 // Query: *[_type == "movie"  && !(_id in path('drafts.**'))]  | order(_createdAt desc) {  _id,  title,  date,  link,  image,}
@@ -667,6 +702,7 @@ export type MoviesQueryResult = Array<{
     _type: "image";
   };
 }>;
+
 // Source: ../web/src/sanity/posts/queries.ts
 // Variable: allPostsQuery
 // Query: *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "authors": authors[]->{    _id,    name,    image,  },  image,  body}
@@ -711,6 +747,7 @@ export type AllPostsQueryResult = Array<{
   } | null;
   body: string;
 }>;
+
 // Source: ../web/src/sanity/static-info/queries.ts
 // Variable: staticInfoQuery
 // Query: *[_type == "staticInfo" && !(_id in path('drafts.**'))] {  title,  "slug": slug.current,  pageType,  body}
@@ -720,6 +757,7 @@ export type StaticInfoQueryResult = Array<{
   pageType: "about" | "for-companies" | "for-students";
   body: string;
 }>;
+
 // Source: ../web/src/sanity/student-group/queries.ts
 // Variable: studentGroupsByTypeQuery
 // Query: *[_type == "studentGroup"  && groupType == $type  && !(_id in path('drafts.**'))] | order(_createdAt asc) {  _id,  _createdAt,  _updatedAt,  name,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0..$n]
@@ -821,6 +859,7 @@ export type StudentGroupBySlugQueryResult = {
     email: string | null;
   } | null;
 } | null;
+
 // Source: ../web/src/sanity/utils/contacts.ts
 // Variable: happeningContactsQuery
 // Query: *[_type == "happening" && slug.current == $slug] {"contacts": contacts[] {email,"profile": profile->{  _id,  name,},},}[0].contacts

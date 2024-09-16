@@ -12,11 +12,11 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.1",
+    "@types/node": "20.16.5",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.0",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.17.0",
+    "tsx": "4.19.1",
     "typescript": "5.5.4"
   },
   "eslintConfig": {

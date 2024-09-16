@@ -20,6 +20,7 @@ export const getColumns = (questions: Array<Question>) => {
 
   columns.push(...questions.map((question) => question.title));
   columns.push("Status");
+  columns.push("Tidspunkt");
 
   return columns.filter((header) => header !== undefined).filter((header) => header.trim() !== "");
 };
