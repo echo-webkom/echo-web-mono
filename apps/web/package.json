@@ -44,7 +44,7 @@
     "clsx": "2.1.1",
     "date-fns": "3.6.0",
     "drizzle-orm": "0.33.0",
-    "framer-motion": "11.3.29",
+    "framer-motion": "11.5.4",
     "groq": "3.56.0",
     "ics": "^3.7.6",
     "nanoid": "5.0.7",
