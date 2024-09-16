@@ -257,8 +257,8 @@ importers:
         specifier: 0.5.9
         version: 0.5.9(tailwindcss@3.4.10)
       '@tailwindcss/typography':
-        specifier: 0.5.14
-        version: 0.5.14(tailwindcss@3.4.10)
+        specifier: 0.5.15
+        version: 0.5.15(tailwindcss@3.4.10)
       '@testing-library/react':
         specifier: 16.0.1
         version: 16.0.1(@testing-library/dom@10.0.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3529,10 +3529,10 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1 || >= 4.0.0-alpha.20'
 
-  '@tailwindcss/typography@0.5.14':
-    resolution: {integrity: sha512-ZvOCjUbsJBjL9CxQBn+VEnFpouzuKhxh2dH8xMIWHILL+HfOYtlAkWcyoon8LlzE53d2Yo6YO6pahKKNW3q1YQ==}
+  '@tailwindcss/typography@0.5.15':
+    resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
     peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
+      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
 
   '@tanem/react-nprogress@5.0.51':
     resolution: {integrity: sha512-YxNUCpznuBVA+PhjEzFmxaa1czXgU+5Ojchw5JBK7DQS6SHIgNudpFohWpNBWMu2KWByGJ2OLH2OwbM/XyP18Q==}
@@ -12749,7 +12749,7 @@ snapshots:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.4.10
 
-  '@tailwindcss/typography@0.5.14(tailwindcss@3.4.10)':
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.10)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
