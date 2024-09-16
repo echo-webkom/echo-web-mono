@@ -136,7 +136,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   <option hidden>Velg årstrinn</option>
                   {Array.from({ length: 6 }, (_, i) => i + 1).map((year) => (
                     <option key={year} value={year}>
-                      {year == 6 ? "5+." : year + "."} trinn
+                      {year === 6 ? "5+." : year + "."} trinn
                     </option>
                   ))}
                 </Select>
