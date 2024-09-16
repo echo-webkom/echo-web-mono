@@ -6,6 +6,7 @@ const YEARS: Record<string, number> = {
   THIRD: 3,
   FOURTH: 4,
   FIFTH: 5,
+  PHD: 6,
 };
 
 export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degreeYears"]) => {
@@ -28,7 +29,7 @@ export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degree
  *
  * @example
  * ```ts
- * degreeYearText([1, 2, 3, 4, 5]); // "Alle"
+ * degreeYearText([1, 2, 3, 4, 5, 6]); // "Alle"
  * degreeYearText([1, 2, 3, 5]); // "1 - 3 og 5. trinn"
  * ```
  *
@@ -39,7 +40,7 @@ export const degreeYearText = (degreeYears: Array<number>): string => {
   if (degreeYears.length === 0) {
     return "Ingen";
   }
-  if (degreeYears.length === 5) {
+  if (degreeYears.length === 6) {
     return "Alle";
   }
 
