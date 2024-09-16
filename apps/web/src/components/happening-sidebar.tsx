@@ -291,11 +291,11 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
                 <SidebarItemContent key={range.id}>
                   {range.spots || "Uendelig"} plasser for
                   {range.minYear === range.maxYear ? (
-                    <span> {range.minYear}. trinn</span>
+                    <span> {range.minYear === 6 ? "5+." : range.minYear + "."} trinn</span>
                   ) : (
                     <span>
                       {" "}
-                      {range.minYear} - {range.maxYear}. trinn
+                      {range.minYear} - {range.maxYear === 6 ? "5+." : range.maxYear + "."} trinn
                     </span>
                   )}
                 </SidebarItemContent>
