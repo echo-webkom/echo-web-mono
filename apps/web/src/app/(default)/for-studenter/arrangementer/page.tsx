@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { DaysCalendar } from "@/components/calendar/days-calendar";
+import { Calendar } from "@/components/calendar/calendar";
 import { Container } from "@/components/container";
 import {
   EventFilter,
@@ -26,7 +26,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
 
   return (
     <Container className="space-y-4 py-10">
-      <DaysCalendar events={calendarEvents} isWeek steps={0} />
+      <Calendar events={calendarEvents} type="multi" />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
       </div>
