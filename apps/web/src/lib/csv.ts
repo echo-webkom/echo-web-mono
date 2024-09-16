@@ -42,6 +42,8 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
         obj[question.title] = formattedAnswer;
       });
 
+      obj.Tidspunkt = r.changedAt ? stringify(r.changedAt) : stringify(r.createdAt);
+
       return obj;
     })
     .sort((a, b) => {
