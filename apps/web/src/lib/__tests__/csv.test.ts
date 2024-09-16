@@ -104,7 +104,7 @@ describe("toCsv", () => {
       "Studieretning",
       "Question 1",
       "Question 2",
-      "Tidspunkt"
+      "Tidspunkt",
     ];
     const csv = toCsv(happening, selectedHeaders);
 
