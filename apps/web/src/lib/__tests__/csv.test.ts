@@ -104,11 +104,12 @@ describe("toCsv", () => {
       "Studieretning",
       "Question 1",
       "Question 2",
+      "Tidspunkt"
     ];
     const csv = toCsv(happening, selectedHeaders);
 
     expect(csv).toBe(
-      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2"\n"Petter Kjellberg","supah@gmail.com","registered","2022","Computer Science","yes","no"`,
+      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","Computer Science","yes","no","${new Date()}"`,
     );
   });
 
