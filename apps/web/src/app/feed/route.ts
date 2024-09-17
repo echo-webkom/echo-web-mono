@@ -8,7 +8,8 @@ export const GET = async () => {
 
   const rssItems = [posts.map(postToRSSItem)]
     .flat()
-    .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
+    .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+    .slice(0, 10);
 
   const rssFeed = createRSSFeed({
     title: "echo – Linjeforeningen for informatikk",
