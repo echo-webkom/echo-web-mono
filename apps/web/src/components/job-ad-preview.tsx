@@ -38,7 +38,7 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
           </div>
         </div>
         <div className="flex h-full w-full flex-col gap-1 overflow-x-hidden">
-          <h3 className="mb-4 line-clamp-2 text-lg font-semibold md:text-2xl">{jobAd.title}</h3>
+          <h3 className="mb-4 line-clamp-2 text-lg font-semibold md:text-xl">{jobAd.title}</h3>
           <ul className="flex flex-wrap gap-3">
             <li className="flex items-center gap-2">
               <LuBriefcase className="h-4 w-4 text-yellow-800" /> {jobAd.company.name}
