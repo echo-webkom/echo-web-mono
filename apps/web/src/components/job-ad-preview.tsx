@@ -28,7 +28,7 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
           },
         )}
       >
-        <div>
+        <div className="hidden sm:block">
           <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 bg-white">
             <Image
               src={urlFor(jobAd.company.image).url()}
