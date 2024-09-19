@@ -112,7 +112,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@echo-webkom/sanity':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.9.0
