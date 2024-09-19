@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -33,6 +34,7 @@ type RegisterButtonProps = {
 };
 
 export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -58,6 +60,11 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
     });
 
     setIsLoading(false);
+    if (success) {
+      setIsOpen(false);
+      form.reset();
+      router.refresh();
+    }
 
     toast({
       title: message,
@@ -76,9 +83,12 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
     });
 
     setIsLoading(false);
+    if (success) {
+      router.refresh();
+    }
   };
 
-  if (questions.length === 0) {
+  if (questions?.length === 0) {
     return (
       <Button onClick={handleOneClickRegister} fullWidth>
         {isLoading ? (

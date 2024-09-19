@@ -15,6 +15,7 @@ export default defineConfig({
     trace: "on-first-retry",
     headless: !!process.env.CI,
     baseURL: "http://localhost:3000",
+    video: "retain-on-failure",
   },
 
   projects: [
@@ -31,6 +32,13 @@ export default defineConfig({
   ],
 
   webServer: [
+    {
+      command: "pnpm --filter=api run start",
+      url: "http://localhost:8000",
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
+      cwd: "../",
+    },
     {
       command: "pnpm --filter=web run start",
       url: "http://localhost:3000",

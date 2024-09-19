@@ -1,0 +1,13 @@
+node_modules
+.git
+.env
+logs
+.DS_Store
+.vscode
+.github
+.sanity
+.turbo
+.next
+dist
+postgres-data
+redis-data

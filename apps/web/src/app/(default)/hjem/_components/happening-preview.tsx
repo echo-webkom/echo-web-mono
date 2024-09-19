@@ -6,7 +6,7 @@ import { RxCalendar } from "react-icons/rx";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { getHappeningSpotRangeAndRegistrations } from "@/data/happenings/queries";
+import { apiClient } from "@/api/client";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
@@ -71,8 +71,20 @@ const HappeningRegistrationInfo = async ({
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) => {
-  const { spotRanges, registrations } = await getHappeningSpotRangeAndRegistrations(happening._id);
-  const info = getSpotRangeInfo(happening, spotRanges, registrations);
+  const { waiting, registered, max } = await apiClient
+    .get(`happening/${happening._id}/registrations/count`)
+    .json<{
+      waiting: number;
+      registered: number;
+      max: number | null;
+    }>();
+
+  const info = getSpotRangeInfo({
+    registrationStart: happening.registrationStart,
+    waiting,
+    registered,
+    max,
+  });
 
   if (!info) {
     return null;

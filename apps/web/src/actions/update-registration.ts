@@ -52,7 +52,8 @@ export const updateRegistration = async (
       };
     }
 
-    if (!isHost(user, exisitingRegistration.happening)) {
+    const groups = exisitingRegistration.happening.groups.map((group) => group.groupId);
+    if (!isHost(user, groups)) {
       return {
         success: false,
         message: "Du kan ikke endre påmeldingen til en arrangør",
