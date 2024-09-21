@@ -20,7 +20,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
     <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-[360px]">
       <SidebarItem>
         <Link href={jobAd.company.website}>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-xl border-2 bg-white">
             <div className="relative aspect-square w-full">
               <Image
                 src={urlFor(jobAd.company.image).url()}
