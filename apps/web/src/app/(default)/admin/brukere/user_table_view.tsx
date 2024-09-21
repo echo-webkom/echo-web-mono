@@ -37,13 +37,14 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
 
   // Filter users based on search query
   const filteredUsers = users?.filter(
-    (u) =>
-      u.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchQuery.toLowerCase()),
+    (user) =>
+      user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
   return (
     <Container className="flex justify-end">
       <Heading className="mb-4">Brukere</Heading>
+
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2 py-4">
           <p className="font-semibold">Oversikt over alle bukere.</p>
