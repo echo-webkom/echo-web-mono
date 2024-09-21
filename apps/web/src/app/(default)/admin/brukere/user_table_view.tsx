@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AllUsers } from "./page";
+import { type AllUsers } from "./page";
 import { UserForm } from "./user-form";
 
 /**
@@ -36,9 +36,9 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter users based on search query
-  const filteredUsers = users?.filter(
+  const filteredUsers = (users ?? [])?.filter(
     (user) =>
-      user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
   return (
