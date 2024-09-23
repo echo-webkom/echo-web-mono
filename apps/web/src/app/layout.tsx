@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { type Metadata, type Viewport } from "next";
+import { type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -10,9 +10,9 @@ import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
-import { BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
+import { getDefaultPageMetadata } from "./seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,24 +41,7 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-export const metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "echo – Linjeforeningen for informatikk",
-    template: "%s | echo – Linjeforeningen for informatikk",
-  },
-  description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
-  keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
-  icons: {
-    apple: "/apple-touch-icon.png",
-    icon: "/favicon-32x32.png",
-    shortcut: "/favicon16x16.png",
-  },
-  manifest: "/site.webmanifest",
-  appleWebApp: {
-    title: "echo",
-  },
-} satisfies Metadata;
+export const metadata = getDefaultPageMetadata();
 
 export const viewport = {
   themeColor: [
