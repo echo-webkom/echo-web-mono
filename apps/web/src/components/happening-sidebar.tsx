@@ -215,7 +215,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
          */}
         {event.company && (
           <SidebarItem>
-            <Link href={event.company.website}>
+            <a href={event.company.website}>
               <Image
                 src={urlFor(event.company.image).url()}
                 alt={`${event.company.name} logo`}
@@ -223,7 +223,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
                 height={475}
                 className="h-auto w-full"
               />
-            </Link>
+            </a>
           </SidebarItem>
         )}
 
@@ -232,10 +232,10 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             <SidebarItem>
               <SidebarItemTitle>Bedrift:</SidebarItemTitle>
               <SidebarItemContent>
-                <Link className="hover:underline" href={event.company.website}>
+                <a className="hover:underline" href={event.company.website}>
                   {event.company.name}
                   <ExternalLink className="ml-1 inline-block h-4 w-4" />
-                </Link>
+                </a>
               </SidebarItemContent>
             </SidebarItem>
           )}
