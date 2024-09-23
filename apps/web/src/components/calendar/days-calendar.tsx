@@ -22,9 +22,9 @@ const getInterval = (width: number, isWeek?: boolean) => {
   return 5;
 };
 
-const calculateStartDate = (steps: number, interval: number, isWeek?: boolean) => {
+const calculateStartDate = (steps: number, interval: number) => {
   const contextDate = addDays(new Date(), interval * steps);
-  if (!isWeek) {
+  if (interval !== 7) {
     return contextDate;
   }
   return startOfWeek(contextDate, { weekStartsOn: 1 });
@@ -35,10 +35,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
   const [calendarWidth, setCalendarWidth] = useState(1024);
   const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
 
-  const startDate = useMemo(
-    () => calculateStartDate(steps, interval, isWeek),
-    [steps, interval, isWeek],
-  );
+  const startDate = useMemo(() => calculateStartDate(steps, interval), [steps, interval]);
 
   const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 

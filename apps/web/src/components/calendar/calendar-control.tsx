@@ -17,7 +17,7 @@ export const CalendarControl = ({ prev, next, reset }: Props) => {
           <BiUndo />
         </Button>
       )}
-      <Button variant="outline" onClick={prev}>
+      <Button variant="outline" className="mr-1" onClick={prev}>
         <FaArrowLeft />
       </Button>
       <Button variant="outline" onClick={next}>
