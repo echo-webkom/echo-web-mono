@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { loginAs } from "../helpers/sessionTest";
+import { loginAs } from "../../helpers/sessionTest";
 
 test.describe("Gruppe", () => {
   test("see group dashboard", async ({ page }) => {

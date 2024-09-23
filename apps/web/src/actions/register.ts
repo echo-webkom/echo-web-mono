@@ -7,9 +7,6 @@ import { getUser } from "@/lib/get-user";
 import { type registrationFormSchema } from "@/lib/schemas/registration";
 
 export const register = async (id: string, payload: z.infer<typeof registrationFormSchema>) => {
-  /**
-   * Check if user is signed in
-   */
   const user = await getUser();
 
   if (!user) {
@@ -26,7 +23,7 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
   const userId = user.id;
   const questions = payload.questions;
 
-  return await apiServer
+  const resp = await apiServer
     .post("admin/register", {
       json: {
         happeningId,
@@ -34,5 +31,15 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
         questions,
       },
     })
-    .json<{ success: boolean; message: string }>();
+    .json<{ success: boolean; message: string }>()
+    .catch((err) => {
+      console.error("FATAL. Failed to connect to API", err);
+
+      return {
+        success: false,
+        message: "Fikk ikke koblet til API.",
+      };
+    });
+
+  return resp;
 };

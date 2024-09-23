@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
-import { loginAs } from "../helpers/sessionTest";
+import { loginAs } from "../../helpers/sessionTest";
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";

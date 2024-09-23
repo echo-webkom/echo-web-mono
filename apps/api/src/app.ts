@@ -11,7 +11,14 @@ import shoppingApp from "./services/shopping-list";
 const app = new Hono();
 
 app.use(logger());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://echo.uib.no"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  }),
+);
 
 app.route("/", healthApp);
 app.route("/", adminApp);

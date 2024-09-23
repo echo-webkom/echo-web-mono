@@ -1,50 +1,42 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
-export default defineConfig({
-  testDir: "./",
-  fullyParallel: false,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: 1,
-  reporter: "html",
+const isCI = !!process.env.CI;
 
-  use: {
-    trace: "on-first-retry",
-    headless: !!process.env.CI,
-    baseURL: "http://localhost:3000",
-    video: "retain-on-failure",
-  },
+export default defineConfig({
+  testDir: "./tests",
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  reporter: "html",
+  workers: process.env.CI ? 1 : undefined,
 
   projects: [
-    /* Test against desktop viewports. */
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    // Commented out because of problems in CI
-    // {
-    //   name: "Mobile Safari",
-    //   use: { ...devices["iPhone 12"] },
-    // },
   ],
 
   webServer: [
     {
-      command: "pnpm --filter=api run start",
-      url: "http://localhost:8000",
-      timeout: 120 * 1000,
-      reuseExistingServer: !process.env.CI,
-      cwd: "../",
+      command: "pnpm run dev",
+      cwd: "../apps/web",
+      url: "http://127.0.0.1:3000",
+      reuseExistingServer: !isCI,
     },
     {
-      command: "pnpm --filter=web run start",
-      url: "http://localhost:3000",
-      timeout: 120 * 1000,
-      reuseExistingServer: !process.env.CI,
-      cwd: "../",
+      command: "pnpm run dev",
+      cwd: "../apps/api",
+      url: "http://127.0.0.1:8000",
+      reuseExistingServer: !isCI,
+      stdout: "pipe",
     },
   ],
+
+  use: {
+    headless: isCI,
+    baseURL: "http://127.0.0.1:3000",
+    video: "retain-on-failure",
+    trace: "retain-on-failure",
+    timezoneId: "Europe/Oslo",
+  },
 });

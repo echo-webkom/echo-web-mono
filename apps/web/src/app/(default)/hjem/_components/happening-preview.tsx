@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
@@ -55,9 +54,7 @@ export const HappeningPreview = ({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li>
-              <Suspense fallback={<div className="flex-none" />}>
-                <HappeningRegistrationInfo happening={happening} />
-              </Suspense>
+              <HappeningRegistrationInfo happening={happening} />
             </li>
           </ul>
         </div>

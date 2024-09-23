@@ -1,6 +1,8 @@
 import ky from "ky";
 
 export const apiClient = ky.extend({
-  // TODO: Change to env variable
-  prefixUrl: "http://localhost:8000",
+  prefixUrl: process.env.NEXT_PUBLIC_API_URL,
+  throwHttpErrors: false,
+  credentials: "include",
+  cache: "no-store",
 });
