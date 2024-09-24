@@ -29,37 +29,18 @@ export default async function UserStrikePagez() {
 
   const [validStrikes, earlierStrikes] = split(
     strikes,
-    (strike) => strike.id > (user.bannedFromStrike ?? -1),
+    (strike) => strike.id >= (user.bannedFromStrike ?? -1),
   );
 
   const nextBedpresAfterBan = user.isBanned ? await getNextBedpresAfterBan(user) : null;
 
   return (
     <div className="max-w-4xl">
-      <Heading level={2} className="mb-4">
+      <Heading level={2} className="my-4">
         Oversikt over dine prikker
       </Heading>
-
-      <div className="mb-10">
-        <Text>
-          <Link
-            className="group flex items-center underline-offset-4 hover:underline"
-            href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
-          >
-            <ArrowRight className="inline h-6 w-6 transition-transform group-hover:translate-x-2" />
-            <h2 className="ml-2 text-center">Les om Bedkom sine retningslinjer</h2>
-          </Link>
-        </Text>
-        <Text>
-          For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
-          <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
-            bedkom@echo.uib.no
-          </Link>
-        </Text>
-      </div>
-
       {user.isBanned && (
-        <div className="text-lg text-destructive">
+        <p className="mb-2 font-semibold text-destructive">
           Du er utestengt{" "}
           {nextBedpresAfterBan && (
             <>
@@ -69,12 +50,31 @@ export default async function UserStrikePagez() {
               </Link>
             </>
           )}
-        </div>
+        </p>
+      )}
+      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
+        <p className="mb-2">Du har ingen prikker. Fortsett sånn!</p>
       )}
 
-      {validStrikes.length === 0 && earlierStrikes.length === 0 && (
-        <p className="text-2xl">Du har ingen prikker. Fortsett sånn!</p>
-      )}
+      <div className="my-5 rounded-md border bg-muted p-5">
+        <Text className="font-semibold">Gyldige prikker: {validStrikes.length}</Text>
+        <Text className="font-semibold">
+          Tidligere prikker: {strikes.length - validStrikes.length}
+        </Text>
+        <Link
+          className="group mt-3 flex items-center space-x-1 underline-offset-4 hover:underline"
+          href="https://docs.google.com/document/d/1hzkwiVmdsLov-A-57AMdbkkvGgNAC25cQ_YmAf-zzZI/edit"
+        >
+          <h2 className="text-center">Les om Bedkom sine retningslinjer</h2>
+          <ArrowRight className="inline size-4 transition-transform group-hover:translate-x-1" />
+        </Link>
+      </div>
+      <Text>
+        For spørsmål om dine prikker, ta kontakt med bedkom på{" "}
+        <Link href={mailTo("bedkom@echo.uib.no")} className="underline">
+          bedkom@echo.uib.no
+        </Link>
+      </Text>
 
       {validStrikes.length > 0 && (
         <>
@@ -87,7 +87,6 @@ export default async function UserStrikePagez() {
           <StrikeTable strikes={validStrikes} />
         </>
       )}
-
       {earlierStrikes.length > 0 && (
         <>
           <Heading level={3} className="mt-8">

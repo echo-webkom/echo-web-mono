@@ -1,39 +1,49 @@
 import { unstable_cache as cache } from "next/cache";
-import { and, count, eq, gt, isNull, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { strikes, users } from "@echo-webkom/db/schemas";
 
+import { type UserWithStrikes } from "@/app/(default)/prikker/table";
 import { cacheKeyFactory } from "./revalidate";
 
-export const getAllUsersWithValidStrikes = async () => {
-  return cache(
-    async () => {
-      return await db
-        .select({
-          id: users.id,
-          name: users.name,
-          isBanned: users.isBanned,
-          strikes: count(strikes.id),
-        })
-        .from(users)
-        .leftJoin(
-          strikes,
-          and(
-            eq(users.id, strikes.userId),
-            eq(strikes.isDeleted, false),
-            or(isNull(users.bannedFromStrike), gt(strikes.id, users.bannedFromStrike)),
-          ),
-        )
-        .groupBy(users.id);
-    },
-    [cacheKeyFactory.allUsersStrikes()],
-    {
-      tags: [cacheKeyFactory.allUsersStrikes()],
-      revalidate: 60, // to be deleted
-    },
-  )();
-};
+export const getAllUsersWithStrikes = cache(
+  async () => {
+    const usersWithStrikes = await db.query.users.findMany({
+      with: {
+        strikes: {
+          with: {
+            strikeInfo: {
+              with: {
+                happening: true,
+                issuer: true,
+              },
+            },
+          },
+          where: (strike) => and(eq(strike.isDeleted, false)),
+        },
+      },
+    });
+
+    const result: Array<UserWithStrikes> = usersWithStrikes.map((user) => {
+      const validStrikes = user.strikes.filter(
+        (strike) => strike.id >= (user.bannedFromStrike ?? -1),
+      );
+
+      return {
+        id: user.id,
+        name: user.name,
+        isBanned: Boolean(user.bannedFromStrike),
+        validStrikes: validStrikes.length,
+      };
+    });
+
+    return result;
+  },
+  [cacheKeyFactory.allUsersWithStrikes()],
+  {
+    tags: [cacheKeyFactory.allUsersWithStrikes()],
+  },
+);
 
 export const getAllUserStrikes = async (userId: string) => {
   return cache(
