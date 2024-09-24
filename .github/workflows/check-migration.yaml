@@ -29,27 +29,37 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: Checkout main
+      - name: 🔍 Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Install dependencies
-        uses: ./.github/actions/pnpm-install
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Apply migrations (main)
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Apply migrations (main)
         run: pnpm db:migrate
 
-      - name: Checkout PR branch
+      - name: 🔍 Checkout PR branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Install dependencies
-        uses: ./.github/actions/pnpm-install
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Check migrations (PR Branch)
+      - name: 🩺 Check migrations (PR Branch)
         run: pnpm db:check
 
-      - name: Apply migrations (PR Branch)
+      - name: 🚢 Apply migrations (PR Branch)
         run: pnpm db:migrate
