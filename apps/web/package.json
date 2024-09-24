@@ -50,7 +50,7 @@
     "ics": "^3.7.6",
     "ky": "^1.7.2",
     "nanoid": "5.0.7",
-    "next": "14.2.6",
+    "next": "14.2.10",
     "next-auth": "4.24.7",
     "next-themes": "0.3.0",
     "nextjs-toploader": "1.6.12",
