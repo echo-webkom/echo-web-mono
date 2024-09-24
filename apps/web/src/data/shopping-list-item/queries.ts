@@ -4,10 +4,10 @@ import {
   type UsersToShoppingListItems,
 } from "@echo-webkom/db/schemas";
 
-import { apiClient } from "@/api/client";
+import { apiServer } from "@/api/server";
 
 export const getAllShoppinglistItems = () => {
-  return apiClient
+  return apiServer
     .get("shopping")
     .json<
       Array<

@@ -1,3 +1,5 @@
+import "server-only";
+
 import ky from "ky";
 
 export const apiServer = ky.extend({

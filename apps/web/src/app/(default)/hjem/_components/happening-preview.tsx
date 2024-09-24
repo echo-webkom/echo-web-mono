@@ -5,7 +5,7 @@ import { RxCalendar } from "react-icons/rx";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { apiClient } from "@/api/client";
+import { apiServer } from "@/api/server";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
@@ -68,7 +68,7 @@ const HappeningRegistrationInfo = async ({
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) => {
-  const { waiting, registered, max } = await apiClient
+  const { waiting, registered, max } = await apiServer
     .get(`happening/${happening._id}/registrations/count`)
     .json<{
       waiting: number;
