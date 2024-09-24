@@ -14,4 +14,4 @@ primary_region = "arn"
 [[vm]]
   size = "shared-cpu-2x"
   memory = "1gb"
-  cpus = 4
+  cpus = 1
