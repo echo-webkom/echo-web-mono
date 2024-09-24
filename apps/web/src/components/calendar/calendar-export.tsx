@@ -31,11 +31,12 @@ const eventTypes: Array<{
     value: "bedpres",
   },
 ];
-export default function CalendarExport() {
+
+export const CalendarExport = () => {
   const [types, setTypes] = useState<Array<HappeningType>>(["bedpres", "event"]);
-  const [includePast, setIncludePast] = useState<boolean>(false);
-  const [includeMovies, setIncludeMovies] = useState<boolean>(false);
-  const [includeBedpresRegistration, setIncludeBedpresRegistration] = useState<boolean>(false);
+  const [includePast, setIncludePast] = useState(false);
+  const [includeMovies, setIncludeMovies] = useState(false);
+  const [includeBedpresRegistration, setIncludeBedpresRegistration] = useState(false);
 
   const addToTypes = (type: HappeningType) => {
     if (!types.includes(type)) {
@@ -141,4 +142,4 @@ export default function CalendarExport() {
       </Button>
     </Container>
   );
-}
+};

@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BiCalendar } from "react-icons/bi";
+import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { Heading } from "../typography/heading";
 import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { CalendarControl } from "./calendar-control";
+import { CalendarExport } from "./calendar-export";
 import { DaysCalendar } from "./days-calendar";
 import { MonthCalendar } from "./month-calendar";
 
@@ -67,6 +69,18 @@ export const Calendar = ({ events, type }: Props) => {
             <TabsContent value="month">
               <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
             </TabsContent>
+            <div className="flex justify-end">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>
+                    <BiDownload />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <CalendarExport />
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
         </motion.div>
       </Tabs>
