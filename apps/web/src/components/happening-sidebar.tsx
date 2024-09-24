@@ -384,7 +384,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
            * Show waitlist position if:
            * - User is on waitlist
            */}
-          {currentUserStatus === "waiting" && userWaitlistPosition > 0 && (
+          {isRegistrationOpen && currentUserStatus === "waiting" && userWaitlistPosition > 0 && (
             <SidebarItem>
               <SidebarItemTitle>Plass på venteliste:</SidebarItemTitle>
               <SidebarItemContent>{userWaitlistPosition}</SidebarItemContent>
