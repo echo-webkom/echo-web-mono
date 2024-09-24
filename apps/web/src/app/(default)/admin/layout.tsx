@@ -54,11 +54,6 @@ const adminRoutes = [
     groups: ["webkom", "hovedstyret"],
   },
   {
-    href: "/admin/kaffe",
-    label: "Kaffe-admin",
-    groups: ["webkom", "hovedstyret"],
-  },
-  {
     href: "/admin/whitelist",
     label: "Whitelist",
     groups: ["webkom", "hovedstyret"],
