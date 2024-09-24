@@ -2,15 +2,17 @@ import { serve } from "@hono/node-server";
 
 import app from "./app";
 
+const isCI = !!process.env.CI;
+const HOSTNAME = isCI ? "localhost" : "0.0.0.0";
 const PORT = process.env.API_PORT ? Number(process.env.API_PORT) : 8000;
 
 serve(
   {
     fetch: app.fetch,
     port: PORT,
-    hostname: "127.0.0.1",
+    hostname: HOSTNAME,
   },
   (info) => {
-    console.log(`Listening on http://localhost:${info.port}`);
+    console.log(`Listening on http://${HOSTNAME}:${info.port}`);
   },
 );

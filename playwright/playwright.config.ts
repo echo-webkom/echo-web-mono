@@ -18,15 +18,15 @@ export default defineConfig({
 
   webServer: [
     {
-      command: "pnpm run dev",
+      command: "pnpm run start",
       cwd: "../apps/web",
-      url: "http://127.0.0.1:3000",
+      url: "http://localhost:3000",
       reuseExistingServer: !isCI,
     },
     {
-      command: "pnpm run dev",
+      command: "pnpm run start",
       cwd: "../apps/api",
-      url: "http://127.0.0.1:8000",
+      url: "http://localhost:8000",
       reuseExistingServer: !isCI,
       stdout: "pipe",
     },
@@ -34,7 +34,7 @@ export default defineConfig({
 
   use: {
     headless: isCI,
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://localhost:3000",
     video: "retain-on-failure",
     trace: "retain-on-failure",
     timezoneId: "Europe/Oslo",
