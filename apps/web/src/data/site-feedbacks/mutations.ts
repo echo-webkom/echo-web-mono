@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { siteFeedback, type SiteFeedbackInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 export const createFeedback = async (feedback: SiteFeedbackInsert) => {
   const [insertedFeedback] = await db

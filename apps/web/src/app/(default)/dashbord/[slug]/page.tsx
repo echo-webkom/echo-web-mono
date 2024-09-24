@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { db } from "@echo-webkom/db";
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { Container } from "@/components/container";
 import { HappeningInfoBox } from "@/components/happening-info-box";

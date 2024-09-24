@@ -1,8 +1,8 @@
 import { unstable_cache as cache } from "next/cache";
 import { and, count, eq, gt, isNull, or } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { strikes, users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { cacheKeyFactory } from "./revalidate";
 

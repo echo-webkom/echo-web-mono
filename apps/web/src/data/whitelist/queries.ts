@@ -1,6 +1,6 @@
 import { isFuture } from "date-fns";
 
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 export const getWhitelist = async () => {
   return await db.query.whitelist

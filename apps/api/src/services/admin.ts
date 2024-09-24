@@ -3,9 +3,9 @@ import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
 
+import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
 import { getCorrectSpotrange } from "../utils/correct-spot-range";
 import { parseJson } from "../utils/json";

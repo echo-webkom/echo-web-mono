@@ -3,8 +3,8 @@
 import { revalidateTag } from "next/cache";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { registrations } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { cacheKeyFactory } from "@/data/registrations/revalidate";
 import { getUser } from "@/lib/get-user";

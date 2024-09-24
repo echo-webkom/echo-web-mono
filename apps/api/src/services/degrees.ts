@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { degrees, insertDegreeSchema } from "@echo-webkom/db/schemas";
 
+import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
 import { parseJson } from "../utils/json";
 

@@ -4,7 +4,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./schemas": "./src/schemas/index.ts",
-    "./utils": "./src/utils.ts"
+    "./utils": "./src/utils.ts",
+    "./create": "./src/create.ts",
+    "./serverless": "./src/serverless.ts",
+    "./error": "./src/error.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
