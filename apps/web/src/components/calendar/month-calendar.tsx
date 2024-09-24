@@ -13,10 +13,11 @@ import {
   subDays,
 } from "date-fns";
 
+import { EventHoverPreview } from "@/components/calendar/event-hover-prev";
+import { Heading } from "@/components/typography/heading";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
-import { Heading } from "../typography/heading";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 type Props = {
   events: Array<CalendarEvent>;
@@ -54,8 +55,8 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="w-full overflow-x-scroll md:overflow-hidden">
-        <div className="grid min-w-[50rem] grid-cols-7">
+      <div className="h-[600px] w-full overflow-y-auto overflow-x-scroll md:h-auto">
+        <div className="sticky top-0 grid min-w-[50rem] grid-cols-7 bg-background">
           {weekdays.map((day) => (
             <Heading
               level={2}
@@ -68,7 +69,8 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
               {day}
             </Heading>
           ))}
-
+        </div>
+        <div className="grid min-w-[50rem] grid-cols-7">
           {Array.from({ length: firstDay }, (_, i) => subDays(month, firstDay - i)).map(
             (day, index) => (
               <div
@@ -99,10 +101,10 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                   <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                     <HoverCardTrigger asChild>
                       <div
-                        className={cn("overflow-hidden rounded-xl border-2 p-2", {
-                          "border-blue-500 hover:bg-blue-400": event.type === "bedpres",
-                          "border-green-500 hover:bg-green-400": event.type === "event",
-                          "border-red-500 hover:bg-red-400": event.type === "movie",
+                        className={cn("overflow-hidden border-l-4 p-2", {
+                          "border-primary hover:bg-primary-hover": event.type === "bedpres",
+                          "border-secondary hover:bg-secondary": event.type === "event",
+                          "border-pink-400 hover:bg-pink-400": event.type === "movie",
                         })}
                       >
                         <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
@@ -111,26 +113,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                       </div>
                     </HoverCardTrigger>
                     <HoverCardContent>
-                      <div className="space-y-2">
-                        <Link className="hover:underline" href={event.link}>
-                          <h3 className="line-clamp-1 text-ellipsis font-semibold">
-                            {event.title}
-                          </h3>
-                        </Link>
-
-                        <p className="text-sm font-medium">
-                          {event.body.slice(0, 250)}
-                          {(event.body.length ?? 0) > 250 && "..."}
-                        </p>
-                        <div>
-                          <Link
-                            href={event.link}
-                            className="text-sm font-medium italic hover:underline"
-                          >
-                            Les mer
-                          </Link>
-                        </div>
-                      </div>
+                      <EventHoverPreview event={event} />
                     </HoverCardContent>
                   </HoverCard>
                 ))}
@@ -143,24 +126,6 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
               </Heading>
             </div>
           ))}
-        </div>
-        <div className="flex gap-4 p-5">
-          <div className="mr-2 flex items-center">
-            <div className="mr-1 h-4 w-4 rounded-full bg-blue-500"></div>
-            <div>Bedpres</div>
-          </div>
-          <div className="mr-2 flex items-center">
-            <div className="mr-1 h-4 w-4 rounded-full bg-green-500"></div>
-            <div>Arrangement</div>
-          </div>
-          <div className="mr-2 flex items-center">
-            <div className="mr-1 h-4 w-4 rounded-full bg-red-500"></div>
-            <div>Film</div>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-1 h-4 w-4 rounded-full bg-gray-600"></div>
-            <div>Annet</div>
-          </div>
         </div>
       </div>
     </div>
