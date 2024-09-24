@@ -1,4 +1,3 @@
-import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
@@ -13,7 +12,6 @@ import {
 } from "@echo-webkom/db/schemas";
 import { isBoard } from "@echo-webkom/lib";
 
-import { revalidateSpotRange } from "@/data/spotrange/revalidate";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { toDateOrNull } from "@/utils/date";
 import { makeListUnique } from "@/utils/list";
@@ -124,12 +122,6 @@ export const POST = withBasicAuth(async (req) => {
     data,
   });
 
-  // Revalidate happening data from Sanity
-  revalidateTag("happening-params");
-  revalidateTag("home-happenings");
-  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
-  revalidateTag("happenings");
-
   /**
    * If the happening is external, we don't want to do anything. Since
    * we are not responsible for the registrations of external happenings.
@@ -207,8 +199,6 @@ export const POST = withBasicAuth(async (req) => {
       await db.insert(spotRanges).values(spotRangesToInsert);
     }
 
-    revalidateSpotRange(happening.id);
-
     const questionsToInsert = (data.questions ?? []).map((q) => ({
       id: q.id,
       happeningId: happening.id,
@@ -264,8 +254,6 @@ export const POST = withBasicAuth(async (req) => {
     if (spotRangesToInsert.length > 0) {
       await db.insert(spotRanges).values(spotRangesToInsert);
     }
-
-    revalidateSpotRange(happening.id);
 
     const oldQuestions = await db.query.questions.findMany({
       where: eq(questions.happeningId, happening.id),

@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { describe, expect, it } from "vitest";
 
-import { isHost, isMemberOf, isWebkom, type Hostable, type TUser } from "../memberships";
+import { isHost, isMemberOf, isWebkom, type TUser } from "../memberships";
 
 const userId = crypto.randomUUID();
 
@@ -35,14 +35,7 @@ const user2: TUser = {
   ],
 };
 
-const happening: Hostable = {
-  groups: [
-    {
-      groupId: "webkom",
-      happeningId: "happening",
-    },
-  ],
-};
+const groups = ["webkom"];
 
 describe("user helpers", () => {
   it("should be member of webkom", () => {
@@ -58,10 +51,10 @@ describe("user helpers", () => {
   });
 
   it("should be host of happening", () => {
-    expect(isHost(user1, happening)).toBe(true);
+    expect(isHost(user1, groups)).toBe(true);
   });
 
   it("should not be host of happening", () => {
-    expect(isHost(user2, happening)).toBe(false);
+    expect(isHost(user2, groups)).toBe(false);
   });
 });

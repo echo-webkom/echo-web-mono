@@ -7,10 +7,18 @@ on:
 env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+
+  API_PORT: 8000
+  NEXT_PUBLIC_API_URL: http://localhost:8000
+
   NEXT_PUBLIC_SANITY_DATASET: "testing"
+
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+
   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  NEXTAUTH_URL: http://localhost:3000
+
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -30,36 +38,40 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pnpm-install
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
 
-      - run: pnpm db:migrate
+      - name: 🚚 Install dependencies
+        uses: ./.github/actions/pnpm-install
 
-      - name: Lint
+      - name: 🏗️ Migrate database
+        run: pnpm db:migrate
+
+      - name: 📝 Lint
         run: pnpm lint
 
-      - name: Type check
+      - name: 🛫 Type check
         run: pnpm typecheck
 
-      - name: Check style
+      - name: 💄 Check style
         run: pnpm format:check
 
-      - name: Build
-        run: pnpm build
-
-      - name: Run unit tests
-        run: pnpm test:unit
-
-      - name: Install playwright browsers
-        run: pnpm --filter=playwright test:install
-
-      - name: Seed database
+      - name: 🌱 Seed database
         run: pnpm seed database --mode test
 
-      - name: Run playwright tests
+      - name: 👷🏻‍♂️ Build
+        run: pnpm build
+
+      - name: 🧪 Run unit tests
+        run: pnpm test:unit
+
+      - name: 💻 Install playwright browsers
+        run: pnpm --filter=playwright test:install
+
+      - name: 🎭 Run playwright tests
         run: pnpm test:e2e
 
-      - name: Upload test results
+      - name: 📥 Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:

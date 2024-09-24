@@ -1,0 +1,33 @@
+{
+  "name": "@echo-webkom/api",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "pnpm with-env esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "dev": "pnpm with-env tsx watch ./src/index.ts",
+    "start": "pnpm with-env node ./dist/index.js",
+    "typecheck": "pnpm with-env tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@echo-webkom/auth": "workspace:*",
+    "@echo-webkom/db": "workspace:*",
+    "@echo-webkom/email": "workspace:*",
+    "@echo-webkom/lib": "workspace:*",
+    "@echo-webkom/sanity": "workspace:*",
+    "@hono/node-server": "1.13.0",
+    "date-fns": "3.6.0",
+    "drizzle-orm": "0.33.0",
+    "hono": "4.6.2",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@echo-webkom/tsconfig": "workspace:*",
+    "@types/node": "20.16.5",
+    "dotenv-cli": "7.4.2",
+    "esbuild": "0.23.1",
+    "tsx": "4.19.1",
+    "typescript": "5.5.4",
+    "vitest": "2.0.5"
+  }
+}

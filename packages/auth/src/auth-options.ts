@@ -69,12 +69,6 @@ export const createAuthOptions = (
           return true;
         }
 
-        if (process.env.TESTING === "true") {
-          if (email === "kjella@test.feide.no") {
-            return true;
-          }
-        }
-
         if (opts?.onSignInFail) {
           return await opts.onSignInFail({
             error,

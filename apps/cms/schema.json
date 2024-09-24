@@ -327,7 +327,7 @@
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "title": {
           "type": "objectAttribute",
@@ -1265,6 +1265,13 @@
         },
         "optional": false
       },
+      "weight": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": false
+      },
       "locations": {
         "type": "objectAttribute",
         "value": {
@@ -1390,6 +1397,13 @@
               "optional": true
             },
             "FIFTH": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
+            "PHD": {
               "type": "objectAttribute",
               "value": {
                 "type": "boolean"

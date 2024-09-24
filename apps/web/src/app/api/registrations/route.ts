@@ -29,7 +29,8 @@ export const GET = async (req: NextRequest) => {
     return new Response("Happening not found", { status: 404 });
   }
 
-  if (!isHost(user, happening)) {
+  const hostGroups = happening.groups.map((group) => group.groupId);
+  if (!isHost(user, hostGroups)) {
     return new Response("Unauthorized", { status: 401 });
   }
 

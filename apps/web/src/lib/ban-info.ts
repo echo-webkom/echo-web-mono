@@ -1,9 +1,10 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db";
-import { type Happening, type User } from "@echo-webkom/db/schemas";
+import { type User } from "@echo-webkom/db/schemas";
 
 import { getHappeningsFromDate, getHappeningsFromDateToDate } from "@/data/happenings/queries";
+import { type fetchHappeningBySlug } from "@/sanity/happening";
 
 export const BAN_LENGTH = 3;
 
@@ -80,8 +81,11 @@ export const getNextBedpresAfterBan = async (user: User) => {
   return fromNow[index];
 };
 
-export const isUserBannedFromBedpres = async (user: User, bedpres: Happening) => {
-  if (bedpres.type !== "bedpres") {
+export const isUserBannedFromBedpres = async (
+  user: User,
+  bedpres: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>,
+) => {
+  if (bedpres.happeningType !== "bedpres") {
     throw new Error("Happening is not a bedpres");
   }
 
@@ -99,7 +103,11 @@ export const isUserBannedFromBedpres = async (user: User, bedpres: Happening) =>
 
   const dateBanned = await getDateBanned(user.bannedFromStrike);
 
-  const happenings = await getHappeningsFromDateToDate(dateBanned, bedpres.date, "bedpres");
+  const happenings = await getHappeningsFromDateToDate(
+    dateBanned,
+    new Date(bedpres.date),
+    "bedpres",
+  );
 
   const available = happenings
     .filter((happening) =>
@@ -107,7 +115,7 @@ export const isUserBannedFromBedpres = async (user: User, bedpres: Happening) =>
         (spotRange) => user.year! >= spotRange.minYear && user.year! <= spotRange.maxYear,
       ),
     )
-    .filter((happening) => happening !== bedpres);
+    .filter((happening) => happening.id !== bedpres._id);
 
   return available.length < BAN_LENGTH;
 };

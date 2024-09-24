@@ -10,7 +10,7 @@ import { HappeningInfoBox } from "@/components/happening-info-box";
 import { getStudentGroups } from "@/data/groups/queries";
 import { getFullHappening } from "@/data/happenings/queries";
 import { getUser } from "@/lib/get-user";
-import { isHost as _isHost } from "@/lib/memberships";
+import { isHost } from "@/lib/memberships";
 import { RegistrationTable } from "./_components/registration-table";
 
 type Props = {
@@ -30,9 +30,10 @@ export default async function EventDashboard({ params }: Props) {
 
   const user = await getUser();
 
-  const isHost = user ? _isHost(user, happening) : false;
+  const hostGroups = happening.groups.map((group) => group.groupId);
+  const isHosting = user ? isHost(user, hostGroups) : false;
 
-  if (!isHost) {
+  if (!isHosting) {
     return notFound();
   }
 
