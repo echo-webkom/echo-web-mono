@@ -70,6 +70,7 @@ export const Calendar = ({ events, type }: Props) => {
             <TabsContent value="month">
               <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
             </TabsContent>
+            <Legend />
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="gap-2">
@@ -88,7 +89,7 @@ export const Calendar = ({ events, type }: Props) => {
   }
 
   return (
-    <div>
+    <div className="space-y-2">
       <div className="flex w-full gap-4">
         <Button asChild variant="ghost">
           <Link href="/for-studenter/arrangementer">
@@ -111,6 +112,30 @@ export const Calendar = ({ events, type }: Props) => {
       ) : (
         <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
       )}
+      <Legend />
+    </div>
+  );
+};
+
+const Legend = () => {
+  return (
+    <div className="flex flex-col gap-4 p-5 md:flex-row">
+      <div className="mr-2 flex items-center">
+        <div className="mr-1 h-4 w-4 rounded-full bg-primary"></div>
+        <div>Bedpres</div>
+      </div>
+      <div className="mr-2 flex items-center">
+        <div className="mr-1 h-4 w-4 rounded-full bg-secondary"></div>
+        <div>Arrangement</div>
+      </div>
+      <div className="mr-2 flex items-center">
+        <div className="mr-1 h-4 w-4 rounded-full bg-pink-400"></div>
+        <div>Film</div>
+      </div>
+      <div className="flex items-center">
+        <div className="mr-1 h-4 w-4 rounded-full bg-gray-600"></div>
+        <div>Annet</div>
+      </div>
     </div>
   );
 };

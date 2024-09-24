@@ -5,8 +5,10 @@ import Link from "next/link";
 import { addDays, getWeek, isSameDay, startOfWeek } from "date-fns";
 
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
+import { cn } from "@/utils/cn";
 import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
+import { EventHoverPreview } from "./event-hover-prev";
 
 type Props = {
   events: Array<CalendarEvent>;
@@ -74,7 +76,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
 
   return (
     <div ref={ref} className="space-y-4">
-      <div className="mb-10 h-72 overflow-hidden rounded-lg border-2">
+      <div className="h-72 overflow-hidden rounded-lg border-2">
         <div
           className="h-full divide-x"
           style={{
@@ -108,36 +110,25 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                   <ul className="flex flex-col gap-1 px-1">
                     {eventsThisDay.map((event) => {
                       return (
-                        <HoverCard key={event.id}>
+                        <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                           <HoverCardTrigger asChild>
-                            <Link
-                              className="overflow-hidden rounded-xl border-2 p-2"
-                              href={event.link}
+                            <div
+                              className={cn("overflow-hidden border-l-4 p-2", {
+                                "border-primary hover:bg-primary-hover": event.type === "bedpres",
+                                "border-secondary hover:bg-secondary": event.type === "event",
+                                "border-pink-400 hover:bg-pink-400": event.type === "movie",
+                              })}
                             >
-                              <p className="line-clamp-1 text-sm font-semibold">{event.title}</p>
-                            </Link>
+                              <Link
+                                href={event.link}
+                                className="line-clamp-1 text-sm font-semibold"
+                              >
+                                {event.title}
+                              </Link>
+                            </div>
                           </HoverCardTrigger>
                           <HoverCardContent>
-                            <div className="space-y-2">
-                              <Link className="hover:underline" href={event.link}>
-                                <h3 className="line-clamp-1 text-ellipsis font-semibold">
-                                  {event.title}
-                                </h3>
-                              </Link>
-
-                              <p className="text-sm font-medium">
-                                {event.body.slice(0, 250)}
-                                {(event.body.length ?? 0) > 250 && "..."}
-                              </p>
-                              <div>
-                                <Link
-                                  href={event.link}
-                                  className="text-sm font-medium italic hover:underline"
-                                >
-                                  Les mer
-                                </Link>
-                              </div>
-                            </div>
+                            <EventHoverPreview event={event} />
                           </HoverCardContent>
                         </HoverCard>
                       );
