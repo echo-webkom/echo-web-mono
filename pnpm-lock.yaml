@@ -27,6 +27,8 @@ importers:
         specifier: 5.5.4
         version: 5.5.4
 
+  apps/api: {}
+
   apps/cms:
     dependencies:
       '@echo-webkom/lib':

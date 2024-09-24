@@ -1,0 +1,7 @@
+{
+  "name": "@echo-webkom/api",
+  "scripts": {
+    "start": "deno serve -A src/main.ts",
+    "dev": "deno serve -A --watch src/main.ts"
+  }
+}

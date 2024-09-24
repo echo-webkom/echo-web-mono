@@ -7,10 +7,17 @@ on:
 env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
-  NEXT_PUBLIC_SANITY_DATASET: "testing"
+  API_PORT: 8000
+
+  NEXT_PUBLIC_SANITY_DATASET: testing
+  NEXT_PUBLIC_API_URL: http://localhost:8000
+
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+
   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  NEXTAUTH_URL: http://localhost:3000
+
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -32,6 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
 
       - run: pnpm db:migrate
 

@@ -1,42 +1,42 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+const isCI = !!process.env.CI;
+
 export default defineConfig({
   testDir: "./",
-  fullyParallel: false,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: 1,
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  workers: isCI ? 1 : undefined,
   reporter: "html",
 
-  use: {
-    trace: "on-first-retry",
-    headless: !!process.env.CI,
-    baseURL: "http://localhost:3000",
-  },
-
   projects: [
-    /* Test against desktop viewports. */
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    // Commented out because of problems in CI
-    // {
-    //   name: "Mobile Safari",
-    //   use: { ...devices["iPhone 12"] },
-    // },
   ],
 
   webServer: [
     {
-      command: "pnpm --filter=web run start",
+      command: "pnpm --filter=web run dev",
       url: "http://localhost:3000",
       timeout: 120 * 1000,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !isCI,
+      cwd: "../",
+    },
+    {
+      command: "pnpm --filter=api run dev",
+      url: "http://localhost:8000",
+      timeout: 120 * 1000,
+      reuseExistingServer: !isCI,
       cwd: "../",
     },
   ],
+
+  use: {
+    trace: "on-first-retry",
+    video: isCI ? "retain-on-failure" : "on",
+    headless: isCI,
+    baseURL: "http://localhost:3000",
+  },
 });
