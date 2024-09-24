@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { EventPage } from "@/components/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening";
+import { norwegianDateString } from "@/utils/date";
 
 type Props = {
   params: {
@@ -24,10 +25,16 @@ const getData = cache(async (slug: string) => {
 });
 
 export const generateMetadata = async ({ params }: Props) => {
-  const bedpres = await getData(params.slug);
+  const bedpress = await getData(params.slug);
+
+  const regDate = bedpress.registrationStart
+    ? `Påmelding åpner ${norwegianDateString(new Date(bedpress.registrationStart)).toLowerCase()}.`
+    : "";
 
   return {
-    title: bedpres.title,
+    title: bedpress.title,
+    description: `Ny bedpress med ${bedpress.company?.name}, ${norwegianDateString(new Date(bedpress.date)).toLowerCase()},
+    ${bedpress.location?.name}. ${regDate}`,
   };
 };
 

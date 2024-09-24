@@ -34,7 +34,6 @@ const getData = cache(async (path: Props["params"]["path"]) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const page = await getData(params.path);
-
   return {
     title: page.title,
   };

@@ -7,6 +7,7 @@ import { JobAdSidebar } from "@/components/job-ad-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchJobAdBySlug } from "@/sanity/job-ad";
+import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   params: {
@@ -26,12 +27,12 @@ const getData = cache(async (slug: Props["params"]["slug"]) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const jobAd = await getData(slug);
 
-  return {
-    title: jobAd.title,
-  };
+  return getNewPageMetadata(
+    jobAd.title,
+    `Ny stilling hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`
+  );
 };
 
 export default async function JobAdPage({ params }: { params: { slug: string } }) {

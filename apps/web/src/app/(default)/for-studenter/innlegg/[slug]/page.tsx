@@ -33,8 +33,11 @@ export const generateMetadata = async ({ params }: Props) => {
     };
   });
 
+  const authorListString = authors?.map((a) => a.name).join(", ");
+
   return {
     title: post.title,
+    description: `Nytt innslag "${post.title}" av ${authorListString}.`,
     authors,
   };
 };
