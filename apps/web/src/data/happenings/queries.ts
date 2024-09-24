@@ -1,7 +1,7 @@
 import { and, asc, eq, gt, lt } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { isErrorMessage } from "@/utils/error";
 

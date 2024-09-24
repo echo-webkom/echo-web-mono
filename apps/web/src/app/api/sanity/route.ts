@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   happenings,
   happeningsToGroups,
@@ -10,6 +9,7 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
 
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";

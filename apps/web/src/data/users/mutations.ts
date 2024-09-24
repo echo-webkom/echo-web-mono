@@ -2,8 +2,8 @@
 
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 export const unbanUser = async (userId: string) => {
   const user = await db

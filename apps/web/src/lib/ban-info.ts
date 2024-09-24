@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { type User } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { getHappeningsFromDate, getHappeningsFromDateToDate } from "@/data/happenings/queries";
 import { type fetchHappeningBySlug } from "@/sanity/happening";

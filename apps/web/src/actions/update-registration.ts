@@ -3,8 +3,8 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 

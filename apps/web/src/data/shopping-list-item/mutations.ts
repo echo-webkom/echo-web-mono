@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   shoppingListItems,
   usersToShoppingListItems,
@@ -9,6 +8,7 @@ import {
   type UsersToShoppingListItems,
   type UsersToShoppingListItemsInsert,
 } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 export const createShoppinglistItem = async (newItem: ShoppingListItemsInsert) => {
   const [insertedShoppingListItem] = await db

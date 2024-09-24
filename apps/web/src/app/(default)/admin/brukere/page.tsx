@@ -1,6 +1,6 @@
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
