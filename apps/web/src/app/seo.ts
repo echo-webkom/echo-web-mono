@@ -3,7 +3,18 @@ import { type Metadata } from "next/types";
 
 import { BASE_URL } from "@/config";
 
-export function getNewPageMetadata(title: string | TemplateString, description: string): Metadata {
+const defaultTitle = {
+  default: "echo – Linjeforeningen for informatikk",
+  template: "%s | echo – Linjeforeningen for informatikk",
+};
+
+const defaultDescription =
+  "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.";
+
+export const getNewPageMetadata = (
+  title: string | TemplateString = defaultTitle,
+  description: string = defaultDescription,
+): Metadata => {
   return {
     title,
     description,
@@ -25,14 +36,4 @@ export function getNewPageMetadata(title: string | TemplateString, description: 
       title: "echo",
     },
   };
-}
-
-export function getDefaultPageMetadata(): Metadata {
-  return getNewPageMetadata(
-    {
-      default: "echo – Linjeforeningen for informatikk",
-      template: "%s | echo – Linjeforeningen for informatikk",
-    },
-    "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
-  );
-}
+};

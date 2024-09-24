@@ -12,6 +12,7 @@ import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
 import { mailTo } from "@/utils/prefixes";
+import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   params: {
@@ -35,12 +36,9 @@ const getData = cache(async (slug: string) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const group = await getData(slug);
 
-  return {
-    title: group.name,
-  };
+  return getNewPageMetadata(group.name, `Infosiden til echo sin undergruppe ${group.name}.`);
 };
 
 export default async function GroupPage({ params }: Props) {
