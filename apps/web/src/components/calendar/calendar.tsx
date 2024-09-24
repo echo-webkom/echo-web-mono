@@ -5,11 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
-import { Heading } from "../typography/heading";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { CalendarControl } from "./calendar-control";
 import { CalendarExport } from "./calendar-export";
 import { DaysCalendar } from "./days-calendar";
@@ -69,18 +70,17 @@ export const Calendar = ({ events, type }: Props) => {
             <TabsContent value="month">
               <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
             </TabsContent>
-            <div className="flex justify-end">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>
-                    <BiDownload />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <CalendarExport />
-                </DialogContent>
-              </Dialog>
-            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <BiDownload className="size-5" />
+                  <Text size="sm">Last ned kalender</Text>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <CalendarExport />
+              </DialogContent>
+            </Dialog>
           </div>
         </motion.div>
       </Tabs>
