@@ -54,7 +54,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="w-full overflow-x-scroll">
+      <div className="w-full overflow-x-scroll md:overflow-hidden">
         <div className="grid min-w-[50rem] grid-cols-7">
           {weekdays.map((day) => (
             <Heading
