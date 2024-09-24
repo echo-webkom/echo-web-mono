@@ -109,6 +109,9 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
     (registration) => registration.userId === user?.id,
   )?.status;
 
+  const userWaitlistPosition =
+    registrations.findIndex((registration) => registration.userId === user?.id) - registeredCount;
+
   return (
     <div className="flex w-full flex-col gap-4 lg:max-w-[320px]">
       {/**
@@ -369,6 +372,17 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             <SidebarItem>
               <SidebarItemTitle>Venteliste:</SidebarItemTitle>
               <SidebarItemContent>{waitlistCount}</SidebarItemContent>
+            </SidebarItem>
+          )}
+
+          {/**
+           * Show waitlist position if:
+           * - User is on waitlist
+           */}
+          {currentUserStatus === "waiting" && userWaitlistPosition > 0 && (
+            <SidebarItem>
+              <SidebarItemTitle>Plass på venteliste:</SidebarItemTitle>
+              <SidebarItemContent>{userWaitlistPosition}</SidebarItemContent>
             </SidebarItem>
           )}
 
