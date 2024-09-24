@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest } from "next/server";
 
-import { env } from "@/env.mjs";
 import { type HandlerFunction } from "./utils";
 
 /**
@@ -13,12 +12,12 @@ import { type HandlerFunction } from "./utils";
  */
 export const withBasicAuth = (handler: HandlerFunction) => {
   return async (request: NextRequest): Promise<Response> => {
-    if (env.NODE_ENV !== "development") {
+    if (process.env.NODE_ENV !== "development") {
       const auth = headers().get("Authorization")?.split(" ")[1];
       const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
       const [, password] = decodedAuth.split(":");
 
-      if (password !== env.ADMIN_KEY) {
+      if (password !== process.env.ADMIN_KEY) {
         return new Response("Unauthorized", {
           status: 401,
         });
