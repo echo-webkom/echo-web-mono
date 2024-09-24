@@ -12,7 +12,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
-import { getDefaultPageMetadata } from "./seo";
+import { getNewPageMetadata } from "./seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,7 +41,7 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-export const metadata = getDefaultPageMetadata();
+export const metadata = getNewPageMetadata();
 
 export const viewport = {
   themeColor: [

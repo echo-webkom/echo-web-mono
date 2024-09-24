@@ -7,6 +7,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
+import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   params: {
@@ -33,10 +34,11 @@ export const generateMetadata = async ({ params }: Props) => {
     };
   });
 
-  return {
-    title: post.title,
-    authors,
-  };
+  const authorListString = authors?.map((a) => a.name).join(", "); // "Alice, Bob, Charlie"
+  const metadata = getNewPageMetadata(post.title, `Nytt innslag "${post.title}" av ${authorListString}.`);
+  metadata.authors = authors;
+
+  return metadata;
 };
 
 export default async function PostPage({ params }: Props) {

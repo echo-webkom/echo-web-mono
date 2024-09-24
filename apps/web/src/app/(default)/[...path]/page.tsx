@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/static-info";
+import { getNewPageMetadata } from "@/app/seo";
 
 export const dynamicParams = false;
 
@@ -33,10 +34,7 @@ const getData = cache(async (path: Props["params"]["path"]) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const page = await getData(params.path);
-
-  return {
-    title: page.title,
-  };
+  return getNewPageMetadata(page.title);
 };
 
 export default async function StaticPage({ params }: Props) {
