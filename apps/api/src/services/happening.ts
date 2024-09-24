@@ -38,8 +38,11 @@ app.get("/happening/:id/registrations/count", async (c) => {
     }),
   ]);
 
-  const max =
-    spotRanges.length === 0 ? spotRanges.reduce((acc, range) => acc + range.spots, 0) : null;
+  let max: number | null = null;
+
+  if (spotRanges.length > 0) {
+    max = spotRanges.reduce((acc, range) => acc + range.spots, 0);
+  }
 
   const grouped = registrations.reduce(
     (acc, registration) => {

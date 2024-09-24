@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 import adminApp from "./services/admin";
+import degreesApp from "./services/degrees";
 import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
 import healthApp from "./services/health";
@@ -25,5 +26,6 @@ app.route("/", adminApp);
 app.route("/", happeningApp);
 app.route("/", feedbackApp);
 app.route("/", shoppingApp);
+app.route("/", degreesApp);
 
 export default app;
