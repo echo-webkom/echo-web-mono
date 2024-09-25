@@ -19,6 +19,31 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 
+const CalendarDay = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => <div className={cn("flex min-h-20 flex-col bg-white p-2", className)}>{children}</div>;
+
+const DayCircle = ({
+  isActive = false,
+  children,
+}: {
+  isActive?: boolean;
+  children: React.ReactNode;
+}) => (
+  <div
+    className={cn("ml-auto flex h-6 w-6 items-center justify-center rounded-full", {
+      "bg-red-400 text-white": isActive,
+      "bg-transparent text-black": !isActive,
+    })}
+  >
+    {children}
+  </div>
+);
+
 type Props = {
   events: Array<CalendarEvent>;
   steps: number;
@@ -54,79 +79,60 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   }, [month, setMonthText, steps]);
 
   return (
-    <div className="flex w-full flex-col items-center gap-2">
-      <div className="h-[600px] w-full overflow-y-auto overflow-x-scroll md:h-auto">
-        <div className="sticky top-0 grid min-w-[50rem] grid-cols-7 bg-background">
-          {weekdays.map((day) => (
-            <Heading
-              level={2}
-              key={day}
-              className={cn(
-                "flex h-10 items-center justify-end border-b border-muted-foreground px-2 py-6",
-                ["Lør", "Søn"].includes(day) && "text-muted-foreground",
-              )}
-            >
-              {day}
-            </Heading>
-          ))}
-        </div>
-        <div className="grid min-w-[50rem] grid-cols-7">
-          {Array.from({ length: firstDay }, (_, i) => subDays(month, firstDay - i)).map(
-            (day, index) => (
-              <div
-                key={index}
-                className="flex min-h-20 flex-col border border-muted-foreground p-2"
-              >
-                <Heading className="w-full justify-end text-muted-foreground" level={3}>
-                  {day.getDate()}
-                </Heading>
-              </div>
-            ),
-          )}
+    <div className="h-[600px] w-full overflow-x-auto overflow-y-auto rounded-xl border-2 border-border md:h-auto">
+      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] border-b-2 border-border bg-border">
+        {weekdays.map((day) => (
+          <Heading
+            level={3}
+            key={day}
+            className={cn(
+              "flex h-16 place-items-baseline justify-end bg-muted p-2",
+              ["Lør", "Søn"].includes(day) && "text-muted-foreground",
+            )}
+          >
+            {day}
+          </Heading>
+        ))}
+      </div>
+      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-gray-100">
+        {Array.from({ length: firstDay }, (_, i) => subDays(month, firstDay - i)).map((day) => (
+          <CalendarDay key={day.toString()}>
+            <DayCircle>{day.getDate()}</DayCircle>
+          </CalendarDay>
+        ))}
 
-          {daysInMonth.map((day, index) => (
-            <div
-              key={index}
-              className={cn(
-                "flex min-h-20 flex-col gap-2 border border-muted-foreground p-2",
-                isToday(day) && "bg-accent",
-              )}
-            >
-              <Heading className="w-full justify-end" level={3}>
-                {index + 1}
-              </Heading>
-              {events
-                .filter((event) => isSameDay(event.date, day))
-                .map((event, _) => (
-                  <HoverCard key={event.id} openDelay={300} closeDelay={100}>
-                    <HoverCardTrigger asChild>
-                      <div
-                        className={cn("overflow-hidden border-l-4 p-2", {
-                          "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                          "border-secondary hover:bg-secondary": event.type === "event",
-                          "border-pink-400 hover:bg-pink-400": event.type === "movie",
-                        })}
-                      >
-                        <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
-                          {event.title}
-                        </Link>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      <EventHoverPreview event={event} />
-                    </HoverCardContent>
-                  </HoverCard>
-                ))}
-            </div>
-          ))}
-          {Array.from({ length: 7 - ((firstDay + daysInMonth.length) % 7) }).map((_, index) => (
-            <div key={index} className="flex min-h-20 flex-col border border-muted-foreground p-2">
-              <Heading className="w-full justify-end text-muted-foreground" level={3}>
-                {index + 1}
-              </Heading>
-            </div>
-          ))}
-        </div>
+        {daysInMonth.map((day, index) => (
+          <CalendarDay key={day.toString()}>
+            <DayCircle isActive={isToday(day)}>{index + 1}</DayCircle>
+            {events
+              .filter((event) => isSameDay(event.date, day))
+              .map((event, _) => (
+                <HoverCard key={event.id} openDelay={300} closeDelay={100}>
+                  <HoverCardTrigger asChild>
+                    <div
+                      className={cn("overflow-hidden border-l-4 p-2", {
+                        "border-primary hover:bg-primary-hover": event.type === "bedpres",
+                        "border-secondary hover:bg-secondary": event.type === "event",
+                        "border-pink-400 hover:bg-pink-400": event.type === "movie",
+                      })}
+                    >
+                      <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
+                        {event.title}
+                      </Link>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <EventHoverPreview event={event} />
+                  </HoverCardContent>
+                </HoverCard>
+              ))}
+          </CalendarDay>
+        ))}
+        {Array.from({ length: 7 - ((firstDay + daysInMonth.length) % 7) }).map((_, index) => (
+          <CalendarDay key={index}>
+            <DayCircle>{index + 1}</DayCircle>
+          </CalendarDay>
+        ))}
       </div>
     </div>
   );
