@@ -27,7 +27,8 @@ export const FeedbackForm = () => {
     defaultValues: {
       email: "",
       name: "",
-      category: undefined,
+      // @ts-expect-error Default is ""
+      category: "",
       message: "",
     },
   });
@@ -87,10 +88,8 @@ export const FeedbackForm = () => {
                   Kategori
                 </FormLabel>
                 <FormControl>
-                  <Select id="category" {...field}>
-                    <option selected disabled>
-                      Velg en kategori
-                    </option>
+                  <Select id="category" defaultValue="" {...field}>
+                    <option value="">Velg en kategori</option>
                     <hr />
                     <option value="bug">Bug</option>
                     <option value="feature">Funksjonalitet</option>
