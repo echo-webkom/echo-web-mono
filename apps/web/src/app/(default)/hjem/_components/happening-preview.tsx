@@ -22,10 +22,9 @@ export const HappeningPreview = ({
     <Link href={href}>
       <div
         className={cn(
-          "h-18 relative flex items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted",
+          "h-18 flex items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted",
           {
             "h-[6.5rem]": happening.happeningType === "bedpres",
-            "border-secondary-dark": happening.isPinned === true,
           },
         )}
       >
@@ -62,7 +61,7 @@ export const HappeningPreview = ({
             <li className="flex justify-end text-xs text-muted-foreground">
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
-            <li>
+            <li className="text-muted-foreground">
               <HappeningRegistrationInfo happening={happening} />
             </li>
           </ul>

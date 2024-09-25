@@ -1,7 +1,5 @@
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
-import { Banner } from "./_components/Banner";
-import BirthdayBanner from "./_components/birthdayBanner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
@@ -13,9 +11,10 @@ export default async function Home() {
   await ensureUser();
 
   return (
-    <>
-      <Banner />
-      <BirthdayBanner />
+    <div className="space-y-8 py-24">
+      <Container layout="larger">
+        <FPCalendar />
+      </Container>
 
       <Container
         layout="larger"
@@ -25,11 +24,11 @@ export default async function Home() {
           title="Arrangementer"
           href="/for-studenter/arrangementer?type=event"
           types={["external", "event"]}
-          n={7}
+          n={11}
           className="col-span-1 row-span-2"
         />
         <ComingHappenings
-          title="Bedpresser"
+          title="Bedriftspresentasjoner"
           href="/for-studenter/arrangementer?type=bedpres"
           types={["bedpres"]}
           n={3}
