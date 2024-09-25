@@ -38,6 +38,15 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }),
   ]);
 
+  if (!profileOwner.isPublic && !isOwner) {
+    return (
+      <div className="max-w-2xl space-y-4">
+        <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
+        <Text>Denne brukeren har privat profil.</Text>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl space-y-4">
       <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
