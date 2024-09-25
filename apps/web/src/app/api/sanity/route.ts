@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
@@ -107,6 +108,12 @@ export const POST = withBasicAuth(async (req) => {
     pastSlug,
     data,
   });
+
+  // Revalidate happening data from Sanity
+  revalidateTag("happening-params");
+  revalidateTag("home-happenings");
+  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
+  revalidateTag("happenings");
 
   /**
    * If the happening is external, we don't want to do anything. Since
