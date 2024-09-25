@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 import { type User } from "@echo-webkom/db/schemas";
 
@@ -31,6 +32,8 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
   const toggleCollapsed = () => {
     setCollapsed((prev) => !prev);
   };
+
+  const userLink = (userId: string) => `/auth/user/${userId}`;
 
   if (!comments.length) {
     return null;
@@ -64,7 +67,11 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
               })}
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                <h3 className="text-lg font-medium">{comment.user?.name ?? "[slettet]"}</h3>
+                <Link href={userLink(comment.user?.id ?? "")}>
+                  <h3 className="text-lg font-medium hover:underline">
+                    {comment.user?.name ?? "[slettet]"}
+                  </h3>
+                </Link>
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-muted-foreground">{shortDate(comment.createdAt)}</p>
                   {comment.children.length > 0 && (

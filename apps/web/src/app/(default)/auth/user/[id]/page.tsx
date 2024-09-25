@@ -10,21 +10,28 @@ import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
-import { getUserById } from "@/lib/get-user";
+import { getUser, getUserById } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const userId = params.id;
-  const user = await getUserById(userId);
+  const profileOwner = await getUserById(userId);
+  const currentUser = await getUser();
 
-  if (!user) {
+  if (!profileOwner) {
+    return redirect("/hjem");
+  }
+
+  if (!currentUser) {
     return redirect("/auth/logg-inn");
   }
+
+  const isOwner = profileOwner.id === currentUser.id;
 
   const [degrees, memberships] = await Promise.all([
     getAllDegrees(),
     db.query.usersToGroups.findMany({
-      where: (usersToGroup) => eq(usersToGroup.userId, user.id),
+      where: (usersToGroup) => eq(usersToGroup.userId, profileOwner.id),
       with: {
         group: true,
       },
@@ -33,19 +40,22 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
   return (
     <div className="max-w-2xl space-y-4">
-      <Heading level={2}>{`${user.name?.split(" ")[0]} sin profil`}</Heading>
+      <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-6 md:flex-row">
-          <UploadProfilePicture name={user.name ?? "Bo Bakseter"} image={user.image} />
+          <UploadProfilePicture
+            name={profileOwner.name ?? "Bo Bakseter"}
+            image={profileOwner.image}
+          />
 
           <div>
             <div>
               <Label>Navn</Label>
-              <Text>{user.name}</Text>
+              <Text>{profileOwner.name}</Text>
             </div>
             <div>
               <Label>E-post</Label>
-              <Text>{user.email}</Text>
+              <Text>{profileOwner.email}</Text>
             </div>
           </div>
         </div>
@@ -71,17 +81,34 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         )}
       </div>
 
-      <UserForm
-        user={{
-          id: user.id,
-          degree: user.degree ?? undefined,
-          year: user.year ?? undefined,
-          alternativeEmail: user.alternativeEmail ?? undefined,
-          hasReadTerms: user.hasReadTerms ?? undefined,
-          isPublic: user.isPublic ?? undefined,
-        }}
-        degrees={degrees}
-      />
+      {isOwner ? (
+        <UserForm
+          user={{
+            id: profileOwner.id,
+            degree: profileOwner.degree ?? undefined,
+            year: profileOwner.year ?? undefined,
+            alternativeEmail: profileOwner.alternativeEmail ?? undefined,
+            hasReadTerms: profileOwner.hasReadTerms ?? undefined,
+            isPublic: profileOwner.isPublic ?? undefined,
+          }}
+          degrees={degrees}
+        />
+      ) : (
+        <div>
+          <div>
+            <Label>Degree</Label>
+            <Text>{profileOwner.degree?.name}</Text>
+          </div>
+          <div>
+            <Label>Year</Label>
+            <Text>{profileOwner.year}</Text>
+          </div>
+          <div>
+            <Label>Alternative Email</Label>
+            <Text>{profileOwner.alternativeEmail}</Text>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
