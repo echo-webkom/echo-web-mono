@@ -92,6 +92,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       </div>
       <WhitelistNotification />
       {isProfileOwner ? (
+
+      {isOwner ? (
         <UserForm
           user={{
             id: profileOwner.id,

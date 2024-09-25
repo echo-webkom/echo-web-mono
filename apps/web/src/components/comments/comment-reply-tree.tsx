@@ -26,6 +26,14 @@ type ReplyTreeProps = {
 };
 
 export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => !prev);
+  };
+
+  const userLink = (userId: string) => `/auth/user/${userId}`;
+
   if (!comments.length) {
     return null;
   }
