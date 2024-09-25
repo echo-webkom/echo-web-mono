@@ -76,7 +76,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
 
   return (
     <div ref={ref} className="space-y-4">
-      <div className="h-72 overflow-hidden rounded-lg border-2">
+      <div className="h-72 overflow-hidden rounded-xl border-2">
         <div
           className="h-full divide-x"
           style={{

@@ -25,7 +25,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   );
 
   return (
-    <Container className="space-y-4 py-10">
+    <Container layout="larger" className="space-y-4 py-10">
       <Calendar events={calendarEvents} type="multi" />
       <div className="pb-4 sm:mb-8 sm:border-b-2">
         <EventFilter />
