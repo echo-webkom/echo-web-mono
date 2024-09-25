@@ -28,4 +28,8 @@ app.route("/", feedbackApp);
 app.route("/", shoppingApp);
 app.route("/", degreesApp);
 
+app.get("/date", (c) => {
+  return c.text(new Date().toISOString());
+});
+
 export default app;
