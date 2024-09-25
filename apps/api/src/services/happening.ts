@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 
+import { registrationCountCache } from "../lib/cache";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
 
@@ -27,6 +28,14 @@ app.get("/happening/:id", async (c) => {
 
 app.get("/happening/:id/registrations/count", async (c) => {
   const { id } = c.req.param();
+
+  const cached = await registrationCountCache.get(id);
+
+  console.log(cached);
+
+  if (cached) {
+    return c.json(cached);
+  }
 
   const [spotRanges, registrations] = await Promise.all([
     db.query.spotRanges.findMany({
@@ -61,6 +70,8 @@ app.get("/happening/:id/registrations/count", async (c) => {
       max,
     },
   );
+
+  await registrationCountCache.set(id, grouped, 30);
 
   return c.json(grouped);
 });

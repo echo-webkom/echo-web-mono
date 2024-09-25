@@ -12,6 +12,17 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
+  kv:
+    image: redis:7.0.0
+    restart: always
+    container_name: echo-web-kv
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
+
 volumes:
   db:
+    driver: local
+  kv:
     driver: local

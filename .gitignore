@@ -7,8 +7,9 @@ node_modules/
 yarn.lock
 package-lock.json
 
-# db
+# storage
 postgres-data/
+redis-data/
 
 # email
 .react-email/
