@@ -101,20 +101,6 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  // await fetch("https://beta.echo-webkom.no/api/sanity", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: `Bearer ${process.env.ADMIN_KEY}`,
-  //   },
-  //   body: JSON.stringify({
-  //     operation,
-  //     documentId,
-  //     pastSlug,
-  //     data,
-  //   }),
-  // });
-
   console.info("Syncing happening from Sanity", {
     operation,
     documentId,
