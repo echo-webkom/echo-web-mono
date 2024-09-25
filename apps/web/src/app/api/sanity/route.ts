@@ -102,17 +102,25 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  console.info("Syncing happening from Sanity", {
-    operation,
-    documentId,
-    pastSlug,
-    data,
-  });
+  console.info(
+    "Syncing happening from Sanity",
+    JSON.stringify({
+      operation,
+      documentId,
+      pastSlug,
+      data,
+    }),
+  );
 
   // Revalidate happening data from Sanity
   revalidateTag("happening-params");
   revalidateTag("home-happenings");
-  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
+  if (data?.slug) {
+    revalidateTag(`happening-${data.slug}`);
+  }
+  if (pastSlug) {
+    revalidateTag(`happening-${pastSlug}`);
+  }
   revalidateTag("happenings");
 
   /**
