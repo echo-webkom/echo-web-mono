@@ -24,11 +24,11 @@ export default async function Home() {
           title="Arrangementer"
           href="/for-studenter/arrangementer?type=event"
           types={["external", "event"]}
-          n={7}
+          n={11}
           className="col-span-1 row-span-2"
         />
         <ComingHappenings
-          title="Bedpresser"
+          title="Bedriftspresentasjoner"
           href="/for-studenter/arrangementer?type=bedpres"
           types={["bedpres"]}
           n={3}
