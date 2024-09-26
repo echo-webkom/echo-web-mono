@@ -13,10 +13,10 @@ auto_start_machines = true
 min_machines_running = 1
 script_checks = [ ]
 
-  [services.concurrency]
-  hard_limit = 100
-  soft_limit = 80
-  type = "requests"
+  # [services.concurrency]
+  # hard_limit = 120
+  # soft_limit = 100
+  # type = "requests"
 
   [[services.ports]]
   handlers = [ "http" ]
