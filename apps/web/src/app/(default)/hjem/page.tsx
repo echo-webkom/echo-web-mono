@@ -1,8 +1,8 @@
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
-import { Calendar } from "./_components/calendar";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
+import { FPCalendar } from "./_components/fp-calendar";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <div className="space-y-8 py-24">
       <Container layout="larger">
-        <Calendar />
+        <FPCalendar />
       </Container>
 
       <Container
