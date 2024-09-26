@@ -38,7 +38,7 @@ const DayCircle = ({
   children: React.ReactNode;
 }) => (
   <div
-    className={cn("ml-auto flex h-6 w-6 items-center justify-center rounded-full", {
+    className={cn("ml-auto flex h-7 w-7 items-center justify-center rounded-full", {
       "bg-red-400 text-white": variant === "active",
       "bg-transparent": variant === "default",
       "text-muted-foreground": variant === "muted",
@@ -109,7 +109,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                 (isToday(day) && "active") || (!isSameMonth(month, day) && "muted") || "default"
               }
             >
-              {day.getDate()}.
+              {day.getDate()}
             </DayCircle>
             {events
               .filter((event) => isSameDay(event.date, day))
