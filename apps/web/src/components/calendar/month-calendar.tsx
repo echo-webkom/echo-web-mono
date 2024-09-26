@@ -3,10 +3,13 @@
 import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
+  addDays,
   addMonths,
   eachDayOfInterval,
+  getDaysInMonth,
   getMonth,
   isSameDay,
+  isSameMonth,
   isToday,
   lastDayOfMonth,
   startOfMonth,
@@ -25,19 +28,20 @@ const CalendarDay = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={cn("flex min-h-20 flex-col bg-white p-2", className)}>{children}</div>;
+}) => <div className={cn("flex min-h-20 flex-col bg-background p-2", className)}>{children}</div>;
 
 const DayCircle = ({
-  isActive = false,
+  variant = "default",
   children,
 }: {
-  isActive?: boolean;
+  variant?: "default" | "active" | "muted";
   children: React.ReactNode;
 }) => (
   <div
     className={cn("ml-auto flex h-6 w-6 items-center justify-center rounded-full", {
-      "bg-red-400 text-white": isActive,
-      "bg-transparent text-black": !isActive,
+      "bg-red-400 text-white": variant === "active",
+      "bg-transparent": variant === "default",
+      "text-muted-foreground": variant === "muted",
     })}
   >
     {children}
@@ -70,7 +74,10 @@ const months = [
 export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   const month = useMemo(() => addMonths(startOfMonth(new Date()), steps), [steps]);
   const firstDay = month.getDay() > 0 ? month.getDay() - 1 : 6; //getDay goes from sunday, monday, ..., saturday
-  const daysInMonth = eachDayOfInterval({ start: month, end: lastDayOfMonth(month) });
+  const allDays = eachDayOfInterval({
+    start: subDays(month, firstDay),
+    end: addDays(lastDayOfMonth(month), 7 - ((firstDay + getDaysInMonth(month)) % 7)),
+  });
 
   useEffect(() => {
     if (setMonthText) {
@@ -79,7 +86,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   }, [month, setMonthText, steps]);
 
   return (
-    <div className="h-[600px] w-full overflow-x-auto overflow-y-auto rounded-xl border-2 border-border md:h-auto">
+    <div className="w-full overflow-x-scroll rounded-xl border-2 border-border md:overflow-hidden">
       <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] border-b-2 border-border bg-border">
         {weekdays.map((day) => (
           <Heading
@@ -94,23 +101,23 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
           </Heading>
         ))}
       </div>
-      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-gray-100">
-        {Array.from({ length: firstDay }, (_, i) => subDays(month, firstDay - i)).map((day) => (
+      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-border">
+        {allDays.map((day, _) => (
           <CalendarDay key={day.toString()}>
-            <DayCircle>{day.getDate()}</DayCircle>
-          </CalendarDay>
-        ))}
-
-        {daysInMonth.map((day, index) => (
-          <CalendarDay key={day.toString()}>
-            <DayCircle isActive={isToday(day)}>{index + 1}</DayCircle>
+            <DayCircle
+              variant={
+                (isToday(day) && "active") || (!isSameMonth(month, day) && "muted") || "default"
+              }
+            >
+              {day.getDate()}.
+            </DayCircle>
             {events
               .filter((event) => isSameDay(event.date, day))
               .map((event, _) => (
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                   <HoverCardTrigger asChild>
                     <div
-                      className={cn("overflow-hidden border-l-4 p-2", {
+                      className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
                         "border-primary hover:bg-primary-hover": event.type === "bedpres",
                         "border-secondary hover:bg-secondary": event.type === "event",
                         "border-pink-400 hover:bg-pink-400": event.type === "movie",
@@ -126,11 +133,6 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                   </HoverCardContent>
                 </HoverCard>
               ))}
-          </CalendarDay>
-        ))}
-        {Array.from({ length: 7 - ((firstDay + daysInMonth.length) % 7) }).map((_, index) => (
-          <CalendarDay key={index}>
-            <DayCircle>{index + 1}</DayCircle>
           </CalendarDay>
         ))}
       </div>
