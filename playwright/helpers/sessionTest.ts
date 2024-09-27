@@ -12,7 +12,7 @@ type User = keyof typeof userCookies;
 export const loginAs = async (page: Page, as: User) => {
   await page.context().addCookies([
     {
-      name: "next-auth.session-token",
+      name: "auth_session",
       value: userCookies[as],
       domain: "localhost",
       path: "/",

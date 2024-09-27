@@ -1,0 +1,21 @@
+primary_region = "arn"
+kill_signal = "SIGINT"
+kill_timeout = 5
+swap_size_mb = 512
+
+[[services]]
+internal_port = 8000
+processes = [ "app" ]
+protocol = "tcp"
+auto_stop_machines = "stop"
+auto_start_machines = true
+script_checks = [ ]
+
+  [[services.ports]]
+  handlers = [ "http" ]
+  port = 80
+  force_https = true
+
+  [[services.ports]]
+  handlers = [ "tls", "http" ]
+  port = 443

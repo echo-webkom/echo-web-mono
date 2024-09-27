@@ -12,8 +12,7 @@ import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
 export const SiteHeader = async () => {
-  const user = await getUser();
-  const message = (await getProgrammerbarStatus()).message;
+  const [user, { message }] = await Promise.all([getUser(), getProgrammerbarStatus()]);
 
   return (
     <div className="sticky top-0 z-20">

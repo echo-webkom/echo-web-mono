@@ -30,6 +30,8 @@ export default async function ProfilePage() {
     }),
   ]);
 
+  const degree = degrees.find((degree) => degree.id === user.degreeId);
+
   return (
     <div className="max-w-2xl space-y-4">
       <Heading level={2}>Din profil</Heading>
@@ -74,7 +76,7 @@ export default async function ProfilePage() {
       <UserForm
         user={{
           id: user.id,
-          degree: user.degree ?? undefined,
+          degree: degree ?? undefined,
           year: user.year ?? undefined,
           alternativeEmail: user.alternativeEmail ?? undefined,
           hasReadTerms: user.hasReadTerms ?? undefined,

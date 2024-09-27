@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 import {
   RxAvatar as Avatar,
   RxExit as Exit,
@@ -11,7 +10,7 @@ import {
 } from "react-icons/rx";
 import { TbGavel } from "react-icons/tb";
 
-import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
+import { type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
 import { isBedkom, isMemberOf } from "@/lib/memberships";
 import {
@@ -25,11 +24,7 @@ import {
 
 type UserMenuProps = {
   user: User & {
-    memberships: Array<
-      UsersToGroups & {
-        group: Group;
-      }
-    >;
+    memberships: Array<UsersToGroups>;
   };
 };
 
@@ -78,17 +73,13 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         )}
 
         <DropdownMenuItem asChild>
-          <button
+          <a
+            href={`${process.env.NEXT_PUBLIC_API_URL}/auth/logout?app=site&callbackUrl=${pathname}`}
             className="w-full"
-            onClick={() =>
-              void signOut({
-                callbackUrl: pathname,
-              })
-            }
           >
             <Exit className="mr-2 h-4 w-4" />
             <span>Logg ut</span>
-          </button>
+          </a>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

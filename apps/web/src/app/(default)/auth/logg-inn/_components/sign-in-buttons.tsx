@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { Feide } from "@/components/icons/feide";
@@ -31,14 +28,12 @@ export const SignInButtons = () => {
           <div key={id}>
             <Button
               className="group w-full gap-2 border-feide-dark bg-feide hover:border-feide hover:bg-feide-hover hover:text-black"
-              onClick={() =>
-                void signIn(id, {
-                  callbackUrl: "/",
-                })
-              }
+              asChild
             >
-              <Feide className="h-5 w-5" />
-              Logg inn med {name}
+              <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/${id}?app=site`}>
+                <Feide className="h-5 w-5" />
+                Logg inn med {name}
+              </a>
             </Button>
           </div>
         ))}

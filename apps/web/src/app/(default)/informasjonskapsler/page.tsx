@@ -12,9 +12,7 @@ Vi bruker ingen informasjonskapsler for å spore deg eller lagre personlig infor
 Informasjonskapslene vi bruker er:
 
 - \`cookie-banner\` - brukes til å lagre om du har lukket cookie-banneret eller ikke. (Ikke i bruk)
-- \`next-auth.session-token\` - brukes til å lagre innloggingsstatusen din.
-- \`next-auth.callback-url\` - brukes til å lagre callback-urlen din.
-- \`next-auth.csrf-token\` - brukes til å lagre CSRF-tokenet ditt.
+- \`auth_session\` - brukes til å lagre innloggingsstatusen din.
 `;
 
 export default function Cookies() {

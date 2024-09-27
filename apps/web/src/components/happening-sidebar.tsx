@@ -85,7 +85,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       event &&
       doesIntersect(
         event.registrationGroups ?? [],
-        user.memberships.map((membership) => membership.group.id),
+        user.memberships.map((membership) => membership.groupId),
       ),
   );
 

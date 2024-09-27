@@ -29,10 +29,10 @@ const VALID_PROGRAM_IDS = [
   "POST",
 ];
 
-export type IsMemberOfechoFn = (accessToken: string) => Promise<
+export type IsMemberResult = Promise<
   | {
       success: true;
-      error: undefined;
+      error?: undefined;
     }
   | {
       success: false;
@@ -40,7 +40,7 @@ export type IsMemberOfechoFn = (accessToken: string) => Promise<
     }
 >;
 
-export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
+export const isMemberOfecho = async (accessToken: string): IsMemberResult => {
   try {
     const response = await fetch(`${FEIDE_GROUPS_ENDPOINT}/groups/me/groups`, {
       headers: {
