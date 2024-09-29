@@ -1,12 +1,10 @@
-import { Hono } from "hono";
-
-import { db } from "../lib/db";
+import { createApp } from "../lib/hono";
 import { admin } from "../middleware/admin";
 
-const app = new Hono();
+const app = createApp();
 
 app.get("/shopping", admin(), async (c) => {
-  const items = await db.query.shoppingListItems.findMany({
+  const items = await c.var.db.query.shoppingListItems.findMany({
     with: { likes: true, user: true },
   });
 

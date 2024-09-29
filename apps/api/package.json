@@ -2,32 +2,25 @@
   "name": "@echo-webkom/api",
   "version": "1.0.0",
   "scripts": {
-    "build": "pnpm with-env esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "dev": "pnpm with-env tsx watch ./src/index.ts",
-    "start": "pnpm with-env node ./dist/index.js",
-    "typecheck": "pnpm with-env tsc --noEmit",
-    "clean": "rm -rf dist .turbo node_modules",
-    "with-env": "dotenv -e ../../.env --"
+    "dev": "wrangler dev src/index.ts --test-scheduled --show-interactive-dev-session false --port 8000",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "typegen": "wrangler types worker-configuration.d.ts --env-interface CloudflareBindings",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules .wrangler"
   },
   "dependencies": {
-    "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@echo-webkom/email": "workspace:*",
-    "@echo-webkom/lib": "workspace:*",
-    "@echo-webkom/sanity": "workspace:*",
-    "@hono/node-server": "1.13.1",
     "date-fns": "3.6.0",
     "drizzle-orm": "0.33.0",
     "hono": "4.6.3",
+    "postgres": "3.4.4",
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "4.20240925.0",
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
-    "dotenv-cli": "7.4.2",
-    "esbuild": "0.24.0",
-    "tsx": "4.19.1",
     "typescript": "5.6.2",
-    "vitest": "2.1.1"
+    "vitest": "2.1.1",
+    "wrangler": "3.78.12"
   }
 }

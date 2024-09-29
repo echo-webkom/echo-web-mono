@@ -24,7 +24,7 @@ export default defineConfig({
       reuseExistingServer: !isCI,
     },
     {
-      command: "pnpm run start",
+      command: "pnpm run dev",
       cwd: "../apps/api",
       url: "http://localhost:8000",
       reuseExistingServer: !isCI,

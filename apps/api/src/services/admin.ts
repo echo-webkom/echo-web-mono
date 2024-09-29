@@ -1,21 +1,20 @@
 import { isFuture, isPast } from "date-fns";
 import { and, eq, gte, lte, or, sql } from "drizzle-orm";
-import { Hono } from "hono";
 import { z } from "zod";
 
 import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
 
-import { db } from "../lib/db";
+import { createApp } from "../lib/hono";
 import { admin } from "../middleware/admin";
 import { getCorrectSpotrange } from "../utils/correct-spot-range";
 import { parseJson } from "../utils/json";
 
-const app = new Hono();
+const app = createApp();
 
 app.get("/admin/comments/:id", admin(), async (c) => {
   const { id } = c.req.param();
 
-  const comments = await db.query.comments.findMany({
+  const comments = await c.var.db.query.comments.findMany({
     where: (comment, { eq }) => eq(comment.postId, id),
     orderBy: (comment, { desc }) => [desc(comment.createdAt)],
     with: {
@@ -49,7 +48,7 @@ app.post("/admin/comments", admin(), async (c) => {
 
   const { content, postId, userId, parentCommentId } = json;
 
-  await db.insert(comments).values({
+  await c.var.db.insert(comments).values({
     content,
     postId,
     userId,
@@ -80,7 +79,7 @@ app.post("/admin/register", admin(), async (c) => {
 
   const { userId, happeningId, questions } = json;
 
-  const user = await db.query.users.findFirst({
+  const user = await c.var.db.query.users.findFirst({
     where: (user, { eq }) => eq(user.id, userId),
     with: {
       memberships: true,
@@ -110,7 +109,7 @@ app.post("/admin/register", admin(), async (c) => {
     );
   }
 
-  const happening = await db.query.happenings.findFirst({
+  const happening = await c.var.db.query.happenings.findFirst({
     where: (happening) => eq(happening.id, happeningId),
     with: {
       questions: true,
@@ -133,7 +132,7 @@ app.post("/admin/register", admin(), async (c) => {
   /**
    * Check if user is already registered
    */
-  const exisitingRegistration = await db.query.registrations.findFirst({
+  const exisitingRegistration = await c.var.db.query.registrations.findFirst({
     where: (registration) =>
       and(
         eq(registration.happeningId, happeningId),
@@ -215,14 +214,14 @@ app.post("/admin/register", admin(), async (c) => {
   /**
    * Get spot ranges for happening
    */
-  const spotRanges = await db.query.spotRanges.findMany({
+  const spotRanges = await c.var.db.query.spotRanges.findMany({
     where: (spotRange) => eq(spotRange.happeningId, happeningId),
   });
 
   /**
    * Get groups that host the happening
    */
-  const hostGroups = await db.query.happeningsToGroups
+  const hostGroups = await c.var.db.query.happeningsToGroups
     .findMany({
       where: (happeningToGroup) => eq(happeningToGroup.happeningId, happeningId),
     })
@@ -277,7 +276,7 @@ app.post("/admin/register", admin(), async (c) => {
     );
   }
 
-  const { registration, isWaitlisted } = await db.transaction(
+  const { registration, isWaitlisted } = await c.var.db.transaction(
     async (tx) => {
       await tx.execute(sql`LOCK TABLE ${registrations} IN EXCLUSIVE MODE`);
 
@@ -346,7 +345,7 @@ app.post("/admin/register", admin(), async (c) => {
   );
 
   if (answersToInsert.length > 0) {
-    await db.insert(answers).values(answersToInsert).onConflictDoNothing();
+    await c.var.db.insert(answers).values(answersToInsert).onConflictDoNothing();
   }
 
   console.info("Successful registration", {

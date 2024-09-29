@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 
-import { db } from "../lib/db";
+import { createApp } from "../lib/hono";
 import { admin } from "../middleware/admin";
 
-const app = new Hono();
+const app = createApp();
 
 app.get("/happenings", async (c) => {
-  const happenings = await db.query.happenings.findMany();
+  const happenings = await c.var.db.query.happenings.findMany();
 
   return c.json(happenings);
 });
@@ -14,7 +14,7 @@ app.get("/happenings", async (c) => {
 app.get("/happening/:id", async (c) => {
   const { id } = c.req.param();
 
-  const happening = await db.query.happenings.findFirst({
+  const happening = await c.var.db.query.happenings.findFirst({
     where: (row, { eq }) => eq(row.id, id),
   });
 
@@ -29,10 +29,10 @@ app.get("/happening/:id/registrations/count", async (c) => {
   const { id } = c.req.param();
 
   const [spotRanges, registrations] = await Promise.all([
-    db.query.spotRanges.findMany({
+    c.var.db.query.spotRanges.findMany({
       where: (row, { eq }) => eq(row.happeningId, id),
     }),
-    db.query.registrations.findMany({
+    c.var.db.query.registrations.findMany({
       where: (row, { eq }) => eq(row.happeningId, id),
     }),
   ]);
@@ -68,7 +68,7 @@ app.get("/happening/:id/registrations/count", async (c) => {
 app.get("/happening/:id/registrations", admin(), async (c) => {
   const { id } = c.req.param();
 
-  const registrations = await db.query.registrations.findMany({
+  const registrations = await c.var.db.query.registrations.findMany({
     where: (row, { eq }) => eq(row.happeningId, id),
     with: {
       user: true,
@@ -81,7 +81,7 @@ app.get("/happening/:id/registrations", admin(), async (c) => {
 app.get("/happening/:id/spot-ranges", admin(), async (c) => {
   const { id } = c.req.param();
 
-  const spotRanges = await db.query.spotRanges.findMany({
+  const spotRanges = await c.var.db.query.spotRanges.findMany({
     where: (row, { eq }) => eq(row.happeningId, id),
   });
 
@@ -91,7 +91,7 @@ app.get("/happening/:id/spot-ranges", admin(), async (c) => {
 app.get("/happening/:id/questions", async (c) => {
   const { id } = c.req.param();
 
-  const questions = await db.query.questions.findMany({
+  const questions = await c.var.db.query.questions.findMany({
     where: (row, { eq }) => eq(row.happeningId, id),
   });
 

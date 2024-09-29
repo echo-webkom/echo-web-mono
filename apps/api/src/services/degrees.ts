@@ -4,14 +4,14 @@ import { z } from "zod";
 
 import { degrees, insertDegreeSchema } from "@echo-webkom/db/schemas";
 
-import { db } from "../lib/db";
+import { createApp } from "../lib/hono";
 import { admin } from "../middleware/admin";
 import { parseJson } from "../utils/json";
 
-const app = new Hono();
+const app = createApp();
 
 app.get("/degrees", async (c) => {
-  const degrees = await db.query.degrees.findMany({
+  const degrees = await c.var.db.query.degrees.findMany({
     orderBy: (row, { asc }) => [asc(row.name)],
   });
 
@@ -25,7 +25,7 @@ app.post("/degrees", admin(), async (c) => {
     return c.json({ error: "Invalid input" }, 400);
   }
 
-  await db.insert(degrees).values(json);
+  await c.var.db.insert(degrees).values(json);
 
   return c.json({ success: true });
 });
@@ -38,7 +38,7 @@ app.post("/degree/:id", admin(), async (c) => {
     return c.json({ error: "Invalid input" }, 400);
   }
 
-  await db.update(degrees).set(json).where(eq(degrees.id, id));
+  await c.var.db.update(degrees).set(json).where(eq(degrees.id, id));
 
   return c.json({ success: true });
 });
@@ -46,7 +46,7 @@ app.post("/degree/:id", admin(), async (c) => {
 app.delete("/degree/:id", admin(), async (c) => {
   const { id } = c.req.param();
 
-  await db.delete(degrees).where(eq(degrees.id, id));
+  await c.var.db.delete(degrees).where(eq(degrees.id, id));
 
   return c.json({ success: true });
 });

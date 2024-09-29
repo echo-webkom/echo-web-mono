@@ -5,10 +5,10 @@
     "target": "ESNext",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["@cloudflare/workers-types"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "outDir": "dist"
+    "jsxImportSource": "hono/jsx"
   },
+  "include": ["src", "worker-configuration.d.ts"],
   "exclude": ["node_modules"]
 }

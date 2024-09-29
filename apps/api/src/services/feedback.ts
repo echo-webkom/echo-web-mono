@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 
-import { db } from "../lib/db";
+import { createApp } from "../lib/hono";
 import { admin } from "../middleware/admin";
 
-const app = new Hono();
+const app = createApp();
 
 app.get("/feedbacks", admin(), async (c) => {
-  const feedbacks = await db.query.siteFeedback.findMany({
+  const feedbacks = await c.var.db.query.siteFeedback.findMany({
     orderBy: (row, { desc }) => [desc(row.createdAt)],
   });
 
@@ -16,7 +16,7 @@ app.get("/feedbacks", admin(), async (c) => {
 app.get("/feedback/:id", admin(), async (c) => {
   const { id } = c.req.param();
 
-  const feedback = await db.query.siteFeedback.findFirst({
+  const feedback = await c.var.db.query.siteFeedback.findFirst({
     where: (row, { eq }) => eq(row.id, id),
   });
 
