@@ -88,8 +88,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/lib
       '@sanity/client':
-        specifier: 6.21.3
-        version: 6.21.3(debug@4.3.5)
+        specifier: 6.22.0
+        version: 6.22.0(debug@4.3.5)
       '@sanity/icons':
         specifier: 3.4.0
         version: 3.4.0(react@18.3.1)
@@ -215,8 +215,8 @@ importers:
         specifier: 1.2.1
         version: 1.2.1(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/client':
-        specifier: 6.21.3
-        version: 6.21.3(debug@4.3.5)
+        specifier: 6.22.0
+        version: 6.22.0(debug@4.3.5)
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -570,8 +570,8 @@ importers:
   packages/sanity:
     dependencies:
       '@sanity/client':
-        specifier: 6.21.3
-        version: 6.21.3(debug@4.3.5)
+        specifier: 6.22.0
+        version: 6.22.0(debug@4.3.5)
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -604,8 +604,8 @@ importers:
         specifier: workspace:^
         version: link:../sanity
       '@sanity/client':
-        specifier: 6.21.3
-        version: 6.21.3(debug@4.3.5)
+        specifier: 6.22.0
+        version: 6.22.0(debug@4.3.5)
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -3380,8 +3380,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@sanity/client@6.21.3':
-    resolution: {integrity: sha512-oE2+4kKRTZhFCc4IIsojkzKF0jIhsSYSRxkPZjScZ1k/EQ3Y2tEcQYiKwvvotzaXoaWsIL3RTpulE+R4iBYiBw==}
+  '@sanity/client@6.22.0':
+    resolution: {integrity: sha512-GlPwg8iG74WkzRb5Im2dpFg0xq5vgvsDfQA5NQCUWmmnELdo3iMa5hicLyuW+TBK+x1SmVe7InuAjIGKq5XcYg==}
     engines: {node: '>=14.18'}
 
   '@sanity/codegen@3.56.0':
@@ -12392,7 +12392,7 @@ snapshots:
   '@sanity/cli@3.56.0':
     dependencies:
       '@babel/traverse': 7.24.6
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/codegen': 3.56.0
       '@sanity/telemetry': 0.7.7
       '@sanity/util': 3.56.0(debug@4.3.5)
@@ -12412,7 +12412,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sanity/client@6.21.3(debug@4.3.5)':
+  '@sanity/client@6.22.0(debug@4.3.5)':
     dependencies:
       '@sanity/eventsource': 5.0.2
       get-it: 8.6.5(debug@4.3.5)
@@ -12477,7 +12477,7 @@ snapshots:
 
   '@sanity/export@3.41.0':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/util': 3.37.2(debug@4.3.5)
       archiver: 7.0.1
       debug: 4.3.5
@@ -12584,7 +12584,7 @@ snapshots:
 
   '@sanity/migrate@3.56.0':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/mutate': 0.8.0(debug@4.3.5)
       '@sanity/types': 3.56.0(debug@4.3.5)
       '@sanity/util': 3.56.0(debug@4.3.5)
@@ -12598,7 +12598,7 @@ snapshots:
 
   '@sanity/mutate@0.8.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/diff-match-patch': 3.1.1
       hotscript: 1.0.13
       mendoza: 3.0.7
@@ -12626,11 +12626,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sanity/presentation@1.16.4(@sanity/client@6.21.3)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@sanity/presentation@1.16.4(@sanity/client@6.22.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/icons': 3.4.0(react@18.3.1)
-      '@sanity/preview-url-secret': 1.6.20(@sanity/client@6.21.3)
+      '@sanity/preview-url-secret': 1.6.20(@sanity/client@6.22.0)
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/uuid': 3.0.2
       '@types/lodash.isequal': 4.5.8
@@ -12649,9 +12649,9 @@ snapshots:
       - react-is
       - styled-components
 
-  '@sanity/preview-url-secret@1.6.20(@sanity/client@6.21.3)':
+  '@sanity/preview-url-secret@1.6.20(@sanity/client@6.22.0)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/uuid': 3.0.2
 
   '@sanity/schema@3.56.0(debug@4.3.5)':
@@ -12678,14 +12678,14 @@ snapshots:
 
   '@sanity/types@3.37.2(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@types/react': 18.3.8
     transitivePeerDependencies:
       - debug
 
   '@sanity/types@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@types/react': 18.3.8
     transitivePeerDependencies:
       - debug
@@ -12719,7 +12719,7 @@ snapshots:
 
   '@sanity/util@3.37.2(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/types': 3.37.2(debug@4.3.5)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
@@ -12729,7 +12729,7 @@ snapshots:
 
   '@sanity/util@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/types': 3.56.0(debug@4.3.5)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
@@ -18247,7 +18247,7 @@ snapshots:
       '@sanity/bifur-client': 0.4.1
       '@sanity/block-tools': 3.56.0(debug@4.3.5)
       '@sanity/cli': 3.56.0
-      '@sanity/client': 6.21.3(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.5)
       '@sanity/color': 3.0.6
       '@sanity/diff': 3.56.0
       '@sanity/diff-match-patch': 3.1.1
@@ -18260,7 +18260,7 @@ snapshots:
       '@sanity/logos': 2.1.10(@sanity/color@3.0.6)(react@18.3.1)
       '@sanity/migrate': 3.56.0
       '@sanity/mutator': 3.56.0
-      '@sanity/presentation': 1.16.4(@sanity/client@6.21.3)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      '@sanity/presentation': 1.16.4(@sanity/client@6.22.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/schema': 3.56.0(debug@4.3.5)
       '@sanity/telemetry': 0.7.7
       '@sanity/types': 3.56.0(debug@4.3.5)
