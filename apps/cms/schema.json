@@ -1658,6 +1658,13 @@
         },
         "optional": false
       },
+      "isPinned": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": false
+      },
       "happeningType": {
         "type": "objectAttribute",
         "value": {

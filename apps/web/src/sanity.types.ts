@@ -73,7 +73,7 @@ export type Movie = {
 
 export type Question = {
   _type: "question";
-  id?: string;
+  id: string;
   title: string;
   required: boolean;
   type: "text" | "textarea" | "checkbox" | "radio";
@@ -297,6 +297,7 @@ export type Happening = {
   _rev: string;
   title: string;
   slug: Slug;
+  isPinned: boolean;
   happeningType: "event" | "bedpres" | "external";
   organizers?: Array<{
     _ref: string;
@@ -484,13 +485,14 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../web/src/sanity/happening/queries.ts
 // Variable: allHappeningsQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))]  | order(date asc) {    _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    id,    title,    required,    type,    options,  },  externalLink,  body}
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))]  | order(date asc) {    _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  isPinned,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    id,    title,    required,    type,    options,  },  externalLink,  body}
 export type AllHappeningsQueryResult = Array<{
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   title: string;
   slug: string;
+  isPinned: boolean;
   happeningType: "bedpres" | "event" | "external";
   company: {
     _id: string;
@@ -536,7 +538,7 @@ export type AllHappeningsQueryResult = Array<{
     maxYear: number;
   }> | null;
   additionalQuestions: Array<{
-    id: string | null;
+    id: string;
     title: string;
     required: boolean;
     type: "checkbox" | "radio" | "text" | "textarea";
@@ -546,13 +548,14 @@ export type AllHappeningsQueryResult = Array<{
   body: string | null;
 }>;
 // Variable: happeningQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug][0] {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  externalLink,  body}
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug][0] {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  isPinned,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  externalLink,  body}
 export type HappeningQueryResult = {
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   title: string;
   slug: string;
+  isPinned: boolean;
   happeningType: "bedpres" | "event" | "external";
   company: {
     _id: string;
@@ -607,10 +610,11 @@ export type HappeningQueryResult = {
   body: string | null;
 } | null;
 // Variable: homeHappeningsQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && date >= now()  && happeningType in $happeningTypes ] | order(date asc) {  _id,  title,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && date >= now()  && happeningType in $happeningTypes ] | order(date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
 export type HomeHappeningsQueryResult = Array<{
   _id: string;
   title: string;
+  isPinned: boolean;
   happeningType: "bedpres" | "event" | "external";
   date: string;
   registrationStart: string | null;
@@ -878,9 +882,9 @@ export type HappeningContactsQueryResult = Array<{
 
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
-    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
-    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && date >= now()\n  && happeningType in $happeningTypes\n ] | order(date asc) {\n  _id,\n  title,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]\n': HomeHappeningsQueryResult;
+    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
+    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
+    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && date >= now()\n  && happeningType in $happeningTypes\n ] | order(date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]\n': HomeHappeningsQueryResult;
     "\n*[_type == \"happening\"\n  && !(_id in path('drafts.**'))\n  && slug.current == $slug\n ] {\n  happeningType,\n}[0].happeningType\n": HappeningTypeQueryResult;
     '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;
