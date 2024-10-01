@@ -38,7 +38,7 @@ export default async function Home() {
       </Container>
 
       <Container layout="larger">
-        <JobAds className="col-span-2 row-span-1" />
+        <JobAds />
       </Container>
 
       <Container layout="larger" className="space-y-8 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
