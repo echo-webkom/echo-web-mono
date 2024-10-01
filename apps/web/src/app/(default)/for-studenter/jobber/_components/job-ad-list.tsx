@@ -103,8 +103,23 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           case "oldest":
             return new Date(a._createdAt).getTime() - new Date(b._createdAt).getTime();
           case "expiresSoon":
+            if (a.deadline === null) {
+              return 1;
+            }
+
+            if (b.deadline === null) {
+              return -1;
+            }
+
             return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
           case "expiresLate":
+            if (a.deadline === null) {
+              return -1;
+            }
+
+            if (b.deadline === null) {
+              return 1;
+            }
             return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
         }
       });

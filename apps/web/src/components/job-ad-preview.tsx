@@ -49,7 +49,7 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
             </li>
             <li className="flex items-center gap-2">
               <LuCalendarClock className="h-4 w-4 text-stone-700 dark:text-stone-400" />{" "}
-              {shortDateNoTime(jobAd.deadline)}
+              {jobAd.deadline !== null ? shortDateNoTime(jobAd.deadline) : "Fortløpende"}
             </li>
             <li className="flex items-center gap-2">
               <LuCoffee className="h-4 w-4 text-amber-900" /> {jobTypeString(jobAd.jobType)}

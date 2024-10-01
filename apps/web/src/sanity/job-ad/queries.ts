@@ -3,7 +3,7 @@ import groq from "groq";
 export const jobAdsQuery = groq`
 *[_type == "job"
   && !(_id in path('drafts.**'))
-  && deadline > now()]
+  && expiresAt > now()]
   | order(weight desc, deadline desc) {
   _id,
   _createdAt,
@@ -17,6 +17,7 @@ export const jobAdsQuery = groq`
     website,
     image,
   },
+  expiresAt,
   "locations": locations[]->{
     _id,
     name,

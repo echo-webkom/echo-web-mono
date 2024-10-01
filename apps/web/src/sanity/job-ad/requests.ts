@@ -1,6 +1,10 @@
+import { isPast } from "date-fns";
+
 import { type JobAdsQueryResult } from "@/sanity.types";
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
+
+const isExpired = (expiresAt: string) => isPast(expiresAt);
 
 /**
  * Fetches a number of job ads
@@ -37,7 +41,7 @@ export const fetchJobAdPaths = async () => {
  */
 export const fetchAvailableJobAds = async (n: number): Promise<JobAdsQueryResult> => {
   return await fetchJobAds().then((res) =>
-    res.filter((jobAd) => new Date(jobAd.deadline) > new Date()).slice(0, n),
+    res.filter((jobAd) => !isExpired(jobAd.expiresAt)).slice(0, n),
   );
 };
 
@@ -48,5 +52,7 @@ export const fetchAvailableJobAds = async (n: number): Promise<JobAdsQueryResult
  * @returns the job ad or null if not found
  */
 export const fetchJobAdBySlug = async (slug: string): Promise<JobAdsQueryResult[number] | null> => {
-  return await fetchJobAds().then((res) => res.find((jobAd) => jobAd.slug === slug) ?? null);
+  return await fetchJobAds().then(
+    (res) => res.find((jobAd) => jobAd.slug === slug && !isExpired(jobAd.expiresAt)) ?? null,
+  );
 };

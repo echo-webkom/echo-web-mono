@@ -231,6 +231,7 @@ export type Job = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "company";
   };
+  expiresAt: string;
   weight: number;
   locations: Array<{
     _ref: string;
@@ -241,7 +242,7 @@ export type Job = {
   }>;
   jobType: "fulltime" | "parttime" | "internship" | "summerjob" | "event" | "ad";
   link: string;
-  deadline: string;
+  deadline?: string;
   degreeYears?: {
     FIRST?: boolean;
     SECOND?: boolean;
@@ -638,7 +639,7 @@ export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
 
 // Source: ../web/src/sanity/job-ad/queries.ts
 // Variable: jobAdsQuery
-// Query: *[_type == "job"  && !(_id in path('drafts.**'))  && deadline > now()]  | order(weight desc, deadline desc) {  _id,  _createdAt,  _updatedAt,  weight,  title,  "slug": slug.current,  "company": company->{    _id,    name,    website,    image,  },  "locations": locations[]->{    _id,    name,  },  jobType,  link,  deadline,  degreeYears,  body}
+// Query: *[_type == "job"  && !(_id in path('drafts.**'))  && expiresAt > now()]  | order(weight desc, deadline desc) {  _id,  _createdAt,  _updatedAt,  weight,  title,  "slug": slug.current,  "company": company->{    _id,    name,    website,    image,  },  expiresAt,  "locations": locations[]->{    _id,    name,  },  jobType,  link,  deadline,  degreeYears,  body}
 export type JobAdsQueryResult = Array<{
   _id: string;
   _createdAt: string;
@@ -662,13 +663,14 @@ export type JobAdsQueryResult = Array<{
       _type: "image";
     };
   };
+  expiresAt: string;
   locations: Array<{
     _id: string;
     name: string;
   }>;
   jobType: "ad" | "event" | "fulltime" | "internship" | "parttime" | "summerjob";
   link: string;
-  deadline: string;
+  deadline: string | null;
   degreeYears: {
     FIRST?: boolean;
     SECOND?: boolean;
@@ -886,7 +888,7 @@ declare module "@sanity/client" {
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && (isPinned || date >= now())\n  && happeningType in $happeningTypes\n]\n| order(isPinned desc, date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]\n\n': HomeHappeningsQueryResult;
     "\n*[_type == \"happening\"\n  && !(_id in path('drafts.**'))\n  && slug.current == $slug\n ] {\n  happeningType,\n}[0].happeningType\n": HappeningTypeQueryResult;
-    '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && deadline > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
+    '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && expiresAt > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  expiresAt,\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;
     "\n*[_type == \"movie\"\n  && !(_id in path('drafts.**'))]\n  | order(_createdAt desc) {\n  _id,\n  title,\n  date,\n  link,\n  image,\n}\n": MoviesQueryResult;
     '\n*[_type == "post" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "authors": authors[]->{\n    _id,\n    name,\n    image,\n  },\n  image,\n  body\n}\n': AllPostsQueryResult;
