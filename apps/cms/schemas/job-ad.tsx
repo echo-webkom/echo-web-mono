@@ -76,7 +76,7 @@ export default defineType({
     defineField({
       name: "deadline",
       title: "Søknadsfrist",
-      type: "date",
+      type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
