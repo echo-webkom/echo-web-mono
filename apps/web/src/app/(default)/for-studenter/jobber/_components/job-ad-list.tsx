@@ -8,6 +8,7 @@ import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
@@ -18,8 +19,12 @@ type JobAdListProps = {
   jobAds: JobAdsQueryResult;
 };
 
+type Sort = "newest" | "oldest" | "expiresSoon" | "expiresLate";
+
 export const JobAdList = ({ jobAds }: JobAdListProps) => {
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<Sort>("expiresSoon");
+  const [hideExpired, setHideExpired] = useState(true);
   const [companyFilter, setCompanyFilter] = useState("");
   const [workTypeFilter, setWorkTypeFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
@@ -92,11 +97,26 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
         return locationFilter
           ? jobAd.locations?.some((location) => location._id === locationFilter)
           : true;
+      })
+      .filter((jobAd) => {
+        return hideExpired ? new Date(jobAd.deadline).getTime() > Date.now() : true;
+      })
+      .sort((a, b) => {
+        switch (sort) {
+          case "newest":
+            return new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime();
+          case "oldest":
+            return new Date(a._createdAt).getTime() - new Date(b._createdAt).getTime();
+          case "expiresSoon":
+            return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+          case "expiresLate":
+            return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
+        }
       });
-  }, [jobAds, search, companyFilter, workTypeFilter, locationFilter]);
+  }, [jobAds, search, companyFilter, workTypeFilter, locationFilter, hideExpired, sort]);
 
   return (
-    <Container className="space-y-8 py-10">
+    <Container className="space-y-4 py-10">
       <Heading>Stillingsannonser</Heading>
 
       <Text>
@@ -132,6 +152,16 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
         </div>
 
         <div className="flex w-full flex-col gap-1 md:max-w-40">
+          <Label htmlFor="sort">Sorter etter</Label>
+          <Select id="sort" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+            <option value="newest">Nyeste først</option>
+            <option value="oldest">Eldste først</option>
+            <option value="expiresSoon">Utløper snart</option>
+            <option value="expiresLate">Utløper senere</option>
+          </Select>
+        </div>
+
+        <div className="flex w-full flex-col gap-1 md:max-w-40">
           <Label htmlFor="workType">Stillingstype</Label>
           <Select
             id="workType"
@@ -162,6 +192,17 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
             ))}
           </Select>
         </div>
+      </div>
+
+      <div className="flex w-full flex-row items-center gap-2">
+        <Checkbox
+          id="hideExpired"
+          checked={hideExpired}
+          onCheckedChange={(checked) =>
+            setHideExpired(typeof checked === "boolean" ? checked : true)
+          }
+        />
+        <Label htmlFor="hideExpired">Skjul utløpte</Label>
       </div>
 
       <hr className="border-border" />
