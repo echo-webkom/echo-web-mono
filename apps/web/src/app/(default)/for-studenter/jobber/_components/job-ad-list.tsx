@@ -8,7 +8,6 @@ import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
@@ -24,7 +23,6 @@ type Sort = "newest" | "oldest" | "expiresSoon" | "expiresLate";
 export const JobAdList = ({ jobAds }: JobAdListProps) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<Sort>("expiresSoon");
-  const [hideExpired, setHideExpired] = useState(true);
   const [companyFilter, setCompanyFilter] = useState("");
   const [workTypeFilter, setWorkTypeFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
@@ -98,9 +96,6 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           ? jobAd.locations?.some((location) => location._id === locationFilter)
           : true;
       })
-      .filter((jobAd) => {
-        return hideExpired ? new Date(jobAd.deadline).getTime() > Date.now() : true;
-      })
       .sort((a, b) => {
         switch (sort) {
           case "newest":
@@ -113,7 +108,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
             return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
         }
       });
-  }, [jobAds, search, companyFilter, workTypeFilter, locationFilter, hideExpired, sort]);
+  }, [jobAds, search, companyFilter, workTypeFilter, locationFilter, sort]);
 
   return (
     <Container className="space-y-4 py-10">
@@ -192,17 +187,6 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
             ))}
           </Select>
         </div>
-      </div>
-
-      <div className="flex w-full flex-row items-center gap-2">
-        <Checkbox
-          id="hideExpired"
-          checked={hideExpired}
-          onCheckedChange={(checked) =>
-            setHideExpired(typeof checked === "boolean" ? checked : true)
-          }
-        />
-        <Label htmlFor="hideExpired">Skjul utløpte</Label>
       </div>
 
       <hr className="border-border" />
