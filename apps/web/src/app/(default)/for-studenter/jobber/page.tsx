@@ -1,6 +1,6 @@
 import { type Metadata } from "next/types";
 
-import { fetchJobAds } from "@/sanity/job-ad";
+import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { JobAdList } from "./_components/job-ad-list";
 
 export const metadata = {
@@ -8,7 +8,7 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function JobAdsOverviewPage() {
-  const jobAds = await fetchJobAds();
+  const jobAds = await fetchAvailableJobAds();
 
   return <JobAdList jobAds={jobAds} />;
 }

@@ -39,10 +39,12 @@ export const fetchJobAdPaths = async () => {
  * @param n the number of job ads to fetch
  * @returns job ads or an empty array if error
  */
-export const fetchAvailableJobAds = async (n: number): Promise<JobAdsQueryResult> => {
-  return await fetchJobAds().then((res) =>
-    res.filter((jobAd) => !isExpired(jobAd.expiresAt)).slice(0, n),
+export const fetchAvailableJobAds = async (n?: number): Promise<JobAdsQueryResult> => {
+  const jobs = await fetchJobAds().then((res) =>
+    res.filter((jobAd) => !isExpired(jobAd.expiresAt)),
   );
+
+  return n ? jobs.slice(0, n) : jobs;
 };
 
 /**

@@ -208,14 +208,21 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
 
       <p className="text-sm text-muted-foreground">Antall resultater: {filteredJobAds.length}</p>
 
-      <ul className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {filteredJobAds.map((jobAd) => (
-          <li key={jobAd._id}>
-            {/* FIX hideBorder thing */}
-            <JobAdPreview jobAd={jobAd} hideBorder />
-          </li>
-        ))}
-      </ul>
+      {filteredJobAds.length > 0 ? (
+        <ul className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          {filteredJobAds.map((jobAd) => (
+            <li key={jobAd._id}>
+              {/* FIX hideBorder thing */}
+              <JobAdPreview jobAd={jobAd} hideBorder />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="mx-auto w-fit py-8">
+          <p className="mb-2 text-7xl">{":("}</p>
+          <p className="text-center text-2xl">Finner ingen jobber</p>
+        </div>
+      )}
     </Container>
   );
 };
