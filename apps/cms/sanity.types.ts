@@ -747,7 +747,11 @@ export type NotificationQueryResult = Array<{
   dateTo: string;
 }>;
 
+<<<<<<< HEAD:apps/cms/sanity.types.ts
 // Source: ../../packages/sanity/src/queries/posts.ts
+=======
+// Source: ../web/src/sanity/posts/queries.ts
+>>>>>>> 40bb8592 (display notifications):apps/web/src/sanity.types.ts
 // Variable: allPostsQuery
 // Query: *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "authors": authors[]->{    _id,    name,    image,  },  image,  body}
 export type AllPostsQueryResult = Array<{

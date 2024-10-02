@@ -25,7 +25,11 @@ export const NotificationMenu = async () => {
         <DropdownMenuSeparator />
         {notifications.map((notification) => (
           <DropdownMenuItem key={notification._id}>
+<<<<<<< HEAD
             <DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
+=======
+            <DropdownMenuLabel>{notification.title}</DropdownMenuLabel>
+>>>>>>> 40bb8592 (display notifications)
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
