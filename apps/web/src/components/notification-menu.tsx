@@ -1,5 +1,6 @@
 import { RxBell as Bell } from "react-icons/rx";
 
+import { fetchNotifications } from "@/sanity/notification/requests";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-export const NotificationMenu = () => {
+export const NotificationMenu = async () => {
+  const notifications = await fetchNotifications();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,7 +20,15 @@ export const NotificationMenu = () => {
           <Bell className="h-7 w-7" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mx-3 w-56">Notifications</DropdownMenuContent>
+      <DropdownMenuContent className="mx-3 w-56">
+        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {notifications.map((notification) => (
+          <DropdownMenuItem key={notification._id}>
+            <DropdownMenuLabel>{notification.title}</DropdownMenuLabel>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 };
