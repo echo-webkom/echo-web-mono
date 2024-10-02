@@ -9,9 +9,10 @@ export default defineType({
   fields: [
     defineField({
       name: "title",
+      description: "Maks 100 tegn",
       title: "Notifikasjonstittel",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.max(100).required(),
     }),
     defineField({
       name: "dateFrom",
@@ -25,7 +26,7 @@ export default defineType({
       title: "Dato til",
       description: "Når skal notifkiasjonen slutte å vises?",
       type: "datetime",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.min(Rule.valueOfField("dateFrom")).required(),
     }),
   ],
 });
