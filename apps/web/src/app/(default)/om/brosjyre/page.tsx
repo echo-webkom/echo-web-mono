@@ -1,12 +1,8 @@
-import { type Metadata } from "next";
-
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { getNewPageMetadata } from "@/app/seo";
 
-export const metadata: Metadata = {
-  title: "Brosjyre",
-  description: "Brosjyren til echo",
-};
+export const metadata = getNewPageMetadata("Brosjyre", "Brosjyren til echo");
 
 export default function Brochure() {
   return (

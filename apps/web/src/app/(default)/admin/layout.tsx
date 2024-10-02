@@ -1,5 +1,3 @@
-import { type Metadata } from "next/types";
-
 import {
   Sidebar,
   SidebarItem,
@@ -8,14 +6,13 @@ import {
 } from "@/components/sidebar-layout";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { isMemberOf } from "@/lib/memberships";
+import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
-  title: "Admin",
-} satisfies Metadata;
+export const metadata = getNewPageMetadata("Admin");
 
 const adminRoutes = [
   {
