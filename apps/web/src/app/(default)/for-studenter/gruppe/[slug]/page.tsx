@@ -51,7 +51,7 @@ export default async function GroupPage({ params }: Props) {
   const hasSocials = Object.values(group.socials ?? {}).some((value) => value);
 
   return (
-    <Container className="space-y-8 py-10">
+    <Container className="max-w-4xl space-y-8 py-10">
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>
@@ -98,13 +98,15 @@ export default async function GroupPage({ params }: Props) {
       )}
 
       {group.image && (
-        <Image
-          width={700}
-          height={475}
-          src={urlFor(group.image).url()}
-          alt={group.name}
-          className="rounded-lg"
-        />
+        <div className="mx-auto w-fit">
+          <Image
+            width={700}
+            height={475}
+            src={urlFor(group.image).url()}
+            alt={group.name}
+            className="rounded-lg border-2"
+          />
+        </div>
       )}
 
       <section>
@@ -114,10 +116,10 @@ export default async function GroupPage({ params }: Props) {
       </section>
 
       {group.members && (
-        <section>
+        <section className="mx-auto w-full max-w-4xl">
           <Heading level={2}>Medlemmer</Heading>
 
-          <div className="mx-auto grid w-full max-w-6xl grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {group.members.map((member) => {
               const image = member.profile?.picture;
               const initials = member.profile?.name

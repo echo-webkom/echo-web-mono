@@ -327,7 +327,7 @@
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "title": {
           "type": "objectAttribute",
@@ -1265,6 +1265,20 @@
         },
         "optional": false
       },
+      "expiresAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "weight": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": false
+      },
       "locations": {
         "type": "objectAttribute",
         "value": {
@@ -1354,7 +1368,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "degreeYears": {
         "type": "objectAttribute",
@@ -1390,6 +1404,13 @@
               "optional": true
             },
             "FIFTH": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
+            "PHD": {
               "type": "objectAttribute",
               "value": {
                 "type": "boolean"
@@ -1641,6 +1662,13 @@
         "value": {
           "type": "inline",
           "name": "slug"
+        },
+        "optional": false
+      },
+      "isPinned": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": false
       },

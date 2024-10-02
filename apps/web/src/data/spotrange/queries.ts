@@ -1,27 +1,7 @@
-import { unstable_cache as cache } from "next/cache";
+import { type SpotRange } from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db";
-
-import { cacheKeyFactory } from "./revalidate";
+import { apiServer } from "@/api/server";
 
 export const getSpotRangeByHappeningId = async (happeningId: string) => {
-  return cache(
-    async () => {
-      return await db.query.spotRanges
-        .findMany({
-          where: (spotRange, { eq }) => eq(spotRange.happeningId, happeningId),
-        })
-        .catch(() => {
-          console.error("Failed to fetch spot range", {
-            happeningId,
-          });
-
-          return [];
-        });
-    },
-    [cacheKeyFactory.happeningSpotrange(happeningId)],
-    {
-      tags: [cacheKeyFactory.happeningSpotrange(happeningId)],
-    },
-  )();
+  return await apiServer.get(`happening/${happeningId}/spot-ranges`).json<Array<SpotRange>>();
 };

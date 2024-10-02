@@ -39,7 +39,6 @@ export const fetchHomeHappenings = async (types: Array<HappeningType>, n: number
     },
     cdn: true,
     revalidate: 1000,
-    tags: ["home-happenings"],
   }).catch(() => {
     console.error("Failed to fetch home happenings");
 

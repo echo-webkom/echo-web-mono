@@ -1,5 +1,5 @@
-import { db } from "@echo-webkom/db";
 import { registrations, type RegistrationInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { revalidateRegistrations } from "./revalidate";
 

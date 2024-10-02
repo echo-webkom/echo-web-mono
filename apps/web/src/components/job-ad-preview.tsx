@@ -19,7 +19,7 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
     <Link href={`/for-studenter/jobb/${jobAd.slug}`}>
       <div
         className={cn(
-          "flex h-48 flex-row items-center gap-8 rounded-xl border-2 p-6",
+          "h-30 flex flex-row items-center gap-8 rounded-xl border-2 p-6",
           "hover:bg-muted",
           "transition-colors duration-200 ease-in-out",
           {
@@ -28,8 +28,8 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
           },
         )}
       >
-        <div className="hidden sm:block">
-          <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 bg-white">
+        <div className="block">
+          <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 bg-white">
             <Image
               src={urlFor(jobAd.company.image).url()}
               alt={`${jobAd.company.name} logo`}
@@ -38,8 +38,8 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
           </div>
         </div>
         <div className="flex h-full w-full flex-col gap-1 overflow-x-hidden">
-          <h3 className="mb-4 line-clamp-2 text-lg font-semibold md:text-xl">{jobAd.title}</h3>
-          <ul className="flex flex-wrap gap-3">
+          <h3 className="line-clamp-2 text-lg font-semibold">{jobAd.title}</h3>
+          <ul className="mt-auto flex flex-wrap gap-3 gap-y-1 p-0 text-sm">
             <li className="flex items-center gap-2">
               <LuBriefcase className="h-4 w-4 text-yellow-800" /> {jobAd.company.name}
             </li>
@@ -49,7 +49,7 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
             </li>
             <li className="flex items-center gap-2">
               <LuCalendarClock className="h-4 w-4 text-stone-700 dark:text-stone-400" />{" "}
-              {shortDateNoTime(jobAd.deadline)}
+              {jobAd.deadline !== null ? shortDateNoTime(jobAd.deadline) : "Fortløpende"}
             </li>
             <li className="flex items-center gap-2">
               <LuCoffee className="h-4 w-4 text-amber-900" /> {jobTypeString(jobAd.jobType)}

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LuArrowRight as ArrowRight } from "react-icons/lu";
 
 import { Heading } from "@/components/typography/heading";
 import { cn } from "@/utils/cn";
@@ -13,21 +12,19 @@ type BentoBoxProps = {
 
 export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
   return (
-    <section className={cn("flex flex-col gap-5 rounded-md border-2 p-5", className)}>
+    <section className={cn("flex flex-col gap-2 rounded-md border-2 p-2", className)}>
       {href ? (
         <Link
           href={href}
-          className="group mx-auto flex items-center underline-offset-4 hover:underline"
+          className="group relative mx-auto flex items-center underline-offset-4 hover:underline"
         >
-          <Heading className="text-center font-medium">{title}</Heading>
-
-          <ArrowRight className="ml-2 inline h-6 w-6 transition-transform group-hover:translate-x-2" />
+          <Heading className="text-center text-2xl font-medium">{title}</Heading>
         </Link>
       ) : (
-        <Heading className="mx-auto text-center text-3xl font-medium">{title}</Heading>
+        <Heading className="mx-auto text-center text-2xl font-medium">{title}</Heading>
       )}
 
-      <hr className="border-b-2" />
+      <hr className="border-b" />
 
       {children}
     </section>

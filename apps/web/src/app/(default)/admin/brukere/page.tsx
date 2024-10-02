@@ -1,4 +1,4 @@
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { getAllUsers } from "@/data/users/queries";
 import { ensureWebkom } from "@/lib/ensure";
