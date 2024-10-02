@@ -1,15 +1,15 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
-import { RxCalendar } from "react-icons/rx";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { getHappeningSpotRangeAndRegistrations } from "@/data/happenings/queries";
+import { apiServer } from "@/api/server";
+import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
+import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 
 export const HappeningPreview = ({
@@ -21,22 +21,34 @@ export const HappeningPreview = ({
 
   return (
     <Link href={href}>
-      <div className="flex h-32 items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted">
+      <div
+        className={cn(
+          "h-18 relative flex items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted",
+          {
+            "h-[6.5rem]": happening.happeningType === "bedpres",
+            "border-secondary-dark": happening.isPinned === true,
+          },
+        )}
+      >
         {happening.happeningType === "bedpres" && happening.image && (
           // Outer div is needed to that the image is not squished
           <div>
-            <div className="relative h-16 w-16 overflow-hidden rounded-full border md:h-20 md:w-20">
+            <div className="relative h-16 w-16 overflow-hidden rounded-full border md:h-16 md:w-16">
               <Image src={urlFor(happening.image).url()} alt={happening.title} fill />
             </div>
           </div>
         )}
 
+        {happening.isPinned === true && (
+          <Chip variant="secondary" className="absolute -right-2 -top-4 rotate-6">
+            📍 Festet
+          </Chip>
+        )}
+
         <div className="flex w-full justify-between gap-2">
           <div className="my-auto flex flex-col">
-            <h1 className="my-auto line-clamp-1 overflow-hidden text-lg font-medium sm:text-2xl">
-              {happening.title}
-            </h1>
-            <div className="items-center text-sm font-medium text-muted-foreground">
+            <h1 className="my-auto line-clamp-1 overflow-hidden font-medium">{happening.title}</h1>
+            <div className="items-center text-xs font-medium text-muted-foreground">
               {happening.registrationStart &&
                 isFuture(new Date(happening.registrationStart)) &&
                 (isToday(new Date(happening.registrationStart)) ? (
@@ -48,16 +60,11 @@ export const HappeningPreview = ({
           </div>
 
           <ul className="sm:text-md text-md my-auto flex-none text-right">
-            <li className="flex justify-end text-sm">
-              <span className="flex-none font-medium">
-                <RxCalendar className="mx-1 h-full" />
-              </span>{" "}
+            <li className="flex justify-end text-xs text-muted-foreground">
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
-            <li>
-              <Suspense fallback={<div className="flex-none" />}>
-                <HappeningRegistrationInfo happening={happening} />
-              </Suspense>
+            <li className="text-muted-foreground">
+              <HappeningRegistrationInfo happening={happening} />
             </li>
           </ul>
         </div>
@@ -71,12 +78,24 @@ const HappeningRegistrationInfo = async ({
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) => {
-  const { spotRanges, registrations } = await getHappeningSpotRangeAndRegistrations(happening._id);
-  const info = getSpotRangeInfo(happening, spotRanges, registrations);
+  const { waiting, registered, max } = await apiServer
+    .get(`happening/${happening._id}/registrations/count`)
+    .json<{
+      waiting: number;
+      registered: number;
+      max: number | null;
+    }>();
+
+  const info = getSpotRangeInfo({
+    registrationStart: happening.registrationStart,
+    waiting,
+    registered,
+    max,
+  });
 
   if (!info) {
     return null;
   }
 
-  return <p className="text-sm font-medium">{info}</p>;
+  return <p className="text-xs font-medium">{info}</p>;
 };

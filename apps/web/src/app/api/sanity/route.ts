@@ -2,7 +2,6 @@ import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { and, eq, inArray } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   happenings,
   happeningsToGroups,
@@ -11,9 +10,9 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
 
-import { revalidateSpotRange } from "@/data/spotrange/revalidate";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { toDateOrNull } from "@/utils/date";
 import { makeListUnique } from "@/utils/list";
@@ -103,31 +102,24 @@ export const POST = withBasicAuth(async (req) => {
     );
   }
 
-  // await fetch("https://beta.echo-webkom.no/api/sanity", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: `Bearer ${process.env.ADMIN_KEY}`,
-  //   },
-  //   body: JSON.stringify({
-  //     operation,
-  //     documentId,
-  //     pastSlug,
-  //     data,
-  //   }),
-  // });
-
-  console.info("Syncing happening from Sanity", {
-    operation,
-    documentId,
-    pastSlug,
-    data,
-  });
+  console.info(
+    "Syncing happening from Sanity",
+    JSON.stringify({
+      operation,
+      documentId,
+      pastSlug,
+      data,
+    }),
+  );
 
   // Revalidate happening data from Sanity
   revalidateTag("happening-params");
-  revalidateTag("home-happenings");
-  revalidateTag(`happening-${data?.slug ?? pastSlug}`);
+  if (data?.slug) {
+    revalidateTag(`happening-${data.slug}`);
+  }
+  if (pastSlug) {
+    revalidateTag(`happening-${pastSlug}`);
+  }
   revalidateTag("happenings");
 
   /**
@@ -207,8 +199,6 @@ export const POST = withBasicAuth(async (req) => {
       await db.insert(spotRanges).values(spotRangesToInsert);
     }
 
-    revalidateSpotRange(happening.id);
-
     const questionsToInsert = (data.questions ?? []).map((q) => ({
       id: q.id,
       happeningId: happening.id,
@@ -264,8 +254,6 @@ export const POST = withBasicAuth(async (req) => {
     if (spotRangesToInsert.length > 0) {
       await db.insert(spotRanges).values(spotRangesToInsert);
     }
-
-    revalidateSpotRange(happening.id);
 
     const oldQuestions = await db.query.questions.findMany({
       where: eq(questions.happeningId, happening.id),

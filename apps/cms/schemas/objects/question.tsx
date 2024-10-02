@@ -20,7 +20,7 @@ export default defineType({
       },
       initialValue: () => nanoid(),
       validation: (Rule) =>
-        Rule.custom(async (input, context) => {
+        Rule.required().custom(async (input, context) => {
           if (!input) {
             return "ID er påkrevd";
           }

@@ -3,8 +3,8 @@
 import { File } from "node:buffer";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { ppFor } from "@/lib/echogram";
 import { getUser } from "@/lib/get-user";

@@ -7,7 +7,7 @@ export const Posts = async ({ className }: { className?: string }) => {
 
   return (
     <BentoBox title="Siste nytt" href="/for-studenter/innlegg" className={className}>
-      <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4">
+      <ul className="grid grid-cols-1 gap-x-3 gap-y-4 py-4">
         {posts.map((post) => (
           <li key={post._id}>
             <PostPreview post={post} className="shadow-none" />

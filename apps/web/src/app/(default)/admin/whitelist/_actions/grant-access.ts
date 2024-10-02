@@ -2,8 +2,9 @@
 
 import { eq } from "drizzle-orm";
 
-import { db, isPostgresIshError } from "@echo-webkom/db";
+import { isPostgresIshError } from "@echo-webkom/db/error";
 import { accessRequests, whitelist } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { AccessGrantedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 

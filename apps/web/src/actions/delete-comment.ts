@@ -2,8 +2,8 @@
 
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { comments } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { revalidateComments } from "@/data/comments/revalidate";
 import { getUser } from "@/lib/get-user";

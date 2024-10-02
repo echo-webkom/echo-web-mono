@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { format } from "date-fns";
-import { nb } from "date-fns/locale/nb";
+import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { urlFor } from "@echo-webkom/sanity";
 
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
 import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
+import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
@@ -20,7 +20,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
     <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-[360px]">
       <SidebarItem>
         <Link href={jobAd.company.website}>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-xl border-2 bg-white">
             <div className="relative aspect-square w-full">
               <Image
                 src={urlFor(jobAd.company.image).url()}
@@ -34,7 +34,12 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
 
       <SidebarItem>
         <SidebarItemTitle>Bedrift</SidebarItemTitle>
-        <SidebarItemContent>{jobAd.company.name}</SidebarItemContent>
+        <SidebarItemContent>
+          <a className="hover:underline" href={jobAd.company.website}>
+            {jobAd.company.name}
+            <ExternalLink className="ml-1 inline-block h-4 w-4" />
+          </a>
+        </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
         <SidebarItemTitle>Sted</SidebarItemTitle>
@@ -45,9 +50,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
       <SidebarItem>
         <SidebarItemTitle>Søknadsfrist</SidebarItemTitle>
         <SidebarItemContent>
-          {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
-            locale: nb,
-          })}
+          {jobAd.deadline !== null ? shortDate(jobAd.deadline) : "Fortløpende"}
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
