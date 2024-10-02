@@ -1,9 +1,9 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { EventPage } from "@/components/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
-import { getNewPageMetadata } from "@/app/seo";
 import { norwegianDateString } from "@/utils/date";
 
 type Props = {
@@ -28,14 +28,14 @@ const getData = cache(async (slug: string) => {
 export const generateMetadata = async ({ params }: Props) => {
   const bedpress = await getData(params.slug);
 
-  const regDate = bedpress.registrationStart ?
-    `Påmelding åpner ${norwegianDateString(new Date(bedpress.registrationStart)).toLowerCase()}.`
+  const regDate = bedpress.registrationStart
+    ? `Påmelding åpner ${norwegianDateString(new Date(bedpress.registrationStart)).toLowerCase()}.`
     : "";
 
   return getNewPageMetadata(
     bedpress.title,
     `Ny bedpress med ${bedpress.company?.name}, ${norwegianDateString(new Date(bedpress.date)).toLowerCase()},
-    ${bedpress.location?.name}. ${regDate}`
+    ${bedpress.location?.name}. ${regDate}`,
   );
 };
 
