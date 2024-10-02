@@ -26,7 +26,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     return redirect("/auth/logg-inn");
   }
 
-  const isOwner = profileOwner.id === currentUser.id;
+  const isProfileOwner = profileOwner.id === currentUser.id;
+  const hasAccess = profileOwner.isPublic || isProfileOwner;
 
   const [degrees, memberships] = await Promise.all([
     getAllDegrees(),
@@ -38,7 +39,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }),
   ]);
 
-  if (!profileOwner.isPublic && !isOwner) {
+  if (!hasAccess) {
     return (
       <div className="max-w-2xl space-y-4">
         <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
@@ -90,7 +91,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         )}
       </div>
 
-      {isOwner ? (
+      {isProfileOwner ? (
         <UserForm
           user={{
             id: profileOwner.id,
