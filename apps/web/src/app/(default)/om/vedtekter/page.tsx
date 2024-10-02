@@ -1,10 +1,13 @@
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { getNewPageMetadata } from "@/app/seo";
 
-export const metadata = getNewPageMetadata("Vedtekter", "Vedtektene til echo – Linjeforeningen for informatikk");
+export const metadata = getNewPageMetadata(
+  "Vedtekter",
+  "Vedtektene til echo – Linjeforeningen for informatikk",
+);
 
 export default async function Bylaws() {
   const markdown = await fetch(

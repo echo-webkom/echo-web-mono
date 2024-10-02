@@ -1,11 +1,11 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/static-info";
-import { getNewPageMetadata } from "@/app/seo";
 
 export const dynamicParams = false;
 
