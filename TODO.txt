@@ -1,0 +1,18 @@
+- Invitations-schema
+- Answer invitation page
+
+Events:
+    - Ved avmelding:
+        - Invite neste i ventelista
+        - Sende mail
+    - Ved accept invitation:
+        - Register
+    - Ved avslått invitation:
+        - Invite neste i ventelista
+        - Sende mail
+    - Ved invitation timeout
+
+Statisk tasks:
+    - Invitation site
+    - Regler for invite neste i ventelista
+    - Regler for timeout date

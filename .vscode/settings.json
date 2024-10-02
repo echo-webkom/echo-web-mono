@@ -5,9 +5,9 @@
     { "pattern": "packages/*/" },
     { "pattern": "playwright/" }
   ],
-  "cSpell.words": [
-    "avmeldt",
-    "bedpres",
-    "waitlist"
-  ]
+  "cSpell.words": ["avmeldt", "bedpres", "waitlist"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

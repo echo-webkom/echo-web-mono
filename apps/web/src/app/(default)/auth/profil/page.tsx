@@ -9,6 +9,7 @@ import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
+import { UserInvitations } from "@/components/user-invitations";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
@@ -20,12 +21,18 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
-  const [degrees, memberships] = await Promise.all([
+  const [degrees, memberships, invitations] = await Promise.all([
     getAllDegrees(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, user.id),
       with: {
         group: true,
+      },
+    }),
+    db.query.invitations.findMany({
+      where: (row, { eq }) => eq(row.userId, user.id),
+      with: {
+        happening: true,
       },
     }),
   ]);
@@ -69,6 +76,8 @@ export default async function ProfilePage() {
             </ul>
           </div>
         )}
+
+        <UserInvitations user={user} invitations={invitations}></UserInvitations>
       </div>
 
       <UserForm
