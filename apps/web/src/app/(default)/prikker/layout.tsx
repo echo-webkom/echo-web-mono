@@ -1,5 +1,3 @@
-import { type Metadata } from "next/types";
-
 import {
   Sidebar,
   SidebarItem,
@@ -7,14 +5,13 @@ import {
   SidebarLayoutRoot,
 } from "@/components/sidebar-layout";
 import { ensureBedkom } from "@/lib/ensure";
+import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
-  title: "Prikker",
-} satisfies Metadata;
+export const metadata = getNewPageMetadata("Prikker");
 
 const routes = [
   {

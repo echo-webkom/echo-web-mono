@@ -1,11 +1,8 @@
-import { type Metadata } from "next/types";
-
+import { getNewPageMetadata } from "@/app/seo";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { JobAdList } from "./_components/job-ad-list";
 
-export const metadata = {
-  title: "Stillingsannonser",
-} satisfies Metadata;
+export const metadata = getNewPageMetadata("Stillingsannonser");
 
 export default async function JobAdsOverviewPage() {
   const jobAds = await fetchAvailableJobAds();
