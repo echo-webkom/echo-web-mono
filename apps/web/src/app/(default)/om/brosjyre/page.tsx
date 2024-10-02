@@ -1,6 +1,6 @@
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
-import { getNewPageMetadata } from "@/app/seo";
 
 export const metadata = getNewPageMetadata("Brosjyre", "Brosjyren til echo");
 

@@ -9,6 +9,7 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
@@ -24,7 +25,6 @@ import {
 } from "@/components/ui/dialog";
 import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
 import { mailTo } from "@/utils/prefixes";
-import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   params: {

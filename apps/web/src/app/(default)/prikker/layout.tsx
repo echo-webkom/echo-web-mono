@@ -1,3 +1,4 @@
+import { getNewPageMetadata } from "@/app/seo";
 import {
   Sidebar,
   SidebarItem,
@@ -5,7 +6,6 @@ import {
   SidebarLayoutRoot,
 } from "@/components/sidebar-layout";
 import { ensureBedkom } from "@/lib/ensure";
-import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   children: React.ReactNode;

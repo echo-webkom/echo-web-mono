@@ -1,10 +1,10 @@
 import { cache } from "react";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
 import { fetchAllPosts } from "@/sanity/posts/requests";
-import { getNewPageMetadata } from "@/app/seo";
 
 export const metadata = getNewPageMetadata("Innlegg");
 

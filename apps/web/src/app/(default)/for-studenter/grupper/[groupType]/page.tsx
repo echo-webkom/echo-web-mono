@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/typography/heading";
 import { fetchStudentGroupsByType, studentGroupTypeName } from "@/sanity/student-group";
-import { getNewPageMetadata } from "@/app/seo";
 
 type Props = {
   params: {
@@ -21,7 +21,7 @@ export const generateMetadata = ({ params }: Props) => {
   const groupTypeFromPath = pathToGroupType(groupType);
   const groupName = studentGroupTypeName[groupTypeFromPath];
 
-  const sine = (groupTypeFromPath === "board" || groupTypeFromPath === "sport") ? "sitt" : "sine";
+  const sine = groupTypeFromPath === "board" || groupTypeFromPath === "sport" ? "sitt" : "sine";
   return getNewPageMetadata(groupName, `En oversikt over echo ${sine} ${groupName.toLowerCase()}.`);
 };
 
