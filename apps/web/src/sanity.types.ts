@@ -49,6 +49,17 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Notification = {
+  _id: string;
+  _type: "notification";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+};
+
 export type Movie = {
   _id: string;
   _type: "movie";
@@ -461,6 +472,7 @@ export type AllSanitySchemaTypes =
   | SanityImagePalette
   | SanityImageDimensions
   | Geopoint
+  | Notification
   | Movie
   | Question
   | ContactProfile
@@ -714,6 +726,16 @@ export type MoviesQueryResult = Array<{
   };
 }>;
 
+// Source: ../web/src/sanity/notification/queries.ts
+// Variable: notificationQuery
+// Query: *[_type == "notification" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){  _id,  title,  dateFrom,  dateTo}
+export type NotificationQueryResult = Array<{
+  _id: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+}>;
+
 // Source: ../web/src/sanity/posts/queries.ts
 // Variable: allPostsQuery
 // Query: *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "authors": authors[]->{    _id,    name,    image,  },  image,  body}
@@ -891,6 +913,7 @@ declare module "@sanity/client" {
     '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && expiresAt > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  expiresAt,\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;
     "\n*[_type == \"movie\"\n  && !(_id in path('drafts.**'))]\n  | order(_createdAt desc) {\n  _id,\n  title,\n  date,\n  link,\n  image,\n}\n": MoviesQueryResult;
+    "\n*[_type == \"notification\" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){\n  _id,\n  title,\n  dateFrom,\n  dateTo\n}\n": NotificationQueryResult;
     '\n*[_type == "post" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "authors": authors[]->{\n    _id,\n    name,\n    image,\n  },\n  image,\n  body\n}\n': AllPostsQueryResult;
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
