@@ -6,10 +6,6 @@ import { BentoBox } from "./bento-box";
 export const HyggkomList = async ({ className }: { className?: string }) => {
   const [user, items] = await Promise.all([getUser(), getAllShoppinglistItems()]);
 
-  if (!items.length) {
-    return null;
-  }
-
   const withDots = items.length > 5;
 
   const mappedItems = items
