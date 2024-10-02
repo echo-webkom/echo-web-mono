@@ -1,35 +1,20 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
+import { type Registration, type User } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
-import { isErrorMessage } from "@/utils/error";
+import { apiServer } from "@/api/server";
 import { cacheKeyFactory } from "./revalidate";
 
 export const getRegistrationsByHappeningId = async (happeningId: string) => {
-  return cache(
-    async () => {
-      return await db.query.registrations
-        .findMany({
-          where: (registration) => eq(registration.happeningId, happeningId),
-          with: {
-            user: true,
-          },
-        })
-        .catch((error) => {
-          console.error("Failed to fetch registrations", {
-            happeningId,
-            error: isErrorMessage(error) ? error.message : "Unknown error",
-          });
-
-          return [];
-        });
-    },
-    [cacheKeyFactory.registrationsHappening(happeningId)],
-    {
-      tags: [cacheKeyFactory.registrationsHappening(happeningId)],
-    },
-  )();
+  return await apiServer.get(`happening/${happeningId}/registrations`).json<
+    Array<
+      Registration & {
+        user: User;
+      }
+    >
+  >();
 };
 
 export const getRegistrationsByUserId = async (userId: string) => {

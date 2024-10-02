@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   strikeInfos,
   strikes,
@@ -8,6 +7,7 @@ import {
   type StrikeInfoInsert,
   type StrikeInsert,
 } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { revalidateStrikes } from "./revalidate";
 

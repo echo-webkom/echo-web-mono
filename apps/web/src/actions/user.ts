@@ -3,8 +3,8 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { db } from "@echo-webkom/db";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { getUser } from "@/lib/get-user";
 import { isWebkom } from "@/lib/memberships";

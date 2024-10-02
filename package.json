@@ -16,9 +16,10 @@
     "db:generate": "pnpm --filter=db db:generate",
     "db:migrate": "pnpm --filter=db db:migrate",
     "db:check": "pnpm --filter=db db:check",
-    "db:up": "pnpm --filter=db db:up",
-    "db:down": "pnpm --filter=db db:down",
-    "db:remove": "pnpm db:down && rm -rf packages/db/postgres-data",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:down-volumes": "docker compose down --volumes",
+    "db:remove": "pnpm db:down && rm -rf ./postgres-data",
     "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate",
     "seed": "pnpm --filter=seeder seed:start",
     "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
@@ -29,15 +30,15 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\" ",
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
-    "test:e2e": "turbo run test:e2e --concurrency=11",
+    "test:e2e": "turbo run test:e2e",
     "test:e2e:ui": "turbo run test:e2e:ui"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.3.1",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.0.0",
-    "prettier-plugin-tailwindcss": "0.6.6",
+    "prettier-plugin-tailwindcss": "0.6.8",
     "turbo": "2.0.14",
-    "typescript": "5.5.4"
+    "typescript": "5.6.2"
   }
 }

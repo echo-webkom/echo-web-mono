@@ -61,6 +61,7 @@ Sidene som starter er:
 
 - [http://localhost:3000](http://localhost:3000) for nettsiden
 - [http://localhost:3333](http://localhost:3333) for Sanity Studio
+- [http://localhost:8000](http://localhost:8000) for API-et våres
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).

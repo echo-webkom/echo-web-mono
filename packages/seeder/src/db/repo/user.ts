@@ -1,5 +1,5 @@
-import { db } from "@echo-webkom/db";
 import { accounts, sessions, users, type UserType } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 export const create = async ({
   id,
