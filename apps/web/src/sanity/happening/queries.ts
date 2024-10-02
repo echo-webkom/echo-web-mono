@@ -9,6 +9,7 @@ export const allHappeningsQuery = groq`
   _updatedAt,
   title,
   "slug": slug.current,
+  isPinned,
   happeningType,
   "company": company->{
     _id,
@@ -65,6 +66,7 @@ export const happeningQuery = groq`
   _updatedAt,
   title,
   "slug": slug.current,
+  isPinned,
   happeningType,
   "company": company->{
     _id,
@@ -113,11 +115,13 @@ export const happeningQuery = groq`
 export const homeHappeningsQuery = groq`
 *[_type == "happening"
   && !(_id in path('drafts.**'))
-  && date >= now()
+  && (isPinned || date >= now())
   && happeningType in $happeningTypes
- ] | order(date asc) {
+]
+| order(isPinned desc, date asc) {
   _id,
   title,
+  isPinned,
   happeningType,
   date,
   registrationStart,
@@ -127,6 +131,7 @@ export const homeHappeningsQuery = groq`
     name
   }.name
 }[0...$n]
+
 `;
 
 export const happeningTypeQuery = groq`

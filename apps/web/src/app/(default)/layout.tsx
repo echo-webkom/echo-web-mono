@@ -3,7 +3,7 @@ import { type ReactNode } from "react";
 import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
 
-type DefaultLayoutProps = {
+export type DefaultLayoutProps = {
   children: ReactNode;
 };
 

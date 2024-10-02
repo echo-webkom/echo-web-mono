@@ -26,14 +26,14 @@
     "drizzle-zod": "0.5.1",
     "nanoid": "5.0.7",
     "next-auth": "4.24.7",
-    "pg": "8.12.0",
+    "pg": "8.13.0",
     "postgres": "3.4.4",
     "zod": "3.23.8"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.16.5",
-    "@types/pg": "8.11.9",
+    "@types/pg": "8.11.10",
     "dotenv-cli": "7.4.2",
     "drizzle-kit": "0.24.2",
     "eslint-config-webkom": "workspace:*",

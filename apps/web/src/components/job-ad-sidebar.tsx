@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { format } from "date-fns";
-import { nb } from "date-fns/locale/nb";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { urlFor } from "@echo-webkom/sanity";
@@ -9,6 +7,7 @@ import { urlFor } from "@echo-webkom/sanity";
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
 import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
+import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
@@ -51,9 +50,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
       <SidebarItem>
         <SidebarItemTitle>Søknadsfrist</SidebarItemTitle>
         <SidebarItemContent>
-          {format(new Date(jobAd.deadline), "d. MMMM yyyy", {
-            locale: nb,
-          })}
+          {jobAd.deadline !== null ? shortDate(jobAd.deadline) : "Fortløpende"}
         </SidebarItemContent>
       </SidebarItem>
       <SidebarItem>

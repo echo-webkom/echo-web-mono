@@ -42,6 +42,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "expiresAt",
+      title: "Utløper",
+      type: "datetime",
+      description: "Når jobannonsen skal fjernes fra nettsiden.",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "weight",
       title: "Vekting",
       type: "number",
@@ -76,8 +83,7 @@ export default defineType({
     defineField({
       name: "deadline",
       title: "Søknadsfrist",
-      type: "date",
-      validation: (Rule) => Rule.required(),
+      type: "datetime",
     }),
     defineField({
       name: "degreeYears",

@@ -114,7 +114,6 @@ export const POST = withBasicAuth(async (req) => {
 
   // Revalidate happening data from Sanity
   revalidateTag("happening-params");
-  revalidateTag("home-happenings");
   if (data?.slug) {
     revalidateTag(`happening-${data.slug}`);
   }

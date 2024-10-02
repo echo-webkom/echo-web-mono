@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { addDays, format } from "date-fns";
-import { nb } from "date-fns/locale/nb";
+import { addDays } from "date-fns";
 import removeMd from "remove-markdown";
 
 import { isBoard } from "@echo-webkom/lib";
 
 import { type AllPostsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
+import { shortDateNoTimeNoYear } from "@/utils/date";
 import { Chip } from "./typography/chip";
 
 type PostPreviewProps = {
@@ -22,7 +22,7 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
-          "relative flex h-full flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out hover:border-muted-dark hover:bg-muted",
+          "h-42 relative flex flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out hover:border-muted-dark hover:bg-muted",
           {
             "border-transparent": !withBorder,
             "bg-muted hover:bg-transparent": isNew,
@@ -30,26 +30,22 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
           className,
         )}
       >
-        {isNew && <Chip className="absolute -top-2 left-0 bg-primary text-white">NY</Chip>}
-        <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold md:text-2xl">{post.title}</h3>
+        <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold">{post.title}</h3>
 
         <p className="right-2 top-2 text-sm text-gray-500 sm:absolute">
-          {format(new Date(post._createdAt), "d. MMMM yyyy", {
-            locale: nb,
-          })}
+          {shortDateNoTimeNoYear(post._createdAt)}
         </p>
 
-        {post.body && <p className="my-2 line-clamp-2 italic">{removeMd(post.body)}</p>}
+        {post.body && <p className="my-2 line-clamp-3 text-sm italic">{removeMd(post.body)}</p>}
 
-        {post.authors && (
-          <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-4 sm:right-4">
-            {post.authors.map((author) => (
-              <Chip variant="secondary" key={author._id}>
-                {isBoard(author.name) ? "Hovedstyret" : author.name}
-              </Chip>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-4 sm:right-4">
+          {isNew && <Chip>NY</Chip>}
+          {post.authors?.map((author) => (
+            <Chip variant="secondary" key={author._id}>
+              {isBoard(author.name) ? "Hovedstyret" : author.name}
+            </Chip>
+          ))}
+        </div>
       </div>
     </Link>
   );

@@ -23,7 +23,7 @@ export const ComingHappenings = async ({
 
   return (
     <BentoBox title={title} href={href} className={className}>
-      <ul className="grid grid-cols-1 gap-x-3 gap-y-5 py-4">
+      <ul className="grid grid-cols-1 gap-x-3">
         {happenings.map((happening) => (
           <li key={happening._id}>
             <HappeningPreview happening={happening} />

@@ -59,6 +59,17 @@ export default defineType({
       },
     }),
     defineField({
+      name: "isPinned",
+      title: "Pinnet",
+      type: "boolean",
+      description: "Om hendelsen skal være pinnet på forsiden",
+      initialValue: false,
+      validation: (Rule) => Rule.required(),
+      options: {
+        layout: "switch",
+      },
+    }),
+    defineField({
       name: "happeningType",
       title: "Type",
       type: "string",

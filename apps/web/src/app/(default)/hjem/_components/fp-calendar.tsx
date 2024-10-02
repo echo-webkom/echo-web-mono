@@ -1,9 +1,9 @@
-import { Calendar as EventCalendar } from "@/components/calendar/happening-calendar";
+import { Calendar } from "@/components/calendar/calendar";
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar-event-helpers";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
-import { happeningsToCalendarEvent, moviesToCalendarEvent } from "./_lib/mappers";
 
-export const Calendar = async ({ className }: { className?: string }) => {
+export const FPCalendar = async ({ className }: { className?: string }) => {
   const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
 
   const calendarEvents = happeningsToCalendarEvent(happenings).concat(
@@ -12,7 +12,7 @@ export const Calendar = async ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      <EventCalendar events={calendarEvents} />
+      <Calendar events={calendarEvents} type="week" />
     </div>
   );
 };
