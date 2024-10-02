@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select } from "./ui/select";
 
 const userSchema = z.object({
@@ -49,6 +50,7 @@ type UserFormProps = {
 
 export const UserForm = ({ user, degrees }: UserFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -217,7 +219,26 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Jeg vil at brukeren min skal være offentlig.</FormLabel>
+                  <Popover open={isPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <div
+                        className="cursor-pointer hover:underline"
+                        onMouseEnter={() => setIsPopoverOpen(true)}
+                        onMouseLeave={() => setIsPopoverOpen(false)}
+                      >
+                        <FormLabel className="cursor-pointer hover:underline">
+                          Jeg vil at brukeren min skal være offentlig.
+                        </FormLabel>
+                        <span className="text-blue-500"></span>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <p className="text-sm">
+                        Om du velger å gjøre brukeren din offentlig, vil andre brukere kunne se
+                        profil siden din.
+                      </p>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </FormItem>
