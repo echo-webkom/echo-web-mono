@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { apiServer } from "@/api/server";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -29,10 +30,9 @@ export default async function ProfilePage() {
         group: true,
       },
     }),
-    db.query.invitations.findMany({
-      where: (row, { eq }) => eq(row.userId, user.id),
-      with: {
-        happening: true,
+    await apiServer.get("/invitations", {
+      json: {
+        userId: user.id,
       },
     }),
   ]);

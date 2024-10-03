@@ -7,6 +7,7 @@ import degreesApp from "./services/degrees";
 import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
 import healthApp from "./services/health";
+import invitationsApp from "./services/invitations";
 import shoppingApp from "./services/shopping-list";
 
 const app = new Hono();
@@ -27,5 +28,5 @@ app.route("/", happeningApp);
 app.route("/", feedbackApp);
 app.route("/", shoppingApp);
 app.route("/", degreesApp);
-
+app.route("/", invitationsApp);
 export default app;

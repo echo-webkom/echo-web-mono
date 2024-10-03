@@ -1,11 +1,12 @@
 "use client";
 
 import { User, type Invitation } from "@echo-webkom/db/schemas";
+
 import { Button } from "./ui/button";
 
 type UserInvitationProp = {
   user: User;
-  invitations: any[];
+  invitations: JSON;
 };
 
 export const UserInvitations = (props: UserInvitationProp) => {
@@ -14,17 +15,17 @@ export const UserInvitations = (props: UserInvitationProp) => {
       <h2>Invitations</h2>
       <ul>
         {props.invitations.map((invitation) => {
-        return (
-        <li>
-          <div>
-            <p>
-            {invitation.happening.title}
-            </p>
-            <Button>Godta</Button>
-            <Button>Avslå</Button>
-          </div>
-        </li>
-        )})};
+          return (
+            <li>
+              <div>
+                <p>{invitation.happening.title}</p>
+                <Button>Godta</Button>
+                <Button>Avslå</Button>
+              </div>
+            </li>
+          );
+        })}
+        ;
       </ul>
     </div>
   );
