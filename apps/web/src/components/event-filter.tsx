@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
   usePathname,
@@ -8,7 +8,11 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
-import { LuArrowDownNarrowWide as ArrowDownNarrowWide } from "react-icons/lu";
+import {
+  LuArrowDownNarrowWide as ArrowDownNarrowWide,
+  LuChevronDown as ChevronDown,
+  LuChevronRight as ChevronRight,
+} from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
@@ -115,12 +119,17 @@ export const EventFilter = () => {
   const firstButton = type === "ALL" ? "EVENT" : "ALL";
   const secondButton = type === "BEDPRES" ? "EVENT" : "BEDPRES";
 
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
     <>
       <div className="flex flex-col items-center sm:hidden">
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={setIsOpen}>
           <DropdownMenuTrigger className="w-full" asChild>
-            <Button fullWidth>{getButtonLabel(type)}</Button>
+            <Button fullWidth className="flex justify-between">
+              {getButtonLabel(type)}{" "}
+              {isOpen ? <ChevronRight className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-full sm:hidden">
             <DropdownMenuItem className="w-full text-base">
