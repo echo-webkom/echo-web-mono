@@ -16,7 +16,7 @@ export const invitations = pgTable("invitation", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").$defaultFn(now),
-  timeout: timestamp("timeout").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
   response: inviteResponseEnum("response").notNull().default("pending"),
 });
 

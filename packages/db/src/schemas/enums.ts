@@ -30,9 +30,4 @@ export const feedbackCategoryEnum = pgEnum("feedback_category", [
 ]);
 
 export type InviteResponse = (typeof inviteResponseEnum)["enumValues"][number];
-export const inviteResponseEnum = pgEnum("inviteResponse", [
-  "pending",
-  "accepted",
-  "declined",
-  "timed out",
-]);
+export const inviteResponseEnum = pgEnum("inviteResponse", ["pending", "accepted", "declined"]);

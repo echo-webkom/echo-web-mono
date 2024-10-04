@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
-import { apiServer } from "@/api/server";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -12,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { UserInvitations } from "@/components/user-invitations";
 import { getAllDegrees } from "@/data/degrees/queries";
+import { getInvitations } from "@/data/invitations/queries";
 import { getUser } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 
@@ -30,11 +30,7 @@ export default async function ProfilePage() {
         group: true,
       },
     }),
-    await apiServer.get("/invitations", {
-      json: {
-        userId: user.id,
-      },
-    }),
+    getInvitations(user.id),
   ]);
 
   return (
@@ -77,7 +73,7 @@ export default async function ProfilePage() {
           </div>
         )}
 
-        <UserInvitations user={user} invitations={invitations}></UserInvitations>
+        <UserInvitations user={user} invitations={invitations} />
       </div>
 
       <UserForm

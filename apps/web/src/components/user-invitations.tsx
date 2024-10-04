@@ -2,23 +2,29 @@
 
 import { User, type Invitation } from "@echo-webkom/db/schemas";
 
+import { Happening } from "@/sanity.types";
 import { Button } from "./ui/button";
 
 type UserInvitationProp = {
   user: User;
-  invitations: JSON;
+  invitations: Array<
+    Invitation & {
+      happening: Happening;
+    }
+  >;
 };
 
-export const UserInvitations = (props: UserInvitationProp) => {
+export const UserInvitations = ({ user, invitations }: UserInvitationProp) => {
   return (
     <div>
       <h2>Invitations</h2>
       <ul>
-        {props.invitations.map((invitation) => {
+        {invitations.map((invitation) => {
           return (
             <li>
               <div>
                 <p>{invitation.happening.title}</p>
+                <p>{invitation.expiresAt.toString()}</p>
                 <Button>Godta</Button>
                 <Button>Avslå</Button>
               </div>
