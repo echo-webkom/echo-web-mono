@@ -17,7 +17,7 @@ export const NotificationMenu = async () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button data-testid="notification-menu">
-          <Bell className="h-6 w-6" />
+        <Bell className="h-6 w-6" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-3 w-56">
@@ -25,11 +25,7 @@ export const NotificationMenu = async () => {
         <DropdownMenuSeparator />
         {notifications.map((notification) => (
           <DropdownMenuItem key={notification._id}>
-<<<<<<< HEAD
-            <DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
-=======
-            <DropdownMenuLabel>{notification.title}</DropdownMenuLabel>
->>>>>>> 40bb8592 (display notifications)
+<DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
