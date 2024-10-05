@@ -1,12 +1,7 @@
-import { isFuture } from "date-fns";
+import { type Whitelist } from "@echo-webkom/db/schemas";
 
-import { db } from "@echo-webkom/db/serverless";
+import { apiServer } from "@/api/server";
 
 export const getWhitelist = async () => {
-  return await db.query.whitelist
-    .findMany()
-    .then((res) =>
-      res.sort((a, b) => new Date(a.expiresAt).getTime() - new Date(b.expiresAt).getTime()),
-    )
-    .then((res) => res.filter((row) => isFuture(row.expiresAt)));
+  return await apiServer.get("admin/whitelist").json<Array<Whitelist>>();
 };

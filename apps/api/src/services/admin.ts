@@ -361,4 +361,21 @@ app.post("/admin/register", admin(), async (c) => {
   });
 });
 
+app.get("/admin/whitelist", admin(), async (c) => {
+  const whitelist = await db.query.whitelist
+    .findMany()
+    .then((res) =>
+      res.sort((a, b) => new Date(a.expiresAt).getTime() - new Date(b.expiresAt).getTime()),
+    )
+    .then((res) => res.filter((row) => isFuture(row.expiresAt)));
+
+  return c.json(whitelist);
+});
+
+app.get("/admin/access-requests", admin(), async (c) => {
+  const accessRequests = await db.query.accessRequests.findMany();
+
+  return c.json(accessRequests);
+});
+
 export default app;
