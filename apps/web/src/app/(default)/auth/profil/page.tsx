@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { LuFlame as Flame } from "react-icons/lu";
 
 import { db } from "@echo-webkom/db/serverless";
 
@@ -20,6 +21,8 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
+  const streak = "0";
+
   const [degrees, memberships] = await Promise.all([
     getAllDegrees(),
     db.query.usersToGroups.findMany({
@@ -32,7 +35,13 @@ export default async function ProfilePage() {
 
   return (
     <div className="max-w-2xl space-y-4">
-      <Heading level={2}>Din profil</Heading>
+      <div className="flex flex-row gap-4">
+        <Heading level={2}>Din profil</Heading>
+        <div className="flex flex-row gap-1">
+          <Flame className="h-7 w-7 text-orange-600" />
+          <p className="flex items-center font-bold">{streak}</p>
+        </div>
+      </div>
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-6 md:flex-row">
