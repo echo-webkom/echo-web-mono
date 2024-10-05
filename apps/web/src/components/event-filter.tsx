@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
   usePathname,
