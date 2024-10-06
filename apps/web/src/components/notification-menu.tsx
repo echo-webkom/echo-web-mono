@@ -21,13 +21,17 @@ export const NotificationMenu = async () => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-3 w-56">
-        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+        <DropdownMenuLabel>Notifikasjoner</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {notifications.map((notification) => (
-          <DropdownMenuItem key={notification._id}>
-            <DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
-          </DropdownMenuItem>
-        ))}
+        {notifications.length === 0 ? (
+          <DropdownMenuItem>Du har ingen notifikasjoner!</DropdownMenuItem>
+        ) : (
+          notifications.map((notification) => (
+            <DropdownMenuItem key={notification._id}>
+              <DropdownMenuLabel className="truncate">{notification.title}</DropdownMenuLabel>
+            </DropdownMenuItem>
+          ))
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

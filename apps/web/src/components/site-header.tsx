@@ -5,12 +5,12 @@ import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import { NotificationMenu } from "./notification-menu";
 import { ThemeSwitchButton } from "./theme-switch-button";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
-import { NotificationMenu } from "./notification-menu";
 
 export const SiteHeader = async () => {
   const user = await getUser();
