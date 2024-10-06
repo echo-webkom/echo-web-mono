@@ -2,5 +2,8 @@
   "name": "@echo-webkom/tsconfig",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@echo-webkom/tsconfig": "file:"
+  }
 }

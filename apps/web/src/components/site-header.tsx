@@ -10,6 +10,7 @@ import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
+import { NotificationMenu } from "./notification-menu";
 
 export const SiteHeader = async () => {
   const user = await getUser();
@@ -32,7 +33,7 @@ export const SiteHeader = async () => {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
-              <NotificationMenu />
+              {user && <NotificationMenu />}
               <ThemeSwitchButton />
               {user ? (
                 <UserMenu user={user} />
