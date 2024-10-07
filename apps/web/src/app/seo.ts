@@ -11,29 +11,32 @@ const defaultTitle = {
 const defaultDescription =
   "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.";
 
+// app/layout.tsx
+export const rootMetadata = {
+  title: defaultTitle,
+  description: defaultDescription,
+  applicationName: "echo",
+  creator: "echo-webkom",
+  authors: {
+    name: "echo-webkom",
+    url: "/webkom",
+  },
+  metadataBase: new URL(BASE_URL),
+  keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
+  icons: {
+    apple: "/apple-touch-icon.png",
+    icon: "/favicon-32x32.png",
+    shortcut: "/favicon16x16.png",
+  },
+  manifest: "/site.webmanifest",
+  appleWebApp: {
+    title: "echo",
+  },
+};
+
 export const getNewPageMetadata = (
   title: string | TemplateString = defaultTitle,
   description: string = defaultDescription,
 ): Metadata => {
-  return {
-    title,
-    description,
-    applicationName: "echo",
-    creator: "echo-webkom",
-    authors: {
-      name: "echo-webkom",
-      url: "/webkom",
-    },
-    metadataBase: new URL(BASE_URL),
-    keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
-    icons: {
-      apple: "/apple-touch-icon.png",
-      icon: "/favicon-32x32.png",
-      shortcut: "/favicon16x16.png",
-    },
-    manifest: "/site.webmanifest",
-    appleWebApp: {
-      title: "echo",
-    },
-  };
+  return { title, description };
 };
