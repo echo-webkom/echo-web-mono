@@ -2,7 +2,7 @@ import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
-import { MdMail, MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
+import { MdMail, MdOutlineEmail, MdOutlineFacebook, MdPersonOff } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
@@ -22,8 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
-import { LuLinkedin, LuMail } from "react-icons/lu";
-import { IoMail } from "react-icons/io5";
+import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { FaLinkedin } from "react-icons/fa";
 
 type Props = {
@@ -159,7 +158,7 @@ export default async function GroupPage({ params }: Props) {
                         <DialogDescription className="flex  gap-3 pt-3">
                           {member.profile?.socials?.email && <Link href={`mailto:${member.profile?.socials?.email}`}><Button><IoMail className="mr-1" />e-post</Button></Link>}
                           {member.profile?.socials?.linkedin && <Link href={member.profile?.socials?.linkedin}><Button><FaLinkedin className="mr-1" />LinkedIn</Button></Link>}
-                          {!member.profile?.socials?.linkedin && !member.profile?.socials?.email}
+                          {!member.profile?.socials?.linkedin && !member.profile?.socials?.email && <div className="flex gap-3"><IoCloudOfflineSharp /><p>Ingen kontaktinfo</p></div>}
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
