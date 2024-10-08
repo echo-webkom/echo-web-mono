@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
-import { MdMail, MdOutlineEmail, MdOutlineFacebook, MdPersonOff } from "react-icons/md";
+import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
