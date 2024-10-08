@@ -1,6 +1,5 @@
 import { type NextRequest } from "next/server";
 
-import { env } from "@/env.mjs";
 import { type HandlerFunction } from "./utils";
 
 /**
@@ -12,10 +11,10 @@ import { type HandlerFunction } from "./utils";
  */
 export const withBearerAuth = (handler: HandlerFunction) => {
   return async (request: NextRequest): Promise<Response> => {
-    if (env.NODE_ENV !== "development") {
+    if (process.env.NODE_ENV !== "development") {
       const auth = request.headers.get("Authorization")?.split(" ")[1];
 
-      if (auth !== env.ADMIN_KEY) {
+      if (auth !== process.env.ADMIN_KEY) {
         return new Response("Unauthorized", {
           status: 401,
         });

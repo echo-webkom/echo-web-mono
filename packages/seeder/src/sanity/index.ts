@@ -1,6 +1,5 @@
 import { inArray, sql } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import {
   happenings,
   happeningsToGroups,
@@ -9,6 +8,7 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
 import { clientWith, type Dataset } from "@echo-webkom/sanity";
 

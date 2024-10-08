@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "@echo-webkom/db";
 import { groups, type Group, type GroupInsert } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 
 import { revalidateGroups } from "./revalidate";
 

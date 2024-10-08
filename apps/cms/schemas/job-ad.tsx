@@ -9,6 +9,7 @@ const YEARS = [
   { title: "3. året", value: "THIRD" },
   { title: "4. året", value: "FOURTH" },
   { title: "5. året", value: "FIFTH" },
+  { title: "PhD", value: "PHD" },
 ];
 
 export default defineType({
@@ -38,6 +39,13 @@ export default defineType({
       title: "Selskap",
       type: "reference",
       to: { type: "company" },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "expiresAt",
+      title: "Utløper",
+      type: "datetime",
+      description: "Når jobannonsen skal fjernes fra nettsiden.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -75,8 +83,7 @@ export default defineType({
     defineField({
       name: "deadline",
       title: "Søknadsfrist",
-      type: "date",
-      validation: (Rule) => Rule.required(),
+      type: "datetime",
     }),
     defineField({
       name: "degreeYears",

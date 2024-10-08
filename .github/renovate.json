@@ -4,6 +4,7 @@
   "labels": ["dependencies :handshake:"],
   "commitMessageAction": "Update",
   "rangeStrategy": "bump",
+  "schedule": ["every weekend"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^@echo-webkom/", "eslint-config-custom", "tsconfig"],

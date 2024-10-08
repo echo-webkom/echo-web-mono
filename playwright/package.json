@@ -3,24 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test:e2e": "TESTING=\"true\" pnpm with-env playwright test",
-    "test:e2e:ui": "TESTING=\"true\" pnpm with-env playwright test --ui-port 5555",
+    "test:e2e": "pnpm with-env playwright test",
+    "test:e2e:ui": "pnpm with-env playwright test --ui-port 5555",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
-    "lint": "eslint web --ext .ts",
+    "lint": "eslint tests --ext .ts",
     "lint:fix": "eslint lint --fix",
-    "clean": "rm -rf node_modules playwright-report test-results",
+    "clean": "rm -rf node_modules playwright-report test-results .turbo",
     "with-env": "dotenv -e ../.env --"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@playwright/test": "1.46.1",
-    "@types/node": "20.16.1",
+    "@playwright/test": "1.47.2",
+    "@types/node": "20.16.5",
     "dotenv-cli": "7.4.2",
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
     "postgres": "3.4.4",
-    "typescript": "5.5.4"
+    "typescript": "5.6.2"
   },
   "eslintConfig": {
     "root": true,

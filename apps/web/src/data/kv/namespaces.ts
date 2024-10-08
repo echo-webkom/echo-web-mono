@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { db } from "@echo-webkom/db";
+import { db } from "@echo-webkom/db/serverless";
 
 import { KVDrizzleAdapter } from "./kv-adapter";
 import { KVNamespace } from "./kv-namespace";

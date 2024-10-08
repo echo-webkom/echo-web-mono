@@ -21,8 +21,8 @@
   ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "6.21.3",
-    "@sanity/icons": "3.3.1",
+    "@sanity/client": "6.22.0",
+    "@sanity/icons": "3.4.0",
     "@sanity/ui": "2.8.9",
     "@sanity/vision": "3.56.0",
     "nanoid": "5.0.7",
@@ -33,17 +33,17 @@
     "sanity-plugin-markdown": "4.1.2",
     "sanity-plugin-media": "2.3.2",
     "slugify": "1.6.6",
-    "styled-components": "6.1.12"
+    "styled-components": "6.1.13"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
     "@sanity/eslint-config-studio": "4.0.0",
-    "@types/react": "18.3.4",
+    "@types/react": "18.3.8",
     "@types/styled-components": "5.1.34",
     "dotenv": "16.4.5",
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.5.4"
+    "typescript": "5.6.2"
   },
   "eslintConfig": {
     "root": true,

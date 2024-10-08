@@ -18,6 +18,8 @@ const baseMessages = [
   ":(){ :|:& };:",
   "go func() { urself }()",
   "418 i'm a teapot",
+  "New backend, who dis?",
+  "Bedpresolini",
 ];
 
 const getExtraMessages = (now: Date) => {

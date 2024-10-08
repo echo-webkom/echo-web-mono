@@ -9,7 +9,7 @@ export default function Dashboard() {
 
       <Text>
         Velkommen til dashboardet. Her kan du se en oversikt over happenings, tilbakemeldinger,
-        brukere, grupper, studieretninger, kaffe-admin og whitelist.
+        brukere, grupper, studieretninger og whitelist.
       </Text>
     </Container>
   );
