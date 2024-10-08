@@ -2,7 +2,7 @@ import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
-import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
+import { MdMail, MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
@@ -12,6 +12,19 @@ import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
 import { mailTo } from "@/utils/prefixes";
+import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button";
+import { LuLinkedin, LuMail } from "react-icons/lu";
+import { IoMail } from "react-icons/io5";
+import { FaLinkedin } from "react-icons/fa";
 
 type Props = {
   params: {
@@ -128,13 +141,27 @@ export default async function GroupPage({ params }: Props) {
 
               return (
                 <div className="flex flex-col gap-2 p-5 text-center" key={member.profile?._id}>
-                  <Avatar className="mx-auto">
-                    <AvatarImage src={image ? urlFor(image).url() : undefined} />
-                    <AvatarFallback>{initials}</AvatarFallback>
-                  </Avatar>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Avatar className="mx-auto">
+                        <AvatarImage src={image ? urlFor(image).url() : undefined} />
+                        <AvatarFallback>{initials}</AvatarFallback>
+                      </Avatar>
 
-                  <p className="text-lg font-medium">{member.profile?.name}</p>
-                  <p>{member.role}</p>
+                      <p className="text-lg font-medium">{member.profile?.name}</p>
+                      <p>{member.role}</p>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{member.profile?.name}</DialogTitle>
+                        <DialogDescription className="flex  gap-3 pt-3">
+                          {member.profile?.socials?.email && <Link href={`mailto:${member.profile?.socials?.email}`}><Button><IoMail className="mr-1" />e-post</Button></Link>}
+                          {member.profile?.socials?.linkedin && <Link href={member.profile?.socials?.linkedin}><Button><FaLinkedin className="mr-1" />LinkedIn</Button></Link>}
+                          {!member.profile?.socials?.linkedin && !member.profile?.socials?.email}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
                   {/* TODO: Add member socials */}
                 </div>
               );
