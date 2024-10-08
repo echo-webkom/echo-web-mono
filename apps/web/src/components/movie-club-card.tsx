@@ -30,7 +30,7 @@ export const MovieClubCard = async () => {
   return (
     <div className="flex justify-evenly">
       <div className="flex flex-col">
-        <div className="group relative h-[20rem] w-[13rem] sm:h-[24rem] sm:w-[16rem]">
+        <div className="group relative h-[18rem] w-[12rem] lg:h-[24rem] lg:w-[16rem]">
           <div>
             <Image
               className="rounded-md border"
@@ -61,8 +61,8 @@ export const MovieClubCard = async () => {
       </div>
       {nextWeekMovie && (
         <div>
-          <ul className="flex flex-col space-y-8">
-            <div className="relative h-[9rem] w-[6rem] sm:h-[11rem] sm:w-[7rem]">
+          <ul className="flex flex-col space-y-1 sm:space-y-8">
+            <div className="relative h-[9rem] w-[6rem] sm:invisible lg:h-[11rem] lg:w-[7rem] xl:visible">
               <Image
                 className="rounded-md border"
                 fill
@@ -76,7 +76,7 @@ export const MovieClubCard = async () => {
               </div>
             </div>
             {nextNextWeekMovie && (
-              <div className="relative h-[9rem] w-[6rem] sm:h-[11rem] sm:w-[7rem]">
+              <div className="relative h-[9rem] w-[6rem] sm:invisible lg:w-[7rem] xl:visible xl:h-[11rem]">
                 <Image
                   className="rounded-md border"
                   fill
