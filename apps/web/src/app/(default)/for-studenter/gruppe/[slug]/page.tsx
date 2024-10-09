@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
-import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
+import { MdMailLock, MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
@@ -141,39 +141,48 @@ export default async function GroupPage({ params }: Props) {
                 .slice(0, 2);
 
               return (
-                <div className="flex flex-col gap-2 p-5 text-center" key={member.profile?._id}>
+                <div
+                  className="group flex flex-col gap-2 p-5 text-center"
+                  key={member.profile?._id}
+                >
                   <Dialog>
                     <DialogTrigger>
                       <Avatar className="mx-auto">
                         <AvatarImage src={image ? urlFor(image).url() : undefined} />
                         <AvatarFallback>{initials}</AvatarFallback>
                       </Avatar>
-                      <p className="text-lg font-medium">{member.profile?.name}</p>
+                      <p className="text-lg font-medium group-hover:underline">
+                        {member.profile?.name}
+                      </p>
                       <p>{member.role}</p>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>{member.profile?.name}</DialogTitle>
-                        <DialogDescription className="flex gap-3 pt-3">
+                        <DialogDescription className="flex justify-center gap-3 pt-3">
                           {member.profile?.socials?.email && (
                             <Link href={`mailto:${member.profile?.socials?.email}`}>
-                              <Button>
-                                <IoMail className="mr-1" />
-                                e-post
+                              <Button className="flex items-center">
+                                <span>
+                                  <IoMail className="mr-1" />
+                                </span>
+                                <span>E-post</span>
                               </Button>
                             </Link>
                           )}
                           {member.profile?.socials?.linkedin && (
                             <Link href={member.profile?.socials?.linkedin}>
                               <Button>
-                                <FaLinkedin className="mr-1" />
-                                LinkedIn
+                                <span className="flex items-center">
+                                  <FaLinkedin className="mr-1" />
+                                </span>
+                                <span>LinkedIn</span>
                               </Button>
                             </Link>
                           )}
                           {!member.profile?.socials?.linkedin &&
                             !member.profile?.socials?.email && (
-                              <div className="flex gap-3">
+                              <div className="flex items-center justify-center gap-3">
                                 <IoCloudOfflineSharp />
                                 <p>Ingen kontaktinfo</p>
                               </div>
