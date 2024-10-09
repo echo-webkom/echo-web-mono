@@ -113,9 +113,10 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                         <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                           <HoverCardTrigger asChild>
                             <div
-                              className={cn("overflow-hidden border-l-4 p-2", {
+                              className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
                                 "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary": event.type === "event",
+                                "border-secondary hover:bg-secondary hover:dark:text-muted":
+                                  event.type === "event",
                                 "border-pink-400 hover:bg-pink-400": event.type === "movie",
                               })}
                             >
