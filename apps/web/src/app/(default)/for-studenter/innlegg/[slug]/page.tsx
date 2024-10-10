@@ -37,7 +37,7 @@ export const generateMetadata = async ({ params }: Props) => {
 
   return {
     title: post.title,
-    description: `Nytt innslag "${post.title}" av ${authorListString}.`,
+    description: `Nytt innlegg "${post.title}" av ${authorListString}.`,
     authors,
   };
 };

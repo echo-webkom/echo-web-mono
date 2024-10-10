@@ -33,7 +33,7 @@ export const generateMetadata = async ({ params }: Props) => {
 
   return {
     title: event.title,
-    description: `Ny bedpres med ${event.company?.name}, ${norwegianDateString(new Date(event.date)).toLowerCase()},
+    description: `Ny bedriftspresentasjon med ${event.company?.name}, ${norwegianDateString(new Date(event.date)).toLowerCase()},
     ${event.location?.name}. ${regDate}`,
   };
 };
