@@ -37,7 +37,7 @@ export const generateMetadata = async ({ params }: Props) => {
   const authorListString = authors?.map((a) => a.name).join(", "); // "Alice, Bob, Charlie"
   const metadata = getNewPageMetadata(
     post.title,
-    `Nytt innslag "${post.title}" av ${authorListString}.`,
+    `Nytt innlegg "${post.title}" av ${authorListString}.`,
   );
   metadata.authors = authors;
 

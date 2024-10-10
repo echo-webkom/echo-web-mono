@@ -31,7 +31,7 @@ export const generateMetadata = async ({ params }: Props) => {
 
   return getNewPageMetadata(
     jobAd.title,
-    `Ny stilling hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
+    `Ny stillingsannonse hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
   );
 };
 
