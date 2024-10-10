@@ -34,7 +34,7 @@ export const generateMetadata = async ({ params }: Props) => {
 
   return getNewPageMetadata(
     bedpress.title,
-    `Ny bedpress med ${bedpress.company?.name}, ${norwegianDateString(new Date(bedpress.date)).toLowerCase()},
+    `Ny bedriftspresentasjon med ${bedpress.company?.name}, ${norwegianDateString(new Date(bedpress.date)).toLowerCase()},
     ${bedpress.location?.name}. ${regDate}`,
   );
 };

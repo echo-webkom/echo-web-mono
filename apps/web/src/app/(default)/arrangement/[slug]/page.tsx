@@ -34,7 +34,7 @@ export const generateMetadata = async ({ params }: Props) => {
 
   return getNewPageMetadata(
     event.title,
-    `Ny event "${event.title}" med ${event.company?.name},
+    `Nytt arrangement "${event.title}" med ${event.company?.name},
     ${norwegianDateString(new Date(event.date))}, ${event.location?.name}. ${regDate}`,
   );
 };
