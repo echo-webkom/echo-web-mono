@@ -2,8 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from ".";
-import { usersToShoppingListItems } from "./users-to-shopping-list-items";
+import { users, usersToShoppingListItems } from "./index.ts";
 
 export const shoppingListItems = pgTable("shopping_list_item", {
   id: uuid("id").defaultRandom().primaryKey(),

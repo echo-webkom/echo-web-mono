@@ -1,0 +1,8 @@
+{
+  "name": "@echo-webkom/email",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./client": "./src/client.ts"
+  }
+}

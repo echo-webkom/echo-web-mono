@@ -1,6 +1,5 @@
 {
   "name": "@echo-webkom/cms",
-  "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -16,9 +15,6 @@
     "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [
-    "sanity"
-  ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "6.22.0",
@@ -36,23 +32,8 @@
     "styled-components": "6.1.13"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@sanity/eslint-config-studio": "4.0.0",
     "@types/react": "18.3.8",
-    "@types/styled-components": "5.1.34",
-    "dotenv": "16.4.5",
-    "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
-    "typescript": "5.6.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react"
-    ],
-    "ignorePatterns": [
-      "migrations"
-    ]
+    "@types/styled-components": "5.1.34"
   }
 }

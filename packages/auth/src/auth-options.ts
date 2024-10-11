@@ -4,10 +4,10 @@ import type { AuthOptions, DefaultSession } from "next-auth";
 import { users } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { DrizzleAdapter } from "./drizzle-adapter";
-import { Feide } from "./feide";
-import { isMemberOfecho } from "./is-member-of-echo";
-import { isFuture } from "./utils";
+import { DrizzleAdapter } from "./drizzle-adapter.ts";
+import { Feide } from "./feide.ts";
+import { isMemberOfecho } from "./is-member-of-echo.ts";
+import { isFuture } from "./utils.ts";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

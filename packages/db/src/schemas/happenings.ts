@@ -2,7 +2,13 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { index, json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
+import {
+  happeningsToGroups,
+  happeningTypeEnum,
+  questions,
+  registrations,
+  spotRanges,
+} from "./index.ts";
 
 export const happenings = pgTable(
   "happening",

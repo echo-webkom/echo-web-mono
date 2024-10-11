@@ -4,9 +4,9 @@ import { z } from "zod";
 
 import { degrees, insertDegreeSchema } from "@echo-webkom/db/schemas";
 
-import { db } from "../lib/db";
-import { admin } from "../middleware/admin";
-import { parseJson } from "../utils/json";
+import { db } from "../lib/db.ts";
+import { admin } from "../middleware/admin.ts";
+import { parseJson } from "../utils/json.ts";
 
 const app = new Hono();
 

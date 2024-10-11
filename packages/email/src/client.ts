@@ -4,7 +4,8 @@ import "server-only";
 import { render } from "jsx-email";
 import { Resend } from "resend";
 
-const API_KEY = process.env.RESEND_API_KEY;
+const API_KEY = Deno.env.get("RESEND_API_KEY");
+const NODE_ENV = Deno.env.get("NODE_ENV");
 const FROM_EMAIL = "echo <ikkesvar@echo-webkom.no>";
 
 export const emailClient = {
@@ -18,7 +19,7 @@ export const emailClient = {
    * @param Email the email component to render
    */
   sendEmail: async (to: Array<string>, subject: string, component: React.ReactElement) => {
-    if (process.env.NODE_ENV !== "production" || !API_KEY) {
+    if (NODE_ENV !== "production" || !API_KEY) {
       const text = await render(component, {
         plainText: true,
       });

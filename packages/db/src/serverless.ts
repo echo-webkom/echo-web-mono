@@ -1,6 +1,6 @@
 import type postgres from "postgres";
 
-import { createDatabase, createPool } from "./create";
+import { createDatabase, createPool } from "./create.ts";
 
 const MAX_POOL = 1;
 const IDLE_TIMEOUT = 10000; // 10 seconds
@@ -12,7 +12,7 @@ const globalForPool = globalThis as unknown as {
 
 let pool;
 
-if (process.env.NODE_ENV !== "production") {
+if (Deno.env.get("NODE_ENV") !== "production") {
   if (!globalForPool.pool) {
     globalForPool.pool = createPool({
       max: MAX_POOL,

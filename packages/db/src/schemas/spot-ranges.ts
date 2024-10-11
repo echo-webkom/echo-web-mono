@@ -3,7 +3,7 @@ import { integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happenings } from ".";
+import { happenings } from "./index.ts";
 
 export const spotRanges = pgTable(
   "spot_range",

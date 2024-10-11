@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { answers, happenings, questionTypeEnum } from ".";
+import { answers, happenings, questionTypeEnum } from "./index.ts";
 
 type Option = {
   id: string;

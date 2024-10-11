@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "workspace": {
+    "members": [
+      "apps/web",
+      "apps/api",
+      "apps/cms",
+      "packages/auth",
+      "packages/db",
+      "packages/email",
+      "packages/lib",
+      "packages/sanity",
+      "packages/seeder",
+      "playwright"
+    ]
+  }
+}

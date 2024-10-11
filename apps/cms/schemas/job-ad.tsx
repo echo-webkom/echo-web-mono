@@ -1,7 +1,7 @@
 import { CaseIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { JOB_TYPES } from "@echo-webkom/lib";
+import { JOB_TYPES } from "../../../packages/lib/src/mod.ts";
 
 const YEARS = [
   { title: "1. året", value: "FIRST" },

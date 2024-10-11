@@ -1,44 +1,16 @@
 {
   "name": "@echo-webkom/seeder",
   "version": "0.1.0",
-  "main": "./src/index.ts",
   "scripts": {
-    "seed:start": "pnpm with-env tsx ./src/index.ts",
+    "seed:start": "deno run -A ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint src",
-    "lint:fix": "eslint lint --fix",
-    "typecheck": "tsc --noEmit",
+    "lint": "deno lint src",
     "with-env": "dotenv -e ../../.env --"
-  },
-  "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
-    "dotenv-cli": "7.4.2",
-    "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
-    "tsx": "4.19.1",
-    "typescript": "5.6.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.ts"
-        ],
-        "rules": {
-          "no-console": "off"
-        }
-      }
-    ]
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
-    "@echo-webkom/sanity": "workspace:^",
+    "@echo-webkom/sanity": "workspace:*",
     "@sanity/client": "6.22.0",
     "chalk": "5.3.0",
     "commander": "12.1.0",

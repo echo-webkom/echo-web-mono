@@ -3,7 +3,7 @@ import { getServerSession as _getServerSession } from "next-auth/next";
 
 import { db } from "@echo-webkom/db/serverless";
 
-import { createAuthOptions } from "./auth-options";
+import { createAuthOptions } from "./auth-options.ts";
 
 const authOptions = createAuthOptions();
 

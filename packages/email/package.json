@@ -1,21 +1,16 @@
 {
   "name": "@echo-webkom/email",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./index.ts",
+  "version": "0.1.0",
   "exports": {
-    ".": "./index.ts",
-    "./client": "./client.ts"
+    ".": "./src/mod.ts",
+    "./client": "./src/client.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "dev": "pnpm with-env email preview ./emails --no-open",
-    "lint": "eslint",
-    "lint:fix": "eslint lint --fix",
-    "typecheck": "tsc --noEmit",
-    "preview": "pnpm with-env email preview ./emails",
-    "export": "pnpm with-env email export",
-    "with-env": "dotenv -e ../../.env --"
+    "dev": "email preview ./emails --no-open",
+    "lint": "deno lint src",
+    "preview": "email preview ./emails",
+    "export": "email export"
   },
   "dependencies": {
     "jsx-email": "1.12.1",
@@ -24,19 +19,6 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
-    "@types/react": "18.3.8",
-    "dotenv-cli": "7.4.2",
-    "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
-    "typescript": "5.6.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react"
-    ]
+    "@types/react": "18.3.8"
   }
 }

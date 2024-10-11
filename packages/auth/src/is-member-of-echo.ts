@@ -1,4 +1,4 @@
-import { SignInError, type ISignInError } from "./error";
+import { SignInError, type ISignInError } from "./error.ts";
 
 const FEIDE_GROUPS_ENDPOINT = "https://groups-api.dataporten.no";
 
@@ -73,7 +73,7 @@ export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
     return {
       success: true,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error: SignInError.INTERNAL_ERROR,

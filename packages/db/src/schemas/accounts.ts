@@ -3,7 +3,7 @@ import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccount } from "next-auth/adapters";
 
-import { users } from ".";
+import { users } from "./index.ts";
 
 export const accounts = pgTable(
   "account",

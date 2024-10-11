@@ -22,7 +22,7 @@ const config = {
     ],
   },
 
-  // eslint-disable-next-line @typescript-eslint/require-await
+  // deno-lint-ignore require-await
   redirects: async () => [
     {
       source: "/events/:path",
@@ -76,8 +76,8 @@ const config = {
     },
   ],
 
-  eslint: { ignoreDuringBuilds: !!process.env.CI },
-  typescript: { ignoreBuildErrors: !!process.env.CI },
+  eslint: { ignoreDuringBuilds: Deno.env.has("CI") },
+  typescript: { ignoreBuildErrors: Deno.env.has("CI") },
 };
 
 export default config;

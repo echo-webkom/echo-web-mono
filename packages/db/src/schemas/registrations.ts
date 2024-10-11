@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { answers, happenings, registrationStatusEnum, users } from ".";
+import { answers, happenings, registrationStatusEnum, users } from "./index.ts";
 
 export const registrations = pgTable(
   "registration",

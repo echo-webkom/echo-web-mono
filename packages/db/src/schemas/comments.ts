@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
-import { users } from ".";
+import { users } from "./index.ts";
 
 export const comments = pgTable(
   "comment",

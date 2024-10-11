@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happenings, questions, registrations, users } from ".";
+import { happenings, questions, registrations, users } from "./index.ts";
 
 type AnswerCol = {
   answer: string | Array<string>;

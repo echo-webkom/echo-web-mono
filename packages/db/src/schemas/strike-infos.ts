@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happenings, users } from ".";
+import { happenings, users } from "./index.ts";
 
 export const strikeInfos = pgTable("strike_info", {
   id: uuid("id").defaultRandom().primaryKey(),

@@ -1,7 +1,7 @@
 import { UsersIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-import { GROUP_TYPES } from "@echo-webkom/lib";
+import { GROUP_TYPES } from "../../../packages/lib/src/mod.ts";
 
 export default defineType({
   name: "studentGroup",

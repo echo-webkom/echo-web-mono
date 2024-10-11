@@ -1,0 +1,11 @@
+{
+  "name": "@echo-webkom/db",
+  "version": "0.1.0",
+  "exports": {
+    "./schemas": "./src/schemas/index.ts",
+    "./utils": "./src/utils.ts",
+    "./create": "./src/create.ts",
+    "./serverless": "./src/serverless.ts",
+    "./error": "./src/error.ts"
+  }
+}

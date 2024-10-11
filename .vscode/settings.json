@@ -4,5 +4,6 @@
     { "pattern": "apps/*/" },
     { "pattern": "packages/*/" },
     { "pattern": "playwright/" }
-  ]
+  ],
+  "deno.enable": true
 }

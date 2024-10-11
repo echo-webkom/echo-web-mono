@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { groups, users } from ".";
+import { groups, users } from "./index.ts";
 
 export const usersToGroups = pgTable(
   "users_to_groups",

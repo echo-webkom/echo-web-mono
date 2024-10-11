@@ -3,8 +3,7 @@ import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happeningsToGroups } from ".";
-import { usersToGroups } from "./users-to-groups";
+import { happeningsToGroups, usersToGroups } from "./index.ts";
 
 export const groups = pgTable(
   "group",

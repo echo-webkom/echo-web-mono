@@ -68,18 +68,15 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@tailwindcss/forms": "0.5.9",
     "@tailwindcss/typography": "0.5.15",
     "@testing-library/react": "16.0.1",
-    "@types/node": "20.16.5",
     "@types/react": "18.3.8",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react": "4.3.1",
     "autoprefixer": "10.4.20",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
     "jsdom": "25.0.1",
     "postcss": "8.4.47",
     "server-only": "^0.0.1",
@@ -89,13 +86,5 @@
     "vite": "^5.4.6",
     "vite-tsconfig-paths": "4.3.1",
     "vitest": "2.1.1"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react",
-      "webkom/nextjs"
-    ]
   }
 }

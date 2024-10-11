@@ -8,7 +8,7 @@ import {
 } from "sanity";
 import slugify from "slugify";
 
-import { HAPPENING_TYPES, type HappeningType } from "@echo-webkom/lib";
+import { HAPPENING_TYPES, type HappeningType } from "../../../packages/lib/src/mod.ts";
 
 export default defineType({
   name: "happening",

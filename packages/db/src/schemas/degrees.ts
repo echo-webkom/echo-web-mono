@@ -3,7 +3,7 @@ import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { users } from ".";
+import { users } from "./index.ts";
 
 export const degrees = pgTable(
   "degree",

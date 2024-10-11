@@ -5,10 +5,10 @@ import { z } from "zod";
 
 import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
 
-import { db } from "../lib/db";
-import { admin } from "../middleware/admin";
-import { getCorrectSpotrange } from "../utils/correct-spot-range";
-import { parseJson } from "../utils/json";
+import { db } from "../lib/db.ts";
+import { admin } from "../middleware/admin.ts";
+import { getCorrectSpotrange } from "../utils/correct-spot-range.ts";
+import { parseJson } from "../utils/json.ts";
 
 const app = new Hono();
 

@@ -3,7 +3,7 @@ import { boolean, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { feedbackCategoryEnum } from "./enums";
+import { feedbackCategoryEnum } from "./enums.ts";
 
 export const siteFeedback = pgTable(
   "site_feedback",

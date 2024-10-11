@@ -1,18 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { assertEquals } from "jsr:@std/assert";
 
-import { isBoard } from "../is-board";
+import { isBoard } from "../is-board.ts";
 
-describe("isBoard", () => {
-  it("should return true for a valid board", () => {
-    expect(isBoard("1/2")).toBe(true);
-    expect(isBoard("2003/5004")).toBe(true);
-    expect(isBoard("2023/2024")).toBe(true);
-  });
+Deno.test("should return true for a valid board", () => {
+  assertEquals(isBoard("1/2"), true);
+  assertEquals(isBoard("2003/5004"), true);
+  assertEquals(isBoard("2023/2024"), true);
+});
 
-  it("should return false for an invalid board", () => {
-    expect(isBoard("1/2/3")).toBe(false);
-    expect(isBoard("webkom")).toBe(false);
-    expect(isBoard("hell/hallo")).toBe(false);
-    expect(isBoard("2")).toBe(false);
-  });
+Deno.test("should return false for an invalid board", () => {
+  assertEquals(isBoard("1/2/3"), false);
+  assertEquals(isBoard("webkom"), false);
+  assertEquals(isBoard("hell/hallo"), false);
+  assertEquals(isBoard("2"), false);
 });

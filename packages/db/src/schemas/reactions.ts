@@ -1,7 +1,7 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
-import { users } from "./users";
+import { users } from "./index.ts";
 
 export const reactions = pgTable(
   "reaction",

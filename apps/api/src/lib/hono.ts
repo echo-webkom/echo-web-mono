@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { admin } from "../middleware/admin";
+import { admin } from "../middleware/admin.ts";
 
 export const createApp = () => {
   const publicApp = new Hono();

@@ -5,6 +5,6 @@ export default defineConfig({
   out: "./drizzle/migrations",
   schema: "./src/schemas",
   dbCredentials: {
-    url: process.env.DATABASE_URL!,
+    url: Deno.env.get("DATABASE_URL")!,
   },
 });

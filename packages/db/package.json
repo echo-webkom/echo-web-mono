@@ -2,7 +2,6 @@
   "name": "@echo-webkom/db",
   "version": "0.1.0",
   "exports": {
-    ".": "./src/index.ts",
     "./schemas": "./src/schemas/index.ts",
     "./utils": "./src/utils.ts",
     "./create": "./src/create.ts",
@@ -11,15 +10,12 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
-    "lint:fix": "eslint lint --fix",
-    "db:generate": "pnpm with-env drizzle-kit generate",
-    "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
-    "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
-    "kit:up": "drizzle-kit up",
-    "dev": "pnpm with-env drizzle-kit studio",
-    "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "lint": "deno lint src",
+    "db:generate": "deno run --env-file ../../.env -A npm:drizzle-kit generate",
+    "db:migrate": "deno run --env-file ../../.env -A ./drizzle/migrate.ts",
+    "db:check": "deno run --env-file ../../.env -A npm:drizzle-kit check && denp run -A ./drizzle/check.ts",
+    "kit:up": "deno run -A npm:drizzle-kit up",
+    "dev": "deno run -A npm:drizzle-kit studio"
   },
   "dependencies": {
     "drizzle-orm": "0.33.0",
@@ -31,22 +27,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
     "@types/pg": "8.11.10",
-    "dotenv-cli": "7.4.2",
-    "drizzle-kit": "0.24.2",
-    "eslint-config-webkom": "workspace:*",
-    "tsx": "4.19.1",
-    "typescript": "5.6.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ],
-    "ignorePatterns": [
-      "scripts"
-    ]
+    "drizzle-kit": "0.24.2"
   }
 }

@@ -1,28 +1,13 @@
 {
   "name": "@echo-webkom/sanity",
   "version": "0.1.0",
-  "main": "./src/index.ts",
+  "exports": "./src/mod.ts",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint src",
-    "lint:fix": "eslint lint --fix",
-    "typecheck": "tsc --noEmit"
+    "lint": "deno lint src"
   },
   "dependencies": {
     "@sanity/client": "6.22.0",
     "@sanity/image-url": "1.0.2"
-  },
-  "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
-    "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
-    "typescript": "5.6.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ]
   }
 }

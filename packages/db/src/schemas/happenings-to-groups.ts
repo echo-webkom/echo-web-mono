@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { groups, happenings } from ".";
+import { groups, happenings } from "./index.ts";
 
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",

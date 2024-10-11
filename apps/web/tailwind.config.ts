@@ -1,4 +1,7 @@
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
 import { type Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 
@@ -122,9 +125,9 @@ export default {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
+    animate,
+    forms,
+    typography,
     plugin(({ matchUtilities }) => {
       const TIME = 6;
       matchUtilities({
