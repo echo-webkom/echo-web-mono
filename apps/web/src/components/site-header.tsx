@@ -13,8 +13,8 @@ import { UserMenu } from "./user-menu";
 
 export const SiteHeader = async () => {
   const user = await getUser();
-  const message = (await getProgrammerbarStatus()).message;
-
+  const barStatus = (await getProgrammerbarStatus()).message;
+  const currentTimeInHours = new Date().getHours();
   return (
     <div className="sticky top-0 z-20">
       <VercelPreviewNotify />
@@ -24,7 +24,11 @@ export const SiteHeader = async () => {
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
             <div className="absolute -bottom-3 flex space-x-2">
               <Chip className="z-50">{getRandomMessage()}</Chip>
-              {message !== "" && <Chip className="z-50">{message}</Chip>}
+              {(barStatus !== "" && 0 < currentTimeInHours && currentTimeInHours < 16) ? (
+                <Chip className="z-50">Baren er nå stengt!🚪</Chip>
+              ) : (
+                <Chip className="z-50">{barStatus}</Chip>
+              )}
             </div>
 
             <div className="flex items-center">
