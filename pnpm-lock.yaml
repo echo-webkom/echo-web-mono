@@ -248,8 +248,8 @@ importers:
         specifier: 0.33.0
         version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.8)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       framer-motion:
-        specifier: 11.8.0
-        version: 11.8.0(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 11.11.8
+        version: 11.11.8(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       groq:
         specifier: 3.56.0
         version: 3.56.0
@@ -5804,8 +5804,8 @@ packages:
       react-dom:
         optional: true
 
-  framer-motion@11.8.0:
-    resolution: {integrity: sha512-q/axN/PFRdKmzPK6PO2OhbLUMWXXZuiejdM1/3FhC2hm4YIetc+qeco2EvWm4u1/UTFmevclE492wGFNfSZ4eQ==}
+  framer-motion@11.11.8:
+    resolution: {integrity: sha512-mnGQNEoz99GtFXBBPw+Ag5K4FcfP5XrXxrxHz+iE4Lmg7W3sf2gKmGuvfkZCW/yIfcdv5vJd6KiSPETH1Pw68Q==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0
@@ -15735,7 +15735,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  framer-motion@11.8.0(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  framer-motion@11.11.8(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       tslib: 2.6.2
     optionalDependencies:
