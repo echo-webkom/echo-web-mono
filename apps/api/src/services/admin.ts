@@ -7,7 +7,7 @@ import { AnswerInsert, answers, comments, registrations, users } from "@echo-web
 
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { getCorrectSpotrange } from "../utils/correct-spot-range";
+import { findCorrectSpotRange } from "../utils/find-correct-spot-range";
 import { parseJson } from "../utils/json";
 
 const app = new Hono();
@@ -237,7 +237,7 @@ app.post("/admin/register", admin(), async (c) => {
    *
    * If user is not in any spot range, return error
    */
-  const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
+  const userSpotRange = findCorrectSpotRange(user.year, spotRanges, canSkipSpotRange);
 
   if (!userSpotRange) {
     console.error("User is not in any spot range", {
@@ -295,7 +295,8 @@ app.post("/admin/register", admin(), async (c) => {
         .leftJoin(users, eq(registrations.userId, users.id));
 
       const isInfiniteSpots = userSpotRange.spots === 0;
-      const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
+      const isSpotsFilled = regs.length >= userSpotRange.spots;
+      const isWaitlisted = !isInfiniteSpots && isSpotsFilled;
 
       const registration = await tx
         .insert(registrations)

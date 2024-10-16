@@ -1,6 +1,6 @@
 import { SpotRange } from "@echo-webkom/db/schemas";
 
-export const getCorrectSpotrange = (
+export const findCorrectSpotRange = (
   year: number,
   spotRanges: Array<SpotRange>,
   canSkipSpotRange: boolean,

@@ -44,6 +44,9 @@ importers:
       '@echo-webkom/sanity':
         specifier: workspace:*
         version: link:../../packages/sanity
+      '@electric-sql/pglite':
+        specifier: ^0.2.12
+        version: 0.2.12
       '@hono/node-server':
         specifier: 1.13.1
         version: 1.13.1(hono@4.6.5)
@@ -52,7 +55,7 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       hono:
         specifier: 4.6.5
         version: 4.6.5
@@ -78,6 +81,9 @@ importers:
       typescript:
         specifier: 5.6.2
         version: 5.6.2
+      vite-tsconfig-paths:
+        specifier: 4.3.1
+        version: 4.3.1(typescript@5.6.2)(vite@5.4.6(@types/node@20.16.11))
       vitest:
         specifier: 2.1.1
         version: 2.1.1(@types/node@20.16.11)(jsdom@25.0.1)
@@ -89,7 +95,7 @@ importers:
         version: link:../../packages/lib
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/icons':
         specifier: 3.4.0
         version: 3.4.0(react@18.3.1)
@@ -216,7 +222,7 @@ importers:
         version: 1.2.2(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -246,7 +252,7 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       framer-motion:
         specifier: 11.11.8
         version: 11.11.8(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -382,7 +388,7 @@ importers:
         version: link:../db
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       next:
         specifier: 14.2.6
         version: 14.2.6(@babel/core@7.24.6)(@playwright/test@1.47.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -460,10 +466,10 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
       nanoid:
         specifier: 5.0.7
         version: 5.0.7
@@ -571,7 +577,7 @@ importers:
     dependencies:
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -605,7 +611,7 @@ importers:
         version: link:../sanity
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -614,7 +620,7 @@ importers:
         version: 12.1.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       groq:
         specifier: 3.56.0
         version: 3.56.0
@@ -1584,6 +1590,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.1':
     resolution: {integrity: sha512-AHy0vjc+n/4w/8Mif+w86qpppHuF3AyXbcWW+R/W7GNA3F5/p2nuhlkCJaTXSLZheB4l1rtHzOfr9A7NwoR/Zg==}
+
+  '@electric-sql/pglite@0.2.12':
+    resolution: {integrity: sha512-J/X42ujcoFEbOkgRyoNqZB5qcqrnJRWVlwpH3fKYoJkTz49N91uAK/rDSSG/85WRas9nC9mdV4FnMTxnQWE/rw==}
 
   '@emnapi/runtime@0.44.0':
     resolution: {integrity: sha512-ZX/etZEZw8DR7zAB1eVQT40lNo0jeqpb6dCgOvctB6FIQ5PoXfMuNY8+ayQfu8tNQbAB8gQWSSJupR8NxeiZXw==}
@@ -9460,7 +9469,7 @@ snapshots:
       '@babel/traverse': 7.24.1
       '@babel/types': 7.24.0
       convert-source-map: 2.0.0
-      debug: 4.3.4
+      debug: 4.3.7
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -11021,7 +11030,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.24.6
       '@babel/types': 7.24.6
-      debug: 4.3.5
+      debug: 4.3.7
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11170,6 +11179,8 @@ snapshots:
       p-defer: 3.0.0
 
   '@drizzle-team/brocli@0.10.1': {}
+
+  '@electric-sql/pglite@0.2.12': {}
 
   '@emnapi/runtime@0.44.0':
     dependencies:
@@ -11956,9 +11967,9 @@ snapshots:
       '@portabletext/patches': 1.1.0
       '@sanity/block-tools': 3.56.0(debug@4.3.5)
       '@sanity/schema': 3.56.0(debug@4.3.5)
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/util': 3.56.0(debug@4.3.5)
-      debug: 4.3.5
+      debug: 4.3.7
       is-hotkey-esm: 1.0.0
       lodash: 4.17.21
       react: 18.3.1
@@ -12866,7 +12877,7 @@ snapshots:
 
   '@sanity/block-tools@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@types/react': 18.3.11
       get-random-values-esm: 1.0.2
       lodash: 4.17.21
@@ -12876,16 +12887,16 @@ snapshots:
   '@sanity/cli@3.56.0':
     dependencies:
       '@babel/traverse': 7.24.6
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@sanity/codegen': 3.56.0
       '@sanity/telemetry': 0.7.7
-      '@sanity/util': 3.56.0(debug@4.3.5)
+      '@sanity/util': 3.56.0(debug@4.3.7)
       chalk: 4.1.2
-      debug: 4.3.5
+      debug: 4.3.7
       decompress: 4.2.1
       esbuild: 0.21.5
       esbuild-register: 3.5.0(esbuild@0.21.5)
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       groq-js: 1.13.0
       node-machine-id: 1.1.12
       pkg-dir: 5.0.0
@@ -12896,10 +12907,26 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@sanity/client@6.22.0':
+    dependencies:
+      '@sanity/eventsource': 5.0.2
+      get-it: 8.6.5
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
   '@sanity/client@6.22.0(debug@4.3.5)':
     dependencies:
       '@sanity/eventsource': 5.0.2
       get-it: 8.6.5(debug@4.3.5)
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/client@6.22.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/eventsource': 5.0.2
+      get-it: 8.6.5(debug@4.3.7)
       rxjs: 7.8.1
     transitivePeerDependencies:
       - debug
@@ -12914,7 +12941,7 @@ snapshots:
       '@babel/register': 7.23.7(@babel/core@7.24.6)
       '@babel/traverse': 7.24.6
       '@babel/types': 7.24.6
-      debug: 4.3.5
+      debug: 4.3.7
       globby: 10.0.2
       groq: 3.56.0
       groq-js: 1.13.0
@@ -12961,11 +12988,11 @@ snapshots:
 
   '@sanity/export@3.41.0':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/util': 3.37.2(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/util': 3.37.2(debug@4.3.7)
       archiver: 7.0.1
-      debug: 4.3.5
-      get-it: 8.6.5(debug@4.3.5)
+      debug: 4.3.7
+      get-it: 8.6.5(debug@4.3.7)
       lodash: 4.17.21
       mississippi: 4.0.0
       p-queue: 2.4.2
@@ -12998,9 +13025,9 @@ snapshots:
       '@sanity/generate-help-url': 3.0.0
       '@sanity/mutator': 3.37.2
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       file-url: 2.0.2
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -13022,9 +13049,9 @@ snapshots:
       '@sanity/import': 3.37.2
       '@sanity/mutator': 3.37.2
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       file-url: 2.0.2
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -13052,7 +13079,7 @@ snapshots:
   '@sanity/insert-menu@1.0.8(@sanity/types@3.56.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/icons': 3.4.0(react@18.3.1)
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash.startcase: 4.4.0
       react: 18.3.1
@@ -13068,21 +13095,21 @@ snapshots:
 
   '@sanity/migrate@3.56.0':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/mutate': 0.8.0(debug@4.3.5)
-      '@sanity/types': 3.56.0(debug@4.3.5)
-      '@sanity/util': 3.56.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/mutate': 0.8.0(debug@4.3.7)
+      '@sanity/types': 3.56.0(debug@4.3.7)
+      '@sanity/util': 3.56.0(debug@4.3.7)
       arrify: 2.0.1
-      debug: 4.3.5
+      debug: 4.3.7
       fast-fifo: 1.3.2
       groq-js: 1.13.0
       p-map: 7.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@sanity/mutate@0.8.0(debug@4.3.5)':
+  '@sanity/mutate@0.8.0(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@sanity/diff-match-patch': 3.1.1
       hotscript: 1.0.13
       mendoza: 3.0.7
@@ -13095,7 +13122,7 @@ snapshots:
     dependencies:
       '@sanity/diff-match-patch': 3.1.1
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
@@ -13103,16 +13130,16 @@ snapshots:
   '@sanity/mutator@3.56.0':
     dependencies:
       '@sanity/diff-match-patch': 3.1.1
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0(debug@4.3.7)
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
 
   '@sanity/presentation@1.16.4(@sanity/client@6.22.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
       '@sanity/icons': 3.4.0(react@18.3.1)
       '@sanity/preview-url-secret': 1.6.20(@sanity/client@6.22.0)
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -13135,13 +13162,13 @@ snapshots:
 
   '@sanity/preview-url-secret@1.6.20(@sanity/client@6.22.0)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
       '@sanity/uuid': 3.0.2
 
   '@sanity/schema@3.56.0(debug@4.3.5)':
     dependencies:
       '@sanity/generate-help-url': 3.0.0
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       arrify: 1.0.1
       groq-js: 1.13.0
       humanize-list: 1.0.1
@@ -13160,16 +13187,23 @@ snapshots:
       rxjs: 7.8.1
       typeid-js: 0.3.0
 
-  '@sanity/types@3.37.2(debug@4.3.5)':
+  '@sanity/types@3.37.2(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@types/react': 18.3.11
     transitivePeerDependencies:
       - debug
 
-  '@sanity/types@3.56.0(debug@4.3.5)':
+  '@sanity/types@3.56.0':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
+      '@types/react': 18.3.11
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/types@3.56.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@types/react': 18.3.11
     transitivePeerDependencies:
       - debug
@@ -13201,10 +13235,10 @@ snapshots:
       styled-components: 6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       use-effect-event: 1.0.2(react@18.3.1)
 
-  '@sanity/util@3.37.2(debug@4.3.5)':
+  '@sanity/util@3.37.2(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/types': 3.37.2(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/types': 3.37.2(debug@4.3.7)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -13213,8 +13247,18 @@ snapshots:
 
   '@sanity/util@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
+      '@sanity/types': 3.56.0
+      get-random-values-esm: 1.0.2
+      moment: 2.30.1
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/util@3.56.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/types': 3.56.0(debug@4.3.7)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -13588,7 +13632,7 @@ snapshots:
       '@typescript-eslint/type-utils': 7.7.0(eslint@8.57.1)(typescript@5.6.2)
       '@typescript-eslint/utils': 7.7.0(eslint@8.57.1)(typescript@5.6.2)
       '@typescript-eslint/visitor-keys': 7.7.0
-      debug: 4.3.4
+      debug: 4.3.7
       eslint: 8.57.1
       graphemer: 1.4.0
       ignore: 5.3.1
@@ -13619,7 +13663,7 @@ snapshots:
       '@typescript-eslint/types': 7.7.0
       '@typescript-eslint/typescript-estree': 7.7.0(typescript@5.6.2)
       '@typescript-eslint/visitor-keys': 7.7.0
-      debug: 4.3.4
+      debug: 4.3.7
       eslint: 8.57.1
     optionalDependencies:
       typescript: 5.6.2
@@ -13652,7 +13696,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.7.0(typescript@5.6.2)
       '@typescript-eslint/utils': 7.7.0(eslint@8.57.1)(typescript@5.6.2)
-      debug: 4.3.5
+      debug: 4.3.7
       eslint: 8.57.1
       ts-api-utils: 1.3.0(typescript@5.6.2)
     optionalDependencies:
@@ -13683,7 +13727,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.7.0
       '@typescript-eslint/visitor-keys': 7.7.0
-      debug: 4.3.5
+      debug: 4.3.7
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.4
@@ -14981,17 +15025,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
+      '@electric-sql/pglite': 0.2.12
       '@types/pg': 8.11.10
       '@types/react': 18.3.11
       pg: 8.13.0
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.33.0(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   duplexify@3.7.1:
@@ -15694,6 +15739,10 @@ snapshots:
     optionalDependencies:
       debug: 4.3.5
 
+  follow-redirects@1.15.6(debug@4.3.7):
+    optionalDependencies:
+      debug: 4.3.7
+
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
@@ -15788,12 +15837,36 @@ snapshots:
       has-symbols: 1.0.3
       hasown: 2.0.2
 
+  get-it@8.6.5:
+    dependencies:
+      '@types/follow-redirects': 1.14.4
+      '@types/progress-stream': 2.0.5
+      decompress-response: 7.0.0
+      follow-redirects: 1.15.6(debug@4.3.7)
+      is-retry-allowed: 2.2.0
+      progress-stream: 2.0.0
+      tunnel-agent: 0.6.0
+    transitivePeerDependencies:
+      - debug
+
   get-it@8.6.5(debug@4.3.5):
     dependencies:
       '@types/follow-redirects': 1.14.4
       '@types/progress-stream': 2.0.5
       decompress-response: 7.0.0
       follow-redirects: 1.15.6(debug@4.3.5)
+      is-retry-allowed: 2.2.0
+      progress-stream: 2.0.0
+      tunnel-agent: 0.6.0
+    transitivePeerDependencies:
+      - debug
+
+  get-it@8.6.5(debug@4.3.7):
+    dependencies:
+      '@types/follow-redirects': 1.14.4
+      '@types/progress-stream': 2.0.5
+      decompress-response: 7.0.0
+      follow-redirects: 1.15.6(debug@4.3.7)
       is-retry-allowed: 2.2.0
       progress-stream: 2.0.0
       tunnel-agent: 0.6.0
@@ -15929,7 +16002,7 @@ snapshots:
 
   groq-js@1.13.0:
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
 
@@ -18839,7 +18912,7 @@ snapshots:
       '@sanity/presentation': 1.16.4(@sanity/client@6.22.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/schema': 3.56.0(debug@4.3.5)
       '@sanity/telemetry': 0.7.7
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/util': 3.56.0(debug@4.3.5)
       '@sanity/uuid': 3.0.2
@@ -19877,7 +19950,7 @@ snapshots:
 
   vite-tsconfig-paths@4.3.1(typescript@5.6.2)(vite@5.4.6(@types/node@20.16.11)):
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.6.2)
     optionalDependencies:
