@@ -79,8 +79,8 @@ importers:
         specifier: 5.6.2
         version: 5.6.2
       vitest:
-        specifier: 2.1.1
-        version: 2.1.1(@types/node@20.16.11)(jsdom@25.0.1)
+        specifier: 2.1.3
+        version: 2.1.3(@types/node@20.16.11)(jsdom@25.0.1)
 
   apps/cms:
     dependencies:
@@ -89,7 +89,7 @@ importers:
         version: link:../../packages/lib
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/icons':
         specifier: 3.4.0
         version: 3.4.0(react@18.3.1)
@@ -173,7 +173,7 @@ importers:
         specifier: 3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@json2csv/plainjs':
-        specifier: ^7.0.6
+        specifier: 7.0.6
         version: 7.0.6
       '@radix-ui/react-alert-dialog':
         specifier: 1.1.2
@@ -216,7 +216,7 @@ importers:
         version: 1.2.2(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -257,7 +257,7 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       ky:
-        specifier: ^1.7.2
+        specifier: 1.7.2
         version: 1.7.2
       nanoid:
         specifier: 5.0.7
@@ -293,7 +293,7 @@ importers:
         specifier: 9.0.1
         version: 9.0.1(@types/react@18.3.11)(react@18.3.1)
       react-use-websocket:
-        specifier: ^4.8.1
+        specifier: 4.8.1
         version: 4.8.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       remark-gfm:
         specifier: 4.0.0
@@ -334,7 +334,7 @@ importers:
         version: 18.3.1
       '@vitejs/plugin-react':
         specifier: 4.3.2
-        version: 4.3.2(vite@5.4.9(@types/node@20.16.11))
+        version: 4.3.2(vite@5.4.8(@types/node@20.16.11))
       autoprefixer:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -354,7 +354,7 @@ importers:
         specifier: 8.4.47
         version: 8.4.47
       server-only:
-        specifier: ^0.0.1
+        specifier: 0.0.1
         version: 0.0.1
       tailwindcss:
         specifier: 3.4.13
@@ -366,14 +366,14 @@ importers:
         specifier: 5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.8
-        version: 5.4.9(@types/node@20.16.11)
+        specifier: 5.4.8
+        version: 5.4.8(@types/node@20.16.11)
       vite-tsconfig-paths:
         specifier: 4.3.1
-        version: 4.3.1(typescript@5.6.2)(vite@5.4.9(@types/node@20.16.11))
+        version: 4.3.1(typescript@5.6.2)(vite@5.4.8(@types/node@20.16.11))
       vitest:
-        specifier: 2.1.1
-        version: 2.1.1(@types/node@20.16.11)(jsdom@25.0.1)
+        specifier: 2.1.3
+        version: 2.1.3(@types/node@20.16.11)(jsdom@25.0.1)
 
   packages/auth:
     dependencies:
@@ -564,14 +564,14 @@ importers:
         specifier: 5.6.2
         version: 5.6.2
       vitest:
-        specifier: 2.1.1
-        version: 2.1.1(@types/node@20.16.11)(jsdom@25.0.1)
+        specifier: 2.1.3
+        version: 2.1.3(@types/node@20.16.11)(jsdom@25.0.1)
 
   packages/sanity:
     dependencies:
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
@@ -605,7 +605,7 @@ importers:
         version: link:../sanity
       '@sanity/client':
         specifier: 6.22.0
-        version: 6.22.0(debug@4.3.5)
+        version: 6.22.0
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -4267,13 +4267,13 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
 
-  '@vitest/expect@2.1.1':
-    resolution: {integrity: sha512-YeueunS0HiHiQxk+KEOnq/QMzlUuOzbU1Go+PgAsHvvv3tUkJPm9xWt+6ITNTlzsMXUjmgm5T+U7KBPK2qQV6w==}
+  '@vitest/expect@2.1.3':
+    resolution: {integrity: sha512-SNBoPubeCJhZ48agjXruCI57DvxcsivVDdWz+SSsmjTT4QN/DfHk3zB/xKsJqMs26bLZ/pNRLnCf0j679i0uWQ==}
 
-  '@vitest/mocker@2.1.1':
-    resolution: {integrity: sha512-LNN5VwOEdJqCmJ/2XJBywB11DLlkbY0ooDJW3uRX5cZyYCrc4PI/ePX0iQhE3BiEGiQmK4GE7Q/PqCkkaiPnrA==}
+  '@vitest/mocker@2.1.3':
+    resolution: {integrity: sha512-eSpdY/eJDuOvuTA3ASzCjdithHa+GIF1L4PqtEELl6Qa3XafdMLBpBlZCIUCX2J+Q6sNmjmxtosAG62fK4BlqQ==}
     peerDependencies:
-      '@vitest/spy': 2.1.1
+      '@vitest/spy': 2.1.3
       msw: ^2.3.5
       vite: ^5.0.0
     peerDependenciesMeta:
@@ -4282,20 +4282,20 @@ packages:
       vite:
         optional: true
 
-  '@vitest/pretty-format@2.1.1':
-    resolution: {integrity: sha512-SjxPFOtuINDUW8/UkElJYQSFtnWX7tMksSGW0vfjxMneFqxVr8YJ979QpMbDW7g+BIiq88RAGDjf7en6rvLPPQ==}
+  '@vitest/pretty-format@2.1.3':
+    resolution: {integrity: sha512-XH1XdtoLZCpqV59KRbPrIhFCOO0hErxrQCMcvnQete3Vibb9UeIOX02uFPfVn3Z9ZXsq78etlfyhnkmIZSzIwQ==}
 
-  '@vitest/runner@2.1.1':
-    resolution: {integrity: sha512-uTPuY6PWOYitIkLPidaY5L3t0JJITdGTSwBtwMjKzo5O6RCOEncz9PUN+0pDidX8kTHYjO0EwUIvhlGpnGpxmA==}
+  '@vitest/runner@2.1.3':
+    resolution: {integrity: sha512-JGzpWqmFJ4fq5ZKHtVO3Xuy1iF2rHGV4d/pdzgkYHm1+gOzNZtqjvyiaDGJytRyMU54qkxpNzCx+PErzJ1/JqQ==}
 
-  '@vitest/snapshot@2.1.1':
-    resolution: {integrity: sha512-BnSku1WFy7r4mm96ha2FzN99AZJgpZOWrAhtQfoxjUU5YMRpq1zmHRq7a5K9/NjqonebO7iVDla+VvZS8BOWMw==}
+  '@vitest/snapshot@2.1.3':
+    resolution: {integrity: sha512-qWC2mWc7VAXmjAkEKxrScWHWFyCQx/cmiZtuGqMi+WwqQJ2iURsVY4ZfAK6dVo6K2smKRU6l3BPwqEBvhnpQGg==}
 
-  '@vitest/spy@2.1.1':
-    resolution: {integrity: sha512-ZM39BnZ9t/xZ/nF4UwRH5il0Sw93QnZXd9NAZGRpIgj0yvVwPpLd702s/Cx955rGaMlyBQkZJ2Ir7qyY48VZ+g==}
+  '@vitest/spy@2.1.3':
+    resolution: {integrity: sha512-Nb2UzbcUswzeSP7JksMDaqsI43Sj5+Kry6ry6jQJT4b5gAK+NS9NED6mDb8FlMRCX8m5guaHCDZmqYMMWRy5nQ==}
 
-  '@vitest/utils@2.1.1':
-    resolution: {integrity: sha512-Y6Q9TsI+qJ2CC0ZKj6VBb+T8UPz593N113nnUykqwANqhgf3QkZeHFlusgKLTqrnVHbj/XDKZcDHol+dxVT+rQ==}
+  '@vitest/utils@2.1.3':
+    resolution: {integrity: sha512-xpiVfDSg1RrYT0tX6czgerkpcKFmFOF/gCr30+Mve5V2kewCy4Prn1/NDMSRwaSmT7PRaOF83wu+bEtsY1wrvA==}
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -9143,8 +9143,8 @@ packages:
   vfile@6.0.1:
     resolution: {integrity: sha512-1bYqc7pt6NIADBJ98UiG0Bn/CHIVOoZ/IyEkqIruLg0mE1BKzkOXY2D6CSqQIcKqgadppE5lrxgWXJmXd7zZJw==}
 
-  vite-node@2.1.1:
-    resolution: {integrity: sha512-N/mGckI1suG/5wQI35XeR9rsMsPqKXzq1CdUndzVstBj/HvyxxGctwnK6WX43NGt5L3Z5tcRf83g4TITKJhPrA==}
+  vite-node@2.1.3:
+    resolution: {integrity: sha512-I1JadzO+xYX887S39Do+paRePCKoiDrWRRjp9kkG5he0t7RXNvPAJPCQSJqbGN4uCrFFeS3Kj3sLqY8NMYBEdA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
@@ -9189,8 +9189,8 @@ packages:
       terser:
         optional: true
 
-  vite@5.4.6:
-    resolution: {integrity: sha512-IeL5f8OO5nylsgzd9tq4qD2QqI0k2CQLGrWD0rCN0EQJZpBK5vJAx0I+GDkMOXxQX/OfFHMuLIx6ddAxGX/k+Q==}
+  vite@5.4.8:
+    resolution: {integrity: sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -9220,46 +9220,15 @@ packages:
       terser:
         optional: true
 
-  vite@5.4.9:
-    resolution: {integrity: sha512-20OVpJHh0PAM0oSOELa5GaZNWeDjcAvQjGXy2Uyr+Tp+/D2/Hdz6NLgpJLsarPTA2QJ6v8mX2P1ZfbsSKvdMkg==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-
-  vitest@2.1.1:
-    resolution: {integrity: sha512-97We7/VC0e9X5zBVkvt7SGQMGrRtn3KtySFQG5fpaMlS+l62eeXRQO633AYhSTC3z7IMebnPPNjGXVGNRFlxBA==}
+  vitest@2.1.3:
+    resolution: {integrity: sha512-Zrxbg/WiIvUP2uEzelDNTXmEMJXuzJ1kCpbDvaKByFA9MNeO95V+7r/3ti0qzJzrxdyuUw5VduN7k+D3VmVOSA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.1.1
-      '@vitest/ui': 2.1.1
+      '@vitest/browser': 2.1.3
+      '@vitest/ui': 2.1.3
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
@@ -9511,7 +9480,7 @@ snapshots:
       '@babel/traverse': 7.24.6
       '@babel/types': 7.24.6
       convert-source-map: 2.0.0
-      debug: 4.3.5
+      debug: 4.3.7
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -11052,7 +11021,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.24.6
       '@babel/types': 7.24.6
-      debug: 4.3.5
+      debug: 4.3.7
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11067,7 +11036,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.24.6
       '@babel/parser': 7.24.6
       '@babel/types': 7.24.6
-      debug: 4.3.5
+      debug: 4.3.7
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11830,7 +11799,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.25':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
 
   '@json2csv/formatters@7.0.6': {}
 
@@ -11989,7 +11958,7 @@ snapshots:
       '@sanity/schema': 3.56.0(debug@4.3.5)
       '@sanity/types': 3.56.0(debug@4.3.5)
       '@sanity/util': 3.56.0(debug@4.3.5)
-      debug: 4.3.5
+      debug: 4.3.7
       is-hotkey-esm: 1.0.0
       lodash: 4.17.21
       react: 18.3.1
@@ -12824,7 +12793,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
       estree-walker: 2.0.2
-      magic-string: 0.30.10
+      magic-string: 0.30.11
     optionalDependencies:
       rollup: 4.21.0
 
@@ -12907,16 +12876,16 @@ snapshots:
   '@sanity/cli@3.56.0':
     dependencies:
       '@babel/traverse': 7.24.6
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@sanity/codegen': 3.56.0
       '@sanity/telemetry': 0.7.7
-      '@sanity/util': 3.56.0(debug@4.3.5)
+      '@sanity/util': 3.56.0(debug@4.3.7)
       chalk: 4.1.2
-      debug: 4.3.5
+      debug: 4.3.7
       decompress: 4.2.1
       esbuild: 0.21.5
       esbuild-register: 3.5.0(esbuild@0.21.5)
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       groq-js: 1.13.0
       node-machine-id: 1.1.12
       pkg-dir: 5.0.0
@@ -12927,10 +12896,26 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@sanity/client@6.22.0':
+    dependencies:
+      '@sanity/eventsource': 5.0.2
+      get-it: 8.6.5
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
   '@sanity/client@6.22.0(debug@4.3.5)':
     dependencies:
       '@sanity/eventsource': 5.0.2
       get-it: 8.6.5(debug@4.3.5)
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/client@6.22.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/eventsource': 5.0.2
+      get-it: 8.6.5(debug@4.3.7)
       rxjs: 7.8.1
     transitivePeerDependencies:
       - debug
@@ -12945,7 +12930,7 @@ snapshots:
       '@babel/register': 7.23.7(@babel/core@7.24.6)
       '@babel/traverse': 7.24.6
       '@babel/types': 7.24.6
-      debug: 4.3.5
+      debug: 4.3.7
       globby: 10.0.2
       groq: 3.56.0
       groq-js: 1.13.0
@@ -12992,11 +12977,11 @@ snapshots:
 
   '@sanity/export@3.41.0':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/util': 3.37.2(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/util': 3.37.2(debug@4.3.7)
       archiver: 7.0.1
-      debug: 4.3.5
-      get-it: 8.6.5(debug@4.3.5)
+      debug: 4.3.7
+      get-it: 8.6.5(debug@4.3.7)
       lodash: 4.17.21
       mississippi: 4.0.0
       p-queue: 2.4.2
@@ -13029,9 +13014,9 @@ snapshots:
       '@sanity/generate-help-url': 3.0.0
       '@sanity/mutator': 3.37.2
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       file-url: 2.0.2
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -13053,9 +13038,9 @@ snapshots:
       '@sanity/import': 3.37.2
       '@sanity/mutator': 3.37.2
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       file-url: 2.0.2
-      get-it: 8.6.5(debug@4.3.5)
+      get-it: 8.6.5(debug@4.3.7)
       get-uri: 2.0.4
       globby: 10.0.2
       gunzip-maybe: 1.4.2
@@ -13099,21 +13084,21 @@ snapshots:
 
   '@sanity/migrate@3.56.0':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/mutate': 0.8.0(debug@4.3.5)
-      '@sanity/types': 3.56.0(debug@4.3.5)
-      '@sanity/util': 3.56.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/mutate': 0.8.0(debug@4.3.7)
+      '@sanity/types': 3.56.0(debug@4.3.7)
+      '@sanity/util': 3.56.0(debug@4.3.7)
       arrify: 2.0.1
-      debug: 4.3.5
+      debug: 4.3.7
       fast-fifo: 1.3.2
       groq-js: 1.13.0
       p-map: 7.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@sanity/mutate@0.8.0(debug@4.3.5)':
+  '@sanity/mutate@0.8.0(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@sanity/diff-match-patch': 3.1.1
       hotscript: 1.0.13
       mendoza: 3.0.7
@@ -13126,7 +13111,7 @@ snapshots:
     dependencies:
       '@sanity/diff-match-patch': 3.1.1
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
@@ -13134,16 +13119,16 @@ snapshots:
   '@sanity/mutator@3.56.0':
     dependencies:
       '@sanity/diff-match-patch': 3.1.1
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0(debug@4.3.7)
       '@sanity/uuid': 3.0.2
-      debug: 4.3.5
+      debug: 4.3.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
 
   '@sanity/presentation@1.16.4(@sanity/client@6.22.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
       '@sanity/icons': 3.4.0(react@18.3.1)
       '@sanity/preview-url-secret': 1.6.20(@sanity/client@6.22.0)
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -13166,7 +13151,7 @@ snapshots:
 
   '@sanity/preview-url-secret@1.6.20(@sanity/client@6.22.0)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
       '@sanity/uuid': 3.0.2
 
   '@sanity/schema@3.56.0(debug@4.3.5)':
@@ -13191,16 +13176,23 @@ snapshots:
       rxjs: 7.8.1
       typeid-js: 0.3.0
 
-  '@sanity/types@3.37.2(debug@4.3.5)':
+  '@sanity/types@3.37.2(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@types/react': 18.3.11
     transitivePeerDependencies:
       - debug
 
   '@sanity/types@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
+      '@types/react': 18.3.11
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/types@3.56.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/client': 6.22.0(debug@4.3.7)
       '@types/react': 18.3.11
     transitivePeerDependencies:
       - debug
@@ -13232,10 +13224,10 @@ snapshots:
       styled-components: 6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       use-effect-event: 1.0.2(react@18.3.1)
 
-  '@sanity/util@3.37.2(debug@4.3.5)':
+  '@sanity/util@3.37.2(debug@4.3.7)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
-      '@sanity/types': 3.37.2(debug@4.3.5)
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/types': 3.37.2(debug@4.3.7)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -13244,8 +13236,18 @@ snapshots:
 
   '@sanity/util@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/client': 6.22.0(debug@4.3.5)
+      '@sanity/client': 6.22.0
       '@sanity/types': 3.56.0(debug@4.3.5)
+      get-random-values-esm: 1.0.2
+      moment: 2.30.1
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+
+  '@sanity/util@3.56.0(debug@4.3.7)':
+    dependencies:
+      '@sanity/client': 6.22.0(debug@4.3.7)
+      '@sanity/types': 3.56.0(debug@4.3.7)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -13671,7 +13673,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.6.2)
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.6.2)
-      debug: 4.3.5
+      debug: 4.3.7
       eslint: 8.57.1
       ts-api-utils: 1.3.0(typescript@5.6.2)
     optionalDependencies:
@@ -13683,7 +13685,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.7.0(typescript@5.6.2)
       '@typescript-eslint/utils': 7.7.0(eslint@8.57.1)(typescript@5.6.2)
-      debug: 4.3.5
+      debug: 4.3.7
       eslint: 8.57.1
       ts-api-utils: 1.3.0(typescript@5.6.2)
     optionalDependencies:
@@ -13699,7 +13701,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
-      debug: 4.3.5
+      debug: 4.3.7
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.4
@@ -13714,7 +13716,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.7.0
       '@typescript-eslint/visitor-keys': 7.7.0
-      debug: 4.3.5
+      debug: 4.3.7
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.4
@@ -13828,7 +13830,7 @@ snapshots:
   '@unocss/rule-utils@0.58.9':
     dependencies:
       '@unocss/core': 0.58.9
-      magic-string: 0.30.10
+      magic-string: 0.30.11
 
   '@unocss/transformer-compile-class@0.58.9':
     dependencies:
@@ -13872,54 +13874,54 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.3.2(vite@5.4.9(@types/node@20.16.11))':
+  '@vitejs/plugin-react@4.3.2(vite@5.4.8(@types/node@20.16.11))':
     dependencies:
       '@babel/core': 7.25.8
       '@babel/plugin-transform-react-jsx-self': 7.25.7(@babel/core@7.25.8)
       '@babel/plugin-transform-react-jsx-source': 7.25.7(@babel/core@7.25.8)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.9(@types/node@20.16.11)
+      vite: 5.4.8(@types/node@20.16.11)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/expect@2.1.1':
+  '@vitest/expect@2.1.3':
     dependencies:
-      '@vitest/spy': 2.1.1
-      '@vitest/utils': 2.1.1
+      '@vitest/spy': 2.1.3
+      '@vitest/utils': 2.1.3
       chai: 5.1.1
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.1(@vitest/spy@2.1.1)(vite@5.4.6(@types/node@20.16.11))':
+  '@vitest/mocker@2.1.3(@vitest/spy@2.1.3)(vite@5.4.8(@types/node@20.16.11))':
     dependencies:
-      '@vitest/spy': 2.1.1
+      '@vitest/spy': 2.1.3
       estree-walker: 3.0.3
       magic-string: 0.30.11
     optionalDependencies:
-      vite: 5.4.6(@types/node@20.16.11)
+      vite: 5.4.8(@types/node@20.16.11)
 
-  '@vitest/pretty-format@2.1.1':
+  '@vitest/pretty-format@2.1.3':
     dependencies:
       tinyrainbow: 1.2.0
 
-  '@vitest/runner@2.1.1':
+  '@vitest/runner@2.1.3':
     dependencies:
-      '@vitest/utils': 2.1.1
+      '@vitest/utils': 2.1.3
       pathe: 1.1.2
 
-  '@vitest/snapshot@2.1.1':
+  '@vitest/snapshot@2.1.3':
     dependencies:
-      '@vitest/pretty-format': 2.1.1
+      '@vitest/pretty-format': 2.1.3
       magic-string: 0.30.11
       pathe: 1.1.2
 
-  '@vitest/spy@2.1.1':
+  '@vitest/spy@2.1.3':
     dependencies:
       tinyspy: 3.0.0
 
-  '@vitest/utils@2.1.1':
+  '@vitest/utils@2.1.3':
     dependencies:
-      '@vitest/pretty-format': 2.1.1
+      '@vitest/pretty-format': 2.1.3
       loupe: 3.1.1
       tinyrainbow: 1.2.0
 
@@ -15209,14 +15211,14 @@ snapshots:
 
   esbuild-register@3.5.0(esbuild@0.19.12):
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.7
       esbuild: 0.19.12
     transitivePeerDependencies:
       - supports-color
 
   esbuild-register@3.5.0(esbuild@0.21.5):
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.7
       esbuild: 0.21.5
     transitivePeerDependencies:
       - supports-color
@@ -15725,6 +15727,10 @@ snapshots:
     optionalDependencies:
       debug: 4.3.5
 
+  follow-redirects@1.15.6(debug@4.3.7):
+    optionalDependencies:
+      debug: 4.3.7
+
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
@@ -15819,12 +15825,36 @@ snapshots:
       has-symbols: 1.0.3
       hasown: 2.0.2
 
+  get-it@8.6.5:
+    dependencies:
+      '@types/follow-redirects': 1.14.4
+      '@types/progress-stream': 2.0.5
+      decompress-response: 7.0.0
+      follow-redirects: 1.15.6(debug@4.3.7)
+      is-retry-allowed: 2.2.0
+      progress-stream: 2.0.0
+      tunnel-agent: 0.6.0
+    transitivePeerDependencies:
+      - debug
+
   get-it@8.6.5(debug@4.3.5):
     dependencies:
       '@types/follow-redirects': 1.14.4
       '@types/progress-stream': 2.0.5
       decompress-response: 7.0.0
       follow-redirects: 1.15.6(debug@4.3.5)
+      is-retry-allowed: 2.2.0
+      progress-stream: 2.0.0
+      tunnel-agent: 0.6.0
+    transitivePeerDependencies:
+      - debug
+
+  get-it@8.6.5(debug@4.3.7):
+    dependencies:
+      '@types/follow-redirects': 1.14.4
+      '@types/progress-stream': 2.0.5
+      decompress-response: 7.0.0
+      follow-redirects: 1.15.6(debug@4.3.7)
       is-retry-allowed: 2.2.0
       progress-stream: 2.0.0
       tunnel-agent: 0.6.0
@@ -15960,7 +15990,7 @@ snapshots:
 
   groq-js@1.13.0:
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
 
@@ -19879,12 +19909,12 @@ snapshots:
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
 
-  vite-node@2.1.1(@types/node@20.16.11):
+  vite-node@2.1.3(@types/node@20.16.11):
     dependencies:
       cac: 6.7.14
       debug: 4.3.7
       pathe: 1.1.2
-      vite: 5.4.9(@types/node@20.16.11)
+      vite: 5.4.8(@types/node@20.16.11)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -19906,13 +19936,13 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  vite-tsconfig-paths@4.3.1(typescript@5.6.2)(vite@5.4.9(@types/node@20.16.11)):
+  vite-tsconfig-paths@4.3.1(typescript@5.6.2)(vite@5.4.8(@types/node@20.16.11)):
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.6.2)
     optionalDependencies:
-      vite: 5.4.9(@types/node@20.16.11)
+      vite: 5.4.8(@types/node@20.16.11)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -19926,7 +19956,7 @@ snapshots:
       '@types/node': 20.16.11
       fsevents: 2.3.3
 
-  vite@5.4.6(@types/node@20.16.11):
+  vite@5.4.8(@types/node@20.16.11):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
@@ -19935,24 +19965,15 @@ snapshots:
       '@types/node': 20.16.11
       fsevents: 2.3.3
 
-  vite@5.4.9(@types/node@20.16.11):
+  vitest@2.1.3(@types/node@20.16.11)(jsdom@25.0.1):
     dependencies:
-      esbuild: 0.21.5
-      postcss: 8.4.47
-      rollup: 4.21.0
-    optionalDependencies:
-      '@types/node': 20.16.11
-      fsevents: 2.3.3
-
-  vitest@2.1.1(@types/node@20.16.11)(jsdom@25.0.1):
-    dependencies:
-      '@vitest/expect': 2.1.1
-      '@vitest/mocker': 2.1.1(@vitest/spy@2.1.1)(vite@5.4.6(@types/node@20.16.11))
-      '@vitest/pretty-format': 2.1.1
-      '@vitest/runner': 2.1.1
-      '@vitest/snapshot': 2.1.1
-      '@vitest/spy': 2.1.1
-      '@vitest/utils': 2.1.1
+      '@vitest/expect': 2.1.3
+      '@vitest/mocker': 2.1.3(@vitest/spy@2.1.3)(vite@5.4.8(@types/node@20.16.11))
+      '@vitest/pretty-format': 2.1.3
+      '@vitest/runner': 2.1.3
+      '@vitest/snapshot': 2.1.3
+      '@vitest/spy': 2.1.3
+      '@vitest/utils': 2.1.3
       chai: 5.1.1
       debug: 4.3.7
       magic-string: 0.30.11
@@ -19962,8 +19983,8 @@ snapshots:
       tinyexec: 0.3.0
       tinypool: 1.0.0
       tinyrainbow: 1.2.0
-      vite: 5.4.6(@types/node@20.16.11)
-      vite-node: 2.1.1(@types/node@20.16.11)
+      vite: 5.4.8(@types/node@20.16.11)
+      vite-node: 2.1.3(@types/node@20.16.11)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.16.11
