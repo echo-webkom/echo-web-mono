@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
+import { type Adapter, type AdapterAccount } from "@auth/core/adapters";
 import { and, eq } from "drizzle-orm";
 import { type PgDatabase } from "drizzle-orm/pg-core";
-import { type Adapter } from "next-auth/adapters";
 
 import { accounts, sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 
@@ -78,13 +78,13 @@ export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter
       const account = {
         ...updatedAccount,
         access_token: updatedAccount.access_token ?? undefined,
-        token_type: updatedAccount.token_type ?? undefined,
+        token_type: updatedAccount.token_type?.toLowerCase() ?? undefined,
         id_token: updatedAccount.id_token ?? undefined,
         refresh_token: updatedAccount.refresh_token ?? undefined,
         scope: updatedAccount.scope ?? undefined,
         expires_at: updatedAccount.expires_at ?? undefined,
         session_state: updatedAccount.session_state ?? undefined,
-      };
+      } as AdapterAccount;
 
       return account;
     },
