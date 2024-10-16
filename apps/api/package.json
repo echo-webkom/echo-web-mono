@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
+    "@types/node": "20.16.11",
     "dotenv-cli": "7.4.2",
     "esbuild": "0.24.0",
     "tsx": "4.19.1",
