@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { LuTrash } from "react-icons/lu";
 
 import { deleteCommentAction } from "@/actions/delete-comment";
@@ -10,12 +11,14 @@ type CommentDeleteButtonProps = {
 };
 
 export const CommentDeleteButton = ({ id }: CommentDeleteButtonProps) => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const submitAction = (formData: FormData) => {
     startTransition(async () => {
       await deleteCommentAction(formData);
     });
+    router.refresh();
   };
 
   return (
