@@ -2,6 +2,7 @@ import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { JobAdSidebar } from "@/components/job-ad-sidebar";
 import { Markdown } from "@/components/markdown";
@@ -26,12 +27,12 @@ const getData = cache(async (slug: Props["params"]["slug"]) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const jobAd = await getData(slug);
 
-  return {
-    title: jobAd.title,
-  };
+  return getNewPageMetadata(
+    jobAd.title,
+    `Ny stillingsannonse hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
+  );
 };
 
 export default async function JobAdPage({ params }: { params: { slug: string } }) {

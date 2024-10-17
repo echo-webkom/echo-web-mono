@@ -26,7 +26,7 @@
     "email:preview": "pnpm --filter=email preview",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,md}\" \"!**/*/postgres-data\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,json,md}\" ",
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",

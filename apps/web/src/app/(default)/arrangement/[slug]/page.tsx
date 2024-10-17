@@ -1,8 +1,10 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { EventPage } from "@/components/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { norwegianDateString } from "@/utils/date";
 
 type Props = {
   params: {
@@ -26,9 +28,15 @@ const getData = cache(async (slug: string) => {
 export const generateMetadata = async ({ params }: Props) => {
   const event = await getData(params.slug);
 
-  return {
-    title: event.title,
-  };
+  const regDate = event.registrationStart
+    ? `Påmelding åpner ${norwegianDateString(new Date(event.registrationStart)).toLowerCase()}.`
+    : "";
+
+  return getNewPageMetadata(
+    event.title,
+    `Nytt arrangement "${event.title}" med ${event.company?.name},
+    ${norwegianDateString(new Date(event.date))}, ${event.location?.name}. ${regDate}`,
+  );
 };
 
 export default async function EventPage_({ params }: Props) {
