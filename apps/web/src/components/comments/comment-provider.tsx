@@ -2,6 +2,12 @@
 
 import { createContext, useContext, useState } from "react";
 
+type FixedCommentReaction = {
+  commentId: string;
+  userId: string;
+  type: "like" | "dislike";
+};
+
 export type CommentContextProps = {
   commentId: string;
   postId: string;
@@ -11,6 +17,7 @@ export type CommentContextProps = {
   expandComment: (commentId: string) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  reactions: Array<FixedCommentReaction>;
 };
 
 export const CommentContext = createContext<CommentContextProps | undefined>(undefined);
@@ -29,10 +36,17 @@ export type CommentProviderProps = {
   commentId: string;
   postId: string;
   userId: string | null;
+  reactions: Array<FixedCommentReaction>;
   children: React.ReactNode;
 };
 
-export const CommentProvider = ({ children, commentId, postId, userId }: CommentProviderProps) => {
+export const CommentProvider = ({
+  children,
+  commentId,
+  postId,
+  userId,
+  reactions,
+}: CommentProviderProps) => {
   const [collapsedComments, setCollapsedComments] = useState<Array<string>>([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,6 +68,7 @@ export const CommentProvider = ({ children, commentId, postId, userId }: Comment
         collapseComment,
         expandComment,
         isOpen,
+        reactions,
         setIsOpen,
       }}
     >

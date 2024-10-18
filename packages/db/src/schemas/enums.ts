@@ -28,3 +28,6 @@ export const feedbackCategoryEnum = pgEnum("feedback_category", [
   "login",
   "other",
 ]);
+
+export type CommentReactionType = (typeof commentReactionType)["enumValues"][number];
+export const commentReactionType = pgEnum("comment_action", ["like", "dislike"]);

@@ -3,7 +3,14 @@ import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
+import {
+  AnswerInsert,
+  answers,
+  comments,
+  commentsReactions,
+  registrations,
+  users,
+} from "@echo-webkom/db/schemas";
 
 import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
@@ -27,6 +34,7 @@ app.get("/admin/comments/:id", admin(), async (c) => {
           image: true,
         },
       },
+      reactions: true,
     },
   });
 
@@ -56,6 +64,44 @@ app.post("/admin/comments", admin(), async (c) => {
     userId,
     parentCommentId,
   });
+
+  return c.json({ success: true });
+});
+
+app.post("/admin/comments/:id/reaction", admin(), async (c) => {
+  const { ok, json } = await parseJson(
+    c,
+    z.object({
+      commentId: z.string(),
+      userId: z.string(),
+    }),
+  );
+
+  if (!ok) {
+    return c.json({ error: "Invalid data" }, 400);
+  }
+
+  const existingReaction = await db.query.commentsReactions.findFirst({
+    where: (reaction, { eq }) =>
+      and(eq(reaction.commentId, json.commentId), eq(reaction.userId, json.userId)),
+  });
+
+  if (!existingReaction) {
+    await db.insert(commentsReactions).values({
+      commentId: json.commentId,
+      userId: json.userId,
+      type: "like",
+    });
+  } else {
+    await db
+      .delete(commentsReactions)
+      .where(
+        and(
+          eq(commentsReactions.commentId, json.commentId),
+          eq(commentsReactions.userId, json.userId),
+        ),
+      );
+  }
 
   return c.json({ success: true });
 });

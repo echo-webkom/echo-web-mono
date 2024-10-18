@@ -9,6 +9,7 @@ import { initials } from "@/utils/string";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { CommentCollapseButton } from "./comment-collapse-button";
 import { CommentDeleteButton } from "./comment-delete-button";
+import { CommentLikeButton } from "./comment-like-button";
 import { CommentProvider, useComment } from "./comment-provider";
 import { CommentReplyButton } from "./comment-reply-button";
 import { CommentReplyTextarea } from "./comment-reply-textarea";
@@ -41,6 +42,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
               commentId={comment.id}
               postId={comment.postId}
               userId={comment.user?.id ?? null}
+              reactions={comment.reactions}
             >
               <Avatar className="hidden h-14 w-14 sm:block">
                 <AvatarImage src={comment.user?.image ?? ""} />
@@ -70,6 +72,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
                 <p className="mb-1">{comment.content}</p>
 
                 <div className="flex gap-4">
+                  <CommentLikeButton />
                   <CommentReplyButton />
                   {showDelete && <CommentDeleteButton id={comment.id} />}
                 </div>
