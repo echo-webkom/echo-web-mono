@@ -137,7 +137,10 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
 
       <Text>
         Ønsker du å legge ut en stillingsannonse? Les mer om hvordan du kan gjøre det{" "}
-        <Link href="/for-bedrifter/stillingsutlysninger">her</Link>.
+        <Link className="text-blue-500 hover:underline" href="/for-bedrifter/stillingsutlysninger">
+          her
+        </Link>
+        .
       </Text>
 
       <div className="flex flex-col items-center gap-4 md:flex-row">
