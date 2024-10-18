@@ -37,6 +37,7 @@ export const happeningsToCalendarEvent = (
       id: happening._id,
       title: happening.title,
       date: new Date(happening.date),
+      endDate: happening.endDate ? new Date(happening.endDate) : undefined,
       body: RemoveMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
       type: mapHappeningToType(happening.happeningType),
