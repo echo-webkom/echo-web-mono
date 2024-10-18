@@ -169,6 +169,13 @@
       "when": 1723223890405,
       "tag": "0023_happy_wilson_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1729274291220,
+      "tag": "0024_furry_shiver_man",
+      "breakpoints": true
     }
   ]
 }
