@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
 
+import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
 import { findCorrectSpotRange } from "../utils/find-correct-spot-range";
@@ -256,12 +257,7 @@ app.post("/admin/register", admin(), async (c) => {
   /**
    * Check if all questions are answered
    */
-  const allQuestionsAnswered = happening.questions.every((question) => {
-    const questionExists = questions.find((q) => q.questionId === question.id);
-    const questionAnswer = questionExists?.answer;
-
-    return question.required ? !!questionAnswer : true;
-  });
+  const allQuestionsAnswered = validateQuestions(happening.questions, questions);
 
   if (!allQuestionsAnswered) {
     console.error("Not all questions are answered", {
