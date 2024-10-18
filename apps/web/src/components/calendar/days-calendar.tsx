@@ -107,7 +107,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                     )}
                   </div>
 
-                  <ul className="flex flex-col gap-1 px-1">
+                  <ul className="flex flex-col px-1">
                     {eventsThisDay.map((event) => {
                       return (
                         <HoverCard key={event.id} openDelay={300} closeDelay={100}>
