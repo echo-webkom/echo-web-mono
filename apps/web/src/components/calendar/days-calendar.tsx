@@ -86,12 +86,17 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
         >
           {days.map((day) => {
             const isToday = isSameDay(day, new Date());
-
-            const eventsThisDay = events.filter((event) => {
-              return event.endDate
-                ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
-                : isSameDay(event.date, day);
-            });
+            const eventsThisDay = events
+              .filter((event) => {
+                return event.endDate
+                  ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                  : isSameDay(event.date, day);
+              })
+              .sort((a, b) => {
+                if (a.endDate && !b.endDate) return -1;
+                if (!a.endDate && b.endDate) return 1;
+                return 0;
+              });
 
             return (
               <div key={day.toString()}>
