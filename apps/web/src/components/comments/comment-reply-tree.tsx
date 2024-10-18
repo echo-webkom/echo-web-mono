@@ -72,7 +72,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
                 <p className="mb-1">{comment.content}</p>
 
                 <div className="flex gap-4">
-                  <CommentLikeButton />
+                  <CommentLikeButton currentUserId={user?.id ?? null} />
                   <CommentReplyButton />
                   {showDelete && <CommentDeleteButton id={comment.id} />}
                 </div>

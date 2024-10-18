@@ -5,11 +5,15 @@ import { likeComment } from "@/actions/like-comment";
 import { cn } from "@/utils/cn";
 import { useComment } from "./comment-provider";
 
-export const CommentLikeButton = () => {
+type CommentLikeButtonProps = {
+  currentUserId: string | null;
+};
+
+export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => {
   const { commentId, userId, reactions } = useComment();
   const router = useRouter();
 
-  const isLiked = reactions.some((reaction) => reaction.userId === userId);
+  const isLiked = reactions.some((reaction) => reaction.userId === currentUserId);
   const likes = reactions.filter((reaction) => reaction.type === "like").length;
 
   const toggleLiked = async () => {
