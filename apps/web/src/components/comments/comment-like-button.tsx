@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { LuArrowBigUp } from "react-icons/lu";
 
 import { likeComment } from "@/actions/like-comment";
@@ -11,14 +11,16 @@ type CommentLikeButtonProps = {
 
 export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => {
   const { commentId, userId, reactions } = useComment();
-  const router = useRouter();
 
-  const isLiked = reactions.some((reaction) => reaction.userId === currentUserId);
-  const likes = reactions.filter((reaction) => reaction.type === "like").length;
+  const [isLiked, setIsLiked] = useState(
+    reactions.some((reaction) => reaction.userId === currentUserId),
+  );
+  const [likes, setLikes] = useState(reactions.length);
 
-  const toggleLiked = async () => {
-    await likeComment(commentId);
-    router.refresh();
+  const toggleLiked = () => {
+    void likeComment(commentId);
+    setIsLiked(!isLiked);
+    setLikes((likes) => (isLiked ? likes - 1 : likes + 1));
   };
 
   return (
