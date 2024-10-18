@@ -17,8 +17,8 @@ export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => 
   );
   const [likes, setLikes] = useState(reactions.length);
 
-  const toggleLiked = async () => {
-    await likeComment(commentId);
+  const toggleLiked = () => {
+    void likeComment(commentId);
     setIsLiked(!isLiked);
     setLikes((likes) => (isLiked ? likes - 1 : likes + 1));
   };
