@@ -6,6 +6,9 @@ export type CommentContextProps = {
   commentId: string;
   postId: string;
   userId: string | null;
+  collapsedComments: Array<string>;
+  collapseComment: (commentId: string) => void;
+  expandComment: (commentId: string) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
@@ -26,21 +29,34 @@ export type CommentProviderProps = {
   commentId: string;
   postId: string;
   userId: string | null;
-  isOpen: boolean;
   children: React.ReactNode;
 };
 
-export const CommentProvider = ({
-  children,
-  commentId,
-  postId,
-  userId,
-  isOpen: initialIsOpen = false,
-}: CommentProviderProps) => {
-  const [isOpen, setIsOpen] = useState(initialIsOpen);
+export const CommentProvider = ({ children, commentId, postId, userId }: CommentProviderProps) => {
+  const [collapsedComments, setCollapsedComments] = useState<Array<string>>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const collapseComment = (commentId: string) => {
+    setCollapsedComments((prev) => [...prev, commentId]);
+  };
+
+  const expandComment = (commentId: string) => {
+    setCollapsedComments((prev) => prev.filter((id) => id !== commentId));
+  };
 
   return (
-    <CommentContext.Provider value={{ commentId, postId, userId, isOpen, setIsOpen }}>
+    <CommentContext.Provider
+      value={{
+        commentId,
+        postId,
+        userId,
+        collapsedComments,
+        collapseComment,
+        expandComment,
+        isOpen,
+        setIsOpen,
+      }}
+    >
       {children}
     </CommentContext.Provider>
   );
