@@ -42,7 +42,7 @@ test("user can't register with full happening", () => {
     },
     {
       id: "spotrange3",
-      spots: 1,
+      spots: 0,
       minYear: 2,
       maxYear: 2,
       happeningId: "happeningId1",
@@ -145,6 +145,113 @@ test("user can't register in others' spotrange", () => {
   const result = isAvailableSpace(spotRanges, registrations, user);
 
   expect(result).toBe(false);
+});
+
+test("user can register when there is no waitlist in their spotrange", () => {
+  const spotRanges: Array<SpotRange> = [
+    {
+      id: "bigSpotrange",
+      spots: 1,
+      minYear: 1,
+      maxYear: 5,
+      happeningId: "happeningId1",
+    },
+    {
+      id: "smallSpotrange",
+      spots: 1,
+      minYear: 3,
+      maxYear: 3,
+      happeningId: "happeningId1",
+    },
+  ];
+
+  const registrations: Array<RegistrationWithUser> = [
+    {
+      user: makeUser({ id: "user1", year: 1 }),
+      registration: makeRegistration({
+        happeningId: "happening1",
+        userId: "user1",
+        status: "waiting",
+      }),
+    },
+  ];
+
+  const user = makeUser({ id: "currentuser", year: 3 });
+  const result = isAvailableSpace(spotRanges, registrations, user);
+
+  expect(result).toBe(true);
+});
+
+test("user can't register with waitlist", () => {
+  const spotRanges: Array<SpotRange> = [
+    {
+      id: "bigSpotrange",
+      spots: 1,
+      minYear: 1,
+      maxYear: 5,
+      happeningId: "happeningId1",
+    },
+    {
+      id: "smallSpotrange",
+      spots: 1,
+      minYear: 3,
+      maxYear: 3,
+      happeningId: "happeningId1",
+    },
+  ];
+
+  const registrations: Array<RegistrationWithUser> = [
+    {
+      user: makeUser({ id: "user1", year: 3 }),
+      registration: makeRegistration({
+        happeningId: "happening1",
+        userId: "user1",
+        status: "waiting",
+      }),
+    },
+  ];
+
+  const user = makeUser({ id: "currentuser", year: 1 });
+
+  const result = isAvailableSpace(spotRanges, registrations, user);
+
+  expect(result).toBe(false);
+});
+
+test("user can register with infinite spots", () => {
+  const spotRanges: Array<SpotRange> = [
+    {
+      id: "bigSpotrange",
+      spots: 1,
+      minYear: 1,
+      maxYear: 5,
+      happeningId: "happeningId1",
+    },
+    {
+      id: "infiniteSpotrange",
+      spots: 0,
+      minYear: 3,
+      maxYear: 3,
+      happeningId: "happeningId1",
+    },
+  ];
+
+  const registrations: Array<RegistrationWithUser> = [
+    {
+      user: makeUser({ id: "user1", year: 1 }),
+      registration: makeRegistration({
+        happeningId: "happening1",
+        userId: "user1",
+        status: "waiting",
+      }),
+    },
+  ];
+
+  const user = makeUser({ id: "currentuser", year: 3 });
+
+  const result = isAvailableSpace(spotRanges, registrations, user);
+
+  expect(result).toBe(true);
 });
 
 function makeUser(params: Omit<Partial<User>, "id" | "year"> & Pick<User, "id" | "year">): User {

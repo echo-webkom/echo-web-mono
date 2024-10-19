@@ -12,6 +12,7 @@ import {
   users,
 } from "@echo-webkom/db/schemas";
 
+import { fitsInSpotrange, isAvailableSpot } from "@/utils/is-available-spot";
 import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
@@ -284,9 +285,10 @@ app.post("/admin/register", admin(), async (c) => {
    *
    * If user is not in any spot range, return error
    */
-  const userSpotRange = findCorrectSpotRange(user.year, spotRanges, canSkipSpotRange);
+  const userIsEligible =
+    spotRanges.some((spotRange) => fitsInSpotrange(user, spotRange)) || canSkipSpotRange;
 
-  if (!userSpotRange) {
+  if (!userIsEligible) {
     console.error("User is not in any spot range", {
       userId,
       happeningId,
@@ -329,21 +331,17 @@ app.post("/admin/register", admin(), async (c) => {
         .where(
           and(
             eq(registrations.happeningId, happeningId),
-            lte(users.year, userSpotRange.maxYear),
-            gte(users.year, userSpotRange.minYear),
             or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
           ),
         )
         .leftJoin(users, eq(registrations.userId, users.id));
 
-      const isInfiniteSpots = userSpotRange.spots === 0;
-      const isSpotsFilled = regs.length >= userSpotRange.spots;
-      const isWaitlisted = !isInfiniteSpots && isSpotsFilled;
+      const isRegistered = isAvailableSpot(spotRanges, regs, user) || canSkipSpotRange;
 
       const registration = await tx
         .insert(registrations)
         .values({
-          status: isWaitlisted ? "waiting" : "registered",
+          status: isRegistered ? "registered" : "waiting",
           happeningId,
           userId,
           changedBy: null,
@@ -352,14 +350,14 @@ app.post("/admin/register", admin(), async (c) => {
         .onConflictDoUpdate({
           target: [registrations.happeningId, registrations.userId],
           set: {
-            status: isWaitlisted ? "waiting" : "registered",
+            status: isRegistered ? "registered" : "waiting",
           },
         })
         .then((res) => res[0] ?? null);
 
       return {
         registration,
-        isWaitlisted,
+        isWaitlisted: !isRegistered,
       };
     },
     {
