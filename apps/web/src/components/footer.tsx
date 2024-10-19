@@ -16,7 +16,7 @@ type FooterProps = {
 export const Footer = ({ className }: FooterProps) => {
   return (
     <div className={cn("mt-32 selection:bg-primary", className)}>
-      <footer className="relative rounded-t-[40px] border-2 border-secondary-dark bg-secondary px-10 py-24 text-wave-foreground dark:border-wave-dark dark:bg-wave">
+      <footer className="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground">
         <CommitLabel />
 
         <div className="mx-auto flex w-full max-w-7xl">
