@@ -15,11 +15,11 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
       prettier-plugin-organize-imports:
-        specifier: 4.0.0
-        version: 4.0.0(prettier@3.3.3)(typescript@5.6.3)
+        specifier: 4.1.0
+        version: 4.1.0(prettier@3.3.3)(typescript@5.6.3)
       prettier-plugin-tailwindcss:
         specifier: 0.6.8
-        version: 0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(prettier@3.3.3))(prettier-plugin-organize-imports@4.0.0(prettier@3.3.3)(typescript@5.6.3))(prettier@3.3.3)
+        version: 0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(prettier@3.3.3))(prettier-plugin-organize-imports@4.1.0(prettier@3.3.3)(typescript@5.6.3))(prettier@3.3.3)
       turbo:
         specifier: 2.0.14
         version: 2.0.14
@@ -7651,16 +7651,13 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-plugin-organize-imports@4.0.0:
-    resolution: {integrity: sha512-vnKSdgv9aOlqKeEFGhf9SCBsTyzDSyScy1k7E0R1Uo4L0cTcOV7c1XQaT7jfXIOc/p08WLBfN2QUQA9zDSZMxA==}
+  prettier-plugin-organize-imports@4.1.0:
+    resolution: {integrity: sha512-5aWRdCgv645xaa58X8lOxzZoiHAldAPChljr/MT0crXVOWTZ+Svl4hIWlz+niYSlO6ikE5UXkN1JrRvIP2ut0A==}
     peerDependencies:
-      '@vue/language-plugin-pug': ^2.0.24
       prettier: '>=2.0'
       typescript: '>=2.9'
-      vue-tsc: ^2.0.24
+      vue-tsc: ^2.1.0
     peerDependenciesMeta:
-      '@vue/language-plugin-pug':
-        optional: true
       vue-tsc:
         optional: true
 
@@ -11967,7 +11964,7 @@ snapshots:
       '@portabletext/patches': 1.1.0
       '@sanity/block-tools': 3.56.0(debug@4.3.5)
       '@sanity/schema': 3.56.0(debug@4.3.5)
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/util': 3.56.0(debug@4.3.5)
       debug: 4.3.7
       is-hotkey-esm: 1.0.0
@@ -12877,7 +12874,7 @@ snapshots:
 
   '@sanity/block-tools@3.56.0(debug@4.3.5)':
     dependencies:
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@types/react': 18.3.11
       get-random-values-esm: 1.0.2
       lodash: 4.17.21
@@ -13079,7 +13076,7 @@ snapshots:
   '@sanity/insert-menu@1.0.8(@sanity/types@3.56.0(debug@4.3.5))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/icons': 3.4.0(react@18.3.1)
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash.startcase: 4.4.0
       react: 18.3.1
@@ -13168,7 +13165,7 @@ snapshots:
   '@sanity/schema@3.56.0(debug@4.3.5)':
     dependencies:
       '@sanity/generate-help-url': 3.0.0
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       arrify: 1.0.1
       groq-js: 1.13.0
       humanize-list: 1.0.1
@@ -13194,7 +13191,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sanity/types@3.56.0(debug@4.3.5)':
+  '@sanity/types@3.56.0':
     dependencies:
       '@sanity/client': 6.22.1
       '@types/react': 18.3.11
@@ -13248,7 +13245,7 @@ snapshots:
   '@sanity/util@3.56.0(debug@4.3.5)':
     dependencies:
       '@sanity/client': 6.22.1
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -18046,17 +18043,17 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-organize-imports@4.0.0(prettier@3.3.3)(typescript@5.6.3):
+  prettier-plugin-organize-imports@4.1.0(prettier@3.3.3)(typescript@5.6.3):
     dependencies:
       prettier: 3.3.3
       typescript: 5.6.3
 
-  prettier-plugin-tailwindcss@0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(prettier@3.3.3))(prettier-plugin-organize-imports@4.0.0(prettier@3.3.3)(typescript@5.6.3))(prettier@3.3.3):
+  prettier-plugin-tailwindcss@0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(prettier@3.3.3))(prettier-plugin-organize-imports@4.1.0(prettier@3.3.3)(typescript@5.6.3))(prettier@3.3.3):
     dependencies:
       prettier: 3.3.3
     optionalDependencies:
       '@ianvs/prettier-plugin-sort-imports': 4.3.1(prettier@3.3.3)
-      prettier-plugin-organize-imports: 4.0.0(prettier@3.3.3)(typescript@5.6.3)
+      prettier-plugin-organize-imports: 4.1.0(prettier@3.3.3)(typescript@5.6.3)
 
   prettier@3.3.3: {}
 
@@ -18912,7 +18909,7 @@ snapshots:
       '@sanity/presentation': 1.16.4(@sanity/client@6.22.1)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/schema': 3.56.0(debug@4.3.5)
       '@sanity/telemetry': 0.7.7
-      '@sanity/types': 3.56.0(debug@4.3.5)
+      '@sanity/types': 3.56.0
       '@sanity/ui': 2.8.9(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/util': 3.56.0(debug@4.3.5)
       '@sanity/uuid': 3.0.2
