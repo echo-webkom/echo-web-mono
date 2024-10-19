@@ -99,7 +99,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
               });
 
             return (
-              <div key={day.toString()}>
+              <div key={day.toString()} className="bg-background">
                 <div className="flex flex-col gap-2">
                   <div className="flex h-16 flex-col items-center justify-center border-b-2 bg-muted py-2 font-medium">
                     {isToday ? (
