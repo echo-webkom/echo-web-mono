@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import "server-only";
 
-import { render } from "jsx-email";
+import { render } from "@react-email/render";
 import { Resend } from "resend";
 
 const API_KEY = process.env.RESEND_API_KEY;
@@ -19,9 +19,8 @@ export const emailClient = {
    */
   sendEmail: async (to: Array<string>, subject: string, component: React.ReactElement) => {
     if (process.env.NODE_ENV !== "production" || !API_KEY) {
-      const text = await render(component, {
-        plainText: true,
-      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+      const text = await render(component);
 
       console.log("SENDING EMAIL");
       console.log("TO:", to);
