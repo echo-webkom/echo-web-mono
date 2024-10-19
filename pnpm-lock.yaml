@@ -299,8 +299,8 @@ importers:
         specifier: 9.0.1
         version: 9.0.1(@types/react@18.3.11)(react@18.3.1)
       react-use-websocket:
-        specifier: 4.8.1
-        version: 4.8.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 4.9.0
+        version: 4.9.0
       remark-gfm:
         specifier: 4.0.0
         version: 4.0.0
@@ -8032,11 +8032,8 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
-  react-use-websocket@4.8.1:
-    resolution: {integrity: sha512-FTXuG5O+LFozmu1BRfrzl7UIQngECvGJmL7BHsK4TYXuVt+mCizVA8lT0hGSIF0Z0TedF7bOo1nRzOUdginhDw==}
-    peerDependencies:
-      react: '>= 18.0.0'
-      react-dom: '>= 18.0.0'
+  react-use-websocket@4.9.0:
+    resolution: {integrity: sha512-/6OaCMggQCTnryCAsw/N+/wfH7bBfIXk5WXTMPdyf0x9HWJXLGUVttAT5hqAimRytD1dkHEJCUrFHAGzOAg1eg==}
 
   react-virtuoso@4.7.10:
     resolution: {integrity: sha512-l+fnBf/G1Fp6pHCnhFq2Ra4lkZtT6c5XrS9rCS0OA6de7WGLZviCo0y61CUZZG79TeAw3L7O4czeNPiqh9CIrg==}
@@ -18393,10 +18390,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  react-use-websocket@4.8.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+  react-use-websocket@4.9.0: {}
 
   react-virtuoso@4.7.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
