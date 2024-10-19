@@ -86,6 +86,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
         >
           {days.map((day) => {
             const isToday = isSameDay(day, new Date());
+
             const eventsThisDay = events
               .filter((event) => {
                 return event.endDate
