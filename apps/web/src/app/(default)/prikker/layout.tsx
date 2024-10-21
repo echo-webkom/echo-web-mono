@@ -1,5 +1,4 @@
-import { type Metadata } from "next/types";
-
+import { getNewPageMetadata } from "@/app/seo";
 import {
   Sidebar,
   SidebarItem,
@@ -12,9 +11,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
-  title: "Prikker",
-} satisfies Metadata;
+export const metadata = getNewPageMetadata("Prikker");
 
 const routes = [
   {

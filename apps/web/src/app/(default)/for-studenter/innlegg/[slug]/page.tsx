@@ -1,6 +1,7 @@
 import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Authors } from "@/components/authors";
 import { CommentSection } from "@/components/comments/comment-section";
 import { Container } from "@/components/container";
@@ -33,10 +34,14 @@ export const generateMetadata = async ({ params }: Props) => {
     };
   });
 
-  return {
-    title: post.title,
-    authors,
-  };
+  const authorListString = authors?.map((a) => a.name).join(", "); // "Alice, Bob, Charlie"
+  const metadata = getNewPageMetadata(
+    post.title,
+    `Nytt innlegg "${post.title}" av ${authorListString}.`,
+  );
+  metadata.authors = authors;
+
+  return metadata;
 };
 
 export default async function PostPage({ params }: Props) {
