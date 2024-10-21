@@ -205,6 +205,34 @@ export default defineType({
           type: "spotRange",
         }),
       ],
+      validation: (Rule) =>
+        Rule.custom(
+          (value: Array<{ minYear: number; maxYear: number; _key: string }> | undefined) => {
+            const spotRanges = value ?? [];
+            const invalidSpotranges = spotRanges.filter((spotRange1) => {
+              return spotRanges.some((spotRange2) => {
+                const smallest = spotRange1.maxYear < spotRange2.maxYear ? spotRange1 : spotRange2;
+                const biggest = spotRange1.maxYear < spotRange2.maxYear ? spotRange2 : spotRange1;
+
+                if (smallest.maxYear === biggest.maxYear) {
+                  return false;
+                }
+
+                const isPartialOverlap =
+                  smallest.minYear < biggest.minYear && biggest.minYear <= smallest.maxYear;
+
+                return isPartialOverlap;
+              });
+            });
+
+            const invalidPaths = invalidSpotranges.map((spotRange, index) =>
+              spotRange._key ? [{ _key: spotRange._key }] : [index],
+            );
+            return invalidSpotranges.length === 0
+              ? true
+              : { message: "Ugyldige plasser", paths: invalidPaths };
+          },
+        ),
     }),
     defineField({
       name: "additionalQuestions",
