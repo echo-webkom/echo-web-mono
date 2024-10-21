@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { Registration, SpotRange, User } from "@echo-webkom/db/schemas";
 
-import { canRegister as isAvailableSpace, RegistrationWithUser } from "@/utils/is-registered";
+import { isAvailableSpot, RegistrationWithUser } from "@/utils/is-available-spot";
 
 test("user can register with empty happening", () => {
   const spotRanges: Array<SpotRange> = [
@@ -19,7 +19,7 @@ test("user can register with empty happening", () => {
 
   const user = makeUser({ id: "currentuser", year: 1 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(true);
 });
@@ -78,7 +78,7 @@ test("user can't register with full happening", () => {
 
   const user = makeUser({ id: "currentuser", year: 1 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(false);
 });
@@ -110,7 +110,7 @@ test("user can register in overlapping spotrange", () => {
 
   const user = makeUser({ id: "currentuser", year: 3 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(true);
 });
@@ -142,7 +142,7 @@ test("user can't register in others' spotrange", () => {
 
   const user = makeUser({ id: "currentuser", year: 1 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(false);
 });
@@ -177,7 +177,7 @@ test("user can register when there is no waitlist in their spotrange", () => {
   ];
 
   const user = makeUser({ id: "currentuser", year: 3 });
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(true);
 });
@@ -213,7 +213,7 @@ test("user can't register with waitlist", () => {
 
   const user = makeUser({ id: "currentuser", year: 1 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(false);
 });
@@ -249,7 +249,7 @@ test("user can register with infinite spots", () => {
 
   const user = makeUser({ id: "currentuser", year: 3 });
 
-  const result = isAvailableSpace(spotRanges, registrations, user);
+  const result = isAvailableSpot(spotRanges, registrations, user);
 
   expect(result).toBe(true);
 });
