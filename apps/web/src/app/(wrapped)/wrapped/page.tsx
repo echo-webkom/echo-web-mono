@@ -1,7 +1,11 @@
+import AnimatedBg from "./components/AnimatedBg";
+
 export default function Wrapped() {
   return (
     <>
-      <div className="text-xl">Hello</div>
+      <AnimatedBg>
+        <div></div>
+      </AnimatedBg>
     </>
   );
 }
