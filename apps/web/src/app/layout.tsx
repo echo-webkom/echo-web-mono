@@ -7,7 +7,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
+import {
+  AnimatedIcons,
+  AnimatedSnowfall,
+} from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -48,7 +51,8 @@ export const metadata = {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
-  description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  description:
+    "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
   applicationName: "echo",
   creator: "echo-webkom",
   authors: {
@@ -90,12 +94,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isOctober = month === 9;
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
-  const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+  const ThemeWrapper = isOctober
+    ? AnimatedIcons
+    : isChristmas
+      ? AnimatedSnowfall
+      : Fragment;
 
   return (
     <html
       lang="no"
-      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "default"}
+      data-theme={
+        isOctober ? "halloween" : isChristmas ? "christmas" : "default"
+      }
       suppressHydrationWarning
     >
       <head />
