@@ -14,24 +14,26 @@ export default function AnimatedBg({ children }: Props) {
 
   return (
     <>
-      {children}
-      <div className="absolute w-full h-full left-0 top-0 bg-red-500 -z-10">
-        {keys.map((key) => {
-          const xOffset = Math.floor(Math.random() * 95);
-          const yOffset = Math.floor(Math.random() * 95);
+      <div className="absolute overflow-hidden w-full h-full left-0 top-0 bg-red-300">
+        {children}
+        <div className="-z-10 pointer-events-none">
+          {keys.map((key) => {
+            const xOffset = Math.floor(Math.random() * 95);
+            const yOffset = Math.floor(Math.random() * 95);
 
-          const icon = icons[Math.floor(Math.random() * icons.length)];
-          return (
-            <Shape
-              delay={key * 0.5}
-              repeatDelay={15}
-              xOffset={`${xOffset}%`}
-              yOffset={`${yOffset}%`}
-              key={key}
-              iconSrc={`${folder}${icon}`}
-            />
-          );
-        })}
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+            return (
+              <Shape
+                delay={key * 0.5}
+                repeatDelay={15}
+                xOffset={`${xOffset}%`}
+                yOffset={`${yOffset}%`}
+                key={key}
+                iconSrc={`${folder}${icon}`}
+              />
+            );
+          })}
+        </div>
       </div>
     </>
   );
