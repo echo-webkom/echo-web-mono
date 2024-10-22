@@ -6,7 +6,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { AnimatedIcons } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -48,7 +47,8 @@ export const metadata = {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
-  description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  description:
+    "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
   keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
   icons: {
     apple: "/apple-touch-icon.png",
@@ -78,10 +78,8 @@ export const viewport = {
 } satisfies Viewport;
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const isOctober = new Date().getMonth() === 9;
-
   return (
-    <html lang="no" data-theme={isOctober ? "halloween" : "default"} suppressHydrationWarning>
+    <html lang="no" suppressHydrationWarning>
       <head />
       <body
         className={cn(
@@ -92,19 +90,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <AnimatedIcons n={40}>
-          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-          <Providers>
-            {children}
-            <Toaster />
-            {/* <CookieBanner /> */}
-            <FeedbackBlob />
-            <TailwindIndicator />
-            <EasterEgg />
-          </Providers>
-          <Analytics />
-          <SpeedInsights />
-        </AnimatedIcons>
+        <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+        <Providers>
+          {children}
+          <Toaster />
+          {/* <CookieBanner /> */}
+          <FeedbackBlob />
+          <TailwindIndicator />
+          <EasterEgg />
+        </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
