@@ -30,7 +30,7 @@ export const MovieClubCard = async () => {
   return (
     <div className="flex justify-evenly">
       <div className="flex flex-col">
-        <div className="group relative h-[18rem] w-[12rem] lg:h-[24rem] lg:w-[16rem]">
+        <div className="group relative h-[18rem] w-[12rem] md:flex lg:h-[24rem] lg:w-[16rem]">
           <div>
             <Image
               className="rounded-md border"
@@ -60,38 +60,36 @@ export const MovieClubCard = async () => {
         </div>
       </div>
       {nextWeekMovie && (
-        <div>
-          <ul className="flex flex-col space-y-1 sm:space-y-8">
-            <div className="relative h-[9rem] w-[6rem] sm:invisible lg:h-[11rem] lg:w-[7rem] xl:visible">
+        <ul className="flex flex-col space-y-1 md:hidden xl:block">
+          <div className="relative h-[9rem] w-[6rem] lg:h-[11rem] lg:w-[7rem]">
+            <Image
+              className="rounded-md border"
+              fill
+              src={urlFor(nextWeekMovie.image).url()}
+              alt={`${nextWeekMovie.title} logo`}
+            />
+            <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
+              <li className="rounded-md bg-background p-2 text-xs opacity-90">
+                {shortDateNoTimeNoYear(nextWeekMovie.date)}
+              </li>
+            </div>
+          </div>
+          {nextNextWeekMovie && (
+            <div className="relative h-[9rem] w-[6rem] lg:w-[7rem] xl:h-[11rem]">
               <Image
                 className="rounded-md border"
                 fill
-                src={urlFor(nextWeekMovie.image).url()}
-                alt={`${nextWeekMovie.title} logo`}
+                src={urlFor(nextNextWeekMovie.image).url()}
+                alt={`${nextNextWeekMovie.title} logo`}
               />
               <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
                 <li className="rounded-md bg-background p-2 text-xs opacity-90">
-                  {shortDateNoTimeNoYear(nextWeekMovie.date)}
+                  {shortDateNoTimeNoYear(nextNextWeekMovie.date)}
                 </li>
               </div>
             </div>
-            {nextNextWeekMovie && (
-              <div className="relative h-[9rem] w-[6rem] sm:invisible lg:w-[7rem] xl:visible xl:h-[11rem]">
-                <Image
-                  className="rounded-md border"
-                  fill
-                  src={urlFor(nextNextWeekMovie.image).url()}
-                  alt={`${nextNextWeekMovie.title} logo`}
-                />
-                <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-                  <li className="rounded-md bg-background p-2 text-xs opacity-90">
-                    {shortDateNoTimeNoYear(nextNextWeekMovie.date)}
-                  </li>
-                </div>
-              </div>
-            )}
-          </ul>
-        </div>
+          )}
+        </ul>
       )}
     </div>
   );
