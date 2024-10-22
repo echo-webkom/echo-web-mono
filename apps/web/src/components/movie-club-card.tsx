@@ -60,8 +60,8 @@ export const MovieClubCard = async () => {
         </div>
       </div>
       {nextWeekMovie && (
-        <ul className="flex flex-col space-y-1 md:hidden">
-          <div className="relative h-[9rem] w-[6rem] md:collapse lg:h-[11rem] lg:w-[7rem] xl:visible">
+        <ul className="flex flex-col space-y-1 md:hidden xl:block">
+          <div className="relative h-[9rem] w-[6rem] lg:h-[11rem] lg:w-[7rem]">
             <Image
               className="rounded-md border"
               fill
@@ -75,7 +75,7 @@ export const MovieClubCard = async () => {
             </div>
           </div>
           {nextNextWeekMovie && (
-            <div className="relative h-[9rem] w-[6rem] md:collapse lg:w-[7rem] xl:visible xl:h-[11rem]">
+            <div className="relative h-[9rem] w-[6rem] lg:w-[7rem] xl:h-[11rem]">
               <Image
                 className="rounded-md border"
                 fill
