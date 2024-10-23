@@ -1,7 +1,7 @@
+import { type AllPostsQueryResult } from "@echo-webkom/cms/types";
 import { isBoard } from "@echo-webkom/lib";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { type AllPostsQueryResult } from "@/sanity.types";
 import { initials } from "@/utils/string";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 

@@ -1,5 +1,6 @@
+import { type AllPostsQueryResult } from "@echo-webkom/cms/types";
+
 import { type RSSItem } from "@/lib/rss";
-import { type AllPostsQueryResult } from "@/sanity.types";
 
 type Post = AllPostsQueryResult[number];
 

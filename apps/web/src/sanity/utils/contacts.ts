@@ -1,8 +1,7 @@
 import groq from "groq";
 
+import { type HappeningContactsQueryResult } from "@echo-webkom/cms/types";
 import { client } from "@echo-webkom/sanity";
-
-import { type HappeningContactsQueryResult } from "@/sanity.types";
 
 const happeningContactsQuery = groq`
 *[_type == "happening" && slug.current == $slug] {

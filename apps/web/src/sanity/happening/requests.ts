@@ -1,13 +1,13 @@
 import { subMinutes } from "date-fns";
 
-import { type HappeningType } from "@echo-webkom/lib";
-
-import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
 import {
   type AllHappeningsQueryResult,
   type HappeningQueryResult,
   type HomeHappeningsQueryResult,
-} from "@/sanity.types";
+} from "@echo-webkom/cms/types";
+import { type HappeningType } from "@echo-webkom/lib";
+
+import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
 import { sanityFetch } from "../client";
 import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
 
