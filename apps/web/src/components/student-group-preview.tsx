@@ -2,7 +2,7 @@ import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
-import { type StudentGroupsByTypeQueryResult } from "@/sanity.types";
+import { type StudentGroupsByTypeQueryResult } from "@echo-webkom/cms/types";
 
 type StudentGroupPreviewProps = {
   group: StudentGroupsByTypeQueryResult[number];

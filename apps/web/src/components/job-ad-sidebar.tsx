@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
+import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { urlFor } from "@echo-webkom/sanity";
 
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
-import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
 import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";

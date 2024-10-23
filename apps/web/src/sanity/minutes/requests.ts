@@ -1,4 +1,5 @@
-import { type AllMeetingMinuteQueryResult } from "@/sanity.types";
+import { type AllMeetingMinuteQueryResult } from "@echo-webkom/cms/types";
+
 import { sanityFetch } from "../client";
 import { allMeetingMinuteQuery } from "./queries";
 
