@@ -1,6 +1,7 @@
 import { isPast } from "date-fns";
 
-import { type JobAdsQueryResult } from "@/sanity.types";
+import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
+
 import { sanityFetch } from "../client";
 import { jobAdsQuery } from "./queries";
 

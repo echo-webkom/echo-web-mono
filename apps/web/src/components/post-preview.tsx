@@ -2,9 +2,9 @@ import Link from "next/link";
 import { addDays } from "date-fns";
 import removeMd from "remove-markdown";
 
+import { type AllPostsQueryResult } from "@echo-webkom/cms/types";
 import { isBoard } from "@echo-webkom/lib";
 
-import { type AllPostsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear } from "@/utils/date";
 import { Chip } from "./typography/chip";

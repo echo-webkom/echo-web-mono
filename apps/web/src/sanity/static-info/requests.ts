@@ -1,4 +1,5 @@
-import { type StaticInfoQueryResult } from "@/sanity.types";
+import { type StaticInfoQueryResult } from "@echo-webkom/cms/types";
+
 import { sanityFetch } from "../client";
 import { pageTypeToUrl } from "./mappers";
 import { staticInfoQuery } from "./queries";

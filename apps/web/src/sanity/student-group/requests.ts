@@ -1,9 +1,9 @@
-import { type StudentGroupType } from "@echo-webkom/lib";
-
 import {
   type StudentGroupBySlugQueryResult,
   type StudentGroupsByTypeQueryResult,
-} from "@/sanity.types";
+} from "@echo-webkom/cms/types";
+import { type StudentGroupType } from "@echo-webkom/lib";
+
 import { sanityFetch } from "../client";
 import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "./queries";
 
