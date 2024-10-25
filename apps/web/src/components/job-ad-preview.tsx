@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuBriefcase, LuCalendarClock, LuCoffee, LuPin } from "react-icons/lu";
 
+import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
 import { cn } from "@/utils/cn";
 import { shortDateNoTime } from "@/utils/date";

@@ -68,6 +68,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@echo-webkom/cms": "workspace:*",
     "@echo-webkom/tsconfig": "workspace:*",
     "@tailwindcss/forms": "0.5.9",
     "@tailwindcss/typography": "0.5.15",
