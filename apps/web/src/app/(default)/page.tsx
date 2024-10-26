@@ -76,9 +76,7 @@ export default async function HomePage() {
           transition={{ duration: 0.8 }}
         />
       </div>
-
       <ParticlesBackdrop />
-
       <Container>
         <div className="mb-24 mt-32 space-y-16">
           <div className="mx-auto max-w-screen-md text-center">

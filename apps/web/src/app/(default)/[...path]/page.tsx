@@ -9,9 +9,9 @@ import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/
 export const dynamicParams = false;
 
 type Props = {
-  params: {
+  params: Promise<{
     path: Array<string>;
-  };
+  }>;
 };
 
 export const generateStaticParams = async () => {
@@ -31,7 +31,8 @@ const getData = cache(async (path: Props["params"]["path"]) => {
   return page;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const page = await getData(params.path);
 
   return {
@@ -39,7 +40,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function StaticPage({ params }: Props) {
+export default async function StaticPage(props: Props) {
+  const params = await props.params;
   const page = await getData(params.path);
 
   return (

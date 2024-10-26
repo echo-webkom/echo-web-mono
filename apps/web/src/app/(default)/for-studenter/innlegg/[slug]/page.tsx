@@ -9,9 +9,9 @@ import { Heading } from "@/components/typography/heading";
 import { fetchPostBySlug } from "@/sanity/posts/requests";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
@@ -24,7 +24,8 @@ const getData = cache(async (slug: string) => {
   return post;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const post = await getData(params.slug);
 
   const authors = post.authors?.map((author) => {
@@ -39,7 +40,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage(props: Props) {
+  const params = await props.params;
   const post = await getData(params.slug);
 
   return (

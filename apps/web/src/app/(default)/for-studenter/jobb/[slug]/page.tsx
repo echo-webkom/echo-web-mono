@@ -9,9 +9,9 @@ import { Heading } from "@/components/typography/heading";
 import { fetchJobAdBySlug } from "@/sanity/job-ad";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: Props["params"]["slug"]) => {
@@ -24,7 +24,8 @@ const getData = cache(async (slug: Props["params"]["slug"]) => {
   return jobAd;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const { slug } = params;
 
   const jobAd = await getData(slug);
@@ -34,7 +35,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function JobAdPage({ params }: { params: { slug: string } }) {
+export default async function JobAdPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const jobAd = await getData(params.slug);
 
   return (

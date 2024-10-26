@@ -3,12 +3,13 @@ import { notFound, redirect } from "next/navigation";
 import { getHappeningTypeBySlug } from "@/sanity/happening/requests";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default async function EventRedirect({ params }: Props) {
+export default async function EventRedirect(props: Props) {
+  const params = await props.params;
   const { slug } = params;
 
   const type = await getHappeningTypeBySlug(slug);

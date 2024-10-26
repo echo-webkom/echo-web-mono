@@ -12,7 +12,8 @@ import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
-export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
+export default async function Page(props: { searchParams?: Promise<SearchParams> }) {
+  let searchParams = await props.searchParams;
   const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
   if (!searchParams) searchParams = { type: "all" };
 

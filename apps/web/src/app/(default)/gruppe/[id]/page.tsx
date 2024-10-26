@@ -19,12 +19,13 @@ import { AddUserToGroupDialog } from "./_components/add-user-to-group-dialog";
 import { GroupUserForm } from "./_components/group-user-form";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default async function ManageGroup({ params }: Props) {
+export default async function ManageGroup(props: Props) {
+  const params = await props.params;
   const user = await getUser();
 
   if (!user) {
