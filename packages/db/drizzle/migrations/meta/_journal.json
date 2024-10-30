@@ -176,6 +176,13 @@
       "when": 1729274291220,
       "tag": "0024_furry_shiver_man",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1730306884119,
+      "tag": "0025_empty_skin",
+      "breakpoints": true
     }
   ]
 }

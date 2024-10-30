@@ -44,7 +44,7 @@ type UserFormProps = {
     year?: number;
     hasReadTerms?: boolean;
     id: string;
-    birthday: Date;
+    birthday?: Date;
   };
   degrees: Array<Degree>;
 };
@@ -73,6 +73,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         degreeId: data.degree,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
+        birthday: data.birthday,
       });
 
       setIsLoading(false);

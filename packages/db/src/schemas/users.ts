@@ -8,6 +8,7 @@ import {
   text,
   timestamp,
   varchar,
+  date
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -39,6 +40,7 @@ export const users = pgTable(
     updatedAt: timestamp("updated_at").$onUpdate(now),
     createdAt: timestamp("created_at").$defaultFn(now),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
+    birthday: date("birthday", { mode:"date" })
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
