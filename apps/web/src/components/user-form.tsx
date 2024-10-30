@@ -4,13 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
+import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -23,6 +26,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select } from "./ui/select";
 
 const userSchema = z.object({
@@ -30,6 +34,7 @@ const userSchema = z.object({
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
+  birthday: z.date().optional(),
 });
 
 type UserFormProps = {
@@ -39,6 +44,7 @@ type UserFormProps = {
     year?: number;
     hasReadTerms?: boolean;
     id: string;
+    birthday: Date;
   };
   degrees: Array<Degree>;
 };
@@ -142,6 +148,41 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                 </Select>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="birthday">Bursdag</FormLabel>
+              <br></br>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "flex h-10 w-full justify-start rounded-md border-2 border-border bg-input px-3 py-2 text-sm font-semibold ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? format(field.value, "PPP") : <span>Legg til Bursdag</span>}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </FormItem>
           )}
         />
