@@ -184,6 +184,9 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   />
                 </PopoverContent>
               </Popover>
+              <FormDescription>
+                Del bursdagen din og få den vist på echo-skjermene i lesesalen🎉
+              </FormDescription>
             </FormItem>
           )}
         />
