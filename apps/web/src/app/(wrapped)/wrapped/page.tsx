@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Event0 } from "./cards/events";
+import { EventCards } from "./cards/events";
 import { useState } from "react";
 
 // ---------------------------
 
-const cards = [<Event0 />, <Event0 />];
+const cards = [...EventCards];
 
 // ---------------------------
 
