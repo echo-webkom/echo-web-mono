@@ -282,4 +282,32 @@
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
+
+  .bg-wrapped-purple {
+    background-color: #a484e9;
+  }
+
+  .bg-wrapped-blue {
+    background-color: #31bff3;
+  }
+
+  .bg-wrapped-pink {
+    background-color: #f4889a;
+  }
+
+  .bg-wrapped-orange {
+    background-color: #ffaf68;
+  }
+
+  .bg-wrapped-yellow {
+    background-color: #f6e683;
+  }
+
+  .bg-wrapped-green {
+    background-color: #79d45e;
+  }
+
+  .text-wrapped-black {
+    color: #171717;
+  }
 }
