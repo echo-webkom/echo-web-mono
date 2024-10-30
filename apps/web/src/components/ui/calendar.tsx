@@ -10,9 +10,36 @@ import { cn } from "@/utils/cn";
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+  const [month, setMonth] = React.useState(new Date().getMonth());
+  const [year, setYear] = React.useState(new Date().getFullYear());
+
+  // Array of month names for the dropdown
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Generate a range of years (e.g., from 1900 to the current year)
+  const years = Array.from({ length: 125 }, (_, i) => new Date().getFullYear() - i);
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      month={new Date(year, month)}
+      onMonthChange={(date) => {
+        setMonth(date.getMonth());
+        setYear(date.getFullYear());
+      }}
       className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
@@ -47,6 +74,32 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         ...classNames,
       }}
       components={{
+        Caption: () => (
+          <div className="flex items-center justify-center space-x-2 pt-1">
+            <select
+              className="bg-background text-sm font-medium"
+              value={month}
+              onChange={(e) => setMonth(Number(e.target.value))}
+            >
+              {months.map((monthName, index) => (
+                <option key={index} value={index}>
+                  {monthName}
+                </option>
+              ))}
+            </select>
+            <select
+              className="bg-background text-sm font-medium"
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
+            >
+              {years.map((yearOption) => (
+                <option key={yearOption} value={yearOption}>
+                  {yearOption}
+                </option>
+              ))}
+            </select>
+          </div>
+        ),
         IconLeft: ({ ...props }) => <LuChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <LuChevronRight className="h-4 w-4" />,
       }}
