@@ -23,7 +23,7 @@ function CardLayers<C extends number>({
   return (
     <>
       <motion.div
-        className={`${style} ${props.fgColor} z-50 font-bold text-wrapped-black flex items-center justify-center`}
+        className={`${style} ${props.fgColor} z-50 font-bold text-wrapped-black flex items-center justify-center shadow`}
       >
         {children}
       </motion.div>
@@ -49,7 +49,7 @@ function CardLayers<C extends number>({
           <motion.div
             style={{ zIndex: -index }}
             key={index}
-            className={`${style} ${col}`}
+            className={`${style} ${col} shadow`}
             variants={variants}
           ></motion.div>
         );
