@@ -145,16 +145,15 @@ export default async function GroupPage({ params }: Props) {
                   className="group flex flex-col gap-2 p-5 text-center"
                   key={member.profile?._id}
                 >
+                  <Avatar className="mx-auto">
+                    <AvatarImage src={image ? urlFor(image).url() : undefined} />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
                   <Dialog>
                     <DialogTrigger>
-                      <Avatar className="mx-auto">
-                        <AvatarImage src={image ? urlFor(image).url() : undefined} />
-                        <AvatarFallback>{initials}</AvatarFallback>
-                      </Avatar>
                       <p className="text-lg font-medium group-hover:underline">
                         {member.profile?.name}
                       </p>
-                      <p>{member.role}</p>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
@@ -191,6 +190,7 @@ export default async function GroupPage({ params }: Props) {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
+                  <p>{member.role}</p>
                 </div>
               );
             })}
