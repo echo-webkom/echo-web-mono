@@ -47,6 +47,7 @@ function CardLayers<C extends number>({
 
         return (
           <motion.div
+            style={{ zIndex: -index }}
             key={index}
             className={`${style} ${col}`}
             variants={variants}
