@@ -1,12 +1,15 @@
 import { motion, type Variants } from "framer-motion";
 
-type ArrayOfLength<T, L extends number> = [T, ...Array<T>] & { length: L };
+type ArrayOfLength<T, L extends number> =
+  | ([T, ...Array<T>] & { length: L })
+  | [];
 
 // C is number of layers. 0 means just foreground card for text.
 export type WrappedCardProps<C extends number> = {
   offX: ArrayOfLength<number, C>;
   offY: ArrayOfLength<number, C>;
   rotate: ArrayOfLength<number, C>;
+  scale: ArrayOfLength<number, C>;
   colors: ArrayOfLength<string, C>;
   fgColor: string;
 };
@@ -31,6 +34,7 @@ function CardLayers<C extends number>({
       {props.colors.map((col, index) => {
         const variants: Variants = {
           hidden: {
+            scale: 1,
             rotate: 0,
             x: 0,
             y: 0,
@@ -39,6 +43,7 @@ function CardLayers<C extends number>({
             rotate: props.rotate[index],
             x: props.offX[index],
             y: props.offY[index],
+            scale: props.scale[index],
             transition: {
               ease: "backOut",
             },
