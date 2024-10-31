@@ -280,7 +280,20 @@
     background-color: #79d45e;
   }
 
+  .bg-wrapped-black {
+    background-color: #171717;
+  }
+
   .text-wrapped-black {
     color: #171717;
+  }
+
+  .text-wrapped-white {
+    color: white;
+  }
+
+  .text-wrapped-grey {
+    color: #171717;
+    opacity: 0.7;
   }
 }
