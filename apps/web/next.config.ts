@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const config = {
+  output: "standalone",
+
   transpilePackages: [
     "@echo-webkom/db",
     "@echo-webkom/lib",
