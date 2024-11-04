@@ -49,7 +49,7 @@ importers:
         version: 0.2.12
       '@hono/node-server':
         specifier: 1.13.2
-        version: 1.13.2(hono@4.6.5)
+        version: 1.13.2(hono@4.6.8)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -57,8 +57,8 @@ importers:
         specifier: 0.33.0
         version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
       hono:
-        specifier: 4.6.5
-        version: 4.6.5
+        specifier: 4.6.8
+        version: 4.6.8
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -5865,8 +5865,8 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
-  hono@4.6.5:
-    resolution: {integrity: sha512-qsmN3V5fgtwdKARGLgwwHvcdLKursMd+YOt69eGpl1dUCJb8mCd7hZfyZnBYjxCegBG7qkJRQRUy2oO25yHcyQ==}
+  hono@4.6.8:
+    resolution: {integrity: sha512-f+2Ec9JAzabT61pglDiLJcF/DjiSefZkjCn9bzm1cYLGkD5ExJ3Jnv93ax9h0bn7UPLHF81KktoyjdQfWI2n1Q==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -11235,9 +11235,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.1': {}
 
-  '@hono/node-server@1.13.2(hono@4.6.5)':
+  '@hono/node-server@1.13.2(hono@4.6.8)':
     dependencies:
-      hono: 4.6.5
+      hono: 4.6.8
 
   '@hookform/resolvers@3.9.0(react-hook-form@7.52.1(react@18.3.1))':
     dependencies:
@@ -15090,7 +15090,7 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  hono@4.6.5: {}
+  hono@4.6.8: {}
 
   hosted-git-info@2.8.9: {}
 
