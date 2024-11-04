@@ -5,13 +5,11 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 export const whitelist = pgTable(
   "whitelist",
   {
-    email: text("email").notNull(),
-    expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
-    reason: text("reason").notNull(),
+    email: text().notNull(),
+    expiresAt: timestamp({ mode: "date" }).notNull(),
+    reason: text().notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.email] }),
-  }),
+  (table) => [primaryKey({ columns: [table.email] })],
 );
 
 export type Whitelist = InferSelectModel<typeof whitelist>;

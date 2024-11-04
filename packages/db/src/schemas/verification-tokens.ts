@@ -5,9 +5,9 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 export const verificationTokens = pgTable(
   "verification_token",
   {
-    identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
+    identifier: text().notNull(),
+    token: text().notNull(),
+    expires: timestamp({ mode: "date" }).notNull(),
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),

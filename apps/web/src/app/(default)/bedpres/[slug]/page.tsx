@@ -6,9 +6,9 @@ import { fetchHappeningBySlug } from "@/sanity/happening";
 import { norwegianDateString } from "@/utils/date";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
@@ -25,7 +25,8 @@ const getData = cache(async (slug: string) => {
 });
 
 export const generateMetadata = async ({ params }: Props) => {
-  const event = await getData(params.slug);
+  const slug = await params.then((p) => p.slug);
+  const event = await getData(slug);
 
   const regDate = event.registrationStart
     ? `Påmelding åpner ${norwegianDateString(new Date(event.registrationStart)).toLowerCase()}.`
@@ -39,7 +40,8 @@ export const generateMetadata = async ({ params }: Props) => {
 };
 
 export default async function BedpresPage({ params }: Props) {
-  const event = await getData(params.slug);
+  const slug = await params.then((p) => p.slug);
+  const event = await getData(slug);
 
   return <EventPage event={event} />;
 }

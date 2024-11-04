@@ -23,7 +23,7 @@ export const Reveal = ({
   children,
 }: RevealProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref as React.RefObject<Element>, { once: true });
 
   return (
     <div

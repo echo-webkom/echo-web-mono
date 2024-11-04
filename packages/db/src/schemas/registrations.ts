@@ -7,24 +7,22 @@ import { answers, happenings, registrationStatusEnum, users } from ".";
 export const registrations = pgTable(
   "registration",
   {
-    userId: text("user_id")
+    userId: text()
       .notNull()
       .references(() => users.id, { onDelete: "no action" }),
-    happeningId: text("happening_id")
+    happeningId: text()
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    status: registrationStatusEnum("status").notNull().default("waiting"),
-    unregisterReason: text("unregister_reason"),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    prevStatus: registrationStatusEnum("prev_status"),
-    changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
-    changedBy: text("changed_by"),
+    status: registrationStatusEnum().notNull().default("waiting"),
+    unregisterReason: text(),
+    createdAt: timestamp().notNull().defaultNow(),
+    prevStatus: registrationStatusEnum(),
+    changedAt: timestamp().$onUpdate(() => new Date()),
+    changedBy: text(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.happeningId] })],
 );
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({

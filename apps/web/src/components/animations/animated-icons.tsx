@@ -24,7 +24,10 @@ export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
   return (
     <div className="h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      <div className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-full overflow-hidden">
+      <div
+        className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-full overflow-hidden"
+        suppressHydrationWarning
+      >
         {keys.map((key) => {
           const xOffset = Math.floor(Math.random() * 95);
           const yOffset = Math.floor(Math.random() * 95);
@@ -134,6 +137,7 @@ export const AnimatedSnowFlake = ({
   color,
 }: AnimatedSnowFlakeProps) => (
   <motion.div
+    suppressHydrationWarning
     style={{
       position: "absolute",
       left: offset,

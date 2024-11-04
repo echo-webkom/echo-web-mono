@@ -7,15 +7,13 @@ import { users } from ".";
 export const sessions = pgTable(
   "session",
   {
-    sessionToken: text("session_token").notNull(),
-    userId: text("user_id")
+    sessionToken: text().notNull(),
+    userId: text()
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
+    expires: timestamp({ mode: "date" }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.sessionToken] }),
-  }),
+  (table) => [primaryKey({ columns: [table.sessionToken] })],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

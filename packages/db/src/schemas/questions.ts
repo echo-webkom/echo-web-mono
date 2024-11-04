@@ -12,21 +12,19 @@ type Option = {
 export const questions = pgTable(
   "question",
   {
-    id: varchar("id", { length: 255 }).notNull(),
-    title: text("title").notNull(),
-    required: boolean("required").notNull().default(false),
-    type: questionTypeEnum("type").notNull().default("text"),
-    isSensitive: boolean("is_sensitive").notNull().default(false),
-    options: json("options").$type<Array<Option>>(),
-    happeningId: varchar("happening_id", { length: 255 })
+    id: varchar({ length: 255 }).notNull(),
+    title: text().notNull(),
+    required: boolean().notNull().default(false),
+    type: questionTypeEnum().notNull().default("text"),
+    isSensitive: boolean().notNull().default(false),
+    options: json().$type<Array<Option>>(),
+    happeningId: varchar({ length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (table) => [primaryKey({ columns: [table.id] })],
 );
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({

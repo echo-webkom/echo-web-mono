@@ -7,20 +7,18 @@ import { groups, happenings } from ".";
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",
   {
-    happeningId: varchar("happening_id", { length: 255 })
+    happeningId: varchar({ length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    groupId: varchar("group_id", { length: 255 })
+    groupId: varchar({ length: 255 })
       .notNull()
       .references(() => groups.id, {
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.happeningId, table.groupId] })],
 );
 
 export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({

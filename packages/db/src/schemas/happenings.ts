@@ -7,20 +7,17 @@ import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRa
 export const happenings = pgTable(
   "happening",
   {
-    id: varchar("id", { length: 255 }).notNull(),
-    slug: varchar("slug", { length: 255 }).notNull().unique(),
-    title: varchar("title", { length: 255 }).notNull(),
-    type: happeningTypeEnum("type").notNull().default("event"),
-    date: timestamp("date"),
-    registrationGroups: json("registration_groups").$type<Array<string>>(),
-    registrationStartGroups: timestamp("registration_start_groups"),
-    registrationStart: timestamp("registration_start"),
-    registrationEnd: timestamp("registration_end"),
+    id: varchar({ length: 255 }).notNull(),
+    slug: varchar({ length: 255 }).notNull().unique(),
+    title: varchar({ length: 255 }).notNull(),
+    type: happeningTypeEnum().notNull().default("event"),
+    date: timestamp(),
+    registrationGroups: json().$type<Array<string>>(),
+    registrationStartGroups: timestamp(),
+    registrationStart: timestamp(),
+    registrationEnd: timestamp(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-    slugIdx: index("slug_idx").on(table.slug),
-  }),
+  (table) => [primaryKey({ columns: [table.id] }), index("slug_idx").on(table.slug)],
 );
 
 export const happeningsRelations = relations(happenings, ({ many }) => ({

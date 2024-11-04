@@ -11,26 +11,24 @@ type AnswerCol = {
 export const answers = pgTable(
   "answer",
   {
-    userId: text("user_id")
+    userId: text()
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    happeningId: varchar("happening_id", { length: 255 })
+    happeningId: varchar({ length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    questionId: varchar("question_id", { length: 255 })
+    questionId: varchar({ length: 255 })
       .notNull()
       .references(() => questions.id, {
         onDelete: "cascade",
       }),
-    answer: json("answer").$type<AnswerCol>(),
+    answer: json().$type<AnswerCol>(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.happeningId, table.questionId] })],
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({

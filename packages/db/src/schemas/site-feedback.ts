@@ -8,19 +8,17 @@ import { feedbackCategoryEnum } from "./enums";
 export const siteFeedback = pgTable(
   "site_feedback",
   {
-    id: varchar("id")
+    id: varchar()
       .notNull()
       .$defaultFn(() => nanoid()),
-    name: varchar("name", { length: 255 }),
-    email: varchar("email", { length: 255 }),
-    message: text("message").notNull(),
-    category: feedbackCategoryEnum("category").notNull(),
-    isRead: boolean("is_read").notNull().default(false),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    name: varchar({ length: 255 }),
+    email: varchar({ length: 255 }),
+    message: text().notNull(),
+    category: feedbackCategoryEnum().notNull(),
+    isRead: boolean().notNull().default(false),
+    createdAt: timestamp().notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (table) => [primaryKey({ columns: [table.id] })],
 );
 
 export type SiteFeedback = InferSelectModel<typeof siteFeedback>;

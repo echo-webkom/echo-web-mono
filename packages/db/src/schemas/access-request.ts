@@ -2,10 +2,10 @@ import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const accessRequests = pgTable("access_request", {
-  id: text("id").primaryKey(),
-  email: text("email").unique().notNull(),
-  reason: text("reason").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  id: text().primaryKey(),
+  email: text().unique().notNull(),
+  reason: text().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
 });
 
 export type AccessRequest = InferSelectModel<typeof accessRequests>;

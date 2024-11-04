@@ -8,21 +8,19 @@ import { happenings } from ".";
 export const spotRanges = pgTable(
   "spot_range",
   {
-    id: varchar("id", { length: 255 })
+    id: varchar({ length: 255 })
       .notNull()
       .$defaultFn(() => nanoid()),
-    happeningId: varchar("happening_id", { length: 255 })
+    happeningId: varchar({ length: 255 })
       .notNull()
       .references(() => happenings.id, {
         onDelete: "cascade",
       }),
-    spots: integer("spots").notNull(),
-    minYear: integer("min_year").notNull(),
-    maxYear: integer("max_year").notNull(),
+    spots: integer().notNull(),
+    minYear: integer().notNull(),
+    maxYear: integer().notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (table) => [primaryKey({ columns: [table.id] })],
 );
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({

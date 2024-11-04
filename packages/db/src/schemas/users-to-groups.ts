@@ -7,21 +7,19 @@ import { groups, users } from ".";
 export const usersToGroups = pgTable(
   "users_to_groups",
   {
-    userId: text("user_id")
+    userId: text()
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    groupId: varchar("group_id", { length: 255 })
+    groupId: varchar({ length: 255 })
       .notNull()
       .references(() => groups.id, {
         onDelete: "cascade",
       }),
-    isLeader: boolean("is_leader").notNull().default(false),
+    isLeader: boolean().notNull().default(false),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.groupId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.groupId] })],
 );
 
 export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({

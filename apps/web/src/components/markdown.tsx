@@ -73,6 +73,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
               <code
                 className={cn(
                   "rounded bg-gray-200 px-1 py-0.5 font-mono text-gray-700 dark:bg-wave dark:text-gray-100",
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   className,
                 )}
                 {...props}
@@ -84,6 +85,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           blockquote: ({ children, className, ...props }) => {
             return (
               <blockquote
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 className={cn("border-l-4 border-muted py-4 pl-4 italic", className)}
                 {...props}
               >
@@ -101,10 +103,12 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             return <ListItem {...props}>{children}</ListItem>;
           },
           a: ({ children, href, ...props }) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             const isExternal = href?.startsWith("http");
             const classNames = cn(
               "transition-colors underline font-medium duration-200 after:content-['_↗'] hover:text-blue-500",
               {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 "after:content-['_↗']": isExternal,
               },
             );
@@ -113,6 +117,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
               return (
                 <a
                   className={classNames}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   href={href ?? ""}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -124,6 +129,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             }
 
             return (
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               <Link className={classNames} href={href ?? ""} {...props}>
                 {children}
               </Link>
@@ -132,16 +138,20 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           img: ({ src, alt, className, ...props }) => {
             return (
               <Image
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 src={src ?? ""}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 alt={alt ?? ""}
                 {...props}
                 width="600"
                 height="400"
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 className={cn("mx-auto h-auto max-w-full", className)}
               />
             );
           },
           hr: ({ className, ...props }) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             return <hr className={cn("my-8 border-t-border", className)} {...props} />;
           },
         }}

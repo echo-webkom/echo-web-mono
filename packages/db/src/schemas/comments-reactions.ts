@@ -7,14 +7,12 @@ import { commentReactionType } from "./enums";
 export const commentsReactions = pgTable(
   "comments_reactions",
   {
-    commentId: text("comment_id").notNull(),
-    userId: text("user_id").notNull(),
-    type: commentReactionType("type").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    commentId: text().notNull(),
+    userId: text().notNull(),
+    type: commentReactionType().notNull(),
+    createdAt: timestamp().notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.commentId, table.userId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.commentId, table.userId] })],
 );
 
 export const commentsActionsRelations = relations(commentsReactions, ({ one }) => ({

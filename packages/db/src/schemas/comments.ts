@@ -7,21 +7,19 @@ import { commentsReactions, users } from ".";
 export const comments = pgTable(
   "comment",
   {
-    id: text("id").notNull().primaryKey().$defaultFn(nanoid),
-    postId: text("post_id").notNull(),
-    parentCommentId: text("parent_comment_id"),
-    userId: text("user_id").references(() => users.id, {
+    id: text().notNull().primaryKey().$defaultFn(nanoid),
+    postId: text().notNull(),
+    parentCommentId: text(),
+    userId: text().references(() => users.id, {
       onDelete: "set null",
     }),
-    content: text("content").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at")
+    content: text().notNull(),
+    createdAt: timestamp().notNull().defaultNow(),
+    updatedAt: timestamp()
       .notNull()
       .$onUpdateFn(() => new Date()),
   },
-  (t) => ({
-    postIdx: index("post_idx").on(t.postId),
-  }),
+  (t) => [index("post_idx").on(t.postId)],
 );
 
 export const commentsInsert = relations(comments, ({ one, many }) => ({

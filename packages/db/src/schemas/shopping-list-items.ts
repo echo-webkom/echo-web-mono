@@ -6,14 +6,14 @@ import { users } from ".";
 import { usersToShoppingListItems } from "./users-to-shopping-list-items";
 
 export const shoppingListItems = pgTable("shopping_list_item", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  userId: text("user_id")
+  id: uuid().defaultRandom().primaryKey(),
+  userId: text()
     .notNull()
     .references(() => users.id, {
       onDelete: "cascade",
     }),
-  name: text("name").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  name: text().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
 });
 
 export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({

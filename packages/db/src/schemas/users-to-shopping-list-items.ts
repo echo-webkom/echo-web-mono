@@ -7,19 +7,17 @@ import { shoppingListItems, users } from ".";
 export const usersToShoppingListItems = pgTable(
   "users_to_shopping_list_items",
   {
-    userId: text("user_id")
+    userId: text()
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    itemId: uuid("item_id")
+    itemId: uuid()
       .notNull()
       .references(() => shoppingListItems.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
+    createdAt: timestamp().notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.itemId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.itemId] })],
 );
 
 export const usersToShoppingListItemsRelations = relations(usersToShoppingListItems, ({ one }) => ({

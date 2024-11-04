@@ -7,20 +7,18 @@ import { strikeInfos, users } from ".";
 export const strikes = pgTable(
   "strike",
   {
-    id: serial("id").notNull().primaryKey(),
-    userId: text("user_id")
+    id: serial().notNull().primaryKey(),
+    userId: text()
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    strikeInfoId: uuid("strike_info_id")
+    strikeInfoId: uuid()
       .notNull()
       .references(() => strikeInfos.id, { onDelete: "cascade" }),
-    isDeleted: boolean("is_deleted").notNull().default(false),
+    isDeleted: boolean().notNull().default(false),
   },
-  (table) => ({
-    userIdx: index("user_idx").on(table.userId, table.id),
-  }),
+  (table) => [index("user_idx").on(table.userId, table.id)],
 );
 
 export const strikesRelations = relations(strikes, ({ one }) => ({
