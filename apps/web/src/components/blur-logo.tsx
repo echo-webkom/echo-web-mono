@@ -10,6 +10,7 @@ import { cn } from "@/utils/cn";
 export type BlurLogoProps = ComponentPropsWithoutRef<typeof motion.div> & {
   width: number;
   height: number;
+  className?: string;
 };
 
 export const BlurLogo = ({ width, height, className, ...rest }: BlurLogoProps) => {

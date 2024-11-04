@@ -14,12 +14,13 @@ import { isHost } from "@/lib/memberships";
 import { RegistrationTable } from "./_components/registration-table";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default async function EventDashboard({ params }: Props) {
+export default async function EventDashboard(props: Props) {
+  const params = await props.params;
   const { slug } = params;
 
   const happening = await getFullHappening(slug);

@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { fetchMinuteById } from "@/sanity/minutes/requests";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 const getData = cache(async (id: string) => {
@@ -23,14 +23,16 @@ const getData = cache(async (id: string) => {
   return minute;
 });
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const { title } = await getData(params.id);
   return {
     title,
   };
 };
 
-export default async function MinutePage({ params }: Props) {
+export default async function MinutePage(props: Props) {
+  const params = await props.params;
   const minute = await getData(params.id);
 
   return (
