@@ -2,8 +2,6 @@ import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
 import { AnimatedIcons } from "@/components/animations/animated-icons";
@@ -102,8 +100,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <TailwindIndicator />
             <EasterEgg />
           </Providers>
-          <Analytics />
-          <SpeedInsights />
         </AnimatedIcons>
       </body>
     </html>
