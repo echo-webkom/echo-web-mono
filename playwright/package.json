@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@playwright/test": "1.48.1",
+    "@playwright/test": "1.48.2",
     "@types/node": "20.17.1",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.1",
