@@ -5,10 +5,6 @@ import { Happening } from "@/sanity.types";
 
 export const getInvitations = async (userId: string) => {
   return await apiServer
-    .get("/invitations", {
-      json: {
-        userId: userId,
-      },
-    })
+    .get(`invitations/${userId}`)
     .json<Array<Invitation & { happening: Happening }>>();
 };
