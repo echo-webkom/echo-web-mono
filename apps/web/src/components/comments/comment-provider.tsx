@@ -2,12 +2,22 @@
 
 import { createContext, useContext, useState } from "react";
 
+type FixedCommentReaction = {
+  commentId: string;
+  userId: string;
+  type: "like" | "dislike";
+};
+
 export type CommentContextProps = {
   commentId: string;
   postId: string;
   userId: string | null;
+  collapsedComments: Array<string>;
+  collapseComment: (commentId: string) => void;
+  expandComment: (commentId: string) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  reactions: Array<FixedCommentReaction>;
 };
 
 export const CommentContext = createContext<CommentContextProps | undefined>(undefined);
@@ -26,7 +36,7 @@ export type CommentProviderProps = {
   commentId: string;
   postId: string;
   userId: string | null;
-  isOpen: boolean;
+  reactions: Array<FixedCommentReaction>;
   children: React.ReactNode;
 };
 
@@ -35,12 +45,33 @@ export const CommentProvider = ({
   commentId,
   postId,
   userId,
-  isOpen: initialIsOpen = false,
+  reactions,
 }: CommentProviderProps) => {
-  const [isOpen, setIsOpen] = useState(initialIsOpen);
+  const [collapsedComments, setCollapsedComments] = useState<Array<string>>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const collapseComment = (commentId: string) => {
+    setCollapsedComments((prev) => [...prev, commentId]);
+  };
+
+  const expandComment = (commentId: string) => {
+    setCollapsedComments((prev) => prev.filter((id) => id !== commentId));
+  };
 
   return (
-    <CommentContext.Provider value={{ commentId, postId, userId, isOpen, setIsOpen }}>
+    <CommentContext.Provider
+      value={{
+        commentId,
+        postId,
+        userId,
+        collapsedComments,
+        collapseComment,
+        expandComment,
+        isOpen,
+        reactions,
+        setIsOpen,
+      }}
+    >
       {children}
     </CommentContext.Provider>
   );

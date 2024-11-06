@@ -1,5 +1,5 @@
 {
-  "id": "c1bc1b45-f7db-489e-a785-26dc83e9e230",
+  "id": "6284cd05-cc46-4202-b67c-b437bc8907d8",
   "prevId": "9e46921d-c449-4b15-a371-a2a758d21348",
   "version": "7",
   "dialect": "postgresql",
@@ -223,6 +223,50 @@
             "user_id",
             "happening_id",
             "question_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.comments_reactions": {
+      "name": "comments_reactions",
+      "schema": "",
+      "columns": {
+        "comment_id": {
+          "name": "comment_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "comment_action",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "comments_reactions_comment_id_user_id_pk": {
+          "name": "comments_reactions_comment_id_user_id_pk",
+          "columns": [
+            "comment_id",
+            "user_id"
           ]
         }
       },
@@ -1498,84 +1542,17 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
-    },
-    "public.invitation": {
-      "name": "invitation",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "happening_id": {
-          "name": "happening_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "timeout": {
-          "name": "timeout",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "response": {
-          "name": "response",
-          "type": "inviteResponse",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'pending'"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "invitation_happening_id_happening_id_fk": {
-          "name": "invitation_happening_id_happening_id_fk",
-          "tableFrom": "invitation",
-          "tableTo": "happening",
-          "columnsFrom": [
-            "happening_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "invitation_user_id_user_id_fk": {
-          "name": "invitation_user_id_user_id_fk",
-          "tableFrom": "invitation",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
     }
   },
   "enums": {
+    "public.comment_action": {
+      "name": "comment_action",
+      "schema": "public",
+      "values": [
+        "like",
+        "dislike"
+      ]
+    },
     "public.degree_type": {
       "name": "degree_type",
       "schema": "public",
@@ -1603,16 +1580,6 @@
         "bedpres",
         "event",
         "external"
-      ]
-    },
-    "public.inviteResponse": {
-      "name": "inviteResponse",
-      "schema": "public",
-      "values": [
-        "pending",
-        "accepted",
-        "declined",
-        "timed out"
       ]
     },
     "public.question_type": {

@@ -1,4 +1,5 @@
-import { type MoviesQueryResult } from "@/sanity.types";
+import { type MoviesQueryResult } from "@echo-webkom/cms/types";
+
 import { sanityFetch } from "../client";
 import { moviesQuery } from "./queries";
 

@@ -5,7 +5,6 @@ import { and, eq } from "drizzle-orm";
 import { comments } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { revalidateComments } from "@/data/comments/revalidate";
 import { getUser } from "@/lib/get-user";
 
 export const deleteCommentAction = async (body: FormData) => {
@@ -33,28 +32,16 @@ export const deleteCommentAction = async (body: FormData) => {
     })
     .then((res) => !!res);
 
-  let postId: string | undefined = undefined;
-
   if (hasChildren) {
-    postId = await db
+    await db
       .update(comments)
       .set({
         content: "[slettet]",
         userId: null,
       })
-      .where(eq(comments.id, id))
-      .returning()
-      .then((res) => res[0]?.postId);
+      .where(eq(comments.id, id));
   } else {
-    postId = await db
-      .delete(comments)
-      .where(eq(comments.id, id))
-      .returning()
-      .then((res) => res[0]?.postId);
-  }
-
-  if (postId) {
-    revalidateComments(postId);
+    await db.delete(comments).where(eq(comments.id, id));
   }
 
   return {

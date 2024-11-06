@@ -9,15 +9,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sanity/client": "6.22.0",
+    "@sanity/client": "6.22.2",
     "@sanity/image-url": "1.0.2"
   },
   "devDependencies": {
     "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.16.5",
+    "@types/node": "20.17.1",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.6.2"
+    "typescript": "5.6.3"
   },
   "eslintConfig": {
     "root": true,

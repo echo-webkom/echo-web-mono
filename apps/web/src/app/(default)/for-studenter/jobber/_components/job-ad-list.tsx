@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
+import type { JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { type JobType } from "@echo-webkom/lib";
 
 import { Container } from "@/components/container";
@@ -11,7 +13,6 @@ import { Text } from "@/components/typography/text";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { type JobAdsQueryResult } from "@/sanity.types";
 import { jobTypeString } from "@/sanity/job-ad";
 
 type JobAdListProps = {
@@ -132,6 +133,14 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
       <Text>
         Her finner du en oversikt over alle stillingsannonsene vi har tilgjengelig. Du kan filtrere
         på sted, stillingstype og bedrift for å finne stillingen som passer best for deg.
+      </Text>
+
+      <Text>
+        Ønsker du å legge ut en stillingsannonse? Les mer om hvordan du kan gjøre det{" "}
+        <Link className="text-blue-500 hover:underline" href="/for-bedrifter/stillingsutlysninger">
+          her
+        </Link>
+        .
       </Text>
 
       <div className="flex flex-col items-center gap-4 md:flex-row">

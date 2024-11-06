@@ -3,11 +3,20 @@ import { and, eq, gte, lte, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
+import {
+  AnswerInsert,
+  answers,
+  comments,
+  commentsReactions,
+  registrations,
+  users,
+} from "@echo-webkom/db/schemas";
 
+import { fitsInSpotrange, isAvailableSpot } from "@/utils/is-available-spot";
+import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { getCorrectSpotrange } from "../utils/correct-spot-range";
+import { findCorrectSpotRange } from "../utils/find-correct-spot-range";
 import { parseJson } from "../utils/json";
 
 const app = new Hono();
@@ -26,6 +35,7 @@ app.get("/admin/comments/:id", admin(), async (c) => {
           image: true,
         },
       },
+      reactions: true,
     },
   });
 
@@ -55,6 +65,44 @@ app.post("/admin/comments", admin(), async (c) => {
     userId,
     parentCommentId,
   });
+
+  return c.json({ success: true });
+});
+
+app.post("/admin/comments/:id/reaction", admin(), async (c) => {
+  const { ok, json } = await parseJson(
+    c,
+    z.object({
+      commentId: z.string(),
+      userId: z.string(),
+    }),
+  );
+
+  if (!ok) {
+    return c.json({ error: "Invalid data" }, 400);
+  }
+
+  const existingReaction = await db.query.commentsReactions.findFirst({
+    where: (reaction, { eq }) =>
+      and(eq(reaction.commentId, json.commentId), eq(reaction.userId, json.userId)),
+  });
+
+  if (!existingReaction) {
+    await db.insert(commentsReactions).values({
+      commentId: json.commentId,
+      userId: json.userId,
+      type: "like",
+    });
+  } else {
+    await db
+      .delete(commentsReactions)
+      .where(
+        and(
+          eq(commentsReactions.commentId, json.commentId),
+          eq(commentsReactions.userId, json.userId),
+        ),
+      );
+  }
 
   return c.json({ success: true });
 });
@@ -237,9 +285,10 @@ app.post("/admin/register", admin(), async (c) => {
    *
    * If user is not in any spot range, return error
    */
-  const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
+  const userIsEligible =
+    spotRanges.some((spotRange) => fitsInSpotrange(user, spotRange)) || canSkipSpotRange;
 
-  if (!userSpotRange) {
+  if (!userIsEligible) {
     console.error("User is not in any spot range", {
       userId,
       happeningId,
@@ -256,12 +305,7 @@ app.post("/admin/register", admin(), async (c) => {
   /**
    * Check if all questions are answered
    */
-  const allQuestionsAnswered = happening.questions.every((question) => {
-    const questionExists = questions.find((q) => q.questionId === question.id);
-    const questionAnswer = questionExists?.answer;
-
-    return question.required ? !!questionAnswer : true;
-  });
+  const allQuestionsAnswered = validateQuestions(happening.questions, questions);
 
   if (!allQuestionsAnswered) {
     console.error("Not all questions are answered", {
@@ -287,20 +331,17 @@ app.post("/admin/register", admin(), async (c) => {
         .where(
           and(
             eq(registrations.happeningId, happeningId),
-            lte(users.year, userSpotRange.maxYear),
-            gte(users.year, userSpotRange.minYear),
             or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
           ),
         )
         .leftJoin(users, eq(registrations.userId, users.id));
 
-      const isInfiniteSpots = userSpotRange.spots === 0;
-      const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
+      const isRegistered = isAvailableSpot(spotRanges, regs, user) || canSkipSpotRange;
 
       const registration = await tx
         .insert(registrations)
         .values({
-          status: isWaitlisted ? "waiting" : "registered",
+          status: isRegistered ? "registered" : "waiting",
           happeningId,
           userId,
           changedBy: null,
@@ -309,14 +350,14 @@ app.post("/admin/register", admin(), async (c) => {
         .onConflictDoUpdate({
           target: [registrations.happeningId, registrations.userId],
           set: {
-            status: isWaitlisted ? "waiting" : "registered",
+            status: isRegistered ? "registered" : "waiting",
           },
         })
         .then((res) => res[0] ?? null);
 
       return {
         registration,
-        isWaitlisted,
+        isWaitlisted: !isRegistered,
       };
     },
     {
@@ -359,6 +400,23 @@ app.post("/admin/register", admin(), async (c) => {
     success: true,
     message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
   });
+});
+
+app.get("/admin/whitelist", admin(), async (c) => {
+  const whitelist = await db.query.whitelist
+    .findMany()
+    .then((res) =>
+      res.sort((a, b) => new Date(a.expiresAt).getTime() - new Date(b.expiresAt).getTime()),
+    )
+    .then((res) => res.filter((row) => isFuture(row.expiresAt)));
+
+  return c.json(whitelist);
+});
+
+app.get("/admin/access-requests", admin(), async (c) => {
+  const accessRequests = await db.query.accessRequests.findMany();
+
+  return c.json(accessRequests);
 });
 
 export default app;

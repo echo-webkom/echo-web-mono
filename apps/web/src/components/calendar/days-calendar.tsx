@@ -86,15 +86,20 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
         >
           {days.map((day) => {
             const isToday = isSameDay(day, new Date());
-
-            const eventsThisDay = events.filter((event) => {
-              return event.endDate
-                ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
-                : isSameDay(event.date, day);
-            });
+            const eventsThisDay = events
+              .filter((event) => {
+                return event.endDate
+                  ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                  : isSameDay(event.date, day);
+              })
+              .sort((a, b) => {
+                if (a.endDate && !b.endDate) return -1;
+                if (!a.endDate && b.endDate) return 1;
+                return 0;
+              });
 
             return (
-              <div key={day.toString()}>
+              <div key={day.toString()} className="bg-background">
                 <div className="flex flex-col gap-2">
                   <div className="flex h-16 flex-col items-center justify-center border-b-2 bg-muted py-2 font-medium">
                     {isToday ? (
@@ -107,15 +112,16 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                     )}
                   </div>
 
-                  <ul className="flex flex-col gap-1 px-1">
+                  <ul className="flex flex-col px-1">
                     {eventsThisDay.map((event) => {
                       return (
                         <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                           <HoverCardTrigger asChild>
                             <div
-                              className={cn("overflow-hidden border-l-4 p-2", {
+                              className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
                                 "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary": event.type === "event",
+                                "border-secondary hover:bg-secondary hover:dark:text-muted":
+                                  event.type === "event",
                                 "border-pink-400 hover:bg-pink-400": event.type === "movie",
                               })}
                             >

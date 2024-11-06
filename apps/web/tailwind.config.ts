@@ -99,6 +99,11 @@ export default {
           hover: "var(--feide-hover)",
           dark: "var(--feide-dark)",
         },
+        footer: {
+          DEFAULT: "var(--footer)",
+          border: "var(--footer-border)",
+          foreground: "var(--footer-foreground)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

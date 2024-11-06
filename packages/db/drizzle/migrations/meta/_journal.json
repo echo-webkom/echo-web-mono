@@ -173,15 +173,8 @@
     {
       "idx": 24,
       "version": "7",
-      "when": 1727886675436,
-      "tag": "0024_lyrical_screwball",
-      "breakpoints": true
-    },
-    {
-      "idx": 25,
-      "version": "7",
-      "when": 1728047675762,
-      "tag": "0025_salty_grey_gargoyle",
+      "when": 1729274291220,
+      "tag": "0024_furry_shiver_man",
       "breakpoints": true
     }
   ]
