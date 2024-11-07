@@ -1,4 +1,5 @@
 import { motion, type Variants } from "framer-motion";
+import Image from "next/image";
 
 type ArrayOfLength<T, L extends number> =
   | ([T, ...Array<T>] & { length: L })
@@ -12,6 +13,7 @@ export type WrappedCardProps<C extends number> = {
   scale: ArrayOfLength<number, C>;
   colors: ArrayOfLength<string, C>;
   fgColor: string;
+  noParticles?: boolean;
 };
 
 function CardLayers<C extends number>({
@@ -63,6 +65,113 @@ function CardLayers<C extends number>({
   );
 }
 
+function CardBackdrop() {
+  const length = 10 + Math.floor(Math.random() * 4);
+  return (
+    <>
+      <motion.div
+        initial={{ rotate: 0 }}
+        animate={{ rotate: 10 }}
+        transition={{
+          duration: 10,
+        }}
+        className="absolute top-1/2 left-1/2 -z-50"
+      >
+        {[...new Array(length).keys()].map((_, index) => {
+          const angle = (((360 / length) * (index + 1)) / 360) * Math.PI * 2;
+          const dist = 600;
+
+          return (
+            <Particle
+              key={index}
+              x={Math.cos(angle) * dist}
+              y={Math.sin(angle) * dist}
+              duration={Math.random() * 3}
+            />
+          );
+        })}
+        {[...new Array(length).keys()].map((_, index) => {
+          const angle = (((360 / length) * (index + 1)) / 360) * Math.PI * 2;
+          const dist = 800;
+
+          return (
+            <Particle
+              key={index}
+              x={Math.cos(angle) * dist}
+              y={Math.sin(angle) * dist}
+              duration={Math.random() * 2}
+            />
+          );
+        })}
+        {[...new Array(length * 2).keys()].map((_, index) => {
+          const angle =
+            (((360 / (length * 2)) * (index + 1)) / 360) * Math.PI * 2;
+          const dist = 1000;
+
+          return (
+            <Particle
+              key={index}
+              x={Math.cos(angle) * dist}
+              y={Math.sin(angle) * dist}
+              duration={Math.random() * 3}
+            />
+          );
+        })}
+      </motion.div>
+    </>
+  );
+}
+
+function Particle({
+  x,
+  y,
+  duration,
+}: {
+  x: number;
+  y: number;
+  duration: number;
+}) {
+  const images = ["star", "circle", "square", "triangle"];
+  return (
+    <>
+      <motion.div
+        className="absolute w-10 h-10"
+        initial={{
+          x: 0,
+          y: 0,
+          rotate: 0,
+          opacity: 0,
+        }}
+        animate={{
+          x: [Math.floor(x / 1.5), Math.floor(x)],
+          y: [Math.floor(y / 1.5), Math.floor(y)],
+          opacity: [0, 0.1, 1, 0],
+          rotate: 360,
+        }}
+        exit={{
+          opacity: [null, 0],
+          transition: {
+            duration: 0.05,
+          },
+        }}
+        transition={{
+          duration: 7 + duration,
+          times: [0, 0.05, 0.9, 1],
+          ease: "linear",
+        }}
+      >
+        <Image
+          src={`/wrapped/${images[Math.floor(Math.random() * images.length)]}.png`}
+          alt=""
+          className="opacity-20"
+          width={500}
+          height={500}
+        />
+      </motion.div>
+    </>
+  );
+}
+
 export function WrappedCard<C extends number>({
   props,
   children,
@@ -102,6 +211,7 @@ export function WrappedCard<C extends number>({
         exit="exit"
         variants={mainVariants}
       >
+        {!props.noParticles && <CardBackdrop />}
         <CardLayers props={props}>{children}</CardLayers>
       </motion.div>
     </>
