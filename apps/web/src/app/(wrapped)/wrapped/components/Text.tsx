@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Children } from "react";
 
 export function AppearingText({
   children,
