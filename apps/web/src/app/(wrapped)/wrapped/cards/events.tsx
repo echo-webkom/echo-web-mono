@@ -200,6 +200,7 @@ function Event4() {
     offY: [],
     scale: [],
     rotate: [],
+    noParticles: true,
   };
 
   return (
