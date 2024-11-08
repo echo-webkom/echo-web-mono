@@ -13,6 +13,7 @@ export type WrappedCardProps<C extends number> = {
   scale: ArrayOfLength<number, C>;
   colors: ArrayOfLength<string, C>;
   fgColor: string;
+  bgColor: string;
   noParticles?: boolean;
 };
 
@@ -23,7 +24,7 @@ function CardLayers<C extends number>({
   children: React.ReactNode;
   props: WrappedCardProps<C>;
 }) {
-  const style = "absolute w-full h-full top-0 left-0";
+  const style = "absolute w-full h-full top-0 left-0 overflow-hidden";
 
   return (
     <>
@@ -71,7 +72,7 @@ function CardBackdrop() {
     <>
       <motion.div
         initial={{ rotate: 0 }}
-        animate={{ rotate: 10 }}
+        animate={{ rotate: Math.floor(Math.random() * 20 - 10) }}
         transition={{
           duration: 10,
         }}
@@ -200,20 +201,25 @@ export function WrappedCard<C extends number>({
 
   return (
     <>
-      <motion.div
-        className="bg-red-500"
-        style={{
-          width: "30vw",
-          height: "75vh",
-        }}
-        initial="hidden"
-        animate="show"
-        exit="exit"
-        variants={mainVariants}
-      >
-        {!props.noParticles && <CardBackdrop />}
-        <CardLayers props={props}>{children}</CardLayers>
-      </motion.div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+        <div
+          className={`flex w-full h-full ${props.bgColor} items-center justify-center overflow-hidden`}
+        >
+          <motion.div
+            style={{
+              width: "30vw",
+              height: "75vh",
+            }}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            variants={mainVariants}
+          >
+            {!props.noParticles && <CardBackdrop />}
+            <CardLayers props={props}>{children}</CardLayers>
+          </motion.div>
+        </div>
+      </div>
     </>
   );
 }
