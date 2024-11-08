@@ -256,3 +256,41 @@
     }
   }
 }
+
+html[data-theme="christmas"] {
+  --primary: #c0392b; /* Christmas red */
+  --primary-foreground: #ffffff;
+  --primary-hover: #e74c3c;
+  --primary-dark: #8e1a1a;
+
+  --secondary: #27ae60; /* Christmas green */
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #2ecc71;
+  --secondary-dark: #1b7a42;
+
+  --accent: #f1c40f; /* Gold accent */
+  --accent-foreground: #ffffff;
+  --accent-hover: #f39c12;
+  --accent-dark: #d4a007;
+
+  --footer: #c0392b;
+}
+
+html.dark[data-theme="christmas"] {
+  --primary: #b23b3b; /* Deep red */
+  --primary-foreground: #ffffff;
+  --primary-hover: #d9534f;
+  --primary-dark: #7b2828;
+
+  --secondary: #229954; /* Dark green */
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #28b463;
+  --secondary-dark: #196f3d;
+
+  --accent: #e1b12c; /* Warm gold */
+  --accent-foreground: #ffffff;
+  --accent-hover: #f6b93b;
+  --accent-dark: #a47b1a;
+
+  --footer: #b23b3b;
+}

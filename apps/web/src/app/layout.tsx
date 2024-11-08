@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { AnimatedIcons } from "@/components/animations/animated-icons";
+import { AnimatedIcons, AnimatedIconsChristmas } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -79,9 +79,14 @@ export const viewport = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const isOctober = new Date().getMonth() === 9;
+  const isChristmas = new Date().getMonth() === 11 || new Date().getMonth() === 12;
 
   return (
-    <html lang="no" data-theme={isOctober ? "halloween" : "default"} suppressHydrationWarning>
+    <html
+      lang="no"
+      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "default"}
+      suppressHydrationWarning
+    >
       <head />
       <body
         className={cn(
@@ -105,6 +110,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Analytics />
           <SpeedInsights />
         </AnimatedIcons>
+
+        {/* christmas */}
+        <AnimatedIconsChristmas n={40}>
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          <Providers>
+            {children}
+            <Toaster />
+            {/* <CookieBanner /> */}
+            <FeedbackBlob />
+            <TailwindIndicator />
+            <EasterEgg />
+          </Providers>
+          <Analytics />
+          <SpeedInsights />
+        </AnimatedIconsChristmas>
       </body>
     </html>
   );
