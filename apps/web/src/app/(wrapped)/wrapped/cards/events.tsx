@@ -15,6 +15,7 @@ export const EventCards: Array<React.ReactNode> = [
 function Event0() {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
     colors: ["bg-wrapped-yellow", "bg-wrapped-pink"],
     offX: [0, 0],
     offY: [0, 0],
@@ -45,6 +46,7 @@ function Event0() {
 function Event1() {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
     colors: ["bg-wrapped-green", "bg-wrapped-pink"],
     offX: [20, 40],
     offY: [20, 40],
@@ -78,6 +80,7 @@ function Event1() {
 function Event2() {
   const layerProps: WrappedCardProps<3> = {
     fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
     colors: ["bg-wrapped-blue", "bg-wrapped-pink", "bg-wrapped-yellow"],
     offX: [20, 60, 100],
     offY: [-20, -40, -60],
@@ -165,6 +168,7 @@ function Event2() {
 function Event3() {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
     colors: ["bg-wrapped-black", "bg-wrapped-pink"],
     offX: [0, 0],
     offY: [0, 0],
@@ -195,6 +199,7 @@ function Event3() {
 function Event4() {
   const layerProps: WrappedCardProps<0> = {
     fgColor: "bg-wrapped-purple shadow-none",
+    bgColor: "bg-wrapped-purple",
     colors: [],
     offX: [],
     offY: [],
@@ -328,6 +333,7 @@ function Event4() {
 function Event5() {
   const layerProps: WrappedCardProps<4> = {
     fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
     colors: [
       "bg-wrapped-green",
       "bg-wrapped-pink",
