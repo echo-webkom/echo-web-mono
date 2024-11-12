@@ -33,33 +33,39 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 ## Hvordan kjøre?
 
-Først forventer vi at du har installert alle "dependencies" og lagt til `.env` slik det er vist under.
+1. **Før du starter må du passe på at det følgende er installert:**
 
-1. Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.
+   - [pnpm](https://pnpm.io/installation)
+   - [docker](https://docs.docker.com/engine/install/)
+   - [cenv](https://github.com/echo-webkom/cenv)
+
+2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
 
    ```sh
    cp .env.example .env
    ```
 
-1. Last ned "dependencies"
+   Kjør `cenv check` for å skjekke om alt er gjort riktig
+
+3. **Last ned "dependencies"**
 
    ```sh
    pnpm install
    ```
 
-1. Sette opp databasen
+4. **Sette opp databasen**
 
    ```sh
    pnpm db:setup
    ```
 
-1. Synce og seede databasen
+5. **Synce og seede databasen**
 
    ```sh
    pnpm seed
    ```
 
-1. Start utviklingsmiljøet
+6. **Start utviklingsmiljøet**
 
    ```sh
     pnpm dev
@@ -72,7 +78,7 @@ Sidene som starter er:
 - [http://localhost:8000](http://localhost:8000) for API-et våres
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
-NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
+> NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
 
 ## Relaterte prosjekter
 
