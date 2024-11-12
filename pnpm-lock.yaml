@@ -55,7 +55,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       hono:
         specifier: 4.6.8
         version: 4.6.8
@@ -252,7 +252,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       framer-motion:
         specifier: 11.11.11
         version: 11.11.11(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -391,7 +391,7 @@ importers:
         version: link:../db
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       next:
         specifier: 14.2.6
         version: 14.2.6(@babel/core@7.24.6)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -469,10 +469,10 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
       nanoid:
         specifier: 5.0.8
         version: 5.0.8
@@ -480,8 +480,8 @@ importers:
         specifier: 4.24.7
         version: 4.24.7(next@14.2.6(@babel/core@7.24.6)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       pg:
-        specifier: 8.13.0
-        version: 8.13.0
+        specifier: 8.13.1
+        version: 8.13.1
       postgres:
         specifier: 3.4.4
         version: 3.4.4
@@ -632,7 +632,7 @@ importers:
         version: 12.1.0
       drizzle-orm:
         specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       groq:
         specifier: 3.61.0
         version: 3.61.0
@@ -7103,8 +7103,8 @@ packages:
     resolution: {integrity: sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==}
     engines: {node: '>=10'}
 
-  pg@8.13.0:
-    resolution: {integrity: sha512-34wkUTh3SxTClfoHB3pQ7bIMvw9dpFU1audQQeZG837fmHfHpr14n/AELVDoOYVDW2h5RDWU78tFjkD+erSBsw==}
+  pg@8.13.1:
+    resolution: {integrity: sha512-OUir1A0rPNZlX//c7ksiu7crsGZTKSOXJPgtNiHGIlC9H0lO+NC6ZDYksSgBYY/thSWhnSRBv8w1lieNNGATNQ==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -14069,18 +14069,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@electric-sql/pglite': 0.2.12
       '@types/pg': 8.11.10
       '@types/react': 18.3.12
-      pg: 8.13.0
+      pg: 8.13.1
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.33.0(@electric-sql/pglite@0.2.12)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   duplexify@3.7.1:
@@ -16557,9 +16557,9 @@ snapshots:
 
   pg-numeric@1.0.2: {}
 
-  pg-pool@3.7.0(pg@8.13.0):
+  pg-pool@3.7.0(pg@8.13.1):
     dependencies:
-      pg: 8.13.0
+      pg: 8.13.1
 
   pg-protocol@1.6.1: {}
 
@@ -16583,10 +16583,10 @@ snapshots:
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
 
-  pg@8.13.0:
+  pg@8.13.1:
     dependencies:
       pg-connection-string: 2.7.0
-      pg-pool: 3.7.0(pg@8.13.0)
+      pg-pool: 3.7.0(pg@8.13.1)
       pg-protocol: 1.7.0
       pg-types: 2.2.0
       pgpass: 1.0.5
