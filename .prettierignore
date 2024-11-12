@@ -16,5 +16,3 @@ build/
 
 # Misc
 .turbo/
-
-cenv.schema.json
