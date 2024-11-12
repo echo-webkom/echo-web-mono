@@ -31,6 +31,7 @@ const authOptions = createAuthOptions({
   },
 });
 
+// @ts-expect-error wtf
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const handler = NextAuth(authOptions);
 

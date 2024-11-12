@@ -26,9 +26,9 @@ import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
@@ -45,7 +45,8 @@ const getData = cache(async (slug: string) => {
   return group;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const { slug } = params;
 
   const group = await getData(slug);
@@ -55,7 +56,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function GroupPage({ params }: Props) {
+export default async function GroupPage(props: Props) {
+  const params = await props.params;
   const { slug } = params;
 
   const group = await getData(slug);

@@ -9,12 +9,13 @@ import { Heading } from "@/components/typography/heading";
 import { fetchStudentGroupsByType, studentGroupTypeName } from "@/sanity/student-group";
 
 type Props = {
-  params: {
+  params: Promise<{
     groupType: string;
-  };
+  }>;
 };
 
-export const generateMetadata = ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
@@ -24,7 +25,8 @@ export const generateMetadata = ({ params }: Props) => {
   };
 };
 
-export default async function StudentGroupOverview({ params }: Props) {
+export default async function StudentGroupOverview(props: Props) {
+  const params = await props.params;
   const { groupType } = params;
   const groupTypeFromPath = pathToGroupType(groupType);
 
