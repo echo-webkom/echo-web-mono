@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/typography/heading";
@@ -18,10 +19,10 @@ export const generateMetadata = ({ params }: Props) => {
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
+  const groupName = studentGroupTypeName[groupTypeFromPath];
 
-  return {
-    title: studentGroupTypeName[groupTypeFromPath],
-  };
+  const sine = groupTypeFromPath === "board" || groupTypeFromPath === "sport" ? "sitt" : "sine";
+  return getNewPageMetadata(groupName, `En oversikt over echo ${sine} ${groupName.toLowerCase()}.`);
 };
 
 export default async function StudentGroupOverview({ params }: Props) {

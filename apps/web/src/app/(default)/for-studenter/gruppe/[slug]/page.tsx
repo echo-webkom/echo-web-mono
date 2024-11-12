@@ -9,6 +9,7 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
+import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
@@ -47,12 +48,9 @@ const getData = cache(async (slug: string) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const group = await getData(slug);
 
-  return {
-    title: group.name,
-  };
+  return getNewPageMetadata(group.name, `Infosiden til echo sin undergruppe ${group.name}.`);
 };
 
 export default async function GroupPage({ params }: Props) {
