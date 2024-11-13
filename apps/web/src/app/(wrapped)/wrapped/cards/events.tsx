@@ -3,6 +3,46 @@ import { motion } from "framer-motion";
 import { type WrappedCardProps, WrappedCard } from "../components/WrappedCard";
 import { AppearingText, InYourFace } from "../components/Text";
 
+/** antall arrangementer totalt 2024 */
+const EVENTS: number = 1234;
+/** antall arrangementer per undergruppe */
+const EVENTS_PER_GROUP: { name: string; events: number }[] = [
+  { name: "BEDKOM", events: 30 },
+  { name: "WEBKOM", events: 20 },
+  { name: "HYGGKOM", events: 50 },
+  { name: "TILDE", events: 10 },
+  { name: "GNIST", events: 60 },
+  { name: "MAKERSPACE", events: 0 },
+  { name: "ESC", events: 40 },
+];
+/** antall kommentarer totalt 2024 */
+const COMMENTS: number = 1234;
+/** kommentar med flest replies */
+const BEST_COMMENT: { name: string; replies: number } = {
+  name: "webkom er best!",
+  replies: 123,
+};
+/** antall reaksjoner på arrangement i 2024 */
+const REACTIONS: number = 1234;
+/** antall påmeldinger på arrangement i 2024 */
+const REGISTRATIONS: number = 12345;
+/** arrangement med flest påmeldinger */
+const BEST_EVENTS: { name: string; registrations: number }[] = [
+  { name: "Vinterball", registrations: 195 },
+  { name: "DNB bedpres", registrations: 100 },
+  { name: "INF100 kræsjkurs", registrations: 80 },
+];
+/** hvor mange kroner vi har brukt på kaffe */
+const COFFEE: number = 37338;
+/** hvor mange øl vi har kjøpt */
+const BEER: number = 1234;
+/** hvor mye penger vi har fått av RU */
+const RU_MONEY: number = 0;
+/** antall jobbannonser i 2024 */
+const JOBS: number = 123;
+/** antall innlegg i 2024*/
+const POSTS: number = 123;
+
 export const EventCards: Array<React.ReactNode> = [
   <Event0 key={0} />,
   <Event1 key={2} />,
