@@ -1,7 +1,7 @@
 import { type MoviesQueryResult } from "@echo-webkom/cms/types";
+import { moviesQuery } from "@echo-webkom/sanity/queries";
 
-import { sanityFetch } from "../client";
-import { moviesQuery } from "./queries";
+import { sanityFetch } from "./client";
 
 /**
  * Fetches a number of movies

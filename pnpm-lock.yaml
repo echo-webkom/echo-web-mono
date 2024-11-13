@@ -593,6 +593,9 @@ importers:
       '@sanity/image-url':
         specifier: 1.0.2
         version: 1.0.2
+      groq:
+        specifier: 3.61.0
+        version: 3.61.0
     devDependencies:
       '@echo-webkom/tsconfig':
         specifier: workspace:*
@@ -5803,10 +5806,6 @@ packages:
   groq-js@1.13.0:
     resolution: {integrity: sha512-TfNyvCVDOEVZFFbeO6TbwwrslHTXpDNN4WwCYAcuSuORx4dLQU5Zn+cIsEFUQvLycU4lc0BqU1FIgldbhi4acQ==}
     engines: {node: '>= 14'}
-
-  groq@3.50.0:
-    resolution: {integrity: sha512-nnlnjqmGbi5G9dSWmgObVMBh/3nZgA1jhj8lHuMzGfpXkQuI1gR+X4MwyvOq96PSk50XQX1lCm0N0zRcHbiskg==}
-    engines: {node: '>=18'}
 
   groq@3.61.0:
     resolution: {integrity: sha512-WwtX7L8gaQ9WtMCR1168fIPF4dRKONg8zmWCyENgf5vALEre/Xez09eWA+U3jy5qa0BGFQNNpEb2R+CSOkpXcw==}
@@ -15030,8 +15029,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  groq@3.50.0: {}
-
   groq@3.61.0: {}
 
   gunzip-maybe@1.4.2:
@@ -17369,7 +17366,7 @@ snapshots:
       copy-to-clipboard: 3.3.3
       date-fns: 2.30.0
       filesize: 9.0.11
-      groq: 3.50.0
+      groq: 3.61.0
       is-hotkey: 0.2.0
       nanoid: 3.3.7
       npm-run-all: 4.1.5

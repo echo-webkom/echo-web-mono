@@ -3,9 +3,9 @@ import {
   type StudentGroupsByTypeQueryResult,
 } from "@echo-webkom/cms/types";
 import { type StudentGroupType } from "@echo-webkom/lib";
+import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "@echo-webkom/sanity/queries";
 
-import { sanityFetch } from "../client";
-import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "./queries";
+import { sanityFetch } from "./client";
 
 export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
   try {

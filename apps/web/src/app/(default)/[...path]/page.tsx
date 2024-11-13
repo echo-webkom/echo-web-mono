@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchStaticInfo, fetchStaticInfoBySlug, pageTypeToUrl } from "@/sanity/static-info";
+import { fetchStaticInfo, fetchStaticInfoBySlug } from "@/sanity/static-info";
+import { pageTypeToUrl } from "@/sanity/utils/mappers";
 
 export const dynamicParams = false;
 

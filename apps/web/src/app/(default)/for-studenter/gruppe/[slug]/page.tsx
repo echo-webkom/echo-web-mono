@@ -22,7 +22,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
+import { fetchStudentGroupBySlug } from "@/sanity/student-group";
+import { studentGroupTypeName } from "@/sanity/utils/mappers";
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {
