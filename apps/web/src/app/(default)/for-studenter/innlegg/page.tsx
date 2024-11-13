@@ -4,7 +4,7 @@ import { type Metadata } from "next/types";
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
-import { fetchAllPosts } from "@/sanity/posts/requests";
+import { fetchAllPosts } from "@/sanity/posts";
 
 export const metadata = {
   title: "Innlegg",

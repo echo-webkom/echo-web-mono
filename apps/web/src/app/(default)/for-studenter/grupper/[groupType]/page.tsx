@@ -6,7 +6,8 @@ import { type StudentGroupType } from "@echo-webkom/lib";
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/typography/heading";
-import { fetchStudentGroupsByType, studentGroupTypeName } from "@/sanity/student-group";
+import { fetchStudentGroupsByType } from "@/sanity/student-group";
+import { studentGroupTypeName } from "@/sanity/utils/mappers";
 
 type Props = {
   params: {

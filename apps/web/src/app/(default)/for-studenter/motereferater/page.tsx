@@ -4,7 +4,7 @@ import { RxArrowRight } from "react-icons/rx";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchMinutes } from "@/sanity/minutes/requests";
+import { fetchMinutes } from "@/sanity/minutes";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function MinuteOverview() {

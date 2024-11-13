@@ -1,7 +1,7 @@
 import { type AllPostsQueryResult } from "@echo-webkom/cms/types";
+import { allPostsQuery } from "@echo-webkom/sanity/queries";
 
-import { sanityFetch } from "../client";
-import { allPostsQuery } from "./queries";
+import { sanityFetch } from "./client";
 
 /**
  * Fetches all posts.

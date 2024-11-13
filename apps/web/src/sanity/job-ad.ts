@@ -1,9 +1,9 @@
 import { isPast } from "date-fns";
 
 import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
+import { jobAdsQuery } from "@echo-webkom/sanity/queries";
 
-import { sanityFetch } from "../client";
-import { jobAdsQuery } from "./queries";
+import { sanityFetch } from "./client";
 
 const isExpired = (expiresAt: string) => isPast(expiresAt);
 

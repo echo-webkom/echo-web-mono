@@ -6,10 +6,14 @@ import {
   type HomeHappeningsQueryResult,
 } from "@echo-webkom/cms/types";
 import { type HappeningType } from "@echo-webkom/lib";
+import {
+  allHappeningsQuery,
+  happeningQuery,
+  homeHappeningsQuery,
+} from "@echo-webkom/sanity/queries";
 
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
-import { sanityFetch } from "../client";
-import { allHappeningsQuery, happeningQuery, homeHappeningsQuery } from "./queries";
+import { sanityFetch } from "./client";
 
 /**
  * Fetches all happenings

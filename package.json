@@ -31,7 +31,9 @@
     "typecheck": "turbo run typecheck",
     "test:unit": "turbo run test:unit",
     "test:e2e": "turbo run test:e2e",
-    "test:e2e:ui": "turbo run test:e2e:ui"
+    "test:e2e:ui": "turbo run test:e2e:ui",
+    "extract": "pnpm --filter=cms extract",
+    "typegen": "pnpm --filter=cms typegen"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.3.1",

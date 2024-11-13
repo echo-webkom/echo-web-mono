@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 
-import { getHappeningTypeBySlug } from "@/sanity/happening/requests";
+import { getHappeningTypeBySlug } from "@/sanity/happening";
 
 type Props = {
   params: {

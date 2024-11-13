@@ -6,7 +6,7 @@ import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { urlFor } from "@echo-webkom/sanity";
 
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
-import { jobTypeString } from "@/sanity/job-ad";
+import { jobTypeString } from "@/sanity/utils/mappers";
 import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";

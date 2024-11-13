@@ -484,7 +484,18 @@ export type AllSanitySchemaTypes =
   | MediaTag
   | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ../web/src/sanity/happening/queries.ts
+// Source: ../../packages/sanity/src/queries/contacts.ts
+// Variable: happeningContactsQuery
+// Query: *[_type == "happening" && slug.current == $slug] {"contacts": contacts[] {email,"profile": profile->{  _id,  name,},},}[0].contacts
+export type HappeningContactsQueryResult = Array<{
+  email: string;
+  profile: {
+    _id: string;
+    name: string;
+  };
+}> | null;
+
+// Source: ../../packages/sanity/src/queries/happening.ts
 // Variable: allHappeningsQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))]  | order(date asc) {    _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  isPinned,  happeningType,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    id,    title,    required,    type,    options,  },  externalLink,  body}
 export type AllHappeningsQueryResult = Array<{
@@ -637,7 +648,7 @@ export type HomeHappeningsQueryResult = Array<{
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug ] {  happeningType,}[0].happeningType
 export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
 
-// Source: ../web/src/sanity/job-ad/queries.ts
+// Source: ../../packages/sanity/src/queries/job-ad.ts
 // Variable: jobAdsQuery
 // Query: *[_type == "job"  && !(_id in path('drafts.**'))  && expiresAt > now()]  | order(weight desc, deadline desc) {  _id,  _createdAt,  _updatedAt,  weight,  title,  "slug": slug.current,  "company": company->{    _id,    name,    website,    image,  },  expiresAt,  "locations": locations[]->{    _id,    name,  },  jobType,  link,  deadline,  degreeYears,  body}
 export type JobAdsQueryResult = Array<{
@@ -682,7 +693,7 @@ export type JobAdsQueryResult = Array<{
   body: string;
 }>;
 
-// Source: ../web/src/sanity/minutes/queries.ts
+// Source: ../../packages/sanity/src/queries/minutes.ts
 // Variable: allMeetingMinuteQuery
 // Query: *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {  _id,  isAllMeeting,  date,  title,  "document": document.asset->url}
 export type AllMeetingMinuteQueryResult = Array<{
@@ -693,7 +704,7 @@ export type AllMeetingMinuteQueryResult = Array<{
   document: string | null;
 }>;
 
-// Source: ../web/src/sanity/movies/queries.ts
+// Source: ../../packages/sanity/src/queries/movies.ts
 // Variable: moviesQuery
 // Query: *[_type == "movie"  && !(_id in path('drafts.**'))]  | order(_createdAt desc) {  _id,  title,  date,  link,  image,}
 export type MoviesQueryResult = Array<{
@@ -714,7 +725,7 @@ export type MoviesQueryResult = Array<{
   };
 }>;
 
-// Source: ../web/src/sanity/posts/queries.ts
+// Source: ../../packages/sanity/src/queries/posts.ts
 // Variable: allPostsQuery
 // Query: *[_type == "post" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  "authors": authors[]->{    _id,    name,    image,  },  image,  body}
 export type AllPostsQueryResult = Array<{
@@ -759,7 +770,7 @@ export type AllPostsQueryResult = Array<{
   body: string;
 }>;
 
-// Source: ../web/src/sanity/static-info/queries.ts
+// Source: ../../packages/sanity/src/queries/static-info.ts
 // Variable: staticInfoQuery
 // Query: *[_type == "staticInfo" && !(_id in path('drafts.**'))] {  title,  "slug": slug.current,  pageType,  body}
 export type StaticInfoQueryResult = Array<{
@@ -769,7 +780,7 @@ export type StaticInfoQueryResult = Array<{
   body: string;
 }>;
 
-// Source: ../web/src/sanity/student-group/queries.ts
+// Source: ../../packages/sanity/src/queries/student-group.ts
 // Variable: studentGroupsByTypeQuery
 // Query: *[_type == "studentGroup"  && groupType == $type  && !(_id in path('drafts.**'))] | order(_createdAt asc) {  _id,  _createdAt,  _updatedAt,  name,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0..$n]
 export type StudentGroupsByTypeQueryResult = Array<{
@@ -871,19 +882,38 @@ export type StudentGroupBySlugQueryResult = {
   } | null;
 } | null;
 
-// Source: ../web/src/sanity/utils/contacts.ts
-// Variable: happeningContactsQuery
-// Query: *[_type == "happening" && slug.current == $slug] {"contacts": contacts[] {email,"profile": profile->{  _id,  name,},},}[0].contacts
-export type HappeningContactsQueryResult = Array<{
-  email: string;
-  profile: {
-    _id: string;
-    name: string;
-  };
-}> | null;
+// Source: ../../packages/seeder/src/sanity/query.ts
+// Variable: happeningQueryList
+// Query: *[_type == "happening" && !(_id in path('drafts.**'))] {  _id,  title,  "slug": slug.current,  "date": date,  happeningType,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "groups": organizers[]->slug.current,  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "questions": additionalQuestions[] {    id,    title,    required,    type,    isSensitive,    options,  }}
+export type HappeningQueryListResult = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  happeningType: "bedpres" | "event" | "external";
+  registrationStartGroups: string | null;
+  registrationGroups: Array<string> | null;
+  registrationStart: string | null;
+  registrationEnd: string | null;
+  groups: Array<string> | null;
+  spotRanges: Array<{
+    spots: number;
+    minYear: number;
+    maxYear: number;
+  }> | null;
+  questions: Array<{
+    id: string;
+    title: string;
+    required: boolean;
+    type: "checkbox" | "radio" | "text" | "textarea";
+    isSensitive: boolean | null;
+    options: Array<string> | null;
+  }> | null;
+}>;
 
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n*[_type == "happening" && slug.current == $slug] {\n"contacts": contacts[] {\nemail,\n"profile": profile->{\n  _id,\n  name,\n},\n},\n}[0].contacts\n': HappeningContactsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && (isPinned || date >= now())\n  && happeningType in $happeningTypes\n]\n| order(isPinned desc, date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]\n\n': HomeHappeningsQueryResult;
@@ -895,6 +925,6 @@ declare module "@sanity/client" {
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
-    '\n*[_type == "happening" && slug.current == $slug] {\n"contacts": contacts[] {\nemail,\n"profile": profile->{\n  _id,\n  name,\n},\n},\n}[0].contacts\n': HappeningContactsQueryResult;
+    '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }
 }
