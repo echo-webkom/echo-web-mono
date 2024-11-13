@@ -4,8 +4,10 @@ import { type WrappedCardProps, WrappedCard } from "../components/WrappedCard";
 import { AppearingText, InYourFace } from "../components/Text";
 
 /** antall arrangementer totalt 2024 */
+// @ts-ignore
 const EVENTS: number = 1234;
 /** antall arrangementer per undergruppe */
+// @ts-ignore
 const EVENTS_PER_GROUP: { name: string; events: number }[] = [
   { name: "BEDKOM", events: 30 },
   { name: "WEBKOM", events: 20 },
@@ -16,31 +18,41 @@ const EVENTS_PER_GROUP: { name: string; events: number }[] = [
   { name: "ESC", events: 40 },
 ];
 /** antall kommentarer totalt 2024 */
+// @ts-ignore
 const COMMENTS: number = 1234;
 /** kommentar med flest replies */
+// @ts-ignore
 const BEST_COMMENT: { name: string; replies: number } = {
   name: "webkom er best!",
   replies: 123,
 };
 /** antall reaksjoner på arrangement i 2024 */
+// @ts-ignore
 const REACTIONS: number = 1234;
 /** antall påmeldinger på arrangement i 2024 */
+// @ts-ignore
 const REGISTRATIONS: number = 12345;
 /** arrangement med flest påmeldinger */
+// @ts-ignore
 const BEST_EVENTS: { name: string; registrations: number }[] = [
   { name: "Vinterball", registrations: 195 },
   { name: "DNB bedpres", registrations: 100 },
   { name: "INF100 kræsjkurs", registrations: 80 },
 ];
 /** hvor mange kroner vi har brukt på kaffe */
+// @ts-ignore
 const COFFEE: number = 37338;
 /** hvor mange øl vi har kjøpt */
+// @ts-ignore
 const BEER: number = 1234;
 /** hvor mye penger vi har fått av RU */
+// @ts-ignore
 const RU_MONEY: number = 0;
 /** antall jobbannonser i 2024 */
+// @ts-ignore
 const JOBS: number = 123;
 /** antall innlegg i 2024*/
+// @ts-ignore
 const POSTS: number = 123;
 
 export const EventCards: Array<React.ReactNode> = [
