@@ -11,6 +11,7 @@ import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -30,6 +31,7 @@ const userSchema = z.object({
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
+  birthday: z.coerce.date().optional(),
 });
 
 type UserFormProps = {
@@ -39,6 +41,7 @@ type UserFormProps = {
     year?: number;
     hasReadTerms?: boolean;
     id: string;
+    birthday?: Date;
   };
   degrees: Array<Degree>;
 };
@@ -67,6 +70,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         degreeId: data.degree,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
+        birthday: data.birthday,
       });
 
       setIsLoading(false);
@@ -141,6 +145,33 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   ))}
                 </Select>
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bursdag</FormLabel>
+              <FormControl>
+                <Input
+                  id="birthday"
+                  type="date"
+                  className="block"
+                  {...field}
+                  value={
+                    field.value instanceof Date
+                      ? field.value.toISOString().split("T")[0]
+                      : field.value
+                  }
+                />
+              </FormControl>
+              <FormDescription>
+                Legg til bursdagen din, og få den vist på echoscreen i lesesalen!🎉
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
