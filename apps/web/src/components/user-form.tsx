@@ -11,7 +11,6 @@ import { type Degree } from "@echo-webkom/db/schemas";
 
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/utils/cn";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
