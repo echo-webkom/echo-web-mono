@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { type WrappedCardProps, WrappedCard } from "../components/WrappedCard";
 import { AppearingText, InYourFace } from "../components/Text";
+import { BEST_EVENTS, EVENTS, EVENTS_PER_GROUP, REGISTRATIONS } from "../stats";
 
 export const EventCards: Array<React.ReactNode> = [
   <Event0 key={0} />,
@@ -64,7 +67,7 @@ function Event1() {
           <div className="w-full h-full flex items-center justify-center">
             <InYourFace delay={0.8}>
               <p className="text-8xl bg-wrapped-yellow p-10 rounded-3xl">
-                1234
+                {EVENTS}
               </p>
             </InYourFace>
           </div>
@@ -96,16 +99,6 @@ function Event2() {
     "bg-wrapped-green",
   ];
 
-  const underGrupper = [
-    "BEDKOM",
-    "WEBKOM",
-    "HYGGKOM",
-    "TILDE",
-    "GNIST",
-    "MAKERSPACE",
-    "ESC",
-  ];
-
   return (
     <>
       <WrappedCard props={layerProps}>
@@ -114,7 +107,7 @@ function Event2() {
             Antall arrangementer<br></br>per undergruppe:
           </p>
           <div className="flex flex-col items-center gap-4 w-full h-full text-sm">
-            {underGrupper.map((v, index) => {
+            {EVENTS_PER_GROUP.map((v, index) => {
               return (
                 <motion.div
                   style={{
@@ -151,8 +144,8 @@ function Event2() {
                       }}
                       className="w-1/5 flex items-center gap-1"
                     >
-                      <p>{v}</p>
-                      <p className="text-white">123</p>
+                      <p>{v.name}</p>
+                      <p className="text-white">{v.events}</p>
                     </motion.div>
                   </div>
                 </motion.div>
@@ -304,7 +297,7 @@ function Event4() {
             </motion.div>
             <div className="absolute">
               <p className="text-wrapped-black font-bold text-8xl text-center">
-                1234
+                {REGISTRATIONS}
               </p>
               <p className="text-wrapped-grey font-bold text-2xl text-center">
                 PÅMELDINGER
@@ -348,8 +341,7 @@ function Event5() {
     rotate: [-5, -10, 5, 10],
   };
 
-  const hs = ["top-1/2", "top-1/3", "top-2/3"];
-  const names = ["foo", "bar", "faz"];
+  const hs = ["top-[20vh]", "top-[10vh]", "top-[25vh]"];
 
   return (
     <>
@@ -361,10 +353,10 @@ function Event5() {
             </p>
           </AppearingText>
           <div className="w-2/3 h-1/2 grid grid-cols-3 grid-rows-1 gap-2 overflow-hidden">
-            {names.map((name, index) => {
+            {BEST_EVENTS.map((event, index) => {
               return (
                 <>
-                  <div className="flex w-full h-full flex-col items-center justify-end overflow-hidden">
+                  <div className="flex w-full h-full flex-col items-center justify-end">
                     <motion.div
                       key={index}
                       initial={{
@@ -382,8 +374,8 @@ function Event5() {
                       <div className={`w-[5vw] h-[20vw] relative ${hs[index]}`}>
                         {index !== 1 && (
                           <AppearingText delay={3 - index * 0.3}>
-                            <p className="text-wrapped-black text-center font-bold text-xl p-4">
-                              {name}
+                            <p className="flex items-center justify-center text-wrapped-black text-center font-bold text-xl p-4">
+                              {event.name}
                             </p>
                           </AppearingText>
                         )}
@@ -404,7 +396,7 @@ function Event5() {
                               }}
                               className="flex text-wrapped-black text-center font-bold text-3xl items-center justify-center z-50 p-4"
                             >
-                              {name}
+                              {event.name}
                             </motion.p>
                           </InYourFace>
                         )}

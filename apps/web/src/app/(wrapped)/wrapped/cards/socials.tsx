@@ -1,7 +1,10 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import { AppearingText } from "../components/Text";
 import Image from "next/image";
+import { COMMENTS, REACTIONS, REPLIES } from "../stats";
 
 export const SocialCards: Array<React.ReactNode> = [
   <Social0 key={0} />,
@@ -69,7 +72,7 @@ function Social1() {
                 height={0}
               ></Image>
             </div>
-            <p>999 kommentarer</p>
+            <p>{COMMENTS} kommentarer</p>
           </div>
           <div className="flex w-full items-center gap-5">
             <div className="h-full">
@@ -80,7 +83,7 @@ function Social1() {
                 height={0}
               ></Image>
             </div>
-            <p>999 kommentarer</p>
+            <p>{REPLIES} replies</p>
           </div>
           <div className="flex w-full items-center gap-5">
             <div className="h-full">
@@ -91,7 +94,7 @@ function Social1() {
                 height={0}
               ></Image>
             </div>
-            <p>999 kommentarer</p>
+            <p>{REACTIONS} reaksjoner</p>
           </div>
         </div>
       </WrappedCard>
