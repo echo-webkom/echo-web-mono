@@ -205,7 +205,7 @@ export function WrappedCard<C extends number>({
       <div
         className={`relative top-0 left-0 w-[100vw] h-[100vh] overflow-hidden -z-50 ${props.bgColor}`}
       >
-        <div className="flex w-full h-full justify-center items-center">
+        <div className="flex w-full h-full justify-center items-center overflow-hidden">
           <motion.div
             initial="hidden"
             animate="show"
