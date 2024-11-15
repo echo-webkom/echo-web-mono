@@ -211,7 +211,7 @@ function Event4() {
   // MARK: star motherfucker
   return (
     <>
-      <motion.div
+      {/* <motion.div
         style={{
           width: "30vh",
           height: "30vh",
@@ -254,11 +254,12 @@ function Event4() {
             }}
           />
         </div>
-      </motion.div>
+      </motion.div> */}
+
       <motion.div
-        className="absolute w-[30vw] h-[75vh] z-50"
+        className="absolute w-[30vw] h-[75vh] z-50 left-[35vw] top-[12vh]"
         initial={{
-          y: 2000,
+          y: -2000,
         }}
         animate={{
           y: 0,
@@ -266,12 +267,12 @@ function Event4() {
         transition={{
           duration: 2,
           ease: "anticipate",
-          delay: 1,
+          delay: 0.3,
         }}
         exit={{
-          y: 2000,
+          y: -2000,
           transition: {
-            duration: 1,
+            duration: 0.8,
           },
         }}
       >
@@ -311,12 +312,12 @@ function Event4() {
             </div>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center font-bold text-wrapped-black text-5xl text-wrapped-white">
-            <AppearingText delay={3}>
+            <AppearingText delay={2.5}>
               <p className="font-bold text-wrapped-black text-5xl text-wrapped-white">
                 For en fest!
               </p>
             </AppearingText>
-            <AppearingText delay={3.5}>
+            <AppearingText delay={3}>
               <p className="font-normal text-wrapped-white text-2xl opacity-50">
                 Men hvilken var den største?
               </p>
@@ -359,57 +360,58 @@ function Event5() {
               Top 3
             </p>
           </AppearingText>
-          <div className="w-2/3 h-2/3 grid grid-cols-3 grid-rows-1 gap-2 overflow-hidden">
+          <div className="w-2/3 h-1/2 grid grid-cols-3 grid-rows-1 gap-2 overflow-hidden">
             {names.map((name, index) => {
               return (
                 <>
-                  <motion.div
-                    key={index}
-                    initial={{
-                      y: 500,
-                    }}
-                    animate={{
-                      y: 0,
-                    }}
-                    transition={{
-                      delay: 0.6 + index * 0.1,
-                      ease: "backOut",
-                      duration: 1,
-                    }}
-                    className="flex w-full h-full flex-col items-center justify-end"
-                  >
-                    <div className={`h-full w-full absolute ${hs[index]}`}>
-                      {index !== 1 && (
-                        <AppearingText delay={3 - index * 0.3}>
-                          <p className="text-wrapped-black text-center font-bold text-xl p-4">
-                            {name}
-                          </p>
-                        </AppearingText>
-                      )}
-                      {index === 1 && (
-                        <InYourFace delay={3.5}>
-                          <motion.p
-                            animate={{
-                              rotate: [-5, 5],
-                              x: [-10, 10],
-                              y: [5, 0, 5],
-                            }}
-                            transition={{
-                              delay: 4.5,
-                              duration: 0.5,
-                              repeat: Infinity,
-                              tyoe: "spring",
-                              repeatType: "mirror",
-                            }}
-                            className="flex text-wrapped-black text-center font-bold text-3xl items-center justify-center z-50 p-4"
-                          >
-                            {name}
-                          </motion.p>
-                        </InYourFace>
-                      )}
-                      <div className="bg-wrapped-black w-full h-full"></div>
-                    </div>
-                  </motion.div>
+                  <div className="flex w-full h-full flex-col items-center justify-end overflow-hidden">
+                    <motion.div
+                      key={index}
+                      initial={{
+                        y: 500,
+                      }}
+                      animate={{
+                        y: 0,
+                      }}
+                      transition={{
+                        delay: 0.6 + index * 0.1,
+                        ease: "backOut",
+                        duration: 1,
+                      }}
+                    >
+                      <div className={`w-[5vw] h-[20vw] relative ${hs[index]}`}>
+                        {index !== 1 && (
+                          <AppearingText delay={3 - index * 0.3}>
+                            <p className="text-wrapped-black text-center font-bold text-xl p-4">
+                              {name}
+                            </p>
+                          </AppearingText>
+                        )}
+                        {index === 1 && (
+                          <InYourFace delay={3.5}>
+                            <motion.p
+                              animate={{
+                                rotate: [-5, 5],
+                                x: [-10, 10],
+                                y: [5, 0, 5],
+                              }}
+                              transition={{
+                                delay: 4.5,
+                                duration: 0.5,
+                                repeat: Infinity,
+                                tyoe: "spring",
+                                repeatType: "mirror",
+                              }}
+                              className="flex text-wrapped-black text-center font-bold text-3xl items-center justify-center z-50 p-4"
+                            >
+                              {name}
+                            </motion.p>
+                          </InYourFace>
+                        )}
+                        <div className="bg-wrapped-black w-full h-full"></div>
+                      </div>
+                    </motion.div>
+                  </div>
                 </>
               );
             })}

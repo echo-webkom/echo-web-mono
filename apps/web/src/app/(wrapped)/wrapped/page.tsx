@@ -22,6 +22,7 @@ export default function Wrapped() {
           id={`wrapped-card-${cardIdx}`}
           key={cardIdx}
           // className="relative select-none w-[30vw] h-[75vh]"
+          className="overflow-hidden"
         >
           {cards[cardIdx]}
         </motion.div>
