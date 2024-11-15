@@ -21,7 +21,7 @@ export default function Wrapped() {
           onClick={() => setCardIdx((prev) => (prev + 1) % cards.length)}
           id={`wrapped-card-${cardIdx}`}
           key={cardIdx}
-          className="select-none"
+          // className="relative select-none w-[30vw] h-[75vh]"
         >
           {cards[cardIdx]}
         </motion.div>

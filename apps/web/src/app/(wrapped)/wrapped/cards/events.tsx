@@ -208,6 +208,7 @@ function Event4() {
     noParticles: true,
   };
 
+  // MARK: star motherfucker
   return (
     <>
       <motion.div
@@ -217,7 +218,7 @@ function Event4() {
           left: "calc(50vw - 15vh)",
           top: "35vh,",
         }}
-        className="absolute top-1/4 left-1/2 z-50"
+        className="absolute z-40"
         initial={{
           y: -2000,
           rotate: 0,
