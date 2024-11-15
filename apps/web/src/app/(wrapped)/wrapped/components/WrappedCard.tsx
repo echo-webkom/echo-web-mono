@@ -24,44 +24,45 @@ function CardLayers<C extends number>({
   children: React.ReactNode;
   props: WrappedCardProps<C>;
 }) {
-  const style = "absolute w-full h-full top-0 left-0 overflow-hidden";
-
+  const style = "absolute top-0 left-0 w-full h-full";
   return (
     <>
-      <motion.div
-        className={`${style} ${props.fgColor} z-50 font-bold text-wrapped-black flex items-center justify-center shadow`}
-      >
-        {children}
-      </motion.div>
+      <div className="w-full h-full">
+        <motion.div
+          className={`absolute ${props.fgColor} w-full h-full z-10 font-bold text-wrapped-black shadow overflow-hidden`}
+        >
+          {children}
+        </motion.div>
 
-      {props.colors.map((col, index) => {
-        const variants: Variants = {
-          hidden: {
-            scale: 1,
-            rotate: 0,
-            x: 0,
-            y: 0,
-          },
-          show: {
-            rotate: props.rotate[index],
-            x: props.offX[index],
-            y: props.offY[index],
-            scale: props.scale[index],
-            transition: {
-              ease: "backOut",
+        {props.colors.map((col, index) => {
+          const variants: Variants = {
+            hidden: {
+              scale: 1,
+              rotate: 0,
+              x: 0,
+              y: 0,
             },
-          },
-        };
+            show: {
+              rotate: props.rotate[index],
+              x: props.offX[index],
+              y: props.offY[index],
+              scale: props.scale[index],
+              transition: {
+                ease: "backOut",
+              },
+            },
+          };
 
-        return (
-          <motion.div
-            style={{ zIndex: -index }}
-            key={index}
-            className={`${style} ${col} shadow`}
-            variants={variants}
-          ></motion.div>
-        );
-      })}
+          return (
+            <motion.div
+              style={{ zIndex: -index }}
+              key={index}
+              className={`${style} ${col} shadow`}
+              variants={variants}
+            ></motion.div>
+          );
+        })}
+      </div>
     </>
   );
 }
@@ -201,19 +202,16 @@ export function WrappedCard<C extends number>({
 
   return (
     <>
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-        <div
-          className={`flex w-full h-full ${props.bgColor} items-center justify-center overflow-hidden`}
-        >
+      <div
+        className={`relative top-0 left-0 w-[100vw] h-[100vh] overflow-hidden -z-50 ${props.bgColor}`}
+      >
+        <div className="flex w-full h-full justify-center items-center">
           <motion.div
-            style={{
-              width: "30vw",
-              height: "75vh",
-            }}
             initial="hidden"
             animate="show"
             exit="exit"
             variants={mainVariants}
+            className="select-none relative w-[30vw] h-[75vh]"
           >
             {!props.noParticles && <CardBackdrop />}
             <CardLayers props={props}>{children}</CardLayers>
