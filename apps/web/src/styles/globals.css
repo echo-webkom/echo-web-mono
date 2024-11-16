@@ -171,6 +171,34 @@
     --secondary-dark: #ef6c00;
   }
 
+  html[data-theme="christmas"] {
+    --primary: #c0392b; /* Festive red */
+    --primary-foreground: #ffffff; /* White text */
+    --primary-hover: #e74c3c; /* Brighter red for hover */
+    --primary-dark: #8e2323; /* Darker red for contrast */
+
+    --secondary: #27ae60; /* Christmas green */
+    --secondary-foreground: #ffffff; /* White text */
+    --secondary-hover: #2ecc71; /* Brighter green for hover */
+    --secondary-dark: #1e8449; /* Darker green */
+
+    --footer: #c0392b; /* Use red for the footer */
+  }
+
+  html.dark[data-theme="christmas"] {
+    --primary: #bd2d2d; /* Softer dark red */
+    --primary-foreground: #f4f4f4; /* Light foreground */
+    --primary-hover: #e63946; /* Brighter red hover */
+    --primary-dark: #7f1f1f; /* Deep red for dark mode */
+
+    --secondary: #2a9d8f; /* Frosty teal for contrast */
+    --secondary-foreground: #f4f4f4; /* Light text */
+    --secondary-hover: #3faea0; /* Lighter teal */
+    --secondary-dark: #207066; /* Darker teal for depth */
+
+    --footer: #bd2d2d; /* Dark mode footer with softer red */
+  }
+
   * {
     @apply border-border;
     transition: background-color 150ms ease-in-out;

@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { AnimatedIcons } from "@/components/animations/animated-icons";
+import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -79,9 +79,14 @@ export const viewport = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const isOctober = new Date().getMonth() === 9;
+  const isChristmas = new Date().getMonth() === 10 || new Date().getMonth() === 11;
 
   return (
-    <html lang="no" data-theme={isOctober ? "halloween" : "default"} suppressHydrationWarning>
+    <html
+      lang="no"
+      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "defualt"}
+      suppressHydrationWarning
+    >
       <head />
       <body
         className={cn(
@@ -92,19 +97,39 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <AnimatedIcons n={40}>
-          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-          <Providers>
-            {children}
-            <Toaster />
-            {/* <CookieBanner /> */}
-            <FeedbackBlob />
-            <TailwindIndicator />
-            <EasterEgg />
-          </Providers>
-          <Analytics />
-          <SpeedInsights />
-        </AnimatedIcons>
+        {/* Halloween theme */}
+        {isOctober && (
+          <AnimatedIcons n={40}>
+            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+            <Providers>
+              {children}
+              <Toaster />
+              {/* <CookieBanner />*/}
+              <FeedbackBlob />
+              <TailwindIndicator />
+              <EasterEgg />
+            </Providers>
+            <Analytics />
+            <SpeedInsights />
+          </AnimatedIcons>
+        )}
+
+        {/* Christmas theme */}
+        {isChristmas && (
+          <AnimatedSnowfall n={40}>
+            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+            <Providers>
+              {children}
+              <Toaster />
+              {/* <CookieBanner /> */}
+              <FeedbackBlob />
+              <TailwindIndicator />
+              <EasterEgg />
+            </Providers>
+            <Analytics />
+            <SpeedInsights />
+          </AnimatedSnowfall>
+        )}
       </body>
     </html>
   );
