@@ -78,8 +78,10 @@ export const viewport = {
 } satisfies Viewport;
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const isOctober = new Date().getMonth() === 9;
-  const isChristmas = new Date().getMonth() === 10 || new Date().getMonth() === 11;
+  const date = new Date();
+  const month = date.getMonth();
+  const isOctober = month === 9;
+  const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
   return (
     <html

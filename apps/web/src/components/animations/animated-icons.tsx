@@ -84,9 +84,11 @@ export const AnimatedIcon = ({
 );
 
 export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
-  const month = getMonth(new Date());
+  const date = new Date();
+  const month = date.getMonth();
+
   // Christmas
-  if (month !== 10 && month !== 11) return <>{children}</>;
+  if (!((month === 10 && date.getDate() >= 16) || month === 11)) return <>{children}</>;
 
   const keys = [...new Array(n).keys()];
   const folder = "/christmas-icons/";
