@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
-    "@sanity/client": "6.22.2",
+    "@sanity/client": "6.22.4",
     "@sanity/icons": "3.4.0",
     "@sanity/ui": "2.8.22",
     "@sanity/vision": "3.61.0",
