@@ -86,7 +86,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="no"
-      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "defualt"}
+      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "default"}
       suppressHydrationWarning
     >
       <head />
