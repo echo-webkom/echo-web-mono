@@ -271,6 +271,7 @@ function makeUser(params: Omit<Partial<User>, "id" | "year"> & Pick<User, "id" |
     emailVerified: params.emailVerified ?? null,
     alternativeEmail: params.alternativeEmail ?? null,
     bannedFromStrike: params.bannedFromStrike ?? null,
+    birthday: params.birthday ?? null 
   };
 }
 
