@@ -40,7 +40,7 @@ export const users = pgTable(
     updatedAt: timestamp("updated_at").$onUpdate(now),
     createdAt: timestamp("created_at").$defaultFn(now),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
-    birthday: date("birthday", {mode:"date"})
+    birthday: date("birthday", { mode: "date" }),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
