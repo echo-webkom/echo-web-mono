@@ -4,10 +4,44 @@ on:
   push:
     branches:
       - main
+  # TODO: Remove me when merge to main
+  pull_request:
+    branches:
+      - main
 
 jobs:
+  web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🪰 Setup Fly
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: 🚀 Deploy
+        run: flyctl deploy --config apps/web/fly.toml --dockerfile apps/web/Dockerfile --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
   api:
     runs-on: ubuntu-latest
+    # TODO: Remove me when merge to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: 🔍 Checkout
