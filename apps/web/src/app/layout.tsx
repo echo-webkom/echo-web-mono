@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -83,6 +84,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isOctober = month === 9;
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
+  const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+
   return (
     <html
       lang="no"
@@ -99,39 +102,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        {/* Halloween theme */}
-        {isOctober && (
-          <AnimatedIcons n={40}>
-            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-            <Providers>
-              {children}
-              <Toaster />
-              {/* <CookieBanner />*/}
-              <FeedbackBlob />
-              <TailwindIndicator />
-              <EasterEgg />
-            </Providers>
-            <Analytics />
-            <SpeedInsights />
-          </AnimatedIcons>
-        )}
-
-        {/* Christmas theme */}
-        {isChristmas && (
-          <AnimatedSnowfall n={40}>
-            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-            <Providers>
-              {children}
-              <Toaster />
-              {/* <CookieBanner /> */}
-              <FeedbackBlob />
-              <TailwindIndicator />
-              <EasterEgg />
-            </Providers>
-            <Analytics />
-            <SpeedInsights />
-          </AnimatedSnowfall>
-        )}
+        <ThemeWrapper n={40}>
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          <Providers>
+            {children}
+            <Toaster />
+            {/* <CookieBanner />*/}
+            <FeedbackBlob />
+            <TailwindIndicator />
+            <EasterEgg />
+          </Providers>
+          <Analytics />
+          <SpeedInsights />
+        </ThemeWrapper>
       </body>
     </html>
   );
