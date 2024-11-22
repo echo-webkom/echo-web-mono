@@ -171,6 +171,33 @@
     --secondary-dark: #ef6c00;
   }
 
+  html[data-theme="christmas"] {
+    --primary: #c0392b;
+    --primary-foreground: #ffffff;
+    --primary-hover: #e74c3c;
+    --primary-dark: #8e2323;
+
+    --secondary: #27ae60;
+    --secondary-foreground: #ffffff;
+    --secondary-hover: #2ecc71;
+    --secondary-dark: #1e8449;
+
+    --footer: #c0392b;
+  }
+
+  html.dark[data-theme="christmas"] {
+    --primary: #bd2d2d;
+    --primary-foreground: #f4f4f4;
+    --primary-hover: #e63946;
+    --primary-dark: #7f1f1f;
+    --secondary: #2a9d8f;
+    --secondary-foreground: #f4f4f4;
+    --secondary-hover: #3faea0;
+    --secondary-dark: #207066;
+
+    --footer: #bd2d2d;
+  }
+
   * {
     @apply border-border;
     transition: background-color 150ms ease-in-out;
