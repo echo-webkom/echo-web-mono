@@ -27,10 +27,10 @@ export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreview
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
-            {happening.happeningType === "event" && (
+            {happening.happeningType === "event" && happening.organizers?.length && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
-                {happening.organizers?.map((o) => o.name).join(", ") ?? "Bo"}
+                {happening.organizers.map((o) => o.name).join(", ")}
               </li>
             )}
             {happening.date && (
