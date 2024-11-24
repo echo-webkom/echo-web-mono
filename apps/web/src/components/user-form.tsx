@@ -56,6 +56,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       degree: user.degree?.id,
       year: user.year,
       hasReadTerms: user.hasReadTerms,
+      birthday: user.birthday,
     },
     resolver: zodResolver(userSchema),
   });
