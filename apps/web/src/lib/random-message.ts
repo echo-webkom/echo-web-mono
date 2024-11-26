@@ -22,6 +22,7 @@ const baseMessages = [
   "Bedpresolini",
   "Divine intellect",
   "Skrevet i Holy C",
+  "We stan Bjarne",
 ];
 
 const getExtraMessages = (now: Date) => {
