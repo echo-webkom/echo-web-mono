@@ -1,7 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
+
+const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
 type Props = {
   children: React.ReactNode;
@@ -9,33 +11,30 @@ type Props = {
 
 export default function AnimatedBg({ children }: Props) {
   const keys = [...new Array(100).keys()];
-  const folder = "/wrapped-icons/";
-  const icons = ["circle.png", "square.png", "triangle.png", "star.png"];
 
   return (
-    <>
-      <div className="absolute overflow-hidden w-full h-full left-0 top-0 bg-red-300">
-        {children}
-        <div className="-z-10 pointer-events-none">
-          {keys.map((key) => {
-            const xOffset = Math.floor(Math.random() * 95);
-            const yOffset = Math.floor(Math.random() * 95);
+    <div className="absolute left-0 top-0 h-full w-full overflow-hidden bg-red-300">
+      {children}
+      <div className="pointer-events-none -z-10">
+        {keys.map((key) => {
+          const xOffset = Math.floor(Math.random() * 95);
+          const yOffset = Math.floor(Math.random() * 95);
+          const Icon = icons[Math.floor(Math.random() * icons.length)]!;
 
-            const icon = icons[Math.floor(Math.random() * icons.length)];
-            return (
-              <Shape
-                delay={key * 0.5}
-                repeatDelay={15}
-                xOffset={`${xOffset}%`}
-                yOffset={`${yOffset}%`}
-                key={key}
-                iconSrc={`${folder}${icon}`}
-              />
-            );
-          })}
-        </div>
+          return (
+            <Shape
+              delay={key * 0.5}
+              repeatDelay={15}
+              xOffset={`${xOffset}%`}
+              yOffset={`${yOffset}%`}
+              key={key}
+            >
+              <Icon />
+            </Shape>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -44,16 +43,10 @@ type AnimatedProps = {
   yOffset: string;
   delay: number;
   repeatDelay: number;
-  iconSrc: string;
+  children: React.ReactNode;
 };
 
-export const Shape = ({
-  xOffset,
-  yOffset,
-  delay,
-  repeatDelay,
-  iconSrc,
-}: AnimatedProps) => (
+export const Shape = ({ xOffset, yOffset, delay, repeatDelay, children }: AnimatedProps) => (
   <motion.div
     style={{
       position: "absolute",
@@ -75,6 +68,6 @@ export const Shape = ({
       repeat: Number.POSITIVE_INFINITY,
     }}
   >
-    <Image src={iconSrc} alt="" height={50} width={50} />
+    {children}
   </motion.div>
 );

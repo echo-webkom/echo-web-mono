@@ -1,17 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import { AppearingText } from "../components/Text";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
+import { AppearingText } from "../components/Text";
+import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import { COMMENTS, REACTIONS, REPLIES } from "../stats";
 
-export const SocialCards: Array<React.ReactNode> = [
-  <Social0 key={0} />,
-  <Social1 key={1} />,
-];
-
-function Social0() {
+export const CommentSectionCard = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-purple",
     bgColor: "bg-wrapped-pink",
@@ -23,33 +19,31 @@ function Social0() {
   };
 
   return (
-    <>
-      <WrappedCard props={layerProps}>
-        <motion.div
-          className="absolute top-0 left-0 text-3xl opacity-[0.03]"
-          animate={{ y: -1000 }}
-          transition={{ duration: 40 }}
-        >
-          {Array.from({ length: 200 }).map((_, index) => {
-            return <p key={index}>BLA BLA BLA BLA BLA BLA BLA BLA</p>;
-          })}
-        </motion.div>
-        <div className="flex w-full h-full flex-col items-start justify-center p-10 gap-3">
-          <AppearingText delay={0.3}>
-            <p className="text-3xl w-full">For en pratsom gjeng dere er!</p>
-          </AppearingText>
-          <AppearingText delay={1.3}>
-            <p className="font-medium text-2xl w-full text-wrapped-grey">
-              La oss se hvor aktive dere<br></br>har vært i kommentarfeltene...
-            </p>
-          </AppearingText>
-        </div>
-      </WrappedCard>
-    </>
+    <WrappedCard props={layerProps}>
+      <motion.div
+        className="absolute left-0 top-0 text-3xl opacity-[0.03]"
+        animate={{ y: -1000 }}
+        transition={{ duration: 40 }}
+      >
+        {Array.from({ length: 200 }).map((_, index) => {
+          return <p key={index}>BLA BLA BLA BLA BLA BLA BLA BLA</p>;
+        })}
+      </motion.div>
+      <div className="flex h-full w-full flex-col items-start justify-center gap-3 p-10">
+        <AppearingText delay={0.3}>
+          <p className="w-full text-3xl">For en pratsom gjeng dere er!</p>
+        </AppearingText>
+        <AppearingText delay={1.3}>
+          <p className="text-wrapped-grey w-full text-2xl font-medium">
+            La oss se hvor aktive dere<br></br>har vært i kommentarfeltene...
+          </p>
+        </AppearingText>
+      </div>
+    </WrappedCard>
   );
-}
+};
 
-function Social1() {
+export const InteractionCard = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-purple",
     bgColor: "bg-wrapped-pink",
@@ -59,45 +53,29 @@ function Social1() {
     scale: [1, 1],
     rotate: [-5, 10],
   };
+
   return (
-    <>
-      <WrappedCard props={layerProps}>
-        <div className="w-full h-full flex flex-col items-center justify-center p-10 gap-10">
-          <div className="flex w-full items-center gap-5">
-            <div className="h-full">
-              <Image
-                src="/wrapped/star.png"
-                alt=""
-                width={50}
-                height={0}
-              ></Image>
-            </div>
-            <p>{COMMENTS} kommentarer</p>
+    <WrappedCard props={layerProps}>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-10 p-10">
+        <div className="flex w-full items-center gap-5">
+          <div className="h-full">
+            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
           </div>
-          <div className="flex w-full items-center gap-5">
-            <div className="h-full">
-              <Image
-                src="/wrapped/star.png"
-                alt=""
-                width={50}
-                height={0}
-              ></Image>
-            </div>
-            <p>{REPLIES} replies</p>
-          </div>
-          <div className="flex w-full items-center gap-5">
-            <div className="h-full">
-              <Image
-                src="/wrapped/star.png"
-                alt=""
-                width={50}
-                height={0}
-              ></Image>
-            </div>
-            <p>{REACTIONS} reaksjoner</p>
-          </div>
+          <p>{COMMENTS} kommentarer</p>
         </div>
-      </WrappedCard>
-    </>
+        <div className="flex w-full items-center gap-5">
+          <div className="h-full">
+            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
+          </div>
+          <p>{REPLIES} replies</p>
+        </div>
+        <div className="flex w-full items-center gap-5">
+          <div className="h-full">
+            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
+          </div>
+          <p>{REACTIONS} reaksjoner</p>
+        </div>
+      </div>
+    </WrappedCard>
   );
-}
+};

@@ -1,32 +1,49 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { EventCards } from "./cards/events";
 import { useState } from "react";
-import { SocialCards } from "./cards/socials";
+import { AnimatePresence, motion } from "framer-motion";
 
-// ---------------------------
+import {
+  AgendaEvent,
+  AmountEvent,
+  AmountEventPerGroup,
+  BestEvent,
+  EventIntro,
+  RegistrationsCard,
+} from "./cards/events";
+import { CommentSectionCard, InteractionCard } from "./cards/socials";
 
-const cards = [...SocialCards, ...EventCards];
-
-// ---------------------------
+const cards = [
+  { component: <EventIntro />, key: "event-intro" },
+  { component: <AmountEvent />, key: "amount-event" },
+  { component: <AmountEventPerGroup />, key: "amount-event-per-group" },
+  { component: <AgendaEvent />, key: "agenda-event" },
+  { component: <RegistrationsCard />, key: "registrations" },
+  { component: <BestEvent />, key: "best-event" },
+  { component: <CommentSectionCard />, key: "comment-section" },
+  { component: <InteractionCard />, key: "interaction" },
+];
 
 export default function Wrapped() {
   const [cardIdx, setCardIdx] = useState(0);
 
+  const currentCard = cards[cardIdx];
+
+  if (!currentCard) {
+    return <p>Internal error</p>;
+  }
+
   return (
-    <>
-      <AnimatePresence mode="wait">
-        <motion.div
-          onClick={() => setCardIdx((prev) => (prev + 1) % cards.length)}
-          id={`wrapped-card-${cardIdx}`}
-          key={cardIdx}
-          // className="relative select-none w-[30vw] h-[75vh]"
-          className="overflow-hidden"
-        >
-          {cards[cardIdx]}
-        </motion.div>
-      </AnimatePresence>
-    </>
+    <AnimatePresence mode="wait">
+      <motion.div
+        id={`wrapped-card-${currentCard.key}`}
+        onClick={() => setCardIdx((prev) => (prev + 1) % cards.length)}
+        key={currentCard.key}
+        // className="relative select-none w-[30vw] h-[75vh]"
+        className="overflow-hidden"
+      >
+        {currentCard.component}
+      </motion.div>
+    </AnimatePresence>
   );
 }
