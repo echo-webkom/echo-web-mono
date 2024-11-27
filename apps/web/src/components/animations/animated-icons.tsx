@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { getMonth } from "date-fns";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+
+import { Snowflake } from "../icons/snowflake";
 
 type AnimatedIconsProps = {
   n: number;
@@ -86,13 +89,13 @@ export const AnimatedIcon = ({
 export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   const date = new Date();
   const month = date.getMonth();
+  const { theme } = useTheme();
 
   // Christmas
   if (!((month === 10 && date.getDate() >= 16) || month === 11)) return <>{children}</>;
 
   const keys = [...new Array(n).keys()];
-  const folder = "/christmas-icons/";
-  const icons = ["snowflake.svg"]; // Can add different snowflake types here
+  const colors = theme === "light" ? ["#1C274C"] : ["#F3F7F2"]; // Can add different colors for the snowflakes here
 
   return (
     <div className="h-full w-full">
@@ -101,14 +104,14 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
         {keys.map((key) => {
           const offset = Math.floor(Math.random() * 95);
 
-          const icon = icons[Math.floor(Math.random() * icons.length)];
+          const color = colors[Math.floor(Math.random() * colors.length)]!;
           return (
             <AnimatedSnowFlake
               delay={key * 0.5}
               repeatDelay={15}
               offset={`${offset}%`}
               key={key}
-              iconSrc={`${folder}${icon}`}
+              color={color}
             />
           );
         })}
@@ -121,14 +124,14 @@ type AnimatedSnowFlakeProps = {
   offset: string;
   delay: number;
   repeatDelay: number;
-  iconSrc: string;
+  color: string;
 };
 
 export const AnimatedSnowFlake = ({
   offset,
   delay,
   repeatDelay,
-  iconSrc,
+  color,
 }: AnimatedSnowFlakeProps) => (
   <motion.div
     style={{
@@ -149,6 +152,6 @@ export const AnimatedSnowFlake = ({
       repeat: Number.POSITIVE_INFINITY,
     }}
   >
-    <Image src={iconSrc} alt="" height={50} width={50} />
+    <Snowflake color={color} />
   </motion.div>
 );
