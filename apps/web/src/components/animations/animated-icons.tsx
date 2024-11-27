@@ -104,7 +104,7 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
         {keys.map((key) => {
           const offset = Math.floor(Math.random() * 95);
 
-          const color = colors[Math.floor(Math.random() * colors.length)];
+          const color = colors[Math.floor(Math.random() * colors.length)]!;
           return (
             <AnimatedSnowFlake
               delay={key * 0.5}
