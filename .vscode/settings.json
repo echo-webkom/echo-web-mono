@@ -4,10 +4,5 @@
     { "pattern": "apps/*/" },
     { "pattern": "packages/*/" },
     { "pattern": "playwright/" }
-  ],
-  "cSpell.words": [
-    "avmeldt",
-    "bedpres",
-    "waitlist"
   ]
 }
