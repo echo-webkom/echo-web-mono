@@ -102,19 +102,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <ThemeWrapper n={40}>
-          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-          <Providers>
+        <Providers>
+          <ThemeWrapper n={40}>
+            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+
             {children}
             <Toaster />
             {/* <CookieBanner />*/}
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
-          </Providers>
-          <Analytics />
-          <SpeedInsights />
-        </ThemeWrapper>
+
+            <Analytics />
+            <SpeedInsights />
+          </ThemeWrapper>
+        </Providers>
       </body>
     </html>
   );

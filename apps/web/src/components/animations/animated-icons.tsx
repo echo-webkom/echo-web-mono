@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { getMonth } from "date-fns";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 type AnimatedIconsProps = {
   n: number;
@@ -86,13 +87,14 @@ export const AnimatedIcon = ({
 export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   const date = new Date();
   const month = date.getMonth();
+  const theme = useTheme().theme;
 
   // Christmas
   if (!((month === 10 && date.getDate() >= 16) || month === 11)) return <>{children}</>;
 
   const keys = [...new Array(n).keys()];
   const folder = "/christmas-icons/";
-  const icons = ["snowflake.svg"]; // Can add different snowflake types here
+  const icons = theme == "light" ? ["snowflake.svg"] : ["snowflake_white.svg"]; // Can add different snowflake types here
 
   return (
     <div className="h-full w-full">
