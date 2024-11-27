@@ -2,7 +2,7 @@ import { selectUserSchema, type Question } from "@echo-webkom/db/schemas";
 
 import { zodKeys } from "@/lib/zod-keys";
 
-type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status" ;
+type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
 
 export const formatHeaders: Record<HeaderType, string> = {
   name: "Navn",
