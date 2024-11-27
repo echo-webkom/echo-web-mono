@@ -152,6 +152,6 @@ export const AnimatedSnowFlake = ({
       repeat: Number.POSITIVE_INFINITY,
     }}
   >
-    <Snowflake color={color}></Snowflake>
+    <Snowflake color={color} />
   </motion.div>
 );
