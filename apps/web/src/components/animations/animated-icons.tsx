@@ -89,7 +89,7 @@ export const AnimatedIcon = ({
 export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   const date = new Date();
   const month = date.getMonth();
-  const theme = useTheme().theme;
+  const { theme } = useTheme();
 
   // Christmas
   if (!((month === 10 && date.getDate() >= 16) || month === 11)) return <>{children}</>;
