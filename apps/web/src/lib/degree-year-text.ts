@@ -1,4 +1,4 @@
-import { type JobAdsQueryResult } from "@/sanity.types";
+import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
 
 const YEARS: Record<string, number> = {
   FIRST: 1,

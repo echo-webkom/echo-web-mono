@@ -60,9 +60,6 @@
 
     --banner: #53adbd;
 
-    --wave: #ffeabb;
-    --wave-foreground: #171923;
-
     --ring: #94a3b8;
 
     --selected: #ffeabb;
@@ -73,6 +70,10 @@
     --feide: #1f4798;
     --feide-hover: #88b3e0;
     --feide-dark: #062356;
+
+    --footer: #f2cc8f;
+    --footer-border: #d4a373;
+    --footer-foreground: #171923;
   }
 
   .dark {
@@ -133,15 +134,68 @@
 
     --banner: #53adbd;
 
-    --wave: #21201f;
-    --wave-foreground: #f9fafb;
-    --wave-dark: #1e1b17;
-
     --ring: #94a3b8;
 
     --selected: #008fa3;
 
     --radius: 0.5rem;
+
+    --footer: #21201f;
+    --footer-border: #1d1b17;
+    --footer-foreground: #f9fafb;
+  }
+
+  html[data-theme="halloween"] {
+    --primary: #e07a5f;
+    --primary-foreground: #2f3640;
+    --primary-hover: #f4a261;
+    --primary-dark: #9c6644;
+
+    --secondary: #f2cc8f;
+    --secondary-foreground: #2f3640;
+    --secondary-hover: #ffe8a1;
+    --secondary-dark: #d4a373;
+
+    --footer: #e07a5f;
+  }
+
+  html.dark[data-theme="halloween"] {
+    --primary: #9d4edd;
+    --primary-foreground: #f0e6ef;
+    --primary-hover: #bb86fc;
+    --primary-dark: #6a1b9a;
+
+    --secondary: #ffb74d;
+    --secondary-foreground: #f0e6ef;
+    --secondary-hover: #ffa726;
+    --secondary-dark: #ef6c00;
+  }
+
+  html[data-theme="christmas"] {
+    --primary: #c0392b;
+    --primary-foreground: #ffffff;
+    --primary-hover: #e74c3c;
+    --primary-dark: #8e2323;
+
+    --secondary: #27ae60;
+    --secondary-foreground: #ffffff;
+    --secondary-hover: #2ecc71;
+    --secondary-dark: #1e8449;
+
+    --footer: #c0392b;
+  }
+
+  html.dark[data-theme="christmas"] {
+    --primary: #bd2d2d;
+    --primary-foreground: #f4f4f4;
+    --primary-hover: #e63946;
+    --primary-dark: #7f1f1f;
+    --secondary: #2a9d8f;
+    --secondary-foreground: #f4f4f4;
+    --secondary-hover: #3faea0;
+    --secondary-dark: #207066;
+
+    --footer: #bd2d2d;
   }
 
   * {

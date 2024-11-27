@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Body, Container, Head, Heading, Html, Img, Preview, Section, Tailwind } from "jsx-email";
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Preview,
+  Section,
+  Tailwind,
+} from "@react-email/components";
 
 export default function AccessGranted() {
   return (

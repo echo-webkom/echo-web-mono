@@ -20,18 +20,13 @@ export const Comments = async ({ id }: CommentsProps) => {
 
   const commentTree = buildCommentTreeFrom(comments, null);
 
-  return (
-    <ReplyTree
-      comments={commentTree}
-      user={
-        user
-          ? {
-              id: user.id,
-              name: user.name,
-              image: user.image,
-            }
-          : null
+  const u = user
+    ? {
+        id: user.id,
+        name: user.name,
+        image: user.image,
       }
-    />
-  );
+    : null;
+
+  return <ReplyTree comments={commentTree} user={u} />;
 };

@@ -1,11 +1,13 @@
 import "@/styles/globals.css";
 
+import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
+import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -77,8 +79,19 @@ export const viewport = {
 } satisfies Viewport;
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const date = new Date();
+  const month = date.getMonth();
+  const isOctober = month === 9;
+  const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
+
+  const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+
   return (
-    <html lang="no" suppressHydrationWarning>
+    <html
+      lang="no"
+      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "default"}
+      suppressHydrationWarning
+    >
       <head />
       <body
         className={cn(
@@ -89,17 +102,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-        <Providers>
-          {children}
-          <Toaster />
-          {/* <CookieBanner /> */}
-          <FeedbackBlob />
-          <TailwindIndicator />
-          <EasterEgg />
-        </Providers>
-        <Analytics />
-        <SpeedInsights />
+        <ThemeWrapper n={40}>
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          <Providers>
+            {children}
+            <Toaster />
+            {/* <CookieBanner />*/}
+            <FeedbackBlob />
+            <TailwindIndicator />
+            <EasterEgg />
+          </Providers>
+          <Analytics />
+          <SpeedInsights />
+        </ThemeWrapper>
       </body>
     </html>
   );

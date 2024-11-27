@@ -20,6 +20,9 @@ const baseMessages = [
   "418 i'm a teapot",
   "New backend, who dis?",
   "Bedpresolini",
+  "Divine intellect",
+  "Skrevet i Holy C",
+  "We stan Bjarne",
 ];
 
 const getExtraMessages = (now: Date) => {

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { fetchMinuteById } from "@/sanity/minutes/requests";
+import { fetchMinuteById } from "@/sanity/minutes";
 
 type Props = {
   params: {

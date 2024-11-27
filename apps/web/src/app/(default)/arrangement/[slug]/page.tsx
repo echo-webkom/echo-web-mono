@@ -2,7 +2,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { EventPage } from "@/components/event-page";
-import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { fetchHappeningBySlug } from "@/sanity/happening";
 
 type Props = {
   params: {

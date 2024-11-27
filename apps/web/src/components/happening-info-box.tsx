@@ -1,6 +1,6 @@
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { fetchHappeningBySlug } from "@/sanity/happening";
 import { isBetween, norwegianDateString } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { capitalize } from "@/utils/string";

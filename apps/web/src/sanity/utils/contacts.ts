@@ -1,20 +1,6 @@
-import groq from "groq";
-
+import { type HappeningContactsQueryResult } from "@echo-webkom/cms/types";
 import { client } from "@echo-webkom/sanity";
-
-import { type HappeningContactsQueryResult } from "@/sanity.types";
-
-const happeningContactsQuery = groq`
-*[_type == "happening" && slug.current == $slug] {
-"contacts": contacts[] {
-email,
-"profile": profile->{
-  _id,
-  name,
-},
-},
-}[0].contacts
-`;
+import { happeningContactsQuery } from "@echo-webkom/sanity/queries";
 
 export const getContactsBySlug = async (slug: string) => {
   return await client

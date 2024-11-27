@@ -1,7 +1,10 @@
 import { cache } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
+import { FaLinkedin } from "react-icons/fa";
+import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
@@ -10,7 +13,17 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { fetchStudentGroupBySlug, studentGroupTypeName } from "@/sanity/student-group";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { fetchStudentGroupBySlug } from "@/sanity/student-group";
+import { studentGroupTypeName } from "@/sanity/utils/mappers";
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {
@@ -129,15 +142,56 @@ export default async function GroupPage({ params }: Props) {
                 .slice(0, 2);
 
               return (
-                <div className="flex flex-col gap-2 p-5 text-center" key={member.profile?._id}>
+                <div
+                  className="group flex flex-col gap-2 p-5 text-center"
+                  key={member.profile?._id}
+                >
                   <Avatar className="mx-auto">
                     <AvatarImage src={image ? urlFor(image).url() : undefined} />
                     <AvatarFallback>{initials}</AvatarFallback>
                   </Avatar>
-
-                  <p className="text-lg font-medium">{member.profile?.name}</p>
+                  <Dialog>
+                    <DialogTrigger>
+                      <p className="text-lg font-medium group-hover:underline">
+                        {member.profile?.name}
+                      </p>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{member.profile?.name}</DialogTitle>
+                        <DialogDescription className="flex justify-center gap-3 pt-3">
+                          {member.profile?.socials?.email && (
+                            <Link href={`mailto:${member.profile?.socials?.email}`}>
+                              <Button className="flex items-center">
+                                <span>
+                                  <IoMail className="mr-1" />
+                                </span>
+                                <span>E-post</span>
+                              </Button>
+                            </Link>
+                          )}
+                          {member.profile?.socials?.linkedin && (
+                            <Link href={member.profile?.socials?.linkedin}>
+                              <Button>
+                                <span className="flex items-center">
+                                  <FaLinkedin className="mr-1" />
+                                </span>
+                                <span>LinkedIn</span>
+                              </Button>
+                            </Link>
+                          )}
+                          {!member.profile?.socials?.linkedin &&
+                            !member.profile?.socials?.email && (
+                              <div className="flex items-center justify-center gap-3">
+                                <IoCloudOfflineSharp />
+                                <p>Ingen kontaktinfo</p>
+                              </div>
+                            )}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
                   <p>{member.role}</p>
-                  {/* TODO: Add member socials */}
                 </div>
               );
             })}
