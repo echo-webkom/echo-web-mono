@@ -40,3 +40,6 @@ playwright/.cache/
 .sanity
 .dist
 dist
+
+# VScode
+.vscode
