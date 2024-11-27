@@ -111,7 +111,7 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
               repeatDelay={15}
               offset={`${offset}%`}
               key={key}
-              color={color ?? ""}
+              color={color}
             />
           );
         })}
