@@ -18,7 +18,7 @@ export default function Brochure() {
           width: "100%",
           height: "800px",
         }}
-        src="https://www.visbrosjyre.no/echo/WebView/"
+        src="/echo-oppslag.pdf"
       ></iframe>
     </Container>
   );
