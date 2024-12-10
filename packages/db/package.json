@@ -24,7 +24,7 @@
   "dependencies": {
     "drizzle-orm": "0.33.0",
     "drizzle-zod": "0.5.1",
-    "nanoid": "5.0.8",
+    "nanoid": "5.0.9",
     "next-auth": "4.24.7",
     "pg": "8.13.1",
     "postgres": "3.4.4",
