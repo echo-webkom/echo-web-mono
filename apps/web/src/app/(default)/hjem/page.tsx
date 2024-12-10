@@ -1,5 +1,7 @@
+import { AocLeaderboard } from "@/components/aoc-leaderboard";
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
+import { BentoBox } from "./_components/bento-box";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
@@ -27,13 +29,13 @@ export default async function Home() {
           n={11}
           className="col-span-1 row-span-2"
         />
-        <ComingHappenings
-          title="Bedriftspresentasjoner"
-          href="/for-studenter/arrangementer?type=bedpres"
-          types={["bedpres"]}
-          n={3}
+        <BentoBox
+          title="Advent of Code"
+          href="/arrangement/advent-of-code-2"
           className="col-span-2 row-span-1"
-        />
+        >
+          <AocLeaderboard />
+        </BentoBox>
         <Posts className="col-span-2 row-span-1" />
       </Container>
 
