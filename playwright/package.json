@@ -16,7 +16,7 @@
     "@echo-webkom/tsconfig": "workspace:*",
     "@playwright/test": "1.48.2",
     "@types/node": "20.17.1",
-    "dotenv-cli": "7.4.2",
+    "dotenv-cli": "7.4.4",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
     "postgres": "3.4.4",
