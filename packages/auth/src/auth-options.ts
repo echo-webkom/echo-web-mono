@@ -1,10 +1,10 @@
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { eq } from "drizzle-orm";
 import type { AuthOptions, DefaultSession } from "next-auth";
 
-import { users } from "@echo-webkom/db/schemas";
+import { accounts, sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
 import { isMemberOfecho } from "./is-member-of-echo";
 import { isFuture } from "./utils";
@@ -27,7 +27,13 @@ export const createAuthOptions = (
   opts: CreateAuthOptionsOptions | undefined = undefined,
 ): AuthOptions => {
   return {
-    adapter: DrizzleAdapter(db),
+    adapter: DrizzleAdapter(db, {
+      accountsTable: accounts,
+      usersTable: users,
+      authenticatorsTable: undefined,
+      sessionsTable: sessions,
+      verificationTokensTable: verificationTokens,
+    }),
 
     pages: {
       signIn: "/auth/logg-inn",

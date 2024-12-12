@@ -5,7 +5,6 @@ import {
   index,
   integer,
   pgTable,
-  primaryKey,
   text,
   timestamp,
   varchar,
@@ -25,7 +24,7 @@ import { now } from "../utils";
 export const users = pgTable(
   "user",
   {
-    id: text().notNull(),
+    id: text().notNull().primaryKey(),
     name: text(),
     email: text().notNull(),
     emailVerified: timestamp({ mode: "date" }),
@@ -42,7 +41,7 @@ export const users = pgTable(
     hasReadTerms: boolean().notNull().default(false),
     birthday: date({ mode: "date" }),
   },
-  (table) => [primaryKey({ columns: [table.id] }), index("email_idx").on(table.email)],
+  (table) => [index("email_idx").on(table.email)],
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
