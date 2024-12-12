@@ -23,7 +23,7 @@ export const BEST_COMMENT = {
 };
 
 export const COMMENTS = 1234; // Antall kommentarer totalt 2024
-export const REPLIES = 0; // Antall svar på kommentarer
+export const REPLIES = 234; // Antall svar på kommentarer
 export const EVENTS = 1234; // Antall arrangementer totalt 2024
 export const REACTIONS = 12345; // Antall reaksjoner på arrangement i 2024
 export const REGISTRATIONS = 12345; // Antall påmeldinger på arrangement i 2024
