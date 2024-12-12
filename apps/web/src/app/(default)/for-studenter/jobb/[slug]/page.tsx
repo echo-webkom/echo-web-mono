@@ -26,11 +26,11 @@ const getData = cache(async (slug: Props["params"]["slug"]) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const jobAd = await getData(slug);
 
   return {
     title: jobAd.title,
+    description: `Ny stillingsannonse hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
   };
 };
 

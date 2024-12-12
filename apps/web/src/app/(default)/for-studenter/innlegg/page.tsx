@@ -1,5 +1,4 @@
 import { cache } from "react";
-import { type Metadata } from "next/types";
 
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
@@ -8,7 +7,7 @@ import { fetchAllPosts } from "@/sanity/posts";
 
 export const metadata = {
   title: "Innlegg",
-} satisfies Metadata;
+};
 
 const getData = cache(async () => {
   return await fetchAllPosts();

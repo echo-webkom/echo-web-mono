@@ -1,4 +1,4 @@
-import { type Metadata } from "next/types";
+import { type Metadata } from "next";
 
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { JobAdList } from "./_components/job-ad-list";

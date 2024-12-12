@@ -44,12 +44,18 @@ type RootLayoutProps = {
 };
 
 export const metadata = {
-  metadataBase: new URL(BASE_URL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
   description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  applicationName: "echo",
+  creator: "echo-webkom",
+  authors: {
+    name: "echo-webkom",
+    url: "/webkom",
+  },
+  metadataBase: new URL(BASE_URL),
   keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
   icons: {
     apple: "/apple-touch-icon.png",
