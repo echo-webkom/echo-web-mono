@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LuStar } from "react-icons/lu";
+import { TiStarburst } from "react-icons/ti";
 
 import { AppearingText, InYourFace } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
@@ -268,7 +268,7 @@ export const RegistrationsCard = () => {
                 ease: "linear",
               }}
             >
-              <LuStar className="absolute z-40 h-20 w-20 fill-yellow-300 text-yellow-300" />
+              <TiStarburst className="z-40 h-[70vh] w-[70vh] fill-yellow-300" />
             </motion.div>
             <div className="absolute">
               <p className="text-wrapped-black text-center text-8xl font-bold">{REGISTRATIONS}</p>

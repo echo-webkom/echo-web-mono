@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 import { AppearingText } from "../components/Text";
@@ -58,21 +57,15 @@ export const InteractionCard = () => {
     <WrappedCard props={layerProps}>
       <div className="flex h-full w-full flex-col items-center justify-center gap-10 p-10">
         <div className="flex w-full items-center gap-5">
-          <div className="h-full">
-            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
-          </div>
+          <div className="h-full"></div>
           <p>{COMMENTS} kommentarer</p>
         </div>
         <div className="flex w-full items-center gap-5">
-          <div className="h-full">
-            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
-          </div>
+          <div className="h-full"></div>
           <p>{REPLIES} replies</p>
         </div>
         <div className="flex w-full items-center gap-5">
-          <div className="h-full">
-            <Image src="/wrapped/star.png" alt="" width={50} height={0}></Image>
-          </div>
+          <div className="h-full"></div>
           <p>{REACTIONS} reaksjoner</p>
         </div>
       </div>
