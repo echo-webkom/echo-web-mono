@@ -135,7 +135,7 @@ function Particle({ x, y, duration }: { x: number; y: number; duration: number }
       animate={{
         x: [Math.floor(x / 1.5), Math.floor(x)],
         y: [Math.floor(y / 1.5), Math.floor(y)],
-        opacity: [0, 0.1, 1, 0],
+        opacity: [0, 0.3, 1, 0],
         rotate: 360,
       }}
       exit={{
