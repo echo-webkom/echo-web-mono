@@ -1,9 +1,8 @@
 import "@/styles/globals.css";
 
 import { Fragment } from "react";
-import { type Viewport } from "next";
+import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
-import { type Metadata } from "next/types";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";

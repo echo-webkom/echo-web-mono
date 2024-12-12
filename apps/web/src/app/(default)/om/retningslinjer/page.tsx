@@ -1,13 +1,14 @@
-import { getNewPageMetadata } from "@/app/seo";
+import { type Metadata } from "next";
+
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 
-export const metadata = getNewPageMetadata(
-  "Etiske retningslinjer",
-  "De etiske retningslinjene til echo – Linjeforeningen for informatikk",
-);
+export const metadata = {
+  title: "Etiske retningslinjer",
+  description: "De etiske retningslinjene til echo – Linjeforeningen for informatikk",
+} satisfies Metadata;
 
 export default async function EthicalGuidelines() {
   const markdown = await fetch(

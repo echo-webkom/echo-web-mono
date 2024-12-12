@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +10,6 @@ import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { getNewPageMetadata } from "@/app/seo";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
@@ -51,7 +51,10 @@ export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
   const group = await getData(slug);
 
-  return getNewPageMetadata(group.name, `Infosiden til echo sin undergruppe ${group.name}.`);
+  return {
+    title: group.name,
+    description: `Infosiden til echo sin undergruppe ${group.name}.`,
+  } satisfies Metadata;
 };
 
 export default async function GroupPage({ params }: Props) {
