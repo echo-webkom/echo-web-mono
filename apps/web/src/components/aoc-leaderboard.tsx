@@ -17,9 +17,12 @@ export const AocLeaderboard = async () => {
   return (
     <div className="h-full rounded-xl bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base">
       {list.map((user, i) => {
+        const isLongName = user.name.length > 8;
+        const name = isLongName ? user.name.slice(0, 5) + "..." : user.name;
         return (
           <div key={user.id} className="line-clamp-1 flex items-center gap-4 text-nowrap">
             <span className="w-[30px] flex-shrink-0 text-gray-500">{i + 1})</span>
+            <span className="block w-[60px] flex-shrink-0 sm:hidden">{name}</span>
             <span className="w-[40px] flex-shrink-0">{user.localScore}</span>
             <div className="flex flex-shrink-0 items-center">
               {Array.from({ length: 25 }).map((_, i) => {
@@ -37,7 +40,7 @@ export const AocLeaderboard = async () => {
                 );
               })}
             </div>
-            <span className="flex-shrink">{user.name}</span>
+            <span className="hidden flex-shrink sm:block">{user.name}</span>
           </div>
         );
       })}
