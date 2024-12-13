@@ -114,7 +114,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
             {children}
             <Toaster />
-            {/* <CookieBanner />*/}
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
