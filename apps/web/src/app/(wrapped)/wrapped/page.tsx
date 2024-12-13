@@ -11,9 +11,10 @@ import {
   EventIntro,
   RegistrationsCard,
 } from "./cards/events";
-import { CommentSectionCard, InteractionCard } from "./cards/socials";
+import { CommentSectionCard, InteractionCard, YourInteractions } from "./cards/socials";
 
 const cards = [
+  { component: <YourInteractions />, key: "your-interactions" },
   { component: <EventIntro />, key: "event-intro" },
   { component: <AmountEvent />, key: "amount-event" },
   { component: <AmountEventPerGroup />, key: "amount-event-per-group" },

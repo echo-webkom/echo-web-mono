@@ -6,7 +6,14 @@ import { SlSpeech } from "react-icons/sl";
 
 import { AppearingText } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import { COMMENTS, REACTIONS, REPLIES } from "../stats";
+import {
+  COMMENTS,
+  REACTIONS,
+  REPLIES,
+  YOUR_COMMENTS,
+  YOUR_REACTIONS,
+  YOUR_REPLIES,
+} from "../stats";
 
 export const CommentSectionCard = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -111,5 +118,80 @@ export const InteractionCard = () => {
         </motion.div>
       </div>
     </WrappedCard>
+  );
+};
+
+export const YourInteractions = () => {
+  const layerProps: WrappedCardProps<3> = {
+    fgColor: "bg-wrapped-purple",
+    bgColor: "bg-wrapped-pink",
+    colors: ["bg-wrapped-black", "bg-wrapped-orange", "bg-wrapped-yellow"],
+    offX: [20, 60, 100],
+    offY: [20, 40, 60],
+    scale: [1, 1, 1],
+    rotate: [5, 10, 15],
+  };
+
+  const noComments = [
+    // De aller fleste vil få en sånn så har flere for mer variasjon
+    "Du vet vi har et kommentarfelt ikkesant?",
+    "Så stille man hører gresset gro...",
+    "*crickets*",
+  ];
+
+  const comment = (() => {
+    const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
+
+    if (sumActivity === 0) return noComments[Math.floor(Math.random() * noComments.length)];
+    if (sumActivity < 5) return "En person av få ord";
+    if (sumActivity < 10) return "Folket takker deg for din mening";
+
+    // TODO: legg til flere cases, og ulike ting for ulike kombinasjoner av reaksjoner og kommentarer osv
+
+    return "En ekte kommentarfelt-kriger!";
+  })();
+
+  return (
+    <>
+      <WrappedCard props={layerProps}>
+        <div className="grid h-full w-full grid-cols-1 grid-rows-3">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 0.5 }}
+            className="row-span-1 flex items-end justify-center p-10"
+          >
+            <p className="text-4xl">Og du da?</p>
+          </motion.div>
+          <motion.div
+            initial={{ x: -1000 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 1, delay: 1, ease: "backOut" }}
+            className="bg-wrapped-yellow row-span-1 m-5 grid grid-cols-3 grid-rows-1 rounded-2xl p-5"
+          >
+            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
+              <SlSpeech className="h-1/2 w-1/2" />
+              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_COMMENTS}</p>
+            </div>
+            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
+              <FaReply className="h-1/2 w-1/2" />
+              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_REPLIES}</p>
+            </div>
+            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
+              <FaRegThumbsUp className="h-1/2 w-1/2" />
+              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_REACTIONS}</p>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 2.5 }}
+            className="row-span-1 flex items-start justify-center p-10"
+          >
+            <p className="text-wrapped-white text-center text-3xl">{comment}</p>
+          </motion.div>
+        </div>
+      </WrappedCard>
+    </>
   );
 };
