@@ -6,7 +6,7 @@ import { type fetchAllHappenings } from "@/sanity/happening";
 import { type fetchMovies } from "@/sanity/movies";
 import { createHappeningLink } from "./create-link";
 
-type CalendarEventType = "event" | "bedpres" | "movie" | "other";
+type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
 
 export type CalendarEvent = {
   id: string;
@@ -55,4 +55,32 @@ export const moviesToCalendarEvent = (
     link: movie.link ?? "#",
     type: "movie",
   }));
+};
+
+/**
+ * Static method to generate a list of calendar events for boardgame nights.
+ * The events are generated for the next 25 weeks.
+ * @returns {Array<CalendarEvent>} List of calendar events for boardgame nights.
+ */
+export const boardgamesToCalendarEvent = (): Array<CalendarEvent> => {
+  const events: Array<CalendarEvent> = [];
+  const today = new Date();
+  const boardgameDay = 2; // Tuesday
+
+  for (let i = 0; i < 25; i++) {
+    const eventDate = new Date(today);
+    eventDate.setDate(today.getDate() + ((boardgameDay - today.getDay() + 7) % 7) + 7 * i);
+    eventDate.setHours(18, 0, 0, 0);
+
+    events.push({
+      id: `boardgame-${i}`,
+      title: "Brettspillkveld 🎲",
+      date: eventDate,
+      body: "Bli med på brettspillkveld!",
+      link: "https://echo.uib.no/for-studenter/gruppe/echo-brettspill",
+      type: "boardgame",
+    });
+  }
+
+  return events;
 };
