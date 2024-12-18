@@ -1,6 +1,6 @@
 {
-  "id": "cb5b8ce8-b7c9-45dc-813a-940af7313dac",
-  "prevId": "b0a28dbe-0cc7-4d51-ade7-d82f8fc5f873",
+  "id": "0e120cf0-d7b6-4eb1-a048-ac208fda3cac",
+  "prevId": "cb5b8ce8-b7c9-45dc-813a-940af7313dac",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1505,13 +1505,13 @@
       "columns": {
         "notification_id": {
           "name": "notification_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -1562,8 +1562,8 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "primaryKey": true,
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -1586,7 +1586,7 @@
         },
         "created_by": {
           "name": "created_by",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }

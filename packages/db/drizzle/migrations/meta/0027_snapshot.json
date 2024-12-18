@@ -1,6 +1,6 @@
 {
-  "id": "cb5b8ce8-b7c9-45dc-813a-940af7313dac",
-  "prevId": "b0a28dbe-0cc7-4d51-ade7-d82f8fc5f873",
+  "id": "3755fcbf-e994-4d83-9a7e-9851b8afa795",
+  "prevId": "0e120cf0-d7b6-4eb1-a048-ac208fda3cac",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1505,13 +1505,13 @@
       "columns": {
         "notification_id": {
           "name": "notification_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -1562,9 +1562,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -1584,26 +1585,26 @@
           "primaryKey": false,
           "notNull": true
         },
-        "created_by": {
-          "name": "created_by",
-          "type": "integer",
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "notification_created_by_user_id_fk": {
-          "name": "notification_created_by_user_id_fk",
+        "notification_user_id_user_id_fk": {
+          "name": "notification_user_id_user_id_fk",
           "tableFrom": "notification",
           "tableTo": "user",
           "columnsFrom": [
-            "created_by"
+            "user_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

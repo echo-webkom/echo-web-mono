@@ -1,0 +1,2 @@
+ALTER TABLE "user_to_notification" ALTER COLUMN "notification_id" SET DATA TYPE uuid;--> statement-breakpoint
+ALTER TABLE "user_to_notification" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;

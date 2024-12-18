@@ -21,6 +21,7 @@ import {
   userTypeEnum,
 } from ".";
 import { now } from "../utils";
+import { notifications } from "./notifications";
 
 export const users = pgTable(
   "user",
@@ -61,6 +62,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [strikes.id],
   }),
   comments: many(comments),
+  notifications: many(notifications),
 }));
 
 export type User = InferSelectModel<typeof users>;

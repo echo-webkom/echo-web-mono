@@ -1,0 +1,1 @@
+ALTER TABLE "notification_recipient" ALTER COLUMN "user_id" SET DATA TYPE integer;
