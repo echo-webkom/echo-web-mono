@@ -169,6 +169,41 @@
       "when": 1723223890405,
       "tag": "0023_happy_wilson_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1733925773390,
+      "tag": "0024_bitter_black_tarantula",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1734423658526,
+      "tag": "0025_right_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1734423749885,
+      "tag": "0026_silky_xavin",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1734561911245,
+      "tag": "0027_swift_ares",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1734562012515,
+      "tag": "0028_tricky_bloodstorm",
+      "breakpoints": true
     }
   ]
 }
