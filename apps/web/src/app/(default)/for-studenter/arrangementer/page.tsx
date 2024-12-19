@@ -8,7 +8,11 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import { EventsView, type SearchParams } from "@/components/events-view";
-import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar-event-helpers";
+import {
+  boardgamesToCalendarEvent,
+  happeningsToCalendarEvent,
+  moviesToCalendarEvent,
+} from "@/lib/calendar-event-helpers";
 import { fetchAllHappenings } from "@/sanity/happening";
 import { fetchMovies } from "@/sanity/movies";
 
@@ -20,9 +24,9 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
   // Ensure a stable key by stringifying a sorted object if the order may vary.
   const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
-  const calendarEvents = happeningsToCalendarEvent(happenings).concat(
-    moviesToCalendarEvent(movies),
-  );
+  const calendarEvents = happeningsToCalendarEvent(happenings)
+    .concat(moviesToCalendarEvent(movies))
+    .concat(boardgamesToCalendarEvent());
 
   return (
     <Container layout="larger" className="space-y-4 py-10">

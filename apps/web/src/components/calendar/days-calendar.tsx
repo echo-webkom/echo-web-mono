@@ -123,6 +123,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                                 "border-secondary hover:bg-secondary hover:dark:text-muted":
                                   event.type === "event",
                                 "border-pink-400 hover:bg-pink-400": event.type === "movie",
+                                "border-green-600 hover:bg-green-600": event.type === "boardgame",
                               })}
                             >
                               <Link
