@@ -39,7 +39,6 @@
     "styled-components": "6.1.13"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@sanity/eslint-config-studio": "4.0.0",
     "@types/react": "18.3.12",
     "@types/styled-components": "5.1.34",

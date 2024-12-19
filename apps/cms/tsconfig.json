@@ -1,6 +1,27 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@echo-webkom/tsconfig/react.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "composite": true,
+
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "jsx": "preserve"
+  },
   "include": [".eslintrc.cjs", "**/*.ts", "**/*.tsx", "src/", "schemas/"],
   "exclude": ["node_modules/", "dist/", ".sanity/", "migrations/"]
 }

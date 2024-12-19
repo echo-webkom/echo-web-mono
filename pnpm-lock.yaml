@@ -54,9 +54,6 @@ importers:
         specifier: 3.23.8
         version: 3.23.8
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -124,9 +121,6 @@ importers:
         specifier: 6.1.13
         version: 6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/config/tsconfig
       '@sanity/eslint-config-studio':
         specifier: 4.0.0
         version: 4.0.0(eslint@8.57.1)(typescript@5.6.3)
@@ -308,9 +302,6 @@ importers:
       '@echo-webkom/cms':
         specifier: workspace:*
         version: link:../cms
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/config/tsconfig
       '@tailwindcss/forms':
         specifier: 0.5.9
         version: 0.5.9(tailwindcss@3.4.14)
@@ -414,8 +405,6 @@ importers:
         specifier: 5.6.3
         version: 5.6.3
 
-  packages/config/tsconfig: {}
-
   packages/db:
     dependencies:
       drizzle-orm:
@@ -440,9 +429,6 @@ importers:
         specifier: 3.23.8
         version: 3.23.8
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -486,9 +472,6 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -517,9 +500,6 @@ importers:
         specifier: workspace:*
         version: link:../db
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -548,9 +528,6 @@ importers:
         specifier: 3.61.0
         version: 3.61.0
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -591,9 +568,6 @@ importers:
         specifier: 3.61.0
         version: 3.61.0
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
       '@types/node':
         specifier: 20.17.1
         version: 20.17.1
@@ -615,9 +589,6 @@ importers:
 
   playwright:
     devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../packages/config/tsconfig
       '@playwright/test':
         specifier: 1.48.2
         version: 1.48.2
