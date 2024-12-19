@@ -11,10 +11,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@echo-webkom/email": "workspace:*",
-    "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
     "@electric-sql/pglite": "0.2.13",
     "@hono/node-server": "1.13.7",
