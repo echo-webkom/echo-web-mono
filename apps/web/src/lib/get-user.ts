@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import { auth } from "@echo-webkom/auth";
+import { auth } from "@/auth/helpers";
 
 /**
  * Wraps the `auth` function in a "cache" to prevent

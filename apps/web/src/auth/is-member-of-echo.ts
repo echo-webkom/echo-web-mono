@@ -73,7 +73,7 @@ export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
     return {
       success: true,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: SignInError.INTERNAL_ERROR,

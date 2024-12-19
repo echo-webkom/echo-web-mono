@@ -64,7 +64,7 @@ export class KVNamespace<TSchema extends AnySchema = z.ZodUnknown> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return parseData(result, this.schema);
-    } catch (e) {
+    } catch {
       return null;
     }
   };

@@ -11,8 +11,6 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
-    "lint:fix": "eslint lint --fix",
     "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
     "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
@@ -31,22 +29,11 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.17.1",
     "@types/pg": "8.11.10",
     "dotenv-cli": "7.4.2",
     "drizzle-kit": "0.24.2",
-    "eslint-config-webkom": "workspace:*",
     "tsx": "4.19.1",
     "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ],
-    "ignorePatterns": [
-      "scripts"
-    ]
   }
 }

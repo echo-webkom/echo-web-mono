@@ -57,7 +57,7 @@ export const remvoveStrike = async (strikeId: number) => {
       success: true,
       message: "Prikken ble slettet",
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "En feil har oppstått",
