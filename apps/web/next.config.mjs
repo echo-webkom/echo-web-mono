@@ -1,10 +1,10 @@
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: [
-    "@echo-webkom/auth",
     "@echo-webkom/db",
     "@echo-webkom/lib",
     "@echo-webkom/email",
+    "@echo-webkom/sanity",
   ],
 
   logging: {

@@ -151,9 +151,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@echo-webkom/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
       '@echo-webkom/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -374,43 +371,6 @@ importers:
       vitest:
         specifier: 2.1.3
         version: 2.1.3(@types/node@20.17.1)(jsdom@25.0.1)
-
-  packages/auth:
-    dependencies:
-      '@echo-webkom/db':
-        specifier: workspace:*
-        version: link:../db
-      drizzle-orm:
-        specifier: 0.33.0
-        version: 0.33.0(@electric-sql/pglite@0.2.13)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.4)(react@18.3.1)
-      next:
-        specifier: 14.2.15
-        version: 14.2.15(@babel/core@7.25.8)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      next-auth:
-        specifier: 4.24.7
-        version: 4.24.7(next@14.2.15(@babel/core@7.25.8)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: 18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: 18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@echo-webkom/tsconfig':
-        specifier: workspace:*
-        version: link:../config/tsconfig
-      '@types/node':
-        specifier: 20.17.1
-        version: 20.17.1
-      eslint:
-        specifier: 8.57.1
-        version: 8.57.1
-      eslint-config-webkom:
-        specifier: workspace:*
-        version: link:../config/eslint
-      typescript:
-        specifier: 5.6.3
-        version: 5.6.3
 
   packages/config/eslint:
     dependencies:
