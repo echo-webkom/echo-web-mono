@@ -3,7 +3,7 @@ import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { notifications } from "./notifications";
-import { users } from "./users";
+import { users } from ".";
 
 export const usersToNotifications = pgTable(
   "user_to_notification",

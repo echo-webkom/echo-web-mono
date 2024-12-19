@@ -11,6 +11,9 @@ importers:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: 4.3.1
         version: 4.3.1(prettier@3.3.3)
+      echo-web:
+        specifier: 'file:'
+        version: 'file:'
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -463,7 +466,11 @@ importers:
         specifier: 5.6.3
         version: 5.6.3
 
-  packages/config/tsconfig: {}
+  packages/config/tsconfig:
+    dependencies:
+      '@echo-webkom/tsconfig':
+        specifier: 'file:'
+        version: file:packages/config/tsconfig
 
   packages/db:
     dependencies:
@@ -15954,4 +15961,39 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
+    dev: false
+
+  'file:':
+    resolution: {directory: '', type: directory}
+    name: echo-web
+    dependencies:
+      '@ianvs/prettier-plugin-sort-imports': 4.3.1(prettier@3.3.3)
+      prettier: 3.3.3
+      prettier-plugin-organize-imports: 4.1.0(prettier@3.3.3)(typescript@5.6.3)
+      prettier-plugin-tailwindcss: 0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1)(prettier-plugin-organize-imports@4.1.0)(prettier@3.3.3)
+      turbo: 2.1.3
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - '@prettier/plugin-pug'
+      - '@shopify/prettier-plugin-liquid'
+      - '@trivago/prettier-plugin-sort-imports'
+      - '@vue/compiler-sfc'
+      - '@zackad/prettier-plugin-twig-melody'
+      - prettier-plugin-astro
+      - prettier-plugin-css-order
+      - prettier-plugin-import-sort
+      - prettier-plugin-jsdoc
+      - prettier-plugin-marko
+      - prettier-plugin-multiline-arrays
+      - prettier-plugin-organize-attributes
+      - prettier-plugin-sort-imports
+      - prettier-plugin-style-order
+      - prettier-plugin-svelte
+      - supports-color
+      - vue-tsc
+    dev: false
+
+  file:packages/config/tsconfig:
+    resolution: {directory: packages/config/tsconfig, type: directory}
+    name: '@echo-webkom/tsconfig'
     dev: false

@@ -1,8 +1,8 @@
 {
   "name": "eslint-config-webkom",
   "version": "0.0.0",
-  "private": true,
   "main": "index.js",
+  "private": true,
   "files": [
     "./index.js",
     "./react.js",
@@ -22,12 +22,5 @@
     "eslint-plugin-react": "7.37.2",
     "eslint-plugin-react-hooks": "5.0.0",
     "typescript": "5.6.3"
-    "eslint-config-turbo": "2.0.14",
-    "eslint-config-webkom": "file:",
-    "eslint-plugin-import": "2.30.0",
-    "eslint-plugin-jsx-a11y": "6.10.0",
-    "eslint-plugin-react": "7.36.1",
-    "eslint-plugin-react-hooks": "4.6.2",
-    "typescript": "5.6.2"
   }
 }
