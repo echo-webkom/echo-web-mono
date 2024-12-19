@@ -87,12 +87,10 @@ export default defineType({
           type: "string",
         }),
       ],
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       hidden: ({ parent }) => ["text", "textarea"].includes(parent?.type),
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const options = value ?? [];
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           const questionType = context.parent.type as string;
 

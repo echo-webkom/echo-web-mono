@@ -1,32 +1,17 @@
 import { eq } from "drizzle-orm";
-import { getServerSession as _getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 
 import { db } from "@echo-webkom/db/serverless";
 
-import { createAuthOptions } from "./auth-options";
-
-const authOptions = createAuthOptions();
-
-/**
- *
- * @returns session of currently signed in user
- */
-export const getAuthSession = async () => {
-  const session = await _getServerSession(authOptions);
-
-  if (!session) {
-    return null;
-  }
-
-  return session;
-};
+import { authOptions } from "./auth-options";
 
 /**
  *
  * @returns user of currently signed in user
+ * @internal
  */
 export const auth = async () => {
-  const session = await getAuthSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return null;
