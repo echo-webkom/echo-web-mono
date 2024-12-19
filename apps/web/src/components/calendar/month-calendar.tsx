@@ -102,7 +102,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
         ))}
       </div>
       <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-border">
-        {allDays.map((day, _) => (
+        {allDays.map((day) => (
           <CalendarDay key={day.toString()}>
             <DayCircle
               variant={
@@ -113,7 +113,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
             </DayCircle>
             {events
               .filter((event) => isSameDay(event.date, day))
-              .map((event, _) => (
+              .map((event) => (
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                   <HoverCardTrigger asChild>
                     <div

@@ -5,4 +5,6 @@ export default defineCliConfig({
     projectId: "pgq2pd26",
     dataset: "production",
   },
+
+  autoUpdates: true,
 });

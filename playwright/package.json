@@ -7,8 +7,6 @@
     "test:e2e:ui": "pnpm with-env playwright test --ui-port 5555",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
-    "lint": "eslint tests --ext .ts",
-    "lint:fix": "eslint lint --fix",
     "clean": "rm -rf node_modules playwright-report test-results .turbo",
     "with-env": "dotenv -e ../.env --"
   },
@@ -17,14 +15,7 @@
     "@types/node": "20.17.1",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
     "postgres": "3.4.4",
     "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ]
   }
 }

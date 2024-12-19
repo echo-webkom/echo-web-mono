@@ -51,7 +51,7 @@ export default async function StudentGroupOverview({ params }: Props) {
 
 const pathToGroupType = cache((path: string) => {
   const groupType = Object.entries(studentGroupTypeName).find(
-    ([_, url]) => url.toLowerCase() === path,
+    ([, url]) => url.toLowerCase() === path,
   )?.[0];
 
   if (!groupType) {

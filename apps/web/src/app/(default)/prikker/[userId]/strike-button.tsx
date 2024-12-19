@@ -160,7 +160,7 @@ export const AddStrikeButton = ({
                         >
                           <option defaultValue="OTHER">Egendefinert</option>
                           {Object.entries(STRIKE_TYPE_MESSAGE)
-                            .filter(([key, _]) => key !== "OTHER")
+                            .filter(([key]) => key !== "OTHER")
                             .map(([key, value]) => (
                               <option key={key} value={key}>
                                 {value}

@@ -54,7 +54,7 @@ export const upsertWhitelist = async (email: string, reason: string, days: numbe
       success: true,
       message: wasInWhitelist ? "Brukeren ble oppdatert" : "Brukeren ble lagt til i whitelisten",
     };
-  } catch (e) {
+  } catch {
     return {
       success: false,
       message: "Noe gikk galt",
@@ -86,7 +86,7 @@ export const removeWhitelist = async (email: string) => {
       success: true,
       message: "Brukeren ble fjernet fra whitelisten",
     };
-  } catch (e) {
+  } catch {
     return {
       success: false,
       message: "Noe gikk galt",
