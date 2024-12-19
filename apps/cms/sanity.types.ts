@@ -60,6 +60,17 @@ export type Notification = {
   dateTo: string;
 };
 
+export type Notification = {
+  _id: string;
+  _type: "notification";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+};
+
 export type Movie = {
   _id: string;
   _type: "movie";
@@ -735,6 +746,16 @@ export type MoviesQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
+}>;
+
+// Source: ../web/src/sanity/notification/queries.ts
+// Variable: notificationQuery
+// Query: *[_type == "notification" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){  _id,  title,  dateFrom,  dateTo}
+export type NotificationQueryResult = Array<{
+  _id: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
 }>;
 
 // Source: ../web/src/sanity/notification/queries.ts
