@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
 type ArrayOfLength<T, L extends number> = ([T, ...Array<T>] & { length: L }) | [];
@@ -34,7 +34,7 @@ function CardLayers<C extends number>({
       </motion.div>
 
       {props.colors.map((col, index) => {
-        const variants: Variants = {
+        const variants = {
           hidden: {
             scale: 1,
             rotate: 0,

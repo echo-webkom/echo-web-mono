@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 

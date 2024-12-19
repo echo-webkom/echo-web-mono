@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
 import { AppearingText, InYourFace } from "../components/Text";
