@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { getMonth } from "date-fns";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
 
 import { Snowflake } from "../icons/snowflake";

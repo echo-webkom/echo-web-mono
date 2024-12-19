@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Heading } from "@/components/typography/heading";
