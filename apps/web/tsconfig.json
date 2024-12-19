@@ -1,17 +1,37 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@echo-webkom/tsconfig/nextjs.json",
   "compilerOptions": {
-    "lib": ["es2022", "dom", "dom.iterable"],
+    "target": "es2022",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "incremental": true,
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",
@@ -21,5 +41,8 @@
     ".eslintrc.cjs",
     "./src/env.mjs"
   ],
-  "exclude": ["node_modules", ".next"]
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }

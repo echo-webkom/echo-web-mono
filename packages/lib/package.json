@@ -12,7 +12,6 @@
     "@echo-webkom/db": "workspace:*"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.17.1",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
