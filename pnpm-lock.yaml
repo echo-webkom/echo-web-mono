@@ -29,18 +29,9 @@ importers:
 
   apps/api:
     dependencies:
-      '@echo-webkom/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
       '@echo-webkom/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@echo-webkom/email':
-        specifier: workspace:*
-        version: link:../../packages/email
-      '@echo-webkom/lib':
-        specifier: workspace:*
-        version: link:../../packages/lib
       '@echo-webkom/sanity':
         specifier: workspace:*
         version: link:../../packages/sanity
