@@ -20,3 +20,17 @@ export const isBedkom = <U extends TUser>(user: U) => {
 export const isHost = <U extends TUser>(user: U, groups: Array<string>) => {
   return isMemberOf(user, groups) || isWebkom(user);
 };
+
+export const isMemberOfAny = <U extends TUser>(user: U) => {
+  return isMemberOf(user, [
+    "bedkom",
+    "hyggkom",
+    "esc",
+    "gnist",
+    "hovedstyret",
+    "makerspace",
+    "programmerbar",
+    "tilde",
+    "webkom",
+  ]);
+};
