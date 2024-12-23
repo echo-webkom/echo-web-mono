@@ -11,10 +11,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@echo-webkom/auth": "workspace:*",
     "@echo-webkom/db": "workspace:*",
-    "@echo-webkom/email": "workspace:*",
-    "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
     "@electric-sql/pglite": "0.2.13",
     "@hono/node-server": "1.13.7",
@@ -24,7 +21,6 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@types/node": "20.17.1",
     "dotenv-cli": "7.4.2",
     "esbuild": "0.24.0",
