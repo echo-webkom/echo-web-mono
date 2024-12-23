@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 "use client";
 
 import { createNotification } from "@/actions/create-notification";
-=======
-import { createNotification } from "@/actions/create-notification";
 
->>>>>>> d63ceba4deea8675a2246b6ff3a29bff2fd654e7
 // import { Container } from "@/components/container";
 
 export default function Notifications() {
