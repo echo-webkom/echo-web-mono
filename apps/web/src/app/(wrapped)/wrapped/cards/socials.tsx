@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
-import { AppearingText } from "../components/Text";
+import { Confetti } from "../components/Confetti";
+import { AnimatedNumber, AppearingText } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import {
   COMMENTS,
@@ -226,88 +226,6 @@ export const HowManyMembers = () => {
   );
 };
 
-const AnimatedNumber = () => {
-  const [displayNumber, setDisplayNumber] = useState(0);
-  const targetNumber = TOTAL_USERS;
-  const animationDuration = 5; // in seconds
-
-  useEffect(() => {
-    const startTime = Date.now();
-    const updateNumber = () => {
-      const elapsedTime = (Date.now() - startTime) / 1000; // in seconds
-      const progress = Math.min(elapsedTime / animationDuration, 1);
-      const currentNumber = Math.floor(progress * targetNumber);
-      setDisplayNumber(currentNumber);
-
-      if (progress < 1) {
-        requestAnimationFrame(updateNumber);
-      }
-    };
-
-    updateNumber();
-  }, [targetNumber]);
-
-  return (
-    <motion.div
-      initial={{ fontSize: "1em", opacity: 0 }}
-      animate={{ fontSize: "13em", opacity: 1 }}
-      transition={{
-        duration: animationDuration,
-      }}
-      style={{ textAlign: "center", fontWeight: "bold" }}
-    >
-      {displayNumber}
-    </motion.div>
-  );
-};
-
-const Confetti = ({ delay }: { delay: number }) => {
-  return (
-    <>
-      <div className="absolute w-full">
-        {[...new Array(100).keys()].map((index, _) => {
-          const x = Math.floor(Math.random() * 99);
-          const particleDelay = Math.random() * 5 + delay;
-          const offx1 = Math.floor(Math.random() * 3);
-          const offx2 = Math.floor(Math.random() * 3);
-
-          const colors = [
-            "bg-wrapped-yellow",
-            "bg-wrapped-purple",
-            "bg-wrapped-pink",
-            "bg-wrapped-orange",
-            "bg-wrapped-white",
-            "bg-wrapped-blue",
-            "bg-wrapped-green",
-          ];
-
-          const color = colors[Math.floor(Math.random() * colors.length)];
-
-          return (
-            <>
-              <motion.div
-                key={index}
-                className={"absolute h-2 w-2 rounded-full " + color}
-                style={{
-                  translateX: `${x}vw`,
-                }}
-                initial={{ x: 0, y: -10, opacity: 1 }}
-                animate={{ y: 1000, x: [0, -offx1, offx2], opacity: 0 }}
-                transition={{
-                  duration: 5,
-                  x: { duration: 0.2, repeat: Infinity },
-                  delay: particleDelay,
-                  repeat: Infinity,
-                }}
-              ></motion.div>
-            </>
-          );
-        })}
-      </div>
-    </>
-  );
-};
-
 export const NumberOfUsers = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-pink",
@@ -336,7 +254,7 @@ export const NumberOfUsers = () => {
             duration: 1,
           }}
         >
-          <AnimatedNumber></AnimatedNumber>
+          <AnimatedNumber target={TOTAL_USERS}></AnimatedNumber>
         </motion.div>
         <AppearingText delay={6}>
           <p className="text-5xl">
