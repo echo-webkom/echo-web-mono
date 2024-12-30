@@ -1,6 +1,11 @@
 "use client";
 
+<<<<<<< HEAD
 import { motion } from "motion/react";
+=======
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+>>>>>>> 7658ccf6 (total members and confetti)
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
@@ -8,8 +13,10 @@ import { AppearingText } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import {
   COMMENTS,
+  NEW_USERS,
   REACTIONS,
   REPLIES,
+  TOTAL_USERS,
   YOUR_COMMENTS,
   YOUR_REACTIONS,
   YOUR_REPLIES,
@@ -192,6 +199,163 @@ export const YourInteractions = () => {
           </motion.div>
         </div>
       </WrappedCard>
+    </>
+  );
+};
+
+export const HowManyMembers = () => {
+  const layerProps: WrappedCardProps<2> = {
+    fgColor: "bg-wrapped-purple",
+    bgColor: "bg-wrapped-pink",
+    colors: ["bg-wrapped-yellow", "bg-wrapped-orange"],
+    offX: [0, 0],
+    offY: [0, 0],
+    scale: [1, 1],
+    rotate: [-5, 10],
+  };
+
+  return (
+    <WrappedCard props={layerProps}>
+      <div className="grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
+        <div className="flex h-full w-full items-center justify-start p-10">
+          <AppearingText delay={0.3}>I år fikk echo hele {NEW_USERS} nye medlemmer!</AppearingText>
+        </div>
+        <div className="flex h-full w-full flex-wrap items-center justify-end p-10 text-white">
+          <AppearingText delay={1}>
+            Men hvor mange<br></br>er faktisk med?
+          </AppearingText>
+        </div>
+      </div>
+    </WrappedCard>
+  );
+};
+
+const AnimatedNumber = () => {
+  const [displayNumber, setDisplayNumber] = useState(0);
+  const targetNumber = TOTAL_USERS;
+  const animationDuration = 5; // in seconds
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const updateNumber = () => {
+      const elapsedTime = (Date.now() - startTime) / 1000; // in seconds
+      const progress = Math.min(elapsedTime / animationDuration, 1);
+      const currentNumber = Math.floor(progress * targetNumber);
+      setDisplayNumber(currentNumber);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
+      }
+    };
+
+    updateNumber();
+  }, [targetNumber]);
+
+  return (
+    <motion.div
+      initial={{ fontSize: "1em", opacity: 0 }}
+      animate={{ fontSize: "13em", opacity: 1 }}
+      transition={{
+        duration: animationDuration,
+      }}
+      style={{ textAlign: "center", fontWeight: "bold" }}
+    >
+      {displayNumber}
+    </motion.div>
+  );
+};
+
+const Confetti = ({ delay }: { delay: number }) => {
+  return (
+    <>
+      <div className="absolute w-full">
+        {[...new Array(100).keys()].map((index, _) => {
+          const x = Math.floor(Math.random() * 99);
+          const particleDelay = Math.random() * 5 + delay;
+          const offx1 = Math.floor(Math.random() * 3);
+          const offx2 = Math.floor(Math.random() * 3);
+
+          const colors = [
+            "bg-wrapped-yellow",
+            "bg-wrapped-purple",
+            "bg-wrapped-pink",
+            "bg-wrapped-orange",
+            "bg-wrapped-white",
+            "bg-wrapped-blue",
+            "bg-wrapped-green",
+          ];
+
+          const color = colors[Math.floor(Math.random() * colors.length)];
+
+          return (
+            <>
+              <motion.div
+                key={index}
+                className={"absolute h-2 w-2 rounded-full " + color}
+                style={{
+                  translateX: `${x}vw`,
+                }}
+                initial={{ x: 0, y: -10, opacity: 1 }}
+                animate={{ y: 1000, x: [0, -offx1, offx2], opacity: 0 }}
+                transition={{
+                  duration: 5,
+                  x: { duration: 0.2, repeat: Infinity },
+                  delay: particleDelay,
+                  repeat: Infinity,
+                }}
+              ></motion.div>
+            </>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+
+export const NumberOfUsers = () => {
+  const layerProps: WrappedCardProps<2> = {
+    fgColor: "bg-wrapped-pink",
+    bgColor: "bg-wrapped-pink",
+    colors: [],
+    offX: [],
+    offY: [],
+    scale: [],
+    rotate: [],
+  };
+
+  const membersMessage = ["echo krigere", "nerds", "slitne studenter", "tech supportere"];
+
+  return (
+    <>
+      <div className="absolute flex h-full w-full flex-col items-center justify-center">
+        <motion.div
+          initial={{ scale: 1, rotate: 0 }}
+          animate={{
+            scale: [null, 1.5, 1],
+            rotate: [0, -5, 5, 0],
+          }}
+          transition={{
+            delay: 4.9,
+            ease: "anticipate",
+            duration: 1,
+          }}
+        >
+          <AnimatedNumber></AnimatedNumber>
+        </motion.div>
+        <AppearingText delay={6}>
+          <p className="text-5xl">
+            {membersMessage[Math.floor(Math.random() * membersMessage.length)]}
+          </p>
+        </AppearingText>
+      </div>
+
+      <Confetti delay={5}></Confetti>
+
+      <div className="opacity-0">
+        <WrappedCard props={layerProps}>
+          <div></div>
+        </WrappedCard>
+      </div>
     </>
   );
 };

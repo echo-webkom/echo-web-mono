@@ -11,10 +11,15 @@ import {
   EventIntro,
   RegistrationsCard,
 } from "./cards/events";
-import { CommentSectionCard, InteractionCard, YourInteractions } from "./cards/socials";
+import {
+  CommentSectionCard,
+  HowManyMembers,
+  InteractionCard,
+  NumberOfUsers,
+  YourInteractions,
+} from "./cards/socials";
 
 const cards = [
-  { component: <YourInteractions />, key: "your-interactions" },
   { component: <EventIntro />, key: "event-intro" },
   { component: <AmountEvent />, key: "amount-event" },
   { component: <AmountEventPerGroup />, key: "amount-event-per-group" },
@@ -23,6 +28,9 @@ const cards = [
   { component: <BestEvent />, key: "best-event" },
   { component: <CommentSectionCard />, key: "comment-section" },
   { component: <InteractionCard />, key: "interaction" },
+  { component: <YourInteractions />, key: "your-interactions" },
+  { component: <HowManyMembers />, key: "how-many-members" },
+  { component: <NumberOfUsers />, key: "user-count" },
 ];
 
 export default function Wrapped() {

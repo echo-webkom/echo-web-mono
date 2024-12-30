@@ -33,6 +33,9 @@ export const RU_MONEY = 0; // Hvor mye penger vi har fått av RU
 export const JOBS = 123; // Antall jobbannonser i 2024
 export const POSTS = 123; // Antall innlegg i 2024
 
+export const TOTAL_USERS = 1000;
+export const NEW_USERS = 100;
+
 export const YOUR_COMMENTS = 2;
 export const YOUR_REPLIES = 1;
 export const YOUR_REACTIONS = 7;
