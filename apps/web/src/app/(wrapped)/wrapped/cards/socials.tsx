@@ -1,11 +1,7 @@
 "use client";
 
-<<<<<<< HEAD
-import { motion } from "motion/react";
-=======
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
->>>>>>> 7658ccf6 (total members and confetti)
+import { motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
