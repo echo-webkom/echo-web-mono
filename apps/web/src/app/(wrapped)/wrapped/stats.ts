@@ -9,12 +9,63 @@ export const EVENTS_PER_GROUP = [
   { name: "ESC", events: 40 },
 ].sort((a, b) => (a.events > b.events ? -1 : 1));
 
-// Arrangement med flest påmeldinger
+/**
+ * select
+ *   h.title,
+ *   count(*) as count
+ * from
+ *   registration as r
+ *   join happening as h on r.happening_id = h.id
+ * where
+ *   r.status = 'registered'
+ *   and h.date >= '2024-01-01'
+ *   and h.date < '2025-01-01'
+ * group by
+ *   r.happening_id,
+ *   h.title
+ * order by
+ *   count desc
+ * limit
+ *   9;
+ */
 export const TOP_10_EVENTS = [
-  { name: "Vinterball", registrations: 195 },
-  { name: "DNB bedpres", registrations: 100 },
-  { name: "INF100 kræsjkurs", registrations: 80 },
-  // TODO: fill in
+  { name: "🥂 Vinterball 2025 🥂", registrations: 189 }, // Disse tallene er fra gamle DB.
+  {
+    name: "DNB",
+    registrations: 129,
+  },
+  {
+    name: "Kræsjkurs i MNF130 med Gnist ✨",
+    registrations: 128,
+  },
+  {
+    name: "Båttur",
+    registrations: 107,
+  },
+  {
+    name: "Infomøte nye studenter!",
+    registrations: 97,
+  },
+  {
+    name: "INF102 Kræsjkurs med Gnist✨",
+    registrations: 91,
+  },
+  {
+    name: "Git Kræsjkurs 💻",
+    registrations: 86,
+  },
+  {
+    name: "Norges Bank",
+    registrations: 82,
+  },
+  {
+    name: "echoquiz",
+    registrations: 74,
+  },
+  {
+    name: "Kræsjkurs i INF115 med Gnist✨",
+    registrations: 73,
+  },
 ];
 
 // Kommentar med flest replies
