@@ -102,13 +102,13 @@ export const AmountEventPerGroup = () => {
         <p className="p-10">
           Antall arrangementer<br></br>per undergruppe:
         </p>
-        <div className="flex h-full w-full flex-col items-center gap-4 text-sm">
+        <div className="flex h-full w-full flex-col items-center gap-3 text-sm">
           {EVENTS_PER_GROUP.map((v, index) => {
             return (
               <motion.div
                 style={{
                   top: 0,
-                  left: -index * 50 - 50,
+                  left: -index * 30 - 50,
                 }}
                 className={`relative w-full`}
                 key={v.name}
@@ -348,7 +348,7 @@ export const BestEvent = () => {
                   <div className={`relative h-[20vw] w-[5vw] ${hs[index]}`}>
                     {index !== 1 && (
                       <AppearingText delay={3 - index * 0.3}>
-                        <p className="text-wrapped-black flex items-center justify-center p-4 text-center text-xl font-bold">
+                        <p className="text-wrapped-black text-md flex items-center justify-center p-4 text-center font-bold">
                           {event.name}
                         </p>
                       </AppearingText>
