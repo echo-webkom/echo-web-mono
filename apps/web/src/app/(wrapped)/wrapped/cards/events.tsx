@@ -5,7 +5,7 @@ import { TiStarburst } from "react-icons/ti";
 
 import { AppearingText, InYourFace } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import { BEST_EVENTS, EVENTS, EVENTS_PER_GROUP, REGISTRATIONS } from "../stats";
+import { EVENTS, EVENTS_PER_GROUP, REGISTRATIONS, TOP_10_EVENTS } from "../stats";
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -316,7 +316,7 @@ export const BestEvent = () => {
           <p className="text-wrapped-black text-center text-5xl font-bold">Top 3</p>
         </AppearingText>
         <div className="grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden">
-          {BEST_EVENTS.map((event, index) => {
+          {TOP_10_EVENTS.slice(0, 3).map((event, index) => {
             return (
               <div
                 key={event.name}
@@ -374,5 +374,36 @@ export const BestEvent = () => {
         </div>
       </div>
     </WrappedCard>
+  );
+};
+
+export const Top10Events = () => {
+  const layerProps: WrappedCardProps<2> = {
+    fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
+    colors: ["bg-wrapped-green", "bg-wrapped-pink"],
+    offX: [20, 40],
+    offY: [20, 40],
+    scale: [1, 1],
+    rotate: [0, 0],
+  };
+
+  return (
+    <>
+      <WrappedCard props={layerProps}>
+        <div className="flex w-full flex-col gap-2 p-10">
+          <p className="mb-7 text-center text-5xl">Top 10</p>
+          {TOP_10_EVENTS.map((item, index) => {
+            return (
+              <AppearingText key={index} delay={index * 0.3 + 1}>
+                <p className="text-center text-xl">
+                  {index + 1}. {item.name}
+                </p>
+              </AppearingText>
+            );
+          })}
+        </div>
+      </WrappedCard>
+    </>
   );
 };

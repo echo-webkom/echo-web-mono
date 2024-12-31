@@ -10,10 +10,11 @@ export const EVENTS_PER_GROUP = [
 ].sort((a, b) => (a.events > b.events ? -1 : 1));
 
 // Arrangement med flest påmeldinger
-export const BEST_EVENTS = [
+export const TOP_10_EVENTS = [
   { name: "Vinterball", registrations: 195 },
   { name: "DNB bedpres", registrations: 100 },
   { name: "INF100 kræsjkurs", registrations: 80 },
+  // TODO: fill in
 ];
 
 // Kommentar med flest replies
