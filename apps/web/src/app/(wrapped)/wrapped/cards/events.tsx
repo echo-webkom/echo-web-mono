@@ -5,7 +5,16 @@ import { TiStarburst } from "react-icons/ti";
 
 import { AppearingText, InYourFace } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import { EVENTS, EVENTS_PER_GROUP, REGISTRATIONS, TOP_10_EVENTS } from "../stats";
+import {
+  EVENTS,
+  EVENTS_PER_GROUP,
+  FASTEST_REG,
+  REG_PERCENTILE,
+  REGISTRATIONS,
+  TOP_10_EVENTS,
+  YOUR_BEDPRES,
+  YOUR_BEDPRES_ACTUAL,
+} from "../stats";
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -402,6 +411,76 @@ export const Top10Events = () => {
               </AppearingText>
             );
           })}
+        </div>
+      </WrappedCard>
+    </>
+  );
+};
+
+export const YourBedpresses = () => {
+  const layerProps: WrappedCardProps<2> = {
+    fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
+    colors: ["bg-wrapped-pink", "bg-wrapped-black"],
+    offX: [-40, 40],
+    offY: [40, -40],
+    scale: [1, 1],
+    rotate: [0, 0],
+  };
+
+  let bedpres_reaction = "...du får prøve igjen neste år.";
+  if (YOUR_BEDPRES > 0) bedpres_reaction = "En er bedre enn ingen!";
+  if (YOUR_BEDPRES > 1) bedpres_reaction = "Du er en moderat bedpresser.";
+  if (YOUR_BEDPRES > 3) bedpres_reaction = "Trolig en bedpres enjoyer!";
+  if (YOUR_BEDPRES > 5) bedpres_reaction = "Bedpres fan?";
+  // TODO: mer
+  if (YOUR_BEDPRES > 10) bedpres_reaction = "...";
+  if (YOUR_BEDPRES > 15) bedpres_reaction = "...";
+  if (YOUR_BEDPRES > 20) bedpres_reaction = "...";
+
+  let actual_reaction = "Outch";
+  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.3) actual_reaction = "Ikke dumt";
+  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.7) actual_reaction = "Imponerende!";
+  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES === 1) actual_reaction = "Raskere enn lynet!";
+
+  return (
+    <>
+      <WrappedCard props={layerProps}>
+        <div className="flex flex-col gap-5 p-10 text-xl">
+          <div>
+            <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
+          </div>
+
+          <div>
+            <AppearingText delay={1}>
+              <p>Du var på hele {YOUR_BEDPRES} bedriftspresentasjoner!</p>
+            </AppearingText>
+            <AppearingText delay={1.5}>
+              <p className="text-wrapped-grey opacity-50">{bedpres_reaction}</p>
+            </AppearingText>
+          </div>
+
+          <div>
+            <AppearingText delay={2}>
+              <p>Din raskeste påmelding var på {FASTEST_REG} sekunder</p>
+            </AppearingText>
+            <AppearingText delay={2.5}>
+              <p className="text-wrapped-grey opacity-50">
+                Det er i top {REG_PERCENTILE}% av raskeste påmeldinger
+              </p>
+            </AppearingText>
+          </div>
+
+          <div>
+            <AppearingText delay={3}>
+              <p>
+                Av {YOUR_BEDPRES} påmeldinger fikk du plass på {YOUR_BEDPRES_ACTUAL}
+              </p>
+            </AppearingText>
+            <AppearingText delay={3.5}>
+              <p className="text-wrapped-grey opacity-50">{actual_reaction}</p>
+            </AppearingText>
+          </div>
         </div>
       </WrappedCard>
     </>

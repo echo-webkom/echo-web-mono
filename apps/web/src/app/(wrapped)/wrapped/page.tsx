@@ -11,6 +11,7 @@ import {
   EventIntro,
   RegistrationsCard,
   Top10Events,
+  YourBedpresses,
 } from "./cards/events";
 import {
   CommentSectionCard,
@@ -28,6 +29,7 @@ const cards = [
   { component: <RegistrationsCard />, key: "registrations" },
   { component: <BestEvent />, key: "best-event" },
   { component: <Top10Events />, key: "top-10-events" },
+  { component: <YourBedpresses />, key: "your-bedpresses" },
   { component: <CommentSectionCard />, key: "comment-section" },
   { component: <InteractionCard />, key: "interaction" },
   { component: <YourInteractions />, key: "your-interactions" },

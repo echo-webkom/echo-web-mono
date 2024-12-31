@@ -82,3 +82,7 @@ export const NEW_USERS = 453;
 export const YOUR_COMMENTS = 2;
 export const YOUR_REPLIES = 1;
 export const YOUR_REACTIONS = 7;
+export const YOUR_BEDPRES = 4; // Hvor mange du meldte deg på
+export const YOUR_BEDPRES_ACTUAL = 3; // Hvor mange du fikk plass på
+export const FASTEST_REG = 0.1;
+export const REG_PERCENTILE = 10;
