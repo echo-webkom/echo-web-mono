@@ -1,6 +1,11 @@
 import { fetchAocLeaderboard, mapAocLeaderboard } from "@/data/advent-of-code/leaderboard";
 import { cn } from "@/utils/cn";
 
+/**
+ * Display the leaderboard for echo's private Advent of Code leaderboard.
+ * Make sure that the environment variable `AOC_SESSION_COOKIE` is set, or
+ * else it won't be able to fetch the leaderobard.
+ */
 export const AocLeaderboard = async () => {
   const leaderboard = await fetchAocLeaderboard();
 
