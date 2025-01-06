@@ -150,7 +150,7 @@ function Particle({ x, y, duration }: { x: number; y: number; duration: number }
         ease: "linear",
       }}
     >
-      <Icon className="h-10 w-10 opacity-20" />
+      <Icon className="h-10 w-10 opacity-50" />
     </motion.div>
   );
 }

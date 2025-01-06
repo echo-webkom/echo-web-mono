@@ -32,7 +32,7 @@ export const CommentSectionCard = () => {
   return (
     <WrappedCard props={layerProps}>
       <motion.div
-        className="absolute left-0 top-0 text-3xl opacity-[0.03]"
+        className="absolute left-0 top-0 m-5 text-3xl opacity-[0.05]"
         animate={{ y: -1000 }}
         transition={{ duration: 40 }}
       >
