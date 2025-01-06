@@ -319,6 +319,10 @@
     color: white;
   }
 
+  .text-wrapped-yellow {
+    color: #f6e683;
+  }
+
   .text-wrapped-grey {
     color: #171717;
     opacity: 0.7;

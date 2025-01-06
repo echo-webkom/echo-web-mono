@@ -20,8 +20,10 @@ import {
   NumberOfUsers,
   YourInteractions,
 } from "./cards/socials";
+import { SplashScreen } from "./cards/splash";
 
 const cards = [
+  { component: <SplashScreen />, key: "wrapped-splash" },
   { component: <EventIntro />, key: "event-intro" },
   { component: <AmountEvent />, key: "amount-event" },
   { component: <AmountEventPerGroup />, key: "amount-event-per-group" },
