@@ -7,71 +7,46 @@ type SidebarProps = {
   children: React.ReactNode;
 };
 
-export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({ className, children }, ref) => {
-    const childrenArray = React.Children.toArray(children);
+export const Sidebar = ({ className, children }: SidebarProps) => {
+  const childrenArray = React.Children.toArray(children);
 
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "flex w-full flex-col gap-3 rounded-xl border-2 border-muted-dark bg-muted p-6",
-          className,
-        )}
-      >
-        {childrenArray.map((child, index) => {
-          return <React.Fragment key={index}>{child}</React.Fragment>;
-        })}
-      </div>
-    );
-  },
-);
-Sidebar.displayName = "Sidebar";
+  return (
+    <div
+      className={cn(
+        "flex w-full flex-col gap-3 rounded-xl border-2 border-muted-dark bg-muted p-6",
+        className,
+      )}
+    >
+      {childrenArray.map((child, index) => {
+        return <React.Fragment key={index}>{child}</React.Fragment>;
+      })}
+    </div>
+  );
+};
 
 type SidebarItemProps = {
   className?: string;
   children: React.ReactNode;
 };
 
-export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
-  ({ className, children }, ref) => {
-    return (
-      <div ref={ref} className={cn(className)}>
-        {children}
-      </div>
-    );
-  },
-);
-SidebarItem.displayName = "SidebarItem";
+export const SidebarItem = ({ className, children }: SidebarItemProps) => {
+  return <div className={cn(className)}>{children}</div>;
+};
 
 type SidebarItemTitleProps = {
   className?: string;
   children: React.ReactNode;
 };
 
-export const SidebarItemTitle = React.forwardRef<HTMLHeadingElement, SidebarItemTitleProps>(
-  ({ className, children }, ref) => {
-    return (
-      <h3 ref={ref} className={cn("text-lg font-semibold", className)}>
-        {children}
-      </h3>
-    );
-  },
-);
-SidebarItemTitle.displayName = "SidebarItemTitle";
+export const SidebarItemTitle = ({ className, children }: SidebarItemTitleProps) => {
+  return <h3 className={cn("text-lg font-semibold", className)}>{children}</h3>;
+};
 
 type SidebarItemContentProps = {
   className?: string;
   children: React.ReactNode;
 };
 
-export const SidebarItemContent = React.forwardRef<HTMLDivElement, SidebarItemContentProps>(
-  ({ className, children }, ref) => {
-    return (
-      <div ref={ref} className={cn(className)}>
-        {children}
-      </div>
-    );
-  },
-);
-SidebarItemContent.displayName = "SidebarItemContent";
+export const SidebarItemContent = ({ className, children }: SidebarItemContentProps) => {
+  return <div className={cn(className)}>{children}</div>;
+};

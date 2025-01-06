@@ -6,12 +6,13 @@ import { signInAttempt } from "@/data/kv/namespaces";
 import { SignInButtons } from "./_components/sign-in-buttons";
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     attemptId?: string;
-  };
+  }>;
 };
 
-export default async function SignInPage({ searchParams }: Props) {
+export default async function SignInPage(props: Props) {
+  const searchParams = await props.searchParams;
   const { attemptId } = searchParams;
 
   const isValidAttemptId = attemptId && (await signInAttempt.get(attemptId));

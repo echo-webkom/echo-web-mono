@@ -13,7 +13,7 @@ import { type HandlerFunction } from "./utils";
 export const withBasicAuth = (handler: HandlerFunction) => {
   return async (request: NextRequest): Promise<Response> => {
     if (process.env.NODE_ENV !== "development") {
-      const auth = headers().get("Authorization")?.split(" ")[1];
+      const auth = (await headers()).get("Authorization")?.split(" ")[1];
       const decodedAuth = Buffer.from(auth ?? "", "base64").toString();
       const [, password] = decodedAuth.split(":");
 
