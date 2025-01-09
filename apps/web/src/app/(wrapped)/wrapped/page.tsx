@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { EndScreen } from "./cards/end";
 import {
   AgendaEvent,
   AmountEvent,
@@ -37,6 +38,7 @@ const cards = [
   { component: <YourInteractions />, key: "your-interactions" },
   { component: <HowManyMembers />, key: "how-many-members" },
   { component: <NumberOfUsers />, key: "user-count" },
+  { component: <EndScreen />, key: "end-screen" },
 ];
 
 export default function Wrapped() {

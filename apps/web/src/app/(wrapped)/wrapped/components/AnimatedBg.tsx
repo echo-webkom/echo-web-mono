@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
+import { TbColorSwatch } from "react-icons/tb";
 
 const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
@@ -11,15 +12,17 @@ type Props = {
 
 export default function AnimatedBg({ children }: Props) {
   const keys = [...new Array(100).keys()];
+  const colors = ["#a484e9", "#31bff3", "#f4889a", "#ffaf68", "#f6e683", "#79d45e"];
 
   return (
-    <div className="absolute left-0 top-0 h-full w-full overflow-hidden bg-red-300">
+    <div className="absolute left-0 top-0 h-full w-full overflow-hidden">
       {children}
       <div className="pointer-events-none -z-10">
         {keys.map((key) => {
           const xOffset = Math.floor(Math.random() * 95);
           const yOffset = Math.floor(Math.random() * 95);
           const Icon = icons[Math.floor(Math.random() * icons.length)]!;
+          const color = colors[Math.floor(Math.random() * colors.length)];
 
           return (
             <Shape
@@ -29,7 +32,7 @@ export default function AnimatedBg({ children }: Props) {
               yOffset={`${yOffset}%`}
               key={key}
             >
-              <Icon />
+              <Icon color={color} size={50} />
             </Shape>
           );
         })}
