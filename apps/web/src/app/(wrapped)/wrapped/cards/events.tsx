@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
+import { useSound } from "@/hooks/use-sound";
 import { AppearingText, InYourFace } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import {
@@ -15,6 +16,8 @@ import {
   YOUR_BEDPRES,
   YOUR_BEDPRES_ACTUAL,
 } from "../stats";
+
+const DRUM_ROLL = "/sounds/drum-roll.wav";
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -46,6 +49,8 @@ export const EventIntro = () => {
 };
 
 export const AmountEvent = () => {
+  useSound(DRUM_ROLL);
+
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
     bgColor: "bg-wrapped-purple",
