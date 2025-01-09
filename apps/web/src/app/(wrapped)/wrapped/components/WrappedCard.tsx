@@ -1,6 +1,6 @@
 "use client";
 
-import { Alfa_Slab_One, DynaPuff, Limelight, Spicy_Rice } from "next/font/google";
+import { Alfa_Slab_One } from "next/font/google";
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 

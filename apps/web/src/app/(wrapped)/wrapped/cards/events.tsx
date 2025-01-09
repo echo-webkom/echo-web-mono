@@ -18,9 +18,8 @@ import {
   YOUR_BEDPRES_ACTUAL,
 } from "../stats";
 
-<<<<<<< HEAD
 const DRUM_ROLL = "/sounds/drum-roll.wav";
-=======
+
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
   weight: ["400"],
@@ -32,7 +31,6 @@ const unna = Unna({
   weight: ["400"],
   style: ["normal"],
 });
->>>>>>> 87963eb0 (fonts)
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
