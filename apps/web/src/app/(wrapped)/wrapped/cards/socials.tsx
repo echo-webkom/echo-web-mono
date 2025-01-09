@@ -25,13 +25,13 @@ const radley = Radley({
   style: ["normal", "italic"],
 });
 
-const notable = Notable({
+const _notable = Notable({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
 });
 
-const ranchers = Ranchers({
+const _ranchers = Ranchers({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
