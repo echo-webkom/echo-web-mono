@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
-import { TbColorSwatch } from "react-icons/tb";
 
 const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
