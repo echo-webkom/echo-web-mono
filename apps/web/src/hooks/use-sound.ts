@@ -35,6 +35,7 @@ export const useSound = (
     void play();
 
     return () => {
+      audio.volume = 0;
       audio.pause();
     };
   }, [createAudio, options]);
