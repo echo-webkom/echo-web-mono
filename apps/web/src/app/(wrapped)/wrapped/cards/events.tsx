@@ -329,6 +329,8 @@ export const RegistrationsCard = () => {
   );
 };
 
+const VINE_BOOM = "/sounds/vine-boom.mp3";
+
 export const BestEvent = () => {
   const layerProps: WrappedCardProps<4> = {
     fgColor: "bg-wrapped-orange",
@@ -341,6 +343,10 @@ export const BestEvent = () => {
   };
 
   const hs = ["top-[20vh]", "top-[10vh]", "top-[25vh]"];
+
+  useSound(VINE_BOOM, { delay: 2300 });
+  useSound(VINE_BOOM, { delay: 2700 });
+  useSound(VINE_BOOM, { delay: 3100 });
 
   return (
     <WrappedCard props={layerProps}>
