@@ -49,7 +49,7 @@ export const EventIntro = () => {
 };
 
 export const AmountEvent = () => {
-  useSound(DRUM_ROLL);
+  useSound(DRUM_ROLL, { delay: 1000 });
 
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",

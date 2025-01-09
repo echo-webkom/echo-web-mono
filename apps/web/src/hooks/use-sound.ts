@@ -1,6 +1,16 @@
 import { useCallback, useEffect } from "react";
 
-export const useSound = (file: string) => {
+type UseSoundOptions = {
+  // Delay in milliseconds
+  delay?: number;
+};
+
+export const useSound = (
+  file: string,
+  options: UseSoundOptions = {
+    delay: 0,
+  },
+) => {
   const createAudio = useCallback(() => {
     const audio = new Audio(file);
     audio.volume = 0.5;
@@ -12,6 +22,10 @@ export const useSound = (file: string) => {
 
     const play = async () => {
       try {
+        await new Promise((resolve) => {
+          setTimeout(resolve, options.delay);
+        });
+
         await audio.play();
       } catch (err) {
         console.error(err);
@@ -23,5 +37,5 @@ export const useSound = (file: string) => {
     return () => {
       audio.pause();
     };
-  }, [createAudio]);
+  }, [createAudio, options]);
 };
