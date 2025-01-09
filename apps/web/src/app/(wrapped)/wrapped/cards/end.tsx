@@ -1,8 +1,11 @@
 import { Ranchers } from "next/font/google";
 import Link from "next/link";
 
+import { useSound } from "@/hooks/use-sound";
 import AnimatedBg from "../components/AnimatedBg";
 import { AppearingText } from "../components/Text";
+
+const GET_OUT = "/sounds/get-out.mp3";
 
 const ranchers = Ranchers({
   subsets: ["latin"],
@@ -11,6 +14,8 @@ const ranchers = Ranchers({
 });
 
 export const EndScreen = () => {
+  useSound(GET_OUT, { delay: 2000 });
+
   return (
     <>
       <Link href={"/hjem"}>

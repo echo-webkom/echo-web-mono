@@ -1,42 +1,46 @@
-import { useCallback, useEffect } from "react";
+"use client";
+
+import { useEffect } from "react";
 
 type UseSoundOptions = {
-  // Delay in milliseconds
-  delay?: number;
+  delay: number; // Delay in milliseconds
+  volume: number; // Volume from 0 to 1
 };
 
-export const useSound = (
-  file: string,
-  options: UseSoundOptions = {
-    delay: 0,
-  },
-) => {
-  const createAudio = useCallback(() => {
-    const audio = new Audio(file);
-    audio.volume = 0.5;
-    return audio;
-  }, [file]);
+const defaultOptions: UseSoundOptions = {
+  delay: 0,
+  volume: 0.5,
+};
+
+export const useSound = (file: string, options: Partial<UseSoundOptions> = {}) => {
+  const { delay = defaultOptions.delay, volume = defaultOptions.volume } = options;
 
   useEffect(() => {
-    const audio = createAudio();
+    let audio: HTMLAudioElement | null = null;
 
-    const play = async () => {
+    const playAudio = async () => {
       try {
-        await new Promise((resolve) => {
-          setTimeout(resolve, options.delay);
-        });
+        audio = new Audio(file);
+        audio.volume = volume;
+
+        if (delay && delay > 0) {
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
 
         await audio.play();
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Error playing audio:", error);
       }
     };
 
-    void play();
+    void playAudio();
 
     return () => {
-      audio.volume = 0;
-      audio.pause();
+      if (audio) {
+        audio.pause();
+        audio.volume = 0;
+        audio = null;
+      }
     };
-  }, [createAudio, options]);
+  }, [file, delay, volume]);
 };
