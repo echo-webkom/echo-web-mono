@@ -6,12 +6,18 @@ import { signInAttempt } from "@/data/kv/namespaces";
 import { RequestAccessForm } from "./_components/request-access-form";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default async function Access({ params: { id } }: Props) {
+export default async function Access(props: Props) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const attempt = await signInAttempt.get(id);
 
   if (!attempt) {

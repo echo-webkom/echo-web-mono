@@ -22,12 +22,13 @@ import { split } from "@/utils/list";
 import { AddStrikeButton, RemoveBanButton, RemoveStrikeButton } from "./strike-button";
 
 type Props = {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 };
 
-export default async function UserStrikesPage({ params }: Props) {
+export default async function UserStrikesPage(props: Props) {
+  const params = await props.params;
   await ensureBedkom();
   const { userId } = params;
 
