@@ -1,7 +1,14 @@
 "use client";
 
+import { Alfa_Slab_One, DynaPuff, Limelight, Spicy_Rice } from "next/font/google";
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
+
+const spicyRice = Alfa_Slab_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+});
 
 type ArrayOfLength<T, L extends number> = ([T, ...Array<T>] & { length: L }) | [];
 
@@ -28,7 +35,7 @@ function CardLayers<C extends number>({
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${props.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-bold shadow`}
+        className={`absolute ${props.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-bold shadow ${spicyRice.className}`}
       >
         {children}
       </motion.div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Lexend_Deca, Unna } from "next/font/google";
 import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
@@ -17,7 +18,21 @@ import {
   YOUR_BEDPRES_ACTUAL,
 } from "../stats";
 
+<<<<<<< HEAD
 const DRUM_ROLL = "/sounds/drum-roll.wav";
+=======
+const lexendDeca = Lexend_Deca({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+});
+
+const unna = Unna({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+});
+>>>>>>> 87963eb0 (fonts)
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -32,7 +47,9 @@ export const EventIntro = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
+      <div
+        className={"grid h-full w-full grid-cols-1 grid-rows-2 text-3xl " + lexendDeca.className}
+      >
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>
             For et hektisk år<br></br>det har vært!
@@ -103,7 +120,11 @@ export const AmountEventPerGroup = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="flex h-full w-full flex-col items-center overflow-hidden text-3xl">
+      <div
+        className={
+          "flex h-full w-full flex-col items-center overflow-hidden text-3xl " + unna.className
+        }
+      >
         <p className="p-10">
           Antall arrangementer<br></br>per undergruppe:
         </p>
@@ -171,7 +192,7 @@ export const AgendaEvent = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="grid h-full w-full grid-cols-1 grid-rows-2">
+      <div className={"grid h-full w-full grid-cols-1 grid-rows-2 " + lexendDeca.className}>
         <div className="flex h-full w-full flex-col justify-center gap-3 p-10 text-3xl">
           <AppearingText delay={0.3}>
             Wow, dere har mye<br></br>på agendaen!
@@ -329,7 +350,9 @@ export const BestEvent = () => {
         <AppearingText delay={0.3}>
           <p className="text-wrapped-black text-center text-5xl font-bold">Top 3</p>
         </AppearingText>
-        <div className="grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden">
+        <div
+          className={"grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden font-primary"}
+        >
           {TOP_10_EVENTS.slice(0, 3).map((event, index) => {
             return (
               <div
@@ -405,7 +428,7 @@ export const Top10Events = () => {
   return (
     <>
       <WrappedCard props={layerProps}>
-        <div className="flex w-full flex-col gap-2 p-10">
+        <div className={"flex w-full flex-col gap-2 p-10 " + unna.className}>
           <p className="mb-7 text-center text-5xl">Top 10</p>
           {TOP_10_EVENTS.map((item, index) => {
             return (
@@ -451,7 +474,7 @@ export const YourBedpresses = () => {
   return (
     <>
       <WrappedCard props={layerProps}>
-        <div className="flex flex-col gap-5 p-10 text-xl">
+        <div className={"flex flex-col gap-5 p-10 text-xl " + lexendDeca.className}>
           <div>
             <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
           </div>
