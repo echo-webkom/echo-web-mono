@@ -18,8 +18,6 @@ import {
   YOUR_BEDPRES_ACTUAL,
 } from "../stats";
 
-const DRUM_ROLL = "/sounds/drum-roll.wav";
-
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
   weight: ["400"],
@@ -31,6 +29,8 @@ const unna = Unna({
   weight: ["400"],
   style: ["normal"],
 });
+
+const VINE_BOOM = "/sounds/vine-boom.mp3";
 
 export const EventIntro = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -64,8 +64,6 @@ export const EventIntro = () => {
 };
 
 export const AmountEvent = () => {
-  useSound(DRUM_ROLL, { delay: 1000 });
-
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
     bgColor: "bg-wrapped-purple",
@@ -75,6 +73,8 @@ export const AmountEvent = () => {
     scale: [1, 1],
     rotate: [0, 0],
   };
+
+  useSound(VINE_BOOM, { delay: 800 });
 
   return (
     <>
@@ -115,6 +115,8 @@ export const AmountEventPerGroup = () => {
     "bg-wrapped-pink",
     "bg-wrapped-green",
   ];
+
+  useSound("/sounds/chimes.mp3", { delay: 1800 });
 
   return (
     <WrappedCard props={layerProps}>
@@ -218,54 +220,10 @@ export const RegistrationsCard = () => {
     noParticles: true,
   };
 
-  // MARK: star motherfucker
+  useSound("/sounds/angry-boat.mp3", { delay: 1200 });
+
   return (
     <>
-      {/* <motion.div
-        style={{
-          width: "30vh",
-          height: "30vh",
-          left: "calc(50vw - 15vh)",
-          top: "35vh,",
-        }}
-        className="absolute z-40"
-        initial={{
-          y: -2000,
-          rotate: 0,
-          scale: 0,
-        }}
-        animate={{
-          y: [null, 0, 0],
-          rotate: 360,
-          scale: [0, 1, 20],
-        }}
-        transition={{
-          duration: 5,
-          ease: "backOut",
-          times: [0, 0.3, 1],
-        }}
-        exit={{
-          scale: 0,
-          transition: {
-            duration: 0.5,
-            delay: 0.5,
-          },
-        }}
-      >
-        <div className="flex w-full h-full justify-center items-center">
-          <Image
-            src="/wrapped/star_black.svg"
-            alt=""
-            width={0}
-            height={0}
-            style={{
-              width: "50vh",
-              height: "50vh",
-            }}
-          />
-        </div>
-      </motion.div> */}
-
       <motion.div
         className="absolute left-[35vw] top-[12vh] z-50 h-[75vh] w-[30vw]"
         initial={{
@@ -329,8 +287,6 @@ export const RegistrationsCard = () => {
   );
 };
 
-const VINE_BOOM = "/sounds/vine-boom.mp3";
-
 export const BestEvent = () => {
   const layerProps: WrappedCardProps<4> = {
     fgColor: "bg-wrapped-orange",
@@ -345,8 +301,8 @@ export const BestEvent = () => {
   const hs = ["top-[20vh]", "top-[10vh]", "top-[25vh]"];
 
   useSound(VINE_BOOM, { delay: 2300 });
-  useSound(VINE_BOOM, { delay: 2700 });
-  useSound(VINE_BOOM, { delay: 3100 });
+  useSound(VINE_BOOM, { delay: 2900 });
+  useSound(VINE_BOOM, { delay: 3500 });
 
   return (
     <WrappedCard props={layerProps}>
@@ -435,6 +391,7 @@ export const Top10Events = () => {
         <div className={"flex w-full flex-col gap-2 p-10 " + unna.className}>
           <p className="mb-7 text-center text-5xl">Top 10</p>
           {TOP_10_EVENTS.map((item, index) => {
+            useSound("/sounds/meow.mp3", { delay: index * 300 + 1000 });
             return (
               <AppearingText key={index} delay={index * 0.3 + 1}>
                 <p className="text-center text-xl">

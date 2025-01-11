@@ -1,10 +1,11 @@
 "use client";
 
 import { Notable, Radley, Ranchers } from "next/font/google";
-import { motion } from "motion/react";
+import { delay, motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
+import { useSound } from "@/hooks/use-sound";
 import { Confetti } from "../components/Confetti";
 import { AnimatedNumber, AppearingText } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
@@ -161,9 +162,13 @@ export const YourInteractions = () => {
     "*crickets*",
   ];
 
-  const comment = (() => {
-    const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
+  const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
 
+  if (sumActivity === 0) {
+    useSound("/sounds/hell-nah.mp3");
+  }
+
+  const comment = (() => {
     if (sumActivity === 0) return noComments[Math.floor(Math.random() * noComments.length)];
     if (sumActivity < 5) return "En person av få ord";
     if (sumActivity < 10) return "Folket takker deg for din mening";
@@ -172,6 +177,8 @@ export const YourInteractions = () => {
 
     return "En ekte kommentarfelt-kriger!";
   })();
+
+  useSound("/sounds/vine-boom.mp3", { delay: 1000 });
 
   return (
     <>
@@ -245,6 +252,8 @@ export const HowManyMembers = () => {
   );
 };
 
+const DRUM_ROLL = "/sounds/drumroll.wav";
+
 export const NumberOfUsers = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-pink",
@@ -257,6 +266,8 @@ export const NumberOfUsers = () => {
   };
 
   const membersMessage = ["echo krigere", "nerds", "slitne studenter", "tech supportere"];
+
+  useSound(DRUM_ROLL, { delay: 700 });
 
   return (
     <>

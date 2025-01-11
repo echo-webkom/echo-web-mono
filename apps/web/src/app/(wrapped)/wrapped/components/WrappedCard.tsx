@@ -4,6 +4,8 @@ import { Alfa_Slab_One } from "next/font/google";
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
+import { useSound } from "@/hooks/use-sound";
+
 const spicyRice = Alfa_Slab_One({
   subsets: ["latin"],
   weight: ["400"],
@@ -187,6 +189,10 @@ export function WrappedCard<C extends number>({
       },
     },
   };
+
+  if (!props.noParticles) {
+    useSound("/sounds/swoosh.flac", { delay: 0 });
+  }
 
   return (
     <div

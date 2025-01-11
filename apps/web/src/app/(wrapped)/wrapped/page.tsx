@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { useSound } from "@/hooks/use-sound";
 import { EndScreen } from "./cards/end";
 import {
   AgendaEvent,
@@ -41,10 +42,14 @@ const cards = [
   { component: <EndScreen />, key: "end-screen" },
 ];
 
+const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
+
 export default function Wrapped() {
   const [cardIdx, setCardIdx] = useState(0);
 
   const currentCard = cards[cardIdx];
+
+  useSound(SUBWAY_SURFERS_THEME);
 
   if (!currentCard) {
     return <p>Internal error</p>;
