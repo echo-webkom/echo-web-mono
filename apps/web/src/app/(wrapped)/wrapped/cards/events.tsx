@@ -80,15 +80,15 @@ export const AmountEvent = () => {
     <>
       <WrappedCard props={layerProps}>
         <div className="grid h-full w-full grid-cols-1 grid-rows-3 text-3xl">
-          <div className="flex h-full w-full items-center justify-center p-10">
+          <div className="flex h-full w-full items-end justify-center p-10">
             <AppearingText delay={0.3}>Det ble holdt hele</AppearingText>
           </div>
           <div className="flex h-full w-full items-center justify-center">
             <InYourFace delay={0.8}>
-              <p className="bg-wrapped-yellow rounded-3xl p-10 text-8xl">{EVENTS}</p>
+              <p className="text-wrapped-purple p-10 text-9xl">{EVENTS}</p>
             </InYourFace>
           </div>
-          <div className="flex h-full w-full flex-wrap items-center justify-center p-10">
+          <div className="flex h-full w-full flex-wrap items-start justify-center p-10">
             <AppearingText delay={1.8}>arrangementer!</AppearingText>
           </div>
         </div>

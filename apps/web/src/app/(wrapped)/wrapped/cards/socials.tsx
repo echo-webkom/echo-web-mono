@@ -94,9 +94,8 @@ export const InteractionCard = () => {
           transition={{ duration: 0.2, delay: 0.5 }}
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
-          <div className="col-span-1 row-span-2 flex items-center justify-center">
+          <div className="text-wrapped-yellow col-span-1 row-span-2 flex items-center justify-center">
             <SlSpeech className="h-1/2 w-1/2" />
-            <div className="bg-wrapped-blue absolute -z-10 h-32 w-32 rounded-full"></div>
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{COMMENTS}</p>
@@ -111,9 +110,8 @@ export const InteractionCard = () => {
           transition={{ duration: 0.2, delay: 1 }}
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
-          <div className="col-span-1 row-span-2 flex items-center justify-center">
+          <div className="text-wrapped-pink col-span-1 row-span-2 flex items-center justify-center">
             <FaReply className="h-1/2 w-1/2" />
-            <div className="bg-wrapped-pink absolute -z-10 h-32 w-32 rounded-full"></div>
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{REPLIES}</p>
@@ -128,9 +126,8 @@ export const InteractionCard = () => {
           transition={{ duration: 0.2, delay: 1.5 }}
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
-          <div className="col-span-1 row-span-2 flex items-center justify-center">
+          <div className="text-wrapped-green col-span-1 row-span-2 flex items-center justify-center">
             <FaRegThumbsUp className="h-1/2 w-1/2" />
-            <div className="bg-wrapped-yellow absolute -z-10 h-32 w-32 rounded-full"></div>
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{REACTIONS}</p>
@@ -188,34 +185,35 @@ export const YourInteractions = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, delay: 0.5 }}
-            className="row-span-1 flex items-end justify-center p-10"
+            className="row-span-1 flex items-end justify-center p-5"
           >
             <p className="text-4xl">Og du da?</p>
           </motion.div>
-          <motion.div
-            initial={{ x: -1000 }}
-            animate={{ x: 0 }}
-            transition={{ duration: 1, delay: 1, ease: "backOut" }}
-            className="bg-wrapped-yellow row-span-1 m-5 grid grid-cols-3 grid-rows-1 rounded-2xl p-5"
-          >
-            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
-              <SlSpeech className="h-1/2 w-1/2" />
-              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_COMMENTS}</p>
-            </div>
-            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
-              <FaReply className="h-1/2 w-1/2" />
-              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_REPLIES}</p>
-            </div>
-            <div className="col-span-1 flex flex-col items-center justify-center gap-3">
-              <FaRegThumbsUp className="h-1/2 w-1/2" />
-              <p className="text-wrapped-grey text-2xl opacity-50">{YOUR_REACTIONS}</p>
-            </div>
-          </motion.div>
+          <div className="row-span-1 m-5 grid grid-cols-3 grid-rows-1 rounded-2xl p-10">
+            <AppearingText delay={0.6}>
+              <div className="text-wrapped-yellow col-span-1 flex flex-col items-center justify-center gap-3">
+                <SlSpeech className="h-16 w-16" />
+                <p className="text-2xl">{YOUR_COMMENTS}</p>
+              </div>
+            </AppearingText>
+            <AppearingText delay={0.9}>
+              <div className="text-wrapped-pink col-span-1 flex flex-col items-center justify-center gap-3">
+                <FaReply className="h-16 w-16" />
+                <p className="text-2xl">{YOUR_REPLIES}</p>
+              </div>
+            </AppearingText>
+            <AppearingText delay={1.2}>
+              <div className="text-wrapped-green col-span-1 flex flex-col items-center justify-center gap-3">
+                <FaRegThumbsUp className="h-16 w-16" />
+                <p className="text-2xl">{YOUR_REACTIONS}</p>
+              </div>
+            </AppearingText>
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 2.5 }}
-            className="row-span-1 flex items-start justify-center p-10"
+            transition={{ duration: 0.3, delay: 2 }}
+            className="row-span-1 flex items-start justify-center p-5"
           >
             <p className="text-wrapped-white text-center text-3xl">{comment}</p>
           </motion.div>
@@ -258,6 +256,7 @@ export const NumberOfUsers = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-pink",
     bgColor: "bg-wrapped-pink",
+    noParticles: true,
     colors: [],
     offX: [],
     offY: [],

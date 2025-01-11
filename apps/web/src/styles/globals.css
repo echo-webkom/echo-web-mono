@@ -311,6 +311,26 @@
     background-color: #171717;
   }
 
+  .text-wrapped-purple {
+    color: #a484e9;
+  }
+
+  .text-wrapped-blue {
+    color: #31bff3;
+  }
+
+  .text-wrapped-pink {
+    color: #f4889a;
+  }
+
+  .text-wrapped-orange {
+    color: #ffaf68;
+  }
+
+  .text-wrapped-green {
+    color: #79d45e;
+  }
+
   .text-wrapped-black {
     color: #171717;
   }
