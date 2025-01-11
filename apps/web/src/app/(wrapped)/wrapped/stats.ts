@@ -67,7 +67,8 @@ export const REGISTRATIONS = 5040; // Antall påmeldinger på arrangement i 2024
 
 // TODO
 export const COFFEE = 37338; // Hvor mange kroner vi har brukt på kaffe
-export const BEER = 1234; // Hvor mange øl vi har kjøpt
+
+export const BEER = 1326; // Antall liter solgt. Så antall øl vil være ca dobbelt + litt mer.
 
 // Pizza på det møtet vi herpa
 export const RU_MONEY = -1500; // Hvor mye penger vi har fått av RU
@@ -75,8 +76,8 @@ export const RU_MONEY = -1500; // Hvor mye penger vi har fått av RU
 export const JOBS = 17; // Antall jobbannonser i 2024
 export const POSTS = 22; // Antall innlegg i 2024
 
-export const TOTAL_USERS = 789;
-export const NEW_USERS = 453;
+export const TOTAL_USERS = 771;
+export const NEW_USERS = 353;
 
 // TOOD: Gjøre de dynamisk
 export const YOUR_COMMENTS = 2;
