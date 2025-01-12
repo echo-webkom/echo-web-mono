@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSound } from "@/hooks/use-sound";
 import AnimatedBg from "../components/AnimatedBg";
 
-export default () => {
+export default function WrappedPreScreen() {
   useSound("/sounds/waiting.mp3", { loop: true });
   return (
     <>
@@ -32,4 +32,4 @@ export default () => {
       </AnimatedBg>
     </>
   );
-};
+}
