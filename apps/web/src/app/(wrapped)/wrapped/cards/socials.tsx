@@ -215,7 +215,7 @@ export const HowManyMembers = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="font-radley grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
+      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-radley text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>I år fikk echo hele {NEW_USERS} nye medlemmer!</AppearingText>
         </div>

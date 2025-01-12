@@ -4,7 +4,7 @@ export const SplashScreen = () => {
   return (
     <>
       <div className="absolute flex h-full w-full cursor-pointer items-center justify-center">
-        <div className="font-radley bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden">
+        <div className="bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden font-radley">
           <motion.div
             initial={{
               x: 200,
@@ -32,7 +32,7 @@ export const SplashScreen = () => {
           </motion.div>
         </div>
         <div className="bg-wrapped-purple group flex h-full w-1/2 flex-col justify-center gap-5 p-14">
-          <p className="font-ranchers text-wrapped-black text-5xl font-bold">
+          <p className="text-wrapped-black font-ranchers text-5xl font-bold">
             echo wrapped 2024 er her!
           </p>
           <p className="text-wrapped-grey text-2xl opacity-50 group-hover:underline">

@@ -13,7 +13,7 @@ export const EndScreen = () => {
     <>
       <Link href={"/hjem"}>
         <AnimatedBg>
-          <div className="font-ranchers bg-wrapped-orange absolute flex h-full w-full cursor-pointer flex-col items-center justify-center gap-3">
+          <div className="bg-wrapped-orange absolute flex h-full w-full cursor-pointer flex-col items-center justify-center gap-3 font-ranchers">
             <AppearingText delay={0.3}>
               <p className="text-wrapped-black text-5xl font-bold">Det var alt for nå!</p>
             </AppearingText>

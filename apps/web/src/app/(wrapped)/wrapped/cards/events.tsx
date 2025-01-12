@@ -33,7 +33,7 @@ export const EventIntro = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="font-lexend grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
+      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>
             For et hektisk år<br></br>det har vært!
@@ -106,7 +106,7 @@ export const AmountEventPerGroup = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="font-unna flex h-full w-full flex-col items-center overflow-hidden text-3xl">
+      <div className="flex h-full w-full flex-col items-center overflow-hidden font-unna text-3xl">
         <p className="p-10">
           Antall arrangementer<br></br>per undergruppe:
         </p>
@@ -174,7 +174,7 @@ export const AgendaEvent = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className="font-lexend grid h-full w-full grid-cols-1 grid-rows-2">
+      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend">
         <div className="flex h-full w-full flex-col justify-center gap-3 p-10 text-3xl">
           <AppearingText delay={0.3}>
             Wow, dere har mye<br></br>på agendaen!
@@ -395,7 +395,7 @@ export const Top10Events = () => {
   return (
     <>
       <WrappedCard props={layerProps}>
-        <div className="font-unna flex w-full flex-col gap-2 p-10">
+        <div className="flex w-full flex-col gap-2 p-10 font-unna">
           <p className="mb-7 text-center text-5xl">Top 10</p>
           {TOP_10_EVENTS.map((item, index) => {
             return <Top10Item key={item.name} index={index} name={item.name} />;
@@ -434,7 +434,7 @@ export const YourBedpresses = () => {
   return (
     <>
       <WrappedCard props={layerProps}>
-        <div className="font-lexend flex flex-col gap-5 p-10 text-xl">
+        <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
           <div>
             <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
           </div>
@@ -490,7 +490,7 @@ export const BeerAmount = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className={"font-unna flex h-full w-full flex-col gap-5"}>
+      <div className={"flex h-full w-full flex-col gap-5 font-unna"}>
         <div className="flex h-1/4 w-full flex-col items-center justify-center gap-3">
           <motion.p
             initial={{ opacity: 1 }}
@@ -511,7 +511,7 @@ export const BeerAmount = () => {
             </motion.p>
           </AppearingText>
         </div>
-        <div className={"font-unna flex h-1/3 w-full flex-col items-center justify-center gap-5"}>
+        <div className={"flex h-1/3 w-full flex-col items-center justify-center gap-5 font-unna"}>
           <AppearingText delay={2}>
             <p className="text-3xl">Dere drakk hele</p>
           </AppearingText>

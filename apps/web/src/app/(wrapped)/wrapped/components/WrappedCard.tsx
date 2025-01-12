@@ -30,7 +30,7 @@ function CardLayers<C extends number>({
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${props.fgColor} text-wrapped-black font-slab z-10 h-full w-full overflow-hidden font-bold shadow`}
+        className={`absolute ${props.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow`}
       >
         {children}
       </motion.div>
