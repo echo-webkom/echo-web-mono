@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { useSound } from "@/hooks/use-sound";
@@ -46,14 +46,15 @@ const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
 
 export default function Wrapped() {
   const [cardIdx, setCardIdx] = useState(0);
-
   const currentCard = cards[cardIdx];
 
-  if (cardIdx !== 0) {
-    useSound(SUBWAY_SURFERS_THEME, { loop: true });
-  } else {
-    useSound("sounds/fein.mp3", { volume: 0.4, loop: true });
-  }
+  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true });
+
+  useEffect(() => {
+    if (cardIdx === cards.length - 1) {
+      stop();
+    }
+  }, [cardIdx, stop]);
 
   if (!currentCard) {
     return <p>Internal error</p>;

@@ -12,6 +12,9 @@ export default {
       mono: ["var(--ibm-font)", ...fontFamily.mono],
       display: ["var(--inter-display-font)", ...fontFamily.sans],
       block: ["var(--block-font)", ...fontFamily.mono],
+      ranchers: ["var(--ranchers-font)", ...fontFamily.sans],
+      lexend: ["var(--lexend-font)", ...fontFamily.sans],
+      unna: ["var(--unna-font)", ...fontFamily.serif],
     },
     extend: {
       colors: {

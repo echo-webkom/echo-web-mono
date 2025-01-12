@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type UseSoundOptions = {
   delay: number; // Delay in milliseconds
@@ -14,29 +14,35 @@ const defaultOptions: UseSoundOptions = {
   loop: false,
 };
 
-// Array to keep track of all active audio instances
-const audioInstances: HTMLAudioElement[] = [];
-
 export const useSound = (file: string, options: Partial<UseSoundOptions> = {}) => {
-  const { delay = defaultOptions.delay, volume = defaultOptions.volume, loop = defaultOptions.loop } = options;
+  const {
+    delay = defaultOptions.delay,
+    volume = defaultOptions.volume,
+    loop = defaultOptions.loop,
+  } = options;
+
+  const audio = useRef<HTMLAudioElement | null>(null);
+
+  const stop = () => {
+    if (audio.current) {
+      audio.current.volume = 0;
+    }
+    audio.current?.pause();
+    audio.current = null;
+  };
 
   useEffect(() => {
-    let audio: HTMLAudioElement | null = null;
-
     const playAudio = async () => {
       try {
-        audio = new Audio(file);
-        audio.volume = volume;
-        audio.loop = loop;
-
-        // Add the audio instance to the global array
-        audioInstances.push(audio);
+        audio.current = new Audio(file);
+        audio.current.volume = volume;
+        audio.current.loop = loop;
 
         if (delay && delay > 0) {
           await new Promise((resolve) => setTimeout(resolve, delay));
         }
 
-        await audio.play();
+        await audio.current.play();
       } catch (error) {
         console.error("Error playing audio:", error);
       }
@@ -45,27 +51,15 @@ export const useSound = (file: string, options: Partial<UseSoundOptions> = {}) =
     void playAudio();
 
     return () => {
-      if (audio) {
-        // Remove the audio instance from the global array
-        const index = audioInstances.indexOf(audio);
-        if (index !== -1) {
-          audioInstances.splice(index, 1);
-        }
-
-        audio.pause();
-        audio.volume = 0;
-        audio = null;
+      if (audio.current) {
+        audio.current.volume = 0;
       }
+      audio.current?.pause();
+      audio.current = null;
     };
-  }, [file, delay, volume]);
-};
+  }, [delay, file, loop, volume]);
 
-export const stopAllSounds = () => {
-  audioInstances.forEach((audio) => {
-    audio.pause();
-    audio.currentTime = 0; // Reset the playback position
-  });
-
-  // Clear the audioInstances array
-  audioInstances.length = 0;
+  return {
+    stop,
+  };
 };

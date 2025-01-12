@@ -1,26 +1,19 @@
-import { Ranchers } from "next/font/google";
+"use client";
+
 import Link from "next/link";
 
+import { useSound } from "@/hooks/use-sound";
 import AnimatedBg from "../components/AnimatedBg";
 import { AppearingText } from "../components/Text";
 
-const ranchers = Ranchers({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-});
-
 export const EndScreen = () => {
+  useSound("sounds/fein.mp3", { volume: 0.4, loop: true });
+
   return (
     <>
       <Link href={"/hjem"}>
         <AnimatedBg>
-          <div
-            className={
-              "bg-wrapped-orange absolute flex h-full w-full cursor-pointer flex-col items-center justify-center gap-3 " +
-              ranchers.className
-            }
-          >
+          <div className="font-ranchers bg-wrapped-orange absolute flex h-full w-full cursor-pointer flex-col items-center justify-center gap-3">
             <AppearingText delay={0.3}>
               <p className="text-wrapped-black text-5xl font-bold">Det var alt for nå!</p>
             </AppearingText>
