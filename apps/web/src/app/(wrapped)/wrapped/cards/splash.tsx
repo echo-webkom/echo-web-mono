@@ -1,28 +1,10 @@
-import { Radley, Ranchers } from "next/font/google";
 import { motion } from "motion/react";
-
-const radley = Radley({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
-
-const ranchers = Ranchers({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-});
 
 export const SplashScreen = () => {
   return (
     <>
       <div className="absolute flex h-full w-full cursor-pointer items-center justify-center">
-        <div
-          className={
-            "bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden " +
-            radley.className
-          }
-        >
+        <div className="font-radley bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden">
           <motion.div
             initial={{
               x: 200,
@@ -54,7 +36,7 @@ export const SplashScreen = () => {
           </motion.div>
         </div>
         <div className="bg-wrapped-purple flex h-full w-1/2 flex-col justify-center gap-5 p-14">
-          <p className={"text-wrapped-black text-5xl font-bold " + ranchers.className}>
+          <p className="font-ranchers text-wrapped-black text-5xl font-bold">
             echo wrapped 2024 er her!
           </p>
           <p className="text-wrapped-grey text-2xl opacity-50">Klikk for å starte</p>

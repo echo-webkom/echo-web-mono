@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 
 import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Lexend_Deca, Ranchers, Unna, VT323 } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Lexend_Deca, Radley, Ranchers, Unna, VT323 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
@@ -58,6 +58,13 @@ const unna = Unna({
   weight: ["400"],
   style: ["normal"],
   variable: "--unna-font",
+});
+
+const radley = Radley({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--radley-font",
 });
 
 type RootLayoutProps = {
@@ -130,6 +137,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           ranchers.variable,
           lexendDeca.variable,
           unna.variable,
+          radley.variable,
         )}
       >
         <Providers>

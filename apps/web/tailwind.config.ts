@@ -15,6 +15,7 @@ export default {
       ranchers: ["var(--ranchers-font)", ...fontFamily.sans],
       lexend: ["var(--lexend-font)", ...fontFamily.sans],
       unna: ["var(--unna-font)", ...fontFamily.serif],
+      radley: ["var(--radley-font)", ...fontFamily.serif],
     },
     extend: {
       colors: {

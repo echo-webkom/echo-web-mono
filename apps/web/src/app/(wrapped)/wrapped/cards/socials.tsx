@@ -1,7 +1,6 @@
 "use client";
 
-import { Notable, Radley, Ranchers } from "next/font/google";
-import { delay, motion } from "motion/react";
+import { motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
@@ -19,24 +18,6 @@ import {
   YOUR_REACTIONS,
   YOUR_REPLIES,
 } from "../stats";
-
-const radley = Radley({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
-
-const _notable = Notable({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-});
-
-const _ranchers = Ranchers({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-});
 
 export const CommentSectionCard = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -161,9 +142,10 @@ export const YourInteractions = () => {
 
   const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
 
-  if (sumActivity === 0) {
-    useSound("/sounds/hell-nah.mp3");
-  }
+  // TODO:
+  // if (sumActivity === 0) {
+  //   useSound("/sounds/hell-nah.mp3", { autoPlay: false });
+  // }
 
   const comment = (() => {
     if (sumActivity === 0) return noComments[Math.floor(Math.random() * noComments.length)];
@@ -236,7 +218,7 @@ export const HowManyMembers = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className={"grid h-full w-full grid-cols-1 grid-rows-2 text-3xl " + radley.className}>
+      <div className="font-radley grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>I år fikk echo hele {NEW_USERS} nye medlemmer!</AppearingText>
         </div>
