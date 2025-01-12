@@ -48,7 +48,7 @@ const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
 
 export default function Wrapped() {
   const [cardIdx, setCardIdx] = useState(0);
-  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true, volume: 0.1 });
+  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true, volume: 0.2 });
 
   useEffect(() => {
     if (cardIdx === cards.length - 1) {

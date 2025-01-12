@@ -39,8 +39,7 @@ export const SplashScreen = () => {
             Klikk for å starte
           </p>
 
-          <p className="text-wrapped-grey text-2xl opacity-50">NB: Tillat lyd på siden!</p>
-          <p className="text-wrapped-grey text-2xl opacity-50">NB: Anbefales å bruke desktop</p>
+          <p className="text-wrapped-grey mt-5 opacity-50">Tillat lyd på siden!</p>
         </div>
       </div>
     </>

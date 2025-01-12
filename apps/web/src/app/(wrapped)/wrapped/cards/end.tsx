@@ -7,7 +7,7 @@ import AnimatedBg from "../components/AnimatedBg";
 import { AppearingText } from "../components/Text";
 
 export const EndScreen = () => {
-  useSound("sounds/fein.mp3", { volume: 0.4, loop: true });
+  useSound("sounds/fein.mp3", { volume: 0.3, loop: true });
 
   return (
     <>
