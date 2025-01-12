@@ -4,7 +4,7 @@ export const SplashScreen = () => {
   return (
     <>
       <div className="absolute flex h-full w-full cursor-pointer items-center justify-center">
-        <div className="bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden font-radley">
+        <div className="bg-wrapped-pink text-wrapped-yellow font-radley flex h-full w-1/2 flex-col items-end overflow-hidden">
           <motion.div
             initial={{
               x: 200,
@@ -38,8 +38,6 @@ export const SplashScreen = () => {
           <p className="text-wrapped-grey text-2xl opacity-50 group-hover:underline">
             Klikk for å starte
           </p>
-
-          <p className="text-wrapped-grey mt-5 opacity-50">Tillat lyd på siden!</p>
         </div>
       </div>
     </>

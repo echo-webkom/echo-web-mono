@@ -21,7 +21,7 @@ export const WrappedBanner = () => {
     <div>
       {/* When on desktop */}
       <div className="hidden lg:block">
-        <Link href="/wrapped">
+        <Link href="/wrapped/prescreen">
           <div className="bg-wrapped-yellow absolute flex h-14 w-full cursor-pointer items-center justify-center">
             <AnimatedBg />
             <p className="text-wrapped-black flex items-center gap-3 text-xl font-bold">
