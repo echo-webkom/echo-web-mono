@@ -10,12 +10,7 @@ const ranchers = Ranchers({
   style: ["normal"],
 });
 
-// Use then stop sounds is added
-// const FEIN = "/sounds/fein.mp3";
-
 export const EndScreen = () => {
-  // useSound(FEIN);
-
   return (
     <>
       <Link href={"/hjem"}>

@@ -49,7 +49,11 @@ export default function Wrapped() {
 
   const currentCard = cards[cardIdx];
 
-  useSound(SUBWAY_SURFERS_THEME);
+  if (cardIdx !== 0) {
+    useSound(SUBWAY_SURFERS_THEME);
+  } else {
+    useSound("sounds/fein.mp3", { volume: 0.4 });
+  }
 
   if (!currentCard) {
     return <p>Internal error</p>;
@@ -59,7 +63,7 @@ export default function Wrapped() {
     <AnimatePresence mode="wait">
       <motion.div
         id={`wrapped-card-${currentCard.key}`}
-        onClick={() => setCardIdx((prev) => (prev + 1) % cards.length)}
+        onClick={() => setCardIdx((prev) => (prev < cards.length - 1 ? prev + 1 : prev))}
         key={currentCard.key}
         // className="relative select-none w-[30vw] h-[75vh]"
         className="overflow-hidden"
