@@ -37,9 +37,10 @@ export function InYourFace({ children, delay }: { children: React.ReactNode; del
   );
 }
 
+const animationDuration = 5; // in seconds
+
 export const AnimatedNumber = ({ target }: { target: number }) => {
   const [displayNumber, setDisplayNumber] = useState(0);
-  const animationDuration = 5; // in seconds
 
   useEffect(() => {
     const startTime = Date.now();

@@ -16,6 +16,7 @@ export default {
       lexend: ["var(--lexend-font)", ...fontFamily.sans],
       unna: ["var(--unna-font)", ...fontFamily.serif],
       radley: ["var(--radley-font)", ...fontFamily.serif],
+      slab: ["var(--slab-font)", ...fontFamily.sans],
     },
     extend: {
       colors: {

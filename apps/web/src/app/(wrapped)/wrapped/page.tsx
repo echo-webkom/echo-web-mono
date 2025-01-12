@@ -48,15 +48,15 @@ const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
 
 export default function Wrapped() {
   const [cardIdx, setCardIdx] = useState(0);
-  const currentCard = cards[cardIdx];
-
-  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true });
+  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true, volume: 0.1 });
 
   useEffect(() => {
     if (cardIdx === cards.length - 1) {
       stop();
     }
   }, [cardIdx, stop]);
+
+  const currentCard = cards[cardIdx];
 
   if (!currentCard) {
     return <p>Internal error</p>;
@@ -68,7 +68,6 @@ export default function Wrapped() {
         id={`wrapped-card-${currentCard.key}`}
         onClick={() => setCardIdx((prev) => (prev < cards.length - 1 ? prev + 1 : prev))}
         key={currentCard.key}
-        // className="relative select-none w-[30vw] h-[75vh]"
         className="overflow-hidden"
       >
         {currentCard.component}

@@ -133,6 +133,9 @@ export const YourInteractions = () => {
     rotate: [5, 10, 15],
   };
 
+  const { play } = useSound("/sounds/hell-nah.mp3", { autoPlay: false });
+  useSound("/sounds/vine-boom.mp3", { delay: 1000 });
+
   const noComments = [
     // De aller fleste vil få en sånn så har flere for mer variasjon
     "Du vet vi har et kommentarfelt ikkesant?",
@@ -142,10 +145,9 @@ export const YourInteractions = () => {
 
   const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
 
-  // TODO: conditional hell nah sound
-  // if (sumActivity === 0) {
-  //   useSound("/sounds/hell-nah.mp3", { autoPlay: false });
-  // }
+  if (sumActivity === 0) {
+    play();
+  }
 
   const comment = (() => {
     if (sumActivity === 0) return noComments[Math.floor(Math.random() * noComments.length)];
@@ -153,8 +155,6 @@ export const YourInteractions = () => {
     if (sumActivity < 10) return "Folket takker deg for din mening";
     return "En ekte kommentarfelt-kriger!";
   })();
-
-  useSound("/sounds/vine-boom.mp3", { delay: 1000 });
 
   return (
     <>

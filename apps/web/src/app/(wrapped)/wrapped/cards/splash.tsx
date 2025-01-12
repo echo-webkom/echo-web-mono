@@ -23,23 +23,24 @@ export const SplashScreen = () => {
           >
             {Array.from({ length: 200 }).map((_, index) => {
               return (
-                <>
-                  <p key={index} className="text-8xl opacity-70">
-                    ECHO WRAPPED
-                  </p>
-                  <p key={index} className="text-8xl opacity-70">
-                    WRAPPED ECHO
-                  </p>
-                </>
+                <span key={index}>
+                  <p className="text-8xl opacity-70">ECHO WRAPPED</p>
+                  <p className="text-8xl opacity-70">WRAPPED ECHO</p>
+                </span>
               );
             })}
           </motion.div>
         </div>
-        <div className="bg-wrapped-purple flex h-full w-1/2 flex-col justify-center gap-5 p-14">
+        <div className="bg-wrapped-purple group flex h-full w-1/2 flex-col justify-center gap-5 p-14">
           <p className="font-ranchers text-wrapped-black text-5xl font-bold">
             echo wrapped 2024 er her!
           </p>
-          <p className="text-wrapped-grey text-2xl opacity-50">Klikk for å starte</p>
+          <p className="text-wrapped-grey text-2xl opacity-50 group-hover:underline">
+            Klikk for å starte
+          </p>
+
+          <p className="text-wrapped-grey text-2xl opacity-50">NB: Tillat lyd på siden!</p>
+          <p className="text-wrapped-grey text-2xl opacity-50">NB: Anbefales å bruke desktop</p>
         </div>
       </div>
     </>

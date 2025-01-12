@@ -1,16 +1,9 @@
 "use client";
 
-import { Alfa_Slab_One } from "next/font/google";
 import { motion } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
 import { useSound } from "@/hooks/use-sound";
-
-const spicyRice = Alfa_Slab_One({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-});
 
 type ArrayOfLength<T, L extends number> = ([T, ...Array<T>] & { length: L }) | [];
 
@@ -37,7 +30,7 @@ function CardLayers<C extends number>({
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${props.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-bold shadow ${spicyRice.className}`}
+        className={`absolute ${props.fgColor} text-wrapped-black font-slab z-10 h-full w-full overflow-hidden font-bold shadow`}
       >
         {children}
       </motion.div>
@@ -190,9 +183,7 @@ export function WrappedCard<C extends number>({
     },
   };
 
-  if (!props.noParticles) {
-    useSound("/sounds/swoosh.flac", { delay: 0 });
-  }
+  useSound("/sounds/swoosh.flac", { volume: 0.4 });
 
   return (
     <div

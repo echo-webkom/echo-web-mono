@@ -2,7 +2,16 @@ import "@/styles/globals.css";
 
 import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Lexend_Deca, Radley, Ranchers, Unna, VT323 } from "next/font/google";
+import {
+  Alfa_Slab_One,
+  IBM_Plex_Mono,
+  Inter,
+  Lexend_Deca,
+  Radley,
+  Ranchers,
+  Unna,
+  VT323,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
@@ -65,6 +74,13 @@ const radley = Radley({
   weight: ["400"],
   style: ["normal", "italic"],
   variable: "--radley-font",
+});
+
+const slab = Alfa_Slab_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--slab-font",
 });
 
 type RootLayoutProps = {
@@ -138,6 +154,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           lexendDeca.variable,
           unna.variable,
           radley.variable,
+          slab.variable,
         )}
       >
         <Providers>
