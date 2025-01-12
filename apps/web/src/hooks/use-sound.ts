@@ -5,18 +5,20 @@ import { useEffect } from "react";
 type UseSoundOptions = {
   delay: number; // Delay in milliseconds
   volume: number; // Volume from 0 to 1
+  loop: boolean; // Loop audio?
 };
 
 const defaultOptions: UseSoundOptions = {
   delay: 0,
   volume: 0.5,
+  loop: false,
 };
 
 // Array to keep track of all active audio instances
 const audioInstances: HTMLAudioElement[] = [];
 
 export const useSound = (file: string, options: Partial<UseSoundOptions> = {}) => {
-  const { delay = defaultOptions.delay, volume = defaultOptions.volume } = options;
+  const { delay = defaultOptions.delay, volume = defaultOptions.volume, loop = defaultOptions.loop } = options;
 
   useEffect(() => {
     let audio: HTMLAudioElement | null = null;
@@ -25,6 +27,7 @@ export const useSound = (file: string, options: Partial<UseSoundOptions> = {}) =
       try {
         audio = new Audio(file);
         audio.volume = volume;
+        audio.loop = loop;
 
         // Add the audio instance to the global array
         audioInstances.push(audio);

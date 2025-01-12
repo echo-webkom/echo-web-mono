@@ -50,9 +50,9 @@ export default function Wrapped() {
   const currentCard = cards[cardIdx];
 
   if (cardIdx !== 0) {
-    useSound(SUBWAY_SURFERS_THEME);
+    useSound(SUBWAY_SURFERS_THEME, { loop: true });
   } else {
-    useSound("sounds/fein.mp3", { volume: 0.4 });
+    useSound("sounds/fein.mp3", { volume: 0.4, loop: true });
   }
 
   if (!currentCard) {
