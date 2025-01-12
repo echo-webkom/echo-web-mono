@@ -286,6 +286,15 @@ export const BestEvent = () => {
   useSound(VINE_BOOM, { delay: 2900 });
   useSound(VINE_BOOM, { delay: 3500 });
 
+  const events = TOP_10_EVENTS.sort((a, b) => (a.registrations > b.registrations ? 0 : 1)).slice(
+    0,
+    3,
+  );
+
+  if (events[0] !== undefined && events[1] !== undefined) {
+    [events[0], events[1]] = [events[1], events[0]];
+  }
+
   return (
     <WrappedCard props={layerProps}>
       <div className="flex h-full w-full flex-col items-center justify-center">
@@ -295,7 +304,7 @@ export const BestEvent = () => {
         <div
           className={"grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden font-primary"}
         >
-          {TOP_10_EVENTS.slice(0, 3).map((event, index) => {
+          {events.map((event, index) => {
             return (
               <div
                 key={event.name}
