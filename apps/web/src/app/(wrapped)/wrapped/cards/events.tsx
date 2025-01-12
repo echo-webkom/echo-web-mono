@@ -7,6 +7,7 @@ import { useSound } from "@/hooks/use-sound";
 import { AppearingText, InYourFace } from "../components/Text";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import {
+  BEER,
   EVENTS,
   EVENTS_PER_GROUP,
   FASTEST_REG,
@@ -412,13 +413,12 @@ export const YourBedpresses = () => {
   if (YOUR_BEDPRES > 1) bedpres_reaction = "Du er en moderat bedpresser.";
   if (YOUR_BEDPRES > 3) bedpres_reaction = "Trolig en bedpres enjoyer!";
   if (YOUR_BEDPRES > 5) bedpres_reaction = "Bedpres fan?";
-  // TODO: mer
-  if (YOUR_BEDPRES > 10) bedpres_reaction = "...";
-  if (YOUR_BEDPRES > 15) bedpres_reaction = "...";
-  if (YOUR_BEDPRES > 20) bedpres_reaction = "...";
+  if (YOUR_BEDPRES > 10) bedpres_reaction = "Utrolig!";
+  if (YOUR_BEDPRES > 15) bedpres_reaction = "Viva la bedpres";
+  if (YOUR_BEDPRES > 20) bedpres_reaction = "Alt for gratis mat og drikke";
 
-  let actual_reaction = "Outch";
-  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.3) actual_reaction = "Ikke dumt";
+  let actual_reaction = "Outch...";
+  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.3) actual_reaction = "Ikke dumt!";
   if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.7) actual_reaction = "Imponerende!";
   if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES === 1) actual_reaction = "Raskere enn lynet!";
 
@@ -507,7 +507,7 @@ export const BeerAmount = () => {
             <p className="text-3xl">Dere drakk hele</p>
           </AppearingText>
           <InYourFace delay={2.5}>
-            <p className={"text-wrapped-purple font-unna text-7xl font-bold"}>1326 liter øl</p>
+            <p className={"text-wrapped-purple font-unna text-7xl font-bold"}>{BEER} liter øl</p>
           </InYourFace>
         </div>
       </div>

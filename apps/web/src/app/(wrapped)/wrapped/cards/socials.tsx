@@ -142,7 +142,7 @@ export const YourInteractions = () => {
 
   const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
 
-  // TODO:
+  // TODO: conditional hell nah sound
   // if (sumActivity === 0) {
   //   useSound("/sounds/hell-nah.mp3", { autoPlay: false });
   // }
@@ -151,9 +151,6 @@ export const YourInteractions = () => {
     if (sumActivity === 0) return noComments[Math.floor(Math.random() * noComments.length)];
     if (sumActivity < 5) return "En person av få ord";
     if (sumActivity < 10) return "Folket takker deg for din mening";
-
-    // TODO: legg til flere cases, og ulike ting for ulike kombinasjoner av reaksjoner og kommentarer osv
-
     return "En ekte kommentarfelt-kriger!";
   })();
 
