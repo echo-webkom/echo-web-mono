@@ -481,7 +481,7 @@ export const BeerAmount = () => {
 
   return (
     <WrappedCard props={layerProps}>
-      <div className={"flex h-full w-full flex-col gap-5 " + lexendDeca.className}>
+      <div className={"font-unna flex h-full w-full flex-col gap-5"}>
         <div className="flex h-1/4 w-full flex-col items-center justify-center gap-3">
           <motion.p
             initial={{ opacity: 1 }}
@@ -502,18 +502,12 @@ export const BeerAmount = () => {
             </motion.p>
           </AppearingText>
         </div>
-        <div
-          className={
-            "flex h-1/3 w-full flex-col items-center justify-center gap-5 " + unna.className
-          }
-        >
+        <div className={"font-unna flex h-1/3 w-full flex-col items-center justify-center gap-5"}>
           <AppearingText delay={2}>
             <p className="text-3xl">Dere drakk hele</p>
           </AppearingText>
           <InYourFace delay={2.5}>
-            <p className={"text-wrapped-purple text-7xl font-bold " + unna.className}>
-              1326 liter øl
-            </p>
+            <p className={"text-wrapped-purple font-unna text-7xl font-bold"}>1326 liter øl</p>
           </InYourFace>
         </div>
       </div>
