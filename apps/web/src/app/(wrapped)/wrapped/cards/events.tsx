@@ -465,3 +465,58 @@ export const YourBedpresses = () => {
     </>
   );
 };
+
+export const BeerAmount = () => {
+  const layerProps: WrappedCardProps<2> = {
+    fgColor: "bg-wrapped-orange",
+    bgColor: "bg-wrapped-purple",
+    colors: ["bg-wrapped-blue", "bg-wrapped-yellow"],
+    offX: [0, 0],
+    offY: [0, 0],
+    scale: [1, 1],
+    rotate: [-5, 10],
+  };
+
+  useSound("/sounds/beer.mp3");
+
+  return (
+    <WrappedCard props={layerProps}>
+      <div className={"flex h-full w-full flex-col gap-5 " + lexendDeca.className}>
+        <div className="flex h-1/4 w-full flex-col items-center justify-center gap-3">
+          <motion.p
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.3, delay: 3 }}
+            className="text-3xl font-bold"
+          >
+            Og hva er en fest uten litt øl?
+          </motion.p>
+          <AppearingText delay={1}>
+            <motion.p
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 0.3, delay: 3.3 }}
+              className="text-wrapped-grey text-xl opacity-50"
+            >
+              Litt øl??
+            </motion.p>
+          </AppearingText>
+        </div>
+        <div
+          className={
+            "flex h-1/3 w-full flex-col items-center justify-center gap-5 " + unna.className
+          }
+        >
+          <AppearingText delay={2}>
+            <p className="text-3xl">Dere drakk hele</p>
+          </AppearingText>
+          <InYourFace delay={2.5}>
+            <p className={"text-wrapped-purple text-7xl font-bold " + unna.className}>
+              1326 liter øl
+            </p>
+          </InYourFace>
+        </div>
+      </div>
+    </WrappedCard>
+  );
+};
