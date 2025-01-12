@@ -7,10 +7,12 @@ const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
 type Props = {
   children?: React.ReactNode;
+  count?: number;
+  size?: number;
 };
 
-export default function AnimatedBg({ children }: Props) {
-  const keys = [...new Array(100).keys()];
+export default function AnimatedBg({ children, count = 100, size = 50 }: Props) {
+  const keys = [...new Array(count).keys()];
   const colors = ["#a484e9", "#31bff3", "#f4889a", "#ffaf68", "#f6e683", "#79d45e"];
 
   return (
@@ -31,7 +33,7 @@ export default function AnimatedBg({ children }: Props) {
               yOffset={`${yOffset}%`}
               key={key}
             >
-              <Icon color={color} size={50} />
+              <Icon color={color} size={size} />
             </Shape>
           );
         })}

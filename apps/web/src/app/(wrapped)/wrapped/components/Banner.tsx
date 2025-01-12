@@ -34,8 +34,8 @@ export const WrappedBanner = () => {
       {/* When on mobile */}
       <div className="block lg:hidden">
         <div className="bg-wrapped-yellow absolute flex h-14 w-full cursor-pointer items-center justify-center">
-          <AnimatedBg />
-          <p className="text-wrapped-black text-xl font-bold">
+          <AnimatedBg size={10} />
+          <p className="text-wrapped-black text-sm font-bold">
             echo wrapped er her. Gå på PCen for å se!
           </p>
         </div>
