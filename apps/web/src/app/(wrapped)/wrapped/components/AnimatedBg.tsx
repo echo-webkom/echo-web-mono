@@ -6,7 +6,7 @@ import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export default function AnimatedBg({ children }: Props) {
