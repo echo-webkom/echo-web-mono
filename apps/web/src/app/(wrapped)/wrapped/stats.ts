@@ -14,7 +14,10 @@ export const EVENTS_PER_GROUP = [
 ].sort((a, b) => (a.events > b.events ? -1 : 1));
 
 export const TOP_10_EVENTS = [
-  { name: "Vinterball 2025", registrations: 189 }, // Disse tallene er fra gamle DB.
+  { 
+    name: "Vinterball 2024",
+    registrations: 189
+  }, // Disse tallene er fra gamle DB.
   {
     name: "DNB bedpres",
     registrations: 129,
