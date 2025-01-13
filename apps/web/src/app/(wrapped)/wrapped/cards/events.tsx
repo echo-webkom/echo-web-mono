@@ -460,7 +460,9 @@ export const YourBedpresses = () => {
           </AppearingText>
           <AppearingText delay={2.5}>
             <p className="text-wrapped-grey opacity-50">
-              Det er i top {stats?.registrationPrecentile}% av raskeste påmeldinger
+              Det er i top{" "}
+              {stats?.registrationPrecentile ? 100 - stats?.registrationPrecentile : 100}% av
+              raskeste påmeldinger
             </p>
           </AppearingText>
         </div>
