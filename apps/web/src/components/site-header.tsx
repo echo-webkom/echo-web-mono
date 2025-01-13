@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { WrappedBanner } from "@/app/(wrapped)/wrapped/components/Banner";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
@@ -47,6 +48,7 @@ export const SiteHeader = async () => {
           <NavigationViewport />
         </NavigationRoot>
       </div>
+      <WrappedBanner />
     </div>
   );
 };
