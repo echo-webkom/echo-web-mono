@@ -14,9 +14,9 @@ export const EVENTS_PER_GROUP = [
 ].sort((a, b) => (a.events > b.events ? -1 : 1));
 
 export const TOP_10_EVENTS = [
-  { 
+  {
     name: "Vinterball 2024",
-    registrations: 189
+    registrations: 189,
   }, // Disse tallene er fra gamle DB.
   {
     name: "DNB bedpres",
@@ -81,12 +81,3 @@ export const POSTS = 22; // Antall innlegg i 2024
 
 export const TOTAL_USERS = 771;
 export const NEW_USERS = 353;
-
-// TOOD: Gjøre de dynamisk
-export const YOUR_COMMENTS = 2;
-export const YOUR_REPLIES = 1;
-export const YOUR_REACTIONS = 7;
-export const YOUR_BEDPRES = 4; // Hvor mange du meldte deg på
-export const YOUR_BEDPRES_ACTUAL = 3; // Hvor mange du fikk plass på
-export const FASTEST_REG = 0.1;
-export const REG_PERCENTILE = 10;

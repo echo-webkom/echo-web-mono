@@ -1,77 +1,35 @@
-"use client";
+import { getUser } from "@/lib/get-user";
+import { UserStatsProvider, type UserWrappedData } from "./components/UserContext";
+import { WrappedClient } from "./components/wrapped-client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-
-import { useSound } from "@/hooks/use-sound";
-import { EndScreen } from "./cards/end";
-import {
-  AgendaEvent,
-  AmountEvent,
-  AmountEventPerGroup,
-  BeerAmount,
-  BestEvent,
-  EventIntro,
-  RegistrationsCard,
-  Top10Events,
-  YourBedpresses,
-} from "./cards/events";
-import {
-  CommentSectionCard,
-  HowManyMembers,
-  InteractionCard,
-  NumberOfUsers,
-  YourInteractions,
-} from "./cards/socials";
-import { SplashScreen } from "./cards/splash";
-
-const cards = [
-  { component: <SplashScreen />, key: "wrapped-splash" },
-  { component: <EventIntro />, key: "event-intro" },
-  { component: <AmountEvent />, key: "amount-event" },
-  { component: <AmountEventPerGroup />, key: "amount-event-per-group" },
-  { component: <AgendaEvent />, key: "agenda-event" },
-  { component: <RegistrationsCard />, key: "registrations" },
-  { component: <BestEvent />, key: "best-event" },
-  { component: <Top10Events />, key: "top-10-events" },
-  { component: <BeerAmount />, key: "beer-amount" },
-  { component: <YourBedpresses />, key: "your-bedpresses" },
-  { component: <CommentSectionCard />, key: "comment-section" },
-  { component: <InteractionCard />, key: "interaction" },
-  { component: <YourInteractions />, key: "your-interactions" },
-  { component: <HowManyMembers />, key: "how-many-members" },
-  { component: <NumberOfUsers />, key: "user-count" },
-  { component: <EndScreen />, key: "end-screen" },
-];
-
-const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
-
-export default function Wrapped() {
-  const [cardIdx, setCardIdx] = useState(0);
-  const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true, volume: 0.2 });
-
-  useEffect(() => {
-    if (cardIdx === cards.length - 1) {
-      stop();
-    }
-  }, [cardIdx, stop]);
-
-  const currentCard = cards[cardIdx];
-
-  if (!currentCard) {
-    return <p>Internal error</p>;
+const fetchStats = async (userId: string) => {
+  if (process.env.NODE_ENV === "development") {
+    // only use in development
+    // id of jesper
+    userId = "52c5eb16-cbd2-4043-9cbd-26704d7ab7bf";
   }
 
+  const resp = await fetch(`https://echo-wrapped-stats.fly.dev/stats/${userId}`, {
+    cache: "no-cache",
+    headers: {
+      Authorization: process.env.ADMIN_KEY!,
+    },
+  });
+
+  if (!resp.ok) {
+    return null;
+  }
+
+  return (await resp.json()) as Exclude<UserWrappedData, null>;
+};
+
+export default async function Wrapped() {
+  const user = await getUser();
+  const stats = user?.id ? await fetchStats(user.id) : null;
+
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        id={`wrapped-card-${currentCard.key}`}
-        onClick={() => setCardIdx((prev) => (prev < cards.length - 1 ? prev + 1 : prev))}
-        key={currentCard.key}
-        className="overflow-hidden"
-      >
-        {currentCard.component}
-      </motion.div>
-    </AnimatePresence>
+    <UserStatsProvider data={stats}>
+      <WrappedClient />
+    </UserStatsProvider>
   );
 }

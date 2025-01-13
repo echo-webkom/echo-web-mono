@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from "react";
+"use client";
 
-import { getUser } from "@/lib/get-user";
+import { createContext, useContext } from "react";
 
 export type UserWrappedData = {
   comments: number;
@@ -10,47 +10,25 @@ export type UserWrappedData = {
   fastestRegistration: number | null;
   registrationPrecentile: number | null;
   reactions: number;
-};
+} | null;
 
-const defaultUserWrappedData: UserWrappedData = {
-  comments: 0,
-  replies: 0,
-  registrations: 0,
-  registeredRegistrations: 0,
-  fastestRegistration: null,
-  registrationPrecentile: null,
-  reactions: 0,
-};
+export const UserStatsContext = createContext<UserWrappedData>(null);
 
-export const UserContext = createContext<UserWrappedData>(defaultUserWrappedData);
+export const useUserStatsContext = () => {
+  const ctx = useContext(UserStatsContext);
 
-const fetchUserData = async (): Promise<UserWrappedData | null> => {
-  const user = await getUser();
-
-  if (user === null) {
-    return null;
+  if (ctx === undefined) {
+    throw new Error("useUserStatsContext must be used within a UserStatsProvider");
   }
 
-  const resp = await fetch(`https://echo-wrapped-stats.fly.dev/stats/${user.id}`, {
-    headers: {
-      Authorization: process.env.ADMIN_KEY || "",
-    },
-  });
-
-  if (!resp.ok) {
-    return null;
-  }
-
-  return (await resp.json()) as UserWrappedData;
+  return ctx;
 };
 
-export const UserProvider = async ({ children }: { children: React.ReactNode }) => {
-  let data = await fetchUserData();
-  if (data === null) data = defaultUserWrappedData;
+type UserStatsProviderProps = {
+  data: UserWrappedData;
+  children?: React.ReactNode;
+};
 
-  return (
-    <>
-      <UserContext.Provider value={data}>{children}</UserContext.Provider>
-    </>
-  );
+export const UserStatsProvider = ({ data, children }: UserStatsProviderProps) => {
+  return <UserStatsContext.Provider value={data}>{children}</UserStatsContext.Provider>;
 };

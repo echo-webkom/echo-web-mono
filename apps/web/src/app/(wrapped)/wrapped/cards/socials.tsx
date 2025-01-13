@@ -7,17 +7,9 @@ import { SlSpeech } from "react-icons/sl";
 import { useSound } from "@/hooks/use-sound";
 import { Confetti } from "../components/Confetti";
 import { AnimatedNumber, AppearingText } from "../components/Text";
+import { useUserStatsContext } from "../components/UserContext";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import {
-  COMMENTS,
-  NEW_USERS,
-  REACTIONS,
-  REPLIES,
-  TOTAL_USERS,
-  YOUR_COMMENTS,
-  YOUR_REACTIONS,
-  YOUR_REPLIES,
-} from "../stats";
+import { COMMENTS, NEW_USERS, REACTIONS, REPLIES, TOTAL_USERS } from "../stats";
 
 export const CommentSectionCard = () => {
   const layerProps: WrappedCardProps<2> = {
@@ -133,6 +125,7 @@ export const YourInteractions = () => {
     rotate: [5, 10, 15],
   };
 
+  const stats = useUserStatsContext();
   const { play } = useSound("/sounds/hell-nah.mp3", { autoPlay: false });
   useSound("/sounds/vine-boom.mp3", { delay: 1000 });
 
@@ -143,7 +136,7 @@ export const YourInteractions = () => {
     "*crickets*",
   ];
 
-  const sumActivity = YOUR_REACTIONS + YOUR_COMMENTS + YOUR_REPLIES;
+  const sumActivity = (stats?.reactions ?? 0) + (stats?.comments ?? 0) + (stats?.replies ?? 0);
 
   if (sumActivity === 0) {
     play();
@@ -172,19 +165,19 @@ export const YourInteractions = () => {
             <AppearingText delay={0.6}>
               <div className="text-wrapped-yellow col-span-1 flex flex-col items-center justify-center gap-3">
                 <SlSpeech className="h-16 w-16" />
-                <p className="text-2xl">{YOUR_COMMENTS}</p>
+                <p className="text-2xl">{stats?.comments}</p>
               </div>
             </AppearingText>
             <AppearingText delay={0.9}>
               <div className="text-wrapped-pink col-span-1 flex flex-col items-center justify-center gap-3">
                 <FaReply className="h-16 w-16" />
-                <p className="text-2xl">{YOUR_REPLIES}</p>
+                <p className="text-2xl">{stats?.replies}</p>
               </div>
             </AppearingText>
             <AppearingText delay={1.2}>
               <div className="text-wrapped-green col-span-1 flex flex-col items-center justify-center gap-3">
                 <FaRegThumbsUp className="h-16 w-16" />
-                <p className="text-2xl">{YOUR_REACTIONS}</p>
+                <p className="text-2xl">{stats?.reactions}</p>
               </div>
             </AppearingText>
           </div>

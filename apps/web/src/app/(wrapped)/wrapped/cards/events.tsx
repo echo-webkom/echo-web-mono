@@ -1,24 +1,13 @@
 "use client";
 
-import { useContext } from "react";
 import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
 import { useSound } from "@/hooks/use-sound";
 import { AppearingText, InYourFace } from "../components/Text";
-import { UserContext, UserProvider } from "../components/UserContext";
+import { useUserStatsContext } from "../components/UserContext";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
-import {
-  BEER,
-  EVENTS,
-  EVENTS_PER_GROUP,
-  FASTEST_REG,
-  REG_PERCENTILE,
-  REGISTRATIONS,
-  TOP_10_EVENTS,
-  YOUR_BEDPRES,
-  YOUR_BEDPRES_ACTUAL,
-} from "../stats";
+import { BEER, EVENTS, EVENTS_PER_GROUP, REGISTRATIONS, TOP_10_EVENTS } from "../stats";
 
 const VINE_BOOM = "/sounds/vine-boom.mp3";
 
@@ -408,6 +397,29 @@ export const Top10Events = () => {
   );
 };
 
+const getBedpresText = (bedpres: number | null) => {
+  if (bedpres === null) return "...du får prøve igjen neste år.";
+
+  if (bedpres > 20) return "Alt for gratis mat og drikke";
+  if (bedpres > 15) return "Viva la bedpres";
+  if (bedpres > 10) return "Utrolig!";
+  if (bedpres > 5) return "Bedpres fan?";
+  if (bedpres > 3) return "Trolig en bedpres enjoyer!";
+  if (bedpres > 1) return "Du er en moderat bedpresser.";
+  if (bedpres > 0) return "En er bedre enn ingen!";
+
+  // Unreachable
+  return "Bedpres konge?";
+};
+
+const getBedpresReactionText = (bedpres: number | null, actual: number | null) => {
+  if (bedpres === null || actual === null) return "Outch...";
+
+  if (actual / bedpres > 0.3) return "Ikke dumt!";
+  if (actual / bedpres > 0.7) return "Imponerende!";
+  if (actual / bedpres === 1) return "Raskere enn lynet!";
+};
+
 export const YourBedpresses = () => {
   const layerProps: WrappedCardProps<2> = {
     fgColor: "bg-wrapped-orange",
@@ -419,65 +431,53 @@ export const YourBedpresses = () => {
     rotate: [0, 0],
   };
 
-  let bedpres_reaction = "...du får prøve igjen neste år.";
-  if (YOUR_BEDPRES > 0) bedpres_reaction = "En er bedre enn ingen!";
-  if (YOUR_BEDPRES > 1) bedpres_reaction = "Du er en moderat bedpresser.";
-  if (YOUR_BEDPRES > 3) bedpres_reaction = "Trolig en bedpres enjoyer!";
-  if (YOUR_BEDPRES > 5) bedpres_reaction = "Bedpres fan?";
-  if (YOUR_BEDPRES > 10) bedpres_reaction = "Utrolig!";
-  if (YOUR_BEDPRES > 15) bedpres_reaction = "Viva la bedpres";
-  if (YOUR_BEDPRES > 20) bedpres_reaction = "Alt for gratis mat og drikke";
-
-  let actual_reaction = "Outch...";
-  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.3) actual_reaction = "Ikke dumt!";
-  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.7) actual_reaction = "Imponerende!";
-  if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES === 1) actual_reaction = "Raskere enn lynet!";
-
-  const ctx = useContext(UserContext);
+  const stats = useUserStatsContext();
+  const bedpresText = getBedpresText(stats?.registeredRegistrations ?? null);
+  const bedpresActualText = getBedpresReactionText(
+    stats?.registeredRegistrations ?? null,
+    stats?.fastestRegistration ?? null,
+  );
 
   return (
-    <>
-      <UserProvider>
-        <WrappedCard props={layerProps}>
-          <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
-            <div>
-              <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
-            </div>
+    <WrappedCard props={layerProps}>
+      <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
+        <div>
+          <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
+        </div>
 
-            <div>
-              <AppearingText delay={1}>
-                <p>Du var på hele {YOUR_BEDPRES} bedriftspresentasjoner!</p>
-              </AppearingText>
-              <AppearingText delay={1.5}>
-                <p className="text-wrapped-grey opacity-50">{bedpres_reaction}</p>
-              </AppearingText>
-            </div>
+        <div>
+          <AppearingText delay={1}>
+            <p>Du var på hele {stats?.registeredRegistrations} bedriftspresentasjoner!</p>
+          </AppearingText>
+          <AppearingText delay={1.5}>
+            <p className="text-wrapped-grey opacity-50">{bedpresText}</p>
+          </AppearingText>
+        </div>
 
-            <div>
-              <AppearingText delay={2}>
-                <p>Din raskeste påmelding var på {ctx.fastestRegistration} sekunder</p>
-              </AppearingText>
-              <AppearingText delay={2.5}>
-                <p className="text-wrapped-grey opacity-50">
-                  Det er i top {ctx.registrationPrecentile}% av raskeste påmeldinger
-                </p>
-              </AppearingText>
-            </div>
+        <div>
+          <AppearingText delay={2}>
+            <p>Din raskeste påmelding var på {stats?.fastestRegistration} sekunder</p>
+          </AppearingText>
+          <AppearingText delay={2.5}>
+            <p className="text-wrapped-grey opacity-50">
+              Det er i top {stats?.registrationPrecentile}% av raskeste påmeldinger
+            </p>
+          </AppearingText>
+        </div>
 
-            <div>
-              <AppearingText delay={3}>
-                <p>
-                  Av {ctx.registrations} påmeldinger fikk du plass på {YOUR_BEDPRES_ACTUAL}
-                </p>
-              </AppearingText>
-              <AppearingText delay={3.5}>
-                <p className="text-wrapped-grey opacity-50">{actual_reaction}</p>
-              </AppearingText>
-            </div>
-          </div>
-        </WrappedCard>
-      </UserProvider>
-    </>
+        <div>
+          <AppearingText delay={3}>
+            <p>
+              Av {stats?.registrations} påmeldinger fikk du plass på{" "}
+              {stats?.registeredRegistrations}
+            </p>
+          </AppearingText>
+          <AppearingText delay={3.5}>
+            <p className="text-wrapped-grey opacity-50">{bedpresActualText}</p>
+          </AppearingText>
+        </div>
+      </div>
+    </WrappedCard>
   );
 };
 
