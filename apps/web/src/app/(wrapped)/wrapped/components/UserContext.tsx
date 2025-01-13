@@ -22,7 +22,7 @@ const defaultUserWrappedData: UserWrappedData = {
   reactions: 0,
 };
 
-const UserContext = createContext<UserWrappedData | null>(null);
+export const UserContext = createContext<UserWrappedData>(defaultUserWrappedData);
 
 const fetchUserData = async (): Promise<UserWrappedData | null> => {
   const user = await getUser();

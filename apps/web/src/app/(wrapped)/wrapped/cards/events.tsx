@@ -1,10 +1,12 @@
 "use client";
 
+import { useContext } from "react";
 import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
 import { useSound } from "@/hooks/use-sound";
 import { AppearingText, InYourFace } from "../components/Text";
+import { UserContext, UserProvider } from "../components/UserContext";
 import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
 import {
   BEER,
@@ -431,46 +433,50 @@ export const YourBedpresses = () => {
   if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES > 0.7) actual_reaction = "Imponerende!";
   if (YOUR_BEDPRES_ACTUAL / YOUR_BEDPRES === 1) actual_reaction = "Raskere enn lynet!";
 
+  const ctx = useContext(UserContext);
+
   return (
     <>
-      <WrappedCard props={layerProps}>
-        <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
-          <div>
-            <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
-          </div>
+      <UserProvider>
+        <WrappedCard props={layerProps}>
+          <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
+            <div>
+              <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
+            </div>
 
-          <div>
-            <AppearingText delay={1}>
-              <p>Du var på hele {YOUR_BEDPRES} bedriftspresentasjoner!</p>
-            </AppearingText>
-            <AppearingText delay={1.5}>
-              <p className="text-wrapped-grey opacity-50">{bedpres_reaction}</p>
-            </AppearingText>
-          </div>
+            <div>
+              <AppearingText delay={1}>
+                <p>Du var på hele {YOUR_BEDPRES} bedriftspresentasjoner!</p>
+              </AppearingText>
+              <AppearingText delay={1.5}>
+                <p className="text-wrapped-grey opacity-50">{bedpres_reaction}</p>
+              </AppearingText>
+            </div>
 
-          <div>
-            <AppearingText delay={2}>
-              <p>Din raskeste påmelding var på {FASTEST_REG} sekunder</p>
-            </AppearingText>
-            <AppearingText delay={2.5}>
-              <p className="text-wrapped-grey opacity-50">
-                Det er i top {REG_PERCENTILE}% av raskeste påmeldinger
-              </p>
-            </AppearingText>
-          </div>
+            <div>
+              <AppearingText delay={2}>
+                <p>Din raskeste påmelding var på {ctx.fastestRegistration} sekunder</p>
+              </AppearingText>
+              <AppearingText delay={2.5}>
+                <p className="text-wrapped-grey opacity-50">
+                  Det er i top {ctx.registrationPrecentile}% av raskeste påmeldinger
+                </p>
+              </AppearingText>
+            </div>
 
-          <div>
-            <AppearingText delay={3}>
-              <p>
-                Av {YOUR_BEDPRES} påmeldinger fikk du plass på {YOUR_BEDPRES_ACTUAL}
-              </p>
-            </AppearingText>
-            <AppearingText delay={3.5}>
-              <p className="text-wrapped-grey opacity-50">{actual_reaction}</p>
-            </AppearingText>
+            <div>
+              <AppearingText delay={3}>
+                <p>
+                  Av {ctx.registrations} påmeldinger fikk du plass på {YOUR_BEDPRES_ACTUAL}
+                </p>
+              </AppearingText>
+              <AppearingText delay={3.5}>
+                <p className="text-wrapped-grey opacity-50">{actual_reaction}</p>
+              </AppearingText>
+            </div>
           </div>
-        </div>
-      </WrappedCard>
+        </WrappedCard>
+      </UserProvider>
     </>
   );
 };
