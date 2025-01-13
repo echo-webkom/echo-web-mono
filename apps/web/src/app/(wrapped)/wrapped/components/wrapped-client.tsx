@@ -25,28 +25,34 @@ import {
 } from "../cards/socials";
 import { SplashScreen } from "../cards/splash";
 
-const cards = [
-  { component: <SplashScreen />, key: "wrapped-splash" },
-  { component: <EventIntro />, key: "event-intro" },
-  { component: <AmountEvent />, key: "amount-event" },
-  { component: <AmountEventPerGroup />, key: "amount-event-per-group" },
-  { component: <AgendaEvent />, key: "agenda-event" },
-  { component: <RegistrationsCard />, key: "registrations" },
-  { component: <BestEvent />, key: "best-event" },
-  { component: <Top10Events />, key: "top-10-events" },
-  { component: <BeerAmount />, key: "beer-amount" },
-  { component: <YourBedpresses />, key: "your-bedpresses" },
-  { component: <CommentSectionCard />, key: "comment-section" },
-  { component: <InteractionCard />, key: "interaction" },
-  { component: <YourInteractions />, key: "your-interactions" },
-  { component: <HowManyMembers />, key: "how-many-members" },
-  { component: <NumberOfUsers />, key: "user-count" },
-  { component: <EndScreen />, key: "end-screen" },
+const CARDS = [
+  { requireAuth: false, component: <SplashScreen />, key: "wrapped-splash" },
+  { requireAuth: false, component: <EventIntro />, key: "event-intro" },
+  { requireAuth: false, component: <AmountEvent />, key: "amount-event" },
+  { requireAuth: false, component: <AmountEventPerGroup />, key: "amount-event-per-group" },
+  { requireAuth: false, component: <AgendaEvent />, key: "agenda-event" },
+  { requireAuth: false, component: <RegistrationsCard />, key: "registrations" },
+  { requireAuth: false, component: <BestEvent />, key: "best-event" },
+  { requireAuth: false, component: <Top10Events />, key: "top-10-events" },
+  { requireAuth: false, component: <BeerAmount />, key: "beer-amount" },
+  { requireAuth: true, component: <YourBedpresses />, key: "your-bedpresses" },
+  { requireAuth: false, component: <CommentSectionCard />, key: "comment-section" },
+  { requireAuth: false, component: <InteractionCard />, key: "interaction" },
+  { requireAuth: true, component: <YourInteractions />, key: "your-interactions" },
+  { requireAuth: false, component: <HowManyMembers />, key: "how-many-members" },
+  { requireAuth: false, component: <NumberOfUsers />, key: "user-count" },
+  { requireAuth: false, component: <EndScreen />, key: "end-screen" },
 ];
 
 const SUBWAY_SURFERS_THEME = "/sounds/subway-surfers-theme.mp3";
 
-export const WrappedClient = () => {
+type WrappedClientProps = {
+  isSignedIn: boolean;
+};
+
+export const WrappedClient = ({ isSignedIn }: WrappedClientProps) => {
+  const cards = CARDS.filter((card) => !card.requireAuth || isSignedIn);
+
   const [cardIdx, setCardIdx] = useState(0);
   const { stop } = useSound(SUBWAY_SURFERS_THEME, { loop: true, volume: 0.2 });
 
@@ -54,7 +60,7 @@ export const WrappedClient = () => {
     if (cardIdx === cards.length - 1) {
       stop();
     }
-  }, [cardIdx, stop]);
+  }, [cardIdx, cards.length, stop]);
 
   const currentCard = cards[cardIdx];
 

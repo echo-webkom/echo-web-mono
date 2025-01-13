@@ -29,7 +29,7 @@ export default async function Wrapped() {
 
   return (
     <UserStatsProvider data={stats}>
-      <WrappedClient />
+      <WrappedClient isSignedIn={!!user} />
     </UserStatsProvider>
   );
 }
