@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { WrappedBanner } from "@/app/(wrapped)/wrapped/components/Banner";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
@@ -14,7 +13,7 @@ import { UserMenu } from "./user-menu";
 
 export const SiteHeader = async () => {
   const user = await getUser();
-  const message = (await getProgrammerbarStatus()).message;
+  const { message } = await getProgrammerbarStatus();
 
   return (
     <div className="sticky top-0 z-20">
@@ -48,7 +47,6 @@ export const SiteHeader = async () => {
           <NavigationViewport />
         </NavigationRoot>
       </div>
-      <WrappedBanner />
     </div>
   );
 };
