@@ -1,29 +1,30 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "motion/react";
 import { TiStarburst } from "react-icons/ti";
 
 import { useSound } from "@/hooks/use-sound";
 import { AppearingText, InYourFace } from "../components/Text";
 import { useUserStatsContext } from "../components/UserContext";
-import { WrappedCard, type WrappedCardProps } from "../components/WrappedCard";
+import { WrappedCard } from "../components/WrappedCard";
 import { BEER, EVENTS, EVENTS_PER_GROUP, REGISTRATIONS, TOP_10_EVENTS } from "../stats";
 
 const VINE_BOOM = "/sounds/vine-boom.mp3";
 
 export const EventIntro = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-yellow", "bg-wrapped-pink"],
-    offX: [0, 0],
-    offY: [0, 0],
-    scale: [1, 1],
-    rotate: [-5, 10],
-  };
-
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-yellow", "bg-wrapped-pink"],
+        offX: [0, 0],
+        offY: [0, 0],
+        scale: [1, 1],
+        rotate: [-5, 10],
+      }}
+    >
       <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>
@@ -41,62 +42,60 @@ export const EventIntro = () => {
 };
 
 export const AmountEvent = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-green", "bg-wrapped-pink"],
-    offX: [20, 40],
-    offY: [20, 40],
-    scale: [1, 1],
-    rotate: [0, 0],
-  };
-
   useSound(VINE_BOOM, { delay: 800 });
 
   return (
-    <>
-      <WrappedCard props={layerProps}>
-        <div className="grid h-full w-full grid-cols-1 grid-rows-3 text-3xl">
-          <div className="flex h-full w-full items-end justify-center p-10">
-            <AppearingText delay={0.3}>Det ble holdt hele</AppearingText>
-          </div>
-          <div className="flex h-full w-full items-center justify-center">
-            <InYourFace delay={0.8}>
-              <p className="text-wrapped-purple p-10 text-9xl">{EVENTS}</p>
-            </InYourFace>
-          </div>
-          <div className="flex h-full w-full flex-wrap items-start justify-center p-10">
-            <AppearingText delay={1.8}>arrangementer!</AppearingText>
-          </div>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-green", "bg-wrapped-pink"],
+        offX: [20, 40],
+        offY: [20, 40],
+        scale: [1, 1],
+        rotate: [0, 0],
+      }}
+    >
+      <div className="grid h-full w-full grid-cols-1 grid-rows-3 text-3xl">
+        <div className="flex h-full w-full items-end justify-center p-10">
+          <AppearingText delay={0.3}>Det ble holdt hele</AppearingText>
         </div>
-      </WrappedCard>
-    </>
+        <div className="flex h-full w-full items-center justify-center">
+          <InYourFace delay={0.8}>
+            <p className="text-wrapped-purple p-10 text-9xl">{EVENTS}</p>
+          </InYourFace>
+        </div>
+        <div className="flex h-full w-full flex-wrap items-start justify-center p-10">
+          <AppearingText delay={1.8}>arrangementer!</AppearingText>
+        </div>
+      </div>
+    </WrappedCard>
   );
 };
 
+const COLORS = [
+  "bg-wrapped-purple",
+  "bg-wrapped-blue",
+  "bg-wrapped-yellow",
+  "bg-wrapped-pink",
+  "bg-wrapped-green",
+];
+
 export const AmountEventPerGroup = () => {
-  const layerProps: WrappedCardProps<3> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-blue", "bg-wrapped-pink", "bg-wrapped-yellow"],
-    offX: [20, 60, 100],
-    offY: [-20, -40, -60],
-    scale: [1, 1, 1],
-    rotate: [-5, -10, -15],
-  };
-
-  const colors = [
-    "bg-wrapped-purple",
-    "bg-wrapped-blue",
-    "bg-wrapped-yellow",
-    "bg-wrapped-pink",
-    "bg-wrapped-green",
-  ];
-
   useSound("/sounds/chimes.mp3", { delay: 1800 });
 
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-blue", "bg-wrapped-pink", "bg-wrapped-yellow"],
+        offX: [20, 60, 100],
+        offY: [-20, -40, -60],
+        scale: [1, 1, 1],
+        rotate: [-5, -10, -15],
+      }}
+    >
       <div className="flex h-full w-full flex-col items-center overflow-hidden font-unna text-3xl">
         <p className="p-10">
           Antall arrangementer<br></br>per undergruppe:
@@ -126,7 +125,7 @@ export const AmountEventPerGroup = () => {
               >
                 <div className="flex h-full w-full items-center gap-2">
                   <div
-                    className={`flex h-full flex-grow items-center justify-end p-4 ${colors[index % colors.length]} rounded-full`}
+                    className={`flex h-full flex-grow items-center justify-end p-4 ${COLORS[index % COLORS.length]} rounded-full`}
                   ></div>
                   <motion.div
                     initial={{
@@ -153,26 +152,30 @@ export const AmountEventPerGroup = () => {
 };
 
 export const AgendaEvent = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-black", "bg-wrapped-pink"],
-    offX: [0, 0],
-    offY: [0, 0],
-    scale: [1, 1],
-    rotate: [-5, 10],
-  };
-
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-black", "bg-wrapped-pink"],
+        offX: [0, 0],
+        offY: [0, 0],
+        scale: [1, 1],
+        rotate: [-5, 10],
+      }}
+    >
       <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend">
         <div className="flex h-full w-full flex-col justify-center gap-3 p-10 text-3xl">
           <AppearingText delay={0.3}>
-            Wow, dere har mye<br></br>på agendaen!
+            Wow, dere har mye
+            <br />
+            på agendaen!
           </AppearingText>
           <AppearingText delay={1}>
             <p className="text-wrapped-grey text-2xl font-normal">
-              La oss se hvor mange som<br></br>faktisk var med...
+              La oss se hvor mange som
+              <br />
+              faktisk var med...
             </p>
           </AppearingText>
         </div>
@@ -182,17 +185,6 @@ export const AgendaEvent = () => {
 };
 
 export const RegistrationsCard = () => {
-  const layerProps: WrappedCardProps<0> = {
-    fgColor: "bg-wrapped-purple shadow-none",
-    bgColor: "bg-wrapped-purple",
-    colors: [],
-    offX: [],
-    offY: [],
-    scale: [],
-    rotate: [],
-    noParticles: true,
-  };
-
   useSound("/sounds/angry-boat.mp3", { delay: 1200 });
 
   return (
@@ -253,25 +245,25 @@ export const RegistrationsCard = () => {
           </div>
         </div>
       </motion.div>
-      <WrappedCard props={layerProps}>
-        <div></div>
-      </WrappedCard>
+
+      <WrappedCard
+        style={{
+          fgColor: "bg-wrapped-purple shadow-none",
+          bgColor: "bg-wrapped-purple",
+          colors: [],
+          offX: [],
+          offY: [],
+          scale: [],
+          rotate: [],
+          noParticles: true,
+        }}
+      />
     </>
   );
 };
 
 export const BestEvent = () => {
-  const layerProps: WrappedCardProps<4> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-green", "bg-wrapped-pink", "bg-wrapped-blue", "bg-wrapped-yellow"],
-    offX: [-80, -160, 80, 160],
-    offY: [0, 0, 0, 0],
-    scale: [0.9, 0.8, 0.9, 0.8],
-    rotate: [-5, -10, 5, 10],
-  };
-
-  const hs = ["top-[20vh]", "top-[10vh]", "top-[25vh]"];
+  const hs = ["top-[12vh]", "top-[5vh]", "top-[13vh]"];
 
   useSound(VINE_BOOM, { delay: 2300 });
   useSound(VINE_BOOM, { delay: 2900 });
@@ -287,7 +279,17 @@ export const BestEvent = () => {
   }
 
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-green", "bg-wrapped-pink", "bg-wrapped-blue", "bg-wrapped-yellow"],
+        offX: [-80, -160, 80, 160],
+        offY: [0, 0, 0, 0],
+        scale: [0.9, 0.8, 0.9, 0.8],
+        rotate: [-5, -10, 5, 10],
+      }}
+    >
       <div className="flex h-full w-full flex-col items-center justify-center">
         <AppearingText delay={0.3}>
           <p className="text-wrapped-black text-center text-5xl font-bold">Top 3</p>
@@ -344,7 +346,7 @@ export const BestEvent = () => {
                         </motion.p>
                       </InYourFace>
                     )}
-                    <div className="bg-wrapped-black h-full w-full"></div>
+                    <div className="bg-wrapped-black h-full w-full" />
                   </div>
                 </motion.div>
               </div>
@@ -363,6 +365,7 @@ type Top10ItemProps = {
 
 const Top10Item = ({ index, name }: Top10ItemProps) => {
   useSound("/sounds/meow.mp3", { delay: index * 300 + 1000 });
+
   return (
     <AppearingText key={index} delay={index * 0.3 + 1}>
       <p className="text-center text-xl">
@@ -373,27 +376,25 @@ const Top10Item = ({ index, name }: Top10ItemProps) => {
 };
 
 export const Top10Events = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-green", "bg-wrapped-pink"],
-    offX: [20, 40],
-    offY: [20, 40],
-    scale: [1, 1],
-    rotate: [0, 0],
-  };
-
   return (
-    <>
-      <WrappedCard props={layerProps}>
-        <div className="flex w-full flex-col gap-2 p-10 font-unna">
-          <p className="mb-7 text-center text-5xl">Top 10</p>
-          {TOP_10_EVENTS.map((item, index) => {
-            return <Top10Item key={item.name} index={index} name={item.name} />;
-          })}
-        </div>
-      </WrappedCard>
-    </>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-green", "bg-wrapped-pink"],
+        offX: [20, 40],
+        offY: [20, 40],
+        scale: [1, 1],
+        rotate: [0, 0],
+      }}
+    >
+      <div className="flex w-full flex-col gap-2 p-10 font-unna">
+        <p className="mb-7 text-center text-5xl">Top 10</p>
+        {TOP_10_EVENTS.map((item, index) => {
+          return <Top10Item key={item.name} index={index} name={item.name} />;
+        })}
+      </div>
+    </WrappedCard>
   );
 };
 
@@ -421,25 +422,34 @@ const getBedpresReactionText = (bedpres: number | null, actual: number | null) =
 };
 
 export const YourBedpresses = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-pink", "bg-wrapped-black"],
-    offX: [-40, 40],
-    offY: [40, -40],
-    scale: [1, 1],
-    rotate: [0, 0],
-  };
-
   const stats = useUserStatsContext();
-  const bedpresText = getBedpresText(stats?.registeredRegistrations ?? null);
-  const bedpresActualText = getBedpresReactionText(
-    stats?.registeredRegistrations ?? null,
-    stats?.fastestRegistration ?? null,
+
+  const bedpresText = useMemo(
+    () => getBedpresText(stats?.registeredRegistrations ?? null),
+    [stats?.registeredRegistrations],
+  );
+
+  const bedpresActualText = useMemo(
+    () =>
+      getBedpresReactionText(
+        stats?.registeredRegistrations ?? null,
+        stats?.fastestRegistration ?? null,
+      ),
+    [stats?.fastestRegistration, stats?.registeredRegistrations],
   );
 
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-pink", "bg-wrapped-black"],
+        offX: [-40, 40],
+        offY: [40, -40],
+        scale: [1, 1],
+        rotate: [0, 0],
+      }}
+    >
       <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
         <div>
           <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
@@ -484,20 +494,20 @@ export const YourBedpresses = () => {
 };
 
 export const BeerAmount = () => {
-  const layerProps: WrappedCardProps<2> = {
-    fgColor: "bg-wrapped-orange",
-    bgColor: "bg-wrapped-purple",
-    colors: ["bg-wrapped-blue", "bg-wrapped-yellow"],
-    offX: [0, 0],
-    offY: [0, 0],
-    scale: [1, 1],
-    rotate: [-5, 10],
-  };
-
   useSound("/sounds/beer.mp3");
 
   return (
-    <WrappedCard props={layerProps}>
+    <WrappedCard
+      style={{
+        fgColor: "bg-wrapped-orange",
+        bgColor: "bg-wrapped-purple",
+        colors: ["bg-wrapped-blue", "bg-wrapped-yellow"],
+        offX: [0, 0],
+        offY: [0, 0],
+        scale: [1, 1],
+        rotate: [-5, 10],
+      }}
+    >
       <div className={"flex h-full w-full flex-col gap-5 font-unna"}>
         <div className="flex h-1/4 w-full flex-col items-center justify-center gap-3">
           <motion.p

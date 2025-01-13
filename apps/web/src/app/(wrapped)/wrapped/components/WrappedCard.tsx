@@ -7,35 +7,34 @@ import { useSound } from "@/hooks/use-sound";
 
 type ArrayOfLength<T, L extends number> = ([T, ...Array<T>] & { length: L }) | [];
 
-// C is number of layers. 0 means just foreground card for text.
-export type WrappedCardProps<C extends number> = {
+const ICONS = [LuStar, LuCircle, LuSquare, LuTriangle];
+
+export type WrappedCardStyle<C extends number> = {
   offX: ArrayOfLength<number, C>;
-  offY: ArrayOfLength<number, C>;
-  rotate: ArrayOfLength<number, C>;
-  scale: ArrayOfLength<number, C>;
-  colors: ArrayOfLength<string, C>;
+  offY: ArrayOfLength<number, NoInfer<C>>;
+  rotate: ArrayOfLength<number, NoInfer<C>>;
+  scale: ArrayOfLength<number, NoInfer<C>>;
+  colors: ArrayOfLength<string, NoInfer<C>>;
   fgColor: string;
   bgColor: string;
   noParticles?: boolean;
 };
 
-function CardLayers<C extends number>({
-  children,
-  props,
-}: {
-  children: React.ReactNode;
-  props: WrappedCardProps<C>;
-}) {
-  const style = "absolute top-0 left-0 w-full h-full";
+type WrappedCardProps<C extends number> = {
+  style: WrappedCardStyle<C>;
+  children?: React.ReactNode;
+};
+
+function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) {
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${props.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow`}
+        className={`absolute ${style.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow`}
       >
         {children}
       </motion.div>
 
-      {props.colors.map((col, index) => {
+      {style.colors.map((color, index) => {
         const variants = {
           hidden: {
             scale: 1,
@@ -44,10 +43,10 @@ function CardLayers<C extends number>({
             y: 0,
           },
           show: {
-            rotate: props.rotate[index],
-            x: props.offX[index],
-            y: props.offY[index],
-            scale: props.scale[index],
+            rotate: style.rotate[index],
+            x: style.offX[index],
+            y: style.offY[index],
+            scale: style.scale[index],
             transition: {
               ease: "backOut",
             },
@@ -58,9 +57,9 @@ function CardLayers<C extends number>({
           <motion.div
             style={{ zIndex: -index }}
             key={index}
-            className={`${style} ${col} shadow`}
+            className={`absolute left-0 top-0 h-full w-full ${color} shadow`}
             variants={variants}
-          ></motion.div>
+          />
         );
       })}
     </div>
@@ -120,10 +119,15 @@ function CardBackdrop() {
     </motion.div>
   );
 }
-const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
 
-function Particle({ x, y, duration }: { x: number; y: number; duration: number }) {
-  const Icon = icons[Math.floor(Math.random() * icons.length)]!;
+type ParticleProps = {
+  x: number;
+  y: number;
+  duration: number;
+};
+
+function Particle({ x, y, duration }: ParticleProps) {
+  const Icon = ICONS[Math.floor(Math.random() * ICONS.length)]!;
 
   return (
     <motion.div
@@ -157,37 +161,31 @@ function Particle({ x, y, duration }: { x: number; y: number; duration: number }
   );
 }
 
-export function WrappedCard<C extends number>({
-  props,
-  children,
-}: {
-  props: WrappedCardProps<C>;
-  children: React.ReactNode;
-}) {
-  const mainVariants = {
-    hidden: {
-      scale: 0,
+const mainVariants = {
+  hidden: {
+    scale: 0,
+  },
+  show: {
+    scale: 1,
+    transition: {
+      duration: 0.2,
+      delayChildren: 0.2,
     },
-    show: {
-      scale: 1,
-      transition: {
-        duration: 0.2,
-        delayChildren: 0.2,
-      },
+  },
+  exit: {
+    scale: 0,
+    transition: {
+      duration: 0.2,
     },
-    exit: {
-      scale: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
+  },
+};
 
+export function WrappedCard<C extends number>({ style, children }: WrappedCardProps<C>) {
   useSound("/sounds/swoosh.flac", { volume: 0.4 });
 
   return (
     <div
-      className={`relative left-0 top-0 -z-50 h-[100vh] w-[100vw] overflow-hidden ${props.bgColor}`}
+      className={`relative left-0 top-0 -z-50 h-[100vh] w-[100vw] overflow-hidden ${style.bgColor}`}
     >
       <div className="flex h-full w-full items-center justify-center overflow-hidden">
         <motion.div
@@ -195,10 +193,10 @@ export function WrappedCard<C extends number>({
           animate="show"
           exit="exit"
           variants={mainVariants}
-          className="relative h-[75vh] w-[30vw] select-none"
+          className="relative h-[660px] w-full max-w-[475px] select-none"
         >
-          {!props.noParticles && <CardBackdrop />}
-          <CardLayers props={props}>{children}</CardLayers>
+          {!style.noParticles && <CardBackdrop />}
+          <CardLayers style={style}>{children}</CardLayers>
         </motion.div>
       </div>
     </div>

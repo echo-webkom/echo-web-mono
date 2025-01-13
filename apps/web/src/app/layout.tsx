@@ -135,6 +135,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
   const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+  const n = isOctober ? 40 : isChristmas ? 40 : 0;
 
   return (
     <html
@@ -158,7 +159,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Providers>
-          <ThemeWrapper n={40}>
+          <ThemeWrapper n={n}>
             <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
 
             {children}

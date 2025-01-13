@@ -8,6 +8,7 @@ import AnimatedBg from "../components/AnimatedBg";
 
 export default function WrappedPreScreen() {
   useSound("/sounds/waiting.mp3", { loop: true });
+
   return (
     <>
       <AnimatedBg>
