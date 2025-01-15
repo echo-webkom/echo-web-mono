@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,12 +49,12 @@ const getData = cache(async (slug: string) => {
 
 export const generateMetadata = async ({ params }: Props) => {
   const { slug } = params;
-
   const group = await getData(slug);
 
   return {
     title: group.name,
-  };
+    description: `Infosiden til echo sin undergruppe ${group.name}.`,
+  } satisfies Metadata;
 };
 
 export default async function GroupPage({ params }: Props) {

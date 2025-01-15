@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState, type FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { type IconBaseProps } from "react-icons";
 import { RxChevronDown as ChevronDown } from "react-icons/rx";
 

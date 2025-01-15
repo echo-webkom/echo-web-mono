@@ -21,17 +21,16 @@
     "@react-email/render": "1.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "resend": "4.0.0",
+    "resend": "4.0.1",
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.17.1",
+    "@types/node": "20.17.10",
     "@types/react": "18.3.12",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "react-email": "3.0.1",
+    "react-email": "3.0.4",
     "typescript": "5.6.3"
   },
   "eslintConfig": {

@@ -44,12 +44,18 @@ type RootLayoutProps = {
 };
 
 export const metadata = {
-  metadataBase: new URL(BASE_URL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
   description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  applicationName: "echo",
+  creator: "echo-webkom",
+  authors: {
+    name: "echo-webkom",
+    url: "/webkom",
+  },
+  metadataBase: new URL(BASE_URL),
   keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
   icons: {
     apple: "/apple-touch-icon.png",
@@ -102,19 +108,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <ThemeWrapper n={40}>
-          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-          <Providers>
+        <Providers>
+          <ThemeWrapper n={40}>
+            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+
             {children}
             <Toaster />
-            {/* <CookieBanner />*/}
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
-          </Providers>
-          <Analytics />
-          <SpeedInsights />
-        </ThemeWrapper>
+
+            <Analytics />
+            <SpeedInsights />
+          </ThemeWrapper>
+        </Providers>
       </body>
     </html>
   );

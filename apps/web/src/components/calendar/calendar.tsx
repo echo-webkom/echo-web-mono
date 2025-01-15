@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Heading } from "@/components/typography/heading";
@@ -131,6 +131,10 @@ const Legend = () => {
       <div className="mr-2 flex items-center">
         <div className="mr-1 h-3 w-3 rounded-full bg-pink-400"></div>
         <div>Film</div>
+      </div>
+      <div className="mr-2 flex items-center">
+        <div className="mr-1 h-3 w-3 rounded-full bg-green-600"></div>
+        <div>Brettspill</div>
       </div>
       <div className="flex items-center">
         <div className="mr-1 h-3 w-3 rounded-full bg-gray-600"></div>

@@ -5,10 +5,10 @@ import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Vedtekter",
   description: "Vedtektene til echo – Linjeforeningen for informatikk",
-};
+} satisfies Metadata;
 
 export default async function Bylaws() {
   const markdown = await fetch(

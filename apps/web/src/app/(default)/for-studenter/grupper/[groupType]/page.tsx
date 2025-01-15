@@ -19,9 +19,12 @@ export const generateMetadata = ({ params }: Props) => {
   const { groupType } = params;
 
   const groupTypeFromPath = pathToGroupType(groupType);
+  const groupName = studentGroupTypeName[groupTypeFromPath];
+  const sine = groupTypeFromPath === "board" || groupTypeFromPath === "sport" ? "sitt" : "sine";
 
   return {
-    title: studentGroupTypeName[groupTypeFromPath],
+    title: groupName,
+    description: `En oversikt over echo ${sine} ${groupName.toLowerCase()}.`,
   };
 };
 

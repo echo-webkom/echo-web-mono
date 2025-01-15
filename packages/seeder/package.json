@@ -11,8 +11,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
-    "@types/node": "20.17.1",
+    "@types/node": "20.17.10",
     "dotenv-cli": "7.4.2",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",

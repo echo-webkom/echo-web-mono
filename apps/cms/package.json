@@ -28,7 +28,7 @@
     "@sanity/icons": "3.4.0",
     "@sanity/ui": "2.8.22",
     "@sanity/vision": "3.61.0",
-    "nanoid": "5.0.8",
+    "nanoid": "5.0.9",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
@@ -39,7 +39,6 @@
     "styled-components": "6.1.13"
   },
   "devDependencies": {
-    "@echo-webkom/tsconfig": "workspace:*",
     "@sanity/eslint-config-studio": "4.0.0",
     "@types/react": "18.3.12",
     "@types/styled-components": "5.1.34",
