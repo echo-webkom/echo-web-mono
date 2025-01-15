@@ -193,7 +193,7 @@ export function WrappedCard<C extends number>({ style, children }: WrappedCardPr
           animate="show"
           exit="exit"
           variants={mainVariants}
-          className="relative h-[800px] w-full max-w-[650px] select-none"
+          className="relative h-[80vh] w-full max-w-[65vh] select-none"
         >
           {!style.noParticles && <CardBackdrop />}
           <CardLayers style={style}>{children}</CardLayers>
