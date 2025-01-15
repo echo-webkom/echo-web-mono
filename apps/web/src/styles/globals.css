@@ -282,4 +282,69 @@
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
+
+  .bg-wrapped-purple {
+    background-color: #a484e9;
+  }
+
+  .bg-wrapped-blue {
+    background-color: #31bff3;
+  }
+
+  .bg-wrapped-pink {
+    background-color: #f4889a;
+  }
+
+  .bg-wrapped-orange {
+    background-color: #ffaf68;
+  }
+
+  .bg-wrapped-yellow {
+    background-color: #f6e683;
+  }
+
+  .bg-wrapped-green {
+    background-color: #79d45e;
+  }
+
+  .bg-wrapped-black {
+    background-color: #171717;
+  }
+
+  .text-wrapped-purple {
+    color: #a484e9;
+  }
+
+  .text-wrapped-blue {
+    color: #31bff3;
+  }
+
+  .text-wrapped-pink {
+    color: #f4889a;
+  }
+
+  .text-wrapped-orange {
+    color: #ffaf68;
+  }
+
+  .text-wrapped-green {
+    color: #79d45e;
+  }
+
+  .text-wrapped-black {
+    color: #171717;
+  }
+
+  .text-wrapped-white {
+    color: white;
+  }
+
+  .text-wrapped-yellow {
+    color: #f6e683;
+  }
+
+  .text-wrapped-grey {
+    color: #171717;
+    opacity: 0.7;
+  }
 }

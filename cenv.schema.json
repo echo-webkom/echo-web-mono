@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2024-11-11T12:53:07.131542171+01:00",
+  "lastUpdated": "2025-01-13T12:43:01.701629068+01:00",
   "fields": {
     "ADMIN_KEY": {
-      "required": false,
-      "public": true,
+      "required": true,
+      "public": false,
       "lengthRequired": false,
       "length": 0,
       "format": "",
       "key": "ADMIN_KEY",
-      "value": "foobar"
+      "value": ""
     },
     "API_PORT": {
       "required": false,
@@ -40,8 +40,8 @@
     "FEIDE_CLIENT_ID": {
       "required": true,
       "public": false,
-      "lengthRequired": false,
-      "length": 0,
+      "lengthRequired": true,
+      "length": 36,
       "format": "",
       "key": "FEIDE_CLIENT_ID",
       "value": ""
@@ -49,20 +49,20 @@
     "FEIDE_CLIENT_SECRET": {
       "required": true,
       "public": false,
-      "lengthRequired": false,
-      "length": 0,
+      "lengthRequired": true,
+      "length": 36,
       "format": "",
       "key": "FEIDE_CLIENT_SECRET",
       "value": ""
     },
     "NEXTAUTH_SECRET": {
       "required": false,
-      "public": true,
+      "public": false,
       "lengthRequired": false,
       "length": 0,
       "format": "",
       "key": "NEXTAUTH_SECRET",
-      "value": "foobar"
+      "value": ""
     },
     "NEXTAUTH_URL": {
       "required": false,
@@ -90,6 +90,69 @@
       "format": "",
       "key": "NEXT_PUBLIC_SANITY_DATASET",
       "value": "develop"
+    },
+    "POSTGRES_DATABASE": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_DATABASE",
+      "value": ""
+    },
+    "POSTGRES_HOST": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_HOST",
+      "value": ""
+    },
+    "POSTGRES_PASSWORD": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_PASSWORD",
+      "value": ""
+    },
+    "POSTGRES_PRISMA_URL": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_PRISMA_URL",
+      "value": ""
+    },
+    "POSTGRES_URL": {
+      "required": false,
+      "public": true,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_URL",
+      "value": "postgres://default:L74YmUjwsBZN@ep-steep-feather-952873-pooler.eu-central-1.postgres.vercel-storage.com:5432/verceldb"
+    },
+    "POSTGRES_URL_NON_POOLING": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_URL_NON_POOLING",
+      "value": ""
+    },
+    "POSTGRES_USER": {
+      "required": false,
+      "public": false,
+      "lengthRequired": false,
+      "length": 0,
+      "format": "",
+      "key": "POSTGRES_USER",
+      "value": ""
     }
   }
 }

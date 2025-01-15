@@ -2,7 +2,16 @@ import "@/styles/globals.css";
 
 import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
-import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import {
+  Alfa_Slab_One,
+  IBM_Plex_Mono,
+  Inter,
+  Lexend_Deca,
+  Radley,
+  Ranchers,
+  Unna,
+  VT323,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
@@ -37,6 +46,41 @@ const vt323 = VT323({
   subsets: ["latin"],
   variable: "--block-font",
   weight: ["400"],
+});
+
+const ranchers = Ranchers({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--ranchers-font",
+});
+
+const lexendDeca = Lexend_Deca({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--lexend-font",
+});
+
+const unna = Unna({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--unna-font",
+});
+
+const radley = Radley({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--radley-font",
+});
+
+const slab = Alfa_Slab_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--slab-font",
 });
 
 type RootLayoutProps = {
@@ -91,6 +135,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
   const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+  const n = isOctober ? 40 : isChristmas ? 40 : 0;
 
   return (
     <html
@@ -106,10 +151,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           ibmPlexMono.variable,
           ibmPlexMonoDisplay.variable,
           vt323.variable,
+          ranchers.variable,
+          lexendDeca.variable,
+          unna.variable,
+          radley.variable,
+          slab.variable,
         )}
       >
         <Providers>
-          <ThemeWrapper n={40}>
+          <ThemeWrapper n={n}>
             <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
 
             {children}
