@@ -9,8 +9,8 @@ import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { getRegistrations } from "./_lib/get-registrations";
 import { createBackLink } from "./_lib/utils";
-import { DetailsTab } from "./_tabs/details";
 import { RegistrationsTab } from "./_tabs/registrations";
+import { StatisticsTab } from "./_tabs/statistics";
 import { UtilitiesTab } from "./_tabs/utilities";
 
 type Props = {
@@ -42,14 +42,14 @@ export default async function EventDashboard({ params }: Props) {
       <Tabs defaultValue="registrations">
         <TabsList className="grid h-10 w-full grid-cols-3">
           <TabsTrigger value="registrations">Påmeldinger</TabsTrigger>
-          <TabsTrigger value="details">Detaljer</TabsTrigger>
+          <TabsTrigger value="statistics">Statistikk</TabsTrigger>
           <TabsTrigger value="utilities">Verktøy</TabsTrigger>
         </TabsList>
         <TabsContent value="registrations">
           <RegistrationsTab happening={happening} registrations={registrations} />
         </TabsContent>
-        <TabsContent value="details">
-          <DetailsTab registrations={registrations} />
+        <TabsContent value="statistics">
+          <StatisticsTab registrations={registrations} />
         </TabsContent>
         <TabsContent value="utilities">
           <UtilitiesTab happening={happening} registrations={registrations} />

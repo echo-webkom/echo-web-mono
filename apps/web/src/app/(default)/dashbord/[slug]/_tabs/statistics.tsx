@@ -25,7 +25,7 @@ type DetailsTabProps = {
   registrations: Array<RegistrationWithUser>;
 };
 
-export const DetailsTab = async ({ registrations }: DetailsTabProps) => {
+export const StatisticsTab = async ({ registrations }: DetailsTabProps) => {
   const [groups, degrees] = await Promise.all([getStudentGroups(), getAllDegrees()]);
 
   const registered = registrations.filter((registration) => registration.status === "registered");
