@@ -1,31 +1,28 @@
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getStudentGroups } from "@/data/groups/queries";
+import { type getFullHappening } from "@/data/happenings/queries";
+import { Box } from "../_components/box";
 import { AreaChartRegistrationsOverTime } from "../_components/charts/area-chart-registrations-over-time";
 import { BarChartYear } from "../_components/charts/bar-chart-year-registrations";
 import { PieChartDegrees } from "../_components/charts/pie-chart-degree-registrations";
 import { PieChartGroups } from "../_components/charts/pie-chart-group-registrations";
+import { FastestRegistrations } from "../_components/fastest-registrations";
+import { Heading } from "../_components/heading";
 import { type RegistrationWithUser } from "../_lib/types";
 
-const Heading = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-2xl font-medium">{children}</h2>
-);
-
-const Box = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-lg border bg-muted px-3 py-8 text-center">{children}</div>
-);
-
 const Stat = ({ title, value }: { title: string; value: string }) => (
-  <Box>
+  <Box className="text-center">
     <p className="mb-2 text-muted-foreground">{title}</p>
     <p className="text-7xl font-medium">{value}</p>
   </Box>
 );
 
-type DetailsTabProps = {
+type StatisticsTabProps = {
+  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
   registrations: Array<RegistrationWithUser>;
 };
 
-export const StatisticsTab = async ({ registrations }: DetailsTabProps) => {
+export const StatisticsTab = async ({ happening, registrations }: StatisticsTabProps) => {
   const [groups, degrees] = await Promise.all([getStudentGroups(), getAllDegrees()]);
 
   const registered = registrations.filter((registration) => registration.status === "registered");
@@ -45,6 +42,13 @@ export const StatisticsTab = async ({ registrations }: DetailsTabProps) => {
         <Stat title="Antall avmeldt" value={unregistered.length.toString()} />
         <Stat title="Antall fjernet" value={removed.length.toString()} />
       </div>
+
+      {happening.registrationStart && (
+        <>
+          <Heading>Raskeste påmeldinger</Heading>
+          <FastestRegistrations happening={happening} registrations={registrations} />
+        </>
+      )}
 
       <Heading>Grafer</Heading>
 

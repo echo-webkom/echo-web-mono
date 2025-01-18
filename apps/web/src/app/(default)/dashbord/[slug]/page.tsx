@@ -49,7 +49,7 @@ export default async function EventDashboard({ params }: Props) {
           <RegistrationsTab happening={happening} registrations={registrations} />
         </TabsContent>
         <TabsContent value="statistics">
-          <StatisticsTab registrations={registrations} />
+          <StatisticsTab happening={happening} registrations={registrations} />
         </TabsContent>
         <TabsContent value="utilities">
           <UtilitiesTab happening={happening} registrations={registrations} />

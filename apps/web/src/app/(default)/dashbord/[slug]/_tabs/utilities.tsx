@@ -1,19 +1,13 @@
 import { type getFullHappening } from "@/data/happenings/queries";
+import { Box } from "../_components/box";
 import { DownloadCsvButton } from "../_components/download-csv-button";
+import { Heading } from "../_components/heading";
 import { RandomPersonButton } from "../_components/random-person-button";
 import { RemoveAllRegistrationsButton } from "../_components/remove-all-registrations-button";
 import { type RegistrationWithUser } from "../_lib/types";
 
-const Box = ({ children }: { children: React.ReactNode }) => (
-  <div className="space-y-4 rounded-lg border bg-muted p-4">{children}</div>
-);
-
 const Text = ({ children }: { children: React.ReactNode }) => (
   <p className="text-muted-foreground">{children}</p>
-);
-
-const Heading = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-2xl font-medium">{children}</h2>
 );
 
 type UtilitiesTabProps = {
