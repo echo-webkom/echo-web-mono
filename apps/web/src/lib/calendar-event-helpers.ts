@@ -1,12 +1,18 @@
-import RemoveMarkdown from "remove-markdown";
-
-import { type HappeningType } from "@echo-webkom/lib";
+import { eachDayOfInterval } from "date-fns";
+import removeMd from "remove-markdown";
 
 import { type fetchAllHappenings } from "@/sanity/happening";
 import { type fetchMovies } from "@/sanity/movies";
+import { type fetchAllRepeatingHappenings } from "@/sanity/repeating-happening";
 import { createHappeningLink } from "./create-link";
 
 type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
+
+type FetchAllRepeatingHappeningsResult = Awaited<ReturnType<typeof fetchAllRepeatingHappenings>>;
+type FetchAllHappeningsResult = Awaited<ReturnType<typeof fetchAllHappenings>>;
+type FetchMoviesResult = Awaited<ReturnType<typeof fetchMovies>>;
+
+type Happening = FetchAllHappeningsResult[number] | FetchAllRepeatingHappeningsResult[number];
 
 export type CalendarEvent = {
   id: string;
@@ -18,18 +24,26 @@ export type CalendarEvent = {
   type: CalendarEventType;
 };
 
-const mapHappeningToType = (happeningType: HappeningType): CalendarEventType => {
-  switch (happeningType) {
+const getCalendarEventType = (happening: Happening): CalendarEventType => {
+  const isBoardgameGroup = happening.organizers?.some(
+    (organizer) => organizer.slug === "echo-brettspill",
+  );
+
+  if (isBoardgameGroup) {
+    return "boardgame";
+  }
+
+  switch (happening.happeningType) {
     case "bedpres":
     case "event":
-      return happeningType;
+      return happening.happeningType;
     case "external":
       return "other";
   }
 };
 
 export const happeningsToCalendarEvent = (
-  happenings: Awaited<ReturnType<typeof fetchAllHappenings>>,
+  happenings: FetchAllHappeningsResult,
 ): Array<CalendarEvent> => {
   return happenings
     .filter((happening) => Boolean(happening.date))
@@ -38,15 +52,13 @@ export const happeningsToCalendarEvent = (
       title: happening.title,
       date: new Date(happening.date),
       endDate: happening.endDate ? new Date(happening.endDate) : undefined,
-      body: RemoveMarkdown(happening.body ?? ""),
+      body: removeMd(happening.body ?? ""),
       link: createHappeningLink(happening),
-      type: mapHappeningToType(happening.happeningType),
+      type: getCalendarEventType(happening),
     }));
 };
 
-export const moviesToCalendarEvent = (
-  movies: Awaited<ReturnType<typeof fetchMovies>>,
-): Array<CalendarEvent> => {
+export const moviesToCalendarEvent = (movies: FetchMoviesResult): Array<CalendarEvent> => {
   return movies.map((movie) => ({
     id: movie._id,
     title: `Film: ${movie.title}`,
@@ -57,30 +69,52 @@ export const moviesToCalendarEvent = (
   }));
 };
 
-/**
- * Static method to generate a list of calendar events for boardgame nights.
- * The events are generated for the next 25 weeks.
- * @returns {Array<CalendarEvent>} List of calendar events for boardgame nights.
- */
-export const boardgamesToCalendarEvent = (): Array<CalendarEvent> => {
-  const events: Array<CalendarEvent> = [];
-  const today = new Date();
-  const boardgameDay = 2; // Tuesday
+const getDate = (date: Date | string | number) => {
+  const d = new Date(date);
 
-  for (let i = 0; i < 25; i++) {
-    const eventDate = new Date(today);
-    eventDate.setDate(today.getDate() + ((boardgameDay - today.getDay() + 7) % 7) + 7 * i);
-    eventDate.setHours(18, 0, 0, 0);
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+};
 
-    events.push({
-      id: `boardgame-${i}`,
-      title: "Brettspillkveld 🎲",
-      date: eventDate,
-      body: "Bli med på brettspillkveld!",
-      link: "https://echo.uib.no/for-studenter/gruppe/echo-brettspill",
-      type: "boardgame",
-    });
-  }
+export const repeatingEventsToCalendarEvent = (
+  repeatingHappenings: FetchAllRepeatingHappeningsResult,
+): Array<CalendarEvent> => {
+  return repeatingHappenings.flatMap((happening) => {
+    return eachDayOfInterval({
+      start: new Date(happening.startDate),
+      end: new Date(happening.endDate),
+    })
+      .filter((date) => !happening.ignoredDates?.map(getDate).includes(getDate(date)))
+      .filter((date) => date.getDay() === happening.dayOfWeek)
+      .filter((_, i) => {
+        switch (happening.interval) {
+          case "weekly":
+            return true;
+          case "bi-weekly":
+            return i % 2 === 0;
+          case "monthly":
+            return i % 4 === 0;
+          default:
+            return false;
+        }
+      })
+      .map((date) => {
+        const startDate = new Date(date);
+        startDate.setHours(happening.startTime.hour);
+        startDate.setMinutes(happening.startTime.minute);
 
-  return events;
+        const endDate = new Date(date);
+        endDate.setHours(happening.endTime.hour);
+        endDate.setMinutes(happening.endTime.minute);
+
+        return {
+          id: happening._id,
+          title: happening.title,
+          date: startDate,
+          endDate: endDate,
+          body: removeMd(happening.body ?? ""),
+          link: createHappeningLink(happening),
+          type: getCalendarEventType(happening),
+        };
+      });
+  });
 };

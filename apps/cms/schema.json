@@ -1616,6 +1616,664 @@
     }
   },
   {
+    "name": "repeatingHappening",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "repeatingHappening"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
+        },
+        "optional": false
+      },
+      "happeningType": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "event"
+            },
+            {
+              "type": "string",
+              "value": "external"
+            }
+          ]
+        },
+        "optional": false
+      },
+      "organizers": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_ref": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "reference"
+                }
+              },
+              "_weak": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "boolean"
+                },
+                "optional": true
+              }
+            },
+            "dereferencesTo": "studentGroup",
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
+      },
+      "location": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "location"
+        },
+        "optional": true
+      },
+      "cost": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "dayOfWeek": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "number",
+              "value": 1
+            },
+            {
+              "type": "number",
+              "value": 2
+            },
+            {
+              "type": "number",
+              "value": 3
+            },
+            {
+              "type": "number",
+              "value": 4
+            },
+            {
+              "type": "number",
+              "value": 5
+            },
+            {
+              "type": "number",
+              "value": 6
+            },
+            {
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        "optional": false
+      },
+      "startTime": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "ttime"
+        },
+        "optional": false
+      },
+      "endTime": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "ttime"
+        },
+        "optional": false
+      },
+      "startDate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "endDate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "interval": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "daily"
+            },
+            {
+              "type": "string",
+              "value": "weekly"
+            },
+            {
+              "type": "string",
+              "value": "bi-weekly"
+            },
+            {
+              "type": "string",
+              "value": "monthly"
+            }
+          ]
+        },
+        "optional": false
+      },
+      "ignoredDates": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "string"
+          }
+        },
+        "optional": true
+      },
+      "contacts": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "contactProfile"
+            }
+          }
+        },
+        "optional": true
+      },
+      "externalLink": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "body": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
+    "name": "ttime",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "ttime"
+          }
+        },
+        "hour": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "number",
+                "value": 1
+              },
+              {
+                "type": "number",
+                "value": 2
+              },
+              {
+                "type": "number",
+                "value": 3
+              },
+              {
+                "type": "number",
+                "value": 4
+              },
+              {
+                "type": "number",
+                "value": 5
+              },
+              {
+                "type": "number",
+                "value": 6
+              },
+              {
+                "type": "number",
+                "value": 7
+              },
+              {
+                "type": "number",
+                "value": 8
+              },
+              {
+                "type": "number",
+                "value": 9
+              },
+              {
+                "type": "number",
+                "value": 10
+              },
+              {
+                "type": "number",
+                "value": 11
+              },
+              {
+                "type": "number",
+                "value": 12
+              },
+              {
+                "type": "number",
+                "value": 13
+              },
+              {
+                "type": "number",
+                "value": 14
+              },
+              {
+                "type": "number",
+                "value": 15
+              },
+              {
+                "type": "number",
+                "value": 16
+              },
+              {
+                "type": "number",
+                "value": 17
+              },
+              {
+                "type": "number",
+                "value": 18
+              },
+              {
+                "type": "number",
+                "value": 19
+              },
+              {
+                "type": "number",
+                "value": 20
+              },
+              {
+                "type": "number",
+                "value": 21
+              },
+              {
+                "type": "number",
+                "value": 22
+              },
+              {
+                "type": "number",
+                "value": 23
+              }
+            ]
+          },
+          "optional": false
+        },
+        "minute": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "number",
+                "value": 0
+              },
+              {
+                "type": "number",
+                "value": 1
+              },
+              {
+                "type": "number",
+                "value": 2
+              },
+              {
+                "type": "number",
+                "value": 3
+              },
+              {
+                "type": "number",
+                "value": 4
+              },
+              {
+                "type": "number",
+                "value": 5
+              },
+              {
+                "type": "number",
+                "value": 6
+              },
+              {
+                "type": "number",
+                "value": 7
+              },
+              {
+                "type": "number",
+                "value": 8
+              },
+              {
+                "type": "number",
+                "value": 9
+              },
+              {
+                "type": "number",
+                "value": 10
+              },
+              {
+                "type": "number",
+                "value": 11
+              },
+              {
+                "type": "number",
+                "value": 12
+              },
+              {
+                "type": "number",
+                "value": 13
+              },
+              {
+                "type": "number",
+                "value": 14
+              },
+              {
+                "type": "number",
+                "value": 15
+              },
+              {
+                "type": "number",
+                "value": 16
+              },
+              {
+                "type": "number",
+                "value": 17
+              },
+              {
+                "type": "number",
+                "value": 18
+              },
+              {
+                "type": "number",
+                "value": 19
+              },
+              {
+                "type": "number",
+                "value": 20
+              },
+              {
+                "type": "number",
+                "value": 21
+              },
+              {
+                "type": "number",
+                "value": 22
+              },
+              {
+                "type": "number",
+                "value": 23
+              },
+              {
+                "type": "number",
+                "value": 24
+              },
+              {
+                "type": "number",
+                "value": 25
+              },
+              {
+                "type": "number",
+                "value": 26
+              },
+              {
+                "type": "number",
+                "value": 27
+              },
+              {
+                "type": "number",
+                "value": 28
+              },
+              {
+                "type": "number",
+                "value": 29
+              },
+              {
+                "type": "number",
+                "value": 30
+              },
+              {
+                "type": "number",
+                "value": 31
+              },
+              {
+                "type": "number",
+                "value": 32
+              },
+              {
+                "type": "number",
+                "value": 33
+              },
+              {
+                "type": "number",
+                "value": 34
+              },
+              {
+                "type": "number",
+                "value": 35
+              },
+              {
+                "type": "number",
+                "value": 36
+              },
+              {
+                "type": "number",
+                "value": 37
+              },
+              {
+                "type": "number",
+                "value": 38
+              },
+              {
+                "type": "number",
+                "value": 39
+              },
+              {
+                "type": "number",
+                "value": 40
+              },
+              {
+                "type": "number",
+                "value": 41
+              },
+              {
+                "type": "number",
+                "value": 42
+              },
+              {
+                "type": "number",
+                "value": 43
+              },
+              {
+                "type": "number",
+                "value": 44
+              },
+              {
+                "type": "number",
+                "value": 45
+              },
+              {
+                "type": "number",
+                "value": 46
+              },
+              {
+                "type": "number",
+                "value": 47
+              },
+              {
+                "type": "number",
+                "value": 48
+              },
+              {
+                "type": "number",
+                "value": 49
+              },
+              {
+                "type": "number",
+                "value": 50
+              },
+              {
+                "type": "number",
+                "value": 51
+              },
+              {
+                "type": "number",
+                "value": 52
+              },
+              {
+                "type": "number",
+                "value": 53
+              },
+              {
+                "type": "number",
+                "value": 54
+              },
+              {
+                "type": "number",
+                "value": 55
+              },
+              {
+                "type": "number",
+                "value": 56
+              },
+              {
+                "type": "number",
+                "value": 57
+              },
+              {
+                "type": "number",
+                "value": 58
+              },
+              {
+                "type": "number",
+                "value": 59
+              }
+            ]
+          },
+          "optional": false
+        }
+      }
+    }
+  },
+  {
     "name": "happening",
     "type": "document",
     "attributes": {
