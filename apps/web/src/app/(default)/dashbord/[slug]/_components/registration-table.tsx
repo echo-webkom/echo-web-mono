@@ -36,7 +36,7 @@ export const RegistrationTable = ({
   const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
 
   return (
-    <div className="flex flex-col gap-8 overflow-y-auto">
+    <div className="flex flex-col gap-8">
       <div className="flex flex-col items-center gap-4 pb-2 pt-2 md:flex-row md:pb-4">
         <SearchFilter searchTerm={filters.searchTerm} setSearchTerm={setSearchTerm} />
         <YearFilter yearFilter={filters.yearFilter} setYearFilter={setYearFilter} />
