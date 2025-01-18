@@ -1,5 +1,8 @@
+import { getAllDegrees } from "@/data/degrees/queries";
 import { getStudentGroups } from "@/data/groups/queries";
 import { AreaChartRegistrationsOverTime } from "../_components/charts/area-chart-registrations-over-time";
+import { BarChartYear } from "../_components/charts/bar-chart-year-registrations";
+import { PieChartDegrees } from "../_components/charts/pie-chart-degree-registrations";
 import { PieChartGroups } from "../_components/charts/pie-chart-group-registrations";
 import { type RegistrationWithUser } from "../_lib/types";
 
@@ -23,7 +26,7 @@ type DetailsTabProps = {
 };
 
 export const DetailsTab = async ({ registrations }: DetailsTabProps) => {
-  const groups = await getStudentGroups();
+  const [groups, degrees] = await Promise.all([getStudentGroups(), getAllDegrees()]);
 
   const registered = registrations.filter((registration) => registration.status === "registered");
   const waitlist = registrations.filter((registration) => registration.status === "waiting");
@@ -51,6 +54,12 @@ export const DetailsTab = async ({ registrations }: DetailsTabProps) => {
         </Box>
         <Box>
           <AreaChartRegistrationsOverTime registrations={registrations} />
+        </Box>
+        <Box>
+          <PieChartDegrees degrees={degrees} registrations={registrations} />
+        </Box>
+        <Box>
+          <BarChartYear registrations={registrations} />
         </Box>
       </div>
     </div>

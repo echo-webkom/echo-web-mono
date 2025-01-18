@@ -6,16 +6,8 @@ import { Legend, Pie, PieChart } from "recharts";
 import { type Group } from "@echo-webkom/db/schemas";
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { randomHexColor } from "@/lib/color";
 import { type RegistrationWithUser } from "../../_lib/types";
-
-const generateRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
 
 type PieChartGroupsProps = {
   registrations: Array<RegistrationWithUser>;
@@ -24,7 +16,7 @@ type PieChartGroupsProps = {
 
 export const PieChartGroups = memo(({ groups, registrations }: PieChartGroupsProps) => {
   const chartData: Array<{ groupId: string; count: number }> = groups.map((group) => {
-    const color = generateRandomColor();
+    const color = randomHexColor();
     return {
       groupId: group.id,
       count: registrations.filter((registration) =>
