@@ -2,7 +2,7 @@ import groq from "groq";
 
 export const bannerQuery = groq`
 *[_type == "banner"] {
-  color,
+  backgroundColor,
   textColor,
   text,
   linkTo,
