@@ -719,40 +719,11 @@ export type AllSanitySchemaTypes =
   | MediaTag
   | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ../../packages/seeder/src/sanity/query.ts
-// Variable: happeningQueryList
-// Query: *[_type == "happening" && !(_id in path('drafts.**'))] {  _id,  title,  "slug": slug.current,  "date": date,  happeningType,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "groups": organizers[]->slug.current,  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "questions": additionalQuestions[] {    id,    title,    required,    type,    isSensitive,    options,  }}
-export type HappeningQueryListResult = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  date: string;
-  happeningType: "bedpres" | "event" | "external";
-  registrationStartGroups: string | null;
-  registrationGroups: Array<string> | null;
-  registrationStart: string | null;
-  registrationEnd: string | null;
-  groups: Array<string> | null;
-  spotRanges: Array<{
-    spots: number;
-    minYear: number;
-    maxYear: number;
-  }> | null;
-  questions: Array<{
-    id: string;
-    title: string;
-    required: boolean;
-    type: "checkbox" | "radio" | "text" | "textarea";
-    isSensitive: boolean | null;
-    options: Array<string> | null;
-  }> | null;
-}>;
-
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
-// Query: *[_type == "banner"] {  color,  textColor,  text,  linkTo,  isExternal,}[0]
+// Query: *[_type == "banner"] {  backgroundColor,  textColor,  text,  linkTo,  isExternal,}[0]
 export type BannerQueryResult = {
-  color: null;
+  backgroundColor: Color | null;
   textColor: Color | null;
   text: string;
   linkTo: string | null;
@@ -1194,10 +1165,38 @@ export type StudentGroupBySlugQueryResult = {
   } | null;
 } | null;
 
+// Source: ../../packages/seeder/src/sanity/query.ts
+// Variable: happeningQueryList
+// Query: *[_type == "happening" && !(_id in path('drafts.**'))] {  _id,  title,  "slug": slug.current,  "date": date,  happeningType,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "groups": organizers[]->slug.current,  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "questions": additionalQuestions[] {    id,    title,    required,    type,    isSensitive,    options,  }}
+export type HappeningQueryListResult = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  date: string;
+  happeningType: "bedpres" | "event" | "external";
+  registrationStartGroups: string | null;
+  registrationGroups: Array<string> | null;
+  registrationStart: string | null;
+  registrationEnd: string | null;
+  groups: Array<string> | null;
+  spotRanges: Array<{
+    spots: number;
+    minYear: number;
+    maxYear: number;
+  }> | null;
+  questions: Array<{
+    id: string;
+    title: string;
+    required: boolean;
+    type: "checkbox" | "radio" | "text" | "textarea";
+    isSensitive: boolean | null;
+    options: Array<string> | null;
+  }> | null;
+}>;
+
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
-    '\n*[_type == "banner"] {\n  color,\n  textColor,\n  text,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
+    '\n*[_type == "banner"] {\n  backgroundColor,\n  textColor,\n  text,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
     '\n*[_type == "happening" && slug.current == $slug] {\n"contacts": contacts[] {\nemail,\n"profile": profile->{\n  _id,\n  name,\n},\n},\n}[0].contacts\n': HappeningContactsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  _type,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
@@ -1211,5 +1210,6 @@ declare module "@sanity/client" {
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
+    '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }
 }
