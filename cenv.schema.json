@@ -90,69 +90,6 @@
       "format": "",
       "key": "NEXT_PUBLIC_SANITY_DATASET",
       "value": "develop"
-    },
-    "POSTGRES_DATABASE": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_DATABASE",
-      "value": ""
-    },
-    "POSTGRES_HOST": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_HOST",
-      "value": ""
-    },
-    "POSTGRES_PASSWORD": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_PASSWORD",
-      "value": ""
-    },
-    "POSTGRES_PRISMA_URL": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_PRISMA_URL",
-      "value": ""
-    },
-    "POSTGRES_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_URL",
-      "value": "postgres://default:L74YmUjwsBZN@ep-steep-feather-952873-pooler.eu-central-1.postgres.vercel-storage.com:5432/verceldb"
-    },
-    "POSTGRES_URL_NON_POOLING": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_URL_NON_POOLING",
-      "value": ""
-    },
-    "POSTGRES_USER": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "POSTGRES_USER",
-      "value": ""
     }
   }
 }
