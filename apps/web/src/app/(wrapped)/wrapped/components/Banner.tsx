@@ -18,9 +18,9 @@ export const WrappedBanner = () => {
   }
 
   return (
-    <div>
+    <div className="relative block">
       {/* When on desktop */}
-      <div className="hidden lg:block">
+      <div className="relative hidden lg:block">
         <Link href="/wrapped/prescreen">
           <div className="bg-wrapped-yellow absolute flex h-14 w-full cursor-pointer items-center justify-center">
             <AnimatedBg />
@@ -32,7 +32,7 @@ export const WrappedBanner = () => {
       </div>
 
       {/* When on mobile */}
-      <div className="block lg:hidden">
+      <div className="relative block lg:hidden">
         <div className="bg-wrapped-yellow absolute flex h-14 w-full items-center justify-center">
           <AnimatedBg size={10} />
           <p className="text-wrapped-black text-sm font-bold">
