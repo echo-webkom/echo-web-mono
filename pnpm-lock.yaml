@@ -40,7 +40,7 @@ importers:
         version: 0.2.13
       '@hono/node-server':
         specifier: 1.13.7
-        version: 1.13.7(hono@4.6.8)
+        version: 1.13.7(hono@4.6.16)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -48,8 +48,8 @@ importers:
         specifier: 0.33.0
         version: 0.33.0(@electric-sql/pglite@0.2.13)(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       hono:
-        specifier: 4.6.8
-        version: 4.6.8
+        specifier: 4.6.16
+        version: 4.6.16
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -2817,8 +2817,8 @@ packages:
   '@radix-ui/react-checkbox@1.1.2':
     resolution: {integrity: sha512-/i0fl686zaJbDQLNKrkCbMyDm6FQMt4jg323k7HuqitoANm9sE23Ql8yOK3Wusk34HSLKDChhMux05FnP6KUkw==}
     peerDependencies:
-      '@types/react': 19.0.3
-      '@types/react-dom': 19.0.2
+      '@types/react': '*'
+      '@types/react-dom': '*'
       react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
       react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
     peerDependenciesMeta:
@@ -3456,6 +3456,7 @@ packages:
 
   '@sanity/block-tools@3.61.0':
     resolution: {integrity: sha512-4kZH6v//AEB18Xn+Im5zYW0em0m4ymAofnWBgwQxhE1Sx1nxS29SSB2JxDEsxZH+OU8R44wfWdK5UImE4UEDTA==}
+    deprecated: Renamed - use `@portabletext/block-tools` instead. `@sanity/block-tools` will no longer receive updates.
 
   '@sanity/cli@3.61.0':
     resolution: {integrity: sha512-JLPvR3sryRRsvRB5MvFuGmQZsz0+f4ukgSdN4MzDOE5/UfrBl3ZktAp2TlRbhMVI9NAhIcIxuXK3liWR/rbp/w==}
@@ -5690,8 +5691,8 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
-  hono@4.6.8:
-    resolution: {integrity: sha512-f+2Ec9JAzabT61pglDiLJcF/DjiSefZkjCn9bzm1cYLGkD5ExJ3Jnv93ax9h0bn7UPLHF81KktoyjdQfWI2n1Q==}
+  hono@4.6.16:
+    resolution: {integrity: sha512-iE6xOPwDYlfnZFwk6BfIMMIH4WZm3pPhz6rc1uJM/OPew0pjG5K6p8WTLaMBY1/szF/T0TaEjprMpwn16BA0NQ==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -10282,9 +10283,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.1': {}
 
-  '@hono/node-server@1.13.7(hono@4.6.8)':
+  '@hono/node-server@1.13.7(hono@4.6.16)':
     dependencies:
-      hono: 4.6.8
+      hono: 4.6.16
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.53.0(react@18.3.1))':
     dependencies:
@@ -14062,7 +14063,7 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  hono@4.6.8: {}
+  hono@4.6.16: {}
 
   hosted-git-info@2.8.9: {}
 
