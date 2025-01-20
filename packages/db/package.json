@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/node": "20.17.10",
     "@types/pg": "8.11.10",
-    "dotenv-cli": "7.4.2",
+    "dotenv-cli": "7.4.4",
     "drizzle-kit": "0.24.2",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.19.1",
