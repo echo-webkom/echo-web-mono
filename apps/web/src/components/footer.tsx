@@ -1,6 +1,7 @@
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
+import { BiRss } from "react-icons/bi";
 import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
@@ -18,6 +19,7 @@ export const Footer = ({ className }: FooterProps) => {
     <div className={cn("mt-32 selection:bg-primary", className)}>
       <footer className="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground">
         <CommitLabel />
+        <UsefulLinks />
 
         <div className="mx-auto flex w-full max-w-7xl">
           <div className="flex w-full flex-wrap justify-between gap-10 sm:gap-20">
@@ -104,6 +106,21 @@ const CommitLabel = () => {
           {humanSha}
         </a>
       </p>
+    </div>
+  );
+};
+
+const UsefulLinks = () => {
+  return (
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">
+      <ul className="flex flex-row gap-2 font-mono text-xs text-muted-foreground">
+        <li>
+          <Link className="flex items-center gap-1 hover:underline" href="/feed">
+            <BiRss className="inline-block h-4 w-4" />
+            RSS Feed
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 };
