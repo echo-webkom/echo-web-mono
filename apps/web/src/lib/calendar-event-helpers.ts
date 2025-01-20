@@ -4,6 +4,7 @@ import removeMd from "remove-markdown";
 import { type fetchAllHappenings } from "@/sanity/happening";
 import { type fetchMovies } from "@/sanity/movies";
 import { type fetchAllRepeatingHappenings } from "@/sanity/repeating-happening";
+import { getDate } from "@/utils/date";
 import { createHappeningLink } from "./create-link";
 
 type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
@@ -67,12 +68,6 @@ export const moviesToCalendarEvent = (movies: FetchMoviesResult): Array<Calendar
     link: movie.link ?? "#",
     type: "movie",
   }));
-};
-
-const getDate = (date: Date | string | number) => {
-  const d = new Date(date);
-
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 
 export const repeatingEventsToCalendarEvent = (

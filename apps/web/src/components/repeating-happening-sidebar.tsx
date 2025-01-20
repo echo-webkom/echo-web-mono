@@ -1,3 +1,4 @@
+import { eachDayOfInterval } from "date-fns";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
@@ -5,7 +6,9 @@ import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/get-user";
 import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
+import { getDate } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
+import { capitalize } from "@/utils/string";
 import { ReactionButtonGroup } from "./reaction-button-group";
 
 const DAYS = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
@@ -14,8 +17,48 @@ type EventSidebarProps = {
   event: Exclude<Awaited<ReturnType<typeof fetchRepeatingHappening>>, null>;
 };
 
+const intervalToText = (interval: "bi-weekly" | "daily" | "monthly" | "weekly") => {
+  switch (interval) {
+    case "bi-weekly":
+      return "Hver andre uke";
+    case "daily":
+      return "Hver dag";
+    case "monthly":
+      return "Hver måned";
+    case "weekly":
+      return "Hver uke";
+  }
+};
+
+const getNextOccurrence = (
+  happening: Exclude<Awaited<ReturnType<typeof fetchRepeatingHappening>>, null>,
+) => {
+  return eachDayOfInterval({
+    start: new Date(happening.startDate),
+    end: new Date(happening.endDate),
+  })
+    .filter((date) => !happening.ignoredDates?.map(getDate).includes(getDate(date)))
+    .filter((date) => date.getDay() === happening.dayOfWeek)
+    .filter((_, i) => {
+      switch (happening.interval) {
+        case "weekly":
+          return true;
+        case "bi-weekly":
+          return i % 2 === 0;
+        case "monthly":
+          return i % 4 === 0;
+        default:
+          return false;
+      }
+    })
+    .filter((date) => Date.now() < date.getTime())
+    .sort((a, b) => a.getTime() - b.getTime())[0];
+};
+
 export const RepeatingHappeningSidebar = async ({ event }: EventSidebarProps) => {
   const user = await getUser();
+
+  const nextOccurrence = getNextOccurrence(event);
 
   return (
     <div className="flex w-full flex-col gap-4 lg:max-w-[320px]">
@@ -48,6 +91,26 @@ export const RepeatingHappeningSidebar = async ({ event }: EventSidebarProps) =>
           <SidebarItem>
             <SidebarItemTitle>Dager:</SidebarItemTitle>
             <SidebarItemContent>{DAYS[event.dayOfWeek]}</SidebarItemContent>
+          </SidebarItem>
+
+          <SidebarItem>
+            <SidebarItemTitle>Hyppighet:</SidebarItemTitle>
+            <SidebarItemContent>{intervalToText(event.interval)}</SidebarItemContent>
+          </SidebarItem>
+
+          <SidebarItem>
+            <SidebarItemTitle>Neste gang:</SidebarItemTitle>
+            <SidebarItemContent>
+              {nextOccurrence === undefined
+                ? "Ingen planlagte"
+                : capitalize(
+                    nextOccurrence.toLocaleDateString("nb-NO", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                    }),
+                  )}
+            </SidebarItemContent>
           </SidebarItem>
 
           <SidebarItem>
