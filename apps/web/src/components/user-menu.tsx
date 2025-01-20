@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
   RxAvatar as Avatar,
+  RxBell as Bell,
   RxExit as Exit,
   RxLockClosed as LockClosed,
   RxPerson as Person,
@@ -13,7 +14,7 @@ import { TbGavel } from "react-icons/tb";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
-import { isBedkom, isMemberOf } from "@/lib/memberships";
+import { isBedkom, isMemberOf, isMemberOfAny } from "@/lib/memberships";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,6 +74,15 @@ export const UserMenu = ({ user }: UserMenuProps) => {
             <Link href="/prikker">
               <TbGavel className="mr-2 h-4 w-4" />
               <span>Prikker</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
+
+        {isMemberOfAny(user) && (
+          <DropdownMenuItem asChild>
+            <Link href="/notifikasjoner">
+              <Bell className="mr-2 h-4 w-4" />
+              <span>Send notifikasjon</span>
             </Link>
           </DropdownMenuItem>
         )}
