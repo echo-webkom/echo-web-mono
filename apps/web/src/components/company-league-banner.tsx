@@ -86,13 +86,21 @@ type TeamProps = {
   id: number;
   name: string;
   score: number | null | undefined;
+  outcome: "win" | "loss" | "draw" | null;
 };
 
-const Team = ({ id, name, score }: TeamProps) => {
+const Team = ({ id, name, score, outcome }: TeamProps) => {
   return (
-    <div className="flex w-full items-center gap-4">
+    <div
+      className={cn("flex w-full items-center gap-4 border-l-2", {
+        "border-green-500": outcome === "win",
+        "border-red-500": outcome === "loss",
+        "border-orange-500": outcome === "draw",
+        "border-gray-500": outcome === null,
+      })}
+    >
       <div
-        className={cn("flex-1 text-sm", {
+        className={cn("flex-1 pl-2 text-sm", {
           "font-medium": id === DATABRUS_FC_ID,
           "text-gray-500": id !== DATABRUS_FC_ID,
         })}
@@ -112,6 +120,12 @@ const Team = ({ id, name, score }: TeamProps) => {
   );
 };
 
+const getOutcome = (home: number, away: number) => {
+  if (home > away) return "win";
+  if (home < away) return "loss";
+  return "draw";
+};
+
 export const CompanyLeagueBanner = async () => {
   const league = await fetchCompanyLeagueTableMatches();
 
@@ -119,8 +133,16 @@ export const CompanyLeagueBanner = async () => {
     <div className="relative pb-8">
       <Marquee gradient gradientColor="var(--background)">
         {league.matches.map((match) => {
+          const homeOutcome = match.matchResult
+            ? getOutcome(match.matchResult.homeGoals, match.matchResult.awayGoals)
+            : null;
+
+          const awayOutcome = match.matchResult
+            ? getOutcome(match.matchResult.awayGoals, match.matchResult.homeGoals)
+            : null;
+
           return (
-            <div className="flex flex-col border-r px-8" key={match.matchId}>
+            <div className="relative flex flex-col px-8" key={match.matchId}>
               <p className="mb-1 text-xs">{format(new Date(match.matchDate), "dd.MM.yyyy")}</p>
 
               <div className="flex-center flex gap-8">
@@ -129,12 +151,14 @@ export const CompanyLeagueBanner = async () => {
                     id={match.hometeamId}
                     name={match.hometeamOrgName}
                     score={match.matchResult?.homeGoals}
+                    outcome={homeOutcome}
                   />
 
                   <Team
                     id={match.awayteamId}
                     name={match.awayteamOrgName}
                     score={match.matchResult?.awayGoals}
+                    outcome={awayOutcome}
                   />
                 </div>
               </div>
