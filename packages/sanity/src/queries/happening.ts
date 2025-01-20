@@ -64,6 +64,7 @@ export const happeningQuery = groq`
   _id,
   _createdAt,
   _updatedAt,
+  _type,
   title,
   "slug": slug.current,
   isPinned,

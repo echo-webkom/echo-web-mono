@@ -257,3 +257,15 @@ export const _differenceInHours = (dateLeft: Date | null, dateRight: Date | null
   if (!dateLeft || !dateRight) return 0;
   return differenceInHours(dateLeft, dateRight);
 };
+
+/**
+ * Converts a date to a date string in the format "YYYY-MM-DD"
+ *
+ * @param date - Date to convert
+ * @returns - Date in the format "YYYY-MM-DD"
+ */
+export const getDate = (date: Date | string | number) => {
+  const d = new Date(date);
+
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+};
