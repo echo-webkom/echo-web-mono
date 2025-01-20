@@ -175,10 +175,6 @@ export default defineType({
       options: {
         list: [
           {
-            title: "Daglig",
-            value: "daily",
-          },
-          {
             title: "Ukentlig",
             value: "weekly",
           },
