@@ -61,4 +61,3 @@ export const NotificationMenu = () => {
     </DropdownMenu>
   );
 };
-
