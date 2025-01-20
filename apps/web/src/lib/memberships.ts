@@ -22,6 +22,7 @@ export const isHost = <U extends TUser>(user: U, groups: Array<string>) => {
 };
 
 export const isMemberOfAny = <U extends TUser>(user: U) => {
+<<<<<<< HEAD
   return isMemberOf(user, [
     "bedkom",
     "hyggkom",
@@ -33,4 +34,7 @@ export const isMemberOfAny = <U extends TUser>(user: U) => {
     "tilde",
     "webkom",
   ]);
+=======
+  return user.memberships.length > 0;
+>>>>>>> 2b2bdb9dc36b8618834dea36bff783b7ea4b6e9a
 };
