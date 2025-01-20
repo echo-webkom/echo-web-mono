@@ -12,8 +12,6 @@ app.get("/notifications", admin(), async (c) => {
       orderBy: (row, { desc }) => [desc(row.dateFrom)],
     });
 
-    
-
     return c.json(allNotifications);
   } catch (error) {
     console.error("Error fetching notifications:", error);

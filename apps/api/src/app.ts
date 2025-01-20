@@ -7,8 +7,8 @@ import degreesApp from "./services/degrees";
 import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
 import healthApp from "./services/health";
-import shoppingApp from "./services/shopping-list";
 import notificationsApp from "./services/notifications";
+import shoppingApp from "./services/shopping-list";
 
 const app = new Hono();
 
