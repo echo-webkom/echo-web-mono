@@ -1837,10 +1837,6 @@
           "of": [
             {
               "type": "string",
-              "value": "daily"
-            },
-            {
-              "type": "string",
               "value": "weekly"
             },
             {

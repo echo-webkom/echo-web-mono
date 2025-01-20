@@ -318,7 +318,7 @@ export type RepeatingHappening = {
   endTime: Ttime;
   startDate: string;
   endDate: string;
-  interval: "daily" | "weekly" | "bi-weekly" | "monthly";
+  interval: "weekly" | "bi-weekly" | "monthly";
   ignoredDates?: Array<string>;
   contacts?: Array<
     {
@@ -931,7 +931,7 @@ export type AllRepeatingHappeningsQueryResult = Array<{
   endTime: Ttime;
   startDate: string;
   endDate: string;
-  interval: "bi-weekly" | "daily" | "monthly" | "weekly";
+  interval: "bi-weekly" | "monthly" | "weekly";
   cost: number | null;
   ignoredDates: Array<string> | null;
   externalLink: string | null;

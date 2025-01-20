@@ -17,12 +17,10 @@ type EventSidebarProps = {
   event: Exclude<Awaited<ReturnType<typeof fetchRepeatingHappening>>, null>;
 };
 
-const intervalToText = (interval: "bi-weekly" | "daily" | "monthly" | "weekly") => {
+const intervalToText = (interval: "bi-weekly" | "monthly" | "weekly") => {
   switch (interval) {
     case "bi-weekly":
       return "Hver andre uke";
-    case "daily":
-      return "Hver dag";
     case "monthly":
       return "Hver måned";
     case "weekly":
