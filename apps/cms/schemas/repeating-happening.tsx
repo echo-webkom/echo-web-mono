@@ -196,8 +196,8 @@ export default defineType({
     }),
     defineField({
       name: "ignoredDates",
-      title: "Ignorerte datoer",
-      description: "Datoer mellom start og slutt som skal ignoreres",
+      title: "Unntaksdatoer",
+      description: "Datoer arrangementet ikke holdes (f.eks helligdager)",
       type: "array",
       of: [
         defineArrayMember({
