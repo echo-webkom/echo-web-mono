@@ -1,3 +1,5 @@
+"use client";
+
 import { createNotification } from "@/actions/create-notification";
 // import { Container } from "@/components/container";
 
