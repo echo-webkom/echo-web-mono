@@ -11,6 +11,8 @@ import { Markdown } from "./markdown";
 import { RepeatingHappeningSidebar } from "./repeating-happening-sidebar";
 import { Heading } from "./typography/heading";
 
+const FOOTBALL_KEYWORDS = ["fotball", "databrus fc", "futsal"];
+
 type EventPageProps = {
   // The awaited return type of fetchHappeningBySlug or fetchRepeatingHappening with null excluded from the type
   event: Exclude<
@@ -20,7 +22,10 @@ type EventPageProps = {
 };
 
 export const EventPage = ({ event }: EventPageProps) => {
-  const isCompanyLeague = event.body?.toLowerCase().includes("databrus fc");
+  const isCompanyLeague = FOOTBALL_KEYWORDS.some(
+    (keyword) =>
+      event.title.toLowerCase().includes(keyword) || event.body?.toLowerCase().includes(keyword),
+  );
 
   return (
     <div>
