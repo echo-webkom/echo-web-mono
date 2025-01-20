@@ -4,7 +4,11 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users, usersToNotifications } from ".";
 
+<<<<<<< HEAD
 export const notifications = pgTable("notifications", {
+=======
+export const notifications = pgTable("notification", {
+>>>>>>> d63ceba4deea8675a2246b6ff3a29bff2fd654e7
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   dateFrom: date("date_from").notNull(),

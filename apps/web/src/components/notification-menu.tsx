@@ -26,7 +26,10 @@ export const NotificationMenu = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getNotifications();
+<<<<<<< HEAD
       console.log(result);
+=======
+>>>>>>> d63ceba4deea8675a2246b6ff3a29bff2fd654e7
       setNotifications(
         result.map((notification) => ({
           id: notification.id,
