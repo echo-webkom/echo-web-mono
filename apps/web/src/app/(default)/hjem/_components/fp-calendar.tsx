@@ -1,18 +1,8 @@
 import { Calendar } from "@/components/calendar/calendar";
-import {
-  boardgamesToCalendarEvent,
-  happeningsToCalendarEvent,
-  moviesToCalendarEvent,
-} from "@/lib/calendar-event-helpers";
-import { fetchAllHappenings } from "@/sanity/happening";
-import { fetchMovies } from "@/sanity/movies";
+import { getCalendarEvents } from "@/lib/calendar-events";
 
 export const FPCalendar = async ({ className }: { className?: string }) => {
-  const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
-
-  const calendarEvents = happeningsToCalendarEvent(happenings)
-    .concat(moviesToCalendarEvent(movies))
-    .concat(boardgamesToCalendarEvent());
+  const calendarEvents = await getCalendarEvents();
 
   return (
     <div className={className}>

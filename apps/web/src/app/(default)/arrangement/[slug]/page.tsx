@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { EventPage } from "@/components/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening";
-import { norwegianDateString } from "@/utils/date";
+import { fetchRepeatingHappening } from "@/sanity/repeating-happening";
 
 type Props = {
   params: {
@@ -13,28 +13,27 @@ type Props = {
 
 const getData = cache(async (slug: string) => {
   const event = await fetchHappeningBySlug(slug);
-
-  if (!event) {
-    console.info("Event not found", {
-      slug,
-    });
-    return notFound();
+  if (event) {
+    return event;
   }
 
-  return event;
+  const repeatingEvent = await fetchRepeatingHappening(slug);
+  if (repeatingEvent) {
+    return repeatingEvent;
+  }
+
+  console.info("Event not found", {
+    slug,
+  });
+
+  return notFound();
 });
 
 export const generateMetadata = async ({ params }: Props) => {
   const event = await getData(params.slug);
 
-  const regDate = event.registrationStart
-    ? `Påmelding åpner ${norwegianDateString(new Date(event.registrationStart)).toLowerCase()}.`
-    : "";
-
   return {
     title: event.title,
-    description: `Ny arrangement, "${event.title}", med ${event.company?.name},
-    ${norwegianDateString(new Date(event.date))}, ${event.location?.name}. ${regDate}`,
   };
 };
 

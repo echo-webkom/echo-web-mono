@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 
-import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
 import {
   Alfa_Slab_One,
@@ -16,7 +15,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -134,8 +132,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isOctober = month === 9;
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
 
-  const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
-  const n = isOctober ? 40 : isChristmas ? 40 : 0;
+  // Refactor how we apply dynamic theme to the site
+  // const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+  // const n = isOctober ? 40 : isChristmas ? 40 : undefined;
 
   return (
     <html
@@ -159,18 +158,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Providers>
-          <ThemeWrapper n={n}>
-            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          {/* <ThemeWrapper> */}
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
 
-            {children}
-            <Toaster />
-            <FeedbackBlob />
-            <TailwindIndicator />
-            <EasterEgg />
+          {children}
+          <Toaster />
+          <FeedbackBlob />
+          <TailwindIndicator />
+          <EasterEgg />
 
-            <Analytics />
-            <SpeedInsights />
-          </ThemeWrapper>
+          <Analytics />
+          <SpeedInsights />
+          {/* </ThemeWrapper> */}
         </Providers>
       </body>
     </html>
