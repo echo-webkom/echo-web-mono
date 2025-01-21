@@ -128,11 +128,14 @@ const getOutcome = (home: number, away: number) => {
 
 export const CompanyLeagueBanner = async () => {
   const league = await fetchCompanyLeagueTableMatches();
+  const matches = league.matches.sort(
+    (a, b) => new Date(a.matchDate).getTime() - new Date(b.matchDate).getTime(),
+  );
 
   return (
     <div className="relative pb-8">
       <Marquee gradient gradientColor="var(--background)">
-        {league.matches.map((match) => {
+        {matches.map((match) => {
           const homeOutcome = match.matchResult
             ? getOutcome(match.matchResult.homeGoals, match.matchResult.awayGoals)
             : null;
