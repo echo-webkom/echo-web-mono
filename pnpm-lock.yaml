@@ -58,8 +58,8 @@ importers:
         specifier: 20.17.10
         version: 20.17.10
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       esbuild:
         specifier: 0.24.0
         version: 0.24.0
@@ -336,8 +336,8 @@ importers:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.4.49)
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -445,8 +445,8 @@ importers:
         specifier: 8.11.10
         version: 8.11.10
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       drizzle-kit:
         specifier: 0.24.2
         version: 0.24.2
@@ -488,8 +488,8 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -581,8 +581,8 @@ importers:
         specifier: 20.17.10
         version: 20.17.10
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -605,8 +605,8 @@ importers:
         specifier: 20.17.10
         version: 20.17.10
       dotenv-cli:
-        specifier: 7.4.2
-        version: 7.4.2
+        specifier: 7.4.4
+        version: 7.4.4
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -4629,6 +4629,10 @@ packages:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
 
+  cross-spawn@7.0.6:
+    resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
+    engines: {node: '>= 8'}
+
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
@@ -4925,8 +4929,8 @@ packages:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
 
-  dotenv-cli@7.4.2:
-    resolution: {integrity: sha512-SbUj8l61zIbzyhIbg0FwPJq6+wjbzdn9oEtozQpZ6kW2ihCcapKVZj49oCT3oPM+mgQm+itgvUQcG5szxVrZTA==}
+  dotenv-cli@7.4.4:
+    resolution: {integrity: sha512-XkBYCG0tPIes+YZr4SpfFv76SQrV/LeCE8CI7JSEMi3VR9MvTihCGTOtbIexD6i2mXF+6px7trb1imVCXSNMDw==}
     hasBin: true
 
   dotenv-expand@10.0.0:
@@ -12784,6 +12788,12 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  cross-spawn@7.0.6:
+    dependencies:
+      path-key: 3.1.1
+      shebang-command: 2.0.0
+      which: 2.0.2
+
   crypto-random-string@2.0.0: {}
 
   css-color-keywords@1.0.0: {}
@@ -13062,9 +13072,9 @@ snapshots:
     dependencies:
       is-obj: 2.0.0
 
-  dotenv-cli@7.4.2:
+  dotenv-cli@7.4.4:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       dotenv: 16.4.5
       dotenv-expand: 10.0.0
       minimist: 1.2.8
