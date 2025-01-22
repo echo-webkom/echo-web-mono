@@ -5,7 +5,6 @@ import { type Template } from "sanity";
 import { markdownSchema } from "sanity-plugin-markdown";
 import { media } from "sanity-plugin-media";
 import { structureTool } from "sanity/structure";
-import {colorInput} from '@sanity/color-input'
 
 import { schemaTypes } from "./schemas";
 import { deskStructure } from "./src/desk-structure";
@@ -28,8 +27,8 @@ const defaultConfig = {
   ],
   schema: {
     types: schemaTypes,
-    templates: (templates: Template[]) =>
-      templates.filter(({ schemaType }: any) => !singletonTypes.has(schemaType)),
+    templates: (templates: Array<Template>) =>
+      templates.filter(({ schemaType }) => !singletonTypes.has(schemaType)),
   },
   projectId: "pgq2pd26",
   document: {
