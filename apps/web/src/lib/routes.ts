@@ -55,7 +55,7 @@ export const headerRoutes: Array<Route> = [
       {
         label: "Stillingsannonser",
         href: "/for-studenter/stillingsannonser",
-        description: "Se hvilke jobber som er tilgjengelig for studenter",
+        description: "Se hvilke stillingsannonsener som er tilgjengelig for studenter",
         icon: LuCircleDollarSign,
       },
       {
