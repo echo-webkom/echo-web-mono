@@ -53,8 +53,8 @@ export const headerRoutes: Array<Route> = [
         icon: LuCalendarDays,
       },
       {
-        label: "Jobber",
-        href: "/for-studenter/jobber",
+        label: "Stillingsannonser",
+        href: "/for-studenter/stillingsannonser",
         description: "Se hvilke jobber som er tilgjengelig for studenter",
         icon: LuCircleDollarSign,
       },
