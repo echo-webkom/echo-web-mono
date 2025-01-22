@@ -63,20 +63,6 @@ export type Banner = {
   isExternal?: boolean;
 };
 
-export type Banner = {
-  _id: string;
-  _type: "banner";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  text: string;
-  expiringDate: string;
-  backgroundColor?: Color;
-  textColor?: Color;
-  linkTo?: string;
-  isExternal?: boolean;
-};
-
 export type Movie = {
   _id: string;
   _type: "movie";
@@ -629,39 +615,6 @@ export type HslaColor = {
   a?: number;
 };
 
-export type Color = {
-  _type: "color";
-  hex?: string;
-  alpha?: number;
-  hsl?: HslaColor;
-  hsv?: HsvaColor;
-  rgb?: RgbaColor;
-};
-
-export type RgbaColor = {
-  _type: "rgbaColor";
-  r?: number;
-  g?: number;
-  b?: number;
-  a?: number;
-};
-
-export type HsvaColor = {
-  _type: "hsvaColor";
-  h?: number;
-  s?: number;
-  v?: number;
-  a?: number;
-};
-
-export type HslaColor = {
-  _type: "hslaColor";
-  h?: number;
-  s?: number;
-  l?: number;
-  a?: number;
-};
-
 export type Markdown = string;
 
 export type MediaTag = {
@@ -685,7 +638,6 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | Geopoint
   | Banner
-  | Banner
   | Movie
   | Question
   | ContactProfile
@@ -707,10 +659,6 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | SanityAssetSourceData
   | SanityImageMetadata
-  | Color
-  | RgbaColor
-  | HsvaColor
-  | HslaColor
   | Color
   | RgbaColor
   | HsvaColor

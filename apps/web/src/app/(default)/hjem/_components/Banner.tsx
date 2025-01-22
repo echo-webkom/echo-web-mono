@@ -5,8 +5,8 @@ import { fetchBannerInfo } from "@/sanity/banner";
 export const Banner = async () => {
   const bannerInfo = await fetchBannerInfo();
   const linkTo = bannerInfo?.linkTo ? bannerInfo.linkTo : "/";
-  const backgroundColor = bannerInfo?.backgroundColor?.hex || "var(--primary)";
-  const color = bannerInfo?.textColor?.hex || "white";
+  const backgroundColor = bannerInfo?.backgroundColor?.hex ?? "var(--primary)";
+  const color = bannerInfo?.textColor?.hex ?? "white";
   return (
     <div>
       <div className="block">

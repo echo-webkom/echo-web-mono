@@ -1,4 +1,4 @@
-import { ListItemBuilder, type StructureBuilder } from "sanity/structure";
+import { type StructureBuilder } from "sanity/structure";
 
 const hiddenDocuments = ["media.tag"];
 
