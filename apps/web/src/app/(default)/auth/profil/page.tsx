@@ -12,6 +12,7 @@ import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
+import WhitelistNotification from "./_components/whitelist-notification";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -37,7 +38,6 @@ export default async function ProfilePage() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-6 md:flex-row">
           <UploadProfilePicture name={user.name ?? "Bo Bakseter"} image={user.image} />
-
           <div>
             <div>
               <Label>Navn</Label>
@@ -70,7 +70,7 @@ export default async function ProfilePage() {
           </div>
         )}
       </div>
-
+      <WhitelistNotification />
       <UserForm
         user={{
           id: user.id,
