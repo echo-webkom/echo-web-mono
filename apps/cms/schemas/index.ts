@@ -32,5 +32,4 @@ export const schemaTypes = [
   movies,
   banner,
   time,
-  banner,
 ];
