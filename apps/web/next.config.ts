@@ -1,4 +1,5 @@
-/** @type {import("next").NextConfig} */
+import type { NextConfig } from "next";
+
 const config = {
   transpilePackages: [
     "@echo-webkom/db",
@@ -88,6 +89,6 @@ const config = {
 
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
-};
+} satisfies NextConfig;
 
 export default config;
