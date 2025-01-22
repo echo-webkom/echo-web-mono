@@ -13,6 +13,7 @@ export default function WebkomPage() {
     <Container className="py-10 text-center">
       <Image className="mx-auto h-32 w-auto" src={Webkom} alt="Webkom logo" />
       <Heading className="mx-auto font-display">Webkom</Heading>
+      {/* Forslag om å opprette gruppe var 28. jul 2020 */}
       {/* Slack ble laget 5. aug 2020 */}
       <Text className="text-xs text-muted-foreground">EST. 2020</Text>
 
