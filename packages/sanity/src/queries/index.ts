@@ -8,4 +8,3 @@ export * from "./student-group";
 export * from "./static-info";
 export * from "./banner";
 export * from "./repeating-happening";
-export * from "./banner";
