@@ -67,7 +67,7 @@ export const headerRoutes: Array<Route> = [
       {
         label: "Hovedstyrer",
         href: "/for-studenter/grupper/hovedstyre",
-        description: "Oversikt over hovedstyret",
+        description: "Oversikt over echos hovedstyrer",
         icon: LuUsers,
       },
       {
