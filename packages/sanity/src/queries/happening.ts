@@ -119,7 +119,7 @@ export const homeHappeningsQuery = groq`
   && (isPinned || date >= now())
   && happeningType in $happeningTypes
 ]
-| order(isPinned desc, date asc) {
+| order(coalesce(isPinned, false) desc, date asc) {
   _id,
   title,
   isPinned,
@@ -131,9 +131,7 @@ export const homeHappeningsQuery = groq`
   "organizers": organizers[]->{
     name
   }.name
-}[0...$n]
-
-`;
+}[0...$n]`;
 
 export const happeningTypeQuery = groq`
 *[_type == "happening"
