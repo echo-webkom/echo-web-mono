@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     ...jobs.map((e): MetadataRoute.Sitemap[number] => {
       return {
-        url: `${BASE_URL}/for-studenter/jobb/${e.slug}`,
+        url: `${BASE_URL}/for-studenter/stillingsannonse/${e.slug}`,
         lastModified: e._updatedAt,
         changeFrequency: "weekly",
         priority: 0.5,

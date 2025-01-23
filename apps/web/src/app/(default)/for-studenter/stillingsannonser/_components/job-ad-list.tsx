@@ -229,7 +229,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
       ) : (
         <div className="mx-auto w-fit py-8">
           <p className="mb-2 text-7xl">{":("}</p>
-          <p className="text-center text-2xl">Finner ingen jobber</p>
+          <p className="text-center text-2xl">Finner ingen stillingsannonsener</p>
         </div>
       )}
     </Container>

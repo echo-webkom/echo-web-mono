@@ -16,7 +16,7 @@ type JobAdPreviewProps = {
 
 export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) => {
   return (
-    <Link href={`/for-studenter/jobb/${jobAd.slug}`}>
+    <Link href={`/for-studenter/stillingsannonse/${jobAd.slug}`}>
       <div
         className={cn(
           "h-30 flex flex-row items-center gap-8 rounded-xl border-2 p-6",

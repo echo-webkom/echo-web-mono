@@ -40,6 +40,16 @@ const config = {
       statusCode: 301,
     },
     {
+      source: "/for-studenter/jobber",
+      destination: "/for-studenter/stillingsannonser",
+      statusCode: 301,
+    },
+    {
+      source: "/for-studenter/jobb/:path",
+      destination: "/for-studenter/stillingsannonse/:path",
+      statusCode: 301,
+    },
+    {
       source: "/om-echo/:path",
       destination: "/om/:path",
       statusCode: 301,

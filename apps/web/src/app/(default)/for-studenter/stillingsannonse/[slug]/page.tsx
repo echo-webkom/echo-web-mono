@@ -39,7 +39,7 @@ export default async function JobAdPage({ params }: { params: { slug: string } }
 
   return (
     <Container className="py-10">
-      <Link className="hover:underline" href="/for-studenter/jobber">
+      <Link className="hover:underline" href="/for-studenter/stillingsannonser">
         ← Tilbake til alle stillingsannonser
       </Link>
 
