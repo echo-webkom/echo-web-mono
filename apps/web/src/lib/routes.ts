@@ -65,9 +65,9 @@ export const headerRoutes: Array<Route> = [
         icon: LuMailOpen,
       },
       {
-        label: "Hovedstyre",
+        label: "Hovedstyrer",
         href: "/for-studenter/grupper/hovedstyre",
-        description: "Oversikt over hovedstyret",
+        description: "Oversikt over echos hovedstyrer",
         icon: LuUsers,
       },
       {
