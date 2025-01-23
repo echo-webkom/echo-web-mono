@@ -1,17 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-import { type RegistrationStatus } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
+import { LuArrowLeft } from "react-icons/lu";
 
 import { Container } from "@/components/container";
-import { HappeningInfoBox } from "@/components/happening-info-box";
-import { getStudentGroups } from "@/data/groups/queries";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getFullHappening } from "@/data/happenings/queries";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
-import { RegistrationTable } from "./_components/registration-table";
+import { getRegistrations } from "./_lib/get-registrations";
+import { createBackLink } from "./_lib/utils";
+import { RegistrationsTab } from "./_tabs/registrations";
+import { StatisticsTab } from "./_tabs/statistics";
+import { UtilitiesTab } from "./_tabs/utilities";
 
 type Props = {
   params: {
@@ -21,120 +21,47 @@ type Props = {
 
 export default async function EventDashboard({ params }: Props) {
   const { slug } = params;
-
   const happening = await getFullHappening(slug);
-
   if (!happening) {
     return notFound();
   }
 
   const user = await getUser();
-
   const hostGroups = happening.groups.map((group) => group.groupId);
   const isHosting = user ? isHost(user, hostGroups) : false;
-
   if (!isHosting) {
     return notFound();
   }
 
-  const registrations = await db.query.registrations.findMany({
-    where: (registration, { eq }) => eq(registration.happeningId, happening.id),
-    with: {
-      changedByUser: true,
-      user: {
-        with: {
-          memberships: {
-            with: {
-              group: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  registrations.sort((a, b) => {
-    const statusOrder: Record<RegistrationStatus, number> = {
-      registered: 0,
-      waiting: 1,
-      unregistered: 2,
-      removed: 3,
-      pending: 4,
-    };
-    if (a.status === b.status) {
-      return a.createdAt.getTime() - b.createdAt.getTime();
-    }
-
-    return statusOrder[a.status] - statusOrder[b.status];
-  });
-
-  const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
-
-  const registered = registrations.filter((registration) => registration.status === "registered");
-  const waitlist = registrations.filter((registration) => registration.status === "waiting");
-  const unregistered = registrations.filter(
-    (registration) => registration.status === "unregistered",
-  );
-  const removed = registrations.filter((registration) => registration.status === "removed");
-
-  const groups = await getStudentGroups();
+  const registrations = await getRegistrations(happening.id);
 
   return (
     <Container layout="larger" className="flex flex-col gap-10 py-10">
-      <div className="m-2">
-        <Link href={`/${happeningType}/${happening.slug}`}>
-          <span className="p-2">⇐</span>
-          <span className="underline">Tilbake</span>
-        </Link>
-      </div>
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antall påmeldte</p>
-          <p className="text-7xl">{registered.length}</p>
-        </div>
+      <BackButton link={createBackLink(happening)} />
 
-        <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antall på venteliste</p>
-          <p className="text-7xl">{waitlist.length}</p>
-        </div>
-
-        <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antall avmeldt</p>
-          <p className="text-7xl">{unregistered.length}</p>
-        </div>
-
-        <div className="rounded-xl border px-3 py-8 text-center">
-          <p>Antall fjernet</p>
-          <p className="text-7xl">{removed.length}</p>
-        </div>
-      </div>
-
-      <HappeningInfoBox slug={happening.slug} />
-
-      {registrations.length > 0 ? (
-        <div className="flex flex-col gap-3">
-          <h2 className="text-3xl font-semibold">Registrerte</h2>
-          <RegistrationTable
-            questions={happening.questions}
-            registrations={registrations}
-            studentGroups={groups}
-            slug={happening.slug}
-            isBedpres={happeningType === "bedpres"}
-            happeningDate={happening.date}
-          />
-        </div>
-      ) : (
-        <div className="mx-auto flex w-fit flex-col gap-8 p-5">
-          <h3 className="text-center text-xl font-medium">Ingen registrerte!</h3>
-          <Image
-            className="rounded-lg"
-            src="/gif/empty-shelves-john-travolta.gif"
-            alt="Travolta looking around in an empty store"
-            width={600}
-            height={600}
-          />
-        </div>
-      )}
+      <Tabs defaultValue="registrations">
+        <TabsList className="grid h-10 w-full grid-cols-3">
+          <TabsTrigger value="registrations">Påmeldinger</TabsTrigger>
+          <TabsTrigger value="statistics">Statistikk</TabsTrigger>
+          <TabsTrigger value="utilities">Verktøy</TabsTrigger>
+        </TabsList>
+        <TabsContent value="registrations">
+          <RegistrationsTab happening={happening} registrations={registrations} />
+        </TabsContent>
+        <TabsContent value="statistics">
+          <StatisticsTab happening={happening} registrations={registrations} />
+        </TabsContent>
+        <TabsContent value="utilities">
+          <UtilitiesTab happening={happening} registrations={registrations} />
+        </TabsContent>
+      </Tabs>
     </Container>
   );
 }
+
+const BackButton = ({ link }: { link: string }) => (
+  <Link className="text-muted-foreground hover:underline" href={link}>
+    <LuArrowLeft className="mr-2 inline-block" />
+    <span>Tilbake til arrangementet</span>
+  </Link>
+);

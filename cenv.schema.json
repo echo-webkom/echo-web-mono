@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2024-11-11T12:53:07.131542171+01:00",
+  "lastUpdated": "2025-01-13T12:43:01.701629068+01:00",
   "fields": {
     "ADMIN_KEY": {
-      "required": false,
-      "public": true,
+      "required": true,
+      "public": false,
       "lengthRequired": false,
       "length": 0,
       "format": "",
       "key": "ADMIN_KEY",
-      "value": "foobar"
+      "value": ""
     },
     "API_PORT": {
       "required": false,
@@ -40,8 +40,8 @@
     "FEIDE_CLIENT_ID": {
       "required": true,
       "public": false,
-      "lengthRequired": false,
-      "length": 0,
+      "lengthRequired": true,
+      "length": 36,
       "format": "",
       "key": "FEIDE_CLIENT_ID",
       "value": ""
@@ -49,20 +49,20 @@
     "FEIDE_CLIENT_SECRET": {
       "required": true,
       "public": false,
-      "lengthRequired": false,
-      "length": 0,
+      "lengthRequired": true,
+      "length": 36,
       "format": "",
       "key": "FEIDE_CLIENT_SECRET",
       "value": ""
     },
     "NEXTAUTH_SECRET": {
       "required": false,
-      "public": true,
+      "public": false,
       "lengthRequired": false,
       "length": 0,
       "format": "",
       "key": "NEXTAUTH_SECRET",
-      "value": "foobar"
+      "value": ""
     },
     "NEXTAUTH_URL": {
       "required": false,

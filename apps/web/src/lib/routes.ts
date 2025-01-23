@@ -53,9 +53,9 @@ export const headerRoutes: Array<Route> = [
         icon: LuCalendarDays,
       },
       {
-        label: "Jobber",
-        href: "/for-studenter/jobber",
-        description: "Se hvilke jobber som er tilgjengelig for studenter",
+        label: "Stillingsannonser",
+        href: "/for-studenter/stillingsannonser",
+        description: "Se hvilke stillingsannonsener som er tilgjengelig for studenter",
         icon: LuCircleDollarSign,
       },
       {
@@ -65,7 +65,7 @@ export const headerRoutes: Array<Route> = [
         icon: LuMailOpen,
       },
       {
-        label: "Hovedstyre",
+        label: "Hovedstyrer",
         href: "/for-studenter/grupper/hovedstyre",
         description: "Oversikt over hovedstyret",
         icon: LuUsers,

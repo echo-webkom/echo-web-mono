@@ -74,6 +74,12 @@
     --footer: #f2cc8f;
     --footer-border: #d4a373;
     --footer-foreground: #171923;
+
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
@@ -143,6 +149,12 @@
     --footer: #21201f;
     --footer-border: #1d1b17;
     --footer-foreground: #f9fafb;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 
   html[data-theme="halloween"] {
@@ -281,5 +293,88 @@
       transform: none;
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
+  }
+
+  @keyframes marqueeLeft {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marqueeRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .bg-wrapped-purple {
+    background-color: #a484e9;
+  }
+
+  .bg-wrapped-blue {
+    background-color: #31bff3;
+  }
+
+  .bg-wrapped-pink {
+    background-color: #f4889a;
+  }
+
+  .bg-wrapped-orange {
+    background-color: #ffaf68;
+  }
+
+  .bg-wrapped-yellow {
+    background-color: #f6e683;
+  }
+
+  .bg-wrapped-green {
+    background-color: #79d45e;
+  }
+
+  .bg-wrapped-black {
+    background-color: #171717;
+  }
+
+  .text-wrapped-purple {
+    color: #a484e9;
+  }
+
+  .text-wrapped-blue {
+    color: #31bff3;
+  }
+
+  .text-wrapped-pink {
+    color: #f4889a;
+  }
+
+  .text-wrapped-orange {
+    color: #ffaf68;
+  }
+
+  .text-wrapped-green {
+    color: #79d45e;
+  }
+
+  .text-wrapped-black {
+    color: #171717;
+  }
+
+  .text-wrapped-white {
+    color: white;
+  }
+
+  .text-wrapped-yellow {
+    color: #f6e683;
+  }
+
+  .text-wrapped-grey {
+    color: #171717;
+    opacity: 0.7;
   }
 }

@@ -28,7 +28,10 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
 
   return (
     <>
-      <Button onClick={openDialog}> Fjern alle påmeldinger </Button>
+      <Button variant="destructive" onClick={openDialog}>
+        Fjern alle påmeldinger
+      </Button>
+
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent>
@@ -39,9 +42,7 @@ export const RemoveAllRegistrationsButton = ({ slug }: RemoveAllRegistrationsBut
             </DialogBody>
             <DialogFooter>
               <div className="flex w-full justify-between">
-                <Button onClick={handleRemoveAllRegistrations} variant="default">
-                  Ja, fjern alle
-                </Button>
+                <Button onClick={handleRemoveAllRegistrations}>Ja, fjern alle</Button>
                 <Button variant="secondary" onClick={closeDialog}>
                   Avbryt
                 </Button>
