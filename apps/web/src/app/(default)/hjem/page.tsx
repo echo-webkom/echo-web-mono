@@ -1,6 +1,6 @@
-import { WrappedBanner } from "@/app/(wrapped)/wrapped/components/Banner";
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
+import BirthdayBanner from "./_components/birthdayBanner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
@@ -13,8 +13,7 @@ export default async function Home() {
 
   return (
     <>
-      <WrappedBanner />
-
+      <BirthdayBanner />
       <div className="space-y-8 py-24">
         <Container layout="larger">
           <FPCalendar />
