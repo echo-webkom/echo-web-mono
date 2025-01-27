@@ -26,6 +26,7 @@ export default async function HomePage() {
     <>
       <div className="z-10">
         <WrappedBanner />
+        {/* replace with <Banner /> when wrapped done thankyou */}
       </div>
 
       {/* Prevents scrolling on the body when the blur logo is outside the viewport // No idea why

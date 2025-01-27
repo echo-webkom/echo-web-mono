@@ -1,3 +1,4 @@
+import banner from "./banner";
 import company from "./company";
 import happening from "./happening";
 import job from "./job-ad";
@@ -29,5 +30,6 @@ export const schemaTypes = [
   contactProfile,
   question,
   movies,
+  banner,
   time,
 ];

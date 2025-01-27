@@ -8,6 +8,11 @@ export const deskStructure = (S: StructureBuilder) =>
     .items([
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (listItem) => !hiddenDocuments.includes(listItem.getId() ?? ""),
+        (listItem) =>
+          !hiddenDocuments.includes(listItem.getId() ?? "") && listItem.getId() !== "banner",
       ),
+      S.listItem()
+        .title("Banner")
+        .id("banner")
+        .child(S.document().schemaType("banner").documentId("banner")),
     ]);

@@ -6,4 +6,5 @@ export * from "./movies";
 export * from "./posts";
 export * from "./student-group";
 export * from "./static-info";
+export * from "./banner";
 export * from "./repeating-happening";
