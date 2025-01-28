@@ -7,6 +7,10 @@ export default defineType({
   description: "Banner som vises øverst på forsiden",
   icon: InfoOutlineIcon,
   type: "document",
+  options: {
+    // @ts-expect-error custom option
+    singleton: true,
+  },
   preview: {
     select: {
       title: "text",

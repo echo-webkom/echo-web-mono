@@ -35,6 +35,7 @@
     "sanity": "3.71.2",
     "sanity-plugin-markdown": "4.1.2",
     "sanity-plugin-media": "2.3.2",
+    "sanity-plugin-singleton-tools": "^1.1.0",
     "slugify": "1.6.6",
     "styled-components": "6.1.13"
   },
