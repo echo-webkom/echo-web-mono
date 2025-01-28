@@ -22,9 +22,12 @@ const getData = cache(async (slug: string) => {
     return repeatingEvent;
   }
 
-  console.info("Event not found", {
-    slug,
-  });
+  console.info(
+    JSON.stringify({
+      message: "Event not found",
+      slug,
+    }),
+  );
 
   return notFound();
 });

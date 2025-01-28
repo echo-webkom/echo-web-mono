@@ -1,5 +1,5 @@
 import { isFuture, isPast } from "date-fns";
-import { and, eq, gte, lte, or, sql } from "drizzle-orm";
+import { and, eq, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -12,11 +12,11 @@ import {
   users,
 } from "@echo-webkom/db/schemas";
 
+import { Logger } from "@/lib/logger";
 import { fitsInSpotrange, isAvailableSpot } from "@/utils/is-available-spot";
 import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { findCorrectSpotRange } from "../utils/find-correct-spot-range";
 import { parseJson } from "../utils/json";
 
 const app = new Hono();
@@ -116,13 +116,16 @@ app.post("/admin/register", admin(), async (c) => {
       questions: z.array(
         z.object({
           questionId: z.string(),
-          answer: z.string(),
+          answer: z.string().or(z.array(z.string())),
         }),
       ),
     }),
   );
 
   if (!ok) {
+    const data = await c.req.json();
+    Logger.error("Invalid data", data);
+
     return c.json({ error: "Invalid data" }, 400);
   }
 
@@ -136,9 +139,10 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (!user) {
-    console.error("User not found", {
+    Logger.warn("User not found", {
       userId,
     });
+
     return c.json(
       {
         success: false,
@@ -149,6 +153,10 @@ app.post("/admin/register", admin(), async (c) => {
   }
 
   if (!user.degreeId || !user.year || !user.hasReadTerms) {
+    Logger.warn("User has not filled out study information", {
+      userId,
+    });
+
     return c.json(
       {
         success: false,
@@ -166,9 +174,10 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (!happening) {
-    console.error("Happening not found", {
+    Logger.error("Happening not found", {
       happeningId,
     });
+
     return c.json(
       {
         success: false,
@@ -191,7 +200,7 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (exisitingRegistration) {
-    console.error("Registration already exists", {
+    Logger.warn("Registration already exists", {
       userId,
       happeningId,
     });
@@ -216,7 +225,7 @@ app.post("/admin/register", admin(), async (c) => {
    * Check if registration is open for user that can not early register
    */
   if (!canEarlyRegister && happening.registrationStart && isFuture(happening.registrationStart)) {
-    console.error("Registration is not open", {
+    Logger.warn("Registration is not open", {
       userId: userId,
       happeningId,
     });
@@ -230,7 +239,7 @@ app.post("/admin/register", admin(), async (c) => {
   }
 
   if (!canEarlyRegister && !happening.registrationStart) {
-    console.error("Registration is not open", {
+    Logger.warn("Registration is not open", {
       userId,
       happeningId,
     });
@@ -247,7 +256,7 @@ app.post("/admin/register", admin(), async (c) => {
    * Check if registration is closed for user that can not early register
    */
   if (happening.registrationEnd && isPast(happening.registrationEnd)) {
-    console.error("Registration is closed", {
+    Logger.warn("Registration is closed", {
       userId,
       happeningId,
     });
@@ -289,7 +298,7 @@ app.post("/admin/register", admin(), async (c) => {
     spotRanges.some((spotRange) => fitsInSpotrange(user, spotRange)) || canSkipSpotRange;
 
   if (!userIsEligible) {
-    console.error("User is not in any spot range", {
+    Logger.warn("User is not in any spot range", {
       userId,
       happeningId,
     });
@@ -308,7 +317,7 @@ app.post("/admin/register", admin(), async (c) => {
   const allQuestionsAnswered = validateQuestions(happening.questions, questions);
 
   if (!allQuestionsAnswered) {
-    console.error("Not all questions are answered", {
+    Logger.warn("Not all questions are answered", {
       userId,
       happeningId,
     });
@@ -366,6 +375,11 @@ app.post("/admin/register", admin(), async (c) => {
   );
 
   if (!registration) {
+    Logger.error("Failed to update registration", {
+      userId,
+      happeningId,
+    });
+
     throw new Error("Failed to update registration");
   }
 
@@ -390,7 +404,7 @@ app.post("/admin/register", admin(), async (c) => {
     await db.insert(answers).values(answersToInsert).onConflictDoNothing();
   }
 
-  console.info("Successful registration", {
+  Logger.info("Successfully registered user", {
     userId: user.id,
     happeningId: happening.id,
     isWaitlisted,
