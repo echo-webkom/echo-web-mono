@@ -31,9 +31,7 @@ export const POST = withBasicAuth(async (req) => {
       slug: string | null;
     };
 
-    console.info("Revalidating static content", {
-      type,
-    });
+    console.info(`Revalidating static content for ${type}`);
 
     // await fetch("https://beta.echo-webkom.no/api/sanity/revalidate", {
     //   method: "POST",

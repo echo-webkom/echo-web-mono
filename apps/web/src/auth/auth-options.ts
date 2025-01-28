@@ -65,10 +65,13 @@ export const authOptions: AuthOptions = {
         return true;
       }
 
-      console.info("Sign in failed", {
-        email,
-        error,
-      });
+      console.info(
+        JSON.stringify({
+          message: "Failed login attempt",
+          email,
+          error,
+        }),
+      );
 
       const id = nanoid();
       await signInAttempt.set(

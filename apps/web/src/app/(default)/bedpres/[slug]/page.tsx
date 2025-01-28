@@ -15,9 +15,12 @@ const getData = cache(async (slug: string) => {
   const event = await fetchHappeningBySlug(slug);
 
   if (!event) {
-    console.info("Bedpres not found", {
-      slug,
-    });
+    console.info(
+      JSON.stringify({
+        message: "Bedpres not found",
+        slug,
+      }),
+    );
     return notFound();
   }
 
