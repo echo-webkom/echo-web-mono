@@ -162,7 +162,7 @@ importers:
         version: link:../../packages/sanity
       '@hookform/resolvers':
         specifier: 3.9.1
-        version: 3.9.1(react-hook-form@7.53.0(react@18.3.1))
+        version: 3.9.1(react-hook-form@7.54.2(react@18.3.1))
       '@json2csv/plainjs':
         specifier: 7.0.6
         version: 7.0.6
@@ -281,8 +281,8 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
-        specifier: 7.53.0
-        version: 7.53.0(react@18.3.1)
+        specifier: 7.54.2
+        version: 7.54.2(react@18.3.1)
       react-icons:
         specifier: 5.3.0
         version: 5.3.0(react@18.3.1)
@@ -6249,9 +6249,11 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -7413,6 +7415,12 @@ packages:
 
   react-hook-form@7.53.0:
     resolution: {integrity: sha512-M1n3HhqCww6S2hxLxciEXy2oISPnAzxY7gvwVPrtlczTM/1dDadXgUxDpHMrMTblDOcm/AXtXxHwZ3jpg1mqKQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-hook-form@7.54.2:
+    resolution: {integrity: sha512-eHpAUgUjWbZocoQYUHposymRb4ZP6d0uwUnooL2uOybA9/3tPUvoAKqEWK1WaSiTxxOfTpffNZP7QwlnM3/gEg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -10375,6 +10383,10 @@ snapshots:
   '@hookform/resolvers@3.9.1(react-hook-form@7.53.0(react@18.3.1))':
     dependencies:
       react-hook-form: 7.53.0(react@18.3.1)
+
+  '@hookform/resolvers@3.9.1(react-hook-form@7.54.2(react@18.3.1))':
+    dependencies:
+      react-hook-form: 7.54.2(react@18.3.1)
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -16035,6 +16047,10 @@ snapshots:
       '@types/react': 18.3.12
 
   react-hook-form@7.53.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
+  react-hook-form@7.54.2(react@18.3.1):
     dependencies:
       react: 18.3.1
 
