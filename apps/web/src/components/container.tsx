@@ -8,25 +8,21 @@ type ContainerProps = HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
 };
 
-export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-  ({ layout = "normal", className, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "mx-auto flex w-full flex-col px-4 sm:px-6 lg:px-8",
-          {
-            "max-w-[1200px]": layout === "normal",
-            "max-w-[1500px]": layout === "larger",
-            "max-w-full": layout === "full",
-          },
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  },
-);
-Container.displayName = "Container";
+export const Container = ({ layout = "normal", className, children, ...props }: ContainerProps) => {
+  return (
+    <div
+      className={cn(
+        "mx-auto flex w-full flex-col px-4 sm:px-6 lg:px-8",
+        {
+          "max-w-[1200px]": layout === "normal",
+          "max-w-[1500px]": layout === "larger",
+          "max-w-full": layout === "full",
+        },
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};

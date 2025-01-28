@@ -14,12 +14,13 @@ import { StatisticsTab } from "./_tabs/statistics";
 import { UtilitiesTab } from "./_tabs/utilities";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default async function EventDashboard({ params }: Props) {
+export default async function EventDashboard(props: Props) {
+  const params = await props.params;
   const { slug } = params;
   const happening = await getFullHappening(slug);
   if (!happening) {

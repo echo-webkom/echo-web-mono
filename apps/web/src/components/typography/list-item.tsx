@@ -7,13 +7,6 @@ type ListItemProps = {
   children: React.ReactNode;
 };
 
-export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
-  ({ className, children }, ref) => {
-    return (
-      <li ref={ref} className={cn("text-lg", className)}>
-        {children}
-      </li>
-    );
-  },
-);
-ListItem.displayName = "ListItem";
+export const ListItem = ({ className, children }: ListItemProps) => {
+  return <li className={cn("text-lg", className)}>{children}</li>;
+};

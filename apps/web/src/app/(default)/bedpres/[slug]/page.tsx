@@ -6,9 +6,9 @@ import { fetchHappeningBySlug } from "@/sanity/happening";
 import { norwegianDateString } from "@/utils/date";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
@@ -27,7 +27,8 @@ const getData = cache(async (slug: string) => {
   return event;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const event = await getData(params.slug);
 
   const regDate = event.registrationStart
@@ -41,7 +42,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function BedpresPage({ params }: Props) {
+export default async function BedpresPage(props: Props) {
+  const params = await props.params;
   const event = await getData(params.slug);
 
   return <EventPage event={event} />;

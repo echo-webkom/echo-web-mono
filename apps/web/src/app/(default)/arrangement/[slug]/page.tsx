@@ -6,9 +6,9 @@ import { fetchHappeningBySlug } from "@/sanity/happening";
 import { fetchRepeatingHappening } from "@/sanity/repeating-happening";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
@@ -32,7 +32,8 @@ const getData = cache(async (slug: string) => {
   return notFound();
 });
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
   const event = await getData(params.slug);
 
   return {
@@ -40,7 +41,8 @@ export const generateMetadata = async ({ params }: Props) => {
   };
 };
 
-export default async function EventPage_({ params }: Props) {
+export default async function EventPage_(props: Props) {
+  const params = await props.params;
   const event = await getData(params.slug);
 
   return <EventPage event={event} />;
