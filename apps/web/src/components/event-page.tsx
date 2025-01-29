@@ -3,13 +3,13 @@ import Image from "next/image";
 
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
-import { CommentSection } from "../comments/comment-section";
-import { CompanyLeagueBanner } from "../company-league-banner";
-import { Container } from "../container";
-import { Markdown } from "../markdown";
-import { RepeatingHappeningSidebar } from "../repeating-happening-sidebar";
-import { Heading } from "../typography/heading";
+import { CommentSection } from "./comments/comment-section";
+import { CompanyLeagueBanner } from "./company-league-banner";
+import { Container } from "./container";
 import { HappeningSidebar } from "./happening-sidebar";
+import { Markdown } from "./markdown";
+import { RepeatingHappeningSidebar } from "./repeating-happening-sidebar";
+import { Heading } from "./typography/heading";
 
 const FOOTBALL_KEYWORDS = ["fotball", "databrus fc", "futsal"];
 
