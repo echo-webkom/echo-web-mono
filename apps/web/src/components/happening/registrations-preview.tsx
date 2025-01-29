@@ -1,7 +1,9 @@
 import { type Registration, type User } from "@echo-webkom/db/schemas";
 
 import { ellipsis, initials } from "@/utils/string";
+import { Text } from "../typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type ProfilePreviewProps = {
@@ -52,22 +54,47 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
   }`;
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <div className="flex items-center">
-            <div className="flex items-center -space-x-4">
-              {sorted.map((registration) => (
-                <ProfilePreview key={registration.user.id} user={registration.user} />
-              ))}
+    <Dialog>
+      <DialogTrigger className="group flex w-fit items-start">
+        <TooltipProvider>
+          <Tooltip>
+            <div>
+              <TooltipTrigger>
+                <div className="flex items-center">
+                  <div className="flex items-center -space-x-4">
+                    {sorted.map((registration) => (
+                      <ProfilePreview key={registration.user.id} user={registration.user} />
+                    ))}
+                  </div>
+                  {extra > 0 && (
+                    <div className="ml-2 text-sm font-medium text-gray-600 group-hover:underline">
+                      +{extra}
+                    </div>
+                  )}
+                </div>
+              </TooltipTrigger>
             </div>
-            {extra > 0 && <div className="ml-2 text-sm font-medium text-gray-600">+{extra}</div>}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{names}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+            <TooltipContent>
+              <p>{names}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Påmeldte brukere</DialogTitle>
+        </DialogHeader>
+        <div className="px-4 pb-4">
+          {registrations
+            .filter((registration) => registration.status === "registered")
+            .map((registration) => (
+              <div key={registration.userId} className="flex items-center space-x-4">
+                <ProfilePreview user={registration.user} />
+                <Text className="text-muted-foreground">{registration.user.name}</Text>
+              </div>
+            ))}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
