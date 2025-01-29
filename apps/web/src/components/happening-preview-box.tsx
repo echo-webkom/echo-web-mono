@@ -3,9 +3,9 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
+import { type AllHappeningsQueryResult } from "@echo-webkom/cms/types";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { type AllHappeningsQueryResult } from "@/sanity.types";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeWithEndDate } from "@/utils/date";
 
@@ -27,10 +27,10 @@ export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreview
         <div className="overflow-x-hidden">
           <h3 className="line-clamp-1 text-2xl font-semibold">{happening.title}</h3>
           <ul>
-            {happening.happeningType === "event" && (
+            {happening.happeningType === "event" && happening.organizers?.length && (
               <li>
                 <span className="font-semibold">Gruppe:</span>{" "}
-                {happening.organizers?.map((o) => o.name).join(", ") ?? "Bo"}
+                {happening.organizers.map((o) => o.name).join(", ")}
               </li>
             )}
             {happening.date && (
@@ -39,14 +39,14 @@ export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreview
                 {shortDateNoTimeWithEndDate(happening.date, happening.endDate ?? undefined)}
               </li>
             )}
-            <li>
-              <span className="font-semibold">Påmelding:</span>{" "}
-              {happening.registrationStart
-                ? format(new Date(happening.registrationStart), "d. MMMM yyyy", {
-                    locale: nb,
-                  })
-                : "Påmelding åpner snart"}
-            </li>
+            {happening.registrationStart && (
+              <li>
+                <span className="font-semibold">Påmelding:</span>{" "}
+                {format(new Date(happening.registrationStart), "d. MMMM yyyy", {
+                  locale: nb,
+                })}
+              </li>
+            )}
           </ul>
         </div>
         {happening.happeningType === "bedpres" && (

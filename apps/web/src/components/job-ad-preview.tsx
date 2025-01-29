@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuBriefcase, LuCalendarClock, LuCoffee, LuPin } from "react-icons/lu";
 
+import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { urlFor } from "@echo-webkom/sanity";
 
-import { type JobAdsQueryResult } from "@/sanity.types";
-import { jobTypeString } from "@/sanity/job-ad";
+import { jobTypeString } from "@/sanity/utils/mappers";
 import { cn } from "@/utils/cn";
 import { shortDateNoTime } from "@/utils/date";
 
@@ -16,7 +16,7 @@ type JobAdPreviewProps = {
 
 export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) => {
   return (
-    <Link href={`/for-studenter/jobb/${jobAd.slug}`}>
+    <Link href={`/for-studenter/stillingsannonse/${jobAd.slug}`}>
       <div
         className={cn(
           "h-30 flex flex-row items-center gap-8 rounded-xl border-2 p-6",

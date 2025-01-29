@@ -31,9 +31,7 @@ export const POST = withBasicAuth(async (req) => {
       slug: string | null;
     };
 
-    console.info("Revalidating static content", {
-      type,
-    });
+    console.info(`Revalidating static content for ${type}`);
 
     // await fetch("https://beta.echo-webkom.no/api/sanity/revalidate", {
     //   method: "POST",
@@ -74,6 +72,16 @@ export const POST = withBasicAuth(async (req) => {
     if (type === "movie") {
       console.log("Revalidating movies");
       revalidateTags(["movies"]);
+    }
+
+    if (type === "repeatingHappening") {
+      console.log("Revalidating repeating-happenings");
+      revalidateTags(["repeating-happenings"]);
+    }
+
+    if (type === "banner") {
+      console.log("Revalidating banners");
+      revalidateTags(["banner"]);
     }
 
     return new Response(`Revalidated type: "${type}".`, {

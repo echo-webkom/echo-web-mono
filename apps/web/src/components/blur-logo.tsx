@@ -2,7 +2,7 @@
 
 import { type ComponentPropsWithoutRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { cn } from "@/utils/cn";

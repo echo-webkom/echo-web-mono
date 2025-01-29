@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";

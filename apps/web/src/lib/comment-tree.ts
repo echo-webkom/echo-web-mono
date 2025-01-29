@@ -16,12 +16,10 @@ export const buildCommentTreeFrom = (
   comments: Array<Comment>,
   parentId: string | null = null,
 ): CommentTree => {
-  const foo = comments
+  return comments
     .filter((comment) => comment.parentCommentId === parentId)
     .map((comment) => ({
       ...comment,
       children: buildCommentTreeFrom(comments, comment.id),
     }));
-
-  return foo;
 };

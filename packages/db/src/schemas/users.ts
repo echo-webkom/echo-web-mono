@@ -1,6 +1,7 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
   boolean,
+  date,
   index,
   integer,
   pgTable,
@@ -19,7 +20,6 @@ import {
   usersToShoppingListItems,
   userTypeEnum,
 } from ".";
-import { now } from "../utils";
 
 export const users = pgTable(
   "user",
@@ -36,10 +36,11 @@ export const users = pgTable(
     isBanned: boolean("is_banned").notNull().default(false),
     bannedFromStrike: integer("banned_from_strike"),
     lastSignInAt: timestamp("last_sign_in_at"),
-    updatedAt: timestamp("updated_at").$onUpdate(now),
-    createdAt: timestamp("created_at").$defaultFn(now),
+    updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
+    createdAt: timestamp("created_at").$defaultFn(() => new Date()),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     isPublic: boolean("is_public").notNull().default(false),
+    birthday: date("birthday", { mode: "date" }),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),

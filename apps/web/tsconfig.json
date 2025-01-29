@@ -1,8 +1,20 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@echo-webkom/tsconfig/nextjs.json",
   "compilerOptions": {
+    "target": "es2022",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
     "lib": ["es2022", "dom", "dom.iterable"],
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -11,7 +23,9 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "incremental": true,
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",

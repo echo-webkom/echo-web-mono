@@ -8,24 +8,20 @@ type TextProps = {
   children: React.ReactNode;
 };
 
-export const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
-  ({ size = "md", className, children }, ref) => {
-    return (
-      <p
-        ref={ref}
-        className={cn(
-          "break-words py-1 leading-relaxed",
-          {
-            "text-sm": size === "sm",
-            "text-lg": size === "md",
-            "text-xl": size === "lg",
-          },
-          className,
-        )}
-      >
-        {children}
-      </p>
-    );
-  },
-);
-Text.displayName = "Text";
+export const Text = ({ size = "md", className, children }: TextProps) => {
+  return (
+    <p
+      className={cn(
+        "break-words py-1 leading-relaxed",
+        {
+          "text-sm": size === "sm",
+          "text-lg": size === "md",
+          "text-xl": size === "lg",
+        },
+        className,
+      )}
+    >
+      {children}
+    </p>
+  );
+};

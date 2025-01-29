@@ -9,6 +9,23 @@ import { db } from "@echo-webkom/db/serverless";
 import { ppFor } from "@/lib/echogram";
 import { getUser } from "@/lib/get-user";
 
+const deleteImage = (id: string) =>
+  fetch(ppFor(id), {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${process.env.ADMIN_KEY}`,
+    },
+  });
+
+const uploadImage = (id: string, formData: FormData) =>
+  fetch(ppFor(id), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.ADMIN_KEY}`,
+    },
+    body: formData,
+  });
+
 export const uploadProfilePictureAction = async (formData: FormData) => {
   const user = await getUser();
 
@@ -17,6 +34,17 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
       success: false,
       message: "Du er ikke logget inn.",
     };
+  }
+
+  if (!formData.has("file")) {
+    return {
+      success: false,
+      message: "Du må laste opp et bilde.",
+    };
+  }
+
+  if (user.image) {
+    await deleteImage(user.image);
   }
 
   const file = formData.get("file");
@@ -31,14 +59,9 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
     };
   }
 
-  const response = await fetch(ppFor(user.id), {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.ADMIN_KEY}`,
-    },
-    body: formData,
-  });
+  const imageId = `${user.id}-${Date.now()}`;
 
+  const response = await uploadImage(imageId, formData);
   if (!response.ok) {
     return {
       success: false,
@@ -46,13 +69,14 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
     };
   }
 
-  const imageUrl = ppFor(user.id);
-
-  await db.update(users).set({ image: imageUrl }).where(eq(users.id, user.id));
+  await db
+    .update(users)
+    .set({ image: ppFor(imageId) })
+    .where(eq(users.id, user.id));
 
   return {
     success: true,
-    message: imageUrl,
+    message: ppFor(imageId),
   };
 };
 
@@ -66,12 +90,14 @@ export const deleteProfilePictureAction = async () => {
     };
   }
 
-  await fetch(`${process.env.NEXT_PUBLIC_ECHOGRAM_URL}/${user.id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${process.env.ECHOGRAM_API_KEY}`,
-    },
-  });
+  if (!user.image) {
+    return {
+      success: false,
+      message: "Du har ikke et profilbilde.",
+    };
+  }
+
+  await deleteImage(user.image);
 
   await db
     .update(users)

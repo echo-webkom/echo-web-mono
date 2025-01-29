@@ -1,6 +1,7 @@
 export * from "./access-request";
 export * from "./accounts";
 export * from "./answers";
+export * from "./comments-reactions";
 export * from "./comments";
 export * from "./degrees";
 export * from "./enums";

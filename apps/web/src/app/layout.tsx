@@ -1,7 +1,16 @@
 import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
-import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import {
+  Alfa_Slab_One,
+  IBM_Plex_Mono,
+  Inter,
+  Lexend_Deca,
+  Radley,
+  Ranchers,
+  Unna,
+  VT323,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
@@ -37,17 +46,58 @@ const vt323 = VT323({
   weight: ["400"],
 });
 
+const ranchers = Ranchers({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--ranchers-font",
+});
+
+const lexendDeca = Lexend_Deca({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--lexend-font",
+});
+
+const unna = Unna({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--unna-font",
+});
+
+const radley = Radley({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--radley-font",
+});
+
+const slab = Alfa_Slab_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--slab-font",
+});
+
 type RootLayoutProps = {
   children: React.ReactNode;
 };
 
 export const metadata = {
-  metadataBase: new URL(BASE_URL),
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
   },
   description: "Nettsiden til echo – Linjeforeningen for informatikk ved Universitetet i Bergen.",
+  applicationName: "echo",
+  creator: "echo-webkom",
+  authors: {
+    name: "echo-webkom",
+    url: "/webkom",
+  },
+  metadataBase: new URL(BASE_URL),
   keywords: ["echo", "linjeforening", "informatikk", "lesesalen", "bergen"],
   icons: {
     apple: "/apple-touch-icon.png",
@@ -77,8 +127,21 @@ export const viewport = {
 } satisfies Viewport;
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const date = new Date();
+  const month = date.getMonth();
+  const isOctober = month === 9;
+  const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
+
+  // Refactor how we apply dynamic theme to the site
+  // const ThemeWrapper = isOctober ? AnimatedIcons : isChristmas ? AnimatedSnowfall : Fragment;
+  // const n = isOctober ? 40 : isChristmas ? 40 : undefined;
+
   return (
-    <html lang="no" suppressHydrationWarning>
+    <html
+      lang="no"
+      data-theme={isOctober ? "halloween" : isChristmas ? "christmas" : "default"}
+      suppressHydrationWarning
+    >
       <head />
       <body
         className={cn(
@@ -87,19 +150,27 @@ export default function RootLayout({ children }: RootLayoutProps) {
           ibmPlexMono.variable,
           ibmPlexMonoDisplay.variable,
           vt323.variable,
+          ranchers.variable,
+          lexendDeca.variable,
+          unna.variable,
+          radley.variable,
+          slab.variable,
         )}
       >
-        <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
         <Providers>
+          {/* <ThemeWrapper> */}
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+
           {children}
           <Toaster />
-          {/* <CookieBanner /> */}
           <FeedbackBlob />
           <TailwindIndicator />
           <EasterEgg />
+
+          <Analytics />
+          <SpeedInsights />
+          {/* </ThemeWrapper> */}
         </Providers>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

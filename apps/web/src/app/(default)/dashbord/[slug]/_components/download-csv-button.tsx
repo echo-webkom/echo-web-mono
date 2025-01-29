@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { RxChevronDown } from "react-icons/rx";
+
+import { type Question } from "@echo-webkom/db/schemas";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,14 +13,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toRelative } from "@/utils/url";
-import { useRegistrationTable } from "./registration-table-context";
+import { getColumns } from "../_lib/get-columns";
 
 type DownloadCsvButtonProps = {
   slug: string;
+  questions: Array<Question>;
 };
 
-export const DownloadCsvButton = ({ slug }: DownloadCsvButtonProps) => {
-  const { headers, selectedHeaders, setSelectedHeaders } = useRegistrationTable();
+export const DownloadCsvButton = ({ slug, questions }: DownloadCsvButtonProps) => {
+  const headers = useMemo(() => getColumns(questions), [questions]);
+  const [selectedHeaders, setSelectedHeaders] = useState<Array<string>>([]);
 
   const handleCheckedChange = (header: string) => {
     if (selectedHeaders.includes(header)) {
@@ -42,7 +46,7 @@ export const DownloadCsvButton = ({ slug }: DownloadCsvButtonProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="mx-auto flex gap-2 md:ml-auto">
+        <Button className="flex gap-2">
           Last ned
           <RxChevronDown />
         </Button>

@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { eq } from "drizzle-orm";
 
-import { auth } from "@echo-webkom/auth";
+import { auth } from "@/auth/helpers";
 import { users } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 

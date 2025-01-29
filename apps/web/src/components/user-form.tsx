@@ -32,6 +32,7 @@ const userSchema = z.object({
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
   isPublic: z.boolean().optional(),
+  birthday: z.coerce.date().optional(),
 });
 
 type UserFormProps = {
@@ -42,6 +43,7 @@ type UserFormProps = {
     hasReadTerms?: boolean;
     isPublic?: boolean;
     id: string;
+    birthday?: Date;
   };
   degrees: Array<Degree>;
 };
@@ -59,6 +61,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       year: user.year,
       hasReadTerms: user.hasReadTerms,
       isPublic: user.isPublic,
+      birthday: user.birthday,
     },
     resolver: zodResolver(userSchema),
   });
@@ -73,6 +76,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         year: data.year,
         hasReadTerms: data.hasReadTerms,
         isPublic: data.isPublic,
+        birthday: data.birthday,
       });
 
       setIsLoading(false);
@@ -147,6 +151,33 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   ))}
                 </Select>
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bursdag</FormLabel>
+              <FormControl>
+                <Input
+                  id="birthday"
+                  type="date"
+                  className="block"
+                  {...field}
+                  value={
+                    field.value instanceof Date
+                      ? field.value.toISOString().split("T")[0]
+                      : field.value
+                  }
+                />
+              </FormControl>
+              <FormDescription>
+                Legg til bursdagen din, og få den vist på echoscreen i lesesalen!🎉
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

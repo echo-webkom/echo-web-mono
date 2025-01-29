@@ -2,37 +2,49 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { EventPage } from "@/components/event-page";
-import { fetchHappeningBySlug } from "@/sanity/happening/requests";
+import { fetchHappeningBySlug } from "@/sanity/happening";
+import { norwegianDateString } from "@/utils/date";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const getData = cache(async (slug: string) => {
-  const bedpres = await fetchHappeningBySlug(slug);
+  const event = await fetchHappeningBySlug(slug);
 
-  if (!bedpres) {
-    console.info("Bedpres not found", {
-      slug,
-    });
+  if (!event) {
+    console.info(
+      JSON.stringify({
+        message: "Bedpres not found",
+        slug,
+      }),
+    );
     return notFound();
   }
 
-  return bedpres;
+  return event;
 });
 
-export const generateMetadata = async ({ params }: Props) => {
-  const bedpres = await getData(params.slug);
+export const generateMetadata = async (props: Props) => {
+  const params = await props.params;
+  const event = await getData(params.slug);
+
+  const regDate = event.registrationStart
+    ? `Påmelding åpner ${norwegianDateString(new Date(event.registrationStart)).toLowerCase()}.`
+    : "";
 
   return {
-    title: bedpres.title,
+    title: event.title,
+    description: `Ny bedriftspresentasjon med ${event.company?.name}, ${norwegianDateString(new Date(event.date)).toLowerCase()},
+    ${event.location?.name}. ${regDate}`,
   };
 };
 
-export default async function BedpresPage({ params }: Props) {
-  const bedpres = await getData(params.slug);
+export default async function BedpresPage(props: Props) {
+  const params = await props.params;
+  const event = await getData(params.slug);
 
-  return <EventPage event={bedpres} />;
+  return <EventPage event={event} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LuSend as Send } from "react-icons/lu";
 
 import { addReplyAction } from "@/actions/add-comment";
@@ -8,6 +9,7 @@ import { useComment } from "./comment-provider";
 import { CommentTextarea } from "./comment-textarea";
 
 export const CommentReplyTextarea = () => {
+  const router = useRouter();
   const { commentId, postId, isOpen, setIsOpen } = useComment();
   const [content, setContent] = useState("");
 
@@ -17,6 +19,7 @@ export const CommentReplyTextarea = () => {
     await addReplyAction(postId, content, commentId);
     setContent("");
     setIsOpen(false);
+    router.refresh();
   };
 
   if (!isOpen) {

@@ -2,7 +2,7 @@ import { relations, type InferInsertModel, type InferSelectModel } from "drizzle
 import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
-import { users } from ".";
+import { commentsReactions, users } from ".";
 
 export const comments = pgTable(
   "comment",
@@ -37,6 +37,7 @@ export const commentsInsert = relations(comments, ({ one, many }) => ({
   replies: many(comments, {
     relationName: "replies",
   }),
+  reactions: many(commentsReactions),
 }));
 
 export type Comment = InferSelectModel<typeof comments>;

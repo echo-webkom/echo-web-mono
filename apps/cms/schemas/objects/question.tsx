@@ -16,6 +16,7 @@ export default defineType({
       title: "ID",
       type: "string",
       components: {
+        // @ts-expect-error sanity
         input: IdInput,
       },
       initialValue: () => nanoid(),

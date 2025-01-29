@@ -1,7 +1,10 @@
+import { colorInput } from "@sanity/color-input";
 import { RobotIcon, RocketIcon, TerminalIcon } from "@sanity/icons";
 import { visionTool } from "@sanity/vision";
+import { type Config } from "sanity";
 import { markdownSchema } from "sanity-plugin-markdown";
 import { media } from "sanity-plugin-media";
+import { singletonTools } from "sanity-plugin-singleton-tools";
 import { structureTool } from "sanity/structure";
 
 import { schemaTypes } from "./schemas";
@@ -12,13 +15,17 @@ import { deskStructure } from "./src/desk-structure";
 const defaultConfig = {
   plugins: [
     structureTool({
-      structure: (S) => deskStructure(S),
+      structure: deskStructure,
     }),
     visionTool(),
     media(),
     markdownSchema(),
+    colorInput(),
+    singletonTools(),
   ],
-  schema: { types: schemaTypes },
+  schema: {
+    types: schemaTypes,
+  },
   projectId: "pgq2pd26",
 };
 
@@ -63,4 +70,4 @@ const getConfig = () => {
   return [prodConfig];
 };
 
-export default getConfig();
+export default getConfig() as Array<Config>;

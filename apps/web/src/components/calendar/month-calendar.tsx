@@ -121,6 +121,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                         "border-primary hover:bg-primary-hover": event.type === "bedpres",
                         "border-secondary hover:bg-secondary": event.type === "event",
                         "border-pink-400 hover:bg-pink-400": event.type === "movie",
+                        "border-green-600 hover:bg-green-600": event.type === "boardgame",
                       })}
                     >
                       <Link href={event.link} className="line-clamp-1 text-sm font-semibold">

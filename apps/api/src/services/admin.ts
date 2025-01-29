@@ -1,13 +1,22 @@
 import { isFuture, isPast } from "date-fns";
-import { and, eq, gte, lte, or, sql } from "drizzle-orm";
+import { and, eq, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { AnswerInsert, answers, comments, registrations, users } from "@echo-webkom/db/schemas";
+import {
+  AnswerInsert,
+  answers,
+  comments,
+  commentsReactions,
+  registrations,
+  users,
+} from "@echo-webkom/db/schemas";
 
+import { Logger } from "@/lib/logger";
+import { fitsInSpotrange, isAvailableSpot } from "@/utils/is-available-spot";
+import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { getCorrectSpotrange } from "../utils/correct-spot-range";
 import { parseJson } from "../utils/json";
 
 const app = new Hono();
@@ -26,6 +35,7 @@ app.get("/admin/comments/:id", admin(), async (c) => {
           image: true,
         },
       },
+      reactions: true,
     },
   });
 
@@ -59,6 +69,44 @@ app.post("/admin/comments", admin(), async (c) => {
   return c.json({ success: true });
 });
 
+app.post("/admin/comments/:id/reaction", admin(), async (c) => {
+  const { ok, json } = await parseJson(
+    c,
+    z.object({
+      commentId: z.string(),
+      userId: z.string(),
+    }),
+  );
+
+  if (!ok) {
+    return c.json({ error: "Invalid data" }, 400);
+  }
+
+  const existingReaction = await db.query.commentsReactions.findFirst({
+    where: (reaction, { eq }) =>
+      and(eq(reaction.commentId, json.commentId), eq(reaction.userId, json.userId)),
+  });
+
+  if (!existingReaction) {
+    await db.insert(commentsReactions).values({
+      commentId: json.commentId,
+      userId: json.userId,
+      type: "like",
+    });
+  } else {
+    await db
+      .delete(commentsReactions)
+      .where(
+        and(
+          eq(commentsReactions.commentId, json.commentId),
+          eq(commentsReactions.userId, json.userId),
+        ),
+      );
+  }
+
+  return c.json({ success: true });
+});
+
 app.post("/admin/register", admin(), async (c) => {
   const { ok, json } = await parseJson(
     c,
@@ -68,13 +116,16 @@ app.post("/admin/register", admin(), async (c) => {
       questions: z.array(
         z.object({
           questionId: z.string(),
-          answer: z.string(),
+          answer: z.string().or(z.array(z.string())),
         }),
       ),
     }),
   );
 
   if (!ok) {
+    const data = await c.req.json();
+    Logger.error("Invalid data", data);
+
     return c.json({ error: "Invalid data" }, 400);
   }
 
@@ -88,9 +139,10 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (!user) {
-    console.error("User not found", {
+    Logger.warn("User not found", {
       userId,
     });
+
     return c.json(
       {
         success: false,
@@ -101,6 +153,10 @@ app.post("/admin/register", admin(), async (c) => {
   }
 
   if (!user.degreeId || !user.year || !user.hasReadTerms) {
+    Logger.warn("User has not filled out study information", {
+      userId,
+    });
+
     return c.json(
       {
         success: false,
@@ -118,9 +174,10 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (!happening) {
-    console.error("Happening not found", {
+    Logger.error("Happening not found", {
       happeningId,
     });
+
     return c.json(
       {
         success: false,
@@ -143,7 +200,7 @@ app.post("/admin/register", admin(), async (c) => {
   });
 
   if (exisitingRegistration) {
-    console.error("Registration already exists", {
+    Logger.warn("Registration already exists", {
       userId,
       happeningId,
     });
@@ -168,7 +225,7 @@ app.post("/admin/register", admin(), async (c) => {
    * Check if registration is open for user that can not early register
    */
   if (!canEarlyRegister && happening.registrationStart && isFuture(happening.registrationStart)) {
-    console.error("Registration is not open", {
+    Logger.warn("Registration is not open", {
       userId: userId,
       happeningId,
     });
@@ -182,7 +239,7 @@ app.post("/admin/register", admin(), async (c) => {
   }
 
   if (!canEarlyRegister && !happening.registrationStart) {
-    console.error("Registration is not open", {
+    Logger.warn("Registration is not open", {
       userId,
       happeningId,
     });
@@ -199,7 +256,7 @@ app.post("/admin/register", admin(), async (c) => {
    * Check if registration is closed for user that can not early register
    */
   if (happening.registrationEnd && isPast(happening.registrationEnd)) {
-    console.error("Registration is closed", {
+    Logger.warn("Registration is closed", {
       userId,
       happeningId,
     });
@@ -237,10 +294,11 @@ app.post("/admin/register", admin(), async (c) => {
    *
    * If user is not in any spot range, return error
    */
-  const userSpotRange = getCorrectSpotrange(user.year, spotRanges, canSkipSpotRange);
+  const userIsEligible =
+    spotRanges.some((spotRange) => fitsInSpotrange(user, spotRange)) || canSkipSpotRange;
 
-  if (!userSpotRange) {
-    console.error("User is not in any spot range", {
+  if (!userIsEligible) {
+    Logger.warn("User is not in any spot range", {
       userId,
       happeningId,
     });
@@ -256,15 +314,10 @@ app.post("/admin/register", admin(), async (c) => {
   /**
    * Check if all questions are answered
    */
-  const allQuestionsAnswered = happening.questions.every((question) => {
-    const questionExists = questions.find((q) => q.questionId === question.id);
-    const questionAnswer = questionExists?.answer;
-
-    return question.required ? !!questionAnswer : true;
-  });
+  const allQuestionsAnswered = validateQuestions(happening.questions, questions);
 
   if (!allQuestionsAnswered) {
-    console.error("Not all questions are answered", {
+    Logger.warn("Not all questions are answered", {
       userId,
       happeningId,
     });
@@ -287,20 +340,17 @@ app.post("/admin/register", admin(), async (c) => {
         .where(
           and(
             eq(registrations.happeningId, happeningId),
-            lte(users.year, userSpotRange.maxYear),
-            gte(users.year, userSpotRange.minYear),
             or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
           ),
         )
         .leftJoin(users, eq(registrations.userId, users.id));
 
-      const isInfiniteSpots = userSpotRange.spots === 0;
-      const isWaitlisted = !isInfiniteSpots && regs.length >= userSpotRange.spots;
+      const isRegistered = isAvailableSpot(spotRanges, regs, user) || canSkipSpotRange;
 
       const registration = await tx
         .insert(registrations)
         .values({
-          status: isWaitlisted ? "waiting" : "registered",
+          status: isRegistered ? "registered" : "waiting",
           happeningId,
           userId,
           changedBy: null,
@@ -309,14 +359,14 @@ app.post("/admin/register", admin(), async (c) => {
         .onConflictDoUpdate({
           target: [registrations.happeningId, registrations.userId],
           set: {
-            status: isWaitlisted ? "waiting" : "registered",
+            status: isRegistered ? "registered" : "waiting",
           },
         })
         .then((res) => res[0] ?? null);
 
       return {
         registration,
-        isWaitlisted,
+        isWaitlisted: !isRegistered,
       };
     },
     {
@@ -325,6 +375,11 @@ app.post("/admin/register", admin(), async (c) => {
   );
 
   if (!registration) {
+    Logger.error("Failed to update registration", {
+      userId,
+      happeningId,
+    });
+
     throw new Error("Failed to update registration");
   }
 
@@ -349,7 +404,7 @@ app.post("/admin/register", admin(), async (c) => {
     await db.insert(answers).values(answersToInsert).onConflictDoNothing();
   }
 
-  console.info("Successful registration", {
+  Logger.info("Successfully registered user", {
     userId: user.id,
     happeningId: happening.id,
     isWaitlisted,
@@ -359,6 +414,32 @@ app.post("/admin/register", admin(), async (c) => {
     success: true,
     message: isWaitlisted ? "Du er nå på venteliste" : "Du er nå påmeldt arrangementet",
   });
+});
+
+app.get("/admin/whitelist", admin(), async (c) => {
+  const whitelist = await db.query.whitelist
+    .findMany()
+    .then((res) =>
+      res.sort((a, b) => new Date(a.expiresAt).getTime() - new Date(b.expiresAt).getTime()),
+    )
+    .then((res) => res.filter((row) => isFuture(row.expiresAt)));
+
+  return c.json(whitelist);
+});
+
+app.get("admin/whitelist/:email", admin(), async (c) => {
+  const { email } = c.req.param();
+  const whitelist = await db.query.whitelist.findFirst({
+    where: (row, { eq }) => eq(row.email, email),
+  });
+
+  return c.json(whitelist ?? null);
+});
+
+app.get("/admin/access-requests", admin(), async (c) => {
+  const accessRequests = await db.query.accessRequests.findMany();
+
+  return c.json(accessRequests);
 });
 
 export default app;

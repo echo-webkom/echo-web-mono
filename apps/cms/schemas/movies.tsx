@@ -1,9 +1,11 @@
+import { PresentationIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "movie",
   title: "Film",
   type: "document",
+  icon: PresentationIcon,
   fields: [
     defineField({
       name: "title",

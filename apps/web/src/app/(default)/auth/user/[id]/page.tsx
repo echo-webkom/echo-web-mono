@@ -12,6 +12,7 @@ import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser, getUserById } from "@/lib/get-user";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
+import WhitelistNotification from "./_components/whitelist-notification";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const userId = params.id;
@@ -57,7 +58,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             name={profileOwner.name ?? "Bo Bakseter"}
             image={profileOwner.image}
           />
-
           <div>
             <div>
               <Label>Navn</Label>
@@ -90,7 +90,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
           </div>
         )}
       </div>
-
+      <WhitelistNotification />
       {isProfileOwner ? (
         <UserForm
           user={{
@@ -100,6 +100,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             alternativeEmail: profileOwner.alternativeEmail ?? undefined,
             hasReadTerms: profileOwner.hasReadTerms ?? undefined,
             isPublic: profileOwner.isPublic ?? undefined,
+            birthday: profileOwner.birthday ?? undefined,
           }}
           degrees={degrees}
         />

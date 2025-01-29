@@ -3,7 +3,7 @@
 import { google, ics, outlook, yahoo, type CalendarEvent } from "calendar-link";
 import { BiLogoGoogle } from "react-icons/bi";
 import { FaFileDownload, FaYahoo } from "react-icons/fa";
-import { SiMicrosoftoutlook } from "react-icons/si";
+import { PiMicrosoftOutlookLogo } from "react-icons/pi";
 
 import {
   Dialog,
@@ -66,7 +66,7 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
       <div className="flex flex-col rounded-sm bg-gray-100 py-3 sm:gap-4 sm:bg-transparent sm:py-0">
         <div className="mx-auto">
           {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
-          {"Outlook" === calendarType && <SiMicrosoftoutlook className={iconClassNames} />}
+          {"Outlook" === calendarType && <PiMicrosoftOutlookLogo className={iconClassNames} />}
           {"Yahoo" === calendarType && <FaYahoo className={iconClassNames} />}
           {"Ics" === calendarType && <FaFileDownload className={iconClassNames} />}
         </div>
