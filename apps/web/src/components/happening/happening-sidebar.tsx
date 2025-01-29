@@ -119,7 +119,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       .findIndex((registration) => registration.userId === user?.id) + 1;
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:max-w-[320px]">
+    <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
       {/**
        * Show warning if:
        * - Event is not happening
