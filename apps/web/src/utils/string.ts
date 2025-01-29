@@ -90,3 +90,11 @@ export const initials = (name: string): string => {
 
   return `${first![0]}${second![0]}`.toUpperCase();
 };
+
+export const ellipsis = (str: string, maxLength: number) => {
+  if (str.length <= maxLength) {
+    return str;
+  }
+
+  return `${str.slice(0, maxLength)}...`;
+};
