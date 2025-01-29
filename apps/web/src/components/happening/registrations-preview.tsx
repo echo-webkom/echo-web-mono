@@ -1,9 +1,16 @@
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { ellipsis, initials } from "@/utils/string";
+import { initials } from "@/utils/string";
 import { Text } from "../typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type Registration = {
@@ -23,7 +30,7 @@ const ProfilePreview = ({ registration }: ProfilePreviewProps) => {
   return (
     <Avatar className="size-8">
       <AvatarImage src={registration.image ?? ""} />
-      <AvatarFallback>{fallback}</AvatarFallback>
+      <AvatarFallback className="text-xs">{fallback}</AvatarFallback>
     </Avatar>
   );
 };
@@ -32,7 +39,7 @@ type RegistrationsPreviewProps = {
   registrations: Array<Registration>;
 };
 
-const MAX = 7;
+const MAX = 13;
 
 export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProps) => {
   const sorted = registrations
@@ -52,7 +59,7 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
   }
 
   const extra = registrations.length - MAX;
-  const names = `${sorted.map((registration) => ellipsis(registration.name ?? "", 7)).join(", ")}${
+  const names = `${sorted.map((registration) => registration.name?.split(" ")[0]).join(", ")}${
     extra > 0 ? ` +${extra}` : ""
   }`;
 
@@ -87,7 +94,7 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
         <DialogHeader>
           <DialogTitle>Påmeldte brukere</DialogTitle>
         </DialogHeader>
-        <div className="px-4 pb-4">
+        <DialogBody>
           {registrations
             .filter((registration) => registration.status === "registered")
             .map((registration) => (
@@ -96,7 +103,7 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
                 <Text className="text-muted-foreground">{registration.name}</Text>
               </div>
             ))}
-        </div>
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );
