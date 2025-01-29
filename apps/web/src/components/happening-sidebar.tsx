@@ -31,9 +31,8 @@ import {
 } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import { ReactionButtonGroup } from "../reaction-button-group";
-import { RegistrationCount } from "../registration-count";
-import { RegistrationsPreview } from "./registrations-preview";
+import { ReactionButtonGroup } from "./reaction-button-group";
+import { RegistrationCount } from "./registration-count";
 
 type EventSidebarProps = {
   event: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
@@ -487,9 +486,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
           )}
         </div>
       </Sidebar>
-
-      {Boolean(user) && <RegistrationsPreview registrations={registrations} />}
-
       {/**
        * Show link to admin dashbord if:
        * - User is host
