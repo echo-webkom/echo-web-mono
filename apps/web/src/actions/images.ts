@@ -59,6 +59,13 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
     };
   }
 
+  if (file.size / 1024 / 1024 > 5) {
+    return {
+      success: false,
+      message: "Bildet er for stort. Maks 5MB.",
+    };
+  }
+
   const imageId = `${user.id}-${Date.now()}`;
 
   const response = await uploadImage(imageId, formData);
