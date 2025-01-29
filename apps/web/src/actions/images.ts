@@ -43,10 +43,6 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
     };
   }
 
-  if (user.image) {
-    await deleteImage(user.image);
-  }
-
   const file = formData.get("file");
 
   if (
@@ -64,6 +60,10 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
       success: false,
       message: "Bildet er for stort. Maks 5MB.",
     };
+  }
+
+  if (user.image) {
+    await deleteImage(user.image);
   }
 
   const imageId = `${user.id}-${Date.now()}`;

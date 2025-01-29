@@ -14,6 +14,12 @@ const config = {
     },
   },
 
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
+  },
+
   images: {
     remotePatterns: [
       {
