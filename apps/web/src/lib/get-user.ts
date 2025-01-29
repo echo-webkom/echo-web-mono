@@ -1,9 +1,10 @@
 import { cache } from "react";
 import { eq } from "drizzle-orm";
 
-import { auth } from "@/auth/helpers";
 import { users } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+
+import { auth } from "@/auth/helpers";
 
 /**
  * Wraps the `auth` function in a "cache" to prevent
