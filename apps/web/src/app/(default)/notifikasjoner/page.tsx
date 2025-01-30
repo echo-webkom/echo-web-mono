@@ -1,6 +1,6 @@
 "use server";
 
-import NotificationPage from "@/auth/notification-page";
+import NotificationPage from "@/components/notifications/notification-page";
 import { getUser } from "@/lib/get-user";
 
 export default async function Notifications() {
