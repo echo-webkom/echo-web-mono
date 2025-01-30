@@ -35,6 +35,12 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
       return;
     }
 
+    const size = file.size / 1024 / 1024;
+    if (size > 5) {
+      toast({ title: "Bildet er for stort. Maks 5MB" });
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 

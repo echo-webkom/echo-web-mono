@@ -7,6 +7,11 @@ export const Banner = async () => {
   const linkTo = bannerInfo?.linkTo ? bannerInfo.linkTo : "/";
   const backgroundColor = bannerInfo?.backgroundColor?.hex ?? "var(--primary)";
   const color = bannerInfo?.textColor?.hex ?? "white";
+
+  if (!bannerInfo?.text) {
+    return null;
+  }
+
   return (
     <div>
       <div className="block">
@@ -16,7 +21,7 @@ export const Banner = async () => {
             style={{ backgroundColor }}
           >
             <p className="flex items-center gap-3 text-xl font-bold" style={{ color }}>
-              {bannerInfo?.text}
+              {bannerInfo.text}
             </p>
           </div>
         </Link>
@@ -24,5 +29,3 @@ export const Banner = async () => {
     </div>
   );
 };
-
-export default Banner;

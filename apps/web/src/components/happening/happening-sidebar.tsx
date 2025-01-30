@@ -31,8 +31,9 @@ import {
 } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
-import { ReactionButtonGroup } from "./reaction-button-group";
-import { RegistrationCount } from "./registration-count";
+import { ReactionButtonGroup } from "../reaction-button-group";
+import { RegistrationCount } from "../registration-count";
+import { RegistrationsPreview } from "./registrations-preview";
 
 type EventSidebarProps = {
   event: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
@@ -118,7 +119,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       .findIndex((registration) => registration.userId === user?.id) + 1;
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:max-w-[320px]">
+    <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
       {/**
        * Show warning if:
        * - Event is not happening
@@ -486,6 +487,18 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
           )}
         </div>
       </Sidebar>
+
+      {Boolean(user) && (
+        <RegistrationsPreview
+          registrations={registrations.map((registration) => ({
+            image: registration.user.image,
+            name: registration.user.name,
+            userId: registration.userId,
+            status: registration.status,
+          }))}
+        />
+      )}
+
       {/**
        * Show link to admin dashbord if:
        * - User is host

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
-import { WrappedBanner } from "../(wrapped)/wrapped/components/Banner";
+import { Banner } from "./hjem/_components/Banner";
 
 export default async function HomePage() {
   await ensureAnonymous({
@@ -25,8 +25,7 @@ export default async function HomePage() {
   return (
     <>
       <div className="z-10">
-        <WrappedBanner />
-        {/* replace with <Banner /> when wrapped done thankyou */}
+        <Banner />
       </div>
 
       {/* Prevents scrolling on the body when the blur logo is outside the viewport // No idea why

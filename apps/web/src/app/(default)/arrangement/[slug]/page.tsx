@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
-import { EventPage } from "@/components/event-page";
+import { EventPage } from "@/components/happening/event-page";
 import { fetchHappeningBySlug } from "@/sanity/happening";
 import { fetchRepeatingHappening } from "@/sanity/repeating-happening";
 

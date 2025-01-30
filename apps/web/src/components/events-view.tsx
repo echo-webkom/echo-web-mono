@@ -3,7 +3,7 @@ import { subMinutes } from "date-fns";
 
 import { fetchFilteredHappening } from "@/sanity/happening";
 import { startOfNextWeek, startOfTheWeekAfterNext } from "@/utils/date";
-import { CombinedHappeningPreview } from "./happening-preview-box";
+import { CombinedHappeningPreview } from "./happening/happening-preview-box";
 import { Callout } from "./typography/callout";
 
 /**
