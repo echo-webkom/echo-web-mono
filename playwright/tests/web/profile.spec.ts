@@ -6,7 +6,7 @@ test("update profile", async ({ page }) => {
   await loginAs(page, "Student");
 
   //TODO: check dynamic user id
-  await page.goto("/user/1");
+  await page.goto("/user/student");
 
   await expect(page.getByText("Student", { exact: true })).toBeVisible();
   await expect(page.getByText("student@echo.uib.no", { exact: true })).toBeVisible();
@@ -22,7 +22,7 @@ test("update profile", async ({ page }) => {
 test("see admin dashboard", async ({ page }) => {
   await loginAs(page, "Admin");
 
-  await page.goto("/");
+  await page.goto("/user/admin");
 
   await page.getByTestId("user-menu").click();
 
