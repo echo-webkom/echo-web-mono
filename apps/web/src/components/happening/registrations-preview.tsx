@@ -58,7 +58,8 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
     return null;
   }
 
-  const extra = registrations.length - MAX;
+  const extra =
+    registrations.filter((registration) => registration.status === "registered").length - MAX;
   const names = `${sorted.map((registration) => registration.name?.split(" ")[0]).join(", ")}${
     extra > 0 ? ` +${extra}` : ""
   }`;
