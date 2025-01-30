@@ -427,7 +427,7 @@ app.get("/admin/whitelist", admin(), async (c) => {
   return c.json(whitelist);
 });
 
-app.get("admin/whitelist/:email", admin(), async (c) => {
+app.get("/admin/whitelist/:email", admin(), async (c) => {
   const { email } = c.req.param();
   const whitelist = await db.query.whitelist.findFirst({
     where: (row, { eq }) => eq(row.email, email),
