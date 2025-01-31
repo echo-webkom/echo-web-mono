@@ -682,7 +682,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
-// Query: *[_type == "banner"] {  backgroundColor,  textColor,  text,  linkTo,  isExternal,}[0]
+// Query: *[_type == "banner" && _id == "banner" && !(_id in path('drafts.**'))] {  backgroundColor,  textColor,  text,  linkTo,  isExternal,}[0]
 export type BannerQueryResult = {
   backgroundColor: Color | null;
   textColor: Color | null;
@@ -830,7 +830,7 @@ export type HappeningQueryResult = {
   body: string | null;
 } | null;
 // Variable: homeHappeningsQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && (isPinned || date >= now())  && happeningType in $happeningTypes]| order(isPinned desc, date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && (isPinned || date >= now())  && happeningType in $happeningTypes]| order(coalesce(isPinned, false) desc, date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
 export type HomeHappeningsQueryResult = Array<{
   _id: string;
   title: string;
