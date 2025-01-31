@@ -1,6 +1,5 @@
 import { BasketIcon } from "@sanity/icons";
-import { defineField, defineType, type SlugSchemaType, type SlugSourceContext } from "sanity";
-import slugify from "slugify";
+import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "merch",
@@ -19,31 +18,20 @@ export default defineType({
   },
   fields: [
     defineField({
-      name: "titel",
+      name: "title",
       title: "Tittel",
-      validation: (Rule) => Rule.required(),
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
-      validation: (Rule) => Rule.required(),
       options: {
         source: "title",
-        slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
-          const slug = slugify(input, { remove: /[*+~.()'"!:@]/g, lower: true, strict: true });
-          const query = 'count(*[_type == "happening" && slug.current == $slug]{_id})';
-          const params = { slug };
-          const { getClient } = context;
-
-          const count: number = await getClient({ apiVersion: "2021-04-10" }).fetch(query, params);
-          return count > 0 ? `${slug}-${count + 1}` : slug;
-        },
+        maxLength: 96,
       },
-      readOnly: ({ currentUser }) => {
-        return !!currentUser?.roles.find((role) => role.name === "admin");
-      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "text",
@@ -56,6 +44,13 @@ export default defineType({
       title: "Pris",
       description: "Hvor mye koster denne?",
       type: "number",
+    }),
+    defineField({
+      name: "picture",
+      title: "Bilde",
+      description: "Bilde av produktet",
+      type: "image",
+      options: { hotspot: true },
     }),
   ],
 });

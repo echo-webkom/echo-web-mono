@@ -72,6 +72,16 @@ const config = {
       statusCode: 301,
     },
     {
+      source: "/merch",
+      destination: "/merch",
+      statusCode: 301,
+    },
+    {
+      source: "/merch/:path",
+      destination: "/merch/:path",
+      statusCode: 301,
+    },
+    {
       source: "/om-echo/studentgrupper/:path",
       destination: "/for-studenter/gruppe/:path",
       statusCode: 301,
