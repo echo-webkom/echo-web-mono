@@ -669,11 +669,12 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
-// Query: *[_type == "banner"] {  backgroundColor,  textColor,  text,  linkTo,  isExternal,}[0]
+// Query: *[_type == "banner" && _id == "banner" && !(_id in path('drafts.**'))] {  backgroundColor,  textColor,  text,  expiringDate,  linkTo,  isExternal,}[0]
 export type BannerQueryResult = {
   backgroundColor: Color | null;
   textColor: Color | null;
   text: string;
+  expiringDate: string;
   linkTo: string | null;
   isExternal: boolean | null;
 } | null;
@@ -817,7 +818,7 @@ export type HappeningQueryResult = {
   body: string | null;
 } | null;
 // Variable: homeHappeningsQuery
-// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && (isPinned || date >= now())  && happeningType in $happeningTypes]| order(isPinned desc, date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
+// Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && (isPinned || date >= now())  && happeningType in $happeningTypes]| order(coalesce(isPinned, false) desc, date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
 export type HomeHappeningsQueryResult = Array<{
   _id: string;
   title: string;
@@ -1144,11 +1145,11 @@ export type HappeningQueryListResult = Array<{
 
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n*[_type == "banner"] {\n  backgroundColor,\n  textColor,\n  text,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
+    '\n*[_type == "banner" && _id == "banner" && !(_id in path(\'drafts.**\'))] {\n  backgroundColor,\n  textColor,\n  text,\n  expiringDate,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
     '\n*[_type == "happening" && slug.current == $slug] {\n"contacts": contacts[] {\nemail,\n"profile": profile->{\n  _id,\n  name,\n},\n},\n}[0].contacts\n': HappeningContactsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  _type,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
-    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && (isPinned || date >= now())\n  && happeningType in $happeningTypes\n]\n| order(isPinned desc, date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]\n\n': HomeHappeningsQueryResult;
+    '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && (isPinned || date >= now())\n  && happeningType in $happeningTypes\n]\n| order(coalesce(isPinned, false) desc, date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]': HomeHappeningsQueryResult;
     "\n*[_type == \"happening\"\n  && !(_id in path('drafts.**'))\n  && slug.current == $slug\n ] {\n  happeningType,\n}[0].happeningType\n": HappeningTypeQueryResult;
     '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && expiresAt > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  expiresAt,\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;

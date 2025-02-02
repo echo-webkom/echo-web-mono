@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isPast } from "date-fns";
 
 import { fetchBannerInfo } from "@/sanity/banner";
 
@@ -9,6 +10,10 @@ export const Banner = async () => {
   const color = bannerInfo?.textColor?.hex ?? "white";
 
   if (!bannerInfo?.text) {
+    return null;
+  }
+
+  if (bannerInfo.expiringDate && isPast(new Date(bannerInfo.expiringDate))) {
     return null;
   }
 
