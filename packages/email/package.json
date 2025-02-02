@@ -30,7 +30,7 @@
     "dotenv-cli": "7.4.4",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "react-email": "3.0.4",
+    "react-email": "3.0.6",
     "typescript": "5.6.3"
   },
   "eslintConfig": {
