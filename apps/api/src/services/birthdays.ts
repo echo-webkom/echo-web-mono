@@ -4,19 +4,19 @@ import { db } from "@/lib/db";
 
 const app = new Hono();
 
-app.get("/birthdays", async (c) => {
-  const users = await db.query.users.findMany({
-    where: (row, { isNotNull }) => isNotNull(row.birthday),
-  });
+const today = new Date();
 
-  return c.json(
-    users.map((user) => {
-      return {
-        name: user.name,
-        birthday: user.birthday,
-      };
-    }),
-  );
+const isToday = (date: Date) =>
+  date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+
+app.get("/birthdays", async (c) => {
+  const users = await db.query.users
+    .findMany({
+      where: (row, { isNotNull }) => isNotNull(row.birthday),
+    })
+    .then((res) => res.filter((user) => user.birthday && isToday(user.birthday)));
+
+  return c.json(users.map((user) => user.name));
 });
 
 export default app;
