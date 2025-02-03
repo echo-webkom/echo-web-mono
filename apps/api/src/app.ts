@@ -15,7 +15,7 @@ const app = new Hono();
 app.use(logger());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://echo.uib.no"],
+    origin: ["http://localhost:3000", "http://localhost:5173", "https://echo.uib.no"],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
