@@ -94,11 +94,13 @@ export const repeatingEventsToCalendarEvent = (
       })
       .map((date) => {
         const startDate = new Date(date);
-        startDate.setHours(happening.startTime.hour);
+        // TODO FIX: Timezone hack
+        startDate.setHours(happening.startTime.hour - 1);
         startDate.setMinutes(happening.startTime.minute);
 
         const endDate = new Date(date);
-        endDate.setHours(happening.endTime.hour);
+        // TODO FIX: Timezone hack
+        endDate.setHours(happening.endTime.hour - 1);
         endDate.setMinutes(happening.endTime.minute);
 
         return {
