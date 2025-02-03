@@ -22,7 +22,7 @@ export const Banner = async () => {
       <div className="block">
         <Link href={linkTo}>
           <div
-            className="absolute flex h-14 w-full cursor-pointer items-center justify-center"
+            className="flex h-14 w-full cursor-pointer items-center justify-center"
             style={{ backgroundColor }}
           >
             <p className="flex items-center gap-3 text-xl font-bold" style={{ color }}>
