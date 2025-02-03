@@ -1,4 +1,5 @@
 import { type getFullHappening } from "@/data/happenings/queries";
+import { getFullNorwegianDate } from "@/utils/date";
 import { type RegistrationWithUser } from "../_lib/types";
 import { Box } from "./box";
 
@@ -20,13 +21,17 @@ export const FastestRegistrations = ({ happening, registrations }: FastestRegist
         <li>
           Påmelding for grupper åpnet:{" "}
           <span className="text-muted-foreground">
-            {happening.registrationStartGroups?.toLocaleString() ?? "Ingen påmelding for grupper"}
+            {happening.registrationStartGroups
+              ? getFullNorwegianDate(happening.registrationStartGroups)
+              : "Ingen påmelding for grupper"}
           </span>
         </li>
         <li>
           Påmelding for alle åpnet:{" "}
           <span className="text-muted-foreground">
-            {happening.registrationStart?.toLocaleString()}
+            {happening.registrationStart
+              ? getFullNorwegianDate(happening.registrationStart)
+              : "Ingen påmelding for alle"}
           </span>
         </li>
       </ul>
