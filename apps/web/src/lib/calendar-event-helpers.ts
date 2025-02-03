@@ -93,21 +93,26 @@ export const repeatingEventsToCalendarEvent = (
         }
       })
       .map((date) => {
-        const startDate = new Date(date);
-        // TODO FIX: Timezone hack
-        startDate.setHours(happening.startTime.hour - 1);
-        startDate.setMinutes(happening.startTime.minute);
+        const d = new Date(date);
 
-        const endDate = new Date(date);
-        // TODO FIX: Timezone hack
-        endDate.setHours(happening.endTime.hour - 1);
-        endDate.setMinutes(happening.endTime.minute);
+        const year = d.getFullYear();
+        const month = (d.getMonth() + 1).toString().padStart(2, "0");
+        const day = d.getDate().toString().padStart(2, "0");
+
+        const startHour = happening.startTime.hour.toString().padStart(2, "0");
+        const startMinute = happening.startTime.minute.toString().padStart(2, "0");
+
+        const endHour = happening.endTime.hour.toString().padStart(2, "0");
+        const endMinute = happening.endTime.minute.toString().padStart(2, "0");
+
+        const startDate = `${year}-${month}-${day}T${startHour}:${startMinute}:00+01:00`;
+        const endDate = `${year}-${month}-${day}T${endHour}:${endMinute}:00+01:00`;
 
         return {
           id: happening._id,
           title: happening.title,
-          date: startDate,
-          endDate: endDate,
+          date: new Date(startDate),
+          endDate: new Date(endDate),
           body: removeMd(happening.body ?? ""),
           link: createHappeningLink(happening),
           type: getCalendarEventType(happening),
