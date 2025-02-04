@@ -5,7 +5,7 @@ import { admin } from "../middleware/admin";
 
 const app = new Hono();
 
-app.get("/notifications", admin(), async (c) => {
+app.get("/notifications", async (c) => {
   try {
     const allNotifications = await db.query.notifications.findMany({
       with: { recipients: true },
