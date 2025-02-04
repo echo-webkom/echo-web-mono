@@ -19,10 +19,11 @@ type NotificationPageProps = {
 };
 
 export default function NotificationPage({ user, happenings }: NotificationPageProps) {
+  console.log("Happenings: ", happenings);
   return (
     <div>
       <h1>Happenings</h1>
-      {happenings.length === 0 ? (
+      {/* {happenings.length === 0 ? (
         <p>No happenings found.</p>
       ) : (
         <ul>
@@ -32,7 +33,7 @@ export default function NotificationPage({ user, happenings }: NotificationPageP
             </li>
           ))}
         </ul>
-      )}
+      )} */}
       <NotificationForm />
     </div>
   );

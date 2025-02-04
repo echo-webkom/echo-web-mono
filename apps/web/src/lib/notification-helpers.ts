@@ -25,7 +25,7 @@ import { getUser } from "@/lib/get-user";
 // };
 
 export async function getHappeningsForGroup(groupName: string) {
-  const today = Date();
+  const today = new Date();
 
   const group = await db.query.groups.findFirst({
     where: eq(groups.id, groupName.toLowerCase()),

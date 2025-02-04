@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 
 import NotificationPage from "@/components/notifications/notification-page";
 import { getUser } from "@/lib/get-user";
@@ -12,5 +12,5 @@ export default async function Notifications() {
     return <div>Du må være logget inn for å lage en notifikasjon</div>;
   }
 
-  return <NotificationPage user={user}></NotificationPage>;
+  return <NotificationPage user={user} happenings={happenings}></NotificationPage>;
 }
