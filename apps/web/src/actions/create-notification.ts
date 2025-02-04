@@ -9,7 +9,7 @@ import { getUser } from "@/lib/get-user";
 
 const notificationSchema = z.object({
   name: z.string().min(1, "Navn på notifikasjon er obligatorisk"),
-  dateFrom: z.coerce.date(),
+  dateFrom: z.coerce.date().default(new Date()),
   dateTo: z.coerce.date(),
 });
 
