@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 import adminApp from "./services/admin";
+import birthdays from "./services/birthdays";
 import degreesApp from "./services/degrees";
 import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
@@ -14,7 +15,7 @@ const app = new Hono();
 app.use(logger());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://echo.uib.no"],
+    origin: ["http://localhost:3000", "http://localhost:5173", "https://echo.uib.no"],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
@@ -27,5 +28,6 @@ app.route("/", happeningApp);
 app.route("/", feedbackApp);
 app.route("/", shoppingApp);
 app.route("/", degreesApp);
+app.route("/", birthdays);
 
 export default app;

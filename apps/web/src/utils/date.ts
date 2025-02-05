@@ -269,3 +269,23 @@ export const getDate = (date: Date | string | number) => {
 
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
+
+/**
+ * Converts the date to a full date in the format "YYYY-MM-DD HH:MM:SS", with the norwegian timezone.
+ *
+ * @param date - Date to convert
+ * @returns - Date in the format "YYYY-MM-DD HH:MM:SS"
+ */
+export const getFullNorwegianDate = (date: Date | string | number) => {
+  const d = new Date(date);
+
+  return d.toLocaleDateString("nb-NO", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Europe/Oslo",
+  });
+};

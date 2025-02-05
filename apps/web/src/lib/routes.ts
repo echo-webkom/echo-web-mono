@@ -221,6 +221,10 @@ const contactUsRoutes = new RouteGroup("", { label: "Kontakt oss ☎️" })
     label: "Opplevd noe kjipt? Speak up!",
     isExternal: false,
   })
+  .link("/personvern", {
+    label: "Personvernerklæring",
+    isExternal: false,
+  })
   .build();
 
 const followUsRoutes = new RouteGroup("", { label: "Følg oss 💻" })

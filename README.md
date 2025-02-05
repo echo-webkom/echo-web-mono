@@ -23,7 +23,7 @@ Utviklet av frivillige informatikkstudenter fra undergruppen **echo Webkom**.
 
 ## Tilbakemeldinger
 
-Har du noen tilbakemeldinger til nettsiden?
+Har du ingen tilbakemeldinger til nettsiden?
 Vi jobber hele tiden med å forbedre den,
 og setter stor pris på om du sier ifra om noe er feil,
 eller du har idéer til nye endringer!
