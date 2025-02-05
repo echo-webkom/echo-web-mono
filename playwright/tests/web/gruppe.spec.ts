@@ -7,7 +7,7 @@ test.describe("Gruppe", () => {
     await loginAs(page, "Admin");
 
     //TODO: check dynamic user id
-    await page.goto("/user/admin");
+    await page.goto("/auth/user/admin");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 
@@ -22,7 +22,7 @@ test.describe("Gruppe", () => {
     await loginAs(page, "Student");
 
     //TODO: check dynamic user id
-    await page.goto("/user/student");
+    await page.goto("/auth/user/student");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 

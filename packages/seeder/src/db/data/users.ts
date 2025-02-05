@@ -7,6 +7,7 @@ export const users = [
     email: "student@echo.uib.no",
     type: "student",
     token: "student",
+    isPublic: false,
   },
 
   {
@@ -16,6 +17,7 @@ export const users = [
     type: "student",
     token: "student2",
     year: 2,
+    isPublic: false,
   },
 
   {
@@ -25,6 +27,7 @@ export const users = [
     type: "student",
     token: "student5",
     year: 5,
+    isPublic: false,
   },
 
   {
@@ -33,6 +36,7 @@ export const users = [
     email: "alum@echo.uib.on",
     type: "alum",
     token: "alum",
+    isPublic: true,
   },
 
   {
@@ -41,6 +45,7 @@ export const users = [
     email: "admin@echo.uib.on",
     type: "student",
     token: "admin",
+    isPublic: true,
   },
   {
     id: "unethical",
