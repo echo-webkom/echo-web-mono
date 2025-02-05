@@ -488,7 +488,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
         </div>
       </Sidebar>
 
-      {Boolean(user) && (
+      {/* Event for speed-dating. Hidden because sausage party. */}
+      {Boolean(user) && event._id !== "0f32ad83-e0d1-4c53-ba42-a1609ad79fc6" && (
         <RegistrationsPreview
           registrations={registrations.map((registration) => ({
             image: registration.user.image,
