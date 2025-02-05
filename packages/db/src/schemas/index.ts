@@ -23,3 +23,7 @@ export * from "./users-to-shopping-list-items";
 export * from "./whitelist";
 export * from "./strikes";
 export * from "./strike-infos";
+export * from "./workouts";
+export * from "./tournamen-users";
+export * from "./tournaments";
+export * from "./sports";
