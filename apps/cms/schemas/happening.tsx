@@ -207,7 +207,15 @@ export default defineType({
       ],
       validation: (Rule) =>
         Rule.custom(
-          (value: Array<{ minYear: number; maxYear: number; _key: string }> | undefined) => {
+          (
+            value: Array<{ minYear: number; maxYear: number; _key: string }> | undefined,
+            context,
+          ) => {
+            const registrationStart = context.document?.registrationStart as Date | undefined;
+            if ((registrationStart && !value) ?? value?.length === 0) {
+              return "Du må legge til minst én plass, eller fjerne påmeldingsdatoen.";
+            }
+
             const spotRanges = value ?? [];
             const invalidSpotranges = spotRanges.filter((spotRange1) => {
               return spotRanges.some((spotRange2) => {
