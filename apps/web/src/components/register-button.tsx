@@ -214,12 +214,12 @@ export const RegisterButton = ({ id, questions, registrationDate }: RegisterButt
               </div>
             </DialogBody>
             <DialogFooter>
-              <Button size="sm" type="submit" className="w-32">
-                <div className="relative text-sm">
+              <div className="relative">
+                <Button size="sm" type="submit" className="w-32">
                   Send inn
-                  <Countdown toDate={registrationDate} />
-                </div>
-              </Button>
+                </Button>
+                <Countdown toDate={registrationDate} />
+              </div>
             </DialogFooter>
           </form>
         </Form>
