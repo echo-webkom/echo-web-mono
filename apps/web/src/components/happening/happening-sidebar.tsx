@@ -479,7 +479,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
                   questions={questions}
                   registrationDate={new Date(userRegistrationStart)}
                 />
-                {/* <Countdown toDate={new Date(userRegistrationStart)} /> */}
               </SidebarItem>
             )}
 
