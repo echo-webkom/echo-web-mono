@@ -4,10 +4,8 @@ import { db } from "@/lib/db";
 
 const app = new Hono();
 
-const today = new Date();
-
 const isToday = (date: Date) =>
-  date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+  date.getMonth() === new Date().getMonth() && date.getDate() === new Date().getDate();
 
 app.get("/birthdays", async (c) => {
   const users = await db.query.users
