@@ -66,6 +66,10 @@ const getDateSpecificMessage = (date: Date) => {
     return "God sommer 🌞";
   }
 
+  if (getMonth(date) === 1 && getDate(date) === 14) {
+    return "❤️❤️❤️";
+  }
+
   if (isThursday(date) && getHours(date) < 12) {
     return "Husk bedpres kl. 12:00!";
   }
