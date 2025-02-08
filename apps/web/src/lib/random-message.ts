@@ -23,6 +23,7 @@ const baseMessages = [
   "Divine intellect",
   "Skrevet i Holy C",
   "We stan Bjarne",
+  "Rust or bust",
 ];
 
 const getExtraMessages = (now: Date) => {
