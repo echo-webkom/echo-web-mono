@@ -16,8 +16,10 @@ app.use(logger());
 app.use(
   cors({
     origin: [
+      // Development domains
       "http://localhost:3000",
       "http://localhost:5173",
+      // Production domains
       "https://echo.uib.no",
       "https://screen.echo-webkom.no",
     ],
