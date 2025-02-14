@@ -30,9 +30,3 @@ export const getAllUsers = async () => {
     },
   )();
 };
-
-export const getBannedUsers = async () => {
-  return await db.query.users.findMany({
-    where: (user) => eq(user.isBanned, true),
-  });
-};

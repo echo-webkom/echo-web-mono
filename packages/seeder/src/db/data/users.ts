@@ -1,3 +1,6 @@
+import { faker } from "@faker-js/faker";
+
+import { pickRandom } from "../../utils";
 import * as User from "../repo/user";
 
 export const users = [
@@ -58,11 +61,13 @@ export const createFakeUsers = async (n: number) => {
     Array.from({ length: n }, (_, i) =>
       User.create({
         id: `student${i}`,
-        name: `Student ${i}`,
-        email: `student${i}@uib.no`,
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
         type: "student",
         token: `student${i}`,
         hasReadTerms: true,
+        degreeId: pickRandom(["dtek", "dsik", "prog", "inf", "dsc", "dvit"]),
+        year: pickRandom([1, 2, 3, 4, 5]),
       }),
     ),
   );

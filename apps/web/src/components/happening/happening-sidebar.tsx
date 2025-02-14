@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { getQuestionsByHappeningId } from "@/data/questions/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { isUserBannedFromBedpres } from "@/lib/ban-info";
 import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
@@ -97,11 +96,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const isClosed = Boolean(event?.registrationEnd && isPast(event.registrationEnd));
 
-  const isBannedFromBedpres =
-    event && user && event.happeningType === "bedpres" && user.isBanned
-      ? await isUserBannedFromBedpres(user, event)
-      : false;
-
   const registrationOpensIn24Hours =
     userRegistrationStart &&
     isPast(new Date(new Date(userRegistrationStart).getTime() - 24 * 60 * 60 * 1000));
@@ -150,7 +144,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
        * - User is banned
        * - User is complete
        */}
-      {user && isBannedFromBedpres && isUserComplete && (
+      {user && isUserComplete && (
         <Callout type="warning" noIcon>
           <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
         </Callout>
@@ -466,7 +460,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
            */}
           {!isRegistered &&
             isUserComplete &&
-            !isBannedFromBedpres &&
             spotRanges.length > 0 &&
             !isClosed &&
             registrationOpensIn24Hours && (
