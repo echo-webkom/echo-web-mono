@@ -263,14 +263,12 @@ function makeUser(params: Omit<Partial<User>, "id" | "year"> & Pick<User, "id" |
     year: params.year ?? 1,
     image: params.image ?? null,
     degreeId: params.degreeId ?? null,
-    isBanned: params.isBanned ?? false,
     createdAt: params.createdAt ?? null,
     updatedAt: params.updatedAt ?? null,
     hasReadTerms: params.hasReadTerms ?? true,
     lastSignInAt: params.lastSignInAt ?? null,
     emailVerified: params.emailVerified ?? null,
     alternativeEmail: params.alternativeEmail ?? null,
-    bannedFromStrike: params.bannedFromStrike ?? null,
     birthday: params.birthday ?? null,
   };
 }

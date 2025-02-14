@@ -21,6 +21,7 @@ export const auth = async () => {
     where: (user) => eq(user.id, session.user.id),
     with: {
       degree: true,
+      banInfo: true,
       memberships: {
         with: {
           group: true,

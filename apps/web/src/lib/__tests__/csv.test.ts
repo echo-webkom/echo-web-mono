@@ -28,8 +28,6 @@ const petter = {
   year: 2022,
   degreeId: "Computer Science",
   hasReadTerms: true,
-  bannedFromStrike: null,
-  isBanned: false,
   createdAt: new Date(),
   updatedAt: new Date(),
   id: "1",

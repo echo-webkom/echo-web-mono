@@ -135,6 +135,7 @@ app.post("/admin/register", admin(), async (c) => {
     where: (user, { eq }) => eq(user.id, userId),
     with: {
       memberships: true,
+      banInfo: true,
     },
   });
 
@@ -182,6 +183,20 @@ app.post("/admin/register", admin(), async (c) => {
       {
         success: false,
         message: "Arrangementet finnes ikke",
+      },
+      400,
+    );
+  }
+
+  if (happening.type === "bedpres" && user.banInfo && isFuture(user.banInfo.expiresAt)) {
+    Logger.warn("User is banned", {
+      userId,
+    });
+
+    return c.json(
+      {
+        success: false,
+        message: "Du er bannet",
       },
       400,
     );

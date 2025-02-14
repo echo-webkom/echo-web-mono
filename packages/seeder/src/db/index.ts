@@ -116,5 +116,5 @@ const seedTest = async () => {
   console.log("Inserted spot range for Test i prod med Webkom");
 
   // Uncomment to add 100 fake students
-  // await createFakeUsers(100);
+  //await createFakeUsers(100);
 };

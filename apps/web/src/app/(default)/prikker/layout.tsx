@@ -22,8 +22,12 @@ const routes = [
     label: "Oversikt",
   },
   {
-    href: "/prikker/dashboard",
+    href: "/prikker/brukere",
     label: "Dashboard",
+  },
+  {
+    href: "/prikker/ny",
+    label: "Legg til",
   },
 ];
 
