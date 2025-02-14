@@ -183,6 +183,13 @@
       "when": 1731519881604,
       "tag": "0025_lethal_meltdown",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1739497555417,
+      "tag": "0026_shocking_skullbuster",
+      "breakpoints": true
     }
   ]
 }

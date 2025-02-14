@@ -1,9 +1,11 @@
 export * from "./access-request";
 export * from "./accounts";
 export * from "./answers";
+export * from "./ban-info";
 export * from "./comments-reactions";
 export * from "./comments";
 export * from "./degrees";
+export * from "./dots";
 export * from "./enums";
 export * from "./groups";
 export * from "./happenings-to-groups";
@@ -21,5 +23,3 @@ export * from "./verification-tokens";
 export * from "./shopping-list-items";
 export * from "./users-to-shopping-list-items";
 export * from "./whitelist";
-export * from "./strikes";
-export * from "./strike-infos";

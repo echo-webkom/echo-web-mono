@@ -13,9 +13,10 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import {
+  banInfos,
   comments,
   degrees,
-  strikes,
+  dots,
   usersToGroups,
   usersToShoppingListItems,
   userTypeEnum,
@@ -33,8 +34,6 @@ export const users = pgTable(
     degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
-    isBanned: boolean("is_banned").notNull().default(false),
-    bannedFromStrike: integer("banned_from_strike"),
     lastSignInAt: timestamp("last_sign_in_at"),
     updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
     createdAt: timestamp("created_at").$defaultFn(() => new Date()),
@@ -54,12 +53,15 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   }),
   memberships: many(usersToGroups),
   likes: many(usersToShoppingListItems),
-  strikes: many(strikes),
-  bannedFromStrike: one(strikes, {
-    fields: [users.bannedFromStrike],
-    references: [strikes.id],
+  dots: many(dots, {
+    relationName: "dots",
   }),
   comments: many(comments),
+  banInfo: one(banInfos, {
+    fields: [users.id],
+    references: [banInfos.userId],
+    relationName: "banInfo",
+  }),
 }));
 
 export type User = InferSelectModel<typeof users>;

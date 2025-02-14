@@ -45,7 +45,7 @@ export const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      className={cn("border-r-2 bg-background p-5 md:block", {
+      className={cn("min-w-[200px] flex-shrink-0 border-r-2 bg-background p-5 md:block", {
         "hidden md:block": !isOpen,
         "w-full md:w-auto": isOpen,
       })}
