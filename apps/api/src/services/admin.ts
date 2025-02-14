@@ -1,5 +1,5 @@
 import { isFuture, isPast } from "date-fns";
-import { and, eq, or, sql } from "drizzle-orm";
+import { and, eq, inArray, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -9,7 +9,7 @@ import {
   comments,
   commentsReactions,
   registrations,
-  users,
+  usersToGroups,
 } from "@echo-webkom/db/schemas";
 
 import { Logger } from "@/lib/logger";
@@ -334,18 +334,28 @@ app.post("/admin/register", admin(), async (c) => {
     async (tx) => {
       await tx.execute(sql`LOCK TABLE ${registrations} IN EXCLUSIVE MODE`);
 
-      const regs = await tx
-        .select()
-        .from(registrations)
-        .where(
-          and(
-            eq(registrations.happeningId, happeningId),
-            or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
-          ),
-        )
-        .leftJoin(users, eq(registrations.userId, users.id));
+      const regs = await tx.query.registrations.findMany({
+        where: and(
+          eq(registrations.happeningId, happeningId),
+          or(eq(registrations.status, "registered"), eq(registrations.status, "waiting")),
+        ),
+        with: {
+          user: {
+            with: {
+              memberships: {
+                where: inArray(usersToGroups.groupId, hostGroups),
+              },
+            },
+          },
+        },
+      });
 
-      const isRegistered = isAvailableSpot(spotRanges, regs, user) || canSkipSpotRange;
+      const regsWithIsHost = regs.map(({ user: { memberships, ...user }, ...registration }) => ({
+        ...registration,
+        user: { ...user, isHost: memberships.length !== 0 },
+      }));
+
+      const isRegistered = isAvailableSpot(spotRanges, regsWithIsHost, user, canSkipSpotRange);
 
       const registration = await tx
         .insert(registrations)
