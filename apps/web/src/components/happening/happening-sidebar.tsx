@@ -151,7 +151,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {isBanned && (
         <Callout type="warning" noIcon>
           <p className="font-semibold">
-            Du er utestengt fra denne bedriftspresentasjoner frem til{" "}
+            Du er utestengt fra bedriftspresentasjoner frem til{" "}
             {shortDateNoTime(user!.banInfo.expiresAt)}.
           </p>
         </Callout>
