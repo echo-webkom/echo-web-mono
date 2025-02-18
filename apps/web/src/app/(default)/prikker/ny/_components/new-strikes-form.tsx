@@ -233,12 +233,20 @@ type UserSearchProps = {
 
 const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [inputWidth, setInputWidth] = useState(0);
+  const [inputWidth, setInputWidth] = useState(300);
 
   useLayoutEffect(() => {
-    if (ref.current) {
-      setInputWidth(ref.current.offsetWidth);
-    }
+    const handleResize = () => {
+      if (ref.current) {
+        setInputWidth(ref.current.offsetWidth);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -270,19 +278,19 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
       >
         <ListBox
           items={users}
-          className="flex w-full flex-col rounded-md border-2 border-border bg-input px-3 py-2 text-foreground"
+          className="flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 border-border bg-input px-3 py-2 text-foreground"
         >
           {(user) => {
             return (
               <ListBoxItem
-                className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted selected:border-border selected:bg-muted"
+                className="selected:border-border selected:bg-muted group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted"
                 key={user.id}
                 textValue={user.name}
               >
                 {() => {
                   return (
                     <>
-                      <Avatar className="h-14 w-14">
+                      <Avatar className="size-12 md:size-14">
                         <AvatarImage src={user.imageUrl ?? ""} />
                         <AvatarFallback className="bg-background text-foreground">
                           {initials(user.name)}
@@ -290,7 +298,7 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
                       </Avatar>
 
                       <div className="flex flex-col">
-                        <span className="text-lg font-semibold text-foreground">{user.name}</span>
+                        <span className="font-semibold text-foreground">{user.name}</span>
                         <span className="text-sm text-muted-foreground">
                           {user.strikes} prikk(er)
                         </span>
