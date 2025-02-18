@@ -48,6 +48,9 @@ importers:
       '@hono/node-server':
         specifier: 1.13.7
         version: 1.13.7(hono@4.6.20)
+      '@hono/node-ws':
+        specifier: ^1.0.8
+        version: 1.0.8(@hono/node-server@1.13.7(hono@4.6.20))(hono@4.6.20)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -2545,6 +2548,13 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
+
+  '@hono/node-ws@1.0.8':
+    resolution: {integrity: sha512-LhoJeaFsrgP9prhudqI/9finYjtjTyv4oXd0IjORRV7BGpmGkKaleYyT2zEl7I4scv0e0HJfvNcVMnzxGAHvQw==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      '@hono/node-server': ^1.11.1
+      hono: ^4.6.0
 
   '@hookform/resolvers@3.9.1':
     resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
@@ -11954,6 +11964,15 @@ snapshots:
   '@hono/node-server@1.13.7(hono@4.6.20)':
     dependencies:
       hono: 4.6.20
+
+  '@hono/node-ws@1.0.8(@hono/node-server@1.13.7(hono@4.6.20))(hono@4.6.20)':
+    dependencies:
+      '@hono/node-server': 1.13.7(hono@4.6.20)
+      hono: 4.6.20
+      ws: 8.18.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.54.2(react@18.3.1))':
     dependencies:

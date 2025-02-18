@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
+import { ActiveUsers } from "./active-users";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
@@ -32,6 +33,7 @@ export const SiteHeader = async () => {
               <DesktopNavigation />
             </div>
             <div className="flex items-center space-x-2">
+              <ActiveUsers />
               <ThemeSwitchButton />
               {user ? (
                 <UserMenu user={user} />
