@@ -30,3 +30,36 @@ export const getAllUsers = async () => {
     },
   )();
 };
+
+export const getBannedUsers = async () => {
+  return await db.query.users
+    .findMany({
+      orderBy: (user, { asc }) => [asc(user.name)],
+      columns: {
+        id: true,
+        name: true,
+        image: true,
+      },
+      with: {
+        dots: {
+          with: {
+            strikedByUser: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        },
+        banInfo: {
+          with: {
+            bannedByUser: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    .then((users) => users.filter((user) => user.dots.length > 0 || user.banInfo !== null));
+};
