@@ -17,7 +17,7 @@ export const Callout = ({ type = "info", noIcon = false, className, children }: 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-xl border-2 p-4",
+        "flex items-center gap-4 rounded-xl border-2 p-4",
         {
           "border-info-dark bg-info text-info-foreground": type === "info",
           "border-warning-dark bg-warning text-warning-foreground": type === "warning",

@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { Callout } from "@/components/typography/callout";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -11,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
+import { shortDate, shortDateNoTime } from "@/utils/date";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -21,7 +23,10 @@ export default async function ProfilePage() {
     return redirect("/auth/logg-inn");
   }
 
-  const [degrees, memberships] = await Promise.all([
+  const [strikes, degrees, memberships] = await Promise.all([
+    db.query.dots.findMany({
+      where: (row, { eq }) => eq(row.userId, user.id),
+    }),
     getAllDegrees(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, user.id),
@@ -33,6 +38,33 @@ export default async function ProfilePage() {
 
   return (
     <div className="max-w-2xl space-y-4">
+      {user.banInfo && (
+        <Callout type="danger">
+          <Text size="sm" className="font-medium">
+            Du er utestengt fra bedriftpresentasjoner frem til{" "}
+            {shortDateNoTime(user.banInfo.expiresAt)}, grunnet {`"${user.banInfo.reason}"`}.
+          </Text>
+        </Callout>
+      )}
+
+      {strikes.length > 0 && (
+        <Callout type="warning">
+          <Text size="sm" className="font-medium">
+            Du har {strikes.length} prikk(er) registrert:
+          </Text>
+
+          <ul className="list-disc -space-y-2 pl-4">
+            {strikes.map((strike) => (
+              <li key={strike.id}>
+                <Text size="sm">
+                  {strike.count} prikk(er) frem til {shortDateNoTime(strike.expiresAt)}.
+                </Text>
+              </li>
+            ))}
+          </ul>
+        </Callout>
+      )}
+
       <Heading level={2}>Din profil</Heading>
 
       <div className="flex flex-col gap-4">
