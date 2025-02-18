@@ -112,7 +112,9 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .findIndex((registration) => registration.userId === user?.id) + 1;
 
-  const isBanned = user?.banInfo ? isFuture(new Date(user.banInfo.expiresAt)) : false;
+  const isBanned = user?.banInfo
+    ? isFuture(new Date(user.banInfo.expiresAt)) && event.happeningType === "bedpres"
+    : false;
 
   return (
     <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
@@ -148,7 +150,10 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
        */}
       {isBanned && (
         <Callout type="warning" noIcon>
-          <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
+          <p className="font-semibold">
+            Du er utestengt fra denne bedriftspresentasjoner frem til{" "}
+            {shortDateNoTime(user!.banInfo.expiresAt)}.
+          </p>
         </Callout>
       )}
 
