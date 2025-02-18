@@ -9,7 +9,7 @@ import { db } from "@echo-webkom/db/serverless";
 
 import { getUser } from "@/lib/get-user";
 import { isBedkom } from "@/lib/memberships";
-import { addStrikesSchema } from "../_lib/schema";
+import { parseAddStrikesSchema, type addStrikesSchema } from "../_lib/schema";
 
 export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) => {
   try {
@@ -22,7 +22,14 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       };
     }
 
-    const data = addStrikesSchema.parse(input);
+    const { success, data } = parseAddStrikesSchema(input);
+
+    if (!success) {
+      return {
+        success: false,
+        message: "Ugyldig input",
+      };
+    }
 
     const strikedUser = await db.query.users.findFirst({
       where: (row, { eq }) => eq(row.id, data.userId),

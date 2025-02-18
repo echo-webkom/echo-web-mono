@@ -30,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
 import { addStrikesAction } from "../_actions/add-strike";
-import { addStrikesSchema } from "../_lib/schema";
+import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from "../_lib/schema";
 
 type User = {
   id: string;
@@ -50,6 +50,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
     resolver: zodResolver(addStrikesSchema),
     defaultValues: {
       userId: "",
+      strikeType: StrikeType.DeregisterBeforeDeadline,
       count: 1,
       reason: "",
       expiresInMonths: 3,
@@ -60,7 +61,11 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
   const watched = form.watch();
 
   const existingDots = users.find((user) => user.id === watched.userId)?.strikes ?? 0;
-  const newDots = Number(existingDots) + Number(watched.count);
+  const newDots =
+    Number(existingDots) +
+    (watched.strikeType === StrikeType.Other
+      ? Number(watched.count)
+      : (Number(StrikeTypeCount[watched.strikeType]) ?? 1));
 
   const reset = () => {
     setUser("");
@@ -114,6 +119,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
                     form.reset({
                       count: 1,
                       expiresInMonths: 3,
+                      strikeType: StrikeType.DeregisterBeforeDeadline,
                       reason: "",
                       userId: data,
                     });
@@ -128,17 +134,22 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
 
         <FormField
           control={form.control}
-          name="reason"
+          name="strikeType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="reason">Årsak</FormLabel>
+              <FormLabel htmlFor="strikeType">Årsak</FormLabel>
               <FormControl>
-                <Textarea
-                  id="reason"
-                  placeholder="Hvorfor skal brukeren prikk(er)?"
-                  rows={3}
-                  {...field}
-                />
+                <Select {...field}>
+                  {Object.entries(StrikeTypeLabels).map(([key, value]) => {
+                    const dots = StrikeTypeCount[key];
+                    const dotsText = dots ? ` (${dots} prikk${dots > 1 ? "er" : ""})` : "";
+                    return (
+                      <option key={key} value={key}>
+                        {value} {dotsText}
+                      </option>
+                    );
+                  })}
+                </Select>
               </FormControl>
               <FormDescription>
                 Hvorfor skal brukeren få prikker? Det du skriver her er også synlig for brukeren.
@@ -148,37 +159,64 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
           )}
         />
 
-        {watched.userId !== "" && (
-          <FormField
-            control={form.control}
-            name="count"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="count">Antall prikker</FormLabel>
-                <FormControl>
-                  <Select
-                    id="count"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  >
-                    <option value={1}>1 prikker</option>
-                    <option value={2}>2 prikker</option>
-                    <option value={3}>3 prikker</option>
-                    <option value={4}>4 prikker</option>
-                    <option value={5}>5 prikker</option>
-                  </Select>
-                </FormControl>
-                {newDots >= 5 ? (
-                  <FormDescription className="text-red-500">
-                    Brukeren vil bli bannet etter denne prikken
+        {watched.strikeType === "other" && (
+          <>
+            <FormField
+              control={form.control}
+              name="reason"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="reason">Årsak</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="reason"
+                      placeholder="Hvorfor skal brukeren prikk(er)?"
+                      rows={3}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Hvorfor skal brukeren få prikker? Det du skriver her er også synlig for
+                    brukeren.
                   </FormDescription>
-                ) : (
-                  <FormDescription>{newDots} prikk(er) totalt for brukeren</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {watched.userId !== "" && (
+              <FormField
+                control={form.control}
+                name="count"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="count">Antall prikker</FormLabel>
+                    <FormControl>
+                      <Select
+                        id="count"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      >
+                        <option value={1}>1 prikker</option>
+                        <option value={2}>2 prikker</option>
+                        <option value={3}>3 prikker</option>
+                        <option value={4}>4 prikker</option>
+                        <option value={5}>5 prikker</option>
+                      </Select>
+                    </FormControl>
+                    {newDots >= 5 ? (
+                      <FormDescription className="text-red-500">
+                        Brukeren vil bli bannet etter denne prikken
+                      </FormDescription>
+                    ) : (
+                      <FormDescription>{newDots} prikk(er) totalt for brukeren</FormDescription>
+                    )}
+                    <FormMessage />
+                  </FormItem>
                 )}
-                <FormMessage />
-              </FormItem>
+              />
             )}
-          />
+          </>
         )}
 
         {newDots >= 5 && (
