@@ -139,18 +139,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       )}
 
       {/**
-       * Show banned warning if:
-       * - User is logged in
-       * - User is banned
-       * - User is complete
-       */}
-      {user && isUserComplete && (
-        <Callout type="warning" noIcon>
-          <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
-        </Callout>
-      )}
-
-      {/**
        * Show warning for not being in group if:
        * - User is logged in
        * - User is not in any of the groups that can early register
