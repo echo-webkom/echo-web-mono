@@ -284,7 +284,7 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
           {(user) => {
             return (
               <ListBoxItem
-                className="selected:border-border selected:bg-muted group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted"
+                className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted selected:border-border selected:bg-muted"
                 key={user.id}
                 textValue={user.name}
               >

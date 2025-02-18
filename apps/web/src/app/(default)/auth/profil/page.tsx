@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
-import { shortDate, shortDateNoTime } from "@/utils/date";
+import { shortDateNoTime } from "@/utils/date";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
