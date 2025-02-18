@@ -272,6 +272,7 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
       </div>
       <Popover
         style={{
+          minWidth: "280px",
           width: inputWidth,
           maxWidth: "640px",
         }}
