@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { BiChevronDown } from "react-icons/bi";
 
 import { type BanInfo, type Dot } from "@echo-webkom/db/schemas";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
+import { removeBanAction, removeStrikeAction } from "../_actions/remove-strike-ban";
+import { ConfirmationModal } from "./confirmation-modal";
 
 type StrikeRowProps = {
   userId: string;
@@ -14,8 +18,9 @@ type StrikeRowProps = {
   banInfo: (BanInfo & { bannedByUser: { name: string | null } | null }) | null;
 };
 
-export const StrikeRow = ({ name, strikes, banInfo }: StrikeRowProps) => {
+export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const toggle = () => setIsOpen((prev) => !prev);
 
@@ -46,7 +51,7 @@ export const StrikeRow = ({ name, strikes, banInfo }: StrikeRowProps) => {
       </div>
 
       {isOpen && (
-        <>
+        <div>
           <hr />
 
           <div className="py-8">
@@ -66,6 +71,22 @@ export const StrikeRow = ({ name, strikes, banInfo }: StrikeRowProps) => {
 
                 <p className="text-sm">{banInfo.reason}</p>
               </div>
+            )}
+
+            {banInfo !== null && (
+              <ConfirmationModal
+                title="Fjern ban"
+                description="Er du sikker på at du vil fjerne denne bannet?"
+                confirmVariant="destructive"
+                onConfirmAction={async () => {
+                  await removeBanAction(userId);
+                  router.refresh();
+                }}
+              >
+                <Button variant="destructive" className="mt-4 w-fit">
+                  Fjern ban
+                </Button>
+              </ConfirmationModal>
             )}
 
             {strikes.length > 0 && (
@@ -91,6 +112,20 @@ export const StrikeRow = ({ name, strikes, banInfo }: StrikeRowProps) => {
                         </p>
 
                         <p className="text-sm">{reason}</p>
+
+                        <ConfirmationModal
+                          title="Fjern prikk"
+                          description="Er du sikker på at du vil fjerne denne prikken?"
+                          confirmVariant="destructive"
+                          onConfirmAction={async () => {
+                            await removeStrikeAction(userId, id);
+                            router.refresh();
+                          }}
+                        >
+                          <Button variant="destructive" className="mt-4 w-fit">
+                            Fjern prikk
+                          </Button>
+                        </ConfirmationModal>
                       </li>
                     ),
                   )}
@@ -98,7 +133,7 @@ export const StrikeRow = ({ name, strikes, banInfo }: StrikeRowProps) => {
               </>
             )}
           </div>
-        </>
+        </div>
       )}
     </li>
   );
