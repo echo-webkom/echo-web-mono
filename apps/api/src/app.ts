@@ -9,6 +9,7 @@ import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
 import healthApp from "./services/health";
 import shoppingApp from "./services/shopping-list";
+import strikesApp from "./services/strikes";
 
 const app = new Hono();
 
@@ -16,8 +17,10 @@ app.use(logger());
 app.use(
   cors({
     origin: [
+      // Development domains
       "http://localhost:3000",
       "http://localhost:5173",
+      // Production domains
       "https://echo.uib.no",
       "https://screen.echo-webkom.no",
     ],
@@ -34,5 +37,6 @@ app.route("/", feedbackApp);
 app.route("/", shoppingApp);
 app.route("/", degreesApp);
 app.route("/", birthdays);
+app.route("/", strikesApp);
 
 export default app;

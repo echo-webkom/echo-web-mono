@@ -135,6 +135,7 @@ export default {
     require("tailwindcss-animate"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
+    require("tailwindcss-react-aria-components"),
     plugin(({ matchUtilities }) => {
       const TIME = 6;
       matchUtilities({
