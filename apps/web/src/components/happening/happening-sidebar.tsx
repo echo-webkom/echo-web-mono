@@ -112,6 +112,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .findIndex((registration) => registration.userId === user?.id) + 1;
 
+  const isBanned = user?.banInfo ? isFuture(new Date(user.banInfo.expiresAt)) : false;
+
   return (
     <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
       {/**
@@ -135,6 +137,18 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {user && isClosed && (
         <Callout type="warning" noIcon>
           <p className="font-semibold">Påmelding er stengt.</p>
+        </Callout>
+      )}
+
+      {/**
+       * Show banned warning if:
+       * - User is logged in
+       * - User is banned
+       * - User is complete
+       */}
+      {isBanned && (
+        <Callout type="warning" noIcon>
+          <p className="font-semibold">Du er utestengt fra denne bedriftspresentasjonen.</p>
         </Callout>
       )}
 
@@ -449,6 +463,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
           {!isRegistered &&
             isUserComplete &&
             spotRanges.length > 0 &&
+            !isBanned &&
             !isClosed &&
             registrationOpensIn24Hours && (
               <SidebarItem className="relative">
