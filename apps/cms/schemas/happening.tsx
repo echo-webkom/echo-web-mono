@@ -64,7 +64,17 @@ export default defineType({
       type: "boolean",
       description: "Om hendelsen skal være pinnet på forsiden",
       initialValue: false,
-      validation: (Rule) => Rule.required(),
+      /**
+       *  Is has to be set to a false, but must be false if there are
+       *  already 4 other happenings pinned.
+       */
+      validation: (Rule) =>
+        Rule.custom(async (isPinned, context) => {
+          const pinnedEvents = await context
+            .getClient({ apiVersion: "2021-04-10" })
+            .fetch<Array<{ _id: string }>>(`*[_type == "happening" && isPinned == true] { _id }`);
+          return pinnedEvents.length < 5 || !isPinned || "Det kan bare være 4 pinnete hendelser";
+        }),
       options: {
         layout: "switch",
       },
