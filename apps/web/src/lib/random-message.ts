@@ -98,5 +98,6 @@ export const getRandomMessage = () => {
   }
 
   const messages = [...baseMessages, ...getExtraMessages(now)];
-  return messages[Math.floor(Math.random() * messages.length)] ?? "404";
+  // return messages[Math.floor(Math.random() * messages.length)] ?? "404";
+  return "Gratulere med dagen, Gard! 🥳";
 };
