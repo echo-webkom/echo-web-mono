@@ -79,7 +79,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       });
     }
 
-    const sendToEmail = user.alternativeEmail ?? user.email;
+    const sendToEmail = strikedUser.alternativeEmail ?? strikedUser.email;
 
     await emailClient.sendEmail(
       [sendToEmail],
