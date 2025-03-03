@@ -18,7 +18,7 @@ export const removeBanAction = async (userId: string) => {
     };
   }
 
-  if (!isMemberOf(user, ["bedkom"])) {
+  if (!isMemberOf(user, ["bedkom", "webkom"])) {
     return {
       success: false,
       message: "Unauthorized",
@@ -45,7 +45,7 @@ export const removeStrikeAction = async (userId: string, strikeId: number) => {
     };
   }
 
-  if (!isMemberOf(user, ["bedkom"])) {
+  if (!isMemberOf(user, ["bedkom", "webkom"])) {
     return {
       success: false,
       message: "Unauthorized",

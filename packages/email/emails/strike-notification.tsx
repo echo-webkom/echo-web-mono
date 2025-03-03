@@ -15,7 +15,6 @@ import {
 type StrikeNotificationEmailProps = {
   name?: string;
   reason?: string;
-  happeningTitle?: string;
   amount?: number;
   isBanned?: boolean;
 };
@@ -23,14 +22,13 @@ type StrikeNotificationEmailProps = {
 export default function StrikeNotificationEmail({
   name = "Bo Salhus",
   reason = "Kom for sent",
-  happeningTitle = "Workshop med Webkom",
   amount = 3,
   isBanned = false,
 }: StrikeNotificationEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Prikkmelding: {happeningTitle}</Preview>
+      <Preview>VIKITG: Du har fått prikk</Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
           <Container className="mx-auto my-8 w-full max-w-screen-sm border border-solid border-gray-200">
@@ -50,17 +48,21 @@ export default function StrikeNotificationEmail({
                 <Text className="text-gray-600">Hei, {name}.</Text>
 
                 <Text className="mt-4 text-gray-600">
-                  Du har mottatt {amount > 1 ? `${amount} prikker` : "en prikk"} fordi du{" "}
-                  {reason.toLowerCase()} under `{happeningTitle}`. Ta kontakt med Bedkom dersom
-                  dette er en feil.
+                  Du har motatt {amount} prikk{amount > 1 ? "er" : ""} grunnet:
                 </Text>
 
-                {isBanned || reason === "Du møtte ikke opp." ? (
+                <Text className="mt-4 italic text-gray-600">
+                  {'"'}
+                  {reason}
+                  {'"'}
+                </Text>
+
+                {isBanned && (
                   <Text className="mt-4 text-gray-600">
-                    Som en konsekvens har du blitt midlertidig utestengt fra de neste 3
-                    bedriftspresentasjonene du kunne ha deltatt i.
+                    Siden dette har ført til at du har 5 prikker, vil du bli utestengt fra å melde
+                    deg på arrangementer i en periode. Besøk profil-siden din for mer informasjon.
                   </Text>
-                ) : null}
+                )}
               </Section>
             </Section>
           </Container>
