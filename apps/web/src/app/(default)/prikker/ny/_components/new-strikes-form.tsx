@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
 import {
@@ -46,6 +47,7 @@ type StrikeButton = {
 
 export const NewStrikesForm = ({ users }: StrikeButton) => {
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<z.infer<typeof addStrikesSchema>>({
     resolver: zodResolver(addStrikesSchema),
     defaultValues: {
@@ -91,6 +93,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
 
       reset();
 
+      router.refresh();
       toast({
         title: "Prikker lagt til",
         variant: "success",
@@ -338,9 +341,11 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
 
                       <div className="flex flex-col">
                         <span className="font-semibold text-foreground">{user.name}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {user.strikes} prikk(er)
-                        </span>
+                        {user.isBanned ? (
+                          <span className="text-red-500">Bannet</span>
+                        ) : (
+                          <span className="text-muted-foreground">{user.strikes} prikk(er)</span>
+                        )}
                       </div>
                     </>
                   );

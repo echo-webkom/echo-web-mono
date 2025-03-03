@@ -6,16 +6,18 @@ import { type z } from "zod";
 
 import { banInfos, dots } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { StrikeNotificationEmail } from "@echo-webkom/email";
+import { emailClient } from "@echo-webkom/email/client";
 
 import { getUser } from "@/lib/get-user";
-import { isBedkom } from "@/lib/memberships";
+import { isMemberOf } from "@/lib/memberships";
 import { parseAddStrikesSchema, type addStrikesSchema } from "../_lib/schema";
 
 export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) => {
   try {
     const user = await getUser();
 
-    if (!user || !isBedkom(user)) {
+    if (!user || !isMemberOf(user, ["bedkom", "webkom"])) {
       return {
         success: false,
         message: "Unauthorized",
@@ -76,6 +78,19 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
         expiresAt: addMonths(new Date(), 10),
       });
     }
+
+    const sendToEmail = user.alternativeEmail ?? user.email;
+
+    await emailClient.sendEmail(
+      [sendToEmail],
+      "VIKTIG: Du har fått prikk",
+      <StrikeNotificationEmail
+        amount={data.count}
+        isBanned={shouldBeBanned}
+        name={user.name ?? "Ola Nordmann"}
+        reason={data.reason}
+      />,
+    );
 
     return {
       success: true,
