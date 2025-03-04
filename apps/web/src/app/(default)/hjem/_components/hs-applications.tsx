@@ -1,4 +1,5 @@
 import Marquee from "react-fast-marquee";
+import { LuArrowRight } from "react-icons/lu";
 
 import { type AllHsApplicationsResult } from "@echo-webkom/cms/types";
 import { cdnClient, urlFor } from "@echo-webkom/sanity";
@@ -22,10 +23,11 @@ export const HSApplications = async () => {
 
       <Text className="mb-5 text-muted-foreground">Trykk på en søker for å lese mer om dem.</Text>
 
-      <Marquee gradient pauseOnHover gradientColor="var(--background)">
+      <Marquee gradient gradientColor="var(--background)">
         {applications.map((application) => {
           return <Application key={application.profile._id} application={application} />;
         })}
+        <ApplyNow />
       </Marquee>
     </div>
   );
@@ -58,6 +60,19 @@ const Application = ({ application }: ApplicationProps) => {
         <Text size="sm" className="w-full text-center group-hover:underline">
           {name}
         </Text>
+      </a>
+    </div>
+  );
+};
+
+const ApplyNow = () => {
+  return (
+    <div>
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLScOOWOl2leWB_128L3M92dM4gyV8d2PMg6-GfLuJ53qwOV4SQ/viewform"
+        className="group flex items-center text-lg font-medium hover:underline"
+      >
+        ...kanskje deg? <LuArrowRight className="ml-2 transition-all group-hover:ml-3" />
       </a>
     </div>
   );
