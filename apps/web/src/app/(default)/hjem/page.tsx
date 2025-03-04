@@ -5,6 +5,7 @@ import BirthdayBanner from "./_components/birthdayBanner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
+import { HSApplications } from "./_components/hs-applications";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
@@ -20,6 +21,10 @@ export default async function Home() {
       <div className="space-y-8 py-24">
         <Container layout="larger">
           <FPCalendar />
+        </Container>
+
+        <Container layout="larger">
+          <HSApplications />
         </Container>
 
         <Container
