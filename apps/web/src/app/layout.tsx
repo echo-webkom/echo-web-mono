@@ -17,6 +17,7 @@ import NextTopLoader from "nextjs-toploader";
 
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
+import { MembershipFeeModal } from "@/components/membership-fee-modal";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL } from "@/config";
@@ -169,6 +170,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
           <Analytics />
           <SpeedInsights />
+          <MembershipFeeModal />
           {/* </ThemeWrapper> */}
         </Providers>
       </body>
