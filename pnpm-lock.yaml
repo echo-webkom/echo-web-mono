@@ -334,8 +334,8 @@ importers:
         specifier: 0.5.10
         version: 0.5.10(tailwindcss@3.4.14)
       '@tailwindcss/typography':
-        specifier: 0.5.15
-        version: 0.5.15(tailwindcss@3.4.14)
+        specifier: 0.5.16
+        version: 0.5.16(tailwindcss@3.4.14)
       '@testing-library/react':
         specifier: 16.0.1
         version: 16.0.1(@testing-library/dom@10.0.0)(@types/react-dom@19.0.2(@types/react@19.0.3))(@types/react@19.0.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -4750,10 +4750,10 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1 || >= 4.0.0-alpha.20 || >= 4.0.0-beta.1'
 
-  '@tailwindcss/typography@0.5.15':
-    resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
+  '@tailwindcss/typography@0.5.16':
+    resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
+      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
 
   '@tanem/react-nprogress@5.0.51':
     resolution: {integrity: sha512-YxNUCpznuBVA+PhjEzFmxaa1czXgU+5Ojchw5JBK7DQS6SHIgNudpFohWpNBWMu2KWByGJ2OLH2OwbM/XyP18Q==}
@@ -14869,7 +14869,7 @@ snapshots:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.4.14
 
-  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.14)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
