@@ -485,8 +485,8 @@ importers:
   packages/email:
     dependencies:
       '@react-email/components':
-        specifier: 0.0.32
-        version: 0.0.32(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.0.33
+        version: 0.0.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/render':
         specifier: 1.0.5
         version: 1.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2505,6 +2505,7 @@ packages:
   '@faker-js/faker@9.5.0':
     resolution: {integrity: sha512-3qbjLv+fzuuCg3umxc9/7YjrEXNaKwHgmig949nfyaTx8eL4FAsvFbu+1JcFUj1YAXofhaDn6JdEUBTYuk0Ssw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
@@ -3859,8 +3860,8 @@ packages:
     peerDependencies:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
 
-  '@react-email/components@0.0.32':
-    resolution: {integrity: sha512-+1Wv7PyVgWfLoj5W0+CvBsJMIfMI6ibcFcIPXNkb2lhKQQASgxSoAedRL1rH0CCaBo6+63tg8y4baHzJonfZbw==}
+  '@react-email/components@0.0.33':
+    resolution: {integrity: sha512-/GKdT3YijT1iEWPAXF644jr12w5xVgzUr0zlbZGt2KOkGeFHNZUCL5UtRopmnjrH/Fayf8Gjv6q/4E2cZgDtdQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
@@ -3926,13 +3927,6 @@ packages:
 
   '@react-email/render@1.0.1':
     resolution: {integrity: sha512-W3gTrcmLOVYnG80QuUp22ReIT/xfLsVJ+n7ghSlG2BITB8evNABn1AO2rGQoXuK84zKtDAlxCdm3hRyIpZdGSA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.0 || ^19.0 || ^19.0.0-rc
-      react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
-
-  '@react-email/render@1.0.4':
-    resolution: {integrity: sha512-8ZXi89d8igBDE6W3zlHBa3GEDWKEUFDAa7i8MvVxnRViQuvsRbibK3ltuPgixxRI5+HgGNCSreBHQKZCkhUdyw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
@@ -13591,7 +13585,7 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  '@react-email/components@0.0.32(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@react-email/components@0.0.33(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-email/body': 0.0.11(react@18.3.1)
       '@react-email/button': 0.0.19(react@18.3.1)
@@ -13608,7 +13602,7 @@ snapshots:
       '@react-email/link': 0.0.12(react@18.3.1)
       '@react-email/markdown': 0.0.14(react@18.3.1)
       '@react-email/preview': 0.0.12(react@18.3.1)
-      '@react-email/render': 1.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-email/render': 1.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/row': 0.0.12(react@18.3.1)
       '@react-email/section': 0.0.16(react@18.3.1)
       '@react-email/tailwind': 1.0.4(react@18.3.1)
@@ -13662,14 +13656,6 @@ snapshots:
     dependencies:
       html-to-text: 9.0.5
       js-beautify: 1.15.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-promise-suspense: 0.3.4
-
-  '@react-email/render@1.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      html-to-text: 9.0.5
-      prettier: 3.4.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-promise-suspense: 0.3.4
