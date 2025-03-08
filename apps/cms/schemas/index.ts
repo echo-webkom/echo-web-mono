@@ -5,6 +5,7 @@ import hsApplication from "./hs-application";
 import job from "./job-ad";
 import location from "./location";
 import meetingMinute from "./meeting-minute";
+import merch from "./merch";
 import movies from "./movies";
 import contactProfile from "./objects/contact-profile";
 import question from "./objects/question";
@@ -34,4 +35,5 @@ export const schemaTypes = [
   banner,
   time,
   hsApplication,
+  merch,
 ];

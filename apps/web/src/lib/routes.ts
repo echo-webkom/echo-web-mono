@@ -14,6 +14,7 @@ import {
   LuPresentation,
   LuScale,
   LuScrollText,
+  LuShirt,
   LuShoppingCart,
   LuStickyNote,
   LuUsers,
@@ -123,6 +124,12 @@ export const headerRoutes: Array<Route> = [
         href: "/for-studenter/handleliste",
         description: "Si hva du synes hyggkom burde kjøpe inn til lesesalen",
         icon: LuShoppingCart,
+      },
+      {
+        label: "Merch",
+        href: "/for-studenter/merch",
+        description: "Få deg noe tøff echo merch",
+        icon: LuShirt,
       },
       {
         label: "Utlegg",
