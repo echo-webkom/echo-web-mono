@@ -43,17 +43,6 @@ export default async function MerchPage(props: Props) {
   return (
     <Container className="mx-auto max-w-4xl space-y-5 px-6 py-10">
       <Heading className="text-3xl font-bold">{merch.title}</Heading>
-      {merch.body && (
-        <div>
-          <Heading className="mb-2 text-lg font-semibold">Beskrivelse</Heading>
-          <Markdown content={merch.body} />
-        </div>
-      )}
-
-      <div className="flex max-w-52 items-center justify-between">
-        <Text className="text-xl font-semibold">Pris: {merch.price} kr</Text>
-        <Button variant="outline">Kjøp</Button>
-      </div>
 
       <Image
         src={urlFor(merch.image).url()}
@@ -62,6 +51,18 @@ export default async function MerchPage(props: Props) {
         height={475}
         className="rounded-lg border-2 shadow-lg"
       />
+
+      <Text className="text-xl font-semibold">Pris: {merch.price} kr</Text>
+      <Text className="text-md font-semibold">
+        Send mail til <span className="underline">echo@uib.no</span> for kjøp
+      </Text>
+
+      {merch.body && (
+        <div>
+          <Heading className="mb-2 text-lg font-semibold">Beskrivelse</Heading>
+          <Markdown content={merch.body} />
+        </div>
+      )}
     </Container>
   );
 }
