@@ -49,6 +49,29 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Merch = {
+  _id: string;
+  _type: "merch";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  price: number;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  body?: string;
+};
+
 export type HsApplication = {
   _id: string;
   _type: "hs-application";
@@ -660,6 +683,7 @@ export type AllSanitySchemaTypes =
   | SanityImagePalette
   | SanityImageDimensions
   | Geopoint
+  | Merch
   | HsApplication
   | Banner
   | Movie
@@ -935,6 +959,30 @@ export type JobAdsQueryResult = Array<{
   body: string;
 }>;
 
+// Source: ../../packages/sanity/src/queries/merch.ts
+// Variable: allMerchQuery
+// Query: *[_type == "merch" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  price,  image,  body}
+export type AllMerchQueryResult = Array<{
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  slug: string;
+  price: number;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  body: string | null;
+}>;
+
 // Source: ../../packages/sanity/src/queries/minutes.ts
 // Variable: allMeetingMinuteQuery
 // Query: *[_type == "meetingMinute" && !(_id in path('drafts.**'))] | order(date desc) {  _id,  isAllMeeting,  date,  title,  "document": document.asset->url}
@@ -1199,6 +1247,7 @@ declare module "@sanity/client" {
     "\n*[_type == \"happening\"\n  && !(_id in path('drafts.**'))\n  && slug.current == $slug\n ] {\n  happeningType,\n}[0].happeningType\n": HappeningTypeQueryResult;
     '*[_type == "hs-application" && !(_id in path(\'drafts.**\'))] {\n  "profile": profile->{\n    _id,\n    name,\n    picture\n  },\n  "poster": poster.asset->url\n}': AllHsApplicationsResult;
     '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && expiresAt > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  expiresAt,\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
+    '\n*[_type == "merch" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  price,\n  image,\n  body\n}\n': AllMerchQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;
     "\n*[_type == \"movie\"\n  && !(_id in path('drafts.**'))]\n  | order(_createdAt desc) {\n  _id,\n  title,\n  date,\n  link,\n  image,\n}\n": MoviesQueryResult;
     '\n*[_type == "post" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "authors": authors[]->{\n    _id,\n    name,\n    image,\n  },\n  image,\n  body\n}\n': AllPostsQueryResult;
