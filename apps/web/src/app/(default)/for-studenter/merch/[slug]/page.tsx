@@ -8,7 +8,6 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { Button } from "@/components/ui/button";
 import { fetchMerchBySlug } from "@/sanity/merch";
 
 type Props = {
