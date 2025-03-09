@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 
 import { Group, Happening, User, UsersToGroups } from "@echo-webkom/db/schemas";
 
-import { getHappeningsForGroup } from "@/lib/notification-helpers";
 import NotificationForm from "./notification-form";
 
 type NotificationPageProps = {

@@ -1,4 +1,4 @@
-import { and, eq, gte } from "drizzle-orm";
+import { and, eq, gte, inArray } from "drizzle-orm";
 
 import { groups, happenings, happeningsToGroups } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
@@ -32,4 +32,14 @@ export async function getHappeningsForGroup(groupName: string) {
     .orderBy(happenings.date);
 
   return happeningList;
+}
+
+export async function getHappeningsForUser(userId: string) {
+  const today = new Date();
+
+  const userGroups = await db.query.groups.findMany({
+    where: inArray(groups.id,
+      db.query.usersToGroups.select({ groupId: usersToGroups.groupId }).where(eq(usersToGroups.userId, userId))
+    ),
+  });
 }
