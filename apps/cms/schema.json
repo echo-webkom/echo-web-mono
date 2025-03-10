@@ -190,6 +190,134 @@
     }
   },
   {
+    "name": "merch",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "merch"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
+        },
+        "optional": false
+      },
+      "price": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": false
+      },
+      "image": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "asset": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "object",
+                "attributes": {
+                  "_ref": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "_type": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string",
+                      "value": "reference"
+                    }
+                  },
+                  "_weak": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "boolean"
+                    },
+                    "optional": true
+                  }
+                },
+                "dereferencesTo": "sanity.imageAsset"
+              },
+              "optional": true
+            },
+            "hotspot": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageHotspot"
+              },
+              "optional": true
+            },
+            "crop": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageCrop"
+              },
+              "optional": true
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "image"
+              }
+            }
+          }
+        },
+        "optional": false
+      },
+      "body": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
     "name": "hs-application",
     "type": "document",
     "attributes": {
