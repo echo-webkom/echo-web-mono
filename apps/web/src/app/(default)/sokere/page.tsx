@@ -32,7 +32,7 @@ export default async function HSApplicationsPage() {
 
   return (
     <Container layout="larger">
-      <Heading className="mb-4 mt-8">Søkere til Hovedstyret</Heading>
+      <Heading className="mb-4 mb-6 mt-10 text-center">Søkere til Hovedstyret</Heading>
 
       <div className="mx-auto grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {shuffled.map((application) => {
