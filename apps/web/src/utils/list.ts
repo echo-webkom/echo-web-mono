@@ -56,3 +56,21 @@ export const split = <T>(a: Array<T>, condition: (item: T) => boolean): [Array<T
 
   return [trueArray, falseArray];
 };
+
+/**
+ * Shuffels the list in a random order.
+ *
+ * @param list the list to shuffle
+ * @returns a new list with the elements in a random order
+ */
+export const shuffle = <T>(list: Array<T>): Array<T> => {
+  const shuffled = [...list];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    // @ts-expect-error This is a valid swap
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+};
