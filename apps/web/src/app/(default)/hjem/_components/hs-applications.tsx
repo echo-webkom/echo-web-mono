@@ -21,7 +21,12 @@ export const HSApplications = async () => {
     <div>
       <Heading level={3}>Årets søkere til Hovedstyret!</Heading>
 
-      <Text className="mb-5 text-muted-foreground">Trykk på en søker for å lese mer om dem.</Text>
+      <Text className="mb-5 text-muted-foreground">
+        Trykk på en søker for å lese mer om dem,{" "}
+        <a href="/sokere" className="text-primary underline">
+          eller se alle søkere her.
+        </a>
+      </Text>
 
       <Marquee gradient gradientColor="var(--background)">
         {applications.map((application) => {
