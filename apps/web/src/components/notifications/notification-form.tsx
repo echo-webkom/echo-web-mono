@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 type NotificationFormProps = {
   userEvents: Happening[];
@@ -24,6 +25,7 @@ type NotificationFormProps = {
 export default function NotificationForm({ userEvents }: NotificationFormProps) {
   const [selectedEvent, setSelectedEvent] = useState<Happening | null>(null);
   const [notificationName, setNotificationName] = useState("");
+  const { toast } = useToast();
 
   const handleSelectEvent = (eventId: string) => {
     const event = userEvents.find((e) => e.id === eventId) || null;
@@ -53,7 +55,19 @@ export default function NotificationForm({ userEvents }: NotificationFormProps) 
     };
 
     const result = await createNotification(payload);
-    console.log(result);
+    if (result.success) {
+      toast({
+        title: "Notifikasjon sendt",
+        description: "",
+        variant: "success",
+      });
+    } else {
+      toast({
+        title: "Feil ved sending",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
