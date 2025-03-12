@@ -8,6 +8,7 @@ import { allHsApplications } from "@echo-webkom/sanity/queries";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { shuffle } from "@/utils/list";
 import { ellipsis, initials } from "@/utils/string";
 
 const fetchAllHsApplications = async () => {
@@ -15,7 +16,7 @@ const fetchAllHsApplications = async () => {
 };
 
 export const HSApplications = async () => {
-  const applications = await fetchAllHsApplications();
+  const applications = shuffle(await fetchAllHsApplications());
 
   return (
     <div>
