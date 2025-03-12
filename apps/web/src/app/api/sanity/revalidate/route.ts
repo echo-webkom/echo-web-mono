@@ -84,6 +84,11 @@ export const POST = withBasicAuth(async (req) => {
       revalidateTags(["banner"]);
     }
 
+    if (type === "merch") {
+      console.log("Revalidating merch");
+      revalidateTags(["merch"]);
+    }
+
     return new Response(`Revalidated type: "${type}".`, {
       status: 200,
     });
