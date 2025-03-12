@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Group, Happening, User, UsersToGroups } from "@echo-webkom/db/schemas";
 
 import NotificationForm from "./notification-form";
@@ -19,7 +18,7 @@ type NotificationPageProps = {
 export default function NotificationPage({ user, happenings }: NotificationPageProps) {
   return (
     <div>
-      <NotificationForm />
+      <NotificationForm userEvents={happenings} />
     </div>
   );
 }
