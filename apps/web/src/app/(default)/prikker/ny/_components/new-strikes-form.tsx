@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
@@ -55,7 +55,8 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
       strikeType: StrikeType.DeregisterBeforeDeadline,
       count: 1,
       reason: "",
-      expiresInMonths: 3,
+      banExpiresInMonths: 3,
+      strikeExpiresInMonths: 10,
     },
   });
 
@@ -68,12 +69,14 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
     (watched.strikeType === StrikeType.Other
       ? Number(watched.count)
       : (Number(StrikeTypeCount[watched.strikeType]) ?? 1));
+  const shouldBeBanned = newDots >= 5;
 
   const reset = () => {
     setUser("");
     form.reset({
       count: 1,
-      expiresInMonths: 3,
+      banExpiresInMonths: 3,
+      strikeExpiresInMonths: 10,
       reason: "",
       userId: "",
     });
@@ -91,11 +94,10 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
         return;
       }
 
-      reset();
-
       router.refresh();
+      reset();
       toast({
-        title: "Prikker lagt til",
+        title: message,
         variant: "success",
       });
     },
@@ -103,6 +105,21 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
       console.error(error);
     },
   );
+
+  // SUPER HACKY !
+  useEffect(() => {
+    if (shouldBeBanned) {
+      form.setValue("strikeExpiresInMonths", 10);
+    } else {
+      form.setValue("strikeExpiresInMonths", 10);
+    }
+
+    if (!shouldBeBanned) {
+      form.setValue("banExpiresInMonths", 3);
+    } else {
+      form.setValue("banExpiresInMonths", 3);
+    }
+  }, [form, shouldBeBanned]);
 
   return (
     <Form {...form}>
@@ -121,7 +138,8 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
                     field.onChange(data);
                     form.reset({
                       count: 1,
-                      expiresInMonths: 3,
+                      strikeExpiresInMonths: 10,
+                      banExpiresInMonths: 3,
                       strikeType: StrikeType.DeregisterBeforeDeadline,
                       reason: "",
                       userId: data,
@@ -207,7 +225,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
                         <option value={5}>5 prikker</option>
                       </Select>
                     </FormControl>
-                    {newDots >= 5 ? (
+                    {shouldBeBanned ? (
                       <FormDescription className="text-red-500">
                         Brukeren vil bli bannet etter denne prikken
                       </FormDescription>
@@ -222,16 +240,17 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
           </>
         )}
 
-        {newDots >= 5 && (
+        {shouldBeBanned ? (
           <FormField
             control={form.control}
-            name="expiresInMonths"
+            key="banExpiresInMonths"
+            name="banExpiresInMonths"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="expires">Utløper</FormLabel>
+                <FormLabel htmlFor="banExpires">Ban utløper om</FormLabel>
                 <FormControl>
                   <Select
-                    id="expires"
+                    id="banExpires"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   >
@@ -248,8 +267,40 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
                   </Select>
                 </FormControl>
                 <FormDescription>
-                  Tiden brukeren vil være bannet. 3 måneder er standard, men kan utvides ved behov
-                  (f.eks sommerferie).
+                  Hvor lenge brukeren skal være bannet. 3 måneder er standard.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            key="strikeExpiresInMonths"
+            name="strikeExpiresInMonths"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="strikeExpires">Prikk(er) utløper om</FormLabel>
+                <FormControl>
+                  <Select
+                    id="strikeExpires"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  >
+                    <option value={1}>1 måned</option>
+                    <option value={2}>2 måneder</option>
+                    <option value={3}>3 måneder</option>
+                    <option value={4}>4 måneder</option>
+                    <option value={5}>5 måneder</option>
+                    <option value={6}>6 måneder</option>
+                    <option value={7}>7 måneder</option>
+                    <option value={8}>8 måneder</option>
+                    <option value={9}>9 måneder</option>
+                    <option value={10}>10 måneder</option>
+                  </Select>
+                </FormControl>
+                <FormDescription>
+                  Hvor lenge prikkene skal vare for brukeren. 10 måneder er standard.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

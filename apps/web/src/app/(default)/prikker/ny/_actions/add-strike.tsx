@@ -64,7 +64,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
         reason: data.reason,
         bannedBy: user.id,
         createdAt: new Date(),
-        expiresAt: addMonths(new Date(), data.expiresInMonths),
+        expiresAt: addMonths(new Date(), data.banExpiresInMonths),
       });
 
       await db.delete(dots).where(eq(dots.userId, data.userId));
@@ -75,7 +75,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
         userId: data.userId,
         createdAt: new Date(),
         strikedBy: user.id,
-        expiresAt: addMonths(new Date(), 10),
+        expiresAt: addMonths(new Date(), data.strikeExpiresInMonths),
       });
     }
 
@@ -92,16 +92,20 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       />,
     );
 
+    const message = shouldBeBanned
+      ? `Brukeren er bannet i ${data.banExpiresInMonths} måneder`
+      : `Brukeren har nå ${previousStrikes + data.count} prikker`;
+
     return {
       success: true,
-      message: "Strikes added",
+      message,
     };
   } catch (e) {
     console.error(e);
 
     return {
       success: false,
-      message: "Invalid input",
+      message: "Ugyldig input",
     };
   }
 };

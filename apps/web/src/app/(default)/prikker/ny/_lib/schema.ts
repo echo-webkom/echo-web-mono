@@ -37,7 +37,8 @@ export const addStrikesSchema = z
     strikeType: z.nativeEnum(StrikeType),
     reason: z.string(),
     count: z.coerce.number().min(1).max(5),
-    expiresInMonths: z.coerce.number().min(1).max(12),
+    strikeExpiresInMonths: z.coerce.number().min(1).max(12),
+    banExpiresInMonths: z.coerce.number().min(1).max(12),
   })
   .superRefine((data, ctx) => {
     if (data.strikeType === StrikeType.Other && !data.reason) {
@@ -75,7 +76,8 @@ export const parseAddStrikesSchema = (
       success: true,
       data: {
         count: data.count,
-        expiresInMonths: data.expiresInMonths,
+        strikeExpiresInMonths: data.strikeExpiresInMonths,
+        banExpiresInMonths: data.banExpiresInMonths,
         reason: data.reason,
         userId: data.userId,
       },
@@ -86,7 +88,8 @@ export const parseAddStrikesSchema = (
     success: true,
     data: {
       count: StrikeTypeCount[input.strikeType] ?? 1,
-      expiresInMonths: data.expiresInMonths,
+      strikeExpiresInMonths: data.strikeExpiresInMonths,
+      banExpiresInMonths: data.banExpiresInMonths,
       userId: data.userId,
       reason: StrikeTypeLabels[input.strikeType] ?? "Ingen grunn oppgitt",
     },
