@@ -4,6 +4,7 @@ import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
+import { StaticPageSidebar } from "@/lib/static-page-sidebar";
 
 export default async function HyggkomHandleliste() {
   const [user, items] = await Promise.all([getUser(), getAllShoppinglistItems()]);
@@ -19,15 +20,19 @@ export default async function HyggkomHandleliste() {
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   return (
-    <Container className="max-w-5xl py-10">
-      <h1 className="bold py-3 text-4xl">Hyggkoms handleliste</h1>
-      <div className="py-5">
-        <h1 className="py-3 text-xl">
-          Like de tingene du mener vi bør kjøpe inn, eller legg til ditt eget forslag under!
-        </h1>
-        <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={false} />
+    <Container className="flex flex-row py-10">
+      <StaticPageSidebar />
+
+      <div>
+        <h1 className="bold py-3 text-4xl">Hyggkoms handleliste</h1>
+        <div className="py-5">
+          <h1 className="py-3 text-xl">
+            Like de tingene du mener vi bør kjøpe inn, eller legg til ditt eget forslag under!
+          </h1>
+          <HyggkomShoppingList items={mappedItems} isAdmin={isAdmin} withDots={false} />
+        </div>
+        <HyggkomShoppingForm />
       </div>
-      <HyggkomShoppingForm />
     </Container>
   );
 }
