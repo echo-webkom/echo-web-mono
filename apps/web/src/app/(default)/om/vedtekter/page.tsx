@@ -4,6 +4,7 @@ import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { StaticPageSidebar } from "@/lib/static-page-sidebar";
 
 export const metadata = {
   title: "Vedtekter",
@@ -21,23 +22,27 @@ export default async function Bylaws() {
   ).then((res) => res.text());
 
   return (
-    <Container className="space-y-8 py-10">
-      <div>
-        <Heading>Vedtekter</Heading>
-        <Text>
-          Vedtektene til echo – Linjeforeningen for informatikk. Du kan og lese de på{" "}
-          <a
-            className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/echo-uib/Vedtekter"
-          >
-            GitHub
-          </a>
-          .
-        </Text>
+    <Container className="flex flex-row py-10">
+      <StaticPageSidebar />
+
+      <div className="space-y-8">
+        <div>
+          <Heading>Vedtekter</Heading>
+          <Text>
+            Vedtektene til echo – Linjeforeningen for informatikk. Du kan og lese de på{" "}
+            <a
+              className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/echo-uib/Vedtekter"
+            >
+              GitHub
+            </a>
+            .
+          </Text>
+        </div>
+        <Markdown content={markdown} />
       </div>
-      <Markdown content={markdown} />
     </Container>
   );
 }

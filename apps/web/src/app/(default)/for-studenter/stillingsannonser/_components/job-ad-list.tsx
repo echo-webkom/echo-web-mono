@@ -127,7 +127,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
   }, [jobAds, search, companyFilter, workTypeFilter, locationFilter, sort]);
 
   return (
-    <Container className="space-y-4 py-10">
+    <Container className="space-y-4">
       <Heading>Stillingsannonser</Heading>
 
       <Text>

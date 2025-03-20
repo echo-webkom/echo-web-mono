@@ -31,6 +31,7 @@ type Route =
     }
   | {
       label: string;
+      path: string;
       links: Array<{
         label: string;
         href: string;
@@ -46,6 +47,7 @@ export const headerRoutes: Array<Route> = [
   },
   {
     label: "For studenter",
+    path: "/for-studenter",
     links: [
       {
         label: "Arrangementer",
@@ -147,6 +149,7 @@ export const headerRoutes: Array<Route> = [
   },
   {
     label: "For bedrifter",
+    path: "/for-bedrifter",
     links: [
       {
         label: "Bedriftspresentasjon",
@@ -164,6 +167,7 @@ export const headerRoutes: Array<Route> = [
   },
   {
     label: "Om echo",
+    path: "/om",
     links: [
       {
         label: "Om oss",

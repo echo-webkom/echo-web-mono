@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
+import { StaticPageSidebar } from "@/lib/static-page-sidebar";
 import { fetchStaticInfo, fetchStaticInfoBySlug } from "@/sanity/static-info";
 import { pageTypeToUrl } from "@/sanity/utils/mappers";
 
@@ -45,7 +46,9 @@ export default async function StaticPage(props: Props) {
   const page = await getData(params.path);
 
   return (
-    <Container className="py-10">
+    <Container className="flex flex-row py-10">
+      <StaticPageSidebar />
+
       <article>
         <Heading className="mb-4">{page.title}</Heading>
 
