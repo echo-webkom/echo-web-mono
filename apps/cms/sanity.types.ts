@@ -1237,6 +1237,16 @@ export type HappeningQueryListResult = Array<{
   }> | null;
 }>;
 
+// Source: ../../apps/web/src/sanity/notification/queries.ts
+// Variable: notificationQuery
+// Query: *[_type == "notification" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){  _id,  title,  dateFrom,  dateTo}
+export type NotificationQueryResult = Array<{
+  _id: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+}>;
+
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n*[_type == "banner" && _id == "banner" && !(_id in path(\'drafts.**\'))] {\n  backgroundColor,\n  textColor,\n  text,\n  expiringDate,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
@@ -1256,5 +1266,6 @@ declare module "@sanity/client" {
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
     '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
+    "\n*[_type == \"notification\" && !(_id in path('drafts.**')) && dateTime(now()) >= dateTime(dateFrom) && dateTime(now()) <= dateTime(dateTo)]| order(_createdAt desc){\n  _id,\n  title,\n  dateFrom,\n  dateTo\n}\n": NotificationQueryResult;
   }
 }
