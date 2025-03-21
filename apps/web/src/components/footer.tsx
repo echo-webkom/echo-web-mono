@@ -5,6 +5,7 @@ import { BiRss } from "react-icons/bi";
 import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
+import BekkApril from "@/assets/images/bekk-april.png";
 import BekkLogo from "@/assets/images/bekk.png";
 import { footerRoutes } from "@/lib/routes";
 import { sponsors } from "@/lib/sponsors";
@@ -14,7 +15,12 @@ type FooterProps = {
   className?: string;
 };
 
+const isAprilFools = (date: Date) => date.getMonth() === 3 && date.getDate() === 1;
+
 export const Footer = ({ className }: FooterProps) => {
+  const isAprilFoolsDay = isAprilFools(new Date());
+  const bekkLogo = isAprilFoolsDay ? BekkApril : BekkLogo;
+
   return (
     <div className={cn("mt-32 selection:bg-primary", className)}>
       <footer className="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground">
@@ -60,8 +66,11 @@ export const Footer = ({ className }: FooterProps) => {
               <h3 className="mb-4 py-2 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
               <Link href="https://bekk.no" target="_blank" rel="noreferrer">
                 <Image
-                  src={BekkLogo as StaticImport}
-                  className="h-28 w-auto invert dark:invert-0"
+                  src={bekkLogo}
+                  className={cn("h-28 w-auto", {
+                    "invert dark:invert-0": !isAprilFoolsDay,
+                    "mx-auto h-40": isAprilFoolsDay,
+                  })}
                   alt="Bekk logo"
                 />
               </Link>
