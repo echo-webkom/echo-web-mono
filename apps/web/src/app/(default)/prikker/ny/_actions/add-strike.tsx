@@ -73,7 +73,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       if (overflowStrikes > 0) {
         await db.insert(dots).values({
           count: overflowStrikes,
-          reason: "Overflow",
+          reason: data.reason,
           userId: data.userId,
           createdAt: new Date(),
           strikedBy: user.id,
