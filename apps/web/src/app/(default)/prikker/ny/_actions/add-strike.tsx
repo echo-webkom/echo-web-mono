@@ -57,6 +57,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
 
     const previousStrikes = strikedUser.dots.reduce((acc, dot) => acc + dot.count, 0);
     const shouldBeBanned = previousStrikes + data.count >= 5;
+    const overflowStrikes = previousStrikes + data.count - 5;
 
     if (shouldBeBanned) {
       await db.insert(banInfos).values({
@@ -68,6 +69,17 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       });
 
       await db.delete(dots).where(eq(dots.userId, data.userId));
+
+      if (overflowStrikes > 0) {
+        await db.insert(dots).values({
+          count: overflowStrikes,
+          reason: "Overflow",
+          userId: data.userId,
+          createdAt: new Date(),
+          strikedBy: user.id,
+          expiresAt: addMonths(new Date(), data.strikeExpiresInMonths),
+        });
+      }
     } else {
       await db.insert(dots).values({
         count: data.count,

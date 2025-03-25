@@ -205,42 +205,73 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
               )}
             />
 
-            {watched.userId !== "" && (
-              <FormField
-                control={form.control}
-                name="count"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="count">Antall prikker</FormLabel>
-                    <FormControl>
-                      <Select
-                        id="count"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      >
-                        <option value={1}>1 prikker</option>
-                        <option value={2}>2 prikker</option>
-                        <option value={3}>3 prikker</option>
-                        <option value={4}>4 prikker</option>
-                        <option value={5}>5 prikker</option>
-                      </Select>
-                    </FormControl>
-                    {shouldBeBanned ? (
-                      <FormDescription className="text-red-500">
-                        Brukeren vil bli bannet etter denne prikken
-                      </FormDescription>
-                    ) : (
-                      <FormDescription>{newDots} prikk(er) totalt for brukeren</FormDescription>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="count"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="count">Antall prikker</FormLabel>
+                  <FormControl>
+                    <Select
+                      id="count"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    >
+                      <option value={1}>1 prikker</option>
+                      <option value={2}>2 prikker</option>
+                      <option value={3}>3 prikker</option>
+                      <option value={4}>4 prikker</option>
+                      <option value={5}>5 prikker</option>
+                    </Select>
+                  </FormControl>
+                  {shouldBeBanned ? (
+                    <FormDescription className="text-red-500">
+                      Brukeren vil bli bannet etter denne prikken
+                    </FormDescription>
+                  ) : (
+                    <FormDescription>{newDots} prikk(er) totalt for brukeren</FormDescription>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         )}
 
-        {shouldBeBanned ? (
+        <FormField
+          control={form.control}
+          key="strikeExpiresInMonths"
+          name="strikeExpiresInMonths"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="strikeExpires">Prikk(er) utløper om</FormLabel>
+              <FormControl>
+                <Select
+                  id="strikeExpires"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                >
+                  <option value={1}>1 måned</option>
+                  <option value={2}>2 måneder</option>
+                  <option value={3}>3 måneder</option>
+                  <option value={4}>4 måneder</option>
+                  <option value={5}>5 måneder</option>
+                  <option value={6}>6 måneder</option>
+                  <option value={7}>7 måneder</option>
+                  <option value={8}>8 måneder</option>
+                  <option value={9}>9 måneder</option>
+                  <option value={10}>10 måneder</option>
+                </Select>
+              </FormControl>
+              <FormDescription>
+                Hvor lenge prikkene skal vare for brukeren. 10 måneder er standard.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {shouldBeBanned && (
           <FormField
             control={form.control}
             key="banExpiresInMonths"
@@ -268,39 +299,6 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
                 </FormControl>
                 <FormDescription>
                   Hvor lenge brukeren skal være bannet. 3 måneder er standard.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ) : (
-          <FormField
-            control={form.control}
-            key="strikeExpiresInMonths"
-            name="strikeExpiresInMonths"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="strikeExpires">Prikk(er) utløper om</FormLabel>
-                <FormControl>
-                  <Select
-                    id="strikeExpires"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  >
-                    <option value={1}>1 måned</option>
-                    <option value={2}>2 måneder</option>
-                    <option value={3}>3 måneder</option>
-                    <option value={4}>4 måneder</option>
-                    <option value={5}>5 måneder</option>
-                    <option value={6}>6 måneder</option>
-                    <option value={7}>7 måneder</option>
-                    <option value={8}>8 måneder</option>
-                    <option value={9}>9 måneder</option>
-                    <option value={10}>10 måneder</option>
-                  </Select>
-                </FormControl>
-                <FormDescription>
-                  Hvor lenge prikkene skal vare for brukeren. 10 måneder er standard.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
