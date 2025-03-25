@@ -51,7 +51,7 @@ export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) =>
       </div>
 
       {isOpen && (
-        <div>
+        <div className="rounded-lg border p-2">
           <hr />
 
           <div className="py-8">
@@ -90,7 +90,7 @@ export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) =>
             )}
 
             {strikes.length > 0 && (
-              <>
+              <div className="py-4">
                 <p className="mb-4 text-lg font-medium">Prikker</p>
 
                 <ul className="flex flex-col gap-2">
@@ -130,7 +130,7 @@ export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) =>
                     ),
                   )}
                 </ul>
-              </>
+              </div>
             )}
           </div>
         </div>
