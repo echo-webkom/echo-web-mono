@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "id": "e747461b-8ddc-4dbd-ad90-3c8f53f14651",
+=======
+  "id": "c01c23d7-effa-4cb6-95b5-a5027cd2a01c",
+>>>>>>> 9cc0fe6f (create displayable bell and sanity notification tab)
   "prevId": "812eb103-6296-4731-9bff-8306448adc2a",
   "version": "7",
   "dialect": "postgresql",
@@ -228,6 +232,7 @@
       },
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
     "public.ban_info": {
       "name": "ban_info",
       "schema": "",
@@ -304,6 +309,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+=======
+>>>>>>> 9cc0fe6f (create displayable bell and sanity notification tab)
     "public.comments_reactions": {
       "name": "comments_reactions",
       "schema": "",
@@ -460,6 +467,7 @@
       },
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
     "public.dot": {
       "name": "dot",
       "schema": "",
@@ -548,6 +556,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+=======
+>>>>>>> 9cc0fe6f (create displayable bell and sanity notification tab)
     "public.group": {
       "name": "group",
       "schema": "",
@@ -1288,6 +1298,22 @@
           "notNull": true,
           "default": "'student'"
         },
+<<<<<<< HEAD
+=======
+        "is_banned": {
+          "name": "is_banned",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "banned_from_strike": {
+          "name": "banned_from_strike",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+>>>>>>> 9cc0fe6f (create displayable bell and sanity notification tab)
         "last_sign_in_at": {
           "name": "last_sign_in_at",
           "type": "timestamp",
@@ -1546,6 +1572,288 @@
         }
       },
       "uniqueConstraints": {}
+<<<<<<< HEAD
+=======
+    },
+    "public.strike": {
+      "name": "strike",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "strike_info_id": {
+          "name": "strike_info_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "user_idx": {
+          "name": "user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "strike_user_id_user_id_fk": {
+          "name": "strike_user_id_user_id_fk",
+          "tableFrom": "strike",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "strike_strike_info_id_strike_info_id_fk": {
+          "name": "strike_strike_info_id_strike_info_id_fk",
+          "tableFrom": "strike",
+          "tableTo": "strike_info",
+          "columnsFrom": [
+            "strike_info_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.strike_info": {
+      "name": "strike_info",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "happening_id": {
+          "name": "happening_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "issuer_id": {
+          "name": "issuer_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "strike_info_happening_id_happening_id_fk": {
+          "name": "strike_info_happening_id_happening_id_fk",
+          "tableFrom": "strike_info",
+          "tableTo": "happening",
+          "columnsFrom": [
+            "happening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "strike_info_issuer_id_user_id_fk": {
+          "name": "strike_info_issuer_id_user_id_fk",
+          "tableFrom": "strike_info",
+          "tableTo": "user",
+          "columnsFrom": [
+            "issuer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.notification": {
+      "name": "notification",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_from": {
+          "name": "date_from",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_to": {
+          "name": "date_to",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notification_created_by_user_id_fk": {
+          "name": "notification_created_by_user_id_fk",
+          "tableFrom": "notification",
+          "tableTo": "user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.user_to_notification": {
+      "name": "user_to_notification",
+      "schema": "",
+      "columns": {
+        "notification_id": {
+          "name": "notification_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "is_read": {
+          "name": "is_read",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_to_notification_notification_id_notification_id_fk": {
+          "name": "user_to_notification_notification_id_notification_id_fk",
+          "tableFrom": "user_to_notification",
+          "tableTo": "notification",
+          "columnsFrom": [
+            "notification_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_to_notification_user_id_user_id_fk": {
+          "name": "user_to_notification_user_id_user_id_fk",
+          "tableFrom": "user_to_notification",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_to_notification_notification_id_user_id_pk": {
+          "name": "user_to_notification_notification_id_user_id_pk",
+          "columns": [
+            "notification_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+>>>>>>> 9cc0fe6f (create displayable bell and sanity notification tab)
     }
   },
   "enums": {

@@ -18,6 +18,7 @@ import {
   degrees,
   dots,
   usersToGroups,
+  usersToNotifications,
   usersToShoppingListItems,
   userTypeEnum,
 } from ".";
@@ -62,6 +63,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     references: [banInfos.userId],
     relationName: "banInfo",
   }),
+  notifications: many(usersToNotifications),
 }));
 
 export type User = InferSelectModel<typeof users>;
