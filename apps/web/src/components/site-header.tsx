@@ -23,7 +23,9 @@ export const SiteHeader = async () => {
         <NavigationRoot>
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
             <div className="absolute -bottom-3 flex space-x-2">
-              <Chip className="z-50">{getRandomMessage()}</Chip>
+              <a href="https://echo.uib.no/liten-e">
+                <Chip className="z-50" >{getRandomMessage()}</Chip>
+              </a>
               {message !== "" && <Chip className="z-50">{message}</Chip>}
             </div>
 
