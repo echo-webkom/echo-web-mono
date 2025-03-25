@@ -42,7 +42,7 @@ const getExtraMessages = (now: Date): Array<MessageItem> => {
   const messages: Array<MessageItem> = [];
 
   if (isThursday(now)) {
-    messages.push({ text: "Vaffeltorsdag 🧇", link: "/arrangementer" });
+    messages.push({ text: "Vaffeltorsdag 🧇" });
   }
 
   if (isFriday(now)) {
@@ -51,7 +51,7 @@ const getExtraMessages = (now: Date): Array<MessageItem> => {
 
   if (week === 34 || week === 35) {
     messages.push(
-        { text: "Velkommen (tilbake)!", link: "/guide" },
+        { text: "Velkommen (tilbake)!" },
         { text: "New semester, new me?" }
     );
   }
@@ -66,7 +66,7 @@ const getExtraMessages = (now: Date): Array<MessageItem> => {
 
   // December
   if (month === 11) {
-    messages.push({ text: "Ho, ho, ho!", link: "/julekalender" });
+    messages.push({ text: "Ho, ho, ho!" });
   }
 
   return messages;
@@ -74,7 +74,7 @@ const getExtraMessages = (now: Date): Array<MessageItem> => {
 
 const getDateSpecificMessage = (date: Date): MessageItem | null => {
   if (getMonth(date) === 4 && getDate(date) === 17) {
-    return { text: "Gralla 🇳🇴", link: "/17mai" };
+    return { text: "Gralla 🇳🇴" };
   }
 
   if ([5, 6].includes(getMonth(date))) {
@@ -82,15 +82,15 @@ const getDateSpecificMessage = (date: Date): MessageItem | null => {
   }
 
   if (getMonth(date) === 1 && getDate(date) === 14) {
-    return { text: "🥰💕💞💓💏💗💖💘💝", link: "/valentine" };
+    return { text: "🥰💕💞💓💏💗💖💘💝" };
   }
 
   if (isThursday(date) && getHours(date) < 12) {
-    return { text: "Husk bedpres kl. 12:00!", link: "/bedpres" };
+    return { text: "Husk bedpres kl. 12:00!" };
   }
 
   if (getMonth(date) === 11 && getDate(date) >= 24) {
-    return { text: "God jul! 🎅", link: "/julekalender" };
+    return { text: "God jul! 🎅"};
   }
 
   if (getMonth(date) === 0 && getDate(date) === 1) {
