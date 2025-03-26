@@ -25,13 +25,13 @@ export const SiteHeader = async () => {
           <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
             <div className="absolute -bottom-3 flex space-x-2">
               {randomMessage.link ? (
-                  <Link href={randomMessage.link}>
-                    <Chip className="z-50 cursor-pointer hover:bg-primary/10 transition-colors">
-                      {randomMessage.text}
-                    </Chip>
-                  </Link>
+                <Link href={randomMessage.link}>
+                  <Chip className="hover:bg-primary/10 z-50 cursor-pointer transition-colors">
+                    {randomMessage.text}
+                  </Chip>
+                </Link>
               ) : (
-                  <Chip className="z-50">{randomMessage.text}</Chip>
+                <Chip className="z-50">{randomMessage.text}</Chip>
               )}
               {message !== "" && <Chip className="z-50">{message}</Chip>}
             </div>

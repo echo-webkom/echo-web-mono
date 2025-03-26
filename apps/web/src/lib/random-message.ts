@@ -50,18 +50,12 @@ const getExtraMessages = (now: Date): Array<MessageItem> => {
   }
 
   if (week === 34 || week === 35) {
-    messages.push(
-        { text: "Velkommen (tilbake)!" },
-        { text: "New semester, new me?" }
-    );
+    messages.push({ text: "Velkommen (tilbake)!" }, { text: "New semester, new me?" });
   }
 
   // October
   if (month === 9) {
-    messages.push(
-        { text: "BØ!" },
-        { text: "UuUuuUuuUuUu" }
-    );
+    messages.push({ text: "BØ!" }, { text: "UuUuuUuuUuUu" });
   }
 
   // December
@@ -90,7 +84,7 @@ const getDateSpecificMessage = (date: Date): MessageItem | null => {
   }
 
   if (getMonth(date) === 11 && getDate(date) >= 24) {
-    return { text: "God jul! 🎅"};
+    return { text: "God jul! 🎅" };
   }
 
   if (getMonth(date) === 0 && getDate(date) === 1) {
