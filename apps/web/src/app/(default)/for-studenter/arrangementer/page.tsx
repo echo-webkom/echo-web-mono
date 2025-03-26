@@ -8,17 +8,21 @@ import {
   FilterStatusAndOrderBar,
 } from "@/components/event-filter";
 import { EventsView, type SearchParams } from "@/components/events-view";
-import { getCalendarEvents } from "@/lib/calendar-events";
+import { happeningsToCalendarEvent, moviesToCalendarEvent } from "@/lib/calendar-event-helpers";
+import { fetchAllHappenings } from "@/sanity/happening";
+import { fetchMovies } from "@/sanity/movies";
 
 export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
-  // TODO: This is very bad practice and should be fixed!
+  const [happenings, movies] = await Promise.all([fetchAllHappenings(), fetchMovies()]);
   if (!searchParams) searchParams = { type: "all" };
 
   // Serialize searchParams to a JSON string as a key for the Suspense component.
   // Ensure a stable key by stringifying a sorted object if the order may vary.
   const searchParamsKey = JSON.stringify(searchParams, Object.keys(searchParams).sort());
 
-  const calendarEvents = await getCalendarEvents();
+  const calendarEvents = happeningsToCalendarEvent(happenings).concat(
+    moviesToCalendarEvent(movies),
+  );
 
   return (
     <Container layout="larger" className="space-y-4 py-10">

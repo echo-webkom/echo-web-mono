@@ -1,5 +1,4 @@
-import type { NextConfig } from "next";
-
+/** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: [
     "@echo-webkom/db",

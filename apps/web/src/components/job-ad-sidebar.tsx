@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { format } from "date-fns";
+import { nb } from "date-fns/locale/nb";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { type JobAdsQueryResult } from "@echo-webkom/cms/types";

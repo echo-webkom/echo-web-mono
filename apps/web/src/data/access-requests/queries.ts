@@ -1,6 +1,4 @@
-import { type AccessRequest } from "@echo-webkom/db/schemas";
-
-import { apiServer } from "@/api/server";
+import { db } from "@echo-webkom/db/serverless";
 
 export const getAccessRequests = async () => {
   return await apiServer.get("admin/access-requests").json<Array<AccessRequest>>();

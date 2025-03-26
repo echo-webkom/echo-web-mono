@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Heading } from "@/components/typography/heading";
@@ -119,25 +119,21 @@ export const Calendar = ({ events, type }: Props) => {
 
 const Legend = () => {
   return (
-    <div className="flex flex-wrap gap-4 p-5 text-xs">
+    <div className="flex flex-col gap-4 p-5 md:flex-row">
       <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-primary"></div>
+        <div className="mr-1 h-4 w-4 rounded-full bg-primary"></div>
         <div>Bedpres</div>
       </div>
       <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-secondary"></div>
+        <div className="mr-1 h-4 w-4 rounded-full bg-secondary"></div>
         <div>Arrangement</div>
       </div>
       <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-pink-400"></div>
+        <div className="mr-1 h-4 w-4 rounded-full bg-pink-400"></div>
         <div>Film</div>
       </div>
-      <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-green-600"></div>
-        <div>Brettspill</div>
-      </div>
       <div className="flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-gray-600"></div>
+        <div className="mr-1 h-4 w-4 rounded-full bg-gray-600"></div>
         <div>Annet</div>
       </div>
     </div>

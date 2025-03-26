@@ -10,12 +10,8 @@ export const JobAds = async ({ className }: { className?: string }) => {
   }
 
   return (
-    <BentoBox
-      title="Stillingsannonser"
-      href="/for-studenter/stillingsannonser"
-      className={className}
-    >
-      <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
+    <BentoBox title="Jobbannonser" href="/for-studenter/jobber" className={className}>
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {jobAds.map((jobAd) => (
           <li key={jobAd._id}>
             <JobAdPreview jobAd={jobAd} />

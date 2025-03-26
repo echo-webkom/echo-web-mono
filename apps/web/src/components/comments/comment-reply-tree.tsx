@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+
 import { type User } from "@echo-webkom/db/schemas";
 
 import { type CommentTree } from "@/lib/comment-tree";
@@ -26,6 +29,14 @@ type ReplyTreeProps = {
 };
 
 export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => !prev);
+  };
+
+  const userLink = (userId: string) => `/auth/user/${userId}`;
+
   if (!comments.length) {
     return null;
   }

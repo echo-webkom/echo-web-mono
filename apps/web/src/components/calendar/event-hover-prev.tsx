@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { format } from "date-fns";
 
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 
@@ -15,7 +12,12 @@ export const EventHoverPreview = ({ event }: Props) => {
         <Link className="hover:underline" href={event.link}>
           <h3 className="line-clamp-1 text-ellipsis font-semibold">{event.title}</h3>
         </Link>
-        <h3 className="text-sm">{format(event.date, "HH:mm")}</h3>
+        <h3 className="text-sm">
+          {event.date.toLocaleTimeString("nb-NO", {
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+        </h3>
       </div>
       <p className="text-sm font-medium">
         {event.body.slice(0, 250)}

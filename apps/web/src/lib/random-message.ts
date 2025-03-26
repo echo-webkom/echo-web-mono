@@ -1,38 +1,24 @@
 import { getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday } from "date-fns";
 
-// Define interface for message items
-interface MessageItem {
-  text: string;
-  link?: string; // Optional link
-}
-
-// Convert all messages to message objects
-const baseMessages: Array<MessageItem> = [
-  { text: "Bottom text" },
-  { text: "🤙🤙🤙" },
-  { text: "Lorem ipsum" },
-  { text: "Uten sylteagurk!" },
-  { text: "Spruuutnice" },
-  { text: "Skambra!" },
-  { text: "For ei skjønnas 😍" },
-  { text: "Vim eller forsvinn" },
-  { text: "Mye å gjøre? SUCK IT UP!" },
-  { text: "@echo_webkom", link: "https://www.instagram.com/echo_webkom/" },
-  { text: "@echo_uib", link: "https://www.instagram.com/echo_uib/" },
-  { text: "JAJ FOR FAJ" },
-  { text: "Dubkom" },
-  { text: "1337" },
-  { text: ":(){ :|:& };:", link: "https://askubuntu.com/questions/777562/what-does-do" },
-  { text: "go func() { urself }()" },
-  { text: "418 i'm a teapot" },
-  { text: "New backend, who dis?" },
-  { text: "Bedpresolini" },
-  { text: "Divine intellect" },
-  { text: "Skrevet i Holy C" },
-  { text: "We stan Bjarne", link: "https://www.stroustrup.com/" },
-  { text: "Rust or bust" },
-  { text: "CRUD-kriger" },
-  { text: "Liten e!!!", link: "/liten-e" },
+const baseMessages = [
+  "Bottom text",
+  "🤙🤙🤙",
+  "Lorem ipsum",
+  "Uten sylteagurk!",
+  "Spruuutnice",
+  "Skambra!",
+  "For ei skjønnas 😍",
+  "Vim eller forsvinn",
+  "Mye å gjøre? SUCK IT UP!",
+  "@echo_webkom",
+  "@echo_uib",
+  "JAJ FOR FAJ",
+  "Dubkom",
+  "1337",
+  ":(){ :|:& };:",
+  "go func() { urself }()",
+  "418 i'm a teapot",
+  "New backend, who dis?",
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {

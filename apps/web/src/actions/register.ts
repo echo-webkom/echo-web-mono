@@ -23,24 +23,23 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
   const userId = user.id;
   const questions = payload.questions;
 
-  try {
-    const resp = await apiServer
-      .post("admin/register", {
-        json: {
-          happeningId,
-          userId,
-          questions,
-        },
-      })
-      .json<{ success: boolean; message: string }>();
+  const resp = await apiServer
+    .post("admin/register", {
+      json: {
+        happeningId,
+        userId,
+        questions,
+      },
+    })
+    .json<{ success: boolean; message: string }>()
+    .catch((err) => {
+      console.error("FATAL. Failed to connect to API", err);
 
-    return resp;
-  } catch (error) {
-    console.error("Failed to register");
+      return {
+        success: false,
+        message: "Fikk ikke koblet til API.",
+      };
+    });
 
-    return {
-      success: false,
-      message: "Noe gikk galt på serveren. Kontakt en i Webkom.",
-    };
-  }
+  return resp;
 };
