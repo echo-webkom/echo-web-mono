@@ -1,12 +1,10 @@
 import { getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday } from "date-fns";
 
-// Define interface for message items
 interface MessageItem {
   text: string;
-  link?: string; // Optional link
+  link?: string;
 }
 
-// Convert all messages to message objects
 const baseMessages: Array<MessageItem> = [
   { text: "Bottom text" },
   { text: "🤙🤙🤙" },
@@ -33,6 +31,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "Rust or bust" },
   { text: "CRUD-kriger" },
   { text: "Liten e!!!", link: "/liten-e" },
+  { text: "⭐️⭐️⭐️", link: "https://github.com/echo-webkom/echo-web-mono" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
