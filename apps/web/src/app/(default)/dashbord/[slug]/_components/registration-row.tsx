@@ -108,19 +108,19 @@ export const RegistrationRow = ({
         </TableCell>
       </TableRow>
       {showMore && (
-        <TableRow className="col-span-6 bg-gray-100 p-4">
+        <TableRow className="col-span-6 bg-muted p-4">
           <TableCell colSpan={showIndex ? 7 : 6}>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Epost:</span>{" "}
               {registration.user.alternativeEmail ?? registration.user.email}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Grupper:</span> {group}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Årstrinn:</span> {registration.user.year}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Linje:</span>{" "}
               {registration.user.degreeId?.toUpperCase() ?? "N/A"}
             </p>
@@ -129,7 +129,7 @@ export const RegistrationRow = ({
                 <hr className="my-4" />
 
                 <p>
-                  <span className="font-semibold text-gray-600">Spørsmål:</span>
+                  <span className="font-semibold text-muted-foreground">Spørsmål:</span>
                   {registration.answers?.map((answer) => {
                     const ans = Array.isArray(answer.answer?.answer)
                       ? answer.answer.answer.join(", ")
@@ -138,7 +138,7 @@ export const RegistrationRow = ({
                     return (
                       <span key={answer.questionId}>
                         <br />
-                        <span className="font-semibold text-gray-600">
+                        <span className="font-semibold text-muted-foreground">
                           {answer.question.title}:
                         </span>{" "}
                         {ans}
