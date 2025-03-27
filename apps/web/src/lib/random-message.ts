@@ -32,6 +32,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "CRUD-kriger" },
   { text: "Liten e!!!", link: "/liten-e" },
   { text: "⭐️⭐️⭐️", link: "https://github.com/echo-webkom/echo-web-mono" },
+  { text: "Vibe-coder litt bare" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
