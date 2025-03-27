@@ -38,11 +38,6 @@ export const RegistrationRow = ({
   happeningDate,
 }: RegistrationRowProps) => {
   const [showMore, setShowMore] = useState(false);
-  const reason = registration.unregisterReason
-    ? registration.unregisterReason.length > 200
-      ? " " + registration.unregisterReason.substring(0, 200) + "..."
-      : " " + registration.unregisterReason
-    : "";
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
     .join(",");
@@ -58,7 +53,6 @@ export const RegistrationRow = ({
         <TableCell className={cn(statusColor[registration.status])}>
           {getRegistrationStatus(registration, happeningDate)}
         </TableCell>
-        <TableCell>{reason}</TableCell>
         <TableCell>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -109,14 +103,16 @@ export const RegistrationRow = ({
       </TableRow>
       {showMore && (
         <TableRow className="col-span-6 bg-muted p-4">
-          <TableCell colSpan={showIndex ? 7 : 6}>
+          <TableCell colSpan={showIndex ? 6 : 5}>
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Epost:</span>{" "}
               {registration.user.alternativeEmail ?? registration.user.email}
             </p>
-            <p className="text-sm text-muted-foreground">
-              <span className="font-semibold">Grupper:</span> {group}
-            </p>
+            {group.length > 1 && (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold">Grupper:</span> {group}
+              </p>
+            )}
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold">Årstrinn:</span> {registration.user.year}
             </p>
@@ -124,7 +120,7 @@ export const RegistrationRow = ({
               <span className="font-semibold">Linje:</span>{" "}
               {registration.user.degreeId?.toUpperCase() ?? "N/A"}
             </p>
-            {!!registration.answers && (
+            {(registration.answers?.length ?? 0) > 0 && (
               <>
                 <hr className="my-4" />
 
@@ -147,6 +143,12 @@ export const RegistrationRow = ({
                   })}
                 </p>
               </>
+            )}
+            {registration.unregisterReason && (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold">Avregistreringsgrunn:</span>{" "}
+                {registration.unregisterReason}
+              </p>
             )}
           </TableCell>
         </TableRow>
