@@ -33,6 +33,12 @@ const baseMessages: Array<MessageItem> = [
   { text: "Liten e!!!", link: "/liten-e" },
   { text: "⭐️⭐️⭐️", link: "https://github.com/echo-webkom/echo-web-mono" },
   { text: "Vibe-coder litt bare" },
+  { text: "0xDEADBEEF" },
+  { text: "0xCAFEBABE" },
+  { text: "Fist of Gnist" },
+  { text: "Foobar" },
+  { text: "Progbar > Ad fontes" },
+  { text: "Progbar > Integrerbar" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
