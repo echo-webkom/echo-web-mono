@@ -39,6 +39,7 @@ export const users = pgTable(
     createdAt: timestamp("created_at").$defaultFn(() => new Date()),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
+    xp: integer("xp").default(0),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.id] }),
