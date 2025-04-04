@@ -21,7 +21,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "@echo_webkom", link: "https://www.instagram.com/echo_webkom/" },
   { text: "@echo_uib", link: "https://www.instagram.com/echo_uib/" },
   { text: "JAJ FOR FAJ" },
-  { text: "Dubkom", link: "https://ehco-webkom.no" },
+  { text: "Dubkom", link: "https://echo-webkom.no" },
   { text: "1337" },
   { text: ":(){ :|:& };:", link: "https://askubuntu.com/questions/777562/what-does-do" },
   { text: "go func() { urself }()" },
