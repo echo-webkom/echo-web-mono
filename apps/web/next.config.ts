@@ -26,6 +26,10 @@ const config = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
+      {
+        protocol: "https",
+        hostname: "echogram.echo-webkom.no",
+      },
     ],
   },
 
