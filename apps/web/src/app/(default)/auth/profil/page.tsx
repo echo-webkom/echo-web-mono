@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { Progressbar } from "@/components/progressbar";
 import { Callout } from "@/components/typography/callout";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -13,6 +14,7 @@ import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { getUser } from "@/lib/get-user";
 import { shortDateNoTime } from "@/utils/date";
+import { levelToXp, xpToLevel } from "@/utils/xp";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -35,6 +37,8 @@ export default async function ProfilePage() {
       },
     }),
   ]);
+
+  const level = xpToLevel(user.xp ? user.xp : 0);
 
   return (
     <div className="max-w-2xl space-y-4">
@@ -80,6 +84,14 @@ export default async function ProfilePage() {
               <Text>{user.email}</Text>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-col">
+          <Progressbar
+            value={user.xp ? user.xp : 0}
+            min={levelToXp(level)}
+            max={levelToXp(level + 1)}
+          />
         </div>
 
         {memberships.length > 0 && (

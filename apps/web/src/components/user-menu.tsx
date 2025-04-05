@@ -14,6 +14,7 @@ import { TbGavel } from "react-icons/tb";
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 
 import { isBedkom, isMemberOf } from "@/lib/memberships";
+import { xpToLevel } from "@/utils/xp";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +41,9 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button data-testid="user-menu">
+          <p className="absolute -m-1.5 h-4 w-4 rounded-full bg-primary text-xs">
+            {xpToLevel(user.xp ? user.xp : 0)}
+          </p>
           <Avatar className="h-7 w-7" />
         </button>
       </DropdownMenuTrigger>
