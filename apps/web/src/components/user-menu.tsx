@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -40,7 +41,17 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button data-testid="user-menu">
-          <Avatar className="h-7 w-7" />
+          {user.image ? (
+            <Image
+              src={user.image}
+              alt="User image"
+              className="h-7 w-7 rounded-full"
+              width={64}
+              height={64}
+            />
+          ) : (
+            <Avatar className="h-7 w-7" />
+          )}
         </button>
       </DropdownMenuTrigger>
 
