@@ -24,9 +24,9 @@ type Props = {
 export const AddToCalender = ({ date, endDate, title, children }: Props) => {
   return (
     <Dialog>
-      <DialogTrigger className="text-left hover:underline">{children}</DialogTrigger>
+      <DialogTrigger className="rounded text-left hover:underline">{children}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="rounded-lg">
         <DialogHeader>
           <DialogTitle className="pl-5">Legg til i kalender 📅</DialogTitle>
         </DialogHeader>
@@ -63,7 +63,7 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
   const iconClassNames = "h-8 w-8";
   return (
     <a href={link} target="_blank" rel="noreferrer">
-      <div className="flex flex-col rounded-sm bg-gray-100 py-3 sm:gap-4 sm:bg-transparent sm:py-0">
+      <div className="flex flex-col rounded-sm bg-background py-3 sm:gap-4 sm:py-0">
         <div className="mx-auto">
           {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
           {"Outlook" === calendarType && <PiMicrosoftOutlookLogo className={iconClassNames} />}
