@@ -8,6 +8,11 @@ export const getRegistrations = async (happeningId: string) => {
     where: (registration, { eq }) => eq(registration.happeningId, happeningId),
     with: {
       changedByUser: true,
+      answers: {
+        with: {
+          question: true,
+        },
+      },
       user: {
         with: {
           memberships: {

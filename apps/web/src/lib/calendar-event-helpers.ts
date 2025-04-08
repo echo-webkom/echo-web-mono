@@ -105,8 +105,10 @@ export const repeatingEventsToCalendarEvent = (
         const endHour = happening.endTime.hour.toString().padStart(2, "0");
         const endMinute = happening.endTime.minute.toString().padStart(2, "0");
 
-        const startDate = `${year}-${month}-${day}T${startHour}:${startMinute}:00+01:00`;
-        const endDate = `${year}-${month}-${day}T${endHour}:${endMinute}:00+01:00`;
+        // TODO: Use the current time zone instead of hardcoding +02:00
+        const offset = "02:00";
+        const startDate = `${year}-${month}-${day}T${startHour}:${startMinute}:00+${offset}`;
+        const endDate = `${year}-${month}-${day}T${endHour}:${endMinute}:00+${offset}`;
 
         return {
           id: happening._id,

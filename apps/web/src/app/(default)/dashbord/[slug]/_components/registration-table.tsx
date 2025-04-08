@@ -79,8 +79,12 @@ export const RegistrationTable = ({
               </TableHead>
               <TableHead scope="col">Navn</TableHead>
               <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col">Grunn</TableHead>
-              <TableHead scope="col">Mer</TableHead>
+              <TableHead scope="col" className="w-16">
+                Mer
+              </TableHead>
+              <TableHead scope="col" className="w-12">
+                {/* Empty */}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

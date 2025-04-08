@@ -13,12 +13,12 @@ export const StrikeType = {
 export type StrikeType = (typeof StrikeType)[keyof typeof StrikeType];
 
 export const StrikeTypeLabels = {
-  [StrikeType.DeregisterBeforeDeadline]: "Avmelding før first",
-  [StrikeType.DeregisterAfterDeadline]: "Avmelding etter first",
+  [StrikeType.DeregisterBeforeDeadline]: "Avmelding før frist",
+  [StrikeType.DeregisterAfterDeadline]: "Avmelding etter frist",
   [StrikeType.WrongInformation]: "Oppgitt feil informasjon",
-  [StrikeType.LateArrival]: "Kommet for seint",
+  [StrikeType.LateArrival]: "Kommet for sent",
   [StrikeType.NoFeedback]: "Ikke svart på tilbakemeldings skjema",
-  [StrikeType.NoShow]: "Ikke møtt",
+  [StrikeType.NoShow]: "Ikke møtt (ikke gitt beskjed)",
   [StrikeType.Other]: "Annet",
 };
 
@@ -28,7 +28,7 @@ export const StrikeTypeCount = {
   [StrikeType.WrongInformation]: 1,
   [StrikeType.LateArrival]: 1,
   [StrikeType.NoFeedback]: 1,
-  [StrikeType.NoShow]: 5,
+  [StrikeType.NoShow]: 7,
 };
 
 export const addStrikesSchema = z
