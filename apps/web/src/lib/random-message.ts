@@ -35,13 +35,15 @@ const baseMessages: Array<MessageItem> = [
   { text: "CRUD-kriger" },
   { text: "Liten e!!!", link: "/liten-e" },
   { text: "⭐️⭐️⭐️", link: "https://github.com/echo-webkom/echo-web-mono" },
-  { text: "Vibe-coder litt bare" },
+  { text: "Vibe-coder litt bare", link: "https://chatgpt.com/" },
   { text: "0xDEADBEEF" },
   { text: "0xCAFEBABE" },
   { text: "Fist of Gnist", link: "https://echo.uib.no/for-studenter/gruppe/gnist" },
   { text: "Foobar" },
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
   { text: "Progbar > Integrerbar", link: "https://programmer.bar" },
+  { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
+  { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
