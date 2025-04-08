@@ -43,7 +43,6 @@ const baseMessages: Array<MessageItem> = [
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
   { text: "Progbar > Integrerbar", link: "https://programmer.bar" },
   { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
-  { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
