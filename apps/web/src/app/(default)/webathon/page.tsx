@@ -69,7 +69,7 @@ export default function WebathonShowcase() {
       group: "Møas INC",
       img: Moas,
       description: "Fargerik prossess-monitor i terminalen.",
-      github: "",
+      github: "https://github.com/lockels/m-as",
     },
     {
       name: "Smart F1",
