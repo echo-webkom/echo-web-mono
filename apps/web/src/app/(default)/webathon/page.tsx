@@ -107,11 +107,11 @@ export default function WebathonShowcase() {
         <Container className="gap-3 pb-10">
           <p className="text-2xl font-bold">Hva er dette?</p>
           <p>
-            Webathon var et hackathon arrangert av Webkom. Konkuransen gikk ut på å lage det kuleste
-            grafiske prosjektet som passet stikkordene &quot;raskt, smart, mange&quot;. Hackathonet
-            varte fra fredag til søndag. Alle gruppene lagde fantastisk kule prosjekter og vi er
-            veldig imponert med insatsen. Vinnerlaget fikk en Raspberry Pi hver, i tillegg til lader
-            og echo deksel.
+            Webathon var et hackathon arrangert av Webkom. Konkurransen gikk ut på å lage det
+            kuleste grafiske prosjektet som passet stikkordene &quot;raskt, smart, mange&quot;.
+            Hackathonet varte fra fredag til søndag. Alle gruppene lagde fantastisk kule prosjekter
+            og vi er veldig imponert med innsatsen. Vinnerlaget fikk en Raspberry Pi hver, i tillegg
+            til lader og echo deksel.
           </p>
           <p>Var du ikke med nå? Bli med neste gang!</p>
         </Container>
