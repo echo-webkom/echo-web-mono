@@ -99,7 +99,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       <StrikeNotificationEmail
         amount={data.count}
         isBanned={shouldBeBanned}
-        name={user.name ?? "Ola Nordmann"}
+        name={strikedUser.name ?? "Ola Nordmann"}
         reason={data.reason}
       />,
     );
