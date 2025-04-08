@@ -8,7 +8,7 @@ Det som derimot ikke står i noen forskrift, er at den ordinære eksamenen også
 
 Likevel er det overraskende mange som bare kaller alt «konte» og antar at dette er standard prosedyre som alle fakulteter tilbyr. Det er faktisk ikke riktig. Hadde det ikke vært for at våres fakultet ønsker å være fleksibelt og legge til rette for at flest mulig skal lykkes, ville «tidlig eksamen» ikke vært et tema i det hele tatt. Den har ingenting med lovkravet om kontinuasjon å gjøre, annet enn at de to ordningene av praktiske årsaker ofte avholdes samtidig.
 
-Så neste gang du hører noen sier at de skal ta en «taktsik-kont», kan det være verdt å minnes på at fakultetet faktisk gir denne ekstra muligheten til deg. Det er strengt tatt mer enn det man kan kreve, og nettopp derfor er det på høy tid at flere får øynene opp for hva tidlig eksamen faktisk innebærer.`;
+Så neste gang du hører noen sier at de skal ta en «taktisk-kont», kan det være verdt å minnes på at fakultetet faktisk gir denne ekstra muligheten til deg. Det er strengt tatt mer enn det man kan kreve, og nettopp derfor er det på høy tid at flere får øynene opp for hva tidlig eksamen faktisk innebærer.`;
 
 export default function EarlyExam() {
     return (
