@@ -11,12 +11,12 @@ Likevel er det overraskende mange som bare kaller alt «konte» og antar at dett
 Så neste gang du hører noen sier at de skal ta en «taktisk-kont», kan det være verdt å minnes på at fakultetet faktisk gir denne ekstra muligheten til deg. Det er strengt tatt mer enn det man kan kreve, og nettopp derfor er det på høy tid at flere får øynene opp for hva tidlig eksamen faktisk innebærer.`;
 
 export default function EarlyExam() {
-    return (
-        <Container className="py-10">
-            <Heading className="mb-4">
-                Det heter {'"'}Tidlig eksamen{'"'}, ikke {'"'}Konte eksamen{'"'}.
-            </Heading>
-            <Markdown className="text-lg" content={body} />
-        </Container>
-    );
+  return (
+    <Container className="py-10">
+      <Heading className="mb-4">
+        Det heter {'"'}Tidlig eksamen{'"'}, ikke {'"'}Konte eksamen{'"'}.
+      </Heading>
+      <Markdown className="text-lg" content={body} />
+    </Container>
+  );
 }
