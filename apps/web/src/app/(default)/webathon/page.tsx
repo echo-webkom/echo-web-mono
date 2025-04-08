@@ -41,14 +41,14 @@ export default function WebathonShowcase() {
       group: "Dementia Delinquents",
       img: AlzheimerArena,
       description: "Et fast-paced multiplayer minnespill med ulike buffs.",
-      github: "https://github.com/KaffeBataljonen/tictactoe-chess.png",
+      github: "https://github.com/h593289/webathon",
     },
     {
       name: "Bable Royale",
       group: "Flodsvin-v2",
       img: BableRoyale,
       description: "En battle royale for kebab-sultne studenter i fylla.",
-      github: "https://github.com/KaffeBataljonen/tictactoe-chess.png",
+      github: "https://github.com/X104n/p2p-bab",
     },
     {
       name: "Brainrot Processing",
