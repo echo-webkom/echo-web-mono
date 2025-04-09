@@ -44,12 +44,5 @@ export default defineType({
       title: "Lenke til intern/ekstern side",
       type: "string",
     }),
-    defineField({
-      name: "isExternal",
-      title: "Er linken til en ekstern side?",
-      description: "En ekstern side er en side som ikke er på echo.uib.no.",
-      type: "boolean",
-      initialValue: false,
-    }),
   ],
 });

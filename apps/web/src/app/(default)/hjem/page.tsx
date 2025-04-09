@@ -1,6 +1,6 @@
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
-import { Banner } from "./_components/Banner";
+import { Banner } from "./_components/banner";
 import BirthdayBanner from "./_components/birthdayBanner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import { FilmklubbMovies } from "./_components/filmklubb";

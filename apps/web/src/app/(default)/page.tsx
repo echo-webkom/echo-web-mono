@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
-import { Banner } from "./hjem/_components/Banner";
+import { Banner } from "./hjem/_components/banner";
 
 export default async function HomePage() {
   await ensureAnonymous({
