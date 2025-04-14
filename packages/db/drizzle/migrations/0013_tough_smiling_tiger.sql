@@ -1,0 +1,1 @@
+ALTER TABLE "registration" ADD COLUMN "registration_changed_at" text;

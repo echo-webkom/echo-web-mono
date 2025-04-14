@@ -10,8 +10,6 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "pnpm with-env email dev --port 9000",
-    "lint": "eslint",
-    "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
     "export": "pnpm with-env email export",
     "with-env": "dotenv -e ../../.env --"
@@ -29,15 +27,7 @@
     "@types/react": "18.3.12",
     "dotenv-cli": "7.4.4",
     "eslint": "8.57.1",
-    "eslint-config-webkom": "workspace:*",
     "react-email": "3.0.6",
     "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react"
-    ]
   }
 }

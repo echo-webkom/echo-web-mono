@@ -1,27 +1,17 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "es2022",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-
+    "skipLibCheck": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-
-    "composite": true,
-
-    "module": "es2022",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-
-    "lib": ["es2022", "dom", "dom.iterable"],
-    "jsx": "preserve"
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true
   },
-  "include": [".eslintrc.cjs", "**/*.ts", "**/*.tsx", "src/", "schemas/"],
-  "exclude": ["node_modules/", "dist/", ".sanity/", "migrations/"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

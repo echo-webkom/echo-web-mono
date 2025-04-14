@@ -1,0 +1,1 @@
+ALTER TABLE "happening" ADD CONSTRAINT "happening_slug_unique" UNIQUE("slug");

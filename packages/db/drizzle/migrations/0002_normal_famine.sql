@@ -1,0 +1,1 @@
+ALTER TYPE "registration_status" ADD VALUE 'pending';
