@@ -2,4 +2,4 @@ packages:
   - apps/*
   - packages/*
   - packages/config/*
-  - playwright
+  - e2e
