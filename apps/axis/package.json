@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "go run main.go"
+    "dev": "go run cmd/main.go"
   }
 }
