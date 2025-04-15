@@ -5,3 +5,7 @@ export const xpToLevel = (xp: number) => {
 export const levelToXp = (level: number) => {
   return 200 * level * level;
 };
+
+export const calculateXpFromHappening = (amountOfRegistered: number, cost: number, type: number){
+  return Math.round(((amountOfRegistered**1.5)/10 + (cost / 5) + type))
+}
