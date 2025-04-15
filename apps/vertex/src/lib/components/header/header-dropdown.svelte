@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { getHeaderContext } from '$lib/context/header';
+	import { slide } from 'svelte/transition';
 
 	let headerCtx = getHeaderContext();
 </script>
 
-{#if headerCtx.routes.length > 0}
-	<nav class="absolute bg-background border-b w-full flex">
+{#if !!headerCtx.openRoutes?.label}
+	<nav transition:slide class="absolute bg-background border-b w-full flex">
 		<menu class="gap-4 grid grid-cols-3 mx-auto max-w-7xl p-4">
-			{#each headerCtx.routes as route}
+			{#each headerCtx.openRoutes!.links as route}
 				{@const Icon = route.icon}
 				<li>
 					<a

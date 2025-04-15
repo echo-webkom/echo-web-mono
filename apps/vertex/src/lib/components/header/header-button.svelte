@@ -1,32 +1,33 @@
 <script lang="ts">
 	import { cn } from '$lib/cn';
 	import { getHeaderContext } from '$lib/context/header';
-	import type { Snippet } from 'svelte';
 	import { ChevronDown, type Icon as IconType } from '@lucide/svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	type Props = HTMLButtonAttributes & {
+		label: string;
 		links: Array<{
 			label: string;
 			description: string;
 			href: string;
 			icon: typeof IconType;
 		}>;
-		children: Snippet;
 	};
 
-	let { children, links, class: className, ...props }: Props = $props();
+	let { label, links, class: className, ...props }: Props = $props();
 
-	let isOpen = $state(false);
 	let headerCtx = getHeaderContext();
 
-	const handleClick = () => {
-		isOpen = !isOpen;
+	let isOpen = $derived(headerCtx.openRoutes?.label === label);
 
+	const handleClick = () => {
 		if (isOpen) {
-			headerCtx.routes = links;
+			headerCtx.openRoutes = null;
 		} else {
-			headerCtx.routes = [];
+			headerCtx.openRoutes = {
+				links,
+				label
+			};
 		}
 	};
 </script>
@@ -35,11 +36,11 @@
 	<button
 		onclick={handleClick}
 		class={[
-			'font-medium flex h-10 p-2 hover:bg-muted text-muted-foreground items-center gap-2',
+			'font-medium flex h-10 p-2 hover:bg-muted rounded-xl dark:text-foreground text-gray-600 items-center gap-2',
 			className
 		]}
 		{...props}
-		>{@render children()}
+		>{label}
 		<ChevronDown class={cn('size-4', isOpen ? 'rotate-180' : 'rotate-0')} /></button
 	>
 </li>

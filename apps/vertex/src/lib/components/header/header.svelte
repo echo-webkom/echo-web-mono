@@ -25,22 +25,23 @@
 		Users,
 		Wallet
 	} from '@lucide/svelte';
+	import ThemeButton from './theme-button.svelte';
 
 	let context = $state({
-		routes: []
+		openRoutes: null
 	});
-
 	setHeaderContext(context);
 </script>
 
 <div class="border-b relative">
-	<header class="flex items-center mx-auto max-w-7xl justify-between p-4">
+	<header class="flex items-center mx-auto h-20 max-w-7xl justify-between p-4">
 		<div class="flex items-center gap-8">
 			<img src={Logo} class="size-14" alt="echo Logo" />
 
-			<menu class="flex gap-4 items-center">
+			<menu class="flex gap-1 items-center">
 				<HeaderLink href="/">Hjem</HeaderLink>
 				<HeaderButton
+					label="For studenter"
 					links={[
 						{
 							label: 'Arrangementer',
@@ -138,9 +139,10 @@
 							description: 'Opplevd noe kjipt? Speak Up!',
 							icon: Heart
 						}
-					]}>For Studenter</HeaderButton
-				>
+					]}
+				/>
 				<HeaderButton
+					label="For bedrifter"
 					links={[
 						{
 							label: 'Bedriftspresentasjon',
@@ -154,9 +156,10 @@
 							description: 'Informasjon om stillingsutlysninger på våre nettsider',
 							icon: Briefcase
 						}
-					]}>For Bedrifter</HeaderButton
-				>
+					]}
+				/>
 				<HeaderButton
+					label="Om echo"
 					links={[
 						{
 							label: 'Om oss',
@@ -200,12 +203,14 @@
 							description: 'Oversikt over etiske retningslinjer',
 							icon: Scale
 						}
-					]}>Om echo</HeaderButton
-				>
+					]}
+				/>
 			</menu>
 		</div>
 
 		<div class="flex items-center gap-4">
+			<ThemeButton />
+
 			<button class="btn btn-primary">Logg inn</button>
 		</div>
 	</header>

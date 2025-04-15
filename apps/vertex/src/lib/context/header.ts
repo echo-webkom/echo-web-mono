@@ -4,8 +4,11 @@ import { setContext, getContext } from "svelte";
 const HEADER_CONTEXT_KEY = "header-context";
 
 export type HeaderContext = {
-  routes: Array<{ label: string, description: string, href: string, icon: typeof IconType }>
-}
+  openRoutes: {
+    links: Array<{ label: string, description: string, href: string, icon: typeof IconType }>
+    label: string
+  } | null
+};
 
 export const setHeaderContext = (context: HeaderContext) => {
   setContext(HEADER_CONTEXT_KEY, context);
