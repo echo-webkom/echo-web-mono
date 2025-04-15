@@ -1,12 +1,11 @@
 package happening
 
 import (
-	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/storage/database"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -17,22 +16,10 @@ type happening struct {
 
 func ListHappenings(h *apputil.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		rows, err := h.DB.Query("SELECT id, title FROM happening")
+		happenings, err := database.GetAllHappenings(h.DB)
 		if err != nil {
-			log.Default().Println("Error querying database:", err)
-			http.Error(w, "Database query failed", http.StatusInternalServerError)
+			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
 			return
-		}
-		defer rows.Close()
-
-		happenings := make([]happening, 0)
-		for rows.Next() {
-			var evt happening
-			if err := rows.Scan(&evt.ID, &evt.Title); err != nil {
-				http.Error(w, "Failed to scan row", http.StatusInternalServerError)
-				return
-			}
-			happenings = append(happenings, evt)
 		}
 
 		w.Header().Set("Content-Type", "application/json")
@@ -50,19 +37,14 @@ func FindHappening(h *apputil.Handler) http.HandlerFunc {
 			return
 		}
 
-		row := h.DB.QueryRow("SELECT id, title FROM happening WHERE id = ?", id)
-		var evt happening
-		if err := row.Scan(&evt.ID, &evt.Title); err != nil {
-			if err == sql.ErrNoRows {
-				http.Error(w, "Happening not found", http.StatusNotFound)
-			} else {
-				log.Default().Println("Error querying database:", err)
-				http.Error(w, "Database query failed", http.StatusInternalServerError)
-			}
+		happenings, err := database.GetHappeningById(h.DB, id)
+		if err != nil {
+			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
 			return
 		}
+
 		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(evt); err != nil {
+		if err := json.NewEncoder(w).Encode(happenings); err != nil {
 			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		}
 	}
