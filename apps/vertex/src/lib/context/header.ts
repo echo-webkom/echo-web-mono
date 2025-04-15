@@ -1,9 +1,10 @@
+import { type Icon as IconType } from "@lucide/svelte";
 import { setContext, getContext } from "svelte";
 
 const HEADER_CONTEXT_KEY = "header-context";
 
 export type HeaderContext = {
-  routes: Array<{ title: string, description: string, href: string}>
+  routes: Array<{ label: string, description: string, href: string, icon: typeof IconType }>
 }
 
 export const setHeaderContext = (context: HeaderContext) => {
