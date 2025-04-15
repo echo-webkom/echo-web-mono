@@ -4,32 +4,34 @@
 	import Bekk from '$lib/assets/images/bekk.png';
 </script>
 
-<div class="absolute bottom-0 left-0 p-1.5">
-	<p class="font-mono text-xs text-muted-foreground">
-		<a
-			class="flex items-center gap-1 hover:underline"
-			href="https://github.com/echo-webkom/echo-web-mono/commit/052a8c60122981aed3b6ee79e246421c51dfb8a3"
-		>
-			<GitCommit class="size-4" />
-			052a8c6
-		</a>
-	</p>
-</div>
-
-<div class="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">
-	<ul class="flex flex-row gap-2 font-mono text-xs text-muted-foreground">
-		<li>
-			<a class="flex items-center gap-1 hover:underline" href="/feed">
-				<Rss class="size-4" />
-				RSS Feed
-			</a>
-		</li>
-	</ul>
-</div>
-
 <footer
 	class="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground"
 >
+	<!-- Latest commit -->
+	<div class="absolute bottom-0 left-0 p-1.5">
+		<p class="font-mono text-xs text-muted-foreground">
+			<a
+				class="flex items-center gap-1 hover:underline"
+				href="https://github.com/echo-webkom/echo-web-mono/commit/052a8c60122981aed3b6ee79e246421c51dfb8a3"
+			>
+				<GitCommit class="size-4" />
+				052a8c6
+			</a>
+		</p>
+	</div>
+
+	<!-- Link to RSS feed -->
+	<div class="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">
+		<ul class="flex flex-row gap-2 font-mono text-xs text-muted-foreground">
+			<li>
+				<a class="flex items-center gap-1 hover:underline" href="/feed">
+					<Rss class="size-4" />
+					RSS Feed
+				</a>
+			</li>
+		</ul>
+	</div>
+
 	<div class="mx-auto flex w-full max-w-7xl">
 		<div class="flex w-full flex-wrap justify-between gap-10 sm:gap-20">
 			<div>
