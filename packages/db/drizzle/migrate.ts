@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import process from "node:process";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
-import { db } from "../src/serverless";
+const db = drizzle(postgres(process.env.DATABASE_URL!));
 
 /**
  * Do not run migrations in preview deployments.

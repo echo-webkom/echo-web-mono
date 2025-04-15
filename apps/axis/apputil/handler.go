@@ -26,6 +26,6 @@ func NewRouterFactory(r chi.Router, h *Handler) *RouterFactory {
 }
 
 // Mount wraps chi's Mount, injecting the handler into the router constructor
-func (rf *RouterFactory) Mount(pattern string, constructor RouterConstructor) {
-	rf.Router.Mount(pattern, constructor(rf.Handler))
+func (rf *RouterFactory) Mount(constructor RouterConstructor) {
+	rf.Router.Mount("/", constructor(rf.Handler))
 }

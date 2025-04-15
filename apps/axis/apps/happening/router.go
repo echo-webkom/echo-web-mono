@@ -8,7 +8,7 @@ import (
 func Router(h *apputil.Handler) chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", Home(h))
+	r.Get("/happenings", ListHappenings(h))
 
 	return r
 }

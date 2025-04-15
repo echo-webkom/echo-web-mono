@@ -36,7 +36,7 @@ func Run() {
 	h := &apputil.Handler{DB: db}
 	rf := apputil.NewRouterFactory(r, h)
 
-	rf.Mount("/", happening.Router)
+	rf.Mount(happening.Router)
 
 	port := ":8080"
 	fmt.Println("Running on http://localhost" + port)
