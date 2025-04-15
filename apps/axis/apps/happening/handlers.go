@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/echo-webkom/axis/apputil"
-	"github.com/echo-webkom/axis/storage/database"
+	"github.com/echo-webkom/axis/service"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -15,8 +15,10 @@ type happening struct {
 }
 
 func ListHappenings(h *apputil.Handler) http.HandlerFunc {
+	hs := service.NewHappeningService(h.DB)
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		happenings, err := database.GetAllHappenings(h.DB)
+		happenings, err := hs.GetAllHappenings()
 		if err != nil {
 			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
 			return
@@ -30,6 +32,8 @@ func ListHappenings(h *apputil.Handler) http.HandlerFunc {
 }
 
 func FindHappening(h *apputil.Handler) http.HandlerFunc {
+	hs := service.NewHappeningService(h.DB)
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		if id == "" {
@@ -37,7 +41,7 @@ func FindHappening(h *apputil.Handler) http.HandlerFunc {
 			return
 		}
 
-		happenings, err := database.GetHappeningById(h.DB, id)
+		happenings, err := hs.GetHappeningById(id)
 		if err != nil {
 			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
 			return

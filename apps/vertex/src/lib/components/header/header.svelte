@@ -10,7 +10,7 @@
 	import { browser } from '$app/environment';
 	import { ChevronDown, Menu, X } from '@lucide/svelte';
 	import { cn } from '$lib/cn';
-	import { slide } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 
 	let isMobileDropdownOpen = $state(false);
@@ -22,7 +22,7 @@
 	setHeaderContext(context);
 
 	const toggleMenu = () => {
-		if (innerWidth < 1024) {
+		if (innerWidth < 768) {
 			isMobileDropdownOpen = !isMobileDropdownOpen;
 		}
 	};
@@ -44,11 +44,11 @@
 	});
 
 	$effect(() => {
-		if (innerWidth < 1024) {
+		if (innerWidth < 768) {
 			context.openRoutes = null;
 		}
 
-		if (innerWidth >= 1024) {
+		if (innerWidth >= 768) {
 			isMobileDropdownOpen = false;
 			activeMobileLabel = null;
 		}
@@ -64,15 +64,17 @@
 <svelte:window onresize={() => (innerWidth = window.innerWidth)} />
 
 <div
-	class={cn('border-b relative w-full bg-background', {
+	class={cn('border-b relative w-full bg-background z-50', {
 		'h-full max-h-screen absolute overflow-y-auto': isMobileDropdownOpen
 	})}
 >
 	<header class="flex items-center mx-auto h-20 max-w-7xl justify-between p-4">
 		<div class="flex items-center gap-8">
-			<img src={Logo} class="size-14" alt="echo Logo" />
+			<a href="/">
+				<img src={Logo} class="size-14" alt="echo Logo" />
+			</a>
 
-			<menu class="gap-1 items-center hidden lg:flex">
+			<menu class="gap-1 items-center hidden md:flex">
 				<HeaderLink href="/">Hjem</HeaderLink>
 				{#each routes as route}
 					<HeaderButton label={route.label} links={route.links} />
@@ -82,8 +84,8 @@
 
 		<div class="flex items-center gap-4">
 			<ThemeButton />
-			<button class="btn btn-primary">Logg inn</button>
-			<button class="lg:hidden block" onclick={toggleMenu}>
+			<a href="/logg-inn" class="btn-secondary hover:underline">Logg inn</a>
+			<button class="md:hidden block" onclick={toggleMenu}>
 				{#if isMobileDropdownOpen}
 					<X class="size-6" />
 				{:else}
@@ -97,7 +99,7 @@
 	<HeaderDesktopDropdown />
 
 	{#if isMobileDropdownOpen}
-		<div in:slide={{ delay: 400 }} class="flex flex-col felx-1 absolute w-full p-4">
+		<div in:fly={{ delay: 200, x: -800 }} class="flex flex-col felx-1 absolute w-full p-4">
 			<menu class="flex flex-col gap-1 p-4">
 				<li class="flex">
 					<a

@@ -7,7 +7,7 @@
 
 {#if !!headerCtx.openRoutes?.label}
 	<nav transition:slide class="absolute bg-background border-b w-full flex">
-		<menu class="gap-4 grid grid-cols-3 mx-auto max-w-7xl p-4">
+		<menu class="gap-4 grid grid-cols-2 lg:grid-cols-3 mx-auto max-w-7xl p-4">
 			{#each headerCtx.openRoutes!.links as route}
 				{@const Icon = route.icon}
 				<li>

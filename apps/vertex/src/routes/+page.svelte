@@ -18,8 +18,8 @@
 		</div>
 
 		<div class="flex justify-center gap-4">
-			<a class="btn-secondary" href="/logg-inn">Logg inn</a>
-			<a class="btn-outline" href="/om/echo">Les mer om echo</a>
+			<a class="btn-secondary hover:underline" href="/logg-inn">Logg inn</a>
+			<a class="btn-outline hover:underline" href="/om/echo">Les mer om echo</a>
 		</div>
 	</div>
 
