@@ -3,217 +3,158 @@
 	import { setHeaderContext } from '$lib/context/header';
 	import HeaderButton from './header-button.svelte';
 	import HeaderLink from './header-link.svelte';
-	import HeaderDropdown from './header-dropdown.svelte';
-	import {
-		Atom,
-		Briefcase,
-		Building2,
-		CalendarDays,
-		CircleDollarSign,
-		GraduationCap,
-		Heart,
-		HeartHandshake,
-		MailOpen,
-		Martini,
-		Megaphone,
-		Presentation,
-		Scale,
-		ScrollText,
-		Shirt,
-		ShoppingCart,
-		StickyNote,
-		Users,
-		Wallet
-	} from '@lucide/svelte';
-	import ThemeButton from './theme-button.svelte';
+	import HeaderDesktopDropdown from './header-desktop-dropdown.svelte';
 
+	import ThemeButton from './theme-button.svelte';
+	import { routes } from '$lib/routes';
+	import { browser } from '$app/environment';
+	import { ChevronDown, Menu, X } from '@lucide/svelte';
+	import { cn } from '$lib/cn';
+	import { slide } from 'svelte/transition';
+	import { onNavigate } from '$app/navigation';
+
+	let isMobileDropdownOpen = $state(false);
+	let activeMobileLabel = $state<string | null>(null);
+	let innerWidth = $state(browser ? window.innerWidth : 0);
 	let context = $state({
 		openRoutes: null
 	});
 	setHeaderContext(context);
+
+	const toggleMenu = () => {
+		if (innerWidth < 1024) {
+			isMobileDropdownOpen = !isMobileDropdownOpen;
+		}
+	};
+
+	const toggleLabel = (label: string) => {
+		if (activeMobileLabel === label) {
+			activeMobileLabel = null;
+		} else {
+			activeMobileLabel = label;
+		}
+	};
+
+	$effect(() => {
+		if (isMobileDropdownOpen) {
+			window.document.body.style.overflow = 'hidden';
+		} else {
+			window.document.body.style.overflow = 'auto';
+		}
+	});
+
+	$effect(() => {
+		if (innerWidth < 1024) {
+			context.openRoutes = null;
+		}
+
+		if (innerWidth >= 1024) {
+			isMobileDropdownOpen = false;
+			activeMobileLabel = null;
+		}
+	});
+
+	onNavigate(() => {
+		isMobileDropdownOpen = false;
+		activeMobileLabel = null;
+		context.openRoutes = null;
+	});
 </script>
 
-<div class="border-b relative">
+<svelte:window onresize={() => (innerWidth = window.innerWidth)} />
+
+<div
+	class={cn('border-b relative w-full bg-background', {
+		'h-full max-h-screen absolute overflow-y-auto': isMobileDropdownOpen
+	})}
+>
 	<header class="flex items-center mx-auto h-20 max-w-7xl justify-between p-4">
 		<div class="flex items-center gap-8">
 			<img src={Logo} class="size-14" alt="echo Logo" />
 
-			<menu class="flex gap-1 items-center">
+			<menu class="gap-1 items-center hidden lg:flex">
 				<HeaderLink href="/">Hjem</HeaderLink>
-				<HeaderButton
-					label="For studenter"
-					links={[
-						{
-							label: 'Arrangementer',
-							href: '/for-studenter/arrangementer',
-							description: 'Oversikt over kommende og tidligere arrangementer',
-							icon: CalendarDays
-						},
-						{
-							label: 'Stillingsannonser',
-							href: '/for-studenter/stillingsannonser',
-							description: 'Se hvilke stillingsannonsener som er tilgjengelig for studenter',
-							icon: CircleDollarSign
-						},
-						{
-							label: 'Innlegg',
-							href: '/for-studenter/innlegg',
-							description: 'Nyheter og oppdateringer fra echo',
-							icon: MailOpen
-						},
-						{
-							label: 'Hovedstyrer',
-							href: '/for-studenter/grupper/hovedstyre',
-							description: 'Oversikt over echos hovedstyrer',
-							icon: Users
-						},
-						{
-							label: 'Undergrupper',
-							href: '/for-studenter/grupper/undergrupper',
-							description: 'Oversikt over undergrupper',
-							icon: Users
-						},
-						{
-							label: 'Programmerbar',
-							href: 'https://programmer.bar',
-							description: 'Studentbaren for informatikkstudenter',
-							icon: Martini
-						},
-						{
-							label: 'Interessegrupper',
-							href: '/for-studenter/grupper/interessegrupper',
-							description: 'Oversikt over interessegrupper',
-							icon: Users
-						},
-						{
-							label: 'Idrettslag',
-							href: '/for-studenter/grupper/idrettslag',
-							description: 'Oversikt over idrettslag',
-							icon: Users
-						},
-						{
-							label: 'Møtereferater',
-							href: '/for-studenter/motereferater',
-							description: 'Referater fra møter og generalforsamlinger i echo',
-							icon: ScrollText
-						},
-						{
-							label: 'Masterinfo',
-							href: '/for-studenter/masterinfo',
-							description: 'Informasjon til deg som tar master',
-							icon: GraduationCap
-						},
-						{
-							label: 'Økonomisk støtte',
-							href: '/for-studenter/okonomisk-stotte',
-							description: 'Økonmisk støtte for arrangementer og aktiviteter',
-							icon: CircleDollarSign
-						},
-						{
-							label: 'Anonyme tilbakemeldinger',
-							href: '/for-studenter/anonyme-tilbakemeldinger',
-							description: 'Send anonyme tilbakemeldinger',
-							icon: Megaphone
-						},
-						{
-							label: 'Hyggkoms handleliste',
-							href: '/for-studenter/handleliste',
-							description: 'Si hva du synes hyggkom burde kjøpe inn til lesesalen',
-							icon: ShoppingCart
-						},
-						{
-							label: 'Merch',
-							href: '/for-studenter/merch',
-							description: 'Få deg noe tøff echo merch',
-							icon: Shirt
-						},
-						{
-							label: 'Utlegg',
-							href: '/for-studenter/utlegg',
-							description: 'Sende inn faktura og utlegg',
-							icon: Wallet
-						},
-						{
-							label: 'Speak Up',
-							href: '/for-studenter/speak-up',
-							description: 'Opplevd noe kjipt? Speak Up!',
-							icon: Heart
-						}
-					]}
-				/>
-				<HeaderButton
-					label="For bedrifter"
-					links={[
-						{
-							label: 'Bedriftspresentasjon',
-							href: '/for-bedrifter/bedriftspresentasjon',
-							description: 'Ønsker du å presentere bedriften din?',
-							icon: Presentation
-						},
-						{
-							label: 'Stillingsannonser',
-							href: '/for-bedrifter/stillingsutlysninger',
-							description: 'Informasjon om stillingsutlysninger på våre nettsider',
-							icon: Briefcase
-						}
-					]}
-				/>
-				<HeaderButton
-					label="Om echo"
-					links={[
-						{
-							label: 'Om oss',
-							href: '/om/echo',
-							description: 'Om echo',
-							icon: Atom
-						},
-						{
-							label: 'Instituttrådet',
-							href: '/om/instituttradet',
-							description: 'Om instituttrådet',
-							icon: Building2
-						},
-						{
-							label: 'Vedtekter',
-							href: '/om/vedtekter',
-							description: 'Vedtekter',
-							icon: Scale
-						},
-						{
-							label: 'Bekk',
-							href: '/om/bekk',
-							description: 'Om Bekk, vår samarbeidspartner',
-							icon: HeartHandshake
-						},
-						{
-							label: 'Brosjyre',
-							href: '/om/brosjyre',
-							description: 'Brosjyre med informasjon om echo',
-							icon: StickyNote
-						},
-						{
-							label: 'Programstyrene',
-							href: '/om/programstyrene',
-							description: 'Oversikt over programstyrene',
-							icon: Users
-						},
-						{
-							label: 'Etiske retningslinjer',
-							href: '/om/retningslinjer',
-							description: 'Oversikt over etiske retningslinjer',
-							icon: Scale
-						}
-					]}
-				/>
+				{#each routes as route}
+					<HeaderButton label={route.label} links={route.links} />
+				{/each}
 			</menu>
 		</div>
 
 		<div class="flex items-center gap-4">
 			<ThemeButton />
-
 			<button class="btn btn-primary">Logg inn</button>
+			<button class="lg:hidden block" onclick={toggleMenu}>
+				{#if isMobileDropdownOpen}
+					<X class="size-6" />
+				{:else}
+					<Menu class="size-6" />
+				{/if}
+				<span class="sr-only">Toggle mobile menu</span>
+			</button>
 		</div>
 	</header>
 
-	<HeaderDropdown />
+	<HeaderDesktopDropdown />
+
+	{#if isMobileDropdownOpen}
+		<div in:slide={{ delay: 400 }} class="flex flex-col felx-1 absolute w-full p-4">
+			<menu class="flex flex-col gap-1 p-4">
+				<li class="flex">
+					<a
+						href="/"
+						class="rounded-md p-4 w-full text-2xl text-gray-600 hover:bg-muted dark:text-foreground"
+					>
+						<span class="text-2xl">Hjem</span>
+					</a>
+				</li>
+				{#each routes as route}
+					<li class="flex w-full">
+						<div class="flex flex-col w-full">
+							<button
+								class="rounded-md w-full text-left p-4 text-2xl text-gray-600 hover:bg-muted dark:text-foreground"
+								onclick={() => toggleLabel(route.label)}
+							>
+								{route.label}
+								<ChevronDown
+									class={[
+										'inline size-6',
+										activeMobileLabel === route.label ? 'rotate-180' : 'rotate-0'
+									]}
+								/>
+							</button>
+
+							{#if activeMobileLabel === route.label}
+								<ul transition:slide class="flex flex-col gap-1 pl-4">
+									{#each route.links as subRoute}
+										{@const Icon = subRoute.icon}
+										<li>
+											<a
+												href={subRoute.href}
+												class="text-lg flex items-center gap-8 p-4 hover:bg-muted"
+											>
+												<div class="shrink-0">
+													<Icon class="size-6" />
+												</div>
+												<div class="flex flex-col">
+													<span class="text-gray-600 dark:text-gray-100">
+														{subRoute.label}
+													</span>
+													<span class="text-sm text-muted-foreground">
+														{subRoute.description}
+													</span>
+												</div>
+											</a>
+										</li>
+									{/each}
+								</ul>
+							{/if}
+						</div>
+					</li>
+				{/each}
+			</menu>
+			<div class="flex flex-col gap-1 p-4">
+				<button class="btn-primary">Logg inn</button>
+			</div>
+		</div>
+	{/if}
 </div>
