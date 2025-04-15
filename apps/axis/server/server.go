@@ -1,11 +1,12 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/echo-webkom/axis/apps/happening"
-	"github.com/echo-webkom/axis/server/handler"
+	"github.com/echo-webkom/axis/apputil"
 	"github.com/echo-webkom/axis/storage/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -32,10 +33,12 @@ func Run() {
 	}
 	defer db.Close()
 
-	h := &handler.Handler{DB: db}
-	rf := handler.NewRouterFactory(r, h)
+	h := &apputil.Handler{DB: db}
+	rf := apputil.NewRouterFactory(r, h)
 
 	rf.Mount("/", happening.Router)
 
-	http.ListenAndServe(":8080", r)
+	port := ":8080"
+	fmt.Println("Running on http://localhost" + port)
+	http.ListenAndServe(port, r)
 }
