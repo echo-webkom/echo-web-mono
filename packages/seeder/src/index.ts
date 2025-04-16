@@ -23,7 +23,7 @@ program
   .option(
     "-d, --dataset <dataset>",
     "Sanity dataset",
-    process.env.SANITY_DATASET
+    process.env.PUBLIC_SANITY_DATASET
   )
   .option("-m, --mode <mode>", "What data to seed", "dev")
   .action(async (options: AllOptions) => {

@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2025-04-16T17:01:00.744948+02:00",
+	"lastUpdated": "2025-04-16T17:05:08.725195+02:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -51,6 +51,11 @@
 			"public": true,
 			"key": "PUBLIC_SANITY_DATASET",
 			"value": "production"
+		},
+		"PUBLIC_SANITY_PROJECT_ID": {
+			"public": true,
+			"key": "PUBLIC_SANITY_PROJECT_ID",
+			"value": "pgq2pd26"
 		}
 	}
 }
