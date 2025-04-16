@@ -76,9 +76,6 @@ INSERT INTO users_to_shopping_list_items (user_id, item_id)
 VALUES ($1, $2)
 ON CONFLICT (user_id, item_id) DO NOTHING;
 `, userID, itemID)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }

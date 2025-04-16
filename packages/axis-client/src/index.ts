@@ -134,6 +134,28 @@ export class AxisClient {
     },
   };
 
+  readonly feedback = {
+    create: async ({
+      name,
+      email,
+      message,
+    }: {
+      name?: string;
+      email?: string;
+      message: string;
+    }) => {
+      return await this.#axis
+        .post("feedback", {
+          json: {
+            name: name ?? null,
+            email: email ?? null,
+            message,
+          },
+        })
+        .then((response) => response.status === 201);
+    },
+  };
+
   // Use the sanity client directly for more complex queries
   readonly sanity = () => this.#sanity;
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Welcome to Axis!")
+	fmt.Println("Welcome to...")
 	fmt.Println("     _    __  _____ ____\n" +
 		"    / \\   \\ \\/ /_ _/ ___|\n" +
 		"   / _ \\   \\  / | |\\___ \\\n" +

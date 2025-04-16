@@ -12,6 +12,9 @@
 	import { cn } from '$lib/cn';
 	import { fly, slide } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
+	import { getRandomMessage } from '$lib/random-message';
+
+	const message = getRandomMessage();
 
 	let isMobileDropdownOpen = $state(false);
 	let activeMobileLabel = $state<string | null>(null);
@@ -68,7 +71,7 @@
 		'h-full max-h-screen absolute overflow-y-auto': isMobileDropdownOpen
 	})}
 >
-	<header class="flex items-center mx-auto h-20 max-w-7xl justify-between p-4">
+	<header class="relative flex items-center mx-auto h-20 max-w-7xl justify-between p-4">
 		<div class="flex items-center gap-8">
 			<a href="/">
 				<img src={Logo} class="size-14" alt="echo Logo" />
@@ -93,6 +96,24 @@
 				{/if}
 				<span class="sr-only">Toggle mobile menu</span>
 			</button>
+		</div>
+
+		<div class="absolute -bottom-3 flex space-x-2">
+			{#if message.link}
+				<a class="z-[80]" href={message.link}>
+					<span
+						class="inline-block rounded-full border-2 px-3 py-1 text-xs font-semibold border-primary-dark bg-primary text-primary-foreground"
+					>
+						{message.text}
+					</span>
+				</a>
+			{:else}
+				<span
+					class="inline-block z-[80] rounded-full border-2 px-3 py-1 text-xs font-semibold border-primary-dark bg-primary text-primary-foreground"
+				>
+					{message.text}
+				</span>
+			{/if}
 		</div>
 	</header>
 

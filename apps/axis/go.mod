@@ -7,3 +7,5 @@ require (
 	github.com/go-chi/cors v1.2.1
 	github.com/lib/pq v1.10.9
 )
+
+require github.com/matoous/go-nanoid/v2 v2.1.0 // indirect
