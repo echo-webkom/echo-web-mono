@@ -7,7 +7,7 @@ import (
 	"github.com/echo-webkom/axis/service"
 )
 
-func ListShoppingItems(h *apputil.Handler) http.HandlerFunc {
+func listShoppingItems(h *apputil.Handler) http.HandlerFunc {
 	sls := service.NewShoppingListService(h.DB)
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +21,7 @@ func ListShoppingItems(h *apputil.Handler) http.HandlerFunc {
 	}
 }
 
-func CreateShoppingItem(h *apputil.Handler) http.HandlerFunc {
+func createShoppingItem(h *apputil.Handler) http.HandlerFunc {
 	sls := service.NewShoppingListService(h.DB)
 
 	return func(w http.ResponseWriter, r *http.Request) {

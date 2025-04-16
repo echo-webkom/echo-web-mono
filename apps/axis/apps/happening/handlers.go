@@ -9,12 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type happening struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
-}
-
-func ListHappenings(h *apputil.Handler) http.HandlerFunc {
+func listHappenings(h *apputil.Handler) http.HandlerFunc {
 	hs := service.NewHappeningService(h.DB)
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +23,7 @@ func ListHappenings(h *apputil.Handler) http.HandlerFunc {
 	}
 }
 
-func FindHappening(h *apputil.Handler) http.HandlerFunc {
+func findHappening(h *apputil.Handler) http.HandlerFunc {
 	hs := service.NewHappeningService(h.DB)
 
 	return func(w http.ResponseWriter, r *http.Request) {
