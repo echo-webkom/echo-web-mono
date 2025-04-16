@@ -1,3 +1,5 @@
+# ☢️ Experimental rewrite ☢️
+
 <br>
 
 <div align="center">
@@ -28,7 +30,7 @@ Vi jobber hele tiden med å forbedre den,
 og setter stor pris på om du sier ifra om noe er feil,
 eller du har idéer til nye endringer!
 
-Send oss gjerne en tilbakemelding via skjemaet på https://echo.uib.no/tilbakemelding,
+Send oss gjerne en tilbakemelding via skjemaet på <https://echo.uib.no/tilbakemelding>,
 eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo.uib.no).
 
 ## Hvordan kjøre?
