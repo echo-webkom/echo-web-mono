@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/echo-webkom/axis/apps/happening"
+	"github.com/echo-webkom/axis/apps/shoppinglist"
 	"github.com/echo-webkom/axis/apputil"
 	"github.com/echo-webkom/axis/storage/database"
 	"github.com/go-chi/chi/v5"
@@ -36,7 +37,8 @@ func Run() {
 	h := &apputil.Handler{DB: db}
 	rf := apputil.NewRouterFactory(r, h)
 
-	rf.Mount(happening.Router)
+	rf.Mount("/happening", happening.Router)
+	rf.Mount("/shopping-list", shoppinglist.Router)
 
 	port := ":8080"
 	fmt.Println("Running on http://localhost" + port)

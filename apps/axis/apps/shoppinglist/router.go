@@ -1,4 +1,4 @@
-package happening
+package shoppinglist
 
 import (
 	"github.com/echo-webkom/axis/apputil"
@@ -8,7 +8,8 @@ import (
 func Router(h *apputil.Handler) chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", ListHappenings(h))
+	r.Get("/", ListShoppingItems(h))
+	r.Post("/", CreateShoppingItem(h))
 
 	return r
 }

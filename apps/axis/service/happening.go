@@ -15,7 +15,9 @@ func NewHappeningService(db *sql.DB) *HappeningService {
 }
 
 func (hs *HappeningService) GetHappeningById(id string) (*database.Happening, error) {
-	row := hs.db.QueryRow("SELECT id, title FROM happening WHERE id = ?", id)
+	row := hs.db.QueryRow(`
+SELECT id, title FROM happening WHERE id = ?
+`, id)
 
 	var evt database.Happening
 	if err := row.Scan(&evt.ID, &evt.Title); err != nil {
@@ -29,7 +31,9 @@ func (hs *HappeningService) GetHappeningById(id string) (*database.Happening, er
 }
 
 func (hs *HappeningService) GetAllHappenings() ([]database.Happening, error) {
-	rows, err := hs.db.Query("SELECT id, title FROM happening")
+	rows, err := hs.db.Query(`
+SELECT id, title FROM happening
+`)
 	if err != nil {
 		return nil, err
 	}

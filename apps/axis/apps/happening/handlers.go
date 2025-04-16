@@ -1,7 +1,7 @@
 package happening
 
 import (
-	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/echo-webkom/axis/apputil"
@@ -20,14 +20,11 @@ func ListHappenings(h *apputil.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		happenings, err := hs.GetAllHappenings()
 		if err != nil {
-			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
+			h.Error(w, http.StatusInternalServerError, errors.New("failed to fetch happenings"))
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(happenings); err != nil {
-			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-		}
+		h.JSON(w, http.StatusOK, happenings)
 	}
 }
 
@@ -37,19 +34,16 @@ func FindHappening(h *apputil.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		if id == "" {
-			http.Error(w, "Missing ID", http.StatusBadRequest)
+			h.Error(w, http.StatusBadRequest, errors.New("missing id"))
 			return
 		}
 
 		happenings, err := hs.GetHappeningById(id)
 		if err != nil {
-			http.Error(w, "Failed to fetch happenings", http.StatusInternalServerError)
+			h.Error(w, http.StatusInternalServerError, errors.New("failed to fetch happening"))
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(happenings); err != nil {
-			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-		}
+		h.JSON(w, http.StatusOK, happenings)
 	}
 }
