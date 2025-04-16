@@ -4,7 +4,7 @@ import { marked } from 'marked';
 import { axis } from './axis/client';
 
 export const loadStaticPage = async (pageType: PageType, slug: string) => {
-	const page = await axis.fetchStaticPage(pageType, slug);
+	const page = await axis.content.staticPage(pageType, slug);
 	if (!page) {
 		error(404, 'Finner ikke siden du leter etter');
 	}
@@ -15,7 +15,7 @@ export const loadStaticPage = async (pageType: PageType, slug: string) => {
 };
 
 export const loadGroupsPage = async (groupType: StudentGroupType) => {
-	const groups = await axis.fetchGroupsByType(groupType);
+	const groups = await axis.groups.byType(groupType);
 	if (!groups) {
 		error(404, 'Finner ikke siden du leter etter');
 	}

@@ -46,7 +46,6 @@ export class AxisClient {
     });
 
     this.#debug = options.debug ?? false;
-
     this.log("AxisClient initialized");
   }
 
@@ -56,151 +55,74 @@ export class AxisClient {
     }
   }
 
-  sanity = () => {
-    return this.#sanity;
+  readonly shoppingList = {
+    list: async (): Promise<
+      Array<{ id: string; name: string; userId: string; userName: string }>
+    > => {
+      return await this.#axis.get("shopping-list").json();
+    },
+
+    add: async (userId: string, name: string) => {
+      return await this.#axis
+        .post("shopping-list", { json: { name, userId } })
+        .json<{ id: string }>();
+    },
   };
 
-  /**
-   * Fetches the shopping list items from the database.
-   *
-   * @returns
-   */
-  fetchShoppingListItems = async () => {
-    return await this.#axis.get("shopping-list").json<
-      Array<{
-        id: string;
-        name: string;
-        userId: string;
-        userName: string;
-      }>
-    >();
+  readonly content = {
+    posts: {
+      list: async (): Promise<AllPostsQueryResult> => {
+        return await this.#sanity.fetch(allPostsQuery);
+      },
+    },
+
+    jobs: {
+      list: async (): Promise<JobAdsQueryResult> => {
+        return await this.#sanity.fetch(jobAdsQuery);
+      },
+    },
+
+    staticPage: async (pageType: PageType, slug: string) => {
+      const data =
+        await this.#sanity.fetch<StaticInfoQueryResult>(staticInfoQuery);
+      return data.find(
+        (page) => page.pageType === pageType && page.slug === slug
+      );
+    },
+
+    minutes: {
+      list: async (): Promise<AllMeetingMinuteQueryResult> => {
+        return await this.#sanity.fetch(allMeetingMinuteQuery);
+      },
+    },
   };
 
-  /**
-   * Adds a shopping list item to the database.
-   *
-   * @param userId
-   * @param name
-   * @returns
-   */
-  addShoppingListItem = async (userId: string, name: string) => {
-    return await this.#axis
-      .post("shopping-list", {
-        json: {
-          name,
-          userId,
-        },
-      })
-      .json<{
-        id: string;
-      }>();
+  readonly events = {
+    upcoming: async (types: Array<string>, n: number) => {
+      return await this.#sanity.fetch<HomeHappeningsQueryResult>(
+        homeHappeningsQuery,
+        { happeningTypes: types, n }
+      );
+    },
   };
 
-  /**
-   * Fetches the next upcoming events from sanity
-   *
-   * @returns
-   */
-  fetchUpcomingEvents = async () => {
-    return await this.#sanity.fetch<HomeHappeningsQueryResult>(
-      homeHappeningsQuery,
-      {
-        happeningTypes: ["event", "external"],
-        n: 5,
-      }
-    );
+  readonly groups = {
+    byType: async (type: string) => {
+      const result = await this.#sanity.fetch<StudentGroupsByTypeQueryResult>(
+        studentGroupsByTypeQuery,
+        { type, n: -1 }
+      );
+      return result.sort((a, b) => a.name.localeCompare(b.name));
+    },
+
+    bySlug: async (slug: string) => {
+      return await this.#sanity.fetch<StudentGroupBySlugQueryResult>(
+        studentGroupBySlugQuery,
+        { slug }
+      );
+    },
   };
 
-  /**
-   * Fetches the next upcoming bedpres from sanity
-   *
-   * @returns
-   */
-  fetchUpcomingBedpres = async () => {
-    return await this.#sanity.fetch<HomeHappeningsQueryResult>(
-      homeHappeningsQuery,
-      {
-        happeningTypes: ["bedpres"],
-        n: 5,
-      }
-    );
-  };
-
-  /**
-   * Fetches a static page from sanity based on the page type and slug
-   *
-   * @param pageType
-   * @param slug
-   * @returns
-   */
-  fetchStaticPage = async (pageType: PageType, slug: string) => {
-    const data =
-      await this.#sanity.fetch<StaticInfoQueryResult>(staticInfoQuery);
-    return data.find(
-      (page) => page.pageType === pageType && page.slug === slug
-    );
-  };
-
-  /**
-   * Fetches the available job ads from sanity
-   *
-   * @returns
-   */
-  fetchJobs = async () => {
-    return await this.#sanity.fetch<JobAdsQueryResult>(jobAdsQuery);
-  };
-
-  /**
-   * Fetches all the posts from sanity
-   *
-   * @returns
-   */
-  fetchPosts = async () => {
-    return await this.#sanity.fetch<AllPostsQueryResult>(allPostsQuery);
-  };
-
-  /**
-   * Fetches all the groups based on the type from sanity
-   *
-   * @param type
-   * @returns
-   */
-  fetchGroupsByType = async (type: string) => {
-    return await this.#sanity
-      .fetch<StudentGroupsByTypeQueryResult>(studentGroupsByTypeQuery, {
-        type,
-        n: -1,
-      })
-      .then((groups) => {
-        return groups.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-      });
-  };
-
-  /**
-   * Fetches the group by slug from sanity
-   *
-   * @param slug
-   * @returns
-   */
-  fetchGroupBySlug = async (slug: string) => {
-    return await this.#sanity.fetch<StudentGroupBySlugQueryResult>(
-      studentGroupBySlugQuery,
-      {
-        slug,
-      }
-    );
-  };
-
-  /**
-   * Fetches all the meeting minutes from sanity
-   *
-   * @returns
-   */
-  fetchMinutes = async () => {
-    return await this.#sanity.fetch<AllMeetingMinuteQueryResult>(
-      allMeetingMinuteQuery
-    );
-  };
+  // Use the sanity client directly for more complex queries
+  readonly sanity = () => this.#sanity;
 }

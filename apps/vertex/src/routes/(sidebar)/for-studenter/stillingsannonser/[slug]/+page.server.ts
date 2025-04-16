@@ -4,8 +4,9 @@ import { marked } from 'marked';
 import { axis } from '$lib/axis/client';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const jobs = await axis.fetchJobs();
-	const job = jobs.find((job) => job.slug === params.slug);
+	const job = await axis.content.jobs
+		.list()
+		.then((jobs) => jobs.find((job) => job.slug === params.slug));
 	if (!job) {
 		error(404, 'Finner ikke stillingsannonsen');
 	}

@@ -3,8 +3,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	const [events, bedpres] = await Promise.all([
-		axis.fetchUpcomingEvents(),
-		axis.fetchUpcomingBedpres()
+		axis.events.upcoming(['event', 'external'], 5),
+		axis.events.upcoming(['bedpres'], 5)
 	]);
 
 	return {

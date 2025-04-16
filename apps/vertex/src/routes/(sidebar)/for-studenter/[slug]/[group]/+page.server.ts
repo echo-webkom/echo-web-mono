@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		error(404, 'Group not found');
 	}
 
-	const studentGroup = await axis.fetchGroupBySlug(group);
+	const studentGroup = await axis.groups.bySlug(group);
 	if (!studentGroup) {
 		throw error(404, 'Group not found');
 	}
