@@ -3,12 +3,14 @@ import { Command } from "commander";
 import * as Database from "./db";
 import { isSeedMode } from "./db/mode";
 import * as Sanity from "./sanity";
-import { parseEnv } from "./sanity/utils";
 import * as message from "./utils";
 
 const program = new Command();
 
-program.name("seeder").version("0.0.1").description("Seed data to database and Sanity");
+program
+  .name("seeder")
+  .version("0.0.1")
+  .description("Seed data to database and Sanity");
 
 /**
  * Seed all data
@@ -21,7 +23,7 @@ program
   .option(
     "-d, --dataset <dataset>",
     "Sanity dataset",
-    parseEnv(process.env.NEXT_PUBLIC_SANITY_DATASET),
+    process.env.SANITY_DATASET
   )
   .option("-m, --mode <mode>", "What data to seed", "dev")
   .action(async (options: AllOptions) => {

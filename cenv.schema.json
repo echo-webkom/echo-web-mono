@@ -1,95 +1,56 @@
 {
-  "lastUpdated": "2025-01-13T12:43:01.701629068+01:00",
-  "fields": {
-    "ADMIN_KEY": {
-      "required": true,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "ADMIN_KEY",
-      "value": ""
-    },
-    "API_PORT": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "API_PORT",
-      "value": "8000"
-    },
-    "DATABASE_LOG": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "DATABASE_LOG",
-      "value": "true"
-    },
-    "DATABASE_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "DATABASE_URL",
-      "value": "postgres://postgres:postgres@localhost:5432/echo-web"
-    },
-    "FEIDE_CLIENT_ID": {
-      "required": true,
-      "public": false,
-      "lengthRequired": true,
-      "length": 36,
-      "format": "",
-      "key": "FEIDE_CLIENT_ID",
-      "value": ""
-    },
-    "FEIDE_CLIENT_SECRET": {
-      "required": true,
-      "public": false,
-      "lengthRequired": true,
-      "length": 36,
-      "format": "",
-      "key": "FEIDE_CLIENT_SECRET",
-      "value": ""
-    },
-    "NEXTAUTH_SECRET": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXTAUTH_SECRET",
-      "value": ""
-    },
-    "NEXTAUTH_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXTAUTH_URL",
-      "value": "http://localhost:3000"
-    },
-    "NEXT_PUBLIC_API_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXT_PUBLIC_API_URL",
-      "value": "http://localhost:8000"
-    },
-    "NEXT_PUBLIC_SANITY_DATASET": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXT_PUBLIC_SANITY_DATASET",
-      "value": "develop"
-    }
-  }
+	"lastUpdated": "2025-04-16T17:01:00.744948+02:00",
+	"fields": {
+		"ADMIN_KEY": {
+			"required": true,
+			"key": "ADMIN_KEY"
+		},
+		"API_PORT": {
+			"public": true,
+			"key": "API_PORT",
+			"value": "8080"
+		},
+		"DATABASE_LOG": {
+			"public": true,
+			"key": "DATABASE_LOG",
+			"value": "true"
+		},
+		"DATABASE_URL": {
+			"public": true,
+			"key": "DATABASE_URL",
+			"value": "postgres://postgres:postgres@localhost:5432/echo-web"
+		},
+		"FEIDE_CLIENT_ID": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_ID"
+		},
+		"FEIDE_CLIENT_SECRET": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_SECRET"
+		},
+		"NEXTAUTH_URL": {
+			"public": true,
+			"key": "NEXTAUTH_URL",
+			"value": "http://localhost:3000"
+		},
+		"PUBLIC_API_URL": {
+			"public": true,
+			"key": "PUBLIC_API_URL",
+			"value": "http://localhost:8080"
+		},
+		"PUBLIC_ECHOGRAM_URL": {
+			"public": true,
+			"key": "PUBLIC_ECHOGRAM_URL",
+			"value": "http://localhost:8001"
+		},
+		"PUBLIC_SANITY_DATASET": {
+			"public": true,
+			"key": "PUBLIC_SANITY_DATASET",
+			"value": "production"
+		}
+	}
 }

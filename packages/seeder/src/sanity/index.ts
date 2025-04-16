@@ -8,15 +8,15 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
-import { clientWith, type Dataset } from "@echo-webkom/sanity";
 
 import * as message from "../utils";
 import { happeningQueryList, type SanityHappening } from "./query";
+import { clientWith } from "./client";
+import { db } from "../db/client";
 
 export type Options = {
-  dataset: Dataset;
+  dataset: string;
 };
 
 export const seed = async ({ dataset }: Options) => {
@@ -24,7 +24,8 @@ export const seed = async ({ dataset }: Options) => {
   console.log(`🌱 Seeding Sanity data...`);
   message.lines();
 
-  const res = await clientWith(dataset).fetch<Array<SanityHappening>>(happeningQueryList);
+  const res =
+    await clientWith(dataset).fetch<Array<SanityHappening>>(happeningQueryList);
 
   const formattedHappenings = res
     .filter((happening) => happening.happeningType !== "external")
@@ -34,11 +35,16 @@ export const seed = async ({ dataset }: Options) => {
       registrationStartGroups: h.registrationStartGroups
         ? new Date(h.registrationStartGroups)
         : null,
-      registrationStart: h.registrationStart ? new Date(h.registrationStart) : null,
+      registrationStart: h.registrationStart
+        ? new Date(h.registrationStart)
+        : null,
       registrationEnd: h.registrationEnd ? new Date(h.registrationEnd) : null,
       registrationGroups:
-        h.registrationGroups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
-      groups: h.groups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
+        h.registrationGroups?.map((group) =>
+          isBoard(group) ? "hovedstyre" : group
+        ) ?? [],
+      groups:
+        h.groups?.map((group) => (isBoard(group) ? "hovedstyre" : group)) ?? [],
     }));
 
   await db.transaction(async (tx) => {
@@ -58,8 +64,8 @@ export const seed = async ({ dataset }: Options) => {
                 registrationEnd: h.registrationEnd,
                 registrationStartGroups: h.registrationStartGroups,
                 registrationGroups: h.registrationGroups,
-              }) satisfies HappeningInsert,
-          ),
+              }) satisfies HappeningInsert
+          )
         )
         .onConflictDoUpdate({
           target: [happenings.slug],
@@ -78,15 +84,17 @@ export const seed = async ({ dataset }: Options) => {
       await tx.delete(happeningsToGroups).where(
         inArray(
           happeningsToGroups.happeningId,
-          formattedHappenings.map((h) => h._id),
-        ),
+          formattedHappenings.map((h) => h._id)
+        )
       );
 
       const validGroups = await tx.query.groups.findMany();
 
       const groupsToInsert = formattedHappenings.flatMap((h) => {
         return (h.groups ?? [])
-          .filter((groupId) => validGroups.map((group) => group.id).includes(groupId))
+          .filter((groupId) =>
+            validGroups.map((group) => group.id).includes(groupId)
+          )
           .map((groupId) => ({
             happeningId: h._id,
             groupId,
@@ -101,8 +109,8 @@ export const seed = async ({ dataset }: Options) => {
     await tx.delete(spotRanges).where(
       inArray(
         spotRanges.happeningId,
-        formattedHappenings.map((h) => h._id),
-      ),
+        formattedHappenings.map((h) => h._id)
+      )
     );
 
     const spotRangesToInsert = formattedHappenings.flatMap((h) => {
@@ -123,23 +131,24 @@ export const seed = async ({ dataset }: Options) => {
     await tx.delete(questions).where(
       inArray(
         questions.happeningId,
-        formattedHappenings.map((h) => h._id),
-      ),
+        formattedHappenings.map((h) => h._id)
+      )
     );
 
-    const questionsToInsert: Array<QuestionInsert> = formattedHappenings.flatMap((h) => {
-      return (h.questions ?? []).map((q) => {
-        return {
-          id: q.id,
-          happeningId: h._id,
-          title: q.title,
-          required: q.required,
-          isSensitive: q.isSensitive,
-          type: q.type,
-          options: (q.options ?? []).map((o) => ({ id: o, value: o })),
-        };
+    const questionsToInsert: Array<QuestionInsert> =
+      formattedHappenings.flatMap((h) => {
+        return (h.questions ?? []).map((q) => {
+          return {
+            id: q.id,
+            happeningId: h._id,
+            title: q.title,
+            required: q.required,
+            isSensitive: q.isSensitive,
+            type: q.type,
+            options: (q.options ?? []).map((o) => ({ id: o, value: o })),
+          };
+        });
       });
-    });
 
     if (questionsToInsert.length > 0) {
       await tx.insert(questions).values(questionsToInsert);

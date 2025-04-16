@@ -1,4 +1,4 @@
-# ☢️ Experimental rewrite ☢️
+<h1 align="center">☢️ Experimental rewrite ☢️</h1>
 
 <br>
 
@@ -39,6 +39,7 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
    - [pnpm](https://pnpm.io/installation)
    - [docker](https://docs.docker.com/engine/install/)
+   - [go](https://go.dev/doc/install)
    - [cenv](https://github.com/echo-webkom/cenv)
 
 2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
@@ -75,9 +76,9 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 Sidene som starter er:
 
-- [http://localhost:3000](http://localhost:3000) for nettsiden
+- [http://localhost:3000](http://localhost:5173) for nettsiden
 - [http://localhost:3333](http://localhost:3333) for Sanity Studio
-- [http://localhost:8000](http://localhost:8000) for API-et våres
+- [http://localhost:8000](http://localhost:8080) for API-et våres
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 > NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
@@ -86,13 +87,10 @@ Sidene som starter er:
 
 - [nano](https://github.com/echo-webkom/nano) - Nano-services for siden.
 - [cenv](https://github.com/echo-webkom/cenv) - Environment fil skjekker
+- [cpr](https://github.com/echo-webkom/cpr) - En enkel tjenste for å backe opp databaser
 
-## Dokumentasjon
-
-[Du kan lese mer på vår wiki!](https://docs.echo-webkom.no)
-
-<br>
+## Bærekraft
 
 <div align="center">
-<img width="20%" src="./.github/wetestinprod.png" />
+   <img width="20%" src="./.github/wetestinprod.png" />
 </div>
