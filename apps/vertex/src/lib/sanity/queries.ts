@@ -1,8 +1,20 @@
-import { homeHappeningsQuery, jobAdsQuery, staticInfoQuery } from '@echo-webkom/sanity/queries';
+import {
+	allMeetingMinuteQuery,
+	allPostsQuery,
+	homeHappeningsQuery,
+	jobAdsQuery,
+	staticInfoQuery,
+	studentGroupBySlugQuery,
+	studentGroupsByTypeQuery
+} from '@echo-webkom/sanity/queries';
 import type {
+	StudentGroupBySlugQueryResult,
+	AllPostsQueryResult,
 	HomeHappeningsQueryResult,
 	JobAdsQueryResult,
-	StaticInfoQueryResult
+	StaticInfoQueryResult,
+	StudentGroupsByTypeQueryResult,
+	AllMeetingMinuteQueryResult
 } from '@echo-webkom/cms/types';
 import { sanityCdn } from '.';
 import type { PageType } from '@echo-webkom/lib';
@@ -28,4 +40,31 @@ export const fetchStaticPage = async (pageType: PageType, slug: string) => {
 
 export const fetchJobs = async () => {
 	return await sanityCdn.fetch<JobAdsQueryResult>(jobAdsQuery);
+};
+
+export const fetchPosts = async () => {
+	return await sanityCdn.fetch<AllPostsQueryResult>(allPostsQuery);
+};
+
+export const fetchGroupsByType = async (type: string) => {
+	return await sanityCdn
+		.fetch<StudentGroupsByTypeQueryResult>(studentGroupsByTypeQuery, {
+			type,
+			n: -1
+		})
+		.then((groups) => {
+			return groups.sort((a, b) => {
+				return a.name.localeCompare(b.name);
+			});
+		});
+};
+
+export const fetchGroupBySlug = async (slug: string) => {
+	return await sanityCdn.fetch<StudentGroupBySlugQueryResult>(studentGroupBySlugQuery, {
+		slug
+	});
+};
+
+export const fetchMinutes = async () => {
+	return await sanityCdn.fetch<AllMeetingMinuteQueryResult>(allMeetingMinuteQuery);
 };

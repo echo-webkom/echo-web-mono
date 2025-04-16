@@ -44,13 +44,13 @@ export const routes = [
 			},
 			{
 				label: 'Hovedstyrer',
-				href: '/for-studenter/grupper/hovedstyre',
+				href: '/for-studenter/hovedstyre',
 				description: 'Oversikt over echos hovedstyrer',
 				icon: Users
 			},
 			{
 				label: 'Undergrupper',
-				href: '/for-studenter/grupper/undergrupper',
+				href: '/for-studenter/undergrupper',
 				description: 'Oversikt over undergrupper',
 				icon: Users
 			},
@@ -62,13 +62,13 @@ export const routes = [
 			},
 			{
 				label: 'Interessegrupper',
-				href: '/for-studenter/grupper/interessegrupper',
+				href: '/for-studenter/interessegrupper',
 				description: 'Oversikt over interessegrupper',
 				icon: Users
 			},
 			{
 				label: 'Idrettslag',
-				href: '/for-studenter/grupper/idrettslag',
+				href: '/for-studenter/idrettslag',
 				description: 'Oversikt over idrettslag',
 				icon: Users
 			},

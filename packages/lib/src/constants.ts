@@ -17,6 +17,18 @@ export const GROUP_TYPES = [
 
 export type StudentGroupType = (typeof GROUP_TYPES)[number]["value"];
 
+export const GROUP_PATH_TO_TYPE: Record<string, StudentGroupType> = {
+  hovedstyre: "board",
+  undergrupper: "subgroup",
+  underorganisasjoner: "suborg",
+  interessegrupper: "intgroup",
+  idrettslag: "sport",
+};
+
+export const GROUP_TYPE_TO_PATH = Object.fromEntries(
+  Object.entries(GROUP_PATH_TO_TYPE).map(([key, value]) => [value, key])
+);
+
 export const HAPPENING_TYPES = [
   { title: "Arrangement", value: "event" },
   { title: "Bedriftspresentasjon", value: "bedpres" },
@@ -89,4 +101,6 @@ export const GROUPS = {
   BRYGGELAGET: "bryggelaget",
 } as const;
 
-export type Group = (typeof GROUPS)[keyof typeof GROUPS] | (string & NonNullable<unknown>);
+export type Group =
+  | (typeof GROUPS)[keyof typeof GROUPS]
+  | (string & NonNullable<unknown>);

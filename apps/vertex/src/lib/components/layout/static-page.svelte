@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { StaticInfoQueryResult } from '@echo-webkom/cms/types';
-	import StaticPagesSiderbar from '$lib/components/static-pages-siderbar.svelte';
-	import Container from '$lib/components/ui/container.svelte';
 	import Heading from '$lib/components/ui/heading.svelte';
 	import Markdown from '$lib/components/ui/markdown.svelte';
 
@@ -16,11 +14,5 @@
 	<title>{page.title}</title>
 </svelte:head>
 
-<Container>
-	<StaticPagesSiderbar />
-
-	<div>
-		<Heading>{page.title}</Heading>
-		<Markdown markdown={page.body} />
-	</div>
-</Container>
+<Heading>{page.title}</Heading>
+<Markdown markdown={page.body} />

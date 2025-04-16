@@ -1,5 +1,5 @@
-import type { PageType } from '@echo-webkom/lib';
-import { fetchStaticPage } from './sanity/queries';
+import type { PageType, StudentGroupType } from '@echo-webkom/lib';
+import { fetchGroupsByType, fetchStaticPage } from './sanity/queries';
 import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
 
@@ -12,4 +12,12 @@ export const loadStaticPage = async (pageType: PageType, slug: string) => {
 		...page,
 		body: await marked(page.body)
 	};
+};
+
+export const loadGroupsPage = async (groupType: StudentGroupType) => {
+	const groups = await fetchGroupsByType(groupType);
+	if (!groups) {
+		error(404, 'Finner ikke siden du leter etter');
+	}
+	return groups;
 };

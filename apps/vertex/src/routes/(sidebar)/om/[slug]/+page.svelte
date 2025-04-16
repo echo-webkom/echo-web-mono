@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StaticPage from '$lib/components/static-page.svelte';
+	import StaticPage from '$lib/components/layout/static-page.svelte';
 
 	let { data } = $props();
 </script>

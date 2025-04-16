@@ -20,7 +20,7 @@
 						</div>
 						<div class="flex flex-col gap-1">
 							<span class="font-medium">{route.label}</span>
-							<span class="text-muted-foreground">{route.description}</span>
+							<span class="text-muted-foreground text-sm">{route.description}</span>
 						</div>
 					</a>
 				</li>
