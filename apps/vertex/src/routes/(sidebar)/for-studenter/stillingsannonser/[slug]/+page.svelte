@@ -2,7 +2,7 @@
 	import Heading from '$lib/components/ui/heading.svelte';
 	import Markdown from '$lib/components/ui/markdown.svelte';
 	import { degreeYearText, degreeYearsToList } from '$lib/degree-year-text.js';
-	import { urlFor } from '$lib/sanity';
+	import { urlFor } from '$lib/sanity/client.js';
 	import { JOB_TYPES } from '@echo-webkom/lib';
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale';

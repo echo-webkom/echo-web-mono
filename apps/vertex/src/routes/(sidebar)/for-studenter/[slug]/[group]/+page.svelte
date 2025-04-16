@@ -2,7 +2,7 @@
 	import Heading from '$lib/components/ui/heading.svelte';
 	import Markdown from '$lib/components/ui/markdown.svelte';
 	import { initials } from '$lib/initials';
-	import { urlFor } from '$lib/sanity';
+	import { urlFor } from '$lib/sanity/client.js';
 	import { Send, Facebook, Instagram, Linkedin } from '@lucide/svelte';
 
 	let { data } = $props();

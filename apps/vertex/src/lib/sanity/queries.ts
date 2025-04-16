@@ -16,7 +16,7 @@ import type {
 	StudentGroupsByTypeQueryResult,
 	AllMeetingMinuteQueryResult
 } from '@echo-webkom/cms/types';
-import { sanityCdn } from '.';
+import { sanityCdn } from './client';
 import type { PageType } from '@echo-webkom/lib';
 
 /**
