@@ -6,6 +6,8 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Router wraps chi.Mux and serves as a ready-to-use router apps can create.
+// Mounted handlers are private by default.
 type Router struct {
 	r *chi.Mux
 }

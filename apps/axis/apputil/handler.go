@@ -10,7 +10,8 @@ type Handler struct {
 	DB *sql.DB
 }
 
-// Encodes the response as JSON and writes it to the http.ResponseWriter
+// JSON encodes the response as json and writes to the http.ResponseWriter.
+// Serves status 500 on failed encoding.
 func (h *Handler) JSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -20,7 +21,7 @@ func (h *Handler) JSON(w http.ResponseWriter, status int, v any) {
 	}
 }
 
-// Error writes an error message to the http.ResponseWriter
+// Error writes an error message to the http.ResponseWriter.
 func (h *Handler) Error(w http.ResponseWriter, status int, err error) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -30,7 +31,7 @@ func (h *Handler) Error(w http.ResponseWriter, status int, err error) {
 	}
 }
 
-// Bind decodes the request body into the provided struct
+// Bind decodes the request body into the provided struct.
 func (h *Handler) Bind(r *http.Request, v any) error {
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
