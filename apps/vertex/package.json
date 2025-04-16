@@ -20,6 +20,8 @@
     "@sveltejs/adapter-node": "^5.2.12",
     "@sveltejs/kit": "^2.20.7",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
     "eslint": "^9.7.0",
     "eslint-plugin-svelte": "^2.36.0",
@@ -40,12 +42,13 @@
     "@echo-webkom/sanity": "workspace:*",
     "@lucide/svelte": "^0.488.0",
     "@sanity/client": "6.27.2",
-    "@tailwindcss/typography": "^0.5.16",
+    "@sanity/image-url": "1.0.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "groq": "^3.84.0",
     "ky": "^1.8.1",
     "marked": "^15.0.8",
+    "remove-markdown": "^0.6.0",
     "tailwind-merge": "^3.2.0"
   }
 }

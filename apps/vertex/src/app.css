@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/forms';
 
 :root {
 	--background: #f9fafb;
@@ -210,6 +211,11 @@ html.dark[data-theme='christmas'] {
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+	--font-sans: 'Inter', sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+}
+
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
@@ -275,6 +281,10 @@ html.dark[data-theme='christmas'] {
 
 	--color-radius: var(--radius);
 
+	--color-feide: var(--feide);
+	--color-feide-hover: var(--feide-hover);
+	--color-feide-dark: var(--feide-dark);
+
 	--color-footer: var(--footer);
 	--color-footer-border: var(--footer-border);
 	--color-footer-foreground: var(--footer-foreground);
@@ -301,8 +311,8 @@ html.dark[data-theme='christmas'] {
 	body {
 		margin: 0;
 		padding: 0;
-		font-family: system-ui, sans-serif;
-		font-weight: 400;
+		font-family: var(--font-sans);
+		font-weight: 300;
 		font-size: 1rem;
 		line-height: 1.5rem;
 		color: var(--color-foreground);

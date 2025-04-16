@@ -154,9 +154,6 @@
 					</li>
 				{/each}
 			</menu>
-			<div class="flex flex-col gap-1 p-4">
-				<button class="btn-primary">Logg inn</button>
-			</div>
 		</div>
 	{/if}
 </div>

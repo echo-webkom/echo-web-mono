@@ -7,8 +7,6 @@ const fetchGuidelines = async () => {
 	).then((res) => res.text());
 };
 
-export const prerender = true;
-
 export const load: PageServerLoad = async () => {
 	const bylaws = await fetchGuidelines();
 	const body = await marked(bylaws);

@@ -1,7 +1,6 @@
 import groq from "groq";
 
-export const jobAdsQuery = groq`
-*[_type == "job"
+export const jobAdsQuery = groq`*[_type == "job"
   && !(_id in path('drafts.**'))
   && expiresAt > now()]
   | order(weight desc, deadline desc) {
@@ -27,5 +26,4 @@ export const jobAdsQuery = groq`
   deadline,
   degreeYears,
   body
-}
-`;
+}`;

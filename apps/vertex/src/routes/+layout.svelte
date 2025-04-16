@@ -3,6 +3,7 @@
 
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
+	import FloatingFeedbackButton from '$lib/components/floating-feedback-button.svelte';
 
 	let { children } = $props();
 </script>
@@ -22,5 +23,6 @@
 		{@render children()}
 	</div>
 
+	<FloatingFeedbackButton />
 	<Footer />
 </div>

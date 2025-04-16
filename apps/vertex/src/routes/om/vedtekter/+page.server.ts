@@ -7,8 +7,6 @@ const fetchBylaws = async () => {
 	);
 };
 
-export const prerender = true;
-
 export const load: PageServerLoad = async () => {
 	const bylaws = await fetchBylaws();
 	const body = await marked(bylaws);

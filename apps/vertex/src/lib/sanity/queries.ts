@@ -1,5 +1,9 @@
-import { homeHappeningsQuery, staticInfoQuery } from '@echo-webkom/sanity/queries';
-import type { HomeHappeningsQueryResult, StaticInfoQueryResult } from '@echo-webkom/cms/types';
+import { homeHappeningsQuery, jobAdsQuery, staticInfoQuery } from '@echo-webkom/sanity/queries';
+import type {
+	HomeHappeningsQueryResult,
+	JobAdsQueryResult,
+	StaticInfoQueryResult
+} from '@echo-webkom/cms/types';
 import { sanityCdn } from '.';
 import type { PageType } from '@echo-webkom/lib';
 
@@ -20,4 +24,8 @@ export const fetchUpcomingBedpres = async () => {
 export const fetchStaticPage = async (pageType: PageType, slug: string) => {
 	const data = await sanityCdn.fetch<StaticInfoQueryResult>(staticInfoQuery);
 	return data.find((page) => page.pageType === pageType && page.slug === slug);
+};
+
+export const fetchJobs = async () => {
+	return await sanityCdn.fetch<JobAdsQueryResult>(jobAdsQuery);
 };
