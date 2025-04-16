@@ -85,14 +85,14 @@ type HappeningsToGroups struct {
 }
 
 type Happening struct {
-	ID                      string
-	Slug                    string
-	Title                   string
-	Type                    string
-	Date                    *time.Time
-	RegistrationGroups      *json.RawMessage
-	RegistrationStartGroups *time.Time
-	RegistrationStart       *time.Time
+	ID                      string           `json:"id"`
+	Slug                    string           `json:"slug"`
+	Title                   string           `json:"title"`
+	Type                    string           `json:"type"`
+	Date                    *time.Time       `json:"date"`
+	RegistrationGroups      *json.RawMessage `json:"registrationGroups"`
+	RegistrationStartGroups *time.Time       `json:"registrationStartGroups"`
+	RegistrationStart       *time.Time       `json:"registrationStart"`
 }
 
 type KV struct {

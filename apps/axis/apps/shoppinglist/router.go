@@ -8,8 +8,8 @@ import (
 func Router(h *apputil.Handler) chi.Router {
 	r := chi.NewRouter()
 
-	r.Get("/", ListShoppingItems(h))
-	r.Post("/", CreateShoppingItem(h))
+	r.Get("/", listShoppingItems(h))
+	r.Post("/", createShoppingItem(h))
 
 	return r
 }
