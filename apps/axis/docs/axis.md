@@ -5,6 +5,7 @@
 - `/apps` - Service APIs
 - `/apputil` - Service handler and other utils
 - `/cmd` - Axis entrypoint
+- `/config` - Axis and API configuration
 - `/server` - Server router and mounting of apps
 - `/service` - Internal data and API services
 - `/storage`
@@ -23,11 +24,22 @@ Only the Router function should be exported:
 
 ```go
 func Router(h *apputil.Handler) chi.Router {
-	r := chi.NewRouter()
+    r := chi.NewRouter()
 
-  // Mount handlers
+    // Mount handlers
 
-	return r
+    return r
+}
+```
+
+Handlers have the following signature:
+
+```go
+func helloWorldHandler(h *apputil.Handler) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+
+        h.JSON(w, http.StatusOK, "{'message': 'Hello world!'}")
+    }
 }
 ```
 

@@ -6,13 +6,14 @@ import (
 	"net/http"
 
 	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/config"
 	"github.com/echo-webkom/axis/storage/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
 
-func Run() {
+func Run(config *config.Config) {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
@@ -36,7 +37,7 @@ func Run() {
 	rf := apputil.NewRouterFactory(r, h)
 	mount(rf)
 
-	port := ":8080"
+	port := toGoPort(config.Port)
 	fmt.Println("Running on http://localhost" + port)
 	http.ListenAndServe(port, r)
 }

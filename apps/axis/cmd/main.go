@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/echo-webkom/axis/config"
 	"github.com/echo-webkom/axis/server"
 )
 
@@ -18,5 +19,6 @@ func main() {
 	fmt.Println("Starting Axis server...")
 	fmt.Println()
 
-	server.Run()
+	config := config.Load()
+	server.Run(config)
 }
