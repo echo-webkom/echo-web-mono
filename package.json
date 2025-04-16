@@ -19,6 +19,7 @@
     "db:remove": "pnpm db:down && rm -rf ./postgres-data",
     "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate",
     "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
+    "seed": "pnpm --filter=seeder seed:start",
     "format": "turbo run format",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
