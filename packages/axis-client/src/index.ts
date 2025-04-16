@@ -1,6 +1,7 @@
 import { createClient, type SanityClient } from "@sanity/client";
 import {
   allMeetingMinuteQuery,
+  allMerchQuery,
   allPostsQuery,
   homeHappeningsQuery,
   jobAdsQuery,
@@ -16,6 +17,7 @@ import type {
   StaticInfoQueryResult,
   StudentGroupsByTypeQueryResult,
   AllMeetingMinuteQueryResult,
+  AllMerchQueryResult,
 } from "@echo-webkom/cms/types";
 import type { PageType } from "@echo-webkom/lib";
 import ky, { type KyInstance } from "ky";
@@ -26,12 +28,14 @@ export type AxisClientOptions = {
     projectId: string;
     dataset: string;
   };
+  apiToken?: string;
   debug?: boolean;
 };
 
 export class AxisClient {
   #sanity: SanityClient;
   #axis: KyInstance;
+  #apiToken: string | undefined;
   #debug: boolean = false;
 
   constructor(options: AxisClientOptions) {
@@ -46,6 +50,7 @@ export class AxisClient {
     });
 
     this.#debug = options.debug ?? false;
+    this.#apiToken = options.apiToken;
     this.log("AxisClient initialized");
   }
 
@@ -79,6 +84,12 @@ export class AxisClient {
     jobs: {
       list: async (): Promise<JobAdsQueryResult> => {
         return await this.#sanity.fetch(jobAdsQuery);
+      },
+    },
+
+    merch: {
+      list: async (): Promise<AllMerchQueryResult> => {
+        return await this.#sanity.fetch(allMerchQuery);
       },
     },
 
