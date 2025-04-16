@@ -156,6 +156,25 @@ export class AxisClient {
     },
   };
 
+  readonly auth = {
+    session: {
+      validate: async (sessionId: string) => {
+        const response = await this.#axis
+          .get("auth/session", {
+            headers: {
+              Authorization: `Bearer ${this.#apiToken}`,
+            },
+          })
+          .json<{ user: any; session: any }>();
+
+        return {
+          user: response.user,
+          session: response.session,
+        };
+      },
+    },
+  };
+
   // Use the sanity client directly for more complex queries
   readonly sanity = () => this.#sanity;
 }
