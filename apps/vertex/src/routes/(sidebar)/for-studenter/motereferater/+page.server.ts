@@ -1,8 +1,8 @@
-import { fetchMinutes } from '$lib/sanity/queries';
+import { axis } from '$lib/axis/client';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const minutes = await fetchMinutes();
+	const minutes = await axis.fetchMinutes();
 	return {
 		minutes
 	};

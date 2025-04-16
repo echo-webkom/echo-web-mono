@@ -4,7 +4,7 @@
 	import Input from '$lib/components/ui/form/input.svelte';
 	import Select from '$lib/components/ui/form/select.svelte';
 	import { Briefcase, Calendar, Coffee, Pin } from '@lucide/svelte';
-	import { urlFor } from '$lib/sanity/client.js';
+	import { urlFor } from '$lib/sanity/image';
 	import { JOB_TYPES } from '@echo-webkom/lib';
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale';

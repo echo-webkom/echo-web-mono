@@ -4,15 +4,17 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "start": "vite preview",
+    "dev": "pnpm with-env vite dev",
+    "build": "pnpm with-env vite build",
+    "preview": "pnpm with-env vite preview",
+    "start": "node ./build/index.js",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "test:unit": "vitest",
-    "test": "npm run test:unit -- --run"
+    "test": "npm run test:unit -- --run",
+    "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.3",
@@ -23,6 +25,7 @@
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
+    "dotenv-cli": "7.4.4",
     "eslint": "^9.7.0",
     "eslint-plugin-svelte": "^2.36.0",
     "globals": "^15.0.0",
@@ -37,6 +40,7 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
+    "@echo-webkom/axis-client": "workspace:*",
     "@echo-webkom/cms": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",

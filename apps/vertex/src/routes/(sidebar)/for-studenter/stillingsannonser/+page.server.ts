@@ -1,8 +1,8 @@
-import { fetchJobs } from '$lib/sanity/queries';
+import { axis } from '$lib/axis/client';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const jobs = await fetchJobs();
+	const jobs = await axis.fetchJobs();
 
 	return {
 		jobs

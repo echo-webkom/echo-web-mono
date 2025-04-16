@@ -1,13 +1,13 @@
 {
-	"lastUpdated": "2025-04-16T17:05:08.725195+02:00",
+	"lastUpdated": "2025-04-16T17:34:06.517661+02:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
 			"key": "ADMIN_KEY"
 		},
-		"API_PORT": {
+		"AXIS_PORT": {
 			"public": true,
-			"key": "API_PORT",
+			"key": "AXIS_PORT",
 			"value": "8080"
 		},
 		"DATABASE_LOG": {
@@ -37,9 +37,9 @@
 			"key": "NEXTAUTH_URL",
 			"value": "http://localhost:3000"
 		},
-		"PUBLIC_API_URL": {
+		"PUBLIC_AXIS_URL": {
 			"public": true,
-			"key": "PUBLIC_API_URL",
+			"key": "PUBLIC_AXIS_URL",
 			"value": "http://localhost:8080"
 		},
 		"PUBLIC_ECHOGRAM_URL": {

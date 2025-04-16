@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "go run cmd/main.go"
+    "dev": "go run cmd/main.go",
+    "build": "go build -o build/axis cmd/main.go",
+    "test": "go test ./... -v"
   }
 }

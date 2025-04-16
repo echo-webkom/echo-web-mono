@@ -1,9 +1,9 @@
-import { fetchMinutes } from '$lib/sanity/queries';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { axis } from '$lib/axis/client';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const minute = await fetchMinutes().then((data) => {
+	const minute = await axis.fetchMinutes().then((data) => {
 		return data.find((minute) => minute._id === params.id);
 	});
 	if (!minute) {

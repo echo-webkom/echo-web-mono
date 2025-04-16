@@ -1,8 +1,8 @@
 import { GROUP_PATH_TO_TYPE } from '@echo-webkom/lib';
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import { fetchGroupBySlug } from '$lib/sanity/queries';
 import { marked } from 'marked';
+import { axis } from '$lib/axis/client';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const { slug, group } = params;
@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		error(404, 'Group not found');
 	}
 
-	const studentGroup = await fetchGroupBySlug(group);
+	const studentGroup = await axis.fetchGroupBySlug(group);
 	if (!studentGroup) {
 		throw error(404, 'Group not found');
 	}
