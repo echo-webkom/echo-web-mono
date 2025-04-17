@@ -2,6 +2,7 @@ package feedback
 
 import (
 	"context"
+	"errors"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	gonanoid "github.com/matoous/go-nanoid/v2"
@@ -21,6 +22,10 @@ func (s *FeedbackService) SubmitFeedback(ctx context.Context, feedback NewFeedba
 	id, err := gonanoid.New()
 	if err != nil {
 		return err
+	}
+
+	if feedback.Email != nil && !isEmail(*feedback.Email) {
+		return errors.New("invalid email")
 	}
 
 	_, err = s.pool.Exec(ctx, `
