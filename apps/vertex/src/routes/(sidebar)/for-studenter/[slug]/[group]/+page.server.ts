@@ -2,7 +2,7 @@ import { GROUP_PATH_TO_TYPE } from '@echo-webkom/lib';
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const { slug, group } = params;

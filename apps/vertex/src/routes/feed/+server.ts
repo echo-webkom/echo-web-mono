@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 import { type AllPostsQueryResult } from '@echo-webkom/cms/types';
 
 export type RSSItem = {

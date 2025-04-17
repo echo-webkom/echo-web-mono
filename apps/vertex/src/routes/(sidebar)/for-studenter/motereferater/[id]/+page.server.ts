@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const minute = await axis.content.minutes.list().then((data) => {

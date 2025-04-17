@@ -1,7 +1,7 @@
 import { type Icon as IconType } from '@lucide/svelte';
 import { setContext, getContext } from 'svelte';
 
-const HEADER_CONTEXT_KEY = 'header-context';
+const HEADER_CONTEXT_KEY = Symbol('header-context');
 
 export type HeaderContext = {
 	openRoutes: {
@@ -10,15 +10,15 @@ export type HeaderContext = {
 	} | null;
 };
 
-export const setHeaderContext = (context: HeaderContext) => {
-	setContext(HEADER_CONTEXT_KEY, context);
+export const setHeaderContext = (ctx: HeaderContext) => {
+	setContext(HEADER_CONTEXT_KEY, ctx);
 };
 
 export const getHeaderContext = () => {
-	const context = getContext<HeaderContext>(HEADER_CONTEXT_KEY);
-	if (!context) {
+	const ctx = getContext<HeaderContext>(HEADER_CONTEXT_KEY);
+	if (!ctx) {
 		throw new Error('Header context not found');
 	}
 
-	return context;
+	return ctx;
 };

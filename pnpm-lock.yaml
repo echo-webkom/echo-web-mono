@@ -19,7 +19,11 @@ importers:
         specifier: 5.6.3
         version: 5.6.3
 
-  apps/axis: {}
+  apps/axis:
+    dependencies:
+      dotenv-cli:
+        specifier: 7.4.4
+        version: 7.4.4
 
   apps/cms:
     dependencies:
@@ -129,6 +133,9 @@ importers:
       remove-markdown:
         specifier: ^0.6.0
         version: 0.6.0
+      svelte-sonner:
+        specifier: ^0.3.28
+        version: 0.3.28(svelte@5.27.0)
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -7296,6 +7303,11 @@ packages:
     peerDependenciesMeta:
       svelte:
         optional: true
+
+  svelte-sonner@0.3.28:
+    resolution: {integrity: sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0-next.1
 
   svelte@5.27.0:
     resolution: {integrity: sha512-Uai13Ydt1ZE+bUHme6b9U38PCYVNCqBRoBMkUKbFbKiD7kHWjdUUrklYAQZJxyKK81qII4mrBwe/YmvEMSlC9w==}
@@ -15541,6 +15553,10 @@ snapshots:
       postcss: 8.5.3
       postcss-scss: 4.0.9(postcss@8.5.3)
     optionalDependencies:
+      svelte: 5.27.0
+
+  svelte-sonner@0.3.28(svelte@5.27.0):
+    dependencies:
       svelte: 5.27.0
 
   svelte@5.27.0:

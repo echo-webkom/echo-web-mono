@@ -28,7 +28,7 @@ export type AxisClientOptions = {
     projectId: string;
     dataset: string;
   };
-  apiToken?: string;
+  apiToken: string;
   debug?: boolean;
 };
 
@@ -44,13 +44,15 @@ export class AxisClient {
       apiVersion: "2023-10-01",
       useCdn: true,
     });
-
+    this.#apiToken = options.apiToken;
     this.#axis = ky.extend({
       prefixUrl: options.axisUrl,
+      headers: {
+        Authorization: `Bearer ${this.#apiToken}`,
+      },
     });
 
     this.#debug = options.debug ?? false;
-    this.#apiToken = options.apiToken;
     this.log("AxisClient initialized");
   }
 

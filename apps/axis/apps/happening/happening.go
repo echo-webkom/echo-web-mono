@@ -1,39 +1,37 @@
-package service
+package happening
 
 import (
-	"database/sql"
+	"context"
 
 	"github.com/echo-webkom/axis/storage/database"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type HappeningService struct {
-	db *sql.DB
+	pool *pgxpool.Pool
 }
 
-func NewHappeningService(db *sql.DB) *HappeningService {
-	return &HappeningService{db: db}
+func New(pool *pgxpool.Pool) *HappeningService {
+	return &HappeningService{
+		pool,
+	}
 }
 
-func (hs *HappeningService) GetHappeningById(id string) (*database.Happening, error) {
-	row := hs.db.QueryRow(`
-SELECT id, title FROM happening WHERE id = ?
-`, id)
+func (s *HappeningService) GetHappeningById(ctx context.Context, id string) (*database.Happening, error) {
+	row := s.pool.QueryRow(ctx, `
+		SELECT id, title FROM happening WHERE id = ?`, id)
 
 	var evt database.Happening
 	if err := row.Scan(&evt.ID, &evt.Title); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
 		return nil, err
 	}
 
 	return &evt, nil
 }
 
-func (hs *HappeningService) GetAllHappenings() ([]database.Happening, error) {
-	rows, err := hs.db.Query(`
-SELECT id, title FROM happening
-`)
+func (s *HappeningService) GetAllHappenings(ctx context.Context) ([]database.Happening, error) {
+	rows, err := s.pool.Query(ctx, `
+		SELECT id, title FROM happening`)
 	if err != nil {
 		return nil, err
 	}

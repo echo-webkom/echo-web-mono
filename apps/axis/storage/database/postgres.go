@@ -1,12 +1,31 @@
 package database
 
 import (
-	"database/sql"
+	"context"
+	"time"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func Connect() (*sql.DB, error) {
-	connStr := "user=postgres password=postgres dbname=echo-web host=localhost port=5432 sslmode=disable"
-	return sql.Open("postgres", connStr)
+func Connect(ctx context.Context, connStr string) (*pgxpool.Pool, error) {
+	config, err := pgxpool.ParseConfig(connStr)
+	if err != nil {
+		return nil, err
+	}
+
+	config.MaxConns = 10
+	config.MaxConnLifetime = 20 * time.Minute
+
+	pool, err := pgxpool.NewWithConfig(ctx, config)
+	if err != nil {
+		return nil, err
+	}
+
+	err = pool.Ping(ctx)
+	if err != nil {
+		pool.Close()
+		return nil, err
+	}
+
+	return pool, nil
 }

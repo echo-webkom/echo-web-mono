@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "go run cmd/main.go",
-    "build": "go build -o build/axis cmd/main.go",
-    "test": "go test ./... -v"
+    "dev": "pnpm with-env go run cmd/main.go",
+    "build": "pnpm with-env go build -o build/axis cmd/main.go",
+    "test": "pnpm with-env go test ./... -v",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "dotenv-cli": "7.4.4"
   }
 }

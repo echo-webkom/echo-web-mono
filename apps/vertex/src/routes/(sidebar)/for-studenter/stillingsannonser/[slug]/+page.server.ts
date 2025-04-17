@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { marked } from 'marked';
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const job = await axis.content.jobs

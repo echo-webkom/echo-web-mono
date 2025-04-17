@@ -1,11 +1,19 @@
 <script lang="ts">
 	import '../app.css';
 
+	import { Toaster } from 'svelte-sonner';
 	import Header from '$lib/components/header/header.svelte';
 	import Footer from '$lib/components/footer/footer.svelte';
 	import FloatingFeedbackButton from '$lib/components/floating-feedback-button.svelte';
+	import { ThemeState } from '$lib/state/theme.svelte';
+	import { setThemeContext } from '$lib/context/color-theme';
 
 	let { children } = $props();
+
+	let state = new ThemeState();
+	setThemeContext({
+		state
+	});
 </script>
 
 <svelte:head>
@@ -16,6 +24,9 @@
 	/>
 </svelte:head>
 
+<Toaster richColors closeButton bind:theme={state.theme} />
+<FloatingFeedbackButton />
+
 <div class="flex flex-col w-full min-h-screen">
 	<Header />
 
@@ -23,6 +34,5 @@
 		{@render children()}
 	</div>
 
-	<FloatingFeedbackButton />
 	<Footer />
 </div>

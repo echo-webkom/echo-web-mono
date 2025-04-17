@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,6 +17,7 @@ import (
 func Run(config *config.Config) {
 	r := chi.NewRouter()
 
+	r.Use(adminKeyMiddleware(config.AdminKey))
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(cors.Handler(cors.Options{
@@ -25,13 +27,14 @@ func Run(config *config.Config) {
 		AllowCredentials: true,
 	}))
 
-	db, err := database.Connect()
+	ctx := context.Background()
+	pool, err := database.Connect(ctx, config.DBConnStr)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer db.Close()
+	defer pool.Close()
 
-	h := &apputil.Handler{DB: db}
+	h := &apputil.Handler{Pool: pool}
 	rf := apputil.NewRouterFactory(r, h)
 	mount(rf)
 

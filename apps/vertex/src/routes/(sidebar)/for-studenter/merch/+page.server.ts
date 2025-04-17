@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {

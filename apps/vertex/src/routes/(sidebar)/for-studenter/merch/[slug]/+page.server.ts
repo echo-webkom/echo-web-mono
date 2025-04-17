@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client';
+import { axis } from '$lib/axis/client.server';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

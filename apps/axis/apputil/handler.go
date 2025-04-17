@@ -1,13 +1,14 @@
 package apputil
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Handler struct {
-	DB *sql.DB
+	Pool *pgxpool.Pool
 }
 
 // JSON encodes the response as json and writes to the http.ResponseWriter.
