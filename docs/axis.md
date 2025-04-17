@@ -2,8 +2,8 @@
 
 ## Project layout
 
-- `/apps` - Service APIs
-- `/apputil` - Service handler and other utils
+- `/api` - Server APIs
+- `/apiutil` - API handler and other utils
 - `/cmd` - Axis entrypoint
 - `/config` - Axis and API configuration
 - `/server` - Server router and mounting of apps
@@ -11,33 +11,24 @@
 - `/storage`
   - `/database` - Database repo and models
 
-## Creating an app
+## Creating an api
 
-### Structure
+Create new file in `/axis/api` with the name of the api. For this example we create a new Hello api.
 
-Apps consist of two main files:
-
-- `router.go` - App router (chi) which mounts the handlers
-- `handler.go` - App endpoint handlers
-
-Only the Router function should be exported:
+Only a `xxxRouter` function should be exported with the following signature:
 
 ```go
-func Router(h *apputil.Handler) chi.Router {
-    r := chi.NewRouter()
+func HelloRouter(h *apputil.Handler) chi.Router {
+    r := apituil.NewRouter()
 
-    // Mount handlers
+    // Create single endpoint for GET request that responds with hello
+    r.Get("/", helloWorldHandler(h))
 
     return r
 }
-```
 
-Handlers have the following signature:
-
-```go
 func helloWorldHandler(h *apputil.Handler) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-
         h.JSON(w, http.StatusOK, "{'message': 'Hello world!'}")
     }
 }
@@ -45,5 +36,13 @@ func helloWorldHandler(h *apputil.Handler) http.HandlerFunc {
 
 ### Mounting
 
-Mount the app handler in `/server/mount.go`.
+Mount the api router in `/server/mount.go`.
+
+```go
+func mount(rf *apiutil.RouterFactory) {
+    ...
+
+	rf.Mount("/hello", api.HelloRouter)
+}
+```
 
