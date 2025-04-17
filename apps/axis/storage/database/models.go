@@ -147,7 +147,6 @@ type SiteFeedback struct {
 	Name      *string   `json:"name"`
 	Email     *string   `json:"email"`
 	Message   string    `json:"message"`
-	Category  string    `json:"category"`
 	IsRead    bool      `json:"isRead"`
 	CreatedAt time.Time `json:"createdAt"`
 }

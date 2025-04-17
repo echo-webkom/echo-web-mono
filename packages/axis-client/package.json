@@ -6,22 +6,20 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "clean": "rm -rf .turbo node_modules",
+    "clean": "rimraf .turbo node_modules",
     "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "8.57.1",
+    "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@echo-webkom/cms": "workspace:*",
-    "@echo-webkom/sanity": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
+    "@echo-webkom/sanity": "workspace:*",
     "@sanity/client": "6.22.5",
     "ky": "^1.8.1"
   }

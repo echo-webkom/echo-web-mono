@@ -32,7 +32,7 @@ func (s *ShoppingListService) ListShoppingItems(ctx context.Context) ([]Shopping
 	}
 	defer rows.Close()
 
-	items := make([]ShoppingListItemWithUser, 0)
+	items := []ShoppingListItemWithUser{}
 	for rows.Next() {
 		var item ShoppingListItemWithUser
 		if err := rows.Scan(&item.ID, &item.Name, &item.UserID, &item.UserName); err != nil {

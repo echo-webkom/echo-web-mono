@@ -30,5 +30,18 @@ func FeedbackRouter(h *apiutil.Handler) *apiutil.Router {
 		w.WriteHeader(http.StatusCreated)
 	})
 
+	// GET /feedback
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
+		feedbacks, err := fs.ListFeedback(ctx)
+		if err != nil {
+			h.Error(w, http.StatusInternalServerError, errors.New("internal server error"))
+			return
+		}
+
+		h.JSON(w, http.StatusOK, feedbacks)
+	})
+
 	return r
 }

@@ -20,10 +20,13 @@ importers:
         version: 5.6.3
 
   apps/axis:
-    dependencies:
+    devDependencies:
       dotenv-cli:
         specifier: 7.4.4
         version: 7.4.4
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
 
   apps/cms:
     dependencies:
@@ -88,6 +91,9 @@ importers:
       eslint:
         specifier: ^9.9.0
         version: 9.24.0(jiti@2.4.2)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -182,6 +188,9 @@ importers:
       prettier-plugin-svelte:
         specifier: ^3.2.6
         version: 3.3.3(prettier@3.4.2)(svelte@5.27.0)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       svelte:
         specifier: ^5.27.0
         version: 5.27.0
@@ -221,6 +230,9 @@ importers:
       postgres:
         specifier: 3.4.5
         version: 3.4.5
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -246,6 +258,9 @@ importers:
       eslint:
         specifier: 8.57.1
         version: 8.57.1
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -283,6 +298,9 @@ importers:
       drizzle-kit:
         specifier: 0.24.2
         version: 0.24.2
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       tsx:
         specifier: 4.19.1
         version: 4.19.1
@@ -326,6 +344,9 @@ importers:
       react-email:
         specifier: 3.0.6
         version: 3.0.6(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -335,6 +356,9 @@ importers:
       '@types/node':
         specifier: 20.17.10
         version: 20.17.10
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -360,6 +384,9 @@ importers:
       eslint:
         specifier: 8.57.1
         version: 8.57.1
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -406,6 +433,9 @@ importers:
       eslint:
         specifier: 8.57.1
         version: 8.57.1
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       tsx:
         specifier: 4.19.1
         version: 4.19.1

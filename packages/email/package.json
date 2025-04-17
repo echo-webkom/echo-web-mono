@@ -8,7 +8,7 @@
     "./client": "./client.ts"
   },
   "scripts": {
-    "clean": "rm -rf .turbo node_modules",
+    "clean": "rimraf .turbo node_modules",
     "dev": "pnpm with-env email dev --port 9000",
     "typecheck": "tsc --noEmit",
     "export": "pnpm with-env email export",
@@ -28,6 +28,7 @@
     "dotenv-cli": "7.4.4",
     "eslint": "8.57.1",
     "react-email": "3.0.6",
+    "rimraf": "^6.0.1",
     "typescript": "5.6.3"
   }
 }

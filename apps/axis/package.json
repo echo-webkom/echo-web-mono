@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "pnpm with-env go run cmd/main.go",
+    "start": "pnpm with-env ./build/axis",
+    "dev": "pnpm with-env air",
     "build": "pnpm with-env go build -o build/axis cmd/main.go",
     "test": "pnpm with-env go test ./... -v",
+    "clean": "rimraf build .turbo node_modules tmp",
     "with-env": "dotenv -e ../../.env --"
   },
-  "dependencies": {
-    "dotenv-cli": "7.4.4"
+  "devDependencies": {
+    "dotenv-cli": "7.4.4",
+    "rimraf": "^6.0.1"
   }
 }

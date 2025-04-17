@@ -37,7 +37,7 @@ func (s *HappeningService) GetAllHappenings(ctx context.Context) ([]database.Hap
 	}
 	defer rows.Close()
 
-	happenings := make([]database.Happening, 0)
+	happenings := []database.Happening{}
 	for rows.Next() {
 		var evt database.Happening
 		if err := rows.Scan(&evt.ID, &evt.Title); err != nil {
