@@ -1,5 +1,16 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { index, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
+import {
+  index,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
@@ -17,9 +28,7 @@ export const dots = pgTable(
     expiresAt: timestamp("expires_at").notNull(),
     createdAt: timestamp("created_at").notNull(),
   },
-  (table) => ({
-    userIdx: index("user_strike_idx").on(table.userId, table.id),
-  }),
+  (table) => [index("user_strike_idx").on(table.userId, table.id)]
 );
 
 export const dotsRelations = relations(dots, ({ one }) => ({

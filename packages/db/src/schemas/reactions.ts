@@ -1,5 +1,15 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
+import {
+  integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 import { users } from "./users";
 
@@ -13,9 +23,9 @@ export const reactions = pgTable(
       .references(() => users.id, { onDelete: "no action" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.reactToKey, table.emojiId, table.userId] }),
-  }),
+  (table) => [
+    primaryKey({ columns: [table.reactToKey, table.emojiId, table.userId] }),
+  ]
 );
 
 export const reactionsRelations = relations(reactions, ({ one }) => ({

@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -13,9 +17,7 @@ export const sessions = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.sessionToken] }),
-  }),
+  (table) => [primaryKey({ columns: [table.sessionToken] })]
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

@@ -11,4 +11,5 @@ func mount(rf *apiutil.RouterFactory) {
 	rf.Mount("/shopping-list", api.ShoppingListRouter)
 	rf.Mount("/feedback", api.FeedbackRouter)
 	rf.Mount("/auth", api.AuthRouter)
+	rf.Mount("/whitelist", api.WhitelistRouter)
 }

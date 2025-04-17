@@ -4,8 +4,8 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user: {} | null;
-			session: {} | null;
+			user: import('$lib/auth/validate').ValidatedUser | null;
+			session: import('$lib/auth/validate').ValidatedSession | null;
 		}
 		// interface PageData {}
 		// interface PageState {}

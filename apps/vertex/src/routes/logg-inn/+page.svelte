@@ -15,12 +15,12 @@
 
 		<div class="mb-4 flex flex-col justify-center gap-3">
 			<div>
-				<button
+				<a
+					href="/auth/feide"
 					class="inline-flex items-center font-semibold justify-center rounded-xl border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background duration-300 text-primary-foreground h-10 py-2 px-4 group w-full gap-2 border-feide-dark bg-feide hover:border-feide hover:bg-feide-hover hover:text-black"
-					type="button"
 				>
 					<Feide /> Logg inn med Feide
-				</button>
+				</a>
 			</div>
 		</div>
 

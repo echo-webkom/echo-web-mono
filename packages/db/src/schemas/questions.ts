@@ -1,5 +1,16 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
+import {
+  boolean,
+  json,
+  pgTable,
+  primaryKey,
+  text,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, questionTypeEnum } from ".";
@@ -24,9 +35,7 @@ export const questions = pgTable(
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (table) => [primaryKey({ columns: [table.id] })]
 );
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({

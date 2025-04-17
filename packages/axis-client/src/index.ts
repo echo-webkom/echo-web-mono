@@ -158,22 +158,27 @@ export class AxisClient {
     },
   };
 
-  readonly auth = {
-    session: {
-      validate: async (sessionId: string) => {
-        const response = await this.#axis
-          .get("auth/session", {
-            headers: {
-              Authorization: `Bearer ${this.#apiToken}`,
-            },
-          })
-          .json<{ user: any; session: any }>();
+  readonly whitelist = {
+    list: async () => {
+      return await this.#axis.get("whitelist").json<{
+        email: string;
+        expiresAt: string;
+        reason: string;
+      }>();
+    },
 
-        return {
-          user: response.user,
-          session: response.session,
-        };
-      },
+    getByEmail: async (email: string) => {
+      const response = await this.#axis.get(`whitelist/${email}`);
+
+      if (response.status === 404) {
+        return null;
+      }
+
+      return await response.json<{
+        email: string;
+        expiresAt: string;
+        reason: string;
+      }>();
     },
   };
 

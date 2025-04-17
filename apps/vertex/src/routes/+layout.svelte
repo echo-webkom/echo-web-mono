@@ -7,12 +7,23 @@
 	import FloatingFeedbackButton from '$lib/components/floating-feedback-button.svelte';
 	import { ThemeState } from '$lib/state/theme.svelte';
 	import { setThemeContext } from '$lib/context/color-theme';
+	import { AuthState } from '$lib/state/auth.svelte';
+	import { setAuthContext } from '$lib/context/auth';
 
-	let { children } = $props();
+	let { children, data } = $props();
 
-	let state = new ThemeState();
+	let authState = new AuthState(data.user);
+	setAuthContext({
+		state: authState
+	});
+
+	$effect.pre(() => {
+		authState.user = data.user;
+	});
+
+	let themeState = new ThemeState();
 	setThemeContext({
-		state
+		state: themeState
 	});
 </script>
 
@@ -24,7 +35,7 @@
 	/>
 </svelte:head>
 
-<Toaster richColors closeButton bind:theme={state.theme} />
+<Toaster richColors closeButton bind:theme={themeState.theme} />
 <FloatingFeedbackButton />
 
 <div class="flex flex-col w-full min-h-screen">

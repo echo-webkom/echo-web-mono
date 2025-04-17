@@ -9,13 +9,15 @@ export const verificationTokens = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  }),
+  (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })]
 );
 
 export type VerificationToken = InferSelectModel<typeof verificationTokens>;
-export type VerificationTokenInsert = InferInsertModel<typeof verificationTokens>;
+export type VerificationTokenInsert = InferInsertModel<
+  typeof verificationTokens
+>;
 
-export const selectVerificationTokenSchema = createSelectSchema(verificationTokens);
-export const insertVerificationTokenSchema = createInsertSchema(verificationTokens);
+export const selectVerificationTokenSchema =
+  createSelectSchema(verificationTokens);
+export const insertVerificationTokenSchema =
+  createInsertSchema(verificationTokens);

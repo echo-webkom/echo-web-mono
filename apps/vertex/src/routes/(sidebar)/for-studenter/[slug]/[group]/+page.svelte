@@ -3,6 +3,7 @@
 	import Markdown from '$lib/components/ui/markdown.svelte';
 	import { initials } from '$lib/initials';
 	import { urlFor } from '$lib/sanity/image';
+	import { GROUP_TYPES } from '@echo-webkom/lib';
 	import { Send, Facebook, Instagram, Linkedin } from '@lucide/svelte';
 
 	let { data } = $props();
@@ -31,18 +32,19 @@
 	];
 
 	let hasSocials = socials.some((social) => social.url);
+	let type = $derived(GROUP_TYPES.find((type) => type.value === data.group.groupType)?.title);
 </script>
 
 <div class="flex-col max-w-4xl gap-8 py-0">
 	<div>
-		<p>Undergrupper</p>
+		<p>{type}</p>
 		<Heading>
 			{data.group.name}
 		</Heading>
 	</div>
 
 	{#if hasSocials}
-		<section class="flex items-center gap-4">
+		<section class="flex items-center gap-4 mb-8">
 			{#each socials as social}
 				{@const Icon = social.icon}
 				{#if social.url}
@@ -60,16 +62,16 @@
 		</section>
 	{/if}
 
-	{#if data.group.image}
-		<div class="mx-auto w-fit">
-			<img alt={data.group.name} class="rounded-lg border-2" src={urlFor(data.group.image).url()} />
-		</div>
-	{/if}
-
 	{#if data.group.description}
 		<section>
 			<Markdown markdown={data.group.description} />
 		</section>
+	{/if}
+
+	{#if data.group.image}
+		<div class="mx-auto w-fit mb-8">
+			<img alt={data.group.name} class="rounded-lg border-2" src={urlFor(data.group.image).url()} />
+		</div>
 	{/if}
 
 	{#if data.group.members}

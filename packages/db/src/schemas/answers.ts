@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import { json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -28,9 +32,11 @@ export const answers = pgTable(
       }),
     answer: json("answer").$type<AnswerCol>(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
-  }),
+  (table) => [
+    primaryKey({
+      columns: [table.userId, table.happeningId, table.questionId],
+    }),
+  ]
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({

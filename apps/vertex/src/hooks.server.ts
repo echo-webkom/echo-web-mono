@@ -1,5 +1,5 @@
-import { SESSION_COOKIE_NAME } from '$lib/auth';
-import { axis } from '$lib/axis/client.server';
+import { SESSION_COOKIE_NAME } from '$lib/auth/constants';
+import { validateSession } from '$lib/auth/validate';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -10,10 +10,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return await resolve(event);
 	}
 
-	const { user, session } = await axis.auth.session.validate(sessionId);
+	const { user, session } = await validateSession(sessionId);
 	if (session) {
 		event.cookies.set(SESSION_COOKIE_NAME, sessionId, {
-			expires: new Date(session.expiresAt),
+			expires: new Date(session.expires),
 			path: '/'
 		});
 		event.locals.user = user;

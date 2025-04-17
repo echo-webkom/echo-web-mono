@@ -10,16 +10,10 @@
 
 	let { form } = $props();
 
-	// $effect(() => {
-	// 	if (form?.message) {
-	// 		toast(form.message);
-	// 	}
-	// });
-
 	let isLoading = $state(false);
 </script>
 
-<Container>
+<Container class="max-w-5xl">
 	<div class="grid grid-cols-1 gap-10 md:grid-cols-2">
 		<div class="space-y-2">
 			<Heading>Send inn tilbakemelding</Heading>

@@ -13,6 +13,9 @@
 	import { fly, slide } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 	import { getRandomMessage } from '$lib/random-message';
+	import { getAuthContext } from '$lib/context/auth';
+	import { enhance } from '$app/forms';
+	import { initials } from '$lib/initials';
 
 	const message = getRandomMessage();
 
@@ -23,6 +26,8 @@
 		openRoutes: null
 	});
 	setHeaderContext(context);
+
+	let auth = getAuthContext();
 
 	const toggleMenu = () => {
 		if (innerWidth < 768) {
@@ -87,7 +92,29 @@
 
 		<div class="flex items-center gap-4">
 			<ThemeButton />
-			<a href="/logg-inn" class="btn-secondary hover:underline">Logg inn</a>
+
+			{#if auth.state.user}
+				<a class="block" href="/profil">
+					<span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2">
+						{#if auth.state.user.image}
+							<img
+								alt={auth.state.user.name}
+								class="aspect-square h-full w-full object-cover"
+								src={auth.state.user.image}
+							/>
+						{:else}
+							<span class="my-auto mx-auto text-sm">{initials(auth.state.user.name!)}</span>
+						{/if}
+					</span>
+				</a>
+
+				<form method="post" action="/logg-ut" use:enhance>
+					<button class="btn-secondary">Logg ut</button>
+				</form>
+			{:else}
+				<a href="/logg-inn" class="btn-secondary hover:underline">Logg inn</a>
+			{/if}
+
 			<button class="md:hidden block" onclick={toggleMenu}>
 				{#if isMobileDropdownOpen}
 					<X class="size-6" />

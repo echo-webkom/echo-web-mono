@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -22,26 +26,27 @@ export const registrations = pgTable(
     changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.happeningId] })]
 );
 
-export const registrationsRelations = relations(registrations, ({ one, many }) => ({
-  happening: one(happenings, {
-    fields: [registrations.happeningId],
-    references: [happenings.id],
-  }),
-  user: one(users, {
-    fields: [registrations.userId],
-    references: [users.id],
-  }),
-  answers: many(answers),
-  changedByUser: one(users, {
-    fields: [registrations.changedBy],
-    references: [users.id],
-  }),
-}));
+export const registrationsRelations = relations(
+  registrations,
+  ({ one, many }) => ({
+    happening: one(happenings, {
+      fields: [registrations.happeningId],
+      references: [happenings.id],
+    }),
+    user: one(users, {
+      fields: [registrations.userId],
+      references: [users.id],
+    }),
+    answers: many(answers),
+    changedByUser: one(users, {
+      fields: [registrations.changedBy],
+      references: [users.id],
+    }),
+  })
+);
 
 export type Registration = InferSelectModel<typeof registrations>;
 export type RegistrationInsert = InferInsertModel<typeof registrations>;

@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
 import { comments, users } from ".";
@@ -12,21 +16,22 @@ export const commentsReactions = pgTable(
     type: commentReactionType("type").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.commentId, table.userId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.commentId, table.userId] })]
 );
 
-export const commentsActionsRelations = relations(commentsReactions, ({ one }) => ({
-  user: one(users, {
-    fields: [commentsReactions.userId],
-    references: [users.id],
-  }),
-  comment: one(comments, {
-    fields: [commentsReactions.commentId],
-    references: [comments.id],
-  }),
-}));
+export const commentsActionsRelations = relations(
+  commentsReactions,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [commentsReactions.userId],
+      references: [users.id],
+    }),
+    comment: one(comments, {
+      fields: [commentsReactions.commentId],
+      references: [comments.id],
+    }),
+  })
+);
 
 export type CommentReaction = InferSelectModel<typeof commentsReactions>;
 export type CommentReactionInsert = InferInsertModel<typeof commentsReactions>;

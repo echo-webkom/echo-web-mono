@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import {
   boolean,
   date,
@@ -31,7 +35,9 @@ export const users = pgTable(
     emailVerified: timestamp("email_verified", { mode: "date" }),
     image: text("image"),
     alternativeEmail: varchar("alternative_email", { length: 255 }),
-    degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
+    degreeId: varchar("degree_id", { length: 255 }).references(
+      () => degrees.id
+    ),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
     lastSignInAt: timestamp("last_sign_in_at"),
@@ -40,10 +46,10 @@ export const users = pgTable(
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-    emailIdx: index("email_idx").on(table.email),
-  }),
+  (table) => [
+    primaryKey({ columns: [table.id] }),
+    index("email_idx").on(table.email),
+  ]
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({

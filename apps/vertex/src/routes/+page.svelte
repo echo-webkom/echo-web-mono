@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { getAuthContext } from '$lib/context/auth.js';
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale';
+
+	let auth = getAuthContext();
 
 	let { data } = $props();
 </script>
@@ -18,7 +21,9 @@
 		</div>
 
 		<div class="flex justify-center gap-4">
-			<a class="btn-secondary hover:underline" href="/logg-inn">Logg inn</a>
+			{#if !auth.state.user}
+				<a class="btn-secondary hover:underline" href="/logg-inn">Logg inn</a>
+			{/if}
 			<a class="btn-outline hover:underline" href="/om/echo">Les mer om echo</a>
 		</div>
 	</div>

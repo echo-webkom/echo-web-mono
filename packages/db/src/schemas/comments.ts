@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import { index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
@@ -19,9 +23,7 @@ export const comments = pgTable(
       .notNull()
       .$onUpdateFn(() => new Date()),
   },
-  (t) => ({
-    postIdx: index("post_idx").on(t.postId),
-  }),
+  (t) => [index("post_idx").on(t.postId)]
 );
 
 export const commentsInsert = relations(comments, ({ one, many }) => ({

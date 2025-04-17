@@ -1,8 +1,25 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { index, json, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
+import {
+  index,
+  json,
+  pgTable,
+  primaryKey,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happeningsToGroups, happeningTypeEnum, questions, registrations, spotRanges } from ".";
+import {
+  happeningsToGroups,
+  happeningTypeEnum,
+  questions,
+  registrations,
+  spotRanges,
+} from ".";
 
 export const happenings = pgTable(
   "happening",
@@ -17,10 +34,10 @@ export const happenings = pgTable(
     registrationStart: timestamp("registration_start"),
     registrationEnd: timestamp("registration_end"),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-    slugIdx: index("slug_idx").on(table.slug),
-  }),
+  (table) => [
+    primaryKey({ columns: [table.id] }),
+    index("slug_idx").on(table.slug),
+  ]
 );
 
 export const happeningsRelations = relations(happenings, ({ many }) => ({
