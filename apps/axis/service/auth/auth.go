@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 
-	"github.com/echo-webkom/axis/apps/session"
+	"github.com/echo-webkom/axis/service/session"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

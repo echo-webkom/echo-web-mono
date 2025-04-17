@@ -4,13 +4,13 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/echo-webkom/axis/apps/shoppinglist"
-	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/apiutil"
+	"github.com/echo-webkom/axis/service/shoppinglist"
 	"github.com/go-chi/chi/v5"
 )
 
-func ShoppingListRouter(h *apputil.Handler) *apputil.Router {
-	r := apputil.NewRouter()
+func ShoppingListRouter(h *apiutil.Handler) *apiutil.Router {
+	r := apiutil.NewRouter()
 	sls := shoppinglist.New(h.Pool)
 
 	// GET /shopping-list

@@ -2,11 +2,11 @@ package server
 
 import (
 	"github.com/echo-webkom/axis/api"
-	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/apiutil"
 )
 
 // Mounts the different routers to the main router.
-func mount(rf *apputil.RouterFactory) {
+func mount(rf *apiutil.RouterFactory) {
 	rf.Mount("/happening", api.HappeningRouter)
 	rf.Mount("/shopping-list", api.ShoppingListRouter)
 	rf.Mount("/feedback", api.FeedbackRouter)

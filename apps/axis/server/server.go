@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/apiutil"
 	"github.com/echo-webkom/axis/config"
 	"github.com/echo-webkom/axis/storage/database"
 	"github.com/go-chi/chi/v5"
@@ -34,8 +34,8 @@ func Run(config *config.Config) {
 	}
 	defer pool.Close()
 
-	h := &apputil.Handler{Pool: pool}
-	rf := apputil.NewRouterFactory(r, h)
+	h := &apiutil.Handler{Pool: pool}
+	rf := apiutil.NewRouterFactory(r, h)
 	mount(rf)
 
 	port := toGoPort(config.Port)

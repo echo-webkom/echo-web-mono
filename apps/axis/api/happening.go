@@ -4,13 +4,13 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/echo-webkom/axis/apps/happening"
-	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/apiutil"
+	"github.com/echo-webkom/axis/service/happening"
 	"github.com/go-chi/chi/v5"
 )
 
-func HappeningRouter(h *apputil.Handler) *apputil.Router {
-	r := apputil.NewRouter()
+func HappeningRouter(h *apiutil.Handler) *apiutil.Router {
+	r := apiutil.NewRouter()
 	hs := happening.New(h.Pool)
 
 	// GET /happening

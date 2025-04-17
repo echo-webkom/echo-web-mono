@@ -1,11 +1,9 @@
 package api
 
-import (
-	"github.com/echo-webkom/axis/apputil"
-)
+import "github.com/echo-webkom/axis/apiutil"
 
-func AuthRouter(h *apputil.Handler) *apputil.Router {
-	r := apputil.NewRouter()
+func AuthRouter(h *apiutil.Handler) *apiutil.Router {
+	r := apiutil.NewRouter()
 
 	return r
 }

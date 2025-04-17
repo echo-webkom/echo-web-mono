@@ -4,13 +4,13 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/echo-webkom/axis/apps/feedback"
-	"github.com/echo-webkom/axis/apputil"
+	"github.com/echo-webkom/axis/apiutil"
+	"github.com/echo-webkom/axis/service/feedback"
 )
 
-func FeedbackRouter(h *apputil.Handler) *apputil.Router {
+func FeedbackRouter(h *apiutil.Handler) *apiutil.Router {
 	fs := feedback.New(h.Pool)
-	r := apputil.NewRouter()
+	r := apiutil.NewRouter()
 
 	// POST /feedback
 	r.Post("/", func(w http.ResponseWriter, r *http.Request) {

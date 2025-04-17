@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"github.com/echo-webkom/axis/apps/account"
+	"github.com/echo-webkom/axis/service/account"
 	"github.com/echo-webkom/axis/storage/database"
 	"github.com/jackc/pgx/v5/pgxpool"
 )

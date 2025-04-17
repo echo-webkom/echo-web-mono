@@ -1,4 +1,4 @@
-package apputil
+package apiutil
 
 import (
 	"encoding/json"
