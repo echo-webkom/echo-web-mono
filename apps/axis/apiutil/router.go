@@ -15,8 +15,8 @@ type Router struct {
 type Flag int
 
 const (
-	Private Flag = iota
-	Public
+	PRIVATE Flag = iota
+	PUBLIC
 )
 
 func NewRouter() *Router {
@@ -33,9 +33,9 @@ func addMiddleware(h http.Handler, flags ...Flag) http.HandlerFunc {
 
 	for _, flag := range flags {
 		switch flag {
-		case Private:
+		case PRIVATE:
 			h = privateMiddleware(h)
-		case Public:
+		case PUBLIC:
 			h = publicMiddleware(h)
 		}
 	}

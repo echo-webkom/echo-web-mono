@@ -11,9 +11,9 @@
 - `/storage`
   - `/database` - Database repo and models
 
-## Creating an api
+## Creating an API
 
-Create new file in `/axis/api` with the name of the api. For this example we create a new Hello api.
+Create new file in `/api` with the name of the api. For this example we create a simple hello world api in `/api/hello.go`.
 
 Only a `xxxRouter` function should be exported with the following signature:
 
@@ -22,12 +22,13 @@ func HelloRouter(h *apputil.Handler) chi.Router {
     r := apituil.NewRouter()
 
     // Create single endpoint for GET request that responds with hello
-    r.Get("/", helloWorldHandler(h))
+    // Endpoints are private by default, pass PUBLIC to make it accessible to everyone
+    r.Get("/", helloWorldHandler(h), apiutil.PUBLIC)
 
     return r
 }
 
-func helloWorldHandler(h *apputil.Handler) http.HandlerFunc {
+func helloWorldHandler(h *apiutil.Handler) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         h.JSON(w, http.StatusOK, "{'message': 'Hello world!'}")
     }
