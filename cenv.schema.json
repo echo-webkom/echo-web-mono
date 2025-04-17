@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2025-04-16T17:34:06.517661+02:00",
+	"lastUpdated": "2025-04-17T16:59:39.103414+02:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -56,6 +56,12 @@
 			"public": true,
 			"key": "PUBLIC_SANITY_PROJECT_ID",
 			"value": "pgq2pd26"
+		},
+		"PUBLIC_VERTEX_FEIDE_REDIRECT_URI": {
+			"required": true,
+			"public": true,
+			"key": "PUBLIC_VERTEX_FEIDE_REDIRECT_URI",
+			"value": "http://localhost:5173/auth/feide/callback"
 		}
 	}
 }
