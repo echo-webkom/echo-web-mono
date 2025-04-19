@@ -32,7 +32,7 @@ resource "azurerm_linux_web_app" "echo-vertex" {
 
     http_logs {
       file_system {
-        retention_in_days = 2
+        retention_in_days = 7
         retention_in_mb   = 35
       }
     }
@@ -70,7 +70,7 @@ resource "azurerm_linux_web_app" "echo-axis" {
 
     http_logs {
       file_system {
-        retention_in_days = 2
+        retention_in_days = 7
         retention_in_mb   = 35
       }
     }
