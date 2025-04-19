@@ -13,9 +13,11 @@
 	import { fly, slide } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 	import { getRandomMessage } from '$lib/random-message';
-	import { getAuthContext } from '$lib/context/auth';
+	import { getAuth } from '$lib/context/auth';
 	import { enhance } from '$app/forms';
-	import { initials } from '$lib/initials';
+	import { initials } from '$lib/strings';
+	import Avatar from '../ui/avatar.svelte';
+	import Button from '../ui/button.svelte';
 
 	const message = getRandomMessage();
 
@@ -27,7 +29,7 @@
 	});
 	setHeaderContext(context);
 
-	let auth = getAuthContext();
+	let auth = getAuth();
 
 	const toggleMenu = () => {
 		if (innerWidth < 768) {
@@ -82,7 +84,7 @@
 				<img src={Logo} class="size-14" alt="echo Logo" />
 			</a>
 
-			<menu class="gap-1 items-center hidden md:flex">
+			<menu class="items-center mt-auto hidden md:flex">
 				<HeaderLink href="/">Hjem</HeaderLink>
 				{#each routes as route}
 					<HeaderButton label={route.label} links={route.links} />
@@ -93,26 +95,20 @@
 		<div class="flex items-center gap-4">
 			<ThemeButton />
 
-			{#if auth.state.user}
+			{#if auth.user}
 				<a class="block" href="/profil">
-					<span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border-2">
-						{#if auth.state.user.image}
-							<img
-								alt={auth.state.user.name}
-								class="aspect-square h-full w-full object-cover"
-								src={auth.state.user.image}
-							/>
-						{:else}
-							<span class="my-auto mx-auto text-sm">{initials(auth.state.user.name!)}</span>
-						{/if}
-					</span>
+					<Avatar
+						src={auth.user.image ?? ''}
+						alt={auth.user.name ?? 'Profilbilde'}
+						fallback={initials(auth.user.name ?? 'ON')}
+					/>
 				</a>
 
 				<form method="post" action="/logg-ut" use:enhance>
-					<button class="btn-secondary">Logg ut</button>
+					<Button variant="secondary">Logg ut</Button>
 				</form>
 			{:else}
-				<a href="/logg-inn" class="btn-secondary hover:underline">Logg inn</a>
+				<Button variant="secondary" href="/logg-inn">Logg inn</Button>
 			{/if}
 
 			<button class="md:hidden block" onclick={toggleMenu}>
@@ -147,8 +143,8 @@
 	<HeaderDesktopDropdown />
 
 	{#if isMobileDropdownOpen}
-		<div in:fly={{ delay: 200, x: -800 }} class="flex flex-col felx-1 absolute w-full p-4">
-			<menu class="flex flex-col gap-1 p-4">
+		<div in:fly={{ delay: 200, x: -800 }} class="flex flex-col flex-1 absolute w-full p-4">
+			<menu class="flex flex-col gap-1">
 				<li class="flex">
 					<a
 						href="/"
@@ -178,15 +174,12 @@
 									{#each route.links as subRoute}
 										{@const Icon = subRoute.icon}
 										<li>
-											<a
-												href={subRoute.href}
-												class="text-lg flex items-center gap-8 p-4 hover:bg-muted"
-											>
+											<a href={subRoute.href} class="flex items-center gap-4 p-2 hover:bg-muted">
 												<div class="shrink-0">
 													<Icon class="size-6" />
 												</div>
 												<div class="flex flex-col">
-													<span class="text-gray-600 dark:text-gray-100">
+													<span class="text-gray-600 font-medium dark:text-gray-100">
 														{subRoute.label}
 													</span>
 													<span class="text-sm text-muted-foreground">

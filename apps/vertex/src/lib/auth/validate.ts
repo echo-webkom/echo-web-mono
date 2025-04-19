@@ -7,10 +7,11 @@ export type ValidatedUser = {
 	email: string;
 	image: string | null;
 	alternativeEmail: string | null;
-	degree: string | null;
+	degree: { id: string; name: string } | null;
 	year: number | null;
-	memberships: Array<{ group: string; isLeader: boolean }>;
+	memberships: Array<{ id: string; group: string; isLeader: boolean }>;
 	birthday: Date | null;
+	hasReadTerms: boolean;
 };
 
 export type ValidatedSession = Session;
@@ -45,11 +46,15 @@ export const validateSession = async (
 
 	const memberships = await db.query.usersToGroups
 		.findMany({
-			where: (row, { eq }) => eq(row.userId, user.id)
+			where: (row, { eq }) => eq(row.userId, user.id),
+			with: {
+				group: true
+			}
 		})
 		.then((memberships) =>
 			memberships.map((membership) => ({
-				group: membership.groupId,
+				id: membership.groupId,
+				group: membership.group.name,
 				isLeader: membership.isLeader
 			}))
 		);
@@ -59,7 +64,16 @@ export const validateSession = async (
 				.findFirst({
 					where: (row, { eq }) => eq(row.id, user.degreeId!)
 				})
-				.then((degree) => degree?.name ?? null)
+				.then((degree) => {
+					if (!degree) {
+						return null;
+					}
+
+					return {
+						id: degree.id,
+						name: degree.name
+					};
+				})
 		: null;
 
 	const validatedUser: ValidatedUser = {
@@ -71,7 +85,8 @@ export const validateSession = async (
 		degree,
 		year: user.year,
 		memberships,
-		birthday: user.birthday
+		birthday: user.birthday,
+		hasReadTerms: user.hasReadTerms
 	};
 
 	return {

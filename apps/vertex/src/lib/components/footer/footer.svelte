@@ -1,7 +1,45 @@
 <script lang="ts">
-	import { GitCommit, Rss } from '@lucide/svelte';
+	import { ExternalLink, GitCommit, Rss } from '@lucide/svelte';
 	import Sanity from '$lib/assets/svg/sanity-logo.svg';
 	import Bekk from '$lib/assets/images/bekk.png';
+
+	const contactUsLinks = [
+		{
+			label: 'echo@uib.no',
+			href: 'mailto:echo@uib.no'
+		},
+		{
+			label: 'Thormøhlens gate 55 5006 BERGEN',
+			href: 'https://goo.gl/maps/adUsBsoZh3QqNvA36'
+		},
+		{
+			label: 'Organisasjonsnummer: 998 995 035',
+			href: 'https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035'
+		},
+		{
+			label: 'Opplevd noe kjipt? Speak up!',
+			href: '/for-studenter/speak-up'
+		},
+		{
+			label: 'Personvernerklæring',
+			href: '/personvern'
+		}
+	];
+
+	const socialsLinks = [
+		{
+			label: 'Facebook',
+			href: 'https://www.facebook.com/groups/informatikk'
+		},
+		{
+			label: 'Instagram',
+			href: 'https://www.instagram.com/echo_uib/'
+		},
+		{
+			label: 'GitHub',
+			href: 'https://github.com/echo-webkom'
+		}
+	];
 </script>
 
 <footer
@@ -38,69 +76,38 @@
 				<h3 class="mb-4 py-2 text-xl font-bold">Kontakt oss ☎️</h3>
 				<ul class="space-y-1">
 					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="mailto:echo@uib.no">echo@uib.no</a
-						>
-					</li>
-					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="https://goo.gl/maps/adUsBsoZh3QqNvA36">Thormøhlens gate 55 5006 BERGEN</a
-						>
-					</li>
-					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="https://w2.brreg.no/enhet/sok/detalj.jsp?orgnr=998995035"
-							>Organisasjonsnummer: 998 995 035</a
-						>
-					</li>
-					<li>
-						<a class="flex items-center gap-2 hover:underline" href="/for-studenter/speak-up"
-							>Opplevd noe kjipt? Speak up!</a
-						>
-					</li>
-					<li>
-						<a class="flex items-center gap-2 hover:underline" href="/personvern"
-							>Personvernerklæring</a
-						>
+						{#each contactUsLinks as link}
+							{@const isExternal = link.href.startsWith('http')}
+							{#if isExternal}
+								<a
+									class="flex items-center gap-2 hover:underline"
+									target="_blank"
+									rel="noreferrer"
+									href={link.href}
+									>{link.label} <ExternalLink class="size-3" />
+								</a>
+							{:else}
+								<a class="flex items-center gap-2 hover:underline" href={link.href}
+									>{link.label}
+								</a>
+							{/if}
+						{/each}
 					</li>
 				</ul>
 			</div>
 			<div>
 				<h3 class="mb-4 py-2 text-xl font-bold">Følg oss 💻</h3>
 				<ul class="space-y-1">
-					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="https://www.facebook.com/groups/informatikk">Facebook</a
-						>
-					</li>
-					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="https://www.instagram.com/echo_uib/">Instagram</a
-						>
-					</li>
-					<li>
-						<a
-							class="flex items-center gap-2 hover:underline"
-							target="_blank"
-							rel="noreferrer"
-							href="https://github.com/echo-webkom">GitHub</a
-						>
-					</li>
+					{#each socialsLinks as social}
+						<li>
+							<a
+								class="flex items-center gap-2 hover:underline"
+								target="_blank"
+								rel="noreferrer"
+								href={social.href}>{social.label} <ExternalLink class="size-3" /></a
+							>
+						</li>
+					{/each}
 				</ul>
 			</div>
 			<div>

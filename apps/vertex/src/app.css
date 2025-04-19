@@ -85,7 +85,7 @@
 }
 
 .dark {
-	--background: #151210;
+	--background: #121212;
 	--foreground: #eeeeee;
 
 	--muted: #181818;
@@ -312,6 +312,11 @@ html.dark[data-theme='christmas'] {
 		-webkit-font-smoothing: antialiased;
 	}
 
+	::selection {
+		background-color: var(--color-primary);
+		color: var(--color-primary-foreground);
+	}
+
 	body {
 		margin: 0;
 		padding: 0;
@@ -332,87 +337,5 @@ html.dark[data-theme='christmas'] {
 			color: var(--foreground);
 			background-color: var(--background);
 		}
-	}
-}
-
-@layer components {
-	.btn-primary {
-		color: var(--color-primary-foreground);
-		background-color: var(--color-primary);
-		box-shadow:
-			0 1px 2px 0 rgba(0, 0, 0, 0.05),
-			0 1px 3px 0 rgba(0, 0, 0, 0.1);
-		border-radius: 0.5rem;
-		border-width: 0.175rem;
-		border-color: var(--color-primary-dark);
-		padding: 0.5rem 1rem;
-		font-size: 1rem;
-		font-weight: 600;
-		line-height: 1.5rem;
-		height: 2.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-decoration: none;
-		transition:
-			background-color 0.2s ease-in-out,
-			border-color 0.2s ease-in-out,
-			box-shadow 0.2s ease-in-out;
-		cursor: pointer;
-		margin: 0;
-		text-decoration: none;
-	}
-
-	.btn-secondary {
-		color: var(--color-secondary-foreground);
-		background-color: var(--color-secondary);
-		box-shadow:
-			0 1px 2px 0 rgba(0, 0, 0, 0.05),
-			0 1px 3px 0 rgba(0, 0, 0, 0.1);
-		border-radius: 05rem;
-		border-width: 0.175rem;
-		border-color: var(--color-secondary-dark);
-		padding: 0.5rem 1rem;
-		font-size: 1rem;
-		font-weight: 600;
-		line-height: 1.5rem;
-		height: 2.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-decoration: none;
-		transition:
-			background-color 0.2s ease-in-out,
-			border-color 0.2s ease-in-out,
-			box-shadow 0.2s ease-in-out;
-		cursor: pointer;
-		margin: 0;
-		text-decoration: none;
-	}
-
-	.btn-outline {
-		color: var(--color-foreground);
-		background-color: transparent;
-		border-color: var(--color-primary);
-		box-shadow: none;
-		border-radius: 0.5rem;
-		border-width: 0.175rem;
-		border-color: var(--color-border);
-		padding: 0.5rem 1rem;
-		font-size: 1rem;
-		font-weight: 600;
-		line-height: 1.5rem;
-		height: 2.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-decoration: none;
-		transition:
-			background-color 0.2s ease-in-out,
-			border-color 0.2s ease-in-out,
-			box-shadow 0.2s ease-in-out;
-		cursor: pointer;
-		margin: 0;
-		text-decoration: none;
 	}
 }

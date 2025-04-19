@@ -5,7 +5,7 @@
 	const theme = getThemeContext();
 </script>
 
-<button onclick={theme.state.toggle}>
+<button onclick={theme.toggle}>
 	<span class="sr-only">Toggle dark mode</span>
 	<Sun class="hidden dark:block size-6" />
 	<Moon class="block dark:hidden size-6" />

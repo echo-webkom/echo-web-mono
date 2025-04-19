@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
+	import { headingVariants, type HeadingVariants } from '$lib/variants';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { twMerge } from 'tailwind-merge';
 
-	type Props = HTMLAttributes<HTMLHeadingElement>;
+	type Props = HTMLAttributes<HTMLHeadingElement> &
+		HeadingVariants & {
+			as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+		};
 
-	let { children, class: className, ...props }: Props = $props();
+	let { children, as = 'h1', size, class: className, ...props }: Props = $props();
 </script>
 
-<h1
-	class={cn('group flex items-center font-semibold tracking-tight text-4xl mb-4', className)}
-	{...props}
->
+<svelte:element this={as} class={twMerge(headingVariants({ size, class: className }))} {...props}>
 	{@render children?.()}
-</h1>
+</svelte:element>

@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { getAuthContext } from '$lib/context/auth.js';
+	import Button from '$lib/components/ui/button.svelte';
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale';
-
-	let auth = getAuthContext();
 
 	let { data } = $props();
 </script>
@@ -21,10 +19,8 @@
 		</div>
 
 		<div class="flex justify-center gap-4">
-			{#if !auth.state.user}
-				<a class="btn-secondary hover:underline" href="/logg-inn">Logg inn</a>
-			{/if}
-			<a class="btn-outline hover:underline" href="/om/echo">Les mer om echo</a>
+			<Button variant="secondary" href="/logg-inn">Logg inn</Button>
+			<Button variant="outline" href="/om/echo">Les mer om echo</Button>
 		</div>
 	</div>
 
@@ -65,7 +61,7 @@
 				{#each data.events as event}
 					<a
 						href="/arrangement/{event.slug}"
-						class="mb-4 flex items-center justify-between hover:underline"
+						class="mb-1 flex items-center justify-between hover:underline"
 					>
 						<h3 class="font-medium truncate line-clamp-1">{event.title}</h3>
 						<p class="text-muted-foreground">{format(event.date, 'eee. dd.MM', { locale: nb })}</p>
@@ -81,7 +77,7 @@
 				{#each data.bedpres as bedpres}
 					<a
 						href="/bedpres/{bedpres.slug}"
-						class="mb-4 flex items-center justify-between hover:underline"
+						class="mb-1 flex items-center justify-between hover:underline"
 					>
 						<h3 class="font-medium truncate line-clamp-1">{bedpres.title}</h3>
 						<p class="text-muted-foreground">

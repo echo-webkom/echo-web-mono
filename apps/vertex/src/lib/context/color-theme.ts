@@ -3,16 +3,12 @@ import { setContext, getContext } from 'svelte';
 
 const THEME_CONTEXT_KEY = Symbol('color-theme');
 
-export type ThemeContext = {
-	state: ThemeState;
-};
-
-export const setThemeContext = (ctx: ThemeContext) => {
+export const setThemeContext = (ctx: ThemeState) => {
 	setContext(THEME_CONTEXT_KEY, ctx);
 };
 
 export const getThemeContext = () => {
-	const ctx = getContext<ThemeContext>(THEME_CONTEXT_KEY);
+	const ctx = getContext<ThemeState>(THEME_CONTEXT_KEY);
 	if (!ctx) {
 		throw new Error('No theme context found');
 	}

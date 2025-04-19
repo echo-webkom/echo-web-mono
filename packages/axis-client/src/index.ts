@@ -1,23 +1,27 @@
 import { createClient, type SanityClient } from "@sanity/client";
 import {
+  allHappeningsQuery,
   allMeetingMinuteQuery,
   allMerchQuery,
   allPostsQuery,
+  happeningQuery,
   homeHappeningsQuery,
   jobAdsQuery,
   staticInfoQuery,
   studentGroupBySlugQuery,
   studentGroupsByTypeQuery,
 } from "@echo-webkom/sanity/queries";
-import type {
-  StudentGroupBySlugQueryResult,
-  AllPostsQueryResult,
-  HomeHappeningsQueryResult,
-  JobAdsQueryResult,
-  StaticInfoQueryResult,
-  StudentGroupsByTypeQueryResult,
-  AllMeetingMinuteQueryResult,
-  AllMerchQueryResult,
+import {
+  type StudentGroupBySlugQueryResult,
+  type AllPostsQueryResult,
+  type HomeHappeningsQueryResult,
+  type JobAdsQueryResult,
+  type StaticInfoQueryResult,
+  type StudentGroupsByTypeQueryResult,
+  type AllMeetingMinuteQueryResult,
+  type AllMerchQueryResult,
+  AllHappeningsQueryResult,
+  HappeningQueryResult,
 } from "@echo-webkom/cms/types";
 import type { PageType } from "@echo-webkom/lib";
 import ky, { type KyInstance } from "ky";
@@ -111,6 +115,18 @@ export class AxisClient {
   };
 
   readonly events = {
+    list: async () => {
+      return await this.#sanity.fetch<AllHappeningsQueryResult>(
+        allHappeningsQuery
+      );
+    },
+
+    getBySlug: async (slug: string) => {
+      return await this.#sanity.fetch<HappeningQueryResult>(happeningQuery, {
+        slug,
+      });
+    },
+
     upcoming: async (types: Array<string>, n: number) => {
       return await this.#sanity.fetch<HomeHappeningsQueryResult>(
         homeHappeningsQuery,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/components/ui/heading.svelte';
 	import Markdown from '$lib/components/ui/markdown.svelte';
-	import { initials } from '$lib/initials';
+	import { initials } from '$lib/strings.js';
 	import { urlFor } from '$lib/sanity/image';
 	import { GROUP_TYPES } from '@echo-webkom/lib';
 	import { Send, Facebook, Instagram, Linkedin } from '@lucide/svelte';

@@ -7,6 +7,7 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import { cn } from '$lib/cn';
+	import Button from '$lib/components/ui/button.svelte';
 
 	let { form } = $props();
 
@@ -54,7 +55,12 @@
 				</div>
 				<div class="space-y-2">
 					<Label for="message" required>Tilbakemelding</Label>
-					<Textarea id="message" placeholder="Din tilbakemelding" name="message"></Textarea>
+					<Textarea
+						id="message"
+						placeholder="Din tilbakemelding"
+						name="message"
+						class="max-h-56 min-h-10"
+					></Textarea>
 				</div>
 			</div>
 			<p>
@@ -63,17 +69,7 @@
 					kontakter deg om tilbakemeldingen.</small
 				>
 			</p>
-			<button
-				class={cn(
-					'inline-flex items-center font-semibold justify-center rounded-xl border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background duration-300 bg-primary border-primary-dark text-primary-foreground hover:bg-primary-hover h-10 py-2 px-4 w-full sm:w-auto',
-					{
-						'opacity-50 cursor-not-allowed': isLoading
-					}
-				)}
-				type="submit"
-			>
-				Send
-			</button>
+			<Button type="submit" loading={isLoading}>Send</Button>
 		</form>
 	</div>
 </Container>

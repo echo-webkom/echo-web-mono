@@ -6,9 +6,6 @@ export const GET: RequestHandler = ({ cookies }) => {
 	const state = generateState();
 	const url = feide.createAuthorizationURL(state);
 
-	console.log('state', state);
-	console.log('url', url);
-
 	cookies.set('feide_oauth_state', state, {
 		path: '/',
 		httpOnly: true,
