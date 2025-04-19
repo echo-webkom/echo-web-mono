@@ -165,7 +165,7 @@
 			<p class="text-3xl pl-3 font-medium">Kalender</p>
 		</div>
 
-		<div class="flex items-center w-fit overflow-hidden p-1 border-2 rounded-2xl">
+		<div class="flex items-center w-fit overflow-hidden p-1 border-2 rounded-full">
 			<button
 				onclick={() => (date = subDays(date, daysVisible))}
 				class="size-8 flex items-center justify-center"
@@ -187,7 +187,10 @@
 			</button>
 
 			<button
-				onclick={() => (date = startOfWeek(TODAY))}
+				onclick={() => {
+					date = startOfWeek(TODAY);
+					isDirty = false;
+				}}
 				class="size-8 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
 				disabled={date.getTime() === startOfWeek(TODAY).getTime()}
 			>
@@ -196,42 +199,17 @@
 
 			<div class="w-[2px] h-8 mx-2 bg-border"></div>
 
-			<button
-				onclick={() => handleChangeDaysVisible(1)}
-				class={cn(
-					'py-2 px-3 h-8 font-medium flex items-center justify-center rounded-xl font-mono',
-					{
-						'bg-border': daysVisible === 1
-					}
-				)}>1</button
-			>
-			<button
-				onclick={() => handleChangeDaysVisible(3)}
-				class={cn(
-					'py-2 px-3 h-8 font-medium flex items-center justify-center rounded-xl font-mono',
-					{
-						'bg-border': daysVisible === 3
-					}
-				)}>3</button
-			>
-			<button
-				onclick={() => handleChangeDaysVisible(5)}
-				class={cn(
-					'py-2 px-3 h-8 font-medium flex items-center justify-center rounded-xl font-mono',
-					{
-						'bg-border': daysVisible === 5
-					}
-				)}>5</button
-			>
-			<button
-				onclick={() => handleChangeDaysVisible(7)}
-				class={cn(
-					'py-2 px-3 h-8 font-medium flex items-center justify-center rounded-xl font-mono',
-					{
-						'bg-border': daysVisible === 7
-					}
-				)}>7</button
-			>
+			{#each [1, 3, 5, 7] as day}
+				<button
+					onclick={() => handleChangeDaysVisible(day)}
+					class={cn(
+						'py-2 px-3 h-8 font-medium flex items-center justify-center rounded-full font-mono',
+						{
+							'bg-border': daysVisible === day
+						}
+					)}>{day}</button
+				>
+			{/each}
 		</div>
 	</div>
 

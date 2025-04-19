@@ -81,6 +81,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const tokens = await feide.validateAuthorizationCode(code);
+
 	const userInfo = await feide.getUserInfo(tokens.accessToken());
 	const allowedToSignIn = await isAllowedToSignIn(userInfo, tokens.accessToken());
 	if (typeof allowedToSignIn === 'string') {

@@ -3,20 +3,10 @@ variable "subscription_id" {
   type        = string
 }
 
-variable "database_password" {
-  description = "The password for the PostgreSQL database"
+variable "database_url" {
+  description = "The URL of the PostgreSQL database"
   type        = string
   sensitive   = true
-}
-
-variable "database_name" {
-  description = "The name of the PostgreSQL database"
-  type        = string
-}
-
-variable "database_username" {
-  description = "The username for the PostgreSQL database"
-  type        = string
 }
 
 variable "postgres_version" {

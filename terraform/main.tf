@@ -17,22 +17,6 @@ resource "azurerm_service_plan" "plan" {
   sku_name            = "B1"
 }
 
-resource "azurerm_postgresql_flexible_server" "db" {
-  name                   = var.database_name
-  resource_group_name    = azurerm_resource_group.rg.name
-  location               = azurerm_resource_group.rg.location
-  administrator_login    = var.database_username
-  administrator_password = var.database_password
-  sku_name               = "Standard_B1ms"
-  version                = var.database_password
-  storage_mb             = 32768
-  zone                   = "1"
-
-  tags = {
-    environment = "prod"
-  }
-}
-
 resource "azurerm_linux_web_app" "echo-vertex" {
   name                = var.app_service_name
   location            = azurerm_resource_group.rg.location
@@ -67,7 +51,7 @@ resource "azurerm_linux_web_app" "echo-vertex" {
   }
 
   app_settings = {
-    DATABASE_URL = azurerm_postgresql_flexible_server.db.fqdn
+    DATABASE_URL = var.database_url
   }
 }
 
@@ -105,7 +89,7 @@ resource "azurerm_linux_web_app" "echo-axis" {
   }
 
   app_settings = {
-    DATABASE_URL = azurerm_postgresql_flexible_server.db.fqdn
+    DATABASE_URL = var.database_url
   }
 }
 

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import removeMd from 'remove-markdown';
 	import type { PageData } from '../$types';
-	import Chip from '$lib/components/ui/chip.svelte';
 
 	type Props = {
 		posts: PageData['posts'];
@@ -19,7 +18,7 @@
 			>
 				<div class="flex items-center gap-4">
 					<div>
-						<h3 class="font-semibold group-hover:underline">{post.title}</h3>
+						<h3 class="font-semibold group-hover:underline mb-2">{post.title}</h3>
 						<p class="text-sm text-muted-foreground italic line-clamp-3">
 							{removeMd(post.body)}
 						</p>

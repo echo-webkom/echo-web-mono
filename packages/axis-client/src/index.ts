@@ -7,6 +7,7 @@ import {
   happeningQuery,
   homeHappeningsQuery,
   jobAdsQuery,
+  moviesQuery,
   staticInfoQuery,
   studentGroupBySlugQuery,
   studentGroupsByTypeQuery,
@@ -22,6 +23,7 @@ import {
   type AllMerchQueryResult,
   AllHappeningsQueryResult,
   HappeningQueryResult,
+  MoviesQueryResult,
 } from "@echo-webkom/cms/types";
 import type { PageType } from "@echo-webkom/lib";
 import ky, { type KyInstance } from "ky";
@@ -96,6 +98,12 @@ export class AxisClient {
     merch: {
       list: async (): Promise<AllMerchQueryResult> => {
         return await this.#sanity.fetch(allMerchQuery);
+      },
+    },
+
+    movies: {
+      list: async () => {
+        return await this.#sanity.fetch<MoviesQueryResult>(moviesQuery);
       },
     },
 
