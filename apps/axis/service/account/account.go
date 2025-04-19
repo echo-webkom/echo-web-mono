@@ -36,3 +36,13 @@ func (s *AccountService) FindAccountByProvider(ctx context.Context, provider, id
 
 	return account, nil
 }
+
+// Create new account for the given id.
+func (s *AccountService) Create(userId string, providerId string) error {
+	_, err := s.pool.Exec(context.Background(), `
+		INSERT INTO account (userId, type, provider, providerAccountId)
+		VALUES $1, $2, $3, $4
+	`, userId, "oauth", "feide", providerId)
+
+	return err
+}

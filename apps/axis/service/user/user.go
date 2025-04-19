@@ -12,6 +12,12 @@ type UserService struct {
 	pool *pgxpool.Pool
 }
 
+func New(pool *pgxpool.Pool) *UserService {
+	return &UserService{
+		pool: pool,
+	}
+}
+
 // Finds the user associated with the given feide ID.
 func (s *UserService) FindUserByFeideID(ctx context.Context, feideID string) (database.User, error) {
 	as := account.New(s.pool)
@@ -41,4 +47,13 @@ func (s *UserService) FindUserByFeideID(ctx context.Context, feideID string) (da
 	}
 
 	return user, nil
+}
+
+func (s *UserService) Create(id string, name string, email string) error {
+	_, err := s.pool.Exec(context.Background(), `
+		INSERT INTO user (id, name, email)
+		VALUES $1, $2, $3
+	`, id, name, email)
+
+	return err
 }

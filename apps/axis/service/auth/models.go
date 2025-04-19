@@ -14,6 +14,20 @@ type ValidateUser struct {
 }
 
 type ValidatedSession struct {
+	Success      bool      `json:"success"`
 	SessionToken string    `json:"sessionToken"`
 	Expires      time.Time `json:"expires"`
+}
+
+type FeideUserInfo struct {
+	Iss      string `json:"iss"`
+	Jti      string `json:"jti"`
+	Aud      string `json:"aud"`
+	Sub      string `json:"sub"`
+	Iat      int    `json:"iat"`
+	Exp      int    `json:"exp"`
+	AuthTime int    `json:"auth_time"`
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Picture  string `json:"picture"`
 }

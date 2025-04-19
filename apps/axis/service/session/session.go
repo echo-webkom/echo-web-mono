@@ -20,8 +20,21 @@ func New(db *pgxpool.Pool) *SessionService {
 	}
 }
 
-// Finds a session by its ID
-func (s *SessionService) FindSessionByID(ctx context.Context, sessionID string) (database.Session, error) {
+func (s *SessionService) FindSessionByUserID(ctx context.Context, userID string) (sesh database.Session, err error) {
+	err = s.pool.QueryRow(ctx, `
+		SELECT session_token, user_id, expires_at
+		FROM session
+		WHERE user_id = $1
+	`, userID).Scan(
+		&sesh.SessionToken,
+		&sesh.UserID,
+		&sesh.Expires,
+	)
+
+	return sesh, nil
+}
+
+func (s *SessionService) FindSessionBySessionID(ctx context.Context, sessionID string) (database.Session, error) {
 	var session database.Session
 
 	err := s.pool.QueryRow(ctx, `
@@ -41,11 +54,12 @@ func (s *SessionService) FindSessionByID(ctx context.Context, sessionID string) 
 	return session, nil
 }
 
-// Creates a new session in the database for the given user ID.
-func (s *SessionService) CreateSession(ctx context.Context, userID string) (string, error) {
+// Creates a new session in the database for the given user ID and returns new
+// session id/token and expiration date.
+func (s *SessionService) CreateSession(ctx context.Context, userID string) (seshId string, expires time.Time, err error) {
 	id, err := gonanoid.New(40)
 	if err != nil {
-		return "", nil
+		return "", time.Now(), nil
 	}
 
 	expiresAt := time.Now().AddDate(0, 0, 30)
@@ -55,10 +69,10 @@ func (s *SessionService) CreateSession(ctx context.Context, userID string) (stri
 		VALUES $1, $2, $3
 	`, id, userID, expiresAt)
 	if err != nil {
-		return "", nil
+		return "", time.Now(), nil
 	}
 
-	return id, nil
+	return id, expiresAt, nil
 }
 
 // Deletes a session from the database.
