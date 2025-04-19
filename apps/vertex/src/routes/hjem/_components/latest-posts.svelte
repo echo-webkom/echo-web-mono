@@ -1,12 +1,11 @@
 <script lang="ts">
 	import removeMd from 'remove-markdown';
 	import type { PageData } from '../$types';
+	import { page } from '$app/state';
+	import { isBoard } from '@echo-webkom/lib';
 
-	type Props = {
-		posts: PageData['posts'];
-	};
-
-	let { posts }: Props = $props();
+	let data = $derived(page.data as PageData);
+	let posts = $derived(data.posts);
 </script>
 
 <ul>
@@ -18,13 +17,29 @@
 			>
 				<div class="flex items-center gap-4">
 					<div>
-						<h3 class="font-semibold group-hover:underline mb-2">{post.title}</h3>
-						<p class="text-sm text-muted-foreground italic line-clamp-3">
+						<div class="mb-2">
+							<h3 class="font-semibold group-hover:underline">{post.title}</h3>
+							{#if post.authors}
+								<p class="text-xs text-muted-foreground">
+									Av {post.authors
+										?.map((author) => (isBoard(author.name) ? 'Hovedstyret' : author.name))
+										.join(', ')}
+								</p>
+							{/if}
+						</div>
+						<p class="text-sm text-muted-foreground italic line-clamp-2">
 							{removeMd(post.body)}
 						</p>
 					</div>
 				</div>
 			</a>
+
+			<p class="text-xs absolute top-4 right-4 text-muted-foreground">
+				{new Date(post._createdAt).toLocaleDateString('nb-NO', {
+					day: '2-digit',
+					month: 'long'
+				})}
+			</p>
 		</li>
 	{/each}
 </ul>

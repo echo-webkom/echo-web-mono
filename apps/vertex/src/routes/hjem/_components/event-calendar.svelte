@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { PageProps } from '../$types';
+	import { page } from '$app/state';
 	import { cn } from '$lib/cn';
 	import { browser } from '$app/environment';
 	import { addDays, getWeek, startOfWeek, subDays } from 'date-fns';
 	import { ArrowLeft, ArrowRight, Circle, RotateCcw } from '@lucide/svelte';
+	import type { PageData } from '../$types';
 
-	type Props = {
-		events: PageProps['data']['allEvents'];
-	};
+	let data = $derived(page.data as PageData);
+	let events = $derived(data.allEvents);
 
 	const DAYS = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
 	const TODAY = new Date();
@@ -84,8 +84,6 @@
 		}
 	};
 
-	let { events }: Props = $props();
-
 	$effect(() => {
 		if (isDirty) return;
 
@@ -161,9 +159,7 @@
 
 <div class="flex flex-col gap-4 h-full">
 	<div class="flex items-center justify-between h-[50px]">
-		<div>
-			<p class="text-3xl pl-3 font-medium">Kalender</p>
-		</div>
+		<div></div>
 
 		<div class="flex items-center w-fit overflow-hidden p-1 border-2 rounded-full">
 			<button

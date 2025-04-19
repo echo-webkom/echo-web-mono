@@ -3,12 +3,10 @@
 	import { format } from 'date-fns';
 	import { nb } from 'date-fns/locale';
 	import type { PageData } from '../$types';
+	import { page } from '$app/state';
 
-	type Props = {
-		events: PageData['events'];
-	};
-
-	let { events }: Props = $props();
+	let data = $derived(page.data as PageData);
+	let events = $derived(data.events);
 </script>
 
 <div>

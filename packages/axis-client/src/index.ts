@@ -70,7 +70,13 @@ export class AxisClient {
 
   readonly shoppingList = {
     list: async (): Promise<
-      Array<{ id: string; name: string; userId: string; userName: string }>
+      Array<{
+        id: string;
+        name: string;
+        userId: string;
+        userName: string;
+        likes: Array<string>;
+      }>
     > => {
       return await this.#axis.get("shopping-list").json();
     },

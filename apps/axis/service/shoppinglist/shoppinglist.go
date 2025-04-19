@@ -23,9 +23,12 @@ func (s *ShoppingListService) ListShoppingItems(ctx context.Context) ([]Shopping
     		sli.id,
     		sli.name AS item_name,
     		sli.user_id,
-    		u.name AS user_name
+    		u.name AS user_name,
+    		COALESCE(array_agg(l.user_id) FILTER (WHERE l.user_id IS NOT NULL), '{}') AS likes
 		FROM shopping_list_item sli
-		JOIN "user" u ON sli.user_id = u.id`)
+		JOIN "user" u ON sli.user_id = u.id
+		LEFT JOIN users_to_shopping_list_items l ON sli.id = l.item_id
+		GROUP BY sli.id, u.name`)
 
 	if err != nil {
 		return nil, err
@@ -35,9 +38,13 @@ func (s *ShoppingListService) ListShoppingItems(ctx context.Context) ([]Shopping
 	items := []ShoppingListItemWithUser{}
 	for rows.Next() {
 		var item ShoppingListItemWithUser
-		if err := rows.Scan(&item.ID, &item.Name, &item.UserID, &item.UserName); err != nil {
+		var likes []string
+
+		if err := rows.Scan(&item.ID, &item.Name, &item.UserID, &item.UserName, &likes); err != nil {
 			return nil, err
 		}
+
+		item.Likes = likes
 		items = append(items, item)
 	}
 

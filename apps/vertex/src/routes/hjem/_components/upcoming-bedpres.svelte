@@ -4,15 +4,13 @@
 	import type { PageData } from '../$types';
 	import { format } from 'date-fns';
 	import { capitalize } from '$lib/strings';
+	import { page } from '$app/state';
 
-	type Props = {
-		events: PageData['bedpres'];
-	};
-
-	let { events }: Props = $props();
+	let data = $derived(page.data as PageData);
+	let events = $derived(data.events);
 </script>
 
-<div>
+<div class="flex flex-col h-full">
 	{#each events as event}
 		<a
 			href="/arrangement/{event.slug}"
@@ -36,5 +34,11 @@
 				</div>
 			</div>
 		</a>
+	{:else}
+		<div class="flex flex-col items-center justify-center h-full p-4">
+			<p class="text-muted-foreground text-lg font-medium text-center">
+				Bedpres szn er over. Kom tilbake neste semester.
+			</p>
+		</div>
 	{/each}
 </div>
