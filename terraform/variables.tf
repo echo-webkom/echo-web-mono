@@ -52,7 +52,7 @@ variable "postgres_version" {
 }
 
 variable "location" {
-  default = "West Europe"
+  default = "Norway East"
 }
 
 variable "resource_group_name" {

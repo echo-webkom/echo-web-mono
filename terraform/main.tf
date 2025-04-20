@@ -9,7 +9,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "echo-web"
     storage_account_name = "echowebtfstate"
-    container_name       = "echo-web-tfstate"
+    container_name       = "tfstate"
     key                  = "prod.terraform.tfstate"
   }
 
