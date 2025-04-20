@@ -63,10 +63,6 @@ variable "app_service_plan_name" {
   default = "echo-web-plan"
 }
 
-variable "app_service_name" {
-  default = "echo-web"
-}
-
 variable "docker_owner" {
   default = "echo-webkom"
 }

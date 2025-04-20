@@ -1,3 +1,21 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.26.0"
+    }
+  }
+
+  backend "azurerm" {
+    resource_group_name  = "echo-web"
+    storage_account_name = "echowebtfstate"
+    container_name       = "echo-web-tfstate"
+    key                  = "prod.terraform.tfstate"
+  }
+
+  required_version = ">= 1.11.0"
+}
+
 provider "azurerm" {
   subscription_id = var.subscription_id
 
@@ -18,7 +36,7 @@ resource "azurerm_service_plan" "plan" {
 }
 
 resource "azurerm_linux_web_app" "echo-vertex" {
-  name                = var.app_service_name
+  name                = "echo-web-vertex"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.plan.id
@@ -66,8 +84,14 @@ resource "azurerm_linux_web_app" "echo-vertex" {
   }
 }
 
+resource "azurerm_app_service_custom_hostname_binding" "vertex_custom_domain" {
+  hostname            = "beta.echo-webkom.no"
+  app_service_name    = azurerm_linux_web_app.echo-vertex.name
+  resource_group_name = azurerm_linux_web_app.echo-vertex.resource_group_name
+}
+
 resource "azurerm_linux_web_app" "echo-axis" {
-  name                = var.app_service_name
+  name                = "echo-web-axis"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.plan.id
@@ -107,3 +131,8 @@ resource "azurerm_linux_web_app" "echo-axis" {
   }
 }
 
+resource "azurerm_app_service_custom_hostname_binding" "axis_custom_domain" {
+  hostname            = "axis.echo-webkom.no"
+  app_service_name    = azurerm_linux_web_app.echo-axis.name
+  resource_group_name = azurerm_linux_web_app.echo-axis.resource_group_name
+}
