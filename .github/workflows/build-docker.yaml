@@ -8,53 +8,61 @@ on:
     branches:
       - main
 
-env:
-  ADMIN_KEY: foobar
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
-
-  PUBLIC_AXIS_PORT: 8000
-
-  NEXT_PUBLIC_SANITY_DATASET: "testing"
-
-  FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
-  FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
-
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
 jobs:
   build-vertex:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+
+      PUBLIC_VERTEX_FEIDE_REDIRECT_URI: "https://beta.echo-webkom.no/auth/feide/callback"
+      PUBLIC_SANITY_PROJECT_ID: "pgq2pd26"
+      PUBLIC_SANITY_DATASET: "production"
+      PUBLIC_AXIS_URL: "https://axis.echo-webkom.no"
+      PUBLIC_ECHOGRAM_URL: "https://echogram.echo-webkom.no"
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐳 Build Docker image
+        run: |
+          export DOCKER_BUILDKIT=1
+          docker build \
+            --build-arg PUBLIC_VERTEX_FEIDE_REDIRECT_URI=$PUBLIC_VERTEX_FEIDE_REDIRECT_URI \
+            --build-arg PUBLIC_SANITY_DATASET=$PUBLIC_SANITY_DATASET \
+            --build-arg PUBLIC_SANITY_PROJECT_ID=$PUBLIC_SANITY_PROJECT_ID \
+            --build-arg PUBLIC_AXIS_URL=$PUBLIC_AXIS_URL \
+            --build-arg PUBLIC_ECHOGRAM_URL=$PUBLIC_ECHOGRAM_URL \
+            --secret id=database_url,env=DATABASE_URL \
+            --secret id=admin_key,env=ADMIN_KEY \
+            -t ghcr.io/echo-webkom/vertex:latest \
+            -f apps/vertex/Dockerfile .
+
+      - name: 🔐 Authenticate Docker
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: 🚀 Push Docker image
+        run: |
+          docker push ghcr.io/echo-webkom/vertex:latest
+
+  build-axis:
     runs-on: ubuntu-latest
     steps:
       - name: 🔍 Checkout
         uses: actions/checkout@v4
 
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: 🐳 Build Docker image
+        run: |
+          docker build \
+              -t ghcr.io/echo-webkom/axis:latest \
+              -f apps/axis/Dockerfile .
 
-      - name: 🐢 Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-          cache-dependency-path: ./pnpm-lock.yaml
+      - name: 🔐 Authenticate Docker
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # - name: 🏗️ Migrate database
-      #   run: pnpm db:migrate
-
-      # - name: 📝 Check lint and format
-      #   run: pnpm lint
-
-      # - name: 📝 Svelte check
-      #   run: pnpm --filter=vertex run check
-
-      # - name: 🏗️ Build vertex
-      #   run: pnpm --filter=vertex build
-
-      # - name: 🐳 Build Docker image
-      #   run: docker build . -t vertex-image --file ./apps/vertex/Dockerfile --build-arg NODE_ENV=production --build-arg PUBLIC_AXIS_PORT=8000 --build-arg NEXT_PUBLIC_SANITY_DATASET=testing --build-arg FEIDE_CLIENT_ID=${{ secrets.FEIDE_CLIENT_ID }} --build-arg FEIDE_CLIENT_SECRET=${{ secrets.FEIDE_CLIENT_SECRET }} --build-arg ADMIN_KEY=foobar --build-arg DATABASE_URL=postgres://postgres:postgres@localhost:5432/echo-web
-      # - name: 🐳 Push Docker image
-      #   run: docker tag vertex-image ghcr.io/echo-web/vertex:latest
+      - name: 🚀 Push Docker image
+        run: |
+          docker push ghcr.io/echo-webkom/axis:latest
