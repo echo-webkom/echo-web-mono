@@ -7,9 +7,6 @@ on:
 env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
   NEXT_PUBLIC_SANITY_DATASET: "develop"
-  FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
-  FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
-  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
