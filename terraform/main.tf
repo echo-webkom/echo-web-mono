@@ -81,6 +81,10 @@ resource "azurerm_linux_web_app" "echo-vertex" {
     PUBLIC_FEIDE_REDIRECT_URI = var.public_vertex_feide_redirect_uri
     PUBLIC_SANITY_DATASET     = var.sanity_dataset
     PUBLIC_SANITY_PROJECT_ID  = var.sanity_project_id
+
+
+    APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.vertex_ai.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.vertex_ai.connection_string
   }
 }
 
@@ -128,6 +132,9 @@ resource "azurerm_linux_web_app" "echo-axis" {
 
     DATABASE_URL = var.database_url
     ADMIN_KEY    = var.admin_key
+
+    APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.axis_ai.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.axis_ai.connection_string
   }
 }
 
@@ -135,4 +142,18 @@ resource "azurerm_app_service_custom_hostname_binding" "axis_custom_domain" {
   hostname            = "axis.echo-webkom.no"
   app_service_name    = azurerm_linux_web_app.echo-axis.name
   resource_group_name = azurerm_linux_web_app.echo-axis.resource_group_name
+}
+
+resource "azurerm_application_insights" "vertex_ai" {
+  name                = "ai-echo-vertex"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  application_type    = "Node.JS"
+}
+
+resource "azurerm_application_insights" "axis_ai" {
+  name                = "ai-echo-axis"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  application_type    = "other"
 }
