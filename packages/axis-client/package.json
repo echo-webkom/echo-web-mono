@@ -12,9 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "eslint": "8.57.1",
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.24.0",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.0.0"
   },
   "dependencies": {
     "@echo-webkom/cms": "workspace:*",

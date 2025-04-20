@@ -21,14 +21,14 @@ import {
   type StudentGroupsByTypeQueryResult,
   type AllMeetingMinuteQueryResult,
   type AllMerchQueryResult,
-  AllHappeningsQueryResult,
-  HappeningQueryResult,
-  MoviesQueryResult,
+  type AllHappeningsQueryResult,
+  type HappeningQueryResult,
+  type MoviesQueryResult,
 } from "@echo-webkom/cms/types";
 import type { PageType } from "@echo-webkom/lib";
 import ky, { type KyInstance } from "ky";
 
-export type AxisClientOptions = {
+export interface AxisClientOptions {
   axisUrl: string;
   sanity: {
     projectId: string;
@@ -36,13 +36,13 @@ export type AxisClientOptions = {
   };
   apiToken: string;
   debug?: boolean;
-};
+}
 
 export class AxisClient {
   #sanity: SanityClient;
   #axis: KyInstance;
   #apiToken: string | undefined;
-  #debug: boolean = false;
+  #debug: boolean;
 
   constructor(options: AxisClientOptions) {
     this.#sanity = createClient({
@@ -70,13 +70,13 @@ export class AxisClient {
 
   readonly shoppingList = {
     list: async (): Promise<
-      Array<{
+      {
         id: string;
         name: string;
         userId: string;
         userName: string;
-        likes: Array<string>;
-      }>
+        likes: string[];
+      }[]
     > => {
       return await this.#axis.get("shopping-list").json();
     },
@@ -141,7 +141,7 @@ export class AxisClient {
       });
     },
 
-    upcoming: async (types: Array<string>, n: number) => {
+    upcoming: async (types: string[], n: number) => {
       return await this.#sanity.fetch<HomeHappeningsQueryResult>(
         homeHappeningsQuery,
         { happeningTypes: types, n }

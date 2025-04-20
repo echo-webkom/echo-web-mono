@@ -28,7 +28,7 @@ func Run(config *config.Config) {
 	}))
 
 	ctx := context.Background()
-	pool, err := database.Connect(ctx, config.DBConnStr)
+	pool, err := database.Connect(ctx, config.DatabaseURL)
 	if err != nil {
 		log.Fatalln(err)
 	}

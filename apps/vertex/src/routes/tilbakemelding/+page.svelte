@@ -6,7 +6,6 @@
 	import Textarea from '$lib/components/ui/form/textarea.svelte';
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
-	import { cn } from '$lib/cn';
 	import Button from '$lib/components/ui/button.svelte';
 
 	let { form } = $props();

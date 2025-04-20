@@ -5,15 +5,12 @@
   "scripts": {
     "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rimraf .turbo node_modules",
-    "lint": "eslint src",
-    "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
     "@types/node": "20.17.10",
     "dotenv-cli": "7.4.4",
-    "eslint": "8.57.1",
     "rimraf": "^6.0.1",
     "tsx": "4.19.1",
     "typescript": "5.6.3"

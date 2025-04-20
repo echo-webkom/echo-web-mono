@@ -10,6 +10,7 @@
 	class={['fill-current h-5 w-5', className]}
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 371.02 449"
+	{...props}
 >
 	<rect x="322.21" y="234.2" width="48.82" height="117.17"></rect>
 	<polygon

@@ -46,7 +46,7 @@
 
 					return searchMatch && locationMatch && jobTypeMatch && companyMatch;
 				})
-				// @ts-ignore
+				// @ts-expect-error Something wrong with the type of _createdAt
 				.sort((a, b) => {
 					if (sortBy === 'newest') {
 						return new Date(b._createdAt ?? 0).getTime() - new Date(a._createdAt ?? 0).getTime();

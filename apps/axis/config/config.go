@@ -6,9 +6,9 @@ import (
 )
 
 type Config struct {
-	Port      string
-	AdminKey  string
-	DBConnStr string
+	Port        string
+	AdminKey    string
+	DatabaseURL string
 }
 
 func Load() *Config {
@@ -22,9 +22,14 @@ func Load() *Config {
 		log.Fatal("ADMIN_KEY not set")
 	}
 
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		log.Fatalln("DATABASE_NOT not set")
+	}
+
 	return &Config{
-		Port:      port,
-		AdminKey:  adminKey,
-		DBConnStr: "postgres://postgres:postgres@localhost:5432/echo-web?sslmode=disable",
+		Port:        port,
+		AdminKey:    adminKey,
+		DatabaseURL: databaseURL,
 	}
 }

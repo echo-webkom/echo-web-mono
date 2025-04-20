@@ -26,7 +26,6 @@
     "@types/node": "20.17.10",
     "@types/react": "18.3.12",
     "dotenv-cli": "7.4.4",
-    "eslint": "8.57.1",
     "react-email": "3.0.6",
     "rimraf": "^6.0.1",
     "typescript": "5.6.3"

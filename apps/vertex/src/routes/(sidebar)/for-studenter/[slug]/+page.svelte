@@ -8,5 +8,5 @@
 {#if data.isGroupPage}
 	<GroupOverviewPage groups={data.groups} />
 {:else}
-	<StaticPage page={data.page} />
+	<StaticPage page={data.page!} />
 {/if}

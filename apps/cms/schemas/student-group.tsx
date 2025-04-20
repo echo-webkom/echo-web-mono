@@ -64,7 +64,6 @@ export default defineType({
           type: "url",
         }),
       ],
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       hidden: ({ parent }) => parent.groupType === "board",
     }),
     defineField({
@@ -120,10 +119,8 @@ export default defineType({
     },
     prepare({ name, groupType, image }) {
       return {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         title: name,
         subtitle: GROUP_TYPES.find((t) => t.value === groupType)?.title,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         media: image,
       };
     },

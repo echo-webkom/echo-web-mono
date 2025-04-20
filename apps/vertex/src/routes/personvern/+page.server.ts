@@ -66,7 +66,7 @@ Du har rett til å få utlevert dine personopplysninger i et strukturert, alminn
 
 Vi håper du vil si ifra dersom du mener vi ikke overholder reglene i personopplysningsloven. Si da gjerne først i fra gjennom den kontakten eller kanalen du allerede har etablert med oss. Du kan også klage over vår behandling av personopplysninger. Dette gjør du til Datatilsynet.`;
 
-const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async () => {
 	return {
 		body: await marked(body)
 	};

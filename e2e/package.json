@@ -7,8 +7,6 @@
     "test:ui": "pnpm with-env playwright test --ui-port 5555",
     "test:install": "playwright install --with-deps",
     "test:report": "playwright show-report",
-    "lint": "eslint tests --ext .ts",
-    "lint:fix": "eslint lint --fix",
     "clean": "rimraf node_modules playwright-report test-results .turbo",
     "with-env": "dotenv -e ../.env --"
   },
@@ -16,7 +14,6 @@
     "@playwright/test": "1.48.2",
     "@types/node": "20.17.10",
     "dotenv-cli": "7.4.4",
-    "eslint": "8.57.1",
     "postgres": "3.4.5",
     "rimraf": "^6.0.1",
     "typescript": "5.6.3"
