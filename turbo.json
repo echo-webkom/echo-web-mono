@@ -38,7 +38,8 @@
     "//#clean": {
       "cache": false
     },
-    "format": {}
+    "format": {},
+    "format:check": {}
   },
   "globalDependencies": [".env"],
   "globalEnv": [
