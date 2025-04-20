@@ -1,0 +1,60 @@
+name: 🐳 Build Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  ADMIN_KEY: foobar
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+
+  PUBLIC_AXIS_PORT: 8000
+
+  NEXT_PUBLIC_SANITY_DATASET: "testing"
+
+  FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+  FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+jobs:
+  build-vertex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # - name: 🏗️ Migrate database
+      #   run: pnpm db:migrate
+
+      # - name: 📝 Check lint and format
+      #   run: pnpm lint
+
+      # - name: 📝 Svelte check
+      #   run: pnpm --filter=vertex run check
+
+      # - name: 🏗️ Build vertex
+      #   run: pnpm --filter=vertex build
+
+      # - name: 🐳 Build Docker image
+      #   run: docker build . -t vertex-image --file ./apps/vertex/Dockerfile --build-arg NODE_ENV=production --build-arg PUBLIC_AXIS_PORT=8000 --build-arg NEXT_PUBLIC_SANITY_DATASET=testing --build-arg FEIDE_CLIENT_ID=${{ secrets.FEIDE_CLIENT_ID }} --build-arg FEIDE_CLIENT_SECRET=${{ secrets.FEIDE_CLIENT_SECRET }} --build-arg ADMIN_KEY=foobar --build-arg DATABASE_URL=postgres://postgres:postgres@localhost:5432/echo-web
+      # - name: 🐳 Push Docker image
+      #   run: docker tag vertex-image ghcr.io/echo-web/vertex:latest

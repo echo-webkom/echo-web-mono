@@ -51,6 +51,8 @@ resource "azurerm_linux_web_app" "echo-vertex" {
   }
 
   app_settings = {
+    WEBSITES_PORT = 3000
+
     DATABASE_URL        = var.database_url
     ADMIN_KEY           = var.admin_key
     FEIDE_CLIENT_ID     = var.feide_client_id
@@ -98,6 +100,8 @@ resource "azurerm_linux_web_app" "echo-axis" {
   }
 
   app_settings = {
+    WEBSITES_PORT = 8080
+
     DATABASE_URL = var.database_url
     ADMIN_KEY    = var.admin_key
   }

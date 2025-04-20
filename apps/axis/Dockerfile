@@ -1,10 +1,17 @@
-FROM golang:1.24.2 AS build
+# syntax=docker/dockerfile:1.4
+
+FROM golang:1.24-alpine AS builder
+
 WORKDIR /app
 COPY . .
-RUN go build -o main ./cmd/main.go
+RUN cd apps/axis && \
+    go build -o ./build/axis ./cmd/main.go
 
-FROM debian:bullseye-slim
+FROM golang:1.24-alpine AS runner
+
 WORKDIR /app
-COPY --from=build /app/main .
-EXPOSE 8080
-CMD ["./main"]
+
+COPY --from=builder /app/apps/axis/build/axis /app/apps/axis/build/axis
+
+EXPOSE 8000
+CMD ["./apps/axis/build/axis"]

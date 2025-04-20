@@ -35,13 +35,13 @@ func WhitelistRouter(h *apiutil.Handler) *apiutil.Router {
 			return
 		}
 
-		whitelist, err := ws.GetWhitelist(ctx, email)
+		wl, err := ws.GetWhitelist(ctx, email)
 		if err != nil {
 			h.Error(w, http.StatusNotFound, errors.New("email not found"))
 			return
 		}
 
-		h.JSON(w, http.StatusOK, whitelist)
+		h.JSON(w, http.StatusOK, wl)
 	})
 
 	return r

@@ -11,6 +11,14 @@
 - `/storage`
   - `/database` - Database repo and models
 
+## Building with Docker
+
+```bash
+docker build \
+    -t echo-webkom/axis:latest \
+    -f apps/axis/Dockerfile .
+```
+
 ## Creating an API
 
 Create new file in `/api` with the name of the api. For this example we create a simple hello world api in `/api/hello.go`.
@@ -46,4 +54,3 @@ func mount(rf *apiutil.RouterFactory) {
 	rf.Mount("/hello", api.HelloRouter)
 }
 ```
-
