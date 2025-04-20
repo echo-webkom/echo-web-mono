@@ -12,7 +12,6 @@ import {
   VT323,
 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from "nextjs-toploader";
 
 import { EasterEgg } from "@/components/easter-egg";
@@ -169,7 +168,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <EasterEgg />
 
           <Analytics />
-          <SpeedInsights />
           <MembershipFeeModal />
           {/* </ThemeWrapper> */}
         </Providers>
