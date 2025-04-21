@@ -149,8 +149,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		});
 	} else {
 		let existingSession = await db.query.sessions.findFirst({
-			where: (row, { eq, and, lt }) =>
-				and(eq(row.userId, existingAccount.userId), lt(row.expires, new Date()))
+			where: (row, { eq, and, gt }) =>
+				and(eq(row.userId, existingAccount.userId), gt(row.expires, new Date()))
 		});
 
 		if (!existingSession) {

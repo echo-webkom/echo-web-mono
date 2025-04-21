@@ -37,6 +37,8 @@ WORKDIR /app
 COPY --from=builder /app/out/json/ .
 RUN pnpm install --frozen-lockfile
 
+ENV NODE_ENV=production
+
 COPY --from=builder /app/out/full/ .
 RUN --mount=type=secret,id=database_url \
     --mount=type=secret,id=admin_key \
