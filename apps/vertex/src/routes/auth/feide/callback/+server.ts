@@ -85,8 +85,6 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const userInfo = await feide.getUserInfo(tokens.accessToken());
 	const allowedToSignIn = await isAllowedToSignIn(userInfo, tokens.accessToken());
 	if (typeof allowedToSignIn === 'string') {
-		console.log('Redirecting to', allowedToSignIn);
-
 		return new Response(null, {
 			status: 302,
 			headers: {
@@ -105,8 +103,6 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		where: (row, { eq, and }) =>
 			and(eq(row.provider, 'feide'), eq(row.providerAccountId, userInfo.sub))
 	});
-
-	console.log('Existing account', existingAccount);
 
 	if (!existingAccount) {
 		const userId = nanoid();

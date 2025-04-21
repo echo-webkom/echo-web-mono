@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ExternalLink, GitCommit, Rss } from '@lucide/svelte';
+	import { PUBLIC_COMMIT_HASH } from '$env/static/public';
 	import Sanity from '$lib/assets/svg/sanity-logo.svg';
 	import Bekk from '$lib/assets/images/bekk.png';
 
@@ -40,23 +41,27 @@
 			href: 'https://github.com/echo-webkom'
 		}
 	];
+
+	const displayHash = PUBLIC_GITHUB_COMMIT === '' ? null : PUBLIC_GITHUB_COMMIT.slice(0, 7);
 </script>
 
 <footer
 	class="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground"
 >
 	<!-- Latest commit -->
-	<div class="absolute bottom-0 left-0 p-1.5">
-		<p class="font-mono text-xs text-muted-foreground">
-			<a
-				class="flex items-center gap-1 hover:underline"
-				href="https://github.com/echo-webkom/echo-web-mono/commit/052a8c60122981aed3b6ee79e246421c51dfb8a3"
-			>
-				<GitCommit class="size-4" />
-				052a8c6
-			</a>
-		</p>
-	</div>
+	{#if displayHash}
+		<div class="absolute bottom-0 left-0 p-1.5">
+			<p class="font-mono text-xs text-muted-foreground">
+				<a
+					class="flex items-center gap-1 hover:underline"
+					href="https://github.com/echo-webkom/echo-web-mono/commit/{PUBLIC_GITHUB_COMMIT}"
+				>
+					<GitCommit class="size-4" />
+					{displayHash}
+				</a>
+			</p>
+		</div>
+	{/if}
 
 	<!-- Link to RSS feed -->
 	<div class="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">

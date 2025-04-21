@@ -21,6 +21,7 @@ jobs:
       PUBLIC_SANITY_DATASET: "production"
       PUBLIC_AXIS_URL: "https://axis.echo-webkom.no"
       PUBLIC_ECHOGRAM_URL: "https://echogram.echo-webkom.no"
+      PUBLIC_COMMIT_HASH: ${{ github.sha }}
 
     steps:
       - name: 🔍 Checkout
@@ -35,6 +36,7 @@ jobs:
             --build-arg PUBLIC_SANITY_PROJECT_ID=$PUBLIC_SANITY_PROJECT_ID \
             --build-arg PUBLIC_AXIS_URL=$PUBLIC_AXIS_URL \
             --build-arg PUBLIC_ECHOGRAM_URL=$PUBLIC_ECHOGRAM_URL \
+            --build-arg PUBLIC_COMMIT_HASH=$PUBLIC_COMMIT_HASH \
             --secret id=database_url,env=DATABASE_URL \
             --secret id=admin_key,env=ADMIN_KEY \
             -t ghcr.io/echo-webkom/vertex:latest \
