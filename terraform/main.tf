@@ -53,6 +53,7 @@ resource "azurerm_linux_web_app" "echo-vertex" {
         retention_in_days = 7
         retention_in_mb   = 35
       }
+
     }
 
     detailed_error_messages = true
@@ -60,8 +61,6 @@ resource "azurerm_linux_web_app" "echo-vertex" {
   }
 
   site_config {
-    always_on = false
-
     application_stack {
       docker_image_name   = "${var.docker_owner}/${var.vertex_docker_image}:${var.docker_tag}"
       docker_registry_url = "https://ghcr.io"
@@ -119,8 +118,6 @@ resource "azurerm_linux_web_app" "echo-axis" {
   }
 
   site_config {
-    always_on = false
-
     application_stack {
       docker_image_name   = "${var.docker_owner}/${var.axis_docker_image}:${var.docker_tag}"
       docker_registry_url = "https://ghcr.io"
