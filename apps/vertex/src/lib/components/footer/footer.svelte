@@ -42,7 +42,7 @@
 		}
 	];
 
-	const displayHash = PUBLIC_GITHUB_COMMIT === '' ? null : PUBLIC_GITHUB_COMMIT.slice(0, 7);
+	const displayHash = PUBLIC_COMMIT_HASH === '' ? null : PUBLIC_COMMIT_HASH.slice(0, 7);
 </script>
 
 <footer
@@ -54,7 +54,7 @@
 			<p class="font-mono text-xs text-muted-foreground">
 				<a
 					class="flex items-center gap-1 hover:underline"
-					href="https://github.com/echo-webkom/echo-web-mono/commit/{PUBLIC_GITHUB_COMMIT}"
+					href="https://github.com/echo-webkom/echo-web-mono/commit/{PUBLIC_COMMIT_HASH}"
 				>
 					<GitCommit class="size-4" />
 					{displayHash}
