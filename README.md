@@ -92,5 +92,6 @@ Sidene som starter er:
 <br>
 
 <div align="center">
-<img width="20%" src="./.github/wetestinprod.png" />
+  <img width="20%" src="./.github/wetestinprod.png" />
+  <img width="20%" src="./.github/anti-ai.png" />
 </div>
