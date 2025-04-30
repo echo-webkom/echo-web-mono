@@ -9,6 +9,7 @@ import { PieChartGroups } from "../_components/charts/pie-chart-group-registrati
 import { FastestRegistrations } from "../_components/fastest-registrations";
 import { Heading } from "../_components/heading";
 import { type RegistrationWithUser } from "../_lib/types";
+import { PizzaFormel } from "../../../../../components/pizza-formel";
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box className="text-center">
@@ -31,6 +32,8 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
     (registration) => registration.status === "unregistered",
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
+
+  const registration_count = registered.length;
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -64,6 +67,14 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
         </Box>
         <Box>
           <BarChartYear registrations={registrations} />
+        </Box>
+      </div>
+
+      <Heading>Pizza</Heading>
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <Box>
+          <PizzaFormel registration_count={registration_count} />
         </Box>
       </div>
     </div>
