@@ -140,6 +140,16 @@ export default defineType({
       type: "number",
     }),
     defineField({
+      name: "hideRegistrations",
+      title: "Skjul påmelding",
+      type: "boolean",
+      description: "Skjul påmeldingsknappen for arrangementet.",
+      initialValue: false,
+      options: {
+        layout: "switch",
+      },
+    }),
+    defineField({
       name: "date",
       title: "Dato",
       description: "Dato og tid for arrangementet",

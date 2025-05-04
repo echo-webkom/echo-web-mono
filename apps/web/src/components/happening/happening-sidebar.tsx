@@ -116,6 +116,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
     ? isFuture(new Date(user.banInfo.expiresAt)) && event.happeningType === "bedpres"
     : false;
 
+  const hideRegistrations = (event.hideRegistrations ?? false) === true;
+
   return (
     <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
       {/**
@@ -489,7 +491,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
         </div>
       </Sidebar>
 
-      {Boolean(user) && (
+      {Boolean(user) && !hideRegistrations && (
         <RegistrationsPreview
           registrations={registrations.map((registration) => ({
             image: registration.user.image,
