@@ -1,0 +1,26 @@
+"use client";
+
+import { useState } from "react";
+import { Heading, Input, Label } from "react-aria-components";
+
+import { Container } from "@/components/container";
+import { PizzaFormel } from "@/components/pizza-formel";
+
+const Pizza = () => {
+  const [count, setCount] = useState("0");
+  return (
+    <Container className="flex w-fit flex-col items-center justify-center gap-4 p-4">
+      <Heading className="mb-4">Pizza formel</Heading>
+      <Label>Antall folk:</Label>
+      <Input
+        className="text-black"
+        value={count}
+        onChange={(e) => setCount(e.target.value)}
+        placeholder="Antall..."
+      />
+      <PizzaFormel registration_count={Number(count)} />
+    </Container>
+  );
+};
+
+export default Pizza;

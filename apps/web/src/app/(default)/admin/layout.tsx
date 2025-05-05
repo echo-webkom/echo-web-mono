@@ -58,6 +58,11 @@ const adminRoutes = [
     label: "Whitelist",
     groups: ["webkom", "hovedstyret"],
   },
+  {
+    href: "/admin/pizza",
+    label: "Pizza",
+    groups: ["webkom", "hovedstyret"],
+  },
 ];
 
 export default async function AdminDashboardLayout({ children }: Props) {
