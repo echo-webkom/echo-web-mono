@@ -4,6 +4,11 @@ export default defineType({
     name: "hungerGames",
     title: "Hunger Games",
     type: "document",
+    preview: {
+        select: {
+            title: "profile.name"
+        }
+    },
     fields: [
         defineField({
             name: "profile",
