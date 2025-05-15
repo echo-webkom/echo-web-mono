@@ -93,9 +93,13 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                   : isSameDay(event.date, day);
               })
               .sort((a, b) => {
-                if (a.endDate && !b.endDate) return -1;
-                if (!a.endDate && b.endDate) return 1;
-                return 0;
+                const aIsMultiDay = a.endDate && !isSameDay(a.endDate, a.date);
+                const bIsMultiDay = b.endDate && !isSameDay(b.endDate, b.date);
+
+                if (aIsMultiDay && !bIsMultiDay) return -1;
+                if (bIsMultiDay && !aIsMultiDay) return 1;
+
+                return a.date.getTime() - b.date.getTime();
               });
 
             return (
