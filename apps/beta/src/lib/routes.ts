@@ -6,7 +6,6 @@ import {
 	CircleDollarSign,
 	GraduationCap,
 	Heart,
-	HeartHandshake,
 	MailOpen,
 	Martini,
 	Megaphone,
@@ -159,12 +158,6 @@ export const routes = [
 				href: '/om/vedtekter',
 				description: 'Vedtekter',
 				icon: Scale
-			},
-			{
-				label: 'Bekk',
-				href: '/om/bekk',
-				description: 'Om Bekk, vår samarbeidspartner',
-				icon: HeartHandshake
 			},
 			{
 				label: 'Brosjyre',
