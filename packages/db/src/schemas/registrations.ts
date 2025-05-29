@@ -22,9 +22,7 @@ export const registrations = pgTable(
     changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.userId, table.happeningId] })],
 );
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({

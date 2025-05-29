@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
+import { type Adapter } from "@auth/core/adapters";
 import { and, eq } from "drizzle-orm";
 import { type PgDatabase } from "drizzle-orm/pg-core";
-import { type Adapter } from "next-auth/adapters";
 
 import { accounts, sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 
@@ -67,26 +67,23 @@ export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter
         .then((res) => res[0]);
     },
     async linkAccount(rawAccount) {
-      const updatedAccount = await client
+      await client
         .insert(accounts)
-        .values(rawAccount)
+        .values({
+          userId: rawAccount.userId,
+          type: rawAccount.type,
+          provider: rawAccount.provider,
+          providerAccountId: rawAccount.providerAccountId,
+          refresh_token: rawAccount.refresh_token ?? null,
+          access_token: rawAccount.access_token ?? null,
+          expires_at: rawAccount.expires_at ?? null,
+          token_type: rawAccount.token_type ?? null,
+          scope: rawAccount.scope ?? null,
+          id_token: rawAccount.id_token ?? null,
+          session_state: null,
+        })
         .returning()
         .then((res) => res[0]!);
-
-      // Drizzle will return `null` for fields that are not defined.
-      // However, the return type is expecting `undefined`.
-      const account = {
-        ...updatedAccount,
-        access_token: updatedAccount.access_token ?? undefined,
-        token_type: updatedAccount.token_type ?? undefined,
-        id_token: updatedAccount.id_token ?? undefined,
-        refresh_token: updatedAccount.refresh_token ?? undefined,
-        scope: updatedAccount.scope ?? undefined,
-        expires_at: updatedAccount.expires_at ?? undefined,
-        session_state: updatedAccount.session_state ?? undefined,
-      };
-
-      return account;
     },
     async getUserByAccount(account) {
       const dbAccount =
@@ -148,7 +145,7 @@ export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter
         .then((res) => res[0] ?? null);
     },
     async unlinkAccount(account) {
-      const l = await client
+      await client
         .delete(accounts)
         .where(
           and(
@@ -158,13 +155,6 @@ export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter
         )
         .returning()
         .then((res) => res[0] ?? null);
-
-      const provider = l!.provider;
-      const type = l!.type;
-      const providerAccountId = l!.providerAccountId;
-      const userId = l!.userId;
-
-      return { provider, type, providerAccountId, userId };
     },
   };
 };

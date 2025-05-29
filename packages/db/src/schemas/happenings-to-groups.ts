@@ -18,9 +18,7 @@ export const happeningsToGroups = pgTable(
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.happeningId, table.groupId] })],
 );
 
 export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({

@@ -20,9 +20,7 @@ export const banInfos = pgTable(
       .$defaultFn(() => new Date()),
     expiresAt: timestamp("expires_at").notNull(),
   },
-  (table) => ({
-    userIdIdx: index("user_id_idx").on(table.userId),
-  }),
+  (table) => [index("user_id_idx").on(table.userId)],
 );
 
 export const banInfoRelations = relations(banInfos, ({ one }) => ({

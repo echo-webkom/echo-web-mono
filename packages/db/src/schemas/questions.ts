@@ -24,9 +24,7 @@ export const questions = pgTable(
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (table) => [primaryKey({ columns: [table.id] })],
 );
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({

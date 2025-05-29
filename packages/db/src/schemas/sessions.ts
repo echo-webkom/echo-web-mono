@@ -13,9 +13,7 @@ export const sessions = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.sessionToken] }),
-  }),
+  (table) => [primaryKey({ columns: [table.sessionToken] })],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
