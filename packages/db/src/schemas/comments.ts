@@ -19,9 +19,7 @@ export const comments = pgTable(
       .notNull()
       .$onUpdateFn(() => new Date()),
   },
-  (t) => ({
-    postIdx: index("post_idx").on(t.postId),
-  }),
+  (comment) => [index("post_idx").on(comment.postId)],
 );
 
 export const commentsInsert = relations(comments, ({ one, many }) => ({

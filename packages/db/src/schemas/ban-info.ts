@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { index, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
@@ -20,9 +19,7 @@ export const banInfos = pgTable(
       .$defaultFn(() => new Date()),
     expiresAt: timestamp("expires_at").notNull(),
   },
-  (table) => ({
-    userIdIdx: index("user_id_idx").on(table.userId),
-  }),
+  (banInfo) => [index("user_id_idx").on(banInfo.userId)],
 );
 
 export const banInfoRelations = relations(banInfos, ({ one }) => ({
@@ -39,6 +36,3 @@ export const banInfoRelations = relations(banInfos, ({ one }) => ({
 
 export type BanInfo = InferSelectModel<typeof banInfos>;
 export type BanInfoInsert = InferInsertModel<typeof banInfos>;
-
-export const selectBanInfoSchema = createSelectSchema(banInfos);
-export const insertBanInfoSchema = createInsertSchema(banInfos);

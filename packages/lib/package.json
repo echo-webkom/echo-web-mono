@@ -12,7 +12,7 @@
     "@echo-webkom/db": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "20.17.55",
+    "@types/node": "22.15.29",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.6.3",

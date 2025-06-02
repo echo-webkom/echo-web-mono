@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { users } from ".";
@@ -13,9 +12,7 @@ export const degrees = pgTable(
       .$defaultFn(() => nanoid()),
     name: varchar("name", { length: 255 }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (degree) => [primaryKey({ columns: [degree.id] })],
 );
 
 export const degreesRelations = relations(degrees, ({ many }) => ({
@@ -24,6 +21,3 @@ export const degreesRelations = relations(degrees, ({ many }) => ({
 
 export type Degree = InferSelectModel<typeof degrees>;
 export type DegreeInsert = InferInsertModel<typeof degrees>;
-
-export const selectDegreeSchema = createSelectSchema(degrees);
-export const insertDegreeSchema = createInsertSchema(degrees);

@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from ".";
 
@@ -13,9 +12,7 @@ export const sessions = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.sessionToken] }),
-  }),
+  (session) => [primaryKey({ columns: [session.sessionToken] })],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -27,6 +24,3 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 export type Session = InferSelectModel<typeof sessions>;
 export type SessionInsert = InferInsertModel<typeof sessions>;
-
-export const selectSessionSchema = createSelectSchema(sessions);
-export const insertSessionSchema = createInsertSchema(sessions);

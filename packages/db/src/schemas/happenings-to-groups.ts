@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, happenings } from ".";
 
@@ -18,9 +17,9 @@ export const happeningsToGroups = pgTable(
         onDelete: "cascade",
       }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.happeningId, table.groupId] }),
-  }),
+  (happeningsToGroup) => [
+    primaryKey({ columns: [happeningsToGroup.happeningId, happeningsToGroup.groupId] }),
+  ],
 );
 
 export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({
@@ -36,6 +35,3 @@ export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one 
 
 export type HappeningsToGroups = InferSelectModel<typeof happeningsToGroups>;
 export type HappeningsToGroupsInsert = InferInsertModel<typeof happeningsToGroups>;
-
-export const selectHappeningsToGroupsSchema = createSelectSchema(happeningsToGroups);
-export const insertHappeningsToGroupsSchema = createInsertSchema(happeningsToGroups);

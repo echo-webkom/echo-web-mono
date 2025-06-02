@@ -3,8 +3,6 @@
 import { z } from "zod";
 
 import {
-  insertDegreeSchema,
-  selectDegreeSchema,
   type Degree,
   type DegreeInsert,
 } from "@echo-webkom/db/schemas";
@@ -31,7 +29,10 @@ export const addDegree = async (payload: DegreeInsert) => {
   }
 
   try {
-    const parsedPayload = insertDegreeSchema.parse(payload);
+    const parsedPayload = z.object({
+      id: z.string().min(1, "ID er påkrevd"),
+      name: z.string().min(1, "Navn er påkrevd"),
+    }).parse(payload);
 
     await createDegree(parsedPayload);
 
@@ -108,7 +109,11 @@ export const editDegree = async (payload: Degree) => {
   }
 
   try {
-    const parsedPayload = selectDegreeSchema.parse(payload);
+    const parsedPayload = z.object({
+      id: z.string().min(1, "ID er påkrevd"),
+      name: z.string().min(1, "Navn er påkrevd"),
+    })
+    .parse(payload);
 
     await updateDegree(parsedPayload);
 

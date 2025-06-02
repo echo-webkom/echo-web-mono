@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, users } from ".";
 
@@ -19,9 +18,7 @@ export const usersToGroups = pgTable(
       }),
     isLeader: boolean("is_leader").notNull().default(false),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.groupId] }),
-  }),
+  (userToGroup) => [primaryKey({ columns: [userToGroup.userId, userToGroup.groupId] })],
 );
 
 export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
@@ -37,6 +34,3 @@ export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
 
 export type UsersToGroups = InferSelectModel<typeof usersToGroups>;
 export type UsersToGroupsInsert = InferInsertModel<typeof usersToGroups>;
-
-export const selectUsersToGroupsSchema = createSelectSchema(usersToGroups);
-export const insertUsersToGroupsSchema = createInsertSchema(usersToGroups);

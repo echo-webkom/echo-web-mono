@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { happeningsToGroups } from ".";
@@ -14,9 +13,7 @@ export const groups = pgTable(
       .$defaultFn(() => nanoid()),
     name: varchar("name", { length: 255 }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (group) => [primaryKey({ columns: [group.id] })],
 );
 
 export const groupsRelations = relations(groups, ({ many }) => ({
@@ -27,5 +24,3 @@ export const groupsRelations = relations(groups, ({ many }) => ({
 export type Group = InferSelectModel<typeof groups>;
 export type GroupInsert = InferInsertModel<typeof groups>;
 
-export const selectGroupSchema = createSelectSchema(groups);
-export const insertGroupSchema = createInsertSchema(groups);

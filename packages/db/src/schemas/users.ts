@@ -10,7 +10,6 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import {
   banInfos,
@@ -40,10 +39,7 @@ export const users = pgTable(
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-    emailIdx: index("email_idx").on(table.email),
-  }),
+  (user) => [primaryKey({ columns: [user.id] }), index("email_idx").on(user.email)],
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -66,6 +62,3 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 
 export type User = InferSelectModel<typeof users>;
 export type UserInsert = InferInsertModel<typeof users>;
-
-export const selectUserSchema = createSelectSchema(users);
-export const insertUserSchema = createInsertSchema(users);

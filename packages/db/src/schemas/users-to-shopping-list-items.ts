@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { shoppingListItems, users } from ".";
 
@@ -17,9 +16,9 @@ export const usersToShoppingListItems = pgTable(
       .references(() => shoppingListItems.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.itemId] }),
-  }),
+  (usersToShoppListItem) => [
+    primaryKey({ columns: [usersToShoppListItem.userId, usersToShoppListItem.itemId] }),
+  ],
 );
 
 export const usersToShoppingListItemsRelations = relations(usersToShoppingListItems, ({ one }) => ({
@@ -35,6 +34,3 @@ export const usersToShoppingListItemsRelations = relations(usersToShoppingListIt
 
 export type UsersToShoppingListItems = InferSelectModel<typeof usersToShoppingListItems>;
 export type UsersToShoppingListItemsInsert = InferInsertModel<typeof usersToShoppingListItems>;
-
-export const selectUsersToShoppingListItemsSchema = createSelectSchema(usersToShoppingListItems);
-export const insertUsersToShoppingListItemsSchema = createInsertSchema(usersToShoppingListItems);

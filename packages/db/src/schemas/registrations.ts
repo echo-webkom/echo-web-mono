@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { answers, happenings, registrationStatusEnum, users } from ".";
 
@@ -22,9 +21,7 @@ export const registrations = pgTable(
     changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId] }),
-  }),
+  (registration) => [primaryKey({ columns: [registration.userId, registration.happeningId] })],
 );
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({
@@ -45,6 +42,3 @@ export const registrationsRelations = relations(registrations, ({ one, many }) =
 
 export type Registration = InferSelectModel<typeof registrations>;
 export type RegistrationInsert = InferInsertModel<typeof registrations>;
-
-export const selectRegistrationSchema = createSelectSchema(registrations);
-export const insertRegistrationSchema = createInsertSchema(registrations);

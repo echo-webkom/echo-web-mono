@@ -11,11 +11,11 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
-    "@types/node": "20.17.55",
-    "dotenv-cli": "7.4.4",
+    "@types/node": "22.15.29",
+    "dotenv-cli": "8.0.0",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.19.1",
+    "tsx": "4.19.4",
     "typescript": "5.6.3"
   },
   "eslintConfig": {
@@ -42,7 +42,7 @@
     "@sanity/client": "6.22.5",
     "chalk": "5.3.0",
     "commander": "12.1.0",
-    "drizzle-orm": "0.33.0",
+    "drizzle-orm": "0.44.1",
     "groq": "3.61.0"
   }
 }

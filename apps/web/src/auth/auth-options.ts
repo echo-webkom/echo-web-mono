@@ -1,3 +1,4 @@
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { addMinutes, isFuture } from "date-fns";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -8,7 +9,6 @@ import { db } from "@echo-webkom/db/serverless";
 
 import { signInAttempt } from "@/data/kv/namespaces";
 import { toRelative } from "@/utils/url";
-import { DrizzleAdapter } from "./drizzle-adapter";
 import { Feide } from "./feide";
 import { isMemberOfecho } from "./is-member-of-echo";
 

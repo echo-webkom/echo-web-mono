@@ -17,5 +17,6 @@ export const createDatabase = (pool: ReturnType<typeof postgres>) => {
   return drizzle(pool, {
     schema,
     logger: process.env.DATABASE_LOG === "true",
+    casing: "snake_case",
   });
 };

@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { degrees, insertDegreeSchema } from "@echo-webkom/db/schemas";
+import { degrees } from "@echo-webkom/db/schemas";
 
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
@@ -19,7 +19,10 @@ app.get("/degrees", async (c) => {
 });
 
 app.post("/degrees", admin(), async (c) => {
-  const { ok, json } = await parseJson(c, insertDegreeSchema);
+  const { ok, json } = await parseJson(c, z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+  }));
 
   if (!ok) {
     return c.json({ error: "Invalid input" }, 400);

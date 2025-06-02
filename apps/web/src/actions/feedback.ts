@@ -2,18 +2,18 @@
 
 import { z } from "zod";
 
-import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
-
 import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
 import { getFeedbackById } from "@/data/site-feedbacks/queries";
 import { getUser } from "@/lib/get-user";
 import { isWebkom } from "@/lib/memberships";
 
-const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
-  email: true,
-  name: true,
-  category: true,
-  message: true,
+const sendFeedbackPayloadSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  category: z.enum(["bug", "feature", "login", "other"], {
+    errorMap: () => ({ message: "Ugyldig kategori" }),
+  }),
+  message: z.string().min(1, "Melding må være minst 10 tegn"),
 });
 
 export const sendFeedback = async (payload: z.infer<typeof sendFeedbackPayloadSchema>) => {

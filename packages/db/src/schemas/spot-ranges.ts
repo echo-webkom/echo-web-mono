@@ -1,6 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
 import { happenings } from ".";
@@ -20,9 +19,7 @@ export const spotRanges = pgTable(
     minYear: integer("min_year").notNull(),
     maxYear: integer("max_year").notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (spotRange) => [primaryKey({ columns: [spotRange.id] })],
 );
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
@@ -34,6 +31,3 @@ export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
 
 export type SpotRange = InferSelectModel<typeof spotRanges>;
 export type SpotRangeInsert = InferInsertModel<typeof spotRanges>;
-
-export const selectSpotRangeSchema = createSelectSchema(spotRanges);
-export const insertSpotRangeSchema = createInsertSchema(spotRanges);
