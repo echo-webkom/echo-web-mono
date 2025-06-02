@@ -394,8 +394,8 @@ importers:
   packages/config/eslint:
     dependencies:
       '@next/eslint-plugin-next':
-        specifier: 14.2.18
-        version: 14.2.18
+        specifier: 14.2.29
+        version: 14.2.29
       '@types/eslint':
         specifier: 8.56.12
         version: 8.56.12
@@ -2831,8 +2831,8 @@ packages:
   '@next/env@15.1.6':
     resolution: {integrity: sha512-d9AFQVPEYNr+aqokIiPLNK/MTyt3DWa/dpKveiAaVccUadFbhFEvY6FXYX2LJO2Hv7PHnLBu2oWwB4uBuHjr/w==}
 
-  '@next/eslint-plugin-next@14.2.18':
-    resolution: {integrity: sha512-KyYTbZ3GQwWOjX3Vi1YcQbekyGP0gdammb7pbmmi25HBUCINzDReyrzCMOJIeZisK1Q3U6DT5Rlc4nm2/pQeXA==}
+  '@next/eslint-plugin-next@14.2.29':
+    resolution: {integrity: sha512-qpxSYiPNJTr9RzqjGi5yom8AIC8Kgdtw4oNIXAB/gDYMDctmfMEv452FRUhT06cWPgcmSsbZiEPYhbFiQtCWTg==}
 
   '@next/swc-darwin-arm64@15.1.2':
     resolution: {integrity: sha512-b9TN7q+j5/7+rGLhFAVZiKJGIASuo8tWvInGfAd8wsULjB1uNGRCj1z1WZwwPWzVQbIKWFYqc+9L7W09qwt52w==}
@@ -12471,7 +12471,7 @@ snapshots:
 
   '@next/env@15.1.6': {}
 
-  '@next/eslint-plugin-next@14.2.18':
+  '@next/eslint-plugin-next@14.2.29':
     dependencies:
       glob: 10.3.10
 
@@ -14812,15 +14812,15 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@sanity/presentation-comlink@1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
+  '@sanity/presentation-comlink@1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
       '@sanity/comlink': 3.0.3
-      '@sanity/visual-editing-types': 1.0.18(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/visual-editing-types': 1.0.18(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
     transitivePeerDependencies:
       - '@sanity/types'
 
-  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.2.1)':
+  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.2.1(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
       '@sanity/uuid': 3.0.2
@@ -15043,7 +15043,7 @@ snapshots:
       - react-dom
       - react-is
 
-  '@sanity/visual-editing-types@1.0.18(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
+  '@sanity/visual-editing-types@1.0.18(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
     optionalDependencies:
@@ -17573,7 +17573,7 @@ snapshots:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
-      minimatch: 9.0.4
+      minimatch: 9.0.5
       minipass: 7.1.2
       path-scurry: 1.10.2
 
@@ -20556,8 +20556,8 @@ snapshots:
       '@sanity/message-protocol': 0.13.1
       '@sanity/migrate': 3.88.2(@types/react@19.0.3)
       '@sanity/mutator': 3.88.2(@types/react@19.0.3)
-      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
-      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1)
+      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1(debug@4.4.0))
       '@sanity/schema': 3.88.2(@types/react@19.0.3)(debug@4.4.0)
       '@sanity/sdk': 0.0.0-alpha.25(@types/react@19.0.3)(debug@4.4.0)(immer@10.0.4)(react@18.3.1)(use-sync-external-store@1.5.0(react@18.3.1))
       '@sanity/telemetry': 0.8.1(react@18.3.1)
@@ -20720,8 +20720,8 @@ snapshots:
       '@sanity/message-protocol': 0.13.1
       '@sanity/migrate': 3.88.2(@types/react@19.0.3)
       '@sanity/mutator': 3.88.2(@types/react@19.0.3)
-      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
-      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1)
+      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1(debug@4.4.0))
       '@sanity/schema': 3.88.2(@types/react@19.0.3)(debug@4.4.0)
       '@sanity/sdk': 0.0.0-alpha.25(@types/react@19.0.3)(debug@4.4.0)(immer@10.0.4)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
       '@sanity/telemetry': 0.8.1(react@19.0.0)
