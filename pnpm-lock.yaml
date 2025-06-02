@@ -252,8 +252,8 @@ importers:
         specifier: 3.8.1
         version: 3.8.1
       ky:
-        specifier: 1.7.2
-        version: 1.7.2
+        specifier: 1.8.1
+        version: 1.8.1
       lucide-react:
         specifier: 0.473.0
         version: 0.473.0(react@19.0.0)
@@ -7444,8 +7444,8 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  ky@1.7.2:
-    resolution: {integrity: sha512-OzIvbHKKDpi60TnF9t7UUVAF1B4mcqc02z5PIvrm08Wyb+yOcz63GRvEuVxNT18a9E1SrNouhB4W2NNLeD7Ykg==}
+  ky@1.8.1:
+    resolution: {integrity: sha512-7Bp3TpsE+L+TARSnnDpk3xg8Idi8RwSLdj6CMbNWoOARIrGrbuLGusV0dYwbZOm4bB3jHNxSw8Wk/ByDqJEnDw==}
     engines: {node: '>=18'}
 
   language-subtag-registry@0.3.22:
@@ -14812,15 +14812,15 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@sanity/presentation-comlink@1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
+  '@sanity/presentation-comlink@1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
       '@sanity/comlink': 3.0.3
-      '@sanity/visual-editing-types': 1.0.18(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/visual-editing-types': 1.0.18(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
     transitivePeerDependencies:
       - '@sanity/types'
 
-  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.2.1)':
+  '@sanity/preview-url-secret@2.1.11(@sanity/client@7.2.1(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
       '@sanity/uuid': 3.0.2
@@ -15043,7 +15043,7 @@ snapshots:
       - react-dom
       - react-is
 
-  '@sanity/visual-editing-types@1.0.18(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
+  '@sanity/visual-editing-types@1.0.18(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))':
     dependencies:
       '@sanity/client': 7.2.1(debug@4.4.0)
     optionalDependencies:
@@ -18319,7 +18319,7 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  ky@1.7.2: {}
+  ky@1.8.1: {}
 
   language-subtag-registry@0.3.22: {}
 
@@ -20556,8 +20556,8 @@ snapshots:
       '@sanity/message-protocol': 0.13.1
       '@sanity/migrate': 3.88.2(@types/react@19.0.3)
       '@sanity/mutator': 3.88.2(@types/react@19.0.3)
-      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
-      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1)
+      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1(debug@4.4.0))
       '@sanity/schema': 3.88.2(@types/react@19.0.3)(debug@4.4.0)
       '@sanity/sdk': 0.0.0-alpha.25(@types/react@19.0.3)(debug@4.4.0)(immer@10.0.4)(react@18.3.1)(use-sync-external-store@1.5.0(react@18.3.1))
       '@sanity/telemetry': 0.8.1(react@18.3.1)
@@ -20720,8 +20720,8 @@ snapshots:
       '@sanity/message-protocol': 0.13.1
       '@sanity/migrate': 3.88.2(@types/react@19.0.3)
       '@sanity/mutator': 3.88.2(@types/react@19.0.3)
-      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1)(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
-      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1)
+      '@sanity/presentation-comlink': 1.0.19(@sanity/client@7.2.1(debug@4.4.0))(@sanity/types@3.88.2(@types/react@19.0.3)(debug@4.4.0))
+      '@sanity/preview-url-secret': 2.1.11(@sanity/client@7.2.1(debug@4.4.0))
       '@sanity/schema': 3.88.2(@types/react@19.0.3)(debug@4.4.0)
       '@sanity/sdk': 0.0.0-alpha.25(@types/react@19.0.3)(debug@4.4.0)(immer@10.0.4)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
       '@sanity/telemetry': 0.8.1(react@19.0.0)
