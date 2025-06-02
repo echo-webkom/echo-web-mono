@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.48.2",
-    "@types/node": "20.17.10",
+    "@types/node": "20.17.55",
     "dotenv-cli": "7.4.4",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",

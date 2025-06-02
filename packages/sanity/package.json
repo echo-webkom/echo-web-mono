@@ -18,7 +18,7 @@
     "groq": "3.61.0"
   },
   "devDependencies": {
-    "@types/node": "20.17.10",
+    "@types/node": "20.17.55",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
     "typescript": "5.6.3"
