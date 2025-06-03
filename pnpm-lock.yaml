@@ -141,8 +141,8 @@ importers:
         specifier: 5.1.34
         version: 5.1.34
       dotenv:
-        specifier: 16.4.5
-        version: 16.4.5
+        specifier: 16.5.0
+        version: 16.5.0
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -6085,6 +6085,10 @@ packages:
 
   dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
+
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
 
   drizzle-kit@0.24.2:
@@ -16716,6 +16720,8 @@ snapshots:
   dotenv@16.0.3: {}
 
   dotenv@16.4.5: {}
+
+  dotenv@16.5.0: {}
 
   drizzle-kit@0.24.2:
     dependencies:
