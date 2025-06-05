@@ -13,9 +13,7 @@ export const reactions = pgTable(
       .references(() => users.id, { onDelete: "no action" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.reactToKey, table.emojiId, table.userId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.reactToKey, t.emojiId, t.userId] })],
 );
 
 export const reactionsRelations = relations(reactions, ({ one }) => ({

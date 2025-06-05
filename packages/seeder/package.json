@@ -12,10 +12,10 @@
   },
   "devDependencies": {
     "@types/node": "20.17.55",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
-    "tsx": "4.19.1",
+    "tsx": "4.19.4",
     "typescript": "5.6.3"
   },
   "eslintConfig": {
@@ -38,11 +38,11 @@
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:^",
-    "@faker-js/faker": "^9.5.0",
-    "@sanity/client": "6.22.5",
-    "chalk": "5.3.0",
-    "commander": "12.1.0",
-    "drizzle-orm": "0.33.0",
-    "groq": "3.61.0"
+    "@faker-js/faker": "9.8.0",
+    "@sanity/client": "7.4.1",
+    "chalk": "5.4.1",
+    "commander": "14.0.0",
+    "drizzle-orm": "0.44.2",
+    "groq": "3.91.0"
   }
 }

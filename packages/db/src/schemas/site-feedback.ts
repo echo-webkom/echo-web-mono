@@ -18,9 +18,7 @@ export const siteFeedback = pgTable(
     isRead: boolean("is_read").notNull().default(false),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (t) => [primaryKey({ columns: [t.id] })],
 );
 
 export type SiteFeedback = InferSelectModel<typeof siteFeedback>;

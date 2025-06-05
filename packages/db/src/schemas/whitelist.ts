@@ -9,9 +9,7 @@ export const whitelist = pgTable(
     expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
     reason: text("reason").notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.email] }),
-  }),
+  (t) => [primaryKey({ columns: [t.email] })],
 );
 
 export type Whitelist = InferSelectModel<typeof whitelist>;
