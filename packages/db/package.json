@@ -27,13 +27,13 @@
     "nanoid": "5.0.9",
     "next-auth": "4.24.7",
     "pg": "8.16.0",
-    "postgres": "3.4.5",
+    "postgres": "3.4.7",
     "zod": "3.23.8"
   },
   "devDependencies": {
     "@types/node": "20.17.55",
     "@types/pg": "8.15.2",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "drizzle-kit": "0.24.2",
     "eslint-config-webkom": "workspace:*",
     "tsx": "4.19.1",

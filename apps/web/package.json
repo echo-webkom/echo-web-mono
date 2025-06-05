@@ -81,7 +81,7 @@
     "@types/react-dom": "19.0.2",
     "@vitejs/plugin-react": "4.5.0",
     "autoprefixer": "10.4.20",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "eslint": "8.57.1",
     "eslint-config-webkom": "workspace:*",
     "jsdom": "25.0.1",
