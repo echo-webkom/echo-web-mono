@@ -130,9 +130,11 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             );
           },
           img: ({ src, alt, className, ...props }) => {
+            const srcStr = typeof src === "string" ? src : "";
+
             return (
               <Image
-                src={src ?? ""}
+                src={srcStr}
                 alt={alt ?? ""}
                 {...props}
                 width="600"
