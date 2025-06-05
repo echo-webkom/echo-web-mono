@@ -14,9 +14,7 @@ export const groups = pgTable(
       .$defaultFn(() => nanoid()),
     name: varchar("name", { length: 255 }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (t) => [primaryKey({ columns: [t.id] })],
 );
 
 export const groupsRelations = relations(groups, ({ many }) => ({
