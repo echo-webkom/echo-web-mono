@@ -34,7 +34,7 @@
     "@radix-ui/react-tabs": "1.1.12",
     "@radix-ui/react-toast": "1.2.14",
     "@radix-ui/react-tooltip": "1.2.7",
-    "@sanity/client": "6.22.5",
+    "@sanity/client": "7.4.1",
     "@sanity/image-url": "1.1.0",
     "@tanstack/react-query": "5.80.6",
     "calendar-link": "2.10.0",
