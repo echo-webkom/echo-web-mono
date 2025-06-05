@@ -25,6 +25,7 @@
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "7.2.1",
+    "@sanity/color-input": "^4.0.3",
     "@sanity/icons": "3.7.0",
     "@sanity/ui": "2.15.17",
     "@sanity/vision": "3.88.2",
