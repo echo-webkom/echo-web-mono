@@ -69,10 +69,10 @@ export default async function Image({ params }: ImageProps) {
               alignItems: "center",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <img src="https://echo.uib.no/android-chrome-512x512.png" width={300} />
             <p style={{ fontSize: 120 }}>🤝</p>
-            {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <img src={logoUrl} width={300} />
           </div>
           <p
