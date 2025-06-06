@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Heading, Input, Label } from "react-aria-components";
 
 import { Container } from "@/components/container";
 import { PizzaFormel } from "@/components/pizza-formel";
+import { Heading } from "@/components/typography/heading";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Pizza = () => {
   const [count, setCount] = useState(0);
