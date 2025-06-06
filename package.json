@@ -11,7 +11,7 @@
     "db:dev": "pnpm run --filter=db dev",
     "start": "turbo run start",
     "setup": "pnpm install && pnpm db:up && pnpm db:migrate",
-    "clean": "rm -rf node_modules",
+    "clean": "rm -rf node_modules .turbo",
     "clean-workspaces": "turbo run clean",
     "db:generate": "pnpm --filter=db db:generate",
     "db:migrate": "pnpm --filter=db db:migrate",

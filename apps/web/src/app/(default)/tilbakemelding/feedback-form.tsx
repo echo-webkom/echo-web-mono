@@ -17,17 +17,17 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { feedbackSchema, type FeedbackForm as TFeedbackForm } from "@/lib/schemas/feedback";
+import { feedbackSchema } from "@/lib/schemas/feedback";
+import type { z } from "zod";
 
 export const FeedbackForm = () => {
   const { toast } = useToast();
 
-  const form = useForm<TFeedbackForm>({
+  const form = useForm({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       email: "",
       name: "",
-      // @ts-expect-error Default is ""
       category: "",
       message: "",
     },
@@ -35,7 +35,12 @@ export const FeedbackForm = () => {
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      const { success, message } = await sendFeedback(data);
+      const { success, message } = await sendFeedback({
+        email: data.email,
+        name: data.name,
+        category: data.category as z.infer<typeof feedbackSchema>["category"],
+        message: data.message,
+      });
 
       toast({
         title: message,
