@@ -33,8 +33,6 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
 
-  const registration_count = registered.length;
-
   return (
     <div className="mt-8 flex flex-col gap-6">
       <Heading>Oversikt</Heading>
@@ -74,7 +72,7 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <Box>
-          <PizzaFormel registration_count={registration_count} />
+          <PizzaFormel count={registered.length} />
         </Box>
       </div>
     </div>
