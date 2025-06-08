@@ -21,7 +21,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@types/node": "20.17.57",
+    "@types/node": "20.19.0",
     "dotenv-cli": "8.0.0",
     "esbuild": "0.25.5",
     "tsx": "4.19.4",
