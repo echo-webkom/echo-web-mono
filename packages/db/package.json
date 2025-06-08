@@ -28,7 +28,7 @@
     "next-auth": "4.24.7",
     "pg": "8.16.0",
     "postgres": "3.4.7",
-    "zod": "3.23.8"
+    "zod": "3.25.51"
   },
   "devDependencies": {
     "@types/node": "20.19.0",
