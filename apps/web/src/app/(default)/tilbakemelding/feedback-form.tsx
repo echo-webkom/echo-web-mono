@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
 
 import { sendFeedback } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,6 @@ import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { feedbackSchema } from "@/lib/schemas/feedback";
-import type { z } from "zod";
 
 export const FeedbackForm = () => {
   const { toast } = useToast();
