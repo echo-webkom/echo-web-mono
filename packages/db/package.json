@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "drizzle-orm": "0.44.2",
-    "drizzle-zod": "0.5.1",
+    "drizzle-zod": "0.8.2",
     "nanoid": "5.1.5",
     "next-auth": "4.24.7",
     "pg": "8.16.0",
