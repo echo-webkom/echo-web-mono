@@ -46,7 +46,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       hono:
         specifier: 4.7.11
         version: 4.7.11
@@ -234,7 +234,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.91.0
         version: 3.91.0
@@ -430,10 +430,10 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.23.8)
       nanoid:
         specifier: 5.1.5
         version: 5.1.5
@@ -454,8 +454,8 @@ importers:
         specifier: 20.17.57
         version: 20.17.57
       '@types/pg':
-        specifier: 8.15.2
-        version: 8.15.2
+        specifier: 8.15.4
+        version: 8.15.4
       dotenv-cli:
         specifier: 8.0.0
         version: 8.0.0
@@ -587,7 +587,7 @@ importers:
         version: 14.0.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.91.0
         version: 3.91.0
@@ -4045,8 +4045,8 @@ packages:
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
 
-  '@types/pg@8.15.2':
-    resolution: {integrity: sha512-+BKxo5mM6+/A1soSHBI7ufUglqYXntChLDyTbvcAn1Lawi9J7J9Ok3jt6w7I0+T/UDJ4CyhHk66+GZbwmkYxSg==}
+  '@types/pg@8.15.4':
+    resolution: {integrity: sha512-I6UNVBAoYbvuWkkU3oosC8yxqH21f4/Jc4DK71JLG3dT2mdlGe1z+ep/LQGXaKaOgcvUrsQoPRqfgtMcvZiJhg==}
 
   '@types/react-dom@19.1.6':
     resolution: {integrity: sha512-4hOiT/dwO8Ko0gV1m/TJZYk3y0KBnY9vzDh7W+DH17b2HFSOGgdj33dhihPeuy3l0q23+4e+hoXHV6hCC4dCXw==}
@@ -7039,9 +7039,6 @@ packages:
     peerDependencies:
       rxjs: ^6.5 || ^7
 
-  obuf@1.1.2:
-    resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
-
   oidc-token-hash@5.0.3:
     resolution: {integrity: sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==}
     engines: {node: ^10.13.0 || >=12.0.0}
@@ -7236,10 +7233,6 @@ packages:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
 
-  pg-numeric@1.0.2:
-    resolution: {integrity: sha512-BM/Thnrw5jm2kKLE5uJkXqqExRUY/toLHda65XgFTBTFYZyopbKjBe29Ii3RbkvlsMoFwD+tHeGaCjjv0gHlyw==}
-    engines: {node: '>=4'}
-
   pg-pool@3.10.0:
     resolution: {integrity: sha512-DzZ26On4sQ0KmqnO34muPcmKbhrjmyiO4lCCR0VwEd7MjmiKf5NTg/6+apUEu0NF7ESa37CGzFxH513CoUmWnA==}
     peerDependencies:
@@ -7251,10 +7244,6 @@ packages:
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
-
-  pg-types@4.0.2:
-    resolution: {integrity: sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==}
-    engines: {node: '>=10'}
 
   pg@8.16.0:
     resolution: {integrity: sha512-7SKfdvP8CTNXjMUzfcVTaI+TDzBEeaUnVwiVGZQD1Hh33Kpev7liQba9uLd4CfN8r9mCVsD0JIpq03+Unpz+kg==}
@@ -7398,36 +7387,17 @@ packages:
     resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
     engines: {node: '>=4'}
 
-  postgres-array@3.0.2:
-    resolution: {integrity: sha512-6faShkdFugNQCLwucjPcY5ARoW1SlbnrZjmGl0IrrqewpvxvhSLHimCVzqeuULCbG0fQv7Dtk1yDbG3xv7Veog==}
-    engines: {node: '>=12'}
-
   postgres-bytea@1.0.0:
     resolution: {integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==}
     engines: {node: '>=0.10.0'}
-
-  postgres-bytea@3.0.0:
-    resolution: {integrity: sha512-CNd4jim9RFPkObHSjVHlVrxoVQXz7quwNFpz7RY1okNNme49+sVyiTvTRobiLV548Hx/hb1BG+iE7h9493WzFw==}
-    engines: {node: '>= 6'}
 
   postgres-date@1.0.7:
     resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
     engines: {node: '>=0.10.0'}
 
-  postgres-date@2.1.0:
-    resolution: {integrity: sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA==}
-    engines: {node: '>=12'}
-
   postgres-interval@1.2.0:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
-
-  postgres-interval@3.0.0:
-    resolution: {integrity: sha512-BSNDnbyZCXSxgA+1f5UU2GmwhoI0aU5yMxRGO8CdFEcY2BQF9xm/7MqKnYoM1nJDk8nONNWDk9WeSmePFhQdlw==}
-    engines: {node: '>=12'}
-
-  postgres-range@1.1.4:
-    resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
 
   postgres@3.4.7:
     resolution: {integrity: sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==}
@@ -13426,11 +13396,11 @@ snapshots:
 
   '@types/parse-json@4.0.2': {}
 
-  '@types/pg@8.15.2':
+  '@types/pg@8.15.4':
     dependencies:
       '@types/node': 20.17.57
       pg-protocol: 1.10.0
-      pg-types: 4.0.2
+      pg-types: 2.2.0
 
   '@types/react-dom@19.1.6(@types/react@19.1.6)':
     dependencies:
@@ -14659,16 +14629,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7):
+  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7):
     optionalDependencies:
       '@electric-sql/pglite': 0.3.3
-      '@types/pg': 8.15.2
+      '@types/pg': 8.15.4
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.2)(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       zod: 3.23.8
 
   dunder-proto@1.0.1:
@@ -16819,8 +16789,6 @@ snapshots:
     dependencies:
       rxjs: 7.8.2
 
-  obuf@1.1.2: {}
-
   oidc-token-hash@5.0.3: {}
 
   once@1.4.0:
@@ -17030,8 +16998,6 @@ snapshots:
 
   pg-int8@1.0.1: {}
 
-  pg-numeric@1.0.2: {}
-
   pg-pool@3.10.0(pg@8.16.0):
     dependencies:
       pg: 8.16.0
@@ -17045,16 +17011,6 @@ snapshots:
       postgres-bytea: 1.0.0
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
-
-  pg-types@4.0.2:
-    dependencies:
-      pg-int8: 1.0.1
-      pg-numeric: 1.0.2
-      postgres-array: 3.0.2
-      postgres-bytea: 3.0.0
-      postgres-date: 2.1.0
-      postgres-interval: 3.0.0
-      postgres-range: 1.1.4
 
   pg@8.16.0:
     dependencies:
@@ -17176,25 +17132,13 @@ snapshots:
 
   postgres-array@2.0.0: {}
 
-  postgres-array@3.0.2: {}
-
   postgres-bytea@1.0.0: {}
 
-  postgres-bytea@3.0.0:
-    dependencies:
-      obuf: 1.1.2
-
   postgres-date@1.0.7: {}
-
-  postgres-date@2.1.0: {}
 
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
-
-  postgres-interval@3.0.0: {}
-
-  postgres-range@1.1.4: {}
 
   postgres@3.4.7: {}
 
