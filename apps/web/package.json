@@ -86,7 +86,7 @@
     "jsdom": "26.1.0",
     "postcss": "8.5.4",
     "server-only": "^0.0.1",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "4.1.8",
     "tailwindcss-animate": "1.0.7",
     "tailwindcss-react-aria-components": "^1.2.0",
     "typescript": "5.6.3",
