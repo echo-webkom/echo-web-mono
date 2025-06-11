@@ -69,6 +69,7 @@ export const happeningQuery = groq`
   "slug": slug.current,
   isPinned,
   happeningType,
+  hideRegistrations,
   "company": company->{
     _id,
     name,

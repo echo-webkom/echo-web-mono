@@ -13,9 +13,7 @@ export const degrees = pgTable(
       .$defaultFn(() => nanoid()),
     name: varchar("name", { length: 255 }).notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (t) => [primaryKey({ columns: [t.id] })],
 );
 
 export const degreesRelations = relations(degrees, ({ many }) => ({

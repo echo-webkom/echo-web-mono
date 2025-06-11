@@ -17,9 +17,7 @@ export const dots = pgTable(
     expiresAt: timestamp("expires_at").notNull(),
     createdAt: timestamp("created_at").notNull(),
   },
-  (table) => ({
-    userIdx: index("user_strike_idx").on(table.userId, table.id),
-  }),
+  (t) => [index("user_strike_idx").on(t.userId, t.id)],
 );
 
 export const dotsRelations = relations(dots, ({ one }) => ({

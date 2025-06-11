@@ -40,10 +40,7 @@ export const users = pgTable(
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-    emailIdx: index("email_idx").on(table.email),
-  }),
+  (t) => [primaryKey({ columns: [t.id] }), index("email_idx").on(t.email)],
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({

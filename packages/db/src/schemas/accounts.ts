@@ -22,9 +22,7 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (account) => ({
-    pk: primaryKey({ columns: [account.provider, account.providerAccountId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.provider, t.providerAccountId] })],
 );
 
 export type Account = InferSelectModel<typeof accounts>;

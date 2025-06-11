@@ -17,9 +17,7 @@ export const usersToShoppingListItems = pgTable(
       .references(() => shoppingListItems.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.itemId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.userId, t.itemId] })],
 );
 
 export const usersToShoppingListItemsRelations = relations(usersToShoppingListItems, ({ one }) => ({

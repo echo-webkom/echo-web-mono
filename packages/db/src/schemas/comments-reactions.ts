@@ -12,9 +12,7 @@ export const commentsReactions = pgTable(
     type: commentReactionType("type").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.commentId, table.userId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.commentId, t.userId] })],
 );
 
 export const commentsActionsRelations = relations(commentsReactions, ({ one }) => ({

@@ -2,6 +2,7 @@ import banner from "./banner";
 import company from "./company";
 import happening from "./happening";
 import hsApplication from "./hs-application";
+import hungerGames from "./hunger-games";
 import job from "./job-ad";
 import location from "./location";
 import meetingMinute from "./meeting-minute";
@@ -36,4 +37,5 @@ export const schemaTypes = [
   time,
   hsApplication,
   merch,
+  hungerGames,
 ];

@@ -28,9 +28,7 @@ export const answers = pgTable(
       }),
     answer: json("answer").$type<AnswerCol>(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.happeningId, table.questionId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.userId, t.happeningId, t.questionId] })],
 );
 
 export const answersRelations = relations(answers, ({ one }) => ({

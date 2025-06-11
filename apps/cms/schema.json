@@ -2773,6 +2773,13 @@
         },
         "optional": true
       },
+      "hideRegistrations": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
+      },
       "date": {
         "type": "objectAttribute",
         "value": {

@@ -20,9 +20,7 @@ export const spotRanges = pgTable(
     minYear: integer("min_year").notNull(),
     maxYear: integer("max_year").notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.id] }),
-  }),
+  (t) => [primaryKey({ columns: [t.id] })],
 );
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
