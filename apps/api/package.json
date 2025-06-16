@@ -14,7 +14,7 @@
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
     "@electric-sql/pglite": "0.3.3",
-    "@hono/node-server": "1.14.3",
+    "@hono/node-server": "1.14.4",
     "date-fns": "4.1.0",
     "drizzle-orm": "0.44.2",
     "hono": "4.7.11",
@@ -24,7 +24,7 @@
     "@types/node": "20.19.0",
     "dotenv-cli": "8.0.0",
     "esbuild": "0.25.5",
-    "tsx": "4.19.4",
+    "tsx": "4.20.2",
     "typescript": "5.6.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.2"
