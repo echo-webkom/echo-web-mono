@@ -37,6 +37,7 @@ const petter = {
   type: "student",
   lastSignInAt: new Date(),
   birthday: null,
+  inactiveEmailSentAt: null,
 } satisfies FullHappening["registrations"][number]["user"];
 
 const happening = createHappening({

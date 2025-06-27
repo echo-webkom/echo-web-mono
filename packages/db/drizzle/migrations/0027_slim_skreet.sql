@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "inactive_email_sent_at" timestamp;
