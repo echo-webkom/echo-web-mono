@@ -35,6 +35,7 @@ export const users = pgTable(
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
     lastSignInAt: timestamp("last_sign_in_at"),
+    inactiveEmailSentAt: timestamp("inactive_email_sent_at"),
     updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
     createdAt: timestamp("created_at").$defaultFn(() => new Date()),
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
