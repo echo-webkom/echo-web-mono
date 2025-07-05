@@ -36,8 +36,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/sanity
       '@electric-sql/pglite':
-        specifier: 0.3.3
-        version: 0.3.3
+        specifier: 0.3.4
+        version: 0.3.4
       '@hono/node-server':
         specifier: 1.14.4
         version: 1.14.4(hono@4.8.3)
@@ -46,7 +46,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       hono:
         specifier: 4.8.3
         version: 4.8.3
@@ -234,7 +234,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.93.0
         version: 3.93.0
@@ -430,10 +430,10 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56)
+        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56)
       nanoid:
         specifier: 5.1.5
         version: 5.1.5
@@ -587,7 +587,7 @@ importers:
         version: 14.0.0
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.93.0
         version: 3.93.0
@@ -1350,8 +1350,8 @@ packages:
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
 
-  '@electric-sql/pglite@0.3.3':
-    resolution: {integrity: sha512-JrvHOx9q0yvKEby0bK8qzGTVw6K+yEg8enxDWb2IwNKr5XZxRrBb+GNIqoAIP7yXyhRg5jcENWmdHmtnAT87vA==}
+  '@electric-sql/pglite@0.3.4':
+    resolution: {integrity: sha512-h5hoL2GuxcWN8Q3+jtesIRem14iIvAZVEsTeUF6eO9RiUb6ar73QVIEW9t+Ud58iXAcAE2dFMtWqw3W2Oo4LDw==}
 
   '@emnapi/runtime@1.4.3':
     resolution: {integrity: sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ==}
@@ -10115,7 +10115,7 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
-  '@electric-sql/pglite@0.3.3': {}
+  '@electric-sql/pglite@0.3.4': {}
 
   '@emnapi/runtime@1.4.3':
     dependencies:
@@ -14600,16 +14600,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7):
+  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7):
     optionalDependencies:
-      '@electric-sql/pglite': 0.3.3
+      '@electric-sql/pglite': 0.3.4
       '@types/pg': 8.15.4
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56):
+  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56):
     dependencies:
-      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.3)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       zod: 3.25.56
 
   dunder-proto@1.0.1:
