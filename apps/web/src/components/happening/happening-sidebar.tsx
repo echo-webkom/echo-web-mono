@@ -505,8 +505,9 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {/**
        * Show link to admin dashbord if:
        * - User is host
+       * - The happening is not external
        */}
-      {isHosting && (
+      {isHosting && event.happeningType !== "external" && (
         <Button variant="link" className="w-full" asChild>
           <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
         </Button>
