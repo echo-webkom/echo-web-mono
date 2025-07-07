@@ -51,8 +51,8 @@ importers:
         specifier: 4.8.3
         version: 4.8.3
       zod:
-        specifier: 3.25.56
-        version: 3.25.56
+        specifier: 3.25.72
+        version: 3.25.72
     devDependencies:
       '@types/node':
         specifier: 20.19.4
@@ -311,8 +311,8 @@ importers:
         specifier: 3.3.1
         version: 3.3.1
       zod:
-        specifier: 3.25.56
-        version: 3.25.56
+        specifier: 3.25.72
+        version: 3.25.72
     devDependencies:
       '@echo-webkom/cms':
         specifier: workspace:*
@@ -433,7 +433,7 @@ importers:
         version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56)
+        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72)
       nanoid:
         specifier: 5.1.5
         version: 5.1.5
@@ -447,8 +447,8 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       zod:
-        specifier: 3.25.56
-        version: 3.25.56
+        specifier: 3.25.72
+        version: 3.25.72
     devDependencies:
       '@types/node':
         specifier: 20.19.4
@@ -9152,8 +9152,8 @@ packages:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
-  zod@3.25.56:
-    resolution: {integrity: sha512-rd6eEF3BTNvQnR2e2wwolfTmUTnp70aUTqr0oaGbHifzC3BKJsoV+Gat8vxUMR1hwOKBs6El+qWehrHbCpW6SQ==}
+  zod@3.25.72:
+    resolution: {integrity: sha512-Cl+fe4dNL4XumOBNBsr0lHfA80PQiZXHI4xEMTEr8gt6aGz92t3lBA32e71j9+JeF/VAYvdfBnuwJs+BMx/BrA==}
 
   zustand@5.0.4:
     resolution: {integrity: sha512-39VFTN5InDtMd28ZhjLyuTnlytDr9HfwO512Ai4I8ZABCoyAj4F1+sr7sD1jP/+p7k77Iko0Pb5NhgBFDCX0kQ==}
@@ -12696,7 +12696,7 @@ snapshots:
       groq-js: 1.17.0
       json5: 2.2.3
       tsconfig-paths: 4.2.0
-      zod: 3.25.56
+      zod: 3.25.72
     transitivePeerDependencies:
       - supports-color
 
@@ -14607,10 +14607,10 @@ snapshots:
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.56):
+  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72):
     dependencies:
       drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
-      zod: 3.25.56
+      zod: 3.25.72
 
   dunder-proto@1.0.1:
     dependencies:
@@ -17948,7 +17948,7 @@ snapshots:
       rxjs: 7.8.2
       sanity: 3.93.0(@emotion/is-prop-valid@1.2.2)(@types/node@20.19.4)(@types/react@19.1.8)(immer@10.1.1)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styled-components@6.1.18(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(terser@5.37.0)(tsx@4.20.2)(typescript@5.6.3)(yaml@2.7.0)
       styled-components: 6.1.18(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      zod: 3.25.56
+      zod: 3.25.72
     transitivePeerDependencies:
       - '@types/react'
       - debug
@@ -19345,7 +19345,7 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.5.2
 
-  zod@3.25.56: {}
+  zod@3.25.72: {}
 
   zustand@5.0.4(@types/react@19.1.8)(immer@10.1.1)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
     optionalDependencies:
