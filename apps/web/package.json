@@ -11,7 +11,9 @@
     "test:unit": "env TZ=UTC-1 vitest",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
@@ -79,6 +81,10 @@
     "@types/react-dom": "19.1.6",
     "@types/remove-markdown": "0.3.4",
     "@vitejs/plugin-react": "4.5.2",
+    "@ianvs/prettier-plugin-sort-imports": "4.4.2",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "prettier-plugin-tailwindcss": "0.6.12",
     "autoprefixer": "10.4.21",
     "dotenv-cli": "8.0.0",
     "eslint": "8.57.1",

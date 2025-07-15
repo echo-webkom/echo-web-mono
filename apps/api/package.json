@@ -8,7 +8,9 @@
     "typecheck": "pnpm with-env tsc --noEmit",
     "test:unit": "pnpm with-env vitest",
     "clean": "rm -rf dist .turbo node_modules",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",

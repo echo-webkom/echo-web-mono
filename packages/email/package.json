@@ -14,7 +14,9 @@
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
     "export": "pnpm with-env email export",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@react-email/components": "0.1.1",

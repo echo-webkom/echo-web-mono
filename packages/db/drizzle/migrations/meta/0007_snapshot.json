@@ -78,14 +78,10 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "columnsFrom": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -93,10 +89,7 @@
       "compositePrimaryKeys": {
         "account_provider_provider_account_id_pk": {
           "name": "account_provider_provider_account_id_pk",
-          "columns": [
-            "provider",
-            "provider_account_id"
-          ]
+          "columns": ["provider", "provider_account_id"]
         }
       },
       "uniqueConstraints": {}
@@ -135,42 +128,30 @@
         "answer_user_id_user_id_fk": {
           "name": "answer_user_id_user_id_fk",
           "tableFrom": "answer",
-          "columnsFrom": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         },
         "answer_happening_id_happening_id_fk": {
           "name": "answer_happening_id_happening_id_fk",
           "tableFrom": "answer",
-          "columnsFrom": [
-            "happening_id"
-          ],
+          "columnsFrom": ["happening_id"],
           "tableTo": "happening",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         },
         "answer_question_id_question_id_fk": {
           "name": "answer_question_id_question_id_fk",
           "tableFrom": "answer",
-          "columnsFrom": [
-            "question_id"
-          ],
+          "columnsFrom": ["question_id"],
           "tableTo": "question",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -178,11 +159,7 @@
       "compositePrimaryKeys": {
         "answer_user_id_happening_id_question_id_pk": {
           "name": "answer_user_id_happening_id_question_id_pk",
-          "columns": [
-            "user_id",
-            "happening_id",
-            "question_id"
-          ]
+          "columns": ["user_id", "happening_id", "question_id"]
         }
       },
       "uniqueConstraints": {}
@@ -209,9 +186,7 @@
       "compositePrimaryKeys": {
         "degree_id_pk": {
           "name": "degree_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -238,9 +213,7 @@
       "compositePrimaryKeys": {
         "group_id_pk": {
           "name": "group_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -267,28 +240,20 @@
         "happenings_to_groups_happening_id_happening_id_fk": {
           "name": "happenings_to_groups_happening_id_happening_id_fk",
           "tableFrom": "happenings_to_groups",
-          "columnsFrom": [
-            "happening_id"
-          ],
+          "columnsFrom": ["happening_id"],
           "tableTo": "happening",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         },
         "happenings_to_groups_group_id_group_id_fk": {
           "name": "happenings_to_groups_group_id_group_id_fk",
           "tableFrom": "happenings_to_groups",
-          "columnsFrom": [
-            "group_id"
-          ],
+          "columnsFrom": ["group_id"],
           "tableTo": "group",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -296,10 +261,7 @@
       "compositePrimaryKeys": {
         "happenings_to_groups_happening_id_group_id_pk": {
           "name": "happenings_to_groups_happening_id_group_id_pk",
-          "columns": [
-            "happening_id",
-            "group_id"
-          ]
+          "columns": ["happening_id", "group_id"]
         }
       },
       "uniqueConstraints": {}
@@ -369,9 +331,7 @@
       "compositePrimaryKeys": {
         "happening_id_pk": {
           "name": "happening_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -431,14 +391,10 @@
         "question_happening_id_happening_id_fk": {
           "name": "question_happening_id_happening_id_fk",
           "tableFrom": "question",
-          "columnsFrom": [
-            "happening_id"
-          ],
+          "columnsFrom": ["happening_id"],
           "tableTo": "happening",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -446,9 +402,7 @@
       "compositePrimaryKeys": {
         "question_id_pk": {
           "name": "question_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -495,28 +449,20 @@
         "registration_user_id_user_id_fk": {
           "name": "registration_user_id_user_id_fk",
           "tableFrom": "registration",
-          "columnsFrom": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         },
         "registration_happening_id_happening_id_fk": {
           "name": "registration_happening_id_happening_id_fk",
           "tableFrom": "registration",
-          "columnsFrom": [
-            "happening_id"
-          ],
+          "columnsFrom": ["happening_id"],
           "tableTo": "happening",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -524,10 +470,7 @@
       "compositePrimaryKeys": {
         "registration_user_id_happening_id_pk": {
           "name": "registration_user_id_happening_id_pk",
-          "columns": [
-            "user_id",
-            "happening_id"
-          ]
+          "columns": ["user_id", "happening_id"]
         }
       },
       "uniqueConstraints": {}
@@ -560,14 +503,10 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "columnsFrom": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -575,9 +514,7 @@
       "compositePrimaryKeys": {
         "session_session_token_pk": {
           "name": "session_session_token_pk",
-          "columns": [
-            "session_token"
-          ]
+          "columns": ["session_token"]
         }
       },
       "uniqueConstraints": {}
@@ -636,9 +573,7 @@
       "compositePrimaryKeys": {
         "site_feedback_id_pk": {
           "name": "site_feedback_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -683,14 +618,10 @@
         "spot_range_happening_id_happening_id_fk": {
           "name": "spot_range_happening_id_happening_id_fk",
           "tableFrom": "spot_range",
-          "columnsFrom": [
-            "happening_id"
-          ],
+          "columnsFrom": ["happening_id"],
           "tableTo": "happening",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -698,9 +629,7 @@
       "compositePrimaryKeys": {
         "spot_range_id_pk": {
           "name": "spot_range_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -734,28 +663,20 @@
         "users_to_groups_user_id_user_id_fk": {
           "name": "users_to_groups_user_id_user_id_fk",
           "tableFrom": "users_to_groups",
-          "columnsFrom": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
         "users_to_groups_group_id_group_id_fk": {
           "name": "users_to_groups_group_id_group_id_fk",
           "tableFrom": "users_to_groups",
-          "columnsFrom": [
-            "group_id"
-          ],
+          "columnsFrom": ["group_id"],
           "tableTo": "group",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -763,10 +684,7 @@
       "compositePrimaryKeys": {
         "users_to_groups_user_id_group_id_pk": {
           "name": "users_to_groups_user_id_group_id_pk",
-          "columns": [
-            "user_id",
-            "group_id"
-          ]
+          "columns": ["user_id", "group_id"]
         }
       },
       "uniqueConstraints": {}
@@ -836,14 +754,10 @@
         "user_degree_id_degree_id_fk": {
           "name": "user_degree_id_degree_id_fk",
           "tableFrom": "user",
-          "columnsFrom": [
-            "degree_id"
-          ],
+          "columnsFrom": ["degree_id"],
           "tableTo": "degree",
           "schemaTo": "public",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "no action"
         }
@@ -851,9 +765,7 @@
       "compositePrimaryKeys": {
         "user_id_pk": {
           "name": "user_id_pk",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -886,10 +798,7 @@
       "compositePrimaryKeys": {
         "verification_token_identifier_token_pk": {
           "name": "verification_token_identifier_token_pk",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {}
@@ -922,9 +831,7 @@
       "compositePrimaryKeys": {
         "whitelist_email_pk": {
           "name": "whitelist_email_pk",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "uniqueConstraints": {}
@@ -934,62 +841,32 @@
     "public.degree_type": {
       "name": "degree_type",
       "schema": "public",
-      "values": [
-        "bachelors",
-        "masters",
-        "integrated",
-        "year"
-      ]
+      "values": ["bachelors", "masters", "integrated", "year"]
     },
     "public.feedback_category": {
       "name": "feedback_category",
       "schema": "public",
-      "values": [
-        "bug",
-        "feature",
-        "login",
-        "other"
-      ]
+      "values": ["bug", "feature", "login", "other"]
     },
     "public.happening_type": {
       "name": "happening_type",
       "schema": "public",
-      "values": [
-        "bedpres",
-        "event",
-        "external"
-      ]
+      "values": ["bedpres", "event", "external"]
     },
     "public.question_type": {
       "name": "question_type",
       "schema": "public",
-      "values": [
-        "text",
-        "textarea",
-        "radio",
-        "checkbox"
-      ]
+      "values": ["text", "textarea", "radio", "checkbox"]
     },
     "public.registration_status": {
       "name": "registration_status",
       "schema": "public",
-      "values": [
-        "registered",
-        "unregistered",
-        "removed",
-        "waiting",
-        "pending"
-      ]
+      "values": ["registered", "unregistered", "removed", "waiting", "pending"]
     },
     "public.user_type": {
       "name": "user_type",
       "schema": "public",
-      "values": [
-        "student",
-        "company",
-        "guest",
-        "alum"
-      ]
+      "values": ["student", "company", "guest", "alum"]
     }
   },
   "schemas": {},

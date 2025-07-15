@@ -1,4 +1,20 @@
 import { createClient, type SanityClient } from "@sanity/client";
+import ky, { type KyInstance } from "ky";
+
+import {
+  type AllHappeningsQueryResult,
+  type AllMeetingMinuteQueryResult,
+  type AllMerchQueryResult,
+  type AllPostsQueryResult,
+  type HappeningQueryResult,
+  type HomeHappeningsQueryResult,
+  type JobAdsQueryResult,
+  type MoviesQueryResult,
+  type StaticInfoQueryResult,
+  type StudentGroupBySlugQueryResult,
+  type StudentGroupsByTypeQueryResult,
+} from "@echo-webkom/cms/types";
+import type { PageType } from "@echo-webkom/lib";
 import {
   allHappeningsQuery,
   allMeetingMinuteQuery,
@@ -12,21 +28,6 @@ import {
   studentGroupBySlugQuery,
   studentGroupsByTypeQuery,
 } from "@echo-webkom/sanity/queries";
-import {
-  type StudentGroupBySlugQueryResult,
-  type AllPostsQueryResult,
-  type HomeHappeningsQueryResult,
-  type JobAdsQueryResult,
-  type StaticInfoQueryResult,
-  type StudentGroupsByTypeQueryResult,
-  type AllMeetingMinuteQueryResult,
-  type AllMerchQueryResult,
-  type AllHappeningsQueryResult,
-  type HappeningQueryResult,
-  type MoviesQueryResult,
-} from "@echo-webkom/cms/types";
-import type { PageType } from "@echo-webkom/lib";
-import ky, { type KyInstance } from "ky";
 
 export interface AxisClientOptions {
   axisUrl: string;
@@ -114,11 +115,8 @@ export class AxisClient {
     },
 
     staticPage: async (pageType: PageType, slug: string) => {
-      const data =
-        await this.#sanity.fetch<StaticInfoQueryResult>(staticInfoQuery);
-      return data.find(
-        (page) => page.pageType === pageType && page.slug === slug
-      );
+      const data = await this.#sanity.fetch<StaticInfoQueryResult>(staticInfoQuery);
+      return data.find((page) => page.pageType === pageType && page.slug === slug);
     },
 
     minutes: {
@@ -130,9 +128,7 @@ export class AxisClient {
 
   readonly events = {
     list: async () => {
-      return await this.#sanity.fetch<AllHappeningsQueryResult>(
-        allHappeningsQuery
-      );
+      return await this.#sanity.fetch<AllHappeningsQueryResult>(allHappeningsQuery);
     },
 
     getBySlug: async (slug: string) => {
@@ -142,10 +138,10 @@ export class AxisClient {
     },
 
     upcoming: async (types: string[], n: number) => {
-      return await this.#sanity.fetch<HomeHappeningsQueryResult>(
-        homeHappeningsQuery,
-        { happeningTypes: types, n }
-      );
+      return await this.#sanity.fetch<HomeHappeningsQueryResult>(homeHappeningsQuery, {
+        happeningTypes: types,
+        n,
+      });
     },
 
     registrations: async (happeningId: string) => {
@@ -160,16 +156,15 @@ export class AxisClient {
     byType: async (type: string) => {
       const result = await this.#sanity.fetch<StudentGroupsByTypeQueryResult>(
         studentGroupsByTypeQuery,
-        { type, n: -1 }
+        { type, n: -1 },
       );
       return result.sort((a, b) => a.name.localeCompare(b.name));
     },
 
     bySlug: async (slug: string) => {
-      return await this.#sanity.fetch<StudentGroupBySlugQueryResult>(
-        studentGroupBySlugQuery,
-        { slug }
-      );
+      return await this.#sanity.fetch<StudentGroupBySlugQueryResult>(studentGroupBySlugQuery, {
+        slug,
+      });
     },
   };
 

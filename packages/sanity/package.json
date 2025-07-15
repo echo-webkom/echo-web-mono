@@ -10,7 +10,9 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@sanity/client": "7.6.0",

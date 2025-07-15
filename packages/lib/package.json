@@ -6,7 +6,9 @@
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint src",
     "lint:fix": "eslint lint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*"

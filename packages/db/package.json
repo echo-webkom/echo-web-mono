@@ -19,7 +19,9 @@
     "kit:up": "drizzle-kit up",
     "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "drizzle-orm": "0.44.2",

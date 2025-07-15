@@ -10,7 +10,9 @@
     "lint": "eslint tests --ext .ts",
     "lint:fix": "eslint lint --fix",
     "clean": "rm -rf node_modules playwright-report test-results .turbo",
-    "with-env": "dotenv -e ../.env --"
+    "with-env": "dotenv -e ../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@playwright/test": "1.53.0",

@@ -17,7 +17,9 @@
     "deploy-graphql": "sanity graphql deploy",
     "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
     "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "sanity"
