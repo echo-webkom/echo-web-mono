@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db/client.server';
@@ -6,7 +6,7 @@ import { shoppingListItems, usersToShoppingListItems } from '@echo-webkom/db/sch
 import { ShoppingListService } from '$lib/services/shopping-list-service';
 
 export const load: PageServerLoad = async () => {
-	const items = await axis.shoppingList.list();
+	const items = await uno.shoppingList.list();
 
 	return {
 		items

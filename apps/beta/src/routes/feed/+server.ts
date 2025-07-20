@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { type AllPostsQueryResult } from '@echo-webkom/cms/types';
 
 export type RSSItem = {
@@ -72,7 +72,7 @@ const postToRSSItem = (post: Post): RSSItem => {
 };
 
 export const GET = async () => {
-	const posts = await axis.content.posts.list();
+	const posts = await uno.content.posts.list();
 	const latestPostDate = posts[0] ? new Date(posts[0]._createdAt) : new Date();
 
 	const rssItems = [posts.map(postToRSSItem)]
