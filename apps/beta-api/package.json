@@ -1,0 +1,20 @@
+{
+  "name": "@echo-webkom/beta-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "pnpm with-env ./build/axis",
+    "dev": "pnpm with-env air",
+    "build": "pnpm with-env go build -o build/axis cmd/main.go",
+    "test": "pnpm with-env go test ./...",
+    "format": "gofmt -w .",
+    "format:check": "gofmt -l .",
+    "lint": "gofmt -l . && go vet ./...",
+    "clean": "rimraf build .turbo node_modules tmp",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "devDependencies": {
+    "dotenv-cli": "7.4.4",
+    "rimraf": "^6.0.1"
+  }
+}

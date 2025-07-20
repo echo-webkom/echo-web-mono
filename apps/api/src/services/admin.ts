@@ -4,12 +4,12 @@ import { Hono } from "hono";
 import { z } from "zod";
 
 import {
-  AnswerInsert,
   answers,
   comments,
   commentsReactions,
   registrations,
   usersToGroups,
+  type AnswerInsert,
 } from "@echo-webkom/db/schemas";
 
 import { Logger } from "@/lib/logger";
@@ -123,7 +123,9 @@ app.post("/admin/register", admin(), async (c) => {
   );
 
   if (!ok) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const data = await c.req.json();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Logger.error("Invalid data", data);
 
     return c.json({ error: "Invalid data" }, 400);

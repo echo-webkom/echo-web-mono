@@ -68,7 +68,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
     Number(existingDots) +
     (watched.strikeType === StrikeType.Other
       ? Number(watched.count)
-      : (Number(StrikeTypeCount[watched.strikeType]) ?? 1));
+      : Number(StrikeTypeCount[watched.strikeType]));
   const shouldBeBanned = newDots >= 5;
 
   const reset = () => {

@@ -15,12 +15,22 @@ env:
 
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+  PUBLIC_VERTEX_FEIDE_REDIRECT_URI: http://localhost:3000/api/auth/callback/feide
 
   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
   NEXTAUTH_URL: http://localhost:3000
 
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+  # Needed to build the beta frontend
+  PUBLIC_SANITY_DATASET: "testing"
+  PUBLIC_SANITY_PROJECT_ID: "pgq2pd26"
+
+  PUBLIC_AXIS_URL: http://localhost:8002
+  PUBLIC_ECHOGRAM_URL: http://localhost:8001
+
+  PUBLIC_COMMIT_HASH: ${{ github.sha }}
 
 jobs:
   ci:

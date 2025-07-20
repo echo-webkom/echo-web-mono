@@ -93,9 +93,9 @@ export const fetchFilteredHappening = async (
 
         if (!q.past && !dateFilter) return false;
 
-        if (q.past) return new Date(endDate ? endDate : date) < new Date();
+        if (q.past) return new Date(endDate ?? date) < new Date();
 
-        return new Date(endDate ? endDate : date) >= subMinutes(new Date(), 5);
+        return new Date(endDate ?? date) >= subMinutes(new Date(), 5);
       })
       .filter((happening) => {
         const { happeningType } = happening;

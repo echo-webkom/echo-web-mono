@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { LuArrowRight } from "react-icons/lu";
 
@@ -24,9 +25,9 @@ export const HSApplications = async () => {
 
       <Text className="mb-5 text-muted-foreground">
         Trykk på en søker for å lese mer om dem,{" "}
-        <a href="/sokere" className="text-primary underline">
+        <Link href="/sokere" className="text-primary underline">
           eller se alle søkere her.
-        </a>
+        </Link>
       </Text>
 
       <Marquee gradient gradientColor="var(--background)">

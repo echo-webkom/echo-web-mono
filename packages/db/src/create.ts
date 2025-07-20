@@ -5,8 +5,9 @@ import * as schema from "./schemas";
 
 export type Database = ReturnType<typeof createDatabase>;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const createPool = (options?: postgres.Options<{}> | undefined) => {
+type Options = Parameters<typeof postgres>[1];
+
+export const createPool = (options?: Options) => {
   return postgres(process.env.DATABASE_URL!, {
     prepare: false,
     ...options,

@@ -19,7 +19,6 @@ export const emailClient = {
    */
   sendEmail: async (to: Array<string>, subject: string, component: React.ReactElement) => {
     if (process.env.NODE_ENV !== "production" || !API_KEY) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       const text = await render(component);
 
       console.log("SENDING EMAIL");

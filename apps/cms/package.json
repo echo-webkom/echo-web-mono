@@ -17,7 +17,9 @@
     "deploy-graphql": "sanity graphql deploy",
     "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
     "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "sanity"
@@ -45,18 +47,13 @@
     "@types/react": "19.1.8",
     "@types/styled-components": "5.1.34",
     "dotenv": "16.5.0",
-    "eslint": "8.57.1",
+    "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
-    "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react"
-    ],
-    "ignorePatterns": [
-      "migrations"
-    ]
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "^15.0.0",
+    "typescript": "5.6.3",
+    "typescript-eslint": "^8.0.0"
   }
 }

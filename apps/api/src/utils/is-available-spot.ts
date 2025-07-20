@@ -1,4 +1,4 @@
-import { Registration, SpotRange, User } from "@echo-webkom/db/schemas";
+import { type Registration, type SpotRange, type User } from "@echo-webkom/db/schemas";
 
 export type UserWithIsHost = User & { isHost: boolean };
 

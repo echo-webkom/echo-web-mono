@@ -8,7 +8,7 @@ import * as schema from "@echo-webkom/db/schemas";
 import { client, db } from "@/lib/db";
 import { applyMigrations } from "@/lib/migrate";
 
-vi.mock("@/lib/db", async () => {
+vi.mock("@/lib/db", () => {
   const client = new PGlite();
   const db = drizzle(client, { schema });
 
@@ -29,5 +29,5 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-  (client as unknown as PGlite).close();
+  await (client as unknown as PGlite).close();
 });

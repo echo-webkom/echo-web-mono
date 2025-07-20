@@ -19,7 +19,9 @@
     "kit:up": "drizzle-kit up",
     "dev": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "drizzle-orm": "0.44.2",
@@ -35,17 +37,11 @@
     "@types/pg": "8.15.4",
     "dotenv-cli": "8.0.0",
     "drizzle-kit": "0.31.1",
+    "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
+    "globals": "^15.0.0",
     "tsx": "4.20.2",
-    "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ],
-    "ignorePatterns": [
-      "scripts"
-    ]
+    "typescript": "5.6.3",
+    "typescript-eslint": "^8.0.0"
   }
 }

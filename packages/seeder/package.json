@@ -5,34 +5,22 @@
   "scripts": {
     "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint src",
+    "lint": "eslint",
     "lint:fix": "eslint lint --fix",
     "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "20.19.4",
     "dotenv-cli": "8.0.0",
-    "eslint": "8.57.1",
+    "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
+    "globals": "^15.0.0",
     "tsx": "4.20.2",
-    "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.ts"
-        ],
-        "rules": {
-          "no-console": "off"
-        }
-      }
-    ]
+    "typescript": "5.6.3",
+    "typescript-eslint": "^8.0.0"
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",

@@ -31,6 +31,7 @@ export const stringify = (value: unknown) => {
   if (value === null || value === undefined) {
     return "";
   }
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
   return String(value);
 };
 

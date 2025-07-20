@@ -1,4 +1,4 @@
-import { Question as BaseQuestion } from "@echo-webkom/db/schemas";
+import type { Question as BaseQuestion } from "@echo-webkom/db/schemas";
 
 export type Question = Omit<BaseQuestion, "happeningId" | "title">;
 

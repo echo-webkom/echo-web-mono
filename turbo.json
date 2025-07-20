@@ -7,21 +7,35 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", ".sanity/**", "dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        ".sanity/**",
+        "dist/**",
+        ".svelte-kit/**",
+        "build/**"
+      ]
     },
     "start": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true,
       "cache": false
     },
     "test:e2e": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true,
       "cache": false
     },
     "test:e2e:ui": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true,
       "cache": false
     },
@@ -38,9 +52,16 @@
     "//#clean": {
       "cache": false
     },
-    "format": {}
+    "format": {
+      "cache": false
+    },
+    "format:check": {
+      "cache": false
+    }
   },
-  "globalDependencies": [".env"],
+  "globalDependencies": [
+    ".env"
+  ],
   "globalEnv": [
     "CI",
     "NODE_ENV",

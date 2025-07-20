@@ -11,7 +11,9 @@
     "test:unit": "env TZ=UTC-1 vitest",
     "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
@@ -71,6 +73,7 @@
   },
   "devDependencies": {
     "@echo-webkom/cms": "workspace:*",
+    "@ianvs/prettier-plugin-sort-imports": "4.4.2",
     "@tailwindcss/forms": "0.5.10",
     "@tailwindcss/typography": "0.5.16",
     "@testing-library/react": "16.3.0",
@@ -81,25 +84,25 @@
     "@vitejs/plugin-react": "4.5.2",
     "autoprefixer": "10.4.21",
     "dotenv-cli": "8.0.0",
-    "eslint": "8.57.1",
+    "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "^15.0.0",
     "jsdom": "26.1.0",
     "postcss": "8.5.6",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "prettier-plugin-tailwindcss": "0.6.12",
     "server-only": "^0.0.1",
     "tailwindcss": "3.4.17",
     "tailwindcss-animate": "1.0.7",
     "tailwindcss-react-aria-components": "^1.2.0",
     "typescript": "5.6.3",
+    "typescript-eslint": "^8.0.0",
     "vite": "6.3.5",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react",
-      "webkom/nextjs"
-    ]
   }
 }

@@ -15,7 +15,7 @@ import { mailTo } from "@/utils/prefixes";
 const parseDate = (date: Date) => {
   try {
     return shortDate(date);
-  } catch (e) {
+  } catch {
     return "Dårlig";
   }
 };
