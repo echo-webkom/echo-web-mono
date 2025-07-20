@@ -30,16 +30,14 @@
     "@types/node": "20.19.4",
     "@types/react": "19.1.8",
     "dotenv-cli": "8.0.0",
-    "eslint": "8.57.1",
+    "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "^15.0.0",
     "react-email": "4.0.16",
-    "typescript": "5.6.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "webkom/base",
-      "webkom/react"
-    ]
+    "typescript": "5.6.3",
+    "typescript-eslint": "^8.0.0"
   }
 }

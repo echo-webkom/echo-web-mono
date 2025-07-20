@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { Question, validateQuestions } from "@/utils/validate-questions";
+import { validateQuestions, type Question } from "@/utils/validate-questions";
 
 test("text", () => {
   const questions: Array<Question> = [

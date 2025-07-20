@@ -13,13 +13,11 @@ const globalForPool = globalThis as unknown as {
 let pool;
 
 if (process.env.NODE_ENV !== "production") {
-  if (!globalForPool.pool) {
-    globalForPool.pool = createPool({
-      max: MAX_POOL,
-      idle_timeout: IDLE_TIMEOUT,
-      connect_timeout: CONNECT_TIMEOUT,
-    });
-  }
+  globalForPool.pool ??= createPool({
+    max: MAX_POOL,
+    idle_timeout: IDLE_TIMEOUT,
+    connect_timeout: CONNECT_TIMEOUT,
+  });
   pool = globalForPool.pool;
 } else {
   pool = createPool({

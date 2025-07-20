@@ -9,7 +9,7 @@ export default function NotFound() {
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key.match(/^[a-zA-Z0-9 ]$/)) {
+      if (/^[a-zA-Z0-9 ]$/.exec(e.key)) {
         void router.push("/");
       }
     };

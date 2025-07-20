@@ -22,7 +22,7 @@
 		<li>
 			<a href="/for-studenter/{typePath}/{group.slug}">
 				<div
-					class="group hover:bg-muted flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg"
+					class="hover:bg-muted group flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg"
 				>
 					<h2 class="text-2xl font-bold">{group.name}</h2>
 					{#if group.description}

@@ -42,7 +42,7 @@
 		}
 	];
 
-	const displayHash = PUBLIC_COMMIT_HASH === '' ? null : PUBLIC_COMMIT_HASH.slice(0, 7);
+	const displayHash = PUBLIC_COMMIT_HASH === '' ? null : PUBLIC_COMMIT_HASH?.slice(0, 7);
 </script>
 
 <footer

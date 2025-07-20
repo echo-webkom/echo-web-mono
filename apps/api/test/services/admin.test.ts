@@ -21,7 +21,9 @@ test("comments", async () => {
   });
 
   expect(response.status).toBe(200);
-  expect(await response.json().then((data) => data.length)).toBe(2);
+
+  const data = (await response.json()) as Array<unknown>;
+  expect(data.length).toBe(2);
 });
 
 test("register on happening that has happened", async () => {
@@ -67,8 +69,8 @@ test("two parallel registrations", async () => {
 
   const [response1, response2] = await Promise.all([register("1"), register("2")]);
 
-  const json1 = await response1.json();
-  const json2 = await response2.json();
+  const json1 = (await response1.json()) as { success: boolean; message: string };
+  const json2 = (await response2.json()) as { success: boolean; message: string };
 
   expect(response1.status).toBe(200);
   expect(response2.status).toBe(200);

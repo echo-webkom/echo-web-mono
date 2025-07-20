@@ -13,7 +13,9 @@
       "outputs": [
         ".next/**",
         ".sanity/**",
-        "dist/**"
+        "dist/**",
+        ".svelte-kit/**",
+        "build/**"
       ]
     },
     "start": {

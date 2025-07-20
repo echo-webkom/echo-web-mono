@@ -14,7 +14,7 @@ export const registerReaction = async (newReaction: Omit<ReactionInsert, "create
         createdAt: new Date(),
       })
       .returning({ reactToKey: reactions.reactToKey });
-  } catch (error) {
+  } catch {
     await db
       .delete(reactions)
       .where(

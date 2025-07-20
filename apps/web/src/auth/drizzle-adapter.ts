@@ -136,7 +136,7 @@ export const DrizzleAdapter = (client: InstanceType<typeof PgDatabase>): Adapter
           )
           .returning()
           .then((res) => res[0] ?? null);
-      } catch (err) {
+      } catch {
         throw new Error("No verification token found.");
       }
     },

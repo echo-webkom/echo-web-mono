@@ -35,7 +35,7 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
       .json<{ success: boolean; message: string }>();
 
     return resp;
-  } catch (error) {
+  } catch {
     console.error("Failed to register");
 
     return {

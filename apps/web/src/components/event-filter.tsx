@@ -72,24 +72,31 @@ export const updateFilter = (
         searchParams.set("type", "bedpres");
         break;
       case "SEARCH":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         search ? searchParams.set("search", search) : searchParams.delete("search");
         break;
       case "DESC":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.delete("order") : searchParams.set("order", "DESC");
         break;
       case "THIS_WEEK":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.set("thisWeek", "false") : searchParams.delete("thisWeek");
         break;
       case "NEXT_WEEK":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.set("nextWeek", "false") : searchParams.delete("nextWeek");
         break;
       case "LATER":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.set("later", "false") : searchParams.delete("later");
         break;
       case "OPEN":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.delete("open") : searchParams.set("open", "true");
         break;
       case "PAST":
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         condition ? searchParams.delete("past") : searchParams.set("past", "true");
         break;
     }

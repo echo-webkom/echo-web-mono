@@ -1,8 +1,12 @@
 import { expect, test } from "vitest";
 
-import { Registration, SpotRange } from "@echo-webkom/db/schemas";
+import { type Registration, type SpotRange } from "@echo-webkom/db/schemas";
 
-import { isAvailableSpot, RegistrationWithUser, UserWithIsHost } from "@/utils/is-available-spot";
+import {
+  isAvailableSpot,
+  type RegistrationWithUser,
+  type UserWithIsHost,
+} from "@/utils/is-available-spot";
 
 test("user can register with empty happening", () => {
   const spotRanges: Array<SpotRange> = [

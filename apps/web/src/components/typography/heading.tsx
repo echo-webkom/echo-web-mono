@@ -14,6 +14,7 @@ export type HeadingProps = {
 
 export const Heading = ({ level = 1, copyable = false, className, children }: HeadingProps) => {
   const Comp = `h${level}` as const;
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
   const id = generateId(children?.toString() ?? "");
 
   return (
