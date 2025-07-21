@@ -7,7 +7,6 @@ import {
   LuCircleDollarSign,
   LuGraduationCap,
   LuHeart,
-  LuHeartHandshake,
   LuMailOpen,
   LuMartini,
   LuMegaphone,
@@ -186,12 +185,6 @@ export const headerRoutes: Array<Route> = [
         href: "/om/vedtekter",
         description: "Vedtekter",
         icon: LuScale,
-      },
-      {
-        label: "Bekk",
-        href: "/om/bekk",
-        description: "Om Bekk, vår samarbeidspartner",
-        icon: LuHeartHandshake,
       },
       {
         label: "Brosjyre",
