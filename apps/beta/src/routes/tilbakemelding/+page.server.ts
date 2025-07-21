@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { isEmail } from '$lib/email';
 
 export const actions: Actions = {
@@ -29,7 +29,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const success = await axis.feedback.create({
+		const success = await uno.feedback.create({
 			email,
 			name,
 			message

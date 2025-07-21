@@ -1,9 +1,9 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const merch = await axis.content.merch
+	const merch = await uno.content.merch
 		.list()
 		.then((m) => m.find((merch) => merch.slug === params.slug));
 

@@ -1,8 +1,8 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const minutes = await axis.content.minutes.list();
+	const minutes = await uno.content.minutes.list();
 	return {
 		minutes
 	};

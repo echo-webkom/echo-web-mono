@@ -1,8 +1,8 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const merch = await axis.content.merch.list();
+	const merch = await uno.content.merch.list();
 
 	return {
 		merch

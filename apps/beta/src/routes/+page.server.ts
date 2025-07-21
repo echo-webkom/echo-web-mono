@@ -1,4 +1,4 @@
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	const [events, bedpres] = await Promise.all([
-		axis.events.upcoming(['event', 'external'], 5),
-		axis.events.upcoming(['bedpres'], 5)
+		uno.events.upcoming(['event', 'external'], 5),
+		uno.events.upcoming(['bedpres'], 5)
 	]);
 
 	return {

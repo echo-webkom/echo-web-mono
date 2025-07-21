@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { axis } from '$lib/axis/client.server';
+import { uno } from '$lib/uno/client.server';
 import { isFuture } from 'date-fns';
 import { ShoppingListService } from '$lib/services/shopping-list-service';
 
@@ -10,13 +10,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	const [allEvents, events, bedpres, p, jobs, m, shoppingList] = await Promise.all([
-		axis.events.list(),
-		axis.events.upcoming(['event', 'external'], 8),
-		axis.events.upcoming(['bedpres'], 4),
-		axis.content.posts.list(),
-		axis.content.jobs.list(),
-		axis.content.movies.list(),
-		axis.shoppingList.list()
+		uno.events.list(),
+		uno.events.upcoming(['event', 'external'], 8),
+		uno.events.upcoming(['bedpres'], 4),
+		uno.content.posts.list(),
+		uno.content.jobs.list(),
+		uno.content.movies.list(),
+		uno.shoppingList.list()
 	]);
 
 	const posts = p

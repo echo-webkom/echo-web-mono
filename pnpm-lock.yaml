@@ -75,9 +75,6 @@ importers:
 
   apps/beta:
     dependencies:
-      '@echo-webkom/axis-client':
-        specifier: workspace:*
-        version: link:../../packages/axis-client
       '@echo-webkom/cms':
         specifier: workspace:*
         version: link:../cms
@@ -90,6 +87,9 @@ importers:
       '@echo-webkom/sanity':
         specifier: workspace:*
         version: link:../../packages/sanity
+      '@echo-webkom/uno-client':
+        specifier: workspace:*
+        version: link:../../packages/uno-client
       '@lucide/svelte':
         specifier: ^0.488.0
         version: 0.488.0(svelte@5.35.6)
@@ -227,15 +227,6 @@ importers:
         specifier: ^3.1.1
         version: 3.2.2(@types/debug@4.1.12)(@types/node@20.19.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.2)(yaml@2.7.0)
 
-  apps/beta-api:
-    devDependencies:
-      dotenv-cli:
-        specifier: 7.4.4
-        version: 7.4.4
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
-
   apps/cms:
     dependencies:
       '@echo-webkom/lib':
@@ -323,6 +314,15 @@ importers:
       typescript-eslint:
         specifier: ^8.0.0
         version: 8.33.1(eslint@9.9.0(jiti@2.4.2))(typescript@5.6.3)
+
+  apps/uno:
+    devDependencies:
+      dotenv-cli:
+        specifier: 7.4.4
+        version: 7.4.4
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
 
   apps/web:
     dependencies:
@@ -433,7 +433,7 @@ importers:
         version: 15.3.3(@babel/core@7.27.4)(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: 4.24.7
-        version: 4.24.7(next@15.3.3(@babel/core@7.27.4)(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 4.24.7(next@15.3.3(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-themes:
         specifier: 0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -586,40 +586,6 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@20.19.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.2)(yaml@2.7.0)
 
-  packages/axis-client:
-    dependencies:
-      '@echo-webkom/cms':
-        specifier: workspace:*
-        version: link:../../apps/cms
-      '@echo-webkom/lib':
-        specifier: workspace:*
-        version: link:../lib
-      '@echo-webkom/sanity':
-        specifier: workspace:*
-        version: link:../sanity
-      '@sanity/client':
-        specifier: 6.22.5
-        version: 6.22.5
-      ky:
-        specifier: ^1.8.1
-        version: 1.8.1
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.17.0
-        version: 9.31.0
-      eslint:
-        specifier: ^9.9.0
-        version: 9.9.0(jiti@2.4.2)
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      typescript-eslint:
-        specifier: ^8.0.0
-        version: 8.33.1(eslint@9.9.0(jiti@2.4.2))(typescript@5.8.3)
-
   packages/config/eslint:
     dependencies:
       '@next/eslint-plugin-next':
@@ -675,7 +641,7 @@ importers:
         version: 5.1.5
       next-auth:
         specifier: 4.24.7
-        version: 4.24.7(next@15.3.3(@babel/core@7.27.4)(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 4.24.7(next@15.3.3(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       pg:
         specifier: 8.16.0
         version: 8.16.0
@@ -888,6 +854,40 @@ importers:
       typescript-eslint:
         specifier: ^8.0.0
         version: 8.33.1(eslint@9.9.0(jiti@2.4.2))(typescript@5.6.3)
+
+  packages/uno-client:
+    dependencies:
+      '@echo-webkom/cms':
+        specifier: workspace:*
+        version: link:../../apps/cms
+      '@echo-webkom/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@echo-webkom/sanity':
+        specifier: workspace:*
+        version: link:../sanity
+      '@sanity/client':
+        specifier: 6.22.5
+        version: 6.22.5
+      ky:
+        specifier: ^1.8.1
+        version: 1.8.1
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.17.0
+        version: 9.31.0
+      eslint:
+        specifier: ^9.9.0
+        version: 9.9.0(jiti@2.4.2)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      typescript-eslint:
+        specifier: ^8.0.0
+        version: 8.33.1(eslint@9.9.0(jiti@2.4.2))(typescript@5.8.3)
 
   playwright:
     devDependencies:
@@ -18273,7 +18273,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  next-auth@4.24.7(next@15.3.3(@babel/core@7.27.4)(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next-auth@4.24.7(next@15.3.3(@playwright/test@1.53.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@babel/runtime': 7.27.1
       '@panva/hkdf': 1.1.1

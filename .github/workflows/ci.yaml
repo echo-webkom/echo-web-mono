@@ -27,7 +27,7 @@ env:
   PUBLIC_SANITY_DATASET: "testing"
   PUBLIC_SANITY_PROJECT_ID: "pgq2pd26"
 
-  PUBLIC_AXIS_URL: http://localhost:8002
+  PUBLIC_UNO_URL: http://localhost:8002
   PUBLIC_ECHOGRAM_URL: http://localhost:8001
 
   PUBLIC_COMMIT_HASH: ${{ github.sha }}

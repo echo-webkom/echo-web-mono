@@ -6,7 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/api --filter=@echo-webkom/cms",
-    "dev:beta": "turbo run dev --filter=@echo-webkom/beta --filter=@echo-webkom/beta-api --filter=@echo-webkom/cms",
+    "dev:beta": "turbo run dev --filter=@echo-webkom/beta --filter=@echo-webkom/uno --filter=@echo-webkom/cms",
     "web:dev": "pnpm run --filter=web dev",
     "cms:dev": "pnpm run --filter=cms dev",
     "db:dev": "pnpm run --filter=db dev",
