@@ -2,7 +2,6 @@
 	import { ExternalLink, GitCommit, Rss } from '@lucide/svelte';
 	import { PUBLIC_COMMIT_HASH } from '$env/static/public';
 	import Sanity from '$lib/assets/svg/sanity-logo.svg';
-	import Bekk from '$lib/assets/images/bekk.png';
 
 	const contactUsLinks = [
 		{
@@ -114,12 +113,6 @@
 						</li>
 					{/each}
 				</ul>
-			</div>
-			<div>
-				<h3 class="mb-4 py-2 text-xl font-bold">Hovedsamarbeidspartner 💘</h3>
-				<a target="_blank" rel="noreferrer" href="https://bekk.no"
-					><img src={Bekk} alt="Bekk logo" class="h-28 w-auto invert dark:invert-0" /></a
-				>
 			</div>
 			<div>
 				<h3 class="mb-4 py-2 text-xl font-bold">Powered by 🔧</h3>
