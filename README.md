@@ -31,6 +31,32 @@ eller du har idéer til nye endringer!
 Send oss gjerne en tilbakemelding via skjemaet på <https://echo.uib.no/tilbakemelding>,
 eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo.uib.no).
 
+## Arkitektur
+
+Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
+
+### Applikasjoner (`/apps`)
+
+- **web** - Hovednettsiden bygget med Next.js 15, React 19, Tailwind CSS og NextAuth.js
+- **api** - Backend API bygget med Hono.js, Node.js og esbuild
+- **cms** - Sanity Studio for innholdsadministrasjon
+- **beta** - Eksperimentell applikasjon bygget med SvelteKit 2
+- **beta-api** - Go backend for beta-applikasjonen
+
+### Delte pakker (`/packages`)
+
+- **db** - Databaseskjemaer, migrasjoner og verktøy med Drizzle ORM og PostgreSQL
+- **sanity** - Delte Sanity-spørringer og verktøy
+- **lib** - Felles verktøy og forretningslogikk
+- **email** - E-postmaler og sending-funksjonalitet
+- **seeder** - Database seeding-verktøy
+- **config/eslint** - Delte ESLint-konfigurasjoner
+- **axis-client** - Klientbibliotek for Axis-integrasjon
+
+### Testing (`/playwright`)
+
+- End-to-end tester med Playwright for både API og web-applikasjoner
+
 ## Hvordan kjøre?
 
 1. **Før du starter må du passe på at det følgende er installert:**
@@ -80,12 +106,27 @@ Sidene som starter er:
 
 > NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
 
+## Hvordan kjøre beta-miljøet?
+
+Følg først steg 1-5 fra "Hvordan kjøre?" for å sette opp det grunnleggende miljøet.
+
+**Start beta utviklingsmiljøet**
+
+```sh
+pnpm dev:beta
+```
+
+Sidene som starter er:
+
+- [http://localhost:8001](http://localhost:8001) for beta-applikasjonen (SvelteKit)
+- [http://localhost:8002](http://localhost:8002) for beta API-et (Go)
+
 ## Relaterte prosjekter
 
 - [nano](https://github.com/echo-webkom/nano) - Nano-services for siden.
 - [cenv](https://github.com/echo-webkom/cenv) - Environment fil skjekker
-
-## Dokumentasjon
+- [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
+- [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
 
 <br>
 
