@@ -15,7 +15,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@playwright/test": "1.53.0",
+    "@playwright/test": "1.54.2",
     "@types/node": "20.19.4",
     "dotenv-cli": "8.0.0",
     "eslint": "9.9.0",
