@@ -30,7 +30,7 @@ export const users = pgTable(
     email: text("email").notNull(),
     emailVerified: timestamp("email_verified", { mode: "date" }),
     image: text("image"),
-    alternativeEmail: varchar("alternative_email", { length: 255 }),
+    alternativeEmail: varchar("alternative_email", { length: 255 }).unique(),
     degreeId: varchar("degree_id", { length: 255 }).references(() => degrees.id),
     year: integer("year"),
     type: userTypeEnum("type").notNull().default("student"),
@@ -41,7 +41,11 @@ export const users = pgTable(
     hasReadTerms: boolean("has_read_terms").notNull().default(false),
     birthday: date("birthday", { mode: "date" }),
   },
-  (t) => [primaryKey({ columns: [t.id] }), index("email_idx").on(t.email)],
+  (t) => [
+    primaryKey({ columns: [t.id] }),
+    index("email_idx").on(t.email),
+    index("alternative_email_idx").on(t.alternativeEmail),
+  ],
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
