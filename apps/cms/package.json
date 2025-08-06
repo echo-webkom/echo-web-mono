@@ -28,7 +28,7 @@
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "7.6.0",
     "@sanity/color-input": "4.0.3",
-    "@sanity/icons": "3.7.0",
+    "@sanity/icons": "3.7.4",
     "@sanity/ui": "2.16.12",
     "@sanity/vision": "3.93.0",
     "nanoid": "5.1.5",
