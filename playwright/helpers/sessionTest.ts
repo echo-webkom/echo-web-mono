@@ -1,7 +1,7 @@
 import { type Page } from "@playwright/test";
 import { SignJWT } from "jose";
 
-function createCookie(value: string) {
+async function createCookie(value: string) {
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
 
   return new SignJWT({ sessionId: value })
@@ -10,20 +10,19 @@ function createCookie(value: string) {
     .sign(secret);
 }
 
-const userCookies = {
-  Admin: await createCookie("admin"),
-  Student: await createCookie("student"),
-  Student5: await createCookie("student5"),
-  Unethical: await createCookie("unethical"),
-};
+export async function getUserCookie(user: string) {
+  return await createCookie(user.toLowerCase());
+}
 
-type User = keyof typeof userCookies;
+type User = "Admin" | "Student" | "Student5" | "Unethical";
 
-export const loginAs = async (page: Page, as: User) => {
+export async function loginAs(page: Page, as: User) {
+  const cookieValue = await getUserCookie(as);
+
   await page.context().addCookies([
     {
       name: "session-token",
-      value: userCookies[as],
+      value: cookieValue,
       domain: "localhost",
       path: "/",
       expires: -1,
@@ -31,4 +30,4 @@ export const loginAs = async (page: Page, as: User) => {
       sameSite: "Lax",
     },
   ]);
-};
+}
