@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -14,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUser } from "@/lib/get-user";
 import { AddUserToGroupDialog } from "./_components/add-user-to-group-dialog";
 import { GroupUserForm } from "./_components/group-user-form";
 
@@ -26,7 +26,7 @@ type Props = {
 
 export default async function ManageGroup(props: Props) {
   const params = await props.params;
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return (

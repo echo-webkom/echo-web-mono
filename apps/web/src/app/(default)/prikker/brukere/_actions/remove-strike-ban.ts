@@ -5,11 +5,11 @@ import { and, eq } from "drizzle-orm";
 import { banInfos, dots } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
 export const removeBanAction = async (userId: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {
@@ -36,7 +36,7 @@ export const removeBanAction = async (userId: string) => {
 };
 
 export const removeStrikeAction = async (userId: string, strikeId: number) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

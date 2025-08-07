@@ -1,10 +1,10 @@
+import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
 import { getWhitelistByEmail } from "@/data/whitelist/queries";
-import { getUser } from "@/lib/get-user";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function WhitelistNotification() {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user?.email) {
     return null;

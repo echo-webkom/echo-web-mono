@@ -2,10 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
 
+import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getFullHappening } from "@/data/happenings/queries";
-import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { getRegistrations } from "./_lib/get-registrations";
 import { createBackLink } from "./_lib/utils";
@@ -27,7 +27,7 @@ export default async function EventDashboard(props: Props) {
     return notFound();
   }
 
-  const user = await getUser();
+  const user = await auth();
   const hostGroups = happening.groups.map((group) => group.groupId);
   const isHosting = user ? isHost(user, hostGroups) : false;
   if (!isHosting) {

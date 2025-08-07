@@ -1,6 +1,6 @@
+import { auth } from "@/auth/session";
 import { getReactionByReactToKey } from "@/data/reactions/queries";
 import { idToEmoji } from "@/lib/emojis";
-import { getUser } from "@/lib/get-user";
 import { ReactionButton } from "./reaction-button";
 
 type ReactionButtonGroupProps = {
@@ -8,7 +8,7 @@ type ReactionButtonGroupProps = {
 };
 
 export const ReactionButtonGroup = async ({ reactToKey }: ReactionButtonGroupProps) => {
-  const [reactions, user] = await Promise.all([getReactionByReactToKey(reactToKey), getUser()]);
+  const [reactions, user] = await Promise.all([getReactionByReactToKey(reactToKey), auth()]);
 
   return (
     <div className="flex gap-3">

@@ -9,12 +9,12 @@ import {
   type DegreeInsert,
 } from "@echo-webkom/db/schemas";
 
+import { auth } from "@/auth/session";
 import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutations";
-import { getUser } from "@/lib/get-user";
 import { isMemberOf, isWebkom } from "@/lib/memberships";
 
 export const addDegree = async (payload: DegreeInsert) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {
@@ -57,7 +57,7 @@ export const addDegree = async (payload: DegreeInsert) => {
 };
 
 export const removeDegree = async (id: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {
@@ -91,7 +91,7 @@ export const removeDegree = async (id: string) => {
 };
 
 export const editDegree = async (payload: Degree) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

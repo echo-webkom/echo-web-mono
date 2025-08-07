@@ -1,7 +1,7 @@
 import Link from "next/link";
 
+import { auth } from "@/auth/session";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
-import { getUser } from "@/lib/get-user";
 import { getRandomMessage } from "@/lib/random-message";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
@@ -12,7 +12,7 @@ import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
 export const SiteHeader = async () => {
-  const user = await getUser();
+  const user = await auth();
   const { message } = await getProgrammerbarStatus();
   const randomMessage = getRandomMessage();
 

@@ -1,10 +1,10 @@
 "use server";
 
 import { apiServer } from "@/api/server";
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 
 export const addCommentAction = async (id: string, content: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return null;
@@ -28,7 +28,7 @@ export const addCommentAction = async (id: string, content: string) => {
 };
 
 export const addReplyAction = async (id: string, content: string, parentId: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return null;

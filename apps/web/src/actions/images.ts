@@ -6,8 +6,8 @@ import { eq } from "drizzle-orm";
 import { users } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
+import { auth } from "@/auth/session";
 import { ppFor } from "@/lib/echogram";
-import { getUser } from "@/lib/get-user";
 
 const deleteImage = (id: string) =>
   fetch(ppFor(id), {
@@ -27,7 +27,7 @@ const uploadImage = (id: string, formData: FormData) =>
   });
 
 export const uploadProfilePictureAction = async (formData: FormData) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {
@@ -88,7 +88,7 @@ export const uploadProfilePictureAction = async (formData: FormData) => {
 };
 
 export const deleteProfilePictureAction = async () => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

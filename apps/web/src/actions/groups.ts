@@ -4,12 +4,12 @@ import { z } from "zod";
 
 import { insertGroupSchema, type GroupInsert } from "@echo-webkom/db/schemas";
 
+import { auth } from "@/auth/session";
 import { createGroup } from "@/data/groups/mutations";
-import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 export const addGroup = async (group: GroupInsert) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

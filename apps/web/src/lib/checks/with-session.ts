@@ -2,7 +2,7 @@ import { type ZodType } from "zod";
 
 import { type User } from "@echo-webkom/db/schemas";
 
-import { getUser } from "../get-user";
+import { auth } from "@/auth/session";
 import { type TRequest, type TResponse } from "./utils";
 
 /**
@@ -30,7 +30,7 @@ export const withSession = <TContext, TInput>(
   inputValidator?: ZodType<TInput>,
 ) => {
   return async (request: TRequest, context: TContext): Promise<TResponse> => {
-    const user = await getUser();
+    const user = await auth();
 
     if (!user) {
       return new Response("Unauthorized", {

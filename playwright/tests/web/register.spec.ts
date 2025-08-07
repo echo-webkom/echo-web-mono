@@ -42,7 +42,7 @@ test.describe("Register", () => {
 
     await ctx1.addCookies([
       {
-        name: "next-auth.session-token",
+        name: "session-token",
         value: "student",
         domain: "localhost",
         path: "/",
@@ -54,7 +54,7 @@ test.describe("Register", () => {
 
     await ctx2.addCookies([
       {
-        name: "next-auth.session-token",
+        name: "session-token",
         value: "student2",
         domain: "localhost",
         path: "/",

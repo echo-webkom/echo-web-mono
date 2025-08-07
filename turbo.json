@@ -45,6 +45,9 @@
     },
     "test:unit": {},
     "lint": {},
+    "lint:fix": {
+      "cache": false
+    },
     "typecheck": {},
     "clean": {
       "cache": false

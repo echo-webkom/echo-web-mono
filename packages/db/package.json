@@ -12,7 +12,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
-    "lint:fix": "eslint lint --fix",
+    "lint:fix": "eslint . --fix",
     "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
     "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
@@ -27,7 +27,6 @@
     "drizzle-orm": "0.44.2",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.1.5",
-    "next-auth": "4.24.7",
     "pg": "8.16.0",
     "postgres": "3.4.7",
     "zod": "3.25.72"

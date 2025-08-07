@@ -17,7 +17,7 @@ env:
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
   PUBLIC_VERTEX_FEIDE_REDIRECT_URI: http://localhost:3000/api/auth/callback/feide
 
-  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  NEXTAUTH_SECRET: foobar
   NEXTAUTH_URL: http://localhost:3000
 
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

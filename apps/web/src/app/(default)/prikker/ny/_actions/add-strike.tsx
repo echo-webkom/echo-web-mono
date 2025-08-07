@@ -9,13 +9,13 @@ import { db } from "@echo-webkom/db/serverless";
 import { StrikeNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 import { parseAddStrikesSchema, type addStrikesSchema } from "../_lib/schema";
 
 export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) => {
   try {
-    const user = await getUser();
+    const user = await auth();
 
     if (!user || !isMemberOf(user, ["bedkom", "webkom"])) {
       return {

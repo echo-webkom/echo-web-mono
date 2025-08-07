@@ -1,15 +1,15 @@
 import { type NextRequest } from "next/server";
 
+import { auth } from "@/auth/session";
 import { getFullHappening } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
-import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { slugify } from "@/utils/string";
 
 export const dynamic = "force-dynamic";
 
 export const GET = async (req: NextRequest) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return new Response("Unauthorized", { status: 401 });

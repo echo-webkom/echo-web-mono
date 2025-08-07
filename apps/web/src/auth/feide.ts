@@ -1,6 +1,9 @@
-import { type OAuthConfig } from "next-auth/providers/index";
+import { OAuth2Client, type OAuth2Tokens } from "arctic";
+import ky from "ky";
 
-type FeideProfile = {
+import { BASE_URL } from "@/config";
+
+export type FeideUserInfo = {
   iss: string;
   jti: string;
   aud: string;
@@ -13,30 +16,47 @@ type FeideProfile = {
   picture: string;
 };
 
-export const Feide = (options: Partial<OAuthConfig<FeideProfile>>): OAuthConfig<FeideProfile> => {
-  return {
-    id: "feide",
-    name: "Feide",
-    type: "oauth",
-    issuer: "https://auth.dataporten.no",
-    wellKnown: "https://auth.dataporten.no/.well-known/openid-configuration",
-    accessTokenUrl: "https://auth.dataporten.no/oauth/token",
-    jwks_endpoint: "https://auth.dataporten.no/openid/jwks",
-    userinfo: "https://auth.dataporten.no/openid/userinfo",
-    token: "https://auth.dataporten.no/oauth/token",
-    authorization: {
-      params: {
-        scope: "email openid profile groups",
+const FEIDE_SCOPES = ["openid", "email", "profile", "groups"];
+
+class Feide {
+  #oauthClient: OAuth2Client;
+  #authorizationEndpoint = "https://auth.dataporten.no/oauth/authorization";
+  #tokenEndpoint = "https://auth.dataporten.no/oauth/token";
+  #userInfoEndpoint = "https://auth.dataporten.no/openid/userinfo";
+
+  constructor(clientId: string, clientSecret: string) {
+    this.#oauthClient = new OAuth2Client(
+      clientId,
+      clientSecret,
+      `${BASE_URL}/api/auth/callback/feide`,
+    );
+  }
+
+  createAuthorizationURL(state: string): URL {
+    return this.#oauthClient.createAuthorizationURL(
+      this.#authorizationEndpoint,
+      state,
+      FEIDE_SCOPES,
+    );
+  }
+
+  validateAuthorizationCode(code: string): Promise<OAuth2Tokens> {
+    return this.#oauthClient.validateAuthorizationCode(this.#tokenEndpoint, code, null);
+  }
+
+  async getUserInfo(accessToken: string): Promise<FeideUserInfo> {
+    const response = await ky.get<FeideUserInfo>(this.#userInfoEndpoint, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    },
-    profile(profile) {
-      return {
-        id: profile.sub,
-        name: profile.name,
-        email: profile.email,
-        image: profile.picture,
-      };
-    },
-    ...options,
-  };
-};
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user info from Feide");
+    }
+
+    return await response.json();
+  }
+}
+
+export const feide = new Feide(process.env.FEIDE_CLIENT_ID!, process.env.FEIDE_CLIENT_SECRET!);

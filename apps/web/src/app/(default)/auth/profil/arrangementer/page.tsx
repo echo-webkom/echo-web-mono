@@ -8,14 +8,14 @@ import {
   registrationStatusToString,
 } from "@echo-webkom/lib";
 
+import { auth } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { getRegistrationsByUserId } from "@/data/registrations/queries";
-import { getUser } from "@/lib/get-user";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function UserHappenings() {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");

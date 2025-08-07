@@ -6,7 +6,7 @@
     "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint",
-    "lint:fix": "eslint lint --fix",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
     "format": "prettier --write .",

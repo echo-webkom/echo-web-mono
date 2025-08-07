@@ -2,7 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 
-import { getUser } from "./get-user";
+import { auth } from "@/auth/session";
 import { isMemberOf } from "./memberships";
 
 type EnsureOptions = {
@@ -16,7 +16,7 @@ type EnsureOptions = {
  * @returns the user
  */
 export const ensureUser = async (groups?: Array<string>, options: EnsureOptions = {}) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return redirect(options.redirectTo ?? "/");
@@ -59,7 +59,7 @@ export const ensureBedkom = async () => ensureUser(["bedkom", "webkom"]);
  * @param options
  */
 export const ensureAnonymous = async (options: EnsureOptions = {}) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (user) {
     redirect(options.redirectTo ?? "/");
