@@ -16,6 +16,7 @@ Before starting development:
 ## Common Development Commands
 
 ### Development
+
 - `pnpm dev` - Start development servers for web, API, and CMS
 - `pnpm dev:beta` - Start beta version development servers
 - `pnpm web:dev` - Start only the web application
@@ -23,12 +24,14 @@ Before starting development:
 - `pnpm db:dev` - Start Drizzle Studio for database management
 
 ### Building and Testing
+
 - `pnpm build` - Build all applications
 - `pnpm test:unit` - Run unit tests across all packages
 - `pnpm test:e2e` - Run end-to-end tests
 - `pnpm test:e2e:ui` - Run E2E tests with UI
 
 ### Code Quality
+
 - `pnpm lint` - Run ESLint on all packages
 - `pnpm lint:fix` - Fix auto-fixable linting issues
 - `pnpm typecheck` - Run TypeScript type checking
@@ -36,6 +39,7 @@ Before starting development:
 - `pnpm format:check` - Check code formatting
 
 ### Database Operations
+
 - `pnpm db:generate` - Generate database schema changes
 - `pnpm db:migrate` - Run database migrations
 - `pnpm db:check` - Validate database schema
@@ -48,28 +52,30 @@ Before starting development:
 This is a full-stack monorepo for echo – Linjeforeningen for informatikk (student organization for informatics at University of Bergen).
 
 ### Applications (`/apps`)
+
 - **web** - Next.js 15 main website with React 19, Tailwind CSS, NextAuth.js
 - **api** - Hono.js backend API built with Node.js and esbuild
 - **cms** - Sanity Studio for content management
-- **beta** - SvelteKit 2 experimental application
-- **beta-api** - Go backend for beta application
+- **uno** - Go backend for beta application
 
 ### Shared Packages (`/packages`)
+
 - **db** - Database schemas, migrations, and utilities using Drizzle ORM with PostgreSQL
 - **sanity** - Shared Sanity queries and utilities
 - **lib** - Common utilities and business logic
 - **email** - Email templates and sending functionality
 - **seeder** - Database seeding utilities
 - **config/eslint** - Shared ESLint configurations
-- **axis-client** - Client library for Axis integration
+- **uno-client** - Client library for Uno integration
 
 ### Testing (`/playwright`)
+
 - End-to-end tests using Playwright for both API and web applications
 
 ## Key Technologies
 
 - **Monorepo**: Managed with Turbo, pnpm workspaces
-- **Frontend**: Next.js 15 (App Router), React 19, SvelteKit 2, Tailwind CSS
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS
 - **Backend**: Hono.js (Node.js), Go for beta API
 - **Database**: PostgreSQL with Drizzle ORM
 - **CMS**: Sanity.io
@@ -82,8 +88,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 - Sanity Studio: http://localhost:3333
 - API server: http://localhost:8000
 - Drizzle Studio: https://local.drizzle.studio (backend on port 4983)
-- Beta application: http://localhost:8001
-- Beta API: http://localhost:8002
+- Uno API: http://localhost:8002
 
 ## Important Notes
 
