@@ -1,10 +1,10 @@
 "use server";
 
 import { apiServer } from "@/api/server";
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 
 export const likeComment = async (commentId: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return { success: false };

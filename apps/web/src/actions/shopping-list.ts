@@ -2,13 +2,13 @@
 
 import { z } from "zod";
 
+import { auth } from "@/auth/session";
 import {
   addShoppinglistLike,
   createShoppinglistItem,
   deleteShoppinglistItems,
   removeShoppinglistLike,
 } from "@/data/shopping-list-item/mutations";
-import { getUser } from "@/lib/get-user";
 import { isMemberOf } from "@/lib/memberships";
 
 const shoppingListSchema = z.object({
@@ -17,7 +17,7 @@ const shoppingListSchema = z.object({
 
 export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>) => {
   try {
-    const user = await getUser();
+    const user = await auth();
 
     const data = await shoppingListSchema.parseAsync(payload);
 
@@ -58,7 +58,7 @@ export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>)
 };
 
 export const hyggkomRemoveSubmit = async (id: string) => {
-  const user = await getUser();
+  const user = await auth();
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
 
   if (!isAdmin) {
@@ -75,7 +75,7 @@ export const hyggkomRemoveSubmit = async (id: string) => {
 };
 
 export const hyggkomLikeSubmit = async (itemId: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

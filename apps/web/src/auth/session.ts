@@ -1,0 +1,105 @@
+import { cache } from "react";
+import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
+import { jwtVerify, SignJWT } from "jose";
+
+import { sessions } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
+
+const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
+
+export const SESSION_COOKIE_NAME = "session-token";
+
+async function getSessionCookie(): Promise<string | null> {
+  const cookieStore = await cookies();
+
+  const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+
+  if (!sessionCookie) {
+    return null;
+  }
+
+  try {
+    const { payload } = await jwtVerify(sessionCookie, secret);
+    return payload.sessionId as string;
+  } catch {
+    return null; // Invalid or expired token
+  }
+}
+
+export async function getSession() {
+  const sessionId = await getSessionCookie();
+
+  if (!sessionId) {
+    return null;
+  }
+
+  const session = await db.query.sessions.findFirst({
+    where: (session) => eq(session.sessionToken, sessionId),
+    with: {
+      user: true,
+    },
+  });
+
+  if (!session) {
+    return null;
+  }
+
+  if (session.expires && session.expires < new Date()) {
+    console.warn(`Session ${sessionId} has expired`);
+    await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+    return null;
+  }
+
+  return session;
+}
+
+export async function createSessionCookie(sessionId: string) {
+  return await new SignJWT({ sessionId })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("30d")
+    .sign(secret);
+}
+
+export async function signOut() {
+  const cookieStore = await cookies();
+  const sessionId = await getSessionCookie();
+
+  if (!sessionId) {
+    return;
+  }
+
+  // Clear the session cookie
+  cookieStore.delete(SESSION_COOKIE_NAME);
+
+  // Delete the session from the database
+  await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+}
+
+export const auth = cache(async () => {
+  const session = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
+  const user = await db.query.users.findFirst({
+    where: (user) => eq(user.id, session.user.id),
+    with: {
+      degree: true,
+      banInfo: true,
+      memberships: {
+        with: {
+          group: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    console.error(`User ${session.user.id} not found in database`);
+    return null;
+  }
+
+  return user;
+});

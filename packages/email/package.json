@@ -11,7 +11,7 @@
     "clean": "rm -rf .turbo node_modules",
     "dev": "pnpm with-env email dev --port 9000",
     "lint": "eslint",
-    "lint:fix": "eslint lint --fix",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "export": "pnpm with-env email export",
     "with-env": "dotenv -e ../../.env --",

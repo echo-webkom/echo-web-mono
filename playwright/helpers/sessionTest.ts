@@ -1,19 +1,28 @@
 import { type Page } from "@playwright/test";
+import { SignJWT } from "jose";
 
-const userCookies = {
-  Admin: "admin",
-  Student: "student",
-  Student5: "student5",
-  Unethical: "unethical",
-};
+async function createCookie(value: string) {
+  const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
 
-type User = keyof typeof userCookies;
+  return new SignJWT({ sessionId: value })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("30d")
+    .sign(secret);
+}
 
-export const loginAs = async (page: Page, as: User) => {
+export async function getUserCookie(user: string) {
+  return await createCookie(user.toLowerCase());
+}
+
+type User = "Admin" | "Student" | "Student5" | "Unethical";
+
+export async function loginAs(page: Page, as: User) {
+  const cookieValue = await getUserCookie(as);
+
   await page.context().addCookies([
     {
-      name: "next-auth.session-token",
-      value: userCookies[as],
+      name: "session-token",
+      value: cookieValue,
       domain: "localhost",
       path: "/",
       expires: -1,
@@ -21,4 +30,4 @@ export const loginAs = async (page: Page, as: User) => {
       sameSite: "Lax",
     },
   ]);
-};
+}

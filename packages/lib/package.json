@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint",
-    "lint:fix": "eslint lint --fix",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

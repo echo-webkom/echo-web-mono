@@ -6,7 +6,7 @@ import { z } from "zod";
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { isWebkom } from "@/lib/memberships";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
@@ -19,7 +19,7 @@ const updateSelfPayloadSchema = insertUserSchema.pick({
 
 export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema>) => {
   try {
-    const user = await getUser();
+    const user = await auth();
 
     if (!user) {
       return {
@@ -79,7 +79,7 @@ export const updateUser = async (
   payload: z.infer<typeof updateUserPayloadSchema>,
 ) => {
   try {
-    const user = await getUser();
+    const user = await auth();
 
     if (user === null || !isWebkom(user)) {
       return {

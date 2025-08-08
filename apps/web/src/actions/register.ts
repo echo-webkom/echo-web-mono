@@ -3,11 +3,11 @@
 import { type z } from "zod";
 
 import { apiServer } from "@/api/server";
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { type registrationFormSchema } from "@/lib/schemas/registration";
 
 export const register = async (id: string, payload: z.infer<typeof registrationFormSchema>) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     console.error("User not found", {

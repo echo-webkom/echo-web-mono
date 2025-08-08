@@ -1,8 +1,8 @@
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import ConfettiForBDay from "./confetti";
 
 export default async function BirthdayBanner() {
-  const user = await getUser();
+  const user = await auth();
   const userName = user?.name;
   const firstName = userName?.split(" ")[0]?.toUpperCase();
   const hasBirthday =

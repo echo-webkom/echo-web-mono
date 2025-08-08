@@ -6,6 +6,7 @@ import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "reac
 
 import { urlFor } from "@echo-webkom/sanity";
 
+import { auth } from "@/auth/session";
 import { AddToCalender } from "@/components/add-to-calender";
 import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
@@ -16,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { getQuestionsByHappeningId } from "@/data/questions/queries";
 import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
 import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
-import { getUser } from "@/lib/get-user";
 import { isHost } from "@/lib/memberships";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
@@ -43,7 +43,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
   noStore();
 
   const [user, spotRanges, registrations, questions] = await Promise.all([
-    getUser(),
+    auth(),
     getSpotRangeByHappeningId(event._id),
     getRegistrationsByHappeningId(event._id),
     getQuestionsByHappeningId(event._id),

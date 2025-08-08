@@ -8,8 +8,8 @@ import { db } from "@echo-webkom/db/serverless";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
+import { auth } from "@/auth/session";
 import { revalidateRegistrations } from "@/data/registrations/revalidate";
-import { getUser } from "@/lib/get-user";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
 
 const deregisterPayloadSchema = z.object({
@@ -18,7 +18,7 @@ const deregisterPayloadSchema = z.object({
 
 export const deregister = async (id: string, payload: z.infer<typeof deregisterPayloadSchema>) => {
   try {
-    const user = await getUser();
+    const user = await auth();
 
     if (!user) {
       return {

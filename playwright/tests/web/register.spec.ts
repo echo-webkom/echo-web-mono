@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
-import { loginAs } from "../../helpers/sessionTest";
+import { getUserCookie, loginAs } from "../../helpers/sessionTest";
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
@@ -39,11 +39,13 @@ test.describe("Register", () => {
   test("only one should be able to register", async ({ browser }) => {
     const ctx1 = await browser.newContext();
     const ctx2 = await browser.newContext();
+    const student1CookieValue = await getUserCookie("student");
+    const student2CookieValue = await getUserCookie("student2");
 
     await ctx1.addCookies([
       {
-        name: "next-auth.session-token",
-        value: "student",
+        name: "session-token",
+        value: student1CookieValue,
         domain: "localhost",
         path: "/",
         expires: -1,
@@ -54,8 +56,8 @@ test.describe("Register", () => {
 
     await ctx2.addCookies([
       {
-        name: "next-auth.session-token",
-        value: "student2",
+        name: "session-token",
+        value: student2CookieValue,
         domain: "localhost",
         path: "/",
         expires: -1,

@@ -1,11 +1,11 @@
 "use server";
 
+import { auth } from "@/auth/session";
 import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
-import { getUser } from "@/lib/get-user";
 
 export const handleReact = async (reactToKey: string, emojiId: number) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

@@ -2,11 +2,11 @@
 
 import { revalidateTag } from "next/cache";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { isWebkom } from "@/lib/memberships";
 
 export const revalidateCacheAction = async (tag: string) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

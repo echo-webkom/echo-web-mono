@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -11,13 +12,12 @@ import { Text } from "@/components/typography/text";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
-import { getUser } from "@/lib/get-user";
 import { shortDateNoTime } from "@/utils/date";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
 export default async function ProfilePage() {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");

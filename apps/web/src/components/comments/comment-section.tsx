@@ -1,4 +1,4 @@
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 import { cn } from "@/utils/cn";
 import { Heading } from "../typography/heading";
 import { CommentForm } from "./comment-form";
@@ -10,7 +10,7 @@ type CommentSectionProps = {
 };
 
 export const CommentSection = async ({ id, className }: CommentSectionProps) => {
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return null;

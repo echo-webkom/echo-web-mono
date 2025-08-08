@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { comments } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { getUser } from "@/lib/get-user";
+import { auth } from "@/auth/session";
 
 export const deleteCommentAction = async (body: FormData) => {
   const id = body.get("id");
@@ -17,7 +17,7 @@ export const deleteCommentAction = async (body: FormData) => {
     };
   }
 
-  const user = await getUser();
+  const user = await auth();
 
   if (!user) {
     return {

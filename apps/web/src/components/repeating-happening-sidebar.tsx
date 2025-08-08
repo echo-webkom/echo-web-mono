@@ -1,10 +1,10 @@
 import { eachDayOfInterval } from "date-fns";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
+import { auth } from "@/auth/session";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { getUser } from "@/lib/get-user";
 import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
 import { getDate } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
@@ -54,7 +54,7 @@ const getNextOccurrence = (
 };
 
 export const RepeatingHappeningSidebar = async ({ event }: EventSidebarProps) => {
-  const user = await getUser();
+  const user = await auth();
 
   const nextOccurrence = getNextOccurrence(event);
 
