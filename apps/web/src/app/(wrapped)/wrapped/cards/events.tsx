@@ -337,7 +337,7 @@ export const BestEvent = () => {
                             delay: 4.5,
                             duration: 0.5,
                             repeat: Infinity,
-                            tyoe: "spring",
+                            type: "spring",
                             repeatType: "mirror",
                           }}
                           className="text-wrapped-black z-50 flex items-center justify-center p-4 text-center text-3xl font-bold"

@@ -40,8 +40,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 - **web** - Hovednettsiden bygget med Next.js 15, React 19, Tailwind CSS og NextAuth.js
 - **api** - Backend API bygget med Hono.js, Node.js og esbuild
 - **cms** - Sanity Studio for innholdsadministrasjon
-- **beta** - Eksperimentell applikasjon bygget med SvelteKit 2
-- **beta-api** - Go backend for beta-applikasjonen
+- **uno** - Go backend for beta-applikasjonen
 
 ### Delte pakker (`/packages`)
 
@@ -118,7 +117,6 @@ pnpm dev:beta
 
 Sidene som starter er:
 
-- [http://localhost:8001](http://localhost:8001) for beta-applikasjonen (SvelteKit)
 - [http://localhost:8002](http://localhost:8002) for beta API-et (Go)
 
 ## Relaterte prosjekter
