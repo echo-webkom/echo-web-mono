@@ -204,6 +204,13 @@
       "when": 1754498132348,
       "tag": "0028_chemical_stark_industries",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1754678697192,
+      "tag": "0029_orange_mantis",
+      "breakpoints": true
     }
   ]
 }

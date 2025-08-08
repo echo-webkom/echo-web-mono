@@ -7,6 +7,7 @@ import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas"
 import { db } from "@echo-webkom/db/serverless";
 
 import { auth } from "@/auth/session";
+import { sendVerificationEmail } from "@/lib/email-verification";
 import { isWebkom } from "@/lib/memberships";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
@@ -30,11 +31,15 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
 
     const data = updateSelfPayloadSchema.parse(payload);
 
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    const newAlternativeEmail = data.alternativeEmail?.trim() || null;
+    const isEmailChanging = user?.alternativeEmail !== newAlternativeEmail;
+
     const resp = await db
       .update(users)
       .set({
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        alternativeEmail: data.alternativeEmail?.trim() || null,
+        alternativeEmail: newAlternativeEmail,
+        alternativeEmailVerifiedAt: isEmailChanging ? null : user.alternativeEmailVerifiedAt,
         degreeId: data.degreeId,
         year: data.year,
         hasReadTerms: data.hasReadTerms,
@@ -49,6 +54,16 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
         success: false,
         message: "Fikk ikke til å oppdatere brukeren",
       };
+    }
+
+    // Send verification email if alternativeEmail was updated and is not null
+    if (isEmailChanging && newAlternativeEmail) {
+      try {
+        await sendVerificationEmail(newAlternativeEmail, user.name?.split(" ")[0]);
+      } catch (emailError) {
+        // Log the error but don't fail the entire operation
+        console.error("Failed to send verification email:", emailError);
+      }
     }
 
     return {

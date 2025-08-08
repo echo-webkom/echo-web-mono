@@ -24,6 +24,7 @@ const createHappening = (happening: Partial<FullHappening>): FullHappening => {
 
 const petter = {
   alternativeEmail: "supah@gmail.com",
+  alternativeEmailVerifiedAt: new Date(),
   name: "Petter Kjellberg",
   year: 2022,
   degreeId: "Computer Science",

@@ -314,6 +314,7 @@ function makeUser(
     inactiveEmailSentAt: params.inactiveEmailSentAt ?? null,
     emailVerified: params.emailVerified ?? null,
     alternativeEmail: params.alternativeEmail ?? null,
+    alternativeEmailVerifiedAt: params.alternativeEmailVerifiedAt ?? null,
     birthday: params.birthday ?? null,
     isHost: params.isHost ?? false,
   };

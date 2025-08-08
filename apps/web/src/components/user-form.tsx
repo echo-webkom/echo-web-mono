@@ -36,6 +36,7 @@ const userSchema = z.object({
 type UserFormProps = {
   user: {
     alternativeEmail?: string;
+    alternativeEmailVerifiedAt?: Date | null;
     degree?: Degree;
     year?: number;
     hasReadTerms?: boolean;
@@ -90,6 +91,8 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
     },
   );
 
+  const isAlternativeEmailVerified = user.alternativeEmail && !!user.alternativeEmailVerifiedAt;
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-8">
@@ -98,11 +101,26 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           name="alternativeEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="alternativeEmail">Alternativ e-post</FormLabel>
+              <FormLabel htmlFor="alternativeEmail">
+                Alternativ e-post
+                {user.alternativeEmail && isAlternativeEmailVerified ? (
+                  <span className="text-green-500"> (Bekreftet)</span>
+                ) : (
+                  <span className="text-red-500"> (Ubekreftet)</span>
+                )}
+              </FormLabel>
               <FormControl>
                 <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
               </FormControl>
-              <FormDescription>Om du ønsker å få e-post tilsendt en annen mail.</FormDescription>
+              <FormDescription>
+                Om du ønsker å få e-post tilsendt en annen mail.
+                {user.alternativeEmail && !user.alternativeEmailVerifiedAt && (
+                  <>
+                    <br />
+                    Du må bekrefte denne e-posten for å kunne logge inn med den.
+                  </>
+                )}
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

@@ -109,6 +109,7 @@ export default async function ProfilePage() {
           degree: user.degree ?? undefined,
           year: user.year ?? undefined,
           alternativeEmail: user.alternativeEmail ?? undefined,
+          alternativeEmailVerifiedAt: user.alternativeEmailVerifiedAt ?? undefined,
           hasReadTerms: user.hasReadTerms ?? undefined,
           birthday: user.birthday ?? undefined,
         }}
