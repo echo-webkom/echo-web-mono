@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, type Easing, type Variants } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
 import { useSound } from "@/hooks/use-sound";
@@ -35,7 +35,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
       </motion.div>
 
       {style.colors.map((color, index) => {
-        const variants = {
+        const variants: Variants = {
           hidden: {
             scale: 1,
             rotate: 0,
@@ -48,7 +48,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
             y: style.offY[index],
             scale: style.scale[index],
             transition: {
-              ease: "backOut",
+              ease: "backOut" as Easing,
             },
           },
         };
