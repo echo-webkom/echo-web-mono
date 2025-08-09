@@ -7,3 +7,4 @@ export { default as StrikeNotificationEmail } from "./emails/strike-notification
 export { default as AccessGrantedEmail } from "./emails/access-granted";
 export { default as AccessRequestNotificationEmail } from "./emails/access-request-notification";
 export { default as EmailVerificationEmail } from "./emails/email-verification";
+export { default as MagicLinkEmail } from "./emails/magic-link";
