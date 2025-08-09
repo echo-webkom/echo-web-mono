@@ -25,6 +25,6 @@
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
     "@sanity/client": "6.22.5",
-    "ky": "^1.8.1"
+    "ky": "^1.8.2"
   }
 }
