@@ -33,8 +33,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       drizzle-orm:
-        specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        specifier: 0.44.4
+        version: 0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       hono:
         specifier: 4.8.12
         version: 4.8.12
@@ -257,8 +257,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       drizzle-orm:
-        specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        specifier: 0.44.4
+        version: 0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.93.0
         version: 3.93.0
@@ -480,11 +480,11 @@ importers:
   packages/db:
     dependencies:
       drizzle-orm:
-        specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        specifier: 0.44.4
+        version: 0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72)
+        version: 0.5.1(drizzle-orm@0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72)
       nanoid:
         specifier: 5.1.5
         version: 5.1.5
@@ -670,8 +670,8 @@ importers:
         specifier: 14.0.0
         version: 14.0.0
       drizzle-orm:
-        specifier: 0.44.2
-        version: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+        specifier: 0.44.4
+        version: 0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       groq:
         specifier: 3.93.0
         version: 3.93.0
@@ -5333,8 +5333,8 @@ packages:
     resolution: {integrity: sha512-tCPWVZWZqWVx2XUsVpJRnH9Mx0ClVOf5YUHerZ5so1OKSlqww4zy1R5ksEdGRcO3tM3zj0PYN6V48TbQCL1RfA==}
     hasBin: true
 
-  drizzle-orm@0.44.2:
-    resolution: {integrity: sha512-zGAqBzWWkVSFjZpwPOrmCrgO++1kZ5H/rZ4qTGeGOe18iXGVJWf3WPfHOVwFIbmi8kHjfJstC6rJomzGx8g/dQ==}
+  drizzle-orm@0.44.4:
+    resolution: {integrity: sha512-ZyzKFpTC/Ut3fIqc2c0dPZ6nhchQXriTsqTNs4ayRgl6sZcFlMs9QZKPSHXK4bdOf41GHGWf+FrpcDDYwW+W6Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -14963,16 +14963,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7):
+  drizzle-orm@0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7):
     optionalDependencies:
       '@electric-sql/pglite': 0.3.4
       '@types/pg': 8.15.4
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.5.1(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72):
+  drizzle-zod@0.5.1(drizzle-orm@0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7))(zod@3.25.72):
     dependencies:
-      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.4(@electric-sql/pglite@0.3.4)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)
       zod: 3.25.72
 
   dunder-proto@1.0.1:

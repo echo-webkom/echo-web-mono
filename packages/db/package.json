@@ -24,7 +24,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "drizzle-orm": "0.44.2",
+    "drizzle-orm": "0.44.4",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.1.5",
     "pg": "8.16.0",
