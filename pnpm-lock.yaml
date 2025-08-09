@@ -242,7 +242,7 @@ importers:
         specifier: 5.80.7
         version: 5.80.7(react@19.1.0)
       arctic:
-        specifier: ^3.6.0
+        specifier: ^3.7.0
         version: 3.7.0
       calendar-link:
         specifier: 2.10.0
