@@ -15,6 +15,7 @@ type GroupsResponse = {
 };
 
 const PROGRAM_ID_PREFIX = "fc:fs:fs:prg:uib.no:";
+const ORG_UNIT_ID_PREFIX = "fc:org:uib.no:unit:";
 
 const VALID_PROGRAM_IDS = [
   "BAMN-DTEK",
@@ -27,6 +28,10 @@ const VALID_PROGRAM_IDS = [
   "ÅRMN-INF",
   "5MAMN-DSC",
   "POST",
+];
+
+const VALID_UNIT_IDS = [
+  "121200", // NT-II
 ];
 
 export type IsMemberOfechoFn = (accessToken: string) => Promise<
@@ -48,7 +53,7 @@ export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
       },
     });
 
-    if (response.status > 200) {
+    if (!response.ok) {
       return {
         success: false,
         error: SignInError.INTERNAL_ERROR,
@@ -57,13 +62,19 @@ export const isMemberOfecho: IsMemberOfechoFn = async (accessToken: string) => {
 
     const groups = (await response.json()) as Array<GroupsResponse>;
 
+    const userOrgUnits = groups.filter((group) => group.id.startsWith(ORG_UNIT_ID_PREFIX));
+
+    const isMemberOfAllowedOrgUnits = userOrgUnits.some((orgUnit) =>
+      VALID_UNIT_IDS.includes(orgUnit.id.slice(ORG_UNIT_ID_PREFIX.length)),
+    );
+
     const userPrograms = groups.filter((group) => group.id.startsWith(PROGRAM_ID_PREFIX));
 
-    const isMemberOfecho = userPrograms.some((program) =>
+    const isMemberOfAllowedPrograms = userPrograms.some((program) =>
       VALID_PROGRAM_IDS.includes(program.id.slice(PROGRAM_ID_PREFIX.length)),
     );
 
-    if (!isMemberOfecho) {
+    if (!isMemberOfAllowedPrograms && !isMemberOfAllowedOrgUnits) {
       return {
         success: false,
         error: SignInError.NOT_MEMBER_OF_ECHO,
