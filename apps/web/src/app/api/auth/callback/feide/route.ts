@@ -58,6 +58,8 @@ async function isAllowedToSignIn(
   return toRelative(url);
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const cookieStore = await cookies();

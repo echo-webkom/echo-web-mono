@@ -4,6 +4,8 @@ import { generateState } from "arctic";
 
 import { feide } from "@/auth/feide";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const cookieStore = await cookies();
 
