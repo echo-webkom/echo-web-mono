@@ -9,8 +9,8 @@ import { db } from "@echo-webkom/db/serverless";
 import { feide, type FeideUserInfo } from "@/auth/feide";
 import { isMemberOfecho } from "@/auth/is-member-of-echo";
 import { createSessionCookie, SESSION_COOKIE_NAME } from "@/auth/session";
+import { BASE_URL } from "@/config";
 import { signInAttempt } from "@/data/kv/namespaces";
-import { toRelative } from "@/utils/url";
 
 async function isAllowedToSignIn(
   userInfo: FeideUserInfo,
@@ -51,11 +51,11 @@ async function isAllowedToSignIn(
     error,
   });
 
-  const url = new URL("https://abakus.no");
+  const url = new URL(BASE_URL);
   url.pathname = "/auth/logg-inn";
   url.searchParams.append("attemptId", id);
 
-  return toRelative(url);
+  return url.toString();
 }
 
 export const dynamic = "force-dynamic";
@@ -67,12 +67,12 @@ export async function GET(request: Request) {
   const state = url.searchParams.get("state");
   const storedState = cookieStore.get("feide_oauth_state")?.value ?? null;
   if (code === null || state === null || storedState === null) {
-    return NextResponse.redirect("/auth/logg-inn?error=missing_code_or_state", {
+    return NextResponse.redirect(`${BASE_URL}/auth/logg-inn?error=missing_code_or_state`, {
       status: 302,
     });
   }
   if (state !== storedState) {
-    return NextResponse.redirect("/auth/logg-inn?error=invalid_state", {
+    return NextResponse.redirect(`${BASE_URL}/auth/logg-inn?error=invalid_state`, {
       status: 302,
     });
   }
@@ -140,41 +140,41 @@ export async function GET(request: Request) {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return NextResponse.redirect("/", {
-      status: 302,
-    });
-  } else {
-    let existingSession = await db.query.sessions.findFirst({
-      where: (row, { eq, and, gt }) =>
-        and(eq(row.userId, existingAccount.userId), gt(row.expires, new Date())),
-    });
-
-    if (!existingSession) {
-      const sessionId = nanoid(40);
-      const expiresAt = addDays(new Date(), 30);
-      await db.insert(sessions).values({
-        sessionToken: sessionId,
-        userId: existingAccount.userId,
-        expires: expiresAt,
-      });
-      existingSession = {
-        sessionToken: sessionId,
-        expires: expiresAt,
-        userId: existingAccount.userId,
-      };
-    }
-
-    const sessionCookie = await createSessionCookie(existingSession.sessionToken);
-
-    cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
-      path: "/",
-      expires: existingSession.expires,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    });
-
-    return NextResponse.redirect("/", {
+    return NextResponse.redirect(BASE_URL, {
       status: 302,
     });
   }
+
+  let existingSession = await db.query.sessions.findFirst({
+    where: (row, { eq, and, gt }) =>
+      and(eq(row.userId, existingAccount.userId), gt(row.expires, new Date())),
+  });
+
+  if (!existingSession) {
+    const sessionId = nanoid(40);
+    const expiresAt = addDays(new Date(), 30);
+    await db.insert(sessions).values({
+      sessionToken: sessionId,
+      userId: existingAccount.userId,
+      expires: expiresAt,
+    });
+    existingSession = {
+      sessionToken: sessionId,
+      expires: expiresAt,
+      userId: existingAccount.userId,
+    };
+  }
+
+  const sessionCookie = await createSessionCookie(existingSession.sessionToken);
+
+  cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
+    path: "/",
+    expires: existingSession.expires,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  return NextResponse.redirect(BASE_URL, {
+    status: 302,
+  });
 }
