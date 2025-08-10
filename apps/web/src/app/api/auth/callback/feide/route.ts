@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { addDays, isFuture } from "date-fns";
 import { nanoid } from "nanoid";
 
@@ -67,10 +67,14 @@ export async function GET(request: Request) {
   const state = url.searchParams.get("state");
   const storedState = cookieStore.get("feide_oauth_state")?.value ?? null;
   if (code === null || state === null || storedState === null) {
-    return redirect("/auth/logg-inn?error=missing_code_or_state");
+    return NextResponse.redirect("/auth/logg-inn?error=missing_code_or_state", {
+      status: 302,
+    });
   }
   if (state !== storedState) {
-    return redirect("/auth/logg-inn?error=invalid_state");
+    return NextResponse.redirect("/auth/logg-inn?error=invalid_state", {
+      status: 302,
+    });
   }
 
   const tokens = await feide.validateAuthorizationCode(code);
@@ -79,7 +83,9 @@ export async function GET(request: Request) {
   const allowedToSignIn = await isAllowedToSignIn(userInfo, tokens.accessToken());
   if (typeof allowedToSignIn === "string") {
     // If allowToSignIn is a string, it means we should redirect to a relative URL
-    return redirect(allowedToSignIn);
+    return NextResponse.redirect(allowedToSignIn, {
+      status: 302,
+    });
   }
 
   if (allowedToSignIn === false) {
@@ -134,7 +140,9 @@ export async function GET(request: Request) {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return redirect("/");
+    return NextResponse.redirect("/", {
+      status: 302,
+    });
   } else {
     let existingSession = await db.query.sessions.findFirst({
       where: (row, { eq, and, gt }) =>
@@ -165,6 +173,8 @@ export async function GET(request: Request) {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return redirect("/");
+    return NextResponse.redirect("/", {
+      status: 302,
+    });
   }
 }

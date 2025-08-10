@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { generateState } from "arctic";
 
 import { feide } from "@/auth/feide";
@@ -17,5 +17,7 @@ export async function GET() {
     maxAge: 60 * 10, // 10 minutes
   });
 
-  return redirect(url.toString());
+  return NextResponse.redirect(url, {
+    status: 302,
+  });
 }
