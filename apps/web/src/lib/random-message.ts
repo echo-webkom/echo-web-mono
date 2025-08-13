@@ -43,9 +43,13 @@ const baseMessages: Array<MessageItem> = [
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
   { text: "Progbar > Integrerbar", link: "https://programmer.bar" },
   { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
-  { text: "Finding Steinar trees" },
+  {
+    text: "Finding Steinar trees",
+    link: "https://www.mimuw.edu.pl/~malcin/book/parameterized-algorithms.pdf#subsection.7.3.3",
+  },
   { text: "Any polynomial is a good polynomial" },
   { text: "MEME101", link: "https://www4.uib.no/studier/emner/meme101" },
+  { text: "Lean, mean, fighting machine", link: "https://lean-lang.org/" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
