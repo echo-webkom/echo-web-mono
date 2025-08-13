@@ -45,6 +45,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
   { text: "Finding Steinar trees" },
   { text: "Any polynomial is a good polynomial" },
+  { text: "MEME101", link: "https://www4.uib.no/studier/emner/meme101" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
