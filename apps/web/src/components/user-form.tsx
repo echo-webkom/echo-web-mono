@@ -105,9 +105,9 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                 Alternativ e-post
                 {user.alternativeEmail && isAlternativeEmailVerified ? (
                   <span className="text-green-500"> (Bekreftet)</span>
-                ) : (
+                ) : user.alternativeEmail ? (
                   <span className="text-red-500"> (Ubekreftet)</span>
-                )}
+                ) : null}
               </FormLabel>
               <FormControl>
                 <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
