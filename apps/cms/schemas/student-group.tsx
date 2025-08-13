@@ -38,6 +38,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "isActive",
+      title: "Er gruppen aktiv?",
+      type: "boolean",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "socials",
       title: "Sosiale medier",
       description: "Legg til lenker til sosiale medier",
@@ -112,6 +118,9 @@ export default defineType({
       ],
     }),
   ],
+  initialValue: {
+    isActive: true,
+  },
   preview: {
     select: {
       name: "name",

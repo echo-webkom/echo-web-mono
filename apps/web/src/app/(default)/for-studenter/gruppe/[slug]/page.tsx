@@ -3,9 +3,10 @@ import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { InfoIcon } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
-import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
+import { IoCloudOfflineSharp, IoInformation, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
@@ -68,6 +69,16 @@ export default async function GroupPage(props: Props) {
 
   return (
     <Container className="max-w-4xl space-y-8 py-10">
+      {!group.isActive && (
+        <div className="rounded-md border-2 border-warning-dark bg-warning p-4">
+          <h1 className="flex gap-2 text-warning-foreground">
+            <InfoIcon />
+            Denne gruppen er ikke aktiv lengre. Kontakt hovedstyret hvis du ønsker å starte den opp
+            igjen.
+          </h1>
+        </div>
+      )}
+
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>

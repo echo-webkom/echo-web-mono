@@ -16,37 +16,19 @@ import "@sanity/client";
  */
 
 // Source: schema.json
-export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
-  background?: string;
-  foreground?: string;
-  population?: number;
-  title?: string;
-};
-
-export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
-  darkMuted?: SanityImagePaletteSwatch;
-  lightVibrant?: SanityImagePaletteSwatch;
-  darkVibrant?: SanityImagePaletteSwatch;
-  vibrant?: SanityImagePaletteSwatch;
-  dominant?: SanityImagePaletteSwatch;
-  lightMuted?: SanityImagePaletteSwatch;
-  muted?: SanityImagePaletteSwatch;
-};
-
-export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
-};
-
-export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
+export type HungerGames = {
+  _id: string;
+  _type: "hungerGames";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  profile: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "profile";
+  };
+  isDead?: boolean;
 };
 
 export type Merch = {
@@ -65,6 +47,7 @@ export type Merch = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -91,6 +74,7 @@ export type HsApplication = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
+    media?: unknown;
     _type: "file";
   };
 };
@@ -123,6 +107,7 @@ export type Movie = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -174,30 +159,9 @@ export type MeetingMinute = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
     };
+    media?: unknown;
     _type: "file";
   };
-};
-
-export type SanityFileAsset = {
-  _id: string;
-  _type: "sanity.fileAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  source?: SanityAssetSourceData;
 };
 
 export type StudentGroup = {
@@ -209,6 +173,7 @@ export type StudentGroup = {
   name: string;
   slug: Slug;
   groupType: "board" | "subgroup" | "suborg" | "intgroup" | "sport" | "hidden";
+  isActive: boolean;
   socials?: {
     email?: string;
     facebook?: string;
@@ -223,6 +188,7 @@ export type StudentGroup = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -266,6 +232,7 @@ export type Profile = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -342,6 +309,7 @@ export type Post = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -565,67 +533,11 @@ export type Company = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageAsset = {
-  _id: string;
-  _type: "sanity.imageAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  metadata?: SanityImageMetadata;
-  source?: SanityAssetSourceData;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
 };
 
 export type Color = {
@@ -672,17 +584,126 @@ export type MediaTag = {
   name?: Slug;
 };
 
+export type SanityImagePaletteSwatch = {
+  _type: "sanity.imagePaletteSwatch";
+  background?: string;
+  foreground?: string;
+  population?: number;
+  title?: string;
+};
+
+export type SanityImagePalette = {
+  _type: "sanity.imagePalette";
+  darkMuted?: SanityImagePaletteSwatch;
+  lightVibrant?: SanityImagePaletteSwatch;
+  darkVibrant?: SanityImagePaletteSwatch;
+  vibrant?: SanityImagePaletteSwatch;
+  dominant?: SanityImagePaletteSwatch;
+  lightMuted?: SanityImagePaletteSwatch;
+  muted?: SanityImagePaletteSwatch;
+};
+
+export type SanityImageDimensions = {
+  _type: "sanity.imageDimensions";
+  height?: number;
+  width?: number;
+  aspectRatio?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityFileAsset = {
+  _id: string;
+  _type: "sanity.fileAsset";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  source?: SanityAssetSourceData;
+};
+
+export type SanityImageAsset = {
+  _id: string;
+  _type: "sanity.imageAsset";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  metadata?: SanityImageMetadata;
+  source?: SanityAssetSourceData;
+};
+
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
+};
+
+export type Geopoint = {
+  _type: "geopoint";
+  lat?: number;
+  lng?: number;
+  alt?: number;
+};
+
 export type Slug = {
   _type: "slug";
   current: string;
   source?: string;
 };
 
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
+};
+
 export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | Geopoint
+  | HungerGames
   | Merch
   | HsApplication
   | Banner
@@ -691,7 +712,6 @@ export type AllSanitySchemaTypes =
   | ContactProfile
   | SpotRange
   | MeetingMinute
-  | SanityFileAsset
   | StudentGroup
   | StaticInfo
   | Profile
@@ -702,18 +722,23 @@ export type AllSanitySchemaTypes =
   | Happening
   | Location
   | Company
-  | SanityImageCrop
-  | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
   | Color
   | RgbaColor
   | HsvaColor
   | HslaColor
   | Markdown
   | MediaTag
-  | Slug;
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
+  | Slug
+  | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
@@ -760,6 +785,7 @@ export type AllHappeningsQueryResult = Array<{
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -825,6 +851,7 @@ export type HappeningQueryResult = {
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -883,6 +910,7 @@ export type HomeHappeningsQueryResult = Array<{
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -907,6 +935,7 @@ export type AllHsApplicationsResult = Array<{
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -936,6 +965,7 @@ export type JobAdsQueryResult = Array<{
         _weak?: boolean;
         [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
       };
+      media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       _type: "image";
@@ -977,6 +1007,7 @@ export type AllMerchQueryResult = Array<{
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1010,6 +1041,7 @@ export type MoviesQueryResult = Array<{
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1041,6 +1073,7 @@ export type AllPostsQueryResult = Array<{
             _weak?: boolean;
             [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
           };
+          media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
           _type: "image";
@@ -1054,6 +1087,7 @@ export type AllPostsQueryResult = Array<{
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1125,6 +1159,7 @@ export type StudentGroupsByTypeQueryResult = Array<{
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1141,6 +1176,7 @@ export type StudentGroupsByTypeQueryResult = Array<{
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -1159,12 +1195,13 @@ export type StudentGroupsByTypeQueryResult = Array<{
   } | null;
 }>;
 // Variable: studentGroupBySlugQuery
-// Query: *[_type == "studentGroup"  && slug.current == $slug  && !(_id in path('drafts.**'))] {  _id,  _createdAt,  _updatedAt,  name,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0]
+// Query: *[_type == "studentGroup"  && slug.current == $slug  && !(_id in path('drafts.**'))] {  _id,  _createdAt,  _updatedAt,  name,  isActive,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0]
 export type StudentGroupBySlugQueryResult = {
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   name: string;
+  isActive: boolean;
   groupType: "board" | "hidden" | "intgroup" | "sport" | "subgroup" | "suborg";
   slug: string;
   description: string | null;
@@ -1175,6 +1212,7 @@ export type StudentGroupBySlugQueryResult = {
       _weak?: boolean;
       [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
+    media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
@@ -1191,6 +1229,7 @@ export type StudentGroupBySlugQueryResult = {
           _weak?: boolean;
           [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
         };
+        media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
@@ -1255,7 +1294,7 @@ declare module "@sanity/client" {
     '\n*[_type == "repeatingHappening"\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  happeningType,\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "location": location->{\n    name,\n  },\n  dayOfWeek,\n  startTime,\n  endTime,\n  startDate,\n  endDate,\n  interval,\n  cost,\n  ignoredDates,\n  externalLink,\n  body,\n}': AllRepeatingHappeningsQueryResult;
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
-    '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
+    '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
     '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }
 }

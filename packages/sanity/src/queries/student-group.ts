@@ -38,6 +38,7 @@ export const studentGroupBySlugQuery = groq`
   _createdAt,
   _updatedAt,
   name,
+  isActive,
   groupType,
   "slug": slug.current,
   description,
