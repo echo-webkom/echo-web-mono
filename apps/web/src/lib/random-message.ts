@@ -25,7 +25,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "1337" },
   { text: ":(){ :|:& };:", link: "https://askubuntu.com/questions/777562/what-does-do" },
   { text: "go func() { urself }()" },
-  { text: "418 i'm a teapot" },
+  { text: "418 I'm a teapot" },
   { text: "New backend, who dis?", link: "https://localhost:8000" },
   { text: "Bedpresolini", link: "https://echo.uib.no/for-studenter/arrangementer?type=bedpres" },
   { text: "Divine intellect" },
@@ -43,6 +43,8 @@ const baseMessages: Array<MessageItem> = [
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
   { text: "Progbar > Integrerbar", link: "https://programmer.bar" },
   { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
+  { text: "Finding Steinar trees" },
+  { text: "Any polynomial is a good polynomial" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
