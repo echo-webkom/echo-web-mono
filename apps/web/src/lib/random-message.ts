@@ -50,6 +50,7 @@ const baseMessages: Array<MessageItem> = [
   { text: "Any polynomial is a good polynomial" },
   { text: "MEME101", link: "https://www4.uib.no/studier/emner/meme101" },
   { text: "Lean, mean, fighting machine", link: "https://lean-lang.org/" },
+  { text: "Prove it!", link: "https://wiki.portal.chalmers.se/agda/pmwiki.php" },
 ];
 
 const getExtraMessages = (now: Date): Array<MessageItem> => {
