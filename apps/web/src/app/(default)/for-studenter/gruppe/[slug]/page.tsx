@@ -70,8 +70,8 @@ export default async function GroupPage(props: Props) {
   return (
     <Container className="max-w-4xl space-y-8 py-10">
       {!group.isActive && (
-        <div className="rounded-md border-2 border-warning-dark bg-warning p-4">
-          <h1 className="flex gap-2 text-warning-foreground">
+        <div className="rounded-md border-2 border-destructive-dark bg-destructive p-4">
+          <h1 className="flex gap-2 text-destructive-foreground">
             <InfoIcon />
             Denne gruppen er ikke aktiv lengre. Kontakt hovedstyret hvis du ønsker å starte den opp
             igjen.
