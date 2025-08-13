@@ -78,7 +78,7 @@ export default async function GroupPage(props: Props) {
           </h1>
         </div>
       )}
-
+      
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>

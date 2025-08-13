@@ -1143,12 +1143,13 @@ export type StaticInfoQueryResult = Array<{
 
 // Source: ../../packages/sanity/src/queries/student-group.ts
 // Variable: studentGroupsByTypeQuery
-// Query: *[_type == "studentGroup"  && groupType == $type  && !(_id in path('drafts.**'))] | order(_createdAt asc) {  _id,  _createdAt,  _updatedAt,  name,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0..$n]
+// Query: *[_type == "studentGroup"  && groupType == $type  && !(_id in path('drafts.**'))] | order(_createdAt asc) {  _id,  _createdAt,  _updatedAt,  name,  isActive,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0..$n]
 export type StudentGroupsByTypeQueryResult = Array<{
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   name: string;
+  isActive: boolean;
   groupType: "board" | "hidden" | "intgroup" | "sport" | "subgroup" | "suborg";
   slug: string;
   description: string | null;
@@ -1293,7 +1294,7 @@ declare module "@sanity/client" {
     '\n*[_type == "post" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "authors": authors[]->{\n    _id,\n    name,\n    image,\n  },\n  image,\n  body\n}\n': AllPostsQueryResult;
     '\n*[_type == "repeatingHappening"\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  happeningType,\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "location": location->{\n    name,\n  },\n  dayOfWeek,\n  startTime,\n  endTime,\n  startDate,\n  endDate,\n  interval,\n  cost,\n  ignoredDates,\n  externalLink,\n  body,\n}': AllRepeatingHappeningsQueryResult;
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
-    '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
+    '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
     '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }

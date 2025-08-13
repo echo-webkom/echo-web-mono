@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { InfoIcon } from "lucide-react";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
@@ -28,7 +27,7 @@ export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
             </span>
           </p>
           {!group.isActive && (
-            <div className="absolute right-0 mt-8 rounded-full border-2 border-warning-dark bg-warning p-1 px-1.5">
+            <div className="absolute right-0 mt-8 rounded-full border-2 border-warning-dark bg-warning p-0.5 px-1.5">
               <h1 className="flex items-center gap-2 text-sm text-warning-foreground">
                 Ikke aktiv
               </h1>
