@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { InfoIcon } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
-import { IoCloudOfflineSharp, IoInformation, IoMail } from "react-icons/io5";
+import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { urlFor } from "@echo-webkom/sanity";
@@ -78,7 +78,7 @@ export default async function GroupPage(props: Props) {
           </h1>
         </div>
       )}
-      
+
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>

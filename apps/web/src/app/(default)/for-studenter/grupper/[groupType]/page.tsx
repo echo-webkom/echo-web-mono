@@ -38,13 +38,13 @@ export default async function StudentGroupOverview(props: Props) {
   const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);
 
   groups.sort((a, b) => {
-    const aValue = a.isActive
-    const bValue = b.isActive
+    const aValue = a.isActive;
+    const bValue = b.isActive;
 
-    if (aValue && !bValue) return -1
-    if (bValue && !aValue) return 1
-    return 0
-  })
+    if (aValue && !bValue) return -1;
+    if (bValue && !aValue) return 1;
+    return 0;
+  });
 
   return (
     <Container className="flex flex-row py-10">
