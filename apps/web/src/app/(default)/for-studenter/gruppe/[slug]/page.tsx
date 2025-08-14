@@ -12,6 +12,7 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
+import { Callout } from "@/components/typography/callout";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,13 @@ export default async function GroupPage(props: Props) {
 
   return (
     <Container className="max-w-4xl space-y-8 py-10">
+      {!group.isActive && (
+        <Callout type="danger">
+          Denne gruppen er ikke aktiv lengre. Kontakt hovedstyret hvis du ønsker å starte den opp
+          igjen.
+        </Callout>
+      )}
+
       <div>
         <p>{studentGroupTypeName[group.groupType]}</p>
         <Heading>{group.name}</Heading>

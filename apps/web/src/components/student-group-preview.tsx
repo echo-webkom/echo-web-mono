@@ -4,6 +4,8 @@ import removeMd from "remove-markdown";
 
 import { type StudentGroupsByTypeQueryResult } from "@echo-webkom/cms/types";
 
+import { Chip } from "./typography/chip";
+
 type StudentGroupPreviewProps = {
   group: StudentGroupsByTypeQueryResult[number];
 };
@@ -19,14 +21,21 @@ export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
             {removeMd(group.description ?? "")}
           </p>
         )}
-
-        <p className="flex items-center gap-1 font-medium">
-          Les mer
-          <span className="transition-all duration-150 group-hover:pl-1">
-            <ArrowRight />
-          </span>
-        </p>
+        <div className="relative flex justify-between">
+          <p className="flex items-center gap-1 font-medium">
+            Les mer
+            <span className="transition-all duration-150 group-hover:pl-1">
+              <ArrowRight />
+            </span>
+          </p>
+          {!group.isActive && (
+            <Chip variant={"destructive"} className="absolute right-0 mt-9">
+              Ikke aktiv
+            </Chip>
+          )}
+        </div>
       </div>
+      <div></div>
     </Link>
   );
 };

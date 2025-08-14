@@ -37,6 +37,15 @@ export default async function StudentGroupOverview(props: Props) {
 
   const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);
 
+  groups.sort((a, b) => {
+    const aValue = a.isActive;
+    const bValue = b.isActive;
+
+    if (aValue && !bValue) return -1;
+    if (bValue && !aValue) return 1;
+    return 0;
+  });
+
   return (
     <Container className="flex flex-row py-10">
       <StaticPageSidebar />
@@ -44,7 +53,7 @@ export default async function StudentGroupOverview(props: Props) {
       <div>
         <Heading className="mb-4">{studentGroupTypeName[groupTypeFromPath]}</Heading>
 
-        <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {groups.map((group) => (
             <li key={group._id}>
               <StudentGroupPreview group={group} />
