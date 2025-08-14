@@ -5,7 +5,7 @@ interface MessageItem {
   link?: string;
 }
 
-const baseMessages: Array<MessageItem> = [
+export const baseMessages: Array<MessageItem> = [
   { text: "Bottom text" },
   { text: "🤙🤙🤙" },
   { text: "Lorem ipsum" },
