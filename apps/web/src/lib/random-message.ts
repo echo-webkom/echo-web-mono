@@ -3,6 +3,7 @@ import { getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday } 
 interface MessageItem {
   text: string;
   link?: string;
+  when?: () => boolean;
 }
 
 export const baseMessages: Array<MessageItem> = [
@@ -51,79 +52,53 @@ export const baseMessages: Array<MessageItem> = [
   { text: "MEME101", link: "https://www4.uib.no/studier/emner/meme101" },
   { text: "Lean, mean, fighting machine", link: "https://lean-lang.org/" },
   { text: "Prove it!", link: "https://wiki.portal.chalmers.se/agda/pmwiki.php" },
+  { text: "Vaffeltorsdag 🧇", when: () => isThursday(new Date()) },
+  { text: "Tacofredag 🌯", when: () => isFriday(new Date()) },
+  { text: "New semester, new me?", when: () => [34, 35].includes(getWeek(new Date())) },
+  { text: "BØ! UuUuuUuuUuUu", when: () => getMonth(new Date()) === 9 }, // October
+  { text: "Ho, ho, ho!", when: () => getMonth(new Date()) === 11 }, // December
+  { text: "Gralla 🇳🇴", when: () => getMonth(new Date()) === 4 && getDate(new Date()) === 17 }, // May 17
+  { text: "God sommer 🌞", when: () => [5, 6].includes(getMonth(new Date())) }, // June and July
+  {
+    text: "🥰💕💞💓💏💗💖💘💝",
+    when: () => getMonth(new Date()) === 1 && getDate(new Date()) === 14,
+  }, // Valentine's Day
+  {
+    text: "Husk bedpres kl. 12:00!",
+    when: () => isThursday(new Date()) && getHours(new Date()) < 12,
+  },
+  { text: "God jul! 🎅", when: () => getMonth(new Date()) === 11 && getDate(new Date()) >= 24 }, // Christmas
+  { text: "Godt nyttår! ✨", when: () => getMonth(new Date()) === 0 && getDate(new Date()) === 1 }, // New Year's Day
+  { text: "New week, new me?", when: () => isMonday(new Date()) },
 ];
 
-const getExtraMessages = (now: Date): Array<MessageItem> => {
-  const week = getWeek(now);
-  const month = getMonth(now);
-
-  const messages: Array<MessageItem> = [];
-
-  if (isThursday(now)) {
-    messages.push({ text: "Vaffeltorsdag 🧇" });
-  }
-
-  if (isFriday(now)) {
-    messages.push({ text: "Tacofredag 🌯" });
-  }
-
-  if (week === 34 || week === 35) {
-    messages.push({ text: "Velkommen (tilbake)!" }, { text: "New semester, new me?" });
-  }
-
-  // October
-  if (month === 9) {
-    messages.push({ text: "BØ!" }, { text: "UuUuuUuuUuUu" });
-  }
-
-  // December
-  if (month === 11) {
-    messages.push({ text: "Ho, ho, ho!" });
-  }
-
-  return messages;
-};
-
-const getDateSpecificMessage = (date: Date): MessageItem | null => {
-  if (getMonth(date) === 4 && getDate(date) === 17) {
-    return { text: "Gralla 🇳🇴" };
-  }
-
-  if ([5, 6].includes(getMonth(date))) {
-    return { text: "God sommer 🌞" };
-  }
-
-  if (getMonth(date) === 1 && getDate(date) === 14) {
-    return { text: "🥰💕💞💓💏💗💖💘💝" };
-  }
-
-  if (isThursday(date) && getHours(date) < 12) {
-    return { text: "Husk bedpres kl. 12:00!" };
-  }
-
-  if (getMonth(date) === 11 && getDate(date) >= 24) {
-    return { text: "God jul! 🎅" };
-  }
-
-  if (getMonth(date) === 0 && getDate(date) === 1) {
-    return { text: "Godt nyttår! ✨" };
-  }
-
-  if (isMonday(date)) {
-    return { text: "New week, new me?" };
-  }
-
-  return null;
-};
-
 export const getRandomMessage = (): MessageItem => {
-  const now = new Date();
+  // First, check for date-specific messages (higher priority)
+  const dateSpecificMessages = baseMessages.filter((message) => {
+    if (!message.when) return false;
 
-  const dateSpecificMessage = getDateSpecificMessage(now);
-  if (dateSpecificMessage) {
-    return dateSpecificMessage;
+    // Check if this is a date-specific message (uses getDate and getMonth)
+    const whenString = message.when.toString();
+    return whenString.includes("getDate") && whenString.includes("getMonth") && message.when();
+  });
+
+  if (dateSpecificMessages.length > 0) {
+    const randomIndex = Math.floor(Math.random() * dateSpecificMessages.length);
+    return dateSpecificMessages[randomIndex] ?? { text: "No message available" };
   }
 
-  const messages = [...baseMessages, ...getExtraMessages(now)];
-  return messages[Math.floor(Math.random() * messages.length)] ?? { text: "404", link: "/404" };
+  // If no date-specific messages, fall back to all applicable messages
+  const filteredMessages = baseMessages.filter((message) => {
+    return !message.when || message.when();
+  });
+
+  const randomIndex = Math.floor(Math.random() * filteredMessages.length);
+  return filteredMessages[randomIndex] ?? { text: "No message available" };
+};
+
+export const getAllMessages = (): Array<MessageItem> => {
+  return baseMessages.map((message) => ({
+    text: message.text,
+    link: message.link,
+  }));
 };
