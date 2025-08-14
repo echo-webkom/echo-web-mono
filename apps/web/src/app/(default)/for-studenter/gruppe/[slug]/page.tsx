@@ -3,7 +3,6 @@ import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { InfoIcon } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
@@ -13,6 +12,7 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
+import { Callout } from "@/components/typography/callout";
 import { Heading } from "@/components/typography/heading";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -70,13 +70,10 @@ export default async function GroupPage(props: Props) {
   return (
     <Container className="max-w-4xl space-y-8 py-10">
       {!group.isActive && (
-        <div className="rounded-md border-2 border-destructive-dark bg-destructive p-4">
-          <h1 className="flex gap-2 text-destructive-foreground">
-            <InfoIcon />
-            Denne gruppen er ikke aktiv lengre. Kontakt hovedstyret hvis du ønsker å starte den opp
-            igjen.
-          </h1>
-        </div>
+        <Callout type="danger">
+          Denne gruppen er ikke aktiv lengre. Kontakt hovedstyret hvis du ønsker å starte den opp
+          igjen.
+        </Callout>
       )}
 
       <div>
