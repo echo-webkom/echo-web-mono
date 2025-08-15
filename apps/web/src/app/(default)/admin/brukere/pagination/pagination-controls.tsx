@@ -27,9 +27,9 @@ export const PaginationControls = ({
           onChange={(e) => setPageSize(Number(e.target.value))}
           className="pr-8"
         >
-          <option value={1}>1</option>
-          <option value={5}>5</option>
           <option value={10}>10</option>
+          <option value={25}>25</option>
+          <option value={50}>50</option>
         </Select>
 
         <div className="flex items-center gap-2">

@@ -20,7 +20,7 @@ import { UserTable } from "./user-table";
 export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Array<Group> }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Filter users based on search query
   const filteredUsers = (users ?? [])?.filter(
