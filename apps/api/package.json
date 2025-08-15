@@ -17,7 +17,7 @@
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
-    "@electric-sql/pglite": "0.3.4",
+    "@electric-sql/pglite": "0.3.7",
     "@hono/node-server": "1.14.4",
     "date-fns": "4.1.0",
     "drizzle-orm": "0.44.4",
