@@ -29,7 +29,7 @@
     "nanoid": "5.1.5",
     "pg": "8.16.0",
     "postgres": "3.4.7",
-    "zod": "3.25.72"
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@types/node": "20.19.4",
