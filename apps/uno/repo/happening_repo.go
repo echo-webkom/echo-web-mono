@@ -12,5 +12,5 @@ type HappeningRepo interface {
 }
 
 func (r *Repo) GetHappeningByID(ctx context.Context, id string) (happening.Happening, error) {
-	return gorm.G[happening.Happening](r.db).Where("id = ?").First(ctx)
+	return gorm.G[happening.Happening](r.db).Where("id = ?", id).First(ctx)
 }

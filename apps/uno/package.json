@@ -9,6 +9,8 @@
     "test": "pnpm with-env go test ./...",
     "format": "gofmt -w .",
     "format:check": "gofmt -l .",
+    "docs:init": "swag init -d cmd,routes",
+    "docs:fmt": "swag fmt -d ./",
     "lint": "gofmt -l . && go vet ./...",
     "clean": "rimraf build .turbo node_modules tmp",
     "with-env": "dotenv -e ../../.env --"
@@ -18,3 +20,4 @@
     "rimraf": "^6.0.1"
   }
 }
+

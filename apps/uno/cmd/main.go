@@ -34,6 +34,10 @@ const ART = `⠐⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄�
 ⠄⠄⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣾⣿⣿⡿⠟⠄⠄
 ⠠⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄`
 
+// @title echo Uno API
+// @version 1.0
+// @description Uno API documentation.
+// @BasePath /
 func main() {
 	fmt.Println(ART)
 
@@ -48,5 +52,5 @@ func main() {
 	go s.ListenAndServe(notif)
 
 	notif.NotifyOnSignal(os.Interrupt, syscall.SIGTERM)
-	log.Println("shutdown")
+	log.Println("Shutting down Uno...")
 }
