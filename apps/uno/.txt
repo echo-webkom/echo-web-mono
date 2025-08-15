@@ -1,0 +1,37 @@
+
+
+/uno
+    /cmd
+    /pkg
+    /models
+        /happening
+    /routers
+        /happening
+    /domain
+        /happening
+
+
+/internal     
+    /happenings
+        /domain        
+            happening.go
+            handler.go
+            repo.go
+
+            type Repository interface
+            type CreateHapping interface
+            type ListHappenings interface
+
+            func Router() Router
+            func New()
+        /app         
+            type HappeningService struct
+
+            create_happening.go - Create(h model.Happening)
+            list_happenings.go
+        /infra        
+            router.go
+            repo_postgres.go
+            
+            type PostgresRepo struct (repo_postgres)
+

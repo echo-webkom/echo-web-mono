@@ -1,0 +1,39 @@
+.
+├── cmd
+│   └── main.go
+├── config
+│   └── config.go
+├── context
+│   └── context.go
+├── Dockerfile
+├── go.mod
+├── go.sum
+├── happenings
+│   ├── app
+│   │   ├── happening.go
+│   │   └── routes.go
+│   ├── domain
+│   │   ├── domain.go
+│   │   └── handler.go
+│   └── infra
+│       └── postgres_repo.go
+├── middleware
+│   └── cors.go
+├── node_modules
+│   ├── dotenv-cli -> ../../../node_modules/.pnpm/dotenv-cli@7.4.4/node_modules/dotenv-cli
+│   └── rimraf -> ../../../node_modules/.pnpm/rimraf@6.0.1/node_modules/rimraf
+├── package.json
+├── pkg
+├── sanity
+│   └── sanity.go
+├── server
+│   ├── mount.go
+│   └── server.go
+├── storage
+│   └── database
+│       └── models.go
+├── testutils
+│   └── utils.go
+└── util
+
+18 directories, 18 files

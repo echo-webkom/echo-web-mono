@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"syscall"
 
 	"github.com/echo-webkom/uno/config"
 	"github.com/echo-webkom/uno/server"
+	"github.com/jesperkha/notifier"
 )
 
 const ART = `⠐⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠂
@@ -38,5 +42,11 @@ func main() {
 	fmt.Println()
 
 	config := config.Load()
-	server.Run(config)
+	notif := notifier.New()
+
+	s := server.New(config)
+	go s.ListenAndServe(notif)
+
+	notif.NotifyOnSignal(os.Interrupt, syscall.SIGTERM)
+	log.Println("shutdown")
 }
