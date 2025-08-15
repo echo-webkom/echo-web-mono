@@ -2,46 +2,61 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/echo-webkom/uno/apiutil"
 	"github.com/echo-webkom/uno/config"
-	"github.com/echo-webkom/uno/sanity"
-	"github.com/echo-webkom/uno/storage/database"
+	"github.com/echo-webkom/uno/pkg/middleware"
+	"github.com/echo-webkom/uno/routes"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
+	"github.com/jesperkha/notifier"
 )
 
-func Run(config *config.Config) {
-	r := chi.NewRouter()
+type Server struct {
+	mux     *chi.Mux
+	config  *config.Config
+	cleanup func()
+}
 
-	r.Use(adminKeyMiddleware(config.AdminKey))
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "https://echo.uib.no"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
-		AllowCredentials: true,
-	}))
+func New(config *config.Config) *Server {
+	mux := chi.NewMux()
 
-	ctx := context.Background()
-	pool, err := database.Connect(ctx, config.DatabaseURL)
-	if err != nil {
-		log.Fatalln(err)
+	mux.Use(middleware.Logger())
+	mux.Use(middleware.Cors())
+
+	r := routes.NewRouter(config)
+	mux.Mount("/", r.Handler())
+
+	cleanup := func() {
 	}
-	defer pool.Close()
 
-	sanity := sanity.NewClient(config.SanityProjectID, config.SanityDataset, sanity.V20220307, true)
+	return &Server{
+		mux,
+		config,
+		cleanup,
+	}
+}
 
-	h := &apiutil.Handler{Pool: pool, Client: sanity}
-	rf := apiutil.NewRouterFactory(r, h)
-	mount(rf)
+func (s *Server) ListenAndServe(notif *notifier.Notifier) {
+	done, finish := notif.Register()
 
-	port := toGoPort(config.Port)
-	fmt.Println("Running on http://localhost" + port)
-	http.ListenAndServe(port, r)
+	server := &http.Server{
+		Addr:    s.config.Port,
+		Handler: s.mux,
+	}
+
+	go func() {
+		<-done
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Println(err)
+		}
+
+		s.cleanup()
+		finish()
+	}()
+
+	log.Println("listening on port " + s.config.Port)
+	if err := server.ListenAndServe(); err != http.ErrServerClosed {
+		log.Println(err)
+	}
 }

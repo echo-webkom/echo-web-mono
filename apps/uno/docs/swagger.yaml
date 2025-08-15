@@ -1,0 +1,29 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample API with Chi and Swaggo.
+  title: Chi Example API
+  version: "1.0"
+paths:
+  /happenings/{id}:
+    get:
+      description: Returns the happening with the specified ID
+      parameters:
+        - description: Happening ID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+      summary: Get happening by ID
+      tags:
+        - happenings
+swagger: "2.0"
+

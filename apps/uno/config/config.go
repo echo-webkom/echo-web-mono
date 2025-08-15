@@ -16,7 +16,7 @@ type Config struct {
 func Load() *Config {
 	port := os.Getenv("UNO_PORT")
 	if port == "" {
-		port = "8080"
+		port = ":8080" // TODO: port validation
 	}
 
 	adminKey := os.Getenv("ADMIN_KEY")
