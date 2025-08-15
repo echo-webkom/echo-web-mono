@@ -1,32 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { RxDotsHorizontal as Dots } from "react-icons/rx";
+import { useEffect, useMemo, useState } from "react";
 
 import { type Group } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { type AllUsers } from "./page";
-import { UserForm } from "./user-form";
+import { PaginationControls } from "./pagination/pagination-controls";
+import { UserTable } from "./user-table";
 
 /**
  * Component used to display a table of users.
@@ -34,6 +19,8 @@ import { UserForm } from "./user-form";
  */
 export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Array<Group> }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(1);
 
   // Filter users based on search query
   const filteredUsers = (users ?? [])?.filter(
@@ -41,6 +28,17 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
       (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery, pageSize]);
+  const totalPages = Math.ceil(filteredUsers.length / pageSize);
+
+  const paginatedUsers = useMemo(
+    () => filteredUsers.slice((page - 1) * pageSize, page * pageSize),
+    [filteredUsers, page, pageSize],
+  );
+
   return (
     <Container className="flex justify-end">
       <Heading className="mb-4">Brukere</Heading>
@@ -71,31 +69,18 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredUsers.map((user) => {
-            return (
-              <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <Dots className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <UserForm user={user} groups={groups} />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {paginatedUsers.map((user) => (
+            <UserTable key={user.id} user={user} groups={groups} />
+          ))}
         </TableBody>
       </Table>
+      <PaginationControls
+        page={page}
+        setPage={setPage}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+      />
     </Container>
   );
 };
