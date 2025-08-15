@@ -55,7 +55,7 @@ importers:
         specifier: 9.9.0
         version: 9.9.0(jiti@2.5.1)
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       tsx:
         specifier: 4.20.3
@@ -517,7 +517,7 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       tsx:
         specifier: 4.20.3
@@ -575,7 +575,7 @@ importers:
         specifier: 5.2.0
         version: 5.2.0(eslint@9.9.0(jiti@2.5.1))
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       react-email:
         specifier: 4.0.16
@@ -603,7 +603,7 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       typescript:
         specifier: 5.6.3
@@ -637,7 +637,7 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       typescript:
         specifier: 5.6.3
@@ -689,7 +689,7 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       tsx:
         specifier: 4.20.3
@@ -757,7 +757,7 @@ importers:
         specifier: workspace:*
         version: link:../packages/config/eslint
       globals:
-        specifier: ^15.0.0
+        specifier: ^15.15.0
         version: 15.15.0
       postgres:
         specifier: 3.4.7
