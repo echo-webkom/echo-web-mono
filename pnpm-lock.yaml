@@ -713,8 +713,8 @@ importers:
         specifier: workspace:*
         version: link:../sanity
       '@sanity/client':
-        specifier: 6.22.5
-        version: 6.22.5
+        specifier: 6.29.1
+        version: 6.29.1(debug@4.4.1)
       ky:
         specifier: ^1.8.2
         version: 1.8.2
@@ -4175,10 +4175,6 @@ packages:
     resolution: {integrity: sha512-rsH3gQKEMr5WhtD8GKWXJ0zVoWgwltaVtmENVemFr2BMawVDPtlZLmRC+EHohsiS11PNmjMR0ogDDBq7jW3Png==}
     engines: {node: '>=20.19 >=22.12.0'}
     hasBin: true
-
-  '@sanity/client@6.22.5':
-    resolution: {integrity: sha512-prVcdTftytujpTDaCbQdDMBnInSKuTV4xs9Qx+dgvtN8i+spcC8w/vuigdBwfyxVHTT+3+MIgUl5+zAPrlKR8g==}
-    engines: {node: '>=14.18'}
 
   '@sanity/client@6.29.1':
     resolution: {integrity: sha512-BQRCMeDlBxwnMbFtB61HUxFf9aSb4HNVrpfrC7IFVqFf4cwcc3o5H8/nlrL9U3cDFedbe4W0AXt1mQzwbY/ljw==}
@@ -14034,14 +14030,6 @@ snapshots:
       - typescript
       - utf-8-validate
       - yaml
-
-  '@sanity/client@6.22.5':
-    dependencies:
-      '@sanity/eventsource': 5.0.2
-      get-it: 8.6.9
-      rxjs: 7.8.2
-    transitivePeerDependencies:
-      - debug
 
   '@sanity/client@6.29.1(debug@4.4.1)':
     dependencies:
