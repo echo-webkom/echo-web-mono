@@ -9,7 +9,7 @@
     "./nextjs.js"
   ],
   "dependencies": {
-    "@next/eslint-plugin-next": "15.3.3",
+    "@next/eslint-plugin-next": "15.4.6",
     "@types/eslint": "8.56.12",
     "@types/node": "20.19.4",
     "@typescript-eslint/eslint-plugin": "7.18.0",
