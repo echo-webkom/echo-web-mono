@@ -1,28 +1,27 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample API with Chi and Swaggo.",
-        "title": "Chi Example API",
+        "description": "Uno API documentation.",
+        "title": "echo Uno API",
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
-    "basePath": "/api/v1",
+    "basePath": "/",
     "paths": {
-        "/happenings/{id}": {
+        "/happenings/{slug}": {
             "get": {
-                "description": "Returns the happening with the specified ID",
+                "description": "Returns the happening with the specified slug",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "happenings"
                 ],
-                "summary": "Get happening by ID",
+                "summary": "Get happening by slug",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Happening ID",
+                        "description": "Happening slug",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -37,6 +36,20 @@
                     }
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Provide your JWT token in the format: Bearer \u003ctoken\u003e",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "CookieAuth": {
+            "description": "Session-based authentication via cookies",
+            "type": "apiKey",
+            "name": "auth-token",
+            "in": "cookie"
         }
     }
 }

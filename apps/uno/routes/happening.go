@@ -9,21 +9,21 @@ import (
 func (r *Router) HappeningRoutes() http.Handler {
 	m := chi.NewMux()
 
-	m.Get("/", r.getHappeningById)
+	m.Get("/{slug}", r.getHappeningById)
 
 	return m
 }
 
-// @Summary Get happening by ID
-// @Description Returns the happening with the specified ID
+// @Summary Get happening by slug
+// @Description Returns the happening with the specified slug
 // @Tags happenings
 // @Produce json
-// @Param id path string true "Happening ID"
+// @Param id path string true "Happening slug"
 // @Success 200
 // @Failure 404
-// @Router /happenings/{id} [get]
+// @Router /happenings/{slug} [get]
 func (rt *Router) getHappeningById(w http.ResponseWriter, r *http.Request) {
-	hap, err := rt.hap.GetHappeningByID(r.Context(), r.PathValue("id"))
+	hap, err := rt.hap.GetHappeningBySlug(r.Context(), r.PathValue("slug"))
 	if err != nil {
 		http.Error(w, "failed to fetch happening", http.StatusNotFound)
 		return

@@ -15,20 +15,20 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/happenings/{id}": {
+        "/happenings/{slug}": {
             "get": {
-                "description": "Returns the happening with the specified ID",
+                "description": "Returns the happening with the specified slug",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "happenings"
                 ],
-                "summary": "Get happening by ID",
+                "summary": "Get happening by slug",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Happening ID",
+                        "description": "Happening slug",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -44,17 +44,31 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Provide your JWT token in the format: Bearer \u003ctoken\u003e",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "CookieAuth": {
+            "description": "Session-based authentication via cookies",
+            "type": "apiKey",
+            "name": "auth-token",
+            "in": "cookie"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	Host:             "",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Chi Example API",
-	Description:      "This is a sample API with Chi and Swaggo.",
+	Title:            "echo Uno API",
+	Description:      "Uno API documentation.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

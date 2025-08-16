@@ -38,6 +38,17 @@ const ART = `⠐⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄�
 // @version 1.0
 // @description Uno API documentation.
 // @BasePath /
+
+// @securityDefinitions.apikey  BearerAuth
+// @in header
+// @name Authorization
+// @description Provide your JWT token in the format: Bearer <token>
+
+// @securityDefinitions.apikey CookieAuth
+// @in cookie
+// @name auth-token
+// @description Session-based authentication via cookies
+
 func main() {
 	fmt.Println(ART)
 

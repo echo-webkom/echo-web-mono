@@ -1,29 +1,38 @@
-basePath: /api/v1
-host: localhost:8080
+basePath: /
 info:
   contact: {}
-  description: This is a sample API with Chi and Swaggo.
-  title: Chi Example API
+  description: Uno API documentation.
+  title: echo Uno API
   version: "1.0"
 paths:
-  /happenings/{id}:
+  /happenings/{slug}:
     get:
-      description: Returns the happening with the specified ID
+      description: Returns the happening with the specified slug
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening slug
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
         "404":
           description: Not Found
-      summary: Get happening by ID
+      summary: Get happening by slug
       tags:
-        - happenings
+      - happenings
+securityDefinitions:
+  BearerAuth:
+    description: 'Provide your JWT token in the format: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+  CookieAuth:
+    description: Session-based authentication via cookies
+    in: cookie
+    name: auth-token
+    type: apiKey
 swagger: "2.0"
-

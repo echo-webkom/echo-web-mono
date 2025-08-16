@@ -8,9 +8,9 @@ import (
 )
 
 type HappeningRepo interface {
-	GetHappeningByID(ctx context.Context, id string) (happening.Happening, error)
+	GetHappeningBySlug(ctx context.Context, slug string) (happening.Happening, error)
 }
 
-func (r *Repo) GetHappeningByID(ctx context.Context, id string) (happening.Happening, error) {
-	return gorm.G[happening.Happening](r.db).Where("id = ?", id).First(ctx)
+func (r *Repo) GetHappeningBySlug(ctx context.Context, slug string) (happening.Happening, error) {
+	return gorm.G[happening.Happening](r.db).Where("slug = ?", slug).First(ctx)
 }

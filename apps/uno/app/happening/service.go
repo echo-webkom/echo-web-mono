@@ -15,6 +15,6 @@ func NewHappeningService(repo repo.HappeningRepo) *HappeningService {
 	return &HappeningService{repo}
 }
 
-func (h *HappeningService) GetHappeningByID(ctx context.Context, id string) (happening.Happening, error) {
-	return h.repo.GetHappeningByID(ctx, id)
+func (h *HappeningService) GetHappeningBySlug(ctx context.Context, slug string) (happening.Happening, error) {
+	return h.repo.GetHappeningBySlug(ctx, slug)
 }
