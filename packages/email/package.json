@@ -21,14 +21,14 @@
   "dependencies": {
     "@react-email/components": "0.1.1",
     "@react-email/render": "1.1.4",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "resend": "4.5.2",
     "server-only": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "20.19.4",
-    "@types/react": "19.1.8",
+    "@types/react": "19.1.10",
     "dotenv-cli": "8.0.0",
     "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
