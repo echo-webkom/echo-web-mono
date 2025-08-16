@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/node": "20.19.4",
     "dotenv-cli": "8.0.0",
-    "esbuild": "0.25.8",
+    "esbuild": "0.25.9",
     "eslint": "9.9.0",
     "globals": "^15.15.0",
     "tsx": "4.20.3",
