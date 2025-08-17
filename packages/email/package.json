@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@react-email/components": "0.5.0",
-    "@react-email/render": "1.1.4",
+    "@react-email/render": "1.2.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "resend": "4.5.2",
