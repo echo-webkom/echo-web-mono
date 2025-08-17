@@ -624,8 +624,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0
       groq:
-        specifier: 3.93.0
-        version: 3.93.0
+        specifier: 3.99.0
+        version: 3.99.0
     devDependencies:
       '@types/node':
         specifier: 20.19.4
@@ -673,8 +673,8 @@ importers:
         specifier: 0.44.4
         version: 0.44.4(@electric-sql/pglite@0.3.7)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7)
       groq:
-        specifier: 3.93.0
-        version: 3.93.0
+        specifier: 3.99.0
+        version: 3.99.0
     devDependencies:
       '@types/node':
         specifier: 20.19.4
@@ -6711,10 +6711,6 @@ packages:
 
   groq@3.88.1-typegen-experimental.0:
     resolution: {integrity: sha512-6TZD6H1y3P7zk0BQharjFa7BOivV9nFL6KKVZbRZRH0yOSSyu2xHglTO48b1/2mCEdYoBQpvE7rjCDUf6XmQYQ==}
-    engines: {node: '>=18'}
-
-  groq@3.93.0:
-    resolution: {integrity: sha512-vEEvYwsGOk9CSmdGXXUkWP/YhNB+drG/K7Mv53ve9Yyf1ixQ1VVCTa8B/62ZAlYETs2uQcz9fMsm0kjPJz8Y3w==}
     engines: {node: '>=18'}
 
   groq@3.99.0:
@@ -17450,8 +17446,6 @@ snapshots:
       - supports-color
 
   groq@3.88.1-typegen-experimental.0: {}
-
-  groq@3.93.0: {}
 
   groq@3.99.0: {}
 
