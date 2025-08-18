@@ -17,6 +17,7 @@ import profile from "./profile";
 import repeatingHappening from "./repeating-happening";
 import staticInfo from "./static-info";
 import studentGroup from "./student-group";
+import utlan from "./utlan";
 
 export const schemaTypes = [
   happening,
@@ -38,4 +39,5 @@ export const schemaTypes = [
   hsApplication,
   merch,
   hungerGames,
+  utlan,
 ];

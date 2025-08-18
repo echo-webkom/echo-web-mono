@@ -16,6 +16,29 @@ import "@sanity/client";
  */
 
 // Source: schema.json
+export type Utlan = {
+  _id: string;
+  _type: "utlan";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  body?: string;
+};
+
 export type HungerGames = {
   _id: string;
   _type: "hungerGames";
@@ -703,6 +726,7 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | Utlan
   | HungerGames
   | Merch
   | HsApplication
@@ -1249,6 +1273,30 @@ export type StudentGroupBySlugQueryResult = {
   } | null;
 } | null;
 
+// Source: ../../packages/sanity/src/queries/utlan.ts
+// Variable: allUtlanQuery
+// Query: *[_type == "utlan" && !(_id in path('drafts.**'))] | order(_createdAt desc) {  _id,  _createdAt,  _updatedAt,  title,  "slug": slug.current,  image,  body}
+export type AllUtlanQueryResult = Array<{
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  slug: string;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  body: string | null;
+}>;
+
 // Source: ../../packages/seeder/src/sanity/query.ts
 // Variable: happeningQueryList
 // Query: *[_type == "happening" && !(_id in path('drafts.**'))] {  _id,  title,  "slug": slug.current,  "date": date,  happeningType,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "groups": organizers[]->slug.current,  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "questions": additionalQuestions[] {    id,    title,    required,    type,    isSensitive,    options,  }}
@@ -1296,6 +1344,7 @@ declare module "@sanity/client" {
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
+    '\n*[_type == "utlan" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  image,\n  body\n}\n': AllUtlanQueryResult;
     '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }
 }
