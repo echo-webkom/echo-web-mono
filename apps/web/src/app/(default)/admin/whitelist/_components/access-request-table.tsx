@@ -2,6 +2,7 @@ import { LuX as X } from "react-icons/lu";
 
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -11,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getAccessRequests } from "@/data/access-requests/queries";
-import { DeleteAccessRequestButton } from "./delete-access-request-button";
+import { DenyAccessModal } from "./deny-access-modal";
 import { GrantAccessButton } from "./grant-access-button";
 
 export const AccessRequestTable = async () => {
@@ -52,9 +53,11 @@ export const AccessRequestTable = async () => {
                   <GrantAccessButton accessRequestId={accessRequest.id}>
                     Gi tilgang
                   </GrantAccessButton>
-                  <DeleteAccessRequestButton accessRequestId={accessRequest.id}>
-                    <X />
-                  </DeleteAccessRequestButton>
+                  <DenyAccessModal accessRequestId={accessRequest.id}>
+                    <Button variant="destructive" size="sm">
+                      <X />
+                    </Button>
+                  </DenyAccessModal>
                 </TableCell>
               </TableRow>
             );
