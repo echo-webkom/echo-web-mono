@@ -14,7 +14,7 @@
     "@echo-webkom/db": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "20.19.4",
+    "@types/node": "22.17.2",
     "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
     "globals": "^15.15.0",
