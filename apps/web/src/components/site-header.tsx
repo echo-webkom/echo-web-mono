@@ -13,7 +13,7 @@ import { UserMenu } from "./user-menu";
 
 export const SiteHeader = async () => {
   const user = await auth();
-  const { message } = await getProgrammerbarStatus();
+  const { message: progbarStatus } = await getProgrammerbarStatus();
   const randomMessage = getRandomMessage();
 
   return (
@@ -26,12 +26,12 @@ export const SiteHeader = async () => {
             <div className="absolute -bottom-3 flex space-x-2">
               {randomMessage.link ? (
                 <Link className="z-50" href={randomMessage.link}>
-                  <Chip>{randomMessage.text}</Chip>
+                  <Chip className="underline">{randomMessage.text}</Chip>
                 </Link>
               ) : (
                 <Chip className="z-50">{randomMessage.text}</Chip>
               )}
-              {message !== "" && <Chip className="z-50">{message}</Chip>}
+              {progbarStatus !== "" && <Chip className="z-50">{progbarStatus}</Chip>}
             </div>
 
             <div className="flex items-center">
