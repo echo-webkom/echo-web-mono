@@ -22,21 +22,23 @@ const createHappening = (happening: Partial<FullHappening>): FullHappening => {
   };
 };
 
+const fixedDate = new Date("2024-01-15T10:30:00.000Z");
+
 const petter = {
   alternativeEmail: "supah@gmail.com",
-  alternativeEmailVerifiedAt: new Date(),
+  alternativeEmailVerifiedAt: fixedDate,
   name: "Petter Kjellberg",
   year: 2022,
   degreeId: "Computer Science",
   hasReadTerms: true,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: fixedDate,
+  updatedAt: fixedDate,
   id: "1",
   email: "supah@gmail.com",
   image: null,
-  emailVerified: new Date(),
+  emailVerified: fixedDate,
   type: "student",
-  lastSignInAt: new Date(),
+  lastSignInAt: fixedDate,
   birthday: null,
   inactiveEmailSentAt: null,
 } satisfies FullHappening["registrations"][number]["user"];
@@ -48,9 +50,9 @@ const happening = createHappening({
       status: "registered",
       unregisterReason: "",
       prevStatus: "waiting",
-      changedAt: new Date(),
+      changedAt: fixedDate,
       changedBy: null,
-      createdAt: new Date(),
+      createdAt: fixedDate,
       happeningId: "1",
       userId: "1",
       answers: [
@@ -110,7 +112,7 @@ describe("toCsv", () => {
     const csv = toCsv(happening, selectedHeaders);
 
     expect(csv).toBe(
-      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","Computer Science","yes","no","${new Date()}"`,
+      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","Computer Science","yes","no","${fixedDate}"`,
     );
   });
 
