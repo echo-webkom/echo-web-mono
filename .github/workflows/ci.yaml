@@ -57,7 +57,7 @@ jobs:
       - name: 🐢 Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.19.4
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 

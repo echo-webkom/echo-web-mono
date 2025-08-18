@@ -20,7 +20,7 @@
     "groq": "3.99.0"
   },
   "devDependencies": {
-    "@types/node": "20.19.4",
+    "@types/node": "20.19.11",
     "eslint": "9.9.0",
     "eslint-config-webkom": "workspace:*",
     "globals": "^15.15.0",
