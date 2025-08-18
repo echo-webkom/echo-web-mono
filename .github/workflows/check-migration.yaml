@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: 🔍 Checkout main branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
@@ -51,7 +51,7 @@ jobs:
         run: pnpm db:migrate
 
       - name: 🔍 Checkout PR branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
 
