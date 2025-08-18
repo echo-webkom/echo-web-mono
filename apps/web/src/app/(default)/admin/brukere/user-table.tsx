@@ -29,7 +29,7 @@ export const UserTable = ({ user, groups }: { user: User; groups: Array<Group> }
               <Dots className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white p-2">
+          <DropdownMenuContent align="end">
             <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <UserForm user={user} groups={groups} />
