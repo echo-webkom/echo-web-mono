@@ -1,15 +1,15 @@
+import { RxDotsHorizontal as Dots } from "react-icons/rx";
+
+import { type Group } from "@echo-webkom/db/schemas";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { RxDotsHorizontal as Dots } from "react-icons/rx";
-
-import { type Group } from "@echo-webkom/db/schemas";
-
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { type AllUsers } from "./page";
 import { UserForm } from "./user-form";
@@ -29,7 +29,7 @@ export const UserTable = ({ user, groups }: { user: User; groups: Array<Group> }
               <Dots className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="bg-white p-2">
             <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <UserForm user={user} groups={groups} />
