@@ -21,7 +21,7 @@ export const banInfos = pgTable(
     expiresAt: timestamp("expires_at").notNull(),
   },
   (t) => [index("user_id_idx").on(t.userId)],
-);
+).enableRLS();
 
 export const banInfoRelations = relations(banInfos, ({ one }) => ({
   user: one(users, {

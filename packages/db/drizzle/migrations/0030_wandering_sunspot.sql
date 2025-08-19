@@ -1,0 +1,24 @@
+ALTER TABLE "access_request" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "account" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "answer" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "ban_info" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "comments_reactions" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "comment" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "degree" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "dot" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "group" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "happenings_to_groups" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "happening" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "kv" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "question" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "reaction" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "registration" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "session" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "site_feedback" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "spot_range" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "users_to_groups" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "user" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "verification_token" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "shopping_list_item" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "users_to_shopping_list_items" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
+ALTER TABLE "whitelist" ENABLE ROW LEVEL SECURITY;

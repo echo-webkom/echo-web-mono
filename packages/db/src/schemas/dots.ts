@@ -18,7 +18,7 @@ export const dots = pgTable(
     createdAt: timestamp("created_at").notNull(),
   },
   (t) => [index("user_strike_idx").on(t.userId, t.id)],
-);
+).enableRLS();
 
 export const dotsRelations = relations(dots, ({ one }) => ({
   user: one(users, {

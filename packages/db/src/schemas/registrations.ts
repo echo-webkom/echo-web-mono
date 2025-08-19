@@ -23,7 +23,7 @@ export const registrations = pgTable(
     changedBy: text("changed_by"),
   },
   (t) => [primaryKey({ columns: [t.userId, t.happeningId] })],
-);
+).enableRLS();
 
 export const registrationsRelations = relations(registrations, ({ one, many }) => ({
   happening: one(happenings, {

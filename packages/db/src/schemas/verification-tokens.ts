@@ -10,7 +10,7 @@ export const verificationTokens = pgTable(
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
-);
+).enableRLS();
 
 export type VerificationToken = InferSelectModel<typeof verificationTokens>;
 export type VerificationTokenInsert = InferInsertModel<typeof verificationTokens>;

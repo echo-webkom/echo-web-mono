@@ -14,7 +14,7 @@ export const sessions = pgTable(
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (t) => [primaryKey({ columns: [t.sessionToken] })],
-);
+).enableRLS();
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {

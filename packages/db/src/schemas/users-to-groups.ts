@@ -20,7 +20,7 @@ export const usersToGroups = pgTable(
     isLeader: boolean("is_leader").notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.userId, t.groupId] })],
-);
+).enableRLS();
 
 export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
   user: one(users, {

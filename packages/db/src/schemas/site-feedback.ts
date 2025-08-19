@@ -19,7 +19,7 @@ export const siteFeedback = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.id] })],
-);
+).enableRLS();
 
 export type SiteFeedback = InferSelectModel<typeof siteFeedback>;
 export type SiteFeedbackInsert = InferInsertModel<typeof siteFeedback>;

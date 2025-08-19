@@ -14,7 +14,7 @@ export const degrees = pgTable(
     name: varchar("name", { length: 255 }).notNull(),
   },
   (t) => [primaryKey({ columns: [t.id] })],
-);
+).enableRLS();
 
 export const degreesRelations = relations(degrees, ({ many }) => ({
   users: many(users),
