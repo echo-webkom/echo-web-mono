@@ -1,23 +1,33 @@
 import { createRSSFeed } from "@/lib/rss";
 import { fetchAllHappenings } from "@/sanity/happening";
+import { fetchMinutes } from "@/sanity/minutes";
 import { fetchAllPosts } from "@/sanity/posts";
-import { happeningToRSSItem, postToRSSItem } from "./_lib/mappers";
+import { happeningToRSSItem, meetingMinuteToRSSItem, postToRSSItem } from "./_lib/mappers";
+
+export const revalidate = 1800;
 
 export const GET = async () => {
-  const [posts, happenings] = await Promise.all([fetchAllPosts(), fetchAllHappenings()]);
+  const [posts, happenings, minutes] = await Promise.all([
+    fetchAllPosts(),
+    fetchAllHappenings(),
+    fetchMinutes(),
+  ]);
 
-  const latestPostDate = posts[0] ? new Date(posts[0]._createdAt) : new Date();
-  const latestHappeningDate = happenings[0] ? new Date(happenings[0]._createdAt) : new Date();
-  const lastBuildDate = latestPostDate > latestHappeningDate ? latestPostDate : latestHappeningDate;
+  const lastBuildDate = new Date();
 
-  const rssItems = [posts.map(postToRSSItem), happenings.map(happeningToRSSItem)]
+  const rssItems = [
+    posts.map(postToRSSItem),
+    happenings.map(happeningToRSSItem),
+    minutes.map(meetingMinuteToRSSItem),
+  ]
     .flat()
     .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 
   const rssFeed = createRSSFeed({
     title: "echo – Linjeforeningen for informatikk",
     link: "https://echo.uib.no/",
-    description: "Innlegg og arrangementer på nettsiden til echo – Linjeforeningen for informatikk",
+    description:
+      "Innlegg, arrangementer og møtereferater fra echo – Linjeforeningen for informatikk",
     language: "nb",
     lastBuildDate: lastBuildDate.toUTCString(),
     items: rssItems,

@@ -1,9 +1,14 @@
-import { type AllHappeningsQueryResult, type AllPostsQueryResult } from "@echo-webkom/cms/types";
+import {
+  type AllHappeningsQueryResult,
+  type AllMeetingMinuteQueryResult,
+  type AllPostsQueryResult,
+} from "@echo-webkom/cms/types";
 
 import { type RSSItem } from "@/lib/rss";
 
 type Post = AllPostsQueryResult[number];
 type Happening = AllHappeningsQueryResult[number];
+type MeetingMinute = AllMeetingMinuteQueryResult[number];
 
 const POST_DESCRIPTION_LENGTH = 300;
 const HAPPENING_DESCRIPTION_LENGTH = 300;
@@ -19,7 +24,16 @@ export const postToRSSItem = (post: Post): RSSItem => {
       : post.body;
   const content = post.body;
 
-  return { title, link, guid: post._id, creator, pubDate, description, content };
+  return {
+    title,
+    link,
+    guid: post._id,
+    creator,
+    pubDate,
+    description,
+    content,
+    category: "Innlegg",
+  };
 };
 
 export const happeningToRSSItem = (happening: Happening): RSSItem => {
@@ -37,5 +51,20 @@ export const happeningToRSSItem = (happening: Happening): RSSItem => {
       : (happening.body ?? "");
   const content = happening.body ?? "";
 
-  return { title, link, guid: happening._id, creator, pubDate, description, content };
+  const category = happening.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement";
+
+  return { title, link, guid: happening._id, creator, pubDate, description, content, category };
+};
+
+export const meetingMinuteToRSSItem = (minute: MeetingMinute): RSSItem => {
+  const title = minute.title;
+  const link = `https://echo.uib.no/for-studenter/motereferat/${minute._id}`;
+  const creator = "echo";
+  const pubDate = new Date(minute.date).toUTCString();
+  const description = minute.isAllMeeting ? "Allmøtereferat" : "Møtereferat";
+  const content = `${description} fra ${new Date(minute.date).toLocaleDateString("nb-NO")}. Dokument: ${minute.document ?? "Ikke tilgjengelig"}`;
+
+  const category = minute.isAllMeeting ? "Allmøtereferat" : "Møtereferat";
+
+  return { title, link, guid: minute._id, creator, pubDate, description, content, category };
 };

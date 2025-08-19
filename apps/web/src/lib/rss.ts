@@ -6,6 +6,7 @@ export type RSSItem = {
   pubDate: string;
   description: string;
   content: string;
+  category?: string;
 };
 
 export type RSSFeed = {
@@ -26,6 +27,7 @@ export const createRSSItem = (item: RSSItem) => {
     <pubDate>${item.pubDate}</pubDate>
     <description><![CDATA[${item.description}]]></description>
     <content:encoded><![CDATA[${item.content}]]></content:encoded>
+    ${item.category ? `<category><![CDATA[${item.category}]]></category>` : ""}
 </item>
     `;
 };
