@@ -49,7 +49,7 @@ export const users = pgTable(
     index("email_idx").on(t.email),
     index("alternative_email_idx").on(t.alternativeEmail),
   ],
-);
+).enableRLS();
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   degree: one(degrees, {

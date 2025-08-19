@@ -20,7 +20,7 @@ export const comments = pgTable(
       .$onUpdateFn(() => new Date()),
   },
   (t) => [index("post_idx").on(t.postId)],
-);
+).enableRLS();
 
 export const commentsInsert = relations(comments, ({ one, many }) => ({
   parentComment: one(comments, {

@@ -21,7 +21,7 @@ export const spotRanges = pgTable(
     maxYear: integer("max_year").notNull(),
   },
   (t) => [primaryKey({ columns: [t.id] })],
-);
+).enableRLS();
 
 export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
   happening: one(happenings, {

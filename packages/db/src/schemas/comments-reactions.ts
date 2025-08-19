@@ -13,7 +13,7 @@ export const commentsReactions = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.commentId, t.userId] })],
-);
+).enableRLS();
 
 export const commentsActionsRelations = relations(commentsReactions, ({ one }) => ({
   user: one(users, {

@@ -10,7 +10,7 @@ export const whitelist = pgTable(
     reason: text("reason").notNull(),
   },
   (t) => [primaryKey({ columns: [t.email] })],
-);
+).enableRLS();
 
 export type Whitelist = InferSelectModel<typeof whitelist>;
 export type WhitelistInsert = InferInsertModel<typeof whitelist>;

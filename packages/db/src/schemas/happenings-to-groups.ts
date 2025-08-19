@@ -19,7 +19,7 @@ export const happeningsToGroups = pgTable(
       }),
   },
   (t) => [primaryKey({ columns: [t.happeningId, t.groupId] })],
-);
+).enableRLS();
 
 export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({
   happening: one(happenings, {

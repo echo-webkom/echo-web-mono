@@ -25,7 +25,7 @@ export const questions = pgTable(
       }),
   },
   (t) => [primaryKey({ columns: [t.id] })],
-);
+).enableRLS();
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({
   happening: one(happenings, {

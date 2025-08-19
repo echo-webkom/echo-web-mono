@@ -18,7 +18,7 @@ export const happenings = pgTable(
     registrationEnd: timestamp("registration_end"),
   },
   (t) => [primaryKey({ columns: [t.id] }), index("slug_idx").on(t.slug)],
-);
+).enableRLS();
 
 export const happeningsRelations = relations(happenings, ({ many }) => ({
   registrations: many(registrations),

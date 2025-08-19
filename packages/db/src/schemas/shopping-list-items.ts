@@ -14,7 +14,7 @@ export const shoppingListItems = pgTable("shopping_list_item", {
     }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+}).enableRLS();
 
 export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({
   user: one(users, {

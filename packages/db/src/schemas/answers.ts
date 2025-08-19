@@ -29,7 +29,7 @@ export const answers = pgTable(
     answer: json("answer").$type<AnswerCol>(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.happeningId, t.questionId] })],
-);
+).enableRLS();
 
 export const answersRelations = relations(answers, ({ one }) => ({
   user: one(registrations, {

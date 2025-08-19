@@ -14,7 +14,7 @@ export const reactions = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.reactToKey, t.emojiId, t.userId] })],
-);
+).enableRLS();
 
 export const reactionsRelations = relations(reactions, ({ one }) => ({
   user: one(users, {

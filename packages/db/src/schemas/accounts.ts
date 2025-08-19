@@ -22,7 +22,7 @@ export const accounts = pgTable(
     session_state: text("session_state"),
   },
   (t) => [primaryKey({ columns: [t.provider, t.providerAccountId] })],
-);
+).enableRLS();
 
 export type Account = InferSelectModel<typeof accounts>;
 export type AccountInsert = InferInsertModel<typeof accounts>;
