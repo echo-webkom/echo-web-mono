@@ -108,6 +108,46 @@ export const RegistrationRow = ({
               <span className="font-semibold">Epost:</span>{" "}
               {registration.user.alternativeEmail ?? registration.user.email}
             </p>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold">Registrert:</span>{" "}
+              <span className="font-mono">
+                {registration.createdAt.toLocaleString("no-NO", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+                .{registration.createdAt.getMilliseconds().toString().padStart(3, "0")}
+              </span>
+            </p>
+            {registration.changedAt && (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold">Status endret:</span>{" "}
+                <span className="font-mono">
+                  {registration.changedAt.toLocaleString("no-NO", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                  .{registration.changedAt.getMilliseconds().toString().padStart(3, "0")}
+                </span>
+                {registration.changedByUser && <span> av {registration.changedByUser.name}</span>}
+              </p>
+            )}
+            {registration.prevStatus && (
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold">Forrige status:</span>{" "}
+                {getRegistrationStatus(
+                  { ...registration, status: registration.prevStatus },
+                  happeningDate,
+                )}
+              </p>
+            )}
             {group.length > 1 && (
               <p className="text-sm text-muted-foreground">
                 <span className="font-semibold">Grupper:</span> {group}
