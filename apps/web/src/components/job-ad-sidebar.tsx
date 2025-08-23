@@ -64,7 +64,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
         <SidebarItemContent>{jobTypeString(jobAd.jobType)}</SidebarItemContent>
       </SidebarItem>
       <SidebarItem>
-        <Button className="w-full hover:underline" asChild>
+        <Button data-attr="apply-link" className="w-full hover:underline" asChild>
           <Link href={jobAd.link}>Søk her!</Link>
         </Button>
       </SidebarItem>
