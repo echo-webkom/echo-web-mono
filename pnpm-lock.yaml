@@ -27,8 +27,8 @@ importers:
         specifier: 0.3.7
         version: 0.3.7
       '@hono/node-server':
-        specifier: 1.18.2
-        version: 1.18.2(hono@4.9.2)
+        specifier: 1.19.0
+        version: 1.19.0(hono@4.9.2)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -2319,8 +2319,8 @@ packages:
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
 
-  '@hono/node-server@1.18.2':
-    resolution: {integrity: sha512-icgNvC0vRYivzyuSSaUv9ttcwtN8fDyd1k3AOIBDJgYd84tXRZSS6na8X54CY/oYoFTNhEmZraW/Rb9XYwX4KA==}
+  '@hono/node-server@1.19.0':
+    resolution: {integrity: sha512-1k8/8OHf5VIymJEcJyVksFpT+AQ5euY0VA5hUkCnlKpD4mr8FSbvXaHblxeTTEr90OaqWzAkQaqD80qHZQKxBA==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
@@ -12677,7 +12677,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@hono/node-server@1.18.2(hono@4.9.2)':
+  '@hono/node-server@1.19.0(hono@4.9.2)':
     dependencies:
       hono: 4.9.2
 
