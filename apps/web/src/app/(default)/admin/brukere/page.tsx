@@ -2,7 +2,7 @@ import { db } from "@echo-webkom/db/serverless";
 
 import { getAllUsers } from "@/data/users/queries";
 import { ensureWebkom } from "@/lib/ensure";
-import { UserTableView } from "./user_table_view";
+import { UserTableView } from "./user-table";
 
 export const dynamic = "force-dynamic";
 
