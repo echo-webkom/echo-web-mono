@@ -23,7 +23,7 @@
     "@react-email/render": "1.2.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "resend": "4.5.2",
+    "resend": "4.8.0",
     "server-only": "0.0.1"
   },
   "devDependencies": {
