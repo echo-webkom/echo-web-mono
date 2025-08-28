@@ -53,7 +53,7 @@ export const POST = withBasicAuth(async (req) => {
       revalidateTags(["minutes"]);
     }
 
-    if (type === "studentGroup") {
+    if (type === "studentGroup" || type === "profile") {
       console.log("Revalidating student-groups");
       revalidateTags(["student-groups"]);
     }
