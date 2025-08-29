@@ -15,7 +15,8 @@
         ".sanity/**",
         "dist/**",
         ".svelte-kit/**",
-        "build/**"
+        "build/**",
+        ".vitepress/dist/**"
       ]
     },
     "start": {

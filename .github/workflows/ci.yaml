@@ -57,7 +57,7 @@ jobs:
       - name: 🐢 Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
@@ -66,6 +66,9 @@ jobs:
 
       - name: 🏗️ Migrate database
         run: pnpm db:migrate
+
+      - name: 🔃 Sync
+        run: pnpm --filter=docs sync
 
       - name: 📝 Lint
         run: pnpm lint
