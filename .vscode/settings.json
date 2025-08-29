@@ -4,5 +4,8 @@
     { "pattern": "apps/*/" },
     { "pattern": "packages/*/" },
     { "pattern": "playwright/" }
-  ]
+  ],
+  "files.associations": {
+    "wrangler.json": "jsonc"
+  }
 }
