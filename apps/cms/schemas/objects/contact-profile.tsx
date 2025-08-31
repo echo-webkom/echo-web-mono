@@ -16,7 +16,16 @@ export default defineType({
       name: "email",
       title: "E-post",
       type: "string",
-      validation: (Rule) => Rule.required().email(),
+      validation: (Rule) =>
+        Rule.required()
+          .email()
+          .custom((email) => {
+            if (Array.from("æøå").some((char) => email?.includes(char))) {
+              return "E-postadressen kan ikke inneholde æ, ø eller å.";
+            }
+
+            return true;
+          }),
     }),
   ],
   preview: {
