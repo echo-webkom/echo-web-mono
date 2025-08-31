@@ -217,17 +217,23 @@ export async function nyAction() {
 ## Kilder
 
 ### Next.js og React
+
 - [Next.js 15 dokumentasjon](https://nextjs.org/docs)
 - [React 19 beta docs](https://react.dev/blog/2024/04/25/react-19)
 - [Server Actions guide](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
 - [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
 
 ### Styling og UI
+
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Radix UI](https://www.radix-ui.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
 
 ### Autentisering
+
 - [NextAuth.js v5](https://authjs.dev/getting-started)
 - [Arctic](https://arctic.js.org/)
+
+```
+
 ```
