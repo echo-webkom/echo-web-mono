@@ -36,6 +36,10 @@ export default defineConfig({
               label: "verv.echo.uib.no",
               slug: "tjenester/verv-echo",
             },
+            {
+              label: "screen.echo-webkom.no",
+              slug: "tjenester/echo-screen",
+            },
           ],
         },
         {

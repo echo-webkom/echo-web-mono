@@ -243,9 +243,13 @@ pnpm typegen
 ## Kilder
 
 ### Sanity.io
+
 - [Sanity dokumentasjon](https://www.sanity.io/docs)
 - [GROQ query language](https://www.sanity.io/docs/groq)
 - [Schema types reference](https://www.sanity.io/docs/schema-types)
 - [Sanity Studio](https://www.sanity.io/docs/sanity-studio)
 - [Plugins oversikt](https://www.sanity.io/plugins)
+
+```
+
 ```
