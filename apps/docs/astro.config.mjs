@@ -8,18 +8,26 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Webkom Docs",
+      logo: {
+        src: "./src/assets/echo-logo.png",
+        replacesTitle: false,
+      },
+      favicon: "/favicon.ico",
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/echo-webkom" }],
+      customCss: ["./src/styles/custom.css"],
       sidebar: [
         {
-          label: "Guides",
-          items: [
-            // Each item here is one entry in the navigation menu.
-            { label: "Example Guide", slug: "guides/example" },
-          ],
+          label: "Velkommen",
+          slug: "velkommen",
         },
         {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
+          label: "Guider",
+          items: [
+            { label: "Homebrew Oppsett", slug: "guides/homebrew-oppsett" },
+            { label: "WSL Oppsett", slug: "guides/wsl-oppsett" },
+            { label: "Sette opp Git", slug: "guides/sette-opp-git" },
+            { label: "VSCode Oppsett", slug: "guides/vscode-oppsett" },
+          ],
         },
       ],
     }),

@@ -1,0 +1,121 @@
+/* Echo Webkom Documentation Styling */
+
+:root {
+  /* Echo brand colors */
+  --sl-color-accent: #008fa3;
+  --sl-color-accent-low: #f0fafb;
+  --sl-color-accent-high: #006f83;
+
+  /* Custom echo colors */
+  --echo-primary: #008fa3;
+  --echo-secondary: #fed879;
+  --echo-primary-hover: #32a5b5;
+  --echo-secondary-hover: #ffe195;
+
+  /* Override Starlight theme colors */
+  --sl-color-bg-nav: #f9fafb;
+  --sl-color-bg-sidebar: #f9fafb;
+  --sl-color-bg-inline-code: #ebeef4;
+
+  /* Text colors */
+  --sl-color-text: #171923;
+  --sl-color-text-accent: #008fa3;
+
+  /* Border colors */
+  --sl-color-hairline: #9db2cd;
+  --sl-color-border: #9db2cd;
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+  --sl-color-accent: #32a5b5;
+  --sl-color-accent-low: #0f1419;
+  --sl-color-accent-high: #008fa3;
+
+  --sl-color-bg-nav: #151210;
+  --sl-color-bg-sidebar: #151210;
+  --sl-color-bg-inline-code: #181818;
+
+  --sl-color-text: #eeeeee;
+  --sl-color-text-accent: #32a5b5;
+
+  --sl-color-hairline: #4d4d4d;
+  --sl-color-border: #4d4d4d;
+}
+
+/* Custom styling for echo branding */
+.hero h1 {
+  background: linear-gradient(135deg, var(--echo-primary), var(--echo-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Echo-themed buttons */
+.sl-link-button[data-type="primary"] {
+  background: linear-gradient(135deg, var(--echo-primary), var(--echo-primary-hover));
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.sl-link-button[data-type="primary"]:hover {
+  background: linear-gradient(135deg, var(--echo-primary-hover), var(--echo-secondary));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 143, 163, 0.3);
+}
+
+/* Custom cards styling */
+.card-grid .card {
+  border: 1px solid var(--sl-color-hairline);
+  transition: all 0.3s ease;
+}
+
+.card-grid .card:hover {
+  border-color: var(--echo-primary);
+  box-shadow: 0 4px 12px rgba(0, 143, 163, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Logo styling */
+.site-title img {
+  height: 2rem;
+  width: auto;
+}
+
+/* Navigation enhancements */
+.top-nav {
+  border-bottom: 1px solid var(--sl-color-hairline);
+  backdrop-filter: blur(10px);
+}
+
+/* Custom spacing and typography */
+.hero-subtitle {
+  color: var(--sl-color-text);
+  opacity: 0.8;
+}
+
+/* Sidebar styling */
+.sidebar-content {
+  background: var(--sl-color-bg-sidebar);
+}
+
+/* Code blocks with echo accent */
+pre {
+  border-left: 3px solid var(--echo-primary);
+}
+
+/* Custom animations */
+@keyframes echo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.echo-logo {
+  animation: echo-pulse 2s ease-in-out infinite;
+}

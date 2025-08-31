@@ -1,36 +1,47 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Webkom Dokumentasjon
+description: Komplett guide for echo Webkom utviklere og nye studenter.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Velkommen til echo Webkom! Din guide til utvikling for echo – Linjeforeningen for informatikk.
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/echo-logo.png
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Kom i gang
+      link: /velkommen
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: echo Nettside
+      link: https://echo.uib.no
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-## Next steps
+## Hva du finner her
 
 <CardGrid stagger>
-  <Card title="Update content" icon="pencil">
-    Edit `src/content/docs/index.mdx` to see this page change.
+  <Card title="Utviklingsoppsett" icon="rocket">
+    Lær hvordan du setter opp utviklingsmiljøet for echos webapplikasjoner og tjenester.
   </Card>
-  <Card title="Add new content" icon="add-document">
-    Add Markdown or MDX files to `src/content/docs` to create new pages.
+  <Card title="Arkitekturguide" icon="puzzle">
+    Forstå monorepo-strukturen, teknologier som brukes, og hvordan komponenter fungerer sammen.
   </Card>
-  <Card title="Configure your site" icon="setting">
-    Edit your `sidebar` and other config in `astro.config.mjs`.
+  <Card title="Bidragsretningslinjer" icon="open-book">
+    Beste praksis for kodestil, testing, og bidrag til echos kodebase.
   </Card>
-  <Card title="Read the docs" icon="open-book">
-    Learn more in [the Starlight Docs](https://starlight.astro.build/).
+  <Card title="Deploy & Drift" icon="setting">
+    Hvordan deploye applikasjoner, administrere miljøer, og håndtere produksjonsoperasjoner.
   </Card>
 </CardGrid>
+
+## Om echo Webkom
+
+echo Webkom er ansvarlig for å utvikle og vedlikeholde den digitale infrastrukturen for echo – Linjeforeningen for informatikk ved Universitetet i Bergen. Vi bygger og vedlikeholder:
+
+- **Hovednettside** - Den primære echo-nettsiden med arrangementer, nyheter og studentinformasjon
+- **API-tjenester** - Backend-tjenester som driver nettsiden og mobilapplikasjoner
+- **Innholdsstyring** - Sanity CMS for administrasjon av nettstedinnhold
+- **Infrastruktur** - DevOps, deployment og operasjonelle verktøy
+
+Enten du er en ny student som blir med i Webkom eller en erfaren utvikler som bidrar til våre prosjekter, vil denne dokumentasjonen hjelpe deg å forstå systemene våre og bli produktiv raskt.
