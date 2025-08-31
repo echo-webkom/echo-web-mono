@@ -21,6 +21,24 @@ export default defineConfig({
           slug: "velkommen",
         },
         {
+          label: "Tjenester",
+          items: [
+            {
+              label: "echo-web-mono",
+              items: [
+                { label: "Oversikt", slug: "tjenester/echo-web-mono/oversikt" },
+                { label: "Web", slug: "tjenester/echo-web-mono/web" },
+                { label: "CMS", slug: "tjenester/echo-web-mono/cms" },
+                { label: "API", slug: "tjenester/echo-web-mono/api" },
+              ],
+            },
+            {
+              label: "verv.echo.uib.no",
+              slug: "tjenester/verv-echo",
+            },
+          ],
+        },
+        {
           label: "Guider",
           items: [
             { label: "Homebrew Oppsett", slug: "guides/homebrew-oppsett" },
