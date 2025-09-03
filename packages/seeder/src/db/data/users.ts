@@ -10,6 +10,7 @@ export const users = [
     email: "student@echo.uib.no",
     type: "student",
     token: "student",
+    isPublic: true,
   },
 
   {
@@ -19,6 +20,7 @@ export const users = [
     type: "student",
     token: "student2",
     year: 2,
+    isPublic: true,
   },
 
   {
@@ -28,6 +30,7 @@ export const users = [
     type: "student",
     token: "student5",
     year: 5,
+    isPublic: true,
   },
 
   {
@@ -36,6 +39,7 @@ export const users = [
     email: "alum@echo.uib.on",
     type: "alum",
     token: "alum",
+    isPublic: true,
   },
 
   {
@@ -44,6 +48,7 @@ export const users = [
     email: "admin@echo.uib.on",
     type: "student",
     token: "admin",
+    isPublic: false,
   },
   {
     id: "unethical",
@@ -53,6 +58,7 @@ export const users = [
     token: "unethical",
     year: 2,
     hasReadTerms: false,
+    isPublic: false,
   },
 ] as const;
 
@@ -66,6 +72,7 @@ export const createFakeUsers = async (n: number) => {
         type: "student",
         token: `student${i}`,
         hasReadTerms: true,
+        isPublic: true,
         degreeId: pickRandom(["dtek", "dsik", "prog", "inf", "dsc", "dvit"]),
         year: pickRandom([1, 2, 3, 4, 5]),
       }),
