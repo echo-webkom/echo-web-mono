@@ -63,7 +63,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/auth/profil">
+          <Link href={`auth/user/${user.id}`}>
             <Person className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
