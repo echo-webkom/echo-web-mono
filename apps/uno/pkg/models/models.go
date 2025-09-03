@@ -196,6 +196,7 @@ type User struct {
 	CreatedAt        *time.Time `json:"createdAt"`
 	HasReadTerms     bool       `json:"hasReadTerms"`
 	Birthday         *time.Time `json:"birthday"`
+	IsPublic         bool       `json:"isPublic"`
 }
 
 func (u *User) IsProfileComplete() bool {

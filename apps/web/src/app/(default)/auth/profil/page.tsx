@@ -112,6 +112,7 @@ export default async function ProfilePage() {
           alternativeEmailVerifiedAt: user.alternativeEmailVerifiedAt ?? undefined,
           hasReadTerms: user.hasReadTerms ?? undefined,
           birthday: user.birthday ?? undefined,
+          isPublic: user.isPublic ?? undefined,
         }}
         degrees={degrees}
       />
