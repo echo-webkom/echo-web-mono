@@ -31,6 +31,7 @@ const userSchema = z.object({
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
   birthday: z.coerce.date().optional(),
+  isPublic: z.boolean().optional(),
 });
 
 type UserFormProps = {
@@ -42,6 +43,7 @@ type UserFormProps = {
     hasReadTerms?: boolean;
     id: string;
     birthday?: Date;
+    isPublic?: boolean;
   };
   degrees: Array<Degree>;
 };
@@ -58,6 +60,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       year: user.year,
       hasReadTerms: user.hasReadTerms,
       birthday: user.birthday,
+      isPublic: user.isPublic,
     },
     resolver: zodResolver(userSchema),
   });
@@ -72,6 +75,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
         year: data.year,
         hasReadTerms: data.hasReadTerms,
         birthday: data.birthday,
+        isPublic: data.isPublic,
       });
 
       setIsLoading(false);

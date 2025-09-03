@@ -6,7 +6,7 @@ test.describe("Gruppe", () => {
   test("see group dashboard", async ({ page }) => {
     await loginAs(page, "Admin");
 
-    await page.goto("/auth/profil");
+    await page.goto("/auth/user/admin");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 
@@ -20,7 +20,7 @@ test.describe("Gruppe", () => {
   test("not see group dashboard", async ({ page }) => {
     await loginAs(page, "Student");
 
-    await page.goto("/auth/profil");
+    await page.goto("/auth/user/student");
 
     const webkomChip = page.getByRole("link", { name: "Webkom" });
 
