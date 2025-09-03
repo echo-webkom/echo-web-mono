@@ -16,10 +16,10 @@ const getRoutes = (profileOwnerId: string) => {
       label: "Arrangementer",
       href: `/auth/user/${profileOwnerId}/arrangementer`,
     },
-    {
-      label: "Prikker",
-      href: `/auth/user/${profileOwnerId}/prikker`,
-    },
+    // {
+    //   label: "Prikker",
+    //   href: `/auth/user/${profileOwnerId}/prikker`,
+    // },
   ];
 };
 
