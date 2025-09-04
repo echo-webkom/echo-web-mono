@@ -38,7 +38,7 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "globals": "^16.3.0",
     "react-email": "4.2.8",
-    "typescript": "5.6.3",
+    "typescript": "5.9.2",
     "typescript-eslint": "^8.42.0"
   }
 }
