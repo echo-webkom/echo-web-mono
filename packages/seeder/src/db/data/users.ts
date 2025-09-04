@@ -20,7 +20,7 @@ export const users = [
     type: "student",
     token: "student2",
     year: 2,
-    isPublic: true,
+    isPublic: false,
   },
 
   {
