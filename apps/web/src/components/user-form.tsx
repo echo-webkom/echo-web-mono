@@ -12,6 +12,7 @@ import { type Degree } from "@echo-webkom/db/schemas";
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
 import {
   Form,
@@ -218,6 +219,31 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                       de etiske retnlingslinjene
                     </Link>
                     .
+                  </FormLabel>
+                </div>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isPublic"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start space-y-2">
+              <div className="flex space-x-3">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Jeg vil ha{" "}
+                    <span className="group relative cursor-pointer underline">
+                      offentlig bruker
+                      <Card className="absolute left-0 top-full mt-1 hidden w-max bg-gray-800 p-2 text-sm text-white shadow-md group-hover:block">
+                        Dette betyr at profilen din vil være synlig for andre brukere.
+                      </Card>
+                    </span>
                   </FormLabel>
                 </div>
               </div>
