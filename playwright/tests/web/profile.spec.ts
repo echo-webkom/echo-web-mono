@@ -18,6 +18,15 @@ test("update profile", async ({ page }) => {
   await expect(page.getByTestId("toast").getByText("Brukeren ble oppdatert")).toBeVisible();
 });
 
+test("can't see private profile", async ({ page }) => {
+  await loginAs(page, "Student");
+
+  await page.goto("/auth/user/student2");
+
+  await expect(page.getByText("Student2", { exact: true })).toBeVisible();
+  await expect(page.getByText("Denne brukeren har privat profil.")).toBeVisible();
+});
+
 test("see admin dashboard", async ({ page }) => {
   await loginAs(page, "Admin");
 
