@@ -32,7 +32,7 @@ export default async function ProfileLayout({
     return null;
   }
 
-  const profileOwnerId = params.id;
+  const profileOwnerId = String(params.id);
   const routes = getRoutes(profileOwnerId);
 
   if (currentUser.id !== profileOwnerId) {
