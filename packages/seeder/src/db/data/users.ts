@@ -48,7 +48,7 @@ export const users = [
     email: "admin@echo.uib.on",
     type: "student",
     token: "admin",
-    isPublic: false,
+    isPublic: true,
   },
   {
     id: "unethical",
@@ -72,7 +72,7 @@ export const createFakeUsers = async (n: number) => {
         type: "student",
         token: `student${i}`,
         hasReadTerms: true,
-        isPublic: true,
+        isPublic: false,
         degreeId: pickRandom(["dtek", "dsik", "prog", "inf", "dsc", "dvit"]),
         year: pickRandom([1, 2, 3, 4, 5]),
       }),
