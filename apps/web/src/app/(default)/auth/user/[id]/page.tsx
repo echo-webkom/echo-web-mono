@@ -24,7 +24,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     return redirect("/auth/logg-inn");
   }
 
-  const ownerId = params.id;
+  const ownerId = String(params.id);
   const profileOwner = await getProfileOwner(ownerId);
 
   if (!profileOwner) {
@@ -32,8 +32,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   }
 
   const isProfileOwner = ownerId === user.id;
-  const profileOwnerInfo = await getProfileOwner(ownerId);
-  const hasAccess = profileOwnerInfo?.isPublic ?? isProfileOwner;
+  const hasAccess = profileOwner?.isPublic ?? isProfileOwner;
 
   const [degrees, memberships] = await Promise.all([
     getAllDegrees(),
@@ -44,6 +43,71 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       },
     }),
   ]);
+
+  if (isProfileOwner) {
+    return (
+      <div className="max-w-2xl space-y-4">
+        <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6 md:flex-row">
+            <UploadProfilePicture
+              name={profileOwner.name ?? "Bo Bakseter"}
+              image={profileOwner.image}
+            />
+            <div>
+              <div>
+                <Label>Navn</Label>
+                <Text>{profileOwner.name}</Text>
+              </div>
+              <div>
+                <Label>E-post</Label>
+                <Text>{profileOwner.email}</Text>
+              </div>
+            </div>
+          </div>
+
+          {memberships.length > 0 && (
+            <div>
+              <Text size="sm" className="mb-2 font-semibold">
+                Grupper:
+              </Text>
+
+              <ul className="flex flex-wrap gap-1">
+                {memberships.map(({ group }) => (
+                  <li key={group.id}>
+                    <Link href={`/gruppe/${group.id}`}>
+                      <Chip key={group.id} variant="secondary" className="hover:underline">
+                        {group.name}
+                      </Chip>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        {isProfileOwner ? (
+          <UserForm
+            user={{
+              id: profileOwner.id,
+              degree: profileOwner.degree ?? undefined,
+              year: profileOwner.year ?? undefined,
+              alternativeEmail:
+                "alternativeEmail" in profileOwner
+                  ? (profileOwner.alternativeEmail ?? undefined)
+                  : undefined,
+              hasReadTerms: !!profileOwner.hasReadTerms,
+              isPublic:
+                "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
+              birthday:
+                "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
+            }}
+            degrees={degrees}
+          />
+        ) : null}
+      </div>
+    );
+  }
 
   if (!hasAccess) {
     return (
@@ -137,7 +201,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                     {memberships.map(({ group }) => (
                       <li key={group.id}>
                         <Link href={`/gruppe/${group.id}`}>
-                          <Chip key={group.id} variant="secondary" className="hover:underline">
+                          <Chip variant="secondary" className="hover:underline">
                             {group.name}
                           </Chip>
                         </Link>
@@ -161,62 +225,4 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       </div>
     );
   }
-
-  return (
-    <div className="max-w-2xl space-y-4">
-      <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-6 md:flex-row">
-          <UploadProfilePicture
-            name={profileOwner.name ?? "Bo Bakseter"}
-            image={profileOwner.image}
-          />
-          <div>
-            <div>
-              <Label>Navn</Label>
-              <Text>{profileOwner.name}</Text>
-            </div>
-            <div>
-              <Label>E-post</Label>
-              <Text>{profileOwner.email}</Text>
-            </div>
-          </div>
-        </div>
-
-        {memberships.length > 0 && (
-          <div>
-            <Text size="sm" className="mb-2 font-semibold">
-              Grupper:
-            </Text>
-
-            <ul className="flex flex-wrap gap-1">
-              {memberships.map(({ group }) => (
-                <li key={group.id}>
-                  <Link href={`/gruppe/${group.id}`}>
-                    <Chip key={group.id} variant="secondary" className="hover:underline">
-                      {group.name}
-                    </Chip>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-      {isProfileOwner ? (
-        <UserForm
-          user={{
-            id: profileOwner.id,
-            degree: profileOwner.degree ?? undefined,
-            year: profileOwner.year ?? undefined,
-            alternativeEmail: profileOwner.alternativeEmail ?? undefined,
-            hasReadTerms: profileOwner.hasReadTerms ?? undefined,
-            isPublic: profileOwner.isPublic ?? undefined,
-            birthday: profileOwner.birthday ?? undefined,
-          }}
-          degrees={degrees}
-        />
-      ) : null}
-    </div>
-  );
 }
