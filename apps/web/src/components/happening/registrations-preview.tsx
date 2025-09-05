@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { initials } from "@/utils/string";
@@ -101,7 +103,9 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
             .map((registration) => (
               <div key={registration.userId} className="flex items-center space-x-4">
                 <ProfilePreview registration={registration} />
-                <Text className="text-muted-foreground">{registration.name}</Text>
+                <Link href={`/profile/${registration.userId}`} className="hover:underline">
+                  <Text className="text-muted-foreground">{registration.name}</Text>
+                </Link>
               </div>
             ))}
         </DialogBody>
