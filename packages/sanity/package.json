@@ -15,16 +15,16 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@sanity/client": "7.6.0",
-    "@sanity/image-url": "1.1.0",
-    "groq": "3.99.0"
+    "@sanity/client": "7.11.0",
+    "@sanity/image-url": "1.2.0",
+    "groq": "4.6.1"
   },
   "devDependencies": {
     "@types/node": "22.17.2",
-    "eslint": "9.33.0",
+    "eslint": "9.34.0",
     "eslint-config-webkom": "workspace:*",
-    "globals": "^15.15.0",
+    "globals": "^16.3.0",
     "typescript": "5.6.3",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.42.0"
   }
 }

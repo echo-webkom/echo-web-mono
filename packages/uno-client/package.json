@@ -18,13 +18,13 @@
     "eslint": "^9.33.0",
     "rimraf": "^6.0.1",
     "typescript": "5.6.3",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.42.0"
   },
   "dependencies": {
     "@echo-webkom/cms": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
-    "@sanity/client": "6.29.1",
-    "ky": "^1.8.2"
+    "@sanity/client": "7.11.0",
+    "ky": "^1.9.1"
   }
 }
