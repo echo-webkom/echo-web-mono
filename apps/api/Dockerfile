@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:22.19.0-alpine AS base
 
 RUN npm install -g turbo@2.5.6
 RUN npm install -g pnpm@9.7.1
