@@ -49,6 +49,8 @@ export default defineConfig({
             { label: "WSL Oppsett", slug: "guides/wsl-oppsett" },
             { label: "Sette opp Git", slug: "guides/sette-opp-git" },
             { label: "VSCode Oppsett", slug: "guides/vscode-oppsett" },
+            { label: "Installere Node.js (fnm)", slug: "guides/installere-fnm" },
+            { label: "Installere pnpm", slug: "guides/installere-pnpm" },
           ],
         },
       ],
