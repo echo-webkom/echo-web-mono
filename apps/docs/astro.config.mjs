@@ -5,6 +5,8 @@ import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://docs.echo-webkom.no",
+
   integrations: [
     starlight({
       title: "Webkom Docs",
