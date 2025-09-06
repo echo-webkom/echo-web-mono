@@ -88,7 +88,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/jesperkha/notifier v1.0.0
 	github.com/matoous/go-nanoid/v2 v2.1.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.6
 	github.com/testcontainers/testcontainers-go/modules/postgres v0.37.0
