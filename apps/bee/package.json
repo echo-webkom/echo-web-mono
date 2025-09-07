@@ -1,0 +1,12 @@
+{
+  "name": "@echo-webkom/bee",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cargo watch -x run",
+    "start": "cargo run --release",
+    "build": "cargo build --release",
+    "test": "cargo test"
+  }
+}

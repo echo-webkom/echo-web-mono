@@ -35,8 +35,10 @@ test-results/
 playwright-report/
 playwright/.cache/
 
-
 # Sanity
 .sanity
 .dist
 dist
+
+# Rust
+target/
