@@ -93,6 +93,7 @@ require (
 	github.com/matoous/go-nanoid/v2 v2.1.0
 	github.com/stretchr/testify v1.11.1
 	github.com/swaggo/http-swagger v1.3.4
+	github.com/swaggo/http-swagger/v2 v2.0.2
 	github.com/swaggo/swag v1.16.6
 	github.com/testcontainers/testcontainers-go/modules/postgres v0.38.0
 	gorm.io/driver/postgres v1.6.0
