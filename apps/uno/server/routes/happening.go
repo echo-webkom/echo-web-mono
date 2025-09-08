@@ -3,11 +3,13 @@ package routes
 import (
 	"net/http"
 
+	"github.com/echo-webkom/uno/pkg/middleware"
 	"github.com/go-chi/chi/v5"
 )
 
 func (r *Router) HappeningRoutes() http.Handler {
 	m := chi.NewMux()
+	m.Use(middleware.AdminAuth(r.config))
 
 	m.Get("/{slug}", r.getHappeningById)
 
@@ -22,8 +24,12 @@ func (r *Router) HappeningRoutes() http.Handler {
 // @Success 200
 // @Failure 404
 // @Router /happenings/{slug} [get]
+// @Security admin-token
 func (rt *Router) getHappeningById(w http.ResponseWriter, r *http.Request) {
-	hap, err := rt.hap.GetHappeningBySlug(r.Context(), r.PathValue("slug"))
+	ctx := r.Context()
+	slug := r.PathValue("slug")
+
+	hap, err := rt.hap.GetHappeningBySlug(ctx, slug)
 	if err != nil {
 		http.Error(w, "failed to fetch happening", http.StatusNotFound)
 		return

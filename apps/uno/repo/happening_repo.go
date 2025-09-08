@@ -3,14 +3,14 @@ package repo
 import (
 	"context"
 
-	"github.com/echo-webkom/uno/domain/happening"
+	"github.com/echo-webkom/uno/models/database"
 	"gorm.io/gorm"
 )
 
 type HappeningRepo interface {
-	GetHappeningBySlug(ctx context.Context, slug string) (happening.Happening, error)
+	GetHappeningBySlug(ctx context.Context, slug string) (database.Happening, error)
 }
 
-func (r *Repo) GetHappeningBySlug(ctx context.Context, slug string) (happening.Happening, error) {
-	return gorm.G[happening.Happening](r.db).Where("slug = ?", slug).First(ctx)
+func (r *Repo) GetHappeningBySlug(ctx context.Context, slug string) (database.Happening, error) {
+	return gorm.G[database.Happening](r.db).Where("slug = ?", slug).First(ctx)
 }

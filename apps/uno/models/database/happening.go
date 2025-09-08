@@ -1,4 +1,4 @@
-package happening
+package database
 
 import (
 	"encoding/json"

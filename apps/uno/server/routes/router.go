@@ -4,23 +4,25 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/echo-webkom/uno/app/happening"
 	"github.com/echo-webkom/uno/config"
 	"github.com/echo-webkom/uno/repo"
+	"github.com/echo-webkom/uno/service/happening"
 	"github.com/go-chi/chi/v5"
 )
 
 type Router struct {
-	mux *chi.Mux
-	hap *happening.HappeningService
+	mux    *chi.Mux
+	hap    *happening.HappeningService
+	config *config.Config
 }
 
 func NewRouter(config *config.Config) *Router {
 	repo := repo.NewRepo(config, context.Background())
 
 	r := &Router{
-		mux: chi.NewMux(),
-		hap: happening.NewHappeningService(repo),
+		mux:    chi.NewMux(),
+		hap:    happening.NewHappeningService(repo),
+		config: config,
 	}
 
 	r.mount()
