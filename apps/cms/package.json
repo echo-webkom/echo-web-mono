@@ -29,7 +29,7 @@
     "@sanity/client": "7.11.0",
     "@sanity/color-input": "4.0.6",
     "@sanity/icons": "3.7.4",
-    "@sanity/ui": "3.0.10",
+    "@sanity/ui": "3.0.14",
     "@sanity/vision": "4.6.1",
     "nanoid": "5.1.5",
     "react": "19.1.1",
