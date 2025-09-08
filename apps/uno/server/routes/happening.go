@@ -29,7 +29,7 @@ func (rt *Router) getHappeningById(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	slug := r.PathValue("slug")
 
-	hap, err := rt.hap.GetHappeningBySlug(ctx, slug)
+	hap, err := rt.hs.GetHappeningBySlug(ctx, slug)
 	if err != nil {
 		http.Error(w, "failed to fetch happening", http.StatusNotFound)
 		return

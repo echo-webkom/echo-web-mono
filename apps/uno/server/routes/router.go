@@ -6,23 +6,38 @@ import (
 
 	"github.com/echo-webkom/uno/config"
 	"github.com/echo-webkom/uno/repo"
-	"github.com/echo-webkom/uno/service/happening"
+	"github.com/echo-webkom/uno/service"
+	"github.com/echo-webkom/uno/storage"
 	"github.com/go-chi/chi/v5"
 )
 
 type Router struct {
 	mux    *chi.Mux
-	hap    *happening.HappeningService
 	config *config.Config
+
+	// Services
+	hs *service.HappeningService
+	cs *service.CommentService
 }
 
 func NewRouter(config *config.Config) *Router {
-	repo := repo.NewRepo(config, context.Background())
+	// Create storage adapters
+	postgres := storage.NewPostgres(config, context.Background())
+
+	// Create repos
+	hr := repo.NewHappeningRepo(postgres)
+	cr := repo.NewCommentRepo(postgres)
+
+	// Create services
+	hs := service.NewHappeningService(hr)
+	cs := service.NewCommentService(cr)
 
 	r := &Router{
 		mux:    chi.NewMux(),
-		hap:    happening.NewHappeningService(repo),
 		config: config,
+
+		hs: hs,
+		cs: cs,
 	}
 
 	r.mount()

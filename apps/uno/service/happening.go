@@ -1,4 +1,4 @@
-package happening
+package service
 
 import (
 	"context"
