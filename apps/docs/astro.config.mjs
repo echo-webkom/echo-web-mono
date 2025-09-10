@@ -55,6 +55,19 @@ export default defineConfig({
             { label: "Installere pnpm", slug: "guides/installere-pnpm" },
           ],
         },
+        {
+          label: "Vertkøy",
+          items: [
+            {
+              label: "cenv",
+              slug: "tools/cenv",
+            },
+            {
+              label: "lazygit",
+              slug: "tools/lazygit",
+            },
+          ],
+        },
       ],
     }),
   ],
