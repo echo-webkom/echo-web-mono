@@ -85,7 +85,6 @@ require (
 )
 
 require (
-	github.com/go-chi/chi/v5 v5.2.3
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.19.0
 	github.com/jackc/pgx/v5 v5.7.5
