@@ -95,6 +95,7 @@ export default function WebkomPage() {
         <UnorderedList className="list-none p-0 text-lg">
           <ListItem>Githan Mayurathan</ListItem>
           <ListItem>Mikael Øverland</ListItem>
+          <ListItem>Marcelina Dylewska</ListItem>
         </UnorderedList>
       </div>
     </Container>
