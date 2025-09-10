@@ -90,6 +90,17 @@ export default function WebkomPage() {
           <ListItem>Andreas Drevdal</ListItem>
           <ListItem>Birk Monsen</ListItem>
         </UnorderedList>
+<<<<<<< HEAD
+
+        {/* --- H25 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
+          <ListItem>Githan Mayurathan</ListItem>
+=======
+        {/* --- H25 --- */}
+        <UnorderedList className="list-none p-0 text-lg">
+          <ListItem>Mikael Øverland</ListItem>
+>>>>>>> c41f02d8 (First commit)
+        </UnorderedList>
       </div>
     </Container>
   );
