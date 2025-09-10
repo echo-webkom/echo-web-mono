@@ -90,9 +90,11 @@ export default function WebkomPage() {
           <ListItem>Andreas Drevdal</ListItem>
           <ListItem>Birk Monsen</ListItem>
         </UnorderedList>
-
-                {/* --- H25 --- */}
+          
+        {/* --- H25 --- */}
         <UnorderedList className="list-none p-0 text-lg">
+          <ListItem>Githan Mayurathan</ListItem>
+          <ListItem>Mikael Øverland</ListItem>
           <ListItem>Marcelina Dylewska</ListItem>
         </UnorderedList>
       </div>
