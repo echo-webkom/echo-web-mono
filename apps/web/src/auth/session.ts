@@ -76,6 +76,34 @@ export async function signOut() {
   await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
 }
 
+export const getProfileOwnerInfo = cache(async (userId: string) => {
+  const session = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
+  const user = await db.query.users.findFirst({
+    where: (user) => eq(user.id, userId),
+    with: {
+      degree: true,
+      banInfo: true,
+      memberships: {
+        with: {
+          group: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    console.error(`User ${userId} not found in database`);
+    return null;
+  }
+
+  return user;
+});
+
 export const auth = cache(async () => {
   const session = await getSession();
 
