@@ -79,6 +79,10 @@ export default async function ProfilePage() {
               <Label>E-post</Label>
               <Text>{user.email}</Text>
             </div>
+            <div>
+              <Label>ID</Label>
+              <Text>{user.id}</Text>
+            </div>
           </div>
         </div>
 
