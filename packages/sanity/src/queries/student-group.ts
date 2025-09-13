@@ -61,3 +61,12 @@ export const studentGroupBySlugQuery = groq`
   }
 }[0]
 `;
+
+export const studentGroupsByProfileIdQuery = groq`
+*[_type == "studentGroup"
+  && !(_id in path('drafts.**'))
+  && $profileId in members[].profile->_id] | order(_createdAt asc) {
+  _id,
+  "slug": slug.current,
+}
+`;

@@ -1,9 +1,15 @@
 import {
   type StudentGroupBySlugQueryResult,
+  type StudentGroupsByProfileIdQueryResult,
   type StudentGroupsByTypeQueryResult,
 } from "@echo-webkom/cms/types";
 import { type StudentGroupType } from "@echo-webkom/lib";
-import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "@echo-webkom/sanity/queries";
+import { client } from "@echo-webkom/sanity";
+import {
+  studentGroupBySlugQuery,
+  studentGroupsByProfileIdQuery,
+  studentGroupsByTypeQuery,
+} from "@echo-webkom/sanity/queries";
 
 import { sanityFetch } from "./client";
 
@@ -41,5 +47,15 @@ export const fetchStudentGroupBySlug = async (slug: string) => {
     });
   } catch {
     return null;
+  }
+};
+
+export const fetchStudentGroupsByProfileId = async (profileId: string) => {
+  try {
+    return await client.fetch<StudentGroupsByProfileIdQueryResult>(studentGroupsByProfileIdQuery, {
+      profileId,
+    });
+  } catch {
+    return [];
   }
 };
