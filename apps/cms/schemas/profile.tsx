@@ -8,6 +8,12 @@ export default defineType({
   icon: UserIcon,
   fields: [
     defineField({
+      name: "userId",
+      title: "Bruker-ID",
+      type: "string",
+      description: "Bruker-ID på echo.uib.no",
+    }),
+    defineField({
       name: "name",
       title: "Navn",
       type: "string",
