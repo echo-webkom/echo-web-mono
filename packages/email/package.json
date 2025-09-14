@@ -27,7 +27,7 @@
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@react-email/preview-server": "^4.2.8",
+    "@react-email/preview-server": "^4.2.11",
     "@types/node": "22.18.1",
     "@types/react": "19.1.12",
     "dotenv-cli": "10.0.0",
