@@ -1,7 +1,17 @@
 "use client";
 
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronDown } from "lucide-react";
+import {
+  Button as AriaButton,
+  Input as AriaInput,
+  ComboBox,
+  ListBox,
+  ListBoxItem,
+  Popover,
+} from "react-aria-components";
 import { useForm } from "react-hook-form";
 import { RxPlus as Plus } from "react-icons/rx";
 import { type z } from "zod";
@@ -26,10 +36,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addUserToGroupSchema } from "@/lib/schemas/add-user-to-group";
 import { addUserToGroup } from "../actions";
+
+type User = {
+  id: string;
+  name: string;
+};
 
 type AddUserToGroupDialogProps = {
   group: {
@@ -41,15 +55,51 @@ type AddUserToGroupDialogProps = {
 export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [users, setUsers] = useState<Array<User>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof addUserToGroupSchema>>({
     defaultValues: {
-      email: "",
+      userId: "",
     },
     resolver: zodResolver(addUserToGroupSchema),
   });
 
+  useEffect(() => {
+    const searchUsers = async () => {
+      if (searchQuery.length < 2) {
+        setUsers([]);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/users/search?q=${encodeURIComponent(searchQuery)}`);
+        if (!response.ok) {
+          setUsers([]);
+          return;
+        }
+        const data = (await response.json()) as Array<User>;
+        if (Array.isArray(data)) {
+          setUsers(data);
+        } else {
+          setUsers([]);
+        }
+      } catch (error) {
+        console.error("Error searching users:", error);
+        setUsers([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const debounceTimeout = setTimeout(searchUsers, 300);
+    return () => clearTimeout(debounceTimeout);
+  }, [searchQuery]);
+
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await addUserToGroup(data.email, group.id);
+    const { success, message } = await addUserToGroup(data.userId, group.id);
 
     toast({
       title: message,
@@ -60,8 +110,12 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
       return;
     }
 
+    form.reset();
+    setSearchQuery("");
+    setUsers([]);
     router.refresh();
   });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -79,17 +133,24 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
             </DialogHeader>
             <DialogBody>
               <FormField
-                name="email"
+                name="userId"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="email">E-post</FormLabel>
+                    <FormLabel htmlFor="user">Bruker</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="andreas@student.uib.no" />
+                      <UserSearch
+                        value={searchQuery}
+                        onInputChange={setSearchQuery}
+                        onChange={(userId) => {
+                          field.onChange(userId);
+                        }}
+                        users={users}
+                        isLoading={isLoading}
+                      />
                     </FormControl>
                     <FormDescription>
-                      Dette er samme e-post som brukeren har på profil-siden sin som slutter med
-                      @student.uib.no.
+                      Søk etter navn på brukeren du vil legge til i gruppen.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -97,6 +158,13 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
               />
             </DialogBody>
             <DialogFooter>
+              <Button
+                size="sm"
+                type="submit"
+                disabled={!form.watch("userId") || form.formState.isSubmitting}
+              >
+                Legg til
+              </Button>
               <DialogClose asChild>
                 <Button size="sm">Lukk</Button>
               </DialogClose>
@@ -105,5 +173,115 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
         </Form>
       </DialogContent>
     </Dialog>
+  );
+};
+
+type UserSearchProps = {
+  users: Array<User>;
+  onChange?: (userId: string) => void;
+  value?: string;
+  onInputChange?: (query: string) => void;
+  isLoading?: boolean;
+};
+
+const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSearchProps) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [inputWidth, setInputWidth] = useState(300);
+  const displayItems = (() => {
+    if (isLoading) {
+      return [{ id: "loading", name: "Laster...", isSpecial: true }];
+    }
+    const typedLength = value?.length ?? 0;
+    if (typedLength < 2) {
+      return [{ id: "type_more", name: "Skriv minst 2 tegn", isSpecial: true }];
+    }
+    if (users.length === 0) {
+      return [{ id: "empty", name: "Ingen brukere funnet", isSpecial: true }];
+    }
+    return users.map((user) => ({ ...user, isSpecial: false }));
+  })();
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      if (ref.current) {
+        setInputWidth(ref.current.offsetWidth);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <ComboBox
+      aria-label="user"
+      name="user"
+      menuTrigger="input"
+      allowsCustomValue
+      allowsEmptyCollection
+      inputValue={value}
+      onInputChange={(val) => {
+        onInputChange?.(val);
+      }}
+      onSelectionChange={(data) => {
+        const selectedId = data?.toString() ?? "";
+        // Keep menu open and ignore non-selectable helper rows
+        if (selectedId === "loading" || selectedId === "empty" || selectedId === "type_more") {
+          return;
+        }
+        if (!selectedId) return;
+
+        onChange?.(selectedId);
+        const selectedUser = users.find((u) => u.id === selectedId);
+        if (selectedUser && onInputChange) {
+          onInputChange(selectedUser.name);
+        }
+      }}
+    >
+      <div
+        ref={ref}
+        className="group relative flex h-10 w-full rounded-md border-2 border-border bg-input text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <AriaInput
+          placeholder="Søk etter bruker..."
+          className="h-full w-full border-0 bg-transparent px-3 py-2 outline-0 ring-0 placeholder:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+        />
+        <AriaButton className="absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground">
+          <ChevronDown className="h-4 w-4" />
+        </AriaButton>
+      </div>
+      <Popover
+        style={{
+          minWidth: "280px",
+          width: inputWidth,
+          maxWidth: "640px",
+        }}
+        className="z-[100]"
+      >
+        <ListBox
+          items={displayItems}
+          className="flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 border-border bg-input px-3 py-2 text-foreground"
+        >
+          {(item) => (
+            <ListBoxItem
+              id={item.id}
+              textValue={item.name}
+              className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted selected:border-border selected:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span
+                className={
+                  item.isSpecial ? "text-muted-foreground" : "font-semibold text-foreground"
+                }
+              >
+                {item.name}
+              </span>
+            </ListBoxItem>
+          )}
+        </ListBox>
+      </Popover>
+    </ComboBox>
   );
 };

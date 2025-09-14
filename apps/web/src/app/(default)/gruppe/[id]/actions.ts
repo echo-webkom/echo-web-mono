@@ -171,7 +171,7 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
  * @param userId the user to be added
  * @param groupId the group to add the user to
  */
-export const addUserToGroup = async (userEmail: string, groupId: string) => {
+export const addUserToGroup = async (userId: string, groupId: string) => {
   try {
     const group = await db.query.groups.findFirst({
       where: (group) => eq(group.id, groupId),
@@ -191,7 +191,7 @@ export const addUserToGroup = async (userEmail: string, groupId: string) => {
       };
     }
 
-    const isUserInGroup = group.members.find((member) => member.user.email === userEmail);
+    const isUserInGroup = group.members.find((member) => member.userId === userId);
 
     if (isUserInGroup) {
       return {
@@ -221,7 +221,7 @@ export const addUserToGroup = async (userEmail: string, groupId: string) => {
     }
 
     const user = await db.query.users.findFirst({
-      where: (user) => eq(user.email, userEmail),
+      where: (user) => eq(user.id, userId),
     });
 
     if (!user) {
@@ -232,7 +232,7 @@ export const addUserToGroup = async (userEmail: string, groupId: string) => {
     }
 
     await db.insert(usersToGroups).values({
-      userId: user.id,
+      userId,
       groupId,
     });
 
