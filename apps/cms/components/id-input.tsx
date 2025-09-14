@@ -1,8 +1,9 @@
 import { Box, Button, Flex, TextInput } from "@sanity/ui";
 import { nanoid } from "nanoid";
 import { set, type StringInputProps, type StringSchemaType } from "sanity";
+import { type ReactElement } from "react";
 
-export const IdInput = (props: StringInputProps<StringSchemaType>) => {
+export const IdInput = (props: StringInputProps<StringSchemaType>): ReactElement => {
   const { value, onChange, elementProps } = props;
 
   const handleGenerateId = () => {
