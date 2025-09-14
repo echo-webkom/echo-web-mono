@@ -1,5 +1,5 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { groups, users } from ".";
@@ -17,7 +17,6 @@ export const usersToGroups = pgTable(
       .references(() => groups.id, {
         onDelete: "cascade",
       }),
-    isLeader: boolean("is_leader").notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.userId, t.groupId] })],
 ).enableRLS();

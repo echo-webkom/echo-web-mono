@@ -9,12 +9,10 @@ const user1: TUser = {
   memberships: [
     {
       groupId: "webkom",
-      isLeader: false,
       userId,
     },
     {
       groupId: "tilde",
-      isLeader: false,
       userId,
     },
   ],
@@ -24,12 +22,10 @@ const user2: TUser = {
   memberships: [
     {
       groupId: "bedkom",
-      isLeader: false,
       userId,
     },
     {
       groupId: "tilde",
-      isLeader: false,
       userId,
     },
   ],

@@ -73,13 +73,11 @@ const seedTest = async () => {
   await db.insert(usersToGroups).values({
     userId: "admin",
     groupId: "webkom",
-    isLeader: true,
   });
 
   await db.insert(usersToGroups).values({
     userId: "admin",
     groupId: "bedkom",
-    isLeader: true,
   });
 
   await Happening.create({

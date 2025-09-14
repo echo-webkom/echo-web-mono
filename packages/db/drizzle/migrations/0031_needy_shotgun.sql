@@ -1,0 +1,1 @@
+ALTER TABLE "users_to_groups" DROP COLUMN "is_leader";

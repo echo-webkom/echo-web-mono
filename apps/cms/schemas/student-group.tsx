@@ -23,6 +23,8 @@ export default defineType({
         source: "name",
         maxLength: 96,
       },
+      description:
+        "Unik identifikator for gruppen, brukes i URL. Burde også være den samme som IDen i echo sin database. Spør Webkom om du er usikker på noe.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

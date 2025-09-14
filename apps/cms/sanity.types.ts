@@ -1248,6 +1248,12 @@ export type StudentGroupBySlugQueryResult = {
     email: string | null;
   } | null;
 } | null;
+// Variable: studentGroupsByProfileIdQuery
+// Query: *[_type == "studentGroup"  && !(_id in path('drafts.**'))  && $profileId in members[].profile->_id] | order(_createdAt asc) {  _id,  "slug": slug.current,}
+export type StudentGroupsByProfileIdQueryResult = Array<{
+  _id: string;
+  slug: string;
+}>;
 
 // Source: ../../packages/seeder/src/sanity/query.ts
 // Variable: happeningQueryList
@@ -1296,6 +1302,7 @@ declare module "@sanity/client" {
     '\n*[_type == "staticInfo" && !(_id in path(\'drafts.**\'))] {\n  title,\n  "slug": slug.current,\n  pageType,\n  body\n}\n': StaticInfoQueryResult;
     '\n*[_type == "studentGroup"\n  && groupType == $type\n  && !(_id in path(\'drafts.**\'))] | order(_createdAt asc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0..$n]\n': StudentGroupsByTypeQueryResult;
     '\n*[_type == "studentGroup"\n  && slug.current == $slug\n  && !(_id in path(\'drafts.**\'))] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  name,\n  isActive,\n  groupType,\n  "slug": slug.current,\n  description,\n  image,\n  "members": members[] {\n    role,\n    "profile": profile->{\n      _id,\n      name,\n      picture,\n      socials,\n    },\n  },\n  "socials": socials {\n    facebook,\n    instagram,\n    linkedin,\n    email,\n  }\n}[0]\n': StudentGroupBySlugQueryResult;
+    '\n*[_type == "studentGroup"\n  && !(_id in path(\'drafts.**\'))\n  && $profileId in members[].profile->_id] | order(_createdAt asc) {\n  _id,\n  "slug": slug.current,\n}\n': StudentGroupsByProfileIdQueryResult;
     '*[_type == "happening" && !(_id in path(\'drafts.**\'))] {\n  _id,\n  title,\n  "slug": slug.current,\n  "date": date,\n  happeningType,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "groups": organizers[]->slug.current,\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "questions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    isSensitive,\n    options,\n  }\n}\n': HappeningQueryListResult;
   }
 }
