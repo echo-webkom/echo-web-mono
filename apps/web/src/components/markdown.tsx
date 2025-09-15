@@ -68,7 +68,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           p: ({ children, ...props }) => {
             return <Text {...props}>{children}</Text>;
           },
-          code: ({ children, className, ...props }) => {
+          code: ({ ref: _, children, className, ...props }) => {
             return (
               <code
                 className={cn(
@@ -81,7 +81,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
               </code>
             );
           },
-          blockquote: ({ children, className, ...props }) => {
+          blockquote: ({ ref: _, children, className, ...props }) => {
             return (
               <blockquote
                 className={cn("border-l-4 border-muted py-4 pl-4 italic", className)}
@@ -100,7 +100,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           li: ({ children, ...props }) => {
             return <ListItem {...props}>{children}</ListItem>;
           },
-          a: ({ children, href, ...props }) => {
+          a: ({ ref: _, children, href, ...props }) => {
             const isExternal = href?.startsWith("http");
             const classNames = cn(
               "transition-colors underline font-medium duration-200 after:content-['_↗'] hover:text-blue-500",
@@ -129,7 +129,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
               </Link>
             );
           },
-          img: ({ src, alt, className, ...props }) => {
+          img: ({ ref: _, src, alt, className, ...props }) => {
             const srcStr = typeof src === "string" ? src : "";
 
             return (
@@ -143,7 +143,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
               />
             );
           },
-          hr: ({ className, ...props }) => {
+          hr: ({ ref: _, className, ...props }) => {
             return <hr className={cn("my-8 border-t-border", className)} {...props} />;
           },
         }}
