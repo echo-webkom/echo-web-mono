@@ -59,3 +59,15 @@ export const fetchJobAdBySlug = async (slug: string): Promise<JobAdsQueryResult[
     (res) => res.find((jobAd) => jobAd.slug === slug && !isExpired(jobAd.expiresAt)) ?? null,
   );
 };
+
+/**
+ * Fetches job ads by company ID
+ *
+ * @param company the company ID to fetch job ads for
+ * @returns an array of job ads for the specified company
+ */
+export const fetchJobAdsByCompany = async (company: string): Promise<JobAdsQueryResult> => {
+  return await fetchJobAds().then((res) =>
+    res.filter((jobAd) => jobAd.company._id === company && !isExpired(jobAd.expiresAt)),
+  );
+};

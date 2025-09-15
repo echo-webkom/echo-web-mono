@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 
+import { BedpresJobAds } from "@/app/(default)/hjem/_components/job-ads";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
 import { CommentSection } from "../comments/comment-section";
@@ -40,6 +41,11 @@ export const EventPage = ({ event }: EventPageProps) => {
         {event?._type === "repeatingHappening" && <RepeatingHappeningSidebar event={event} />}
 
         <div>
+          {event.happeningType === "bedpres" && event.company && (
+            <div className="mb-10">
+              <BedpresJobAds companyId={event.company._id} />
+            </div>
+          )}
           <article>
             <Heading className="mb-4">{event.title}</Heading>
 
