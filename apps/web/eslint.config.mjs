@@ -1,5 +1,6 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
 import jsxA11y from "eslint-plugin-jsx-a11y";
@@ -8,18 +9,25 @@ import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-export default tseslint.config(
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+export default [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: [
       ".next/**",
-      "dist/**",
       "node_modules/**",
       "eslint.config.*",
       "next-env.d.ts",
       "postcss.config.*",
       "prettier.config.*",
+      "out/**",
+      "build/**",
     ],
   },
   js.configs.recommended,
@@ -96,4 +104,4 @@ export default tseslint.config(
       "@typescript-eslint/unbound-method": "off",
     },
   },
-);
+];
