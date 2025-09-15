@@ -23,10 +23,11 @@ type EventPageProps = {
 };
 
 export const EventPage = ({ event }: EventPageProps) => {
-  const isCompanyLeague = FOOTBALL_KEYWORDS.some(
-    (keyword) =>
-      event.title.toLowerCase().includes(keyword) || event.body?.toLowerCase().includes(keyword),
-  );
+  const isCompanyLeague =
+    FOOTBALL_KEYWORDS.some(
+      (keyword) =>
+        event.title.toLowerCase().includes(keyword) || event.body?.toLowerCase().includes(keyword),
+    ) && event.happeningType === "event";
 
   return (
     <div>
