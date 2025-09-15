@@ -1,6 +1,7 @@
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { BentoBox } from "./bento-box";
+import { JobAdCarouselClient } from "./job-ads-client";
 
 export const JobAds = async ({ className }: { className?: string }) => {
   const jobAds = await fetchAvailableJobAds(4);
@@ -24,4 +25,16 @@ export const JobAds = async ({ className }: { className?: string }) => {
       </ul>
     </BentoBox>
   );
+};
+
+export const BedpresJobAds = async ({ companyId }: { companyId: string }) => {
+  const jobAds = await fetchAvailableJobAds().then((res) =>
+    res.filter((jobAd) => jobAd.company._id === companyId),
+  );
+
+  if (!jobAds.length) {
+    return null;
+  }
+
+  return <JobAdCarouselClient jobAds={jobAds} />;
 };
