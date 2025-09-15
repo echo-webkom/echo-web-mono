@@ -1,29 +1,29 @@
 declare module "*.png" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
 
 declare module "*.jpg" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
 
 declare module "*.jpeg" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
 
 declare module "*.gif" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
 
 declare module "*.svg" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
 
 declare module "*.wav" {
-  const content: string;
+  const content: StaticImport;
   export default content;
 }
