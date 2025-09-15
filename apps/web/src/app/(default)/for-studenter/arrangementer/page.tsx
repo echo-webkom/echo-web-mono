@@ -10,9 +10,15 @@ import {
 import { EventsView, type SearchParams } from "@/components/events-view";
 import { getCalendarEvents } from "@/lib/calendar-events";
 
-export default async function Page({ searchParams }: { searchParams?: SearchParams }) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams | undefined>;
+}) {
+  let searchParamsResolved = await searchParams;
+
   // TODO: This is very bad practice and should be fixed!
-  searchParams ??= { type: "all" };
+  searchParamsResolved ??= { type: "all" };
 
   // Serialize searchParams to a JSON string as a key for the Suspense component.
   // Ensure a stable key by stringifying a sorted object if the order may vary.
@@ -33,7 +39,7 @@ export default async function Page({ searchParams }: { searchParams?: SearchPara
         <div className="w-full space-y-2">
           <FilterStatusAndOrderBar />
           <Suspense key={searchParamsKey} fallback={<></>}>
-            <EventsView searchParams={searchParams} />
+            <EventsView searchParams={searchParamsResolved} />
           </Suspense>
         </div>
       </div>
