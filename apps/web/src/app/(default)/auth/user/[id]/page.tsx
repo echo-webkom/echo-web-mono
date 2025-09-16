@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "lucide-react";
 
 import { db } from "@echo-webkom/db/serverless";
 
-import { auth, getProfileOwnerInfo as getProfileOwner } from "@/auth/session";
+import { auth, getProfileOwner } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";

@@ -78,7 +78,7 @@ export async function signOut() {
 
 export type AuthSessionUser = Awaited<ReturnType<typeof auth>>;
 
-export const getProfileOwnerInfo = cache(async (userId: string) => {
+export const getProfileOwner = cache(async (userId: string) => {
   const session = await getSession();
 
   if (!session) {
