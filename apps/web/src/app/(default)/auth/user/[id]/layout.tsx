@@ -19,20 +19,15 @@ const getRoutes = (profileOwnerId: string) => {
   ];
 };
 
-export default async function ProfileLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { id: string };
-}) {
+export default async function ProfileLayout(props: LayoutProps<"/auth/user/[id]">) {
+  const { children, params } = props;
   const currentUser = await auth();
 
   if (!currentUser) {
     return null;
   }
 
-  const profileOwnerId = String(params.id);
+  const profileOwnerId = String((await params).id);
   const routes = getRoutes(profileOwnerId);
 
   if (currentUser.id !== profileOwnerId) {
