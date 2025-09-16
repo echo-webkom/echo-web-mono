@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-import { degrees, groups, spotRanges, usersToGroups } from "@echo-webkom/db/schemas";
+import { degrees, groups, happenings, registrations, spotRanges, usersToGroups } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
 import * as message from "../utils";
@@ -10,6 +10,7 @@ import { createFakeUsers, users as defaultUsers } from "./data/users";
 import { type SeedMode } from "./mode";
 import * as Happening from "./repo/happening";
 import * as User from "./repo/user";
+import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 const NOW = new Date();
 
@@ -58,7 +59,32 @@ const seedDev = async () => {
   console.log(chalk.blue.underline(`🌱 Seeding dev data...`));
   message.lines();
 
-  console.log("No dev data to seed");
+  await createFakeUsers(10);
+
+  // Get the 10 most recently created users
+  const users = await db.query.users.findMany({
+    limit: 10,
+    orderBy: (u) => u.createdAt,
+  });
+
+  const happening = await db.query.happenings.findFirst({
+    where: (h) => eq(h.slug, "ball-is-life"),
+  });
+
+  if(!happening) {
+    console.log(chalk.red("Happening 'ball-is-life' not found, skipping registrations"));
+    return;
+  } else {
+      // Register each user to the happening
+    for (const user of users) {
+      await db.insert(registrations).values({
+        userId: user.id,
+        happeningId: happening.id,
+        status: "registered",
+        createdAt: new Date(),
+      }).onConflictDoNothing();
+    }
+  }
 };
 
 const seedTest = async () => {
