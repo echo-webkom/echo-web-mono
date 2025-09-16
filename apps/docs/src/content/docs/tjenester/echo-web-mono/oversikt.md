@@ -79,7 +79,7 @@ pnpm db:setup    # Full database reset
 pnpm db:migrate  # Kjør migrasjoner
 pnpm db:generate # Generer nye migrasjoner
 pnpm seed        # Seed database med testdata
-pnpm seed database --mode <prod || dev || test> # Mogleg å velge modus til seed, modus til høgre inneholder modus til venstre 
+pnpm seed database --mode <prod || dev || test> # Mogleg å velge modus til seed, modus til høgre inneholder modus til venstre
 ```
 
 ### Testing og kvalitet
