@@ -27,7 +27,7 @@
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:^",
     "@faker-js/faker": "10.0.0",
-    "@sanity/client": "7.11.0",
+    "@sanity/client": "7.11.1",
     "chalk": "5.6.2",
     "commander": "14.0.0",
     "drizzle-orm": "0.44.5",
