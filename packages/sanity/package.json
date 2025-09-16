@@ -15,7 +15,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@sanity/client": "7.11.0",
+    "@sanity/client": "7.11.1",
     "@sanity/image-url": "1.2.0",
     "groq": "4.6.1"
   },
