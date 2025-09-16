@@ -76,7 +76,7 @@ export async function signOut() {
   await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
 }
 
-export const getProfileOwnerInfo = cache(async (userId: string) => {
+export const getProfileOwner = cache(async (userId: string) => {
   const session = await getSession();
 
   if (!session) {
