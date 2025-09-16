@@ -1,4 +1,4 @@
-package happening
+package dto
 
 type CreateHappeningDTO struct {
 }

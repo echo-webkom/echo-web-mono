@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":semanticCommitScopeDisabled", ":semanticCommitsDisabled"],
+  "extends": ["config:base", ":semanticCommitScopeDisabled", ":semanticCommitsDisabled", ":automergeMinor"],
   "labels": ["dependencies :handshake:"],
   "commitMessageAction": "Update",
   "rangeStrategy": "bump",
@@ -12,5 +12,9 @@
     }
   ],
   "prConcurrentLimit": 10,
-  "stabilityDays": 3
+  "stabilityDays": 3,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 4am on thursday"]
+  }
 }

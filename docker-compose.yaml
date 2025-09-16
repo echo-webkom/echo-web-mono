@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15.13
+    image: postgres:15.14
     restart: always
     container_name: echo-web-db
     environment:

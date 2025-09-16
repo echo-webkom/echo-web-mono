@@ -7,7 +7,7 @@ import (
 
 	"github.com/echo-webkom/uno/config"
 	"github.com/echo-webkom/uno/pkg/middleware"
-	"github.com/echo-webkom/uno/routes"
+	"github.com/echo-webkom/uno/server/routes"
 	"github.com/go-chi/chi/v5"
 	"github.com/jesperkha/notifier"
 )
@@ -55,7 +55,8 @@ func (s *Server) ListenAndServe(notif *notifier.Notifier) {
 		finish()
 	}()
 
-	log.Println("listening on port " + s.config.Port)
+	log.Println("🔃 Uno running on http://localhost" + s.config.Port)
+	log.Println("📚 See Swagger documentation on http://localhost" + s.config.Port + "/swagger")
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Println(err)
 	}

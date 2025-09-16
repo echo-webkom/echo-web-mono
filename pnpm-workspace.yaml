@@ -3,3 +3,10 @@ packages:
   - packages/*
   - packages/config/*
   - playwright
+
+onlyBuiltDependencies:
+  - core-js
+  - esbuild
+  - sharp
+  - unrs-resolver
+  - workerd

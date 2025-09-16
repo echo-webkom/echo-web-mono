@@ -15,12 +15,12 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@sanity/client": "7.11.0",
+    "@sanity/client": "7.11.1",
     "@sanity/image-url": "1.2.0",
     "groq": "4.6.1"
   },
   "devDependencies": {
-    "@types/node": "22.17.2",
+    "@types/node": "22.18.1",
     "eslint": "9.34.0",
     "eslint-config-webkom": "workspace:*",
     "globals": "^16.3.0",

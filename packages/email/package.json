@@ -19,16 +19,16 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@react-email/components": "0.5.1",
-    "@react-email/render": "1.2.1",
+    "@react-email/components": "0.5.3",
+    "@react-email/render": "1.2.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "resend": "4.8.0",
+    "resend": "6.0.2",
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@react-email/preview-server": "^4.2.8",
-    "@types/node": "22.17.2",
+    "@react-email/preview-server": "^4.2.11",
+    "@types/node": "22.18.1",
     "@types/react": "19.1.12",
     "dotenv-cli": "10.0.0",
     "eslint": "9.34.0",

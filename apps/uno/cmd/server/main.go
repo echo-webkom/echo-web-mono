@@ -39,10 +39,10 @@ const ART = `⠐⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄�
 // @description Uno API documentation.
 // @BasePath /
 
-// @securityDefinitions.apikey  BearerAuth
+// @securityDefinitions.apikey BearerAuth
 // @in header
-// @name Authorization
-// @description Provide your JWT token in the format: Bearer <token>
+// @name admin-token
+// @description Provide your admin token in the format: Bearer <token>
 
 // @securityDefinitions.apikey CookieAuth
 // @in cookie

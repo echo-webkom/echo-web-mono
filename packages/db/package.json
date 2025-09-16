@@ -24,7 +24,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "drizzle-orm": "0.44.4",
+    "drizzle-orm": "0.44.5",
     "drizzle-zod": "0.5.1",
     "nanoid": "5.1.5",
     "pg": "8.16.3",
@@ -32,7 +32,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "@types/node": "22.17.2",
+    "@types/node": "22.18.1",
     "@types/pg": "8.15.5",
     "dotenv-cli": "10.0.0",
     "drizzle-kit": "0.31.4",

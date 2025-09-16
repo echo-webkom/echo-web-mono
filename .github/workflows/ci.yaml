@@ -38,7 +38,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15.13
+        image: postgres:15.14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -55,9 +55,9 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: 🐢 Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 22.19.0
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
@@ -69,6 +69,9 @@ jobs:
 
       - name: 🔃 Sync
         run: pnpm --filter=docs sync
+
+      - name: 🆎 Typegen
+        run: pnpm --filter=web typegen
 
       - name: 📝 Lint
         run: pnpm lint

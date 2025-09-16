@@ -169,7 +169,6 @@ export default defineType({
       description:
         "Dato og tid for når undergrupper kan melde seg på hendelsen. Hvis ikke satt, vil påmeldingsdatoen være den samme som for resten. Kan ikke være etter vanlig påmeldingsdato.",
       type: "datetime",
-      validation: (Rule) => Rule.max(Rule.valueOfField("registrationStart")),
     }),
     defineField({
       name: "registrationGroups",
@@ -189,15 +188,12 @@ export default defineType({
       title: "Påmeldingsdato",
       description: "Dato og tid for påmelding til hendelsen.",
       type: "datetime",
-      validation: (Rule) => Rule.max(Rule.valueOfField("registrationEnd")),
     }),
     defineField({
       name: "registrationEnd",
       title: "Påmeldingsfrist",
       description: "Dato og tid for påmeldingsfrist til hendelsen.",
       type: "datetime",
-      validation: (Rule) =>
-        Rule.min(Rule.valueOfField("registrationStart")).max(Rule.valueOfField("date")),
     }),
     defineField({
       name: "contacts",

@@ -35,9 +35,11 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
       reason,
     });
 
+    await sendSlackNotification(email, reason);
+
     await emailClient.sendEmail(
       ["echo@uib.no"],
-      `Forespørsel om tilgang til echo.uib.no`,
+      "Forespørsel om tilgang til echo.uib.no",
       AccessRequestNotificationEmail({
         email,
         reason,
@@ -75,3 +77,51 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
     };
   }
 };
+
+const SLACK_ACCESS_REQUEST_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
+
+async function sendSlackNotification(email: string, reason: string) {
+  if (!SLACK_ACCESS_REQUEST_WEBHOOK_URL) {
+    console.error("SLACK_WEBHOOK_URL is not defined");
+    return;
+  }
+
+  const message = {
+    text: "🔐 Søknad om tilgang",
+    blocks: [
+      {
+        type: "header",
+        text: {
+          type: "plain_text",
+          text: "🔐 Søknad om tilgang",
+        },
+      },
+      {
+        type: "section",
+        fields: [
+          {
+            type: "mrkdwn",
+            text: `*E-post:*\n${email}`,
+          },
+          {
+            type: "mrkdwn",
+            text: `*Grunn:*\n${reason}`,
+          },
+        ],
+      },
+    ],
+  };
+
+  try {
+    await fetch(SLACK_ACCESS_REQUEST_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+    console.info("Slack notification sent successfully");
+  } catch (error) {
+    console.error("Error sending Slack notification:", error);
+  }
+}

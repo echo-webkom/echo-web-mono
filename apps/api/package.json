@@ -17,15 +17,15 @@
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/sanity": "workspace:*",
-    "@electric-sql/pglite": "0.3.7",
-    "@hono/node-server": "1.19.1",
+    "@electric-sql/pglite": "0.3.8",
+    "@hono/node-server": "1.19.2",
     "date-fns": "4.1.0",
-    "drizzle-orm": "0.44.4",
-    "hono": "4.9.6",
+    "drizzle-orm": "0.44.5",
+    "hono": "4.9.7",
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "@types/node": "22.17.2",
+    "@types/node": "22.18.1",
     "dotenv-cli": "10.0.0",
     "esbuild": "0.25.9",
     "eslint": "9.34.0",

@@ -6,7 +6,7 @@ import { db } from "@echo-webkom/db/serverless";
 import * as message from "../utils";
 import { degrees as defaultDegrees } from "./data/degrees";
 import { groups as defaultGroups } from "./data/groups";
-import { users as defaultUsers } from "./data/users";
+import { createFakeUsers, users as defaultUsers } from "./data/users";
 import { type SeedMode } from "./mode";
 import * as Happening from "./repo/happening";
 import * as User from "./repo/user";
@@ -116,5 +116,5 @@ const seedTest = async () => {
   console.log("Inserted spot range for Test i prod med Webkom");
 
   // Uncomment to add 100 fake students
-  //await createFakeUsers(100);
+  await createFakeUsers(100);
 };
