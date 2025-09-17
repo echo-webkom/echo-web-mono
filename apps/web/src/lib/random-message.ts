@@ -44,6 +44,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
   { text: "Progbar > Integrerbar", link: "https://programmer.bar" },
   { text: "Tidlig eksamen", link: "/tidlig-eksamen" },
+  { text: "Mac-en i taket😍", link: "/mac-en-i-taket" },
   {
     text: "Finding Steinar trees",
     link: "https://www.mimuw.edu.pl/~malcin/book/parameterized-algorithms.pdf#subsection.7.3.3",
