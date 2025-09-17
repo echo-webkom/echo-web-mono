@@ -2,7 +2,11 @@ name: Database check migrations
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: 
+      - opened
+      - synchronize
+    paths:
+      - packages/db/**
 
 env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
