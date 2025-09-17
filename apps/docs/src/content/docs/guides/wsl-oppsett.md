@@ -21,10 +21,6 @@ WSL (Windows Subsystem for Linux) gir deg et komplett Linux-miljø på Windows, 
 ```powershell
 # Aktiver WSL feature
 wsl --install
-
-# Eller manuelt:
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 ```
 
 **Restart datamaskinen** etter at du har aktivert WSL.
@@ -73,15 +69,14 @@ sudo apt update && sudo apt upgrade -y
 ### Node.js og pnpm
 
 ```bash
-# Installer Node Version Manager (nvm)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+# Installer Fast Node Manager
+curl -fsSL https://fnm.vercel.app/install | bash
 
 # Restart terminal eller kjør:
 source ~/.bashrc
 
 # Installer latest Node.js LTS
-nvm install --lts
-nvm use --lts
+fnm use 22
 
 # Installer pnpm
 npm install -g pnpm
@@ -122,12 +117,13 @@ git config --global user.email "din.epost@student.uib.no"
 # Installer cenv
 curl -sSL https://raw.githubusercontent.com/echo-webkom/cenv/main/install.sh | bash
 
-# Restart terminal
-exec bash
+source ~/.bashrc
 
 # Verifiser installasjon
 cenv --version
 ```
+
+> Om det ikke funker legg til `~/.local/bin` i din `PATH`.
 
 ## 6. VSCode integrasjon
 
@@ -141,7 +137,6 @@ cenv --version
 
 ```bash
 # Fra WSL terminal, naviger til prosjektmappen
-cd /home/username/projects
 git clone git@github.com:echo-webkom/echo-web-mono.git
 cd echo-web-mono
 
@@ -157,17 +152,6 @@ VSCode vil automatisk koble til WSL og installere nødvendige extensions.
 
 - **Anbefalt**: `/home/username/projects/` (WSL filsystem)
 - **Unngå**: `/mnt/c/Users/...` (Windows filsystem - langsommere)
-
-### Performance tips
-
-```bash
-# Sett execution policy for bedre ytelse
-echo 'export NODE_OPTIONS="--max-old-space-size=8192"' >> ~/.bashrc
-
-# Excluder node_modules fra Windows Defender
-# Kjør i PowerShell som administrator:
-# Add-MpPreference -ExclusionPath "\\wsl$\Ubuntu-22.04\home\username\projects"
-```
 
 ## 8. Nyttige WSL kommandoer
 
@@ -199,19 +183,6 @@ wsl ls -la
 winget install Microsoft.WindowsTerminal
 ```
 
-### Zsh og Oh My Zsh (valgfritt)
-
-```bash
-# Installer zsh
-sudo apt install zsh
-
-# Installer Oh My Zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Sett zsh som standard shell
-chsh -s $(which zsh)
-```
-
 ## 10. Feilsøking
 
 ### WSL tar lang tid å starte
@@ -227,32 +198,6 @@ wsl
 1. Sjekk at WSL extension er installert
 2. Restart både VSCode og WSL
 3. Prøv å koble til manuelt: `Ctrl+Shift+P` → "WSL: Connect to WSL"
-
-### Docker ikke working
-
-```bash
-# Start Docker service
-sudo service docker start
-
-# Eller legg til i startup
-echo 'sudo service docker start' >> ~/.bashrc
-```
-
-### Filrettigheter issues
-
-```bash
-# Fix ownership av filer
-sudo chown -R $USER:$USER /home/$USER/projects
-
-# Sett korrekte permissions
-chmod -R 755 /home/$USER/projects
-```
-
-### Slow file operations
-
-- Sørg for at prosjekter ligger i WSL filsystem (`/home/...`)
-- Ikke i Windows filsystem (`/mnt/c/...`)
-- Bruk `git clone` i WSL, ikke Windows
 
 ## 11. Best Practices
 
