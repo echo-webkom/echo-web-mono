@@ -4,7 +4,7 @@ title: GitHub CLI (gh)
 
 ## Hva er GitHub CLI?
 
-GitHub CLI (ogs� bare kalt `gh`) er GitHubs kommandolinje-verkt�y som lar deg jobbe med GitHub repositories, issues, pull requests og fra den vakre terminalen din.
+GitHub CLI (også bare kalt `gh`) er GitHubs kommandolinje-verktøy som lar deg jobbe med GitHub repositories, issues, pull requests og fra den vakre terminalen din.
 
 ## Installering
 
@@ -20,13 +20,13 @@ Les [installasjonsinstruksjonene](https://github.com/cli/cli#installation) for a
 
 ## Autentisering
 
-F�r du kan bruke GitHub CLI m� du autentisere deg:
+F�r du kan bruke GitHub CLI må du autentisere deg:
 
 ```sh
 gh auth login
 ```
 
-F�lg instruksjonene for � logge inn via nettleser eller personal access token.
+Følg instruksjonene for å logge inn via nettleser eller personal access token.
 
 ## Tips og triks
 
@@ -70,7 +70,7 @@ gh pr review 123 --approve
 # Request changes
 gh pr review 123 --request-changes --body "Trenger endringer her"
 
-# Komment�r p� PR
+# Kommenter på PR
 gh pr comment 123 --body "God jobb!"
 ```
 
@@ -173,7 +173,7 @@ gh api notifications
 # Opprett og bytt til ny branch
 git checkout -b feature/ny-feature
 
-# Gj�r endringer og commit
+# Gjør endringer og commit
 git add . && git commit -m "Legg til ny feature"
 
 # Push og opprett PR
@@ -183,7 +183,7 @@ gh pr create --title "Ny feature" --body "Beskrivelse"
 #### Review workflow
 
 ```sh
-# Se PRs som venter p� review
+# Se PRs som venter på review
 gh pr list --search "review-requested:@me"
 
 # Sjekk ut PR for lokal testing
