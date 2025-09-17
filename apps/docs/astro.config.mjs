@@ -66,6 +66,10 @@ export default defineConfig({
               label: "lazygit",
               slug: "tools/lazygit",
             },
+            {
+              label: "GitHub CLI",
+              slug: "tools/gh",
+            },
           ],
         },
       ],
