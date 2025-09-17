@@ -52,17 +52,9 @@ git config --global core.editor "code --wait"  # VS Code
 # eller
 git config --global core.editor "vim"          # Vim
 
-# Forbedret diff-visning
-git config --global diff.tool vscode
-git config --global merge.tool vscode
-
-# Automatisk cleanup av branches
-git config --global fetch.prune true
-
 # Bedre log-formatering
 git config --global alias.lg "log --oneline --graph --decorate --all"
 git config --global alias.st "status -sb"
-git config --global alias.co "checkout"
 git config --global alias.br "branch"
 ```
 
@@ -93,7 +85,7 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 cat ~/.ssh/id_ed25519.pub | clip
 ```
 
-> `pbcopy` og `clip` kopierer innholdet til utklippstavlen din.
+> `pbcopy` og `clip` er programmer for å kopierer innholdet til utklippstavlen din.
 
 2. Gå til GitHub → Settings → SSH and GPG keys
 3. Klikk "New SSH key"

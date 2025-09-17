@@ -50,18 +50,8 @@ code --install-extension esbenp.prettier-vscode
 ### React-spesifikke extensions
 
 ```bash
-code --install-extension ms-vscode.vscode-react-javascript-snippets
-code --install-extension christian-kohler.path-intellisense
 code --install-extension ms-vscode.vscode-emmet
 ```
-
-6. **ES7+ React/Redux/React-Native snippets** (`dsznajder.es7-react-js-snippets`)
-   - Nyttige code snippets for React
-   - Rask scaffolding av komponenter
-
-7. **Path Intellisense** (`christian-kohler.path-intellisense`)
-   - Autocomplete for filstier
-   - Reduserer feil i import-stier
 
 ### Git & Collaboration
 
@@ -124,30 +114,11 @@ Opprett eller oppdater `settings.json` filen din:
   "editor.linkedEditing": true,
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
-  "editor.inlineSuggest.enabled": true,
-
-  // Workbench
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "One Dark Pro"
+  "editor.inlineSuggest.enabled": true
 }
 ```
 
-## 4. Workspace-spesifikke innstillinger
-
-I echo-web-mono repository, opprett `.vscode/settings.json`:
-
-```json
-{
-  "typescript.preferences.includePackageJsonAutoImports": "auto",
-  "eslint.workingDirectories": ["./apps/web", "./apps/api", "./apps/cms", "./packages"],
-  "editor.rulers": [80, 120],
-  "files.associations": {
-    "*.mdx": "markdown"
-  }
-}
-```
-
-## 5. Nyttige Snippets
+## 4. Nyttige Snippets
 
 Opprett egne snippets for echo Webkom utvikling. Gå til File → Preferences → Configure User Snippets:
 
@@ -196,40 +167,7 @@ Opprett egne snippets for echo Webkom utvikling. Gå til File → Preferences �
 }
 ```
 
-## 6. Debugging-oppsett
-
-Opprett `.vscode/launch.json` for debugging:
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug Next.js",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/apps/web/node_modules/.bin/next",
-      "args": ["dev"],
-      "console": "integratedTerminal",
-      "serverReadyAction": {
-        "pattern": "started server on .+, url: (https?://.+)",
-        "uriFormat": "%s",
-        "action": "debugWithChrome"
-      }
-    },
-    {
-      "name": "Debug API",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/apps/api/src/index.ts",
-      "outFiles": ["${workspaceFolder}/apps/api/dist/**/*.js"],
-      "console": "integratedTerminal"
-    }
-  ]
-}
-```
-
-## 7. Keyboard Shortcuts
+## 5. Keyboard Shortcuts
 
 Viktige shortcuts for echo Webkom utvikling:
 
@@ -246,7 +184,7 @@ Viktige shortcuts for echo Webkom utvikling:
 | `Cmd/Ctrl + Shift + L` | Select all matches  |
 | `Cmd/Ctrl + /`         | Toggle comment      |
 
-## 9. Produktivitetstips
+## 6. Produktivitetstips
 
 ### IntelliSense og Autocomplete
 
@@ -272,7 +210,7 @@ Viktige shortcuts for echo Webkom utvikling:
 - `@` symbol for å hoppe til symboler i fil
 - `#` symbol for å søke i workspace
 
-## 10. Troubleshooting
+## 7. Troubleshooting
 
 ### TypeScript funker ikke?
 
@@ -282,7 +220,7 @@ Viktige shortcuts for echo Webkom utvikling:
 
 ### ESLint issues
 
-1. Sjekk at `.eslintrc` eller `eslint.config.js` finnes i prosjektet
+1. Sjekk at `eslint.config.js` finnes i prosjektet
 2. Restart ESLint Server: `Cmd/Ctrl + Shift + P` → "ESLint: Restart ESLint Server"
 3. Kontroller at ESLint extension kan finne config-filen
 
@@ -292,7 +230,7 @@ Viktige shortcuts for echo Webkom utvikling:
 2. Sjekk `prettier.config.cjs` i prosjektrotmappen
 3. Enable "Format on Save" i settings
 
-## 11. echo Webkom Workflow
+## 8. echo Webkom Workflow
 
 ### Daglig arbeidsflyt
 
