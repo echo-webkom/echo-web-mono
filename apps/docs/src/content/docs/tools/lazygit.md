@@ -10,6 +10,17 @@ Lazygit gjør det også veldig enkelt å bytte mellom branches (den stasher auto
 
 ## Installer lazygit
 
+### macOS
+
+```bash
+# Last ned med homebrew
+brew install lazygit
+```
+
+### Annet
+
 Gå til [lazygit sin github side](https://github.com/jesseduffield/lazygit) og last ned nyeste release binary.
 
-| **Tip:** Lag en alias `lz` for lazygit.
+## Tips
+
+- Lag en alias `lz` for lazygit.
