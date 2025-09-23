@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 
+import { NO_GROUP_FILTER_VALUE } from "../_lib/use-registration-filter";
+
 type SearchFilterProps = {
   searchTerm: string;
   setSearchTerm: (searchTerm: string) => void;
@@ -78,8 +80,11 @@ export const GroupFilter = ({ studentGroups, groupFilter, setGroupFilter }: Grou
       <Label htmlFor="group">Undergruppe:</Label>
       <Select id="group" value={groupFilter} onChange={(e) => setGroupFilter(e.target.value)}>
         <option value="">Alle</option>
+        <option value={NO_GROUP_FILTER_VALUE}>Ingen</option>
         {studentGroups.map((group) => (
-          <option key={group.id}>{group.name}</option>
+          <option key={group.id} value={group.name}>
+            {group.name}
+          </option>
         ))}
       </Select>
     </div>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+export const NO_GROUP_FILTER_VALUE = "__NO_GROUP__";
+
 export type RegistrationFilter = {
   searchTerm: string;
   yearFilter: string;

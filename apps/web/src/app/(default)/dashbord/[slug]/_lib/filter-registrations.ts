@@ -1,7 +1,7 @@
 import { type Group } from "@echo-webkom/db/schemas";
 
 import { type RegistrationWithUser } from "./types";
-import { type RegistrationFilter } from "./use-registration-filter";
+import { NO_GROUP_FILTER_VALUE, type RegistrationFilter } from "./use-registration-filter";
 
 export const filterRegistrations = (
   registrations: Array<RegistrationWithUser>,
@@ -29,14 +29,23 @@ export const filterRegistrations = (
 
     const matchesGroupFilter =
       groupFilter === "" ||
-      studentGroups.some((group) => {
-        return (
-          groupFilter.toLowerCase() === group.name.toLowerCase() &&
-          registration.user.memberships.some(
-            (membership) => membership.group?.name.toLowerCase() === group.name.toLowerCase(),
-          )
-        );
-      });
+      (groupFilter === NO_GROUP_FILTER_VALUE
+        ? registration.user.memberships.length === 0 ||
+          registration.user.memberships.every((membership) => !membership.group)
+        : studentGroups.some((group) => {
+            const groupName = group.name?.toLowerCase();
+
+            if (!groupName) {
+              return false;
+            }
+
+            return (
+              groupFilter.toLowerCase() === groupName &&
+              registration.user.memberships.some(
+                (membership) => membership.group?.name?.toLowerCase() === groupName,
+              )
+            );
+          }));
     return matchesSearchTerm && matchesYearFilter && matchesStatusFilter && matchesGroupFilter;
   });
 };
