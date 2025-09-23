@@ -17,7 +17,7 @@ export const StaticPageSidebar = () => {
   }
 
   return (
-    <aside className="hidden w-full max-w-[200px] flex-shrink-0 flex-col md:flex">
+    <aside className="hidden w-full max-w-[200px] shrink-0 flex-col md:flex">
       <nav className="flex flex-col space-y-2">
         {links.map((link) => {
           const isActive = link.href === pathname;

@@ -30,7 +30,7 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
 export const SidebarLayoutRoot = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <div className="mx-auto flex w-full max-w-[1400px] flex-grow flex-row">{children}</div>
+      <div className="mx-auto flex w-full max-w-[1400px] grow flex-row">{children}</div>
     </SidebarProvider>
   );
 };
@@ -45,7 +45,7 @@ export const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      className={cn("min-w-[200px] flex-shrink-0 border-r-2 bg-background p-5 md:block", {
+      className={cn("min-w-[200px] shrink-0 border-r-2 bg-background p-5 md:block", {
         "hidden md:block": !isOpen,
         "w-full md:w-auto": isOpen,
       })}

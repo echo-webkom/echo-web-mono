@@ -243,11 +243,11 @@ const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSe
     >
       <div
         ref={ref}
-        className="group relative flex h-10 w-full rounded-md border-2 border-border bg-input text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="group relative flex h-10 w-full rounded-md border-2 border-border bg-input text-sm font-semibold ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <AriaInput
           placeholder="Søk etter bruker..."
-          className="h-full w-full border-0 bg-transparent px-3 py-2 outline-0 ring-0 placeholder:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+          className="h-full w-full border-0 bg-transparent px-3 py-2 outline-0 ring-0 placeholder:text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-0"
         />
         <AriaButton className="absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground">
           <ChevronDown className="h-4 w-4" />
@@ -259,7 +259,7 @@ const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSe
           width: inputWidth,
           maxWidth: "640px",
         }}
-        className="z-[100]"
+        className="z-100"
       >
         <ListBox
           items={displayItems}
@@ -269,7 +269,7 @@ const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSe
             <ListBoxItem
               id={item.id}
               textValue={item.name}
-              className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-none focus:border-border focus:bg-muted selected:border-border selected:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+              className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-hidden focus:border-border focus:bg-muted selected:border-border selected:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span
                 className={

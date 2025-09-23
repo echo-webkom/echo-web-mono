@@ -57,7 +57,7 @@ const Application = ({ application }: ApplicationProps) => {
         target="_blank"
         rel="noreferrer"
       >
-        <Avatar className="mx-auto size-16 flex-shrink-0">
+        <Avatar className="mx-auto size-16 shrink-0">
           <AvatarImage src={imageUrl} />
           <AvatarFallback className="bg-background text-foreground">
             {initials(application.profile.name)}

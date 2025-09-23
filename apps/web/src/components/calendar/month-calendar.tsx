@@ -87,7 +87,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
 
   return (
     <div className="w-full overflow-x-scroll rounded-xl border-2 border-border md:overflow-hidden">
-      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] border-b-2 border-border bg-border">
+      <div className="grid min-w-200 grid-cols-7 gap-[2px] border-b-2 border-border bg-border">
         {weekdays.map((day) => (
           <Heading
             level={3}
@@ -101,7 +101,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
           </Heading>
         ))}
       </div>
-      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-border">
+      <div className="grid min-w-200 grid-cols-7 gap-[2px] bg-border">
         {allDays.map((day, _) => (
           <CalendarDay key={day.toString()}>
             <DayCircle

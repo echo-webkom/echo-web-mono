@@ -125,7 +125,7 @@ export const AmountEventPerGroup = () => {
               >
                 <div className="flex h-full w-full items-center gap-2">
                   <div
-                    className={`flex h-full flex-grow items-center justify-end p-4 ${COLORS[index % COLORS.length]} rounded-full`}
+                    className={`flex h-full grow items-center justify-end p-4 ${COLORS[index % COLORS.length]} rounded-full`}
                   ></div>
                   <motion.div
                     initial={{
