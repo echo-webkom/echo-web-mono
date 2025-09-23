@@ -25,7 +25,7 @@ export const HappeningPreview = ({
         className={cn(
           "h-18 relative flex items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted",
           {
-            "h-[6.5rem]": happening.happeningType === "bedpres",
+            "h-26": happening.happeningType === "bedpres",
             "border-secondary-dark": happening.isPinned === true,
           },
         )}

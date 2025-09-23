@@ -48,7 +48,7 @@ export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
         <Button
           size="icon"
           onClick={handleToggleRead}
-          variant={feedback.isRead ? "outline" : "secondary"}
+          variant={feedback.isRead ? "outline-solid" : "secondary"}
         >
           {feedback.isRead ? <RxEnvelopeOpen /> : <RxEnvelopeClosed />}
         </Button>

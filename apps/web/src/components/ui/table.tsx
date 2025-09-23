@@ -40,7 +40,7 @@ const TableBody = React.forwardRef<
   <tbody
     ref={ref}
     className={cn(
-      "bg-table-background [&_tr:last-child]:border-0 odd:[&_tr]:bg-table-background-alt",
+      "bg-table-background [&_tr:last-child]:border-0 [&_tr]:odd:bg-table-background-alt",
       className,
     )}
     {...props}

@@ -21,7 +21,7 @@ export const UtilitiesTab = ({ happening, registrations }: UtilitiesTabProps) =>
     .map((r) => r.user.name ?? r.user.email);
 
   return (
-    <div className="mt-8 flex max-w-screen-md flex-col justify-between gap-6">
+    <div className="mt-8 flex max-w-(--breakpoint-md) flex-col justify-between gap-6">
       <Heading>Generelt</Heading>
 
       <Box>

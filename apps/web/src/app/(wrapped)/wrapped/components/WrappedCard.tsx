@@ -29,7 +29,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${style.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow`}
+        className={`absolute ${style.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow-sm`}
       >
         {children}
       </motion.div>
@@ -57,7 +57,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
           <motion.div
             style={{ zIndex: -index }}
             key={index}
-            className={`absolute left-0 top-0 h-full w-full ${color} shadow`}
+            className={`absolute left-0 top-0 h-full w-full ${color} shadow-sm`}
             variants={variants}
           />
         );
@@ -185,7 +185,7 @@ export function WrappedCard<C extends number>({ style, children }: WrappedCardPr
 
   return (
     <div
-      className={`relative left-0 top-0 -z-50 h-[100vh] w-[100vw] overflow-hidden ${style.bgColor}`}
+      className={`relative left-0 top-0 -z-50 h-screen w-screen overflow-hidden ${style.bgColor}`}
     >
       <div className="flex h-full w-full items-center justify-center overflow-hidden">
         <motion.div

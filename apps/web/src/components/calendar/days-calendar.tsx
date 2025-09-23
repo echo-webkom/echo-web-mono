@@ -124,7 +124,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                             <div
                               className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
                                 "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary hover:dark:text-muted":
+                                "border-secondary hover:bg-secondary dark:hover:text-muted":
                                   event.type === "event",
                                 "border-pink-400 hover:bg-pink-400": event.type === "movie",
                                 "border-green-600 hover:bg-green-600": event.type === "boardgame",
