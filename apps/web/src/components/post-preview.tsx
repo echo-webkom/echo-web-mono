@@ -22,7 +22,7 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
-          "h-42 relative flex flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out hover:border-muted-dark hover:bg-muted",
+          "hover:border-muted-dark hover:bg-muted relative flex h-42 flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out",
           {
             "border-transparent": !withBorder,
             "bg-muted hover:bg-transparent": isNew,
@@ -32,13 +32,13 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
       >
         <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold">{post.title}</h3>
 
-        <p className="right-2 top-2 text-sm text-gray-500 sm:absolute">
+        <p className="top-2 right-2 text-sm text-gray-500 sm:absolute">
           {shortDateNoTimeNoYear(post._createdAt)}
         </p>
 
         {post.body && <p className="my-2 line-clamp-3 text-sm italic">{removeMd(post.body)}</p>}
 
-        <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:-bottom-4 sm:right-4">
+        <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:right-4 sm:-bottom-4">
           {isNew && <Chip>NY</Chip>}
           {post.authors?.map((author) => (
             <Chip variant="secondary" key={author._id}>

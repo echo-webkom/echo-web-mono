@@ -72,7 +72,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             return (
               <code
                 className={cn(
-                  "rounded bg-gray-200 px-1 py-0.5 font-mono text-gray-700 dark:bg-wave dark:text-gray-100",
+                  "dark:bg-wave rounded bg-gray-200 px-1 py-0.5 font-mono text-gray-700 dark:text-gray-100",
                   className,
                 )}
                 {...props}
@@ -84,7 +84,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
           blockquote: ({ ref: _, children, className, ...props }) => {
             return (
               <blockquote
-                className={cn("border-l-4 border-muted py-4 pl-4 italic", className)}
+                className={cn("border-muted border-l-4 py-4 pl-4 italic", className)}
                 {...props}
               >
                 {children}
@@ -144,7 +144,7 @@ export const Markdown = ({ className, content }: MarkdownProps) => {
             );
           },
           hr: ({ ref: _, className, ...props }) => {
-            return <hr className={cn("my-8 border-t-border", className)} {...props} />;
+            return <hr className={cn("border-t-border my-8", className)} {...props} />;
           },
         }}
         remarkPlugins={[remarkGfm]}

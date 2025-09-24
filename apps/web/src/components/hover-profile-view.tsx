@@ -16,18 +16,18 @@ export const HoverProfileView = ({ user, group }: { user: User; group: string })
       <PopoverContent className="mx-2 flex w-fit flex-col gap-1">
         <p className="font-bold">{user.name}</p>
         {user.year && user.degreeId && (
-          <p className="flex text-muted-foreground">
+          <p className="text-muted-foreground flex">
             <LuGraduationCap className="my-auto mr-2" />
             {user.year.toString() + ". trinn " + user.degreeId.toUpperCase()}
           </p>
         )}
         {group.length > 0 && (
-          <p className="flex text-muted-foreground">
+          <p className="text-muted-foreground flex">
             <LuUsers className="my-auto mr-2" />
             {group}
           </p>
         )}
-        <p className="flex text-muted-foreground">
+        <p className="text-muted-foreground flex">
           <LuMail className="my-auto mr-2" />
           <Link className="hover:underline" href={mailTo(user.email)}>
             {user.alternativeEmail ?? user.email}

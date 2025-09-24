@@ -98,7 +98,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
               key={item.id}
             >
               <div className="flex flex-col">
-                <Text className="pb-0 pt-2">{item.name}</Text>
+                <Text className="pt-2 pb-0">{item.name}</Text>
                 {isAdmin && <Text className="py-1 text-xs font-light">{item.user}</Text>}
               </div>
               <div className="flex items-center justify-end gap-4">
@@ -108,7 +108,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
                     onClick={() => {
                       handleLikeButtonClick(item.id);
                     }}
-                    className="h-min rounded-md p-3 hover:bg-reaction dark:hover:bg-gray-600"
+                    className="hover:bg-reaction h-min rounded-md p-3 dark:hover:bg-gray-600"
                   >
                     {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
                   </button>
@@ -120,7 +120,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
                     {showConfirmRemove !== item.id ? (
                       <button
                         onClick={() => toggleConfirmRemove(item.id)}
-                        className="h-min rounded-md p-3 hover:bg-reaction dark:hover:bg-gray-600"
+                        className="hover:bg-reaction h-min rounded-md p-3 dark:hover:bg-gray-600"
                       >
                         <IoTrashBinOutline />
                       </button>
@@ -131,7 +131,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
                         </Button>
                         <Button
                           variant="ghost"
-                          className="border hover:bg-reaction dark:hover:bg-gray-600 md:border-none"
+                          className="hover:bg-reaction border md:border-none dark:hover:bg-gray-600"
                           onClick={() => toggleConfirmRemove(item.id)}
                         >
                           Avbryt

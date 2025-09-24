@@ -29,7 +29,7 @@ export const CommentReplyButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="flex flex-row items-center text-sm text-muted-foreground hover:underline"
+      className="text-muted-foreground flex flex-row items-center text-sm hover:underline"
     >
       {isOpen ? <X className="mr-1 h-3 w-3" /> : <Reply className="mr-1 h-3 w-3" />}
       {isOpen ? "Avbryt" : "Svar"}

@@ -215,7 +215,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
 
       <hr className="border-border" />
 
-      <p className="text-sm text-muted-foreground">Antall resultater: {filteredJobAds.length}</p>
+      <p className="text-muted-foreground text-sm">Antall resultater: {filteredJobAds.length}</p>
 
       {filteredJobAds.length > 0 ? (
         <ul className="grid grid-cols-1 gap-8 lg:grid-cols-2">

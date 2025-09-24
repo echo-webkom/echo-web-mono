@@ -25,7 +25,7 @@ export const CommentSectionCard = () => {
       }}
     >
       <motion.div
-        className="absolute left-0 top-0 m-5 font-primary text-3xl opacity-[0.05]"
+        className="font-primary absolute top-0 left-0 m-5 text-3xl opacity-[0.05]"
         animate={{ y: -1000 }}
         transition={{ duration: 40 }}
       >
@@ -207,7 +207,7 @@ export const HowManyMembers = () => {
         rotate: [-5, 10],
       }}
     >
-      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-radley text-3xl">
+      <div className="font-radley grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>I år fikk echo hele {NEW_USERS} nye medlemmer!</AppearingText>
         </div>

@@ -13,7 +13,7 @@ import { PizzaFormel } from "../../../../../components/pizza-formel";
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box className="text-center">
-    <p className="mb-2 text-muted-foreground">{title}</p>
+    <p className="text-muted-foreground mb-2">{title}</p>
     <p className="text-7xl font-medium">{value}</p>
   </Box>
 );

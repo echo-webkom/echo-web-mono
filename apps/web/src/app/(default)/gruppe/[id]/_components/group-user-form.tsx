@@ -92,7 +92,7 @@ export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => 
           <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-xs">
             <div className="space-y-0.5">
               <Label>Leder</Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Skal brukeren kunne fjerne og legge til brukere i gruppen?
               </p>
             </div>

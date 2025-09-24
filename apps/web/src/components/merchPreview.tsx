@@ -12,12 +12,12 @@ type MerchPreviewProps = {
 export const MerchPreview = ({ item }: MerchPreviewProps) => {
   return (
     <Link href={`/for-studenter/merch/${item.slug}`}>
-      <div className="group flex h-full justify-between gap-3 rounded-lg border-2 p-6 shadow-lg hover:bg-muted">
+      <div className="group hover:bg-muted flex h-full justify-between gap-3 rounded-lg border-2 p-6 shadow-lg">
         <div className="flex flex-col gap-3">
           <h2 className="text-2xl font-bold">{item.title}</h2>
 
           {item.body && (
-            <p className="line-clamp-3 flex-1 text-slate-700 dark:text-foreground">
+            <p className="dark:text-foreground line-clamp-3 flex-1 text-slate-700">
               {removeMd(item.body ?? "")}
             </p>
           )}

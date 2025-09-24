@@ -25,7 +25,7 @@ export const EventIntro = () => {
         rotate: [-5, 10],
       }}
     >
-      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend text-3xl">
+      <div className="font-lexend grid h-full w-full grid-cols-1 grid-rows-2 text-3xl">
         <div className="flex h-full w-full items-center justify-start p-10">
           <AppearingText delay={0.3}>
             For et hektisk år<br></br>det har vært!
@@ -96,7 +96,7 @@ export const AmountEventPerGroup = () => {
         rotate: [-5, -10, -15],
       }}
     >
-      <div className="flex h-full w-full flex-col items-center overflow-hidden font-unna text-3xl">
+      <div className="font-unna flex h-full w-full flex-col items-center overflow-hidden text-3xl">
         <p className="p-10">
           Antall arrangementer<br></br>per undergruppe:
         </p>
@@ -164,7 +164,7 @@ export const AgendaEvent = () => {
         rotate: [-5, 10],
       }}
     >
-      <div className="grid h-full w-full grid-cols-1 grid-rows-2 font-lexend">
+      <div className="font-lexend grid h-full w-full grid-cols-1 grid-rows-2">
         <div className="flex h-full w-full flex-col justify-center gap-3 p-10 text-3xl">
           <AppearingText delay={0.3}>
             Wow, dere har mye
@@ -190,7 +190,7 @@ export const RegistrationsCard = () => {
   return (
     <>
       <motion.div
-        className="absolute left-[35vw] top-[12vh] z-50 h-[75vh] w-[30vw]"
+        className="absolute top-[12vh] left-[35vw] z-50 h-[75vh] w-[30vw]"
         initial={{
           y: -2000,
         }}
@@ -295,7 +295,7 @@ export const BestEvent = () => {
           <p className="text-wrapped-black text-center text-5xl font-bold">Top 3</p>
         </AppearingText>
         <div
-          className={"grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden font-primary"}
+          className={"font-primary grid h-1/2 w-2/3 grid-cols-3 grid-rows-1 gap-2 overflow-hidden"}
         >
           {events.map((event, index) => {
             return (
@@ -388,7 +388,7 @@ export const Top10Events = () => {
         rotate: [0, 0],
       }}
     >
-      <div className="flex w-full flex-col gap-2 p-10 font-unna">
+      <div className="font-unna flex w-full flex-col gap-2 p-10">
         <p className="mb-7 text-center text-5xl">Top 10</p>
         {TOP_10_EVENTS.map((item, index) => {
           return <Top10Item key={item.name} index={index} name={item.name} />;
@@ -450,7 +450,7 @@ export const YourBedpresses = () => {
         rotate: [0, 0],
       }}
     >
-      <div className="flex flex-col gap-5 p-10 font-lexend text-xl">
+      <div className="font-lexend flex flex-col gap-5 p-10 text-xl">
         <div>
           <p className="text-wrapped-black p-3 text-center text-4xl">Bedpres konge?</p>
         </div>
@@ -508,7 +508,7 @@ export const BeerAmount = () => {
         rotate: [-5, 10],
       }}
     >
-      <div className={"flex h-full w-full flex-col gap-5 font-unna"}>
+      <div className={"font-unna flex h-full w-full flex-col gap-5"}>
         <div className="flex h-1/4 w-full flex-col items-center justify-center gap-3">
           <motion.p
             initial={{ opacity: 1 }}
@@ -529,7 +529,7 @@ export const BeerAmount = () => {
             </motion.p>
           </AppearingText>
         </div>
-        <div className={"flex h-1/3 w-full flex-col items-center justify-center gap-5 font-unna"}>
+        <div className={"font-unna flex h-1/3 w-full flex-col items-center justify-center gap-5"}>
           <AppearingText delay={2}>
             <p className="text-3xl">Dere drakk hele</p>
           </AppearingText>

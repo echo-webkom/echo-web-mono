@@ -34,7 +34,7 @@ export const CommentReplyTextarea = () => {
         value={content}
         onChange={(event) => setContent(event.target.value)}
       />
-      <button className="mt-2 flex items-center text-sm text-muted-foreground hover:underline">
+      <button className="text-muted-foreground mt-2 flex items-center text-sm hover:underline">
         <Send className="mr-1 h-3 w-3" />
         Svar
       </button>

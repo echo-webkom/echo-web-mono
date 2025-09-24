@@ -66,7 +66,7 @@ export const DownloadCsvButton = ({ slug, questions }: DownloadCsvButtonProps) =
           );
         })}
         <div>
-          <Button asChild variant="outline" className="mx-2 mb-2 mt-4">
+          <Button asChild variant="outline" className="mx-2 mt-4 mb-2">
             <a href={toRelative(url)} download>
               Last ned csv
             </a>

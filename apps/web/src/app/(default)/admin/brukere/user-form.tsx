@@ -84,33 +84,33 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
               <div className="flex flex-col gap-2">
                 <div>
                   <Label>ID</Label>
-                  <p className="text-sm text-muted-foreground">{user.id}</p>
+                  <p className="text-muted-foreground text-sm">{user.id}</p>
                 </div>
 
                 <div>
                   <Label>Rolle</Label>
-                  <p className="text-sm text-muted-foreground">{user.alternativeEmail}</p>
+                  <p className="text-muted-foreground text-sm">{user.alternativeEmail}</p>
                 </div>
 
                 <div>
                   <Label>Studieretning</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     {user.degree?.name ?? "Ikke valgt"}
                   </p>
                 </div>
 
                 <div>
                   <Label>År</Label>
-                  <p className="text-sm text-muted-foreground">{user.year ?? "Ikke valgt"}</p>
+                  <p className="text-muted-foreground text-sm">{user.year ?? "Ikke valgt"}</p>
                 </div>
 
                 <div>
                   <Label>Navn</Label>
-                  <p className="text-sm text-muted-foreground">{user.name}</p>
+                  <p className="text-muted-foreground text-sm">{user.name}</p>
                 </div>
                 <div>
                   <Label>E-post</Label>
-                  <p className="text-sm text-muted-foreground">{user.email}</p>
+                  <p className="text-muted-foreground text-sm">{user.email}</p>
                 </div>
 
                 <FormField
@@ -134,7 +134,7 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
                             return (
                               <FormItem
                                 key={id}
-                                className="flex flex-row items-center space-x-3 space-y-0"
+                                className="flex flex-row items-center space-y-0 space-x-3"
                               >
                                 <FormControl>
                                   <Checkbox

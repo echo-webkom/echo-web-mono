@@ -15,8 +15,8 @@ type FooterProps = {
 
 export const Footer = ({ className }: FooterProps) => {
   return (
-    <div className={cn("mt-32 selection:bg-primary", className)}>
-      <footer className="relative rounded-t-[40px] border-2 border-footer-border bg-footer px-10 py-24 text-footer-foreground">
+    <div className={cn("selection:bg-primary mt-32", className)}>
+      <footer className="border-footer-border bg-footer text-footer-foreground relative rounded-t-[40px] border-2 px-10 py-24">
         <CommitLabel />
         <UsefulLinks />
 
@@ -84,7 +84,7 @@ const humanSha = COMMIT_SHA.slice(0, 7);
 const CommitLabel = () => {
   return (
     <div className="absolute bottom-0 left-0 p-1.5">
-      <p className="font-mono text-xs text-muted-foreground">
+      <p className="text-muted-foreground font-mono text-xs">
         <a
           className="flex items-center gap-1 hover:underline"
           href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
@@ -100,7 +100,7 @@ const CommitLabel = () => {
 const UsefulLinks = () => {
   return (
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">
-      <ul className="flex flex-row gap-2 font-mono text-xs text-muted-foreground">
+      <ul className="text-muted-foreground flex flex-row gap-2 font-mono text-xs">
         <li>
           <Link className="flex items-center gap-1 hover:underline" href="/feed">
             <BiRss className="inline-block h-4 w-4" />

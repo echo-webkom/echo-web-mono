@@ -12,7 +12,7 @@ export const Text = ({ size = "md", className, children }: TextProps) => {
   return (
     <p
       className={cn(
-        "break-words py-1 leading-relaxed",
+        "py-1 leading-relaxed break-words",
         {
           "text-sm": size === "sm",
           "text-lg": size === "md",

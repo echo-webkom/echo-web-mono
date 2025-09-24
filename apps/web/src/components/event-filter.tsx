@@ -163,21 +163,21 @@ export const EventFilter = () => {
       <div className="hidden sm:flex sm:flex-row sm:space-x-2">
         <Button
           className="w-auto"
-          variant={type === "ALL" ? "default" : "outline-solid"}
+          variant={type === "ALL" ? "default" : "outline"}
           onClick={() => updateFilter("ALL", router, pathname, params)}
         >
           Alle
         </Button>
         <Button
           className="w-auto"
-          variant={type === "EVENT" ? "default" : "outline-solid"}
+          variant={type === "EVENT" ? "default" : "outline"}
           onClick={() => updateFilter("EVENT", router, pathname, params)}
         >
           Arrangementer
         </Button>
         <Button
           className="w-auto"
-          variant={type === "BEDPRES" ? "default" : "outline-solid"}
+          variant={type === "BEDPRES" ? "default" : "outline"}
           onClick={() => updateFilter("BEDPRES", router, pathname, params)}
         >
           Bedriftspresentasjoner
@@ -214,7 +214,7 @@ export const FilterStatusAndOrderBar = () => {
     <div className="flex items-center justify-between">
       <Button
         size={"sm"}
-        variant={"outline-solid"}
+        variant={"outline"}
         className={cn("rounded-full text-sm", {
           invisible: !filterSet,
         })}

@@ -19,11 +19,11 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
     <Link href={`/for-studenter/stillingsannonse/${jobAd.slug}`}>
       <div
         className={cn(
-          "h-30 flex flex-row items-center gap-8 rounded-xl border-2 p-6",
+          "flex h-30 flex-row items-center gap-8 rounded-xl border-2 p-6",
           "hover:bg-muted",
           "transition-colors duration-200 ease-in-out",
           {
-            "border-transparent hover:border-border": !hideBorder,
+            "hover:border-border border-transparent": !hideBorder,
             "border-border": hideBorder,
           },
         )}
