@@ -55,6 +55,7 @@ export const RegistrationRow = ({
         >
           {registration.user.name}
         </Link>
+        // fix css og error for clickable username i dashbord her
         <TableCell className={cn(statusColor[registration.status])}>
           {getRegistrationStatus(registration, happeningDate)}
         </TableCell>

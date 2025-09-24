@@ -44,102 +44,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }),
   ]);
 
-  if (isProfileOwner) {
-    return (
-      <div className="max-w-2xl space-y-4">
-        <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-6 md:flex-row">
-            <UploadProfilePicture
-              name={profileOwner.name ?? "Bo Bakseter"}
-              image={profileOwner.image}
-            />
-            <div>
-              <div>
-                <Label>Navn</Label>
-                <Text>{profileOwner.name}</Text>
-              </div>
-              <div>
-                <Label>E-post</Label>
-                <Text>{profileOwner.email}</Text>
-              </div>
-            </div>
-          </div>
-
-          {memberships.length > 0 && (
-            <div>
-              <Text size="sm" className="mb-2 font-semibold">
-                Grupper:
-              </Text>
-
-              <ul className="flex flex-wrap gap-1">
-                {memberships.map(({ group }) => (
-                  <li key={group.id}>
-                    <Link href={`/gruppe/${group.id}`}>
-                      <Chip key={group.id} variant="secondary" className="hover:underline">
-                        {group.name}
-                      </Chip>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-        {isProfileOwner ? (
-          <UserForm
-            user={{
-              id: profileOwner.id,
-              degree: profileOwner.degree ?? undefined,
-              year: profileOwner.year ?? undefined,
-              alternativeEmail:
-                "alternativeEmail" in profileOwner
-                  ? (profileOwner.alternativeEmail ?? undefined)
-                  : undefined,
-              hasReadTerms: !!profileOwner.hasReadTerms,
-              isPublic:
-                "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
-              birthday:
-                "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
-            }}
-            degrees={degrees}
-          />
-        ) : null}
-      </div>
-    );
-  }
-
-  if (!hasAccess) {
-    return (
-      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4">
-        <div className="w-full max-w-2xl">
-          <Heading
-            level={2}
-            className="mb-4 text-center"
-          >{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-          <Card className="border-muted shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-center p-8">
-                <div className="text-center">
-                  <Text className="text-lg font-medium">Denne brukeren har privat profil.</Text>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="mt-6 text-center">
-            <Link href={`/auth/user/${user.id}`}>
-              <Button variant="ghost">
-                <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                Gå til egen profil
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isProfileOwner) {
+  if (!isProfileOwner && hasAccess) {
     return (
       <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4">
         <div className="w-full max-w-2xl space-y-6">
@@ -212,8 +117,90 @@ export default async function ProfilePage({ params }: { params: { id: string } }
               </CardContent>
             </Card>
           )}
+        </div>
+      </div>
+    );
+  } else if (isProfileOwner) {
+    return (
+      <div className="max-w-2xl space-y-4">
+        <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6 md:flex-row">
+            <UploadProfilePicture
+              name={profileOwner.name ?? "Bo Bakseter"}
+              image={profileOwner.image}
+            />
+            <div>
+              <div>
+                <Label>Navn</Label>
+                <Text>{profileOwner.name}</Text>
+              </div>
+              <div>
+                <Label>E-post</Label>
+                <Text>{profileOwner.email}</Text>
+              </div>
+            </div>
+          </div>
 
-          <div className="text-right">
+          {memberships.length > 0 && (
+            <div>
+              <Text size="sm" className="mb-2 font-semibold">
+                Grupper:
+              </Text>
+
+              <ul className="flex flex-wrap gap-1">
+                {memberships.map(({ group }) => (
+                  <li key={group.id}>
+                    <Link href={`/gruppe/${group.id}`}>
+                      <Chip key={group.id} variant="secondary" className="hover:underline">
+                        {group.name}
+                      </Chip>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        {isProfileOwner ? (
+          <UserForm
+            user={{
+              id: profileOwner.id,
+              degree: profileOwner.degree ?? undefined,
+              year: profileOwner.year ?? undefined,
+              alternativeEmail:
+                "alternativeEmail" in profileOwner
+                  ? (profileOwner.alternativeEmail ?? undefined)
+                  : undefined,
+              hasReadTerms: !!profileOwner.hasReadTerms,
+              isPublic:
+                "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
+              birthday:
+                "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
+            }}
+            degrees={degrees}
+          />
+        ) : null}
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4">
+        <div className="w-full max-w-2xl">
+          <Heading
+            level={2}
+            className="mb-4 text-center"
+          >{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
+          <Card className="border-muted shadow-md">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center p-8">
+                <div className="text-center">
+                  <Text className="text-lg font-medium">Denne brukeren har privat profil.</Text>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <div className="mt-6 text-center">
             <Link href={`/auth/user/${user.id}`}>
               <Button variant="ghost">
                 <ArrowLeftIcon className="mr-2 h-4 w-4" />
