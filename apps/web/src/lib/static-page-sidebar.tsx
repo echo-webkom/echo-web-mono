@@ -27,7 +27,7 @@ export const StaticPageSidebar = () => {
               key={link.href}
               href={link.href}
               className={cn("text-muted-foreground hover:text-foreground", {
-                "font-bold text-foreground": isActive,
+                "text-foreground font-bold": isActive,
               })}
             >
               {link.label}

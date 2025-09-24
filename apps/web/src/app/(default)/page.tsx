@@ -83,15 +83,15 @@ export default async function HomePage() {
         <ParticlesBackdrop />
 
         <Container>
-          <div className="mb-24 mt-32 space-y-16">
+          <div className="mt-32 mb-24 space-y-16">
             <div className="mx-auto max-w-(--breakpoint-md) text-center">
               <div className="mb-8">
-                <h1 className="text-4xl font-semibold text-gray-700 dark:text-gray-200 sm:text-5xl">
+                <h1 className="text-4xl font-semibold text-gray-700 sm:text-5xl dark:text-gray-200">
                   echo – Linjeforeningen for informatikk
                 </h1>
               </div>
               <Reveal>
-                <p className="mx-auto max-w-(--breakpoint-md) font-medium text-muted-foreground md:text-xl">
+                <p className="text-muted-foreground mx-auto max-w-(--breakpoint-md) font-medium md:text-xl">
                   Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
                   arrangere sosiale og faglige arrangementer.
                 </p>
@@ -144,7 +144,7 @@ export default async function HomePage() {
                 </p>
 
                 <Link
-                  className="font-medium text-primary hover:underline"
+                  className="text-primary font-medium hover:underline"
                   href="/for-bedrifter/bedriftspresentasjon"
                 >
                   Les om bedriftspresentasjoner &rarr;
@@ -166,7 +166,7 @@ export default async function HomePage() {
                         >
                           {event.title}
                         </Link>
-                        <p className="text-nowrap text-muted-foreground">
+                        <p className="text-muted-foreground text-nowrap">
                           {format(new Date(event.date), "EEE. dd.MM", {
                             locale: nb,
                           })}
@@ -193,7 +193,7 @@ export default async function HomePage() {
                           {bedpres.title}
                         </Link>
                         {/* <p className="text-nowrap text-muted-foreground">ti. 02.04</p> */}
-                        <p className="text-nowrap text-muted-foreground">
+                        <p className="text-muted-foreground text-nowrap">
                           {format(new Date(bedpres.date), "EEE. dd.MM", {
                             locale: nb,
                           })}

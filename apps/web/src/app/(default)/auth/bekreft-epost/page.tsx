@@ -6,7 +6,7 @@ import VerifyEmailForm from "./verify-email-form";
 export default function VerifyEmailPage() {
   return (
     <div className="container mx-auto max-w-md py-8">
-      <div className="rounded-lg border bg-muted p-8 shadow-xs">
+      <div className="bg-muted rounded-lg border p-8 shadow-xs">
         <Heading level={3} className="mb-6 text-center">
           Bekreft e-postadresse
         </Heading>

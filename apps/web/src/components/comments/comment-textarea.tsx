@@ -14,7 +14,7 @@ export const CommentTextarea = ({ className, value, ...props }: CommentTextareaP
   return (
     <textarea
       className={cn(
-        "block w-full border-b-2 border-x-transparent border-b-muted-foreground border-t-transparent bg-transparent py-2 focus:border-x-transparent focus:border-b-gray-300 focus:border-t-transparent focus:ring-0 disabled:pointer-events-none disabled:opacity-50",
+        "border-b-muted-foreground block w-full border-b-2 border-x-transparent border-t-transparent bg-transparent py-2 focus:border-x-transparent focus:border-t-transparent focus:border-b-gray-300 focus:ring-0 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       rows={shouldExpand ? 2 : 1}

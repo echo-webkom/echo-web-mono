@@ -14,7 +14,7 @@ export default async function BirthdayBanner() {
   }
 
   return (
-    <div className="flex h-14 items-center justify-center bg-secondary text-center">
+    <div className="bg-secondary flex h-14 items-center justify-center text-center">
       <h1 className="text-md mt-3 font-extrabold text-[#c26ce4] sm:mt-0 sm:text-2xl">
         🎉 GRATTIS MED DAGEN {firstName}! 🎉
       </h1>

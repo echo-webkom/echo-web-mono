@@ -243,13 +243,13 @@ const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSe
     >
       <div
         ref={ref}
-        className="group relative flex h-10 w-full rounded-md border-2 border-border bg-input text-sm font-semibold ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="group border-border bg-input ring-offset-background focus-visible:ring-ring relative flex h-10 w-full rounded-md border-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
       >
         <AriaInput
           placeholder="Søk etter bruker..."
-          className="h-full w-full border-0 bg-transparent px-3 py-2 outline-0 ring-0 placeholder:text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-0"
+          className="placeholder:text-muted-foreground h-full w-full border-0 bg-transparent px-3 py-2 ring-0 outline-0 placeholder:text-sm focus:ring-0 focus:outline-hidden"
         />
-        <AriaButton className="absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground">
+        <AriaButton className="text-muted-foreground absolute inset-y-0 right-0 flex items-center px-2">
           <ChevronDown className="h-4 w-4" />
         </AriaButton>
       </div>
@@ -263,17 +263,17 @@ const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSe
       >
         <ListBox
           items={displayItems}
-          className="flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 border-border bg-input px-3 py-2 text-foreground"
+          className="border-border bg-input text-foreground flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 px-3 py-2"
         >
           {(item) => (
             <ListBoxItem
               id={item.id}
               textValue={item.name}
-              className="group flex cursor-default select-none items-center gap-2 rounded border-2 border-transparent py-2 pl-2 pr-4 text-gray-900 outline-hidden focus:border-border focus:bg-muted selected:border-border selected:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+              className="group focus:border-border focus:bg-muted selected:border-border selected:bg-muted flex cursor-default items-center gap-2 rounded border-2 border-transparent py-2 pr-4 pl-2 text-gray-900 outline-hidden select-none disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span
                 className={
-                  item.isSpecial ? "text-muted-foreground" : "font-semibold text-foreground"
+                  item.isSpecial ? "text-muted-foreground" : "text-foreground font-semibold"
                 }
               >
                 {item.name}

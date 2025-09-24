@@ -41,7 +41,7 @@ export const MovieClubCard = async () => {
           </div>
           <Link href={thisWeekMovie.link ?? "#"}>
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-              <div className="rounded-md bg-background p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
+              <div className="bg-background rounded-md p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
                 <ul>
                   <label className="line-clamp-1 overflow-hidden text-2xl font-semibold">
                     {thisWeekMovie.title}
@@ -69,7 +69,7 @@ export const MovieClubCard = async () => {
               alt={`${nextWeekMovie.title} logo`}
             />
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-              <li className="rounded-md bg-background p-2 text-xs opacity-90">
+              <li className="bg-background rounded-md p-2 text-xs opacity-90">
                 {shortDateNoTimeNoYear(nextWeekMovie.date)}
               </li>
             </div>
@@ -83,7 +83,7 @@ export const MovieClubCard = async () => {
                 alt={`${nextNextWeekMovie.title} logo`}
               />
               <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-                <li className="rounded-md bg-background p-2 text-xs opacity-90">
+                <li className="bg-background rounded-md p-2 text-xs opacity-90">
                   {shortDateNoTimeNoYear(nextNextWeekMovie.date)}
                 </li>
               </div>

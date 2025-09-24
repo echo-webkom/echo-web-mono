@@ -23,7 +23,7 @@ export const HSApplications = async () => {
     <div>
       <Heading level={3}>Årets søkere til Hovedstyret!</Heading>
 
-      <Text className="mb-5 text-muted-foreground">
+      <Text className="text-muted-foreground mb-5">
         Trykk på en søker for å lese mer om dem,{" "}
         <Link href="/sokere" className="text-primary underline">
           eller se alle søkere her.

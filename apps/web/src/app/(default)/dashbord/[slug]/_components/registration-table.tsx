@@ -37,7 +37,7 @@ export const RegistrationTable = ({
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col items-center gap-4 pb-2 pt-2 md:flex-row md:pb-4">
+      <div className="flex flex-col items-center gap-4 pt-2 pb-2 md:flex-row md:pb-4">
         <SearchFilter searchTerm={filters.searchTerm} setSearchTerm={setSearchTerm} />
         <YearFilter yearFilter={filters.yearFilter} setYearFilter={setYearFilter} />
         <StatusFilter statusFilter={filters.statusFilter} setStatusFilter={setStatusFilter} />
@@ -91,7 +91,7 @@ export const RegistrationTable = ({
             {filteredRegistrations.length === 0 && (
               <TableRow>
                 <td colSpan={showIndex ? 6 : 5}>
-                  <p className="py-6 text-center text-xl font-medium text-muted-foreground">
+                  <p className="text-muted-foreground py-6 text-center text-xl font-medium">
                     Ingen resultater
                   </p>
                 </td>

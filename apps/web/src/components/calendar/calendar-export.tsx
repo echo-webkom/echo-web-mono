@@ -67,7 +67,7 @@ export const CalendarExport = () => {
         <h2>Typer</h2>
 
         {eventTypes.map((type) => (
-          <div key={type.value} className="flex flex-row items-start space-x-3 space-y-0">
+          <div key={type.value} className="flex flex-row items-start space-y-0 space-x-3">
             <Checkbox
               id={type.value}
               checked={types.includes(type.value)}
@@ -89,7 +89,7 @@ export const CalendarExport = () => {
         ))}
       </div>
 
-      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+      <div className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
         <Checkbox
           id={INCLUDE_PAST_PARAM}
           checked={includePast}
@@ -102,7 +102,7 @@ export const CalendarExport = () => {
         </div>
       </div>
 
-      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+      <div className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
         <Checkbox
           id={INCLUDE_MOVIES_PARAM}
           checked={includeMovies}
@@ -115,7 +115,7 @@ export const CalendarExport = () => {
         </div>
       </div>
 
-      <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+      <div className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
         <Checkbox
           id={INCLUDE_BEDPRES_REGISTRATION_PARAM}
           checked={includeBedpresRegistration}

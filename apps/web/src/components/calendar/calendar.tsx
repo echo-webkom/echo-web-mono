@@ -196,11 +196,11 @@ const Legend = () => {
   return (
     <div className="flex flex-wrap gap-4 p-5 text-xs">
       <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-primary"></div>
+        <div className="bg-primary mr-1 h-3 w-3 rounded-full"></div>
         <div>Bedpres</div>
       </div>
       <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-secondary"></div>
+        <div className="bg-secondary mr-1 h-3 w-3 rounded-full"></div>
         <div>Arrangement</div>
       </div>
       <div className="mr-2 flex items-center">

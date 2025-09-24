@@ -121,7 +121,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
               </div>
               <div className="grid w-full grid-cols-4 gap-1">
                 <Button
-                  variant={selectedStatus === "registered" ? "secondary" : "outline-solid"}
+                  variant={selectedStatus === "registered" ? "secondary" : "outline"}
                   className={cn("text-xs", {
                     "border border-black": selectedStatus === "registered",
                   })}
@@ -130,7 +130,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
                   Påmeldt
                 </Button>
                 <Button
-                  variant={selectedStatus === "waiting" ? "secondary" : "outline-solid"}
+                  variant={selectedStatus === "waiting" ? "secondary" : "outline"}
                   className={cn("text-xs", {
                     "border border-black": selectedStatus === "waiting",
                   })}
@@ -139,7 +139,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
                   Venteliste
                 </Button>
                 <Button
-                  variant={selectedStatus === "unregistered" ? "secondary" : "outline-solid"}
+                  variant={selectedStatus === "unregistered" ? "secondary" : "outline"}
                   className={cn("text-xs", {
                     "border border-black": selectedStatus === "unregistered",
                   })}
@@ -148,7 +148,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
                   Avmeldt
                 </Button>
                 <Button
-                  variant={selectedStatus === "removed" ? "secondary" : "outline-solid"}
+                  variant={selectedStatus === "removed" ? "secondary" : "outline"}
                   className={cn("text-xs", {
                     "border border-black": selectedStatus === "removed",
                   })}
