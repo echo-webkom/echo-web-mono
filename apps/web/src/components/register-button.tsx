@@ -27,13 +27,15 @@ import { registrationFormSchema } from "@/lib/schemas/registration";
 import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
+import { Countdown } from "./countdown";
 
 type RegisterButtonProps = {
   id: string;
+  userRegistrationStart: Date;
   questions: Array<Question>;
 };
 
-export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
+export const RegisterButton = ({ id, userRegistrationStart, questions }: RegisterButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -213,7 +215,11 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
             </DialogBody>
             <DialogFooter>
               <Button size="sm" type="submit">
-                Send inn
+                <div>
+
+                  <Countdown toDate={userRegistrationStart} />
+                </div>
+                  
               </Button>
             </DialogFooter>
           </form>
