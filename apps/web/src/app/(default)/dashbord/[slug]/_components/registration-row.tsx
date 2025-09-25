@@ -49,13 +49,11 @@ export const RegistrationRow = ({
         <TableCell>
           <HoverProfileView user={registration.user} group={group} />
         </TableCell>
-        <Link
-          href={`/auth/user/${registration.user.id}`}
-          className="font-medium transition-colors hover:underline"
-        >
-          {registration.user.name}
-        </Link>
-        // fix css og error for clickable username i dashbord her
+        <TableCell>
+          <Link href={`/auth/user/${registration.user.id}`} className="hover:underline">
+            {registration.user.name}
+          </Link>
+        </TableCell>
         <TableCell className={cn(statusColor[registration.status])}>
           {getRegistrationStatus(registration, happeningDate)}
         </TableCell>
