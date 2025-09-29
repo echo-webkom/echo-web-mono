@@ -3,7 +3,6 @@ import { type Group } from "@echo-webkom/db/schemas";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-
 import { NO_GROUP_FILTER_VALUE } from "../_lib/use-registration-filter";
 
 type SearchFilterProps = {
