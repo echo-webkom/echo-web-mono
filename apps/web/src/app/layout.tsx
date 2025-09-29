@@ -11,6 +11,7 @@ import {
   Unna,
   VT323,
 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import NextTopLoader from "nextjs-toploader";
 
 import { EasterEgg } from "@/components/easter-egg";
@@ -167,6 +168,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
           {/* </ThemeWrapper> */}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
