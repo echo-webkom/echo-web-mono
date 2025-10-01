@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+  type ReadonlyURLSearchParams,
+} from "next/navigation";
 import { motion } from "motion/react";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
@@ -16,14 +22,30 @@ import { CalendarExport } from "./calendar-export";
 import { DaysCalendar } from "./days-calendar";
 import { MonthCalendar } from "./month-calendar";
 
+const parseStepParam = (params: URLSearchParams | ReadonlyURLSearchParams) => {
+  const rawStep = params.get("step");
+  if (!rawStep) {
+    return 0;
+  }
+
+  const parsed = Number.parseInt(rawStep, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
 type Props = {
   events: Array<CalendarEvent>;
   type: "week" | "month" | "multi";
 };
 
 export const Calendar = ({ events, type }: Props) => {
-  const [steps, setSteps] = useState(0);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [topText, setTopText] = useState("");
+  const [activeView, setActiveView] = useState<"week" | "month">(() =>
+    searchParams.get("view") === "month" ? "month" : "week",
+  );
 
   const tabsRef = useRef<HTMLDivElement>(null);
   const [tabHeight, setTabHeight] = useState(0);
@@ -32,21 +54,74 @@ export const Calendar = ({ events, type }: Props) => {
     setTabHeight(tabsRef.current?.scrollHeight ?? 0);
   }, [topText]);
 
+  useEffect(() => {
+    const paramsStep = parseStepParam(searchParams);
+    setSteps((current) => (current === paramsStep ? current : paramsStep));
+  }, [searchParams]);
+
+  const syncStepsToUrl = (next: number, paramsOverride?: URLSearchParams) => {
+    setSteps(next);
+
+    const params = paramsOverride ?? new URLSearchParams(searchParams.toString());
+    if (next === 0) {
+      params.delete("step");
+    } else {
+      params.set("step", String(next));
+    }
+
+    const paramsString = params.toString();
+    router.replace(paramsString ? `${pathname}?${paramsString}` : pathname);
+  };
+
   const handlePrevStep = () => {
-    setSteps((prevSteps) => prevSteps - 1);
+    syncStepsToUrl(steps - 1);
   };
 
   const handleNextStep = () => {
-    setSteps((prevSteps) => prevSteps + 1);
+    syncStepsToUrl(steps + 1);
   };
 
   const handleReset = () => {
-    setSteps(0);
+    syncStepsToUrl(0);
+  };
+
+  useEffect(() => {
+    if (type !== "multi") {
+      return;
+    }
+
+    const paramsValue = searchParams.get("view");
+    if (paramsValue !== "week" && paramsValue !== "month") {
+      return;
+    }
+
+    if (paramsValue !== activeView) {
+      setActiveView(paramsValue);
+      syncStepsToUrl(0);
+    }
+  }, [activeView, searchParams, type]);
+
+  const handleViewChange = (value: string) => {
+    if (type !== "multi") {
+      return;
+    }
+
+    const nextView: "week" | "month" = value === "month" ? "month" : "week";
+
+    if (nextView === activeView) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", nextView);
+
+    syncStepsToUrl(0, params);
+    setActiveView(nextView);
   };
 
   if (type === "multi") {
     return (
-      <Tabs defaultValue="week" className="w-full gap-2" onValueChange={handleReset}>
+      <Tabs value={activeView} className="w-full gap-2" onValueChange={handleViewChange}>
         <div className="flex w-full flex-col items-center gap-4 md:flex-row">
           <TabsList>
             <TabsTrigger value="week">Ukekalender</TabsTrigger>
