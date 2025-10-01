@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 export const SplashScreen = () => {
   return (
     <div className="absolute flex h-full w-full cursor-pointer items-center justify-center">
-      <div className="bg-wrapped-pink text-wrapped-yellow flex h-full w-1/2 flex-col items-end overflow-hidden font-radley">
+      <div className="bg-wrapped-pink text-wrapped-yellow font-radley flex h-full w-1/2 flex-col items-end overflow-hidden">
         <motion.div
           initial={{
             x: 200,

@@ -21,10 +21,10 @@ export default function WebkomPage() {
         <Image src={Bo} alt="Bo Aanes" width={100} height={100} />
       </div>
 
-      <Heading className="mx-auto font-display">Webkom</Heading>
+      <Heading className="font-display mx-auto">Webkom</Heading>
       {/* Forslag om å opprette gruppe var 28. jul 2020 */}
       {/* Slack ble laget 5. aug 2020 */}
-      <Text className="text-xs text-muted-foreground">EST. 2020</Text>
+      <Text className="text-muted-foreground text-xs">EST. 2020</Text>
 
       <Text className="text-muted-foreground">
         Tidligere og nåværende medlemmer av echo Webkom.
@@ -33,11 +33,11 @@ export default function WebkomPage() {
       <div className="mx-auto my-10 max-w-md space-y-8">
         <UnorderedList className="list-none p-0 text-lg">
           <ListItem className="relative mx-auto w-fit">
-            <FaCrown className="absolute -left-6 top-1 text-yellow-400" />
+            <FaCrown className="absolute top-1 -left-6 text-yellow-400" />
             <span>Andreas Bakseter (Co-founder)</span>
           </ListItem>
           <ListItem className="relative mx-auto w-fit">
-            <FaCrown className="absolute -left-6 top-1 text-yellow-400" />
+            <FaCrown className="absolute top-1 -left-6 text-yellow-400" />
             <span>Bo Aanes (Co-founder)</span>
           </ListItem>
         </UnorderedList>

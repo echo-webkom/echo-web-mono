@@ -33,7 +33,7 @@ export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAdsQueryResult[numb
         {hasPrev && (
           <button
             onClick={() => setPage((p) => p - 1)}
-            className="absolute left-[-25px] z-10 rounded-md border bg-background p-2"
+            className="bg-background absolute left-[-25px] z-10 rounded-md border p-2"
           >
             <ArrowLeft />
           </button>
@@ -50,7 +50,7 @@ export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAdsQueryResult[numb
         {hasNext && (
           <button
             onClick={() => setPage((p) => p + 1)}
-            className="absolute right-[-25px] z-10 rounded-md border bg-background p-2"
+            className="bg-background absolute right-[-25px] z-10 rounded-md border p-2"
           >
             <ArrowRight />
           </button>

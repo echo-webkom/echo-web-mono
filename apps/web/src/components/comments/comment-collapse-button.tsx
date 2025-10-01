@@ -14,7 +14,7 @@ export const CommentCollapseButton = () => {
   };
 
   return (
-    <button onClick={toggleCollapsed} className="text-sm text-muted-foreground hover:underline">
+    <button onClick={toggleCollapsed} className="text-muted-foreground text-sm hover:underline">
       [{isCollapsed ? "+" : "-"}]
     </button>
   );

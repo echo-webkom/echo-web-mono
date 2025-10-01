@@ -105,7 +105,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
             return (
               <div key={day.toString()} className="bg-background">
                 <div className="flex flex-col gap-2">
-                  <div className="flex h-16 flex-col items-center justify-center border-b-2 bg-muted py-2 font-medium">
+                  <div className="bg-muted flex h-16 flex-col items-center justify-center border-b-2 py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
@@ -122,9 +122,9 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                         <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                           <HoverCardTrigger asChild>
                             <div
-                              className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
+                              className={cn("hover:bg-muted-dark overflow-hidden border-l-4 p-2", {
                                 "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary hover:dark:text-muted":
+                                "border-secondary hover:bg-secondary dark:hover:text-muted":
                                   event.type === "event",
                                 "border-pink-400 hover:bg-pink-400": event.type === "movie",
                                 "border-green-600 hover:bg-green-600": event.type === "boardgame",

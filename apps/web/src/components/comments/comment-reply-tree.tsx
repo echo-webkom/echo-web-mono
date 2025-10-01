@@ -64,7 +64,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                   <h3 className="text-lg font-medium">{comment.user?.name ?? "[slettet]"}</h3>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm text-muted-foreground">{shortDate(comment.createdAt)}</p>
+                    <p className="text-muted-foreground text-sm">{shortDate(comment.createdAt)}</p>
                     {hasReplies && <CommentCollapseButton />}
                   </div>
                 </div>

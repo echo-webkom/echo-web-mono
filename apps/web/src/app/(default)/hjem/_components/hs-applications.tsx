@@ -23,7 +23,7 @@ export const HSApplications = async () => {
     <div>
       <Heading level={3}>Årets søkere til Hovedstyret!</Heading>
 
-      <Text className="mb-5 text-muted-foreground">
+      <Text className="text-muted-foreground mb-5">
         Trykk på en søker for å lese mer om dem,{" "}
         <Link href="/sokere" className="text-primary underline">
           eller se alle søkere her.
@@ -57,7 +57,7 @@ const Application = ({ application }: ApplicationProps) => {
         target="_blank"
         rel="noreferrer"
       >
-        <Avatar className="mx-auto size-16 flex-shrink-0">
+        <Avatar className="mx-auto size-16 shrink-0">
           <AvatarImage src={imageUrl} />
           <AvatarFallback className="bg-background text-foreground">
             {initials(application.profile.name)}

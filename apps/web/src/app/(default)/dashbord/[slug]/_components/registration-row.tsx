@@ -102,13 +102,13 @@ export const RegistrationRow = ({
         </TableCell>
       </TableRow>
       {showMore && (
-        <TableRow className="col-span-6 bg-muted p-4">
+        <TableRow className="bg-muted col-span-6 p-4">
           <TableCell colSpan={showIndex ? 6 : 5}>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               <span className="font-semibold">Epost:</span>{" "}
               {registration.user.alternativeEmail ?? registration.user.email}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               <span className="font-semibold">Registrert:</span>{" "}
               <span className="font-mono">
                 {registration.createdAt.toLocaleString("no-NO", {
@@ -123,7 +123,7 @@ export const RegistrationRow = ({
               </span>
             </p>
             {registration.changedAt && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 <span className="font-semibold">Status endret:</span>{" "}
                 <span className="font-mono">
                   {registration.changedAt.toLocaleString("no-NO", {
@@ -140,7 +140,7 @@ export const RegistrationRow = ({
               </p>
             )}
             {registration.prevStatus && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 <span className="font-semibold">Forrige status:</span>{" "}
                 {getRegistrationStatus(
                   { ...registration, status: registration.prevStatus },
@@ -149,14 +149,14 @@ export const RegistrationRow = ({
               </p>
             )}
             {group.length > 1 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 <span className="font-semibold">Grupper:</span> {group}
               </p>
             )}
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               <span className="font-semibold">Årstrinn:</span> {registration.user.year}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               <span className="font-semibold">Linje:</span>{" "}
               {registration.user.degreeId?.toUpperCase() ?? "N/A"}
             </p>
@@ -165,7 +165,7 @@ export const RegistrationRow = ({
                 <hr className="my-4" />
 
                 <p>
-                  <span className="font-semibold text-muted-foreground">Spørsmål:</span>
+                  <span className="text-muted-foreground font-semibold">Spørsmål:</span>
                   {registration.answers?.map((answer) => {
                     const ans = Array.isArray(answer.answer?.answer)
                       ? answer.answer.answer.join(", ")
@@ -174,7 +174,7 @@ export const RegistrationRow = ({
                     return (
                       <span key={answer.questionId}>
                         <br />
-                        <span className="font-semibold text-muted-foreground">
+                        <span className="text-muted-foreground font-semibold">
                           {answer.question.title}:
                         </span>{" "}
                         {ans}
@@ -185,7 +185,7 @@ export const RegistrationRow = ({
               </>
             )}
             {registration.unregisterReason && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 <span className="font-semibold">Avregistreringsgrunn:</span>{" "}
                 {registration.unregisterReason}
               </p>

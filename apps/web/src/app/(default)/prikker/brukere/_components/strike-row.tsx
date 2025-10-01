@@ -29,9 +29,9 @@ export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) =>
   return (
     <li className="py-4">
       <div className="flex items-center justify-between py-2">
-        <p className="line-clamp-1 w-full text-ellipsis text-nowrap text-lg font-medium">{name}</p>
+        <p className="line-clamp-1 w-full text-lg font-medium text-nowrap text-ellipsis">{name}</p>
 
-        <div className="flex w-fit flex-shrink-0 items-center gap-4">
+        <div className="flex w-fit shrink-0 items-center gap-4">
           {banInfo !== null ? (
             <p className="text-lg font-medium text-red-500">Bannet</p>
           ) : (
@@ -40,7 +40,7 @@ export const StrikeRow = ({ userId, name, strikes, banInfo }: StrikeRowProps) =>
             </p>
           )}
 
-          <button className="flex-shrink-0" onClick={toggle}>
+          <button className="shrink-0" onClick={toggle}>
             <BiChevronDown
               className={cn("h-7 w-7 transition-all", {
                 "rotate-180": isOpen,

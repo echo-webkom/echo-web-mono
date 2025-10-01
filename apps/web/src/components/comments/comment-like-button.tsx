@@ -27,7 +27,7 @@ export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => 
     <button
       type="button"
       onClick={toggleLiked}
-      className="flex items-center gap-1 text-sm text-muted-foreground disabled:cursor-not-allowed"
+      className="text-muted-foreground flex items-center gap-1 text-sm disabled:cursor-not-allowed"
       disabled={!userId}
     >
       <LuArrowBigUp

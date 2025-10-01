@@ -35,7 +35,7 @@ export const Heading = ({ level = 1, copyable = false, className, children }: He
       {copyable && (
         <button
           tabIndex={-1}
-          className="ml-2 text-muted-foreground opacity-0 transition-opacity group-hover:block group-hover:opacity-100 hover:underline"
+          className="text-muted-foreground ml-2 opacity-0 transition-opacity group-hover:block group-hover:opacity-100 hover:underline"
           onClick={() => {
             void navigator.clipboard.writeText(
               window.location.origin + window.location.pathname + "#" + id,

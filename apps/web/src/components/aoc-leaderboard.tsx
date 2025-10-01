@@ -26,10 +26,10 @@ export const AocLeaderboard = async () => {
         const name = isLongName ? user.name.slice(0, 5) + "..." : user.name;
         return (
           <div key={user.id} className="line-clamp-1 flex items-center gap-4 text-nowrap">
-            <span className="w-[30px] flex-shrink-0 text-gray-500">{i + 1})</span>
-            <span className="block w-[60px] flex-shrink-0 sm:hidden">{name}</span>
-            <span className="w-[40px] flex-shrink-0">{user.localScore}</span>
-            <div className="flex flex-shrink-0 items-center">
+            <span className="w-[30px] shrink-0 text-gray-500">{i + 1})</span>
+            <span className="block w-[60px] shrink-0 sm:hidden">{name}</span>
+            <span className="w-[40px] shrink-0">{user.localScore}</span>
+            <div className="flex shrink-0 items-center">
               {Array.from({ length: 25 }).map((_, i) => {
                 const completed = user.days[i + 1];
                 return (
@@ -45,7 +45,7 @@ export const AocLeaderboard = async () => {
                 );
               })}
             </div>
-            <span className="hidden flex-shrink sm:block">{user.name}</span>
+            <span className="hidden shrink sm:block">{user.name}</span>
           </div>
         );
       })}

@@ -29,7 +29,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
   return (
     <div className="h-full w-full">
       <motion.div
-        className={`absolute ${style.fgColor} text-wrapped-black z-10 h-full w-full overflow-hidden font-slab font-bold shadow`}
+        className={`absolute ${style.fgColor} text-wrapped-black font-slab z-10 h-full w-full overflow-hidden font-bold shadow-sm`}
       >
         {children}
       </motion.div>
@@ -57,7 +57,7 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
           <motion.div
             style={{ zIndex: -index }}
             key={index}
-            className={`absolute left-0 top-0 h-full w-full ${color} shadow`}
+            className={`absolute top-0 left-0 h-full w-full ${color} shadow-sm`}
             variants={variants}
           />
         );
@@ -75,7 +75,7 @@ function CardBackdrop() {
       transition={{
         duration: 10,
       }}
-      className="absolute left-1/2 top-1/2 -z-50"
+      className="absolute top-1/2 left-1/2 -z-50"
     >
       {[...new Array(length).keys()].map((_, index) => {
         const angle = (((360 / length) * (index + 1)) / 360) * Math.PI * 2;
@@ -185,7 +185,7 @@ export function WrappedCard<C extends number>({ style, children }: WrappedCardPr
 
   return (
     <div
-      className={`relative left-0 top-0 -z-50 h-[100vh] w-[100vw] overflow-hidden ${style.bgColor}`}
+      className={`relative top-0 left-0 -z-50 h-screen w-screen overflow-hidden ${style.bgColor}`}
     >
       <div className="flex h-full w-full items-center justify-center overflow-hidden">
         <motion.div

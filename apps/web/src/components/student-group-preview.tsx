@@ -13,11 +13,11 @@ type StudentGroupPreviewProps = {
 export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
   return (
     <Link href={`/for-studenter/gruppe/${group.slug}`}>
-      <div className="group flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg hover:bg-muted">
+      <div className="group hover:bg-muted flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg">
         <h2 className="text-2xl font-bold">{group.name}</h2>
 
         {group.description && (
-          <p className="line-clamp-3 flex-1 text-slate-700 dark:text-foreground">
+          <p className="dark:text-foreground line-clamp-3 flex-1 text-slate-700">
             {removeMd(group.description ?? "")}
           </p>
         )}

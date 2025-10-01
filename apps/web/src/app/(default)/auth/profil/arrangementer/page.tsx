@@ -86,13 +86,13 @@ function EventCards<
               happeningTypeToPath[registration.happening.type] + "/" + registration.happening.slug
             }
             key={registration.happening.slug}
-            className="rounded-md p-4 hover:bg-muted"
+            className="hover:bg-muted rounded-md p-4"
           >
             <h1 className="my-auto line-clamp-1 overflow-hidden text-lg sm:text-2xl">
               {registration.happening.title}
             </h1>
             {registration.happening.date && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {shortDateNoTime(registration.happening.date)}
               </p>
             )}
