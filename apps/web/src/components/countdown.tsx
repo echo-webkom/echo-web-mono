@@ -44,7 +44,7 @@ export const Countdown = ({ toDate }: CountdownProps) => {
 
   return (
     <div
-      className=" right-0 top-0 flex h-full w-24 items-center justify-center gap-1 rounded-md bg-primary text-md font-semibold text-white"
+      className="text-md right-0 top-0 flex h-full w-24 items-center justify-center gap-1 rounded-md bg-primary font-semibold text-white"
       suppressHydrationWarning
     >
       <span>{timeLeft.hours}</span>
