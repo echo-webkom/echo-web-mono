@@ -33,9 +33,10 @@ type RegisterButtonProps = {
   id: string;
   userRegistrationStart: Date;
   questions: Array<Question>;
+  buttonText?: string;
 };
 
-export const RegisterButton = ({ id, userRegistrationStart, questions }: RegisterButtonProps) => {
+export const RegisterButton = ({ id, userRegistrationStart, questions,  buttonText = "Meld på"}: RegisterButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +120,7 @@ export const RegisterButton = ({ id, userRegistrationStart, questions }: Registe
               <span className="ml-2">Melder på...</span>
             </>
           ) : (
-            <span>Meld på</span>
+            <span>{buttonText}</span>
           )}
         </Button>
       </DialogTrigger>

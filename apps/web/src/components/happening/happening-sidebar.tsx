@@ -474,7 +474,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             !isClosed &&
             registrationOpensIn24Hours && (
               <SidebarItem className="relative">
-                <RegisterButton id={event._id} questions={questions} userRegistrationStart={new Date(userRegistrationStart)} />
+                <RegisterButton buttonText={"Fyll ut spørsmål"} id={event._id} questions={questions} userRegistrationStart={new Date(userRegistrationStart)} />
               </SidebarItem>
             )}
 
