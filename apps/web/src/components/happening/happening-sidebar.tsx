@@ -8,7 +8,6 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { auth } from "@/auth/session";
 import { AddToCalender } from "@/components/add-to-calender";
-import { Countdown } from "@/components/countdown";
 import { DeregisterButton } from "@/components/deregister-button";
 import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
@@ -474,7 +473,12 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             !isClosed &&
             registrationOpensIn24Hours && (
               <SidebarItem className="relative">
-                <RegisterButton buttonText={"Fyll ut spørsmål"} id={event._id} questions={questions} userRegistrationStart={new Date(userRegistrationStart)} />
+                <RegisterButton
+                  buttonText={"Fyll ut spørsmål"}
+                  id={event._id}
+                  questions={questions}
+                  userRegistrationStart={new Date(userRegistrationStart)}
+                />
               </SidebarItem>
             )}
 

@@ -24,10 +24,10 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Countdown } from "./countdown";
 import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
-import { Countdown } from "./countdown";
 
 type RegisterButtonProps = {
   id: string;
@@ -36,7 +36,12 @@ type RegisterButtonProps = {
   buttonText?: string;
 };
 
-export const RegisterButton = ({ id, userRegistrationStart, questions,  buttonText = "Meld på"}: RegisterButtonProps) => {
+export const RegisterButton = ({
+  id,
+  userRegistrationStart,
+  questions,
+  buttonText = "Meld på",
+}: RegisterButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -217,10 +222,8 @@ export const RegisterButton = ({ id, userRegistrationStart, questions,  buttonTe
             <DialogFooter>
               <Button size="sm" type="submit">
                 <div>
-
                   <Countdown toDate={userRegistrationStart} />
                 </div>
-                  
               </Button>
             </DialogFooter>
           </form>
