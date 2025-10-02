@@ -71,7 +71,7 @@ importers:
         version: 5.1.4(typescript@5.6.3)(vite@7.1.5(@types/node@22.18.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1))
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
 
   apps/cms:
     dependencies:
@@ -381,8 +381,8 @@ importers:
         specifier: 4.13.0
         version: 4.13.0
       recharts:
-        specifier: 2.15.4
-        version: 2.15.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 3.2.1
+        version: 3.2.1(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react-is@19.1.1)(react@19.1.1)(redux@5.0.1)
       remark-gfm:
         specifier: 4.0.1
         version: 4.0.1
@@ -500,7 +500,7 @@ importers:
         version: 5.1.4(typescript@5.6.3)(vite@7.1.5(@types/node@22.18.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1))
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
 
   packages/config/eslint:
     dependencies:
@@ -683,7 +683,7 @@ importers:
         version: 8.42.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.6.3)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
 
   packages/sanity:
     dependencies:
@@ -7395,6 +7395,9 @@ packages:
     resolution: {integrity: sha512-w+5mJ3GuFL+NjVtJlvydShqE1eN3h3PbI7/5LAsYJP/2qtuMXjfL2LpHSRqo4b4eSF5K/DH1JXKUAHSB2UW50g==}
     engines: {node: '>= 0.4'}
 
+  es-toolkit@1.39.10:
+    resolution: {integrity: sha512-E0iGnTtbDhkeczB0T+mxmoVlT4YNweEKBLq7oaU4p11mecdsZpNWOglI4895Vh4usbQ+LsJiuLuI2L0Vdmfm2w==}
+
   esast-util-from-estree@2.0.0:
     resolution: {integrity: sha512-4CyanoAudUSBAn5K13H4JhsMH6L9ZP7XbLVe/dKybkxMO7eDyLsT8UHl9TRNrU2Gr9nz+FovfSIjuXWJ81uVwQ==}
 
@@ -7662,9 +7665,6 @@ packages:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
 
-  eventemitter3@4.0.7:
-    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
-
   eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
 
@@ -7713,10 +7713,6 @@ packages:
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-
-  fast-equals@5.2.2:
-    resolution: {integrity: sha512-V7/RktU11J3I36Nwq2JnZEM7tNm17eBJz+u25qdxBZeCKiX6BkVSZQjwWIr+IobgnZy+ag73tTZgZi7tr0LrBw==}
-    engines: {node: '>=6.0.0'}
 
   fast-fifo@1.3.2:
     resolution: {integrity: sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==}
@@ -10221,9 +10217,6 @@ packages:
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
-  react-is@18.3.1:
-    resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
   react-is@19.1.1:
     resolution: {integrity: sha512-tr41fA15Vn8p4X9ntI+yCyeGSf1TlYaY5vlTZfQmeLBrFo3psOPX6HhTDnFNL9uj3EhP0KAQ80cugCl4b4BERA==}
 
@@ -10296,12 +10289,6 @@ packages:
       easymde: '>= 2.0.0 < 3.0.0'
       react: '>=16.8.2'
       react-dom: '>=16.8.2'
-
-  react-smooth@4.0.4:
-    resolution: {integrity: sha512-gnGKTpYwqL0Iii09gHobNolvX4Kiq4PKx6eWBCYYix+8cdw+cGo3do906l1NBPKkSWx1DghC1dlWG9L2uGd61Q==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-stately@3.41.0:
     resolution: {integrity: sha512-Fe8PaZPm9Ue9kDXVa8KaOz6gzbmZPuzftxeVQwKVX3u/kyFhbRkr/LeAFvgP7a+EeX+Bjmdht/9ixDsBXj4qbQ==}
@@ -10382,15 +10369,13 @@ packages:
     resolution: {integrity: sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA==}
     engines: {node: '>= 14.16.0'}
 
-  recharts-scale@0.4.5:
-    resolution: {integrity: sha512-kivNFO+0OcUNu7jQquLXAxz1FIwZj8nrj+YkOKc5694NbjCvcT6aSZiIzNzd2Kul4o4rTto8QVR9lMNtxD4G1w==}
-
-  recharts@2.15.4:
-    resolution: {integrity: sha512-UT/q6fwS3c1dHbXv2uFgYJ9BMFHu3fwnd7AYZaEQhXuYQ4hgsxLvsUXzGdKeZrW5xopzDCvuA2N41WJ88I7zIw==}
-    engines: {node: '>=14'}
+  recharts@3.2.1:
+    resolution: {integrity: sha512-0JKwHRiFZdmLq/6nmilxEZl3pqb4T+aKkOkOi/ZISRZwfBhVMgInxzlYU9D4KnCH3KINScLy68m/OvMXoYGZUw==}
+    engines: {node: '>=18'}
     peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-is: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   recma-build-jsx@1.0.0:
     resolution: {integrity: sha512-8GtdyqaBcDfva+GUKDr3nev3VpKAhup1+RvkMvUxURHpW7QyIvk9F5wz7Vzo06CEMSilw6uArgRqhpiUcWp8ew==}
@@ -11758,8 +11743,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  victory-vendor@36.9.2:
-    resolution: {integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==}
+  victory-vendor@37.3.6:
+    resolution: {integrity: sha512-SbPDPdDBYp+5MJHhBCAyI7wKM3d5ivekigc2Dk2s7pgbZ9wIgIBYGVw4zGHBml/qTFbexrofXW6Gu4noGxrOwQ==}
 
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
@@ -17110,6 +17095,18 @@ snapshots:
       react: 19.1.1
       react-redux: 9.2.0(@types/react@19.1.12)(react@19.1.1)(redux@5.0.1)
 
+  '@reduxjs/toolkit@2.8.2(react-redux@9.2.0(@types/react@19.1.13)(react@19.1.1)(redux@5.0.1))(react@19.1.1)':
+    dependencies:
+      '@standard-schema/spec': 1.0.0
+      '@standard-schema/utils': 0.3.0
+      immer: 10.1.3
+      redux: 5.0.1
+      redux-thunk: 3.1.0(redux@5.0.1)
+      reselect: 5.1.1
+    optionalDependencies:
+      react: 19.1.1
+      react-redux: 9.2.0(@types/react@19.1.13)(react@19.1.1)(redux@5.0.1)
+
   '@rexxars/react-json-inspector@9.0.1(react@19.1.1)':
     dependencies:
       debounce: 1.2.1
@@ -20078,6 +20075,8 @@ snapshots:
       is-date-object: 1.1.0
       is-symbol: 1.1.1
 
+  es-toolkit@1.39.10: {}
+
   esast-util-from-estree@2.0.0:
     dependencies:
       '@types/estree-jsx': 1.0.5
@@ -20730,8 +20729,6 @@ snapshots:
 
   event-target-shim@5.0.1: {}
 
-  eventemitter3@4.0.7: {}
-
   eventemitter3@5.0.1: {}
 
   events@3.3.0: {}
@@ -20776,8 +20773,6 @@ snapshots:
   fast-deep-equal@2.0.1: {}
 
   fast-deep-equal@3.1.3: {}
-
-  fast-equals@5.2.2: {}
 
   fast-fifo@1.3.2: {}
 
@@ -23729,8 +23724,6 @@ snapshots:
 
   react-is@17.0.2: {}
 
-  react-is@18.3.1: {}
-
   react-is@19.1.1: {}
 
   react-markdown@10.1.0(@types/react@19.1.13)(react@19.1.1):
@@ -23762,6 +23755,15 @@ snapshots:
       use-sync-external-store: 1.5.0(react@19.1.1)
     optionalDependencies:
       '@types/react': 19.1.12
+      redux: 5.0.1
+
+  react-redux@9.2.0(@types/react@19.1.13)(react@19.1.1)(redux@5.0.1):
+    dependencies:
+      '@types/use-sync-external-store': 0.0.6
+      react: 19.1.1
+      use-sync-external-store: 1.5.0(react@19.1.1)
+    optionalDependencies:
+      '@types/react': 19.1.13
       redux: 5.0.1
 
   react-refractor@4.0.0(react@19.1.1):
@@ -23842,14 +23844,6 @@ snapshots:
       easymde: 2.18.0
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-
-  react-smooth@4.0.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
-    dependencies:
-      fast-equals: 5.2.2
-      prop-types: 15.8.1
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-      react-transition-group: 4.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
 
   react-stately@3.41.0(react@19.1.1):
     dependencies:
@@ -23980,22 +23974,25 @@ snapshots:
 
   readdirp@4.0.2: {}
 
-  recharts-scale@0.4.5:
+  recharts@3.2.1(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react-is@19.1.1)(react@19.1.1)(redux@5.0.1):
     dependencies:
-      decimal.js-light: 2.5.1
-
-  recharts@2.15.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
-    dependencies:
+      '@reduxjs/toolkit': 2.8.2(react-redux@9.2.0(@types/react@19.1.13)(react@19.1.1)(redux@5.0.1))(react@19.1.1)
       clsx: 2.1.1
-      eventemitter3: 4.0.7
-      lodash: 4.17.21
+      decimal.js-light: 2.5.1
+      es-toolkit: 1.39.10
+      eventemitter3: 5.0.1
+      immer: 10.1.3
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-      react-is: 18.3.1
-      react-smooth: 4.0.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      recharts-scale: 0.4.5
+      react-is: 19.1.1
+      react-redux: 9.2.0(@types/react@19.1.13)(react@19.1.1)(redux@5.0.1)
+      reselect: 5.1.1
       tiny-invariant: 1.3.3
-      victory-vendor: 36.9.2
+      use-sync-external-store: 1.5.0(react@19.1.1)
+      victory-vendor: 37.3.6
+    transitivePeerDependencies:
+      - '@types/react'
+      - redux
 
   recma-build-jsx@1.0.0:
     dependencies:
@@ -25864,7 +25861,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  victory-vendor@36.9.2:
+  victory-vendor@37.3.6:
     dependencies:
       '@types/d3-array': 3.2.1
       '@types/d3-ease': 3.0.2
@@ -25979,7 +25976,7 @@ snapshots:
     optionalDependencies:
       vite: 6.3.6(@types/node@22.18.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1)
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0)(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1):
+  vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.18.1)(jiti@2.5.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(terser@5.37.0)(tsx@4.20.5)(yaml@2.8.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
