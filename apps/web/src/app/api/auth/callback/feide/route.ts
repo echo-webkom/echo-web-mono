@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { addDays, isFuture } from "date-fns";
+import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 import { accounts, sessions, users } from "@echo-webkom/db/schemas";
@@ -106,6 +107,7 @@ export async function GET(request: Request) {
       email: userInfo.email,
       name: userInfo.name,
       id: userId,
+      lastSignInAt: new Date(),
     });
 
     await db.insert(accounts).values({
@@ -164,6 +166,11 @@ export async function GET(request: Request) {
       userId: existingAccount.userId,
     };
   }
+
+  await db
+    .update(users)
+    .set({ lastSignInAt: new Date() })
+    .where(eq(users.id, existingAccount.userId));
 
   const sessionCookie = await createSessionCookie(existingSession.sessionToken);
 
