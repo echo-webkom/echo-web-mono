@@ -31,6 +31,7 @@ const petter = {
   year: 2022,
   degreeId: "Computer Science",
   hasReadTerms: true,
+  isPublic: true,
   createdAt: fixedDate,
   updatedAt: fixedDate,
   id: "1",

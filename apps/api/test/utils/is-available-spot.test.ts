@@ -310,6 +310,7 @@ function makeUser(
     createdAt: params.createdAt ?? null,
     updatedAt: params.updatedAt ?? null,
     hasReadTerms: params.hasReadTerms ?? true,
+    isPublic: params.isPublic ?? false,
     lastSignInAt: params.lastSignInAt ?? null,
     inactiveEmailSentAt: params.inactiveEmailSentAt ?? null,
     emailVerified: params.emailVerified ?? null,
