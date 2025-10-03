@@ -29,7 +29,7 @@
   "devDependencies": {
     "@react-email/preview-server": "^4.2.11",
     "@types/node": "22.18.1",
-    "@types/react": "19.1.12",
+    "@types/react": "19.1.16",
     "dotenv-cli": "10.0.0",
     "eslint": "9.34.0",
     "eslint-config-webkom": "workspace:*",
