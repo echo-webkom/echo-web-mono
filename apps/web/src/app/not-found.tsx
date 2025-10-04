@@ -4,8 +4,11 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useAuth } from "@/hooks/use-auth";
+
 export default function NotFound() {
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
@@ -39,7 +42,7 @@ export default function NotFound() {
         </div>
 
         <div className="text-center">
-          <Link href="/" className="p-4 hover:underline">
+          <Link href={user ? "/hjem" : "/"} className="p-4 hover:underline">
             Klikk her for å gå tilbake til forsiden
           </Link>
         </div>
