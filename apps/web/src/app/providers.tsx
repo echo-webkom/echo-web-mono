@@ -4,14 +4,30 @@ import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+import type { AuthSessionUser } from "@/auth/session";
+import { AuthProvider } from "@/provides/auth";
+
+export const Providers = ({
+  user,
+  children,
+}: {
+  user: AuthSessionUser;
+  children: React.ReactNode;
+}) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-        {children}
-      </ThemeProvider>
-    </QueryClientProvider>
+    <AuthProvider user={user}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   );
 };

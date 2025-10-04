@@ -15,6 +15,7 @@ import {
 import { Analytics } from "@vercel/analytics/next";
 import NextTopLoader from "nextjs-toploader";
 
+import { auth } from "@/auth/session";
 import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
@@ -144,7 +145,8 @@ const ThemeWrapper = ({
   return <InnerWrapper n={n}>{children}</InnerWrapper>;
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const user = await auth();
   const date = new Date();
   const month = date.getMonth();
   const isOctober = month === 9;
@@ -168,7 +170,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           slab.variable,
         )}
       >
-        <Providers>
+        <Providers user={user}>
           <ThemeWrapper theme={theme}>
             <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
 

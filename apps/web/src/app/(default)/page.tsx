@@ -8,15 +8,10 @@ import { BlurLogo } from "@/components/blur-logo";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
-import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { Banner } from "./hjem/_components/banner";
 
 export default async function HomePage() {
-  await ensureAnonymous({
-    redirectTo: "/hjem",
-  });
-
   const [bedpresses, events] = await Promise.all([
     fetchHomeHappenings(["bedpres"], 4),
     fetchHomeHappenings(["event", "external"], 4),
