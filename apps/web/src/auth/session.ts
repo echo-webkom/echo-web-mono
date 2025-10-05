@@ -76,6 +76,8 @@ export async function signOut() {
   await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
 }
 
+export type AuthSessionUser = Awaited<ReturnType<typeof auth>>;
+
 export const auth = cache(async () => {
   const session = await getSession();
 
