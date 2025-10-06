@@ -17,6 +17,7 @@ import {
   comments,
   degrees,
   dots,
+  officeBookings,
   usersToGroups,
   usersToShoppingListItems,
   userTypeEnum,
@@ -66,6 +67,9 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [banInfos.userId],
     relationName: "banInfo",
+  }),
+  officeBookings: many(officeBookings, {
+    relationName: "officeBookings",
   }),
 }));
 

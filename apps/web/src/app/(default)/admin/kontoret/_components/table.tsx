@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import type { Booking } from "../page";
+import type { Booking } from "./bookingCalendar";
 import { BookingItem } from "./bookingItem";
 import { CalendarTableSidebar } from "./tableSidebar";
 

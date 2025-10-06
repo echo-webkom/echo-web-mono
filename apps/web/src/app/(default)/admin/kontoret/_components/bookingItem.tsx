@@ -1,4 +1,4 @@
-import type { Booking } from "../page";
+import type { Booking } from "./bookingCalendar";
 
 export const BookingItem = ({
   booking,

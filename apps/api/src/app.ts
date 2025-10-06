@@ -8,6 +8,7 @@ import degreesApp from "./services/degrees";
 import feedbackApp from "./services/feedback";
 import happeningApp from "./services/happening";
 import healthApp from "./services/health";
+import officeBookingApp from "./services/office-booking";
 import shoppingApp from "./services/shopping-list";
 import strikesApp from "./services/strikes";
 
@@ -35,6 +36,7 @@ app.route("/", adminApp);
 app.route("/", happeningApp);
 app.route("/", feedbackApp);
 app.route("/", shoppingApp);
+app.route("/", officeBookingApp);
 app.route("/", degreesApp);
 app.route("/", birthdays);
 app.route("/", strikesApp);
