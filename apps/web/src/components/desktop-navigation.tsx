@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { type IconBaseProps } from "react-icons";
 import { RxChevronDown as ChevronDown } from "react-icons/rx";
 
+import { useAuth } from "@/hooks/use-auth";
 import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
@@ -168,12 +169,17 @@ export const NavigationViewport = () => {
 };
 
 export const DesktopNavigation = () => {
+  const { user } = useAuth();
+  const isAuthed = Boolean(user);
+
   return (
     <NavigationList>
       {headerRoutes.map((route) => {
         if ("href" in route) {
+          const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
+
           return (
-            <NavigationLink key={route.label} to={route.href}>
+            <NavigationLink key={route.label} to={targetHref}>
               {route.label}
             </NavigationLink>
           );

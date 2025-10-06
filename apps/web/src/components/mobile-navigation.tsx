@@ -10,6 +10,7 @@ import {
   RxHamburgerMenu as HamburgerMenu,
 } from "react-icons/rx";
 
+import { useAuth } from "@/hooks/use-auth";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
@@ -155,6 +156,9 @@ const MenuDropdown = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const MobileNavigation = () => {
+  const { user } = useAuth();
+  const isAuthed = Boolean(user);
+
   return (
     <NavigationRoot>
       <MenuButton />
@@ -166,8 +170,10 @@ export const MobileNavigation = () => {
 
         {headerRoutes.map((route) => {
           if ("href" in route) {
+            const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
+
             return (
-              <MenuLink key={route.label} to={route.href}>
+              <MenuLink key={route.label} to={targetHref}>
                 {route.label}
               </MenuLink>
             );

@@ -27,6 +27,7 @@ type Route =
   | {
       label: string;
       href: string;
+      authedHref?: string;
     }
   | {
       label: string;
@@ -43,6 +44,7 @@ export const headerRoutes: Array<Route> = [
   {
     label: "Hjem",
     href: "/",
+    authedHref: "/hjem",
   },
   {
     label: "For studenter",
