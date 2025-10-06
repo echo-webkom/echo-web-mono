@@ -1,7 +1,6 @@
 import banner from "./banner";
 import company from "./company";
 import happening from "./happening";
-import hsApplication from "./hs-application";
 import hungerGames from "./hunger-games";
 import job from "./job-ad";
 import location from "./location";
@@ -35,7 +34,6 @@ export const schemaTypes = [
   movies,
   banner,
   time,
-  hsApplication,
   merch,
   hungerGames,
 ];
