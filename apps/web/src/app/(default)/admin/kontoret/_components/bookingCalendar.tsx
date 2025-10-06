@@ -21,13 +21,14 @@ export type Booking = {
   user?: { name: string };
   startTime: string;
   endTime: string;
+  title: string;
 };
 
 export default function BookingCalendar({
   user,
   allBookings,
 }: {
-  user?: { name: string };
+  user?: string | undefined | null;
   allBookings?: Array<Booking>;
 }) {
   const [date, setDate] = useState(new Date());
@@ -66,7 +67,13 @@ export default function BookingCalendar({
     <div className="m-4">
       <CalendarControls date={date} weekDays={weekDays} setDate={setDate} />
       <TableHeader weekDays={weekDays} />
-      <CalendarTable weekDays={weekDays} bookings={bookings} date={date} addBooking={addBooking} />
+      <CalendarTable
+        weekDays={weekDays}
+        bookings={bookings}
+        date={date}
+        addBooking={addBooking}
+        user={user}
+      />
     </div>
   );
 }

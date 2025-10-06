@@ -2,10 +2,12 @@ import type { Booking } from "./bookingCalendar";
 
 export const BookingItem = ({
   booking,
+  highlighted = false,
   startHour = 0,
   onDragStart,
 }: {
   booking: Booking;
+  highlighted?: boolean;
   startHour?: number;
   onDragStart?: (booking: Booking) => void;
 }) => {
@@ -18,12 +20,12 @@ export const BookingItem = ({
   return (
     <div
       key={booking.id}
-      className="absolute left-1 right-1 rounded bg-blue-500 p-1 text-xs text-white"
+      className={`absolute left-1 right-1 rounded p-1 text-xs text-white ${highlighted ? "bg-pink-500" : "bg-blue-500"}`}
       style={{ top, height }}
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData("bookingId", booking.id.toString());
-        if (onDragStart) onDragStart(booking);
+        if (onDragStart && highlighted) onDragStart(booking);
       }}
     >
       {booking.user?.name ?? "Ukjent"}

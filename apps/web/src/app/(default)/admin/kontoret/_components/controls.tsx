@@ -20,7 +20,7 @@ export const CalendarControls = ({
     setDate(d);
   };
   return (
-    <div className="mb-4 flex items-center gap-2">
+    <div className="mb-4 flex items-center gap-6">
       <button onClick={prevWeek} className="rounded border px-2 py-1">
         ← Forrige uke
       </button>
@@ -31,6 +31,16 @@ export const CalendarControls = ({
       <button onClick={nextWeek} className="rounded border px-2 py-1">
         Neste uke →
       </button>
+      <div className="m-4 ml-auto flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1">
+          <span className="inline-block h-4 w-4 rounded bg-pink-500" />
+          <span>Mine bookinger</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="inline-block h-4 w-4 rounded bg-blue-500" />
+          <span>Andre brukeres bookinger</span>
+        </div>
+      </div>
     </div>
   );
 };
