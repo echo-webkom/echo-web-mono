@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 
-import { Fragment } from "react";
 import { type Metadata, type Viewport } from "next";
 import {
   Alfa_Slab_One,
@@ -13,11 +12,9 @@ import {
   Unna,
   VT323,
 } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 import NextTopLoader from "nextjs-toploader";
 
 import { auth } from "@/auth/session";
-import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { DevtoolsLoginDialog } from "@/components/devtools/devtools-login-dialog";
 import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
 import { EasterEgg } from "@/components/easter-egg";
@@ -137,33 +134,11 @@ export const viewport: Viewport = {
   initialScale: 1.0,
 };
 
-const ThemeWrapper = ({
-  children,
-  theme,
-}: {
-  children: React.ReactNode;
-  theme?: "christmas" | "halloween" | "default";
-}) => {
-  const InnerWrapper =
-    theme === "halloween" ? AnimatedIcons : theme === "christmas" ? AnimatedSnowfall : Fragment;
-  const n = theme === "halloween" ? 40 : theme === "christmas" ? 40 : undefined;
-  if (!n) {
-    return <>{children}</>;
-  }
-
-  return <InnerWrapper n={n}>{children}</InnerWrapper>;
-};
-
 export default async function RootLayout({ children }: RootLayoutProps) {
   const user = await auth();
-  const date = new Date();
-  const month = date.getMonth();
-  const isOctober = month === 9;
-  const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
-  const theme = isOctober ? "halloween" : isChristmas ? "christmas" : "default";
 
   return (
-    <html lang="no" data-theme={theme} suppressHydrationWarning>
+    <html lang="no" suppressHydrationWarning>
       <head />
       <body
         className={cn(
@@ -181,18 +156,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Providers user={user}>
-          <ThemeWrapper theme={theme}>
-            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-
-            {children}
-            <Toaster />
-            <FeedbackBlob />
-            <TailwindIndicator />
-            <EasterEgg />
-            {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
-          </ThemeWrapper>
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          {children}
+          <Toaster />
+          <FeedbackBlob />
+          <TailwindIndicator />
+          <EasterEgg />
+          {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
         </Providers>
-        <Analytics />
       </body>
     </html>
   );
