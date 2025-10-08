@@ -19,8 +19,8 @@ function getWeekDays(baseDate: Date) {
 export type Booking = {
   id: number;
   user?: { name: string };
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   title: string;
 };
 
@@ -40,7 +40,7 @@ export default function BookingCalendar({
   }, [allBookings]);
 
   useEffect(() => {
-    setBookings((prev) => [...prev.filter((b) => b.startTime >= date.toISOString())]);
+    setBookings((prev) => [...prev.filter((b) => b.startTime >= date)]);
   }, [date]);
 
   const addBooking = async (day: Date) => {
