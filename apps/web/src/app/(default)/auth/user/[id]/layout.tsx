@@ -27,7 +27,7 @@ export default async function ProfileLayout(props: LayoutProps<"/auth/user/[id]"
     return null;
   }
 
-  const profileOwnerId = (await params).id as string;
+  const profileOwnerId = String((await params).id);
   const routes = getRoutes(profileOwnerId);
 
   if (currentUser.id !== profileOwnerId) {
