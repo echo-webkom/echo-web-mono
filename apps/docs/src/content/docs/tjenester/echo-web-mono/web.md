@@ -233,7 +233,3 @@ export async function nyAction() {
 
 - [NextAuth.js v5](https://authjs.dev/getting-started)
 - [Arctic](https://arctic.js.org/)
-
-```
-
-```
