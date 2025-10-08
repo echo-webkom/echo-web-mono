@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { type AllUsers } from "./page";
 import { UserForm } from "./user-form";
-import { statusColor } from "../../dashbord/[slug]/_lib/status-color";
 
 type User = AllUsers[number];
 
