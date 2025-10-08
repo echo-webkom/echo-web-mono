@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { ArrowLeftIcon } from "lucide-react";
 
 import { db } from "@echo-webkom/db/serverless";
 
@@ -10,7 +9,6 @@ import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
@@ -201,12 +199,12 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             </CardContent>
           </Card>
           <div className="mt-6 text-center">
-            <Link href={`/auth/user/${user.id}`}>
+            {/* <Link href={`/auth/user/${user.id}`}>
               <Button variant="ghost">
                 <ArrowLeftIcon className="mr-2 h-4 w-4" />
                 Gå til egen profil
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
