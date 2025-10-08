@@ -24,16 +24,24 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Countdown } from "./countdown";
 import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 
 type RegisterButtonProps = {
   id: string;
+  userRegistrationStart: Date;
   questions: Array<Question>;
+  buttonText?: string;
 };
 
-export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
+export const RegisterButton = ({
+  id,
+  userRegistrationStart,
+  questions,
+  buttonText = "Meld på",
+}: RegisterButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -117,7 +125,7 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
               <span className="ml-2">Melder på...</span>
             </>
           ) : (
-            <span>Meld på</span>
+            <span>{buttonText}</span>
           )}
         </Button>
       </DialogTrigger>
@@ -213,7 +221,9 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
             </DialogBody>
             <DialogFooter>
               <Button size="sm" type="submit">
-                Send inn
+                <div>
+                  <Countdown toDate={userRegistrationStart} />
+                </div>
               </Button>
             </DialogFooter>
           </form>
