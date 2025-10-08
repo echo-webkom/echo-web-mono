@@ -80,7 +80,6 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 - **Database**: PostgreSQL with Drizzle ORM
 - **CMS**: Sanity.io
 - **Auth**: NextAuth.js with Feide (Norwegian academic federation)
-- **Deployment**: Docker containers, hosted on Vercel
 
 ## Development Ports
 

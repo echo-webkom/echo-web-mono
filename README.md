@@ -12,9 +12,6 @@ Utviklet av frivillige informatikkstudenter fra undergruppen **echo Webkom**.
   <a href="https://sanity.io" target="_blank" rel="noopener">
     <img src="https://cdn.sanity.io/images/3do82whm/next/51af00784c5addcf63ae7f0c416756acca7e63ac-353x71.svg?dl=sanity-logo.svg" width="100" alt="Powered by Sanity" />
   </a>
-  <a href="https://vercel.com/?utm_source=echo-webkom&utm_campaign=oss" target="_blank" rel="noopener">
-    <img src=".github/powered-by-vercel.svg" width="120" alt="Powered by Vercel" />
-  </a>
 </div>
 
 <br>
@@ -59,7 +56,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ## Hvordan kjøre?
 
 1. **Før du starter må du passe på at det følgende er installert:**
-
    - [pnpm](https://pnpm.io/installation)
    - [docker](https://docs.docker.com/engine/install/)
    - [cenv](https://github.com/echo-webkom/cenv)

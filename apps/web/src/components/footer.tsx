@@ -64,7 +64,7 @@ export const Footer = ({ className }: FooterProps) => {
                       <Image
                         src={imageSrc as StaticImport}
                         alt={`${label} logo`}
-                        className={cn("h-8 w-auto", label === "Vercel" && "invert-0 dark:invert")}
+                        className="h-8 w-auto"
                       />
                     </Link>
                   </li>
