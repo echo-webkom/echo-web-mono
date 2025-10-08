@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { type AllUsers } from "./page";
 import { UserForm } from "./user-form";
+import { statusColor } from "../../dashbord/[slug]/_lib/status-color";
 
 type User = AllUsers[number];
 
@@ -34,8 +35,8 @@ export const UserTable = ({ user, groups }: UserTableRowProps) => {
               <Dots className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="font-semibold bg-background p-2 border">
+            <DropdownMenuLabel className="p-1">Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <UserForm user={user} groups={groups} />
           </DropdownMenuContent>
