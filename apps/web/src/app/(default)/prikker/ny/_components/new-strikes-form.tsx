@@ -123,7 +123,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="max-w-(--breakpoint-sm) space-y-4">
+      <form onSubmit={onSubmit} className="max-w-2xl space-y-4">
         <FormField
           control={form.control}
           name="userId"

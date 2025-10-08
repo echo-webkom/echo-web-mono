@@ -56,7 +56,7 @@ export const CalendarExport = () => {
   const calendarUrl = calendarBuilder.build();
 
   return (
-    <Container className="max-w-(--breakpoint-sm) space-y-4 py-10">
+    <Container className="max-w-2xl space-y-4 py-10">
       <div>
         <Heading>Kalender</Heading>
 

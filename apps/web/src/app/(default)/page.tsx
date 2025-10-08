@@ -84,14 +84,14 @@ export default async function HomePage() {
 
         <Container>
           <div className="mt-32 mb-24 space-y-16">
-            <div className="mx-auto max-w-(--breakpoint-md) text-center">
+            <div className="mx-auto max-w-3xl text-center">
               <div className="mb-8">
                 <h1 className="text-4xl font-semibold text-gray-700 sm:text-5xl dark:text-gray-200">
                   echo – Linjeforeningen for informatikk
                 </h1>
               </div>
               <Reveal>
-                <p className="text-muted-foreground mx-auto max-w-(--breakpoint-md) font-medium md:text-xl">
+                <p className="text-muted-foreground mx-auto max-w-3xl font-medium md:text-xl">
                   Vi i echo jobber med å gjøre studiehverdagen for informatikkstudenter bedre ved å
                   arrangere sosiale og faglige arrangementer.
                 </p>
@@ -116,7 +116,7 @@ export default async function HomePage() {
             </Reveal>
           </div>
 
-          <div className="mx-auto mt-10 max-w-(--breakpoint-lg) space-y-32">
+          <div className="mx-auto mt-10 max-w-4xl space-y-32">
             <div className="grid items-center gap-16 md:grid-cols-2">
               {/* TODO: Add image of students */}
               <Reveal translateX={200}>

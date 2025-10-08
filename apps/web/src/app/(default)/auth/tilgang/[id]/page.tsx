@@ -26,7 +26,7 @@ export default async function Access(props: Props) {
 
   return (
     <div className="mx-4 my-14">
-      <div className="bg-muted mx-auto flex w-full max-w-(--breakpoint-sm) flex-col gap-4 rounded-2xl p-8">
+      <div className="bg-muted mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-2xl p-8">
         <Heading level={2}>Noe gikk galt</Heading>
 
         <Text>
