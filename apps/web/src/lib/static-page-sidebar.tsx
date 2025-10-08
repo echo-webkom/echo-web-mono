@@ -17,7 +17,7 @@ export const StaticPageSidebar = () => {
   }
 
   return (
-    <aside className="hidden w-full max-w-[200px] flex-shrink-0 flex-col md:flex">
+    <aside className="hidden w-full max-w-[200px] shrink-0 flex-col md:flex">
       <nav className="flex flex-col space-y-2">
         {links.map((link) => {
           const isActive = link.href === pathname;
@@ -27,7 +27,7 @@ export const StaticPageSidebar = () => {
               key={link.href}
               href={link.href}
               className={cn("text-muted-foreground hover:text-foreground", {
-                "font-bold text-foreground": isActive,
+                "text-foreground font-bold": isActive,
               })}
             >
               {link.label}

@@ -15,7 +15,7 @@ export const EventHoverPreview = ({ event }: Props) => {
     <div className="space-y-2">
       <div>
         <Link className="hover:underline" href={event.link}>
-          <h3 className="line-clamp-1 text-ellipsis font-semibold">{event.title}</h3>
+          <h3 className="line-clamp-1 font-semibold text-ellipsis">{event.title}</h3>
         </Link>
         <h3 className="text-sm">{time(event.date)}</h3>
       </div>

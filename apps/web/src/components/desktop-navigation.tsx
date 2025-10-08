@@ -90,7 +90,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="flex h-10 flex-row items-center gap-1 rounded-xl p-2 font-semibold text-gray-600 hover:bg-muted dark:text-foreground"
+        className="hover:bg-muted dark:text-foreground flex h-10 flex-row items-center gap-1 rounded-xl p-2 font-semibold text-gray-600"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -111,7 +111,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
     <li>
       <Link
         href={to}
-        className="h-10 rounded-xl p-2 font-semibold text-gray-600 hover:bg-muted hover:underline dark:text-foreground"
+        className="hover:bg-muted dark:text-foreground h-10 rounded-xl p-2 font-semibold text-gray-600 hover:underline"
       >
         {children}
       </Link>
@@ -147,7 +147,7 @@ export const NavigationViewport = () => {
     <AnimatePresence>
       {activeDropdown && (
         <motion.div
-          className="absolute left-0 z-20 w-full overflow-hidden border-b-2 bg-background"
+          className="bg-background absolute left-0 z-20 w-full overflow-hidden border-b-2"
           initial={{
             height: 0,
           }}
@@ -215,14 +215,14 @@ type IconLinkProps = {
 const IconLink = ({ icon, ...props }: IconLinkProps) => {
   return (
     <Link
-      className="flex items-center rounded-xl border-2 border-transparent p-4 hover:border-border hover:bg-muted"
+      className="hover:border-border hover:bg-muted flex items-center rounded-xl border-2 border-transparent p-4"
       href={props.href}
     >
       <div className="flex items-center gap-6">
         {React.createElement(icon, { className: "h-6 w-6" })}
         <div>
           <p className="font-semibold">{props.label}</p>
-          <p className="text-sm font-medium text-muted-foreground">{props.description}</p>
+          <p className="text-muted-foreground text-sm font-medium">{props.description}</p>
         </div>
       </div>
     </Link>

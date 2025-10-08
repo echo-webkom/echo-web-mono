@@ -55,7 +55,7 @@ export const CommentForm = ({ id }: CommentFormProps) => {
       />
       <button
         type="submit"
-        className="group flex w-fit items-center px-2 font-medium text-muted-foreground hover:underline"
+        className="group text-muted-foreground flex w-fit items-center px-2 font-medium hover:underline"
       >
         Legg til kommentar
         <ArrowRight className="ml-1 inline-block transform opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />

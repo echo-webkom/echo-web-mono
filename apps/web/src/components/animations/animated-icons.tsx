@@ -24,7 +24,7 @@ export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
   return (
     <div className="h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      <div className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-full overflow-hidden">
+      <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
         {keys.map((key) => {
           const xOffset = Math.floor(Math.random() * 95);
           const yOffset = Math.floor(Math.random() * 95);
@@ -100,7 +100,7 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   return (
     <div className="h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      <div className="pointer-events-none absolute left-0 top-0 -z-10 h-full w-full overflow-hidden">
+      <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
         {keys.map((key) => {
           const offset = Math.floor(Math.random() * 95);
 

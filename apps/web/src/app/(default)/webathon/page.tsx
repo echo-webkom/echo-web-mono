@@ -20,7 +20,7 @@ type WebathonEntry = {
 
 function EntryCarousel({ img }: { img: StaticImageData }) {
   return (
-    <div className="flex h-full w-full flex-shrink-0 items-center justify-center overflow-hidden p-4">
+    <div className="flex h-full w-full shrink-0 items-center justify-center overflow-hidden p-4">
       <Image
         src={img}
         alt=""
@@ -119,10 +119,10 @@ export default function WebathonShowcase() {
         {entries.map((entry, index) => (
           <div
             key={index}
-            className="my-4 flex flex-col items-center justify-center gap-4 rounded-lg bg-muted p-10 md:flex-row"
+            className="bg-muted my-4 flex flex-col items-center justify-center gap-4 rounded-lg p-10 md:flex-row"
           >
             {/* Left: Image carousel */}
-            <div className="flex w-full flex-shrink-0 justify-center md:w-1/2">
+            <div className="flex w-full shrink-0 justify-center md:w-1/2">
               <EntryCarousel img={entry.img} />
             </div>
             {/* Right: Text information */}

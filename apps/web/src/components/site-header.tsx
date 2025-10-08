@@ -20,9 +20,9 @@ export const SiteHeader = async () => {
     <div className="sticky top-0 z-20">
       <VercelPreviewNotify />
 
-      <div className="border-b-2 bg-background">
+      <div className="bg-background border-b-2">
         <NavigationRoot>
-          <header className="mx-auto flex max-w-7xl items-center justify-between bg-background px-4 py-2">
+          <header className="bg-background mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
             <div className="absolute -bottom-3 flex space-x-2">
               {randomMessage.link ? (
                 <Link className="z-50" href={randomMessage.link}>

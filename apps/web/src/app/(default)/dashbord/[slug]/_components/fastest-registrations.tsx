@@ -52,13 +52,13 @@ export const FastestRegistrations = ({ happening, registrations }: FastestRegist
               <p>
                 <span className="text-muted-foreground">{i + 1}.</span> {registration.user.name}
               </p>
-              <p className="text-sm text-muted-foreground">{(ms / 1000).toFixed(2)} sekunder</p>
+              <p className="text-muted-foreground text-sm">{(ms / 1000).toFixed(2)} sekunder</p>
             </li>
           );
         })}
       </ul>
 
-      <p className="mt-2 px-4 text-sm text-muted-foreground">
+      <p className="text-muted-foreground mt-2 px-4 text-sm">
         Om det er negativt tall, så har brukeren meldt seg på før påmeldingen åpnet. Dette kan
         skyldes at de har blitt lagt til manuelt, eller at påmeldingsdatoen har blitt endret etter
         at de meldte seg på.

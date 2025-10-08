@@ -30,7 +30,7 @@ export const MovieClubCard = async () => {
   return (
     <div className="flex justify-evenly">
       <div className="flex flex-col">
-        <div className="group relative h-[18rem] w-[12rem] md:flex lg:h-[24rem] lg:w-[16rem]">
+        <div className="group relative h-72 w-48 md:flex lg:h-96 lg:w-[16rem]">
           <div>
             <Image
               className="rounded-md border"
@@ -41,7 +41,7 @@ export const MovieClubCard = async () => {
           </div>
           <Link href={thisWeekMovie.link ?? "#"}>
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-              <div className="rounded-md bg-background p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
+              <div className="bg-background rounded-md p-2 opacity-90 transition-transform duration-300 group-hover:translate-y-40">
                 <ul>
                   <label className="line-clamp-1 overflow-hidden text-2xl font-semibold">
                     {thisWeekMovie.title}
@@ -61,7 +61,7 @@ export const MovieClubCard = async () => {
       </div>
       {nextWeekMovie && (
         <ul className="flex flex-col space-y-1 md:hidden xl:block">
-          <div className="relative h-[9rem] w-[6rem] lg:h-[11rem] lg:w-[7rem]">
+          <div className="relative h-36 w-24 lg:h-44 lg:w-28">
             <Image
               className="rounded-md border"
               fill
@@ -69,13 +69,13 @@ export const MovieClubCard = async () => {
               alt={`${nextWeekMovie.title} logo`}
             />
             <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-              <li className="rounded-md bg-background p-2 text-xs opacity-90">
+              <li className="bg-background rounded-md p-2 text-xs opacity-90">
                 {shortDateNoTimeNoYear(nextWeekMovie.date)}
               </li>
             </div>
           </div>
           {nextNextWeekMovie && (
-            <div className="relative h-[9rem] w-[6rem] lg:w-[7rem] xl:h-[11rem]">
+            <div className="relative h-36 w-24 lg:w-28 xl:h-44">
               <Image
                 className="rounded-md border"
                 fill
@@ -83,7 +83,7 @@ export const MovieClubCard = async () => {
                 alt={`${nextNextWeekMovie.title} logo`}
               />
               <div className="absolute inset-0 flex flex-col-reverse overflow-hidden rounded-md border p-2">
-                <li className="rounded-md bg-background p-2 text-xs opacity-90">
+                <li className="bg-background rounded-md p-2 text-xs opacity-90">
                   {shortDateNoTimeNoYear(nextNextWeekMovie.date)}
                 </li>
               </div>

@@ -23,9 +23,9 @@ export const HappeningPreview = ({
     <Link href={href}>
       <div
         className={cn(
-          "h-18 relative flex items-center gap-4 rounded-xl border-2 border-transparent p-4 hover:border-muted-dark hover:bg-muted",
+          "hover:border-muted-dark hover:bg-muted relative flex h-18 items-center gap-4 rounded-xl border-2 border-transparent p-4",
           {
-            "h-[6.5rem]": happening.happeningType === "bedpres",
+            "h-26": happening.happeningType === "bedpres",
             "border-secondary-dark": happening.isPinned === true,
           },
         )}
@@ -40,7 +40,7 @@ export const HappeningPreview = ({
         )}
 
         {happening.isPinned === true && (
-          <Chip variant="secondary" className="absolute -right-2 -top-4 rotate-6">
+          <Chip variant="secondary" className="absolute -top-4 -right-2 rotate-6">
             📍 Festet
           </Chip>
         )}
@@ -48,7 +48,7 @@ export const HappeningPreview = ({
         <div className="flex w-full justify-between gap-2">
           <div className="my-auto flex flex-col">
             <h1 className="my-auto line-clamp-1 overflow-hidden font-medium">{happening.title}</h1>
-            <div className="items-center text-xs font-medium text-muted-foreground">
+            <div className="text-muted-foreground items-center text-xs font-medium">
               {happening.registrationStart &&
                 isFuture(new Date(happening.registrationStart)) &&
                 (isToday(new Date(happening.registrationStart)) ? (
@@ -60,7 +60,7 @@ export const HappeningPreview = ({
           </div>
 
           <ul className="sm:text-md text-md my-auto flex-none text-right">
-            <li className="flex justify-end text-xs text-muted-foreground">
+            <li className="text-muted-foreground flex justify-end text-xs">
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li className="text-muted-foreground">

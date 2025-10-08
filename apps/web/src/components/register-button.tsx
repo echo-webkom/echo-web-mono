@@ -180,7 +180,7 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
                               control={form.control}
                               name={`questions.${index}.answer`}
                               render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormItem className="flex flex-row items-start space-y-0 space-x-3">
                                   <FormControl>
                                     <Checkbox
                                       checked={field.value?.includes(option.id)}

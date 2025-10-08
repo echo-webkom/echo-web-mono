@@ -119,7 +119,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
   const hideRegistrations = (event.hideRegistrations ?? false) === true;
 
   return (
-    <div className="flex w-full flex-shrink-0 flex-col gap-4 lg:max-w-[320px]">
+    <div className="flex w-full shrink-0 flex-col gap-4 lg:max-w-[320px]">
       {/**
        * Show warning if:
        * - Event is not happening

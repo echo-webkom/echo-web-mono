@@ -63,7 +63,7 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
   const iconClassNames = "h-8 w-8";
   return (
     <a href={link} target="_blank" rel="noreferrer">
-      <div className="flex flex-col rounded-sm bg-background py-3 sm:gap-4 sm:py-0">
+      <div className="bg-background flex flex-col rounded-sm py-3 sm:gap-4 sm:py-0">
         <div className="mx-auto">
           {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
           {"Outlook" === calendarType && <PiMicrosoftOutlookLogo className={iconClassNames} />}

@@ -28,7 +28,7 @@ const CalendarDay = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={cn("flex min-h-20 flex-col bg-background p-2", className)}>{children}</div>;
+}) => <div className={cn("bg-background flex min-h-20 flex-col p-2", className)}>{children}</div>;
 
 const DayCircle = ({
   variant = "default",
@@ -86,14 +86,14 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   }, [month, setMonthText, steps]);
 
   return (
-    <div className="w-full overflow-x-scroll rounded-xl border-2 border-border md:overflow-hidden">
-      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] border-b-2 border-border bg-border">
+    <div className="border-border w-full overflow-x-scroll rounded-xl border-2 md:overflow-hidden">
+      <div className="border-border bg-border grid min-w-200 grid-cols-7 gap-[2px] border-b-2">
         {weekdays.map((day) => (
           <Heading
             level={3}
             key={day}
             className={cn(
-              "flex h-16 place-items-baseline justify-end bg-muted p-2",
+              "bg-muted flex h-16 place-items-baseline justify-end p-2",
               ["Lør", "Søn"].includes(day) && "text-muted-foreground",
             )}
           >
@@ -101,7 +101,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
           </Heading>
         ))}
       </div>
-      <div className="grid min-w-[50rem] grid-cols-7 gap-[2px] bg-border">
+      <div className="bg-border grid min-w-200 grid-cols-7 gap-[2px]">
         {allDays.map((day, _) => (
           <CalendarDay key={day.toString()}>
             <DayCircle
@@ -117,7 +117,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                   <HoverCardTrigger asChild>
                     <div
-                      className={cn("overflow-hidden border-l-4 p-2 hover:bg-muted-dark", {
+                      className={cn("hover:bg-muted-dark overflow-hidden border-l-4 p-2", {
                         "border-primary hover:bg-primary-hover": event.type === "bedpres",
                         "border-secondary hover:bg-secondary": event.type === "event",
                         "border-pink-400 hover:bg-pink-400": event.type === "movie",

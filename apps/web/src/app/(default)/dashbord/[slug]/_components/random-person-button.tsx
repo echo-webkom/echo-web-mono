@@ -50,7 +50,7 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
   return (
     <>
       {isOpen && (
-        <Confetti className="fixed inset-0 z-[60] h-full w-full" height={height} width={width} />
+        <Confetti className="fixed inset-0 z-60 h-full w-full" height={height} width={width} />
       )}
 
       <Button onClick={pickRandomRegisteredUser}>

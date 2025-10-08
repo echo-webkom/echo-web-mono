@@ -19,7 +19,7 @@ export default async function SignInPage(props: Props) {
   return (
     <div className="mx-4 my-14 flex flex-col gap-4">
       {Boolean(attempt) && (
-        <Callout className="mx-auto max-w-screen-sm" type="warning">
+        <Callout className="mx-auto max-w-2xl" type="warning">
           <Text size="sm">
             Noe gikk galt. Dette kan være grunnet til at vi ikke automatisk får til å finne ut om du
             er medlem. Om du mener dette er feil vennligst{" "}

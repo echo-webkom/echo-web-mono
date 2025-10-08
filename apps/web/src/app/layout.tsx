@@ -158,7 +158,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-primary antialiased",
+          "bg-background font-primary min-h-screen antialiased",
           inter.variable,
           ibmPlexMono.variable,
           ibmPlexMonoDisplay.variable,

@@ -16,7 +16,7 @@ export default function AnimatedBg({ children, count = 100, size = 50 }: Props) 
   const colors = ["#a484e9", "#31bff3", "#f4889a", "#ffaf68", "#f6e683", "#79d45e"];
 
   return (
-    <div className="absolute left-0 top-0 h-full w-full overflow-hidden">
+    <div className="absolute top-0 left-0 h-full w-full overflow-hidden">
       {children}
       <div className="pointer-events-none -z-10">
         {keys.map((key) => {
