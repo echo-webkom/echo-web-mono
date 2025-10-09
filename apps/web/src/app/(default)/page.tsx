@@ -2,7 +2,6 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 
-import { auth } from "@/auth/session";
 import { ParticlesBackdrop } from "@/components/animations/particles";
 import { Reveal } from "@/components/animations/reveal";
 import { BlurLogo } from "@/components/blur-logo";
@@ -11,9 +10,13 @@ import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { Banner } from "./hjem/_components/banner";
+import { ensureAnonymous } from "@/lib/ensure";
 
 export default async function HomePage() {
-  const user = await auth();
+  await ensureAnonymous({
+    redirectTo: "/hjem",
+  });
+
   const [bedpresses, events] = await Promise.all([
     fetchHomeHappenings(["bedpres"], 4),
     fetchHomeHappenings(["event", "external"], 4),
@@ -100,15 +103,9 @@ export default async function HomePage() {
 
             <Reveal>
               <div className="flex justify-center gap-4">
-                {!user ? (
-                  <Button variant="secondary" asChild>
-                    <Link href="/auth/logg-inn">Logg inn</Link>
-                  </Button>
-                ) : (
-                  <Button variant="secondary" asChild>
-                    <Link href="/hjem">Gå til forsiden</Link>
-                  </Button>
-                )}
+                <Button variant="secondary" asChild>
+                  <Link href="/auth/logg-inn">Logg inn</Link>
+                </Button>
                 <Button variant="outline" asChild>
                   <Link href="/om/echo">Les mer om echo</Link>
                 </Button>
