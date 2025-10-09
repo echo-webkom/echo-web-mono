@@ -34,8 +34,8 @@ export const UserTable = ({ user, groups }: UserTableRowProps) => {
               <Dots className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="bg-background border p-2 font-semibold">
+            <DropdownMenuLabel className="p-1">Gjør endringer</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <UserForm user={user} groups={groups} />
           </DropdownMenuContent>
