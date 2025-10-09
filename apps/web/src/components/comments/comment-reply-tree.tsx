@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { type User } from "@echo-webkom/db/schemas";
 
 import { type CommentTree } from "@/lib/comment-tree";
@@ -29,6 +31,8 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
   if (!comments.length) {
     return null;
   }
+
+  const userLink = (userId: string) => `/auth/user/${userId}`;
 
   return (
     <ul>
@@ -62,7 +66,11 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
                 })}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                  <h3 className="text-lg font-medium">{comment.user?.name ?? "[slettet]"}</h3>
+                  <h3 className="text-lg font-medium hover:underline">
+                    <Link href={userLink(comment.user.id)}>
+                      {comment.user?.name ?? "[slettet]"}
+                    </Link>
+                  </h3>
                   <div className="flex items-center gap-2">
                     <p className="text-muted-foreground text-sm">{shortDate(comment.createdAt)}</p>
                     {hasReplies && <CommentCollapseButton />}
