@@ -240,7 +240,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     Jeg vil ha{" "}
                     <span className="group relative cursor-pointer underline">
                       offentlig bruker
-                      <Card className="absolute left-0 top-full mt-1 hidden w-max bg-gray-800 p-2 text-sm text-white shadow-md group-hover:block">
+                      <Card className="absolute top-full left-0 mt-1 hidden w-max bg-gray-800 p-2 text-sm text-white shadow-md group-hover:block">
                         Dette betyr at profilen din vil være synlig for andre brukere.
                       </Card>
                     </span>
