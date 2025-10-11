@@ -1,0 +1,8 @@
+{
+  "name": "@echo-webkom/uno",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "./gradlew run",
+    "test": "./gradlew test"
+  }
+}
