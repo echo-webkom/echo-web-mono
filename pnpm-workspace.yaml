@@ -10,3 +10,4 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
   - workerd
+  - '@tailwindcss/oxide'
