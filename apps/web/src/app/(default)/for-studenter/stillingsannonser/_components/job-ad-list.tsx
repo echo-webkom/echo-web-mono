@@ -143,8 +143,8 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
         .
       </Text>
 
-      <div className="flex flex-col items-center gap-4 md:flex-row">
-        <div className="flex w-full flex-1 flex-col gap-1">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
+        <div className="flex w-full flex-1 flex-col gap-1 md:col-span-3">
           <Label htmlFor="search">Søk</Label>
           <Input
             id="search"
@@ -154,7 +154,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           />
         </div>
 
-        <div className="flex w-full flex-col gap-1 md:max-w-44">
+        <div className="flex w-full flex-col gap-1 md:col-span-3">
           <Label htmlFor="location">Sted</Label>
           <Select
             id="location"
@@ -170,7 +170,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           </Select>
         </div>
 
-        <div className="flex w-full flex-col gap-1 md:max-w-40">
+        <div className="flex w-full flex-col gap-1 md:col-span-2">
           <Label htmlFor="sort">Sorter etter</Label>
           <Select id="sort" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
             <option value="newest">Nyeste først</option>
@@ -180,7 +180,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           </Select>
         </div>
 
-        <div className="flex w-full flex-col gap-1 md:max-w-40">
+        <div className="flex w-full flex-col gap-1 md:col-span-2">
           <Label htmlFor="workType">Stillingstype</Label>
           <Select
             id="workType"
@@ -196,7 +196,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
           </Select>
         </div>
 
-        <div className="flex w-full flex-col gap-1 md:max-w-40">
+        <div className="flex w-full flex-col gap-1 md:col-span-2">
           <Label htmlFor="company">Bedrift</Label>
           <Select
             id="company"
