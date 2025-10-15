@@ -14,6 +14,10 @@ const routes = [
     label: "Arrangementer",
     href: "/auth/profil/arrangementer",
   },
+  {
+    label: "Troféer",
+    href: "/auth/profil/trofeer",
+  },
 ];
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
