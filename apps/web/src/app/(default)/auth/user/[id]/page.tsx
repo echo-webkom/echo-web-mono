@@ -199,12 +199,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             </CardContent>
           </Card>
           <div className="mt-6 text-center">
-            {/* <Link href={`/auth/user/${user.id}`}>
-              <Button variant="ghost">
-                <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                Gå til egen profil
-              </Button>
-            </Link> */}
           </div>
         </div>
       </div>
