@@ -198,8 +198,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
               </div>
             </CardContent>
           </Card>
-          <div className="mt-6 text-center">
-          </div>
+          <div className="mt-6 text-center"></div>
         </div>
       </div>
     );
