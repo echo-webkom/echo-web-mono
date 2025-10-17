@@ -5,7 +5,7 @@ import { loginAs } from "../../helpers/sessionTest";
 test("update profile", async ({ page }) => {
   await loginAs(page, "Student");
 
-  await page.goto("/auth/profil");
+  await page.goto("/auth/user/student");
 
   await expect(page.getByText("Student", { exact: true })).toBeVisible();
   await expect(page.getByText("student@echo.uib.no", { exact: true })).toBeVisible();
@@ -21,7 +21,7 @@ test("update profile", async ({ page }) => {
 test("see admin dashboard", async ({ page }) => {
   await loginAs(page, "Admin");
 
-  await page.goto("/");
+  await page.goto("/auth/user/admin");
 
   await page.getByTestId("user-menu").click();
 
@@ -32,4 +32,10 @@ test("see admin dashboard", async ({ page }) => {
   await dashboardItem.click();
 
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+});
+
+test("can't see private profile", async ({ page }) => {
+  await loginAs(page, "Student");
+  await page.goto("/auth/user/student2");
+  await expect(page.getByText("Denne brukeren har privat profil.")).toBeVisible();
 });

@@ -218,6 +218,13 @@
       "when": 1755566992789,
       "tag": "0030_wandering_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1756895439760,
+      "tag": "0031_sturdy_red_skull",
+      "breakpoints": true
     }
   ]
 }

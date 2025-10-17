@@ -16,6 +16,7 @@ export async function givenIHaveUsers() {
         year: 3,
         degreeId: "dtek",
         hasReadTerms: true,
+        isPublic: true,
       },
       {
         id: "2",
@@ -24,6 +25,7 @@ export async function givenIHaveUsers() {
         year: 5,
         degreeId: "dtek",
         hasReadTerms: true,
+        isPublic: false,
       },
     ])
     .onConflictDoNothing();
@@ -37,6 +39,7 @@ export const userList = [
     year: 2,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: true,
   },
   {
     id: "2",
@@ -45,6 +48,7 @@ export const userList = [
     year: 4,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: true,
   },
   {
     id: "3",
@@ -53,6 +57,7 @@ export const userList = [
     year: 2,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: true,
   },
   {
     id: "4",
@@ -61,6 +66,7 @@ export const userList = [
     year: 3,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: true,
   },
   {
     id: "5",
@@ -69,6 +75,7 @@ export const userList = [
     year: 5,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: true,
   },
   {
     id: "6",
@@ -77,5 +84,6 @@ export const userList = [
     year: 4,
     degreeId: "dtek",
     hasReadTerms: true,
+    isPublic: false,
   },
 ];
