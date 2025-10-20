@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
+import { ChevronRight } from "lucide-react";
 
 import { ParticlesBackdrop } from "@/components/animations/particles";
 import { Reveal } from "@/components/animations/reveal";
@@ -10,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { ensureAnonymous } from "@/lib/ensure";
 import { fetchHomeHappenings } from "@/sanity/happening";
+import { cn } from "@/utils/cn";
 import { Banner } from "./hjem/_components/banner";
 
 export default async function HomePage() {
@@ -21,6 +23,19 @@ export default async function HomePage() {
     fetchHomeHappenings(["bedpres"], 4),
     fetchHomeHappenings(["event", "external"], 4),
   ]);
+
+  const studieretninger: Record<string, Record<string, string>> = {
+    Bachelor: {
+      Datateknologi: "https://www4.uib.no/studier/program/informatikk-datateknologi-bachelor",
+      Datasikkerhet: "https://www4.uib.no/studier/program/informatikk-datasikkerhet-bachelor",
+      "Informatikk-matematikk-økonomi":
+        "https://www4.uib.no/studier/program/informatikk-matematikk-okonomi-bachelor",
+      Bioinformatikk: "https://www4.uib.no/studier/program/informatikk-bioinformatikk-bachelor",
+      "Geofag og informatikk": "https://www4.uib.no/studier/program/geofag-og-informatikk-bachelor",
+    },
+    Master: { Informatikk: "https://www4.uib.no/studier/program/informatikk-master" },
+    Årsstudium: { Informatikk: "https://www4.uib.no/studier/program/informatikk-arsstudium" },
+  };
 
   return (
     <>
@@ -203,6 +218,54 @@ export default async function HomePage() {
                 )}
               </Reveal>
             </div>
+            {/* <div className="flex justify-center"> */}
+            <Reveal translateX={200}>
+              <div
+                className={cn(
+                  "relative rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md",
+                  "dark:border-white/10 dark:bg-white/[0.03]",
+                )}
+              >
+                <div className="pointer-events-none absolute inset-0 -z-10 rounded-[inherit]">
+                  <div className="bg-primary/15 absolute -top-20 left-10 h-48 w-72 rounded-full blur-2xl" />
+                  <div className="bg-primary/10 absolute right-10 -bottom-24 h-56 w-72 rounded-full blur-3xl" />
+                </div>
+
+                <h3 className="mb-8 text-center text-2xl font-semibold">Studieretninger</h3>
+
+                <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3">
+                  {Object.entries(studieretninger).map(([degree, programs]) => (
+                    <div key={degree}>
+                      <div className="mb-3 flex items-center gap-2">
+                        <div className="bg-primary/70 ring-primary/20 size-2 rounded-full ring-2" />
+                        <h4 className="text-lg font-semibold">{degree}</h4>
+                      </div>
+
+                      <ul className="divide-border/60 border-border/60 bg-background/40 divide-y rounded-xl border">
+                        {Object.entries(programs).map(([programName, programLink], i) => (
+                          <li
+                            key={programName}
+                            className={cn("px-3", i === 0 ? "pt-2.5 pb-1.5" : "py-1.5")}
+                          >
+                            <Link
+                              href={programLink}
+                              className="group flex items-center gap-3 py-1.5"
+                            >
+                              <span className="bg-primary/70 ring-primary/20 relative mt-[2px] size-1.5 rounded-full ring-2 transition group-hover:scale-110" />
+                              <span className="text-primary underline-offset-4 group-hover:underline">
+                                {programName}
+                              </span>
+                              <ChevronRight className="ml-auto size-4 translate-x-0 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+            {/* </div> */}
           </div>
         </Container>
       </div>
