@@ -37,7 +37,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 - **web** - Hovednettsiden bygget med Next.js 15, React 19, Tailwind CSS og NextAuth.js
 - **api** - Backend API bygget med Hono.js, Node.js og esbuild
 - **cms** - Sanity Studio for innholdsadministrasjon
-- **uno** - Go backend for beta-applikasjonen
 
 ### Delte pakker (`/packages`)
 
@@ -47,7 +46,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 - **email** - E-postmaler og sending-funksjonalitet
 - **seeder** - Database seeding-verktøy
 - **config/eslint** - Delte ESLint-konfigurasjoner
-- **axis-client** - Klientbibliotek for Axis-integrasjon
 
 ### Testing (`/playwright`)
 
@@ -100,20 +98,6 @@ Sidene som starter er:
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 > NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
-
-## Hvordan kjøre beta-miljøet?
-
-Følg først steg 1-5 fra "Hvordan kjøre?" for å sette opp det grunnleggende miljøet.
-
-**Start beta utviklingsmiljøet**
-
-```sh
-pnpm dev:beta
-```
-
-Sidene som starter er:
-
-- [http://localhost:8002](http://localhost:8002) for beta API-et (Go)
 
 ## Relaterte prosjekter
 
