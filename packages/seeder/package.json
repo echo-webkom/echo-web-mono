@@ -15,22 +15,22 @@
   "devDependencies": {
     "@types/node": "22.18.11",
     "dotenv-cli": "10.0.0",
-    "eslint": "9.34.0",
+    "eslint": "9.38.0",
     "eslint-config-webkom": "workspace:*",
-    "globals": "^16.3.0",
-    "tsx": "4.20.5",
+    "globals": "^16.4.0",
+    "tsx": "4.20.6",
     "typescript": "5.6.3",
-    "typescript-eslint": "^8.42.0"
+    "typescript-eslint": "^8.46.2"
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@echo-webkom/sanity": "workspace:^",
-    "@faker-js/faker": "10.0.0",
-    "@sanity/client": "7.11.1",
+    "@faker-js/faker": "10.1.0",
+    "@sanity/client": "7.12.0",
     "chalk": "5.6.2",
-    "commander": "14.0.0",
-    "drizzle-orm": "0.44.5",
-    "groq": "4.6.1"
+    "commander": "14.0.1",
+    "drizzle-orm": "0.44.6",
+    "groq": "4.10.3"
   }
 }

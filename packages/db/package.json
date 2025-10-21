@@ -24,9 +24,9 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "drizzle-orm": "0.44.5",
+    "drizzle-orm": "0.44.6",
     "drizzle-zod": "0.8.3",
-    "nanoid": "5.1.5",
+    "nanoid": "5.1.6",
     "pg": "8.16.3",
     "postgres": "3.4.7",
     "zod": "4.1.12"
@@ -35,12 +35,12 @@
     "@types/node": "22.18.11",
     "@types/pg": "8.15.5",
     "dotenv-cli": "10.0.0",
-    "drizzle-kit": "0.31.4",
-    "eslint": "9.34.0",
+    "drizzle-kit": "0.31.5",
+    "eslint": "9.38.0",
     "eslint-config-webkom": "workspace:*",
-    "globals": "^16.3.0",
-    "tsx": "4.20.5",
+    "globals": "^16.4.0",
+    "tsx": "4.20.6",
     "typescript": "5.6.3",
-    "typescript-eslint": "^8.42.0"
+    "typescript-eslint": "^8.46.2"
   }
 }
