@@ -5,6 +5,7 @@ import { getMonth } from "date-fns";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
 
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { Snowflake } from "../icons/snowflake";
 
 type AnimatedIconsProps = {
@@ -14,34 +15,38 @@ type AnimatedIconsProps = {
 
 export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
   const month = getMonth(new Date());
+  const isMounted = useIsMounted();
+
   // Halloween
-  if (month !== 9) return <>{children}</>;
+  if (month !== 9) return children;
 
   const keys = [...new Array(n).keys()];
   const folder = "/halloween-icons/";
   const icons = ["ghost.svg", "pumpkin.svg", "skull.svg"];
 
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
-        {keys.map((key) => {
-          const xOffset = Math.floor(Math.random() * 95);
-          const yOffset = Math.floor(Math.random() * 95);
+      {isMounted && (
+        <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
+          {keys.map((key) => {
+            const xOffset = Math.floor(Math.random() * 95);
+            const yOffset = Math.floor(Math.random() * 95);
 
-          const icon = icons[Math.floor(Math.random() * icons.length)];
-          return (
-            <AnimatedIcon
-              delay={key * 0.5}
-              repeatDelay={15}
-              xOffset={`${xOffset}%`}
-              yOffset={`${yOffset}%`}
-              key={key}
-              iconSrc={`${folder}${icon}`}
-            />
-          );
-        })}
-      </div>
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+            return (
+              <AnimatedIcon
+                delay={key * 0.5}
+                repeatDelay={15}
+                xOffset={`${xOffset}%`}
+                yOffset={`${yOffset}%`}
+                key={key}
+                iconSrc={`${folder}${icon}`}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
@@ -90,32 +95,35 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   const date = new Date();
   const month = date.getMonth();
   const { theme } = useTheme();
+  const isMounted = useIsMounted();
 
   // Christmas
-  if (!((month === 10 && date.getDate() >= 16) || month === 11)) return <>{children}</>;
+  if (!((month === 10 && date.getDate() >= 16) || month === 11)) return children;
 
   const keys = [...new Array(n).keys()];
   const colors = theme === "light" ? ["#1C274C"] : ["#F3F7F2"]; // Can add different colors for the snowflakes here
 
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
-        {keys.map((key) => {
-          const offset = Math.floor(Math.random() * 95);
+      {isMounted && (
+        <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
+          {keys.map((key) => {
+            const offset = Math.floor(Math.random() * 95);
 
-          const color = colors[Math.floor(Math.random() * colors.length)]!;
-          return (
-            <AnimatedSnowFlake
-              delay={key * 0.5}
-              repeatDelay={15}
-              offset={`${offset}%`}
-              key={key}
-              color={color}
-            />
-          );
-        })}
-      </div>
+            const color = colors[Math.floor(Math.random() * colors.length)]!;
+            return (
+              <AnimatedSnowFlake
+                delay={key * 0.5}
+                repeatDelay={15}
+                offset={`${offset}%`}
+                key={key}
+                color={color}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
