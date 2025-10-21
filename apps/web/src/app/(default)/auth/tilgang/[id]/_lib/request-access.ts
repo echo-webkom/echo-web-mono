@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const requestAccessSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   reason: z.string().min(5),
 });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { type KVAdapter } from "./kv-adapter";
 import { type KVKey } from "./kv-types";
-import { createKey, isExpired, parseData } from "./utils";
+import { createKey, isExpired } from "./utils";
 
 export type AnySchema = z.ZodType;
 
@@ -36,20 +36,20 @@ export class KVNamespace<TSchema extends AnySchema = z.ZodUnknown> {
    * @param value - The value to set
    * @param ttl - The time to live of the value
    */
-  set = async <T extends z.infer<TSchema>>(
+  async set<T extends z.infer<TSchema>>(
     keys: KVKey,
     value: T,
     ttl: Date | null = null,
-  ): Promise<void> => {
+  ): Promise<void> {
     if (ttl && isExpired(ttl)) {
       throw new Error("TTL has expired");
     }
 
-    const _value = parseData(value, this.schema);
+    const _value = this.schema.parse(value);
     const key = createKey(this.namespace, ...(Array.isArray(keys) ? keys : [keys]));
 
     await this.adapter.set(key, _value, ttl);
-  };
+  }
 
   /**
    * Get a value from the KV store
@@ -57,15 +57,14 @@ export class KVNamespace<TSchema extends AnySchema = z.ZodUnknown> {
    * @param keys - The keys of the value
    * @returns The value or null if it doesn't exist
    */
-  get = async <T extends z.infer<TSchema>>(keys: KVKey): Promise<T | null> => {
+  async get<T extends z.infer<TSchema>>(keys: KVKey): Promise<T | null> {
     const key = createKey(this.namespace, ...(Array.isArray(keys) ? keys : [keys]));
-    const result = await this.adapter.get(key);
+    const result = await this.adapter.get<T>(key);
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return parseData(result, this.schema);
+      return this.schema.parse(result) as T;
     } catch {
       return null;
     }
-  };
+  }
 }

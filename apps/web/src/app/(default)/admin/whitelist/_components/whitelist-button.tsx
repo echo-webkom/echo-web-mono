@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 const whitelistFormSchema = z.object({
-  email: z.string().email("Ugyldig e-post"),
+  email: z.email("Ugyldig e-post"),
   days: z.coerce.number().positive("Må være et positivt tall"),
   reason: z.string().min(3, "Må være minst 3 tegn"),
 });

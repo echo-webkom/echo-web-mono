@@ -17,7 +17,6 @@ import { fitsInSpotrange, isAvailableSpot } from "@/utils/is-available-spot";
 import { validateQuestions } from "@/utils/validate-questions";
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { parseJson } from "../utils/json";
 
 const app = new Hono();
 
@@ -42,55 +41,50 @@ app.get("/admin/comments/:id", admin(), async (c) => {
   return c.json(comments);
 });
 
-app.post("/admin/comments", admin(), async (c) => {
-  const { ok, json } = await parseJson(
-    c,
-    z.object({
-      content: z.string(),
-      postId: z.string(),
-      userId: z.string(),
-      parentCommentId: z.string().optional(),
-    }),
-  );
+const CommentsRequestBodySchema = z.object({
+  content: z.string(),
+  postId: z.string(),
+  userId: z.string(),
+  parentCommentId: z.string().optional(),
+});
 
-  if (!ok) {
+app.post("/admin/comments", admin(), async (c) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json = await c.req.json();
+  const { success, data } = CommentsRequestBodySchema.safeParse(json);
+
+  if (!success) {
     return c.json({ error: "Invalid data" }, 400);
   }
 
-  const { content, postId, userId, parentCommentId } = json;
-
-  await db.insert(comments).values({
-    content,
-    postId,
-    userId,
-    parentCommentId,
-  });
+  await db.insert(comments).values(data);
 
   return c.json({ success: true });
 });
 
-app.post("/admin/comments/:id/reaction", admin(), async (c) => {
-  const { ok, json } = await parseJson(
-    c,
-    z.object({
-      commentId: z.string(),
-      userId: z.string(),
-    }),
-  );
+const CommentReactionBodySchema = z.object({
+  commentId: z.string(),
+  userId: z.string(),
+});
 
-  if (!ok) {
+app.post("/admin/comments/:id/reaction", admin(), async (c) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json = await c.req.json();
+  const { success, data } = CommentReactionBodySchema.safeParse(json);
+
+  if (!success) {
     return c.json({ error: "Invalid data" }, 400);
   }
 
   const existingReaction = await db.query.commentsReactions.findFirst({
     where: (reaction, { eq }) =>
-      and(eq(reaction.commentId, json.commentId), eq(reaction.userId, json.userId)),
+      and(eq(reaction.commentId, data.commentId), eq(reaction.userId, data.userId)),
   });
 
   if (!existingReaction) {
     await db.insert(commentsReactions).values({
-      commentId: json.commentId,
-      userId: json.userId,
+      commentId: data.commentId,
+      userId: data.userId,
       type: "like",
     });
   } else {
@@ -98,8 +92,8 @@ app.post("/admin/comments/:id/reaction", admin(), async (c) => {
       .delete(commentsReactions)
       .where(
         and(
-          eq(commentsReactions.commentId, json.commentId),
-          eq(commentsReactions.userId, json.userId),
+          eq(commentsReactions.commentId, data.commentId),
+          eq(commentsReactions.userId, data.userId),
         ),
       );
   }
@@ -107,31 +101,30 @@ app.post("/admin/comments/:id/reaction", admin(), async (c) => {
   return c.json({ success: true });
 });
 
-app.post("/admin/register", admin(), async (c) => {
-  const { ok, json } = await parseJson(
-    c,
+const RegisterRequestBodySchema = z.object({
+  userId: z.string(),
+  happeningId: z.string(),
+  questions: z.array(
     z.object({
-      userId: z.string(),
-      happeningId: z.string(),
-      questions: z.array(
-        z.object({
-          questionId: z.string(),
-          answer: z.string().or(z.array(z.string())),
-        }),
-      ),
+      questionId: z.string(),
+      answer: z.string().or(z.array(z.string())),
     }),
-  );
+  ),
+});
 
-  if (!ok) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const data = await c.req.json();
+app.post("/admin/register", admin(), async (c) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json = await c.req.json();
+  const { success, data } = RegisterRequestBodySchema.safeParse(json);
+
+  if (!success) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    Logger.error("Invalid data", data);
+    Logger.error("Invalid data", json);
 
     return c.json({ error: "Invalid data" }, 400);
   }
 
-  const { userId, happeningId, questions } = json;
+  const { userId, happeningId, questions } = data;
 
   const user = await db.query.users.findFirst({
     where: (user, { eq }) => eq(user.id, userId),

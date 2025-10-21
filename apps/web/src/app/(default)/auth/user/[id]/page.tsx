@@ -15,14 +15,20 @@ import { UserForm } from "@/components/user-form";
 import { getAllDegrees } from "@/data/degrees/queries";
 import { UploadProfilePicture } from "../../profil/_components/upload-profile-picture";
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function ProfilePage({ params }: Props) {
   const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");
   }
 
-  const ownerId = String(params.id);
+  const { id: ownerId } = await params;
   const profileOwner = await getProfileOwner(ownerId);
 
   if (!profileOwner) {
