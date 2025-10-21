@@ -37,7 +37,6 @@
     "dotenv-cli": "10.0.0",
     "drizzle-kit": "0.31.5",
     "eslint": "9.38.0",
-    "eslint-config-webkom": "workspace:*",
     "globals": "^16.4.0",
     "tsx": "4.20.6",
     "typescript": "5.6.3",

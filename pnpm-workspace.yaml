@@ -1,7 +1,6 @@
 packages:
   - apps/*
   - packages/*
-  - packages/config/*
   - playwright
 
 onlyBuiltDependencies:

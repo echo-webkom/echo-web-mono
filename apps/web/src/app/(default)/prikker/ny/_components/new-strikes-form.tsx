@@ -61,6 +61,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
   });
 
   const [user, setUser] = useState("");
+  // eslint-disable-next-line react-hooks/incompatible-library
   const watched = form.watch();
 
   const existingDots = users.find((user) => user.id === watched.userId)?.strikes ?? 0;

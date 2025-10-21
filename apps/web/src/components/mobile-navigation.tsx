@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useEffectEvent, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
@@ -35,6 +35,10 @@ const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  const onNavigation = useEffectEvent(() => {
+    setIsOpen(false);
+  });
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -44,7 +48,7 @@ const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    setIsOpen(false);
+    onNavigation();
   }, [pathname]);
 
   return (

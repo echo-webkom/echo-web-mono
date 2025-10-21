@@ -7,7 +7,7 @@ export const POST = withBasicAuth(async (req) => {
     const json = (await req.json()) as { tag: string } | { path: string };
 
     if ("tag" in json) {
-      revalidateTag(json.tag);
+      revalidateTag(json.tag, "max");
 
       return new Response("Revalidated", { status: 200 });
     }

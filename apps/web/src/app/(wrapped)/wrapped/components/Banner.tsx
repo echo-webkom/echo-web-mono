@@ -1,17 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import AnimatedBg from "./AnimatedBg";
 
 export const WrappedBanner = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = useIsMounted();
 
   if (!isMounted) {
     return null;

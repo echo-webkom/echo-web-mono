@@ -5,5 +5,5 @@ export const cacheKeyFactory = {
 };
 
 export const revalidateReactions = (happeningId: string) => {
-  revalidateTag(cacheKeyFactory.reactions(happeningId));
+  revalidateTag(cacheKeyFactory.reactions(happeningId), "max");
 };

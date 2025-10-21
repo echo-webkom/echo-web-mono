@@ -30,9 +30,12 @@ export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
       {isMounted && (
         <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
           {keys.map((key) => {
+            // eslint-disable-next-line react-hooks/purity
             const xOffset = Math.floor(Math.random() * 95);
+            // eslint-disable-next-line react-hooks/purity
             const yOffset = Math.floor(Math.random() * 95);
 
+            // eslint-disable-next-line react-hooks/purity
             const icon = icons[Math.floor(Math.random() * icons.length)];
             return (
               <AnimatedIcon
@@ -109,8 +112,10 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
       {isMounted && (
         <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
           {keys.map((key) => {
+            // eslint-disable-next-line react-hooks/purity
             const offset = Math.floor(Math.random() * 95);
 
+            // eslint-disable-next-line react-hooks/purity
             const color = colors[Math.floor(Math.random() * colors.length)]!;
             return (
               <AnimatedSnowFlake

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 /**
  * Hook to check if component has mounted on the client side.
@@ -9,8 +9,12 @@ import { useEffect, useState } from "react";
 export const useIsMounted = () => {
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+  const onMount = useEffectEvent(() => {
     setMounted(true);
+  });
+
+  useEffect(() => {
+    onMount();
   }, []);
 
   return mounted;

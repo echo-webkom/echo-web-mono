@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const konamiCode = [
@@ -22,7 +22,7 @@ export const EasterEgg = () => {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      setKeys((prev) => [...prev, e.key]);
+      setKeys((prev) => [...prev, e.key].slice(-konamiCode.length));
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -30,17 +30,17 @@ export const EasterEgg = () => {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  });
+  }, []);
 
-  useEffect(() => {
-    if (keys.length > konamiCode.length) {
-      setKeys((prev) => prev.slice(keys.length - konamiCode.length));
-    }
-
+  const onTyping = useEffectEvent(() => {
     if (keys.join() === konamiCode.join()) {
       router.push("/webkom");
     }
-  }, [keys, router]);
+  });
+
+  useEffect(() => {
+    onTyping();
+  }, [keys]);
 
   return null;
 };

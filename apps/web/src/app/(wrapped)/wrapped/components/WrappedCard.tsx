@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion, type Easing, type Variants } from "motion/react";
 import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
@@ -67,11 +68,14 @@ function CardLayers<C extends number>({ style, children }: WrappedCardProps<C>) 
 }
 
 function CardBackdrop() {
-  const length = 10 + Math.floor(Math.random() * 4);
+  const [r1] = useState(() => Math.random());
+  const [r2] = useState(() => Math.random());
+
+  const length = 10 + Math.floor(r1 * 4);
   return (
     <motion.div
       initial={{ rotate: 0 }}
-      animate={{ rotate: Math.floor(Math.random() * 20 - 10) }}
+      animate={{ rotate: Math.floor(r2 * 20 - 10) }}
       transition={{
         duration: 10,
       }}
@@ -86,6 +90,7 @@ function CardBackdrop() {
             key={index}
             x={Math.cos(angle) * dist}
             y={Math.sin(angle) * dist}
+            // eslint-disable-next-line react-hooks/purity
             duration={Math.random() * 3}
           />
         );
@@ -99,6 +104,7 @@ function CardBackdrop() {
             key={index}
             x={Math.cos(angle) * dist}
             y={Math.sin(angle) * dist}
+            // eslint-disable-next-line react-hooks/purity
             duration={Math.random() * 2}
           />
         );
@@ -112,6 +118,7 @@ function CardBackdrop() {
             key={index}
             x={Math.cos(angle) * dist}
             y={Math.sin(angle) * dist}
+            // eslint-disable-next-line react-hooks/purity
             duration={Math.random() * 3}
           />
         );
@@ -127,7 +134,9 @@ type ParticleProps = {
 };
 
 function Particle({ x, y, duration }: ParticleProps) {
-  const Icon = ICONS[Math.floor(Math.random() * ICONS.length)]!;
+  const [r1] = useState(() => Math.random());
+
+  const Icon = ICONS[Math.floor(r1 * ICONS.length)]!;
 
   return (
     <motion.div

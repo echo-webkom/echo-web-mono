@@ -47,7 +47,6 @@ apps/web/
 │   ├── data/                 # Data fetching functions
 │   └── styles/               # Global styling
 ├── public/                   # Statiske filer
-└── tailwind.config.ts       # Tailwind konfigurasjon
 ```
 
 ## Hovedfunksjoner

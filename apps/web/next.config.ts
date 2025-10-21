@@ -101,7 +101,6 @@ const config = {
 
   skipTrailingSlashRedirect: true,
 
-  eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 } satisfies NextConfig;
 

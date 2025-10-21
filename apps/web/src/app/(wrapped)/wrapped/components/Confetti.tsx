@@ -4,9 +4,13 @@ export const Confetti = ({ delay }: { delay: number }) => {
   return (
     <div className="absolute h-full w-full overflow-hidden">
       {[...new Array(100).keys()].map((index, _) => {
+        // eslint-disable-next-line react-hooks/purity
         const x = Math.floor(Math.random() * 99);
+        // eslint-disable-next-line react-hooks/purity
         const particleDelay = Math.random() * 5 + delay;
+        // eslint-disable-next-line react-hooks/purity
         const offx1 = Math.floor(Math.random() * 3);
+        // eslint-disable-next-line react-hooks/purity
         const offx2 = Math.floor(Math.random() * 3);
 
         const colors = [
@@ -19,6 +23,7 @@ export const Confetti = ({ delay }: { delay: number }) => {
           "bg-wrapped-green",
         ];
 
+        // eslint-disable-next-line react-hooks/purity
         const color = colors[Math.floor(Math.random() * colors.length)];
 
         return (

@@ -25,7 +25,7 @@ export const AreaChartRegistrationsOverTime = memo(
           const time = `${date.getMonth() + 1}-${date.getDate()}`;
 
           const last = acc[acc.length - 1];
-          if (last && last.time === time) {
+          if (last?.time === time) {
             last.count += 1;
             last.total = (acc[acc.length - 2]?.total ?? 0) + last.count;
           } else {

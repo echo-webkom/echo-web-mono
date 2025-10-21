@@ -55,6 +55,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof userSchema>>({
+    resolver: zodResolver(userSchema),
     defaultValues: {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
@@ -63,20 +64,21 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
       birthday: user.birthday,
       isPublic: user.isPublic,
     },
-    resolver: zodResolver(userSchema),
   });
 
   const onSubmit = form.handleSubmit(
     async (data) => {
       setIsLoading(true);
 
+      // TODO: It shouldn't be necessary to assert the types here, but for some reason TS
+      // doesn't infer them correctly
       const { success, message } = await updateSelf({
-        alternativeEmail: data.alternativeEmail,
-        degreeId: data.degree,
-        year: data.year,
-        hasReadTerms: data.hasReadTerms,
-        birthday: data.birthday,
-        isPublic: data.isPublic,
+        alternativeEmail: data.alternativeEmail as string | undefined,
+        degreeId: data.degree as string | undefined,
+        year: data.year as number | undefined,
+        hasReadTerms: data.hasReadTerms as boolean | undefined,
+        birthday: data.birthday as Date | undefined,
+        isPublic: data.isPublic as boolean | undefined,
       });
 
       setIsLoading(false);

@@ -62,7 +62,13 @@ export const WhitelistButton = ({
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { success, message } = await upsertWhitelist(data.email, data.reason, data.days);
+    // TODO: It shouldn't be necessary to assert the types here, but for some reason TS
+    // doesn't infer them correctly
+    const { success, message } = await upsertWhitelist(
+      data.email as string,
+      data.reason as string,
+      data.days as number,
+    );
 
     toast({
       title: message,

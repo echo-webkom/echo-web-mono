@@ -1,35 +1,32 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import nextPlugin from "@next/eslint-plugin-next";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
+import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-export default [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    ignores: [
-      ".next/**",
-      "node_modules/**",
-      "eslint.config.*",
-      "next-env.d.ts",
-      "postcss.config.*",
-      "prettier.config.*",
-      "out/**",
-      "build/**",
-    ],
-  },
+export default defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  prettier,
+  globalIgnores([
+    ".next/**",
+    "node_modules/**",
+    "eslint.config.*",
+    "next-env.d.ts",
+    "postcss.config.*",
+    "prettier.config.*",
+    "out/**",
+    "build/**",
+  ]),
   js.configs.recommended,
   // Ensure TS parserOptions are set before enabling typed rules
   {
@@ -68,8 +65,6 @@ export default [
   {
     plugins: {
       "react-hooks": reactHooks,
-      "jsx-a11y": jsxA11y,
-      "@next/next": nextPlugin,
     },
     languageOptions: {
       globals: {
@@ -88,8 +83,6 @@ export default [
       "arrow-parens": ["error"],
       "react/prop-types": "off",
       ...reactHooks.configs.recommended.rules,
-      "@next/next/no-html-link-for-pages": "off",
-      ...nextPlugin.configs.recommended.rules,
     },
   },
   {
@@ -104,4 +97,4 @@ export default [
       "@typescript-eslint/unbound-method": "off",
     },
   },
-];
+]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
 
 import { type Group } from "@echo-webkom/db/schemas";
@@ -30,9 +30,6 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
       user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  useEffect(() => {
-    setPage(1);
-  }, [searchQuery, pageSize]);
   const totalPages = Math.ceil(filteredUsers.length / pageSize) || 1;
 
   const handleNextPage = () => {
@@ -102,7 +99,10 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
               <Input
                 type="number"
                 value={pageSize}
-                onChange={(e) => setPageSize(parseInt(e.target.value))}
+                onChange={(e) => {
+                  setPageSize(parseInt(e.target.value));
+                  setPage(1);
+                }}
               />
             </div>
 
@@ -110,7 +110,10 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
               <Label>Søk:</Label>
               <Input
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setPage(1);
+                }}
                 placeholder="Søk..."
               />
             </div>

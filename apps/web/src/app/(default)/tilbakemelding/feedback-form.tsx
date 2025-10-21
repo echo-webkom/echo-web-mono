@@ -23,24 +23,27 @@ import { feedbackSchema } from "@/lib/schemas/feedback";
 export const FeedbackForm = () => {
   const { toast } = useToast();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof feedbackSchema>>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       email: "",
       name: "",
-      category: "",
+      category: "" as "bug", // Type assertion to satisfy TS
       message: "",
     },
   });
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      const { success, message } = await sendFeedback({
-        email: data.email,
-        name: data.name,
-        category: data.category as z.infer<typeof feedbackSchema>["category"],
-        message: data.message,
-      });
+      if (!data.category) {
+        toast({
+          title: "Vennligst velg en kategori for tilbakemeldingen.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { success, message } = await sendFeedback(data);
 
       toast({
         title: message,

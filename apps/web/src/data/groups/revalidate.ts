@@ -5,5 +5,5 @@ export const cacheKeyFactory = {
 };
 
 export const revalidateGroups = () => {
-  revalidateTag(cacheKeyFactory.groups);
+  revalidateTag(cacheKeyFactory.groups, "max");
 };
