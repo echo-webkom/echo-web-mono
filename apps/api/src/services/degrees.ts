@@ -6,7 +6,6 @@ import { degrees, insertDegreeSchema } from "@echo-webkom/db/schemas";
 
 import { db } from "../lib/db";
 import { admin } from "../middleware/admin";
-import { parseJson } from "../utils/json";
 
 const app = new Hono();
 
@@ -19,26 +18,35 @@ app.get("/degrees", async (c) => {
 });
 
 app.post("/degrees", admin(), async (c) => {
-  const { ok, json } = await parseJson(c, insertDegreeSchema);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json = await c.req.json();
+  const { success, data } = insertDegreeSchema.safeParse(json);
 
-  if (!ok) {
+  if (!success) {
     return c.json({ error: "Invalid input" }, 400);
   }
 
-  await db.insert(degrees).values(json);
+  await db.insert(degrees).values(data);
 
   return c.json({ success: true });
 });
 
-app.post("/degree/:id", admin(), async (c) => {
-  const { id } = c.req.param();
-  const { ok, json } = await parseJson(c, z.object({ id: z.string(), name: z.string() }));
+const CreateDegreeRequestBodySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
 
-  if (!ok) {
+app.post("/degree/:id", admin(), async (c) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json = await c.req.json();
+  const { id } = c.req.param();
+  const { success, data } = CreateDegreeRequestBodySchema.safeParse(json);
+
+  if (!success) {
     return c.json({ error: "Invalid input" }, 400);
   }
 
-  await db.update(degrees).set(json).where(eq(degrees.id, id));
+  await db.update(degrees).set(data).where(eq(degrees.id, id));
 
   return c.json({ success: true });
 });

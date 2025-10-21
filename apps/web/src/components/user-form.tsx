@@ -27,7 +27,7 @@ import { Input } from "./ui/input";
 import { Select } from "./ui/select";
 
 const userSchema = z.object({
-  alternativeEmail: z.string().email().or(z.literal("")).optional(),
+  alternativeEmail: z.email().or(z.literal("")).optional(),
   degree: z.string().optional(),
   year: z.coerce.number().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),

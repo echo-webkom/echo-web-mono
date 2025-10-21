@@ -34,7 +34,7 @@ export const StrikeTypeCount = {
 export const addStrikesSchema = z
   .object({
     userId: z.string().min(1),
-    strikeType: z.nativeEnum(StrikeType),
+    strikeType: z.enum(StrikeType),
     reason: z.string(),
     count: z.coerce.number().min(1).max(5),
     strikeExpiresInMonths: z.coerce.number().min(1).max(12),
@@ -43,7 +43,7 @@ export const addStrikesSchema = z
   .superRefine((data, ctx) => {
     if (data.strikeType === StrikeType.Other && !data.reason) {
       return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Må oppgi en grunn for prikken",
       });
     }
