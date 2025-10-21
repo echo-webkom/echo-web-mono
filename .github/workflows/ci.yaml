@@ -33,7 +33,74 @@ env:
   PUBLIC_COMMIT_HASH: ${{ github.sha }}
 
 jobs:
-  ci:
+  lint:
+    name: 📝 Lint, Format & Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔃 Sync docs
+        run: pnpm --filter=docs sync
+
+      - name: 🆎 Typegen
+        run: pnpm --filter=web typegen
+
+      - name: 📝 Lint
+        run: pnpm lint
+
+      - name: 💄 Check style
+        run: pnpm format:check
+
+      - name: 🛫 Type check
+        run: pnpm typecheck
+
+  test-unit:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔃 Sync docs
+        run: pnpm --filter=docs sync
+
+      - name: 🆎 Typegen
+        run: pnpm --filter=web typegen
+
+      - name: 🧪 Run unit tests
+        run: pnpm test:unit
+
+  test-e2e:
+    name: 🎭 E2E Tests
     runs-on: ubuntu-latest
 
     services:
@@ -67,29 +134,17 @@ jobs:
       - name: 🏗️ Migrate database
         run: pnpm db:migrate
 
-      - name: 🔃 Sync
+      - name: 🔃 Sync docs
         run: pnpm --filter=docs sync
 
       - name: 🆎 Typegen
         run: pnpm --filter=web typegen
-
-      - name: 📝 Lint
-        run: pnpm lint
-
-      - name: 🛫 Type check
-        run: pnpm typecheck
-
-      - name: 💄 Check style
-        run: pnpm format:check
 
       - name: 🌱 Seed database
         run: pnpm seed database --mode test
 
       - name: 👷🏻‍♂️ Build
         run: pnpm build
-
-      - name: 🧪 Run unit tests
-        run: pnpm test:unit
 
       - name: 💻 Install playwright browsers
         run: pnpm --filter=playwright test:install
