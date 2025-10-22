@@ -6,6 +6,6 @@ export const cacheKeyFactory = {
 };
 
 export const revalidateRegistrations = (happeningId: string, userId: string) => {
-  revalidateTag(cacheKeyFactory.registrationsHappening(happeningId));
-  revalidateTag(cacheKeyFactory.registrationsUser(userId));
+  revalidateTag(cacheKeyFactory.registrationsHappening(happeningId), "max");
+  revalidateTag(cacheKeyFactory.registrationsUser(userId), "max");
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
@@ -34,7 +34,7 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const { toast } = useToast();
 
   const form = useForm<DeregistrationForm>({
-    resolver: zodResolver(deregistrationSchema),
+    resolver: standardSchemaResolver(deregistrationSchema),
     defaultValues: {
       hasVerified: false,
       reason: "",

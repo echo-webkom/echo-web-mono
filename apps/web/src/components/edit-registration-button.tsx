@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 
@@ -40,7 +40,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
   const { toast } = useToast();
 
   const form = useForm<editRegistrationForm>({
-    resolver: zodResolver(editRegistrationSchema),
+    resolver: standardSchemaResolver(editRegistrationSchema),
     defaultValues: {
       status: registration.status,
       reason: "",

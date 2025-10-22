@@ -5,7 +5,7 @@ import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 
 const revalidateTags = (tags: Array<string>) => {
   for (const tag of tags) {
-    revalidateTag(tag);
+    revalidateTag(tag, "max");
   }
 };
 

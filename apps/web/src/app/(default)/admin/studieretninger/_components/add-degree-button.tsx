@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 
 import { type Degree } from "@echo-webkom/db/schemas";
@@ -43,7 +43,7 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const form = useForm<DegreeForm>({
-    resolver: zodResolver(degreeFormSchema),
+    resolver: standardSchemaResolver(degreeFormSchema),
     defaultValues: {
       id: initialDegree?.id ?? "",
       name: initialDegree?.name ?? "",

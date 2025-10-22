@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
@@ -123,6 +124,7 @@ const NO_COMMENTS = [
 
 export const YourInteractions = () => {
   const stats = useUserStatsContext();
+  const [random] = useState(() => Math.random());
 
   const { play } = useSound("/sounds/hell-nah.mp3", { autoPlay: false });
   useSound("/sounds/vine-boom.mp3", { delay: 1000 });
@@ -134,7 +136,7 @@ export const YourInteractions = () => {
   }
 
   const comment = (() => {
-    if (sumActivity === 0) return NO_COMMENTS[Math.floor(Math.random() * NO_COMMENTS.length)];
+    if (sumActivity === 0) return NO_COMMENTS[Math.floor(random * NO_COMMENTS.length)];
     if (sumActivity < 5) return "En person av få ord";
     if (sumActivity < 10) return "Folket takker deg for din mening";
     return "En ekte kommentarfelt-kriger!";
@@ -225,6 +227,7 @@ const DRUM_ROLL = "/sounds/drumroll.wav";
 const MEMBERS_MESSAGE = ["echo krigere", "nerds", "slitne studenter", "tech supportere"];
 
 export const NumberOfUsers = () => {
+  const [random] = useState(() => Math.random());
   useSound(DRUM_ROLL, { delay: 700 });
 
   return (
@@ -247,9 +250,7 @@ export const NumberOfUsers = () => {
           <AnimatedNumber target={TOTAL_USERS}></AnimatedNumber>
         </motion.div>
         <AppearingText delay={6}>
-          <p className="text-5xl">
-            {MEMBERS_MESSAGE[Math.floor(Math.random() * MEMBERS_MESSAGE.length)]}
-          </p>
+          <p className="text-5xl">{MEMBERS_MESSAGE[Math.floor(random * MEMBERS_MESSAGE.length)]}</p>
         </AppearingText>
       </div>
     </div>

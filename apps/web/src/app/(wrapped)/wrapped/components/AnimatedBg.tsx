@@ -20,9 +20,13 @@ export default function AnimatedBg({ children, count = 100, size = 50 }: Props) 
       {children}
       <div className="pointer-events-none -z-10">
         {keys.map((key) => {
+          // eslint-disable-next-line react-hooks/purity
           const xOffset = Math.floor(Math.random() * 95);
+          // eslint-disable-next-line react-hooks/purity
           const yOffset = Math.floor(Math.random() * 95);
+          // eslint-disable-next-line react-hooks/purity
           const Icon = icons[Math.floor(Math.random() * icons.length)]!;
+          // eslint-disable-next-line react-hooks/purity
           const color = colors[Math.floor(Math.random() * colors.length)];
 
           return (

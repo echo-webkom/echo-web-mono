@@ -69,9 +69,9 @@ export default async function Image({ params }: ImageProps) {
               alignItems: "center",
             }}
           >
-            <img src="https://echo.uib.no/android-chrome-512x512.png" width={300} />
+            <img alt="echo" src="https://echo.uib.no/android-chrome-512x512.png" width={300} />
             <p style={{ fontSize: 120 }}>🤝</p>
-            <img src={logoUrl} width={300} />
+            <img alt="company logo" src={logoUrl} width={300} />
           </div>
           <p
             style={{

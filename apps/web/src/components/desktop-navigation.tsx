@@ -1,6 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState, type FC } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+  type FC,
+} from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
@@ -134,13 +142,17 @@ export const NavigationViewport = () => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const onNavigation = useEffectEvent(() => {
     if (!activeDropdown?.children) {
       setContentHeight(0);
       return;
     }
 
     setContentHeight(ref.current?.clientHeight ?? 0);
+  });
+
+  useEffect(() => {
+    onNavigation();
   }, [activeDropdown]);
 
   return (

@@ -22,7 +22,7 @@ export const revalidateCacheAction = async (tag: string) => {
     };
   }
 
-  revalidateTag(tag);
+  revalidateTag(tag, "max");
 
   return {
     success: true,

@@ -113,14 +113,14 @@ export const POST = withBasicAuth(async (req) => {
   );
 
   // Revalidate happening data from Sanity
-  revalidateTag("happening-params");
+  revalidateTag("happening-params", "max");
   if (data?.slug) {
-    revalidateTag(`happening-${data.slug}`);
+    revalidateTag(`happening-${data.slug}`, "max");
   }
   if (pastSlug) {
-    revalidateTag(`happening-${pastSlug}`);
+    revalidateTag(`happening-${pastSlug}`, "max");
   }
-  revalidateTag("happenings");
+  revalidateTag("happenings", "max");
 
   /**
    * If the happening is external, we don't want to do anything. Since

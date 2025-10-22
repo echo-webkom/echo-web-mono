@@ -25,7 +25,7 @@ export const removeAllRegistrations = async (slug: string) => {
     }
 
     await db.delete(registrations).where(eq(registrations.happeningId, happening._id));
-    revalidateTag(cacheKeyFactory.registrationsHappening(happening._id));
+    revalidateTag(cacheKeyFactory.registrationsHappening(happening._id), "max");
   } catch (error) {
     return {
       success: false,

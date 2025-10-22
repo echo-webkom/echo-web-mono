@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const config = {
+  reactCompiler: true,
+
   transpilePackages: [
     "@echo-webkom/db",
     "@echo-webkom/lib",
@@ -101,7 +103,6 @@ const config = {
 
   skipTrailingSlashRedirect: true,
 
-  eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 } satisfies NextConfig;
 

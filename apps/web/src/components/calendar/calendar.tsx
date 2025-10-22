@@ -1,14 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import Link from "next/link";
-import {
-  usePathname,
-  useRouter,
-  useSearchParams,
-  type ReadonlyURLSearchParams,
-} from "next/navigation";
-import { motion } from "motion/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Heading } from "@/components/typography/heading";
@@ -22,106 +16,77 @@ import { CalendarExport } from "./calendar-export";
 import { DaysCalendar } from "./days-calendar";
 import { MonthCalendar } from "./month-calendar";
 
-const parseStepParam = (params: URLSearchParams | ReadonlyURLSearchParams) => {
-  const rawStep = params.get("step");
-  if (!rawStep) {
-    return 0;
-  }
+const STEP_PARAM_NAME = "step";
+const TAB_PARAM_NAME = "view";
 
-  const parsed = Number.parseInt(rawStep, 10);
-  return Number.isNaN(parsed) ? 0 : parsed;
-};
+type CalendarTabType = "week" | "month";
 
-type Props = {
+type CalendarProps = {
   events: Array<CalendarEvent>;
-  type: "week" | "month" | "multi";
+  type: CalendarTabType | "multi";
 };
 
-export const Calendar = ({ events, type }: Props) => {
+export const Calendar = ({ events, type }: CalendarProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [topText, setTopText] = useState("Kalender");
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
-  const [topText, setTopText] = useState("");
-  const [activeView, setActiveView] = useState<"week" | "month">(() =>
-    searchParams.get("view") === "month" ? "month" : "week",
+  const [currenetTab, currentTab] = useState<CalendarTabType>(() =>
+    searchParams.get(TAB_PARAM_NAME) === "month" ? "month" : "week",
   );
 
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const [tabHeight, setTabHeight] = useState(0);
+  const handlePrevStep = () => {
+    setSteps((prev) => prev - 1);
+  };
 
-  useEffect(() => {
-    setTabHeight(tabsRef.current?.scrollHeight ?? 0);
-  }, [topText]);
+  const handleNextStep = () => {
+    setSteps((prev) => prev + 1);
+  };
 
-  useEffect(() => {
-    const paramsStep = parseStepParam(searchParams);
-    setSteps((current) => (current === paramsStep ? current : paramsStep));
-  }, [searchParams]);
+  const handleReset = () => {
+    setSteps(0);
+  };
 
-  const syncStepsToUrl = (next: number, paramsOverride?: URLSearchParams) => {
-    setSteps(next);
+  const handleViewChange = (value: string) => {
+    const next = value === "month" ? "month" : "week";
 
-    const params = paramsOverride ?? new URLSearchParams(searchParams.toString());
-    if (next === 0) {
-      params.delete("step");
+    if (type !== "multi") return;
+    if (next === currenetTab) return;
+
+    handleReset();
+    currentTab(next);
+  };
+
+  const onCalendarChange = useEffectEvent(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Update step param
+    if (steps === 0) {
+      params.delete(STEP_PARAM_NAME);
     } else {
-      params.set("step", String(next));
+      params.set(STEP_PARAM_NAME, steps.toString());
+    }
+
+    // Update tab param
+    if (type === "multi") {
+      params.set(TAB_PARAM_NAME, currenetTab);
+    } else {
+      params.delete(TAB_PARAM_NAME);
     }
 
     const paramsString = params.toString();
     router.replace(paramsString ? `${pathname}?${paramsString}` : pathname);
-  };
-
-  const handlePrevStep = () => {
-    syncStepsToUrl(steps - 1);
-  };
-
-  const handleNextStep = () => {
-    syncStepsToUrl(steps + 1);
-  };
-
-  const handleReset = () => {
-    syncStepsToUrl(0);
-  };
+  });
 
   useEffect(() => {
-    if (type !== "multi") {
-      return;
-    }
-
-    const paramsValue = searchParams.get("view");
-    if (paramsValue !== "week" && paramsValue !== "month") {
-      return;
-    }
-
-    if (paramsValue !== activeView) {
-      setActiveView(paramsValue);
-      syncStepsToUrl(0);
-    }
-  }, [activeView, searchParams, type]);
-
-  const handleViewChange = (value: string) => {
-    if (type !== "multi") {
-      return;
-    }
-
-    const nextView: "week" | "month" = value === "month" ? "month" : "week";
-
-    if (nextView === activeView) {
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("view", nextView);
-
-    syncStepsToUrl(0, params);
-    setActiveView(nextView);
-  };
+    onCalendarChange();
+  }, [steps, currenetTab]);
 
   if (type === "multi") {
     return (
-      <Tabs value={activeView} className="w-full gap-2" onValueChange={handleViewChange}>
+      <Tabs value={currenetTab} className="w-full gap-2" onValueChange={handleViewChange}>
         <div className="flex w-full flex-col items-center gap-4 md:flex-row">
           <TabsList>
             <TabsTrigger value="week">Ukekalender</TabsTrigger>
@@ -137,28 +102,26 @@ export const Calendar = ({ events, type }: Props) => {
           />
         </div>
 
-        <motion.div animate={{ height: tabHeight }} className="overflow-hidden">
-          <div ref={tabsRef} className="py-4">
-            <TabsContent value="week">
-              <DaysCalendar events={events} steps={steps} isWeek setWeekText={setTopText} />
-            </TabsContent>
-            <TabsContent value="month">
-              <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
-            </TabsContent>
-            <Legend />
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <BiDownload className="size-5" />
-                  <Text size="sm">Last ned kalender</Text>
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <CalendarExport />
-              </DialogContent>
-            </Dialog>
-          </div>
-        </motion.div>
+        <div className="py-4">
+          <TabsContent value="week">
+            <DaysCalendar events={events} steps={steps} isWeek setWeekText={setTopText} />
+          </TabsContent>
+          <TabsContent value="month">
+            <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
+          </TabsContent>
+          <Legend />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <BiDownload className="size-5" />
+                <Text size="sm">Last ned kalender</Text>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <CalendarExport />
+            </DialogContent>
+          </Dialog>
+        </div>
       </Tabs>
     );
   }
@@ -191,6 +154,20 @@ export const Calendar = ({ events, type }: Props) => {
     </div>
   );
 };
+
+function parseStepParam(params: URLSearchParams) {
+  const value = params.get(STEP_PARAM_NAME);
+  if (!value) {
+    return 0;
+  }
+
+  const v = parseInt(value, 10);
+  if (isNaN(v)) {
+    return 0;
+  }
+
+  return v;
+}
 
 const Legend = () => {
   return (

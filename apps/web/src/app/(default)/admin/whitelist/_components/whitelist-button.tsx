@@ -2,7 +2,7 @@
 
 import { useState, type PropsWithChildren } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -31,7 +31,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const whitelistFormSchema = z.object({
   email: z.email("Ugyldig e-post"),
-  days: z.coerce.number().positive("Må være et positivt tall"),
+  days: z.coerce.number<number>().positive("Må være et positivt tall"),
   reason: z.string().min(3, "Må være minst 3 tegn"),
 });
 type WhitelistForm = z.infer<typeof whitelistFormSchema>;
@@ -53,7 +53,7 @@ export const WhitelistButton = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<WhitelistForm>({
-    resolver: zodResolver(whitelistFormSchema),
+    resolver: standardSchemaResolver(whitelistFormSchema),
     defaultValues: {
       email: whitelistEntry?.email ?? "",
       days: 30,
