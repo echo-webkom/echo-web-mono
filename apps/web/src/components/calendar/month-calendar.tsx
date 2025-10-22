@@ -28,7 +28,7 @@ const CalendarDay = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={cn("bg-background flex min-h-20 flex-col p-2", className)}>{children}</div>;
+}) => <div className={cn("bg-background relative flex min-h-20 flex-col p-2 overflow-hidden", className)}>{children}</div>;
 
 const DayCircle = ({
   variant = "default",
@@ -71,6 +71,7 @@ const months = [
   "Desember",
 ];
 
+
 export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   const month = useMemo(() => addMonths(startOfMonth(new Date()), steps), [steps]);
   const firstDay = month.getDay() > 0 ? month.getDay() - 1 : 6; //getDay goes from sunday, monday, ..., saturday
@@ -84,6 +85,8 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
       setMonthText(`${months[getMonth(month)]} ${month.getFullYear()}`);
     }
   }, [month, setMonthText, steps]);
+
+  const BIRTHDAY = new Date(2025, 10, 7, 12, 0, 0);
 
   return (
     <div className="border-border w-full overflow-x-scroll rounded-xl border-2 md:overflow-hidden">
@@ -111,6 +114,39 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
             >
               {day.getDate()}
             </DayCircle>
+           {(() => {
+  const isBirthday = isSameDay(day, BIRTHDAY);
+
+  return (
+    <>
+      {isBirthday && (
+        <span
+          className="absolute left-2 top-2 rounded px-1 text-[11px] font-semibold tracking-wide
+                     text-foreground/90 bg-background/80 backdrop-blur-sm"
+        >
+          Gratulerer med dagen!
+        </span>
+      )}
+
+      {isBirthday && (
+        <div
+          className="pointer-events-none absolute inset-x-2 top-7 h-18 grid left-3"
+        >
+          <div className="text-1xl font-medium leading-tight">
+            echo
+            <br />
+            BURSDAG 🎉
+          </div>
+        </div>
+      )}
+
+      {isBirthday && <div className="h-10" />}
+    </>
+  );
+})()}
+
+
+
             {events
               .filter((event) => isSameDay(event.date, day))
               .map((event, _) => (
