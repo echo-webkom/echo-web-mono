@@ -28,7 +28,6 @@ export default defineConfig([
     "build/**",
   ]),
   js.configs.recommended,
-  // Ensure TS parserOptions are set before enabling typed rules
   {
     files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
@@ -41,7 +40,6 @@ export default defineConfig([
   },
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  // Override TS rules after presets so ours win
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {

@@ -2,12 +2,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import js from "@eslint/js";
 import astro from "eslint-plugin-astro";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
 import ts from "typescript-eslint";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const config = ts.config(
+export default defineConfig([
   js.configs.recommended,
   ...ts.configs.recommendedTypeChecked,
   ...ts.configs.stylisticTypeChecked,
@@ -24,7 +25,6 @@ const config = ts.config(
       },
     },
     rules: {
-      // Base rules
       eqeqeq: "error",
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],
       "eol-last": "error",
@@ -54,6 +54,4 @@ const config = ts.config(
   {
     ignores: ["dist/**", "node_modules/**", ".astro/**"],
   },
-);
-
-export default config;
+]);
