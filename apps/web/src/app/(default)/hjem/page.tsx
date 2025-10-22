@@ -3,6 +3,7 @@ import { ensureUser } from "@/lib/ensure";
 import { Banner } from "./_components/banner";
 import BirthdayBanner from "./_components/birthdayBanner";
 import { ComingHappenings } from "./_components/coming-bedpres";
+import EchoBirthdayBanner from "./_components/echo-birthday";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
 import { HyggkomList } from "./_components/hyggkom-list";
@@ -16,6 +17,7 @@ export default async function Home() {
     <>
       <Banner />
       <BirthdayBanner />
+      <EchoBirthdayBanner />
 
       <div className="space-y-8 py-24">
         <Container layout="larger">
