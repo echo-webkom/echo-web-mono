@@ -14,7 +14,7 @@ test.describe("Gruppe", () => {
 
     await webkomChip.click();
 
-    await expect(page.getByText("Administrer Webkom")).toBeVisible();
+    await expect(page.getByRole("heading").getByText("Administrer Webkom")).toBeVisible();
   });
 
   test("not see group dashboard", async ({ page }) => {
