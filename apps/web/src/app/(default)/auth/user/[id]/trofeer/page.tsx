@@ -1,16 +1,22 @@
 import Image, { type StaticImageData } from "next/image";
 import { redirect } from "next/navigation";
 
-import BedriftsturEmpty from "@/assets/images/trophies/bedriftstur-empty.png";
-import BedriftsturGold from "@/assets/images/trophies/bedriftstur-gold.png";
-import GokartBronze from "@/assets/images/trophies/gokart-bronze.png";
-import GokartEmpty from "@/assets/images/trophies/gokart-empty.png";
-import GokartGold from "@/assets/images/trophies/gokart-gold.png";
-import GokartSilver from "@/assets/images/trophies/gokart-silver.png";
-import VinterballBronze from "@/assets/images/trophies/vinterball-bronze.png";
-import VinterballEmpty from "@/assets/images/trophies/vinterball-empty.png";
-import VinterballGold from "@/assets/images/trophies/vinterball-gold.png";
-import VinterballSilver from "@/assets/images/trophies/vinterball-silver.png";
+import {
+  BedriftsturEmpty,
+  BedriftsturGold,
+  BrannkampBronze,
+  BrannkampEmpty,
+  BrannkampGold,
+  BrannkampSilver,
+  GokartBronze,
+  GokartEmpty,
+  GokartGold,
+  GokartSilver,
+  VinterballBronze,
+  VinterballEmpty,
+  VinterballGold,
+  VinterballSilver,
+} from "@/assets/images/trophies";
 import { auth } from "@/auth/session";
 import { Heading } from "@/components/typography/heading";
 
@@ -23,10 +29,10 @@ export default async function UserTrophies() {
 
   return (
     <div>
-      <Heading level={2} className="mb-4">
+      <Heading level={2} className="mb-10">
         Dine troféer
       </Heading>
-      <div className="grid grid-cols-1 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-y-10 sm:grid-cols-3 sm:gap-y-14">
         {TROPHIES.map((trophy) => (
           <div key={trophy.name} className="flex flex-col items-center gap-5">
             <Image
@@ -35,12 +41,22 @@ export default async function UserTrophies() {
               width={120}
               height={120}
             />
-            <Heading level={3}>{trophy.name}</Heading>
+            <Heading level={3} className="capitalize">
+              {trophy.name}
+            </Heading>
           </div>
         ))}
       </div>
     </div>
   );
+}
+
+enum TrophyName {
+  BEDRIFTSTUR = "bedriftstur",
+  GOKART = "gokart",
+  VINTERBALL = "vinterball",
+  BEDPRES = "bedpres",
+  BRANNKAMP = "brannkamp",
 }
 
 enum TrophyName {
@@ -58,13 +74,13 @@ type TrophyLevel = {
 };
 
 type Trophy = {
-  name: string;
+  name: TrophyName;
   levels: Array<TrophyLevel>;
 };
 
 const TROPHIES: Array<Trophy> = [
   {
-    name: "Gokart",
+    name: TrophyName.GOKART,
     levels: [
       {
         name: TrophyName.EMPTY,
@@ -95,7 +111,7 @@ const TROPHIES: Array<Trophy> = [
     ],
   },
   {
-    name: "Vinterball",
+    name: TrophyName.VINTERBALL,
     levels: [
       {
         name: TrophyName.EMPTY,
@@ -126,7 +142,7 @@ const TROPHIES: Array<Trophy> = [
     ],
   },
   {
-    name: "Bedriftstur",
+    name: TrophyName.BEDRIFTSTUR,
     levels: [
       {
         name: TrophyName.EMPTY,
@@ -142,4 +158,68 @@ const TROPHIES: Array<Trophy> = [
       },
     ],
   },
+  {
+    name: TrophyName.BRANNKAMP,
+    levels: [
+      {
+        name: TrophyName.EMPTY,
+        image: BrannkampEmpty,
+        title: "Brannkamp",
+        description: "Bli med og se på brannkamp med Gnist for å oppnå dette trofeet!",
+      },
+      {
+        name: TrophyName.BRONZE,
+        image: BrannkampBronze,
+        title: "Brannkamp Bronse",
+        description:
+          "Du har deltatt på én brannkamp med Gnist.\n\nDelta på flere og få gull og bronse!",
+      },
+      {
+        name: TrophyName.SILVER,
+        image: BrannkampSilver,
+        title: "Brannkamp Sølv",
+        description:
+          "Du har deltatt på to brannkamper med Gnist.\n\nDelta på én til og få gull-trofé!",
+      },
+      {
+        name: TrophyName.GOLD,
+        image: BrannkampGold,
+        title: "Brannkamp Gull",
+        description:
+          "Du har deltatt på tre brannkamper med Gnist.\n\nDu er jammen meg glad i Brann!",
+      },
+    ],
+  },
 ];
+
+//     {
+//     name: ,
+//     levels: [
+//       {
+//         name: TrophyName.EMPTY,
+//         image: ,
+//         title: "",
+//         description: "",
+//       },
+//       {
+//         name: TrophyName.BRONZE,
+//         image: ,
+//         title: " Bronse",
+//         description:
+//           "",
+//       },
+//       {
+//         name: TrophyName.SILVER,
+//         image: ,
+//         title: "Sølv",
+//         description:
+//           "",
+//       },
+//       {
+//         name: TrophyName.GOLD,
+//         image: ,
+//         title: " Gull",
+//         description: "",
+//       },
+//     ],
+//   },
