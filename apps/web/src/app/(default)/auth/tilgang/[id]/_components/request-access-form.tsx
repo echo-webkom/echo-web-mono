@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { BiCheckCircle } from "react-icons/bi";
 
@@ -34,7 +34,7 @@ export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
   const router = useRouter();
 
   const form = useForm<IRequestAccessForm>({
-    resolver: zodResolver(requestAccessSchema),
+    resolver: standardSchemaResolver(requestAccessSchema),
     defaultValues: {
       email,
       reason: "",

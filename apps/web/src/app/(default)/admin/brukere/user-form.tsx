@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
@@ -46,7 +46,7 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof userFormSchema>>({
-    resolver: zodResolver(userFormSchema),
+    resolver: standardSchemaResolver(userFormSchema),
     defaultValues: {
       memberships: user.memberships.map((membership) => membership.groupId),
     },

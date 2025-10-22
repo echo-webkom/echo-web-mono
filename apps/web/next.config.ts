@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const config = {
+  reactCompiler: true,
+
   transpilePackages: [
     "@echo-webkom/db",
     "@echo-webkom/lib",

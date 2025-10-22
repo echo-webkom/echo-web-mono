@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { ChevronDown } from "lucide-react";
 import {
   Button as AriaButton,
@@ -49,7 +49,7 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof addStrikesSchema>>({
-    resolver: zodResolver(addStrikesSchema),
+    resolver: standardSchemaResolver(addStrikesSchema),
     defaultValues: {
       userId: "",
       strikeType: StrikeType.DeregisterBeforeDeadline,

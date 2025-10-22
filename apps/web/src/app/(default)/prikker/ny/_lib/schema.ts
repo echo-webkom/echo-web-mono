@@ -36,9 +36,9 @@ export const addStrikesSchema = z
     userId: z.string().min(1),
     strikeType: z.enum(StrikeType),
     reason: z.string(),
-    count: z.coerce.number().min(1).max(5),
-    strikeExpiresInMonths: z.coerce.number().min(1).max(12),
-    banExpiresInMonths: z.coerce.number().min(1).max(12),
+    count: z.coerce.number<number>().min(1).max(5),
+    strikeExpiresInMonths: z.coerce.number<number>().min(1).max(12),
+    banExpiresInMonths: z.coerce.number<number>().min(1).max(12),
   })
   .superRefine((data, ctx) => {
     if (data.strikeType === StrikeType.Other && !data.reason) {

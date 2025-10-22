@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -29,9 +29,9 @@ import { Select } from "./ui/select";
 const userSchema = z.object({
   alternativeEmail: z.email().or(z.literal("")).optional(),
   degree: z.string().optional(),
-  year: z.coerce.number().min(1).max(6).optional(),
+  year: z.coerce.number<number>().min(1).max(6).optional(),
   hasReadTerms: z.boolean().optional(),
-  birthday: z.coerce.date().optional(),
+  birthday: z.coerce.date<Date>().optional(),
   isPublic: z.boolean().optional(),
 });
 
@@ -55,7 +55,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+    resolver: standardSchemaResolver(userSchema),
     defaultValues: {
       alternativeEmail: user.alternativeEmail,
       degree: user.degree?.id,
@@ -70,15 +70,13 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
     async (data) => {
       setIsLoading(true);
 
-      // TODO: It shouldn't be necessary to assert the types here, but for some reason TS
-      // doesn't infer them correctly
       const { success, message } = await updateSelf({
-        alternativeEmail: data.alternativeEmail as string | undefined,
-        degreeId: data.degree as string | undefined,
-        year: data.year as number | undefined,
-        hasReadTerms: data.hasReadTerms as boolean | undefined,
-        birthday: data.birthday as Date | undefined,
-        isPublic: data.isPublic as boolean | undefined,
+        alternativeEmail: data.alternativeEmail,
+        degreeId: data.degree,
+        year: data.year,
+        hasReadTerms: data.hasReadTerms,
+        birthday: data.birthday,
+        isPublic: data.isPublic,
       });
 
       setIsLoading(false);

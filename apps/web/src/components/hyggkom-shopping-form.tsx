@@ -1,6 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
@@ -15,7 +15,7 @@ export const HyggkomShoppingForm = () => {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof hyggkomListSchema>>({
-    resolver: zodResolver(hyggkomListSchema),
+    resolver: standardSchemaResolver(hyggkomListSchema),
     defaultValues: { name: "" },
   });
 

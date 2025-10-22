@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 
 import { addGroup } from "@/actions/groups";
@@ -34,7 +34,7 @@ export const AddGroupButton = ({ ...props }: ButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<GroupForm>({
-    resolver: zodResolver(groupFormSchema),
+    resolver: standardSchemaResolver(groupFormSchema),
     defaultValues: {
       id: "",
       name: "",

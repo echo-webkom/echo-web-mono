@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { type z } from "zod";
@@ -40,7 +40,7 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registrationFormSchema>>({
-    resolver: zodResolver(registrationFormSchema),
+    resolver: standardSchemaResolver(registrationFormSchema),
     defaultValues: {
       questions: questions.map((question) => ({
         questionId: question.id,

@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { ChevronDown } from "lucide-react";
 import {
   Button as AriaButton,
@@ -63,7 +63,7 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
     defaultValues: {
       userId: "",
     },
-    resolver: zodResolver(addUserToGroupSchema),
+    resolver: standardSchemaResolver(addUserToGroupSchema),
   });
 
   useEffect(() => {
