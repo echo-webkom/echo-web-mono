@@ -1,13 +1,57 @@
+# Dependencies
 node_modules
-.git
-.env
-logs
-.DS_Store
-.vscode
-.github
-.sanity
-.turbo
+**/node_modules
+.pnpm-store
+**/node_modules/.pnpm
+**/.pnpm
+
+# Build outputs
 .next
 dist
+.turbo
+out
+build
+tsconfig.tsbuildinfo
+
+# Test outputs
+playwright-report
+test-results
+.playwright
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Docker
+Dockerfile
+docker-compose*.yaml
+.dockerignore
+
+# CI
+.github
+
+# Misc
+*.md
+!README.md
+coverage
 postgres-data
 redis-data
+.github
