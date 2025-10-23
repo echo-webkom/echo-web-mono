@@ -45,7 +45,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 - **lib** - Felles verktøy og forretningslogikk
 - **email** - E-postmaler og sending-funksjonalitet
 - **seeder** - Database seeding-verktøy
-- **config/eslint** - Delte ESLint-konfigurasjoner
 
 ### Testing (`/playwright`)
 
