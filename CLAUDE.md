@@ -80,7 +80,6 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 - **lib** - Common utilities and business logic
 - **email** - Email templates and sending functionality
 - **seeder** - Database seeding utilities
-- **config/eslint** - Shared ESLint configurations
 
 ### Testing (`/playwright`)
 
