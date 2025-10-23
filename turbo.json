@@ -60,6 +60,9 @@
   "globalDependencies": [
     ".env"
   ],
+  "globalPassThroughEnv": [
+    "PLAYWRIGHT_*"
+  ],
   "globalEnv": [
     "CI",
     "NODE_ENV",
@@ -82,7 +85,6 @@
     "NEXT_PUBLIC_API_URL",
     "API_PORT",
     "AOC_SESSION_COOKIE",
-    "AUTH_SECRET",
-    "GITHUB_ACTIONS"
+    "AUTH_SECRET"
   ]
 }
