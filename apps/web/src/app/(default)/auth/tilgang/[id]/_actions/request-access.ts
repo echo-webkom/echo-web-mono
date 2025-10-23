@@ -86,6 +86,8 @@ async function sendSlackNotification(email: string, reason: string) {
     return;
   }
 
+  // Useful tool for building Slack messages:
+  // https://app.slack.com/block-kit-builder/
   const message = {
     text: "🔐 Søknad om tilgang",
     blocks: [
@@ -98,6 +100,13 @@ async function sendSlackNotification(email: string, reason: string) {
       },
       {
         type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "<!channel>",
+        },
+      },
+      {
+        type: "section",
         fields: [
           {
             type: "mrkdwn",
@@ -106,6 +115,18 @@ async function sendSlackNotification(email: string, reason: string) {
           {
             type: "mrkdwn",
             text: `*Grunn:*\n${reason}`,
+          },
+        ],
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "mrkdwn",
+            text: "🟢 Ja   🟠 Jeg vet ikke   🔴 Nei",
           },
         ],
       },
