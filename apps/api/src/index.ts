@@ -2,8 +2,7 @@ import { serve } from "@hono/node-server";
 
 import app from "./app";
 
-const isGitHubCI = !!process.env.GITHUB_ACTIONS;
-const HOSTNAME = isGitHubCI ? "localhost" : "0.0.0.0";
+const HOSTNAME = "0.0.0.0";
 const PORT = process.env.API_PORT ? Number(process.env.API_PORT) : 8000;
 
 serve(
