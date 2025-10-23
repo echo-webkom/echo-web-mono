@@ -744,9 +744,6 @@ importers:
       '@types/node':
         specifier: 22.18.11
         version: 22.18.11
-      dotenv:
-        specifier: 17.2.3
-        version: 17.2.3
       dotenv-cli:
         specifier: 10.0.0
         version: 10.0.0

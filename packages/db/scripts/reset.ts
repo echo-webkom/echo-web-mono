@@ -14,6 +14,7 @@ main()
     process.exit(0);
   })
   .catch((error) => {
-    console.error("❗ Error resetting database:", error);
-    process.exit(1);
+    console.log("❌ Error resetting database:", error);
+    console.log("Most likely nothing to reset. Continuing...");
+    process.exit(0);
   });

@@ -27,16 +27,10 @@
       "cache": false
     },
     "test:e2e": {
-      "dependsOn": [
-        "^build"
-      ],
       "persistent": true,
       "cache": false
     },
     "test:e2e:ui": {
-      "dependsOn": [
-        "^build"
-      ],
       "persistent": true,
       "cache": false
     },
@@ -71,26 +65,24 @@
     "NODE_ENV",
     "VERCEL_ENV",
     "DATABASE_URL",
-    "TEST_DATABASE_URL",
     "FEIDE_CLIENT_ID",
     "FEIDE_CLIENT_SECRET",
     "ADMIN_KEY",
     "NEXT_PUBLIC_SANITY_DATASET",
-    "TESTING",
-    "VERCEL",
     "VERCEL_URL",
     "PORT",
     "SANITY_TOKEN",
     "RESEND_API_KEY",
     "ECHOGRAM_API_KEY",
     "NEXT_PUBLIC_SANITY_PROJECT_ID",
-    "DEV",
     "NEXT_PUBLIC_ECHOGRAM_URL",
     "ECHOGRAM_API_KEY",
     "DATABASE_LOG",
     "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA",
     "NEXT_PUBLIC_API_URL",
     "API_PORT",
-    "AOC_SESSION_COOKIE"
+    "AOC_SESSION_COOKIE",
+    "AUTH_SECRET",
+    "GITHUB_ACTIONS"
   ]
 }

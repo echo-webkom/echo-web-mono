@@ -6,13 +6,7 @@ import { jwtVerify, SignJWT } from "jose";
 import { sessions } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-const getSecret = () => {
-  const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
-  if (!secret.length) {
-    throw new Error("AUTH_SECRET environment variable is not set");
-  }
-  return secret;
-};
+const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
 
 export const SESSION_COOKIE_NAME = "session-token";
 
@@ -26,7 +20,7 @@ async function getSessionCookie(): Promise<string | null> {
   }
 
   try {
-    const { payload } = await jwtVerify(sessionCookie, getSecret());
+    const { payload } = await jwtVerify(sessionCookie, secret);
     return payload.sessionId as string;
   } catch {
     return null; // Invalid or expired token
@@ -64,7 +58,7 @@ export async function createSessionCookie(sessionId: string) {
   return await new SignJWT({ sessionId })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("30d")
-    .sign(getSecret());
+    .sign(secret);
 }
 
 export async function signOut() {

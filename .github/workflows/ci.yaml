@@ -21,7 +21,6 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
-  PUBLIC_COMMIT_HASH: ${{ github.sha }}
   GITHUB_ACTIONS: "true"
 
 jobs:
@@ -94,9 +93,6 @@ jobs:
   test-e2e:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.56.1-noble
-      options: --user 1001
 
     services:
       postgres:
@@ -108,26 +104,6 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-    env:
-      ADMIN_KEY: foobar
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
-
-      API_PORT: 8000
-      NEXT_PUBLIC_API_URL: http://localhost:8000
-
-      NEXT_PUBLIC_SANITY_DATASET: "testing"
-
-      FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
-      FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
-
-      AUTH_SECRET: "test-secret-for-ci-e2e-tests-only"
-
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
-      PUBLIC_COMMIT_HASH: ${{ github.sha }}
-      GITHUB_ACTIONS: "true"
 
     steps:
       - name: 🔍 Checkout
@@ -161,24 +137,8 @@ jobs:
       - name: 👷🏻‍♂️ Build
         run: pnpm build
 
-      # - name: 💻 Install playwright browsers
-      #   run: pnpm --filter=playwright test:install
-
-      - name: 📝 Create .env file for tests
-        run: |
-          cat > .env << EOF
-          ADMIN_KEY=foobar
-          DATABASE_URL=postgres://postgres:postgres@localhost:5432/echo-web
-          API_PORT=8000
-          NEXT_PUBLIC_API_URL=http://localhost:8000
-          NEXT_PUBLIC_SANITY_DATASET=testing
-          FEIDE_CLIENT_ID=${{ secrets.FEIDE_CLIENT_ID }}
-          FEIDE_CLIENT_SECRET=${{ secrets.FEIDE_CLIENT_SECRET }}
-          AUTH_SECRET=test-secret-for-ci-e2e-tests-only
-          PUBLIC_UNO_URL=http://localhost:8002
-          PUBLIC_ECHOGRAM_URL=http://localhost:8001
-          PUBLIC_COMMIT_HASH=${{ github.sha }}
-          EOF
+      - name: 💻 Install playwright browsers
+        run: pnpm --filter=playwright test:install
 
       - name: 🎭 Run playwright tests
         run: pnpm test:e2e
