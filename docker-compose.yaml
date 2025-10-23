@@ -60,12 +60,8 @@ services:
       FEIDE_CLIENT_ID: test
       FEIDE_CLIENT_SECRET: test
 
-      NEXTAUTH_SECRET: foobar
+      AUTH_SECRET: foobar
 
-      PUBLIC_UNO_URL: http://localhost:8002
-      PUBLIC_ECHOGRAM_URL: http://localhost:8001
-
-      PUBLIC_COMMIT_HASH: test
       CI: "true"
     volumes:
       # Mount test results and reports back to host

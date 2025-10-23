@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2025-10-23T04:25:13.589753+02:00",
+	"lastUpdated": "2025-10-23T17:52:49.530608+02:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -17,12 +17,8 @@
 			"required": true,
 			"key": "AUTH_SECRET"
 		},
-		"DATABASE_LOG": {
-			"public": true,
-			"key": "DATABASE_LOG",
-			"value": "true"
-		},
 		"DATABASE_URL": {
+			"required": true,
 			"key": "DATABASE_URL"
 		},
 		"FEIDE_CLIENT_ID": {
@@ -51,16 +47,6 @@
 			"public": true,
 			"key": "NEXT_PUBLIC_SANITY_DATASET",
 			"value": "production"
-		},
-		"PUBLIC_SANITY_DATASET": {
-			"public": true,
-			"key": "PUBLIC_SANITY_DATASET",
-			"value": "production"
-		},
-		"PUBLIC_SANITY_PROJECT_ID": {
-			"public": true,
-			"key": "PUBLIC_SANITY_PROJECT_ID",
-			"value": "pgq2pd26"
 		}
 	}
 }

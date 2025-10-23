@@ -2,7 +2,11 @@ import { type Page } from "@playwright/test";
 import { SignJWT } from "jose";
 
 async function createCookie(value: string) {
-  const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
+  const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+
+  if (!secret.length) {
+    throw new Error("AUTH_SECRET environment variable is not set");
+  }
 
   return new SignJWT({ sessionId: value })
     .setProtectedHeader({ alg: "HS256" })
