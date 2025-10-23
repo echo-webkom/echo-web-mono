@@ -516,6 +516,9 @@ importers:
       drizzle-kit:
         specifier: 0.31.5
         version: 0.31.5
+      drizzle-seed:
+        specifier: ^0.3.1
+        version: 0.3.1(drizzle-orm@0.44.6(@cloudflare/workers-types@4.20251014.0)(@electric-sql/pglite@0.3.11)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7))
       eslint:
         specifier: 9.38.0
         version: 9.38.0(jiti@2.6.1)
@@ -6798,6 +6801,14 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-seed@0.3.1:
+    resolution: {integrity: sha512-F/0lgvfOAsqlYoHM/QAGut4xXIOXoE5VoAdv2FIl7DpGYVXlAzKuJO+IphkKUFK3Dz+rFlOsQLnMNrvoQ0cx7g==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.4'
+    peerDependenciesMeta:
+      drizzle-orm:
+        optional: true
+
   drizzle-zod@0.8.3:
     resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
     peerDependencies:
@@ -9471,6 +9482,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
   querystringify@2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
@@ -18898,6 +18912,12 @@ snapshots:
       pg: 8.16.3
       postgres: 3.4.7
 
+  drizzle-seed@0.3.1(drizzle-orm@0.44.6(@cloudflare/workers-types@4.20251014.0)(@electric-sql/pglite@0.3.11)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7)):
+    dependencies:
+      pure-rand: 6.1.0
+    optionalDependencies:
+      drizzle-orm: 0.44.6(@cloudflare/workers-types@4.20251014.0)(@electric-sql/pglite@0.3.11)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7)
+
   drizzle-zod@0.8.3(drizzle-orm@0.44.6(@cloudflare/workers-types@4.20251014.0)(@electric-sql/pglite@0.3.11)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7))(zod@4.1.12):
     dependencies:
       drizzle-orm: 0.44.6(@cloudflare/workers-types@4.20251014.0)(@electric-sql/pglite@0.3.11)(@types/pg@8.15.5)(pg@8.16.3)(postgres@3.4.7)
@@ -22219,6 +22239,8 @@ snapshots:
       pump: 2.0.1
 
   punycode@2.3.1: {}
+
+  pure-rand@6.1.0: {}
 
   querystringify@2.2.0: {}
 
