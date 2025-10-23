@@ -1,95 +1,66 @@
 {
-  "lastUpdated": "2025-01-13T12:43:01.701629068+01:00",
-  "fields": {
-    "ADMIN_KEY": {
-      "required": true,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "ADMIN_KEY",
-      "value": ""
-    },
-    "API_PORT": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "API_PORT",
-      "value": "8000"
-    },
-    "DATABASE_LOG": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "DATABASE_LOG",
-      "value": "true"
-    },
-    "DATABASE_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "DATABASE_URL",
-      "value": "postgres://postgres:postgres@localhost:5432/echo-web"
-    },
-    "FEIDE_CLIENT_ID": {
-      "required": true,
-      "public": false,
-      "lengthRequired": true,
-      "length": 36,
-      "format": "",
-      "key": "FEIDE_CLIENT_ID",
-      "value": ""
-    },
-    "FEIDE_CLIENT_SECRET": {
-      "required": true,
-      "public": false,
-      "lengthRequired": true,
-      "length": 36,
-      "format": "",
-      "key": "FEIDE_CLIENT_SECRET",
-      "value": ""
-    },
-    "NEXTAUTH_SECRET": {
-      "required": false,
-      "public": false,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXTAUTH_SECRET",
-      "value": ""
-    },
-    "NEXTAUTH_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXTAUTH_URL",
-      "value": "http://localhost:3000"
-    },
-    "NEXT_PUBLIC_API_URL": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXT_PUBLIC_API_URL",
-      "value": "http://localhost:8000"
-    },
-    "NEXT_PUBLIC_SANITY_DATASET": {
-      "required": false,
-      "public": true,
-      "lengthRequired": false,
-      "length": 0,
-      "format": "",
-      "key": "NEXT_PUBLIC_SANITY_DATASET",
-      "value": "develop"
-    }
-  }
+	"lastUpdated": "2025-10-23T04:25:13.589753+02:00",
+	"fields": {
+		"ADMIN_KEY": {
+			"required": true,
+			"key": "ADMIN_KEY"
+		},
+		"AOC_SESSION_COOKIE": {
+			"key": "AOC_SESSION_COOKIE"
+		},
+		"API_PORT": {
+			"public": true,
+			"key": "API_PORT",
+			"value": "8000"
+		},
+		"AUTH_SECRET": {
+			"required": true,
+			"key": "AUTH_SECRET"
+		},
+		"DATABASE_LOG": {
+			"public": true,
+			"key": "DATABASE_LOG",
+			"value": "true"
+		},
+		"DATABASE_URL": {
+			"key": "DATABASE_URL"
+		},
+		"FEIDE_CLIENT_ID": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_ID"
+		},
+		"FEIDE_CLIENT_SECRET": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_SECRET"
+		},
+		"NEXT_PUBLIC_API_URL": {
+			"public": true,
+			"key": "NEXT_PUBLIC_API_URL",
+			"value": "http://localhost:8000"
+		},
+		"NEXT_PUBLIC_ECHOGRAM_URL": {
+			"public": true,
+			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
+			"value": "http://localhost:8001"
+		},
+		"NEXT_PUBLIC_SANITY_DATASET": {
+			"public": true,
+			"key": "NEXT_PUBLIC_SANITY_DATASET",
+			"value": "production"
+		},
+		"PUBLIC_SANITY_DATASET": {
+			"public": true,
+			"key": "PUBLIC_SANITY_DATASET",
+			"value": "production"
+		},
+		"PUBLIC_SANITY_PROJECT_ID": {
+			"public": true,
+			"key": "PUBLIC_SANITY_PROJECT_ID",
+			"value": "pgq2pd26"
+		}
+	}
 }
