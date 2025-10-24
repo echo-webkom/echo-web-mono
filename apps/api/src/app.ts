@@ -1,6 +1,8 @@
 import { Hono } from "hono";
+import { getCookie } from "hono/cookie";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { jwtVerify } from "jose";
 
 import adminApp from "./services/admin";
 import birthdays from "./services/birthdays";
@@ -29,6 +31,22 @@ app.use(
     credentials: true,
   }),
 );
+
+const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
+
+app.get("/whoami", async (c) => {
+  const cookie = getCookie(c, "session-token");
+  if (!cookie) {
+    return c.json({ user: null });
+  }
+
+  try {
+    const { payload } = await jwtVerify(cookie, secret);
+    return c.json({ sessionId: payload.sessionId });
+  } catch {
+    return c.json({ user: null });
+  }
+});
 
 app.route("/", healthApp);
 app.route("/", adminApp);
