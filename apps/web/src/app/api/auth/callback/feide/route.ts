@@ -138,7 +138,8 @@ export async function GET(request: Request) {
     cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
       path: "/",
       expires: expiresAt,
-      sameSite: "lax",
+      sameSite: "none",
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
 
@@ -177,7 +178,8 @@ export async function GET(request: Request) {
   cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
     path: "/",
     expires: existingSession.expires,
-    sameSite: "lax",
+    sameSite: "none",
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",
   });
 

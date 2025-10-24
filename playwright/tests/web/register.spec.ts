@@ -50,7 +50,7 @@ test.describe("Register", () => {
         path: "/",
         expires: -1,
         secure: false,
-        sameSite: "Lax",
+        sameSite: "None",
       },
     ]);
 
@@ -62,7 +62,7 @@ test.describe("Register", () => {
         path: "/",
         expires: -1,
         secure: false,
-        sameSite: "Lax",
+        sameSite: "None",
       },
     ]);
 
