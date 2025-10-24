@@ -31,7 +31,8 @@ export async function loginAs(page: Page, as: User) {
       path: "/",
       expires: -1,
       secure: false,
-      sameSite: "Lax",
+      sameSite: "None",
+      httpOnly: true,
     },
   ]);
 }
