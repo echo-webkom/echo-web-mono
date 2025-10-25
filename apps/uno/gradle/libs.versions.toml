@@ -3,7 +3,7 @@ exposed = "0.61.0"
 h2 = "2.3.232"
 kotlin = "2.2.20"
 ktor = "3.3.0"
-logback = "1.4.14"
+logback = "1.5.20"
 postgres = "42.7.8"
 
 [libraries]
