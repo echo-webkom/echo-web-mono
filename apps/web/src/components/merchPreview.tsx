@@ -11,32 +11,33 @@ type MerchPreviewProps = {
 };
 export const MerchPreview = ({ item }: MerchPreviewProps) => {
   return (
-    <Link href={`/for-studenter/merch/${item.slug}`}>
-      <div className="group hover:bg-muted flex h-full justify-between gap-3 rounded-lg border-2 p-6 shadow-lg">
-        <div className="flex flex-col gap-3">
-          <h2 className="text-2xl font-bold">{item.title}</h2>
+    <Link href={`/for-studenter/merch/${item.slug}`} className="group block h-full">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border-2 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
+        <div className="relative aspect-video w-full overflow-hidden">
+          <Image
+            src={urlFor(item.image).width(800).height(450).fit("crop").url()}
+            alt={item.title}
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div className="flex flex-1 flex-col gap-3 p-5">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold">{item.title}</h2>
+            <p className="text-muted-foreground text-sm font-medium">{item.price} kr</p>
+          </div>
 
           {item.body && (
-            <p className="dark:text-foreground line-clamp-3 flex-1 text-slate-700">
+            <p className="text-muted-foreground line-clamp-2 flex-1 text-sm">
               {removeMd(item.body ?? "")}
             </p>
           )}
 
-          <p className="flex items-center gap-1 font-medium">
+          <div className="text-muted-foreground flex items-center gap-1 text-sm">
             Les mer
-            <span className="transition-all duration-150 group-hover:pl-1">
-              <ArrowRight />
-            </span>
-          </p>
-        </div>
-        <div>
-          <Image
-            src={urlFor(item.image).url()}
-            alt={item.title}
-            width={200}
-            height={100}
-            className="rounded-lg"
-          />
+            <ArrowRight className="h-4 w-4" />
+          </div>
         </div>
       </div>
     </Link>

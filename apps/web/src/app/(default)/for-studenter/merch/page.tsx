@@ -1,4 +1,5 @@
 import { cache } from "react";
+import type { Metadata } from "next";
 
 import { Container } from "@/components/container";
 import { MerchPreview } from "@/components/merchPreview";
@@ -6,7 +7,7 @@ import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
 import { fetchAllMerch } from "@/sanity/merch";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Merch",
 };
 
@@ -22,16 +23,17 @@ export default async function MerchOverviewPage() {
       <StaticPageSidebar />
 
       <div className="space-y-8">
-        <Heading>Merch 💸</Heading>
+        <Heading>Merch</Heading>
 
-        <div className="grid grid-cols-1 gap-x-5 gap-y-8 lg:grid-cols-2">
-          {merch.map((item) => (
-            <div key={item._id}>
-              <MerchPreview item={item} />
-            </div>
-          ))}
-        </div>
-        {merch.length === 0 && <p>Det er ingen merch tilgjengelig for øyeblikket.</p>}
+        {merch.length === 0 ? (
+          <p className="text-muted-foreground">Det er ingen merch tilgjengelig for øyeblikket.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {merch.map((item) => (
+              <MerchPreview key={item._id} item={item} />
+            ))}
+          </div>
+        )}
       </div>
     </Container>
   );
