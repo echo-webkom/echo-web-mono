@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
@@ -13,6 +14,7 @@ import { Input } from "./ui/input";
 
 export const HyggkomShoppingForm = () => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof hyggkomListSchema>>({
     resolver: standardSchemaResolver(hyggkomListSchema),
@@ -21,6 +23,8 @@ export const HyggkomShoppingForm = () => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     const response = await hyggkomSubmit({ name: data.name });
+
+    router.refresh();
 
     if (response.success) {
       toast({

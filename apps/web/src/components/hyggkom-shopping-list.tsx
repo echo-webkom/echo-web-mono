@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { IoHeartOutline, IoHeartSharp, IoTrashBinOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
 
@@ -27,6 +28,7 @@ type HyggkomShoppingListProps = {
 export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppingListProps) => {
   const { toast } = useToast();
   const [showConfirmRemove, setShowConfirmRemove] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleLikeButtonClick = (item: string) => {
     handleLikeClick(item).catch((error) => {
@@ -37,6 +39,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
       });
     });
   };
+
   const toggleConfirmRemove = (item: string) => {
     if (showConfirmRemove === item) {
       setShowConfirmRemove(null);
@@ -71,10 +74,14 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
         variant: "warning",
       });
     }
+
+    router.refresh();
   };
 
   const handleRemoveClick = async (item: string) => {
     const response = await hyggkomRemoveSubmit(item);
+
+    router.refresh();
 
     toast({
       title: "Takk for din tilbakemelding!",
