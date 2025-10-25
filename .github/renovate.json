@@ -1,13 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":semanticCommitScopeDisabled", ":semanticCommitsDisabled", ":automergeMinor"],
-  "labels": ["dependencies :handshake:"],
-  "commitMessageAction": "Update",
+  "extends": [
+    "config:base",
+    ":semanticCommitTypeAll(deps)",
+    ":semanticCommitScopeDisabled",
+    ":automergeMinor"
+  ],
+  "labels": [
+    "dependencies :handshake:"
+  ],
+  "commitMessageAction": "update",
   "rangeStrategy": "bump",
-  "schedule": ["every weekend"],
+  "schedule": [
+    "every weekend"
+  ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@echo-webkom/", "eslint-config-custom", "tsconfig"],
+      "matchPackagePatterns": [
+        "^@echo-webkom/",
+        "eslint-config-custom",
+        "tsconfig"
+      ],
       "enabled": false
     }
   ],
@@ -15,6 +28,8 @@
   "stabilityDays": 3,
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 4am on thursday"]
+    "schedule": [
+      "before 4am on thursday"
+    ]
   }
 }
