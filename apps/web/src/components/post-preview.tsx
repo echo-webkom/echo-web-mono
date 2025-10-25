@@ -22,7 +22,7 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
-          "hover:border-muted-dark hover:bg-muted relative flex h-42 flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out",
+          "hover:border-muted-dark hover:bg-muted relative flex flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out",
           {
             "border-transparent": !withBorder,
             "bg-muted hover:bg-transparent": isNew,
@@ -30,9 +30,11 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
           className,
         )}
       >
-        <h3 className="line-clamp-2 flex gap-2 text-xl font-semibold">{post.title}</h3>
+        <h3 className="text-md line-clamp-2 flex gap-2 truncate font-semibold sm:text-xl">
+          {post.title}
+        </h3>
 
-        <p className="top-2 right-2 text-sm text-gray-500 sm:absolute">
+        <p className="top-2 right-2 text-xs text-gray-500 sm:absolute sm:text-sm">
           {shortDateNoTimeNoYear(post._createdAt)}
         </p>
 
