@@ -27,24 +27,24 @@ import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--inter-font",
+  variable: "--font-inter",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: "500",
   subsets: ["latin"],
-  variable: "--ibm-font",
+  variable: "--font-ibm",
 });
 
 const ibmPlexMonoDisplay = IBM_Plex_Mono({
   weight: "700",
   subsets: ["latin"],
-  variable: "--inter-display-font",
+  variable: "--font-ibm-display",
 });
 
 const vt323 = VT323({
   subsets: ["latin"],
-  variable: "--block-font",
+  variable: "--font-block",
   weight: ["400"],
 });
 
@@ -52,42 +52,42 @@ const ranchers = Ranchers({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
-  variable: "--ranchers-font",
+  variable: "--font-ranchers",
 });
 
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
-  variable: "--lexend-font",
+  variable: "--font-lexend",
 });
 
 const unna = Unna({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
-  variable: "--unna-font",
+  variable: "--font-unna",
 });
 
 const radley = Radley({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal", "italic"],
-  variable: "--radley-font",
+  variable: "--font-radley",
 });
 
 const slab = Alfa_Slab_One({
   subsets: ["latin"],
   weight: ["400"],
   style: ["normal"],
-  variable: "--slab-font",
+  variable: "--font-slab",
 });
 
 type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: "echo – Linjeforeningen for informatikk",
     template: "%s | echo – Linjeforeningen for informatikk",
@@ -110,9 +110,9 @@ export const metadata = {
   appleWebApp: {
     title: "echo",
   },
-} satisfies Metadata;
+};
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: [
     {
       media: "(prefers-color-scheme: dark)",
@@ -126,7 +126,7 @@ export const viewport = {
   width: "device-width",
   height: "device-height",
   initialScale: 1.0,
-} satisfies Viewport;
+};
 
 const ThemeWrapper = ({
   children,

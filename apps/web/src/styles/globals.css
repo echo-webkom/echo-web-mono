@@ -7,33 +7,33 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
+@theme inline {
   --font-*: initial;
   --font-primary:
-    var(--inter-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
   --font-sans:
-    var(--inter-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono:
-    var(--ibm-font), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    var(--font-ibm), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   --font-display:
-    var(--inter-display-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    var(--font-inter-display), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-block:
-    var(--block-font), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    var(--font-block), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   --font-ranchers:
-    var(--ranchers-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    var(--font-ranchers), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-lexend:
-    var(--lexend-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    var(--font-lexend), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
-  --font-unna: var(--unna-font), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-radley: var(--radley-font), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-unna: var(--font-unna), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-radley: var(--font-radley), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-slab:
-    var(--slab-font), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    var(--font-slab), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
 
   --color-background: var(--background);
