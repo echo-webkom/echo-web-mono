@@ -1,15 +1,15 @@
 ---
 title: Web Applikasjon
-description: echo's hovednettside bygget med Next.js 15 og React 19.
+description: echo's hovednettside bygget med Next.js 16 og React 19.
 ---
 
-Web applikasjonen er echo's hovednettside som kjører på [echo.uib.no](https://echo.uib.no). Den er bygget med Next.js 15 og React 19, og fungerer som det primære grensesnittet for studenter og besøkende.
+Web applikasjonen er echo's hovednettside som kjører på [echo.uib.no](https://echo.uib.no). Den er bygget med Next.js 16 og React 19, og fungerer som det primære grensesnittet for studenter og besøkende.
 
 ## Teknologi
 
 ### Core Stack
 
-- **Next.js 15** med App Router
+- **Next.js 16** med App Router
 - **React 19** med server components og concurrent features
 - **TypeScript** for type safety
 - **Tailwind CSS** for styling
@@ -217,7 +217,7 @@ export async function nyAction() {
 
 ### Next.js og React
 
-- [Next.js 15 dokumentasjon](https://nextjs.org/docs)
+- [Next.js 16 dokumentasjon](https://nextjs.org/docs)
 - [React 19 beta docs](https://react.dev/blog/2024/04/25/react-19)
 - [Server Actions guide](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
 - [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)

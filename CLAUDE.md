@@ -61,7 +61,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 ### Applications (`/apps`)
 
-- **web** - Next.js 15 main website with React 19, Tailwind CSS, and custom session-based auth
+- **web** - Next.js 16 main website with React 19, Tailwind CSS, and custom session-based auth
   - Uses App Router with route groups: `(default)`, `(redirects)`, `(wrapped)`
   - Server Actions organized in `_actions` directories co-located with routes
   - Authentication handled via custom session management (`src/auth/session.ts`) with JWT cookies and Feide integration
@@ -89,7 +89,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 ## Key Technologies
 
 - **Monorepo**: Managed with Turbo, pnpm workspaces
-- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS
 - **Backend**: Hono.js (Node.js)
 - **Database**: PostgreSQL with Drizzle ORM
 - **CMS**: Sanity.io

@@ -34,7 +34,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
 ### Applikasjoner (`/apps`)
 
-- **web** - Hovednettsiden bygget med Next.js 15, React 19, Tailwind CSS og NextAuth.js
+- **web** - Hovednettsiden bygget med Next.js 16, React 19, Tailwind CSS og NextAuth.js
 - **api** - Backend API bygget med Hono.js, Node.js og esbuild
 - **cms** - Sanity Studio for innholdsadministrasjon
 

@@ -13,7 +13,7 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 
 | App      | Beskrivelse                       | Teknologi            | Port |
 | -------- | --------------------------------- | -------------------- | ---- |
-| **web**  | Hovednettsiden til echo           | Next.js 15, React 19 | 3000 |
+| **web**  | Hovednettsiden til echo           | Next.js 16, React 19 | 3000 |
 | **cms**  | Sanity Studio for innholdsstyring | Sanity.io            | 3333 |
 | **api**  | Backend API for webapplikasjoner  | Hono.js, Node.js     | 8000 |
 | **docs** | Denne dokumentasjonssiden         | Astro, Starlight     | 4321 |
@@ -31,7 +31,7 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 
 ### Frontend
 
-- **Next.js 15** med App Router
+- **Next.js 16** med App Router
 - **React 19** med server components
 - **Tailwind CSS** for styling
 - **TypeScript** med strict type checking
