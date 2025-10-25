@@ -1,7 +1,7 @@
 FROM node:22.20.0-alpine AS base
 
-RUN npm install -g turbo@2.5.6
-RUN npm install -g pnpm@9.7.1
+RUN npm install -g turbo@2.5.8
+RUN npm install -g pnpm@10.18.3
 
 FROM base AS builder
 
