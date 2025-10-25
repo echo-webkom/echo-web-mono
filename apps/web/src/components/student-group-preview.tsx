@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
 import { type StudentGroupsByTypeQueryResult } from "@echo-webkom/cms/types";
+import { urlFor } from "@echo-webkom/sanity";
 
 import { Chip } from "./typography/chip";
 
@@ -12,30 +14,41 @@ type StudentGroupPreviewProps = {
 
 export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
   return (
-    <Link href={`/for-studenter/gruppe/${group.slug}`}>
-      <div className="group hover:bg-muted flex h-full flex-col gap-3 rounded-lg border-2 p-6 shadow-lg">
-        <h2 className="text-2xl font-bold">{group.name}</h2>
-
-        {group.description && (
-          <p className="dark:text-foreground line-clamp-3 flex-1 text-slate-700">
-            {removeMd(group.description ?? "")}
-          </p>
+    <Link href={`/for-studenter/gruppe/${group.slug}`} className="group block h-full">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border-2 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
+        {group.image && (
+          <div className="relative h-32 w-full overflow-hidden">
+            <Image
+              src={urlFor(group.image).width(800).height(256).fit("crop").url()}
+              alt={group.name}
+              fill
+              className="object-cover"
+            />
+          </div>
         )}
-        <div className="relative flex justify-between">
-          <p className="flex items-center gap-1 font-medium">
-            Les mer
-            <span className="transition-all duration-150 group-hover:pl-1">
-              <ArrowRight />
-            </span>
-          </p>
-          {!group.isActive && (
-            <Chip variant={"destructive"} className="absolute right-0 mt-9">
-              Ikke aktiv
-            </Chip>
+
+        <div className="flex flex-1 flex-col gap-3 p-5">
+          <div className="flex items-start justify-between gap-2">
+            <h2 className="text-xl font-semibold">{group.name}</h2>
+            {!group.isActive && (
+              <Chip variant="destructive" className="shrink-0">
+                Ikke aktiv
+              </Chip>
+            )}
+          </div>
+
+          {group.description && (
+            <p className="text-muted-foreground line-clamp-3 flex-1 text-sm">
+              {removeMd(group.description ?? "")}
+            </p>
           )}
+
+          <div className="text-muted-foreground flex items-center gap-1 text-sm">
+            Les mer
+            <ArrowRight className="h-4 w-4" />
+          </div>
         </div>
       </div>
-      <div></div>
     </Link>
   );
 };

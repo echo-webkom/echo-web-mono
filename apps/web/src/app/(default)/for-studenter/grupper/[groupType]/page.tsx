@@ -1,4 +1,5 @@
 import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
@@ -16,7 +17,7 @@ type Props = {
   }>;
 };
 
-export const generateMetadata = async (props: Props) => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
   const { groupType } = params;
 

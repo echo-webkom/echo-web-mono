@@ -81,7 +81,7 @@ export const headerRoutes: Array<Route> = [
         icon: LuUsers,
       },
       {
-        label: "Programmerbar",
+        label: "Programmerbar ↗",
         href: "https://programmer.bar",
         description: "Studentbaren for informatikkstudenter",
         icon: LuMartini,
