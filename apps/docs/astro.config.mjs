@@ -32,6 +32,7 @@ export default defineConfig({
                 { label: "Web", slug: "tjenester/echo-web-mono/web" },
                 { label: "CMS", slug: "tjenester/echo-web-mono/cms" },
                 { label: "API", slug: "tjenester/echo-web-mono/api" },
+                { label: "Testing", slug: "tjenester/echo-web-mono/testing" },
               ],
             },
             {

@@ -92,6 +92,8 @@ pnpm typecheck   # TypeScript type checking
 pnpm format      # Prettier formatering
 ```
 
+Se [Testing](/tjenester/echo-web-mono/testing) for detaljert guide om unit testing og E2E-testing.
+
 ## Environment setup
 
 ### Krever

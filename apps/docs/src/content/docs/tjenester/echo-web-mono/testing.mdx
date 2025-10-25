@@ -1,0 +1,315 @@
+---
+title: Testing
+description: Komplett guide til testing i echo-web-mono med unit tests og end-to-end tests.
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+echo-web-mono har et omfattende testoppsett med både unit tests og end-to-end (E2E) tests for å sikre kvalitet og pålitelighet i hele kodebasen.
+
+## Oversikt
+
+Prosjektet bruker to typer tester:
+
+- **Unit tests** - Tester individuelle komponenter og funksjoner isolert (Vitest)
+- **End-to-end tests** - Tester hele applikasjonen i en nettleser (Playwright)
+
+<Aside type="caution" title="Pass på!">
+  Før du kjører testene er det viktig at du bytter til riktig Sanity dataset. Her burde du bruke
+  `testing` datasetet for å ikke ødelegge data i `development` eller `production` datasettene.
+  Samtidig inneholder dette datasettet testdata som trengs for at testene skal fungere som
+  forventet.
+</Aside>
+
+## Testkommandoer
+
+### Kjøre alle tester
+
+```bash
+# Kjør alle unit tests
+pnpm test:unit
+
+# Kjør alle E2E tests
+pnpm test:e2e
+
+# Kjør E2E tests i UI-modus (interaktivt)
+pnpm test:e2e:ui
+
+# Kjør E2E tests i Docker
+pnpm test:e2e:docker
+```
+
+<Aside type="note" title="Merk">
+  Kjører du testene med `test:e2e` eller `test:e2e:ui` må du sørge for selv at databasen satt opp
+  med riktig seed-data. Du kan bruke `pnpm seed database --mode test` for å sette opp testdata før
+  du kjører E2E-testene.
+</Aside>
+
+### Kjøre tester for spesifikke pakker
+
+```bash
+# Unit tests kun for web-appen
+pnpm --filter=web test:unit
+```
+
+## Unit Testing
+
+Unit tests bruker [Vitest](https://vitest.dev/) som test-rammeverk. Testene er organisert nær koden de tester.
+
+### Oppsett
+
+Web-appen (`apps/web`) er satt opp med Vitest og Testing Library for React-komponenter:
+
+- **Test runner**: Vitest
+- **React testing**: @testing-library/react
+- **DOM testing**: jsdom
+- **Tidssone**: UTC-1 (satt i package.json script)
+
+### Plassering av tester
+
+Unit tests plasseres i `__tests__`-mapper som speiler kildekodestrukturen, med `.test.ts` eller `.test.tsx` endelse:
+
+```
+src/
+  components/
+    button.tsx
+    __tests__/
+      button.test.tsx
+  utils/
+    formatDate.ts
+    __tests__/
+      formatDate.test.ts
+```
+
+### Eksempel: Unit test
+
+```typescript
+import { describe, expect, it } from "vitest";
+
+import { formatDate } from "./formatDate";
+
+describe("formatDate", () => {
+  it("should format date correctly", () => {
+    const date = new Date("2024-01-15");
+    expect(formatDate(date)).toBe("15. januar 2024");
+  });
+
+  it("should handle invalid dates", () => {
+    expect(() => formatDate(null)).toThrow();
+  });
+});
+```
+
+### Eksempel: React-komponent test
+
+For å kunne teste React-komponenter må du passe på at de er klient-komponenter med "use client" øverst i filen. Vitest støtter for øyeblikket kun testing av klient-komponenter. Du kan følge dette [issuet](https://github.com/testing-library/react-testing-library/issues/1209) for oppdateringer rundt server-komponent testing i fremtiden.
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
+import { Button } from "./button";
+
+describe("Button", () => {
+  it("should render with correct text", () => {
+    render(<Button>Klikk her</Button>);
+    expect(screen.getByRole("button")).toHaveTextContent("Klikk her");
+  });
+
+  it("should be disabled when prop is set", () => {
+    render(<Button disabled>Klikk her</Button>);
+    expect(screen.getByRole("button")).toBeDisabled();
+  });
+});
+```
+
+### Kjøre unit tests
+
+```bash
+# Kjør alle unit tests (fra root)
+pnpm test:unit
+
+# Kjør web unit tests med watch-modus
+pnpm --filter=web test:unit -- --watch
+
+# Kjør spesifikk testfil
+pnpm --filter=web test:unit -- src/utils/formatDate.test.ts
+
+# Kjør med coverage
+pnpm --filter=web test:unit -- --coverage
+```
+
+## End-to-End Testing
+
+E2E-testene bruker [Playwright](https://playwright.dev/) og befinner seg i `/playwright` mappen i monorepoet.
+
+### Arkitektur
+
+```
+playwright/
+  tests/
+    web/           # Tester for web-appen
+      index.spec.ts
+      register.spec.ts
+      profile.spec.ts
+    api/           # Tester for API-et
+  playwright.config.ts
+```
+
+### Oppsett
+
+Playwright-testene:
+
+- Kjører mot lokale utviklingsservere
+- Bruker miljøvariabler fra `.env` filen
+- Tester både web-appen (localhost:3000) og API-et (localhost:8000)
+- Støtter flere nettlesere (Chromium, Firefox, WebKit)
+
+### Eksempel: E2E test
+
+```typescript
+import { expect, test } from "@playwright/test";
+
+test("web frontpage", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page).toHaveTitle("echo – Linjeforeningen for informatikk");
+});
+
+test("user can register for event", async ({ page }) => {
+  // Naviger til arrangement
+  await page.goto("/arrangementer");
+  await page.click('text="Neste arrangement"');
+
+  // Klikk påmelding
+  await page.click('button:has-text("Meld deg på")');
+
+  // Fyll ut skjema
+  await page.fill('input[name="comment"]', "Ser frem til dette!");
+  await page.click('button:has-text("Bekreft påmelding")');
+
+  // Verifiser suksess
+  await expect(page.locator('text="Du er nå påmeldt"')).toBeVisible();
+});
+```
+
+### Kjøre E2E tests
+
+```bash
+# Kjør alle E2E tests (headless)
+pnpm test:e2e
+
+# Kjør med UI-modus for debugging
+pnpm test:e2e:ui
+
+# Kjør spesifikk testfil
+pnpm --filter=playwright test:e2e -- tests/web/register.spec.ts
+
+# Vis test-rapport
+pnpm --filter=playwright test:report
+```
+
+### UI-modus
+
+UI-modus er nyttig for å utvikle og debugge tester interaktivt:
+
+```bash
+pnpm test:e2e:ui
+```
+
+Dette åpner Playwright UI på `localhost:5555` hvor du kan:
+
+- Se testene kjøre i sanntid
+- Pause og inspisere tester
+- Se screenshots og traces
+- Kjøre individuelle tester
+
+### Docker E2E tests
+
+For å kjøre E2E-testene i et isolert Docker-miljø:
+
+```bash
+pnpm test:e2e:docker
+```
+
+Dette er nyttig for:
+
+- Testing i et rent miljø
+- CI/CD pipelines
+- Setter opp nødvendige tjenester som databaser automatisk
+
+## Best Practices
+
+### Unit Tests
+
+1. **Test en ting om gangen** - Hver test skal verifisere ett spesifikt scenario
+2. **Bruk beskrivende navn** - Test-navnet skal forklare hva som testes
+3. **Arrange-Act-Assert** - Følg AAA-mønsteret for struktur
+4. **Mock eksterne avhengigheter** - Isoler koden som testes
+5. **Test edge cases** - Ikke bare happy path, men også feilsituasjoner
+
+### E2E Tests
+
+1. **Test brukerscenarier** - Fokuser på reelle brukerflyter
+2. **Bruk data-testid** - For stabile selektorer som ikke endres med styling
+3. **Vent på elementer** - Bruk Playwright's innebygde waiting, ikke setTimeout
+4. **Parallellisering** - Testene skal kunne kjøre parallelt uten konflikter
+5. **Cleanup** - Rydd opp testdata etter hver test
+
+### Generelt
+
+- **Kjør tester lokalt** - Før du pusher kode
+- **Hold tester oppdatert** - Oppdater tester når koden endres
+- **Test-drevet utvikling** - Skriv tester samtidig med koden
+- **Minimal mock** - Mock bare det som er nødvendig
+- **Dokumenter komplekse tester** - Kommenter hvorfor, ikke hva
+
+## Testing i CI/CD
+
+Alle tester kjøres automatisk i GitHub Actions når du:
+
+- Pusher til en branch
+- Oppretter en Pull Request
+- Merger til `main`
+
+CI-pipelinen kjører:
+
+1. Linting og formatering (`pnpm lint`, `pnpm format:check`)
+2. Type checking (`pnpm typecheck`)
+3. Unit tests (`pnpm test:unit`)
+4. E2E tests (`pnpm test:e2e`)
+5. Build (`pnpm build`)
+
+### Se CI-resultater
+
+- GitHub Actions-fanen i repoet viser kjørehistorikk
+- PR-er viser status for alle sjekker
+- Feilede tester blokkerer merging til `main`
+
+## Testdata og Seeds
+
+For testing lokalt bruker vi seeder-pakken:
+
+```bash
+# Seed database med testdata
+pnpm seed
+
+# Seed med spesifikk modus
+pnpm seed database --mode dev    # Dev data
+pnpm seed database --mode test   # Test data
+pnpm seed database --mode prod   # Prod-lignende data
+```
+
+Testdataene inkluderer:
+
+- Testbrukere med ulike roller
+- Arrangementer og påmeldinger
+- Grupper og medlemskap
+- Bedriftsprofiler og stillingsannonser
+
+## Videre Lesning
+
+- [Vitest Documentation](https://vitest.dev/)
+- [Playwright Documentation](https://playwright.dev/)
+- [Testing Library](https://testing-library.com/)
+- [React Testing Best Practices](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
