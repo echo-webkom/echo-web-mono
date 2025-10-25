@@ -5,8 +5,7 @@
   "packageManager": "pnpm@10.18.3",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=!@echo-webkom/uno",
-    "dev:beta": "turbo run dev --filter=@echo-webkom/uno --filter=@echo-webkom/cms",
+    "dev": "turbo run dev",
     "web:dev": "pnpm run --filter=web dev",
     "cms:dev": "pnpm run --filter=cms dev",
     "db:dev": "pnpm run --filter=db dev",
