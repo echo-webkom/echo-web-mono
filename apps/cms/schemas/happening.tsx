@@ -131,6 +131,7 @@ export default defineType({
       name: "location",
       title: "Sted",
       type: "reference",
+      description: "Hvor arrangementet skal finne sted. Arrangementer på 'Programmerbar' vil også vises på programmer.bar.",
       to: { type: "location" },
     }),
     defineField({
