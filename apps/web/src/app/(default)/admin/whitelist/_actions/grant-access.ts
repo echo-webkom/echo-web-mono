@@ -8,18 +8,11 @@ import { db } from "@echo-webkom/db/serverless";
 import { AccessGrantedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { auth } from "@/auth/session";
-import { isMemberOf } from "@/lib/memberships";
+import { checkAuthorization } from "@/utils/server-action-helpers";
 
 export const grantAccessAction = async (accessRequestId: string) => {
-  const user = await auth();
-
-  if (!user || !isMemberOf(user, ["webkom", "hovedstyret"])) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne handlingen",
-    };
-  }
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
 
   const accessRequest = await db.query.accessRequests.findFirst({
     where: eq(accessRequests.id, accessRequestId),

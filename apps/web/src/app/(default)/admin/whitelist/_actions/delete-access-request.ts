@@ -7,13 +7,11 @@ import { db } from "@echo-webkom/db/serverless";
 import { AccessDeniedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { auth } from "@/auth/session";
-import { isMemberOf } from "@/lib/memberships";
+import { checkAuthorization } from "@/utils/server-action-helpers";
 
 export const deleteAccessRequestAction = async (accessRequestId: string, reason: string) => {
-  const user = await auth();
-
-  if (!user || !isMemberOf(user, ["webkom", "hovedstyret"])) {
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) {
     throw new Error("Du har ikke tilgang til å slette forespørsler");
   }
 

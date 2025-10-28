@@ -2,25 +2,12 @@
 
 import { revalidateTag } from "next/cache";
 
-import { auth } from "@/auth/session";
+import { checkAuthorization } from "@/utils/server-action-helpers";
 import { isWebkom } from "@/lib/memberships";
 
 export const revalidateCacheAction = async (tag: string) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isWebkom(user)) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ customCheck: (user) => isWebkom(user) });
+  if (authError) return authError;
 
   revalidateTag(tag, "max");
 

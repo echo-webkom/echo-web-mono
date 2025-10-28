@@ -5,27 +5,13 @@ import { eq } from "drizzle-orm";
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { auth } from "@/auth/session";
-import { isMemberOf } from "@/lib/memberships";
+import { checkAuthorization } from "@/utils/server-action-helpers";
 
 export const upsertWhitelist = async (email: string, reason: string, days: number) => {
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
+
   try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
-
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + days);
 
@@ -63,23 +49,10 @@ export const upsertWhitelist = async (email: string, reason: string, days: numbe
 };
 
 export const removeWhitelist = async (email: string) => {
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
+
   try {
-    const user = await auth();
-
-    if (!user) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-      return {
-        success: false,
-        message: "Du har ikke tilgang til denne funksjonen",
-      };
-    }
-
     await db.delete(whitelist).where(eq(whitelist.email, email));
 
     return {

@@ -9,26 +9,13 @@ import {
   type DegreeInsert,
 } from "@echo-webkom/db/schemas";
 
-import { auth } from "@/auth/session";
 import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutations";
-import { isMemberOf, isWebkom } from "@/lib/memberships";
+import { checkAuthorization, handleActionError } from "@/utils/server-action-helpers";
+import { isWebkom } from "@/lib/memberships";
 
 export const addDegree = async (payload: DegreeInsert) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
 
   try {
     const parsedPayload = insertDegreeSchema.parse(payload);
@@ -41,37 +28,13 @@ export const addDegree = async (payload: DegreeInsert) => {
     };
   } catch (error) {
     console.error(`[addDegree] Error: ${error} [payload: ${JSON.stringify(payload)}]`);
-
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Feil i skjemaet",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En ukjent feil oppstod",
-    };
+    return handleActionError(error);
   }
 };
 
 export const removeDegree = async (id: string) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
 
   try {
     await deleteDegree(id);
@@ -82,30 +45,15 @@ export const removeDegree = async (id: string) => {
     };
   } catch (error) {
     console.error(`[deleteDegree] Error: ${error} [id: ${id}]`);
-
-    return {
-      success: false,
-      message: "En ukjent feil oppstod",
-    };
+    return handleActionError(error);
   }
 };
 
 export const editDegree = async (payload: Degree) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isWebkom(user)) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ 
+    customCheck: (user) => isWebkom(user) 
+  });
+  if (authError) return authError;
 
   try {
     const parsedPayload = selectDegreeSchema.parse(payload);
@@ -118,10 +66,6 @@ export const editDegree = async (payload: Degree) => {
     };
   } catch (error) {
     console.error(`[updateDegree] Error: ${error} [payload: ${JSON.stringify(payload)}]`);
-
-    return {
-      success: false,
-      message: "En ukjent feil oppstod",
-    };
+    return handleActionError(error);
   }
 };

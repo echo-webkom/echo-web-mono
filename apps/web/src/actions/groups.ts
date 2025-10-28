@@ -4,26 +4,12 @@ import { z } from "zod";
 
 import { insertGroupSchema, type GroupInsert } from "@echo-webkom/db/schemas";
 
-import { auth } from "@/auth/session";
 import { createGroup } from "@/data/groups/mutations";
-import { isMemberOf } from "@/lib/memberships";
+import { checkAuthorization, handleActionError } from "@/utils/server-action-helpers";
 
 export const addGroup = async (group: GroupInsert) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isMemberOf(user, ["webkom", "hovedstyret"])) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ requiredGroups: ["webkom", "hovedstyret"] });
+  if (authError) return authError;
 
   try {
     const data = insertGroupSchema.parse(group);

@@ -6,28 +6,16 @@ import { banInfos, dots } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
 import { auth } from "@/auth/session";
-import { isMemberOf } from "@/lib/memberships";
+import { checkAuthorization } from "@/utils/server-action-helpers";
 
 export const removeBanAction = async (userId: string) => {
+  const authError = await checkAuthorization({ requiredGroups: ["bedkom", "webkom"] });
+  if (authError) return authError;
+
   const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Unauthorized",
-    };
-  }
-
-  if (!isMemberOf(user, ["bedkom", "webkom"])) {
-    return {
-      success: false,
-      message: "Unauthorized",
-    };
-  }
-
   await db.delete(banInfos).where(eq(banInfos.userId, userId));
 
-  console.info(`User, ${user.id}, removed ban for user, ${userId}`);
+  console.info(`User, ${user!.id}, removed ban for user, ${userId}`);
 
   return {
     success: true,
@@ -36,25 +24,13 @@ export const removeBanAction = async (userId: string) => {
 };
 
 export const removeStrikeAction = async (userId: string, strikeId: number) => {
+  const authError = await checkAuthorization({ requiredGroups: ["bedkom", "webkom"] });
+  if (authError) return authError;
+
   const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Unauthorized",
-    };
-  }
-
-  if (!isMemberOf(user, ["bedkom", "webkom"])) {
-    return {
-      success: false,
-      message: "Unauthorized",
-    };
-  }
-
   await db.delete(dots).where(and(eq(dots.userId, userId), eq(dots.id, strikeId)));
 
-  console.info(`User, ${user.id}, removed strike, ${strikeId}, for user, ${userId}`);
+  console.info(`User, ${user!.id}, removed strike, ${strikeId}, for user, ${userId}`);
 
   return {
     success: true,

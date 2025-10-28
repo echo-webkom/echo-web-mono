@@ -4,9 +4,9 @@ import { z } from "zod";
 
 import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
 
-import { auth } from "@/auth/session";
 import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
 import { getFeedbackById } from "@/data/site-feedbacks/queries";
+import { checkAuthorization, handleActionError } from "@/utils/server-action-helpers";
 import { isWebkom } from "@/lib/memberships";
 
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
@@ -42,21 +42,8 @@ export const sendFeedback = async (payload: z.infer<typeof sendFeedbackPayloadSc
 };
 
 export const toggleReadFeedback = async (id: string) => {
-  const user = await auth();
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Du er ikke logget inn",
-    };
-  }
-
-  if (!isWebkom(user)) {
-    return {
-      success: false,
-      message: "Du har ikke tilgang til denne funksjonen",
-    };
-  }
+  const authError = await checkAuthorization({ customCheck: (user) => isWebkom(user) });
+  if (authError) return authError;
 
   try {
     const feedback = await getFeedbackById(id);
@@ -77,16 +64,6 @@ export const toggleReadFeedback = async (id: string) => {
       message: "Tilbakemeldingen er oppdatert",
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: "Tilbakemeldingen er ikke i riktig format",
-      };
-    }
-
-    return {
-      success: false,
-      message: "En feil har oppstått",
-    };
+    return handleActionError(error);
   }
 };
