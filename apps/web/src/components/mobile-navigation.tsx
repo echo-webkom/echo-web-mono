@@ -10,8 +10,9 @@ import {
   RxHamburgerMenu as HamburgerMenu,
 } from "react-icons/rx";
 
-import { useAuth } from "@/hooks/use-auth";
-import { headerRoutes } from "@/lib/routes";
+import { type HeaderQueryResult } from "@echo-webkom/cms/types";
+import { HEADER_ICONS } from "@echo-webkom/lib";
+
 import { cn } from "@/utils/cn";
 
 type NavigationContextType = {
@@ -159,10 +160,11 @@ const MenuDropdown = ({ children }: { children: React.ReactNode }) => {
   return <ul className="w-full items-start">{children}</ul>;
 };
 
-export const MobileNavigation = () => {
-  const { user } = useAuth();
-  const isAuthed = Boolean(user);
+type MobileNavigationProps = {
+  header: HeaderQueryResult;
+};
 
+export const MobileNavigation = ({ header }: MobileNavigationProps) => {
   return (
     <NavigationRoot>
       <MenuButton />
@@ -172,32 +174,35 @@ export const MobileNavigation = () => {
           <CloseMenuButton />
         </div>
 
-        {headerRoutes.map((route) => {
-          if ("href" in route) {
-            const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
-
+        {header?.map((route) => {
+          if (route.isDropdown === false) {
             return (
-              <MenuLink key={route.label} to={targetHref}>
-                {route.label}
+              <MenuLink key={route.text} to={route.linkTo ?? "#"}>
+                {route.text}
               </MenuLink>
             );
           }
 
           return (
-            <MenuItem key={route.label} label={route.label}>
+            <MenuItem key={route._key} label={route.text}>
               <MenuDropdown>
-                {route.links.map((link) => (
-                  <li key={link.label} className="w-full">
+                {route.links?.map((link) => (
+                  <li key={link._key} className="w-full">
                     <Link
                       className="hover:bg-muted flex items-center rounded-lg p-4"
-                      href={link.href}
+                      href={link.linkTo ?? "#"}
                     >
                       <div className="flex items-center gap-4">
-                        {React.createElement(link.icon, { className: "h-6 w-6" })}
+                        {React.createElement(
+                          HEADER_ICONS.find((ic) => ic.value === link.icon)!.icon,
+                          { className: "h-6 w-6" },
+                        )}
                         <div>
                           <div>
-                            <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
-                            <p className="text-muted-foreground text-sm">{link.description}</p>
+                            <p className="text-gray-600 dark:text-gray-100">{link.text}</p>
+                            {link.description && (
+                              <p className="text-muted-foreground text-sm">{link.description}</p>
+                            )}
                           </div>
                         </div>
                       </div>

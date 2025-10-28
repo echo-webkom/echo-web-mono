@@ -1,3 +1,24 @@
+import {
+  LuAtom,
+  LuBriefcase,
+  LuBuilding2,
+  LuCalendarDays,
+  LuCircleDollarSign,
+  LuGraduationCap,
+  LuHeart,
+  LuMailOpen,
+  LuMartini,
+  LuMegaphone,
+  LuPresentation,
+  LuScale,
+  LuScrollText,
+  LuShirt,
+  LuShoppingCart,
+  LuStickyNote,
+  LuUsers,
+  LuWallet,
+} from "react-icons/lu";
+
 export const PAGE_TYPES = [
   { title: "For studenter", value: "for-students" },
   { title: "For bedrifter", value: "for-companies" },
@@ -102,3 +123,24 @@ export const GROUPS = {
 } as const;
 
 export type Group = (typeof GROUPS)[keyof typeof GROUPS] | (string & NonNullable<unknown>);
+
+export const HEADER_ICONS = [
+  { title: "Atom", value: "LuAtom", icon: LuAtom },
+  { title: "Briefcase", value: "LuBriefcase", icon: LuBriefcase },
+  { title: "Building2", value: "LuBuilding2", icon: LuBuilding2 },
+  { title: "CalendarDays", value: "LuCalendarDays", icon: LuCalendarDays },
+  { title: "CircleDollarSign", value: "LuCircleDollarSign", icon: LuCircleDollarSign },
+  { title: "GraduationCap", value: "LuGraduationCap", icon: LuGraduationCap },
+  { title: "Heart", value: "LuHeart", icon: LuHeart },
+  { title: "MailOpen", value: "LuMailOpen", icon: LuMailOpen },
+  { title: "Martini", value: "LuMartini", icon: LuMartini },
+  { title: "Megaphone", value: "LuMegaphone", icon: LuMegaphone },
+  { title: "Presentation", value: "LuPresentation", icon: LuPresentation },
+  { title: "Scale", value: "LuScale", icon: LuScale },
+  { title: "ScrollText", value: "LuScrollText", icon: LuScrollText },
+  { title: "Shirt", value: "LuShirt", icon: LuShirt },
+  { title: "ShoppingCart", value: "LuShoppingCart", icon: LuShoppingCart },
+  { title: "StickyNote", value: "LuStickyNote", icon: LuStickyNote },
+  { title: "Users", value: "LuUsers", icon: LuUsers },
+  { title: "Wallet", value: "LuWallet", icon: LuWallet },
+];

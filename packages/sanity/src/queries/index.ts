@@ -1,5 +1,6 @@
 export * from "./contacts";
 export * from "./happening";
+export * from "./header";
 export * from "./job-ad";
 export * from "./minutes";
 export * from "./movies";

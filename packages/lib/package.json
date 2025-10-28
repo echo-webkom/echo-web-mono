@@ -11,7 +11,8 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@echo-webkom/db": "workspace:*"
+    "@echo-webkom/db": "workspace:*",
+    "react-icons": "5.5.0"
   },
   "devDependencies": {
     "@types/node": "22.18.11",

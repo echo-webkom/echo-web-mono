@@ -5,15 +5,17 @@ import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 import { fetchMinutes } from "@/sanity/minutes";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function MinuteOverview() {
   const minutes = await fetchMinutes();
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div className="flex-1">
         <Heading className="mb-4">Møtereferater</Heading>

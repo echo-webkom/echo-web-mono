@@ -15,9 +15,10 @@ import { AnimatePresence, motion } from "motion/react";
 import { type IconBaseProps } from "react-icons";
 import { RxChevronDown as ChevronDown } from "react-icons/rx";
 
-import { useAuth } from "@/hooks/use-auth";
+import { type HeaderQueryResult } from "@echo-webkom/cms/types";
+import { HEADER_ICONS } from "@echo-webkom/lib";
+
 import { useOutsideClick } from "@/hooks/use-outsideclick";
-import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
 type NavigationContextType = {
@@ -180,33 +181,32 @@ export const NavigationViewport = () => {
   );
 };
 
-export const DesktopNavigation = () => {
-  const { user } = useAuth();
-  const isAuthed = Boolean(user);
+type DesktopNavigationProps = {
+  header: HeaderQueryResult;
+};
 
+export const DesktopNavigation = ({ header }: DesktopNavigationProps) => {
   return (
     <NavigationList>
-      {headerRoutes.map((route) => {
-        if ("href" in route) {
-          const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
-
+      {(header ?? []).map((route) => {
+        if (route.isDropdown === false) {
           return (
-            <NavigationLink key={route.label} to={targetHref}>
-              {route.label}
+            <NavigationLink key={route._key} to={route.linkTo ?? "#"}>
+              {route.text}
             </NavigationLink>
           );
         }
 
         return (
-          <NavigationItem key={route.label} label={route.label}>
+          <NavigationItem key={route._key} label={route.text}>
             <NavigationDropdown>
-              {route.links.map((link) => (
+              {route.links?.map((link) => (
                 <IconLink
-                  key={link.label}
-                  href={link.href}
-                  label={link.label}
-                  description={link.description}
-                  icon={link.icon}
+                  key={link._key}
+                  href={link.linkTo}
+                  label={link.text}
+                  description={link.description ?? ""}
+                  icon={HEADER_ICONS.find((ic) => ic.value === link.icon)!.icon}
                 />
               ))}
             </NavigationDropdown>

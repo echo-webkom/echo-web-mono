@@ -3,11 +3,12 @@ import { type Metadata } from "next";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Etiske retningslinjer",
   description: "De etiske retningslinjene til echo – Linjeforeningen for informatikk",
-} satisfies Metadata;
+};
 
 export default async function EthicalGuidelines() {
   const markdown = await fetch(
@@ -18,10 +19,11 @@ export default async function EthicalGuidelines() {
       },
     },
   ).then((res) => res.text());
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div className="space-y-8">
         <Markdown content={markdown} />

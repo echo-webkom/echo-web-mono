@@ -5,9 +5,11 @@ import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { isMemberOf } from "@/lib/memberships";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 
 export default async function HyggkomHandleliste() {
   const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+  const header = await fetchHeader();
 
   const mappedItems = items.map((item) => ({
     id: item.id,
@@ -21,7 +23,7 @@ export default async function HyggkomHandleliste() {
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div>
         <h1 className="bold py-3 text-4xl">Hyggkoms handleliste</h1>

@@ -13,9 +13,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Admin",
-} satisfies Metadata;
+};
 
 const adminRoutes = [
   {

@@ -8,6 +8,7 @@ import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 import { fetchStudentGroupsByType } from "@/sanity/student-group";
 import { studentGroupTypeName } from "@/sanity/utils/mappers";
 
@@ -37,6 +38,7 @@ export default async function StudentGroupOverview(props: Props) {
   const groupTypeFromPath = pathToGroupType(groupType);
 
   const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);
+  const header = await fetchHeader();
 
   groups.sort((a, b) => {
     const aValue = a.isActive;
@@ -49,7 +51,7 @@ export default async function StudentGroupOverview(props: Props) {
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div>
         <Heading className="mb-4">{studentGroupTypeName[groupTypeFromPath]}</Heading>

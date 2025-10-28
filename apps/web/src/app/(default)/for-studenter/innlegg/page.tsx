@@ -1,12 +1,14 @@
 import { cache } from "react";
+import { type Metadata } from "next";
 
 import { Container } from "@/components/container";
 import { PostPreview } from "@/components/post-preview";
 import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 import { fetchAllPosts } from "@/sanity/posts";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Innlegg",
 };
 
@@ -16,10 +18,11 @@ const getData = cache(async () => {
 
 export default async function PostsOverviewPage() {
   const posts = await getData();
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div className="space-y-8">
         <Heading>Innlegg</Heading>

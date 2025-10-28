@@ -16,6 +16,52 @@ import "@sanity/client";
  */
 
 // Source: schema.json
+export type HeaderItem = {
+  _type: "headerItem";
+  text: string;
+  isDropdown?: boolean;
+  links?: Array<{
+    text: string;
+    linkTo: string;
+    description?: string;
+    icon?:
+      | "LuAtom"
+      | "LuBriefcase"
+      | "LuBuilding2"
+      | "LuCalendarDays"
+      | "LuCircleDollarSign"
+      | "LuGraduationCap"
+      | "LuHeart"
+      | "LuMailOpen"
+      | "LuMartini"
+      | "LuMegaphone"
+      | "LuPresentation"
+      | "LuScale"
+      | "LuScrollText"
+      | "LuShirt"
+      | "LuShoppingCart"
+      | "LuStickyNote"
+      | "LuUsers"
+      | "LuWallet";
+    _key: string;
+  }>;
+  linkTo?: string;
+};
+
+export type Header = {
+  _id: string;
+  _type: "header";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  text?: string;
+  content: Array<
+    {
+      _key: string;
+    } & HeaderItem
+  >;
+};
+
 export type HungerGames = {
   _id: string;
   _type: "hungerGames";
@@ -53,30 +99,6 @@ export type Merch = {
     _type: "image";
   };
   body?: string;
-};
-
-export type HsApplication = {
-  _id: string;
-  _type: "hs-application";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  profile: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "profile";
-  };
-  poster: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
 };
 
 export type Banner = {
@@ -605,25 +627,25 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityFileAsset = {
@@ -703,9 +725,10 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | HeaderItem
+  | Header
   | HungerGames
   | Merch
-  | HsApplication
   | Banner
   | Movie
   | Question
@@ -920,6 +943,15 @@ export type HomeHappeningsQueryResult = Array<{
 // Variable: happeningTypeQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug ] {  happeningType,}[0].happeningType
 export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
+
+// Source: ../../packages/sanity/src/queries/header.ts
+// Variable: headerQuery
+// Query: *[_id == "header" && _type == "header"][0] {    content}.content
+export type HeaderQueryResult = Array<
+  {
+    _key: string;
+  } & HeaderItem
+> | null;
 
 // Source: ../../packages/sanity/src/queries/job-ad.ts
 // Variable: jobAdsQuery
@@ -1263,6 +1295,7 @@ declare module "@sanity/client" {
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  _type,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  hideRegistrations,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && (isPinned || date >= now())\n  && happeningType in $happeningTypes\n]\n| order(coalesce(isPinned, false) desc, date asc) {\n  _id,\n  title,\n  isPinned,\n  happeningType,\n  date,\n  registrationStart,\n  "slug": slug.current,\n  "image": company->image,\n  "organizers": organizers[]->{\n    name\n  }.name\n}[0...$n]': HomeHappeningsQueryResult;
     "\n*[_type == \"happening\"\n  && !(_id in path('drafts.**'))\n  && slug.current == $slug\n ] {\n  happeningType,\n}[0].happeningType\n": HappeningTypeQueryResult;
+    '*[_id == "header" && _type == "header"][0] {\n    content\n}.content': HeaderQueryResult;
     '\n*[_type == "job"\n  && !(_id in path(\'drafts.**\'))\n  && expiresAt > now()]\n  | order(weight desc, deadline desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  weight,\n  title,\n  "slug": slug.current,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  expiresAt,\n  "locations": locations[]->{\n    _id,\n    name,\n  },\n  jobType,\n  link,\n  deadline,\n  degreeYears,\n  body\n}\n': JobAdsQueryResult;
     '\n*[_type == "merch" && !(_id in path(\'drafts.**\'))] | order(_createdAt desc) {\n  _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  price,\n  image,\n  body\n}\n': AllMerchQueryResult;
     '\n*[_type == "meetingMinute" && !(_id in path(\'drafts.**\'))] | order(date desc) {\n  _id,\n  isAllMeeting,\n  date,\n  title,\n  "document": document.asset->url\n}\n': AllMeetingMinuteQueryResult;

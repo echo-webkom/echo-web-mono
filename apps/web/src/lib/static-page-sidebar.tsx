@@ -3,13 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { cn } from "@/utils/cn";
-import { headerRoutes } from "./routes";
+import { type HeaderQueryResult } from "@echo-webkom/cms/types";
 
-export const StaticPageSidebar = () => {
+import { cn } from "@/utils/cn";
+
+type StaticPageSidebarProps = {
+  header: HeaderQueryResult;
+};
+
+export const StaticPageSidebar = ({ header }: StaticPageSidebarProps) => {
   const pathname = usePathname();
 
-  const route = headerRoutes.find((route) => "path" in route && pathname.startsWith(route.path));
+  const route = header?.find((route) =>
+    route.links?.some((link) => pathname.startsWith(link.linkTo)),
+  );
   const links = route && "links" in route ? route.links : [];
 
   if (!route || !links) {
@@ -20,17 +27,17 @@ export const StaticPageSidebar = () => {
     <aside className="hidden w-full max-w-[200px] shrink-0 flex-col md:flex">
       <nav className="flex flex-col space-y-2">
         {links.map((link) => {
-          const isActive = link.href === pathname;
+          const isActive = link.linkTo === pathname;
 
           return (
             <Link
-              key={link.href}
-              href={link.href}
+              key={link._key}
+              href={link.linkTo ?? "#"}
               className={cn("text-muted-foreground hover:text-foreground", {
                 "text-foreground font-bold": isActive,
               })}
             >
-              {link.label}
+              {link.text}
             </Link>
           );
         })}

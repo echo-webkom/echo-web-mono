@@ -1,10 +1,12 @@
 import { cache } from "react";
+import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 import { fetchStaticInfo, fetchStaticInfoBySlug } from "@/sanity/static-info";
 import { pageTypeToUrl } from "@/sanity/utils/mappers";
 
@@ -33,7 +35,7 @@ const getData = cache(async (path: Array<string>) => {
   return page;
 });
 
-export const generateMetadata = async (props: Props) => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const { path } = await props.params;
   const page = await getData(path);
   return {
@@ -44,10 +46,11 @@ export const generateMetadata = async (props: Props) => {
 export default async function StaticPage(props: Props) {
   const params = await props.params;
   const page = await getData(params.path);
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <article>
         <Heading className="mb-4">{page.title}</Heading>

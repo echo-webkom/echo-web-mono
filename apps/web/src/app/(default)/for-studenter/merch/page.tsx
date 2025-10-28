@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { MerchPreview } from "@/components/merchPreview";
 import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 import { fetchAllMerch } from "@/sanity/merch";
 
 export const metadata: Metadata = {
@@ -17,10 +18,11 @@ const getData = cache(async () => {
 
 export default async function MerchOverviewPage() {
   const merch = await getData();
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div className="space-y-8">
         <Heading>Merch</Heading>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth/session";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
+import { fetchHeader } from "@/sanity/header";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
@@ -15,6 +16,7 @@ export const SiteHeader = async () => {
   const user = await auth();
   const { message: progbarStatus } = await getProgrammerbarStatus();
   const randomMessage = getRandomMessage();
+  const header = await fetchHeader();
 
   return (
     <div className="sticky top-0 z-20">
@@ -36,7 +38,7 @@ export const SiteHeader = async () => {
 
             <div className="flex items-center">
               <HeaderLogo />
-              <DesktopNavigation />
+              <DesktopNavigation header={header} />
             </div>
             <div className="flex items-center space-x-2">
               <ThemeSwitchButton />
@@ -47,7 +49,7 @@ export const SiteHeader = async () => {
                   <Link href="/auth/logg-inn">Logg inn</Link>
                 </Button>
               )}
-              <MobileNavigation />
+              <MobileNavigation header={header} />
             </div>
           </header>
 

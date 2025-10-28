@@ -5,11 +5,12 @@ import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { fetchHeader } from "@/sanity/header";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Vedtekter",
   description: "Vedtektene til echo – Linjeforeningen for informatikk",
-} satisfies Metadata;
+};
 
 export default async function Bylaws() {
   const markdown = await fetch(
@@ -20,10 +21,11 @@ export default async function Bylaws() {
       },
     },
   ).then((res) => res.text());
+  const header = await fetchHeader();
 
   return (
     <Container className="flex flex-row py-10">
-      <StaticPageSidebar />
+      <StaticPageSidebar header={header} />
 
       <div className="space-y-8">
         <div>
