@@ -7,6 +7,70 @@ import { db } from "@echo-webkom/db/serverless";
 
 import { auth } from "@/auth/session";
 
+type GroupWithMembers = {
+  id: string;
+  members: Array<{
+    userId: string;
+    isLeader: boolean;
+    user?: {
+      id: string;
+    };
+  }>;
+};
+
+type GroupCheckResult =
+  | { success: true; group: GroupWithMembers; requestUserId: string }
+  | { success: false; message: string };
+
+/**
+ * Common validation logic for group operations requiring leader permissions
+ */
+async function validateGroupLeaderAccess(groupId: string): Promise<GroupCheckResult> {
+  const group = await db.query.groups.findFirst({
+    where: (group) => eq(group.id, groupId),
+    with: {
+      members: {
+        with: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  if (!group) {
+    return {
+      success: false,
+      message: "Gruppe finnes ikke",
+    };
+  }
+
+  const requestUser = await auth();
+
+  if (!requestUser) {
+    return {
+      success: false,
+      message: "Du er ikke logget inn",
+    };
+  }
+
+  const isRequestUserLeader = group.members.find(
+    (member) => member.isLeader && member.userId === requestUser.id,
+  );
+
+  if (!isRequestUserLeader) {
+    return {
+      success: false,
+      message: "Du er ikke leder av gruppen",
+    };
+  }
+
+  return {
+    success: true,
+    group,
+    requestUserId: requestUser.id,
+  };
+}
+
 /**
  * Makes a user leader of a group. This should only be done if the user is member
  * of the group, and the user that made the request is also a leader.
@@ -17,19 +81,10 @@ import { auth } from "@/auth/session";
  */
 export const setGroupLeader = async (groupId: string, userId: string, leader: boolean) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: true,
-      },
-    });
+    const validation = await validateGroupLeaderAccess(groupId);
+    if (!validation.success) return validation;
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
+    const { group } = validation;
 
     const isUserInGroup = group.members.find((member) => member.userId === userId);
 
@@ -37,26 +92,6 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
       return {
         success: false,
         message: "Bruker er ikke medlem av gruppen",
-      };
-    }
-
-    const requestUser = await auth();
-
-    if (!requestUser) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
-    );
-
-    if (!isRequestUserLeader) {
-      return {
-        success: false,
-        message: "Du er ikke leder av gruppen",
       };
     }
 
@@ -94,19 +129,10 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
  */
 export const removeFromGroup = async (userId: string, groupId: string) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: true,
-      },
-    });
+    const validation = await validateGroupLeaderAccess(groupId);
+    if (!validation.success) return validation;
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
+    const { group } = validation;
 
     const isUserInGroup = group.members.find((member) => member.userId === userId);
 
@@ -114,26 +140,6 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
       return {
         success: false,
         message: "Bruker er ikke medlem av gruppen",
-      };
-    }
-
-    const requestUser = await auth();
-
-    if (!requestUser) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
-    );
-
-    if (!isRequestUserLeader) {
-      return {
-        success: false,
-        message: "Du er ikke leder av gruppen",
       };
     }
 
@@ -173,23 +179,10 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
  */
 export const addUserToGroup = async (userId: string, groupId: string) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: {
-          with: {
-            user: true,
-          },
-        },
-      },
-    });
+    const validation = await validateGroupLeaderAccess(groupId);
+    if (!validation.success) return validation;
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
+    const { group } = validation;
 
     const isUserInGroup = group.members.find((member) => member.userId === userId);
 
@@ -197,26 +190,6 @@ export const addUserToGroup = async (userId: string, groupId: string) => {
       return {
         success: false,
         message: "Bruker er allerede medlem av gruppen",
-      };
-    }
-
-    const requestUser = await auth();
-
-    if (!requestUser) {
-      return {
-        success: false,
-        message: "Du er ikke logget inn",
-      };
-    }
-
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
-    );
-
-    if (!isRequestUserLeader) {
-      return {
-        success: false,
-        message: "Du er ikke leder av gruppen",
       };
     }
 
