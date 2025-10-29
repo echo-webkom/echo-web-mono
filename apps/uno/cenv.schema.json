@@ -1,0 +1,9 @@
+{
+	"lastUpdated": "2025-10-29T14:52:15.969079643+01:00",
+	"fields": {
+		"DATABASE_URL": {
+			"required": true,
+			"key": "DATABASE_URL"
+		}
+	}
+}
