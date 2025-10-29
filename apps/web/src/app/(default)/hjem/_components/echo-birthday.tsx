@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import ConfettiForBDay from "./confetti";
 
 export default function EchoBirthdayBanner() {
@@ -11,7 +12,7 @@ export default function EchoBirthdayBanner() {
   const afterBirthday = new Date(today.getFullYear(), 10, 8);
 
   // Durations in milliseconds
-  const startDate = new Date(today.getFullYear(), 9, 7);
+  const startDate = new Date(today.getFullYear(), 9, 24);
   const progressDuration = echoBirthday.getTime() - startDate.getTime();
   const progressElapsed = new Date().getTime() - startDate.getTime();
 
@@ -22,19 +23,32 @@ export default function EchoBirthdayBanner() {
   }
 
   //progressbar completion style
-  const progressbar = (percenrtage = Math.max(0, Math.min(100, percenrtage)));
+  const progressbar = Math.max(0, Math.min(100, percenrtage));
+
+  const onTick = useEffectEvent(() => {
+    setTimeDifference(echoBirthday.getTime() - new Date().getTime());
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTimeDifference(echoBirthday.getTime() - new Date().getTime());
+      onTick();
     }, 1000);
+
     return () => clearInterval(intervalId);
   }, []);
 
   const diffDays = Math.floor(timeDifference / (1000 * 3600 * 24));
   const diffHours = Math.floor((timeDifference % (1000 * 3600 * 24)) / (1000 * 3600));
   const diffMinutes = Math.floor((timeDifference % (1000 * 3600)) / (1000 * 60));
+
   const diffSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+  const isMounted = useIsMounted(); // importer fra "@/hooks/use-is-mounted"
+
+  if (!isMounted) {
+    return null;
+  }
+
   if (echoBirthday > new Date()) {
     return (
       <div className="mt-10 -mb-20">
@@ -49,7 +63,7 @@ export default function EchoBirthdayBanner() {
               className="absolute top-0 left-0 h-full rounded-full bg-sky-200"
               style={{ width: `${progressbar}%` }}
             />
-            <p className="pointer-events-none absolute inset-0 grid place-items-center text-sm font-semibold sm:text-lg">
+            <p className="pointer-events-none absolute inset-0 grid place-items-center text-sm font-semibold text-black sm:text-lg">
               {diffDays} dager {diffHours} timer {diffMinutes} min {diffSeconds} sek{" "}
             </p>
           </div>
