@@ -1,6 +1,12 @@
 {
-	"lastUpdated": "2025-10-29T14:52:15.969079643+01:00",
+	"lastUpdated": "2025-10-29T17:20:41.455471673+01:00",
 	"fields": {
+		"API_PORT": {
+			"required": true,
+			"format": ":{number}",
+			"key": "API_PORT",
+			"default": ":8080"
+		},
 		"DATABASE_URL": {
 			"required": true,
 			"key": "DATABASE_URL"
