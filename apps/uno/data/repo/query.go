@@ -24,7 +24,12 @@ func scanHappening(row Row, hap *model.Happening) error {
 }
 
 func (r *Repo) GetAllHappenings(ctx context.Context) (res []model.Happening, err error) {
-	query := "SELECT * FROM happening"
+	query := `
+		SELECT
+		id, slug, title, type, date, registration_groups,
+		registration_start_groups, registration_start, registration_end
+		FROM happening
+	`
 
 	rows, err := r.pool.Query(ctx, query)
 	if err != nil {

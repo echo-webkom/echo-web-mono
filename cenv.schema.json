@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2025-10-23T17:52:49.530608+02:00",
+	"lastUpdated": "2025-10-29T17:50:01.547241979+01:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -47,6 +47,12 @@
 			"public": true,
 			"key": "NEXT_PUBLIC_SANITY_DATASET",
 			"value": "production"
+		},
+		"UNO_API_PORT": {
+			"required": true,
+			"format": ":{number}",
+			"key": "UNO_API_PORT",
+			"default": ":8080"
 		}
 	}
 }
