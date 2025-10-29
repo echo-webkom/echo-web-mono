@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"uno/data/model"
 	"uno/http/util"
@@ -15,6 +16,7 @@ func GetHappeningsHandler(repo HappeningRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		haps, err := repo.GetAllHappenings(r.Context())
 		if err != nil {
+			log.Println(err)
 			http.Error(w, "failed to fetch happenings", http.StatusInternalServerError)
 			return
 		}
