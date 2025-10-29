@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth/session";
 import { Heading } from "@/components/typography/heading";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getUserTrophies } from "./trophy-helpers";
 
 export default async function UserTrophies() {
@@ -42,46 +43,23 @@ function TrophyDisplay({
   title,
   description,
 }: {
-  level: TrophyName;
+  level: number;
   image: StaticImageData;
   title: string;
   description: string;
 }) {
   return (
-    <>
-      <Image src={image} alt="Empty trophy" width={120} height={120} />
-      <Heading level={3} className="capitalize">
-        {title}
-      </Heading>
-      <p>{description}</p>
-      <p>{level.toString()}</p>
-    </>
+    <Popover>
+      <PopoverTrigger>
+        <Image src={image} alt="Empty trophy" width={120} height={120} />
+        <Heading level={3} className="capitalize">
+          {title}
+        </Heading>
+      </PopoverTrigger>
+      <PopoverContent>
+        <p className="mb-5 text-lg font-semibold">{title}</p>
+        <p>{description}</p>
+      </PopoverContent>
+    </Popover>
   );
 }
-
-export enum TrophyName {
-  BEDRIFTSTUR = "bedriftstur",
-  GOKART = "gokart",
-  VINTERBALL = "vinterball",
-  BEDPRES = "bedpres",
-  BRANNKAMP = "brannkamp",
-}
-
-export enum TrophyName {
-  EMPTY = "empty",
-  BRONZE = "bronze",
-  SILVER = "silver",
-  GOLD = "gold",
-}
-
-export type TrophyLevel = {
-  name: TrophyName;
-  image: StaticImageData;
-  title: string;
-  description: string;
-};
-
-export type Trophy = {
-  name: TrophyName;
-  levels: Array<TrophyLevel>;
-};
