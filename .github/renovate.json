@@ -6,14 +6,10 @@
     ":semanticCommitScopeDisabled",
     ":automergeMinor"
   ],
-  "labels": [
-    "dependencies :handshake:"
-  ],
+  "labels": ["dependencies :handshake:"],
   "commitMessageAction": "update",
   "rangeStrategy": "bump",
-  "schedule": [
-    "every weekend"
-  ],
+  "schedule": ["every weekend"],
   "packageRules": [
     {
       "matchPackagePatterns": [
@@ -28,8 +24,6 @@
   "stabilityDays": 3,
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": [
-      "before 4am on thursday"
-    ]
+    "schedule": ["before 4am on thursday"]
   }
 }

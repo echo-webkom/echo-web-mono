@@ -35,8 +35,6 @@ const calculateStartDate = (steps: number, interval: number) => {
   return startOfWeek(contextDate, { weekStartsOn: 1 });
 };
 
-
-
 export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(1024);
@@ -122,21 +120,18 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
                   </div>
                   {isEchoBirthday(day) && (
                     <>
-                      <div className="px-2 -mt-1">
-                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60
-                                        bg-amber-50/70 dark:bg-amber-900/30 px-2 py-0.5
-                                        text-[11px] font-semibold text-amber-900 dark:text-amber-100">
+                      <div className="-mt-1 px-2">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60 bg-amber-50/70 px-2 py-0.5 text-[11px] font-semibold text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
                           🎂 Gratulerer med dagen echo!
                         </span>
                       </div>
                       <div className="px-2 pt-2">
-                        <div className="text-center text-xl font-semibold leading-snug h-10">
+                        <div className="h-10 text-center text-xl leading-snug font-semibold">
                           🎊 echo 30 år 🎊
                         </div>
                       </div>
                     </>
                   )}
-
 
                   <ul className="flex flex-col px-1">
                     {eventsThisDay.map((event) => {
