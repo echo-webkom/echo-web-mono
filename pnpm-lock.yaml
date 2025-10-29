@@ -210,6 +210,12 @@ importers:
         specifier: ^4.44.0
         version: 4.44.0(@cloudflare/workers-types@4.20251014.0)
 
+  apps/uno:
+    devDependencies:
+      dotenv-cli:
+        specifier: 10.0.0
+        version: 10.0.0
+
   apps/web:
     dependencies:
       '@echo-webkom/db':
