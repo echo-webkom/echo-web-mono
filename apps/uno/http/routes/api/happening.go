@@ -1,18 +1,19 @@
 package api
 
 import (
+	"context"
 	"net/http"
 	"uno/data/model"
 	"uno/http/util"
 )
 
 type HappeningRepo interface {
-	GetAllHappenings() ([]model.Happening, error)
+	GetAllHappenings(ctx context.Context) ([]model.Happening, error)
 }
 
 func GetHappeningsHandler(repo HappeningRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		haps, err := repo.GetAllHappenings()
+		haps, err := repo.GetAllHappenings(r.Context())
 		if err != nil {
 			http.Error(w, "failed to fetch happenings", http.StatusInternalServerError)
 			return

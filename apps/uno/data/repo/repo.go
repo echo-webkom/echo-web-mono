@@ -1,11 +1,13 @@
 package repo
 
-import "database/sql"
+import (
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 type Repo struct {
-	db *sql.DB
+	pool *pgxpool.Pool
 }
 
-func New(db *sql.DB) *Repo {
-	return &Repo{db}
+func New(pool *pgxpool.Pool) *Repo {
+	return &Repo{pool}
 }

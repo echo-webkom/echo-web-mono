@@ -19,5 +19,6 @@ func Load() *Config {
 
 	return &Config{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
+		ApiPort:     os.Getenv("API_PORT"),
 	}
 }

@@ -1,41 +1,33 @@
 package database
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 
-	"github.com/pressly/goose"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Database struct {
-	Pool *sql.DB
+	Pool *pgxpool.Pool
 }
 
 func New(databaseUrl string) (*Database, error) {
-	db, err := sql.Open("sqlite3", databaseUrl)
+	pool, err := pgxpool.New(context.Background(), databaseUrl)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
-	}
-
-	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
-	}
-
-	if err := runMigrations(db); err != nil {
 		return nil, err
 	}
 
-	return &Database{Pool: db}, nil
+	if err := pool.Ping(context.Background()); err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+
+	if err := runMigrations(pool); err != nil {
+		return nil, err
+	}
+
+	return &Database{Pool: pool}, nil
 }
 
-func runMigrations(db *sql.DB) error {
-	if err := goose.SetDialect("sqlite3"); err != nil {
-		return fmt.Errorf("failed to set goose dialect: %w", err)
-	}
-
-	if err := goose.Up(db, "./migrations"); err != nil {
-		return fmt.Errorf("failed to run migrations: %w", err)
-	}
-
+func runMigrations(pool *pgxpool.Pool) error {
 	return nil
 }
