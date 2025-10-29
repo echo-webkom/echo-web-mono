@@ -1,33 +1,20 @@
 package database
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 type Database struct {
-	Pool *pgxpool.Pool
+	DB *sqlx.DB
 }
 
 func New(databaseUrl string) (*Database, error) {
-	pool, err := pgxpool.New(context.Background(), databaseUrl)
+	databaseUrl += "?sslmode=disable"
+	db, err := sqlx.Connect("postgres", databaseUrl)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := pool.Ping(context.Background()); err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
-	}
-
-	if err := runMigrations(pool); err != nil {
-		return nil, err
-	}
-
-	return &Database{Pool: pool}, nil
-}
-
-func runMigrations(pool *pgxpool.Pool) error {
-	return nil
+	return &Database{db}, nil
 }

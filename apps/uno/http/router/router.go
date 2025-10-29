@@ -11,6 +11,15 @@ import (
 	"github.com/jesperkha/notifier"
 )
 
+// Custom Router handler. Returns reuqests status code and error. Handlers
+// should not write status codes on their own as it is handled by Router.
+// The returned error is written to the response with http.Error.
+type Handler func(w http.ResponseWriter, r *http.Request) (int, error)
+
+type Middleware func(Handler) Handler
+
+// Router wraps chi.Mux and provides a simplified API. Routes use the internal
+// Handler function. It also implements http.Handler.
 type Router struct {
 	mux     *chi.Mux
 	cleanup func()
@@ -30,8 +39,22 @@ func New() *Router {
 	return &Router{mux, func() {}}
 }
 
-func (r *Router) Handle(method string, pattern string, handler http.HandlerFunc) {
-	r.mux.Method(method, pattern, handler)
+func (r *Router) Handle(method string, pattern string, handler Handler, middleware ...Middleware) {
+	r.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
+		for _, m := range middleware {
+			handler = m(handler)
+		}
+
+		status, err := handler(w, r)
+		if status != http.StatusOK {
+			w.WriteHeader(status)
+		}
+
+		if err != nil {
+			log.Printf("handle %s: %v", pattern, err)
+			http.Error(w, err.Error(), status)
+		}
+	})
 }
 
 func (r *Router) OnCleanup(f func()) {

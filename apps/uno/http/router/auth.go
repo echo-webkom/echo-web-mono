@@ -1,13 +1,15 @@
-package auth
+package router
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"uno/data/model"
 )
 
 type Repo interface {
-	GetSessionByToken(token string) (model.Session, error)
-	GetUserById(id string) (model.User, error)
+	GetSessionByToken(ctx context.Context, token string) (model.Session, error)
+	GetUserById(ctx context.Context, id string) (model.User, error)
 }
 
 type Auth struct {
@@ -15,19 +17,27 @@ type Auth struct {
 	User    model.User
 }
 
-type AuthHandler func(w http.ResponseWriter, r *http.Request, auth Auth) int
+type AuthHandler func(w http.ResponseWriter, r *http.Request, auth Auth) (int, error)
 
-func NewWithAuthHandler(repo Repo) func(h AuthHandler) http.HandlerFunc {
-	return func(h AuthHandler) http.HandlerFunc {
-		return func(w http.ResponseWriter, r *http.Request) {
+func NewWithAuthHandler(repo Repo) func(h AuthHandler) Handler {
+	return func(h AuthHandler) Handler {
+		return func(w http.ResponseWriter, r *http.Request) (int, error) {
 			auth, ok := getAuthFromRequest(repo, r)
 			if !ok {
-				return
+				return http.StatusUnauthorized, fmt.Errorf("missing authentication")
 			}
+			return h(w, r, auth)
+		}
+	}
+}
 
-			if code := h(w, r, auth); code != http.StatusOK {
-				w.WriteHeader(code)
+func NewAuthMiddleware(repo Repo) Middleware {
+	return func(h Handler) Handler {
+		return func(w http.ResponseWriter, r *http.Request) (int, error) {
+			if _, ok := getAuthFromRequest(repo, r); !ok {
+				return http.StatusUnauthorized, fmt.Errorf("missing authentication")
 			}
+			return h(w, r)
 		}
 	}
 }
@@ -56,6 +66,8 @@ func NewWithOptionalAuthHandler(repo Repo) func(h OptionalAuthHandler) http.Hand
 }
 
 func getAuthFromRequest(repo Repo, r *http.Request) (auth Auth, ok bool) {
+	ctx := r.Context()
+
 	token := r.Header.Get("Authorization")
 	if token == "" {
 		return auth, false
@@ -63,12 +75,12 @@ func getAuthFromRequest(repo Repo, r *http.Request) (auth Auth, ok bool) {
 
 	token = token[len("Bearer "):]
 
-	session, err := repo.GetSessionByToken(token)
+	session, err := repo.GetSessionByToken(ctx, token)
 	if err != nil {
 		return auth, false
 	}
 
-	user, err := repo.GetUserById(session.UserID)
+	user, err := repo.GetUserById(ctx, session.UserID)
 	if err != nil {
 		return auth, false
 	}
