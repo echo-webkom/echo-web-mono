@@ -11,11 +11,13 @@ import contactProfile from "./objects/contact-profile";
 import question from "./objects/question";
 import spotRange from "./objects/spot-range";
 import time from "./objects/time";
+import trophy from "./objects/trophy";
 import post from "./post";
 import profile from "./profile";
 import repeatingHappening from "./repeating-happening";
 import staticInfo from "./static-info";
 import studentGroup from "./student-group";
+import trophies from "./trophies";
 
 export const schemaTypes = [
   happening,
@@ -36,4 +38,6 @@ export const schemaTypes = [
   time,
   merch,
   hungerGames,
+  trophies,
+  trophy,
 ];
