@@ -28,7 +28,13 @@ const CalendarDay = ({
 }: {
   children: React.ReactNode;
   className?: string;
-}) => <div className={cn("bg-background relative flex min-h-20 flex-col p-2 overflow-hidden", className)}>{children}</div>;
+}) => (
+  <div
+    className={cn("bg-background relative flex min-h-20 flex-col overflow-hidden p-2", className)}
+  >
+    {children}
+  </div>
+);
 
 const DayCircle = ({
   variant = "default",
@@ -70,7 +76,6 @@ const months = [
   "November",
   "Desember",
 ];
-
 
 export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   const month = useMemo(() => addMonths(startOfMonth(new Date()), steps), [steps]);
@@ -114,38 +119,31 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
             >
               {day.getDate()}
             </DayCircle>
-           {(() => {
-  const isBirthday = isSameDay(day, BIRTHDAY);
+            {(() => {
+              const isBirthday = isSameDay(day, BIRTHDAY);
 
-  return (
-    <>
-      {isBirthday && (
-        <span
-          className="absolute left-2 top-2 rounded px-1 text-[11px] font-semibold tracking-wide
-                     text-foreground/90 bg-background/80 backdrop-blur-sm"
-        >
-          Gratulerer med dagen!
-        </span>
-      )}
+              return (
+                <>
+                  {isBirthday && (
+                    <span className="text-foreground/90 bg-background/80 absolute top-2 left-2 rounded px-1 text-[11px] font-semibold tracking-wide backdrop-blur-sm">
+                      Gratulerer med dagen!
+                    </span>
+                  )}
 
-      {isBirthday && (
-        <div
-          className="pointer-events-none absolute inset-x-2 top-7 h-18 grid left-3"
-        >
-          <div className="text-1xl font-medium leading-tight">
-            echo
-            <br />
-            BURSDAG 🎉
-          </div>
-        </div>
-      )}
+                  {isBirthday && (
+                    <div className="pointer-events-none absolute inset-x-2 top-7 left-3 grid h-18">
+                      <div className="text-1xl leading-tight font-medium">
+                        echo
+                        <br />
+                        BURSDAG 🎉
+                      </div>
+                    </div>
+                  )}
 
-      {isBirthday && <div className="h-10" />}
-    </>
-  );
-})()}
-
-
+                  {isBirthday && <div className="h-10" />}
+                </>
+              );
+            })()}
 
             {events
               .filter((event) => isSameDay(event.date, day))
