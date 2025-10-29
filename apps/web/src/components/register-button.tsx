@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Activity, useEffect, useEffectEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
@@ -56,6 +56,25 @@ export const RegisterButton = ({
       })),
     },
   });
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    return new Date(userRegistrationStart).getTime() - Date.now();
+  });
+
+  const canSubmit = timeLeft < 0;
+
+  const onTick = useEffectEvent(() => {
+    if (timeLeft < 0) return;
+    setTimeLeft(new Date(userRegistrationStart).getTime() - Date.now());
+  });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      onTick();
+    }, 1);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
@@ -220,11 +239,14 @@ export const RegisterButton = ({
               </div>
             </DialogBody>
             <DialogFooter>
-              <Button size="sm" type="submit">
-                <div>
-                  <Countdown toDate={userRegistrationStart} />
-                </div>
-              </Button>
+              <Activity mode={canSubmit ? "visible" : "hidden"}>
+                <Button size="sm" type="submit">
+                  Send inn
+                </Button>
+              </Activity>
+              <Activity mode={canSubmit ? "hidden" : "visible"}>
+                <Countdown toDate={userRegistrationStart} />
+              </Activity>
             </DialogFooter>
           </form>
         </Form>
