@@ -21,7 +21,7 @@ func RunApi() {
 		log.Fatal(err)
 	}
 
-	repo := repo.New(db.Pool)
+	repo := repo.New(db.DB)
 
 	go api.Run(notif, config, repo)
 
