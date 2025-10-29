@@ -1,0 +1,14 @@
+{
+  "name": "@echo-webkkom/uno",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm with-env air",
+    "format": "pnpm with-env gofmt -w ./...",
+    "tidy": "pnpm with-env go mod tidy",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "dotenv-cli": "10.0.0"
+  }
+}
