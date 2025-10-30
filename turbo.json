@@ -7,9 +7,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": [
         ".next/**",
         ".sanity/**",
@@ -20,9 +18,7 @@
       ]
     },
     "start": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "persistent": true,
       "cache": false
     },
@@ -57,12 +53,8 @@
       "cache": false
     }
   },
-  "globalDependencies": [
-    ".env"
-  ],
-  "globalPassThroughEnv": [
-    "PLAYWRIGHT_*"
-  ],
+  "globalDependencies": [".env"],
+  "globalPassThroughEnv": ["PLAYWRIGHT_*"],
   "globalEnv": [
     "CI",
     "NODE_ENV",
