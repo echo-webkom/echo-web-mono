@@ -64,14 +64,20 @@ export const RegisterButton = ({
   const canSubmit = timeLeft < 0;
 
   const onTick = useEffectEvent(() => {
-    if (timeLeft < 0) return;
+    if (canSubmit) return true;
+
     setTimeLeft(new Date(userRegistrationStart).getTime() - Date.now());
+
+    return false;
   });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      onTick();
-    }, 1);
+      const shouldCleanUp = onTick();
+      if (shouldCleanUp) {
+        clearInterval(intervalId);
+      }
+    }, 1000); // 1 second
 
     return () => clearInterval(intervalId);
   }, []);
