@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Activity, useEffect, useEffectEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
@@ -24,16 +24,24 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+import { Countdown } from "./countdown";
 import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Textarea } from "./ui/textarea";
 
 type RegisterButtonProps = {
   id: string;
+  userRegistrationStart: Date;
   questions: Array<Question>;
+  buttonText?: string;
 };
 
-export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
+export const RegisterButton = ({
+  id,
+  userRegistrationStart,
+  questions,
+  buttonText = "Meld på",
+}: RegisterButtonProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +56,31 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
       })),
     },
   });
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    return new Date(userRegistrationStart).getTime() - Date.now();
+  });
+
+  const canSubmit = timeLeft < 0;
+
+  const onTick = useEffectEvent(() => {
+    if (canSubmit) return true;
+
+    setTimeLeft(new Date(userRegistrationStart).getTime() - Date.now());
+
+    return false;
+  });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const shouldCleanUp = onTick();
+      if (shouldCleanUp) {
+        clearInterval(intervalId);
+      }
+    }, 1000); // 1 second
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
@@ -117,7 +150,7 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
               <span className="ml-2">Melder på...</span>
             </>
           ) : (
-            <span>Meld på</span>
+            <span>{buttonText}</span>
           )}
         </Button>
       </DialogTrigger>
@@ -212,9 +245,14 @@ export const RegisterButton = ({ id, questions }: RegisterButtonProps) => {
               </div>
             </DialogBody>
             <DialogFooter>
-              <Button size="sm" type="submit">
-                Send inn
-              </Button>
+              <Activity mode={canSubmit ? "visible" : "hidden"}>
+                <Button size="sm" type="submit">
+                  Send inn
+                </Button>
+              </Activity>
+              <Activity mode={canSubmit ? "hidden" : "visible"}>
+                <Countdown toDate={userRegistrationStart} />
+              </Activity>
             </DialogFooter>
           </form>
         </Form>
