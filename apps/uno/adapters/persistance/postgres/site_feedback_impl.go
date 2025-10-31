@@ -38,12 +38,16 @@ func (p *PostgresSiteFeedbackImpl) GetAllSiteFeedbacks(ctx context.Context) ([]m
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		if closeErr := rows.Close(); closeErr != nil && err == nil {
+			err = closeErr
+		}
+	}()
 
 	var feedbacks []model.SiteFeedback
 	for rows.Next() {
 		var feedback model.SiteFeedback
-		if err := rows.Scan(&feedback.ID, &feedback.Message, &feedback.CreatedAt, &feedback.IsRead); err != nil {
+		if err := rows.Scan(&feedback.ID, &feedback.Name, &feedback.Email, &feedback.Message, &feedback.CreatedAt, &feedback.IsRead); err != nil {
 			return nil, err
 		}
 		feedbacks = append(feedbacks, feedback)

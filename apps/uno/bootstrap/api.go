@@ -52,6 +52,7 @@ func RunApi() {
 		slog.Info("telemetry disabled")
 	}
 
+	// Initialize database connection
 	db, err := postgres.New(config.DatabaseURL)
 	if err != nil {
 		logger.Error("failed to connect to database", "error", err)

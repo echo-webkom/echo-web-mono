@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "pnpm with-env air",
     "build": "go build -o build/main cmd/main.go",
-    "format": "pnpm with-env gofmt -w ./...",
+    "format": "pnpm with-env go fmt ./...",
+    "format:check": "pnpm with-env go fmt -l ./...",
+    "lint": "pnpm with-env golangci-lint run ./...",
+    "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
     "tidy": "pnpm with-env go mod tidy",
     "swag:init": "swag init --dir ./ --generalInfo adapters/http/server.go --output ./docs --parseDependency --parseInternal",
     "with-env": "dotenv -e ../../.env --"
