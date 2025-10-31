@@ -13,8 +13,12 @@ type PostgresUserImpl struct {
 	db *Database
 }
 
-func NewPostgresUserImpl(db *Database) repo.UserRepo {
-	return &PostgresUserImpl{db: db}
+func (u *PostgresUserImpl) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
+	panic("unimplemented")
+}
+
+func (u *PostgresUserImpl) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWithStrikes, error) {
+	panic("unimplemented")
 }
 
 func (u *PostgresUserImpl) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
@@ -56,4 +60,8 @@ func (u *PostgresUserImpl) GetUsersWithBirthday(ctx context.Context, date time.T
 	`
 	err = u.db.SelectContext(ctx, &users, query, date)
 	return users, err
+}
+
+func NewPostgresUserImpl(db *Database) repo.UserRepo {
+	return &PostgresUserImpl{db: db}
 }

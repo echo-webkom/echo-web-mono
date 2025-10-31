@@ -70,6 +70,8 @@ func RunApi() {
 	siteFeedbackRepoImpl := postgres.NewPostgresSiteFeedbackImpl(db)
 	shoppingListItemRepoImpl := postgres.NewPostgresShoppingListItemImpl(db)
 	usersToShoppingListItemRepoImpl := postgres.NewPostgresUsersToShoppingListItemImpl(db)
+	dotRepoImpl := postgres.NewPostgresDotImpl(db)
+	banInfoImpl := postgres.NewPostgresBanInfoImpl(db)
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepoImpl, userRepoImpl)
@@ -78,6 +80,7 @@ func RunApi() {
 	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepoImpl)
 	shoppingListService := services.NewShoppingListService(shoppingListItemRepoImpl, usersToShoppingListItemRepoImpl, userRepoImpl)
 	userService := services.NewUserService(userRepoImpl)
+	strikeService := services.NewStrikeService(dotRepoImpl, banInfoImpl, userRepoImpl)
 
 	go http.RunServer(
 		notif,
@@ -88,6 +91,7 @@ func RunApi() {
 		siteFeedbackService,
 		shoppingListService,
 		userService,
+		strikeService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
