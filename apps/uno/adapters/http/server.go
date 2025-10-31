@@ -30,10 +30,12 @@ func RunServer(
 	authService *services.AuthService,
 	happeningService *services.HappeningService,
 	degreeService *services.DegreeService,
+	siteFeedbackService *services.SiteFeedbackService,
 ) {
 	r := router.New(config.ServiceName)
 	admin := router.NewAuthMiddleware(authService)
 
+	// Health check route
 	r.Handle("GET", "/", api.HealthHandler())
 
 	// Happening routes
@@ -41,6 +43,8 @@ func RunServer(
 	r.Handle("GET", "/happenings/{id}", api.GetHappeningById(happeningService))
 	r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(happeningService))
 	r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(happeningService))
+	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(happeningService), admin)
+	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(happeningService), admin)
 
 	// Degree routes
 	r.Handle("GET", "/degrees", api.GetDegreesHandler(degreeService))
@@ -48,9 +52,9 @@ func RunServer(
 	r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(degreeService), admin)
 	r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(degreeService), admin)
 
-	// Admin
-	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(happeningService), admin)
-	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(happeningService), admin)
+	// Site feedback routes
+	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(siteFeedbackService), admin)
+	r.Handle("GET", "/feedbacks/{id}", api.GetSiteFeedbackByIDHandler(siteFeedbackService), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

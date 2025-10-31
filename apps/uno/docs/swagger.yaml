@@ -96,6 +96,21 @@ definitions:
     - RegistrationStatusUnregistered
     - RegistrationStatusPending
     - RegistrationStatusRemoved
+  uno_domain_model.SiteFeedback:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      is_read:
+        type: boolean
+      message:
+        type: string
+      name:
+        type: string
+    type: object
   uno_domain_model.SpotRange:
     properties:
       happening_id:
@@ -222,6 +237,50 @@ paths:
       summary: Update degree
       tags:
       - degrees
+  /feedbacks:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.SiteFeedback'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: type
+      summary: Get site feedbacks
+      tags:
+      - feedbacks
+  /feedbacks/{id}:
+    get:
+      parameters:
+      - description: Feedback ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_domain_model.SiteFeedback'
+        "401":
+          description: Unauthorized
+          schema:
+            type: type
+        "404":
+          description: Not Found
+          schema:
+            type: type
+      summary: Get site feedback by ID
+      tags:
+      - feedbacks
   /happenings:
     get:
       description: Retrives a list of all happenings and returns them in a JSON array.

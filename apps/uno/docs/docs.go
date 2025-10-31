@@ -179,6 +179,74 @@ const docTemplate = `{
                 }
             }
         },
+        "/feedbacks": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "feedbacks"
+                ],
+                "summary": "Get site feedbacks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "type"
+                        }
+                    }
+                }
+            }
+        },
+        "/feedbacks/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "feedbacks"
+                ],
+                "summary": "Get site feedback by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Feedback ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "type"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "type"
+                        }
+                    }
+                }
+            }
+        },
         "/happenings": {
             "get": {
                 "description": "Retrives a list of all happenings and returns them in a JSON array.",
@@ -560,6 +628,29 @@ const docTemplate = `{
                 "RegistrationStatusPending",
                 "RegistrationStatusRemoved"
             ]
+        },
+        "uno_domain_model.SiteFeedback": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_read": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
         },
         "uno_domain_model.SpotRange": {
             "type": "object",

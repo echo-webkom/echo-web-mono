@@ -67,13 +67,15 @@ func RunApi() {
 	registrationRepoImpl := postgres.NewPostgresRegistrationImpl(db)
 	spotRangeRepoImpl := postgres.NewPostgresSpotRangeImpl(db)
 	degreeRepoImpl := postgres.NewPostgresDegreeImpl(db)
+	siteFeedbackRepoImpl := postgres.NewPostgresSiteFeedbackImpl(db)
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepoImpl, userRepoImpl)
 	happeningService := services.NewHappeningService(happeningRepoImpl, registrationRepoImpl, spotRangeRepoImpl, questionRepoImpl)
 	degreeService := services.NewDegreeService(degreeRepoImpl)
+	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepoImpl)
 
-	go http.RunServer(notif, config, authService, happeningService, degreeService)
+	go http.RunServer(notif, config, authService, happeningService, degreeService, siteFeedbackService)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
 	logger.Info("received shutdown signal, gracefully shutting down")
