@@ -3,6 +3,7 @@ package postgres
 import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/uptrace/opentelemetry-go-extra/otelsqlx"
 )
 
 type Database struct {
@@ -11,8 +12,13 @@ type Database struct {
 
 func New(databaseUrl string) (*Database, error) {
 	databaseUrl += "?sslmode=disable"
-	db, err := sqlx.Connect("postgres", databaseUrl)
+
+	db, err := otelsqlx.Open("postgres", databaseUrl)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 

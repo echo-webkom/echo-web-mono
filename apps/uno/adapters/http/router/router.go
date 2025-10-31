@@ -4,8 +4,9 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"uno/adapters/http/middleware"
 
-	"github.com/go-chi/chi/middleware"
+	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/jesperkha/notifier"
@@ -25,10 +26,11 @@ type Router struct {
 	cleanup func()
 }
 
-func New() *Router {
+func New(serviceName string) *Router {
 	mux := chi.NewMux()
 
-	mux.Use(middleware.Logger)
+	mux.Use(middleware.Telemetry(serviceName))
+	mux.Use(chiMiddleware.Logger)
 	mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -55,6 +57,11 @@ func (r *Router) Handle(method string, pattern string, handler Handler, middlewa
 			http.Error(w, err.Error(), status)
 		}
 	})
+}
+
+// Mount allows mounting a standard http.Handler (useful for swagger, pprof, etc.)
+func (r *Router) Mount(pattern string, handler http.Handler) {
+	r.mux.Mount(pattern, handler)
 }
 
 func (r *Router) OnCleanup(f func()) {

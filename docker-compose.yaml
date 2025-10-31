@@ -68,6 +68,16 @@ services:
       - ./playwright/playwright-report:/app/playwright/playwright-report
       - ./playwright/test-results:/app/playwright/test-results
 
+  jaeger:
+    profiles: ["dev"]
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4317:4317" # gRPC receiver
+      - "4318:4318" # HTTP receiver
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
 volumes:
   db:
     driver: local

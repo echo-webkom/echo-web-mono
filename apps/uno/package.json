@@ -5,6 +5,7 @@
     "dev": "pnpm with-env air",
     "format": "pnpm with-env gofmt -w ./...",
     "tidy": "pnpm with-env go mod tidy",
+    "swag:init": "swag init --dir ./ --generalInfo adapters/http/server.go --output ./docs --parseDependency --parseInternal",
     "with-env": "dotenv -e ../../.env --"
   },
   "packageManager": "pnpm@10.18.3",

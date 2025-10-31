@@ -6,8 +6,17 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/services"
+
+	_ "uno/domain/model"
 )
 
+// GetHappeningsHandler returns all happenings
+// @Summary	     Get all happenings
+// @Description  Retrives a list of all happenings and returns them in a JSON array.
+// @Tags         happenings
+// @Produce      json
+// @Success      200  {array}  model.Happening  "OK"
+// @Router       /happenings [get]
 func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		haps, err := hs.GetAllHappenings(r.Context())
@@ -19,6 +28,16 @@ func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 	}
 }
 
+// GetHappeningById returns a happening by its ID
+// @Summary	     Get happening by ID
+// @Description  Retrieves a specific happening by its unique identifier.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {object}  model.Happening  "OK"
+// @Failure      400  {type}    string  "Bad Request"
+// @Failure      404  {type}    string  "Not Found"
+// @Router       /happenings/{id} [get]
 func GetHappeningById(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
@@ -35,6 +54,16 @@ func GetHappeningById(hs *services.HappeningService) router.Handler {
 	}
 }
 
+// GetHappeningRegistrationsCount returns the count of registrations for a happening
+// @Summary	     Get happening registrations count
+// @Description  Retrieves the count of registrations for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {object}  GroupedRegistration  "OK"
+// @Failure      400  {type}    string "Bad Request"
+// @Failure      404  {type}    string "Not Found"
+// @Router       /happenings/{id}/registrations/count [get]
 func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
@@ -82,6 +111,16 @@ func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handle
 	}
 }
 
+// GetHappeningRegistrations returns all registrations for a happening
+// @Summary	     Get happening registrations
+// @Description  Retrieves all registrations for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path     string  true  "Happening ID"
+// @Success      200  {array}  model.Registration  "OK"
+// @Failure      400  {type}   util.ErrorResponse   "Bad Request"
+// @Failure      404  {type}   util.ErrorResponse   "Not Found"
+// @Router       /happenings/{id}/registrations [get]
 func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
@@ -100,6 +139,16 @@ func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 	}
 }
 
+// GetHappeningSpotRanges returns all spot ranges for a happening
+// @Summary	     Get happening spot ranges
+// @Description  Retrieves all spot ranges for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path     string  true  "Happening ID"
+// @Success      200  {array}  model.SpotRange  "OK"
+// @Failure      400  {type}   string  "Bad Request"
+// @Failure      404  {type}   string  "Not Found"
+// @Router       /happenings/{id}/spot-ranges [get]
 func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
@@ -118,6 +167,16 @@ func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 	}
 }
 
+// GetHappeningQuestions returns all questions for a happening
+// @Summary	     Get happening questions
+// @Description  Retrieves all questions for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {array}   model.Question  "OK"
+// @Failure      400  {type}    string  "Bad Request"
+// @Failure      404  {type}    string  "Not Found"
+// @Router       /happenings/{id}/questions [get]
 func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
