@@ -1,9 +1,9 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"uno/adapters/http/router"
+	"uno/adapters/http/util"
 	"uno/services"
 )
 
@@ -21,6 +21,6 @@ func GetShoppingList(shoppingListService *services.ShoppingListService) router.H
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
-		return http.StatusOK, json.NewEncoder(w).Encode(feedbacks)
+		return util.JsonOk(w, feedbacks)
 	}
 }

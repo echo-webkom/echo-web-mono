@@ -1,9 +1,9 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"uno/adapters/http/router"
+	"uno/adapters/http/util"
 	"uno/services"
 
 	_ "uno/domain/model"
@@ -23,7 +23,7 @@ func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) 
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
-		return http.StatusOK, json.NewEncoder(w).Encode(feedbacks)
+		return util.JsonOk(w, feedbacks)
 	}
 }
 
@@ -44,6 +44,6 @@ func GetSiteFeedbackByIDHandler(siteFeedbackService *services.SiteFeedbackServic
 		if err != nil {
 			return http.StatusNotFound, err
 		}
-		return http.StatusOK, json.NewEncoder(w).Encode(feedback)
+		return util.JsonOk(w, feedback)
 	}
 }

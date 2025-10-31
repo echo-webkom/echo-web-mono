@@ -1,9 +1,9 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"uno/adapters/http/router"
+	"uno/adapters/http/util"
 	"uno/domain/model"
 	"uno/services"
 )
@@ -20,7 +20,7 @@ func GetDegreesHandler(ds *services.DegreeService) router.Handler {
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
-		return http.StatusOK, json.NewEncoder(w).Encode(degrees)
+		return util.JsonOk(w, degrees)
 	}
 }
 
@@ -38,7 +38,7 @@ func GetDegreesHandler(ds *services.DegreeService) router.Handler {
 func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		var degree model.Degree
-		if err := json.NewDecoder(r.Body).Decode(&degree); err != nil {
+		if err := util.ReadJson(r, &degree); err != nil {
 			return http.StatusBadRequest, err
 		}
 
@@ -46,7 +46,7 @@ func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
-		return http.StatusCreated, json.NewEncoder(w).Encode(createdDegree)
+		return util.Json(w, http.StatusCreated, createdDegree)
 	}
 }
 
@@ -64,7 +64,7 @@ func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		var degree model.Degree
-		if err := json.NewDecoder(r.Body).Decode(&degree); err != nil {
+		if err := util.ReadJson(r, &degree); err != nil {
 			return http.StatusBadRequest, err
 		}
 
@@ -72,7 +72,7 @@ func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
-		return http.StatusOK, json.NewEncoder(w).Encode(updatedDegree)
+		return util.JsonOk(w, updatedDegree)
 	}
 }
 
