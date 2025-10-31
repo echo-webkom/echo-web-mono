@@ -4,8 +4,8 @@ import "time"
 
 type SiteFeedback struct {
 	ID        string    `db:"id" json:"id"`
-	Name      *string   `db:"name" json:"name"`
-	Email     *string   `db:"email" json:"email"`
+	Name      *string   `db:"name" json:"name,omitempty"`
+	Email     *string   `db:"email" json:"email,omitempty"`
 	Message   string    `db:"message" json:"message"`
 	IsRead    bool      `db:"is_read" json:"is_read"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
@@ -21,8 +21,8 @@ type Reaction struct {
 type Comment struct {
 	ID              string    `db:"id" json:"id"`
 	PostID          string    `db:"post_id" json:"post_id"`
-	ParentCommentID *string   `db:"parent_comment_id" json:"parent_comment_id"`
-	UserID          *string   `db:"user_id" json:"user_id"`
+	ParentCommentID *string   `db:"parent_comment_id" json:"parent_comment_id,omitempty"`
+	UserID          *string   `db:"user_id" json:"user_id,omitempty"`
 	Content         string    `db:"content" json:"content"`
 	CreatedAt       time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt       time.Time `db:"updated_at" json:"updated_at"`

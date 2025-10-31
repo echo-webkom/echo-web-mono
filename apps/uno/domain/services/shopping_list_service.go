@@ -28,9 +28,9 @@ type ShoppingList struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
 	UserID    string    `json:"user_id"`
-	UserName  *string   `json:"user_name"`
+	UserName  *string   `json:"user_name,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
-	Likes     []string  `json:"likes"`
+	Likes     []string  `json:"likes,omitempty"`
 }
 
 // GetShoppingList retrieves all shopping list items along with their owners and likes.

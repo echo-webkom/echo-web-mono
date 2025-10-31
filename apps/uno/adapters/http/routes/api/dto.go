@@ -7,7 +7,7 @@ type HealthCheckResponse struct {
 type GroupedRegistration struct {
 	Waiting    int  `json:"waiting"`
 	Registered int  `json:"registered"`
-	Max        *int `json:"max"`
+	Max        *int `json:"max,omitempty"`
 }
 
 type CreateDegreeRequest struct {
