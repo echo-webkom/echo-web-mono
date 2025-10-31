@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/services"
+	"uno/domain/services"
 )
 
 // GetShoppingList returns a list of shopping list items

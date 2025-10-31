@@ -5,7 +5,7 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/model"
-	"uno/services"
+	"uno/domain/services"
 )
 
 // GetDegreesHandler returns a list of degrees

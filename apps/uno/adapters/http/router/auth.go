@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"uno/domain/model"
-	"uno/services"
+	"uno/domain/services"
 )
 
 type Auth struct {

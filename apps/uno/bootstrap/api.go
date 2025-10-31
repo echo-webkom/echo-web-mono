@@ -11,7 +11,7 @@ import (
 	"uno/adapters/persistance/postgres"
 	"uno/adapters/telemetry"
 	"uno/config"
-	"uno/services"
+	"uno/domain/services"
 
 	"github.com/jesperkha/notifier"
 )

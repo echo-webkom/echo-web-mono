@@ -4,7 +4,7 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/routes/api"
 	"uno/config"
-	"uno/services"
+	"uno/domain/services"
 
 	"github.com/jesperkha/notifier"
 )
