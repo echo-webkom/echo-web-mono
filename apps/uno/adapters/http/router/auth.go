@@ -1,17 +1,11 @@
 package router
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"uno/domain/model"
 	"uno/services"
 )
-
-type Repo interface {
-	GetSessionByToken(ctx context.Context, token string) (model.Session, error)
-	GetUserById(ctx context.Context, id string) (model.User, error)
-}
 
 type Auth struct {
 	Session model.Session
@@ -66,15 +60,23 @@ func NewWithOptionalAuthHandler(as *services.AuthService) func(h OptionalAuthHan
 	}
 }
 
+func getBearerToken(r *http.Request) string {
+	token := r.Header.Get("Authorization")
+
+	if token == "" {
+		return ""
+	}
+
+	return token[len("Bearer "):]
+}
+
 func getAuthFromRequest(as *services.AuthService, r *http.Request) (auth Auth, ok bool) {
 	ctx := r.Context()
 
-	token := r.Header.Get("Authorization")
+	token := getBearerToken(r)
 	if token == "" {
 		return auth, false
 	}
-
-	token = token[len("Bearer "):]
 
 	user, session, err := as.ValidateToken(ctx, token)
 	if err != nil {

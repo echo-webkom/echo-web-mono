@@ -6,5 +6,6 @@ import (
 )
 
 type UserRepo interface {
-	GetUserById(ctx context.Context, id string) (model.User, error)
+	GetUserByID(ctx context.Context, id string) (model.User, error)
+	GetUsersByIDs(ctx context.Context, ids []string) ([]model.User, error)
 }

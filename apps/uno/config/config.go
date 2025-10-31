@@ -10,6 +10,7 @@ import (
 type Config struct {
 	DatabaseURL      string
 	ApiPort          string
+	AdminAPIKey      string
 	OTLPEndpoint     string
 	Environment      string
 	ServiceName      string
@@ -25,6 +26,7 @@ func Load() *Config {
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
 		ApiPort:          os.Getenv("UNO_API_PORT"),
+		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		OTLPEndpoint:     getEnvOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4317"),
 		Environment:      getEnvOrDefault("ENVIRONMENT", "development"),
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),

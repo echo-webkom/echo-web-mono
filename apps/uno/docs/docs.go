@@ -59,6 +59,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -90,13 +95,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -104,6 +109,11 @@ const docTemplate = `{
         },
         "/degrees/{id}": {
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -135,18 +145,23 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "tags": [
                     "degrees"
                 ],
@@ -167,13 +182,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -181,6 +196,11 @@ const docTemplate = `{
         },
         "/feedbacks": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -201,7 +221,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -209,6 +229,11 @@ const docTemplate = `{
         },
         "/feedbacks/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -235,13 +260,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -299,13 +324,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -343,13 +368,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -357,6 +382,11 @@ const docTemplate = `{
         },
         "/happenings/{id}/registrations": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "description": "Retrieves all registrations for a specific happening.",
                 "produces": [
                     "application/json"
@@ -387,13 +417,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -428,13 +458,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     }
                 }
@@ -442,6 +472,11 @@ const docTemplate = `{
         },
         "/happenings/{id}/spot-ranges": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "description": "Retrieves all spot ranges for a specific happening.",
                 "produces": [
                     "application/json"
@@ -472,13 +507,46 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "type"
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping": {
+            "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shopping_list"
+                ],
+                "summary": "Get shopping list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/services.ShoppingList"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -504,6 +572,32 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.ShoppingList": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "user_name": {
                     "type": "string"
                 }
             }
@@ -674,6 +768,12 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
+        "AdminAPIKey": {
+            "description": "Admin API Key for protected endpoints",
+            "type": "apiKey",
+            "name": "X-Admin-Key",
+            "in": "header"
+        },
         "BearerAuth": {
             "description": "Enter your bearer token in the format: Bearer {token}",
             "type": "apiKey",

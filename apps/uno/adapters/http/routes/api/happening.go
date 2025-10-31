@@ -35,8 +35,8 @@ func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
 // @Success      200  {object}  model.Happening  "OK"
-// @Failure      400  {type}    string  "Bad Request"
-// @Failure      404  {type}    string  "Not Found"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
 func GetHappeningById(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -61,8 +61,8 @@ func GetHappeningById(hs *services.HappeningService) router.Handler {
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
 // @Success      200  {object}  GroupedRegistration  "OK"
-// @Failure      400  {type}    string "Bad Request"
-// @Failure      404  {type}    string "Not Found"
+// @Failure      400  {string}  string "Bad Request"
+// @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
 func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -118,8 +118,9 @@ func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handle
 // @Produce      json
 // @Param        id   path     string  true  "Happening ID"
 // @Success      200  {array}  model.Registration  "OK"
-// @Failure      400  {type}   util.ErrorResponse   "Bad Request"
-// @Failure      404  {type}   util.ErrorResponse   "Not Found"
+// @Failure      400  {string}  string   "Bad Request"
+// @Failure      404  {string}  string   "Not Found"
+// @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
 func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -146,8 +147,9 @@ func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 // @Produce      json
 // @Param        id   path     string  true  "Happening ID"
 // @Success      200  {array}  model.SpotRange  "OK"
-// @Failure      400  {type}   string  "Bad Request"
-// @Failure      404  {type}   string  "Not Found"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
+// @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
 func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -174,8 +176,8 @@ func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
 // @Success      200  {array}   model.Question  "OK"
-// @Failure      400  {type}    string  "Bad Request"
-// @Failure      404  {type}    string  "Not Found"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
 func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {

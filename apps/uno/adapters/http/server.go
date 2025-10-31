@@ -24,6 +24,11 @@ import (
 // @name                        Authorization
 // @description                 Enter your bearer token in the format: Bearer {token}
 
+// @securityDefinitions.apikey  AdminAPIKey
+// @in                          header
+// @name                        X-Admin-Key
+// @description                 Admin API Key for protected endpoints
+
 func RunServer(
 	notif *notifier.Notifier,
 	config *config.Config,
@@ -31,9 +36,11 @@ func RunServer(
 	happeningService *services.HappeningService,
 	degreeService *services.DegreeService,
 	siteFeedbackService *services.SiteFeedbackService,
+	shoppingListService *services.ShoppingListService,
 ) {
 	r := router.New(config.ServiceName)
-	admin := router.NewAuthMiddleware(authService)
+	// auth := router.NewAuthMiddleware(authService)
+	admin := router.NewAdminMiddleware(config.AdminAPIKey)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler())
@@ -55,6 +62,9 @@ func RunServer(
 	// Site feedback routes
 	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(siteFeedbackService), admin)
 	r.Handle("GET", "/feedbacks/{id}", api.GetSiteFeedbackByIDHandler(siteFeedbackService), admin)
+
+	// Shopping list routes
+	r.Handle("GET", "/shopping", api.GetShoppingList(shoppingListService))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

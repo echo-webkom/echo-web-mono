@@ -31,8 +31,9 @@ func GetDegreesHandler(ds *services.DegreeService) router.Handler {
 // @Produce      json
 // @Param        degree  body   model.Degree  true  "Degree to create"
 // @Success      201  {object}  model.Degree  "Created"
-// @Failure      400  {type}    string  "Bad Request"
-// @Failure      401  {type}    string  "Unauthorized"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Security     AdminAPIKey
 // @Router       /degrees [post]
 func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -56,8 +57,9 @@ func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 // @Produce      json
 // @Param        degree  body   model.Degree  true  "Degree to update"
 // @Success      200  {object}  model.Degree  "OK"
-// @Failure      400  {type}    string  "Bad Request"
-// @Failure      401  {type}    string  "Unauthorized"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
 func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -79,8 +81,9 @@ func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 // @Tags         degrees
 // @Param        id   path      string  true  "Degree ID"
 // @Success      204  "No Content"
-// @Failure      400  {type}    string  "Bad Request"
-// @Failure      401  {type}    string  "Unauthorized"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
 func DeleteDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {

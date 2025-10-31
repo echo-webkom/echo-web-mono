@@ -14,7 +14,8 @@ import (
 // @Tags         feedbacks
 // @Produce      json
 // @Success      200  {array}  model.SiteFeedback  "OK"
-// @Failure      401  {type}  string  "Unauthorized"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Security     AdminAPIKey
 // @Router       /feedbacks [get]
 func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
@@ -32,8 +33,9 @@ func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) 
 // @Produce      json
 // @Param        id   path   string  true  "Feedback ID"
 // @Success      200  {object}  model.SiteFeedback  "OK"
-// @Failure      401  {type}  string  "Unauthorized"
-// @Failure      404  {type}  string  "Not Found"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "Not Found"
+// @Security     AdminAPIKey
 // @Router       /feedbacks/{id} [get]
 func GetSiteFeedbackByIDHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {

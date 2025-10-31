@@ -24,7 +24,7 @@ func (as *AuthService) ValidateToken(ctx context.Context, token string) (model.U
 		return model.User{}, model.Session{}, err
 	}
 
-	user, err := as.userRepo.GetUserById(ctx, session.UserID)
+	user, err := as.userRepo.GetUserByID(ctx, session.UserID)
 	if err != nil {
 		return model.User{}, model.Session{}, err
 	}

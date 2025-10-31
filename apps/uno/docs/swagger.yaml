@@ -14,6 +14,23 @@ definitions:
       status:
         type: string
     type: object
+  services.ShoppingList:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      likes:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
   uno_domain_model.Degree:
     properties:
       id:
@@ -179,11 +196,13 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "401":
           description: Unauthorized
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Create degree
       tags:
       - degrees
@@ -201,11 +220,13 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "401":
           description: Unauthorized
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Delete degree
       tags:
       - degrees
@@ -229,11 +250,13 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "401":
           description: Unauthorized
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Update degree
       tags:
       - degrees
@@ -251,7 +274,9 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Get site feedbacks
       tags:
       - feedbacks
@@ -273,11 +298,13 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Get site feedback by ID
       tags:
       - feedbacks
@@ -315,11 +342,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
       summary: Get happening by ID
       tags:
       - happenings
@@ -344,11 +371,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
       summary: Get happening questions
       tags:
       - happenings
@@ -373,11 +400,13 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Get happening registrations
       tags:
       - happenings
@@ -400,11 +429,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
       summary: Get happening registrations count
       tags:
       - happenings
@@ -429,15 +458,42 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: type
+            type: string
         "404":
           description: Not Found
           schema:
-            type: type
+            type: string
+      security:
+      - AdminAPIKey: []
       summary: Get happening spot ranges
       tags:
       - happenings
+  /shopping:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/services.ShoppingList'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get shopping list
+      tags:
+      - shopping_list
 securityDefinitions:
+  AdminAPIKey:
+    description: Admin API Key for protected endpoints
+    in: header
+    name: X-Admin-Key
+    type: apiKey
   BearerAuth:
     description: 'Enter your bearer token in the format: Bearer {token}'
     in: header

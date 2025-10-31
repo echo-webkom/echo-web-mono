@@ -34,7 +34,8 @@ func New(serviceName string) *Router {
 	mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Admin-Key"},
+		ExposedHeaders:   []string{"Content-Length", "Content-Type"},
 		AllowCredentials: true,
 	}))
 
@@ -48,13 +49,14 @@ func (r *Router) Handle(method string, pattern string, handler Handler, middlewa
 		}
 
 		status, err := handler(w, r)
-		if status != http.StatusOK {
-			w.WriteHeader(status)
-		}
-
 		if err != nil {
 			log.Printf("handle %s: %v", pattern, err)
 			http.Error(w, err.Error(), status)
+			return
+		}
+
+		if status != http.StatusOK {
+			w.WriteHeader(status)
 		}
 	})
 }
