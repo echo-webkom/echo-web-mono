@@ -14,21 +14,28 @@ definitions:
       status:
         type: string
     type: object
+  uno_domain_model.Degree:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   uno_domain_model.Happening:
     properties:
       date:
         type: string
       id:
         type: string
-      registrationEnd:
+      registration_end:
         type: string
-      registrationGroups:
+      registration_groups:
         items:
           type: integer
         type: array
-      registrationStart:
+      registration_start:
         type: string
-      registrationStartGroups:
+      registration_start_groups:
         type: string
       slug:
         type: string
@@ -39,11 +46,11 @@ definitions:
     type: object
   uno_domain_model.Question:
     properties:
-      happeningID:
+      happening_id:
         type: string
       id:
         type: string
-      isSensitive:
+      is_sensitive:
         type: boolean
       options:
         items:
@@ -58,21 +65,21 @@ definitions:
     type: object
   uno_domain_model.Registration:
     properties:
-      changedAt:
+      changed_at:
         type: string
-      changedBy:
+      changed_by:
         type: string
-      createdAt:
+      created_at:
         type: string
-      happeningID:
+      happening_id:
         type: string
-      prevStatus:
+      prev_status:
         type: string
       status:
         $ref: '#/definitions/uno_domain_model.RegistrationStatus'
-      unregisterReason:
+      unregister_reason:
         type: string
-      userID:
+      user_id:
         type: string
     type: object
   uno_domain_model.RegistrationStatus:
@@ -91,13 +98,13 @@ definitions:
     - RegistrationStatusRemoved
   uno_domain_model.SpotRange:
     properties:
-      happeningID:
+      happening_id:
         type: string
       id:
         type: string
-      maxYear:
+      max_year:
         type: integer
-      minYear:
+      min_year:
         type: integer
       spots:
         type: integer
@@ -123,6 +130,98 @@ paths:
       summary: Get health status
       tags:
       - health
+  /degrees:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.Degree'
+            type: array
+      summary: Get degrees
+      tags:
+      - degrees
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Degree to create
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_domain_model.Degree'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/uno_domain_model.Degree'
+        "400":
+          description: Bad Request
+          schema:
+            type: type
+        "401":
+          description: Unauthorized
+          schema:
+            type: type
+      summary: Create degree
+      tags:
+      - degrees
+  /degrees/{id}:
+    delete:
+      parameters:
+      - description: Degree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: type
+        "401":
+          description: Unauthorized
+          schema:
+            type: type
+      summary: Delete degree
+      tags:
+      - degrees
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Degree to update
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_domain_model.Degree'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_domain_model.Degree'
+        "400":
+          description: Bad Request
+          schema:
+            type: type
+        "401":
+          description: Unauthorized
+          schema:
+            type: type
+      summary: Update degree
+      tags:
+      - degrees
   /happenings:
     get:
       description: Retrives a list of all happenings and returns them in a JSON array.

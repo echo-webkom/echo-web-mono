@@ -37,6 +37,148 @@ const docTemplate = `{
                 }
             }
         },
+        "/degrees": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "degrees"
+                ],
+                "summary": "Get degrees",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_domain_model.Degree"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "degrees"
+                ],
+                "summary": "Create degree",
+                "parameters": [
+                    {
+                        "description": "Degree to create",
+                        "name": "degree",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_model.Degree"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_model.Degree"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "type"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "type"
+                        }
+                    }
+                }
+            }
+        },
+        "/degrees/{id}": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "degrees"
+                ],
+                "summary": "Update degree",
+                "parameters": [
+                    {
+                        "description": "Degree to update",
+                        "name": "degree",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_model.Degree"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_model.Degree"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "type"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "type"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "degrees"
+                ],
+                "summary": "Delete degree",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Degree ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "type"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "type"
+                        }
+                    }
+                }
+            }
+        },
         "/happenings": {
             "get": {
                 "description": "Retrives a list of all happenings and returns them in a JSON array.",
@@ -298,6 +440,17 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_domain_model.Degree": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_domain_model.Happening": {
             "type": "object",
             "properties": {
@@ -307,19 +460,19 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "registrationEnd": {
+                "registration_end": {
                     "type": "string"
                 },
-                "registrationGroups": {
+                "registration_groups": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "registrationStart": {
+                "registration_start": {
                     "type": "string"
                 },
-                "registrationStartGroups": {
+                "registration_start_groups": {
                     "type": "string"
                 },
                 "slug": {
@@ -336,13 +489,13 @@ const docTemplate = `{
         "uno_domain_model.Question": {
             "type": "object",
             "properties": {
-                "happeningID": {
+                "happening_id": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "isSensitive": {
+                "is_sensitive": {
                     "type": "boolean"
                 },
                 "options": {
@@ -365,28 +518,28 @@ const docTemplate = `{
         "uno_domain_model.Registration": {
             "type": "object",
             "properties": {
-                "changedAt": {
+                "changed_at": {
                     "type": "string"
                 },
-                "changedBy": {
+                "changed_by": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "happeningID": {
+                "happening_id": {
                     "type": "string"
                 },
-                "prevStatus": {
+                "prev_status": {
                     "type": "string"
                 },
                 "status": {
                     "$ref": "#/definitions/uno_domain_model.RegistrationStatus"
                 },
-                "unregisterReason": {
+                "unregister_reason": {
                     "type": "string"
                 },
-                "userID": {
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -411,16 +564,16 @@ const docTemplate = `{
         "uno_domain_model.SpotRange": {
             "type": "object",
             "properties": {
-                "happeningID": {
+                "happening_id": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "maxYear": {
+                "max_year": {
                     "type": "integer"
                 },
-                "minYear": {
+                "min_year": {
                     "type": "integer"
                 },
                 "spots": {

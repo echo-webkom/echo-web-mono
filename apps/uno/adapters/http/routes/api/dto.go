@@ -9,3 +9,8 @@ type GroupedRegistration struct {
 	Registered int  `json:"registered"`
 	Max        *int `json:"max"`
 }
+
+type CreateDegreeRequest struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
