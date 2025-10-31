@@ -7,6 +7,7 @@ import {
   IBM_Plex_Mono,
   Inter,
   Lexend_Deca,
+  Pacifico,
   Radley,
   Ranchers,
   Unna,
@@ -23,6 +24,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
+import { MatchPopup } from "./(default)/hjem/_components/match-popup";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -81,6 +83,13 @@ const slab = Alfa_Slab_One({
   weight: ["400"],
   style: ["normal"],
   variable: "--font-slab",
+});
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--font-pacifico",
 });
 
 type RootLayoutProps = {
@@ -168,6 +177,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           unna.variable,
           radley.variable,
           slab.variable,
+          pacifico.variable,
         )}
       >
         <Providers user={user}>
@@ -179,6 +189,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
+            <MatchPopup />
           </ThemeWrapper>
         </Providers>
         <Analytics />
