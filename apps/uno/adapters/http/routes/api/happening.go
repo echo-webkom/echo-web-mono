@@ -1,25 +1,16 @@
 package api
 
 import (
-	"context"
 	"fmt"
 	"net/http"
-	"uno/data/model"
-	"uno/http/router"
-	"uno/http/util"
+	"uno/adapters/http/router"
+	"uno/adapters/http/util"
+	"uno/services"
 )
 
-type HappeningRepo interface {
-	GetAllHappenings(ctx context.Context) ([]model.Happening, error)
-	GetHappeningById(ctx context.Context, id string) (model.Happening, error)
-	GetSpotRangesByHappeningId(ctx context.Context, hapId string) ([]model.SpotRange, error)
-	GetRegistrationsByHappeningId(ctx context.Context, hapId string) ([]model.Registration, error)
-	GetQuestionsByHappeningId(ctx context.Context, hapId string) ([]model.Question, error)
-}
-
-func GetHappeningsHandler(repo HappeningRepo) router.Handler {
+func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		haps, err := repo.GetAllHappenings(r.Context())
+		haps, err := hs.GetAllHappenings(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -28,14 +19,14 @@ func GetHappeningsHandler(repo HappeningRepo) router.Handler {
 	}
 }
 
-func GetHappeningById(repo HappeningRepo) router.Handler {
+func GetHappeningById(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		hap, err := repo.GetHappeningById(r.Context(), id)
+		hap, err := hs.GetHappeningById(r.Context(), id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -44,13 +35,7 @@ func GetHappeningById(repo HappeningRepo) router.Handler {
 	}
 }
 
-type GroupedRegistration struct {
-	Waiting    int  `json:"waiting"`
-	Registered int  `json:"registered"`
-	Max        *int `json:"max"`
-}
-
-func GetHappeningRegistrationsCount(repo HappeningRepo) router.Handler {
+func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
@@ -59,17 +44,17 @@ func GetHappeningRegistrationsCount(repo HappeningRepo) router.Handler {
 
 		ctx := r.Context()
 
-		hap, err := repo.GetHappeningById(ctx, id)
+		hap, err := hs.GetHappeningById(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
 
-		spotRanges, err := repo.GetSpotRangesByHappeningId(ctx, hap.ID)
+		spotRanges, err := hs.GetHappeningSpotRanges(ctx, hap.ID)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
 
-		regs, err := repo.GetRegistrationsByHappeningId(ctx, hap.ID)
+		regs, err := hs.GetHappeningRegistrations(ctx, hap.ID)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -97,7 +82,7 @@ func GetHappeningRegistrationsCount(repo HappeningRepo) router.Handler {
 	}
 }
 
-func GetHappeningRegistrations(repo HappeningRepo) router.Handler {
+func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -106,7 +91,7 @@ func GetHappeningRegistrations(repo HappeningRepo) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		regs, err := repo.GetRegistrationsByHappeningId(ctx, id)
+		regs, err := hs.GetHappeningRegistrations(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -115,7 +100,7 @@ func GetHappeningRegistrations(repo HappeningRepo) router.Handler {
 	}
 }
 
-func GetHappeningSpotRanges(repo HappeningRepo) router.Handler {
+func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -124,7 +109,7 @@ func GetHappeningSpotRanges(repo HappeningRepo) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		ranges, err := repo.GetSpotRangesByHappeningId(ctx, id)
+		ranges, err := hs.GetHappeningRegistrations(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -133,7 +118,7 @@ func GetHappeningSpotRanges(repo HappeningRepo) router.Handler {
 	}
 }
 
-func GetHappeningQuestions(repo HappeningRepo) router.Handler {
+func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -142,7 +127,7 @@ func GetHappeningQuestions(repo HappeningRepo) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		qs, err := repo.GetQuestionsByHappeningId(ctx, id)
+		qs, err := hs.GetHappeningQuestions(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}

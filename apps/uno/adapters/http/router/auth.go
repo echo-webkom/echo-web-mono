@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"uno/data/model"
+	"uno/domain/model"
+	"uno/services"
 )
 
 type Repo interface {
@@ -19,10 +20,10 @@ type Auth struct {
 
 type AuthHandler func(w http.ResponseWriter, r *http.Request, auth Auth) (int, error)
 
-func NewWithAuthHandler(repo Repo) func(h AuthHandler) Handler {
+func NewWithAuthHandler(as *services.AuthService) func(h AuthHandler) Handler {
 	return func(h AuthHandler) Handler {
 		return func(w http.ResponseWriter, r *http.Request) (int, error) {
-			auth, ok := getAuthFromRequest(repo, r)
+			auth, ok := getAuthFromRequest(as, r)
 			if !ok {
 				return http.StatusUnauthorized, fmt.Errorf("missing authentication")
 			}
@@ -31,10 +32,10 @@ func NewWithAuthHandler(repo Repo) func(h AuthHandler) Handler {
 	}
 }
 
-func NewAuthMiddleware(repo Repo) Middleware {
+func NewAuthMiddleware(as *services.AuthService) Middleware {
 	return func(h Handler) Handler {
 		return func(w http.ResponseWriter, r *http.Request) (int, error) {
-			if _, ok := getAuthFromRequest(repo, r); !ok {
+			if _, ok := getAuthFromRequest(as, r); !ok {
 				return http.StatusUnauthorized, fmt.Errorf("missing authentication")
 			}
 			return h(w, r)
@@ -53,10 +54,10 @@ func (o OptionalAuth) Unwrap() (auth Auth, ok bool) {
 
 type OptionalAuthHandler func(w http.ResponseWriter, r *http.Request, auth OptionalAuth) int
 
-func NewWithOptionalAuthHandler(repo Repo) func(h OptionalAuthHandler) http.HandlerFunc {
+func NewWithOptionalAuthHandler(as *services.AuthService) func(h OptionalAuthHandler) http.HandlerFunc {
 	return func(h OptionalAuthHandler) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
-			auth, ok := getAuthFromRequest(repo, r)
+			auth, ok := getAuthFromRequest(as, r)
 
 			if code := h(w, r, OptionalAuth{auth, ok}); code != http.StatusOK {
 				w.WriteHeader(code)
@@ -65,7 +66,7 @@ func NewWithOptionalAuthHandler(repo Repo) func(h OptionalAuthHandler) http.Hand
 	}
 }
 
-func getAuthFromRequest(repo Repo, r *http.Request) (auth Auth, ok bool) {
+func getAuthFromRequest(as *services.AuthService, r *http.Request) (auth Auth, ok bool) {
 	ctx := r.Context()
 
 	token := r.Header.Get("Authorization")
@@ -75,12 +76,7 @@ func getAuthFromRequest(repo Repo, r *http.Request) (auth Auth, ok bool) {
 
 	token = token[len("Bearer "):]
 
-	session, err := repo.GetSessionByToken(ctx, token)
-	if err != nil {
-		return auth, false
-	}
-
-	user, err := repo.GetUserById(ctx, session.UserID)
+	user, session, err := as.ValidateToken(ctx, token)
 	if err != nil {
 		return auth, false
 	}

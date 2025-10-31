@@ -1,4 +1,4 @@
-package database
+package postgres
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -6,7 +6,7 @@ import (
 )
 
 type Database struct {
-	DB *sqlx.DB
+	*sqlx.DB
 }
 
 func New(databaseUrl string) (*Database, error) {
