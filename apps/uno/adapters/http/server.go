@@ -37,6 +37,7 @@ func RunServer(
 	degreeService *services.DegreeService,
 	siteFeedbackService *services.SiteFeedbackService,
 	shoppingListService *services.ShoppingListService,
+	userService *services.UserService,
 ) {
 	r := router.New(config.ServiceName)
 	// auth := router.NewAuthMiddleware(authService)
@@ -65,6 +66,9 @@ func RunServer(
 
 	// Shopping list routes
 	r.Handle("GET", "/shopping", api.GetShoppingList(shoppingListService))
+
+	// Birthday routes
+	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(userService))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

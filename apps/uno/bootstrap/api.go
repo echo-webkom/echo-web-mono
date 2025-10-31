@@ -77,6 +77,7 @@ func RunApi() {
 	degreeService := services.NewDegreeService(degreeRepoImpl)
 	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepoImpl)
 	shoppingListService := services.NewShoppingListService(shoppingListItemRepoImpl, usersToShoppingListItemRepoImpl, userRepoImpl)
+	userService := services.NewUserService(userRepoImpl)
 
 	go http.RunServer(
 		notif,
@@ -86,6 +87,7 @@ func RunApi() {
 		degreeService,
 		siteFeedbackService,
 		shoppingListService,
+		userService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
