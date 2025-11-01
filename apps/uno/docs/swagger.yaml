@@ -14,21 +14,15 @@ definitions:
       status:
         type: string
     type: object
-  services.ShoppingList:
+  uno_domain_model.AccessRequest:
     properties:
       created_at:
         type: string
+      email:
+        type: string
       id:
         type: string
-      likes:
-        items:
-          type: string
-        type: array
-      name:
-        type: string
-      user_id:
-        type: string
-      user_name:
+      reason:
         type: string
     type: object
   uno_domain_model.Degree:
@@ -141,6 +135,96 @@ definitions:
       spots:
         type: integer
     type: object
+  uno_domain_model.Whitelist:
+    properties:
+      email:
+        type: string
+      expires_at:
+        type: string
+      reason:
+        type: string
+    type: object
+  uno_domain_repo.BanInfo:
+    properties:
+      banned_by_id:
+        type: string
+      banned_by_name:
+        type: string
+      created_at:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      user_id:
+        type: string
+    type: object
+  uno_domain_repo.DotInfo:
+    properties:
+      count:
+        type: integer
+      created_at:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      striked_by_id:
+        type: string
+      striked_by_name:
+        type: string
+      user_id:
+        type: string
+    type: object
+  uno_domain_repo.UserWithBanInfo:
+    properties:
+      ban_info:
+        $ref: '#/definitions/uno_domain_repo.BanInfo'
+      dots:
+        items:
+          $ref: '#/definitions/uno_domain_repo.DotInfo'
+        type: array
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_domain_repo.UserWithStrikes:
+    properties:
+      id:
+        type: string
+      image_url:
+        type: string
+      is_banned:
+        type: boolean
+      name:
+        type: string
+      strikes:
+        type: integer
+    type: object
+  uno_domain_services.ShoppingList:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      likes:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -162,6 +246,45 @@ paths:
       summary: Get health status
       tags:
       - health
+  /access-requests:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.AccessRequest'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get access requests
+      tags:
+      - access-request
+  /birthdays:
+    get:
+      description: Gets all the users who have birthday today
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get users with birthdays
+      tags:
+      - birthdays
   /degrees:
     get:
       produces:
@@ -477,7 +600,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/services.ShoppingList'
+              $ref: '#/definitions/uno_domain_services.ShoppingList'
             type: array
         "401":
           description: Unauthorized
@@ -488,6 +611,124 @@ paths:
       summary: Get shopping list
       tags:
       - shopping_list
+  /strikes/banned:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_repo.UserWithBanInfo'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Gets all users that are banned
+      tags:
+      - strikes
+  /strikes/unban:
+    post:
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Unban users with expired strikes and bans
+      tags:
+      - strikes
+  /strikes/users:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_repo.UserWithStrikes'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Gets users with strikes and bans
+      tags:
+      - strikes
+  /whitelist:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.Whitelist'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get whitelisted emails
+      tags:
+      - whitelist
+  /whitelist/{email}:
+    get:
+      parameters:
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_domain_model.Whitelist'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get whitelist info by email
+      tags:
+      - whitelist
 securityDefinitions:
   AdminAPIKey:
     description: Admin API Key for protected endpoints
