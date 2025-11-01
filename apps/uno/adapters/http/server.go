@@ -40,6 +40,7 @@ func RunServer(
 	userService *services.UserService,
 	strikeSerivce *services.StrikeService,
 	accessRequestService *services.AccessRequestService,
+	whitelistService *services.WhitelistService,
 ) {
 	r := router.New(config.ServiceName)
 	// auth := router.NewAuthMiddleware(authService)
@@ -76,6 +77,13 @@ func RunServer(
 	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(strikeSerivce), admin)
 	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(strikeSerivce), admin)
 	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(strikeSerivce), admin)
+
+	// Access request routes
+	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(accessRequestService), admin)
+
+	// Whitelist routes
+	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(whitelistService), admin)
+	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(whitelistService), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

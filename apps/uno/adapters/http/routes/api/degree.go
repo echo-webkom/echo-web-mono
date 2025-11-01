@@ -87,7 +87,7 @@ func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 // @Router       /degrees/{id} [delete]
 func DeleteDegreeHandler(ds *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		id := r.URL.Query().Get("id")
+		id := r.PathValue("id")
 		if id == "" {
 			return http.StatusBadRequest, nil
 		}

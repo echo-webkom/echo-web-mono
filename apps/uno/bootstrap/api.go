@@ -71,6 +71,7 @@ func RunApi() {
 	dotRepo := postgres.NewDotRepo(db)
 	banInfoRepo := postgres.NewBanInfoRepo(db)
 	accessRequestRepo := postgres.NewAccessRequestRepo(db)
+	whitelistRepo := postgres.NewWhitelistRepo(db)
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepo, userRepo)
@@ -81,6 +82,7 @@ func RunApi() {
 	userService := services.NewUserService(userRepo)
 	strikeService := services.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	accessRequestService := services.NewAccessRequestService(accessRequestRepo)
+	whitelistService := services.NewWhitelistService(whitelistRepo)
 
 	go http.RunServer(
 		notif,
@@ -93,6 +95,7 @@ func RunApi() {
 		userService,
 		strikeService,
 		accessRequestService,
+		whitelistService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

@@ -39,7 +39,7 @@ func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) 
 // @Router       /feedbacks/{id} [get]
 func GetSiteFeedbackByIDHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		feedbackID := r.URL.Query().Get("id")
+		feedbackID := r.PathValue("id")
 		feedback, err := siteFeedbackService.Queries().GetSiteFeedbackByID(r.Context(), feedbackID)
 		if err != nil {
 			return http.StatusNotFound, err
