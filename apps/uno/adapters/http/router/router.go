@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"uno/adapters/http/middleware"
 
 	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
@@ -29,7 +28,7 @@ type Router struct {
 func New(serviceName string) *Router {
 	mux := chi.NewMux()
 
-	mux.Use(middleware.Telemetry(serviceName))
+	mux.Use(Telemetry(serviceName))
 	mux.Use(chiMiddleware.Logger)
 	mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
