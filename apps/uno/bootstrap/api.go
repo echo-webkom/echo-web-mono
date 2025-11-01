@@ -61,24 +61,26 @@ func RunApi() {
 	logger.Info("database connected")
 
 	// Initialize repositories
-	happeningRepoImpl := postgres.NewHappeningRepo(db)
-	userRepoImpl := postgres.NewUserRepo(db)
-	sessionRepoImpl := postgres.NewSessionRepo(db)
-	degreeRepoImpl := postgres.NewDegreeRepo(db)
-	siteFeedbackRepoImpl := postgres.NewSiteFeedbackRepo(db)
-	shoppingListItemRepoImpl := postgres.NewShoppingListRepo(db)
-	usersToShoppingListItemRepoImpl := postgres.NewUsersToShoppingListItemRepo(db)
-	dotRepoImpl := postgres.NewDotRepo(db)
-	banInfoImpl := postgres.NewBanInfoRepo(db)
+	happeningRepo := postgres.NewHappeningRepo(db)
+	userRepo := postgres.NewUserRepo(db)
+	sessionRepo := postgres.NewSessionRepo(db)
+	degreeRepo := postgres.NewDegreeRepo(db)
+	siteFeedbackRepo := postgres.NewSiteFeedbackRepo(db)
+	shoppingListItemRepo := postgres.NewShoppingListRepo(db)
+	usersToShoppingListItemRepo := postgres.NewUsersToShoppingListItemRepo(db)
+	dotRepo := postgres.NewDotRepo(db)
+	banInfoRepo := postgres.NewBanInfoRepo(db)
+	accessRequestRepo := postgres.NewAccessRequestRepo(db)
 
 	// Initialize services
-	authService := services.NewAuthService(sessionRepoImpl, userRepoImpl)
-	happeningService := services.NewHappeningService(happeningRepoImpl)
-	degreeService := services.NewDegreeService(degreeRepoImpl)
-	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepoImpl)
-	shoppingListService := services.NewShoppingListService(shoppingListItemRepoImpl, usersToShoppingListItemRepoImpl, userRepoImpl)
-	userService := services.NewUserService(userRepoImpl)
-	strikeService := services.NewStrikeService(dotRepoImpl, banInfoImpl, userRepoImpl)
+	authService := services.NewAuthService(sessionRepo, userRepo)
+	happeningService := services.NewHappeningService(happeningRepo)
+	degreeService := services.NewDegreeService(degreeRepo)
+	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepo)
+	shoppingListService := services.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo, userRepo)
+	userService := services.NewUserService(userRepo)
+	strikeService := services.NewStrikeService(dotRepo, banInfoRepo, userRepo)
+	accessRequestService := services.NewAccessRequestService(accessRequestRepo)
 
 	go http.RunServer(
 		notif,
@@ -90,6 +92,7 @@ func RunApi() {
 		shoppingListService,
 		userService,
 		strikeService,
+		accessRequestService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

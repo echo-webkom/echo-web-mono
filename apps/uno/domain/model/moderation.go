@@ -21,7 +21,7 @@ type Dot struct {
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 }
 
-type AccessRequests struct {
+type AccessRequest struct {
 	ID        string    `db:"id" json:"id"`
 	Email     string    `db:"email" json:"email"`
 	Reason    string    `db:"reason" json:"reason"`

@@ -38,7 +38,8 @@ func RunServer(
 	siteFeedbackService *services.SiteFeedbackService,
 	shoppingListService *services.ShoppingListService,
 	userService *services.UserService,
-	strikesSerivce *services.StrikeService,
+	strikeSerivce *services.StrikeService,
+	accessRequestService *services.AccessRequestService,
 ) {
 	r := router.New(config.ServiceName)
 	// auth := router.NewAuthMiddleware(authService)
@@ -72,9 +73,9 @@ func RunServer(
 	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(userService))
 
 	// Strike routes
-	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(strikesSerivce), admin)
-	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(strikesSerivce), admin)
-	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(strikesSerivce), admin)
+	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(strikeSerivce), admin)
+	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(strikeSerivce), admin)
+	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(strikeSerivce), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
