@@ -120,6 +120,16 @@ definitions:
       type:
         type: string
     type: object
+  uno_domain_model.QuestionAnswer:
+    properties:
+      answer:
+        description: Can be string or []string
+        items:
+          type: integer
+        type: array
+      questionId:
+        type: string
+    type: object
   uno_domain_model.Registration:
     properties:
       changed_at:
@@ -273,6 +283,26 @@ definitions:
         type: string
       strikes:
         type: integer
+    type: object
+  uno_domain_services.RegisterRequest:
+    properties:
+      happeningId:
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/uno_domain_model.QuestionAnswer'
+        type: array
+      userId:
+        type: string
+    type: object
+  uno_domain_services.RegisterResponse:
+    properties:
+      isWaitlisted:
+        type: boolean
+      message:
+        type: string
+      success:
+        type: boolean
     type: object
   uno_domain_services.ShoppingList:
     properties:
@@ -679,6 +709,41 @@ paths:
           schema:
             type: string
       summary: Get happening questions
+      tags:
+      - happenings
+  /happenings/{id}/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a user for a specific happening with business logic validation
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Registration request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_domain_services.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+      summary: Register for happening
       tags:
       - happenings
   /happenings/{id}/registrations:

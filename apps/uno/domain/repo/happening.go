@@ -11,4 +11,5 @@ type HappeningRepo interface {
 	GetHappeningRegistrations(ctx context.Context, happeningID string) ([]model.Registration, error)
 	GetHappeningSpotRanges(ctx context.Context, happeningID string) ([]model.SpotRange, error)
 	GetHappeningQuestions(ctx context.Context, happeningID string) ([]model.Question, error)
+	GetHappeningHostGroups(ctx context.Context, happeningID string) ([]string, error)
 }

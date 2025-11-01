@@ -48,7 +48,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.Co
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	commentMap := make(map[string]*repo.CommentWithReactionsAndUser)
 

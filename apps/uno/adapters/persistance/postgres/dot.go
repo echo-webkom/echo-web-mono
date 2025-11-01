@@ -10,7 +10,12 @@ type DotRepo struct {
 }
 
 func (p *DotRepo) DeleteExpired(ctx context.Context) error {
-	panic("unimplemented")
+	query := `
+		DELETE FROM dot
+		WHERE expires_at IS NOT NULL AND expires_at <= NOW()
+	`
+	_, err := p.db.ExecContext(ctx, query)
+	return err
 }
 
 func NewDotRepo(db *Database) repo.DotRepo {

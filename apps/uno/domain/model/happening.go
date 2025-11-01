@@ -46,3 +46,9 @@ type Answer struct {
 	QuestionID  string           `db:"question_id" json:"question_id"`
 	Answer      *json.RawMessage `db:"answer" json:"answer,omitempty"`
 }
+
+// QuestionAnswer represents an answer to a question in a registration request
+type QuestionAnswer struct {
+	QuestionID string          `json:"questionId"`
+	Answer     json.RawMessage `json:"answer"` // Can be string or []string
+}

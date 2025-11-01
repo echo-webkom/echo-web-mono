@@ -66,6 +66,16 @@ func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID s
 	return qs, err
 }
 
+func (h *HappeningRepo) GetHappeningHostGroups(ctx context.Context, happeningID string) (groupIDs []string, err error) {
+	query := `
+		SELECT group_id
+		FROM happenings_to_groups
+		WHERE happening_id = $1
+	`
+	err = h.db.SelectContext(ctx, &groupIDs, query, happeningID)
+	return groupIDs, err
+}
+
 func NewHappeningRepo(db *Database) repo.HappeningRepo {
 	return &HappeningRepo{db: db}
 }

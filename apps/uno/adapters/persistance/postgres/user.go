@@ -62,6 +62,16 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (us
 	return users, err
 }
 
+func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
+	query := `
+		SELECT group_id
+		FROM users_to_groups
+		WHERE user_id = $1
+	`
+	err = u.db.SelectContext(ctx, &groupIDs, query, userID)
+	return groupIDs, err
+}
+
 func NewUserRepo(db *Database) repo.UserRepo {
 	return &UserRepo{db: db}
 }

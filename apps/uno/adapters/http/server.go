@@ -57,6 +57,7 @@ func RunServer(
 	r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(happeningService))
 	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(happeningService), admin)
 	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(happeningService), admin)
+	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(happeningService))
 
 	// Degree routes
 	r.Handle("GET", "/degrees", api.GetDegreesHandler(degreeService))

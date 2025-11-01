@@ -621,6 +621,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/happenings/{id}/register": {
+            "post": {
+                "description": "Registers a user for a specific happening with business logic validation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "happenings"
+                ],
+                "summary": "Register for happening",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Registration request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_services.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/happenings/{id}/registrations": {
             "get": {
                 "security": [
@@ -1172,6 +1225,21 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_domain_model.QuestionAnswer": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "description": "Can be string or []string",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "questionId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_domain_model.Registration": {
             "type": "object",
             "properties": {
@@ -1401,6 +1469,37 @@ const docTemplate = `{
                 },
                 "strikes": {
                     "type": "integer"
+                }
+            }
+        },
+        "uno_domain_services.RegisterRequest": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.QuestionAnswer"
+                    }
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_services.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "isWaitlisted": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         },

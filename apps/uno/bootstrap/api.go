@@ -73,10 +73,11 @@ func RunApi() {
 	accessRequestRepo := postgres.NewAccessRequestRepo(db)
 	whitelistRepo := postgres.NewWhitelistRepo(db)
 	commentRepo := postgres.NewCommentRepo(db)
+	registrationRepo := postgres.NewRegistrationRepo(db)
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepo, userRepo)
-	happeningService := services.NewHappeningService(happeningRepo)
+	happeningService := services.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo)
 	degreeService := services.NewDegreeService(degreeRepo)
 	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepo)
 	shoppingListService := services.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo, userRepo)

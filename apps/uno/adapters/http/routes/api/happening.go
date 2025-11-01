@@ -196,3 +196,42 @@ func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 		return util.JsonOk(w, qs)
 	}
 }
+
+// RegisterForHappening handles user registration for a happening
+// @Summary	     Register for happening
+// @Description  Registers a user for a specific happening with business logic validation
+// @Tags         happenings
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string                      true  "Happening ID"
+// @Param        body  body      services.RegisterRequest    true  "Registration request"
+// @Success      200   {object}  services.RegisterResponse   "OK"
+// @Failure      400   {object}  services.RegisterResponse   "Bad Request"
+// @Failure      500   {object}  services.RegisterResponse   "Internal Server Error"
+// @Router       /happenings/{id}/register [post]
+func RegisterForHappening(hs *services.HappeningService) router.Handler {
+	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+		id := r.PathValue("id")
+		if id == "" {
+			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+		}
+
+		var req services.RegisterRequest
+		if err := util.ReadJson(r, &req); err != nil {
+			return http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err)
+		}
+
+		resp, err := hs.Register(r.Context(), id, req)
+		if err != nil {
+			return http.StatusInternalServerError, err
+		}
+
+		// If registration was not successful, return 400
+		if resp != nil && !resp.Success {
+			return util.Json(w, http.StatusBadRequest, resp)
+		}
+
+		// Successful registration
+		return util.JsonOk(w, resp)
+	}
+}

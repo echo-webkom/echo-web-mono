@@ -12,6 +12,7 @@ type UserRepo interface {
 	GetUsersWithBirthday(ctx context.Context, date time.Time) ([]model.User, error)
 	GetUsersWithStrikes(ctx context.Context) ([]UserWithStrikes, error)
 	GetBannedUsers(ctx context.Context) ([]UserWithBanInfo, error)
+	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
 }
 
 type UserWithStrikes struct {
