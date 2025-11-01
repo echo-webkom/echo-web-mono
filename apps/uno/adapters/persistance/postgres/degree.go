@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresDegreeImpl struct {
+type DegreeRepo struct {
 	db *Database
 }
 
-func NewPostgresDegreeImpl(db *Database) repo.DegreeRepo {
-	return &PostgresDegreeImpl{db: db}
-}
-
-func (p *PostgresDegreeImpl) GetAllDegrees(ctx context.Context) ([]model.Degree, error) {
+func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) {
 	query := `
 		SELECT
 			id, name
@@ -25,7 +21,7 @@ func (p *PostgresDegreeImpl) GetAllDegrees(ctx context.Context) ([]model.Degree,
 	return res, err
 }
 
-func (p *PostgresDegreeImpl) CreateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
+func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
 	query := `
 		INSERT INTO degree (id, name)
 		VALUES ($1, $2)
@@ -35,7 +31,7 @@ func (p *PostgresDegreeImpl) CreateDegree(ctx context.Context, degree model.Degr
 	return degree, err
 }
 
-func (p *PostgresDegreeImpl) UpdateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
+func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
 	query := `
 		UPDATE degree
 		SET name = $2
@@ -46,11 +42,15 @@ func (p *PostgresDegreeImpl) UpdateDegree(ctx context.Context, degree model.Degr
 	return degree, err
 }
 
-func (p *PostgresDegreeImpl) DeleteDegree(ctx context.Context, id string) error {
+func (p *DegreeRepo) DeleteDegree(ctx context.Context, id string) error {
 	query := `
 		DELETE FROM degree
 		WHERE id = $1
 	`
 	_, err := p.db.ExecContext(ctx, query, id)
 	return err
+}
+
+func NewDegreeRepo(db *Database) repo.DegreeRepo {
+	return &DegreeRepo{db: db}
 }

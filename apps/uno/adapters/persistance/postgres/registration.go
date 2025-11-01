@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresRegistrationImpl struct {
+type RegistrationRepo struct {
 	db *Database
 }
 
-func NewPostgresRegistrationImpl(db *Database) repo.RegistrationRepo {
-	return &PostgresRegistrationImpl{db: db}
-}
-
-func (r *PostgresRegistrationImpl) GetRegistrationsByHappeningId(ctx context.Context, hapId string) (regs []model.Registration, err error) {
+func (r *RegistrationRepo) GetRegistrationsByHappeningId(ctx context.Context, hapId string) (regs []model.Registration, err error) {
 	query := `
 		SELECT
 			user_id, happening_id, status, unregister_reason, created_at, prev_status, changed_at, changed_by
@@ -23,4 +19,8 @@ func (r *PostgresRegistrationImpl) GetRegistrationsByHappeningId(ctx context.Con
 	`
 	err = r.db.SelectContext(ctx, &regs, query, hapId)
 	return regs, err
+}
+
+func NewRegistrationRepo(db *Database) repo.RegistrationRepo {
+	return &RegistrationRepo{db: db}
 }

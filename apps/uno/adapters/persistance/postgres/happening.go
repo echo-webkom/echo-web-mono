@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresHappeningImpl struct {
+type HappeningRepo struct {
 	db *Database
 }
 
-func NewPostgresHappeningImpl(db *Database) repo.HappeningRepo {
-	return &PostgresHappeningImpl{db: db}
-}
-
-func (h *PostgresHappeningImpl) GetAllHappenings(ctx context.Context) (res []model.Happening, err error) {
+func (h *HappeningRepo) GetAllHappenings(ctx context.Context) (res []model.Happening, err error) {
 	query := `
 		SELECT
 			id, slug, title, type, date, registration_groups,
@@ -25,7 +21,7 @@ func (h *PostgresHappeningImpl) GetAllHappenings(ctx context.Context) (res []mod
 	return res, err
 }
 
-func (h *PostgresHappeningImpl) GetHappeningById(ctx context.Context, id string) (hap model.Happening, err error) {
+func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (hap model.Happening, err error) {
 	query := `
 		SELECT
 			id, slug, title, type, date, registration_groups,
@@ -35,4 +31,8 @@ func (h *PostgresHappeningImpl) GetHappeningById(ctx context.Context, id string)
 	`
 	err = h.db.GetContext(ctx, &hap, query, id)
 	return hap, err
+}
+
+func NewHappeningRepo(db *Database) repo.HappeningRepo {
+	return &HappeningRepo{db: db}
 }

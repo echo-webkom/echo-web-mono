@@ -9,19 +9,19 @@ import (
 	"github.com/lib/pq"
 )
 
-type PostgresUserImpl struct {
+type UserRepo struct {
 	db *Database
 }
 
-func (u *PostgresUserImpl) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
+func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
 	panic("unimplemented")
 }
 
-func (u *PostgresUserImpl) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWithStrikes, error) {
+func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWithStrikes, error) {
 	panic("unimplemented")
 }
 
-func (u *PostgresUserImpl) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
+func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
 	query := `
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -34,7 +34,7 @@ func (u *PostgresUserImpl) GetUserByID(ctx context.Context, id string) (user mod
 	return user, err
 }
 
-func (u *PostgresUserImpl) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
+func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
 	query := `
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -47,7 +47,7 @@ func (u *PostgresUserImpl) GetUsersByIDs(ctx context.Context, ids []string) (use
 	return users, err
 }
 
-func (u *PostgresUserImpl) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
+func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
 	query := `
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -62,6 +62,6 @@ func (u *PostgresUserImpl) GetUsersWithBirthday(ctx context.Context, date time.T
 	return users, err
 }
 
-func NewPostgresUserImpl(db *Database) repo.UserRepo {
-	return &PostgresUserImpl{db: db}
+func NewUserRepo(db *Database) repo.UserRepo {
+	return &UserRepo{db: db}
 }

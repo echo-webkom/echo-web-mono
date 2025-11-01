@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresQuestionImpl struct {
+type QuestionRepo struct {
 	db *Database
 }
 
-func NewPostgresQuestionImpl(db *Database) repo.QuestionRepo {
-	return &PostgresQuestionImpl{db: db}
-}
-
-func (q *PostgresQuestionImpl) GetQuestionsByHappeningId(ctx context.Context, hapId string) (qs []model.Question, err error) {
+func (q *QuestionRepo) GetQuestionsByHappeningId(ctx context.Context, hapId string) (qs []model.Question, err error) {
 	query := `
 		SELECT
 			id, title, required, type, is_sensitive, options, happening_id
@@ -23,4 +19,8 @@ func (q *PostgresQuestionImpl) GetQuestionsByHappeningId(ctx context.Context, ha
 	`
 	err = q.db.SelectContext(ctx, &qs, query, hapId)
 	return qs, err
+}
+
+func NewQuestionRepo(db *Database) repo.QuestionRepo {
+	return &QuestionRepo{db: db}
 }

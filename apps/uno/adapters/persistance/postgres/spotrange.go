@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresSpotRangeImpl struct {
+type SpotRangeRepo struct {
 	db *Database
 }
 
-func NewPostgresSpotRangeImpl(db *Database) repo.SpotRangeRepo {
-	return &PostgresSpotRangeImpl{db: db}
-}
-
-func (sr *PostgresSpotRangeImpl) GetSpotRangesByHappeningId(ctx context.Context, hapId string) (ranges []model.SpotRange, err error) {
+func (sr *SpotRangeRepo) GetSpotRangesByHappeningId(ctx context.Context, hapId string) (ranges []model.SpotRange, err error) {
 	query := `
 		SELECT
 			id, happening_id, spots, min_year, max_year
@@ -23,4 +19,8 @@ func (sr *PostgresSpotRangeImpl) GetSpotRangesByHappeningId(ctx context.Context,
 	`
 	err = sr.db.SelectContext(ctx, &ranges, query, hapId)
 	return ranges, err
+}
+
+func NewSpotRangeRepo(db *Database) repo.SpotRangeRepo {
+	return &SpotRangeRepo{db: db}
 }

@@ -6,11 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresWhitelistImpl struct {
+type WhitelistRepo struct {
 	db *Database
 }
 
-func (p *PostgresWhitelistImpl) GetWhitelist(ctx context.Context) (whitelist []model.Whitelist, err error) {
+func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whitelist, err error) {
 	query := `
 		SELECT email, expires_at, reason
 		FROM whitelist
@@ -20,7 +20,7 @@ func (p *PostgresWhitelistImpl) GetWhitelist(ctx context.Context) (whitelist []m
 	return whitelist, err
 }
 
-func (p *PostgresWhitelistImpl) GetWhitelistByEmail(ctx context.Context, email string) (wl model.Whitelist, err error) {
+func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (wl model.Whitelist, err error) {
 	query := `
 		SELECT email, expires_at, reason
 		FROM whitelist
@@ -30,7 +30,7 @@ func (p *PostgresWhitelistImpl) GetWhitelistByEmail(ctx context.Context, email s
 	return wl, err
 }
 
-func (p *PostgresWhitelistImpl) IsWhitelisted(ctx context.Context, email string) (bool, error) {
+func (p *WhitelistRepo) IsWhitelisted(ctx context.Context, email string) (bool, error) {
 	query := `
 		SELECT COUNT(1)
 		FROM whitelist
@@ -41,6 +41,6 @@ func (p *PostgresWhitelistImpl) IsWhitelisted(ctx context.Context, email string)
 	return count > 0, err
 }
 
-func NewPostgresWhitelistImpl(db *Database) repo.WhitelistRepo {
-	return &PostgresWhitelistImpl{db: db}
+func NewWhitelistRepo(db *Database) repo.WhitelistRepo {
+	return &WhitelistRepo{db: db}
 }

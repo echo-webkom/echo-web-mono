@@ -6,15 +6,11 @@ import (
 	"uno/domain/repo"
 )
 
-type PostgresShoppingListItemImpl struct {
+type ShoppingListRepo struct {
 	db *Database
 }
 
-func NewPostgresShoppingListItemImpl(db *Database) repo.ShoppingListItemRepo {
-	return &PostgresShoppingListItemImpl{db: db}
-}
-
-func (p *PostgresShoppingListItemImpl) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) error {
+func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) error {
 	query := `
 	INSERT INTO shopping_list_item (id, user_id, name, created_at) VALUES ($1, $2, $3, $4)
 	`
@@ -22,7 +18,7 @@ func (p *PostgresShoppingListItemImpl) CreateShoppingListItem(ctx context.Contex
 	return err
 }
 
-func (p *PostgresShoppingListItemImpl) DeleteShoppingListItem(ctx context.Context, itemID string) error {
+func (p *ShoppingListRepo) DeleteShoppingListItem(ctx context.Context, itemID string) error {
 	query := `
 	DELETE FROM shopping_list_item WHERE id = $1
 	`
@@ -30,7 +26,7 @@ func (p *PostgresShoppingListItemImpl) DeleteShoppingListItem(ctx context.Contex
 	return err
 }
 
-func (p *PostgresShoppingListItemImpl) GetAllShoppingListItems(ctx context.Context) ([]repo.ShoppingListItemWithCreator, error) {
+func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]repo.ShoppingListItemWithCreator, error) {
 	query := `
 	SELECT
 		sli.id, sli.user_id, sli.name, sli.created_at,
@@ -43,4 +39,8 @@ func (p *PostgresShoppingListItemImpl) GetAllShoppingListItems(ctx context.Conte
 	err := p.db.SelectContext(ctx, &items, query)
 	return items, err
 
+}
+
+func NewShoppingListRepo(db *Database) repo.ShoppingListItemRepo {
+	return &ShoppingListRepo{db: db}
 }
