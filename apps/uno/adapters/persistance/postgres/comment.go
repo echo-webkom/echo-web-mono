@@ -1,0 +1,148 @@
+package postgres
+
+import (
+	"context"
+	"time"
+	"uno/domain/model"
+	"uno/domain/repo"
+)
+
+type CommentRepo struct {
+	db *Database
+}
+
+func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string, userID string) error {
+	reactionType := "like" // TODO: Support multiple reaction types
+
+	query := `
+		INSERT INTO comment_reactions (comment_id, user_id, type)
+		VALUES ($1, $2, $3)
+		ON CONFLICT DO NOTHING;
+	`
+	_, err := c.db.ExecContext(ctx, query, commentID, userID, reactionType)
+	return err
+}
+
+func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID string, userID string, parentCommentID *string) error {
+	query := `
+		INSERT INTO comments (content, post_id, user_id, parent_comment_id)
+		VALUES ($1, $2, $3, $4);
+	`
+	_, err := c.db.ExecContext(ctx, query, content, postID, userID, parentCommentID)
+	return err
+}
+
+func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.CommentWithReactionsAndUser, error) {
+	query := `
+		SELECT c.id, c.content, c.post_id, c.user_id, c.parent_comment_id, c.created_at, c.updated_at,
+		       u.id, u.name, u.image,
+		       cr.comment_id, cr.user_id, cr.type, cr.created_at
+		FROM comments c
+		LEFT JOIN users u ON c.user_id = u.id
+		LEFT JOIN comment_reactions cr ON c.id = cr.comment_id
+		WHERE c.id = $1
+		ORDER BY cr.created_at ASC;
+	`
+
+	rows, err := c.db.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	commentMap := make(map[string]*repo.CommentWithReactionsAndUser)
+
+	for rows.Next() {
+		var (
+			commentID         string
+			content           string
+			postID            string
+			userID            string
+			parentCommentID   *string
+			createdAt         time.Time
+			updatedAt         time.Time
+			uID               *string
+			uName             *string
+			uImage            *string
+			reactionCommentID *string
+			reactionUserID    *string
+			reactionType      *string
+			reactionCreatedAt *time.Time
+		)
+
+		err := rows.Scan(&commentID, &content, &postID, &userID, &parentCommentID, &createdAt, &updatedAt,
+			&uID, &uName, &uImage,
+			&reactionCommentID, &reactionUserID, &reactionType, &reactionCreatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		comment, exists := commentMap[commentID]
+		if !exists {
+			comment = &repo.CommentWithReactionsAndUser{
+				Comment: model.Comment{
+					ID:              commentID,
+					Content:         content,
+					PostID:          postID,
+					UserID:          &userID,
+					ParentCommentID: parentCommentID,
+					CreatedAt:       createdAt,
+					UpdatedAt:       updatedAt,
+				},
+				Reactions: []model.CommentsReaction{},
+			}
+			if uID != nil {
+				comment.User = &repo.User{
+					ID:    *uID,
+					Name:  uName,
+					Image: uImage,
+				}
+			}
+			commentMap[commentID] = comment
+		}
+
+		if reactionCommentID != nil && reactionUserID != nil && reactionType != nil && reactionCreatedAt != nil {
+			reaction := model.CommentsReaction{
+				CommentID: *reactionCommentID,
+				UserID:    *reactionUserID,
+				Type:      *reactionType,
+				CreatedAt: *reactionCreatedAt,
+			}
+			comment.Reactions = append(comment.Reactions, reaction)
+		}
+	}
+
+	comments := make([]repo.CommentWithReactionsAndUser, 0, len(commentMap))
+	for _, comment := range commentMap {
+		comments = append(comments, *comment)
+	}
+
+	return comments, nil
+}
+
+func (c *CommentRepo) IsReactedByUser(ctx context.Context, commentID string, userID string) (bool, error) {
+	query := `
+		SELECT COUNT(1)
+		FROM comment_reactions
+		WHERE comment_id = $1 AND user_id = $2;
+	`
+	var count int
+	err := c.db.QueryRowContext(ctx, query, commentID, userID).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func (c *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID string, userID string) error {
+	query := `
+		DELETE FROM comment_reactions
+		WHERE comment_id = $1 AND user_id = $2;
+	`
+	_, err := c.db.ExecContext(ctx, query, commentID, userID)
+	return err
+}
+
+func NewCommentRepo(db *Database) repo.CommentRepo {
+	return &CommentRepo{db: db}
+}

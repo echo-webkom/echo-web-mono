@@ -41,6 +41,7 @@ func RunServer(
 	strikeSerivce *services.StrikeService,
 	accessRequestService *services.AccessRequestService,
 	whitelistService *services.WhitelistService,
+	commentService *services.CommentService,
 ) {
 	r := router.New(config.ServiceName)
 	// auth := router.NewAuthMiddleware(authService)
@@ -84,6 +85,11 @@ func RunServer(
 	// Whitelist routes
 	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(whitelistService), admin)
 	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(whitelistService), admin)
+
+	// Comment routes
+	r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(commentService))
+	r.Handle("POST", "/comments", api.CreateCommentHandler(commentService), admin)
+	r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(commentService), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

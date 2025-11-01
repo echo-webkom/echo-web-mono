@@ -28,7 +28,7 @@ type Comment struct {
 	UpdatedAt       time.Time `db:"updated_at" json:"updated_at"`
 }
 
-type CommentsReactions struct {
+type CommentsReaction struct {
 	CommentID string    `db:"comment_id" json:"comment_id"`
 	UserID    string    `db:"user_id" json:"user_id"`
 	Type      string    `db:"type" json:"type"`

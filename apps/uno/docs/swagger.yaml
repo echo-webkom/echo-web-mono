@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  adapters_http_routes_api.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+      parent_comment_id:
+        type: string
+      post_id:
+        type: string
+      user_id:
+        type: string
+    type: object
   adapters_http_routes_api.GroupedRegistration:
     properties:
       max:
@@ -14,6 +25,13 @@ definitions:
       status:
         type: string
     type: object
+  adapters_http_routes_api.ReactToCommentRequest:
+    properties:
+      comment_id:
+        type: string
+      user_id:
+        type: string
+    type: object
   uno_domain_model.AccessRequest:
     properties:
       created_at:
@@ -23,6 +41,34 @@ definitions:
       id:
         type: string
       reason:
+        type: string
+    type: object
+  uno_domain_model.Comment:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      parent_comment_id:
+        type: string
+      post_id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  uno_domain_model.CommentsReaction:
+    properties:
+      comment_id:
+        type: string
+      created_at:
+        type: string
+      type:
+        type: string
+      user_id:
         type: string
     type: object
   uno_domain_model.Degree:
@@ -161,6 +207,17 @@ definitions:
       user_id:
         type: string
     type: object
+  uno_domain_repo.CommentWithReactionsAndUser:
+    properties:
+      comment:
+        $ref: '#/definitions/uno_domain_model.Comment'
+      reactions:
+        items:
+          $ref: '#/definitions/uno_domain_model.CommentsReaction'
+        type: array
+      user:
+        $ref: '#/definitions/uno_domain_repo.User'
+    type: object
   uno_domain_repo.DotInfo:
     properties:
       count:
@@ -178,6 +235,15 @@ definitions:
       striked_by_name:
         type: string
       user_id:
+        type: string
+    type: object
+  uno_domain_repo.User:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
         type: string
     type: object
   uno_domain_repo.UserWithBanInfo:
@@ -285,6 +351,119 @@ paths:
       summary: Get users with birthdays
       tags:
       - birthdays
+  /comments:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Comment to create
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/adapters_http_routes_api.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create a new comment
+      tags:
+      - comments
+  /comments/{id}:
+    get:
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_repo.CommentWithReactionsAndUser'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get comments by ID
+      tags:
+      - comments
+  /comments/{id}/reaction:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Reaction to add or remove
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/adapters_http_routes_api.ReactToCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: React to a comment
+      tags:
+      - comments
   /degrees:
     get:
       produces:
