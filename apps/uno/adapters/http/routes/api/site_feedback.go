@@ -19,7 +19,7 @@ import (
 // @Router       /feedbacks [get]
 func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		feedbacks, err := siteFeedbackService.GetAllSiteFeedbacks(r.Context())
+		feedbacks, err := siteFeedbackService.Queries().GetAllSiteFeedbacks(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -40,7 +40,7 @@ func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) 
 func GetSiteFeedbackByIDHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		feedbackID := r.URL.Query().Get("id")
-		feedback, err := siteFeedbackService.GetSiteFeedbackByID(r.Context(), feedbackID)
+		feedback, err := siteFeedbackService.Queries().GetSiteFeedbackByID(r.Context(), feedbackID)
 		if err != nil {
 			return http.StatusNotFound, err
 		}

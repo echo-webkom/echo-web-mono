@@ -64,9 +64,6 @@ func RunApi() {
 	happeningRepoImpl := postgres.NewHappeningRepo(db)
 	userRepoImpl := postgres.NewUserRepo(db)
 	sessionRepoImpl := postgres.NewSessionRepo(db)
-	questionRepoImpl := postgres.NewQuestionRepo(db)
-	registrationRepoImpl := postgres.NewRegistrationRepo(db)
-	spotRangeRepoImpl := postgres.NewSpotRangeRepo(db)
 	degreeRepoImpl := postgres.NewDegreeRepo(db)
 	siteFeedbackRepoImpl := postgres.NewSiteFeedbackRepo(db)
 	shoppingListItemRepoImpl := postgres.NewShoppingListRepo(db)
@@ -76,7 +73,7 @@ func RunApi() {
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepoImpl, userRepoImpl)
-	happeningService := services.NewHappeningService(happeningRepoImpl, registrationRepoImpl, spotRangeRepoImpl, questionRepoImpl)
+	happeningService := services.NewHappeningService(happeningRepoImpl)
 	degreeService := services.NewDegreeService(degreeRepoImpl)
 	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepoImpl)
 	shoppingListService := services.NewShoppingListService(shoppingListItemRepoImpl, usersToShoppingListItemRepoImpl, userRepoImpl)
