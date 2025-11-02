@@ -79,6 +79,17 @@ jobs:
         working-directory: apps/uno
         run: golangci-lint run
 
+      - name: 📦 Install swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+
+      - name: 📚 Check Swagger docs are generated
+        run: |
+          pnpm --filter=uno swag:init
+          if ! git diff --exit-code apps/uno/docs/; then
+            echo "Error: Swagger docs are out of sync. Please run 'pnpm --filter=uno swag:init' and commit the changes."
+            exit 1
+          fi
+
   test-unit:
     name: 🧪 Unit Tests
     runs-on: ubuntu-latest
