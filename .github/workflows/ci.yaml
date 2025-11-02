@@ -45,6 +45,18 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 🔎 Install golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          working-directory: apps/uno
+          version: v2.1
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -62,6 +74,10 @@ jobs:
 
       - name: 🛫 Type check
         run: pnpm typecheck
+
+      - name: 🐹 Lint Go code
+        working-directory: apps/uno
+        run: golangci-lint run
 
   test-unit:
     name: 🧪 Unit Tests
