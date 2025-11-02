@@ -9,7 +9,7 @@
     "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",
     "test:coverage:view": "pnpm with-env go tool cover -html=coverage.out",
     "format": "pnpm with-env go fmt ./...",
-    "format:check": "pnpm with-env go fmt -l ./...",
+    "format:check": "pnpm with-env gofmt -l .",
     "lint": "pnpm with-env golangci-lint run ./...",
     "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
     "tidy": "pnpm with-env go mod tidy",
