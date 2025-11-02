@@ -7,16 +7,16 @@ type User struct {
 	Name             *string    `db:"name" json:"name,omitempty"`
 	Email            string     `db:"email" json:"email"`
 	Image            *string    `db:"image" json:"image,omitempty"`
-	AlternativeEmail *string    `db:"alternative_email" json:"alternative_email,omitempty"`
-	DegreeID         *string    `db:"degree_id" json:"degree_id,omitempty"`
+	AlternativeEmail *string    `db:"alternative_email" json:"alternativeEmail,omitempty"`
+	DegreeID         *string    `db:"degree_id" json:"degreeId,omitempty"`
 	Year             *int       `db:"year" json:"year,omitempty"`
 	Type             string     `db:"type" json:"type"`
-	LastSignInAt     *time.Time `db:"last_sign_in_at" json:"last_sign_in_at,omitempty"`
-	UpdatedAt        *time.Time `db:"updated_at" json:"updated_at,omitempty"`
-	CreatedAt        *time.Time `db:"created_at" json:"created_at,omitempty"`
-	HasReadTerms     bool       `db:"has_read_terms" json:"has_read_terms"`
+	LastSignInAt     *time.Time `db:"last_sign_in_at" json:"lastSignInAt,omitempty"`
+	UpdatedAt        *time.Time `db:"updated_at" json:"updatedAt,omitempty"`
+	CreatedAt        *time.Time `db:"created_at" json:"createdAt,omitempty"`
+	HasReadTerms     bool       `db:"has_read_terms" json:"hasReadTerms"`
 	Birthday         *time.Time `db:"birthday" json:"birthday,omitempty"`
-	IsPublic         bool       `db:"is_public" json:"is_public"`
+	IsPublic         bool       `db:"is_public" json:"isPublic"`
 }
 
 func (u *User) IsProfileComplete() bool {
@@ -29,27 +29,27 @@ type Degree struct {
 }
 
 type Account struct {
-	UserID            string  `db:"user_id" json:"user_id"`
+	UserID            string  `db:"user_id" json:"userId"`
 	Type              string  `db:"type" json:"type"`
 	Provider          string  `db:"provider" json:"provider"`
-	ProviderAccountID string  `db:"provider_account_id" json:"provider_account_id"`
-	RefreshToken      *string `db:"refresh_token" json:"refresh_token,omitempty"`
-	AccessToken       *string `db:"access_token" json:"access_token,omitempty"`
-	ExpiresAt         *int    `db:"expires_at" json:"expires_at,omitempty"`
-	TokenType         *string `db:"token_type" json:"token_type,omitempty"`
+	ProviderAccountID string  `db:"provider_account_id" json:"providerAccountId"`
+	RefreshToken      *string `db:"refresh_token" json:"refreshToken,omitempty"`
+	AccessToken       *string `db:"access_token" json:"accessToken,omitempty"`
+	ExpiresAt         *int    `db:"expires_at" json:"expiresAt,omitempty"`
+	TokenType         *string `db:"token_type" json:"tokenType,omitempty"`
 	Scope             *string `db:"scope" json:"scope,omitempty"`
-	IDToken           *string `db:"id_token" json:"id_token,omitempty"`
-	SessionState      *string `db:"session_state" json:"session_state,omitempty"`
+	IDToken           *string `db:"id_token" json:"idToken,omitempty"`
+	SessionState      *string `db:"session_state" json:"sessionState,omitempty"`
 }
 
 type Session struct {
-	SessionToken string    `db:"session_token" json:"session_token"`
-	UserID       string    `db:"user_id" json:"user_id"`
+	SessionToken string    `db:"session_token" json:"sessionToken"`
+	UserID       string    `db:"user_id" json:"userId"`
 	Expires      time.Time `db:"expires" json:"expires"`
 }
 
 type VerificationToken struct {
 	Identifier string    `db:"identifier" json:"identifier"`
 	Token      string    `db:"token" json:"token"`
-	ExpiresAt  time.Time `db:"expires_at" json:"expires_at"`
+	ExpiresAt  time.Time `db:"expires_at" json:"expiresAt"`
 }

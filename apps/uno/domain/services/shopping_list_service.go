@@ -27,9 +27,9 @@ func NewShoppingListService(
 type ShoppingList struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
-	UserID    string    `json:"user_id"`
-	UserName  *string   `json:"user_name,omitempty"`
-	CreatedAt time.Time `json:"created_at"`
+	UserID    string    `json:"userId"`
+	UserName  *string   `json:"userName,omitempty"`
+	CreatedAt time.Time `json:"createdAt"`
 	Likes     []string  `json:"likes,omitempty"`
 }
 

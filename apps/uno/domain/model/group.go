@@ -6,7 +6,7 @@ type Group struct {
 }
 
 type UsersToGroups struct {
-	UserID   string `db:"user_id" json:"user_id"`
-	GroupID  string `db:"group_id" json:"group_id"`
-	IsLeader bool   `db:"is_leader" json:"is_leader"`
+	UserID   string `db:"user_id" json:"userId"`
+	GroupID  string `db:"group_id" json:"groupId"`
+	IsLeader bool   `db:"is_leader" json:"isLeader"`
 }

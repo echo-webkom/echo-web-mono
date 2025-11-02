@@ -13,35 +13,6 @@ type UserRepo struct {
 	db *Database
 }
 
-// type BanInfo struct {
-// 	ID           int       `json:"id"`
-// 	Reason       string    `json:"reason"`
-// 	UserID       string    `json:"user_id"`
-// 	BannedByID   string    `json:"banned_by_id"`
-// 	BannedByName string    `json:"banned_by_name"`
-// 	CreatedAt    time.Time `json:"created_at"`
-// 	ExpiresAt    time.Time `json:"expires_at"`
-// }
-
-// type DotInfo struct {
-// 	ID            int       `json:"id"`
-// 	UserID        string    `json:"user_id"`
-// 	Count         int       `json:"count"`
-// 	Reason        string    `json:"reason"`
-// 	CreatedAt     time.Time `json:"created_at"`
-// 	ExpiresAt     time.Time `json:"expires_at"`
-// 	StrikedByID   string    `json:"striked_by_id"`
-// 	StrikedByName string    `json:"striked_by_name"`
-// }
-
-// type UserWithBanInfo struct {
-// 	ID      string    `json:"id"`
-// 	Name    *string   `json:"name,omitempty"`
-// 	Image   *string   `json:"image,omitempty"`
-// 	BanInfo BanInfo   `json:"ban_info"`
-// 	Dots    []DotInfo `json:"dots"`
-// }
-
 func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
 	// First, get all banned users with their ban info
 	banQuery := `--sql

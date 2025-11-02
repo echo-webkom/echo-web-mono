@@ -13,5 +13,5 @@ type ShoppingListItemRepo interface {
 
 type ShoppingListItemWithCreator struct {
 	model.ShoppingListItem
-	UserName *string `db:"user_name" json:"user_name"`
+	UserName *string `db:"user_name" json:"userName"`
 }

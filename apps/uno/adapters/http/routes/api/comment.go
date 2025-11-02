@@ -36,9 +36,9 @@ func GetCommentsByIDHandler(commentService *services.CommentService) router.Hand
 
 type CreateCommentRequest struct {
 	Content         string  `json:"content"`
-	PostID          string  `json:"post_id"`
-	UserID          string  `json:"user_id"`
-	ParentCommentID *string `json:"parent_comment_id"`
+	PostID          string  `json:"postId"`
+	UserID          string  `json:"userId"`
+	ParentCommentID *string `json:"parentCommentId"`
 }
 
 // CreateCommentHandler creates a new comment
@@ -68,8 +68,8 @@ func CreateCommentHandler(commentService *services.CommentService) router.Handle
 }
 
 type ReactToCommentRequest struct {
-	CommentID string `json:"comment_id"`
-	UserID    string `json:"user_id"`
+	CommentID string `json:"commentId"`
+	UserID    string `json:"userId"`
 }
 
 // ReactToCommentHandler adds or removes a reaction to a comment
@@ -91,10 +91,7 @@ func ReactToCommentHandler(commentService *services.CommentService) router.Handl
 		if commentID == "" {
 			return http.StatusBadRequest, nil
 		}
-		var req struct {
-			CommentID string `json:"comment_id"`
-			UserID    string `json:"user_id"`
-		}
+		var req ReactToCommentRequest
 		if err := util.ReadJson(r, &req); err != nil {
 			return http.StatusBadRequest, err
 		}

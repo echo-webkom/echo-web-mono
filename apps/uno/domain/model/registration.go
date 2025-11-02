@@ -15,12 +15,12 @@ const (
 )
 
 type Registration struct {
-	UserID           string             `db:"user_id" json:"user_id"`
-	HappeningID      string             `db:"happening_id" json:"happening_id"`
+	UserID           string             `db:"user_id" json:"userId"`
+	HappeningID      string             `db:"happening_id" json:"happeningId"`
 	Status           RegistrationStatus `db:"status" json:"status"`
-	UnregisterReason *string            `db:"unregister_reason" json:"unregister_reason,omitempty"`
-	CreatedAt        time.Time          `db:"created_at" json:"created_at"`
-	PrevStatus       *string            `db:"prev_status" json:"prev_status,omitempty"`
-	ChangedAt        *time.Time         `db:"changed_at" json:"changed_at,omitempty"`
-	ChangedBy        *string            `db:"changed_by" json:"changed_by,omitempty"`
+	UnregisterReason *string            `db:"unregister_reason" json:"unregisterReason,omitempty"`
+	CreatedAt        time.Time          `db:"created_at" json:"createdAt"`
+	PrevStatus       *string            `db:"prev_status" json:"prevStatus,omitempty"`
+	ChangedAt        *time.Time         `db:"changed_at" json:"changedAt,omitempty"`
+	ChangedBy        *string            `db:"changed_by" json:"changedBy,omitempty"`
 }

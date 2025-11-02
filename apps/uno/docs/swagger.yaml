@@ -4,11 +4,11 @@ definitions:
     properties:
       content:
         type: string
-      parent_comment_id:
+      parentCommentId:
         type: string
-      post_id:
+      postId:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   adapters_http_routes_api.GroupedRegistration:
@@ -27,14 +27,14 @@ definitions:
     type: object
   adapters_http_routes_api.ReactToCommentRequest:
     properties:
-      comment_id:
+      commentId:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_model.AccessRequest:
     properties:
-      created_at:
+      createdAt:
         type: string
       email:
         type: string
@@ -47,28 +47,28 @@ definitions:
     properties:
       content:
         type: string
-      created_at:
+      createdAt:
         type: string
       id:
         type: string
-      parent_comment_id:
+      parentCommentId:
         type: string
-      post_id:
+      postId:
         type: string
-      updated_at:
+      updatedAt:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_model.CommentsReaction:
     properties:
-      comment_id:
+      commentId:
         type: string
-      created_at:
+      createdAt:
         type: string
       type:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_model.Degree:
@@ -84,15 +84,15 @@ definitions:
         type: string
       id:
         type: string
-      registration_end:
+      registrationEnd:
         type: string
-      registration_groups:
+      registrationGroups:
         items:
           type: integer
         type: array
-      registration_start:
+      registrationStart:
         type: string
-      registration_start_groups:
+      registrationStartGroups:
         type: string
       slug:
         type: string
@@ -103,11 +103,11 @@ definitions:
     type: object
   uno_domain_model.Question:
     properties:
-      happening_id:
+      happeningId:
         type: string
       id:
         type: string
-      is_sensitive:
+      isSensitive:
         type: boolean
       options:
         items:
@@ -132,21 +132,21 @@ definitions:
     type: object
   uno_domain_model.Registration:
     properties:
-      changed_at:
+      changedAt:
         type: string
-      changed_by:
+      changedBy:
         type: string
-      created_at:
+      createdAt:
         type: string
-      happening_id:
+      happeningId:
         type: string
-      prev_status:
+      prevStatus:
         type: string
       status:
         $ref: '#/definitions/uno_domain_model.RegistrationStatus'
-      unregister_reason:
+      unregisterReason:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_model.RegistrationStatus:
@@ -165,13 +165,15 @@ definitions:
     - RegistrationStatusRemoved
   uno_domain_model.SiteFeedback:
     properties:
-      created_at:
+      category:
+        type: string
+      createdAt:
         type: string
       email:
         type: string
       id:
         type: string
-      is_read:
+      isRead:
         type: boolean
       message:
         type: string
@@ -180,13 +182,13 @@ definitions:
     type: object
   uno_domain_model.SpotRange:
     properties:
-      happening_id:
+      happeningId:
         type: string
       id:
         type: string
-      max_year:
+      maxYear:
         type: integer
-      min_year:
+      minYear:
         type: integer
       spots:
         type: integer
@@ -195,26 +197,26 @@ definitions:
     properties:
       email:
         type: string
-      expires_at:
+      expiresAt:
         type: string
       reason:
         type: string
     type: object
   uno_domain_repo.BanInfo:
     properties:
-      banned_by_id:
+      bannedById:
         type: string
-      banned_by_name:
+      bannedByName:
         type: string
-      created_at:
+      createdAt:
         type: string
-      expires_at:
+      expiresAt:
         type: string
       id:
         type: integer
       reason:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_repo.CommentWithReactionsAndUser:
@@ -232,19 +234,19 @@ definitions:
     properties:
       count:
         type: integer
-      created_at:
+      createdAt:
         type: string
-      expires_at:
+      expiresAt:
         type: string
       id:
         type: integer
       reason:
         type: string
-      striked_by_id:
+      strikedById:
         type: string
-      striked_by_name:
+      strikedByName:
         type: string
-      user_id:
+      userId:
         type: string
     type: object
   uno_domain_repo.User:
@@ -258,7 +260,7 @@ definitions:
     type: object
   uno_domain_repo.UserWithBanInfo:
     properties:
-      ban_info:
+      banInfo:
         $ref: '#/definitions/uno_domain_repo.BanInfo'
       dots:
         items:
@@ -275,9 +277,9 @@ definitions:
     properties:
       id:
         type: string
-      image_url:
+      image:
         type: string
-      is_banned:
+      isBanned:
         type: boolean
       name:
         type: string
@@ -286,8 +288,6 @@ definitions:
     type: object
   uno_domain_services.RegisterRequest:
     properties:
-      happeningId:
-        type: string
       questions:
         items:
           $ref: '#/definitions/uno_domain_model.QuestionAnswer'
@@ -306,7 +306,7 @@ definitions:
     type: object
   uno_domain_services.ShoppingList:
     properties:
-      created_at:
+      createdAt:
         type: string
       id:
         type: string
@@ -316,9 +316,9 @@ definitions:
         type: array
       name:
         type: string
-      user_id:
+      userId:
         type: string
-      user_name:
+      userName:
         type: string
     type: object
 host: localhost:8080

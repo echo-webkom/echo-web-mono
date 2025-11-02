@@ -20,35 +20,35 @@ type UserWithStrikes struct {
 	ID       string  `json:"id"`
 	Name     *string `json:"name,omitempty"`
 	Image    *string `json:"image"`
-	IsBanned bool    `json:"is_banned"`
+	IsBanned bool    `json:"isBanned"`
 	Strikes  int     `json:"strikes"`
 }
 
 type BanInfo struct {
 	ID           int       `json:"id"`
 	Reason       string    `json:"reason"`
-	UserID       string    `json:"user_id"`
-	BannedByID   string    `json:"banned_by_id"`
-	BannedByName *string   `json:"banned_by_name,omitempty"`
-	CreatedAt    time.Time `json:"created_at"`
-	ExpiresAt    time.Time `json:"expires_at"`
+	UserID       string    `json:"userId"`
+	BannedByID   string    `json:"bannedById"`
+	BannedByName *string   `json:"bannedByName,omitempty"`
+	CreatedAt    time.Time `json:"createdAt"`
+	ExpiresAt    time.Time `json:"expiresAt"`
 }
 
 type DotInfo struct {
 	ID            int       `json:"id"`
-	UserID        string    `json:"user_id"`
+	UserID        string    `json:"userId"`
 	Count         int       `json:"count"`
 	Reason        string    `json:"reason"`
-	CreatedAt     time.Time `json:"created_at"`
-	ExpiresAt     time.Time `json:"expires_at"`
-	StrikedByID   string    `json:"striked_by_id"`
-	StrikedByName *string   `json:"striked_by_name,omitempty"`
+	CreatedAt     time.Time `json:"createdAt"`
+	ExpiresAt     time.Time `json:"expiresAt"`
+	StrikedByID   string    `json:"strikedById"`
+	StrikedByName *string   `json:"strikedByName,omitempty"`
 }
 
 type UserWithBanInfo struct {
 	ID      string    `json:"id"`
 	Name    *string   `json:"name,omitempty"`
 	Image   *string   `json:"image,omitempty"`
-	BanInfo BanInfo   `json:"ban_info"`
+	BanInfo BanInfo   `json:"banInfo"`
 	Dots    []DotInfo `json:"dots"`
 }

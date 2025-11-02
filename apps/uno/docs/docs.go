@@ -1046,13 +1046,13 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "parent_comment_id": {
+                "parentCommentId": {
                     "type": "string"
                 },
-                "post_id": {
+                "postId": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1082,10 +1082,10 @@ const docTemplate = `{
         "adapters_http_routes_api.ReactToCommentRequest": {
             "type": "object",
             "properties": {
-                "comment_id": {
+                "commentId": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1093,7 +1093,7 @@ const docTemplate = `{
         "uno_domain_model.AccessRequest": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "email": {
@@ -1113,22 +1113,22 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "parent_comment_id": {
+                "parentCommentId": {
                     "type": "string"
                 },
-                "post_id": {
+                "postId": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1136,16 +1136,16 @@ const docTemplate = `{
         "uno_domain_model.CommentsReaction": {
             "type": "object",
             "properties": {
-                "comment_id": {
+                "commentId": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "type": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1170,19 +1170,19 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "registration_end": {
+                "registrationEnd": {
                     "type": "string"
                 },
-                "registration_groups": {
+                "registrationGroups": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "registration_start": {
+                "registrationStart": {
                     "type": "string"
                 },
-                "registration_start_groups": {
+                "registrationStartGroups": {
                     "type": "string"
                 },
                 "slug": {
@@ -1199,13 +1199,13 @@ const docTemplate = `{
         "uno_domain_model.Question": {
             "type": "object",
             "properties": {
-                "happening_id": {
+                "happeningId": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "is_sensitive": {
+                "isSensitive": {
                     "type": "boolean"
                 },
                 "options": {
@@ -1243,28 +1243,28 @@ const docTemplate = `{
         "uno_domain_model.Registration": {
             "type": "object",
             "properties": {
-                "changed_at": {
+                "changedAt": {
                     "type": "string"
                 },
-                "changed_by": {
+                "changedBy": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
-                "happening_id": {
+                "happeningId": {
                     "type": "string"
                 },
-                "prev_status": {
+                "prevStatus": {
                     "type": "string"
                 },
                 "status": {
                     "$ref": "#/definitions/uno_domain_model.RegistrationStatus"
                 },
-                "unregister_reason": {
+                "unregisterReason": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1289,7 +1289,10 @@ const docTemplate = `{
         "uno_domain_model.SiteFeedback": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "email": {
@@ -1298,7 +1301,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "is_read": {
+                "isRead": {
                     "type": "boolean"
                 },
                 "message": {
@@ -1312,16 +1315,16 @@ const docTemplate = `{
         "uno_domain_model.SpotRange": {
             "type": "object",
             "properties": {
-                "happening_id": {
+                "happeningId": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "max_year": {
+                "maxYear": {
                     "type": "integer"
                 },
-                "min_year": {
+                "minYear": {
                     "type": "integer"
                 },
                 "spots": {
@@ -1335,7 +1338,7 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string"
                 },
                 "reason": {
@@ -1346,16 +1349,16 @@ const docTemplate = `{
         "uno_domain_repo.BanInfo": {
             "type": "object",
             "properties": {
-                "banned_by_id": {
+                "bannedById": {
                     "type": "string"
                 },
-                "banned_by_name": {
+                "bannedByName": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string"
                 },
                 "id": {
@@ -1364,7 +1367,7 @@ const docTemplate = `{
                 "reason": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1392,10 +1395,10 @@ const docTemplate = `{
                 "count": {
                     "type": "integer"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string"
                 },
                 "id": {
@@ -1404,13 +1407,13 @@ const docTemplate = `{
                 "reason": {
                     "type": "string"
                 },
-                "striked_by_id": {
+                "strikedById": {
                     "type": "string"
                 },
-                "striked_by_name": {
+                "strikedByName": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1432,7 +1435,7 @@ const docTemplate = `{
         "uno_domain_repo.UserWithBanInfo": {
             "type": "object",
             "properties": {
-                "ban_info": {
+                "banInfo": {
                     "$ref": "#/definitions/uno_domain_repo.BanInfo"
                 },
                 "dots": {
@@ -1458,10 +1461,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "image_url": {
+                "image": {
                     "type": "string"
                 },
-                "is_banned": {
+                "isBanned": {
                     "type": "boolean"
                 },
                 "name": {
@@ -1475,9 +1478,6 @@ const docTemplate = `{
         "uno_domain_services.RegisterRequest": {
             "type": "object",
             "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
                 "questions": {
                     "type": "array",
                     "items": {
@@ -1506,7 +1506,7 @@ const docTemplate = `{
         "uno_domain_services.ShoppingList": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -1521,10 +1521,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "user_id": {
+                "userId": {
                     "type": "string"
                 },
-                "user_name": {
+                "userName": {
                     "type": "string"
                 }
             }
