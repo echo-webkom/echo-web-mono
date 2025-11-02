@@ -1,52 +1,58 @@
 {
-  "lastUpdated": "2025-10-23T17:52:49.530608+02:00",
-  "fields": {
-    "ADMIN_KEY": {
-      "required": true,
-      "key": "ADMIN_KEY"
-    },
-    "AOC_SESSION_COOKIE": {
-      "key": "AOC_SESSION_COOKIE"
-    },
-    "API_PORT": {
-      "public": true,
-      "key": "API_PORT",
-      "value": "8000"
-    },
-    "AUTH_SECRET": {
-      "required": true,
-      "key": "AUTH_SECRET"
-    },
-    "DATABASE_URL": {
-      "required": true,
-      "key": "DATABASE_URL"
-    },
-    "FEIDE_CLIENT_ID": {
-      "required": true,
-      "lengthRequired": true,
-      "length": 36,
-      "key": "FEIDE_CLIENT_ID"
-    },
-    "FEIDE_CLIENT_SECRET": {
-      "required": true,
-      "lengthRequired": true,
-      "length": 36,
-      "key": "FEIDE_CLIENT_SECRET"
-    },
-    "NEXT_PUBLIC_API_URL": {
-      "public": true,
-      "key": "NEXT_PUBLIC_API_URL",
-      "value": "http://localhost:8000"
-    },
-    "NEXT_PUBLIC_ECHOGRAM_URL": {
-      "public": true,
-      "key": "NEXT_PUBLIC_ECHOGRAM_URL",
-      "value": "http://localhost:8001"
-    },
-    "NEXT_PUBLIC_SANITY_DATASET": {
-      "public": true,
-      "key": "NEXT_PUBLIC_SANITY_DATASET",
-      "value": "production"
-    }
-  }
+	"lastUpdated": "2025-11-02T13:57:39.655073+01:00",
+	"fields": {
+		"ADMIN_KEY": {
+			"required": true,
+			"key": "ADMIN_KEY"
+		},
+		"AOC_SESSION_COOKIE": {
+			"key": "AOC_SESSION_COOKIE"
+		},
+		"API_PORT": {
+			"public": true,
+			"key": "API_PORT",
+			"value": "8000"
+		},
+		"AUTH_SECRET": {
+			"required": true,
+			"key": "AUTH_SECRET"
+		},
+		"DATABASE_URL": {
+			"required": true,
+			"key": "DATABASE_URL"
+		},
+		"FEIDE_CLIENT_ID": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_ID"
+		},
+		"FEIDE_CLIENT_SECRET": {
+			"required": true,
+			"lengthRequired": true,
+			"length": 36,
+			"key": "FEIDE_CLIENT_SECRET"
+		},
+		"NEXT_PUBLIC_API_URL": {
+			"public": true,
+			"key": "NEXT_PUBLIC_API_URL",
+			"value": "http://localhost:8000"
+		},
+		"NEXT_PUBLIC_ECHOGRAM_URL": {
+			"public": true,
+			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
+			"value": "http://localhost:8001"
+		},
+		"NEXT_PUBLIC_SANITY_DATASET": {
+			"public": true,
+			"key": "NEXT_PUBLIC_SANITY_DATASET",
+			"value": "production"
+		},
+		"UNO_API_PORT": {
+			"public": true,
+			"format": ":{number}",
+			"key": "UNO_API_PORT",
+			"value": ":8080"
+		}
+	}
 }

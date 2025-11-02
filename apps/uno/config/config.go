@@ -19,8 +19,12 @@ type Config struct {
 }
 
 func Load() *Config {
-	if err := cenv.Verify(); err != nil {
-		log.Fatal(err)
+	environment := getEnvOrDefault("ENVIRONMENT", "development")
+
+	if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
+		if environment != "production" {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
 	}
 
 	return &Config{
@@ -28,7 +32,7 @@ func Load() *Config {
 		ApiPort:          os.Getenv("UNO_API_PORT"),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		OTLPEndpoint:     getEnvOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4317"),
-		Environment:      getEnvOrDefault("ENVIRONMENT", "development"),
+		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		ServiceVersion:   getEnvOrDefault("SERVICE_VERSION", "1.0.0"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "true") == "true",
