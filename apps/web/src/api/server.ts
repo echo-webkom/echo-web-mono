@@ -8,6 +8,7 @@ export const apiServer = ky.extend({
   credentials: "include",
   cache: "no-store",
   headers: {
+    Authorization: "Bearer " + process.env.ADMIN_KEY,
     "X-Admin-Key": process.env.ADMIN_KEY,
   },
 });
