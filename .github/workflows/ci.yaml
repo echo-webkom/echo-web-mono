@@ -156,7 +156,7 @@ jobs:
         run: pnpm seed database --mode test
 
       - name: 👷🏻‍♂️ Build
-        run: pnpm build
+        run: pnpm build --filter=@echo-webkom/web --filter=@echo-webkom/api
 
       - name: 🎭 Run playwright tests
         run: pnpm test:e2e
