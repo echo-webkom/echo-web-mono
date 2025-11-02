@@ -43,3 +43,15 @@ func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWit
 func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
 	return s.userRepo.GetBannedUsers(ctx)
 }
+
+func (s *StrikeService) UserRepo() repo.UserRepo {
+	return s.userRepo
+}
+
+func (s *StrikeService) DotRepo() repo.DotRepo {
+	return s.dotRepo
+}
+
+func (s *StrikeService) BanInfoRepo() repo.BanInfoRepo {
+	return s.banInforepo
+}

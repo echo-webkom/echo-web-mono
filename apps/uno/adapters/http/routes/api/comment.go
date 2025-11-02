@@ -26,7 +26,7 @@ func GetCommentsByIDHandler(commentService *services.CommentService) router.Hand
 		if id == "" {
 			return http.StatusBadRequest, nil
 		}
-		comments, err := commentService.Queries().GetCommentsByID(r.Context(), id)
+		comments, err := commentService.CommentRepo().GetCommentsByID(r.Context(), id)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -59,7 +59,7 @@ func CreateCommentHandler(commentService *services.CommentService) router.Handle
 		if err := util.ReadJson(r, &req); err != nil {
 			return http.StatusBadRequest, err
 		}
-		err := commentService.Queries().CreateComment(r.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
+		err := commentService.CommentRepo().CreateComment(r.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}

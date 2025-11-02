@@ -19,6 +19,10 @@ func NewUserService(
 	}
 }
 
+func (s *UserService) UserRepo() repo.UserRepo {
+	return s.userRepo
+}
+
 func (s *UserService) GetUsersWithBirthdayToday(ctx context.Context) ([]model.User, error) {
 	norway, _ := time.LoadLocation("Europe/Oslo")
 	return s.userRepo.GetUsersWithBirthday(ctx, time.Now().In(norway))

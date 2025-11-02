@@ -15,7 +15,7 @@ func NewCommentService(commentRepo repo.CommentRepo) *CommentService {
 	}
 }
 
-func (s *CommentService) Queries() repo.CommentRepo {
+func (s *CommentService) CommentRepo() repo.CommentRepo {
 	return s.commentRepo
 }
 

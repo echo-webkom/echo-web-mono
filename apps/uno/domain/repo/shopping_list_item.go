@@ -7,7 +7,7 @@ import (
 
 type ShoppingListItemRepo interface {
 	GetAllShoppingListItems(ctx context.Context) ([]ShoppingListItemWithCreator, error)
-	CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) error
+	CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) (model.ShoppingListItem, error)
 	DeleteShoppingListItem(ctx context.Context, itemID string) error
 }
 

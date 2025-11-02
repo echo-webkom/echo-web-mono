@@ -1,4 +1,4 @@
-package api
+package api_test
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"uno/adapters/http/routes/api"
 	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
@@ -29,7 +30,7 @@ func TestGetDegreesHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := GetDegreesHandler(degreeService)
+	handler := api.GetDegreesHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
 	w := httptest.NewRecorder()
@@ -54,16 +55,16 @@ func TestGetDegreesHandler_WithData(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, _ = degreeService.Queries().CreateDegree(ctx, model.Degree{
+	_, _ = degreeService.DegreeRepo().CreateDegree(ctx, model.Degree{
 		ID:   "DTEK",
 		Name: "Datateknologi",
 	})
-	_, _ = degreeService.Queries().CreateDegree(ctx, model.Degree{
+	_, _ = degreeService.DegreeRepo().CreateDegree(ctx, model.Degree{
 		ID:   "INF",
 		Name: "Informatikk",
 	})
 
-	handler := GetDegreesHandler(degreeService)
+	handler := api.GetDegreesHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
 	w := httptest.NewRecorder()
@@ -90,7 +91,7 @@ func TestCreateDegreeHandler_Success(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := CreateDegreeHandler(degreeService)
+	handler := api.CreateDegreeHandler(degreeService)
 
 	degree := model.Degree{
 		ID:   "DTEK",
@@ -120,7 +121,7 @@ func TestCreateDegreeHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := CreateDegreeHandler(degreeService)
+	handler := api.CreateDegreeHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/degrees", bytes.NewReader([]byte("invalid json")))
 	w := httptest.NewRecorder()
@@ -140,12 +141,12 @@ func TestUpdateDegreeHandler_Success(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, _ = degreeService.Queries().CreateDegree(ctx, model.Degree{
+	_, _ = degreeService.DegreeRepo().CreateDegree(ctx, model.Degree{
 		ID:   "DTEK",
 		Name: "Datateknologi",
 	})
 
-	handler := UpdateDegreeHandler(degreeService)
+	handler := api.UpdateDegreeHandler(degreeService)
 
 	updatedDegree := model.Degree{
 		ID:   "DTEK",
@@ -175,7 +176,7 @@ func TestUpdateDegreeHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := UpdateDegreeHandler(degreeService)
+	handler := api.UpdateDegreeHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/degrees/DTEK", bytes.NewReader([]byte("invalid")))
 	w := httptest.NewRecorder()
@@ -195,12 +196,12 @@ func TestDeleteDegreeHandler_Success(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, _ = degreeService.Queries().CreateDegree(ctx, model.Degree{
+	_, _ = degreeService.DegreeRepo().CreateDegree(ctx, model.Degree{
 		ID:   "DTEK",
 		Name: "Datateknologi",
 	})
 
-	handler := DeleteDegreeHandler(degreeService)
+	handler := api.DeleteDegreeHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodDelete, "/degrees/DTEK", nil)
 	req.SetPathValue("id", "DTEK")
@@ -211,7 +212,7 @@ func TestDeleteDegreeHandler_Success(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusNoContent, status)
 
-	degrees, _ := degreeService.Queries().GetAllDegrees(ctx)
+	degrees, _ := degreeService.DegreeRepo().GetAllDegrees(ctx)
 	assert.Len(t, degrees, 0)
 }
 
@@ -222,7 +223,7 @@ func TestDeleteDegreeHandler_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := DeleteDegreeHandler(degreeService)
+	handler := api.DeleteDegreeHandler(degreeService)
 
 	req := httptest.NewRequest(http.MethodDelete, "/degrees/", nil)
 	// Test when no ID is set in path

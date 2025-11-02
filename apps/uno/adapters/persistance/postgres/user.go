@@ -13,16 +13,139 @@ type UserRepo struct {
 	db *Database
 }
 
+// type BanInfo struct {
+// 	ID           int       `json:"id"`
+// 	Reason       string    `json:"reason"`
+// 	UserID       string    `json:"user_id"`
+// 	BannedByID   string    `json:"banned_by_id"`
+// 	BannedByName string    `json:"banned_by_name"`
+// 	CreatedAt    time.Time `json:"created_at"`
+// 	ExpiresAt    time.Time `json:"expires_at"`
+// }
+
+// type DotInfo struct {
+// 	ID            int       `json:"id"`
+// 	UserID        string    `json:"user_id"`
+// 	Count         int       `json:"count"`
+// 	Reason        string    `json:"reason"`
+// 	CreatedAt     time.Time `json:"created_at"`
+// 	ExpiresAt     time.Time `json:"expires_at"`
+// 	StrikedByID   string    `json:"striked_by_id"`
+// 	StrikedByName string    `json:"striked_by_name"`
+// }
+
+// type UserWithBanInfo struct {
+// 	ID      string    `json:"id"`
+// 	Name    *string   `json:"name,omitempty"`
+// 	Image   *string   `json:"image,omitempty"`
+// 	BanInfo BanInfo   `json:"ban_info"`
+// 	Dots    []DotInfo `json:"dots"`
+// }
+
 func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
-	panic("unimplemented")
+	// First, get all banned users with their ban info
+	banQuery := `--sql
+		SELECT
+			u.id, u.name, u.image,
+			b.id AS ban_id, b.reason AS ban_reason, b.user_id AS ban_user_id,
+			b.banned_by AS ban_banned_by_id, banned_by_user.name AS ban_banned_by_name,
+			b.created_at AS ban_created_at, b.expires_at AS ban_expires_at
+		FROM "user" u
+		JOIN ban_info b ON u.id = b.user_id
+		LEFT JOIN "user" banned_by_user ON b.banned_by = banned_by_user.id;
+	`
+
+	rows, err := u.db.QueryContext(ctx, banQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var users []repo.UserWithBanInfo
+	userMap := make(map[string]*repo.UserWithBanInfo)
+
+	for rows.Next() {
+		var user repo.UserWithBanInfo
+		err := rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Image,
+			&user.BanInfo.ID,
+			&user.BanInfo.Reason,
+			&user.BanInfo.UserID,
+			&user.BanInfo.BannedByID,
+			&user.BanInfo.BannedByName,
+			&user.BanInfo.CreatedAt,
+			&user.BanInfo.ExpiresAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		user.Dots = []repo.DotInfo{}
+		users = append(users, user)
+		userMap[user.ID] = &users[len(users)-1]
+	}
+
+	if len(users) == 0 {
+		return users, nil
+	}
+
+	// Now get all dots for these banned users
+	userIDs := make([]string, 0, len(users))
+	for _, user := range users {
+		userIDs = append(userIDs, user.ID)
+	}
+
+	dotQuery := `--sql
+		SELECT
+			d.id, d.user_id, d.count, d.reason, d.created_at, d.expires_at,
+			d.striked_by AS striked_by_id, striked_by_user.name AS striked_by_name
+		FROM dot d
+		LEFT JOIN "user" striked_by_user ON d.striked_by = striked_by_user.id
+		WHERE d.user_id = ANY($1)
+		ORDER BY d.user_id, d.created_at DESC;
+	`
+
+	var dots []repo.DotInfo
+	err = u.db.SelectContext(ctx, &dots, dotQuery, pq.Array(userIDs))
+	if err != nil {
+		return nil, err
+	}
+
+	// Group dots by user ID
+	for _, dot := range dots {
+		if user, exists := userMap[dot.UserID]; exists {
+			user.Dots = append(user.Dots, dot)
+		}
+	}
+
+	return users, nil
 }
 
-func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWithStrikes, error) {
-	panic("unimplemented")
+func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []repo.UserWithStrikes, err error) {
+	query := `--sql
+		SELECT
+			u.id, u.name, u.image,
+			COALESCE(b.is_banned, false) AS isbanned,
+			COALESCE(d.strike_count, 0) AS strikes
+		FROM "user" u
+		LEFT JOIN (
+			SELECT user_id, COUNT(*) AS strike_count
+			FROM dot
+			GROUP BY user_id
+		) d ON u.id = d.user_id
+		LEFT JOIN (
+			SELECT user_id, TRUE AS is_banned
+			FROM ban_info
+		) b ON u.id = b.user_id;
+	`
+
+	err = u.db.SelectContext(ctx, &users, query)
+	return users, err
 }
 
 func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
-	query := `
+	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
@@ -35,7 +158,7 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User,
 }
 
 func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
-	query := `
+	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
@@ -48,7 +171,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []mod
 }
 
 func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
-	query := `
+	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
@@ -63,13 +186,35 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (us
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
-	query := `
+	query := `--sql
 		SELECT group_id
 		FROM users_to_groups
 		WHERE user_id = $1
 	`
 	err = u.db.SelectContext(ctx, &groupIDs, query, userID)
 	return groupIDs, err
+}
+
+func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User, error) {
+	query := `--sql
+		INSERT INTO "user" (id, email, name, image, alternative_email, degree_id, year, type, has_read_terms, birthday, is_public)
+		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
+	`
+	var result model.User
+	err := u.db.GetContext(ctx, &result, query,
+		user.Email,
+		user.Name,
+		user.Image,
+		user.AlternativeEmail,
+		user.DegreeID,
+		user.Year,
+		user.Type,
+		user.HasReadTerms,
+		user.Birthday,
+		user.IsPublic,
+	)
+	return result, err
 }
 
 func NewUserRepo(db *Database) repo.UserRepo {

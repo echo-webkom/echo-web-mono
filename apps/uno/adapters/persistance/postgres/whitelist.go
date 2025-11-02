@@ -11,7 +11,7 @@ type WhitelistRepo struct {
 }
 
 func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whitelist, err error) {
-	query := `
+	query := `--sql
 		SELECT email, expires_at, reason
 		FROM whitelist
 		WHERE expires_at > NOW()
@@ -22,7 +22,7 @@ func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whi
 }
 
 func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (wl model.Whitelist, err error) {
-	query := `
+	query := `--sql
 		SELECT email, expires_at, reason
 		FROM whitelist
 		WHERE email = $1
@@ -32,7 +32,7 @@ func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (
 }
 
 func (p *WhitelistRepo) IsWhitelisted(ctx context.Context, email string) (bool, error) {
-	query := `
+	query := `--sql
 		SELECT COUNT(1)
 		FROM whitelist
 		WHERE email = $1
@@ -40,6 +40,17 @@ func (p *WhitelistRepo) IsWhitelisted(ctx context.Context, email string) (bool, 
 	var count int
 	err := p.db.GetContext(ctx, &count, query, email)
 	return count > 0, err
+}
+
+func (p *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.Whitelist) (model.Whitelist, error) {
+	query := `--sql
+		INSERT INTO whitelist (email, expires_at, reason)
+		VALUES ($1, $2, $3)
+		RETURNING email, expires_at, reason
+	`
+	var result model.Whitelist
+	err := p.db.GetContext(ctx, &result, query, whitelist.Email, whitelist.ExpiresAt, whitelist.Reason)
+	return result, err
 }
 
 func NewWhitelistRepo(db *Database) repo.WhitelistRepo {

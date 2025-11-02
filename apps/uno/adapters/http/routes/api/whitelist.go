@@ -23,7 +23,7 @@ import (
 // @Router       /whitelist [get]
 func GetWhitelistHandler(whitelistService *services.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		whitelistedEmails, err := whitelistService.Queries().GetWhitelist(r.Context())
+		whitelistedEmails, err := whitelistService.WhitelistRepo().GetWhitelist(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -45,7 +45,7 @@ func GetWhitelistHandler(whitelistService *services.WhitelistService) router.Han
 func GetWhitelistByEmailHandler(whitelistService *services.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		email := r.PathValue("email")
-		whitelistInfo, err := whitelistService.Queries().GetWhitelistByEmail(r.Context(), email)
+		whitelistInfo, err := whitelistService.WhitelistRepo().GetWhitelistByEmail(r.Context(), email)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}

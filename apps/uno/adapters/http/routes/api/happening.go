@@ -19,7 +19,7 @@ import (
 // @Router       /happenings [get]
 func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		haps, err := hs.Queries().GetAllHappenings(r.Context())
+		haps, err := hs.HappeningRepo().GetAllHappenings(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -45,7 +45,7 @@ func GetHappeningById(hs *services.HappeningService) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		hap, err := hs.Queries().GetHappeningById(r.Context(), id)
+		hap, err := hs.HappeningRepo().GetHappeningById(r.Context(), id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -73,17 +73,17 @@ func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handle
 
 		ctx := r.Context()
 
-		hap, err := hs.Queries().GetHappeningById(ctx, id)
+		hap, err := hs.HappeningRepo().GetHappeningById(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
 
-		spotRanges, err := hs.Queries().GetHappeningSpotRanges(ctx, hap.ID)
+		spotRanges, err := hs.HappeningRepo().GetHappeningSpotRanges(ctx, hap.ID)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
 
-		regs, err := hs.Queries().GetHappeningRegistrations(ctx, hap.ID)
+		regs, err := hs.HappeningRepo().GetHappeningRegistrations(ctx, hap.ID)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -131,7 +131,7 @@ func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		regs, err := hs.Queries().GetHappeningRegistrations(ctx, id)
+		regs, err := hs.HappeningRepo().GetHappeningRegistrations(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -160,7 +160,7 @@ func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		ranges, err := hs.Queries().GetHappeningSpotRanges(ctx, id)
+		ranges, err := hs.HappeningRepo().GetHappeningSpotRanges(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
@@ -188,7 +188,7 @@ func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 			return http.StatusBadRequest, fmt.Errorf("missing id in path")
 		}
 
-		qs, err := hs.Queries().GetHappeningQuestions(ctx, id)
+		qs, err := hs.HappeningRepo().GetHappeningQuestions(ctx, id)
 		if err != nil {
 			return http.StatusNotFound, err
 		}

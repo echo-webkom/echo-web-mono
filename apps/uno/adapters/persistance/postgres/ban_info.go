@@ -12,7 +12,7 @@ type BanInfoRepo struct {
 }
 
 func (p *BanInfoRepo) DeleteExpired(ctx context.Context) error {
-	query := `
+	query := `--sql
 		DELETE FROM ban_info
 		WHERE expires_at IS NOT NULL AND expires_at <= NOW()
 	`
@@ -22,7 +22,7 @@ func (p *BanInfoRepo) DeleteExpired(ctx context.Context) error {
 
 func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*model.BanInfo, error) {
 	var banInfo model.BanInfo
-	query := `
+	query := `--sql
 		SELECT
 			id, user_id, banned_by, reason, created_at, expires_at
 		FROM ban_info
@@ -38,6 +38,17 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 		return nil, err
 	}
 	return &banInfo, nil
+}
+
+func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.BanInfo, error) {
+	query := `--sql
+		INSERT INTO ban_info (user_id, banned_by, reason, expires_at)
+		VALUES ($1, $2, $3, $4)
+		RETURNING id, user_id, banned_by, reason, created_at, expires_at
+	`
+	var result model.BanInfo
+	err := p.db.GetContext(ctx, &result, query, ban.UserID, ban.BannedBy, ban.Reason, ban.ExpiresAt)
+	return result, err
 }
 
 func NewBanInfoRepo(db *Database) repo.BanInfoRepo {

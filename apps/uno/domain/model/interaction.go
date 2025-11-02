@@ -7,6 +7,7 @@ type SiteFeedback struct {
 	Name      *string   `db:"name" json:"name,omitempty"`
 	Email     *string   `db:"email" json:"email,omitempty"`
 	Message   string    `db:"message" json:"message"`
+	Category  string    `db:"category" json:"category"`
 	IsRead    bool      `db:"is_read" json:"is_read"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 }

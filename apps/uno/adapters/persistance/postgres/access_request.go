@@ -10,19 +10,21 @@ type AccessRequestRepo struct {
 	db *Database
 }
 
-func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.AccessRequest) error {
-	query := `
-		INSERT INTO access_requests (email, reason, created_at)
-		VALUES ($1, $2, NOW())
+func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error) {
+	query := `--sql
+		INSERT INTO access_request (id, email, reason)
+		VALUES (gen_random_uuid(), $1, $2)
+		RETURNING id, email, reason, created_at
 	`
-	_, err := a.db.ExecContext(ctx, query, ar.Email, ar.Reason)
-	return err
+	var result model.AccessRequest
+	err := a.db.GetContext(ctx, &result, query, ar.Email, ar.Reason)
+	return result, err
 }
 
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
-	query := `
+	query := `--sql
 		SELECT id, email, reason, created_at
-		FROM access_requests
+		FROM access_request
 		ORDER BY created_at DESC
 	`
 	err = a.db.SelectContext(ctx, &ars, query)

@@ -14,7 +14,7 @@ type RegistrationRepo struct {
 
 func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error) {
 	var reg model.Registration
-	query := `
+	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
 			created_at, prev_status, changed_at, changed_by
@@ -55,7 +55,7 @@ func (r *RegistrationRepo) CreateRegistration(
 
 	// Get all existing registrations for this happening
 	var existingRegs []model.Registration
-	query := `
+	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
 			created_at, prev_status, changed_at, changed_by
@@ -78,9 +78,9 @@ func (r *RegistrationRepo) CreateRegistration(
 	usersByID := make(map[string]*model.User)
 	membershipsByUserID := make(map[string][]string)
 
-	for _, uid := range userIDs {
+	for _, uid := range userIDs { // TODO: Fix N+1 query
 		var user model.User
-		userQuery := `
+		userQuery := `--sql
 			SELECT
 				id, name, email, image, alternative_email, degree_id, year, type,
 				last_sign_in_at, updated_at, created_at, has_read_terms,
@@ -97,7 +97,7 @@ func (r *RegistrationRepo) CreateRegistration(
 
 			// Get memberships for this user
 			var memberships []string
-			membershipQuery := `
+			membershipQuery := `--sql
 				SELECT group_id
 				FROM users_to_groups
 				WHERE user_id = $1
@@ -133,7 +133,7 @@ func (r *RegistrationRepo) CreateRegistration(
 
 	// Insert or update registration
 	var registration model.Registration
-	upsertQuery := `
+	upsertQuery := `--sql
 		INSERT INTO registration (user_id, happening_id, status, created_at)
 		VALUES ($1, $2, $3, NOW())
 		ON CONFLICT (user_id, happening_id)
@@ -165,7 +165,7 @@ func (r *RegistrationRepo) InsertAnswers(
 	}
 
 	// Build bulk insert query
-	query := `
+	query := `--sql
 		INSERT INTO answer (user_id, happening_id, question_id, answer)
 		VALUES ($1, $2, $3, $4)
 		ON CONFLICT (user_id, happening_id, question_id)

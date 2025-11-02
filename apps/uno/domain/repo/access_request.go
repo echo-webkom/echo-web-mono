@@ -7,5 +7,5 @@ import (
 
 type AccessRequestRepo interface {
 	GetAccessRequests(ctx context.Context) ([]model.AccessRequest, error)
-	CreateAccessRequest(ctx context.Context, ar model.AccessRequest) error
+	CreateAccessRequest(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error)
 }

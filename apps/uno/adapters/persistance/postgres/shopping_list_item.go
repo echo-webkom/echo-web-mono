@@ -10,29 +10,32 @@ type ShoppingListRepo struct {
 	db *Database
 }
 
-func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) error {
-	query := `
-	INSERT INTO shopping_list_item (id, user_id, name, created_at) VALUES ($1, $2, $3, $4)
+func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) (model.ShoppingListItem, error) {
+	query := `--sql
+		INSERT INTO shopping_list_item (id, user_id, name)
+		VALUES (gen_random_uuid(), $1, $2)
+		RETURNING id, user_id, name, created_at
 	`
-	_, err := p.db.ExecContext(ctx, query, item.ID, item.UserID, item.Name, item.CreatedAt)
-	return err
+	var result model.ShoppingListItem
+	err := p.db.GetContext(ctx, &result, query, item.UserID, item.Name)
+	return result, err
 }
 
 func (p *ShoppingListRepo) DeleteShoppingListItem(ctx context.Context, itemID string) error {
-	query := `
-	DELETE FROM shopping_list_item WHERE id = $1
+	query := `--sql
+		DELETE FROM shopping_list_item WHERE id = $1
 	`
 	_, err := p.db.ExecContext(ctx, query, itemID)
 	return err
 }
 
 func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]repo.ShoppingListItemWithCreator, error) {
-	query := `
-	SELECT
-		sli.id, sli.user_id, sli.name, sli.created_at,
-		u.name AS "user_name"
-	FROM shopping_list_item sli
-	JOIN "user" u ON sli.user_id = u.id
+	query := `--sql
+		SELECT
+			sli.id, sli.user_id, sli.name, sli.created_at,
+			u.name AS "user_name"
+		FROM shopping_list_item sli
+		JOIN "user" u ON sli.user_id = u.id
 	`
 
 	var items []repo.ShoppingListItemWithCreator

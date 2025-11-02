@@ -11,35 +11,37 @@ type CommentRepo struct {
 	db *Database
 }
 
-func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string, userID string) error {
-	reactionType := "like" // TODO: Support multiple reaction types
+var (
+	ReactionTypeLike = "like"
+)
 
-	query := `
-		INSERT INTO comment_reactions (comment_id, user_id, type)
+func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string, userID string) error {
+	query := `--sql
+		INSERT INTO comments_reactions (comment_id, user_id, type)
 		VALUES ($1, $2, $3)
 		ON CONFLICT DO NOTHING;
 	`
-	_, err := c.db.ExecContext(ctx, query, commentID, userID, reactionType)
+	_, err := c.db.ExecContext(ctx, query, commentID, userID, ReactionTypeLike)
 	return err
 }
 
 func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID string, userID string, parentCommentID *string) error {
-	query := `
-		INSERT INTO comments (content, post_id, user_id, parent_comment_id)
-		VALUES ($1, $2, $3, $4);
+	query := `--sql
+		INSERT INTO comment (id, content, post_id, user_id, parent_comment_id, created_at, updated_at)
+		VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), NOW());
 	`
 	_, err := c.db.ExecContext(ctx, query, content, postID, userID, parentCommentID)
 	return err
 }
 
 func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.CommentWithReactionsAndUser, error) {
-	query := `
+	query := `--sql
 		SELECT c.id, c.content, c.post_id, c.user_id, c.parent_comment_id, c.created_at, c.updated_at,
 		       u.id, u.name, u.image,
 		       cr.comment_id, cr.user_id, cr.type, cr.created_at
-		FROM comments c
-		LEFT JOIN users u ON c.user_id = u.id
-		LEFT JOIN comment_reactions cr ON c.id = cr.comment_id
+		FROM comment c
+		LEFT JOIN "user" u ON c.user_id = u.id
+		LEFT JOIN comments_reactions cr ON c.id = cr.comment_id
 		WHERE c.id = $1
 		ORDER BY cr.created_at ASC;
 	`
@@ -121,9 +123,9 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.Co
 }
 
 func (c *CommentRepo) IsReactedByUser(ctx context.Context, commentID string, userID string) (bool, error) {
-	query := `
+	query := `--sql
 		SELECT COUNT(1)
-		FROM comment_reactions
+		FROM comments_reactions
 		WHERE comment_id = $1 AND user_id = $2;
 	`
 	var count int
@@ -135,8 +137,8 @@ func (c *CommentRepo) IsReactedByUser(ctx context.Context, commentID string, use
 }
 
 func (c *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID string, userID string) error {
-	query := `
-		DELETE FROM comment_reactions
+	query := `--sql
+		DELETE FROM comments_reactions
 		WHERE comment_id = $1 AND user_id = $2;
 	`
 	_, err := c.db.ExecContext(ctx, query, commentID, userID)

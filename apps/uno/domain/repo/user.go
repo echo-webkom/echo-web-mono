@@ -13,12 +13,13 @@ type UserRepo interface {
 	GetUsersWithStrikes(ctx context.Context) ([]UserWithStrikes, error)
 	GetBannedUsers(ctx context.Context) ([]UserWithBanInfo, error)
 	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
+	CreateUser(ctx context.Context, user model.User) (model.User, error)
 }
 
 type UserWithStrikes struct {
 	ID       string  `json:"id"`
-	Name     string  `json:"name"`
-	ImageURL *string `json:"image_url"`
+	Name     *string `json:"name,omitempty"`
+	Image    *string `json:"image"`
 	IsBanned bool    `json:"is_banned"`
 	Strikes  int     `json:"strikes"`
 }
@@ -28,7 +29,7 @@ type BanInfo struct {
 	Reason       string    `json:"reason"`
 	UserID       string    `json:"user_id"`
 	BannedByID   string    `json:"banned_by_id"`
-	BannedByName string    `json:"banned_by_name"`
+	BannedByName *string   `json:"banned_by_name,omitempty"`
 	CreatedAt    time.Time `json:"created_at"`
 	ExpiresAt    time.Time `json:"expires_at"`
 }
@@ -41,7 +42,7 @@ type DotInfo struct {
 	CreatedAt     time.Time `json:"created_at"`
 	ExpiresAt     time.Time `json:"expires_at"`
 	StrikedByID   string    `json:"striked_by_id"`
-	StrikedByName string    `json:"striked_by_name"`
+	StrikedByName *string   `json:"striked_by_name,omitempty"`
 }
 
 type UserWithBanInfo struct {

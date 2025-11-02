@@ -30,7 +30,7 @@ func NewHappeningService(
 	}
 }
 
-func (hs *HappeningService) Queries() repo.HappeningRepo {
+func (hs *HappeningService) HappeningRepo() repo.HappeningRepo {
 	return hs.happeningRepo
 }
 

@@ -31,3 +31,11 @@ func (as *AuthService) ValidateToken(ctx context.Context, token string) (model.U
 
 	return user, session, nil
 }
+
+func (as *AuthService) SessionRepo() repo.SessionRepo {
+	return as.sessionRepo
+}
+
+func (as *AuthService) UserRepo() repo.UserRepo {
+	return as.userRepo
+}

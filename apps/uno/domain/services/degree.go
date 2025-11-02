@@ -14,6 +14,6 @@ func NewDegreeService(degreeRepo repo.DegreeRepo) *DegreeService {
 	}
 }
 
-func (ds *DegreeService) Queries() repo.DegreeRepo {
+func (ds *DegreeService) DegreeRepo() repo.DegreeRepo {
 	return ds.degreeRepo
 }

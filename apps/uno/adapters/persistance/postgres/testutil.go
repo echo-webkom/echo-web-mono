@@ -82,7 +82,7 @@ func runMigrations(ctx context.Context, db *Database) error {
 		return fmt.Errorf("failed to get current working directory: %w", err)
 	}
 
-	migrationsPath := ""
+	var migrationsPath string
 
 	// Walk up the directories to find the migrations folder
 	for range 10 {

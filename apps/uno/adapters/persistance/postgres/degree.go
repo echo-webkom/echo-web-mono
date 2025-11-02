@@ -11,9 +11,8 @@ type DegreeRepo struct {
 }
 
 func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) {
-	query := `
-		SELECT
-			id, name
+	query := `--sql
+		SELECT id, name
 		FROM degree
 	`
 	var res []model.Degree
@@ -22,7 +21,7 @@ func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) 
 }
 
 func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
-	query := `
+	query := `--sql
 		INSERT INTO degree (id, name)
 		VALUES ($1, $2)
 		RETURNING id, name
@@ -32,7 +31,7 @@ func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (mod
 }
 
 func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
-	query := `
+	query := `--sql
 		UPDATE degree
 		SET name = $2
 		WHERE id = $1
@@ -43,7 +42,7 @@ func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (mod
 }
 
 func (p *DegreeRepo) DeleteDegree(ctx context.Context, id string) error {
-	query := `
+	query := `--sql
 		DELETE FROM degree
 		WHERE id = $1
 	`

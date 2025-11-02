@@ -13,3 +13,7 @@ func NewWhitelistService(whitelistRepo repo.WhitelistRepo) *WhitelistService {
 func (s *WhitelistService) Queries() repo.WhitelistRepo {
 	return s.whitelistRepo
 }
+
+func (s *WhitelistService) WhitelistRepo() repo.WhitelistRepo {
+	return s.whitelistRepo
+}

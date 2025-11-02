@@ -20,7 +20,7 @@ import (
 // @Router       /access-requests [get]
 func GetAccessRequestsHandler(accessRequestService *services.AccessRequestService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		accessRequests, err := accessRequestService.Queries().GetAccessRequests(r.Context())
+		accessRequests, err := accessRequestService.AccessRequestRepo().GetAccessRequests(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}

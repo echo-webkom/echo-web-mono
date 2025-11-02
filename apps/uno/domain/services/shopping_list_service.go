@@ -67,3 +67,11 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 
 	return shoppingLists, nil
 }
+
+func (s *ShoppingListService) ShoppingListItemRepo() repo.ShoppingListItemRepo {
+	return s.shoppingListeItemRepo
+}
+
+func (s *ShoppingListService) UsersToShoppingListItemRepo() repo.UsersToShoppingListItemRepo {
+	return s.usersToShoppingListItemRepo
+}

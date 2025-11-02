@@ -15,3 +15,7 @@ func NewAccessRequestService(accessRequestRepo repo.AccessRequestRepo) *AccessRe
 func (ars *AccessRequestService) Queries() repo.AccessRequestRepo {
 	return ars.accessRequestRepo
 }
+
+func (ars *AccessRequestService) AccessRequestRepo() repo.AccessRequestRepo {
+	return ars.accessRequestRepo
+}
