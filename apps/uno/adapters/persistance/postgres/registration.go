@@ -6,6 +6,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/repo"
 	"uno/domain/services"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type RegistrationRepo struct {
@@ -78,36 +80,53 @@ func (r *RegistrationRepo) CreateRegistration(
 	usersByID := make(map[string]*model.User)
 	membershipsByUserID := make(map[string][]string)
 
-	for _, uid := range userIDs { // TODO: Fix N+1 query
-		var user model.User
-		userQuery := `--sql
-			SELECT
-				id, name, email, image, alternative_email, degree_id, year, type,
-				last_sign_in_at, updated_at, created_at, has_read_terms,
-				birthday, is_public
-			FROM "user"
-			WHERE id = $1
-		`
-		err = tx.GetContext(ctx, &user, userQuery, uid)
-		if err != nil && err != sql.ErrNoRows {
-			return nil, false, err
-		}
-		if err == nil {
-			usersByID[uid] = &user
+	// Bulk fetch all users
+	var users []model.User
+	userQuery, userArgs, err := sqlx.In(`--sql
+		SELECT
+			id, name, email, image, alternative_email, degree_id, year, type,
+			last_sign_in_at, updated_at, created_at, has_read_terms,
+			birthday, is_public
+		FROM "user"
+		WHERE id IN (?)
+	`, userIDs)
+	if err != nil {
+		return nil, false, err
+	}
+	userQuery = tx.Rebind(userQuery)
+	err = tx.SelectContext(ctx, &users, userQuery, userArgs...)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, false, err
+	}
 
-			// Get memberships for this user
-			var memberships []string
-			membershipQuery := `--sql
-				SELECT group_id
-				FROM users_to_groups
-				WHERE user_id = $1
-			`
-			err = tx.SelectContext(ctx, &memberships, membershipQuery, uid)
-			if err != nil && err != sql.ErrNoRows {
-				return nil, false, err
-			}
-			membershipsByUserID[uid] = memberships
-		}
+	// Map users by ID
+	for i := range users {
+		usersByID[users[i].ID] = &users[i]
+	}
+
+	// Bulk fetch all memberships
+	type membership struct {
+		UserID  string `db:"user_id"`
+		GroupID string `db:"group_id"`
+	}
+	var memberships []membership
+	membershipQuery, membershipArgs, err := sqlx.In(`--sql
+		SELECT user_id, group_id
+		FROM users_to_groups
+		WHERE user_id IN (?)
+	`, userIDs)
+	if err != nil {
+		return nil, false, err
+	}
+	membershipQuery = tx.Rebind(membershipQuery)
+	err = tx.SelectContext(ctx, &memberships, membershipQuery, membershipArgs...)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, false, err
+	}
+
+	// Group memberships by user ID
+	for _, m := range memberships {
+		membershipsByUserID[m.UserID] = append(membershipsByUserID[m.UserID], m.GroupID)
 	}
 
 	// Check if there's an available spot using the service logic
