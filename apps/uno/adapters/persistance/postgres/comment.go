@@ -42,8 +42,8 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.Co
 		FROM comment c
 		LEFT JOIN "user" u ON c.user_id = u.id
 		LEFT JOIN comments_reactions cr ON c.id = cr.comment_id
-		WHERE c.id = $1
-		ORDER BY cr.created_at ASC;
+		WHERE c.post_id = $1
+		ORDER BY cr.created_at DESC;
 	`
 
 	rows, err := c.db.QueryContext(ctx, query, id)
@@ -52,7 +52,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.Co
 	}
 	defer func() { _ = rows.Close() }()
 
-	commentMap := make(map[string]*repo.CommentWithReactionsAndUser)
+	commentMap := map[string]*repo.CommentWithReactionsAndUser{}
 
 	for rows.Next() {
 		var (
@@ -114,7 +114,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]repo.Co
 		}
 	}
 
-	comments := make([]repo.CommentWithReactionsAndUser, 0, len(commentMap))
+	comments := []repo.CommentWithReactionsAndUser{}
 	for _, comment := range commentMap {
 		comments = append(comments, *comment)
 	}

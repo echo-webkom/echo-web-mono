@@ -6,13 +6,13 @@ import (
 )
 
 type User struct {
-	ID    string
-	Name  *string
-	Image *string
+	ID    string  `json:"id"`
+	Name  *string `json:"name"`
+	Image *string `json:"image"`
 }
 
 type CommentWithReactionsAndUser struct {
-	Comment   model.Comment            `json:"comment"`
+	model.Comment
 	Reactions []model.CommentsReaction `json:"reactions"`
 	User      *User                    `json:"user"`
 }

@@ -45,7 +45,7 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 		return nil, err
 	}
 
-	var shoppingLists []ShoppingList
+	shoppingLists := []ShoppingList{}
 	for _, item := range items {
 
 		likes := []string{}

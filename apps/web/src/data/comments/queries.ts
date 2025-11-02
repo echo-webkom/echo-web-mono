@@ -15,7 +15,7 @@ export const getCommentsById = (id: string) => {
         reactions: Array<{
           commentId: string;
           userId: string;
-          type: "like" | "dislike";
+          type: "like";
           createdAt: string;
         }>;
       }

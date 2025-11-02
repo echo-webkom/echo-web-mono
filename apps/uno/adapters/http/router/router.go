@@ -88,7 +88,7 @@ func (r *Router) Serve(notif *notifier.Notifier, port string) {
 		finish()
 	}()
 
-	log.Println("listening on port " + port)
+	log.Println("listening on http://localhost" + port)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Println(err)
 	}

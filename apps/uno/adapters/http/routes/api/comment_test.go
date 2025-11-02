@@ -141,7 +141,7 @@ func TestReactToCommentHandler_Success(t *testing.T) {
 	if len(comments) == 0 {
 		t.Skip("No comments created")
 	}
-	commentID := comments[0].Comment.ID
+	commentID := comments[0].ID
 
 	handler := api.ReactToCommentHandler(commentService)
 

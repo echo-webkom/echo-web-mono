@@ -1107,32 +1107,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.Comment": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.CommentsReaction": {
             "type": "object",
             "properties": {
@@ -1375,8 +1349,20 @@ const docTemplate = `{
         "uno_domain_repo.CommentWithReactionsAndUser": {
             "type": "object",
             "properties": {
-                "comment": {
-                    "$ref": "#/definitions/uno_domain_model.Comment"
+                "content": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "parentCommentId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
                 },
                 "reactions": {
                     "type": "array",
@@ -1384,8 +1370,14 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_domain_model.CommentsReaction"
                     }
                 },
+                "updatedAt": {
+                    "type": "string"
+                },
                 "user": {
                     "$ref": "#/definitions/uno_domain_repo.User"
+                },
+                "userId": {
+                    "type": "string"
                 }
             }
         },

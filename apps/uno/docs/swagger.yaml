@@ -43,23 +43,6 @@ definitions:
       reason:
         type: string
     type: object
-  uno_domain_model.Comment:
-    properties:
-      content:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      parentCommentId:
-        type: string
-      postId:
-        type: string
-      updatedAt:
-        type: string
-      userId:
-        type: string
-    type: object
   uno_domain_model.CommentsReaction:
     properties:
       commentId:
@@ -221,14 +204,26 @@ definitions:
     type: object
   uno_domain_repo.CommentWithReactionsAndUser:
     properties:
-      comment:
-        $ref: '#/definitions/uno_domain_model.Comment'
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
       reactions:
         items:
           $ref: '#/definitions/uno_domain_model.CommentsReaction'
         type: array
+      updatedAt:
+        type: string
       user:
         $ref: '#/definitions/uno_domain_repo.User'
+      userId:
+        type: string
     type: object
   uno_domain_repo.DotInfo:
     properties:
