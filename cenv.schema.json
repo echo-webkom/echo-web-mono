@@ -35,18 +35,15 @@
 		},
 		"NEXT_PUBLIC_API_URL": {
 			"public": true,
-			"key": "NEXT_PUBLIC_API_URL",
-			"value": "http://localhost:8000"
+			"key": "NEXT_PUBLIC_API_URL"
 		},
 		"NEXT_PUBLIC_ECHOGRAM_URL": {
 			"public": true,
-			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
-			"value": "http://localhost:8001"
+			"key": "NEXT_PUBLIC_ECHOGRAM_URL"
 		},
 		"NEXT_PUBLIC_SANITY_DATASET": {
 			"public": true,
-			"key": "NEXT_PUBLIC_SANITY_DATASET",
-			"value": "production"
+			"key": "NEXT_PUBLIC_SANITY_DATASET"
 		},
 		"UNO_API_PORT": {
 			"public": true,

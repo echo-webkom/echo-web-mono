@@ -1,10 +1,7 @@
 package config
 
 import (
-	"log"
 	"os"
-
-	"github.com/echo-webkom/cenv"
 )
 
 type Config struct {
@@ -21,11 +18,11 @@ type Config struct {
 func Load() *Config {
 	environment := getEnvOrDefault("ENVIRONMENT", "development")
 
-	if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
-		if environment != "production" {
-			log.Fatalf("Error loading .env file: %v", err)
-		}
-	}
+	// if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
+	// 	if environment != "production" {
+	// 		log.Fatalf("Error loading .env file: %v", err)
+	// 	}
+	// }
 
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),

@@ -30,7 +30,7 @@ type ShoppingList struct {
 	UserID    string    `json:"userId"`
 	UserName  *string   `json:"userName,omitempty"`
 	CreatedAt time.Time `json:"createdAt"`
-	Likes     []string  `json:"likes,omitempty"`
+	Likes     []string  `json:"likes"`
 }
 
 // GetShoppingList retrieves all shopping list items along with their owners and likes.
@@ -48,7 +48,7 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 	var shoppingLists []ShoppingList
 	for _, item := range items {
 
-		var likes []string
+		likes := []string{}
 		for _, like := range userLikes {
 			if like.ItemID == item.ID {
 				likes = append(likes, like.UserID)

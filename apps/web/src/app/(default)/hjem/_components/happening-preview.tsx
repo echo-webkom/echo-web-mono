@@ -79,7 +79,7 @@ const HappeningRegistrationInfo = async ({
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
 }) => {
   const { waiting, registered, max } = await apiServer
-    .get(`happening/${happening._id}/registrations/count`)
+    .get(`happenings/${happening._id}/registrations/count`)
     .json<{
       waiting: number;
       registered: number;

@@ -33,12 +33,13 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (hap mo
 	return hap, err
 }
 
-func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) (regs []model.Registration, err error) {
+func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) (regs []repo.HappeningRegistration, err error) {
 	query := `--sql
 		SELECT
-			user_id, happening_id, status, unregister_reason, created_at, prev_status, changed_at, changed_by
-		FROM registration
-		WHERE happening_id = $1
+			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.image AS user_image
+		FROM registration r
+		LEFT JOIN "user" u ON r.user_id = u.id
+		WHERE r.happening_id = $1
 	`
 	err = h.db.SelectContext(ctx, &regs, query, happeningID)
 	return regs, err

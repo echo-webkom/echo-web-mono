@@ -50,7 +50,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const isRegistered = registrations.some(
     (registration) =>
-      registration.user.id === user?.id &&
+      registration.userId === user?.id &&
       (registration.status === "registered" || registration.status === "waiting"),
   );
 
@@ -497,8 +497,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {Boolean(user) && !hideRegistrations && (
         <RegistrationsPreview
           registrations={registrations.map((registration) => ({
-            image: registration.user.image,
-            name: registration.user.name,
+            image: registration.userImage,
+            name: registration.userName,
             userId: registration.userId,
             status: registration.status,
           }))}
