@@ -1,5 +1,0 @@
-.sanity
-node_modules
-.turbo
-dist
-package.json

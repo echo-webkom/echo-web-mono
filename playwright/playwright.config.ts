@@ -25,8 +25,8 @@ export default defineConfig({
     },
     {
       command: "pnpm run start",
-      cwd: "../apps/api",
-      url: "http://localhost:8000",
+      cwd: "../apps/uno",
+      url: "http://localhost:8080",
       reuseExistingServer: !isCI,
       stdout: "pipe",
     },
