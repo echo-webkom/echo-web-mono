@@ -42,7 +42,7 @@ type RegisterRequest struct {
 type RegisterResponse struct {
 	Success      bool   `json:"success"`
 	Message      string `json:"message"`
-	IsWaitlisted bool   `json:"isWaitlisted,omitempty"`
+	IsWaitlisted bool   `json:"isWaitlisted"`
 }
 
 // Checks if a user fits in a spot range

@@ -28,7 +28,7 @@ type ShoppingList struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
 	UserID    string    `json:"userId"`
-	UserName  *string   `json:"userName,omitempty"`
+	UserName  *string   `json:"userName"`
 	CreatedAt time.Time `json:"createdAt"`
 	Likes     []string  `json:"likes"`
 }

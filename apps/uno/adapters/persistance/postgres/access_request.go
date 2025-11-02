@@ -22,6 +22,7 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ac
 }
 
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
+	ars = []model.AccessRequest{}
 	query := `--sql
 		SELECT id, email, reason, created_at
 		FROM access_request

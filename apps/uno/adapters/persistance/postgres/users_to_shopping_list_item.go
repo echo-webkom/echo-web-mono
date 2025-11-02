@@ -13,6 +13,7 @@ type UsersToShoppingListItemRepo struct {
 }
 
 func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.Context) (ranges []model.UsersToShoppingListItems, err error) {
+	ranges = []model.UsersToShoppingListItems{}
 	query := `--sql
 		SELECT user_id, item_id, created_at FROM users_to_shopping_list_items
 	`

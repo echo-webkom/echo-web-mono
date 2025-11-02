@@ -52,7 +52,7 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 		}
 	}()
 
-	var feedbacks []model.SiteFeedback
+	feedbacks := []model.SiteFeedback{}
 	for rows.Next() {
 		var feedback model.SiteFeedback
 		if err := rows.Scan(&feedback.ID, &feedback.Name, &feedback.Email, &feedback.Message, &feedback.Category, &feedback.CreatedAt, &feedback.IsRead); err != nil {

@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const isCI = !!process.env.CI;
+const isHeadless = !!process.env.HEADLESS;
 
 export default defineConfig({
   testDir: "./tests",
@@ -26,14 +27,14 @@ export default defineConfig({
     {
       command: "pnpm run start",
       cwd: "../apps/uno",
-      url: "http://localhost:8080",
+      url: "http://localhost:8000",
       reuseExistingServer: !isCI,
       stdout: "pipe",
     },
   ],
 
   use: {
-    headless: isCI,
+    headless: isHeadless || isCI,
     baseURL: "http://localhost:3000",
     video: "retain-on-failure",
     trace: "retain-on-failure",

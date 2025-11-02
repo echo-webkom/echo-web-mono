@@ -18,9 +18,9 @@ type Registration struct {
 	UserID           string             `db:"user_id" json:"userId"`
 	HappeningID      string             `db:"happening_id" json:"happeningId"`
 	Status           RegistrationStatus `db:"status" json:"status"`
-	UnregisterReason *string            `db:"unregister_reason" json:"unregisterReason,omitempty"`
+	UnregisterReason *string            `db:"unregister_reason" json:"unregisterReason"`
 	CreatedAt        time.Time          `db:"created_at" json:"createdAt"`
-	PrevStatus       *string            `db:"prev_status" json:"prevStatus,omitempty"`
-	ChangedAt        *time.Time         `db:"changed_at" json:"changedAt,omitempty"`
-	ChangedBy        *string            `db:"changed_by" json:"changedBy,omitempty"`
+	PrevStatus       *string            `db:"prev_status" json:"prevStatus"`
+	ChangedAt        *time.Time         `db:"changed_at" json:"changedAt"`
+	ChangedBy        *string            `db:"changed_by" json:"changedBy"`
 }

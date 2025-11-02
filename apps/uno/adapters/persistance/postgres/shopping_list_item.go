@@ -38,7 +38,7 @@ func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]repo.
 		JOIN "user" u ON sli.user_id = u.id
 	`
 
-	var items []repo.ShoppingListItemWithCreator
+	items := []repo.ShoppingListItemWithCreator{}
 	err := p.db.SelectContext(ctx, &items, query)
 	return items, err
 

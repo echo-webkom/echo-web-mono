@@ -26,7 +26,7 @@ func Load() *Config {
 
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		ApiPort:          os.Getenv("UNO_API_PORT"),
+		ApiPort:          ":" + getEnvOrDefault("UNO_API_PORT", "8080"),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		OTLPEndpoint:     getEnvOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4317"),
 		Environment:      environment,

@@ -14,7 +14,7 @@ type User struct {
 type CommentWithReactionsAndUser struct {
 	Comment   model.Comment            `json:"comment"`
 	Reactions []model.CommentsReaction `json:"reactions"`
-	User      *User                    `json:"user,omitempty"`
+	User      *User                    `json:"user"`
 }
 
 type CommentRepo interface {

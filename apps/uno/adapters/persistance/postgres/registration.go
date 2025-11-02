@@ -56,7 +56,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Get all existing registrations for this happening
-	var existingRegs []model.Registration
+	existingRegs := []model.Registration{}
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
@@ -81,7 +81,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	membershipsByUserID := make(map[string][]string)
 
 	// Bulk fetch all users
-	var users []model.User
+	users := []model.User{}
 	userQuery, userArgs, err := sqlx.In(`--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -109,7 +109,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		UserID  string `db:"user_id"`
 		GroupID string `db:"group_id"`
 	}
-	var memberships []membership
+	memberships := []membership{}
 	membershipQuery, membershipArgs, err := sqlx.In(`--sql
 		SELECT user_id, group_id
 		FROM users_to_groups

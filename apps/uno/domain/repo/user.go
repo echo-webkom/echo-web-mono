@@ -18,7 +18,7 @@ type UserRepo interface {
 
 type UserWithStrikes struct {
 	ID       string  `json:"id"`
-	Name     *string `json:"name,omitempty"`
+	Name     *string `json:"name"`
 	Image    *string `json:"image"`
 	IsBanned bool    `json:"isBanned"`
 	Strikes  int     `json:"strikes"`
@@ -29,7 +29,7 @@ type BanInfo struct {
 	Reason       string    `json:"reason"`
 	UserID       string    `json:"userId"`
 	BannedByID   string    `json:"bannedById"`
-	BannedByName *string   `json:"bannedByName,omitempty"`
+	BannedByName *string   `json:"bannedByName"`
 	CreatedAt    time.Time `json:"createdAt"`
 	ExpiresAt    time.Time `json:"expiresAt"`
 }
@@ -42,13 +42,13 @@ type DotInfo struct {
 	CreatedAt     time.Time `json:"createdAt"`
 	ExpiresAt     time.Time `json:"expiresAt"`
 	StrikedByID   string    `json:"strikedById"`
-	StrikedByName *string   `json:"strikedByName,omitempty"`
+	StrikedByName *string   `json:"strikedByName"`
 }
 
 type UserWithBanInfo struct {
 	ID      string    `json:"id"`
-	Name    *string   `json:"name,omitempty"`
-	Image   *string   `json:"image,omitempty"`
+	Name    *string   `json:"name"`
+	Image   *string   `json:"image"`
 	BanInfo BanInfo   `json:"banInfo"`
 	Dots    []DotInfo `json:"dots"`
 }

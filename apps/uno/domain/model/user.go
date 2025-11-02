@@ -4,18 +4,18 @@ import "time"
 
 type User struct {
 	ID               string     `db:"id" json:"id"`
-	Name             *string    `db:"name" json:"name,omitempty"`
+	Name             *string    `db:"name" json:"name"`
 	Email            string     `db:"email" json:"email"`
-	Image            *string    `db:"image" json:"image,omitempty"`
-	AlternativeEmail *string    `db:"alternative_email" json:"alternativeEmail,omitempty"`
-	DegreeID         *string    `db:"degree_id" json:"degreeId,omitempty"`
-	Year             *int       `db:"year" json:"year,omitempty"`
+	Image            *string    `db:"image" json:"image"`
+	AlternativeEmail *string    `db:"alternative_email" json:"alternativeEmail"`
+	DegreeID         *string    `db:"degree_id" json:"degreeId"`
+	Year             *int       `db:"year" json:"year"`
 	Type             string     `db:"type" json:"type"`
-	LastSignInAt     *time.Time `db:"last_sign_in_at" json:"lastSignInAt,omitempty"`
-	UpdatedAt        *time.Time `db:"updated_at" json:"updatedAt,omitempty"`
-	CreatedAt        *time.Time `db:"created_at" json:"createdAt,omitempty"`
+	LastSignInAt     *time.Time `db:"last_sign_in_at" json:"lastSignInAt"`
+	UpdatedAt        *time.Time `db:"updated_at" json:"updatedAt"`
+	CreatedAt        *time.Time `db:"created_at" json:"createdAt"`
 	HasReadTerms     bool       `db:"has_read_terms" json:"hasReadTerms"`
-	Birthday         *time.Time `db:"birthday" json:"birthday,omitempty"`
+	Birthday         *time.Time `db:"birthday" json:"birthday"`
 	IsPublic         bool       `db:"is_public" json:"isPublic"`
 }
 
@@ -33,13 +33,13 @@ type Account struct {
 	Type              string  `db:"type" json:"type"`
 	Provider          string  `db:"provider" json:"provider"`
 	ProviderAccountID string  `db:"provider_account_id" json:"providerAccountId"`
-	RefreshToken      *string `db:"refresh_token" json:"refreshToken,omitempty"`
-	AccessToken       *string `db:"access_token" json:"accessToken,omitempty"`
-	ExpiresAt         *int    `db:"expires_at" json:"expiresAt,omitempty"`
-	TokenType         *string `db:"token_type" json:"tokenType,omitempty"`
-	Scope             *string `db:"scope" json:"scope,omitempty"`
-	IDToken           *string `db:"id_token" json:"idToken,omitempty"`
-	SessionState      *string `db:"session_state" json:"sessionState,omitempty"`
+	RefreshToken      *string `db:"refresh_token" json:"refreshToken"`
+	AccessToken       *string `db:"access_token" json:"accessToken"`
+	ExpiresAt         *int    `db:"expires_at" json:"expiresAt"`
+	TokenType         *string `db:"token_type" json:"tokenType"`
+	Scope             *string `db:"scope" json:"scope"`
+	IDToken           *string `db:"id_token" json:"idToken"`
+	SessionState      *string `db:"session_state" json:"sessionState"`
 }
 
 type Session struct {

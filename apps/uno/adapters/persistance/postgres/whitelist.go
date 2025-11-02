@@ -11,6 +11,7 @@ type WhitelistRepo struct {
 }
 
 func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whitelist, err error) {
+	whitelist = []model.Whitelist{}
 	query := `--sql
 		SELECT email, expires_at, reason
 		FROM whitelist

@@ -7,8 +7,8 @@ import (
 
 type HappeningRegistration struct {
 	model.Registration
-	UserName  *string `db:"user_name" json:"userName,omitempty"`
-	UserImage *string `db:"user_image" json:"userImage,omitempty"`
+	UserName  *string `db:"user_name" json:"userName"`
+	UserImage *string `db:"user_image" json:"userImage"`
 }
 
 type HappeningRepo interface {

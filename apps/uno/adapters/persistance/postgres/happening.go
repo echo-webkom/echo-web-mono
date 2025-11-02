@@ -11,6 +11,7 @@ type HappeningRepo struct {
 }
 
 func (h *HappeningRepo) GetAllHappenings(ctx context.Context) (res []model.Happening, err error) {
+	res = []model.Happening{}
 	query := `--sql
 		SELECT
 			id, slug, title, type, date, registration_groups,
@@ -34,6 +35,7 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (hap mo
 }
 
 func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) (regs []repo.HappeningRegistration, err error) {
+	regs = []repo.HappeningRegistration{}
 	query := `--sql
 		SELECT
 			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.image AS user_image
@@ -46,6 +48,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 }
 
 func (h *HappeningRepo) GetHappeningSpotRanges(ctx context.Context, happeningID string) (ranges []model.SpotRange, err error) {
+	ranges = []model.SpotRange{}
 	query := `--sql
 		SELECT
 			id, happening_id, spots, min_year, max_year
@@ -57,6 +60,7 @@ func (h *HappeningRepo) GetHappeningSpotRanges(ctx context.Context, happeningID 
 }
 
 func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID string) (qs []model.Question, err error) {
+	qs = []model.Question{}
 	query := `--sql
 		SELECT
 			id, title, required, type, is_sensitive, options, happening_id
@@ -68,6 +72,7 @@ func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID s
 }
 
 func (h *HappeningRepo) GetHappeningHostGroups(ctx context.Context, happeningID string) (groupIDs []string, err error) {
+	groupIDs = []string{}
 	query := `--sql
 		SELECT group_id
 		FROM happenings_to_groups

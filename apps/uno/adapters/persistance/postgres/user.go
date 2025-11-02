@@ -94,6 +94,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, 
 }
 
 func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []repo.UserWithStrikes, err error) {
+	users = []repo.UserWithStrikes{}
 	query := `--sql
 		SELECT
 			u.id, u.name, u.image,
@@ -129,6 +130,7 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User,
 }
 
 func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
+	users = []model.User{}
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -142,6 +144,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []mod
 }
 
 func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
+	users = []model.User{}
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -157,6 +160,7 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (us
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
+	groupIDs = []string{}
 	query := `--sql
 		SELECT group_id
 		FROM users_to_groups

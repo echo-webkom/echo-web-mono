@@ -15,7 +15,7 @@ func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) 
 		SELECT id, name
 		FROM degree
 	`
-	var res []model.Degree
+	res := []model.Degree{}
 	err := p.db.SelectContext(ctx, &res, query)
 	return res, err
 }
