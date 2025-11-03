@@ -23,8 +23,7 @@ func New(logger *slog.Logger) ports.Logger {
 func NewWithConfig(env string) ports.Logger {
 	var handler slog.Handler
 	opts := &slog.HandlerOptions{
-		Level:     slog.LevelInfo,
-		AddSource: true,
+		Level: slog.LevelInfo,
 	}
 
 	if env == "production" {
