@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -30,21 +30,21 @@ func New(cfg TelemetryConfig) (func(context.Context) error, error) {
 	ctx := context.Background()
 
 	// Configure exporter options based on environment
-	opts := []otlptracegrpc.Option{
-		otlptracegrpc.WithEndpoint(cfg.OTLPEndpoint),
+	opts := []otlptracehttp.Option{
+		otlptracehttp.WithEndpoint(cfg.OTLPEndpoint),
 	}
 
 	if cfg.Environment == "development" || cfg.Environment == "dev" {
 		// Use insecure connection in development
-		opts = append(opts, otlptracegrpc.WithInsecure())
+		opts = append(opts, otlptracehttp.WithInsecure())
 	} else {
 		// Use secure connection with headers in production
 		if cfg.OTLPHeaders != "" {
-			opts = append(opts, otlptracegrpc.WithHeaders(parseHeaders(cfg.OTLPHeaders)))
+			opts = append(opts, otlptracehttp.WithHeaders(parseHeaders(cfg.OTLPHeaders)))
 		}
 	}
 
-	exporter, err := otlptracegrpc.New(ctx, opts...)
+	exporter, err := otlptracehttp.New(ctx, opts...)
 	if err != nil {
 		return nil, err
 	}
