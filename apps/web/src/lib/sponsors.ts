@@ -6,13 +6,13 @@ import SanityLogo from "@/assets/images/sanity-logo.png";
 export const sponsors = [
   {
     label: "Fonn Group",
-    href: "",
+    href: "https://fonngroup.com",
     imageDarkMode: FonnGroupDark,
     imageLightMode: FonnGroupLight,
   },
   {
     label: "Bouvet",
-    href: "",
+    href: "https://www.bouvet.no",
     imageDarkMode: BouvetLogo,
     imageLightMode: BouvetLogo,
   },
