@@ -7,7 +7,9 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -28,9 +30,22 @@ func New(cfg TelemetryConfig) (func(context.Context) error, error) {
 		return nil, err
 	}
 
+	// Create resource with service information
+	res, err := resource.New(context.Background(),
+		resource.WithAttributes(
+			semconv.ServiceName(cfg.ServiceName),
+			semconv.ServiceVersion(cfg.ServiceVersion),
+			semconv.DeploymentEnvironment(cfg.Environment),
+		),
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithSampler(sdktrace.AlwaysSample()),
 		sdktrace.WithBatcher(exporter),
+		sdktrace.WithResource(res),
 	)
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(

@@ -44,7 +44,6 @@ func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string
 
 func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID string, userID string, parentCommentID *string) error {
 	c.logger.Info(ctx, "creating comment",
-		"content", content,
 		"post_id", postID,
 		"user_id", userID,
 		"parent_comment_id", parentCommentID,
@@ -58,7 +57,6 @@ func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID 
 	if err != nil {
 		c.logger.Error(ctx, "failed to create comment",
 			"error", err,
-			"content", content,
 			"post_id", postID,
 			"user_id", userID,
 			"parent_comment_id", parentCommentID,
@@ -80,7 +78,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 		LEFT JOIN "user" u ON c.user_id = u.id
 		LEFT JOIN comments_reactions cr ON c.id = cr.comment_id
 		WHERE c.post_id = $1
-		ORDER BY cr.created_at DESC;
+		ORDER BY c.created_at DESC;
 	`
 
 	rows, err := c.db.QueryContext(ctx, query, id)
