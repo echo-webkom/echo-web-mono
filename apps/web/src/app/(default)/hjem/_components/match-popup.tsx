@@ -24,7 +24,10 @@ export function MatchPopup() {
     const hasSeenPopup = localStorage.getItem(LOCALSTORAGE_KEY);
     const is3rdOfNovember2025 = new Date().toISOString().startsWith("2025-11-03");
 
-    if (forceShow || (!hasSeenPopup && is3rdOfNovember2025)) {
+    if (
+      process.env.NEXT_PUBLIC_DISABLE_POPUP !== "true" &&
+      (forceShow || (!hasSeenPopup && is3rdOfNovember2025))
+    ) {
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 1);

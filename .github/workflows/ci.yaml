@@ -20,6 +20,9 @@ env:
 
   AUTH_SECRET: "test-secret-for-ci-e2e-tests-only"
 
+  # remove
+  NEXT_PUBLIC_DISABLE_POPUP: "true"
+
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
