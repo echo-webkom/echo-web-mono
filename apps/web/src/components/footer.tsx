@@ -6,7 +6,7 @@ import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { footerRoutes } from "@/lib/routes";
-import { sponsors } from "@/lib/sponsors";
+import { otherSponsors, sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
 
 type FooterProps = {
@@ -16,7 +16,7 @@ type FooterProps = {
 export const Footer = ({ className }: FooterProps) => {
   return (
     <div className={cn("selection:bg-primary mt-32", className)}>
-      <footer className="border-footer-border bg-footer text-footer-foreground relative rounded-t-[40px] border-2 px-10 py-24">
+      <footer className="border-footer-border bg-footer text-footer-foreground relative border-2 px-10 py-24">
         <CommitLabel />
         <UsefulLinks />
 
@@ -54,11 +54,34 @@ export const Footer = ({ className }: FooterProps) => {
               );
             })}
 
+            {/* Sponsors */}
+            <div>
+              <ul className="space-y-5">
+                <h3 className="mb-4 py-2 text-xl font-bold">Samarbeidspartnere ❤️</h3>
+                {sponsors.map(({ label, href, imageDarkMode, imageLightMode }) => (
+                  <li key={label}>
+                    <Link href={href} target="_blank" rel="noreferrer">
+                      <Image
+                        src={imageDarkMode as StaticImport}
+                        alt={`${label} logo`}
+                        className="hidden h-auto w-28 dark:block"
+                      />
+                      <Image
+                        src={imageLightMode as StaticImport}
+                        alt={`${label} logo`}
+                        className="h-auto w-28 dark:hidden"
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {/* Other sponsors */}
             <div>
               <h3 className="mb-4 py-2 text-xl font-bold">Powered by 🔧</h3>
               <ul className="space-y-5">
-                {sponsors.map(({ label, href, imageSrc }) => (
+                {otherSponsors.map(({ label, href, imageSrc }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
                       <Image
