@@ -185,7 +185,7 @@ definitions:
       reason:
         type: string
     type: object
-  uno_domain_repo.BanInfo:
+  uno_domain_ports.BanInfo:
     properties:
       bannedById:
         type: string
@@ -202,7 +202,7 @@ definitions:
       userId:
         type: string
     type: object
-  uno_domain_repo.CommentWithReactionsAndUser:
+  uno_domain_ports.CommentWithReactionsAndUser:
     properties:
       content:
         type: string
@@ -221,11 +221,11 @@ definitions:
       updatedAt:
         type: string
       user:
-        $ref: '#/definitions/uno_domain_repo.User'
+        $ref: '#/definitions/uno_domain_ports.User'
       userId:
         type: string
     type: object
-  uno_domain_repo.DotInfo:
+  uno_domain_ports.DotInfo:
     properties:
       count:
         type: integer
@@ -244,7 +244,7 @@ definitions:
       userId:
         type: string
     type: object
-  uno_domain_repo.User:
+  uno_domain_ports.User:
     properties:
       id:
         type: string
@@ -253,13 +253,13 @@ definitions:
       name:
         type: string
     type: object
-  uno_domain_repo.UserWithBanInfo:
+  uno_domain_ports.UserWithBanInfo:
     properties:
       banInfo:
-        $ref: '#/definitions/uno_domain_repo.BanInfo'
+        $ref: '#/definitions/uno_domain_ports.BanInfo'
       dots:
         items:
-          $ref: '#/definitions/uno_domain_repo.DotInfo'
+          $ref: '#/definitions/uno_domain_ports.DotInfo'
         type: array
       id:
         type: string
@@ -268,7 +268,7 @@ definitions:
       name:
         type: string
     type: object
-  uno_domain_repo.UserWithStrikes:
+  uno_domain_ports.UserWithStrikes:
     properties:
       id:
         type: string
@@ -428,7 +428,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_repo.CommentWithReactionsAndUser'
+              $ref: '#/definitions/uno_domain_ports.CommentWithReactionsAndUser'
             type: array
         "400":
           description: Bad Request
@@ -857,7 +857,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_repo.UserWithBanInfo'
+              $ref: '#/definitions/uno_domain_ports.UserWithBanInfo'
             type: array
         "401":
           description: Unauthorized
@@ -897,7 +897,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_repo.UserWithStrikes'
+              $ref: '#/definitions/uno_domain_ports.UserWithStrikes'
             type: array
         "401":
           description: Unauthorized

@@ -187,7 +187,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_repo.CommentWithReactionsAndUser"
+                                "$ref": "#/definitions/uno_domain_ports.CommentWithReactionsAndUser"
                             }
                         }
                     },
@@ -863,7 +863,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_repo.UserWithBanInfo"
+                                "$ref": "#/definitions/uno_domain_ports.UserWithBanInfo"
                             }
                         }
                     },
@@ -929,7 +929,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_repo.UserWithStrikes"
+                                "$ref": "#/definitions/uno_domain_ports.UserWithStrikes"
                             }
                         }
                     },
@@ -1320,7 +1320,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_repo.BanInfo": {
+        "uno_domain_ports.BanInfo": {
             "type": "object",
             "properties": {
                 "bannedById": {
@@ -1346,7 +1346,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_repo.CommentWithReactionsAndUser": {
+        "uno_domain_ports.CommentWithReactionsAndUser": {
             "type": "object",
             "properties": {
                 "content": {
@@ -1374,14 +1374,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/uno_domain_repo.User"
+                    "$ref": "#/definitions/uno_domain_ports.User"
                 },
                 "userId": {
                     "type": "string"
                 }
             }
         },
-        "uno_domain_repo.DotInfo": {
+        "uno_domain_ports.DotInfo": {
             "type": "object",
             "properties": {
                 "count": {
@@ -1410,7 +1410,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_repo.User": {
+        "uno_domain_ports.User": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1424,16 +1424,16 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_repo.UserWithBanInfo": {
+        "uno_domain_ports.UserWithBanInfo": {
             "type": "object",
             "properties": {
                 "banInfo": {
-                    "$ref": "#/definitions/uno_domain_repo.BanInfo"
+                    "$ref": "#/definitions/uno_domain_ports.BanInfo"
                 },
                 "dots": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/uno_domain_repo.DotInfo"
+                        "$ref": "#/definitions/uno_domain_ports.DotInfo"
                     }
                 },
                 "id": {
@@ -1447,7 +1447,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_repo.UserWithStrikes": {
+        "uno_domain_ports.UserWithStrikes": {
             "type": "object",
             "properties": {
                 "id": {

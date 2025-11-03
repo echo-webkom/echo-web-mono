@@ -42,17 +42,16 @@ func New(serviceName string, logger ports.Logger) *Router {
 }
 
 func (r *Router) Handle(method string, pattern string, handler Handler, middleware ...Middleware) {
-	logger := r.logger
-	r.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
+	r.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
 
 		for _, m := range middleware {
 			handler = m(handler)
 		}
 
-		status, err := handler(w, r)
+		status, err := handler(w, req)
 		if err != nil {
-			logger.Error(ctx, "request error",
+			r.logger.Error(ctx, "request error",
 				"method", method,
 				"pattern", pattern,
 				"status", status,
@@ -89,7 +88,7 @@ func (r *Router) Serve(notif *notifier.Notifier, port string) {
 	go func() {
 		<-done
 		if err := server.Shutdown(ctx); err != nil {
-			r.logger.Error(ctx, "error shutting down http server",
+			r.logger.Error(ctx, "shutdown failed",
 				"error", err,
 			)
 		}

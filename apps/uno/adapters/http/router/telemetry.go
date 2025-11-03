@@ -8,6 +8,9 @@ import (
 
 func Telemetry(serviceName string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
-		return otelhttp.NewHandler(next, serviceName)
+		return otelhttp.NewHandler(
+			next,
+			serviceName,
+		)
 	}
 }

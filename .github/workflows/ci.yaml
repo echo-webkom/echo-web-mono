@@ -11,6 +11,7 @@ env:
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web
 
   UNO_API_PORT: 8000
+  TELEMENTRY_ENABLED: false
   NEXT_PUBLIC_API_URL: http://localhost:8000
 
   NEXT_PUBLIC_SANITY_DATASET: "testing"

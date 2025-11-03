@@ -25,16 +25,12 @@ func RunApi() {
 
 	// Initialize OpenTelemetry
 	shutdown, err := telemetry.New(telemetry.TelemetryConfig{
-		ServiceName:    config.ServiceName,
-		ServiceVersion: config.ServiceVersion,
-		Environment:    config.Environment,
-		OTLPEndpoint:   config.OTLPEndpoint,
-		OTLPHeaders:    config.OTLPHeaders,
-		Enabled:        config.TelemetryEnabled,
+		ServiceName: config.ServiceName,
+		Environment: config.Environment,
+		Enabled:     config.TelemetryEnabled,
 	})
 	if err != nil {
 		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
-		log.Fatalf("failed to initialize telemetry: %v", err)
 	}
 	defer func() {
 		if err := shutdown(context.Background()); err != nil {
