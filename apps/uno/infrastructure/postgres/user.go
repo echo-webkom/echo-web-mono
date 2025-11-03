@@ -19,6 +19,8 @@ func NewUserRepo(db *Database, logger ports.Logger) ports.UserRepo {
 }
 
 func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo, error) {
+	u.logger.Info(ctx, "getting banned users")
+
 	// First, get all banned users with their ban info
 	banQuery := `--sql
 		SELECT
@@ -33,6 +35,9 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo,
 
 	rows, err := u.db.QueryContext(ctx, banQuery)
 	if err != nil {
+		u.logger.Error(ctx, "failed to get banned users",
+			"error", err,
+		)
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -40,7 +45,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo,
 	var users []ports.UserWithBanInfo
 	userMap := make(map[string]*ports.UserWithBanInfo)
 
-	for rows.Next() {
+	for rows.Next() { // Fix n+1 queyr
 		var user ports.UserWithBanInfo
 		err := rows.Scan(
 			&user.ID,
@@ -85,6 +90,9 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo,
 	var dots []ports.DotInfo
 	err = u.db.SelectContext(ctx, &dots, dotQuery, pq.Array(userIDs))
 	if err != nil {
+		u.logger.Error(ctx, "failed to get dots for banned users",
+			"error", err,
+		)
 		return nil, err
 	}
 
@@ -99,6 +107,8 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo,
 }
 
 func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []ports.UserWithStrikes, err error) {
+	u.logger.Info(ctx, "getting users with strikes")
+
 	users = []ports.UserWithStrikes{}
 	query := `--sql
 		SELECT
@@ -118,10 +128,19 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []ports.UserW
 	`
 
 	err = u.db.SelectContext(ctx, &users, query)
-	return users, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to get users with strikes",
+			"error", err,
+		)
+	}
+	return users, nil
 }
 
 func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
+	u.logger.Info(ctx, "getting user by ID",
+		"user_id", id,
+	)
+
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -131,10 +150,20 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User,
 		WHERE id = $1
 	`
 	err = u.db.GetContext(ctx, &user, query, id)
-	return user, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to get user by ID",
+			"error", err,
+			"user_id", id,
+		)
+	}
+	return user, nil
 }
 
 func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
+	u.logger.Info(ctx, "getting users by IDs",
+		"user_ids", ids,
+	)
+
 	users = []model.User{}
 	query := `--sql
 		SELECT
@@ -145,10 +174,20 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []mod
 		WHERE id IN ($1)
 	`
 	err = u.db.SelectContext(ctx, &users, query, pq.Array(ids))
-	return users, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to get users by IDs",
+			"error", err,
+			"user_ids", ids,
+		)
+	}
+	return users, nil
 }
 
 func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
+	u.logger.Info(ctx, "getting users with birthday",
+		"date", date,
+	)
+
 	users = []model.User{}
 	query := `--sql
 		SELECT
@@ -161,10 +200,20 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (us
 			AND EXTRACT(DAY FROM birthday) = EXTRACT(DAY FROM $1::date)
 	`
 	err = u.db.SelectContext(ctx, &users, query, date)
-	return users, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to get users with birthday",
+			"error", err,
+			"date", date,
+		)
+	}
+	return users, nil
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
+	u.logger.Info(ctx, "getting user memberships",
+		"user_id", userID,
+	)
+
 	groupIDs = []string{}
 	query := `--sql
 		SELECT group_id
@@ -172,10 +221,21 @@ func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (group
 		WHERE user_id = $1
 	`
 	err = u.db.SelectContext(ctx, &groupIDs, query, userID)
-	return groupIDs, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to get user memberships",
+			"error", err,
+			"user_id", userID,
+		)
+	}
+	return groupIDs, nil
 }
 
 func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User, error) {
+	u.logger.Info(ctx, "creating user",
+		"email", user.Email,
+		"name", user.Name,
+	)
+
 	query := `--sql
 		INSERT INTO "user" (id, email, name, image, alternative_email, degree_id, year, type, has_read_terms, birthday, is_public)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -194,5 +254,10 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		user.Birthday,
 		user.IsPublic,
 	)
-	return result, err
+	if err != nil {
+		u.logger.Error(ctx, "failed to create user",
+			"error", err,
+		)
+	}
+	return result, nil
 }

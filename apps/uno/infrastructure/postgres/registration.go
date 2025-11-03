@@ -20,6 +20,11 @@ func NewRegistrationRepo(db *Database, logger ports.Logger) ports.RegistrationRe
 }
 
 func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error) {
+	r.logger.Info(ctx, "getting registration by user and happening",
+		"user_id", userID,
+		"happening_id", happeningID,
+	)
+
 	var reg model.Registration
 	query := `--sql
 		SELECT
@@ -33,6 +38,11 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 		return nil, nil
 	}
 	if err != nil {
+		r.logger.Error(ctx, "failed to get registration by user and happening",
+			"error", err,
+			"user_id", userID,
+			"happening_id", happeningID,
+		)
 		return nil, err
 	}
 	return &reg, nil
@@ -45,6 +55,11 @@ func (r *RegistrationRepo) CreateRegistration(
 	hostGroups []string,
 	canSkipSpotRange bool,
 ) (*model.Registration, bool, error) {
+	r.logger.Info(ctx, "creating registration",
+		"user_id", userID,
+		"happening_id", happeningID,
+	)
+
 	tx, err := r.db.BeginTxx(ctx, &sql.TxOptions{
 		Isolation: sql.LevelReadCommitted,
 	})
@@ -57,6 +72,9 @@ func (r *RegistrationRepo) CreateRegistration(
 	// TODO: Should be a more fine-grained lock if performance becomes an issue
 	_, err = tx.ExecContext(ctx, `LOCK TABLE registration IN EXCLUSIVE MODE`)
 	if err != nil {
+		r.logger.Error(ctx, "failed to lock registration table",
+			"error", err,
+		)
 		return nil, false, err
 	}
 
@@ -72,6 +90,10 @@ func (r *RegistrationRepo) CreateRegistration(
 	`
 	err = tx.SelectContext(ctx, &existingRegs, query, happeningID)
 	if err != nil {
+		r.logger.Error(ctx, "failed to get existing registrations for happening",
+			"error", err,
+			"happening_id", happeningID,
+		)
 		return nil, false, err
 	}
 
@@ -96,6 +118,9 @@ func (r *RegistrationRepo) CreateRegistration(
 		WHERE id IN (?)
 	`, userIDs)
 	if err != nil {
+		r.logger.Error(ctx, "failed to fetch users",
+			"error", err,
+		)
 		return nil, false, err
 	}
 	userQuery = tx.Rebind(userQuery)
@@ -121,11 +146,17 @@ func (r *RegistrationRepo) CreateRegistration(
 		WHERE user_id IN (?)
 	`, userIDs)
 	if err != nil {
+		r.logger.Error(ctx, "failed to fetch memberships",
+			"error", err,
+		)
 		return nil, false, err
 	}
 	membershipQuery = tx.Rebind(membershipQuery)
 	err = tx.SelectContext(ctx, &memberships, membershipQuery, membershipArgs...)
 	if err != nil && err != sql.ErrNoRows {
+		r.logger.Error(ctx, "failed to select memberships",
+			"error", err,
+		)
 		return nil, false, err
 	}
 
@@ -137,6 +168,9 @@ func (r *RegistrationRepo) CreateRegistration(
 	// Check if there's an available spot using the service logic
 	currentUser := usersByID[userID]
 	if currentUser == nil {
+		r.logger.Error(ctx, "failed to get current user",
+			"user_id", userID,
+		)
 		return nil, false, sql.ErrNoRows
 	}
 
@@ -169,10 +203,18 @@ func (r *RegistrationRepo) CreateRegistration(
 	`
 	err = tx.GetContext(ctx, &registration, upsertQuery, userID, happeningID, status)
 	if err != nil {
+		r.logger.Error(ctx, "failed to upsert registration",
+			"error", err,
+			"user_id", userID,
+			"happening_id", happeningID,
+		)
 		return nil, false, err
 	}
 
 	if err = tx.Commit(); err != nil {
+		r.logger.Error(ctx, "failed to commit registration transaction",
+			"error", err,
+		)
 		return nil, false, err
 	}
 
@@ -184,6 +226,11 @@ func (r *RegistrationRepo) InsertAnswers(
 	userID, happeningID string,
 	questions []model.QuestionAnswer,
 ) error {
+	r.logger.Info(ctx, "inserting answers for happening",
+		"user_id", userID,
+		"happening_id", happeningID,
+	)
+
 	if len(questions) == 0 {
 		return nil
 	}
@@ -198,6 +245,9 @@ func (r *RegistrationRepo) InsertAnswers(
 
 	tx, err := r.db.BeginTxx(ctx, nil)
 	if err != nil {
+		r.logger.Error(ctx, "failed to begin transaction for inserting answers",
+			"error", err,
+		)
 		return err
 	}
 	defer func() { _ = tx.Rollback() }()
@@ -211,6 +261,12 @@ func (r *RegistrationRepo) InsertAnswers(
 
 		_, err = tx.ExecContext(ctx, query, userID, happeningID, q.QuestionID, answerJSON)
 		if err != nil {
+			r.logger.Error(ctx, "failed to insert answer",
+				"error", err,
+				"user_id", userID,
+				"happening_id", happeningID,
+				"question_id", q.QuestionID,
+			)
 			return err
 		}
 	}

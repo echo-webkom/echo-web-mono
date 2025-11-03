@@ -18,27 +18,58 @@ func NewUsersToShoppingListItemRepo(db *Database, logger ports.Logger) ports.Use
 }
 
 func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.Context) (ranges []model.UsersToShoppingListItems, err error) {
+	p.logger.Info(ctx, "getting all users to shopping list items")
+
 	ranges = []model.UsersToShoppingListItems{}
 	query := `--sql
 		SELECT user_id, item_id, created_at FROM users_to_shopping_list_items
 	`
 
 	err = p.db.SelectContext(ctx, &ranges, query)
-	return ranges, err
+	if err != nil {
+		p.logger.Error(ctx, "failed to get all users to shopping list items",
+			"error", err,
+		)
+	}
+	return ranges, nil
 }
 
 func (p *UsersToShoppingListItemRepo) AddUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {
+	p.logger.Info(ctx, "adding user to shopping list item",
+		"user_id", userID,
+		"item_id", itemID,
+	)
+
 	query := `--sql
 		INSERT INTO users_to_shopping_list_items (user_id, item_id) VALUES ($1, $2)
 	`
 	_, err := p.db.ExecContext(ctx, query, userID, itemID)
+	if err != nil {
+		p.logger.Error(ctx, "failed to add user to shopping list item",
+			"error", err,
+			"user_id", userID,
+			"item_id", itemID,
+		)
+	}
 	return err
 }
 
 func (p *UsersToShoppingListItemRepo) DeleteUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {
+	p.logger.Info(ctx, "deleting user to shopping list item",
+		"user_id", userID,
+		"item_id", itemID,
+	)
+
 	query := `--sql
 		DELETE FROM users_to_shopping_list_items WHERE user_id = $1 AND item_id = $2
 	`
 	_, err := p.db.ExecContext(ctx, query, userID, itemID)
+	if err != nil {
+		p.logger.Error(ctx, "failed to delete user to shopping list item",
+			"error", err,
+			"user_id", userID,
+			"item_id", itemID,
+		)
+	}
 	return err
 }

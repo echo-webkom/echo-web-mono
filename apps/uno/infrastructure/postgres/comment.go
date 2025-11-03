@@ -21,25 +21,57 @@ func NewCommentRepo(db *Database, logger ports.Logger) ports.CommentRepo {
 }
 
 func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string, userID string) error {
+	c.logger.Info(ctx, "adding reaction to comment",
+		"comment_id", commentID,
+		"user_id", userID,
+	)
+
 	query := `--sql
 		INSERT INTO comments_reactions (comment_id, user_id, type)
 		VALUES ($1, $2, $3)
 		ON CONFLICT DO NOTHING;
 	`
 	_, err := c.db.ExecContext(ctx, query, commentID, userID, ReactionTypeLike)
-	return err
+	if err != nil {
+		c.logger.Error(ctx, "failed to add reaction to comment",
+			"error", err,
+			"comment_id", commentID,
+			"user_id", userID,
+		)
+	}
+	return nil
 }
 
 func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID string, userID string, parentCommentID *string) error {
+	c.logger.Info(ctx, "creating comment",
+		"content", content,
+		"post_id", postID,
+		"user_id", userID,
+		"parent_comment_id", parentCommentID,
+	)
+
 	query := `--sql
 		INSERT INTO comment (id, content, post_id, user_id, parent_comment_id, created_at, updated_at)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), NOW());
 	`
 	_, err := c.db.ExecContext(ctx, query, content, postID, userID, parentCommentID)
+	if err != nil {
+		c.logger.Error(ctx, "failed to create comment",
+			"error", err,
+			"content", content,
+			"post_id", postID,
+			"user_id", userID,
+			"parent_comment_id", parentCommentID,
+		)
+	}
 	return err
 }
 
 func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.CommentWithReactionsAndUser, error) {
+	c.logger.Info(ctx, "getting comments by post id",
+		"post_id", id,
+	)
+
 	query := `--sql
 		SELECT c.id, c.content, c.post_id, c.user_id, c.parent_comment_id, c.created_at, c.updated_at,
 		       u.id, u.name, u.image,
@@ -53,6 +85,11 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 
 	rows, err := c.db.QueryContext(ctx, query, id)
 	if err != nil {
+		c.logger.Error(ctx, "failed to get comments by post id",
+			"error", err,
+			"post_id", id,
+		)
+
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -128,6 +165,11 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 }
 
 func (c *CommentRepo) IsReactedByUser(ctx context.Context, commentID string, userID string) (bool, error) {
+	c.logger.Info(ctx, "checking if user reacted to comment",
+		"comment_id", commentID,
+		"user_id", userID,
+	)
+
 	query := `--sql
 		SELECT COUNT(1)
 		FROM comments_reactions
@@ -136,16 +178,33 @@ func (c *CommentRepo) IsReactedByUser(ctx context.Context, commentID string, use
 	var count int
 	err := c.db.QueryRowContext(ctx, query, commentID, userID).Scan(&count)
 	if err != nil {
+		c.logger.Error(ctx, "failed to check if user reacted to comment",
+			"error", err,
+			"comment_id", commentID,
+			"user_id", userID,
+		)
 		return false, err
 	}
 	return count > 0, nil
 }
 
 func (c *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID string, userID string) error {
+	c.logger.Info(ctx, "deleting reaction from comment",
+		"comment_id", commentID,
+		"user_id", userID,
+	)
+
 	query := `--sql
 		DELETE FROM comments_reactions
 		WHERE comment_id = $1 AND user_id = $2;
 	`
 	_, err := c.db.ExecContext(ctx, query, commentID, userID)
-	return err
+	if err != nil {
+		c.logger.Error(ctx, "failed to delete reaction from comment",
+			"error", err,
+			"comment_id", commentID,
+			"user_id", userID,
+		)
+	}
+	return nil
 }

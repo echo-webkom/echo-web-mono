@@ -16,6 +16,10 @@ func NewAccessRequestRepo(db *Database, logger ports.Logger) ports.AccessRequest
 }
 
 func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error) {
+	a.logger.Info(ctx, "creating access request",
+		"email", ar.Email,
+	)
+
 	query := `--sql
 		INSERT INTO access_request (id, email, reason)
 		VALUES (gen_random_uuid(), $1, $2)
@@ -23,10 +27,19 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ac
 	`
 	var result model.AccessRequest
 	err := a.db.GetContext(ctx, &result, query, ar.Email, ar.Reason)
-	return result, err
+	if err != nil {
+		a.logger.Error(ctx, "failed to create access request",
+			"error", err,
+			"email", ar.Email,
+		)
+		return model.AccessRequest{}, err
+	}
+	return result, nil
 }
 
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
+	a.logger.Info(ctx, "getting access requests")
+
 	ars = []model.AccessRequest{}
 	query := `--sql
 		SELECT id, email, reason, created_at
@@ -34,6 +47,13 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 		ORDER BY created_at DESC
 	`
 	err = a.db.SelectContext(ctx, &ars, query)
-	return ars, err
+	if err != nil {
+		a.logger.Error(ctx, "failed to get access requests",
+			"error", err,
+		)
+		return nil, err
+	}
+
+	return ars, nil
 
 }
