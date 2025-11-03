@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,9 +17,9 @@ import (
 // Setup db, repo and service for shopping list tests
 func setupShoppingListTest(t *testing.T) (*postgres.Database, *services.ShoppingListService, *services.UserService) {
 	db := postgres.SetupTestDB(t)
-	shoppingListItemRepo := postgres.NewShoppingListRepo(db)
-	usersToShoppingListItemRepo := postgres.NewUsersToShoppingListItemRepo(db)
-	userRepo := postgres.NewUserRepo(db)
+	shoppingListItemRepo := postgres.NewShoppingListRepo(db, nil)
+	usersToShoppingListItemRepo := postgres.NewUsersToShoppingListItemRepo(db, nil)
+	userRepo := postgres.NewUserRepo(db, nil)
 	userService := services.NewUserService(userRepo)
 	shoppingListService := services.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo, userRepo)
 	return db, shoppingListService, userService

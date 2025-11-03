@@ -9,6 +9,7 @@ type Config struct {
 	ApiPort          string
 	AdminAPIKey      string
 	OTLPEndpoint     string
+	OTLPHeaders      string
 	Environment      string
 	ServiceName      string
 	ServiceVersion   string
@@ -29,6 +30,7 @@ func Load() *Config {
 		ApiPort:          ":" + getEnvOrDefault("UNO_API_PORT", "8080"),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		OTLPEndpoint:     getEnvOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4317"),
+		OTLPHeaders:      os.Getenv("OTEL_EXPORTER_OTLP_HEADERS"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		ServiceVersion:   getEnvOrDefault("SERVICE_VERSION", "1.0.0"),

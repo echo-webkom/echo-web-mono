@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ import (
 // Setup db, repo and service for site feedback tests
 func setupSiteFeedbackTest(t *testing.T) (*postgres.Database, *services.SiteFeedbackService) {
 	db := postgres.SetupTestDB(t)
-	siteFeedbackRepo := postgres.NewSiteFeedbackRepo(db)
+	siteFeedbackRepo := postgres.NewSiteFeedbackRepo(db, nil)
 	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepo)
 	return db, siteFeedbackService
 }

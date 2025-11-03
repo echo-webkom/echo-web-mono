@@ -8,9 +8,9 @@ import (
 	"net/http/httptest"
 	"testing"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,7 +18,7 @@ import (
 // Setup db, repo and service for degree tests
 func setupDegreeTest(t *testing.T) (*postgres.Database, *services.DegreeService) {
 	db := postgres.SetupTestDB(t)
-	degreeRepo := postgres.NewDegreeRepo(db)
+	degreeRepo := postgres.NewDegreeRepo(db, nil)
 	degreeService := services.NewDegreeService(degreeRepo)
 	return db, degreeService
 }

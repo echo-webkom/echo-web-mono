@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,7 +18,7 @@ import (
 // Setup db, repo and service for birthday tests
 func setupBirthdayTest(t *testing.T) (*postgres.Database, *services.UserService) {
 	db := postgres.SetupTestDB(t)
-	userRepo := postgres.NewUserRepo(db)
+	userRepo := postgres.NewUserRepo(db, nil)
 	userService := services.NewUserService(userRepo)
 	return db, userService
 }

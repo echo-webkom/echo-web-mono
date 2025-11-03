@@ -2,20 +2,20 @@ package services
 
 import (
 	"context"
-	"uno/domain/repo"
+	"uno/domain/ports"
 )
 
 type CommentService struct {
-	commentRepo repo.CommentRepo
+	commentRepo ports.CommentRepo
 }
 
-func NewCommentService(commentRepo repo.CommentRepo) *CommentService {
+func NewCommentService(commentRepo ports.CommentRepo) *CommentService {
 	return &CommentService{
 		commentRepo: commentRepo,
 	}
 }
 
-func (s *CommentService) CommentRepo() repo.CommentRepo {
+func (s *CommentService) CommentRepo() ports.CommentRepo {
 	return s.commentRepo
 }
 

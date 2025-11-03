@@ -4,6 +4,7 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/routes/api"
 	"uno/config"
+	"uno/domain/ports"
 	"uno/domain/services"
 
 	"github.com/jesperkha/notifier"
@@ -31,6 +32,7 @@ import (
 
 func RunServer(
 	notif *notifier.Notifier,
+	logger ports.Logger,
 	config *config.Config,
 	authService *services.AuthService,
 	happeningService *services.HappeningService,
@@ -43,7 +45,7 @@ func RunServer(
 	whitelistService *services.WhitelistService,
 	commentService *services.CommentService,
 ) {
-	r := router.New(config.ServiceName)
+	r := router.New(config.ServiceName, logger)
 	// auth := router.NewAuthMiddleware(authService)
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)
 

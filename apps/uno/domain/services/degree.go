@@ -1,19 +1,19 @@
 package services
 
 import (
-	"uno/domain/repo"
+	"uno/domain/ports"
 )
 
 type DegreeService struct {
-	degreeRepo repo.DegreeRepo
+	degreeRepo ports.DegreeRepo
 }
 
-func NewDegreeService(degreeRepo repo.DegreeRepo) *DegreeService {
+func NewDegreeService(degreeRepo ports.DegreeRepo) *DegreeService {
 	return &DegreeService{
 		degreeRepo: degreeRepo,
 	}
 }
 
-func (ds *DegreeService) DegreeRepo() repo.DegreeRepo {
+func (ds *DegreeService) DegreeRepo() ports.DegreeRepo {
 	return ds.degreeRepo
 }

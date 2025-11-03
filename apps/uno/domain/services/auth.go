@@ -3,15 +3,15 @@ package services
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/repo"
+	"uno/domain/ports"
 )
 
 type AuthService struct {
-	sessionRepo repo.SessionRepo
-	userRepo    repo.UserRepo
+	sessionRepo ports.SessionRepo
+	userRepo    ports.UserRepo
 }
 
-func NewAuthService(sessionRepo repo.SessionRepo, userRepo repo.UserRepo) *AuthService {
+func NewAuthService(sessionRepo ports.SessionRepo, userRepo ports.UserRepo) *AuthService {
 	return &AuthService{
 		sessionRepo: sessionRepo,
 		userRepo:    userRepo,
@@ -32,10 +32,10 @@ func (as *AuthService) ValidateToken(ctx context.Context, token string) (model.U
 	return user, session, nil
 }
 
-func (as *AuthService) SessionRepo() repo.SessionRepo {
+func (as *AuthService) SessionRepo() ports.SessionRepo {
 	return as.sessionRepo
 }
 
-func (as *AuthService) UserRepo() repo.UserRepo {
+func (as *AuthService) UserRepo() ports.UserRepo {
 	return as.userRepo
 }

@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,10 +19,10 @@ import (
 // Setup db, repo and service for happening tests
 func setupHappeningTest(t *testing.T) (*postgres.Database, *services.HappeningService) {
 	db := postgres.SetupTestDB(t)
-	happeningRepo := postgres.NewHappeningRepo(db)
-	userRepo := postgres.NewUserRepo(db)
-	registrationRepo := postgres.NewRegistrationRepo(db)
-	banInfoRepo := postgres.NewBanInfoRepo(db)
+	happeningRepo := postgres.NewHappeningRepo(db, nil)
+	userRepo := postgres.NewUserRepo(db, nil)
+	registrationRepo := postgres.NewRegistrationRepo(db, nil)
+	banInfoRepo := postgres.NewBanInfoRepo(db, nil)
 	happeningService := services.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo)
 	return db, happeningService
 }

@@ -2,10 +2,9 @@ package router
 
 import (
 	"context"
-	"log"
 	"net/http"
+	"uno/domain/ports"
 
-	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/jesperkha/notifier"
@@ -22,14 +21,15 @@ type Middleware func(Handler) Handler
 // Handler function. It also implements http.Handler.
 type Router struct {
 	mux     *chi.Mux
+	logger  ports.Logger
 	cleanup func()
 }
 
-func New(serviceName string) *Router {
+func New(serviceName string, logger ports.Logger) *Router {
 	mux := chi.NewMux()
 
 	mux.Use(Telemetry(serviceName))
-	mux.Use(chiMiddleware.Logger)
+	mux.Use(RequestLogger(logger))
 	mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -38,18 +38,26 @@ func New(serviceName string) *Router {
 		AllowCredentials: true,
 	}))
 
-	return &Router{mux, func() {}}
+	return &Router{mux, logger, func() {}}
 }
 
 func (r *Router) Handle(method string, pattern string, handler Handler, middleware ...Middleware) {
+	logger := r.logger
 	r.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
 		for _, m := range middleware {
 			handler = m(handler)
 		}
 
 		status, err := handler(w, r)
 		if err != nil {
-			log.Printf("handle %s: %v", pattern, err)
+			logger.Error(ctx, "request error",
+				"method", method,
+				"pattern", pattern,
+				"status", status,
+				"error", err.Error(),
+			)
 			http.Error(w, err.Error(), status)
 			return
 		}
@@ -70,6 +78,7 @@ func (r *Router) OnCleanup(f func()) {
 }
 
 func (r *Router) Serve(notif *notifier.Notifier, port string) {
+	ctx := context.Background()
 	done, finish := notif.Register()
 
 	server := &http.Server{
@@ -79,18 +88,22 @@ func (r *Router) Serve(notif *notifier.Notifier, port string) {
 
 	go func() {
 		<-done
-		if err := server.Shutdown(context.Background()); err != nil {
-			log.Println(err)
+		if err := server.Shutdown(ctx); err != nil {
+			r.logger.Error(ctx, "error shutting down http server",
+				"error", err,
+			)
 		}
 
-		log.Println("cleaning up...")
+		r.logger.Info(ctx, "http server stopped")
 		r.cleanup()
 		finish()
 	}()
 
-	log.Println("listening on http://localhost" + port)
+	r.logger.Info(ctx, "listening on http://localhost"+port)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
-		log.Println(err)
+		r.logger.Error(ctx, "error starting http server",
+			"error", err,
+		)
 	}
 }
 

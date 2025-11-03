@@ -3,16 +3,16 @@ package services_test
 import (
 	"testing"
 	"time"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func setupUserServiceTest(t *testing.T) *services.UserService {
 	db := postgres.SetupTestDB(t)
-	userRepo := postgres.NewUserRepo(db)
+	userRepo := postgres.NewUserRepo(db, nil)
 	userService := services.NewUserService(userRepo)
 	return userService
 }

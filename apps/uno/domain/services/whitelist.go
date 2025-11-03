@@ -1,19 +1,19 @@
 package services
 
-import "uno/domain/repo"
+import "uno/domain/ports"
 
 type WhitelistService struct {
-	whitelistRepo repo.WhitelistRepo
+	whitelistRepo ports.WhitelistRepo
 }
 
-func NewWhitelistService(whitelistRepo repo.WhitelistRepo) *WhitelistService {
+func NewWhitelistService(whitelistRepo ports.WhitelistRepo) *WhitelistService {
 	return &WhitelistService{whitelistRepo: whitelistRepo}
 }
 
-func (s *WhitelistService) Queries() repo.WhitelistRepo {
+func (s *WhitelistService) Queries() ports.WhitelistRepo {
 	return s.whitelistRepo
 }
 
-func (s *WhitelistService) WhitelistRepo() repo.WhitelistRepo {
+func (s *WhitelistService) WhitelistRepo() ports.WhitelistRepo {
 	return s.whitelistRepo
 }

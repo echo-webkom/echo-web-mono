@@ -2,20 +2,19 @@ package services
 
 import (
 	"context"
-
-	"uno/domain/repo"
+	"uno/domain/ports"
 )
 
 type StrikeService struct {
-	dotRepo     repo.DotRepo
-	banInforepo repo.BanInfoRepo
-	userRepo    repo.UserRepo
+	dotRepo     ports.DotRepo
+	banInforepo ports.BanInfoRepo
+	userRepo    ports.UserRepo
 }
 
 func NewStrikeService(
-	dotRepo repo.DotRepo,
-	banInfoRepo repo.BanInfoRepo,
-	userRepo repo.UserRepo,
+	dotRepo ports.DotRepo,
+	banInfoRepo ports.BanInfoRepo,
+	userRepo ports.UserRepo,
 ) *StrikeService {
 	return &StrikeService{
 		dotRepo:     dotRepo,
@@ -36,22 +35,22 @@ func (s *StrikeService) UnbanUsersWithExpiredStrikes(ctx context.Context) error 
 
 }
 
-func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]repo.UserWithStrikes, error) {
+func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]ports.UserWithStrikes, error) {
 	return s.userRepo.GetUsersWithStrikes(ctx)
 }
 
-func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]repo.UserWithBanInfo, error) {
+func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo, error) {
 	return s.userRepo.GetBannedUsers(ctx)
 }
 
-func (s *StrikeService) UserRepo() repo.UserRepo {
+func (s *StrikeService) UserRepo() ports.UserRepo {
 	return s.userRepo
 }
 
-func (s *StrikeService) DotRepo() repo.DotRepo {
+func (s *StrikeService) DotRepo() ports.DotRepo {
 	return s.dotRepo
 }
 
-func (s *StrikeService) BanInfoRepo() repo.BanInfoRepo {
+func (s *StrikeService) BanInfoRepo() ports.BanInfoRepo {
 	return s.banInforepo
 }

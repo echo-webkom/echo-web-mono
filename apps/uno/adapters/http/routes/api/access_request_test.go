@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ import (
 // Setup db, repo and service for access request tests
 func setupAccessRequestTest(t *testing.T) (*postgres.Database, *services.AccessRequestService) {
 	db := postgres.SetupTestDB(t)
-	accessRequestRepo := postgres.NewAccessRequestRepo(db)
+	accessRequestRepo := postgres.NewAccessRequestRepo(db, nil)
 	accessRequestService := services.NewAccessRequestService(accessRequestRepo)
 	return db, accessRequestService
 }

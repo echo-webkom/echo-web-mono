@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,7 +18,7 @@ import (
 // Setup db, repo and service for whitelist tests
 func setupWhitelistTest(t *testing.T) (*postgres.Database, *services.WhitelistService) {
 	db := postgres.SetupTestDB(t)
-	whitelistRepo := postgres.NewWhitelistRepo(db)
+	whitelistRepo := postgres.NewWhitelistRepo(db, nil)
 	whitelistService := services.NewWhitelistService(whitelistRepo)
 	return db, whitelistService
 }

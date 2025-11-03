@@ -3,19 +3,19 @@ package services
 import (
 	"context"
 	"time"
-	"uno/domain/repo"
+	"uno/domain/ports"
 )
 
 type ShoppingListService struct {
-	shoppingListeItemRepo       repo.ShoppingListItemRepo
-	usersToShoppingListItemRepo repo.UsersToShoppingListItemRepo
-	userRepo                    repo.UserRepo
+	shoppingListeItemRepo       ports.ShoppingListItemRepo
+	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo
+	userRepo                    ports.UserRepo
 }
 
 func NewShoppingListService(
-	shoppingListeItemRepo repo.ShoppingListItemRepo,
-	usersToShoppingListItemRepo repo.UsersToShoppingListItemRepo,
-	userRepo repo.UserRepo,
+	shoppingListeItemRepo ports.ShoppingListItemRepo,
+	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo,
+	userRepo ports.UserRepo,
 ) *ShoppingListService {
 	return &ShoppingListService{
 		shoppingListeItemRepo:       shoppingListeItemRepo,
@@ -68,10 +68,10 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 	return shoppingLists, nil
 }
 
-func (s *ShoppingListService) ShoppingListItemRepo() repo.ShoppingListItemRepo {
+func (s *ShoppingListService) ShoppingListItemRepo() ports.ShoppingListItemRepo {
 	return s.shoppingListeItemRepo
 }
 
-func (s *ShoppingListService) UsersToShoppingListItemRepo() repo.UsersToShoppingListItemRepo {
+func (s *ShoppingListService) UsersToShoppingListItemRepo() ports.UsersToShoppingListItemRepo {
 	return s.usersToShoppingListItemRepo
 }

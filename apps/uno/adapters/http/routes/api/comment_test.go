@@ -8,9 +8,9 @@ import (
 	"net/http/httptest"
 	"testing"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,8 +18,8 @@ import (
 // Setup db, repo and service for comment tests
 func setupCommentTest(t *testing.T) (*postgres.Database, *services.CommentService, *services.UserService) {
 	db := postgres.SetupTestDB(t)
-	commentRepo := postgres.NewCommentRepo(db)
-	userRepo := postgres.NewUserRepo(db)
+	commentRepo := postgres.NewCommentRepo(db, nil)
+	userRepo := postgres.NewUserRepo(db, nil)
 	commentService := services.NewCommentService(commentRepo)
 	userService := services.NewUserService(userRepo)
 	return db, commentService, userService

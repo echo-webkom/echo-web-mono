@@ -3,15 +3,14 @@ package bootstrap
 import (
 	"context"
 	"log"
-	"log/slog"
 	"os"
 	"syscall"
 	"uno/adapters/http"
-	"uno/adapters/logging"
-	"uno/adapters/persistance/postgres"
-	"uno/adapters/telemetry"
 	"uno/config"
 	"uno/domain/services"
+	"uno/infrastructure/logging"
+	"uno/infrastructure/postgres"
+	"uno/infrastructure/telemetry"
 
 	"github.com/jesperkha/notifier"
 )
@@ -21,59 +20,56 @@ func RunApi() {
 	notif := notifier.New()
 
 	// Initialize structured logging
-	logger := logging.InitLogger(config.Environment)
-	logger.Info("starting uno-api",
-		"environment", config.Environment,
-		"service", config.ServiceName,
-		"version", config.ServiceVersion,
-	)
+	logger := logging.NewWithConfig(config.Environment)
+	logger.Info(context.Background(), "starting uno-api")
 
 	// Initialize OpenTelemetry
-	shutdown, err := telemetry.InitTracer(telemetry.TelemetryConfig{
+	shutdown, err := telemetry.New(telemetry.TelemetryConfig{
 		ServiceName:    config.ServiceName,
 		ServiceVersion: config.ServiceVersion,
 		Environment:    config.Environment,
 		OTLPEndpoint:   config.OTLPEndpoint,
+		OTLPHeaders:    config.OTLPHeaders,
 		Enabled:        config.TelemetryEnabled,
 	})
 	if err != nil {
-		logger.Error("failed to initialize telemetry", "error", err)
+		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
 		log.Fatalf("failed to initialize telemetry: %v", err)
 	}
 	defer func() {
 		if err := shutdown(context.Background()); err != nil {
-			logger.Error("failed to shutdown telemetry", "error", err)
+			logger.Error(context.Background(), "failed to shutdown telemetry", "error", err)
 		}
 	}()
 
 	if config.TelemetryEnabled {
-		slog.Info("telemetry enabled", "endpoint", config.OTLPEndpoint)
+		logger.Info(context.Background(), "telemetry enabled", "endpoint", config.OTLPEndpoint)
 	} else {
-		slog.Info("telemetry disabled")
+		logger.Info(context.Background(), "telemetry disabled")
 	}
 
 	// Initialize database connection
 	db, err := postgres.New(config.DatabaseURL)
 	if err != nil {
-		logger.Error("failed to connect to database", "error", err)
+		logger.Error(context.Background(), "failed to connect to database", "error", err)
 		log.Fatal(err)
 	}
-	logger.Info("database connected")
+	logger.Info(context.Background(), "database connected")
 
 	// Initialize repositories
-	happeningRepo := postgres.NewHappeningRepo(db)
-	userRepo := postgres.NewUserRepo(db)
-	sessionRepo := postgres.NewSessionRepo(db)
-	degreeRepo := postgres.NewDegreeRepo(db)
-	siteFeedbackRepo := postgres.NewSiteFeedbackRepo(db)
-	shoppingListItemRepo := postgres.NewShoppingListRepo(db)
-	usersToShoppingListItemRepo := postgres.NewUsersToShoppingListItemRepo(db)
-	dotRepo := postgres.NewDotRepo(db)
-	banInfoRepo := postgres.NewBanInfoRepo(db)
-	accessRequestRepo := postgres.NewAccessRequestRepo(db)
-	whitelistRepo := postgres.NewWhitelistRepo(db)
-	commentRepo := postgres.NewCommentRepo(db)
-	registrationRepo := postgres.NewRegistrationRepo(db)
+	happeningRepo := postgres.NewHappeningRepo(db, logger)
+	userRepo := postgres.NewUserRepo(db, logger)
+	sessionRepo := postgres.NewSessionRepo(db, logger)
+	degreeRepo := postgres.NewDegreeRepo(db, logger)
+	siteFeedbackRepo := postgres.NewSiteFeedbackRepo(db, logger)
+	shoppingListItemRepo := postgres.NewShoppingListRepo(db, logger)
+	usersToShoppingListItemRepo := postgres.NewUsersToShoppingListItemRepo(db, logger)
+	dotRepo := postgres.NewDotRepo(db, logger)
+	banInfoRepo := postgres.NewBanInfoRepo(db, logger)
+	accessRequestRepo := postgres.NewAccessRequestRepo(db, logger)
+	whitelistRepo := postgres.NewWhitelistRepo(db, logger)
+	commentRepo := postgres.NewCommentRepo(db, logger)
+	registrationRepo := postgres.NewRegistrationRepo(db, logger)
 
 	// Initialize services
 	authService := services.NewAuthService(sessionRepo, userRepo)
@@ -89,6 +85,7 @@ func RunApi() {
 
 	go http.RunServer(
 		notif,
+		logger,
 		config,
 		authService,
 		happeningService,
@@ -103,5 +100,5 @@ func RunApi() {
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
-	logger.Info("received shutdown signal, gracefully shutting down")
+	logger.Info(context.Background(), "received shutdown signal, gracefully shutting down")
 }

@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/util"
 	"uno/domain/services"
 
-	_ "uno/domain/repo"
+	_ "uno/domain/ports"
 )
 
 // UnbanUsersWithExpiredStrikesHandler bans users with expired strikes and bans
@@ -29,7 +29,7 @@ func UnbanUsersWithExpiredStrikesHandler(strikeService *services.StrikeService) 
 // GetUsersWithStrikesHandler returns all users with strikes and bans
 // @Summary	     Gets users with strikes and bans
 // @Tags         strikes
-// @Success      200  {array}  repo.UserWithStrikes  "OK"
+// @Success      200  {array}  ports.UserWithStrikes  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
@@ -47,7 +47,7 @@ func GetUsersWithStrikesHandler(strikeService *services.StrikeService) router.Ha
 // GetBannedUsers returns all banned users
 // @Summary	     Gets all users that are banned
 // @Tags         strikes
-// @Success      200  {array}  repo.UserWithBanInfo  "OK"
+// @Success      200  {array}  ports.UserWithBanInfo  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey

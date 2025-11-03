@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/util"
 	"uno/domain/services"
 
-	_ "uno/domain/repo"
+	_ "uno/domain/ports"
 )
 
 // GetCommentsByIDHandler returns a comment by its ID
@@ -14,7 +14,7 @@ import (
 // @Tags         comments
 // @Produce      json
 // @Param        id   path      string  true  "Comment ID"
-// @Success      200  {array}   repo.CommentWithReactionsAndUser  "OK"
+// @Success      200  {array}   ports.CommentWithReactionsAndUser  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"

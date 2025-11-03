@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 	"uno/adapters/http/routes/api"
-	"uno/adapters/persistance/postgres"
 	"uno/domain/model"
 	"uno/domain/services"
+	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,9 +18,9 @@ import (
 // Setup db, repo and service for strikes tests
 func setupStrikesTest(t *testing.T) (*postgres.Database, *services.StrikeService) {
 	db := postgres.SetupTestDB(t)
-	dotRepo := postgres.NewDotRepo(db)
-	banRepo := postgres.NewBanInfoRepo(db)
-	userRepo := postgres.NewUserRepo(db)
+	dotRepo := postgres.NewDotRepo(db, nil)
+	banRepo := postgres.NewBanInfoRepo(db, nil)
+	userRepo := postgres.NewUserRepo(db, nil)
 	strikeService := services.NewStrikeService(dotRepo, banRepo, userRepo)
 	return db, strikeService
 }

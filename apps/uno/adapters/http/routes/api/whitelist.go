@@ -9,9 +9,6 @@ import (
 	_ "uno/domain/model"
 )
 
-// r.Handle("GET", "/whitelist", api.GetWhitelistHandler(whitelistService), admin)
-// r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(whitelistService), admin)
-
 // GetWhitelistHandler returns a list of whitelisted emails
 // @Summary	     Get whitelisted emails
 // @Tags         whitelist
