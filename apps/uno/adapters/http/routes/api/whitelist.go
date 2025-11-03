@@ -1,9 +1,11 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
+	"uno/domain/ports"
 	"uno/domain/services"
 
 	_ "uno/domain/model"
@@ -18,11 +20,11 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
-func GetWhitelistHandler(whitelistService *services.WhitelistService) router.Handler {
+func GetWhitelistHandler(logger ports.Logger, whitelistService *services.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		whitelistedEmails, err := whitelistService.WhitelistRepo().GetWhitelist(r.Context())
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, whitelistedEmails)
 	}
@@ -39,12 +41,15 @@ func GetWhitelistHandler(whitelistService *services.WhitelistService) router.Han
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist/{email} [get]
-func GetWhitelistByEmailHandler(whitelistService *services.WhitelistService) router.Handler {
+func GetWhitelistByEmailHandler(logger ports.Logger, whitelistService *services.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		email := r.PathValue("email")
+		if email == "" {
+			return http.StatusBadRequest, errors.New("missing email")
+		}
 		whitelistInfo, err := whitelistService.WhitelistRepo().GetWhitelistByEmail(r.Context(), email)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, whitelistInfo)
 	}

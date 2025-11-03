@@ -30,7 +30,7 @@ func TestGetDegreesHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetDegreesHandler(degreeService)
+	handler := api.GetDegreesHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
 	w := httptest.NewRecorder()
@@ -64,7 +64,7 @@ func TestGetDegreesHandler_WithData(t *testing.T) {
 		Name: "Informatikk",
 	})
 
-	handler := api.GetDegreesHandler(degreeService)
+	handler := api.GetDegreesHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
 	w := httptest.NewRecorder()
@@ -91,7 +91,7 @@ func TestCreateDegreeHandler_Success(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.CreateDegreeHandler(degreeService)
+	handler := api.CreateDegreeHandler(nil, degreeService)
 
 	degree := model.Degree{
 		ID:   "DTEK",
@@ -121,7 +121,7 @@ func TestCreateDegreeHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.CreateDegreeHandler(degreeService)
+	handler := api.CreateDegreeHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/degrees", bytes.NewReader([]byte("invalid json")))
 	w := httptest.NewRecorder()
@@ -146,7 +146,7 @@ func TestUpdateDegreeHandler_Success(t *testing.T) {
 		Name: "Datateknologi",
 	})
 
-	handler := api.UpdateDegreeHandler(degreeService)
+	handler := api.UpdateDegreeHandler(nil, degreeService)
 
 	updatedDegree := model.Degree{
 		ID:   "DTEK",
@@ -176,7 +176,7 @@ func TestUpdateDegreeHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.UpdateDegreeHandler(degreeService)
+	handler := api.UpdateDegreeHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/degrees/DTEK", bytes.NewReader([]byte("invalid")))
 	w := httptest.NewRecorder()
@@ -201,7 +201,7 @@ func TestDeleteDegreeHandler_Success(t *testing.T) {
 		Name: "Datateknologi",
 	})
 
-	handler := api.DeleteDegreeHandler(degreeService)
+	handler := api.DeleteDegreeHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodDelete, "/degrees/DTEK", nil)
 	req.SetPathValue("id", "DTEK")
@@ -223,7 +223,7 @@ func TestDeleteDegreeHandler_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.DeleteDegreeHandler(degreeService)
+	handler := api.DeleteDegreeHandler(nil, degreeService)
 
 	req := httptest.NewRequest(http.MethodDelete, "/degrees/", nil)
 	// Test when no ID is set in path

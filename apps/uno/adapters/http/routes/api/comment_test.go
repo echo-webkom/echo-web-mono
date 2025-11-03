@@ -32,7 +32,7 @@ func TestGetCommentsByIDHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetCommentsByIDHandler(commentService)
+	handler := api.GetCommentsByIDHandler(nil, commentService)
 
 	req := httptest.NewRequest(http.MethodGet, "/comments/post123", nil)
 	req.SetPathValue("id", "post123")
@@ -51,7 +51,7 @@ func TestGetCommentsByIDHandler_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetCommentsByIDHandler(commentService)
+	handler := api.GetCommentsByIDHandler(nil, commentService)
 
 	req := httptest.NewRequest(http.MethodGet, "/comments/", nil)
 	w := httptest.NewRecorder()
@@ -77,7 +77,7 @@ func TestCreateCommentHandler_Success(t *testing.T) {
 		Type:  "student",
 	})
 
-	handler := api.CreateCommentHandler(commentService)
+	handler := api.CreateCommentHandler(nil, commentService)
 
 	requestBody := api.CreateCommentRequest{
 		Content: "This is a test comment",
@@ -107,7 +107,7 @@ func TestCreateCommentHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.CreateCommentHandler(commentService)
+	handler := api.CreateCommentHandler(nil, commentService)
 
 	req := httptest.NewRequest(http.MethodPost, "/comments", bytes.NewReader([]byte("invalid json")))
 	w := httptest.NewRecorder()
@@ -143,7 +143,7 @@ func TestReactToCommentHandler_Success(t *testing.T) {
 	}
 	commentID := comments[0].ID
 
-	handler := api.ReactToCommentHandler(commentService)
+	handler := api.ReactToCommentHandler(nil, commentService)
 
 	requestBody := map[string]string{
 		"comment_id": commentID,
@@ -173,7 +173,7 @@ func TestReactToCommentHandler_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.ReactToCommentHandler(commentService)
+	handler := api.ReactToCommentHandler(nil, commentService)
 
 	requestBody := map[string]string{
 		"user_id": "user123",
@@ -196,7 +196,7 @@ func TestReactToCommentHandler_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.ReactToCommentHandler(commentService)
+	handler := api.ReactToCommentHandler(nil, commentService)
 
 	req := httptest.NewRequest(http.MethodPost, "/comments/comment123/reaction", bytes.NewReader([]byte("invalid")))
 	req.SetPathValue("id", "comment123")

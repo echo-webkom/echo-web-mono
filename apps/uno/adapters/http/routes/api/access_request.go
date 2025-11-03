@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
+	"uno/domain/ports"
 	"uno/domain/services"
 
 	_ "uno/domain/model"
@@ -18,11 +19,11 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /access-requests [get]
-func GetAccessRequestsHandler(accessRequestService *services.AccessRequestService) router.Handler {
+func GetAccessRequestsHandler(logger ports.Logger, accessRequestService *services.AccessRequestService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		accessRequests, err := accessRequestService.AccessRequestRepo().GetAccessRequests(r.Context())
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, accessRequests)
 	}

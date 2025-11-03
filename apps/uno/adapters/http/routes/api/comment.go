@@ -1,12 +1,12 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
+	"uno/domain/ports"
 	"uno/domain/services"
-
-	_ "uno/domain/ports"
 )
 
 // GetCommentsByIDHandler returns a comment by its ID
@@ -20,15 +20,16 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id} [get]
-func GetCommentsByIDHandler(commentService *services.CommentService) router.Handler {
+func GetCommentsByIDHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+		ctx := r.Context()
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, nil
+			return http.StatusBadRequest, errors.New("missing comment id")
 		}
-		comments, err := commentService.CommentRepo().GetCommentsByID(r.Context(), id)
+		comments, err := commentService.CommentRepo().GetCommentsByID(ctx, id)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, comments)
 	}
@@ -53,15 +54,16 @@ type CreateCommentRequest struct {
 // @Failure      500      {string}  string                      "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments [post]
-func CreateCommentHandler(commentService *services.CommentService) router.Handler {
+func CreateCommentHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+		ctx := r.Context()
 		var req CreateCommentRequest
 		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, err
+			return http.StatusBadRequest, errors.New("invalid request")
 		}
-		err := commentService.CommentRepo().CreateComment(r.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
+		err := commentService.CommentRepo().CreateComment(ctx, req.Content, req.PostID, req.UserID, req.ParentCommentID)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, map[string]bool{"success": true})
 	}
@@ -85,19 +87,20 @@ type ReactToCommentRequest struct {
 // @Failure      500       {string}  string                       "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id}/reaction [post]
-func ReactToCommentHandler(commentService *services.CommentService) router.Handler {
+func ReactToCommentHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+		ctx := r.Context()
 		commentID := r.PathValue("id")
 		if commentID == "" {
-			return http.StatusBadRequest, nil
+			return http.StatusBadRequest, errors.New("missing comment id")
 		}
 		var req ReactToCommentRequest
 		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, err
+			return http.StatusBadRequest, errors.New("failed to read json")
 		}
-		err := commentService.ReactToComment(r.Context(), commentID, req.UserID)
+		err := commentService.ReactToComment(ctx, commentID, req.UserID)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, map[string]bool{"success": true})
 	}

@@ -53,46 +53,46 @@ func RunServer(
 	r.Handle("GET", "/", api.HealthHandler())
 
 	// Happening routes
-	r.Handle("GET", "/happenings", api.GetHappeningsHandler(happeningService))
-	r.Handle("GET", "/happenings/{id}", api.GetHappeningById(happeningService))
-	r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(happeningService))
-	r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(happeningService))
-	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(happeningService), admin)
-	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(happeningService), admin)
-	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(happeningService))
+	r.Handle("GET", "/happenings", api.GetHappeningsHandler(logger, happeningService))
+	r.Handle("GET", "/happenings/{id}", api.GetHappeningById(logger, happeningService))
+	r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(logger, happeningService))
+	r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(logger, happeningService))
+	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(logger, happeningService), admin)
+	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(logger, happeningService), admin)
+	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService))
 
 	// Degree routes
-	r.Handle("GET", "/degrees", api.GetDegreesHandler(degreeService))
-	r.Handle("POST", "/degrees", api.CreateDegreeHandler(degreeService), admin)
-	r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(degreeService), admin)
-	r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(degreeService), admin)
+	r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))
+	r.Handle("POST", "/degrees", api.CreateDegreeHandler(logger, degreeService), admin)
+	r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(logger, degreeService), admin)
+	r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(logger, degreeService), admin)
 
 	// Site feedback routes
-	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(siteFeedbackService), admin)
-	r.Handle("GET", "/feedbacks/{id}", api.GetSiteFeedbackByIDHandler(siteFeedbackService), admin)
+	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(logger, siteFeedbackService), admin)
+	r.Handle("GET", "/feedbacks/{id}", api.GetSiteFeedbackByIDHandler(logger, siteFeedbackService), admin)
 
 	// Shopping list routes
-	r.Handle("GET", "/shopping", api.GetShoppingList(shoppingListService), admin)
+	r.Handle("GET", "/shopping", api.GetShoppingList(logger, shoppingListService), admin)
 
 	// Birthday routes
-	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(userService))
+	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
 
 	// Strike routes
-	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(strikeSerivce), admin)
-	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(strikeSerivce), admin)
-	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(strikeSerivce), admin)
+	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(logger, strikeSerivce), admin)
+	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(logger, strikeSerivce), admin)
+	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(logger, strikeSerivce), admin)
 
 	// Access request routes
-	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(accessRequestService), admin)
+	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
 
 	// Whitelist routes
-	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(whitelistService), admin)
-	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(whitelistService), admin)
+	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(logger, whitelistService), admin)
+	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(logger, whitelistService), admin)
 
 	// Comment routes
-	r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(commentService))
-	r.Handle("POST", "/comments", api.CreateCommentHandler(commentService), admin)
-	r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(commentService), admin)
+	r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(logger, commentService))
+	r.Handle("POST", "/comments", api.CreateCommentHandler(logger, commentService), admin)
+	r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(logger, commentService), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

@@ -29,7 +29,7 @@ func TestGetSiteFeedbacksHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetSiteFeedbacksHandler(siteFeedbackService)
+	handler := api.GetSiteFeedbacksHandler(nil, siteFeedbackService)
 
 	req := httptest.NewRequest(http.MethodGet, "/feedbacks", nil)
 	w := httptest.NewRecorder()
@@ -73,7 +73,7 @@ func TestGetSiteFeedbacksHandler_WithData(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	handler := api.GetSiteFeedbacksHandler(siteFeedbackService)
+	handler := api.GetSiteFeedbacksHandler(nil, siteFeedbackService)
 
 	req := httptest.NewRequest(http.MethodGet, "/feedbacks", nil)
 	w := httptest.NewRecorder()
@@ -115,7 +115,7 @@ func TestGetSiteFeedbackByIDHandler_Success(t *testing.T) {
 	}
 	feedbackID := feedbacks[0].ID
 
-	handler := api.GetSiteFeedbackByIDHandler(siteFeedbackService)
+	handler := api.GetSiteFeedbackByIDHandler(nil, siteFeedbackService)
 
 	req := httptest.NewRequest(http.MethodGet, "/feedbacks/"+feedbackID, nil)
 	req.SetPathValue("id", feedbackID)
@@ -140,7 +140,7 @@ func TestGetSiteFeedbackByIDHandler_NotFound(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetSiteFeedbackByIDHandler(siteFeedbackService)
+	handler := api.GetSiteFeedbackByIDHandler(nil, siteFeedbackService)
 
 	req := httptest.NewRequest(http.MethodGet, "/feedbacks/nonexistent", nil)
 	req.SetPathValue("id", "nonexistent")

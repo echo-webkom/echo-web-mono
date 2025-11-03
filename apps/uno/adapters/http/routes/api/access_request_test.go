@@ -29,7 +29,7 @@ func TestGetAccessRequestsHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetAccessRequestsHandler(accessRequestService)
+	handler := api.GetAccessRequestsHandler(nil, accessRequestService)
 
 	req := httptest.NewRequest(http.MethodGet, "/access-requests", nil)
 	w := httptest.NewRecorder()
@@ -65,7 +65,7 @@ func TestGetAccessRequestsHandler_WithData(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	handler := api.GetAccessRequestsHandler(accessRequestService)
+	handler := api.GetAccessRequestsHandler(nil, accessRequestService)
 
 	req := httptest.NewRequest(http.MethodGet, "/access-requests", nil)
 	w := httptest.NewRecorder()

@@ -32,7 +32,7 @@ func TestGetShoppingList_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetShoppingList(shoppingListService)
+	handler := api.GetShoppingList(nil, shoppingListService)
 
 	req := httptest.NewRequest(http.MethodGet, "/shopping", nil)
 	w := httptest.NewRecorder()
@@ -77,7 +77,7 @@ func TestGetShoppingList_WithData(t *testing.T) {
 	_ = shoppingListService.UsersToShoppingListItemRepo().AddUserToShoppingListItem(ctx, user.ID, item1.ID)
 	_ = shoppingListService.UsersToShoppingListItemRepo().AddUserToShoppingListItem(ctx, user.ID, item2.ID)
 
-	handler := api.GetShoppingList(shoppingListService)
+	handler := api.GetShoppingList(nil, shoppingListService)
 
 	req := httptest.NewRequest(http.MethodGet, "/shopping", nil)
 	w := httptest.NewRecorder()

@@ -32,7 +32,7 @@ func TestUnbanUsersWithExpiredStrikesHandler_NoUsers(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.UnbanUsersWithExpiredStrikesHandler(strikeService)
+	handler := api.UnbanUsersWithExpiredStrikesHandler(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/strikes/unban", nil)
 	w := httptest.NewRecorder()
@@ -67,7 +67,7 @@ func TestUnbanUsersWithExpiredStrikesHandler_WithExpiredStrikes(t *testing.T) {
 		ExpiresAt: expiredTime,
 	})
 
-	handler := api.UnbanUsersWithExpiredStrikesHandler(strikeService)
+	handler := api.UnbanUsersWithExpiredStrikesHandler(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodPost, "/strikes/unban", nil)
 	w := httptest.NewRecorder()
@@ -85,7 +85,7 @@ func TestGetUsersWithStrikesHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetUsersWithStrikesHandler(strikeService)
+	handler := api.GetUsersWithStrikesHandler(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/strikes/users", nil)
 	w := httptest.NewRecorder()
@@ -126,7 +126,7 @@ func TestGetUsersWithStrikesHandler_WithStrikes(t *testing.T) {
 		ExpiresAt: expiresAt,
 	})
 
-	handler := api.GetUsersWithStrikesHandler(strikeService)
+	handler := api.GetUsersWithStrikesHandler(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/strikes/users", nil)
 	w := httptest.NewRecorder()
@@ -150,7 +150,7 @@ func TestGetBannedUsers_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetBannedUsers(strikeService)
+	handler := api.GetBannedUsers(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/strikes/banned", nil)
 	w := httptest.NewRecorder()
@@ -190,7 +190,7 @@ func TestGetBannedUsers_WithBans(t *testing.T) {
 		ExpiresAt: expiresAt,
 	})
 
-	handler := api.GetBannedUsers(strikeService)
+	handler := api.GetBannedUsers(nil, strikeService)
 
 	req := httptest.NewRequest(http.MethodGet, "/strikes/banned", nil)
 	w := httptest.NewRecorder()

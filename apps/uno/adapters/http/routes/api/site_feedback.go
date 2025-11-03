@@ -1,9 +1,11 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
+	"uno/domain/ports"
 	"uno/domain/services"
 
 	_ "uno/domain/model"
@@ -17,11 +19,11 @@ import (
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /feedbacks [get]
-func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
+func GetSiteFeedbacksHandler(logger ports.Logger, siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		feedbacks, err := siteFeedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(r.Context())
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, feedbacks)
 	}
@@ -37,12 +39,15 @@ func GetSiteFeedbacksHandler(siteFeedbackService *services.SiteFeedbackService) 
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /feedbacks/{id} [get]
-func GetSiteFeedbackByIDHandler(siteFeedbackService *services.SiteFeedbackService) router.Handler {
+func GetSiteFeedbackByIDHandler(logger ports.Logger, siteFeedbackService *services.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		feedbackID := r.PathValue("id")
+		if feedbackID == "" {
+			return http.StatusBadRequest, errors.New("missing site feedback id")
+		}
 		feedback, err := siteFeedbackService.SiteFeedbackRepo().GetSiteFeedbackByID(r.Context(), feedbackID)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, errors.New("site feedback not found")
 		}
 		return util.JsonOk(w, feedback)
 	}

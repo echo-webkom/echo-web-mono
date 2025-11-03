@@ -30,7 +30,7 @@ func TestGetWhitelistHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetWhitelistHandler(whitelistService)
+	handler := api.GetWhitelistHandler(nil, whitelistService)
 
 	req := httptest.NewRequest(http.MethodGet, "/whitelist", nil)
 	w := httptest.NewRecorder()
@@ -66,7 +66,7 @@ func TestGetWhitelistHandler_WithData(t *testing.T) {
 		ExpiresAt: time.Now().Add(48 * time.Hour),
 	})
 
-	handler := api.GetWhitelistHandler(whitelistService)
+	handler := api.GetWhitelistHandler(nil, whitelistService)
 
 	req := httptest.NewRequest(http.MethodGet, "/whitelist", nil)
 	w := httptest.NewRecorder()
@@ -101,7 +101,7 @@ func TestGetWhitelistByEmailHandler_Success(t *testing.T) {
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 	})
 
-	handler := api.GetWhitelistByEmailHandler(whitelistService)
+	handler := api.GetWhitelistByEmailHandler(nil, whitelistService)
 
 	req := httptest.NewRequest(http.MethodGet, "/whitelist/test@example.com", nil)
 	req.SetPathValue("email", "test@example.com")
@@ -126,7 +126,7 @@ func TestGetWhitelistByEmailHandler_NotFound(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetWhitelistByEmailHandler(whitelistService)
+	handler := api.GetWhitelistByEmailHandler(nil, whitelistService)
 
 	req := httptest.NewRequest(http.MethodGet, "/whitelist/notfound@example.com", nil)
 	req.SetPathValue("email", "notfound@example.com")

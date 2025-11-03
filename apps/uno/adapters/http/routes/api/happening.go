@@ -1,10 +1,12 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
+	"uno/domain/ports"
 	"uno/domain/services"
 
 	_ "uno/domain/model"
@@ -17,11 +19,11 @@ import (
 // @Produce      json
 // @Success      200  {array}  model.Happening  "OK"
 // @Router       /happenings [get]
-func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
+func GetHappeningsHandler(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		haps, err := hs.HappeningRepo().GetAllHappenings(r.Context())
+		haps, err := happeningService.HappeningRepo().GetAllHappenings(r.Context())
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 
 		return util.JsonOk(w, haps)
@@ -38,16 +40,16 @@ func GetHappeningsHandler(hs *services.HappeningService) router.Handler {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
-func GetHappeningById(hs *services.HappeningService) router.Handler {
+func GetHappeningById(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
-		hap, err := hs.HappeningRepo().GetHappeningById(r.Context(), id)
+		hap, err := happeningService.HappeningRepo().GetHappeningById(r.Context(), id)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, ErrInternalServer
 		}
 
 		return util.JsonOk(w, hap)
@@ -64,28 +66,28 @@ func GetHappeningById(hs *services.HappeningService) router.Handler {
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
-func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handler {
+func GetHappeningRegistrationsCount(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
 		ctx := r.Context()
 
-		hap, err := hs.HappeningRepo().GetHappeningById(ctx, id)
+		hap, err := happeningService.HappeningRepo().GetHappeningById(ctx, id)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, ErrInternalServer
 		}
 
-		spotRanges, err := hs.HappeningRepo().GetHappeningSpotRanges(ctx, hap.ID)
+		spotRanges, err := happeningService.HappeningRepo().GetHappeningSpotRanges(ctx, hap.ID)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 
-		regs, err := hs.HappeningRepo().GetHappeningRegistrations(ctx, hap.ID)
+		regs, err := happeningService.HappeningRepo().GetHappeningRegistrations(ctx, hap.ID)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 
 		grp := GroupedRegistration{}
@@ -122,18 +124,18 @@ func GetHappeningRegistrationsCount(hs *services.HappeningService) router.Handle
 // @Failure      404  {string}  string   "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
-func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
+func GetHappeningRegistrations(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
-		regs, err := hs.HappeningRepo().GetHappeningRegistrations(ctx, id)
+		regs, err := happeningService.HappeningRepo().GetHappeningRegistrations(ctx, id)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, ErrInternalServer
 		}
 
 		return util.JsonOk(w, regs)
@@ -151,18 +153,18 @@ func GetHappeningRegistrations(hs *services.HappeningService) router.Handler {
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
-func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
+func GetHappeningSpotRanges(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
-		ranges, err := hs.HappeningRepo().GetHappeningSpotRanges(ctx, id)
+		ranges, err := happeningService.HappeningRepo().GetHappeningSpotRanges(ctx, id)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, ErrInternalServer
 		}
 
 		return util.JsonOk(w, ranges)
@@ -179,18 +181,18 @@ func GetHappeningSpotRanges(hs *services.HappeningService) router.Handler {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
-func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
+func GetHappeningQuestions(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
-		qs, err := hs.HappeningRepo().GetHappeningQuestions(ctx, id)
+		qs, err := happeningService.HappeningRepo().GetHappeningQuestions(ctx, id)
 		if err != nil {
-			return http.StatusNotFound, err
+			return http.StatusNotFound, ErrInternalServer
 		}
 
 		return util.JsonOk(w, qs)
@@ -209,21 +211,21 @@ func GetHappeningQuestions(hs *services.HappeningService) router.Handler {
 // @Failure      400   {object}  services.RegisterResponse   "Bad Request"
 // @Failure      500   {object}  services.RegisterResponse   "Internal Server Error"
 // @Router       /happenings/{id}/register [post]
-func RegisterForHappening(hs *services.HappeningService) router.Handler {
+func RegisterForHappening(logger ports.Logger, happeningService *services.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing id in path")
+			return http.StatusBadRequest, fmt.Errorf("missing happening id")
 		}
 
 		var req services.RegisterRequest
 		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err)
+			return http.StatusBadRequest, errors.New("failed to read json")
 		}
 
-		resp, err := hs.Register(r.Context(), id, req)
+		resp, err := happeningService.Register(r.Context(), id, req)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 
 		// If registration was not successful, return 400

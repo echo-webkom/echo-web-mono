@@ -1,10 +1,12 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/model"
+	"uno/domain/ports"
 	"uno/domain/services"
 )
 
@@ -14,11 +16,11 @@ import (
 // @Produce      json
 // @Success      200  {array}  model.Degree  "OK"
 // @Router       /degrees [get]
-func GetDegreesHandler(ds *services.DegreeService) router.Handler {
+func GetDegreesHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		degrees, err := ds.DegreeRepo().GetAllDegrees(r.Context())
+		degrees, err := degreeService.DegreeRepo().GetAllDegrees(r.Context())
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, degrees)
 	}
@@ -35,16 +37,16 @@ func GetDegreesHandler(ds *services.DegreeService) router.Handler {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
-func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
+func CreateDegreeHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		var degree model.Degree
 		if err := util.ReadJson(r, &degree); err != nil {
-			return http.StatusBadRequest, err
+			return http.StatusBadRequest, errors.New("failed to read json")
 		}
 
-		createdDegree, err := ds.DegreeRepo().CreateDegree(r.Context(), degree)
+		createdDegree, err := degreeService.DegreeRepo().CreateDegree(r.Context(), degree)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.Json(w, http.StatusCreated, createdDegree)
 	}
@@ -61,16 +63,16 @@ func CreateDegreeHandler(ds *services.DegreeService) router.Handler {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
-func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
+func UpdateDegreeHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		var degree model.Degree
 		if err := util.ReadJson(r, &degree); err != nil {
-			return http.StatusBadRequest, err
+			return http.StatusBadRequest, errors.New("failed to read json")
 		}
 
-		updatedDegree, err := ds.DegreeRepo().UpdateDegree(r.Context(), degree)
+		updatedDegree, err := degreeService.DegreeRepo().UpdateDegree(r.Context(), degree)
 		if err != nil {
-			return http.StatusInternalServerError, err
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return util.JsonOk(w, updatedDegree)
 	}
@@ -85,15 +87,15 @@ func UpdateDegreeHandler(ds *services.DegreeService) router.Handler {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
-func DeleteDegreeHandler(ds *services.DegreeService) router.Handler {
+func DeleteDegreeHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, nil
+			return http.StatusBadRequest, errors.New("missing degree id")
 		}
 
-		if err := ds.DegreeRepo().DeleteDegree(r.Context(), id); err != nil {
-			return http.StatusInternalServerError, err
+		if err := degreeService.DegreeRepo().DeleteDegree(r.Context(), id); err != nil {
+			return http.StatusInternalServerError, ErrInternalServer
 		}
 		return http.StatusNoContent, nil
 	}

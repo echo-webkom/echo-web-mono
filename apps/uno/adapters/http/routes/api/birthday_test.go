@@ -42,7 +42,7 @@ func TestBirthdaysTodayHandler_Empty(t *testing.T) {
 		Birthday: &yesterday,
 	})
 
-	handler := api.BirthdaysTodayHandler(userService)
+	handler := api.BirthdaysTodayHandler(nil, userService)
 
 	req := httptest.NewRequest(http.MethodGet, "/birthdays", nil)
 	w := httptest.NewRecorder()
@@ -98,7 +98,7 @@ func TestBirthdaysTodayHandler_WithBirthdays(t *testing.T) {
 		Birthday: &notToday,
 	})
 
-	handler := api.BirthdaysTodayHandler(userService)
+	handler := api.BirthdaysTodayHandler(nil, userService)
 
 	req := httptest.NewRequest(http.MethodGet, "/birthdays", nil)
 	w := httptest.NewRecorder()
@@ -135,7 +135,7 @@ func TestBirthdaysTodayHandler_NoNames(t *testing.T) {
 		Birthday: &birthdayToday,
 	})
 
-	handler := api.BirthdaysTodayHandler(userService)
+	handler := api.BirthdaysTodayHandler(nil, userService)
 
 	req := httptest.NewRequest(http.MethodGet, "/birthdays", nil)
 	w := httptest.NewRecorder()

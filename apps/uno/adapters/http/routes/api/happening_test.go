@@ -34,7 +34,7 @@ func TestGetHappeningsHandler_Empty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetHappeningsHandler(happeningService)
+	handler := api.GetHappeningsHandler(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings", nil)
 	w := httptest.NewRecorder()
@@ -73,7 +73,7 @@ func TestGetHappeningsHandler_WithData(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningsHandler(happeningService)
+	handler := api.GetHappeningsHandler(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings", nil)
 	w := httptest.NewRecorder()
@@ -106,7 +106,7 @@ func TestGetHappeningById_Success(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningById(happeningService)
+	handler := api.GetHappeningById(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/"+happening.ID, nil)
 	req.SetPathValue("id", happening.ID)
@@ -131,7 +131,7 @@ func TestGetHappeningById_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetHappeningById(happeningService)
+	handler := api.GetHappeningById(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/", nil)
 	w := httptest.NewRecorder()
@@ -149,7 +149,7 @@ func TestGetHappeningById_NotFound(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.GetHappeningById(happeningService)
+	handler := api.GetHappeningById(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/nonexistent", nil)
 	req.SetPathValue("id", "nonexistent")
@@ -178,7 +178,7 @@ func TestGetHappeningRegistrationsCount_Empty(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningRegistrationsCount(happeningService)
+	handler := api.GetHappeningRegistrationsCount(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/"+happening.ID+"/registrations/count", nil)
 	req.SetPathValue("id", happening.ID)
@@ -213,7 +213,7 @@ func TestGetHappeningRegistrations_Empty(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningRegistrations(happeningService)
+	handler := api.GetHappeningRegistrations(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/"+happening.ID+"/registrations", nil)
 	req.SetPathValue("id", happening.ID)
@@ -247,7 +247,7 @@ func TestGetHappeningSpotRanges_Empty(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningSpotRanges(happeningService)
+	handler := api.GetHappeningSpotRanges(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/"+happening.ID+"/spot-ranges", nil)
 	req.SetPathValue("id", happening.ID)
@@ -281,7 +281,7 @@ func TestGetHappeningQuestions_Empty(t *testing.T) {
 		Date:  &date,
 	})
 
-	handler := api.GetHappeningQuestions(happeningService)
+	handler := api.GetHappeningQuestions(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodGet, "/happenings/"+happening.ID+"/questions", nil)
 	req.SetPathValue("id", happening.ID)
@@ -305,7 +305,7 @@ func TestRegisterForHappening_MissingID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.RegisterForHappening(happeningService)
+	handler := api.RegisterForHappening(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodPost, "/happenings//register", nil)
 	w := httptest.NewRecorder()
@@ -323,7 +323,7 @@ func TestRegisterForHappening_InvalidJSON(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	handler := api.RegisterForHappening(happeningService)
+	handler := api.RegisterForHappening(nil, happeningService)
 
 	req := httptest.NewRequest(http.MethodPost, "/happenings/happening123/register", bytes.NewReader([]byte("invalid")))
 	req.SetPathValue("id", "happening123")
