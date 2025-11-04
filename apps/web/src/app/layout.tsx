@@ -24,7 +24,6 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
-import { MatchPopup } from "./(default)/hjem/_components/match-popup";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -189,7 +188,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
-            <MatchPopup />
           </ThemeWrapper>
         </Providers>
         <Analytics />
