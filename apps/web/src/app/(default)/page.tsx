@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
+import { ChevronRight } from "lucide-react";
 
 import { ParticlesBackdrop } from "@/components/animations/particles";
 import { Reveal } from "@/components/animations/reveal";
@@ -21,6 +22,22 @@ export default async function HomePage() {
     fetchHomeHappenings(["bedpres"], 4),
     fetchHomeHappenings(["event", "external"], 4),
   ]);
+
+  const studieretninger: Record<string, Record<string, string>> = {
+    Bachelor: {
+      Datateknologi: "https://www4.uib.no/studier/program/informatikk-datateknologi-bachelor",
+      Datasikkerhet: "https://www4.uib.no/studier/program/informatikk-datasikkerhet-bachelor",
+      "Informatikk-matematikk-økonomi":
+        "https://www4.uib.no/studier/program/informatikk-matematikk-okonomi-bachelor",
+      Bioinformatikk: "https://www4.uib.no/studier/program/informatikk-bioinformatikk-bachelor",
+    },
+    Master: { Informatikk: "https://www4.uib.no/studier/program/informatikk-master" },
+    Årsstudium: { Informatikk: "https://www4.uib.no/studier/program/informatikk-arsstudium" },
+  };
+
+  const allPrograms = Object.entries(studieretninger).flatMap(([degree, programs]) =>
+    Object.entries(programs).map(([name, url]) => ({ degree, name, url })),
+  );
 
   return (
     <>
@@ -203,6 +220,27 @@ export default async function HomePage() {
                 )}
               </Reveal>
             </div>
+
+            <Reveal translateX={200}>
+              <section>
+                <h2 className="mb-4 text-center text-xl font-semibold">Studieretninger</h2>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {allPrograms.map((p) => (
+                    <Link
+                      key={`${p.degree}-${p.name}`}
+                      href={p.url}
+                      className="group bg-card text-card-foreground hover:bg-muted/30 flex items-center justify-between rounded-lg border p-3 shadow-sm transition"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate group-hover:underline">{p.name}</p>
+                        <p className="text-muted-foreground mt-0.5 text-xs">{p.degree}</p>
+                      </div>
+                      <ChevronRight className="text-muted-foreground group-hover:text-foreground size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            </Reveal>
           </div>
         </Container>
       </div>
