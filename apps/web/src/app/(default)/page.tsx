@@ -220,7 +220,8 @@ export default async function HomePage() {
                 )}
               </Reveal>
             </div>
-            <Reveal>
+
+            <Reveal translateX={200}>
               <section>
                 <h2 className="mb-4 text-center text-xl font-semibold">Studieretninger</h2>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
