@@ -8,6 +8,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
 	"uno/domain/services"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -27,18 +28,12 @@ func TestUserService_GetUsersWithBirthdayToday_Success(t *testing.T) {
 	name1 := "Alice"
 	name2 := "Bob"
 	expectedUsers := []model.User{
-		{
-			ID:    "user-1",
-			Name:  &name1,
-			Email: "alice@example.com",
-			Type:  "student",
-		},
-		{
-			ID:    "user-2",
-			Name:  &name2,
-			Email: "bob@example.com",
-			Type:  "student",
-		},
+		testutil.NewFakeStruct(func(u *model.User) {
+			u.Name = &name1
+		}),
+		testutil.NewFakeStruct(func(u *model.User) {
+			u.Name = &name2
+		}),
 	}
 
 	mockRepo := mocks.NewUserRepo(t)
