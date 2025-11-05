@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+import { addBooking } from "@/actions/bookings"; // 👈 now imports the server action
+import { toast } from "@/hooks/use-toast";
+import BookingModal from "./bookingModal";
 import { CalendarControls } from "./controls";
 import { CalendarTable } from "./table";
 import { TableHeader } from "./tableHeader";
@@ -17,49 +20,91 @@ function getWeekDays(baseDate: Date) {
 }
 
 export type Booking = {
-  id: number;
-  user?: { name: string };
+  id?: number;
+  title: string;
   startTime: Date;
   endTime: Date;
-  title: string;
+  user: {
+    id: string;
+    name: string;
+  };
 };
 
 export default function BookingCalendar({
   user,
   allBookings,
 }: {
-  user?: string | undefined | null;
+  user: { id: string; name: string };
   allBookings?: Array<Booking>;
 }) {
   const [date, setDate] = useState(new Date());
   const [bookings, setBookings] = useState<Array<Booking>>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalDay, setModalDay] = useState<Date | null>(null);
+
   const weekDays = getWeekDays(date);
 
+  // initialize bookings
   useEffect(() => {
     if (allBookings) setBookings(allBookings);
   }, [allBookings]);
 
+  // filter out old bookings when switching week
   useEffect(() => {
-    setBookings((prev) => [...prev.filter((b) => b.startTime >= date)]);
+    setBookings((prev) => prev.filter((b) => b.startTime >= date));
   }, [date]);
 
-  const addBooking = async (day: Date) => {
-    const startTime = prompt("Starttid (HH:MM):");
-    const endTime = prompt("Sluttid (HH:MM):");
-    if (!startTime || !endTime) return;
+  const openAddModal = (day: Date) => {
+    setModalDay(day);
+    setModalOpen(true);
+  };
 
-    const start = new Date(`${day.toISOString().split("T")[0]}T${startTime}`);
-    const end = new Date(`${day.toISOString().split("T")[0]}T${endTime}`);
+  const handleSubmitFromModal = async (values: { title: string; start: string; end: string }) => {
+    if (!modalDay) return;
 
-    const res = await fetch("/api/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ startTime: start, endTime: end }),
-    });
+    const datePrefix = modalDay.toISOString().split("T")[0];
+    const startISO = `${datePrefix}T${values.start}`;
+    const endISO = `${datePrefix}T${values.end}`;
 
-    if (res.ok) {
-      // const booking = await res.json();
-      // setBookings((prev) => [...prev, booking]);
+    try {
+      const result = await addBooking({
+        title: values.title || "Kontorplass",
+        startTime: startISO,
+        endTime: endISO,
+        userId: user.id,
+      });
+
+      if (!result?.success) {
+        toast({
+          title: result?.message ?? "Kunne ikke lagre bookingen.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Construct new booking with local user object
+      const newBooking: Booking = {
+        id: result.booking.id,
+        title: result.booking.title ?? values.title ?? "Kontorplass",
+        startTime: new Date(result.booking.startTime),
+        endTime: new Date(result.booking.endTime),
+        user, // attach logged-in user
+      };
+
+      setBookings((prev) => [...prev, newBooking]);
+      setModalOpen(false);
+      setModalDay(null);
+
+      toast({
+        title: "Bookingen ble lagret!",
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      toast({
+        title: "Serverfeil — prøv igjen senere.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -71,8 +116,14 @@ export default function BookingCalendar({
         weekDays={weekDays}
         bookings={bookings}
         date={date}
-        addBooking={addBooking}
+        addBooking={openAddModal}
         user={user}
+      />
+      <BookingModal
+        open={modalOpen}
+        day={modalDay}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleSubmitFromModal}
       />
     </div>
   );

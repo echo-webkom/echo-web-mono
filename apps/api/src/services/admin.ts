@@ -1,5 +1,5 @@
 import { isFuture, isPast } from "date-fns";
-import { and, eq, inArray, or, sql } from "drizzle-orm";
+import { and, eq, gte, inArray, lte, or, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -7,6 +7,7 @@ import {
   answers,
   comments,
   commentsReactions,
+  officeBookings,
   registrations,
   usersToGroups,
   type AnswerInsert,
@@ -467,6 +468,90 @@ app.get("/admin/access-requests", admin(), async (c) => {
   const accessRequests = await db.query.accessRequests.findMany();
 
   return c.json(accessRequests);
+});
+
+// app.post("/admin/bookings", admin(), async (c) => {
+//   const { ok, json } = await parseJson(
+//     c,
+//     z.object({
+//       title: z.string().min(1),
+//       startTime: z.string().refine((s) => !Number.isNaN(Date.parse(s)), "Invalid date format"),
+//       endTime: z.string().refine((s) => !Number.isNaN(Date.parse(s)), "Invalid date format"),
+//       userId: z.string().optional(),
+//     }),
+//   );
+
+//   if (!ok) {
+//     return c.json({ error: "Invalid data" }, 400);
+//   }
+
+//   console.log("Received booking data:", json);
+//   const { title, startTime, endTime, userId } = json;
+
+//   if (!userId) {
+//     return c.json({ error: "User ID is required" }, 400);
+//   }
+
+//   // Check if time is already passed
+//   if (isPast(new Date(startTime)) || isPast(new Date(endTime))) {
+//     return c.json({ error: "Cannot create booking in the past" }, 400);
+//   }
+
+//   // Check if end time is after start time
+//   if (new Date(endTime) <= new Date(startTime)) {
+//     return c.json({ error: "End time must be after start time" }, 400);
+//   }
+
+//   // Check if spot is available
+//   const overlappingBookings = await db.query.officeBookings.findMany({
+//     where: (booking, { or, and, lt, gt }) =>
+//       or(
+//         and(lt(booking.startTime, new Date(endTime)), gt(booking.endTime, new Date(startTime))),
+//         and(gte(booking.startTime, new Date(startTime)), lte(booking.startTime, new Date(endTime))),
+//         and(gte(booking.endTime, new Date(startTime)), lte(booking.endTime, new Date(endTime))),
+//       ),
+//   });
+
+//   if (overlappingBookings.length > 0) {
+//     return c.json({ error: "Time slot is already booked" }, 400);
+//   }
+
+//   // Create booking
+//   const [created] = await db
+//     .insert(officeBookings)
+//     .values({
+//       title,
+//       startTime: new Date(startTime),
+//       endTime: new Date(endTime),
+//       userId,
+//     })
+//     .returning();
+
+//   console.log("Created booking:", created);
+//   return c.json({ success: true, booking: created });
+// });
+
+app.post("/bookings", admin(), async (c) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const body = await c.req.json();
+  const schema = z.object({
+    title: z.string().min(1),
+    startTime: z.string(),
+    endTime: z.string(),
+    userId: z.string(),
+  });
+
+  const result = schema.safeParse(body);
+  if (!result.success) return c.json({ success: false, error: "Invalid data" }, 400);
+
+  const bookingData = {
+    ...result.data,
+    startTime: new Date(result.data.startTime),
+    endTime: new Date(result.data.endTime),
+  };
+
+  const [created] = await db.insert(officeBookings).values(bookingData).returning();
+  return c.json({ success: true, booking: created });
 });
 
 export default app;

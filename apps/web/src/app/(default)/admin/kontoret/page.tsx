@@ -16,11 +16,11 @@ export default async function Page() {
     endTime: new Date(b.endTime),
   }));
 
-  const userName = user?.name ?? null;
+  const userName = user?.name ?? "Ukjent bruker";
 
   return (
     <>
-      <BookingCalendar user={userName} allBookings={allBookings} />
+      <BookingCalendar user={{ id: user?.id, name: userName }} allBookings={allBookings} />
     </>
   );
 }

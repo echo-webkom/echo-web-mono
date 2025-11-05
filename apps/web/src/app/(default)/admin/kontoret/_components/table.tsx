@@ -14,7 +14,7 @@ export const CalendarTable = ({
   weekDays: Array<Date>;
   bookings: Array<Booking>;
   date: Date;
-  user?: string | undefined | null;
+  user: { name: string };
   addBooking: (day: Date) => void;
 }) => {
   const startHour = 0;
@@ -35,7 +35,7 @@ export const CalendarTable = ({
             key={day.toISOString()}
             className="relative border-l"
             style={{ minHeight: `${64 * 24}px` }}
-            onDoubleClick={() => addBooking(day)}
+            onClick={() => addBooking(day)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               const bookingId = e.dataTransfer.getData("bookingId");
@@ -45,13 +45,13 @@ export const CalendarTable = ({
             }}
           >
             {bookings
-              .filter((b) => new Date(b.startTime).toDateString() === day.toDateString())
+              ?.filter((b) => new Date(b.startTime).toDateString() === day.toDateString())
               .map((b) => (
                 <BookingItem
-                  key={b.id}
+                  key={b.startTime.toISOString()}
                   booking={b}
                   startHour={startHour}
-                  highlighted={user === b.user?.name}
+                  highlighted={user.name === b.user?.name}
                 />
               ))}
           </div>
