@@ -1,6 +1,6 @@
 import BouvetLogo from "@/assets/images/bouvet-logo-white.png";
 import FonnGroup from "@/assets/images/fonn-group.png";
-import SanityLogo from "@/assets/images/sanity-logo.png";
+import SanityLogo from "@/assets/images/sanity.svg";
 
 export const sponsors = [
   {
@@ -19,6 +19,7 @@ export const otherSponsors = [
   {
     label: "Sanity",
     href: "https://www.sanity.io/",
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     imageSrc: SanityLogo,
   },
 ];

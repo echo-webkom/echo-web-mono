@@ -69,7 +69,7 @@ export const Footer = ({ className }: FooterProps) => {
                       <Image
                         src={image as StaticImport}
                         alt={`${label} logo`}
-                        className="h-auto w-28 invert dark:invert-0"
+                        className="h-12 w-auto invert dark:invert-0"
                       />
                     </Link>
                   </li>
@@ -87,7 +87,7 @@ export const Footer = ({ className }: FooterProps) => {
                       <Image
                         src={imageSrc as StaticImport}
                         alt={`${label} logo`}
-                        className="h-8 w-auto"
+                        className="h-12 w-auto invert dark:invert-0"
                       />
                     </Link>
                   </li>
