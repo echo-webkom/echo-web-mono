@@ -1,20 +1,17 @@
-import BouvetLogo from "@/assets/images/bouvet-logo-orange.png";
-import FonnGroupLight from "@/assets/images/fonn-group-light.png";
-import FonnGroupDark from "@/assets/images/fonn-group.png";
-import SanityLogo from "@/assets/images/sanity-logo.png";
+import BouvetLogo from "@/assets/images/bouvet-logo-white.png";
+import FonnGroup from "@/assets/images/fonn-group.png";
+import SanityLogo from "@/assets/images/sanity.svg";
 
 export const sponsors = [
   {
     label: "Fonn Group",
     href: "https://fonngroup.com",
-    imageDarkMode: FonnGroupDark,
-    imageLightMode: FonnGroupLight,
+    image: FonnGroup,
   },
   {
     label: "Bouvet",
     href: "https://www.bouvet.no",
-    imageDarkMode: BouvetLogo,
-    imageLightMode: BouvetLogo,
+    image: BouvetLogo,
   },
 ];
 
@@ -22,6 +19,7 @@ export const otherSponsors = [
   {
     label: "Sanity",
     href: "https://www.sanity.io/",
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     imageSrc: SanityLogo,
   },
 ];

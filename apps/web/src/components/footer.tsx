@@ -58,18 +58,18 @@ export const Footer = ({ className }: FooterProps) => {
             <div>
               <ul className="space-y-5">
                 <h3 className="mb-4 py-2 text-xl font-bold">Samarbeidspartnere ❤️</h3>
-                {sponsors.map(({ label, href, imageDarkMode, imageLightMode }) => (
+                {sponsors.map(({ label, href, image }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
-                      <Image
+                      {/* <Image
                         src={imageDarkMode as StaticImport}
                         alt={`${label} logo`}
                         className="hidden h-auto w-28 dark:block"
-                      />
+                      /> */}
                       <Image
-                        src={imageLightMode as StaticImport}
+                        src={image as StaticImport}
                         alt={`${label} logo`}
-                        className="h-auto w-28 dark:hidden"
+                        className="h-12 w-auto invert dark:invert-0"
                       />
                     </Link>
                   </li>
@@ -87,7 +87,7 @@ export const Footer = ({ className }: FooterProps) => {
                       <Image
                         src={imageSrc as StaticImport}
                         alt={`${label} logo`}
-                        className="h-8 w-auto"
+                        className="h-12 w-auto invert dark:invert-0"
                       />
                     </Link>
                   </li>
