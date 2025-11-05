@@ -1,0 +1,31 @@
+# Registration Lottery System
+
+## Problem
+
+FIFO registration is unfair due to network latency. Users registering at the exact same time should have equal chance.
+
+## Solution
+
+**20-second lottery window** at registration open, then switch to normal FIFO.
+
+### How it works:
+
+1. Registration opens at scheduled time (e.g., 3:00 PM)
+2. **First 10 seconds** - All registrations go into a lottery pool
+3. **At 10-second mark** - Run lottery:
+   - If registrations ≤ spots: Everyone gets in
+   - If registrations > spots: Random selection fills all spots
+4. **After lottery** - Any remaining spots use normal FIFO
+
+### Technical Architecture:
+
+- **Database**: Track lottery status on events, store all registration attempts with timestamps
+- **Worker service**: Separate always-on Go application that checks every 10 seconds for events ready to process
+- **Deployment**: Two Fly.io apps (main web server + tiny worker service)
+
+### Benefits:
+
+- Fair for the initial registration rush
+- Simple to understand and maintain
+- No Redis or complex infrastructure needed
+- Familiar FIFO behavior after lottery
