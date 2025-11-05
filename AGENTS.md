@@ -48,6 +48,14 @@ Before starting development:
 - `pnpm db:down` - Stop Docker database
 - `pnpm db:setup` - Complete database reset and setup (removes data, starts fresh)
 
+### Uno (Go API) Commands
+
+- `pnpm --filter=@echo-webkom/uno tools:install` - Install Go development tools (air, swag, mockery)
+- `pnpm --filter=@echo-webkom/uno swag:init` - Generate Swagger API documentation
+- `pnpm --filter=@echo-webkom/uno mocks:generate` - Generate test mocks from interfaces
+- `pnpm --filter=@echo-webkom/uno test` - Run all Go tests
+- `pnpm --filter=@echo-webkom/uno test:coverage` - Run tests with coverage report
+
 ### Other Commands
 
 - `pnpm extract` - Extract Sanity schema
@@ -68,6 +76,13 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 - **api** - Hono.js backend API built with Node.js and esbuild
   - Lightweight REST API for specific endpoints
   - Uses shared database schemas from `@echo-webkom/db`
+- **uno** - Go backend API using Chi router with clean architecture
+  - Hexagonal architecture with domain/ports/adapters pattern
+  - PostgreSQL database with sqlx
+  - Development tools tracked in `tools.go` (Go best practice for tool dependencies)
+  - Required Go tools: air (hot reload), swag (API docs), mockery (test mocks)
+  - Tool installation scripts in `scripts/` directory
+  - Run `pnpm --filter=@echo-webkom/uno tools:install` to install all Go development tools
 - **cms** - Sanity Studio for content management
 
 ### Shared Packages (`/packages`)

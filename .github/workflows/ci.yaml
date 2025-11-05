@@ -56,7 +56,6 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           working-directory: apps/uno
-          version: v2.1
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
