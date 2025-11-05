@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "pnpm with-env air",
-    "start": "pnpm with-env ./build/main",
-    "build": "go build -o build/main cmd/main.go",
+    "start": "pnpm with-env ./build/web",
+    "build": "go build -o build/web cmd/web/main.go",
     "test": "pnpm with-env go test ./...",
     "test:verbose": "pnpm with-env go test ./... -v",
     "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",
