@@ -1,54 +1,93 @@
 package services_test
 
 import (
+	"context"
+	"errors"
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/domain/ports/mocks"
 	"uno/domain/services"
-	"uno/infrastructure/postgres"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
-func setupUserServiceTest(t *testing.T) *services.UserService {
-	db := postgres.SetupTestDB(t)
-	userRepo := postgres.NewUserRepo(db, nil)
-	userService := services.NewUserService(userRepo)
-	return userService
-}
-
-func TestUserService_GetUserRepo(t *testing.T) {
-	userService := setupUserServiceTest(t)
+func TestUserService_UserRepo(t *testing.T) {
+	mockRepo := mocks.NewUserRepo(t)
+	userService := services.NewUserService(mockRepo)
 
 	userRepo := userService.UserRepo()
-	if userRepo == nil {
-		t.Errorf("Expected UserRepo to be non-nil")
-	}
+	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
 }
 
-func TestUserService_GetUsersWithBirthdayToday(t *testing.T) {
-	userService := setupUserServiceTest(t)
-	ctx := t.Context()
+func TestUserService_GetUsersWithBirthdayToday_Success(t *testing.T) {
+	ctx := context.Background()
 
-	name := "test"
-	birthday := time.Now()
-	_, _ = userService.UserRepo().CreateUser(ctx, model.User{
-		Email:    "test@example.com",
-		Name:     &name,
-		Type:     "student",
-		Birthday: &birthday,
-	})
-	name2 := "test2"
-	birthday2 := time.Now().AddDate(0, 0, -3) // Not today
-	_, _ = userService.UserRepo().CreateUser(ctx, model.User{
-		Email:    "test2@example.com",
-		Name:     &name2,
-		Type:     "student",
-		Birthday: &birthday2,
-	})
+	name1 := "Alice"
+	name2 := "Bob"
+	expectedUsers := []model.User{
+		{
+			ID:    "user-1",
+			Name:  &name1,
+			Email: "alice@example.com",
+			Type:  "student",
+		},
+		{
+			ID:    "user-2",
+			Name:  &name2,
+			Email: "bob@example.com",
+			Type:  "student",
+		},
+	}
 
+	mockRepo := mocks.NewUserRepo(t)
+	mockRepo.EXPECT().
+		GetUsersWithBirthday(mock.Anything, mock.MatchedBy(func(date time.Time) bool {
+			return date.Location().String() == "Europe/Oslo"
+		})).
+		Return(expectedUsers, nil).
+		Once()
+
+	userService := services.NewUserService(mockRepo)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
+
 	assert.NoError(t, err)
-	assert.Len(t, users, 1)
-	assert.Equal(t, "test", *users[0].Name)
+	assert.Len(t, users, 2)
+	assert.Equal(t, "Alice", *users[0].Name)
+	assert.Equal(t, "Bob", *users[1].Name)
+}
+
+func TestUserService_GetUsersWithBirthdayToday_Empty(t *testing.T) {
+	ctx := context.Background()
+
+	mockRepo := mocks.NewUserRepo(t)
+	mockRepo.EXPECT().
+		GetUsersWithBirthday(mock.Anything, mock.Anything).
+		Return([]model.User{}, nil).
+		Once()
+
+	userService := services.NewUserService(mockRepo)
+	users, err := userService.GetUsersWithBirthdayToday(ctx)
+
+	assert.NoError(t, err)
+	assert.Empty(t, users)
+}
+
+func TestUserService_GetUsersWithBirthdayToday_Error(t *testing.T) {
+	ctx := context.Background()
+	expectedErr := errors.New("database connection failed")
+
+	mockRepo := mocks.NewUserRepo(t)
+	mockRepo.EXPECT().
+		GetUsersWithBirthday(mock.Anything, mock.Anything).
+		Return(nil, expectedErr).
+		Once()
+
+	userService := services.NewUserService(mockRepo)
+	users, err := userService.GetUsersWithBirthdayToday(ctx)
+
+	assert.Error(t, err)
+	assert.Equal(t, expectedErr, err)
+	assert.Nil(t, users)
 }
