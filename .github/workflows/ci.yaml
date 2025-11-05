@@ -21,9 +21,6 @@ env:
 
   AUTH_SECRET: "test-secret-for-ci-e2e-tests-only"
 
-  # remove
-  NEXT_PUBLIC_DISABLE_POPUP: "true"
-
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -79,6 +76,20 @@ jobs:
         working-directory: apps/uno
         run: golangci-lint run
 
+  check-docs:
+    name: 📚 Check Backend Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
       - name: 📦 Install swag
         run: go install github.com/swaggo/swag/cmd/swag@latest
 
@@ -90,8 +101,8 @@ jobs:
             exit 1
           fi
 
-  test-unit:
-    name: 🧪 Unit Tests
+  test-unit-frontend:
+    name: 🧪 Unit Tests (Frontend)
     runs-on: ubuntu-latest
 
     steps:
@@ -111,14 +122,26 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🔃 Sync docs
-        run: pnpm --filter=docs sync
+      - name: 🧪 Run frontend unit tests
+        run: pnpm --filter=web test:unit
 
-      - name: 🆎 Typegen
-        run: pnpm --filter=web typegen
+  test-unit-backend:
+    name: 🧪 Unit Tests (Backend)
+    runs-on: ubuntu-latest
 
-      - name: 🧪 Run unit tests
-        run: pnpm test:unit
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 🧪 Run backend unit tests
+        working-directory: apps/uno
+        run: go test ./... -v
 
   test-e2e:
     name: 🎭 E2E Tests
