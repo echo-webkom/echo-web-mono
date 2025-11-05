@@ -11,3 +11,5 @@ packages:
       DotRepo:
       BanInfoRepo:
       SiteFeedbackRepo:
+      ShoppingListItemRepo:
+      UsersToShoppingListItemRepo:
