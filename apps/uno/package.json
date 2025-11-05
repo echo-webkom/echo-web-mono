@@ -14,7 +14,10 @@
     "lint": "pnpm with-env golangci-lint run ./...",
     "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
     "tidy": "pnpm with-env go mod tidy",
+    "tools:install": "./scripts/install-tools.sh",
+    "tools:update": "./scripts/update-tools.sh",
     "swag:init": "swag init --dir ./ --generalInfo adapters/http/server.go --output ./docs --parseDependency --parseInternal",
+    "mocks:generate": "mockery",
     "with-env": "dotenv -e ../../.env --"
   },
   "packageManager": "pnpm@10.18.3",
