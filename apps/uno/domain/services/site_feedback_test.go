@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func SiteFeedbackService_SiteFeedbackRepo(t *testing.T) {
+func TestSiteFeedbackService_SiteFeedbackRepo(t *testing.T) {
 	mockRepo := mocks.NewSiteFeedbackRepo(t)
 	siteFeedbackService := services.NewSiteFeedbackService(mockRepo)
 
