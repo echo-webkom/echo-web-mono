@@ -14,3 +14,8 @@ packages:
       ShoppingListItemRepo:
       UsersToShoppingListItemRepo:
       DegreeRepo:
+      CommentRepo:
+      AccessRequestRepo:
+      SessionRepo:
+      HappeningRepo:
+      RegistrationRepo:
