@@ -15,7 +15,7 @@ RUN go mod download
 
 COPY apps/uno/ ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/web/main.go
 
 FROM alpine:latest AS runner
 
