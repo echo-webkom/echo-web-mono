@@ -12,10 +12,6 @@ func NewSiteFeedbackService(siteFeedbackRepo ports.SiteFeedbackRepo) *SiteFeedba
 	return &SiteFeedbackService{siteFeedbackRepo: siteFeedbackRepo}
 }
 
-func (s *SiteFeedbackService) Queries() ports.SiteFeedbackRepo {
-	return s.siteFeedbackRepo
-}
-
 func (s *SiteFeedbackService) SiteFeedbackRepo() ports.SiteFeedbackRepo {
 	return s.siteFeedbackRepo
 }
