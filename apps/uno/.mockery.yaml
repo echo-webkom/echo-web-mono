@@ -13,3 +13,4 @@ packages:
       SiteFeedbackRepo:
       ShoppingListItemRepo:
       UsersToShoppingListItemRepo:
+      DegreeRepo:
