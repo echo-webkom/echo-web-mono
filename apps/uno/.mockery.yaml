@@ -1,0 +1,9 @@
+packages:
+  uno/domain/ports:
+    config:
+      dir: "{{.InterfaceDir}}/mocks"
+      pkgname: mocks
+      filename: "{{.InterfaceName}}.go"
+      structname: "{{.InterfaceName}}"
+    interfaces:
+      UserRepo:
