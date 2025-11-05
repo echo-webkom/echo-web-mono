@@ -13,14 +13,14 @@ type ShoppingListService struct {
 }
 
 func NewShoppingListService(
-	shoppingListeItemRepo ports.ShoppingListItemRepo,
+	shoppingListItemRepo ports.ShoppingListItemRepo,
 	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo,
 	userRepo ports.UserRepo,
 ) *ShoppingListService {
 	return &ShoppingListService{
-		shoppingListeItemRepo:       shoppingListeItemRepo,
+		shoppingListeItemRepo:       shoppingListItemRepo,
 		usersToShoppingListItemRepo: usersToShoppingListItemRepo,
-		userRepo:                    userRepo,
+		userRepo:                    userRepo, // TODO: Not used. Remove me.
 	}
 }
 
