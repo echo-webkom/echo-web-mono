@@ -4,6 +4,7 @@ go 1.25
 
 require (
 	github.com/air-verse/air v1.63.0
+	github.com/brianvoe/gofakeit/v7 v7.8.2
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-chi/cors v1.2.2
 	github.com/go-chi/httplog/v3 v3.3.0

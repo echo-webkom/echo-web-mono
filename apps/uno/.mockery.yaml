@@ -8,3 +8,5 @@ packages:
     interfaces:
       UserRepo:
       WhitelistRepo:
+      DotRepo:
+      BanInfoRepo:
