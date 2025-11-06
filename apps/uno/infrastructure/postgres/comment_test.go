@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,11 +15,11 @@ func TestCommentRepo_CreateComment(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -45,11 +46,11 @@ func TestCommentRepo_CreateCommentWithParent(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -77,11 +78,11 @@ func TestCommentRepo_GetCommentsByID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -120,7 +121,7 @@ func TestCommentRepo_GetCommentsByIDEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	postID := "non-existent-post"
@@ -137,11 +138,11 @@ func TestCommentRepo_AddReactionToComment(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{
@@ -195,11 +196,11 @@ func TestCommentRepo_IsReactedByUser(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{
@@ -257,11 +258,11 @@ func TestCommentRepo_DeleteReactionFromComment(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewCommentRepo(db, NewTestLogger())
+	repo := NewCommentRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{

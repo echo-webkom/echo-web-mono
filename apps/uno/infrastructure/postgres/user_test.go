@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +16,7 @@ func TestUserRepo_CreateUser(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -43,7 +44,7 @@ func TestUserRepo_GetUserByID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -73,7 +74,7 @@ func TestUserRepo_GetUsersByIDs(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name1 := "John Doe"
@@ -119,7 +120,7 @@ func TestUserRepo_GetUsersWithBirthday(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	birthday := time.Date(1990, 5, 15, 0, 0, 0, 0, time.UTC)
@@ -152,7 +153,7 @@ func TestUserRepo_GetUsersWithBirthdayNoMatch(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	birthday := time.Date(1990, 5, 15, 0, 0, 0, 0, time.UTC)
@@ -184,7 +185,7 @@ func TestUserRepo_GetUserMemberships(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -224,7 +225,7 @@ func TestUserRepo_GetUserMembershipsEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -252,7 +253,7 @@ func TestUserRepo_GetUsersWithStrikes(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -296,7 +297,7 @@ func TestUserRepo_GetBannedUsers(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUserRepo(db, NewTestLogger())
+	repo := NewUserRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
