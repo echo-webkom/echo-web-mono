@@ -253,16 +253,11 @@ func RegisterForHappening(logger ports.Logger, happeningService *services.Happen
 		}
 
 		resp, err := happeningService.Register(r.Context(), id, req)
+
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
 
-		// If registration was not successful, return 400
-		if resp != nil && !resp.Success {
-			return util.Json(w, http.StatusBadRequest, resp)
-		}
-
-		// Successful registration
 		return util.JsonOk(w, resp)
 	}
 }
