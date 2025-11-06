@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,11 +15,11 @@ func TestUsersToShoppingListItemRepo_AddUserToShoppingListItem(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewUsersToShoppingListItemRepo(db, NewTestLogger())
+	repo := NewUsersToShoppingListItemRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user and shopping list item
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -31,7 +32,7 @@ func TestUsersToShoppingListItemRepo_AddUserToShoppingListItem(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	shoppingListRepo := NewShoppingListRepo(db, NewTestLogger())
+	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	item := model.ShoppingListItem{
 		UserID: createdUser.ID,
 		Name:   "Test item",
@@ -57,11 +58,11 @@ func TestUsersToShoppingListItemRepo_GetAllUserToShoppingListItems(t *testing.T)
 		_ = db.Close()
 	}()
 
-	repo := NewUsersToShoppingListItemRepo(db, NewTestLogger())
+	repo := NewUsersToShoppingListItemRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users and items
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{
@@ -86,7 +87,7 @@ func TestUsersToShoppingListItemRepo_GetAllUserToShoppingListItems(t *testing.T)
 	createdUser2, err := userRepo.CreateUser(ctx, user2)
 	assert.NoError(t, err)
 
-	shoppingListRepo := NewShoppingListRepo(db, NewTestLogger())
+	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	item1 := model.ShoppingListItem{
 		UserID: createdUser1.ID,
 		Name:   "Item 1",
@@ -124,11 +125,11 @@ func TestUsersToShoppingListItemRepo_DeleteUserToShoppingListItem(t *testing.T) 
 		_ = db.Close()
 	}()
 
-	repo := NewUsersToShoppingListItemRepo(db, NewTestLogger())
+	repo := NewUsersToShoppingListItemRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user and shopping list item
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -141,7 +142,7 @@ func TestUsersToShoppingListItemRepo_DeleteUserToShoppingListItem(t *testing.T) 
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	shoppingListRepo := NewShoppingListRepo(db, NewTestLogger())
+	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	item := model.ShoppingListItem{
 		UserID: createdUser.ID,
 		Name:   "Test item",
@@ -174,7 +175,7 @@ func TestUsersToShoppingListItemRepo_GetAllUserToShoppingListItemsEmpty(t *testi
 		_ = db.Close()
 	}()
 
-	repo := NewUsersToShoppingListItemRepo(db, NewTestLogger())
+	repo := NewUsersToShoppingListItemRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	items, err := repo.GetAllUserToShoppingListItems(ctx)
