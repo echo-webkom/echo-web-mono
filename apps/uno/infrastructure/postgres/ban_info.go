@@ -68,8 +68,8 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.B
 	)
 
 	query := `--sql
-		INSERT INTO ban_info (user_id, banned_by, reason, expires_at)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO ban_info (user_id, banned_by, reason, expires_at, created_at)
+		VALUES ($1, $2, $3, $4, NOW())
 		RETURNING id, user_id, banned_by, reason, created_at, expires_at
 	`
 	var result model.BanInfo
