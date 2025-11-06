@@ -84,6 +84,16 @@ jobs:
       - name: 🔍 Checkout
         uses: actions/checkout@v5
 
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
