@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,11 +16,11 @@ func TestDotRepo_CreateDot(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDotRepo(db, NewTestLogger())
+	repo := NewDotRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -57,11 +58,11 @@ func TestDotRepo_DeleteExpired(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDotRepo(db, NewTestLogger())
+	repo := NewDotRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{

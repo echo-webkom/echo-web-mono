@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,7 +15,7 @@ func TestSiteFeedbackRepo_CreateSiteFeedback(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSiteFeedbackRepo(db, NewTestLogger())
+	repo := NewSiteFeedbackRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -43,7 +44,7 @@ func TestSiteFeedbackRepo_GetSiteFeedbackByID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSiteFeedbackRepo(db, NewTestLogger())
+	repo := NewSiteFeedbackRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -73,7 +74,7 @@ func TestSiteFeedbackRepo_GetAllSiteFeedbacks(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSiteFeedbackRepo(db, NewTestLogger())
+	repo := NewSiteFeedbackRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name1 := "John Doe"
@@ -118,7 +119,7 @@ func TestSiteFeedbackRepo_MarkSiteFeedbackAsRead(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSiteFeedbackRepo(db, NewTestLogger())
+	repo := NewSiteFeedbackRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	name := "John Doe"
@@ -149,7 +150,7 @@ func TestSiteFeedbackRepo_GetAllSiteFeedbacksEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSiteFeedbackRepo(db, NewTestLogger())
+	repo := NewSiteFeedbackRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	feedbacks, err := repo.GetAllSiteFeedbacks(ctx)

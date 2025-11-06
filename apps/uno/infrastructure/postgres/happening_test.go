@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +17,7 @@ func TestHappeningRepo_CreateHappening(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -50,7 +51,7 @@ func TestHappeningRepo_GetHappeningById(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -78,7 +79,7 @@ func TestHappeningRepo_GetAllHappenings(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date1 := time.Now().Add(24 * time.Hour)
@@ -119,7 +120,7 @@ func TestHappeningRepo_GetHappeningSpotRanges(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -173,7 +174,7 @@ func TestHappeningRepo_GetHappeningQuestions(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -229,7 +230,7 @@ func TestHappeningRepo_GetHappeningHostGroups(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -276,11 +277,11 @@ func TestHappeningRepo_GetHappeningRegistrations(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user and happening
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -324,7 +325,7 @@ func TestHappeningRepo_GetHappeningRegistrationCounts(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewHappeningRepo(db, NewTestLogger())
+	repo := NewHappeningRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	date := time.Now().Add(24 * time.Hour)
@@ -352,7 +353,7 @@ func TestHappeningRepo_GetHappeningRegistrationCounts(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create registrations
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{

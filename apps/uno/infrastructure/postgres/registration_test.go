@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,11 +17,11 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user and happening
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -33,7 +34,7 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",
@@ -65,11 +66,11 @@ func TestRegistrationRepo_GetByUserAndHappeningNotFound(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user and happening
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -82,7 +83,7 @@ func TestRegistrationRepo_GetByUserAndHappeningNotFound(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",
@@ -106,11 +107,11 @@ func TestRegistrationRepo_InsertAnswers(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user and happening
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -123,7 +124,7 @@ func TestRegistrationRepo_InsertAnswers(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",
@@ -167,11 +168,11 @@ func TestRegistrationRepo_InsertAnswersEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user and happening
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -184,7 +185,7 @@ func TestRegistrationRepo_InsertAnswersEmpty(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",
@@ -207,11 +208,11 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create user with year
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	year := 2
@@ -227,7 +228,7 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create happening
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",
@@ -276,11 +277,11 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewRegistrationRepo(db, NewTestLogger())
+	repo := NewRegistrationRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users with year
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	year1 := 2
 	name1 := "John Doe"
 	email1 := "john@example.com"
@@ -310,7 +311,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create happening
-	happeningRepo := NewHappeningRepo(db, NewTestLogger())
+	happeningRepo := NewHappeningRepo(db, testutil.NewTestLogger())
 	date := time.Now().Add(24 * time.Hour)
 	happening := model.Happening{
 		Slug:  "test-happening",

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +16,7 @@ func TestWhitelistRepo_CreateWhitelist(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewWhitelistRepo(db, NewTestLogger())
+	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	whitelist := model.Whitelist{
@@ -37,7 +38,7 @@ func TestWhitelistRepo_GetWhitelistByEmail(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewWhitelistRepo(db, NewTestLogger())
+	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	email := "test@example.com"
@@ -63,7 +64,7 @@ func TestWhitelistRepo_GetWhitelist(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewWhitelistRepo(db, NewTestLogger())
+	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	whitelist1 := model.Whitelist{
@@ -110,7 +111,7 @@ func TestWhitelistRepo_IsWhitelisted(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewWhitelistRepo(db, NewTestLogger())
+	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	email := "test@example.com"
@@ -141,7 +142,7 @@ func TestWhitelistRepo_GetWhitelistEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewWhitelistRepo(db, NewTestLogger())
+	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	whitelists, err := repo.GetWhitelist(ctx)

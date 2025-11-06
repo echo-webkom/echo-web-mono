@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,11 +16,11 @@ func TestBanInfoRepo_CreateBan(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewBanInfoRepo(db, NewTestLogger())
+	repo := NewBanInfoRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -55,11 +56,11 @@ func TestBanInfoRepo_GetBanInfoByUserID(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewBanInfoRepo(db, NewTestLogger())
+	repo := NewBanInfoRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -96,11 +97,11 @@ func TestBanInfoRepo_GetBanInfoByUserIDNotFound(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewBanInfoRepo(db, NewTestLogger())
+	repo := NewBanInfoRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -125,11 +126,11 @@ func TestBanInfoRepo_DeleteExpired(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewBanInfoRepo(db, NewTestLogger())
+	repo := NewBanInfoRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{

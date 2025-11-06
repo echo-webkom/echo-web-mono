@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,11 +15,11 @@ func TestShoppingListRepo_CreateShoppingListItem(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewShoppingListRepo(db, NewTestLogger())
+	repo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -51,11 +52,11 @@ func TestShoppingListRepo_GetAllShoppingListItems(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewShoppingListRepo(db, NewTestLogger())
+	repo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create users
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{
@@ -112,11 +113,11 @@ func TestShoppingListRepo_DeleteShoppingListItem(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewShoppingListRepo(db, NewTestLogger())
+	repo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	// Create a user first
-	userRepo := NewUserRepo(db, NewTestLogger())
+	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
 	user := model.User{
@@ -158,7 +159,7 @@ func TestShoppingListRepo_GetAllShoppingListItemsEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewShoppingListRepo(db, NewTestLogger())
+	repo := NewShoppingListRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	items, err := repo.GetAllShoppingListItems(ctx)

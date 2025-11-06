@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,7 +15,7 @@ func TestAccessRequestRepo_CreateAccessRequest(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewAccessRequestRepo(db, NewTestLogger())
+	repo := NewAccessRequestRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	ar := model.AccessRequest{
@@ -37,7 +38,7 @@ func TestAccessRequestRepo_GetAccessRequests(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewAccessRequestRepo(db, NewTestLogger())
+	repo := NewAccessRequestRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	ar1 := model.AccessRequest{
@@ -71,7 +72,7 @@ func TestAccessRequestRepo_GetAccessRequestsEmpty(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewAccessRequestRepo(db, NewTestLogger())
+	repo := NewAccessRequestRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	requests, err := repo.GetAccessRequests(ctx)

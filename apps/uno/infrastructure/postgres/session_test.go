@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"testing"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -13,7 +14,7 @@ func TestPostgresSessionImpl_GetSessionByToken(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewSessionRepo(db, NewTestLogger())
+	repo := NewSessionRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	session, err := repo.GetSessionByToken(ctx, "some-token")
