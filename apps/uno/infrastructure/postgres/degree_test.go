@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 	"uno/domain/model"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +16,7 @@ func TestDegreeRepo_CreateDegree(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDegreeRepo(db, NewTestLogger())
+	repo := NewDegreeRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	degree := model.Degree{
@@ -37,7 +38,7 @@ func TestDegreeRepo_GetAllDegrees(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDegreeRepo(db, NewTestLogger())
+	repo := NewDegreeRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	degree1 := model.Degree{ID: "DTEK", Name: "Datateknologi"}
@@ -66,7 +67,7 @@ func TestDegreeRepo_UpdateDegree(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDegreeRepo(db, NewTestLogger())
+	repo := NewDegreeRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	degree := model.Degree{
@@ -97,7 +98,7 @@ func TestDegreeRepo_DeleteDegree(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDegreeRepo(db, NewTestLogger())
+	repo := NewDegreeRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	degree := model.Degree{
@@ -123,7 +124,7 @@ func TestDegreeRepo_DeleteNonExistentDegree(t *testing.T) {
 		_ = db.Close()
 	}()
 
-	repo := NewDegreeRepo(db, NewTestLogger())
+	repo := NewDegreeRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
 	err := repo.DeleteDegree(ctx, "IDONTEXIST")

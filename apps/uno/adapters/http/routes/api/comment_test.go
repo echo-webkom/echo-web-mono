@@ -1,0 +1,258 @@
+package api_test
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"uno/adapters/http/routes/api"
+	"uno/domain/ports"
+	"uno/domain/ports/mocks"
+	"uno/domain/services"
+	"uno/testutil"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
+
+func TestGetCommentsByIDHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		commentID      string
+		setupMocks     func(*mocks.CommentRepo)
+		expectedStatus int
+		expectError    bool
+	}{
+		{
+			name:      "success",
+			commentID: "comment123",
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				comments := []ports.CommentWithReactionsAndUser{}
+				mockRepo.EXPECT().
+					GetCommentsByID(mock.Anything, "comment123").
+					Return(comments, nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+			expectError:    false,
+		},
+		{
+			name:        "missing id",
+			commentID:   "",
+			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			expectedStatus: http.StatusBadRequest,
+			expectError:    false,
+		},
+		{
+			name:      "error from repo",
+			commentID: "comment123",
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					GetCommentsByID(mock.Anything, "comment123").
+					Return(nil, errors.New("database error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+			expectError:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockCommentRepo := mocks.NewCommentRepo(t)
+			tt.setupMocks(mockCommentRepo)
+
+			commentService := services.NewCommentService(mockCommentRepo)
+			handler := api.GetCommentsByIDHandler(testutil.NewTestLogger(), commentService)
+
+			req := httptest.NewRequest(http.MethodGet, "/comments/"+tt.commentID, nil)
+			req.SetPathValue("id", tt.commentID)
+			w := httptest.NewRecorder()
+
+			status, err := handler(w, req)
+
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.expectedStatus, status)
+		})
+	}
+}
+
+func TestCreateCommentHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		requestBody    api.CreateCommentRequest
+		setupMocks     func(*mocks.CommentRepo)
+		expectedStatus int
+		expectError    bool
+	}{
+		{
+			name: "success",
+			requestBody: api.CreateCommentRequest{
+				Content:  "Test comment",
+				PostID:   "post123",
+				UserID:   "user123",
+				ParentCommentID: nil,
+			},
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					CreateComment(mock.Anything, "Test comment", "post123", "user123", (*string)(nil)).
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+			expectError:    false,
+		},
+		{
+			name:        "invalid json",
+			requestBody: api.CreateCommentRequest{},
+			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			expectedStatus: http.StatusBadRequest,
+			expectError:    true,
+		},
+		{
+			name: "error from repo",
+			requestBody: api.CreateCommentRequest{
+				Content:  "Test comment",
+				PostID:   "post123",
+				UserID:   "user123",
+				ParentCommentID: nil,
+			},
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					CreateComment(mock.Anything, "Test comment", "post123", "user123", (*string)(nil)).
+					Return(errors.New("database error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+			expectError:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockCommentRepo := mocks.NewCommentRepo(t)
+			tt.setupMocks(mockCommentRepo)
+
+			commentService := services.NewCommentService(mockCommentRepo)
+			handler := api.CreateCommentHandler(testutil.NewTestLogger(), commentService)
+
+			var req *http.Request
+			if tt.name == "invalid json" {
+				req = httptest.NewRequest(http.MethodPost, "/comments", nil)
+			} else {
+				body, _ := json.Marshal(tt.requestBody)
+				req = httptest.NewRequest(http.MethodPost, "/comments", bytes.NewReader(body))
+			}
+			w := httptest.NewRecorder()
+
+			status, err := handler(w, req)
+
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.expectedStatus, status)
+		})
+	}
+}
+
+func TestReactToCommentHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		commentID      string
+		requestBody    api.ReactToCommentRequest
+		setupMocks     func(*mocks.CommentRepo)
+		expectedStatus int
+		expectError    bool
+	}{
+		{
+			name:      "success",
+			commentID: "comment123",
+			requestBody: api.ReactToCommentRequest{
+				CommentID: "comment123",
+				UserID:    "user123",
+			},
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					IsReactedByUser(mock.Anything, "comment123", "user123").
+					Return(false, nil).
+					Once()
+				mockRepo.EXPECT().
+					AddReactionToComment(mock.Anything, "comment123", "user123").
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+			expectError:    false,
+		},
+		{
+			name:        "missing comment id",
+			commentID:  "",
+			requestBody: api.ReactToCommentRequest{},
+			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			expectedStatus: http.StatusBadRequest,
+			expectError:    false,
+		},
+		{
+			name:        "invalid json",
+			commentID:   "comment123",
+			requestBody: api.ReactToCommentRequest{},
+			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			expectedStatus: http.StatusBadRequest,
+			expectError:    true,
+		},
+		{
+			name:      "error from service",
+			commentID: "comment123",
+			requestBody: api.ReactToCommentRequest{
+				CommentID: "comment123",
+				UserID:    "user123",
+			},
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					IsReactedByUser(mock.Anything, "comment123", "user123").
+					Return(false, errors.New("database error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+			expectError:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockCommentRepo := mocks.NewCommentRepo(t)
+			tt.setupMocks(mockCommentRepo)
+
+			commentService := services.NewCommentService(mockCommentRepo)
+			handler := api.ReactToCommentHandler(testutil.NewTestLogger(), commentService)
+
+			var req *http.Request
+			if tt.name == "invalid json" {
+				req = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", nil)
+			} else {
+				body, _ := json.Marshal(tt.requestBody)
+				req = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", bytes.NewReader(body))
+			}
+			req.SetPathValue("id", tt.commentID)
+			w := httptest.NewRecorder()
+
+			status, err := handler(w, req)
+
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.expectedStatus, status)
+		})
+	}
+}
+
