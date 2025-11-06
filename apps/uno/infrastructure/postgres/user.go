@@ -171,7 +171,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []mod
 			last_sign_in_at, updated_at, created_at, has_read_terms,
 			birthday, is_public
 		FROM "user"
-		WHERE id IN ($1)
+		WHERE id = ANY($1)
 	`
 	err = u.db.SelectContext(ctx, &users, query, pq.Array(ids))
 	if err != nil {

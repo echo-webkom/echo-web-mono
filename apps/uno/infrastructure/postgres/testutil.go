@@ -4,15 +4,32 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+	"uno/domain/ports"
 
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
+
+// NoOpLogger is a no-op logger implementation for tests
+type NoOpLogger struct{}
+
+func (n *NoOpLogger) Debug(ctx context.Context, msg string, args ...any) {}
+func (n *NoOpLogger) Info(ctx context.Context, msg string, args ...any)  {}
+func (n *NoOpLogger) Warn(ctx context.Context, msg string, args ...any)  {}
+func (n *NoOpLogger) Error(ctx context.Context, msg string, args ...any) {}
+func (n *NoOpLogger) With(args ...any) ports.Logger                      { return n }
+func (n *NoOpLogger) Slog() *slog.Logger                                 { return slog.Default() }
+
+// NewTestLogger returns a no-op logger for tests
+func NewTestLogger() ports.Logger {
+	return &NoOpLogger{}
+}
 
 func SetupTestDB(t *testing.T) *Database {
 	ctx := context.Background()

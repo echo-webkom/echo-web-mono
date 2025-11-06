@@ -35,14 +35,14 @@ type BanInfo struct {
 }
 
 type DotInfo struct {
-	ID            int       `json:"id"`
-	UserID        string    `json:"userId"`
-	Count         int       `json:"count"`
-	Reason        string    `json:"reason"`
-	CreatedAt     time.Time `json:"createdAt"`
-	ExpiresAt     time.Time `json:"expiresAt"`
-	StrikedByID   string    `json:"strikedById"`
-	StrikedByName *string   `json:"strikedByName"`
+	ID            int       `db:"id" json:"id"`
+	UserID        string    `db:"user_id" json:"userId"`
+	Count         int       `db:"count" json:"count"`
+	Reason        string    `db:"reason" json:"reason"`
+	CreatedAt     time.Time `db:"created_at" json:"createdAt"`
+	ExpiresAt     time.Time `db:"expires_at" json:"expiresAt"`
+	StrikedByID   string    `db:"striked_by_id" json:"strikedById"`
+	StrikedByName *string   `db:"striked_by_name" json:"strikedByName"`
 }
 
 type UserWithBanInfo struct {

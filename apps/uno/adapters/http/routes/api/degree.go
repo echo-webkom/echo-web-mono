@@ -91,7 +91,7 @@ func DeleteDegreeHandler(logger ports.Logger, degreeService *services.DegreeServ
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, errors.New("missing degree id")
+			return http.StatusBadRequest, nil
 		}
 
 		if err := degreeService.DegreeRepo().DeleteDegree(r.Context(), id); err != nil {
