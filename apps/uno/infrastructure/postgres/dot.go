@@ -40,8 +40,8 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.Dot) (model.Dot, erro
 	)
 
 	query := `--sql
-		INSERT INTO dot (user_id, count, reason, striked_by, expires_at)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO dot (user_id, count, reason, striked_by, expires_at, created_at)
+		VALUES ($1, $2, $3, $4, $5, NOW())
 		RETURNING id, user_id, count, reason, striked_by, expires_at, created_at
 	`
 	var result model.Dot
@@ -54,6 +54,7 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.Dot) (model.Dot, erro
 			"striked_by", dot.StrikedBy,
 			"expires_at", dot.ExpiresAt,
 		)
+		return model.Dot{}, err
 	}
 	return result, nil
 }

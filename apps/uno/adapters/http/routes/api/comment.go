@@ -25,7 +25,7 @@ func GetCommentsByIDHandler(logger ports.Logger, commentService *services.Commen
 		ctx := r.Context()
 		id := r.PathValue("id")
 		if id == "" {
-			return http.StatusBadRequest, errors.New("missing comment id")
+			return http.StatusBadRequest, nil
 		}
 		comments, err := commentService.CommentRepo().GetCommentsByID(ctx, id)
 		if err != nil {
@@ -92,7 +92,7 @@ func ReactToCommentHandler(logger ports.Logger, commentService *services.Comment
 		ctx := r.Context()
 		commentID := r.PathValue("id")
 		if commentID == "" {
-			return http.StatusBadRequest, errors.New("missing comment id")
+			return http.StatusBadRequest, nil
 		}
 		var req ReactToCommentRequest
 		if err := util.ReadJson(r, &req); err != nil {

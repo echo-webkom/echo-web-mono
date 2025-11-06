@@ -6,7 +6,7 @@ import (
 
 func NewFakeStruct[T any](overrides ...func(*T)) T {
 	var obj T
-	gofakeit.Struct(&obj)
+	_ = gofakeit.Struct(&obj)
 
 	for _, override := range overrides {
 		override(&obj)
