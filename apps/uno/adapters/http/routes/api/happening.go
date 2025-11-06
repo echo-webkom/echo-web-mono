@@ -49,7 +49,7 @@ func GetHappeningById(logger ports.Logger, happeningService *services.HappeningS
 
 		hap, err := happeningService.HappeningRepo().GetHappeningById(r.Context(), id)
 		if err != nil {
-			return http.StatusNotFound, ErrInternalServer
+			return http.StatusNotFound, err
 		}
 
 		return util.JsonOk(w, hap)
