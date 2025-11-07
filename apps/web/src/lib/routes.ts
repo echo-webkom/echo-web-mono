@@ -177,6 +177,18 @@ export const headerRoutes: Array<Route> = [
         icon: LuAtom,
       },
       {
+        label: "Bouvet",
+        href: "/om/bouvet",
+        description: "Om Bouvet",
+        icon: LuBriefcase,
+      },
+      {
+        label: "Fonn Group",
+        href: "/om/fonn-group",
+        description: "Om Fonn Group",
+        icon: LuBriefcase,
+      },
+      {
         label: "Instituttrådet",
         href: "/om/instituttradet",
         description: "Om instituttrådet",
