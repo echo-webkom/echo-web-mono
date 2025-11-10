@@ -39,7 +39,7 @@ func (_m *AccessRequestRepo) EXPECT() *AccessRequestRepo_Expecter {
 }
 
 // CreateAccessRequest provides a mock function for the type AccessRequestRepo
-func (_mock *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error) {
+func (_mock *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.NewAccessRequest) (model.AccessRequest, error) {
 	ret := _mock.Called(ctx, ar)
 
 	if len(ret) == 0 {
@@ -48,15 +48,15 @@ func (_mock *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar mode
 
 	var r0 model.AccessRequest
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.AccessRequest) (model.AccessRequest, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewAccessRequest) (model.AccessRequest, error)); ok {
 		return returnFunc(ctx, ar)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.AccessRequest) model.AccessRequest); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewAccessRequest) model.AccessRequest); ok {
 		r0 = returnFunc(ctx, ar)
 	} else {
 		r0 = ret.Get(0).(model.AccessRequest)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, model.AccessRequest) error); ok {
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewAccessRequest) error); ok {
 		r1 = returnFunc(ctx, ar)
 	} else {
 		r1 = ret.Error(1)
@@ -71,20 +71,20 @@ type AccessRequestRepo_CreateAccessRequest_Call struct {
 
 // CreateAccessRequest is a helper method to define mock.On call
 //   - ctx context.Context
-//   - ar model.AccessRequest
+//   - ar model.NewAccessRequest
 func (_e *AccessRequestRepo_Expecter) CreateAccessRequest(ctx interface{}, ar interface{}) *AccessRequestRepo_CreateAccessRequest_Call {
 	return &AccessRequestRepo_CreateAccessRequest_Call{Call: _e.mock.On("CreateAccessRequest", ctx, ar)}
 }
 
-func (_c *AccessRequestRepo_CreateAccessRequest_Call) Run(run func(ctx context.Context, ar model.AccessRequest)) *AccessRequestRepo_CreateAccessRequest_Call {
+func (_c *AccessRequestRepo_CreateAccessRequest_Call) Run(run func(ctx context.Context, ar model.NewAccessRequest)) *AccessRequestRepo_CreateAccessRequest_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 model.AccessRequest
+		var arg1 model.NewAccessRequest
 		if args[1] != nil {
-			arg1 = args[1].(model.AccessRequest)
+			arg1 = args[1].(model.NewAccessRequest)
 		}
 		run(
 			arg0,
@@ -99,7 +99,7 @@ func (_c *AccessRequestRepo_CreateAccessRequest_Call) Return(accessRequest model
 	return _c
 }
 
-func (_c *AccessRequestRepo_CreateAccessRequest_Call) RunAndReturn(run func(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error)) *AccessRequestRepo_CreateAccessRequest_Call {
+func (_c *AccessRequestRepo_CreateAccessRequest_Call) RunAndReturn(run func(ctx context.Context, ar model.NewAccessRequest) (model.AccessRequest, error)) *AccessRequestRepo_CreateAccessRequest_Call {
 	_c.Call.Return(run)
 	return _c
 }

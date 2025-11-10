@@ -18,7 +18,7 @@ func TestAccessRequestRepo_CreateAccessRequest(t *testing.T) {
 	repo := NewAccessRequestRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
-	ar := model.AccessRequest{
+	ar := model.NewAccessRequest{
 		Email:  "test@example.com",
 		Reason: "I want to join",
 	}
@@ -41,11 +41,11 @@ func TestAccessRequestRepo_GetAccessRequests(t *testing.T) {
 	repo := NewAccessRequestRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
-	ar1 := model.AccessRequest{
+	ar1 := model.NewAccessRequest{
 		Email:  "test1@example.com",
 		Reason: "Reason 1",
 	}
-	ar2 := model.AccessRequest{
+	ar2 := model.NewAccessRequest{
 		Email:  "test2@example.com",
 		Reason: "Reason 2",
 	}

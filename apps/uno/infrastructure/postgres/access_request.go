@@ -4,6 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type AccessRequestRepo struct {
@@ -15,7 +16,7 @@ func NewAccessRequestRepo(db *Database, logger ports.Logger) ports.AccessRequest
 	return &AccessRequestRepo{db: db, logger: logger}
 }
 
-func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.AccessRequest) (model.AccessRequest, error) {
+func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.NewAccessRequest) (model.AccessRequest, error) {
 	a.logger.Info(ctx, "creating access request",
 		"email", ar.Email,
 	)
@@ -25,8 +26,8 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ac
 		VALUES (gen_random_uuid(), $1, $2)
 		RETURNING id, email, reason, created_at
 	`
-	var result model.AccessRequest
-	err := a.db.GetContext(ctx, &result, query, ar.Email, ar.Reason)
+	var dbModel models.AccessRequestDB
+	err := a.db.GetContext(ctx, &dbModel, query, ar.Email, ar.Reason)
 	if err != nil {
 		a.logger.Error(ctx, "failed to create access request",
 			"error", err,
@@ -34,19 +35,19 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ac
 		)
 		return model.AccessRequest{}, err
 	}
-	return result, nil
+	return *dbModel.ToDomain(), nil
 }
 
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
 	a.logger.Info(ctx, "getting access requests")
 
-	ars = []model.AccessRequest{}
+	var dbModels []models.AccessRequestDB
 	query := `--sql
 		SELECT id, email, reason, created_at
 		FROM access_request
 		ORDER BY created_at DESC
 	`
-	err = a.db.SelectContext(ctx, &ars, query)
+	err = a.db.SelectContext(ctx, &dbModels, query)
 	if err != nil {
 		a.logger.Error(ctx, "failed to get access requests",
 			"error", err,
@@ -54,6 +55,6 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 		return nil, err
 	}
 
-	return ars, nil
+	return models.ToDomainList(dbModels), nil
 
 }
