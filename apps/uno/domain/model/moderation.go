@@ -22,10 +22,15 @@ type Dot struct {
 }
 
 type AccessRequest struct {
-	ID        string    `db:"id" json:"id"`
-	Email     string    `db:"email" json:"email"`
-	Reason    string    `db:"reason" json:"reason"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ID        string
+	Email     string
+	Reason    string
+	CreatedAt time.Time
+}
+
+type NewAccessRequest struct {
+	Email  string
+	Reason string
 }
 
 type Whitelist struct {

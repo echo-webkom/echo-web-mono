@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"uno/adapters/http/dto"
 	"uno/adapters/http/routes/api"
 
 	"github.com/stretchr/testify/assert"
@@ -22,7 +23,7 @@ func TestHealthHandler(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, status)
 
-	var response api.HealthCheckResponse
+	var response dto.HealthCheckResponse
 	err = json.NewDecoder(w.Body).Decode(&response)
 	assert.NoError(t, err)
 	assert.Equal(t, "ok", response.Status)
