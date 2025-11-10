@@ -39,7 +39,7 @@ func (_m *BanInfoRepo) EXPECT() *BanInfoRepo_Expecter {
 }
 
 // CreateBan provides a mock function for the type BanInfoRepo
-func (_mock *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.BanInfo, error) {
+func (_mock *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error) {
 	ret := _mock.Called(ctx, ban)
 
 	if len(ret) == 0 {
@@ -48,15 +48,15 @@ func (_mock *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (mod
 
 	var r0 model.BanInfo
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.BanInfo) (model.BanInfo, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) (model.BanInfo, error)); ok {
 		return returnFunc(ctx, ban)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.BanInfo) model.BanInfo); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) model.BanInfo); ok {
 		r0 = returnFunc(ctx, ban)
 	} else {
 		r0 = ret.Get(0).(model.BanInfo)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, model.BanInfo) error); ok {
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewBanInfo) error); ok {
 		r1 = returnFunc(ctx, ban)
 	} else {
 		r1 = ret.Error(1)
@@ -71,20 +71,20 @@ type BanInfoRepo_CreateBan_Call struct {
 
 // CreateBan is a helper method to define mock.On call
 //   - ctx context.Context
-//   - ban model.BanInfo
+//   - ban model.NewBanInfo
 func (_e *BanInfoRepo_Expecter) CreateBan(ctx interface{}, ban interface{}) *BanInfoRepo_CreateBan_Call {
 	return &BanInfoRepo_CreateBan_Call{Call: _e.mock.On("CreateBan", ctx, ban)}
 }
 
-func (_c *BanInfoRepo_CreateBan_Call) Run(run func(ctx context.Context, ban model.BanInfo)) *BanInfoRepo_CreateBan_Call {
+func (_c *BanInfoRepo_CreateBan_Call) Run(run func(ctx context.Context, ban model.NewBanInfo)) *BanInfoRepo_CreateBan_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 model.BanInfo
+		var arg1 model.NewBanInfo
 		if args[1] != nil {
-			arg1 = args[1].(model.BanInfo)
+			arg1 = args[1].(model.NewBanInfo)
 		}
 		run(
 			arg0,
@@ -99,7 +99,7 @@ func (_c *BanInfoRepo_CreateBan_Call) Return(banInfo model.BanInfo, err error) *
 	return _c
 }
 
-func (_c *BanInfoRepo_CreateBan_Call) RunAndReturn(run func(ctx context.Context, ban model.BanInfo) (model.BanInfo, error)) *BanInfoRepo_CreateBan_Call {
+func (_c *BanInfoRepo_CreateBan_Call) RunAndReturn(run func(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error)) *BanInfoRepo_CreateBan_Call {
 	_c.Call.Return(run)
 	return _c
 }

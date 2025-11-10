@@ -19,7 +19,7 @@ func TestWhitelistRepo_CreateWhitelist(t *testing.T) {
 	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
-	whitelist := model.Whitelist{
+	whitelist := model.NewWhitelist{
 		Email:     "test@example.com",
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 		Reason:    "Test whitelist",
@@ -42,7 +42,7 @@ func TestWhitelistRepo_GetWhitelistByEmail(t *testing.T) {
 	ctx := context.Background()
 
 	email := "test@example.com"
-	whitelist := model.Whitelist{
+	whitelist := model.NewWhitelist{
 		Email:     email,
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 		Reason:    "Test whitelist",
@@ -67,20 +67,20 @@ func TestWhitelistRepo_GetWhitelist(t *testing.T) {
 	repo := NewWhitelistRepo(db, testutil.NewTestLogger())
 	ctx := context.Background()
 
-	whitelist1 := model.Whitelist{
+	whitelist1 := model.NewWhitelist{
 		Email:     "test1@example.com",
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 		Reason:    "First whitelist",
 	}
 
-	whitelist2 := model.Whitelist{
+	whitelist2 := model.NewWhitelist{
 		Email:     "test2@example.com",
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 		Reason:    "Second whitelist",
 	}
 
 	// Create expired whitelist (should not appear in results)
-	expiredWhitelist := model.Whitelist{
+	expiredWhitelist := model.NewWhitelist{
 		Email:     "expired@example.com",
 		ExpiresAt: time.Now().Add(-24 * time.Hour),
 		Reason:    "Expired whitelist",
@@ -115,7 +115,7 @@ func TestWhitelistRepo_IsWhitelisted(t *testing.T) {
 	ctx := context.Background()
 
 	email := "test@example.com"
-	whitelist := model.Whitelist{
+	whitelist := model.NewWhitelist{
 		Email:     email,
 		ExpiresAt: time.Now().Add(24 * time.Hour),
 		Reason:    "Test whitelist",

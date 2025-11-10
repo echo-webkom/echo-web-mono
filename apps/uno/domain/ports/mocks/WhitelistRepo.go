@@ -39,7 +39,7 @@ func (_m *WhitelistRepo) EXPECT() *WhitelistRepo_Expecter {
 }
 
 // CreateWhitelist provides a mock function for the type WhitelistRepo
-func (_mock *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.Whitelist) (model.Whitelist, error) {
+func (_mock *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error) {
 	ret := _mock.Called(ctx, whitelist)
 
 	if len(ret) == 0 {
@@ -48,15 +48,15 @@ func (_mock *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model
 
 	var r0 model.Whitelist
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.Whitelist) (model.Whitelist, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewWhitelist) (model.Whitelist, error)); ok {
 		return returnFunc(ctx, whitelist)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.Whitelist) model.Whitelist); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewWhitelist) model.Whitelist); ok {
 		r0 = returnFunc(ctx, whitelist)
 	} else {
 		r0 = ret.Get(0).(model.Whitelist)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, model.Whitelist) error); ok {
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewWhitelist) error); ok {
 		r1 = returnFunc(ctx, whitelist)
 	} else {
 		r1 = ret.Error(1)
@@ -71,20 +71,20 @@ type WhitelistRepo_CreateWhitelist_Call struct {
 
 // CreateWhitelist is a helper method to define mock.On call
 //   - ctx context.Context
-//   - whitelist model.Whitelist
+//   - whitelist model.NewWhitelist
 func (_e *WhitelistRepo_Expecter) CreateWhitelist(ctx interface{}, whitelist interface{}) *WhitelistRepo_CreateWhitelist_Call {
 	return &WhitelistRepo_CreateWhitelist_Call{Call: _e.mock.On("CreateWhitelist", ctx, whitelist)}
 }
 
-func (_c *WhitelistRepo_CreateWhitelist_Call) Run(run func(ctx context.Context, whitelist model.Whitelist)) *WhitelistRepo_CreateWhitelist_Call {
+func (_c *WhitelistRepo_CreateWhitelist_Call) Run(run func(ctx context.Context, whitelist model.NewWhitelist)) *WhitelistRepo_CreateWhitelist_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 model.Whitelist
+		var arg1 model.NewWhitelist
 		if args[1] != nil {
-			arg1 = args[1].(model.Whitelist)
+			arg1 = args[1].(model.NewWhitelist)
 		}
 		run(
 			arg0,
@@ -99,7 +99,7 @@ func (_c *WhitelistRepo_CreateWhitelist_Call) Return(whitelist1 model.Whitelist,
 	return _c
 }
 
-func (_c *WhitelistRepo_CreateWhitelist_Call) RunAndReturn(run func(ctx context.Context, whitelist model.Whitelist) (model.Whitelist, error)) *WhitelistRepo_CreateWhitelist_Call {
+func (_c *WhitelistRepo_CreateWhitelist_Call) RunAndReturn(run func(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error)) *WhitelistRepo_CreateWhitelist_Call {
 	_c.Call.Return(run)
 	return _c
 }

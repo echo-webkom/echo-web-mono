@@ -33,7 +33,7 @@ func TestBanInfoRepo_CreateBan(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	ban := model.BanInfo{
+	ban := model.NewBanInfo{
 		UserID:    createdUser.ID,
 		BannedBy:  createdUser.ID,
 		Reason:    "Test ban",
@@ -73,7 +73,7 @@ func TestBanInfoRepo_GetBanInfoByUserID(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	ban := model.BanInfo{
+	ban := model.NewBanInfo{
 		UserID:    createdUser.ID,
 		BannedBy:  createdUser.ID,
 		Reason:    "Test ban",
@@ -144,7 +144,7 @@ func TestBanInfoRepo_DeleteExpired(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create an expired ban
-	expiredBan := model.BanInfo{
+	expiredBan := model.NewBanInfo{
 		UserID:    createdUser.ID,
 		BannedBy:  createdUser.ID,
 		Reason:    "Expired ban",
@@ -155,7 +155,7 @@ func TestBanInfoRepo_DeleteExpired(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create a non-expired ban
-	activeBan := model.BanInfo{
+	activeBan := model.NewBanInfo{
 		UserID:    createdUser.ID,
 		BannedBy:  createdUser.ID,
 		Reason:    "Active ban",
