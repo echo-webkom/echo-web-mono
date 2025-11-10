@@ -82,7 +82,20 @@ export const RepeatingHappeningSidebar = async ({ event }: EventSidebarProps) =>
           {event.location && (
             <SidebarItem>
               <SidebarItemTitle>Sted:</SidebarItemTitle>
-              <SidebarItemContent>{event.location.name}</SidebarItemContent>
+              {event.location.link ? (
+                <SidebarItemContent>
+                  <a
+                    className="hover:underline"
+                    href={event.location.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {event.location.name} <ExternalLink className="ml-1 inline-block h-4 w-4" />
+                  </a>
+                </SidebarItemContent>
+              ) : (
+                <SidebarItemContent>{event.location.name}</SidebarItemContent>
+              )}
             </SidebarItem>
           )}
 
