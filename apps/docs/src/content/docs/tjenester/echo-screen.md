@@ -11,11 +11,17 @@ Skjermen kjører på en ettkortsdatamaskin som heter Rasberry Pi ([Nøyaktig mod
 
 ## Tailscale
 
-Vi bruker Tailscale for å SSH inn i Pi-en. Dette tillater oss å kjøre kommandoer på Pi-en på din egen maskin.
+Vi bruker Tailscale for å SSH inn i Pi-en. Dette tillater oss å kjøre kommandoer på Pi-en på din egen maskin. Eksempel på å koble til Pi-en:
+
+```bash
+ssh webkom@screen-pi # screen-pi vil resolve til riktig IP via Tailscale sin DNS
+```
 
 ## Når skjermen ikke fungerer skikkelig
 
-Kommandoen `reload` kan brukes for å restarte chromeium som viser skjermen. Dette kan være nyttig å gjøre av og til når skjermen har problemer. Alternativt kan man også gå inn på Programmerbar og restarte Pi-en med tastaturet som ligger der.
+Kommandoen `refresh` kan brukes for å restarte chromeium som viser skjermen. Dette kan være nyttig å gjøre av og til når skjermen har problemer. Alternativt kan man også gå inn på Programmerbar og restarte Pi-en med tastaturet som ligger der.
+
+Alle tilgjenglige kommander kan man se ved å kjøre `cat ~/README.md` på Pi-en. Er også mulig å legge til flere kommandoer om nødvendig i `~/.local/bin`.
 
 ## Teknologi-stack
 
