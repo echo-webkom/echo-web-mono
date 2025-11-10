@@ -3,22 +3,37 @@ package model
 import "time"
 
 type BanInfo struct {
-	ID        int       `db:"id" json:"id"`
-	UserID    string    `db:"user_id" json:"userId"`
-	BannedBy  string    `db:"banned_by" json:"bannedBy"`
-	Reason    string    `db:"reason" json:"reason"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
-	ExpiresAt time.Time `db:"expires_at" json:"expiresAt"`
+	ID        int
+	UserID    string
+	BannedBy  string
+	Reason    string
+	CreatedAt time.Time
+	ExpiresAt time.Time
+}
+
+type NewBanInfo struct {
+	UserID    string
+	BannedBy  string
+	Reason    string
+	ExpiresAt time.Time
 }
 
 type Dot struct {
-	ID        int       `db:"id" json:"id"`
-	UserID    string    `db:"user_id" json:"userId"`
-	Count     int       `db:"count" json:"count"`
-	Reason    string    `db:"reason" json:"reason"`
-	StrikedBy string    `db:"striked_by" json:"strikedBy"`
-	ExpiresAt time.Time `db:"expires_at" json:"expiresAt"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ID        int
+	UserID    string
+	Count     int
+	Reason    string
+	StrikedBy string
+	ExpiresAt time.Time
+	CreatedAt time.Time
+}
+
+type NewDot struct {
+	UserID    string
+	Count     int
+	Reason    string
+	StrikedBy string
+	ExpiresAt time.Time
 }
 
 type AccessRequest struct {
@@ -34,7 +49,13 @@ type NewAccessRequest struct {
 }
 
 type Whitelist struct {
-	Email     string    `db:"email" json:"email"`
-	ExpiresAt time.Time `db:"expires_at" json:"expiresAt"`
-	Reason    string    `db:"reason" json:"reason"`
+	Email     string
+	ExpiresAt time.Time
+	Reason    string
+}
+
+type NewWhitelist struct {
+	Email     string
+	ExpiresAt time.Time
+	Reason    string
 }
