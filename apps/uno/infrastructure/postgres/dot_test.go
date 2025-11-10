@@ -33,7 +33,7 @@ func TestDotRepo_CreateDot(t *testing.T) {
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
 
-	dot := model.Dot{
+	dot := model.NewDot{
 		UserID:    createdUser.ID,
 		Count:     1,
 		Reason:    "Test strike",
@@ -76,7 +76,7 @@ func TestDotRepo_DeleteExpired(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create an expired dot
-	expiredDot := model.Dot{
+	expiredDot := model.NewDot{
 		UserID:    createdUser.ID,
 		Count:     1,
 		Reason:    "Expired strike",
@@ -88,7 +88,7 @@ func TestDotRepo_DeleteExpired(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Create a non-expired dot
-	activeDot := model.Dot{
+	activeDot := model.NewDot{
 		UserID:    createdUser.ID,
 		Count:     2,
 		Reason:    "Active strike",
