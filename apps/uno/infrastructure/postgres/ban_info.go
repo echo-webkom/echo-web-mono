@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type BanInfoRepo struct {
@@ -38,7 +39,7 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 		"user_id", userID,
 	)
 
-	var banInfo model.BanInfo
+	var dbModel models.BanInfoDB
 	query := `--sql
 		SELECT
 			id, user_id, banned_by, reason, created_at, expires_at
@@ -47,7 +48,7 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 		ORDER BY created_at DESC
 		LIMIT 1
 	`
-	err := p.db.GetContext(ctx, &banInfo, query, userID)
+	err := p.db.GetContext(ctx, &dbModel, query, userID)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -58,10 +59,10 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 		)
 		return nil, err
 	}
-	return &banInfo, nil
+	return dbModel.ToDomain(), nil
 }
 
-func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.BanInfo, error) {
+func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error) {
 	p.logger.Info(ctx, "creating ban info",
 		"user_id", ban.UserID,
 		"banned_by", ban.BannedBy,
@@ -72,8 +73,8 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.B
 		VALUES ($1, $2, $3, $4, NOW())
 		RETURNING id, user_id, banned_by, reason, created_at, expires_at
 	`
-	var result model.BanInfo
-	err := p.db.GetContext(ctx, &result, query, ban.UserID, ban.BannedBy, ban.Reason, ban.ExpiresAt)
+	var dbModel models.BanInfoDB
+	err := p.db.GetContext(ctx, &dbModel, query, ban.UserID, ban.BannedBy, ban.Reason, ban.ExpiresAt)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create ban info",
 			"error", err,
@@ -81,5 +82,5 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.BanInfo) (model.B
 		)
 		return model.BanInfo{}, err
 	}
-	return result, nil
+	return *dbModel.ToDomain(), nil
 }
