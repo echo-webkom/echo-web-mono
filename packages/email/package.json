@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "^4.3.2",
-    "@types/node": "22.18.11",
+    "@types/node": "22.19.0",
     "@types/react": "19.2.2",
     "dotenv-cli": "10.0.0",
     "eslint": "9.38.0",
