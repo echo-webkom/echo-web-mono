@@ -4,6 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type DotRepo struct {
@@ -31,7 +32,7 @@ func (p *DotRepo) DeleteExpired(ctx context.Context) error {
 	return nil
 }
 
-func (p *DotRepo) CreateDot(ctx context.Context, dot model.Dot) (model.Dot, error) {
+func (p *DotRepo) CreateDot(ctx context.Context, dot model.NewDot) (model.Dot, error) {
 	p.logger.Info(ctx, "creating dot",
 		"user_id", dot.UserID,
 		"count", dot.Count,
@@ -44,8 +45,8 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.Dot) (model.Dot, erro
 		VALUES ($1, $2, $3, $4, $5, NOW())
 		RETURNING id, user_id, count, reason, striked_by, expires_at, created_at
 	`
-	var result model.Dot
-	err := p.db.GetContext(ctx, &result, query, dot.UserID, dot.Count, dot.Reason, dot.StrikedBy, dot.ExpiresAt)
+	var dbModel models.DotDB
+	err := p.db.GetContext(ctx, &dbModel, query, dot.UserID, dot.Count, dot.Reason, dot.StrikedBy, dot.ExpiresAt)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create dot",
 			"error", err,
@@ -56,5 +57,5 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.Dot) (model.Dot, erro
 		)
 		return model.Dot{}, err
 	}
-	return result, nil
+	return *dbModel.ToDomain(), nil
 }

@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"net/http"
+	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/ports"
@@ -15,18 +16,23 @@ import (
 // @Summary	     Get whitelisted emails
 // @Tags         whitelist
 // @Produce      json
-// @Success      200  {array}  model.Whitelist  "OK"
+// @Success      200  {array}  dto.WhitelistResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
 func GetWhitelistHandler(logger ports.Logger, whitelistService *services.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+		// Get domain models from service
 		whitelistedEmails, err := whitelistService.WhitelistRepo().GetWhitelist(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.JsonOk(w, whitelistedEmails)
+
+		// Convert to DTOs
+		response := dto.FromWhitelistDomainList(whitelistedEmails)
+
+		return util.JsonOk(w, response)
 	}
 }
 
@@ -35,7 +41,7 @@ func GetWhitelistHandler(logger ports.Logger, whitelistService *services.Whiteli
 // @Tags         whitelist
 // @Produce      json
 // @Param        email   path      string  true  "Email"
-// @Success      200  {object}  model.Whitelist  "OK"
+// @Success      200  {object}  dto.WhitelistResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      404  {string}  string  "Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
@@ -47,10 +53,15 @@ func GetWhitelistByEmailHandler(logger ports.Logger, whitelistService *services.
 		if email == "" {
 			return http.StatusBadRequest, errors.New("missing email")
 		}
+		// Get domain model from service
 		whitelistInfo, err := whitelistService.WhitelistRepo().GetWhitelistByEmail(r.Context(), email)
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.JsonOk(w, whitelistInfo)
+
+		// Convert to DTO
+		response := new(dto.WhitelistResponse).FromDomain(&whitelistInfo)
+
+		return util.JsonOk(w, response)
 	}
 }
