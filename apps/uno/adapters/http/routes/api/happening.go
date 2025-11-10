@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/ports"
@@ -62,7 +63,7 @@ func GetHappeningById(logger ports.Logger, happeningService *services.HappeningS
 // @Tags         happenings
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
-// @Success      200  {object}  GroupedRegistration  "OK"
+// @Success      200  {object}  dto.GroupedRegistration  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
@@ -91,7 +92,7 @@ func GetHappeningRegistrationsCount(logger ports.Logger, happeningService *servi
 			return http.StatusInternalServerError, ErrInternalServer
 		}
 
-		grp := GroupedRegistration{}
+		grp := dto.GroupedRegistration{}
 
 		if len(spotRanges) > 0 {
 			count := 0
