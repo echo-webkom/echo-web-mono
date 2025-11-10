@@ -19,7 +19,7 @@ jobs:
       - name: 🐢 Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22.20.0
+          node-version: 22.21.1
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
@@ -47,7 +47,7 @@ jobs:
       - name: 🐢 Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22.20.0
+          node-version: 22.21.1
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
