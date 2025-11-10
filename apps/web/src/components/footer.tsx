@@ -1,3 +1,5 @@
+"use client";
+
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +10,7 @@ import { RxExternalLink as ExternalLink } from "react-icons/rx";
 import { footerRoutes } from "@/lib/routes";
 import { otherSponsors, sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
+import { shuffle } from "@/utils/list";
 
 type FooterProps = {
   className?: string;
@@ -58,7 +61,7 @@ export const Footer = ({ className }: FooterProps) => {
             <div>
               <ul className="space-y-5">
                 <h3 className="mb-4 py-2 text-xl font-bold">Samarbeidspartnere ❤️</h3>
-                {sponsors.map(({ label, href, image }) => (
+                {shuffle(sponsors).map(({ label, href, image }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
                       {/* <Image
