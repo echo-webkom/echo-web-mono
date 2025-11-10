@@ -38,6 +38,7 @@ export const allHappeningsQuery = groq`
   "registrationEnd": registrationEnd,
   "location": location->{
     name,
+    link
   },
   "spotRanges": spotRanges[] {
     spots,
@@ -97,6 +98,7 @@ export const happeningQuery = groq`
   "registrationEnd": registrationEnd,
   "location": location->{
     name,
+    link
   },
   "spotRanges": spotRanges[] {
     spots,

@@ -22,6 +22,7 @@ export const allRepeatingHappeningsQuery = groq`
   },
   "location": location->{
     name,
+    link,
   },
   dayOfWeek,
   startTime,
