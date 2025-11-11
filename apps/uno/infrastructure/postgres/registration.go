@@ -20,6 +20,7 @@ func NewRegistrationRepo(db *Database, logger ports.Logger) ports.RegistrationRe
 	return &RegistrationRepo{db: db, logger: logger}
 }
 
+// GetByUserAndHappening retrieves a registration by user ID and happening ID.
 func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error) {
 	r.logger.Info(ctx, "getting registration by user and happening",
 		"user_id", userID,
@@ -49,6 +50,9 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 	return regDB.ToDomain(), nil
 }
 
+// CreateRegistration creates a new registration for a user to a happening.
+// It checks for available spots and returns whether the user was waitlisted.
+// An error here could be because of an issue with locking the table or a DB error.
 func (r *RegistrationRepo) CreateRegistration(
 	ctx context.Context,
 	userID, happeningID string,
@@ -224,6 +228,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	return registrationDB.ToDomain(), !isRegistered, nil
 }
 
+// InsertAnswers inserts or updates answers for a user's registration to a happening.
 func (r *RegistrationRepo) InsertAnswers(
 	ctx context.Context,
 	userID, happeningID string,
