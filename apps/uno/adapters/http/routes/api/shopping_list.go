@@ -18,10 +18,10 @@ import (
 // @Router       /shopping [get]
 func GetShoppingList(logger ports.Logger, shoppingListService *services.ShoppingListService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		feedbacks, err := shoppingListService.GetShoppingList(r.Context())
+		shoppingList, err := shoppingListService.GetShoppingList(r.Context())
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.JsonOk(w, feedbacks)
+		return util.JsonOk(w, shoppingList)
 	}
 }
