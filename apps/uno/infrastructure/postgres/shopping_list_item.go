@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type ShoppingListRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewShoppingListRepo(db *Database, logger ports.Logger) ports.ShoppingListItemRepo {
+func NewShoppingListRepo(db *Database, logger port.Logger) port.ShoppingListItemRepo {
 	return &ShoppingListRepo{db: db, logger: logger}
 }
 
@@ -59,7 +59,7 @@ func (p *ShoppingListRepo) DeleteShoppingListItem(ctx context.Context, itemID st
 	return nil
 }
 
-func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]ports.ShoppingListItemWithCreator, error) {
+func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]port.ShoppingListItemWithCreator, error) {
 	p.logger.Info(ctx, "getting all shopping list items")
 
 	query := `--sql
@@ -80,7 +80,7 @@ func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]ports
 	}
 
 	// Convert to domain models
-	result := make([]ports.ShoppingListItemWithCreator, len(dbModels))
+	result := make([]port.ShoppingListItemWithCreator, len(dbModels))
 	for i, dbModel := range dbModels {
 		result[i] = *dbModel.ToDomain()
 	}
