@@ -40,7 +40,7 @@ func (_m *ShoppingListItemRepo) EXPECT() *ShoppingListItemRepo_Expecter {
 }
 
 // CreateShoppingListItem provides a mock function for the type ShoppingListItemRepo
-func (_mock *ShoppingListItemRepo) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) (model.ShoppingListItem, error) {
+func (_mock *ShoppingListItemRepo) CreateShoppingListItem(ctx context.Context, item model.NewShoppingListItem) (model.ShoppingListItem, error) {
 	ret := _mock.Called(ctx, item)
 
 	if len(ret) == 0 {
@@ -49,15 +49,15 @@ func (_mock *ShoppingListItemRepo) CreateShoppingListItem(ctx context.Context, i
 
 	var r0 model.ShoppingListItem
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.ShoppingListItem) (model.ShoppingListItem, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewShoppingListItem) (model.ShoppingListItem, error)); ok {
 		return returnFunc(ctx, item)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.ShoppingListItem) model.ShoppingListItem); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewShoppingListItem) model.ShoppingListItem); ok {
 		r0 = returnFunc(ctx, item)
 	} else {
 		r0 = ret.Get(0).(model.ShoppingListItem)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, model.ShoppingListItem) error); ok {
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewShoppingListItem) error); ok {
 		r1 = returnFunc(ctx, item)
 	} else {
 		r1 = ret.Error(1)
@@ -72,20 +72,20 @@ type ShoppingListItemRepo_CreateShoppingListItem_Call struct {
 
 // CreateShoppingListItem is a helper method to define mock.On call
 //   - ctx context.Context
-//   - item model.ShoppingListItem
+//   - item model.NewShoppingListItem
 func (_e *ShoppingListItemRepo_Expecter) CreateShoppingListItem(ctx interface{}, item interface{}) *ShoppingListItemRepo_CreateShoppingListItem_Call {
 	return &ShoppingListItemRepo_CreateShoppingListItem_Call{Call: _e.mock.On("CreateShoppingListItem", ctx, item)}
 }
 
-func (_c *ShoppingListItemRepo_CreateShoppingListItem_Call) Run(run func(ctx context.Context, item model.ShoppingListItem)) *ShoppingListItemRepo_CreateShoppingListItem_Call {
+func (_c *ShoppingListItemRepo_CreateShoppingListItem_Call) Run(run func(ctx context.Context, item model.NewShoppingListItem)) *ShoppingListItemRepo_CreateShoppingListItem_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 model.ShoppingListItem
+		var arg1 model.NewShoppingListItem
 		if args[1] != nil {
-			arg1 = args[1].(model.ShoppingListItem)
+			arg1 = args[1].(model.NewShoppingListItem)
 		}
 		run(
 			arg0,
@@ -100,7 +100,7 @@ func (_c *ShoppingListItemRepo_CreateShoppingListItem_Call) Return(shoppingListI
 	return _c
 }
 
-func (_c *ShoppingListItemRepo_CreateShoppingListItem_Call) RunAndReturn(run func(ctx context.Context, item model.ShoppingListItem) (model.ShoppingListItem, error)) *ShoppingListItemRepo_CreateShoppingListItem_Call {
+func (_c *ShoppingListItemRepo_CreateShoppingListItem_Call) RunAndReturn(run func(ctx context.Context, item model.NewShoppingListItem) (model.ShoppingListItem, error)) *ShoppingListItemRepo_CreateShoppingListItem_Call {
 	_c.Call.Return(run)
 	return _c
 }

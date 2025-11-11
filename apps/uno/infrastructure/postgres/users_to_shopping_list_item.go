@@ -6,6 +6,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type UsersToShoppingListItemRepo struct {
@@ -17,21 +18,29 @@ func NewUsersToShoppingListItemRepo(db *Database, logger ports.Logger) ports.Use
 	return &UsersToShoppingListItemRepo{db: db, logger: logger}
 }
 
-func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.Context) (ranges []model.UsersToShoppingListItems, err error) {
+func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.Context) ([]model.UsersToShoppingListItems, error) {
 	p.logger.Info(ctx, "getting all users to shopping list items")
 
-	ranges = []model.UsersToShoppingListItems{}
+	var dbModels []models.UsersToShoppingListItemsDB
 	query := `--sql
 		SELECT user_id, item_id, created_at FROM users_to_shopping_list_items
 	`
 
-	err = p.db.SelectContext(ctx, &ranges, query)
+	err := p.db.SelectContext(ctx, &dbModels, query)
 	if err != nil {
 		p.logger.Error(ctx, "failed to get all users to shopping list items",
 			"error", err,
 		)
+		return nil, err
 	}
-	return ranges, nil
+
+	// Convert to domain models
+	result := make([]model.UsersToShoppingListItems, len(dbModels))
+	for i, dbModel := range dbModels {
+		result[i] = *dbModel.ToDomain()
+	}
+
+	return result, nil
 }
 
 func (p *UsersToShoppingListItemRepo) AddUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {

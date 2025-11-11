@@ -31,7 +31,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/adapters_http_routes_api.HealthCheckResponse"
+                            "$ref": "#/definitions/uno_adapters_http_dto.HealthCheckResponse"
                         }
                     }
                 }
@@ -57,7 +57,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.AccessRequest"
+                                "$ref": "#/definitions/uno_adapters_http_dto.AccessRequestResponse"
                             }
                         }
                     },
@@ -791,7 +791,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/adapters_http_routes_api.GroupedRegistration"
+                            "$ref": "#/definitions/uno_adapters_http_dto.GroupedRegistration"
                         }
                     },
                     "400": {
@@ -1013,7 +1013,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.Whitelist"
+                                "$ref": "#/definitions/uno_adapters_http_dto.WhitelistResponse"
                             }
                         }
                     },
@@ -1059,7 +1059,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Whitelist"
+                            "$ref": "#/definitions/uno_adapters_http_dto.WhitelistResponse"
                         }
                     },
                     "401": {
@@ -1102,7 +1102,35 @@ const docTemplate = `{
                 }
             }
         },
-        "adapters_http_routes_api.GroupedRegistration": {
+        "adapters_http_routes_api.ReactToCommentRequest": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.AccessRequestResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.GroupedRegistration": {
             "type": "object",
             "properties": {
                 "max": {
@@ -1116,7 +1144,7 @@ const docTemplate = `{
                 }
             }
         },
-        "adapters_http_routes_api.HealthCheckResponse": {
+        "uno_adapters_http_dto.HealthCheckResponse": {
             "type": "object",
             "properties": {
                 "status": {
@@ -1124,27 +1152,13 @@ const docTemplate = `{
                 }
             }
         },
-        "adapters_http_routes_api.ReactToCommentRequest": {
+        "uno_adapters_http_dto.WhitelistResponse": {
             "type": "object",
             "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.AccessRequest": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
-                "id": {
+                "expiresAt": {
                     "type": "string"
                 },
                 "reason": {
@@ -1348,20 +1362,6 @@ const docTemplate = `{
                 },
                 "spots": {
                     "type": "integer"
-                }
-            }
-        },
-        "uno_domain_model.Whitelist": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
                 }
             }
         },

@@ -2,15 +2,23 @@ package model
 
 import "time"
 
+// ShoppingListItem represents a shopping list item in the domain
 type ShoppingListItem struct {
-	ID        string    `db:"id" json:"id"`
-	UserID    string    `db:"user_id" json:"userId"`
-	Name      string    `db:"name" json:"name"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ID        string
+	UserID    string
+	Name      string
+	CreatedAt time.Time
 }
 
+// NewShoppingListItem represents the input for creating a shopping list item
+type NewShoppingListItem struct {
+	UserID string
+	Name   string
+}
+
+// UsersToShoppingListItems represents the relationship between users and shopping list items
 type UsersToShoppingListItems struct {
-	UserID    string    `db:"user_id" json:"userId"`
-	ItemID    string    `db:"item_id" json:"itemId"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	UserID    string
+	ItemID    string
+	CreatedAt time.Time
 }

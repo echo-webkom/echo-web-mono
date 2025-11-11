@@ -9,18 +9,15 @@ import (
 type ShoppingListService struct {
 	shoppingListeItemRepo       ports.ShoppingListItemRepo
 	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo
-	userRepo                    ports.UserRepo
 }
 
 func NewShoppingListService(
 	shoppingListItemRepo ports.ShoppingListItemRepo,
 	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo,
-	userRepo ports.UserRepo,
 ) *ShoppingListService {
 	return &ShoppingListService{
 		shoppingListeItemRepo:       shoppingListItemRepo,
 		usersToShoppingListItemRepo: usersToShoppingListItemRepo,
-		userRepo:                    userRepo, // TODO: Not used. Remove me.
 	}
 }
 

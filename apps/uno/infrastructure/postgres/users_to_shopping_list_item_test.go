@@ -33,7 +33,7 @@ func TestUsersToShoppingListItemRepo_AddUserToShoppingListItem(t *testing.T) {
 	assert.NoError(t, err)
 
 	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
-	item := model.ShoppingListItem{
+	item := model.NewShoppingListItem{
 		UserID: createdUser.ID,
 		Name:   "Test item",
 	}
@@ -88,14 +88,14 @@ func TestUsersToShoppingListItemRepo_GetAllUserToShoppingListItems(t *testing.T)
 	assert.NoError(t, err)
 
 	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
-	item1 := model.ShoppingListItem{
+	item1 := model.NewShoppingListItem{
 		UserID: createdUser1.ID,
 		Name:   "Item 1",
 	}
 	createdItem1, err := shoppingListRepo.CreateShoppingListItem(ctx, item1)
 	assert.NoError(t, err)
 
-	item2 := model.ShoppingListItem{
+	item2 := model.NewShoppingListItem{
 		UserID: createdUser2.ID,
 		Name:   "Item 2",
 	}
@@ -143,7 +143,7 @@ func TestUsersToShoppingListItemRepo_DeleteUserToShoppingListItem(t *testing.T) 
 	assert.NoError(t, err)
 
 	shoppingListRepo := NewShoppingListRepo(db, testutil.NewTestLogger())
-	item := model.ShoppingListItem{
+	item := model.NewShoppingListItem{
 		UserID: createdUser.ID,
 		Name:   "Test item",
 	}
