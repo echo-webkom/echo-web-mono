@@ -455,7 +455,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                                "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
                             }
                         }
                     },
@@ -495,7 +495,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                            "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
                         }
                     },
                     "401": {
@@ -1152,6 +1152,32 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_adapters_http_dto.SiteFeedbackResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRead": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_adapters_http_dto.WhitelistResponse": {
             "type": "object",
             "properties": {
@@ -1318,32 +1344,6 @@ const docTemplate = `{
                 "RegistrationStatusPending",
                 "RegistrationStatusRemoved"
             ]
-        },
-        "uno_domain_model.SiteFeedback": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isRead": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
         },
         "uno_domain_model.SpotRange": {
             "type": "object",

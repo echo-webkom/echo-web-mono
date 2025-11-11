@@ -1,12 +1,20 @@
 package model
 
+// Group represents a user group in the domain
 type Group struct {
-	ID   string `db:"id" json:"id"`
-	Name string `db:"name" json:"name"`
+	ID   string
+	Name string
 }
 
+// NewGroup represents the input for creating a new group
+type NewGroup struct {
+	ID   string
+	Name string
+}
+
+// UsersToGroups represents the relationship between users and groups
 type UsersToGroups struct {
-	UserID   string `db:"user_id" json:"userId"`
-	GroupID  string `db:"group_id" json:"groupId"`
-	IsLeader bool   `db:"is_leader" json:"isLeader"`
+	UserID   string
+	GroupID  string
+	IsLeader bool
 }
