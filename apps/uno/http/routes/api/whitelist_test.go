@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/routes/api"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
