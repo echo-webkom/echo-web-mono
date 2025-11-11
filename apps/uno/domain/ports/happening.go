@@ -7,16 +7,16 @@ import (
 )
 
 type HappeningRegistration struct {
-	UserID           string                     `json:"userId"`
-	HappeningID      string                     `json:"happeningId"`
-	Status           model.RegistrationStatus   `json:"status"`
-	UnregisterReason *string                    `json:"unregisterReason"`
-	CreatedAt        time.Time                  `json:"createdAt"`
-	PrevStatus       *string                    `json:"prevStatus"`
-	ChangedAt        *time.Time                 `json:"changedAt"`
-	ChangedBy        *string                    `json:"changedBy"`
-	UserName         *string                    `json:"userName"`
-	UserImage        *string                    `json:"userImage"`
+	UserID           string                   `json:"userId"`
+	HappeningID      string                   `json:"happeningId"`
+	Status           model.RegistrationStatus `json:"status"`
+	UnregisterReason *string                  `json:"unregisterReason"`
+	CreatedAt        time.Time                `json:"createdAt"`
+	PrevStatus       *string                  `json:"prevStatus"`
+	ChangedAt        *time.Time               `json:"changedAt"`
+	ChangedBy        *string                  `json:"changedBy"`
+	UserName         *string                  `json:"userName"`
+	UserImage        *string                  `json:"userImage"`
 }
 
 type GroupedRegistrationCount struct {
