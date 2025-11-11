@@ -8,7 +8,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -54,7 +54,7 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 			mockSiteFeedbackRepo := mocks.NewSiteFeedbackRepo(t)
 			tt.setupMocks(mockSiteFeedbackRepo)
 
-			siteFeedbackService := services.NewSiteFeedbackService(mockSiteFeedbackRepo)
+			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
 			handler := api.GetSiteFeedbacksHandler(testutil.NewTestLogger(), siteFeedbackService)
 
 			req := httptest.NewRequest(http.MethodGet, "/feedbacks", nil)
@@ -75,7 +75,7 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 	tests := []struct {
 		name           string
-		feedbackID    string
+		feedbackID     string
 		setupMocks     func(*mocks.SiteFeedbackRepo)
 		expectedStatus int
 		expectError    bool
@@ -96,9 +96,9 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			feedbackID:  "",
-			setupMocks:  func(mockRepo *mocks.SiteFeedbackRepo) {},
+			name:           "missing id",
+			feedbackID:     "",
+			setupMocks:     func(mockRepo *mocks.SiteFeedbackRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
@@ -121,7 +121,7 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			mockSiteFeedbackRepo := mocks.NewSiteFeedbackRepo(t)
 			tt.setupMocks(mockSiteFeedbackRepo)
 
-			siteFeedbackService := services.NewSiteFeedbackService(mockSiteFeedbackRepo)
+			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
 			handler := api.GetSiteFeedbackByIDHandler(testutil.NewTestLogger(), siteFeedbackService)
 
 			req := httptest.NewRequest(http.MethodGet, "/feedbacks/"+tt.feedbackID, nil)
@@ -139,4 +139,3 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 		})
 	}
 }
-

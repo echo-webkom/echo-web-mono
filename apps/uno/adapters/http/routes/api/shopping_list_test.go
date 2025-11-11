@@ -9,7 +9,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/ports"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -76,7 +76,7 @@ func TestGetShoppingList(t *testing.T) {
 
 			tt.setupMocks(mockShoppingListRepo, mockUsersToShoppingListRepo)
 
-			shoppingListService := services.NewShoppingListService(
+			shoppingListService := service.NewShoppingListService(
 				mockShoppingListRepo,
 				mockUsersToShoppingListRepo,
 			)

@@ -5,18 +5,18 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/ports"
-	"uno/domain/services"
+	"uno/domain/service"
 )
 
 // GetShoppingList returns a list of shopping list items
 // @Summary	     Get shopping list
 // @Tags         shopping_list
 // @Produce      json
-// @Success      200  {array}  services.ShoppingList  "OK"
+// @Success      200  {array}  service.ShoppingList  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func GetShoppingList(logger ports.Logger, shoppingListService *services.ShoppingListService) router.Handler {
+func GetShoppingList(logger ports.Logger, shoppingListService *service.ShoppingListService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		shoppingList, err := shoppingListService.GetShoppingList(r.Context())
 		if err != nil {

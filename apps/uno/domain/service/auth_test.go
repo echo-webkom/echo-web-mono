@@ -1,4 +1,4 @@
-package services_test
+package service_test
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"testing"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -16,7 +16,7 @@ import (
 func TestAuthService_SessionRepo(t *testing.T) {
 	mockSessionRepo := mocks.NewSessionRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
-	authService := services.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
 
 	sessionRepo := authService.SessionRepo()
 	assert.NotNil(t, sessionRepo, "Expected SessionRepo to be non-nil")
@@ -25,7 +25,7 @@ func TestAuthService_SessionRepo(t *testing.T) {
 func TestAuthService_UserRepo(t *testing.T) {
 	mockSessionRepo := mocks.NewSessionRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
-	authService := services.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
 
 	userRepo := authService.UserRepo()
 	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
@@ -59,7 +59,7 @@ func TestAuthService_ValidateToken_Success(t *testing.T) {
 		Return(expectedUser, nil).
 		Once()
 
-	authService := services.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
 	user, session, err := authService.ValidateToken(ctx, token)
 
 	assert.NoError(t, err, "Expected ValidateToken to not return an error")
@@ -81,7 +81,7 @@ func TestAuthService_ValidateToken_SessionError(t *testing.T) {
 
 	mockUserRepo := mocks.NewUserRepo(t)
 
-	authService := services.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
 	user, session, err := authService.ValidateToken(ctx, token)
 
 	assert.Error(t, err, "Expected ValidateToken to return an error")
@@ -114,7 +114,7 @@ func TestAuthService_ValidateToken_UserError(t *testing.T) {
 		Return(model.User{}, expectedErr).
 		Once()
 
-	authService := services.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
 	user, session, err := authService.ValidateToken(ctx, token)
 
 	assert.Error(t, err, "Expected ValidateToken to return an error")
