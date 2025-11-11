@@ -2,11 +2,11 @@ package api
 
 import (
 	"net/http"
-	"uno/adapters/http/dto"
-	"uno/adapters/http/router"
-	"uno/adapters/http/util"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/dto"
+	"uno/http/router"
+	"uno/http/util"
 )
 
 // GetAccessRequestsHandler returns a list of access requests
