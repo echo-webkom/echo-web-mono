@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
 )
@@ -54,19 +55,12 @@ func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
 	return ctx.JSON(comments)
 }
 
-type CreateCommentRequest struct {
-	Content         string  `json:"content"`
-	PostID          string  `json:"postId"`
-	UserID          string  `json:"userId"`
-	ParentCommentID *string `json:"parentCommentId"`
-}
-
 // CreateCommentHandler creates a new comment
 // @Summary      Create a new comment
 // @Tags         comments
 // @Accept       json
 // @Produce      json
-// @Param        comment  body      CreateCommentRequest  true  "Comment to create"
+// @Param        comment  body  dto.CreateCommentRequest  true  "Comment to create"
 // @Success      200      {object}  map[string]bool             "OK"
 // @Failure      400      {string}  string                      "Bad Request"
 // @Failure      401      {string}  string                      "Unauthorized"
@@ -74,7 +68,7 @@ type CreateCommentRequest struct {
 // @Security     AdminAPIKey
 // @Router       /comments [post]
 func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
-	var req CreateCommentRequest
+	var req dto.CreateCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
 	}
@@ -87,18 +81,13 @@ func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
 	return ctx.JSON(map[string]bool{"success": true})
 }
 
-type ReactToCommentRequest struct {
-	CommentID string `json:"commentId"`
-	UserID    string `json:"userId"`
-}
-
 // ReactToCommentHandler adds or removes a reaction to a comment
 // @Summary      React to a comment
 // @Tags         comments
 // @Accept       json
 // @Produce      json
 // @Param        id        path      string                 true  "Comment ID"
-// @Param        reaction  body      ReactToCommentRequest  true  "Reaction to add or remove"
+// @Param        reaction  body      dto.ReactToCommentRequest  true  "Reaction to add or remove"
 // @Success      200       {object}  map[string]bool              "OK"
 // @Failure      400       {string}  string                       "Bad Request"
 // @Failure      401       {string}  string                       "Unauthorized"
@@ -111,7 +100,7 @@ func (c *comments) ReactToCommentHandler(ctx *handler.Context) error {
 		return ctx.Error(errMissingId, http.StatusBadRequest)
 	}
 
-	var req ReactToCommentRequest
+	var req dto.ReactToCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
 	}
