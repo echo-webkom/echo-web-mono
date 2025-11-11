@@ -55,6 +55,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 // An error here could be because of an issue with locking the table or a DB error.
 func (r *RegistrationRepo) CreateRegistration(
 	ctx context.Context,
+
 	userID, happeningID string,
 	spotRanges []model.SpotRange,
 	hostGroups []string,
