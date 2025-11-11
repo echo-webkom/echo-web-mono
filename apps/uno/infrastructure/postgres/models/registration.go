@@ -4,19 +4,20 @@ import (
 	"time"
 
 	"uno/domain/model"
+	"uno/domain/ports"
 )
 
 // RegistrationDB represents the database schema for the registration table.
 // It contains database-specific tags and structure.
 type RegistrationDB struct {
-	UserID           string `db:"user_id"`
-	HappeningID      string `db:"happening_id"`
-	Status           string `db:"status"`
-	UnregisterReason *string `db:"unregister_reason"`
-	CreatedAt        time.Time `db:"created_at"`
-	PrevStatus       *string `db:"prev_status"`
+	UserID           string     `db:"user_id"`
+	HappeningID      string     `db:"happening_id"`
+	Status           string     `db:"status"`
+	UnregisterReason *string    `db:"unregister_reason"`
+	CreatedAt        time.Time  `db:"created_at"`
+	PrevStatus       *string    `db:"prev_status"`
 	ChangedAt        *time.Time `db:"changed_at"`
-	ChangedBy        *string `db:"changed_by"`
+	ChangedBy        *string    `db:"changed_by"`
 }
 
 // FromDomain converts a domain Registration model to a database RegistrationDB model.
@@ -54,4 +55,36 @@ func RegistrationToDomainList(dbRegistrations []RegistrationDB) []model.Registra
 		registrations[i] = *dbReg.ToDomain()
 	}
 	return registrations
+}
+
+// HappeningRegistrationDB represents the database schema for registration with user info.
+type HappeningRegistrationDB struct {
+	RegistrationDB
+	UserName  *string `db:"user_name"`
+	UserImage *string `db:"user_image"`
+}
+
+// ToPorts converts a HappeningRegistrationDB to a ports.HappeningRegistration.
+func (db *HappeningRegistrationDB) ToPorts() *ports.HappeningRegistration {
+	return &ports.HappeningRegistration{
+		UserID:           db.UserID,
+		HappeningID:      db.HappeningID,
+		Status:           model.RegistrationStatus(db.Status),
+		UnregisterReason: db.UnregisterReason,
+		CreatedAt:        db.CreatedAt,
+		PrevStatus:       db.PrevStatus,
+		ChangedAt:        db.ChangedAt,
+		ChangedBy:        db.ChangedBy,
+		UserName:         db.UserName,
+		UserImage:        db.UserImage,
+	}
+}
+
+// HappeningRegistrationToPortsList converts a slice of HappeningRegistrationDB to ports.HappeningRegistration.
+func HappeningRegistrationToPortsList(dbRegs []HappeningRegistrationDB) []ports.HappeningRegistration {
+	regs := make([]ports.HappeningRegistration, len(dbRegs))
+	for i, dbReg := range dbRegs {
+		regs[i] = *dbReg.ToPorts()
+	}
+	return regs
 }

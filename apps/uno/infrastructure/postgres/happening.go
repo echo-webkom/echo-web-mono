@@ -4,6 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 
 	"github.com/lib/pq"
 )
@@ -63,7 +64,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 		"happening_id", happeningID,
 	)
 
-	regs = []ports.HappeningRegistration{}
+	var dbRegs []models.HappeningRegistrationDB
 	query := `--sql
 		SELECT
 			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.image AS user_image
@@ -71,13 +72,16 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 		LEFT JOIN "user" u ON r.user_id = u.id
 		WHERE r.happening_id = $1
 	`
-	err = h.db.SelectContext(ctx, &regs, query, happeningID)
+	err = h.db.SelectContext(ctx, &dbRegs, query, happeningID)
 	if err != nil {
 		h.logger.Error(ctx, "failed to get happening registrations",
 			"error", err,
 			"happening_id", happeningID,
 		)
+		return nil, err
 	}
+
+	regs = models.HappeningRegistrationToPortsList(dbRegs)
 	return regs, nil
 }
 
