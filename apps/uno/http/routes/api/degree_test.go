@@ -10,6 +10,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -57,19 +58,20 @@ func TestGetDegreesHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			handler := api.GetDegreesHandler(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
 
-			req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -122,25 +124,26 @@ func TestCreateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			handler := api.CreateDegreeHandler(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
 
-			var req *http.Request
+			var r *http.Request
 			if tt.name == "invalid json" {
-				req = httptest.NewRequest(http.MethodPost, "/degrees", nil)
+				r = httptest.NewRequest(http.MethodPost, "/", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				req = httptest.NewRequest(http.MethodPost, "/degrees", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
 			}
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -193,25 +196,26 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			handler := api.UpdateDegreeHandler(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
 
-			var req *http.Request
+			var r *http.Request
 			if tt.name == "invalid json" {
-				req = httptest.NewRequest(http.MethodPost, "/degrees/123", nil)
+				r = httptest.NewRequest(http.MethodPost, "/123", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				req = httptest.NewRequest(http.MethodPost, "/degrees/123", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/123", bytes.NewReader(body))
 			}
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -263,20 +267,21 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			handler := api.DeleteDegreeHandler(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
 
-			req := httptest.NewRequest(http.MethodDelete, "/degrees/"+tt.degreeID, nil)
-			req.SetPathValue("id", tt.degreeID)
+			r := httptest.NewRequest(http.MethodDelete, "/"+tt.degreeID, nil)
+			r.SetPathValue("id", tt.degreeID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }

@@ -45,6 +45,7 @@ func RunServer(
 	commentService *service.CommentService,
 ) {
 	r := router.New(config.ServiceName, logger)
+
 	// withAuth := router.NewWithAuthHandler(authService)
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)
 
@@ -62,10 +63,10 @@ func RunServer(
 	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService), admin)
 
 	// Degree routes
-	r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))
-	r.Handle("POST", "/degrees", api.CreateDegreeHandler(logger, degreeService), admin)
-	r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(logger, degreeService), admin)
-	r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(logger, degreeService), admin)
+	// r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))
+	// r.Handle("POST", "/degrees", api.CreateDegreeHandler(logger, degreeService), admin)
+	// r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(logger, degreeService), admin)
+	// r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(logger, degreeService), admin)
 
 	// Site feedback routes
 	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(logger, siteFeedbackService), admin)
@@ -75,7 +76,7 @@ func RunServer(
 	r.Handle("GET", "/shopping", api.GetShoppingList(logger, shoppingListService), admin)
 
 	// Birthday routes
-	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
+	//r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
 
 	// Strike routes
 	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(logger, strikeSerivce), admin)
@@ -83,16 +84,16 @@ func RunServer(
 	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(logger, strikeSerivce), admin)
 
 	// Access request routes
-	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
+	//r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
 
 	// Whitelist routes
 	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(logger, whitelistService), admin)
 	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(logger, whitelistService), admin)
 
 	// Comment routes
-	r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(logger, commentService))
-	r.Handle("POST", "/comments", api.CreateCommentHandler(logger, commentService), admin)
-	r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(logger, commentService), admin)
+	// r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(logger, commentService))
+	// r.Handle("POST", "/comments", api.CreateCommentHandler(logger, commentService), admin)
+	//r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(logger, commentService), admin)
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

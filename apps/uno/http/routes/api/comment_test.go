@@ -10,6 +10,7 @@ import (
 	"uno/domain/port"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -65,20 +66,21 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			handler := api.GetCommentsByIDHandler(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
 
-			req := httptest.NewRequest(http.MethodGet, "/comments/"+tt.commentID, nil)
-			req.SetPathValue("id", tt.commentID)
+			r := httptest.NewRequest(http.MethodGet, "/"+tt.commentID, nil)
+			r.SetPathValue("id", tt.commentID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -140,25 +142,26 @@ func TestCreateCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			handler := api.CreateCommentHandler(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
 
-			var req *http.Request
+			var r *http.Request
 			if tt.name == "invalid json" {
-				req = httptest.NewRequest(http.MethodPost, "/comments", nil)
+				r = httptest.NewRequest(http.MethodPost, "/comments", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				req = httptest.NewRequest(http.MethodPost, "/comments", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/comments", bytes.NewReader(body))
 			}
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -232,26 +235,27 @@ func TestReactToCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			handler := api.ReactToCommentHandler(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
 
-			var req *http.Request
+			var r *http.Request
 			if tt.name == "invalid json" {
-				req = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", nil)
+				r = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				req = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", bytes.NewReader(body))
 			}
-			req.SetPathValue("id", tt.commentID)
+			r.SetPathValue("id", tt.commentID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
