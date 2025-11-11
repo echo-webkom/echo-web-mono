@@ -2,9 +2,9 @@ package api
 
 import (
 	"net/http"
-	"uno/adapters/http/dto"
-	"uno/adapters/http/router"
-	"uno/adapters/http/util"
+	"uno/http/dto"
+	"uno/http/router"
+	"uno/http/util"
 )
 
 // HealthHandler returns the health status of the service
