@@ -19,7 +19,7 @@ func NewContext(w http.ResponseWriter, r *http.Request) *Context {
 }
 
 func (c *Context) Destroy() {
-	c.R.Body.Close()
+	_ = c.R.Body.Close()
 }
 
 func (c *Context) ReadJSON(dest any) error {

@@ -31,7 +31,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.HealthCheckResponse"
+                            "$ref": "#/definitions/uno_http_dto.HealthCheckResponse"
                         }
                     }
                 }
@@ -57,7 +57,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.AccessRequestResponse"
+                                "$ref": "#/definitions/uno_http_dto.AccessRequestResponse"
                             }
                         }
                     },
@@ -123,7 +123,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/adapters_http_routes_api.CreateCommentRequest"
+                            "$ref": "#/definitions/http_routes_api.CreateCommentRequest"
                         }
                     }
                 ],
@@ -243,7 +243,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/adapters_http_routes_api.ReactToCommentRequest"
+                            "$ref": "#/definitions/http_routes_api.ReactToCommentRequest"
                         }
                     }
                 ],
@@ -293,7 +293,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
+                                "$ref": "#/definitions/uno_http_dto.DegreeResponse"
                             }
                         }
                     }
@@ -322,7 +322,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.CreateDegreeRequest"
+                            "$ref": "#/definitions/uno_http_dto.CreateDegreeRequest"
                         }
                     }
                 ],
@@ -330,7 +330,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
+                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
                         }
                     },
                     "400": {
@@ -372,7 +372,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.UpdateDegreeRequest"
+                            "$ref": "#/definitions/uno_http_dto.UpdateDegreeRequest"
                         }
                     }
                 ],
@@ -380,7 +380,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
+                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
                         }
                     },
                     "400": {
@@ -455,7 +455,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
+                                "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
                             }
                         }
                     },
@@ -495,7 +495,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
+                            "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
                         }
                     },
                     "401": {
@@ -529,7 +529,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.HappeningResponse"
+                                "$ref": "#/definitions/uno_http_dto.HappeningResponse"
                             }
                         }
                     }
@@ -603,7 +603,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.HappeningResponse"
+                            "$ref": "#/definitions/uno_http_dto.HappeningResponse"
                         }
                     },
                     "400": {
@@ -646,7 +646,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.QuestionResponse"
+                                "$ref": "#/definitions/uno_http_dto.QuestionResponse"
                             }
                         }
                     },
@@ -697,7 +697,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningRequest"
+                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningRequest"
                         }
                     }
                 ],
@@ -705,19 +705,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
                         }
                     }
                 }
@@ -753,7 +753,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.HappeningRegistrationResponse"
+                                "$ref": "#/definitions/uno_http_dto.HappeningRegistrationResponse"
                             }
                         }
                     },
@@ -796,7 +796,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.GroupedRegistration"
+                            "$ref": "#/definitions/uno_http_dto.GroupedRegistration"
                         }
                     },
                     "400": {
@@ -844,7 +844,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.SpotRangeResponse"
+                                "$ref": "#/definitions/uno_http_dto.SpotRangeResponse"
                             }
                         }
                     },
@@ -1018,7 +1018,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_adapters_http_dto.WhitelistResponse"
+                                "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
                             }
                         }
                     },
@@ -1064,7 +1064,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_adapters_http_dto.WhitelistResponse"
+                            "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
                         }
                     },
                     "401": {
@@ -1090,7 +1090,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "adapters_http_routes_api.CreateCommentRequest": {
+        "http_routes_api.CreateCommentRequest": {
             "type": "object",
             "properties": {
                 "content": {
@@ -1107,286 +1107,13 @@ const docTemplate = `{
                 }
             }
         },
-        "adapters_http_routes_api.ReactToCommentRequest": {
+        "http_routes_api.ReactToCommentRequest": {
             "type": "object",
             "properties": {
                 "commentId": {
                     "type": "string"
                 },
                 "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.AccessRequestResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.CreateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.DegreeResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.GroupedRegistration": {
-            "type": "object",
-            "properties": {
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_adapters_http_dto.HappeningRegistrationResponse": {
-            "type": "object",
-            "properties": {
-                "changedAt": {
-                    "type": "string"
-                },
-                "changedBy": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "happeningId": {
-                    "type": "string"
-                },
-                "prevStatus": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "unregisterReason": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userImage": {
-                    "type": "string"
-                },
-                "userName": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.HappeningResponse": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "registrationEnd": {
-                    "type": "string"
-                },
-                "registrationGroups": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "registrationStart": {
-                    "type": "string"
-                },
-                "registrationStartGroups": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.HealthCheckResponse": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.QuestionAnswerDTO": {
-            "type": "object",
-            "properties": {
-                "answer": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "questionId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.QuestionResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isSensitive": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "required": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.RegisterForHappeningRequest": {
-            "type": "object",
-            "properties": {
-                "questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_adapters_http_dto.QuestionAnswerDTO"
-                    }
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.RegisterForHappeningResponse": {
-            "type": "object",
-            "properties": {
-                "isWaitlisted": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "uno_adapters_http_dto.SiteFeedbackResponse": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isRead": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.SpotRangeResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "maxYear": {
-                    "type": "integer"
-                },
-                "minYear": {
-                    "type": "integer"
-                },
-                "spots": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_adapters_http_dto.UpdateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_adapters_http_dto.WhitelistResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "reason": {
                     "type": "string"
                 }
             }
@@ -1594,6 +1321,279 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.AccessRequestResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CreateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.DegreeResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.GroupedRegistration": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "integer"
+                },
+                "registered": {
+                    "type": "integer"
+                },
+                "waiting": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_http_dto.HappeningRegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "changedAt": {
+                    "type": "string"
+                },
+                "changedBy": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "prevStatus": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unregisterReason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userImage": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.HappeningResponse": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "registrationEnd": {
+                    "type": "string"
+                },
+                "registrationGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "registrationStartGroups": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.HealthCheckResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.QuestionAnswerDTO": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "questionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.QuestionResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isSensitive": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.RegisterForHappeningRequest": {
+            "type": "object",
+            "properties": {
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.QuestionAnswerDTO"
+                    }
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.RegisterForHappeningResponse": {
+            "type": "object",
+            "properties": {
+                "isWaitlisted": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "uno_http_dto.SiteFeedbackResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRead": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.SpotRangeResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "maxYear": {
+                    "type": "integer"
+                },
+                "minYear": {
+                    "type": "integer"
+                },
+                "spots": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_http_dto.UpdateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.WhitelistResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "reason": {
                     "type": "string"
                 }
             }
