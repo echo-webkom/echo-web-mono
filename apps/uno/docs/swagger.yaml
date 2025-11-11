@@ -1,23 +1,5 @@
 basePath: /
 definitions:
-  http_routes_api.CreateCommentRequest:
-    properties:
-      content:
-        type: string
-      parentCommentId:
-        type: string
-      postId:
-        type: string
-      userId:
-        type: string
-    type: object
-  http_routes_api.ReactToCommentRequest:
-    properties:
-      commentId:
-        type: string
-      userId:
-        type: string
-    type: object
   uno_domain_model.CommentsReaction:
     properties:
       commentId:
@@ -164,6 +146,17 @@ definitions:
       reason:
         type: string
     type: object
+  uno_http_dto.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.CreateDegreeRequest:
     properties:
       id:
@@ -264,6 +257,13 @@ definitions:
       title:
         type: string
       type:
+        type: string
+    type: object
+  uno_http_dto.ReactToCommentRequest:
+    properties:
+      commentId:
+        type: string
+      userId:
         type: string
     type: object
   uno_http_dto.RegisterForHappeningRequest:
@@ -399,7 +399,7 @@ paths:
         name: comment
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.CreateCommentRequest'
+          $ref: '#/definitions/uno_http_dto.CreateCommentRequest'
       produces:
       - application/json
       responses:
@@ -475,7 +475,7 @@ paths:
         name: reaction
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.ReactToCommentRequest'
+          $ref: '#/definitions/uno_http_dto.ReactToCommentRequest'
       produces:
       - application/json
       responses:
