@@ -2,10 +2,10 @@ package api
 
 import (
 	"net/http"
-	"uno/adapters/http/router"
-	"uno/adapters/http/util"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/router"
+	"uno/http/util"
 )
 
 // UnbanUsersWithExpiredStrikesHandler bans users with expired strikes and bans

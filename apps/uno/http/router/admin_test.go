@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"uno/adapters/http/router"
+	"uno/http/router"
 
 	"github.com/stretchr/testify/assert"
 )

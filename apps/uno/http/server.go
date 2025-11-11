@@ -1,11 +1,11 @@
 package http
 
 import (
-	"uno/adapters/http/router"
-	"uno/adapters/http/routes/api"
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/router"
+	"uno/http/routes/api"
 
 	"github.com/jesperkha/notifier"
 )

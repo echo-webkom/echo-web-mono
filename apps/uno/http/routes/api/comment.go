@@ -3,10 +3,10 @@ package api
 import (
 	"errors"
 	"net/http"
-	"uno/adapters/http/router"
-	"uno/adapters/http/util"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/router"
+	"uno/http/util"
 )
 
 // GetCommentsByIDHandler returns a comment by its ID

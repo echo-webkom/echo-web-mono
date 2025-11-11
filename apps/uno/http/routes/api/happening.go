@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"uno/adapters/http/dto"
-	"uno/adapters/http/router"
-	"uno/adapters/http/util"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/dto"
+	"uno/http/router"
+	"uno/http/util"
 
 	_ "uno/domain/model"
 )
