@@ -17,7 +17,6 @@ import (
 // @contact.name   echo Webkom
 // @contact.email  webkom@echo.uib.no
 
-// @host      localhost:8080
 // @BasePath  /
 
 // @securityDefinitions.apikey  BearerAuth
