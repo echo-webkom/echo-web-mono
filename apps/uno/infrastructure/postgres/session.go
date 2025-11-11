@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
@@ -21,11 +22,17 @@ func (r *PostgresSessionImpl) GetSessionByToken(ctx context.Context, token strin
 
 	query := `--sql
 		SELECT session_token, user_id, expires
-		FROM session
+		FROM "session"
 		WHERE session_token = $1
 	`
 	var sessionDB models.SessionDB
 	err := r.db.GetContext(ctx, &sessionDB, query, token)
+	if err == sql.ErrNoRows {
+		r.logger.Info(ctx, "no session found for token",
+			"token", token,
+		)
+		return model.Session{}, nil
+	}
 	if err != nil {
 		r.logger.Error(ctx, "failed to get session by token",
 			"error", err,
