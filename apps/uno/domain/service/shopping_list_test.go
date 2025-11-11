@@ -1,4 +1,4 @@
-package services_test
+package service_test
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/ports"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -76,13 +76,13 @@ func TestShoppingListService_GetShoppingList(t *testing.T) {
 		Return(usersToShoppingListItem, nil).
 		Once()
 
-	shoppingListService := services.NewShoppingListService(mockShoppingListItemRepo, mockUsersToShoppingListItemRepo)
+	shoppingListService := service.NewShoppingListService(mockShoppingListItemRepo, mockUsersToShoppingListItemRepo)
 
 	shoppingList, err := shoppingListService.GetShoppingList(t.Context())
 	assert.NoError(t, err, "Expected GetShoppingList to not return an error")
 	assert.NotNil(t, shoppingList, "Expected GetShoppingList to return a non-nil shopping list")
 
-	expectedShoppingList := []services.ShoppingList{
+	expectedShoppingList := []service.ShoppingList{
 		{
 			ID:        "1",
 			Name:      "Ost",
@@ -119,7 +119,7 @@ func TestShoppingListService_GetShoppingList_ShoppingListItemRepoError(t *testin
 		Return(nil, assert.AnError).
 		Once()
 
-	shoppingListService := services.NewShoppingListService(mockShoppingListItemRepo, nil)
+	shoppingListService := service.NewShoppingListService(mockShoppingListItemRepo, nil)
 
 	shoppingList, err := shoppingListService.GetShoppingList(t.Context())
 	assert.Error(t, err, "Expected GetShoppingList to return an error")
@@ -145,7 +145,7 @@ func TestShoppingListService_GetShoppingList_UsersToShoppingListItemRepoError(t 
 		Return(nil, assert.AnError).
 		Once()
 
-	shoppingListService := services.NewShoppingListService(
+	shoppingListService := service.NewShoppingListService(
 		mockShoppingListItemRepo,
 		mockUsersToShoppingListItemRepo,
 	)
@@ -157,7 +157,7 @@ func TestShoppingListService_GetShoppingList_UsersToShoppingListItemRepoError(t 
 
 func TestShoppingListService_ShoppingListItemRepo(t *testing.T) {
 	mockRepo := mocks.NewShoppingListItemRepo(t)
-	shoppingListService := services.NewShoppingListService(mockRepo, nil)
+	shoppingListService := service.NewShoppingListService(mockRepo, nil)
 
 	shoppingListItemRepo := shoppingListService.ShoppingListItemRepo()
 	assert.NotNil(t, shoppingListItemRepo, "Expected ShoppingListItemRepo to be non-nil")
@@ -165,7 +165,7 @@ func TestShoppingListService_ShoppingListItemRepo(t *testing.T) {
 
 func TestShoppingListService_UsersToShoppingListItemRepo(t *testing.T) {
 	mockRepo := mocks.NewUsersToShoppingListItemRepo(t)
-	shoppingListService := services.NewShoppingListService(nil, mockRepo)
+	shoppingListService := service.NewShoppingListService(nil, mockRepo)
 
 	usersToShoppingListItemRepo := shoppingListService.UsersToShoppingListItemRepo()
 	assert.NotNil(t, usersToShoppingListItemRepo, "Expected UsersToShoppingListItemRepo to be non-nil")

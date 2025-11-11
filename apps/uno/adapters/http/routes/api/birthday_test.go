@@ -8,7 +8,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -77,7 +77,7 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			tt.setupMocks(mockUserRepo)
 
-			userService := services.NewUserService(mockUserRepo)
+			userService := service.NewUserService(mockUserRepo)
 			handler := api.BirthdaysTodayHandler(testutil.NewTestLogger(), userService)
 
 			req := httptest.NewRequest(http.MethodGet, "/birthdays", nil)
@@ -94,4 +94,3 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 		})
 	}
 }
-

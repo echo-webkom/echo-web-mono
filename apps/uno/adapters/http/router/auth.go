@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"uno/domain/model"
-	"uno/domain/services"
+	"uno/domain/service"
 )
 
 type Auth struct {
@@ -14,7 +14,7 @@ type Auth struct {
 
 type AuthHandler func(w http.ResponseWriter, r *http.Request, auth Auth) (int, error)
 
-func NewWithAuthHandler(as *services.AuthService) func(h AuthHandler) Handler {
+func NewWithAuthHandler(as *service.AuthService) func(h AuthHandler) Handler {
 	return func(h AuthHandler) Handler {
 		return func(w http.ResponseWriter, r *http.Request) (int, error) {
 			auth, ok := getAuthFromRequest(as, r)
@@ -26,7 +26,7 @@ func NewWithAuthHandler(as *services.AuthService) func(h AuthHandler) Handler {
 	}
 }
 
-func NewAuthMiddleware(as *services.AuthService) Middleware {
+func NewAuthMiddleware(as *service.AuthService) Middleware {
 	return func(h Handler) Handler {
 		return func(w http.ResponseWriter, r *http.Request) (int, error) {
 			if _, ok := getAuthFromRequest(as, r); !ok {
@@ -48,7 +48,7 @@ func (o OptionalAuth) Unwrap() (auth Auth, ok bool) {
 
 type OptionalAuthHandler func(w http.ResponseWriter, r *http.Request, auth OptionalAuth) int
 
-func NewWithOptionalAuthHandler(as *services.AuthService) func(h OptionalAuthHandler) http.HandlerFunc {
+func NewWithOptionalAuthHandler(as *service.AuthService) func(h OptionalAuthHandler) http.HandlerFunc {
 	return func(h OptionalAuthHandler) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			auth, ok := getAuthFromRequest(as, r)
@@ -70,7 +70,7 @@ func getBearerToken(r *http.Request) string {
 	return token[len("Bearer "):]
 }
 
-func getAuthFromRequest(as *services.AuthService, r *http.Request) (auth Auth, ok bool) {
+func getAuthFromRequest(as *service.AuthService, r *http.Request) (auth Auth, ok bool) {
 	ctx := r.Context()
 
 	token := getBearerToken(r)
