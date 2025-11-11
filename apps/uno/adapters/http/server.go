@@ -46,7 +46,7 @@ func RunServer(
 	commentService *services.CommentService,
 ) {
 	r := router.New(config.ServiceName, logger)
-	// auth := router.NewAuthMiddleware(authService)
+	// withAuth := router.NewWithAuthHandler(authService)
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)
 
 	// Health check route
@@ -60,7 +60,7 @@ func RunServer(
 	r.Handle("GET", "/happenings/registrations/count", api.GetHappeningRegistrationsCountMany(logger, happeningService))
 	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(logger, happeningService), admin)
 	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(logger, happeningService), admin)
-	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService))
+	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService), admin)
 
 	// Degree routes
 	r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))

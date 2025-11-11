@@ -38,10 +38,102 @@ definitions:
       waiting:
         type: integer
     type: object
+  uno_adapters_http_dto.HappeningRegistrationResponse:
+    properties:
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      userId:
+        type: string
+      userImage:
+        type: string
+      userName:
+        type: string
+    type: object
+  uno_adapters_http_dto.HappeningResponse:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      registrationEnd:
+        type: string
+      registrationGroups:
+        items:
+          type: integer
+        type: array
+      registrationStart:
+        type: string
+      registrationStartGroups:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
   uno_adapters_http_dto.HealthCheckResponse:
     properties:
       status:
         type: string
+    type: object
+  uno_adapters_http_dto.QuestionAnswerDTO:
+    properties:
+      answer:
+        items:
+          type: integer
+        type: array
+      questionId:
+        type: string
+    type: object
+  uno_adapters_http_dto.QuestionResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      isSensitive:
+        type: boolean
+      options:
+        items:
+          type: integer
+        type: array
+      required:
+        type: boolean
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_adapters_http_dto.RegisterForHappeningRequest:
+    properties:
+      questions:
+        items:
+          $ref: '#/definitions/uno_adapters_http_dto.QuestionAnswerDTO'
+        type: array
+      userId:
+        type: string
+    type: object
+  uno_adapters_http_dto.RegisterForHappeningResponse:
+    properties:
+      isWaitlisted:
+        type: boolean
+      message:
+        type: string
+      success:
+        type: boolean
     type: object
   uno_adapters_http_dto.SiteFeedbackResponse:
     properties:
@@ -59,6 +151,19 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  uno_adapters_http_dto.SpotRangeResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      maxYear:
+        type: integer
+      minYear:
+        type: integer
+      spots:
+        type: integer
     type: object
   uno_adapters_http_dto.WhitelistResponse:
     properties:
@@ -86,104 +191,6 @@ definitions:
         type: string
       name:
         type: string
-    type: object
-  uno_domain_model.Happening:
-    properties:
-      date:
-        type: string
-      id:
-        type: string
-      registrationEnd:
-        type: string
-      registrationGroups:
-        items:
-          type: integer
-        type: array
-      registrationStart:
-        type: string
-      registrationStartGroups:
-        type: string
-      slug:
-        type: string
-      title:
-        type: string
-      type:
-        type: string
-    type: object
-  uno_domain_model.Question:
-    properties:
-      happeningId:
-        type: string
-      id:
-        type: string
-      isSensitive:
-        type: boolean
-      options:
-        items:
-          type: integer
-        type: array
-      required:
-        type: boolean
-      title:
-        type: string
-      type:
-        type: string
-    type: object
-  uno_domain_model.QuestionAnswer:
-    properties:
-      answer:
-        description: Can be string or []string
-        items:
-          type: integer
-        type: array
-      questionId:
-        type: string
-    type: object
-  uno_domain_model.Registration:
-    properties:
-      changedAt:
-        type: string
-      changedBy:
-        type: string
-      createdAt:
-        type: string
-      happeningId:
-        type: string
-      prevStatus:
-        type: string
-      status:
-        $ref: '#/definitions/uno_domain_model.RegistrationStatus'
-      unregisterReason:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_domain_model.RegistrationStatus:
-    enum:
-    - registered
-    - waiting
-    - unregistered
-    - pending
-    - removed
-    type: string
-    x-enum-varnames:
-    - RegistrationStatusRegistered
-    - RegistrationStatusWaitlisted
-    - RegistrationStatusUnregistered
-    - RegistrationStatusPending
-    - RegistrationStatusRemoved
-  uno_domain_model.SpotRange:
-    properties:
-      happeningId:
-        type: string
-      id:
-        type: string
-      maxYear:
-        type: integer
-      minYear:
-        type: integer
-      spots:
-        type: integer
     type: object
   uno_domain_ports.BanInfo:
     properties:
@@ -291,24 +298,6 @@ definitions:
         type: string
       strikes:
         type: integer
-    type: object
-  uno_domain_services.RegisterRequest:
-    properties:
-      questions:
-        items:
-          $ref: '#/definitions/uno_domain_model.QuestionAnswer'
-        type: array
-      userId:
-        type: string
-    type: object
-  uno_domain_services.RegisterResponse:
-    properties:
-      isWaitlisted:
-        type: boolean
-      message:
-        type: string
-      success:
-        type: boolean
     type: object
   uno_domain_services.ShoppingList:
     properties:
@@ -656,7 +645,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.Happening'
+              $ref: '#/definitions/uno_adapters_http_dto.HappeningResponse'
             type: array
       summary: Get all happenings
       tags:
@@ -676,7 +665,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_domain_model.Happening'
+            $ref: '#/definitions/uno_adapters_http_dto.HappeningResponse'
         "400":
           description: Bad Request
           schema:
@@ -704,7 +693,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.Question'
+              $ref: '#/definitions/uno_adapters_http_dto.QuestionResponse'
             type: array
         "400":
           description: Bad Request
@@ -733,22 +722,24 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/uno_domain_services.RegisterRequest'
+          $ref: '#/definitions/uno_adapters_http_dto.RegisterForHappeningRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+            $ref: '#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+            $ref: '#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/uno_domain_services.RegisterResponse'
+            $ref: '#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse'
+      security:
+      - BearerAuth: []
       summary: Register for happening
       tags:
       - happenings
@@ -768,7 +759,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.Registration'
+              $ref: '#/definitions/uno_adapters_http_dto.HappeningRegistrationResponse'
             type: array
         "400":
           description: Bad Request
@@ -827,7 +818,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.SpotRange'
+              $ref: '#/definitions/uno_adapters_http_dto.SpotRangeResponse'
             type: array
         "400":
           description: Bad Request

@@ -2,54 +2,125 @@ package model
 
 import "time"
 
+// User represents a user in the system with their profile information.
+// This is a domain model focused on business logic and rules.
 type User struct {
-	ID               string     `db:"id" json:"id"`
-	Name             *string    `db:"name" json:"name"`
-	Email            string     `db:"email" json:"email"`
-	Image            *string    `db:"image" json:"image"`
-	AlternativeEmail *string    `db:"alternative_email" json:"alternativeEmail"`
-	DegreeID         *string    `db:"degree_id" json:"degreeId"`
-	Year             *int       `db:"year" json:"year"`
-	Type             string     `db:"type" json:"type"`
-	LastSignInAt     *time.Time `db:"last_sign_in_at" json:"lastSignInAt"`
-	UpdatedAt        *time.Time `db:"updated_at" json:"updatedAt"`
-	CreatedAt        *time.Time `db:"created_at" json:"createdAt"`
-	HasReadTerms     bool       `db:"has_read_terms" json:"hasReadTerms"`
-	Birthday         *time.Time `db:"birthday" json:"birthday"`
-	IsPublic         bool       `db:"is_public" json:"isPublic"`
+	ID               string
+	Name             *string
+	Email            string
+	Image            *string
+	AlternativeEmail *string
+	DegreeID         *string
+	Year             *int
+	Type             UserType
+	LastSignInAt     *time.Time
+	UpdatedAt        *time.Time
+	CreatedAt        *time.Time
+	HasReadTerms     bool
+	Birthday         *time.Time
+	IsPublic         bool
 }
 
+// UserType represents the type of user account
+type UserType string
+
+const (
+	UserTypeStudent UserType = "student"
+	UserTypeAdmin   UserType = "admin"
+	// Add other user types as needed
+)
+
+// IsProfileComplete checks if the user has completed their profile
+// by filling in required fields.
 func (u *User) IsProfileComplete() bool {
 	return u.DegreeID != nil && u.Year != nil && u.HasReadTerms
 }
 
+// CanAccessPrivateInfo checks if the user's profile information
+// can be accessed by others.
+func (u *User) CanAccessPrivateInfo() bool {
+	return u.IsPublic
+}
+
+// HasBirthday checks if the user has a birthday set.
+func (u *User) HasBirthday() bool {
+	return u.Birthday != nil
+}
+
+// IsBirthdayToday checks if the user's birthday is today in the given location.
+func (u *User) IsBirthdayToday(now time.Time) bool {
+	if u.Birthday == nil {
+		return false
+	}
+	return u.Birthday.Month() == now.Month() && u.Birthday.Day() == now.Day()
+}
+
+// UpdateLastSignIn updates the last sign in timestamp.
+func (u *User) UpdateLastSignIn(timestamp time.Time) {
+	u.LastSignInAt = &timestamp
+}
+
+// Degree represents an academic degree or study program.
 type Degree struct {
-	ID   string `db:"id" json:"id"`
-	Name string `db:"name" json:"name"`
+	ID   string
+	Name string
 }
 
+// Account represents an external authentication provider account
+// linked to a user (e.g., Feide, Google).
 type Account struct {
-	UserID            string  `db:"user_id" json:"userId"`
-	Type              string  `db:"type" json:"type"`
-	Provider          string  `db:"provider" json:"provider"`
-	ProviderAccountID string  `db:"provider_account_id" json:"providerAccountId"`
-	RefreshToken      *string `db:"refresh_token" json:"refreshToken"`
-	AccessToken       *string `db:"access_token" json:"accessToken"`
-	ExpiresAt         *int    `db:"expires_at" json:"expiresAt"`
-	TokenType         *string `db:"token_type" json:"tokenType"`
-	Scope             *string `db:"scope" json:"scope"`
-	IDToken           *string `db:"id_token" json:"idToken"`
-	SessionState      *string `db:"session_state" json:"sessionState"`
+	UserID            string
+	Type              string
+	Provider          string
+	ProviderAccountID string
+	RefreshToken      *string
+	AccessToken       *string
+	ExpiresAt         *int
+	TokenType         *string
+	Scope             *string
+	IDToken           *string
+	SessionState      *string
 }
 
+// IsExpired checks if the account token has expired.
+func (a *Account) IsExpired(now time.Time) bool {
+	if a.ExpiresAt == nil {
+		return false
+	}
+	return now.Unix() > int64(*a.ExpiresAt)
+}
+
+// Session represents an active user session.
 type Session struct {
-	SessionToken string    `db:"session_token" json:"sessionToken"`
-	UserID       string    `db:"user_id" json:"userId"`
-	Expires      time.Time `db:"expires" json:"expires"`
+	SessionToken string
+	UserID       string
+	Expires      time.Time
 }
 
+// IsExpired checks if the session has expired.
+func (s *Session) IsExpired(now time.Time) bool {
+	return now.After(s.Expires)
+}
+
+// IsValid checks if the session is valid (not expired).
+func (s *Session) IsValid(now time.Time) bool {
+	return !s.IsExpired(now)
+}
+
+// VerificationToken represents a token used for email verification
+// or password reset.
 type VerificationToken struct {
-	Identifier string    `db:"identifier" json:"identifier"`
-	Token      string    `db:"token" json:"token"`
-	ExpiresAt  time.Time `db:"expires_at" json:"expiresAt"`
+	Identifier string
+	Token      string
+	ExpiresAt  time.Time
+}
+
+// IsExpired checks if the verification token has expired.
+func (v *VerificationToken) IsExpired(now time.Time) bool {
+	return now.After(v.ExpiresAt)
+}
+
+// IsValid checks if the verification token is valid (not expired).
+func (v *VerificationToken) IsValid(now time.Time) bool {
+	return !v.IsExpired(now)
 }
