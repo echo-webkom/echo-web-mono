@@ -34,15 +34,12 @@ func (hs *HappeningService) HappeningRepo() ports.HappeningRepo {
 	return hs.happeningRepo
 }
 
-type RegisterRequest struct {
-	UserID    string                 `json:"userId"`
-	Questions []model.QuestionAnswer `json:"questions"`
-}
-
-type RegisterResponse struct {
-	Success      bool   `json:"success"`
-	Message      string `json:"message"`
-	IsWaitlisted bool   `json:"isWaitlisted"`
+// RegisterResult represents the outcome of a registration attempt.
+// This is a domain model for internal use in the service layer.
+type RegisterResult struct {
+	Success      bool
+	Message      string
+	IsWaitlisted bool
 }
 
 // Checks if a user fits in a spot range
@@ -217,11 +214,16 @@ func validateQuestions(questions []model.Question, answers []model.QuestionAnswe
 	return true
 }
 
-func (hs *HappeningService) Register(ctx context.Context, happeningID string, req RegisterRequest) (*RegisterResponse, error) {
+func (hs *HappeningService) Register(
+	ctx context.Context,
+	userID string,
+	happeningID string,
+	questions []model.QuestionAnswer,
+) (*RegisterResult, error) {
 	// 1. Get user
-	user, err := hs.userRepo.GetUserByID(ctx, req.UserID)
+	user, err := hs.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
-		return &RegisterResponse{
+		return &RegisterResult{
 			Success: false,
 			Message: "Brukeren finnes ikke",
 		}, err
@@ -229,7 +231,7 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 
 	// 2. Validate user has filled out study information
 	if !user.IsProfileComplete() {
-		return &RegisterResponse{
+		return &RegisterResult{
 			Success: false,
 			Message: "Du må ha fylt ut studieinformasjon for å kunne registrere deg",
 		}, nil
@@ -238,22 +240,22 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 	// 3. Get happening with questions
 	happening, err := hs.happeningRepo.GetHappeningById(ctx, happeningID)
 	if err != nil {
-		return &RegisterResponse{
+		return &RegisterResult{
 			Success: false,
 			Message: "Arrangementet finnes ikke",
 		}, err
 	}
 
-	questions, err := hs.happeningRepo.GetHappeningQuestions(ctx, happeningID)
+	happeningQuestions, err := hs.happeningRepo.GetHappeningQuestions(ctx, happeningID)
 	if err != nil {
-		return &RegisterResponse{Success: false, Message: "Kunne ikke hente spørsmål"}, err
+		return &RegisterResult{Success: false, Message: "Kunne ikke hente spørsmål"}, err
 	}
 
 	// 4. Check if user is banned (for bedpres)
-	if happening.Type == "bedpres" {
-		banInfo, err := hs.banInfoRepo.GetBanInfoByUserID(ctx, req.UserID)
+	if happening.IsBedpres() {
+		banInfo, err := hs.banInfoRepo.GetBanInfoByUserID(ctx, userID)
 		if err == nil && banInfo != nil && banInfo.ExpiresAt.After(time.Now()) {
-			return &RegisterResponse{
+			return &RegisterResult{
 				Success: false,
 				Message: "Du er bannet",
 			}, nil
@@ -261,19 +263,19 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 	}
 
 	// 5. Check if user is already registered
-	existingReg, err := hs.registrationRepo.GetByUserAndHappening(ctx, req.UserID, happeningID)
+	existingReg, err := hs.registrationRepo.GetByUserAndHappening(ctx, userID, happeningID)
 	if err == nil && existingReg != nil {
-		if existingReg.Status == model.RegistrationStatusRegistered || existingReg.Status == model.RegistrationStatusWaitlisted {
+		if existingReg.IsActive() {
 			message := "Du er allerede påmeldt dette arrangementet"
-			if existingReg.Status == model.RegistrationStatusWaitlisted {
+			if existingReg.IsWaitlisted() {
 				message = "Du er allerede på venteliste til dette arrangementet"
 			}
-			return &RegisterResponse{Success: false, Message: message}, nil
+			return &RegisterResult{Success: false, Message: message}, nil
 		}
 	}
 
 	// 6. Get user memberships
-	memberships, err := hs.userRepo.GetUserMemberships(ctx, req.UserID)
+	memberships, err := hs.userRepo.GetUserMemberships(ctx, userID)
 	if err != nil {
 		memberships = []string{} // No memberships
 	}
@@ -297,13 +299,13 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 	// Check if registration is open
 	if !canEarlyRegister {
 		if happening.RegistrationStart == nil {
-			return &RegisterResponse{
+			return &RegisterResult{
 				Success: false,
 				Message: "Påmelding er bare for inviterte undergrupper",
 			}, nil
 		}
 		if happening.RegistrationStart.After(time.Now()) {
-			return &RegisterResponse{
+			return &RegisterResult{
 				Success: false,
 				Message: "Påmeldingen har ikke startet",
 			}, nil
@@ -312,7 +314,7 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 
 	// Check if registration is closed
 	if happening.RegistrationEnd != nil && happening.RegistrationEnd.Before(time.Now()) {
-		return &RegisterResponse{
+		return &RegisterResult{
 			Success: false,
 			Message: "Påmeldingen har allerede stengt",
 		}, nil
@@ -321,7 +323,7 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 	// 8. Get spot ranges and host groups
 	spotRanges, err := hs.happeningRepo.GetHappeningSpotRanges(ctx, happeningID)
 	if err != nil {
-		return &RegisterResponse{Success: false, Message: "Kunne ikke hente plasser"}, err
+		return &RegisterResult{Success: false, Message: "Kunne ikke hente plasser"}, err
 	}
 
 	hostGroups, err := hs.happeningRepo.GetHappeningHostGroups(ctx, happeningID)
@@ -351,15 +353,15 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 		}
 	}
 	if !userIsEligible {
-		return &RegisterResponse{
+		return &RegisterResult{
 			Success: false,
 			Message: "Du kan ikke melde deg på dette arrangementet",
 		}, nil
 	}
 
 	// 11. Validate questions
-	if !validateQuestions(questions, req.Questions) {
-		return &RegisterResponse{
+	if !validateQuestions(happeningQuestions, questions) {
+		return &RegisterResult{
 			Success: false,
 			Message: "Du må svare på alle spørsmålene",
 		}, nil
@@ -368,23 +370,23 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 	// 12. Create registration (with transaction logic)
 	_, isWaitlisted, err := hs.registrationRepo.CreateRegistration(
 		ctx,
-		req.UserID,
+		userID,
 		happeningID,
 		spotRanges,
 		hostGroups,
 		canSkipSpotRange,
 	)
 	if err != nil {
-		return &RegisterResponse{Success: false, Message: "Kunne ikke registrere deg"}, err
+		return &RegisterResult{Success: false, Message: "Kunne ikke registrere deg"}, err
 	}
 
 	// 13. Insert answers
-	if len(req.Questions) > 0 {
+	if len(questions) > 0 {
 		// We don't want to fail the registration if inserting answers fails
 		// since the main registration is already done
 		//
 		// TODO: Remove ignoring error once we have a retry mechanism for failed inserts
-		_ = hs.registrationRepo.InsertAnswers(ctx, req.UserID, happeningID, req.Questions)
+		_ = hs.registrationRepo.InsertAnswers(ctx, userID, happeningID, questions)
 	}
 
 	message := "Du er nå påmeldt arrangementet"
@@ -392,7 +394,7 @@ func (hs *HappeningService) Register(ctx context.Context, happeningID string, re
 		message = "Du er nå på venteliste"
 	}
 
-	return &RegisterResponse{
+	return &RegisterResult{
 		Success:      true,
 		Message:      message,
 		IsWaitlisted: isWaitlisted,

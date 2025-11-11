@@ -5,6 +5,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 
 	"github.com/lib/pq"
 )
@@ -136,7 +137,7 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []ports.UserW
 	return users, nil
 }
 
-func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User, err error) {
+func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, error) {
 	u.logger.Info(ctx, "getting user by ID",
 		"user_id", id,
 	)
@@ -149,22 +150,24 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (user model.User,
 		FROM "user"
 		WHERE id = $1
 	`
-	err = u.db.GetContext(ctx, &user, query, id)
+	var userDB models.UserDB
+	err := u.db.GetContext(ctx, &userDB, query, id)
 	if err != nil {
 		u.logger.Error(ctx, "failed to get user by ID",
 			"error", err,
 			"user_id", id,
 		)
+		return model.User{}, err
 	}
-	return user, nil
+	return *userDB.ToDomain(), nil
 }
 
-func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []model.User, err error) {
+func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.User, error) {
 	u.logger.Info(ctx, "getting users by IDs",
 		"user_ids", ids,
 	)
 
-	users = []model.User{}
+	var usersDB []models.UserDB
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -173,22 +176,23 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) (users []mod
 		FROM "user"
 		WHERE id = ANY($1)
 	`
-	err = u.db.SelectContext(ctx, &users, query, pq.Array(ids))
+	err := u.db.SelectContext(ctx, &usersDB, query, pq.Array(ids))
 	if err != nil {
 		u.logger.Error(ctx, "failed to get users by IDs",
 			"error", err,
 			"user_ids", ids,
 		)
+		return []model.User{}, err
 	}
-	return users, nil
+	return models.UserToDomainList(usersDB), nil
 }
 
-func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (users []model.User, err error) {
+func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]model.User, error) {
 	u.logger.Info(ctx, "getting users with birthday",
 		"date", date,
 	)
 
-	users = []model.User{}
+	var usersDB []models.UserDB
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -199,14 +203,15 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) (us
 			AND EXTRACT(MONTH FROM birthday) = EXTRACT(MONTH FROM $1::date)
 			AND EXTRACT(DAY FROM birthday) = EXTRACT(DAY FROM $1::date)
 	`
-	err = u.db.SelectContext(ctx, &users, query, date)
+	err := u.db.SelectContext(ctx, &usersDB, query, date)
 	if err != nil {
 		u.logger.Error(ctx, "failed to get users with birthday",
 			"error", err,
 			"date", date,
 		)
+		return []model.User{}, err
 	}
-	return users, nil
+	return models.UserToDomainList(usersDB), nil
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
@@ -241,15 +246,15 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
 	`
-	var result model.User
-	err := u.db.GetContext(ctx, &result, query,
+	var resultDB models.UserDB
+	err := u.db.GetContext(ctx, &resultDB, query,
 		user.Email,
 		user.Name,
 		user.Image,
 		user.AlternativeEmail,
 		user.DegreeID,
 		user.Year,
-		user.Type,
+		string(user.Type),
 		user.HasReadTerms,
 		user.Birthday,
 		user.IsPublic,
@@ -258,6 +263,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		u.logger.Error(ctx, "failed to create user",
 			"error", err,
 		)
+		return model.User{}, err
 	}
-	return result, nil
+	return *resultDB.ToDomain(), nil
 }

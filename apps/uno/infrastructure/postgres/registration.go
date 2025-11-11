@@ -6,6 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/ports"
 	"uno/domain/services"
+	"uno/infrastructure/postgres/models"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -25,7 +26,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 		"happening_id", happeningID,
 	)
 
-	var reg model.Registration
+	var regDB models.RegistrationDB
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
@@ -33,7 +34,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 		FROM registration
 		WHERE user_id = $1 AND happening_id = $2
 	`
-	err := r.db.GetContext(ctx, &reg, query, userID, happeningID)
+	err := r.db.GetContext(ctx, &regDB, query, userID, happeningID)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -45,7 +46,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 		)
 		return nil, err
 	}
-	return &reg, nil
+	return regDB.ToDomain(), nil
 }
 
 func (r *RegistrationRepo) CreateRegistration(
@@ -79,7 +80,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Get all existing registrations for this happening
-	existingRegs := []model.Registration{}
+	var existingRegsDB []models.RegistrationDB
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
@@ -88,7 +89,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		WHERE happening_id = $1
 			AND (status = 'registered' OR status = 'waiting')
 	`
-	err = tx.SelectContext(ctx, &existingRegs, query, happeningID)
+	err = tx.SelectContext(ctx, &existingRegsDB, query, happeningID)
 	if err != nil {
 		r.logger.Error(ctx, "failed to get existing registrations for happening",
 			"error", err,
@@ -96,6 +97,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		)
 		return nil, false, err
 	}
+	existingRegs := models.RegistrationToDomainList(existingRegsDB)
 
 	// Get user IDs for membership lookup
 	userIDs := []string{userID}
@@ -108,7 +110,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	membershipsByUserID := make(map[string][]string)
 
 	// Bulk fetch all users
-	users := []model.User{}
+	var usersDB []models.UserDB
 	userQuery, userArgs, err := sqlx.In(`--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -124,12 +126,13 @@ func (r *RegistrationRepo) CreateRegistration(
 		return nil, false, err
 	}
 	userQuery = tx.Rebind(userQuery)
-	err = tx.SelectContext(ctx, &users, userQuery, userArgs...)
+	err = tx.SelectContext(ctx, &usersDB, userQuery, userArgs...)
 	if err != nil && err != sql.ErrNoRows {
 		return nil, false, err
 	}
 
-	// Map users by ID
+	// Convert to domain models and map users by ID
+	users := models.UserToDomainList(usersDB)
 	for i := range users {
 		usersByID[users[i].ID] = &users[i]
 	}
@@ -190,7 +193,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Insert or update registration
-	var registration model.Registration
+	var registrationDB models.RegistrationDB
 	upsertQuery := `--sql
 		INSERT INTO registration (user_id, happening_id, status, created_at)
 		VALUES ($1, $2, $3, NOW())
@@ -201,7 +204,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		RETURNING user_id, happening_id, status, unregister_reason,
 			created_at, prev_status, changed_at, changed_by
 	`
-	err = tx.GetContext(ctx, &registration, upsertQuery, userID, happeningID, status)
+	err = tx.GetContext(ctx, &registrationDB, upsertQuery, userID, happeningID, string(status))
 	if err != nil {
 		r.logger.Error(ctx, "failed to upsert registration",
 			"error", err,
@@ -218,7 +221,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		return nil, false, err
 	}
 
-	return &registration, !isRegistered, nil
+	return registrationDB.ToDomain(), !isRegistered, nil
 }
 
 func (r *RegistrationRepo) InsertAnswers(

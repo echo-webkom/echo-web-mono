@@ -265,12 +265,9 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			req := services.RegisterRequest{
-				UserID:    userID,
-				Questions: []model.QuestionAnswer{},
-			}
 
-			response, err := happeningService.Register(ctx, happeningID, req)
+			questions := []model.QuestionAnswer{}
+			response, err := happeningService.Register(ctx, userID, happeningID, questions)
 
 			if tt.expectedErr != nil {
 				assert.Error(t, err)
@@ -357,12 +354,9 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			req := services.RegisterRequest{
-				UserID:    userID,
-				Questions: []model.QuestionAnswer{},
-			}
 
-			response, err := happeningService.Register(ctx, happeningID, req)
+			questions := []model.QuestionAnswer{}
+			response, err := happeningService.Register(ctx, userID, happeningID, questions)
 
 			assert.NoError(t, err)
 			assert.NotNil(t, response)
@@ -482,12 +476,9 @@ func TestHappeningService_Register_QuestionValidation(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			req := services.RegisterRequest{
-				UserID:    userID,
-				Questions: tt.answers,
-			}
 
-			response, err := happeningService.Register(ctx, happeningID, req)
+			questions := []model.QuestionAnswer{}
+			response, err := happeningService.Register(ctx, userID, happeningID, questions)
 
 			assert.NoError(t, err)
 			assert.NotNil(t, response)
@@ -652,12 +643,9 @@ func TestHappeningService_Register_Success(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			req := services.RegisterRequest{
-				UserID:    userID,
-				Questions: []model.QuestionAnswer{},
-			}
 
-			response, err := happeningService.Register(ctx, happeningID, req)
+			questions := []model.QuestionAnswer{}
+			response, err := happeningService.Register(ctx, userID, happeningID, questions)
 
 			assert.NoError(t, err)
 			assert.NotNil(t, response)
@@ -1135,12 +1123,9 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	req := services.RegisterRequest{
-		UserID:    userID,
-		Questions: []model.QuestionAnswer{},
-	}
 
-	response, err := happeningService.Register(ctx, happeningID, req)
+	questions := []model.QuestionAnswer{}
+			response, err := happeningService.Register(ctx, userID, happeningID, questions)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, response)

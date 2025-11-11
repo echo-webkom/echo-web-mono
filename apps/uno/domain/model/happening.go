@@ -17,6 +17,10 @@ type Happening struct {
 	RegistrationEnd         *time.Time       `db:"registration_end" json:"registrationEnd"`
 }
 
+func (h *Happening) IsBedpres() bool {
+	return h.Type == "bedpres"
+}
+
 type HappeningsToGroups struct {
 	HappeningID string `db:"happening_id" json:"happeningId"`
 	GroupID     string `db:"group_id" json:"groupId"`
