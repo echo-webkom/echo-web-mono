@@ -73,14 +73,12 @@ func TestGetShoppingList(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockShoppingListRepo := mocks.NewShoppingListItemRepo(t)
 			mockUsersToShoppingListRepo := mocks.NewUsersToShoppingListItemRepo(t)
-			mockUserRepo := mocks.NewUserRepo(t)
 
 			tt.setupMocks(mockShoppingListRepo, mockUsersToShoppingListRepo)
 
 			shoppingListService := services.NewShoppingListService(
 				mockShoppingListRepo,
 				mockUsersToShoppingListRepo,
-				mockUserRepo,
 			)
 			handler := api.GetShoppingList(testutil.NewTestLogger(), shoppingListService)
 
@@ -98,4 +96,3 @@ func TestGetShoppingList(t *testing.T) {
 		})
 	}
 }
-
