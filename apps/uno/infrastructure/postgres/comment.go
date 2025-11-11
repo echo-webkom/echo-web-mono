@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 var (
@@ -13,10 +13,10 @@ var (
 
 type CommentRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewCommentRepo(db *Database, logger ports.Logger) ports.CommentRepo {
+func NewCommentRepo(db *Database, logger port.Logger) port.CommentRepo {
 	return &CommentRepo{db: db, logger: logger}
 }
 
@@ -65,7 +65,7 @@ func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID 
 	return err
 }
 
-func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.CommentWithReactionsAndUser, error) {
+func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]port.CommentWithReactionsAndUser, error) {
 	c.logger.Info(ctx, "getting comments by post id",
 		"post_id", id,
 	)
@@ -92,7 +92,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 	}
 	defer func() { _ = rows.Close() }()
 
-	commentMap := map[string]*ports.CommentWithReactionsAndUser{}
+	commentMap := map[string]*port.CommentWithReactionsAndUser{}
 
 	for rows.Next() {
 		var (
@@ -121,7 +121,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 
 		comment, exists := commentMap[commentID]
 		if !exists {
-			comment = &ports.CommentWithReactionsAndUser{
+			comment = &port.CommentWithReactionsAndUser{
 				Comment: model.Comment{
 					ID:              commentID,
 					Content:         content,
@@ -134,7 +134,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 				Reactions: []model.CommentsReaction{},
 			}
 			if uID != nil {
-				comment.User = &ports.User{
+				comment.User = &port.User{
 					ID:    *uID,
 					Name:  uName,
 					Image: uImage,
@@ -154,7 +154,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.C
 		}
 	}
 
-	comments := []ports.CommentWithReactionsAndUser{}
+	comments := []port.CommentWithReactionsAndUser{}
 	for _, comment := range commentMap {
 		comments = append(comments, *comment)
 	}

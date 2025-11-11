@@ -4,16 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type BanInfoRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewBanInfoRepo(db *Database, logger ports.Logger) ports.BanInfoRepo {
+func NewBanInfoRepo(db *Database, logger port.Logger) port.BanInfoRepo {
 	return &BanInfoRepo{db: db, logger: logger}
 }
 

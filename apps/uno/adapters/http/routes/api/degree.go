@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 )
 
@@ -16,7 +16,7 @@ import (
 // @Produce      json
 // @Success      200  {array}  dto.DegreeResponse  "OK"
 // @Router       /degrees [get]
-func GetDegreesHandler(logger ports.Logger, degreeService *service.DegreeService) router.Handler {
+func GetDegreesHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -44,7 +44,7 @@ func GetDegreesHandler(logger ports.Logger, degreeService *service.DegreeService
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
-func CreateDegreeHandler(logger ports.Logger, degreeService *service.DegreeService) router.Handler {
+func CreateDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -81,7 +81,7 @@ func CreateDegreeHandler(logger ports.Logger, degreeService *service.DegreeServi
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
-func UpdateDegreeHandler(logger ports.Logger, degreeService *service.DegreeService) router.Handler {
+func UpdateDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -116,7 +116,7 @@ func UpdateDegreeHandler(logger ports.Logger, degreeService *service.DegreeServi
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
-func DeleteDegreeHandler(logger ports.Logger, degreeService *service.DegreeService) router.Handler {
+func DeleteDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		id := r.PathValue("id")
 		if id == "" {
