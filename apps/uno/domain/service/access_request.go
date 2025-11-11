@@ -1,21 +1,21 @@
 package service
 
-import "uno/domain/ports"
+import "uno/domain/port"
 
 type AccessRequestService struct {
-	accessRequestRepo ports.AccessRequestRepo
+	accessRequestRepo port.AccessRequestRepo
 }
 
-func NewAccessRequestService(accessRequestRepo ports.AccessRequestRepo) *AccessRequestService {
+func NewAccessRequestService(accessRequestRepo port.AccessRequestRepo) *AccessRequestService {
 	return &AccessRequestService{
 		accessRequestRepo: accessRequestRepo,
 	}
 }
 
-func (ars *AccessRequestService) Queries() ports.AccessRequestRepo {
+func (ars *AccessRequestService) Queries() port.AccessRequestRepo {
 	return ars.accessRequestRepo
 }
 
-func (ars *AccessRequestService) AccessRequestRepo() ports.AccessRequestRepo {
+func (ars *AccessRequestService) AccessRequestRepo() port.AccessRequestRepo {
 	return ars.accessRequestRepo
 }

@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type WhitelistRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewWhitelistRepo(db *Database, logger ports.Logger) ports.WhitelistRepo {
+func NewWhitelistRepo(db *Database, logger port.Logger) port.WhitelistRepo {
 	return &WhitelistRepo{db: db, logger: logger}
 }
 

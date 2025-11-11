@@ -7,7 +7,7 @@ import (
 	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 
 	_ "uno/domain/model"
@@ -20,7 +20,7 @@ import (
 // @Produce      json
 // @Success      200  {array}  dto.HappeningResponse  "OK"
 // @Router       /happenings [get]
-func GetHappeningsHandler(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningsHandler(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -47,7 +47,7 @@ func GetHappeningsHandler(logger ports.Logger, happeningService *service.Happeni
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
-func GetHappeningById(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningById(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -81,7 +81,7 @@ func GetHappeningById(logger ports.Logger, happeningService *service.HappeningSe
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
 // @deprecated
-func GetHappeningRegistrationsCount(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningRegistrationsCount(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -141,11 +141,11 @@ func GetHappeningRegistrationsCount(logger ports.Logger, happeningService *servi
 // @Tags         happenings
 // @Produce      json
 // @Param        id   query     string  true  "Happening ID"
-// @Success      200  {array}  ports.GroupedRegistrationCount  "OK"
+// @Success      200  {array}  port.GroupedRegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
-func GetHappeningRegistrationsCountMany(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningRegistrationsCountMany(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -179,7 +179,7 @@ func GetHappeningRegistrationsCountMany(logger ports.Logger, happeningService *s
 // @Failure      404  {string}  string   "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
-func GetHappeningRegistrations(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningRegistrations(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -213,7 +213,7 @@ func GetHappeningRegistrations(logger ports.Logger, happeningService *service.Ha
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
-func GetHappeningSpotRanges(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningSpotRanges(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -246,7 +246,7 @@ func GetHappeningSpotRanges(logger ports.Logger, happeningService *service.Happe
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
-func GetHappeningQuestions(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func GetHappeningQuestions(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 
@@ -282,7 +282,7 @@ func GetHappeningQuestions(logger ports.Logger, happeningService *service.Happen
 // @Failure      500   {object}  dto.RegisterForHappeningResponse     "Internal Server Error"
 // @Security     BearerAuth
 // @Router       /happenings/{id}/register [post]
-func RegisterForHappening(logger ports.Logger, happeningService *service.HappeningService) router.Handler {
+func RegisterForHappening(logger port.Logger, happeningService *service.HappeningService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 

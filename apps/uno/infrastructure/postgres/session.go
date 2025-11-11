@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type PostgresSessionImpl struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewSessionRepo(db *Database, logger ports.Logger) ports.SessionRepo {
+func NewSessionRepo(db *Database, logger port.Logger) port.SessionRepo {
 	return &PostgresSessionImpl{db: db, logger: logger}
 }
 

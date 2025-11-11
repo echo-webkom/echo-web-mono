@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 )
 
@@ -18,7 +18,7 @@ import (
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /feedbacks [get]
-func GetSiteFeedbacksHandler(logger ports.Logger, siteFeedbackService *service.SiteFeedbackService) router.Handler {
+func GetSiteFeedbacksHandler(logger port.Logger, siteFeedbackService *service.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		// Fetch feedbacks from the repository
 		feedbacks, err := siteFeedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(r.Context())
@@ -43,7 +43,7 @@ func GetSiteFeedbacksHandler(logger ports.Logger, siteFeedbackService *service.S
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /feedbacks/{id} [get]
-func GetSiteFeedbackByIDHandler(logger ports.Logger, siteFeedbackService *service.SiteFeedbackService) router.Handler {
+func GetSiteFeedbackByIDHandler(logger port.Logger, siteFeedbackService *service.SiteFeedbackService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		// Get the feedback ID from the path
 		feedbackID := r.PathValue("id")

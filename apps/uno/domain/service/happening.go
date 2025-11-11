@@ -6,21 +6,21 @@ import (
 	"slices"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 type HappeningService struct {
-	happeningRepo    ports.HappeningRepo
-	userRepo         ports.UserRepo
-	registrationRepo ports.RegistrationRepo
-	banInfoRepo      ports.BanInfoRepo
+	happeningRepo    port.HappeningRepo
+	userRepo         port.UserRepo
+	registrationRepo port.RegistrationRepo
+	banInfoRepo      port.BanInfoRepo
 }
 
 func NewHappeningService(
-	happeningRepo ports.HappeningRepo,
-	userRepo ports.UserRepo,
-	registrationRepo ports.RegistrationRepo,
-	banInfoRepo ports.BanInfoRepo,
+	happeningRepo port.HappeningRepo,
+	userRepo port.UserRepo,
+	registrationRepo port.RegistrationRepo,
+	banInfoRepo port.BanInfoRepo,
 ) *HappeningService {
 	return &HappeningService{
 		happeningRepo:    happeningRepo,
@@ -30,7 +30,7 @@ func NewHappeningService(
 	}
 }
 
-func (hs *HappeningService) HappeningRepo() ports.HappeningRepo {
+func (hs *HappeningService) HappeningRepo() port.HappeningRepo {
 	return hs.happeningRepo
 }
 

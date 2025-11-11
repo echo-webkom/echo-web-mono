@@ -7,8 +7,8 @@ import (
 	"testing"
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
-	"uno/domain/ports"
-	"uno/domain/ports/mocks"
+	"uno/domain/port"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -26,7 +26,7 @@ func TestGetShoppingList(t *testing.T) {
 		{
 			name: "success",
 			setupMocks: func(mockShoppingListRepo *mocks.ShoppingListItemRepo, mockUsersToShoppingListRepo *mocks.UsersToShoppingListItemRepo) {
-				items := []ports.ShoppingListItemWithCreator{}
+				items := []port.ShoppingListItemWithCreator{}
 				mockShoppingListRepo.EXPECT().
 					GetAllShoppingListItems(mock.Anything).
 					Return(items, nil).
@@ -45,7 +45,7 @@ func TestGetShoppingList(t *testing.T) {
 			setupMocks: func(mockShoppingListRepo *mocks.ShoppingListItemRepo, mockUsersToShoppingListRepo *mocks.UsersToShoppingListItemRepo) {
 				mockShoppingListRepo.EXPECT().
 					GetAllShoppingListItems(mock.Anything).
-					Return([]ports.ShoppingListItemWithCreator{}, errors.New("database error")).
+					Return([]port.ShoppingListItemWithCreator{}, errors.New("database error")).
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
@@ -54,7 +54,7 @@ func TestGetShoppingList(t *testing.T) {
 		{
 			name: "error from users to shopping list repo",
 			setupMocks: func(mockShoppingListRepo *mocks.ShoppingListItemRepo, mockUsersToShoppingListRepo *mocks.UsersToShoppingListItemRepo) {
-				items := []ports.ShoppingListItemWithCreator{}
+				items := []port.ShoppingListItemWithCreator{}
 				mockShoppingListRepo.EXPECT().
 					GetAllShoppingListItems(mock.Anything).
 					Return(items, nil).
