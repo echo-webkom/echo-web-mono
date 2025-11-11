@@ -3,9 +3,9 @@ package api
 import (
 	"errors"
 	"net/http"
+	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/model"
 	"uno/domain/ports"
 	"uno/domain/services"
 )
@@ -14,15 +14,22 @@ import (
 // @Summary	     Get degrees
 // @Tags         degrees
 // @Produce      json
-// @Success      200  {array}  model.Degree  "OK"
+// @Success      200  {array}  dto.DegreeResponse  "OK"
 // @Router       /degrees [get]
 func GetDegreesHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		degrees, err := degreeService.DegreeRepo().GetAllDegrees(r.Context())
+		ctx := r.Context()
+
+		// Fetch degrees from the service
+		degrees, err := degreeService.DegreeRepo().GetAllDegrees(ctx)
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.JsonOk(w, degrees)
+
+		// Map domain models to DTOs
+		response := dto.DegreesFromDomainList(degrees)
+
+		return util.JsonOk(w, response)
 	}
 }
 
@@ -31,24 +38,35 @@ func GetDegreesHandler(logger ports.Logger, degreeService *services.DegreeServic
 // @Tags         degrees
 // @Accept       json
 // @Produce      json
-// @Param        degree  body   model.Degree  true  "Degree to create"
-// @Success      201  {object}  model.Degree  "Created"
+// @Param        degree  body   dto.CreateDegreeRequest  true  "Degree to create"
+// @Success      201  {object}  dto.DegreeResponse  "Created"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
 func CreateDegreeHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		var degree model.Degree
+		ctx := r.Context()
+
+		// Read and parse the request body
+		var degree dto.CreateDegreeRequest
 		if err := util.ReadJson(r, &degree); err != nil {
 			return http.StatusBadRequest, errors.New("failed to read json")
 		}
 
-		createdDegree, err := degreeService.DegreeRepo().CreateDegree(r.Context(), degree)
+		// Create the degree in the database
+		createdDegree, err := degreeService.DegreeRepo().CreateDegree(ctx, *degree.ToDomain())
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.Json(w, http.StatusCreated, createdDegree)
+
+		// Map domain model to DTO
+		response := dto.DegreeResponse{
+			ID:   createdDegree.ID,
+			Name: createdDegree.Name,
+		}
+
+		return util.Json(w, http.StatusCreated, response)
 	}
 }
 
@@ -57,24 +75,35 @@ func CreateDegreeHandler(logger ports.Logger, degreeService *services.DegreeServ
 // @Tags         degrees
 // @Accept       json
 // @Produce      json
-// @Param        degree  body   model.Degree  true  "Degree to update"
-// @Success      200  {object}  model.Degree  "OK"
+// @Param        degree  body   dto.UpdateDegreeRequest  true  "Degree to update"
+// @Success      200  {object}  dto.DegreeResponse  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
 func UpdateDegreeHandler(logger ports.Logger, degreeService *services.DegreeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		var degree model.Degree
+		ctx := r.Context()
+
+		// Read and parse the request body
+		var degree dto.UpdateDegreeRequest
 		if err := util.ReadJson(r, &degree); err != nil {
 			return http.StatusBadRequest, errors.New("failed to read json")
 		}
 
-		updatedDegree, err := degreeService.DegreeRepo().UpdateDegree(r.Context(), degree)
+		// Update the degree in the database
+		updatedDegree, err := degreeService.DegreeRepo().UpdateDegree(ctx, *degree.ToDomain())
 		if err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
 		}
-		return util.JsonOk(w, updatedDegree)
+
+		// Map domain model to DTO
+		response := dto.DegreeResponse{
+			ID:   updatedDegree.ID,
+			Name: updatedDegree.Name,
+		}
+
+		return util.JsonOk(w, response)
 	}
 }
 
