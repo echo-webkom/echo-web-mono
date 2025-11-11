@@ -11,7 +11,25 @@ definitions:
       userId:
         type: string
     type: object
-  adapters_http_routes_api.GroupedRegistration:
+  adapters_http_routes_api.ReactToCommentRequest:
+    properties:
+      commentId:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_adapters_http_dto.AccessRequestResponse:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      reason:
+        type: string
+    type: object
+  uno_adapters_http_dto.GroupedRegistration:
     properties:
       max:
         type: integer
@@ -20,25 +38,16 @@ definitions:
       waiting:
         type: integer
     type: object
-  adapters_http_routes_api.HealthCheckResponse:
+  uno_adapters_http_dto.HealthCheckResponse:
     properties:
       status:
         type: string
     type: object
-  adapters_http_routes_api.ReactToCommentRequest:
+  uno_adapters_http_dto.WhitelistResponse:
     properties:
-      commentId:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_domain_model.AccessRequest:
-    properties:
-      createdAt:
-        type: string
       email:
         type: string
-      id:
+      expiresAt:
         type: string
       reason:
         type: string
@@ -175,15 +184,6 @@ definitions:
         type: integer
       spots:
         type: integer
-    type: object
-  uno_domain_model.Whitelist:
-    properties:
-      email:
-        type: string
-      expiresAt:
-        type: string
-      reason:
-        type: string
     type: object
   uno_domain_ports.BanInfo:
     properties:
@@ -344,7 +344,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/adapters_http_routes_api.HealthCheckResponse'
+            $ref: '#/definitions/uno_adapters_http_dto.HealthCheckResponse'
       summary: Get health status
       tags:
       - health
@@ -357,7 +357,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.AccessRequest'
+              $ref: '#/definitions/uno_adapters_http_dto.AccessRequestResponse'
             type: array
         "401":
           description: Unauthorized
@@ -799,7 +799,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/adapters_http_routes_api.GroupedRegistration'
+            $ref: '#/definitions/uno_adapters_http_dto.GroupedRegistration'
         "400":
           description: Bad Request
           schema:
@@ -962,7 +962,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.Whitelist'
+              $ref: '#/definitions/uno_adapters_http_dto.WhitelistResponse'
             type: array
         "401":
           description: Unauthorized
@@ -991,7 +991,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_domain_model.Whitelist'
+            $ref: '#/definitions/uno_adapters_http_dto.WhitelistResponse'
         "401":
           description: Unauthorized
           schema:

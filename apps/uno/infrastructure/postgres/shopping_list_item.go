@@ -4,6 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type ShoppingListRepo struct {
@@ -15,7 +16,7 @@ func NewShoppingListRepo(db *Database, logger ports.Logger) ports.ShoppingListIt
 	return &ShoppingListRepo{db: db, logger: logger}
 }
 
-func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item model.ShoppingListItem) (model.ShoppingListItem, error) {
+func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item model.NewShoppingListItem) (model.ShoppingListItem, error) {
 	p.logger.Info(ctx, "creating shopping list item",
 		"user_id", item.UserID,
 		"name", item.Name,
@@ -26,16 +27,17 @@ func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item mode
 		VALUES (gen_random_uuid(), $1, $2)
 		RETURNING id, user_id, name, created_at
 	`
-	var result model.ShoppingListItem
-	err := p.db.GetContext(ctx, &result, query, item.UserID, item.Name)
+	var dbModel models.ShoppingListItemDB
+	err := p.db.GetContext(ctx, &dbModel, query, item.UserID, item.Name)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create shopping list item",
 			"error", err,
 			"user_id", item.UserID,
 			"name", item.Name,
 		)
+		return model.ShoppingListItem{}, err
 	}
-	return result, nil
+	return *dbModel.ToDomain(), nil
 }
 
 func (p *ShoppingListRepo) DeleteShoppingListItem(ctx context.Context, itemID string) error {
@@ -68,13 +70,20 @@ func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]ports
 		JOIN "user" u ON sli.user_id = u.id
 	`
 
-	items := []ports.ShoppingListItemWithCreator{}
-	err := p.db.SelectContext(ctx, &items, query)
+	var dbModels []models.ShoppingListItemWithCreatorDB
+	err := p.db.SelectContext(ctx, &dbModels, query)
 	if err != nil {
 		p.logger.Error(ctx, "failed to get all shopping list items",
 			"error", err,
 		)
+		return nil, err
 	}
-	return items, nil
 
+	// Convert to domain models
+	result := make([]ports.ShoppingListItemWithCreator, len(dbModels))
+	for i, dbModel := range dbModels {
+		result[i] = *dbModel.ToDomain()
+	}
+
+	return result, nil
 }
