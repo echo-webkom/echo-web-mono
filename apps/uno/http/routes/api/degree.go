@@ -6,9 +6,26 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
+	"uno/http/handler"
 	"uno/http/router"
-	"uno/http/util"
 )
+
+type degrees struct {
+	logger        port.Logger
+	degreeService *service.DegreeService
+}
+
+func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService) *router.Mux {
+	mux := router.NewMux()
+	d := degrees{logger, degreeService}
+
+	mux.Handle("GET", "/", d.GetDegreesHandler)
+	mux.Handle("POST", "/", d.CreateDegreeHandler)
+	mux.Handle("POST", "/{id}", d.UpdateDegreeHandler)
+	mux.Handle("DELETE", "/{id}", d.DeleteDegreeHandler)
+
+	return mux
+}
 
 // GetDegreesHandler returns a list of degrees
 // @Summary	     Get degrees
@@ -16,21 +33,16 @@ import (
 // @Produce      json
 // @Success      200  {array}  dto.DegreeResponse  "OK"
 // @Router       /degrees [get]
-func GetDegreesHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Fetch degrees from the service
-		degrees, err := degreeService.DegreeRepo().GetAllDegrees(ctx)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Map domain models to DTOs
-		response := dto.DegreesFromDomainList(degrees)
-
-		return util.JsonOk(w, response)
+func (d *degrees) GetDegreesHandler(ctx *handler.Context) error {
+	// Fetch degrees from the service
+	degrees, err := d.degreeService.DegreeRepo().GetAllDegrees(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+
+	// Map domain models to DTOs
+	response := dto.DegreesFromDomainList(degrees)
+	return ctx.JSON(response)
 }
 
 // CreateDegreeHandler creates a new degree
@@ -44,30 +56,26 @@ func GetDegreesHandler(logger port.Logger, degreeService *service.DegreeService)
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
-func CreateDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Read and parse the request body
-		var degree dto.CreateDegreeRequest
-		if err := util.ReadJson(r, &degree); err != nil {
-			return http.StatusBadRequest, errors.New("failed to read json")
-		}
-
-		// Create the degree in the database
-		createdDegree, err := degreeService.DegreeRepo().CreateDegree(ctx, *degree.ToDomain())
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Map domain model to DTO
-		response := dto.DegreeResponse{
-			ID:   createdDegree.ID,
-			Name: createdDegree.Name,
-		}
-
-		return util.Json(w, http.StatusCreated, response)
+func (d *degrees) CreateDegreeHandler(ctx *handler.Context) error {
+	// Read and parse the request body
+	var degree dto.CreateDegreeRequest
+	if err := ctx.ReadJSON(&degree); err != nil {
+		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
 	}
+
+	// Create the degree in the database
+	createdDegree, err := d.degreeService.DegreeRepo().CreateDegree(ctx.Context(), *degree.ToDomain())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Map domain model to DTO
+	response := dto.DegreeResponse{
+		ID:   createdDegree.ID,
+		Name: createdDegree.Name,
+	}
+
+	return ctx.JSON(response)
 }
 
 // UpdateDegreeHandler updates an existing degree
@@ -81,30 +89,26 @@ func CreateDegreeHandler(logger port.Logger, degreeService *service.DegreeServic
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
-func UpdateDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Read and parse the request body
-		var degree dto.UpdateDegreeRequest
-		if err := util.ReadJson(r, &degree); err != nil {
-			return http.StatusBadRequest, errors.New("failed to read json")
-		}
-
-		// Update the degree in the database
-		updatedDegree, err := degreeService.DegreeRepo().UpdateDegree(ctx, *degree.ToDomain())
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Map domain model to DTO
-		response := dto.DegreeResponse{
-			ID:   updatedDegree.ID,
-			Name: updatedDegree.Name,
-		}
-
-		return util.JsonOk(w, response)
+func (d *degrees) UpdateDegreeHandler(ctx *handler.Context) error {
+	// Read and parse the request body
+	var degree dto.UpdateDegreeRequest
+	if err := ctx.ReadJSON(&degree); err != nil {
+		return ctx.Error(errors.New("failed to read json"), http.StatusBadRequest)
 	}
+
+	// Update the degree in the database
+	updatedDegree, err := d.degreeService.DegreeRepo().UpdateDegree(ctx.Context(), *degree.ToDomain())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Map domain model to DTO
+	response := dto.DegreeResponse{
+		ID:   updatedDegree.ID,
+		Name: updatedDegree.Name,
+	}
+
+	return ctx.JSON(response)
 }
 
 // DeleteDegreeHandler deletes a degree
@@ -116,16 +120,15 @@ func UpdateDegreeHandler(logger port.Logger, degreeService *service.DegreeServic
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
-func DeleteDegreeHandler(logger port.Logger, degreeService *service.DegreeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, nil
-		}
-
-		if err := degreeService.DegreeRepo().DeleteDegree(r.Context(), id); err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return http.StatusNoContent, nil
+func (d *degrees) DeleteDegreeHandler(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(errors.New("missing id parameter"), http.StatusBadRequest)
 	}
+
+	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.Ok()
 }

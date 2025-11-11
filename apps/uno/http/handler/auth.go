@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"uno/domain/model"
 	"uno/domain/service"
@@ -23,7 +24,7 @@ func WithAuth(s *service.SessionService, h AuthHandler) Handler {
 	return func(ctx *Context) error {
 		auth, ok := getAuthFromRequest(s, ctx.R)
 		if !ok {
-			return ctx.Error("not authorized", http.StatusUnauthorized)
+			return ctx.Error(fmt.Errorf("not authorized"), http.StatusUnauthorized)
 		}
 		return h(ctx, auth)
 	}

@@ -5,8 +5,7 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
-	"uno/http/router"
-	"uno/http/util"
+	"uno/http/handler"
 )
 
 // GetAccessRequestsHandler returns a list of access requests
@@ -18,17 +17,16 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /access-requests [get]
-func GetAccessRequestsHandler(logger port.Logger, accessRequestService *service.AccessRequestService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
+func GetAccessRequestsHandler(logger port.Logger, accessRequestService *service.AccessRequestService) handler.Handler {
+	return func(ctx *handler.Context) error {
 		// Get domain models from service
-		accessRequests, err := accessRequestService.AccessRequestRepo().GetAccessRequests(r.Context())
+		accessRequests, err := accessRequestService.AccessRequestRepo().GetAccessRequests(ctx.Context())
 		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
+			return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 		}
 
 		// Convert to DTOs
 		response := dto.AccessRequestsFromDomainList(accessRequests)
-
-		return util.JsonOk(w, response)
+		return ctx.JSON(response)
 	}
 }

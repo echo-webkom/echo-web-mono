@@ -4,8 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/router"
-	"uno/http/util"
+	"uno/http/handler"
 )
 
 // BirthdaysTodayHandler returns a list of names
@@ -15,11 +14,11 @@ import (
 // @Produce      json
 // @Success      200  {array}  string  "OK"
 // @Router       /birthdays [get]
-func BirthdaysTodayHandler(logger port.Logger, userService *service.UserService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		users, err := userService.GetUsersWithBirthdayToday(r.Context())
+func BirthdaysTodayHandler(logger port.Logger, userService *service.UserService) handler.Handler {
+	return func(ctx *handler.Context) error {
+		users, err := userService.GetUsersWithBirthdayToday(ctx.Context())
 		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
+			return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 		}
 
 		var names []string
@@ -29,6 +28,6 @@ func BirthdaysTodayHandler(logger port.Logger, userService *service.UserService)
 			}
 		}
 
-		return util.JsonOk(w, names)
+		return ctx.JSON(names)
 	}
 }

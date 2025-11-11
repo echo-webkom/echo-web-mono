@@ -5,9 +5,29 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/router"
-	"uno/http/util"
 )
+
+var (
+	errMissingId = errors.New("missing id parameter")
+)
+
+type comments struct {
+	logger         port.Logger
+	commentService *service.CommentService
+}
+
+func NewCommentMux(logger port.Logger, commentService *service.CommentService) *router.Mux {
+	c := comments{logger, commentService}
+	mux := router.NewMux()
+
+	mux.Handle("POST", "/", c.CreateCommentHandler)
+	mux.Handle("GET", "/{id}", c.GetCommentsByIDHandler)
+	mux.Handle("GET", "/{id}/reaction", c.ReactToCommentHandler)
+
+	return mux
+}
 
 // GetCommentsByIDHandler returns a comment by its ID
 // @Summary      Get comments by ID
@@ -20,19 +40,18 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id} [get]
-func GetCommentsByIDHandler(logger port.Logger, commentService *service.CommentService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, nil
-		}
-		comments, err := commentService.CommentRepo().GetCommentsByID(ctx, id)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return util.JsonOk(w, comments)
+func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(errMissingId, http.StatusBadRequest)
 	}
+
+	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(comments)
 }
 
 type CreateCommentRequest struct {
@@ -54,19 +73,18 @@ type CreateCommentRequest struct {
 // @Failure      500      {string}  string                      "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments [post]
-func CreateCommentHandler(logger port.Logger, commentService *service.CommentService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-		var req CreateCommentRequest
-		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, errors.New("invalid request")
-		}
-		err := commentService.CommentRepo().CreateComment(ctx, req.Content, req.PostID, req.UserID, req.ParentCommentID)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return util.JsonOk(w, map[string]bool{"success": true})
+func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
+	var req CreateCommentRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
 	}
+
+	err := c.commentService.CommentRepo().CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(map[string]bool{"success": true})
 }
 
 type ReactToCommentRequest struct {
@@ -87,21 +105,21 @@ type ReactToCommentRequest struct {
 // @Failure      500       {string}  string                       "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id}/reaction [post]
-func ReactToCommentHandler(logger port.Logger, commentService *service.CommentService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-		commentID := r.PathValue("id")
-		if commentID == "" {
-			return http.StatusBadRequest, nil
-		}
-		var req ReactToCommentRequest
-		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, errors.New("failed to read json")
-		}
-		err := commentService.ReactToComment(ctx, commentID, req.UserID)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return util.JsonOk(w, map[string]bool{"success": true})
+func (c *comments) ReactToCommentHandler(ctx *handler.Context) error {
+	commentID := ctx.PathValue("id")
+	if commentID == "" {
+		return ctx.Error(errMissingId, http.StatusBadRequest)
 	}
+
+	var req ReactToCommentRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
+	}
+
+	err := c.commentService.ReactToComment(ctx.Context(), commentID, req.UserID)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(map[string]bool{"success": true})
 }
