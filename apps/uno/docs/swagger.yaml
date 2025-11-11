@@ -29,6 +29,20 @@ definitions:
       reason:
         type: string
     type: object
+  uno_adapters_http_dto.CreateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_adapters_http_dto.DegreeResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   uno_adapters_http_dto.GroupedRegistration:
     properties:
       max:
@@ -165,6 +179,13 @@ definitions:
       spots:
         type: integer
     type: object
+  uno_adapters_http_dto.UpdateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   uno_adapters_http_dto.WhitelistResponse:
     properties:
       email:
@@ -185,14 +206,7 @@ definitions:
       userId:
         type: string
     type: object
-  uno_domain_model.Degree:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_domain_ports.BanInfo:
+  uno_domain_port.BanInfo:
     properties:
       bannedById:
         type: string
@@ -209,7 +223,7 @@ definitions:
       userId:
         type: string
     type: object
-  uno_domain_ports.CommentWithReactionsAndUser:
+  uno_domain_port.CommentWithReactionsAndUser:
     properties:
       content:
         type: string
@@ -228,11 +242,11 @@ definitions:
       updatedAt:
         type: string
       user:
-        $ref: '#/definitions/uno_domain_ports.User'
+        $ref: '#/definitions/uno_domain_port.User'
       userId:
         type: string
     type: object
-  uno_domain_ports.DotInfo:
+  uno_domain_port.DotInfo:
     properties:
       count:
         type: integer
@@ -251,7 +265,7 @@ definitions:
       userId:
         type: string
     type: object
-  uno_domain_ports.GroupedRegistrationCount:
+  uno_domain_port.GroupedRegistrationCount:
     properties:
       happeningId:
         type: string
@@ -262,7 +276,7 @@ definitions:
       waiting:
         type: integer
     type: object
-  uno_domain_ports.User:
+  uno_domain_port.User:
     properties:
       id:
         type: string
@@ -271,13 +285,13 @@ definitions:
       name:
         type: string
     type: object
-  uno_domain_ports.UserWithBanInfo:
+  uno_domain_port.UserWithBanInfo:
     properties:
       banInfo:
-        $ref: '#/definitions/uno_domain_ports.BanInfo'
+        $ref: '#/definitions/uno_domain_port.BanInfo'
       dots:
         items:
-          $ref: '#/definitions/uno_domain_ports.DotInfo'
+          $ref: '#/definitions/uno_domain_port.DotInfo'
         type: array
       id:
         type: string
@@ -286,7 +300,7 @@ definitions:
       name:
         type: string
     type: object
-  uno_domain_ports.UserWithStrikes:
+  uno_domain_port.UserWithStrikes:
     properties:
       id:
         type: string
@@ -299,7 +313,7 @@ definitions:
       strikes:
         type: integer
     type: object
-  uno_domain_services.ShoppingList:
+  uno_domain_service.ShoppingList:
     properties:
       createdAt:
         type: string
@@ -427,7 +441,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_ports.CommentWithReactionsAndUser'
+              $ref: '#/definitions/uno_domain_port.CommentWithReactionsAndUser'
             type: array
         "400":
           description: Bad Request
@@ -497,7 +511,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.Degree'
+              $ref: '#/definitions/uno_adapters_http_dto.DegreeResponse'
             type: array
       summary: Get degrees
       tags:
@@ -511,14 +525,14 @@ paths:
         name: degree
         required: true
         schema:
-          $ref: '#/definitions/uno_domain_model.Degree'
+          $ref: '#/definitions/uno_adapters_http_dto.CreateDegreeRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/uno_domain_model.Degree'
+            $ref: '#/definitions/uno_adapters_http_dto.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -565,14 +579,14 @@ paths:
         name: degree
         required: true
         schema:
-          $ref: '#/definitions/uno_domain_model.Degree'
+          $ref: '#/definitions/uno_adapters_http_dto.UpdateDegreeRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_domain_model.Degree'
+            $ref: '#/definitions/uno_adapters_http_dto.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -848,7 +862,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_ports.GroupedRegistrationCount'
+              $ref: '#/definitions/uno_domain_port.GroupedRegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -870,7 +884,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_services.ShoppingList'
+              $ref: '#/definitions/uno_domain_service.ShoppingList'
             type: array
         "401":
           description: Unauthorized
@@ -888,7 +902,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_ports.UserWithBanInfo'
+              $ref: '#/definitions/uno_domain_port.UserWithBanInfo'
             type: array
         "401":
           description: Unauthorized
@@ -928,7 +942,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_ports.UserWithStrikes'
+              $ref: '#/definitions/uno_domain_port.UserWithStrikes'
             type: array
         "401":
           description: Unauthorized

@@ -293,7 +293,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.Degree"
+                                "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
                             }
                         }
                     }
@@ -322,7 +322,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Degree"
+                            "$ref": "#/definitions/uno_adapters_http_dto.CreateDegreeRequest"
                         }
                     }
                 ],
@@ -330,7 +330,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Degree"
+                            "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
                         }
                     },
                     "400": {
@@ -372,7 +372,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Degree"
+                            "$ref": "#/definitions/uno_adapters_http_dto.UpdateDegreeRequest"
                         }
                     }
                 ],
@@ -380,7 +380,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Degree"
+                            "$ref": "#/definitions/uno_adapters_http_dto.DegreeResponse"
                         }
                     },
                     "400": {
@@ -1135,6 +1135,28 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_adapters_http_dto.CreateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.DegreeResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_adapters_http_dto.GroupedRegistration": {
             "type": "object",
             "properties": {
@@ -1344,6 +1366,17 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_adapters_http_dto.UpdateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_adapters_http_dto.WhitelistResponse": {
             "type": "object",
             "properties": {
@@ -1371,17 +1404,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.Degree": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 }
             }
