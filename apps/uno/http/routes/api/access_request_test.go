@@ -8,6 +8,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -55,19 +56,20 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 			tt.setupMocks(mockAccessRequestRepo)
 
 			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo)
-			handler := api.GetAccessRequestsHandler(testutil.NewTestLogger(), accessRequestService)
+			h := api.GetAccessRequestsHandler(testutil.NewTestLogger(), accessRequestService)
 
-			req := httptest.NewRequest(http.MethodGet, "/access-requests", nil)
+			r := httptest.NewRequest(http.MethodGet, "/access-requests", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := h(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
