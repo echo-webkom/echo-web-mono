@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 	"time"
+	"uno/adapters/http/dto"
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/ports"
@@ -110,9 +111,9 @@ func TestGetHappeningById(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			happeningID: "",
-			setupMocks:  func(mockRepo *mocks.HappeningRepo) {},
+			name:           "missing id",
+			happeningID:    "",
+			setupMocks:     func(mockRepo *mocks.HappeningRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
@@ -188,9 +189,9 @@ func TestGetHappeningQuestions(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			happeningID: "",
-			setupMocks:  func(mockRepo *mocks.HappeningRepo) {},
+			name:           "missing id",
+			happeningID:    "",
+			setupMocks:     func(mockRepo *mocks.HappeningRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
@@ -246,7 +247,7 @@ func TestRegisterForHappening(t *testing.T) {
 	tests := []struct {
 		name           string
 		happeningID    string
-		requestBody    services.RegisterRequest
+		requestBody    dto.RegisterForHappeningRequest
 		setupMocks     func(*mocks.HappeningRepo, *mocks.UserRepo, *mocks.RegistrationRepo, *mocks.BanInfoRepo)
 		expectedStatus int
 		expectError    bool
@@ -254,9 +255,9 @@ func TestRegisterForHappening(t *testing.T) {
 		{
 			name:        "success",
 			happeningID: "happening123",
-			requestBody: services.RegisterRequest{
+			requestBody: dto.RegisterForHappeningRequest{
 				UserID:    "user123",
-				Questions: []model.QuestionAnswer{},
+				Questions: []dto.QuestionAnswerDTO{},
 			},
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
 				user := testutil.NewFakeStruct[model.User](func(u *model.User) {
@@ -269,7 +270,7 @@ func TestRegisterForHappening(t *testing.T) {
 				})
 				happening := testutil.NewFakeStruct[model.Happening](func(h *model.Happening) {
 					h.ID = "happening123"
-					h.Type = "event" // Set type to avoid bedpres ban check
+					h.Type = "event"                      // Set type to avoid bedpres ban check
 					now := time.Now().Add(-1 * time.Hour) // Set to 1 hour ago to ensure registration is open
 					h.RegistrationStart = &now
 					h.RegistrationEnd = nil // Ensure registration is not closed
@@ -321,28 +322,30 @@ func TestRegisterForHappening(t *testing.T) {
 		{
 			name:        "missing happening id",
 			happeningID: "",
-			requestBody: services.RegisterRequest{
+			requestBody: dto.RegisterForHappeningRequest{
 				UserID:    "user123",
-				Questions: []model.QuestionAnswer{},
+				Questions: []dto.QuestionAnswerDTO{},
 			},
-			setupMocks:  func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {},
+			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
+			},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
 			name:        "invalid json",
 			happeningID: "happening123",
-			requestBody: services.RegisterRequest{},
-			setupMocks:  func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {},
+			requestBody: dto.RegisterForHappeningRequest{},
+			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
+			},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
 			name:        "validation failure returns 200",
 			happeningID: "happening123",
-			requestBody: services.RegisterRequest{
+			requestBody: dto.RegisterForHappeningRequest{
 				UserID:    "user123",
-				Questions: []model.QuestionAnswer{},
+				Questions: []dto.QuestionAnswerDTO{},
 			},
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
 				user := testutil.NewFakeStruct[model.User](func(u *model.User) {
@@ -403,7 +406,6 @@ func TestRegisterForHappening(t *testing.T) {
 		})
 	}
 }
-
 
 func TestGetHappeningRegistrationsCount(t *testing.T) {
 	mockHappeningRepo := mocks.NewHappeningRepo(t)

@@ -529,7 +529,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.Happening"
+                                "$ref": "#/definitions/uno_adapters_http_dto.HappeningResponse"
                             }
                         }
                     }
@@ -603,7 +603,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.Happening"
+                            "$ref": "#/definitions/uno_adapters_http_dto.HappeningResponse"
                         }
                     },
                     "400": {
@@ -646,7 +646,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.Question"
+                                "$ref": "#/definitions/uno_adapters_http_dto.QuestionResponse"
                             }
                         }
                     },
@@ -667,6 +667,11 @@ const docTemplate = `{
         },
         "/happenings/{id}/register": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Registers a user for a specific happening with business logic validation",
                 "consumes": [
                     "application/json"
@@ -692,7 +697,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_services.RegisterRequest"
+                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningRequest"
                         }
                     }
                 ],
@@ -700,19 +705,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_services.RegisterResponse"
+                            "$ref": "#/definitions/uno_adapters_http_dto.RegisterForHappeningResponse"
                         }
                     }
                 }
@@ -748,7 +753,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.Registration"
+                                "$ref": "#/definitions/uno_adapters_http_dto.HappeningRegistrationResponse"
                             }
                         }
                     },
@@ -839,7 +844,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.SpotRange"
+                                "$ref": "#/definitions/uno_adapters_http_dto.SpotRangeResponse"
                             }
                         }
                     },
@@ -1144,11 +1149,152 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_adapters_http_dto.HappeningRegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "changedAt": {
+                    "type": "string"
+                },
+                "changedBy": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "prevStatus": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unregisterReason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userImage": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.HappeningResponse": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "registrationEnd": {
+                    "type": "string"
+                },
+                "registrationGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "registrationStartGroups": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_adapters_http_dto.HealthCheckResponse": {
             "type": "object",
             "properties": {
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.QuestionAnswerDTO": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "questionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.QuestionResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isSensitive": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.RegisterForHappeningRequest": {
+            "type": "object",
+            "properties": {
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_adapters_http_dto.QuestionAnswerDTO"
+                    }
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.RegisterForHappeningResponse": {
+            "type": "object",
+            "properties": {
+                "isWaitlisted": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         },
@@ -1175,6 +1321,26 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_adapters_http_dto.SpotRangeResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "maxYear": {
+                    "type": "integer"
+                },
+                "minYear": {
+                    "type": "integer"
+                },
+                "spots": {
+                    "type": "integer"
                 }
             }
         },
@@ -1217,151 +1383,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.Happening": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "registrationEnd": {
-                    "type": "string"
-                },
-                "registrationGroups": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "registrationStart": {
-                    "type": "string"
-                },
-                "registrationStartGroups": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.Question": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isSensitive": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "required": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.QuestionAnswer": {
-            "type": "object",
-            "properties": {
-                "answer": {
-                    "description": "Can be string or []string",
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "questionId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.Registration": {
-            "type": "object",
-            "properties": {
-                "changedAt": {
-                    "type": "string"
-                },
-                "changedBy": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "happeningId": {
-                    "type": "string"
-                },
-                "prevStatus": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/uno_domain_model.RegistrationStatus"
-                },
-                "unregisterReason": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.RegistrationStatus": {
-            "type": "string",
-            "enum": [
-                "registered",
-                "waiting",
-                "unregistered",
-                "pending",
-                "removed"
-            ],
-            "x-enum-varnames": [
-                "RegistrationStatusRegistered",
-                "RegistrationStatusWaitlisted",
-                "RegistrationStatusUnregistered",
-                "RegistrationStatusPending",
-                "RegistrationStatusRemoved"
-            ]
-        },
-        "uno_domain_model.SpotRange": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "maxYear": {
-                    "type": "integer"
-                },
-                "minYear": {
-                    "type": "integer"
-                },
-                "spots": {
-                    "type": "integer"
                 }
             }
         },
@@ -1526,34 +1547,6 @@ const docTemplate = `{
                 },
                 "strikes": {
                     "type": "integer"
-                }
-            }
-        },
-        "uno_domain_services.RegisterRequest": {
-            "type": "object",
-            "properties": {
-                "questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.QuestionAnswer"
-                    }
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_services.RegisterResponse": {
-            "type": "object",
-            "properties": {
-                "isWaitlisted": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             }
         },
