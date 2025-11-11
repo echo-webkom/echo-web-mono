@@ -2,21 +2,48 @@ package model
 
 import "time"
 
+// SiteFeedback represents a site feedback entry in the domain
 type SiteFeedback struct {
-	ID        string    `db:"id" json:"id"`
-	Name      *string   `db:"name" json:"name"`
-	Email     *string   `db:"email" json:"email"`
-	Message   string    `db:"message" json:"message"`
-	Category  string    `db:"category" json:"category"`
-	IsRead    bool      `db:"is_read" json:"isRead"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ID        string
+	Name      *string
+	Email     *string
+	Message   string
+	Category  string
+	IsRead    bool
+	CreatedAt time.Time
 }
 
+// NewSiteFeedback represents the data required to create a new site feedback entry.
+type NewSiteFeedback struct {
+	Name     *string
+	Email    *string
+	Message  string
+	Category string
+}
+
+// Reaction represents a generic reaction in the domain
 type Reaction struct {
-	ReactToKey string    `db:"react_to_key" json:"reactToKey"`
-	EmojiID    int       `db:"emoji_id" json:"emojiId"`
-	UserID     string    `db:"user_id" json:"userId"`
-	CreatedAt  time.Time `db:"created_at" json:"createdAt"`
+	ReactToKey string
+	EmojiID    int
+	UserID     string
+	CreatedAt  time.Time
+}
+
+// NewReaction represents the data required to create a new reaction.
+type NewReaction struct {
+	// The hash of the entity being reacted to.
+	// A post for example could have a reactToKey of "post_<postID>"
+	// while a happening/event could have "event_<happeningID>"
+	ReactToKey string
+	// The ID of the emoji being used for the reaction.
+	EmojiID int
+	UserID  string
+}
+
+// IsValid checks if the NewReaction has valid fields.
+// Returns true if ReactToKey is not empty, EmojiID is between 0 and 4, and UserID is not empty.
+func (r NewReaction) IsValid() bool {
+	return r.ReactToKey != "" && r.EmojiID >= 0 && r.EmojiID <= 4 && r.UserID != ""
 }
 
 type Comment struct {
