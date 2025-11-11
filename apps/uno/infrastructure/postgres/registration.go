@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 	"uno/infrastructure/postgres/models"
 
@@ -13,10 +13,10 @@ import (
 
 type RegistrationRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewRegistrationRepo(db *Database, logger ports.Logger) ports.RegistrationRepo {
+func NewRegistrationRepo(db *Database, logger port.Logger) port.RegistrationRepo {
 	return &RegistrationRepo{db: db, logger: logger}
 }
 

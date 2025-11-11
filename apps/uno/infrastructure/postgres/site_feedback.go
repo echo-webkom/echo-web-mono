@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type SiteFeedbackRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewSiteFeedbackRepo(db *Database, logger ports.Logger) ports.SiteFeedbackRepo {
+func NewSiteFeedbackRepo(db *Database, logger port.Logger) port.SiteFeedbackRepo {
 	return &SiteFeedbackRepo{db: db, logger: logger}
 }
 

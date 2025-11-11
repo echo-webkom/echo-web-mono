@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -163,23 +163,23 @@ func (_c *ShoppingListItemRepo_DeleteShoppingListItem_Call) RunAndReturn(run fun
 }
 
 // GetAllShoppingListItems provides a mock function for the type ShoppingListItemRepo
-func (_mock *ShoppingListItemRepo) GetAllShoppingListItems(ctx context.Context) ([]ports.ShoppingListItemWithCreator, error) {
+func (_mock *ShoppingListItemRepo) GetAllShoppingListItems(ctx context.Context) ([]port.ShoppingListItemWithCreator, error) {
 	ret := _mock.Called(ctx)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetAllShoppingListItems")
 	}
 
-	var r0 []ports.ShoppingListItemWithCreator
+	var r0 []port.ShoppingListItemWithCreator
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]ports.ShoppingListItemWithCreator, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]port.ShoppingListItemWithCreator, error)); ok {
 		return returnFunc(ctx)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []ports.ShoppingListItemWithCreator); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []port.ShoppingListItemWithCreator); ok {
 		r0 = returnFunc(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.ShoppingListItemWithCreator)
+			r0 = ret.Get(0).([]port.ShoppingListItemWithCreator)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
@@ -214,12 +214,12 @@ func (_c *ShoppingListItemRepo_GetAllShoppingListItems_Call) Run(run func(ctx co
 	return _c
 }
 
-func (_c *ShoppingListItemRepo_GetAllShoppingListItems_Call) Return(shoppingListItemWithCreators []ports.ShoppingListItemWithCreator, err error) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
+func (_c *ShoppingListItemRepo_GetAllShoppingListItems_Call) Return(shoppingListItemWithCreators []port.ShoppingListItemWithCreator, err error) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
 	_c.Call.Return(shoppingListItemWithCreators, err)
 	return _c
 }
 
-func (_c *ShoppingListItemRepo_GetAllShoppingListItems_Call) RunAndReturn(run func(ctx context.Context) ([]ports.ShoppingListItemWithCreator, error)) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
+func (_c *ShoppingListItemRepo_GetAllShoppingListItems_Call) RunAndReturn(run func(ctx context.Context) ([]port.ShoppingListItemWithCreator, error)) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
 	_c.Call.Return(run)
 	return _c
 }

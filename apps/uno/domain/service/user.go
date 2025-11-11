@@ -4,22 +4,22 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 type UserService struct {
-	userRepo ports.UserRepo
+	userRepo port.UserRepo
 }
 
 func NewUserService(
-	userRepo ports.UserRepo,
+	userRepo port.UserRepo,
 ) *UserService {
 	return &UserService{
 		userRepo: userRepo,
 	}
 }
 
-func (s *UserService) UserRepo() ports.UserRepo {
+func (s *UserService) UserRepo() port.UserRepo {
 	return s.userRepo
 }
 

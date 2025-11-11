@@ -2,8 +2,8 @@ package service_test
 
 import (
 	"testing"
-	"uno/domain/ports"
-	"uno/domain/ports/mocks"
+	"uno/domain/port"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -83,10 +83,10 @@ func TestStrikeService_UnbanUsersWithExpiredStrikes_DotRepoErr(t *testing.T) {
 
 func TestStikeService_GetUsersWithStrikes(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
-	expectedUsers := []ports.UserWithStrikes{
-		testutil.NewFakeStruct[ports.UserWithStrikes](),
-		testutil.NewFakeStruct[ports.UserWithStrikes](),
-		testutil.NewFakeStruct[ports.UserWithStrikes](),
+	expectedUsers := []port.UserWithStrikes{
+		testutil.NewFakeStruct[port.UserWithStrikes](),
+		testutil.NewFakeStruct[port.UserWithStrikes](),
+		testutil.NewFakeStruct[port.UserWithStrikes](),
 	}
 	mockUserRepo.EXPECT().GetUsersWithStrikes(mock.Anything).Return(expectedUsers, nil).Once()
 
@@ -99,9 +99,9 @@ func TestStikeService_GetUsersWithStrikes(t *testing.T) {
 
 func TestStikeService_GetBannedUsers(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
-	expectedBannedUsers := []ports.UserWithBanInfo{
-		testutil.NewFakeStruct[ports.UserWithBanInfo](),
-		testutil.NewFakeStruct[ports.UserWithBanInfo](),
+	expectedBannedUsers := []port.UserWithBanInfo{
+		testutil.NewFakeStruct[port.UserWithBanInfo](),
+		testutil.NewFakeStruct[port.UserWithBanInfo](),
 	}
 	mockUserRepo.EXPECT().GetBannedUsers(mock.Anything).Return(expectedBannedUsers, nil).Once()
 
