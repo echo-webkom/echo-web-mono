@@ -5,7 +5,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/config"
 	"uno/domain/ports"
-	"uno/domain/services"
+	"uno/domain/service"
 
 	"github.com/jesperkha/notifier"
 )
@@ -33,16 +33,16 @@ func RunServer(
 	notif *notifier.Notifier,
 	logger ports.Logger,
 	config *config.Config,
-	authService *services.AuthService,
-	happeningService *services.HappeningService,
-	degreeService *services.DegreeService,
-	siteFeedbackService *services.SiteFeedbackService,
-	shoppingListService *services.ShoppingListService,
-	userService *services.UserService,
-	strikeSerivce *services.StrikeService,
-	accessRequestService *services.AccessRequestService,
-	whitelistService *services.WhitelistService,
-	commentService *services.CommentService,
+	authService *service.AuthService,
+	happeningService *service.HappeningService,
+	degreeService *service.DegreeService,
+	siteFeedbackService *service.SiteFeedbackService,
+	shoppingListService *service.ShoppingListService,
+	userService *service.UserService,
+	strikeSerivce *service.StrikeService,
+	accessRequestService *service.AccessRequestService,
+	whitelistService *service.WhitelistService,
+	commentService *service.CommentService,
 ) {
 	r := router.New(config.ServiceName, logger)
 	// withAuth := router.NewWithAuthHandler(authService)

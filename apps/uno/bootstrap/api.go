@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"uno/adapters/http"
 	"uno/config"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -68,16 +68,16 @@ func RunApi() {
 	registrationRepo := postgres.NewRegistrationRepo(db, logger)
 
 	// Initialize services
-	authService := services.NewAuthService(sessionRepo, userRepo)
-	happeningService := services.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo)
-	degreeService := services.NewDegreeService(degreeRepo)
-	siteFeedbackService := services.NewSiteFeedbackService(siteFeedbackRepo)
-	shoppingListService := services.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
-	userService := services.NewUserService(userRepo)
-	strikeService := services.NewStrikeService(dotRepo, banInfoRepo, userRepo)
-	accessRequestService := services.NewAccessRequestService(accessRequestRepo)
-	whitelistService := services.NewWhitelistService(whitelistRepo)
-	commentService := services.NewCommentService(commentRepo)
+	authService := service.NewAuthService(sessionRepo, userRepo)
+	happeningService := service.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo)
+	degreeService := service.NewDegreeService(degreeRepo)
+	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
+	shoppingListService := service.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
+	userService := service.NewUserService(userRepo)
+	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
+	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
+	whitelistService := service.NewWhitelistService(whitelistRepo)
+	commentService := service.NewCommentService(commentRepo)
 
 	go http.RunServer(
 		notif,

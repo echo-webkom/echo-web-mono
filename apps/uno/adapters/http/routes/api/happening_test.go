@@ -13,7 +13,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/ports"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -63,7 +63,7 @@ func TestGetHappeningsHandler(t *testing.T) {
 
 			tt.setupMocks(mockHappeningRepo)
 
-			happeningService := services.NewHappeningService(
+			happeningService := service.NewHappeningService(
 				mockHappeningRepo,
 				mockUserRepo,
 				mockRegistrationRepo,
@@ -140,7 +140,7 @@ func TestGetHappeningById(t *testing.T) {
 
 			tt.setupMocks(mockHappeningRepo)
 
-			happeningService := services.NewHappeningService(
+			happeningService := service.NewHappeningService(
 				mockHappeningRepo,
 				mockUserRepo,
 				mockRegistrationRepo,
@@ -218,7 +218,7 @@ func TestGetHappeningQuestions(t *testing.T) {
 
 			tt.setupMocks(mockHappeningRepo)
 
-			happeningService := services.NewHappeningService(
+			happeningService := service.NewHappeningService(
 				mockHappeningRepo,
 				mockUserRepo,
 				mockRegistrationRepo,
@@ -376,7 +376,7 @@ func TestRegisterForHappening(t *testing.T) {
 
 			tt.setupMocks(mockHappeningRepo, mockUserRepo, mockRegistrationRepo, mockBanInfoRepo)
 
-			happeningService := services.NewHappeningService(
+			happeningService := service.NewHappeningService(
 				mockHappeningRepo,
 				mockUserRepo,
 				mockRegistrationRepo,
@@ -429,7 +429,7 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 		Return([]ports.HappeningRegistration{}, nil).
 		Once()
 
-	happeningService := services.NewHappeningService(
+	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
 		mockUserRepo,
 		mockRegistrationRepo,
@@ -460,7 +460,7 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 		Return(counts, nil).
 		Once()
 
-	happeningService := services.NewHappeningService(
+	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
 		mockUserRepo,
 		mockRegistrationRepo,
@@ -490,7 +490,7 @@ func TestGetHappeningRegistrations(t *testing.T) {
 		Return(registrations, nil).
 		Once()
 
-	happeningService := services.NewHappeningService(
+	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
 		mockUserRepo,
 		mockRegistrationRepo,
@@ -523,7 +523,7 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 		Return(spotRanges, nil).
 		Once()
 
-	happeningService := services.NewHappeningService(
+	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
 		mockUserRepo,
 		mockRegistrationRepo,

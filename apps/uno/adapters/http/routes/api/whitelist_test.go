@@ -8,7 +8,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -54,7 +54,7 @@ func TestGetWhitelistHandler(t *testing.T) {
 			mockWhitelistRepo := mocks.NewWhitelistRepo(t)
 			tt.setupMocks(mockWhitelistRepo)
 
-			whitelistService := services.NewWhitelistService(mockWhitelistRepo)
+			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
 			handler := api.GetWhitelistHandler(testutil.NewTestLogger(), whitelistService)
 
 			req := httptest.NewRequest(http.MethodGet, "/whitelist", nil)
@@ -82,7 +82,7 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 	}{
 		{
 			name:  "success",
-			email:  "test@example.com",
+			email: "test@example.com",
 			setupMocks: func(mockRepo *mocks.WhitelistRepo) {
 				whitelist := testutil.NewFakeStruct[model.Whitelist](func(w *model.Whitelist) {
 					w.Email = "test@example.com"
@@ -96,15 +96,15 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing email",
-			email:       "",
-			setupMocks:  func(mockRepo *mocks.WhitelistRepo) {},
+			name:           "missing email",
+			email:          "",
+			setupMocks:     func(mockRepo *mocks.WhitelistRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
 			name:  "error from repo",
-			email:  "test@example.com",
+			email: "test@example.com",
 			setupMocks: func(mockRepo *mocks.WhitelistRepo) {
 				mockRepo.EXPECT().
 					GetWhitelistByEmail(mock.Anything, "test@example.com").
@@ -121,7 +121,7 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 			mockWhitelistRepo := mocks.NewWhitelistRepo(t)
 			tt.setupMocks(mockWhitelistRepo)
 
-			whitelistService := services.NewWhitelistService(mockWhitelistRepo)
+			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
 			handler := api.GetWhitelistByEmailHandler(testutil.NewTestLogger(), whitelistService)
 
 			req := httptest.NewRequest(http.MethodGet, "/whitelist/"+tt.email, nil)
@@ -139,4 +139,3 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 		})
 	}
 }
-

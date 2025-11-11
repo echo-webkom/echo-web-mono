@@ -317,4 +317,3 @@ func TestCommentRepo_DeleteReactionFromComment(t *testing.T) {
 	assert.NoError(t, err)
 	assert.False(t, isReacted)
 }
-

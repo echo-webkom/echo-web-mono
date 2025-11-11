@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"uno/domain/model"
 	"uno/domain/ports"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/infrastructure/postgres/models"
 
 	"github.com/jmoiron/sqlx"
@@ -182,7 +182,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		return nil, false, sql.ErrNoRows
 	}
 
-	isRegistered := services.IsAvailableSpot(
+	isRegistered := service.IsAvailableSpot(
 		spotRanges,
 		existingRegs,
 		usersByID,

@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
 	"uno/domain/ports"
-	"uno/domain/services"
+	"uno/domain/service"
 )
 
 // GetCommentsByIDHandler returns a comment by its ID
@@ -20,7 +20,7 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id} [get]
-func GetCommentsByIDHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
+func GetCommentsByIDHandler(logger ports.Logger, commentService *service.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 		id := r.PathValue("id")
@@ -54,7 +54,7 @@ type CreateCommentRequest struct {
 // @Failure      500      {string}  string                      "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments [post]
-func CreateCommentHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
+func CreateCommentHandler(logger ports.Logger, commentService *service.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 		var req CreateCommentRequest
@@ -87,7 +87,7 @@ type ReactToCommentRequest struct {
 // @Failure      500       {string}  string                       "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id}/reaction [post]
-func ReactToCommentHandler(logger ports.Logger, commentService *services.CommentService) router.Handler {
+func ReactToCommentHandler(logger ports.Logger, commentService *service.CommentService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		ctx := r.Context()
 		commentID := r.PathValue("id")

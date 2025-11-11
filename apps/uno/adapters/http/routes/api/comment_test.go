@@ -10,7 +10,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/domain/ports"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -39,9 +39,9 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			commentID:   "",
-			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			name:           "missing id",
+			commentID:      "",
+			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    false,
 		},
@@ -64,7 +64,7 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			mockCommentRepo := mocks.NewCommentRepo(t)
 			tt.setupMocks(mockCommentRepo)
 
-			commentService := services.NewCommentService(mockCommentRepo)
+			commentService := service.NewCommentService(mockCommentRepo)
 			handler := api.GetCommentsByIDHandler(testutil.NewTestLogger(), commentService)
 
 			req := httptest.NewRequest(http.MethodGet, "/comments/"+tt.commentID, nil)
@@ -94,9 +94,9 @@ func TestCreateCommentHandler(t *testing.T) {
 		{
 			name: "success",
 			requestBody: api.CreateCommentRequest{
-				Content:  "Test comment",
-				PostID:   "post123",
-				UserID:   "user123",
+				Content:         "Test comment",
+				PostID:          "post123",
+				UserID:          "user123",
 				ParentCommentID: nil,
 			},
 			setupMocks: func(mockRepo *mocks.CommentRepo) {
@@ -109,18 +109,18 @@ func TestCreateCommentHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "invalid json",
-			requestBody: api.CreateCommentRequest{},
-			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			name:           "invalid json",
+			requestBody:    api.CreateCommentRequest{},
+			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
 			name: "error from repo",
 			requestBody: api.CreateCommentRequest{
-				Content:  "Test comment",
-				PostID:   "post123",
-				UserID:   "user123",
+				Content:         "Test comment",
+				PostID:          "post123",
+				UserID:          "user123",
 				ParentCommentID: nil,
 			},
 			setupMocks: func(mockRepo *mocks.CommentRepo) {
@@ -139,7 +139,7 @@ func TestCreateCommentHandler(t *testing.T) {
 			mockCommentRepo := mocks.NewCommentRepo(t)
 			tt.setupMocks(mockCommentRepo)
 
-			commentService := services.NewCommentService(mockCommentRepo)
+			commentService := service.NewCommentService(mockCommentRepo)
 			handler := api.CreateCommentHandler(testutil.NewTestLogger(), commentService)
 
 			var req *http.Request
@@ -193,18 +193,18 @@ func TestReactToCommentHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing comment id",
-			commentID:  "",
-			requestBody: api.ReactToCommentRequest{},
-			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			name:           "missing comment id",
+			commentID:      "",
+			requestBody:    api.ReactToCommentRequest{},
+			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    false,
 		},
 		{
-			name:        "invalid json",
-			commentID:   "comment123",
-			requestBody: api.ReactToCommentRequest{},
-			setupMocks:  func(mockRepo *mocks.CommentRepo) {},
+			name:           "invalid json",
+			commentID:      "comment123",
+			requestBody:    api.ReactToCommentRequest{},
+			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
@@ -231,7 +231,7 @@ func TestReactToCommentHandler(t *testing.T) {
 			mockCommentRepo := mocks.NewCommentRepo(t)
 			tt.setupMocks(mockCommentRepo)
 
-			commentService := services.NewCommentService(mockCommentRepo)
+			commentService := service.NewCommentService(mockCommentRepo)
 			handler := api.ReactToCommentHandler(testutil.NewTestLogger(), commentService)
 
 			var req *http.Request
@@ -255,4 +255,3 @@ func TestReactToCommentHandler(t *testing.T) {
 		})
 	}
 }
-

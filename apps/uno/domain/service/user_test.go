@@ -1,4 +1,4 @@
-package services_test
+package service_test
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -16,7 +16,7 @@ import (
 
 func TestUserService_UserRepo(t *testing.T) {
 	mockRepo := mocks.NewUserRepo(t)
-	userService := services.NewUserService(mockRepo)
+	userService := service.NewUserService(mockRepo)
 
 	userRepo := userService.UserRepo()
 	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
@@ -44,7 +44,7 @@ func TestUserService_GetUsersWithBirthdayToday_Success(t *testing.T) {
 		Return(expectedUsers, nil).
 		Once()
 
-	userService := services.NewUserService(mockRepo)
+	userService := service.NewUserService(mockRepo)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.NoError(t, err)
@@ -62,7 +62,7 @@ func TestUserService_GetUsersWithBirthdayToday_Empty(t *testing.T) {
 		Return([]model.User{}, nil).
 		Once()
 
-	userService := services.NewUserService(mockRepo)
+	userService := service.NewUserService(mockRepo)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.NoError(t, err)
@@ -79,7 +79,7 @@ func TestUserService_GetUsersWithBirthdayToday_Error(t *testing.T) {
 		Return(nil, expectedErr).
 		Once()
 
-	userService := services.NewUserService(mockRepo)
+	userService := service.NewUserService(mockRepo)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.Error(t, err)

@@ -1,10 +1,10 @@
-package services_test
+package service_test
 
 import (
 	"errors"
 	"testing"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -12,7 +12,7 @@ import (
 
 func TestCommentService_CommentRepo(t *testing.T) {
 	mockRepo := mocks.NewCommentRepo(t)
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	commentRepo := commentService.CommentRepo()
 	assert.NotNil(t, commentRepo, "Expected CommentRepo to be non-nil")
@@ -26,7 +26,7 @@ func TestCommentService_ReactToComment_Exists(t *testing.T) {
 	mockRepo.EXPECT().IsReactedByUser(mock.Anything, commentID, userID).Return(true, nil).Once()
 	mockRepo.EXPECT().DeleteReactionFromComment(mock.Anything, commentID, userID).Return(nil).Once()
 
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	err := commentService.ReactToComment(t.Context(), commentID, userID)
 
@@ -41,7 +41,7 @@ func TestCommentService_ReactToComment_NotExists(t *testing.T) {
 	mockRepo.EXPECT().IsReactedByUser(mock.Anything, commentID, userID).Return(false, nil).Once()
 	mockRepo.EXPECT().AddReactionToComment(mock.Anything, commentID, userID).Return(nil).Once()
 
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	err := commentService.ReactToComment(t.Context(), commentID, userID)
 
@@ -56,7 +56,7 @@ func TestCommentService_ReactToComment_IsReactedByUserError(t *testing.T) {
 	mockRepo := mocks.NewCommentRepo(t)
 	mockRepo.EXPECT().IsReactedByUser(mock.Anything, commentID, userID).Return(false, expectedErr).Once()
 
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	err := commentService.ReactToComment(t.Context(), commentID, userID)
 
@@ -73,7 +73,7 @@ func TestCommentService_ReactToComment_DeleteReactionError(t *testing.T) {
 	mockRepo.EXPECT().IsReactedByUser(mock.Anything, commentID, userID).Return(true, nil).Once()
 	mockRepo.EXPECT().DeleteReactionFromComment(mock.Anything, commentID, userID).Return(expectedErr).Once()
 
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	err := commentService.ReactToComment(t.Context(), commentID, userID)
 
@@ -90,7 +90,7 @@ func TestCommentService_ReactToComment_AddReactionError(t *testing.T) {
 	mockRepo.EXPECT().IsReactedByUser(mock.Anything, commentID, userID).Return(false, nil).Once()
 	mockRepo.EXPECT().AddReactionToComment(mock.Anything, commentID, userID).Return(expectedErr).Once()
 
-	commentService := services.NewCommentService(mockRepo)
+	commentService := service.NewCommentService(mockRepo)
 
 	err := commentService.ReactToComment(t.Context(), commentID, userID)
 
