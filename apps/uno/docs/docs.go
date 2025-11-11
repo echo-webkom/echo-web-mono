@@ -123,7 +123,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.CreateCommentRequest"
+                            "$ref": "#/definitions/uno_http_dto.CreateCommentRequest"
                         }
                     }
                 ],
@@ -243,7 +243,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.ReactToCommentRequest"
+                            "$ref": "#/definitions/uno_http_dto.ReactToCommentRequest"
                         }
                     }
                 ],
@@ -1090,34 +1090,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "http_routes_api.CreateCommentRequest": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.ReactToCommentRequest": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.CommentsReaction": {
             "type": "object",
             "properties": {
@@ -1342,6 +1314,23 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.CreateCommentRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "parentCommentId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.CreateDegreeRequest": {
             "type": "object",
             "properties": {
@@ -1495,6 +1484,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.ReactToCommentRequest": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }
