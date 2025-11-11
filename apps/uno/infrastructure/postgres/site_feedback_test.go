@@ -20,12 +20,11 @@ func TestSiteFeedbackRepo_CreateSiteFeedback(t *testing.T) {
 
 	name := "John Doe"
 	email := "john@example.com"
-	feedback := model.SiteFeedback{
+	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,
 		Message:  "This is a test feedback",
 		Category: "bug",
-		IsRead:   false,
 	}
 
 	createdFeedback, err := repo.CreateSiteFeedback(ctx, feedback)
@@ -34,7 +33,7 @@ func TestSiteFeedbackRepo_CreateSiteFeedback(t *testing.T) {
 	assert.NotEmpty(t, createdFeedback.ID)
 	assert.Equal(t, feedback.Message, createdFeedback.Message)
 	assert.Equal(t, feedback.Category, createdFeedback.Category)
-	assert.Equal(t, feedback.IsRead, createdFeedback.IsRead)
+	assert.Equal(t, false, createdFeedback.IsRead)
 	assert.False(t, createdFeedback.CreatedAt.IsZero())
 }
 
@@ -49,12 +48,11 @@ func TestSiteFeedbackRepo_GetSiteFeedbackByID(t *testing.T) {
 
 	name := "John Doe"
 	email := "john@example.com"
-	feedback := model.SiteFeedback{
+	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,
 		Message:  "Test message",
 		Category: "feature",
-		IsRead:   false,
 	}
 
 	createdFeedback, err := repo.CreateSiteFeedback(ctx, feedback)
@@ -79,22 +77,20 @@ func TestSiteFeedbackRepo_GetAllSiteFeedbacks(t *testing.T) {
 
 	name1 := "John Doe"
 	email1 := "john@example.com"
-	feedback1 := model.SiteFeedback{
+	feedback1 := model.NewSiteFeedback{
 		Name:     &name1,
 		Email:    &email1,
 		Message:  "First feedback",
 		Category: "bug",
-		IsRead:   false,
 	}
 
 	name2 := "Jane Doe"
 	email2 := "jane@example.com"
-	feedback2 := model.SiteFeedback{
+	feedback2 := model.NewSiteFeedback{
 		Name:     &name2,
 		Email:    &email2,
 		Message:  "Second feedback",
 		Category: "feature",
-		IsRead:   true,
 	}
 
 	_, err := repo.CreateSiteFeedback(ctx, feedback1)
@@ -124,12 +120,11 @@ func TestSiteFeedbackRepo_MarkSiteFeedbackAsRead(t *testing.T) {
 
 	name := "John Doe"
 	email := "john@example.com"
-	feedback := model.SiteFeedback{
+	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,
 		Message:  "Test message",
 		Category: "bug",
-		IsRead:   false,
 	}
 
 	createdFeedback, err := repo.CreateSiteFeedback(ctx, feedback)

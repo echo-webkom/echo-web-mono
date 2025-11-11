@@ -4,6 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/ports"
+	"uno/infrastructure/postgres/models"
 )
 
 type SiteFeedbackRepo struct {
@@ -25,10 +26,9 @@ func (p *SiteFeedbackRepo) GetSiteFeedbackByID(ctx context.Context, feedbackID s
 		FROM site_feedback
 		WHERE id = $1
 	`
-	row := p.db.QueryRowContext(ctx, query, feedbackID)
+	var dbModel models.SiteFeedbackDB
+	err := p.db.GetContext(ctx, &dbModel, query, feedbackID)
 
-	var feedback model.SiteFeedback
-	err := row.Scan(&feedback.ID, &feedback.Name, &feedback.Email, &feedback.Message, &feedback.Category, &feedback.CreatedAt, &feedback.IsRead)
 	if err != nil {
 		p.logger.Error(ctx, "failed to get site feedback by ID",
 			"error", err,
@@ -36,10 +36,10 @@ func (p *SiteFeedbackRepo) GetSiteFeedbackByID(ctx context.Context, feedbackID s
 		)
 		return model.SiteFeedback{}, err
 	}
-	return feedback, nil
+	return *dbModel.ToDomain(), nil
 }
 
-func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback model.SiteFeedback) (model.SiteFeedback, error) {
+func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback model.NewSiteFeedback) (model.SiteFeedback, error) {
 	p.logger.Info(ctx, "creating site feedback")
 
 	query := `--sql
@@ -47,14 +47,14 @@ func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback mode
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5)
 		RETURNING id, name, email, message, category, created_at, is_read
 	`
-	var result model.SiteFeedback
-	err := p.db.GetContext(ctx, &result, query, feedback.Name, feedback.Email, feedback.Message, feedback.Category, feedback.IsRead)
+	var dbModel models.SiteFeedbackDB
+	err := p.db.GetContext(ctx, &dbModel, query, feedback.Name, feedback.Email, feedback.Message, feedback.Category, false)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create site feedback",
 			"error", err,
 		)
 	}
-	return result, err
+	return *dbModel.ToDomain(), err
 }
 
 func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.SiteFeedback, error) {

@@ -449,7 +449,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                                "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
                             }
                         }
                     },
@@ -489,7 +489,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_domain_model.SiteFeedback"
+                            "$ref": "#/definitions/uno_adapters_http_dto.SiteFeedbackResponse"
                         }
                     },
                     "401": {
@@ -1146,6 +1146,32 @@
                 }
             }
         },
+        "uno_adapters_http_dto.SiteFeedbackResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRead": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_adapters_http_dto.WhitelistResponse": {
             "type": "object",
             "properties": {
@@ -1312,32 +1338,6 @@
                 "RegistrationStatusPending",
                 "RegistrationStatusRemoved"
             ]
-        },
-        "uno_domain_model.SiteFeedback": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isRead": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
         },
         "uno_domain_model.SpotRange": {
             "type": "object",

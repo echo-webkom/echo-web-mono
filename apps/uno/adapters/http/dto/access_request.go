@@ -38,8 +38,8 @@ func (r *AccessRequestResponse) FromDomain(ar *model.AccessRequest) *AccessReque
 	}
 }
 
-// FromDomainList converts a slice of domain models to DTOs
-func FromDomainList(accessRequests []model.AccessRequest) []AccessRequestResponse {
+// AccessRequestsFromDomainList converts a slice of domain models to DTOs
+func AccessRequestsFromDomainList(accessRequests []model.AccessRequest) []AccessRequestResponse {
 	response := make([]AccessRequestResponse, len(accessRequests))
 	for i, ar := range accessRequests {
 		response[i] = *new(AccessRequestResponse).FromDomain(&ar)

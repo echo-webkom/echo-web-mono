@@ -27,7 +27,7 @@ func GetAccessRequestsHandler(logger ports.Logger, accessRequestService *service
 		}
 
 		// Convert to DTOs
-		response := dto.FromDomainList(accessRequests)
+		response := dto.AccessRequestsFromDomainList(accessRequests)
 
 		return util.JsonOk(w, response)
 	}

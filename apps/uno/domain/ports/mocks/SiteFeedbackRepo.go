@@ -39,7 +39,7 @@ func (_m *SiteFeedbackRepo) EXPECT() *SiteFeedbackRepo_Expecter {
 }
 
 // CreateSiteFeedback provides a mock function for the type SiteFeedbackRepo
-func (_mock *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback model.SiteFeedback) (model.SiteFeedback, error) {
+func (_mock *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback model.NewSiteFeedback) (model.SiteFeedback, error) {
 	ret := _mock.Called(ctx, feedback)
 
 	if len(ret) == 0 {
@@ -48,15 +48,15 @@ func (_mock *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback 
 
 	var r0 model.SiteFeedback
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.SiteFeedback) (model.SiteFeedback, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewSiteFeedback) (model.SiteFeedback, error)); ok {
 		return returnFunc(ctx, feedback)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.SiteFeedback) model.SiteFeedback); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewSiteFeedback) model.SiteFeedback); ok {
 		r0 = returnFunc(ctx, feedback)
 	} else {
 		r0 = ret.Get(0).(model.SiteFeedback)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, model.SiteFeedback) error); ok {
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewSiteFeedback) error); ok {
 		r1 = returnFunc(ctx, feedback)
 	} else {
 		r1 = ret.Error(1)
@@ -71,20 +71,20 @@ type SiteFeedbackRepo_CreateSiteFeedback_Call struct {
 
 // CreateSiteFeedback is a helper method to define mock.On call
 //   - ctx context.Context
-//   - feedback model.SiteFeedback
+//   - feedback model.NewSiteFeedback
 func (_e *SiteFeedbackRepo_Expecter) CreateSiteFeedback(ctx interface{}, feedback interface{}) *SiteFeedbackRepo_CreateSiteFeedback_Call {
 	return &SiteFeedbackRepo_CreateSiteFeedback_Call{Call: _e.mock.On("CreateSiteFeedback", ctx, feedback)}
 }
 
-func (_c *SiteFeedbackRepo_CreateSiteFeedback_Call) Run(run func(ctx context.Context, feedback model.SiteFeedback)) *SiteFeedbackRepo_CreateSiteFeedback_Call {
+func (_c *SiteFeedbackRepo_CreateSiteFeedback_Call) Run(run func(ctx context.Context, feedback model.NewSiteFeedback)) *SiteFeedbackRepo_CreateSiteFeedback_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 model.SiteFeedback
+		var arg1 model.NewSiteFeedback
 		if args[1] != nil {
-			arg1 = args[1].(model.SiteFeedback)
+			arg1 = args[1].(model.NewSiteFeedback)
 		}
 		run(
 			arg0,
@@ -99,7 +99,7 @@ func (_c *SiteFeedbackRepo_CreateSiteFeedback_Call) Return(siteFeedback model.Si
 	return _c
 }
 
-func (_c *SiteFeedbackRepo_CreateSiteFeedback_Call) RunAndReturn(run func(ctx context.Context, feedback model.SiteFeedback) (model.SiteFeedback, error)) *SiteFeedbackRepo_CreateSiteFeedback_Call {
+func (_c *SiteFeedbackRepo_CreateSiteFeedback_Call) RunAndReturn(run func(ctx context.Context, feedback model.NewSiteFeedback) (model.SiteFeedback, error)) *SiteFeedbackRepo_CreateSiteFeedback_Call {
 	_c.Call.Return(run)
 	return _c
 }

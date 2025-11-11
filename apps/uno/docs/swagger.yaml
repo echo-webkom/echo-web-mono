@@ -43,6 +43,23 @@ definitions:
       status:
         type: string
     type: object
+  uno_adapters_http_dto.SiteFeedbackResponse:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      isRead:
+        type: boolean
+      message:
+        type: string
+      name:
+        type: string
+    type: object
   uno_adapters_http_dto.WhitelistResponse:
     properties:
       email:
@@ -155,23 +172,6 @@ definitions:
     - RegistrationStatusUnregistered
     - RegistrationStatusPending
     - RegistrationStatusRemoved
-  uno_domain_model.SiteFeedback:
-    properties:
-      category:
-        type: string
-      createdAt:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      isRead:
-        type: boolean
-      message:
-        type: string
-      name:
-        type: string
-    type: object
   uno_domain_model.SpotRange:
     properties:
       happeningId:
@@ -607,7 +607,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.SiteFeedback'
+              $ref: '#/definitions/uno_adapters_http_dto.SiteFeedbackResponse'
             type: array
         "401":
           description: Unauthorized
@@ -632,7 +632,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_domain_model.SiteFeedback'
+            $ref: '#/definitions/uno_adapters_http_dto.SiteFeedbackResponse'
         "401":
           description: Unauthorized
           schema:
