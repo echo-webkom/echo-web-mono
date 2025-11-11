@@ -10,7 +10,7 @@ import (
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
 	"uno/domain/ports/mocks"
-	"uno/domain/services"
+	"uno/domain/service"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -56,7 +56,7 @@ func TestGetDegreesHandler(t *testing.T) {
 			mockDegreeRepo := mocks.NewDegreeRepo(t)
 			tt.setupMocks(mockDegreeRepo)
 
-			degreeService := services.NewDegreeService(mockDegreeRepo)
+			degreeService := service.NewDegreeService(mockDegreeRepo)
 			handler := api.GetDegreesHandler(testutil.NewTestLogger(), degreeService)
 
 			req := httptest.NewRequest(http.MethodGet, "/degrees", nil)
@@ -83,7 +83,7 @@ func TestCreateDegreeHandler(t *testing.T) {
 		expectError    bool
 	}{
 		{
-			name: "success",
+			name:        "success",
 			requestBody: testutil.NewFakeStruct[model.Degree](),
 			setupMocks: func(mockRepo *mocks.DegreeRepo) {
 				degree := testutil.NewFakeStruct[model.Degree]()
@@ -96,14 +96,14 @@ func TestCreateDegreeHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "invalid json",
-			requestBody: model.Degree{},
-			setupMocks:  func(mockRepo *mocks.DegreeRepo) {},
+			name:           "invalid json",
+			requestBody:    model.Degree{},
+			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
-			name: "error from repo",
+			name:        "error from repo",
 			requestBody: testutil.NewFakeStruct[model.Degree](),
 			setupMocks: func(mockRepo *mocks.DegreeRepo) {
 				mockRepo.EXPECT().
@@ -121,7 +121,7 @@ func TestCreateDegreeHandler(t *testing.T) {
 			mockDegreeRepo := mocks.NewDegreeRepo(t)
 			tt.setupMocks(mockDegreeRepo)
 
-			degreeService := services.NewDegreeService(mockDegreeRepo)
+			degreeService := service.NewDegreeService(mockDegreeRepo)
 			handler := api.CreateDegreeHandler(testutil.NewTestLogger(), degreeService)
 
 			var req *http.Request
@@ -154,7 +154,7 @@ func TestUpdateDegreeHandler(t *testing.T) {
 		expectError    bool
 	}{
 		{
-			name: "success",
+			name:        "success",
 			requestBody: testutil.NewFakeStruct[model.Degree](),
 			setupMocks: func(mockRepo *mocks.DegreeRepo) {
 				degree := testutil.NewFakeStruct[model.Degree]()
@@ -167,14 +167,14 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "invalid json",
-			requestBody: model.Degree{},
-			setupMocks:  func(mockRepo *mocks.DegreeRepo) {},
+			name:           "invalid json",
+			requestBody:    model.Degree{},
+			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    true,
 		},
 		{
-			name: "error from repo",
+			name:        "error from repo",
 			requestBody: testutil.NewFakeStruct[model.Degree](),
 			setupMocks: func(mockRepo *mocks.DegreeRepo) {
 				mockRepo.EXPECT().
@@ -192,7 +192,7 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			mockDegreeRepo := mocks.NewDegreeRepo(t)
 			tt.setupMocks(mockDegreeRepo)
 
-			degreeService := services.NewDegreeService(mockDegreeRepo)
+			degreeService := service.NewDegreeService(mockDegreeRepo)
 			handler := api.UpdateDegreeHandler(testutil.NewTestLogger(), degreeService)
 
 			var req *http.Request
@@ -237,9 +237,9 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			degreeID:    "",
-			setupMocks:  func(mockRepo *mocks.DegreeRepo) {},
+			name:           "missing id",
+			degreeID:       "",
+			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusBadRequest,
 			expectError:    false,
 		},
@@ -262,7 +262,7 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			mockDegreeRepo := mocks.NewDegreeRepo(t)
 			tt.setupMocks(mockDegreeRepo)
 
-			degreeService := services.NewDegreeService(mockDegreeRepo)
+			degreeService := service.NewDegreeService(mockDegreeRepo)
 			handler := api.DeleteDegreeHandler(testutil.NewTestLogger(), degreeService)
 
 			req := httptest.NewRequest(http.MethodDelete, "/degrees/"+tt.degreeID, nil)
@@ -280,4 +280,3 @@ func TestDeleteDegreeHandler(t *testing.T) {
 		})
 	}
 }
-

@@ -883,7 +883,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_services.ShoppingList"
+                                "$ref": "#/definitions/uno_domain_service.ShoppingList"
                             }
                         }
                     },
@@ -1550,7 +1550,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_services.ShoppingList": {
+        "uno_domain_service.ShoppingList": {
             "type": "object",
             "properties": {
                 "createdAt": {
