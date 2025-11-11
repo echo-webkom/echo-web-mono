@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 )
 
@@ -16,7 +16,7 @@ import (
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func GetShoppingList(logger ports.Logger, shoppingListService *service.ShoppingListService) router.Handler {
+func GetShoppingList(logger port.Logger, shoppingListService *service.ShoppingListService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		shoppingList, err := shoppingListService.GetShoppingList(r.Context())
 		if err != nil {

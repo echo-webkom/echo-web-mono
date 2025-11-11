@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 
 	"github.com/lib/pq"
@@ -11,10 +11,10 @@ import (
 
 type HappeningRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewHappeningRepo(db *Database, logger ports.Logger) ports.HappeningRepo {
+func NewHappeningRepo(db *Database, logger port.Logger) port.HappeningRepo {
 	return &HappeningRepo{db: db, logger: logger}
 }
 
@@ -59,7 +59,7 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (hap mo
 	return hap, nil
 }
 
-func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) (regs []ports.HappeningRegistration, err error) {
+func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) (regs []port.HappeningRegistration, err error) {
 	h.logger.Info(ctx, "getting happening registrations",
 		"happening_id", happeningID,
 	)
@@ -191,12 +191,12 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 func (h *HappeningRepo) GetHappeningRegistrationCounts(
 	ctx context.Context,
 	happeningIDs []string,
-) ([]ports.GroupedRegistrationCount, error) {
+) ([]port.GroupedRegistrationCount, error) {
 	h.logger.Info(ctx, "getting happening registration counts",
 		"happening_ids", happeningIDs,
 	)
 
-	counts := []ports.GroupedRegistrationCount{}
+	counts := []port.GroupedRegistrationCount{}
 	query := `--sql
 		SELECT
 		    h.id AS happening_id,

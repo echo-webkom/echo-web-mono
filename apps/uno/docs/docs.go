@@ -187,7 +187,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_ports.CommentWithReactionsAndUser"
+                                "$ref": "#/definitions/uno_domain_port.CommentWithReactionsAndUser"
                             }
                         }
                     },
@@ -561,7 +561,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_ports.GroupedRegistrationCount"
+                                "$ref": "#/definitions/uno_domain_port.GroupedRegistrationCount"
                             }
                         }
                     },
@@ -913,7 +913,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_ports.UserWithBanInfo"
+                                "$ref": "#/definitions/uno_domain_port.UserWithBanInfo"
                             }
                         }
                     },
@@ -979,7 +979,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_ports.UserWithStrikes"
+                                "$ref": "#/definitions/uno_domain_port.UserWithStrikes"
                             }
                         }
                     },
@@ -1386,7 +1386,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.BanInfo": {
+        "uno_domain_port.BanInfo": {
             "type": "object",
             "properties": {
                 "bannedById": {
@@ -1412,7 +1412,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.CommentWithReactionsAndUser": {
+        "uno_domain_port.CommentWithReactionsAndUser": {
             "type": "object",
             "properties": {
                 "content": {
@@ -1440,14 +1440,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/uno_domain_ports.User"
+                    "$ref": "#/definitions/uno_domain_port.User"
                 },
                 "userId": {
                     "type": "string"
                 }
             }
         },
-        "uno_domain_ports.DotInfo": {
+        "uno_domain_port.DotInfo": {
             "type": "object",
             "properties": {
                 "count": {
@@ -1476,7 +1476,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.GroupedRegistrationCount": {
+        "uno_domain_port.GroupedRegistrationCount": {
             "type": "object",
             "properties": {
                 "happeningId": {
@@ -1493,7 +1493,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.User": {
+        "uno_domain_port.User": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1507,16 +1507,16 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.UserWithBanInfo": {
+        "uno_domain_port.UserWithBanInfo": {
             "type": "object",
             "properties": {
                 "banInfo": {
-                    "$ref": "#/definitions/uno_domain_ports.BanInfo"
+                    "$ref": "#/definitions/uno_domain_port.BanInfo"
                 },
                 "dots": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/uno_domain_ports.DotInfo"
+                        "$ref": "#/definitions/uno_domain_port.DotInfo"
                     }
                 },
                 "id": {
@@ -1530,7 +1530,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_ports.UserWithStrikes": {
+        "uno_domain_port.UserWithStrikes": {
             "type": "object",
             "properties": {
                 "id": {

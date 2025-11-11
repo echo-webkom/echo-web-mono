@@ -4,7 +4,7 @@ import (
 	"uno/adapters/http/router"
 	"uno/adapters/http/routes/api"
 	"uno/config"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 
 	"github.com/jesperkha/notifier"
@@ -31,7 +31,7 @@ import (
 
 func RunServer(
 	notif *notifier.Notifier,
-	logger ports.Logger,
+	logger port.Logger,
 	config *config.Config,
 	authService *service.AuthService,
 	happeningService *service.HappeningService,

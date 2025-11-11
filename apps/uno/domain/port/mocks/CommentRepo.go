@@ -6,7 +6,7 @@ package mocks
 
 import (
 	"context"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -240,23 +240,23 @@ func (_c *CommentRepo_DeleteReactionFromComment_Call) RunAndReturn(run func(ctx 
 }
 
 // GetCommentsByID provides a mock function for the type CommentRepo
-func (_mock *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]ports.CommentWithReactionsAndUser, error) {
+func (_mock *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]port.CommentWithReactionsAndUser, error) {
 	ret := _mock.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetCommentsByID")
 	}
 
-	var r0 []ports.CommentWithReactionsAndUser
+	var r0 []port.CommentWithReactionsAndUser
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]ports.CommentWithReactionsAndUser, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]port.CommentWithReactionsAndUser, error)); ok {
 		return returnFunc(ctx, id)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []ports.CommentWithReactionsAndUser); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []port.CommentWithReactionsAndUser); ok {
 		r0 = returnFunc(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.CommentWithReactionsAndUser)
+			r0 = ret.Get(0).([]port.CommentWithReactionsAndUser)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
@@ -297,12 +297,12 @@ func (_c *CommentRepo_GetCommentsByID_Call) Run(run func(ctx context.Context, id
 	return _c
 }
 
-func (_c *CommentRepo_GetCommentsByID_Call) Return(commentWithReactionsAndUsers []ports.CommentWithReactionsAndUser, err error) *CommentRepo_GetCommentsByID_Call {
+func (_c *CommentRepo_GetCommentsByID_Call) Return(commentWithReactionsAndUsers []port.CommentWithReactionsAndUser, err error) *CommentRepo_GetCommentsByID_Call {
 	_c.Call.Return(commentWithReactionsAndUsers, err)
 	return _c
 }
 
-func (_c *CommentRepo_GetCommentsByID_Call) RunAndReturn(run func(ctx context.Context, id string) ([]ports.CommentWithReactionsAndUser, error)) *CommentRepo_GetCommentsByID_Call {
+func (_c *CommentRepo_GetCommentsByID_Call) RunAndReturn(run func(ctx context.Context, id string) ([]port.CommentWithReactionsAndUser, error)) *CommentRepo_GetCommentsByID_Call {
 	_c.Call.Return(run)
 	return _c
 }

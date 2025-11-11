@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 // RegistrationResponse represents the registration data returned in API responses.
@@ -118,8 +118,8 @@ type HappeningRegistrationResponse struct {
 	UserImage        *string    `json:"userImage,omitempty"`
 }
 
-// HappeningRegistrationListFromPorts converts a slice of ports.HappeningRegistration to DTOs.
-func HappeningRegistrationListFromPorts(registrations []ports.HappeningRegistration) []HappeningRegistrationResponse {
+// HappeningRegistrationListFromPorts converts a slice of port.HappeningRegistration to DTOs.
+func HappeningRegistrationListFromPorts(registrations []port.HappeningRegistration) []HappeningRegistrationResponse {
 	dtos := make([]HappeningRegistrationResponse, len(registrations))
 	for i, reg := range registrations {
 		dtos[i] = HappeningRegistrationResponse{

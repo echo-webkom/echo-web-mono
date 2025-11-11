@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -47,7 +47,7 @@ func (rw *responseWriter) Write(b []byte) (int, error) {
 	return n, err
 }
 
-func RequestLogger(logger ports.Logger) func(next http.Handler) http.Handler {
+func RequestLogger(logger port.Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()

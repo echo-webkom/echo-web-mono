@@ -5,16 +5,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type UsersToShoppingListItemRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewUsersToShoppingListItemRepo(db *Database, logger ports.Logger) ports.UsersToShoppingListItemRepo {
+func NewUsersToShoppingListItemRepo(db *Database, logger port.Logger) port.UsersToShoppingListItemRepo {
 	return &UsersToShoppingListItemRepo{db: db, logger: logger}
 }
 

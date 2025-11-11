@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports/mocks"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 

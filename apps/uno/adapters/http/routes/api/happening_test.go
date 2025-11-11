@@ -11,8 +11,8 @@ import (
 	"uno/adapters/http/dto"
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
-	"uno/domain/ports"
-	"uno/domain/ports/mocks"
+	"uno/domain/port"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -426,7 +426,7 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 		Once()
 	mockHappeningRepo.EXPECT().
 		GetHappeningRegistrations(mock.Anything, "happening123").
-		Return([]ports.HappeningRegistration{}, nil).
+		Return([]port.HappeningRegistration{}, nil).
 		Once()
 
 	happeningService := service.NewHappeningService(
@@ -454,7 +454,7 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 
-	counts := []ports.GroupedRegistrationCount{}
+	counts := []port.GroupedRegistrationCount{}
 	mockHappeningRepo.EXPECT().
 		GetHappeningRegistrationCounts(mock.Anything, []string{"happening123", "happening456"}).
 		Return(counts, nil).
@@ -484,7 +484,7 @@ func TestGetHappeningRegistrations(t *testing.T) {
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 
-	registrations := []ports.HappeningRegistration{}
+	registrations := []port.HappeningRegistration{}
 	mockHappeningRepo.EXPECT().
 		GetHappeningRegistrations(mock.Anything, "happening123").
 		Return(registrations, nil).

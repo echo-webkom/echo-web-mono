@@ -7,7 +7,7 @@ package mocks
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -370,23 +370,23 @@ func (_c *HappeningRepo_GetHappeningQuestions_Call) RunAndReturn(run func(ctx co
 }
 
 // GetHappeningRegistrationCounts provides a mock function for the type HappeningRepo
-func (_mock *HappeningRepo) GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]ports.GroupedRegistrationCount, error) {
+func (_mock *HappeningRepo) GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]port.GroupedRegistrationCount, error) {
 	ret := _mock.Called(ctx, happeningIDs)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetHappeningRegistrationCounts")
 	}
 
-	var r0 []ports.GroupedRegistrationCount
+	var r0 []port.GroupedRegistrationCount
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) ([]ports.GroupedRegistrationCount, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) ([]port.GroupedRegistrationCount, error)); ok {
 		return returnFunc(ctx, happeningIDs)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) []ports.GroupedRegistrationCount); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) []port.GroupedRegistrationCount); ok {
 		r0 = returnFunc(ctx, happeningIDs)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.GroupedRegistrationCount)
+			r0 = ret.Get(0).([]port.GroupedRegistrationCount)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, []string) error); ok {
@@ -427,34 +427,34 @@ func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Run(run func(ctx co
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(groupedRegistrationCounts []ports.GroupedRegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(groupedRegistrationCounts []port.GroupedRegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
 	_c.Call.Return(groupedRegistrationCounts, err)
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) RunAndReturn(run func(ctx context.Context, happeningIDs []string) ([]ports.GroupedRegistrationCount, error)) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) RunAndReturn(run func(ctx context.Context, happeningIDs []string) ([]port.GroupedRegistrationCount, error)) *HappeningRepo_GetHappeningRegistrationCounts_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // GetHappeningRegistrations provides a mock function for the type HappeningRepo
-func (_mock *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) ([]ports.HappeningRegistration, error) {
+func (_mock *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happeningID string) ([]port.HappeningRegistration, error) {
 	ret := _mock.Called(ctx, happeningID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetHappeningRegistrations")
 	}
 
-	var r0 []ports.HappeningRegistration
+	var r0 []port.HappeningRegistration
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]ports.HappeningRegistration, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]port.HappeningRegistration, error)); ok {
 		return returnFunc(ctx, happeningID)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []ports.HappeningRegistration); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []port.HappeningRegistration); ok {
 		r0 = returnFunc(ctx, happeningID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.HappeningRegistration)
+			r0 = ret.Get(0).([]port.HappeningRegistration)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
@@ -495,12 +495,12 @@ func (_c *HappeningRepo_GetHappeningRegistrations_Call) Run(run func(ctx context
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrations_Call) Return(happeningRegistrations []ports.HappeningRegistration, err error) *HappeningRepo_GetHappeningRegistrations_Call {
+func (_c *HappeningRepo_GetHappeningRegistrations_Call) Return(happeningRegistrations []port.HappeningRegistration, err error) *HappeningRepo_GetHappeningRegistrations_Call {
 	_c.Call.Return(happeningRegistrations, err)
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrations_Call) RunAndReturn(run func(ctx context.Context, happeningID string) ([]ports.HappeningRegistration, error)) *HappeningRepo_GetHappeningRegistrations_Call {
+func (_c *HappeningRepo_GetHappeningRegistrations_Call) RunAndReturn(run func(ctx context.Context, happeningID string) ([]port.HappeningRegistration, error)) *HappeningRepo_GetHappeningRegistrations_Call {
 	_c.Call.Return(run)
 	return _c
 }

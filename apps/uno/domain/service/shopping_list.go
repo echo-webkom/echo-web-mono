@@ -3,17 +3,17 @@ package service
 import (
 	"context"
 	"time"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 type ShoppingListService struct {
-	shoppingListeItemRepo       ports.ShoppingListItemRepo
-	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo
+	shoppingListeItemRepo       port.ShoppingListItemRepo
+	usersToShoppingListItemRepo port.UsersToShoppingListItemRepo
 }
 
 func NewShoppingListService(
-	shoppingListItemRepo ports.ShoppingListItemRepo,
-	usersToShoppingListItemRepo ports.UsersToShoppingListItemRepo,
+	shoppingListItemRepo port.ShoppingListItemRepo,
+	usersToShoppingListItemRepo port.UsersToShoppingListItemRepo,
 ) *ShoppingListService {
 	return &ShoppingListService{
 		shoppingListeItemRepo:       shoppingListItemRepo,
@@ -65,10 +65,10 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 	return shoppingLists, nil
 }
 
-func (s *ShoppingListService) ShoppingListItemRepo() ports.ShoppingListItemRepo {
+func (s *ShoppingListService) ShoppingListItemRepo() port.ShoppingListItemRepo {
 	return s.shoppingListeItemRepo
 }
 
-func (s *ShoppingListService) UsersToShoppingListItemRepo() ports.UsersToShoppingListItemRepo {
+func (s *ShoppingListService) UsersToShoppingListItemRepo() port.UsersToShoppingListItemRepo {
 	return s.usersToShoppingListItemRepo
 }

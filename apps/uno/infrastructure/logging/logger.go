@@ -4,8 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"os"
-
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	"go.opentelemetry.io/otel/trace"
 )
@@ -14,13 +13,13 @@ type SlogAdapter struct {
 	logger *slog.Logger
 }
 
-func New(logger *slog.Logger) ports.Logger {
+func New(logger *slog.Logger) port.Logger {
 	return &SlogAdapter{
 		logger: logger,
 	}
 }
 
-func NewWithConfig(env string) ports.Logger {
+func NewWithConfig(env string) port.Logger {
 	var handler slog.Handler
 	opts := &slog.HandlerOptions{
 		Level: slog.LevelInfo,
@@ -69,7 +68,7 @@ func (s *SlogAdapter) Error(ctx context.Context, msg string, args ...any) {
 }
 
 // With creates a new logger with additional context
-func (s *SlogAdapter) With(args ...any) ports.Logger {
+func (s *SlogAdapter) With(args ...any) port.Logger {
 	return &SlogAdapter{
 		logger: s.logger.With(args...),
 	}

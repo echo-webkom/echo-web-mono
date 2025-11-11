@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 )
 
@@ -16,7 +16,7 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/unban [post]
-func UnbanUsersWithExpiredStrikesHandler(logger ports.Logger, strikeService *service.StrikeService) router.Handler {
+func UnbanUsersWithExpiredStrikesHandler(logger port.Logger, strikeService *service.StrikeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		if err := strikeService.UnbanUsersWithExpiredStrikes(r.Context()); err != nil {
 			return http.StatusInternalServerError, ErrInternalServer
@@ -28,12 +28,12 @@ func UnbanUsersWithExpiredStrikesHandler(logger ports.Logger, strikeService *ser
 // GetUsersWithStrikesHandler returns all users with strikes and bans
 // @Summary	     Gets users with strikes and bans
 // @Tags         strikes
-// @Success      200  {array}  ports.UserWithStrikes  "OK"
+// @Success      200  {array}  port.UserWithStrikes  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/users [get]
-func GetUsersWithStrikesHandler(logger ports.Logger, strikeService *service.StrikeService) router.Handler {
+func GetUsersWithStrikesHandler(logger port.Logger, strikeService *service.StrikeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		users, err := strikeService.GetUsersWithStrikes(r.Context())
 		if err != nil {
@@ -46,12 +46,12 @@ func GetUsersWithStrikesHandler(logger ports.Logger, strikeService *service.Stri
 // GetBannedUsers returns all banned users
 // @Summary	     Gets all users that are banned
 // @Tags         strikes
-// @Success      200  {array}  ports.UserWithBanInfo  "OK"
+// @Success      200  {array}  port.UserWithBanInfo  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/banned [get]
-func GetBannedUsers(logger ports.Logger, strikeService *service.StrikeService) router.Handler {
+func GetBannedUsers(logger port.Logger, strikeService *service.StrikeService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		users, err := strikeService.GetBannedUsers(r.Context())
 		if err != nil {

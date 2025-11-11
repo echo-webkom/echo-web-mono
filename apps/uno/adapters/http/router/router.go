@@ -3,7 +3,7 @@ package router
 import (
 	"context"
 	"net/http"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -21,11 +21,11 @@ type Middleware func(Handler) Handler
 // Handler function. It also implements http.Handler.
 type Router struct {
 	mux     *chi.Mux
-	logger  ports.Logger
+	logger  port.Logger
 	cleanup func()
 }
 
-func New(serviceName string, logger ports.Logger) *Router {
+func New(serviceName string, logger port.Logger) *Router {
 	mux := chi.NewMux()
 
 	mux.Use(Telemetry(serviceName))

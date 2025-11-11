@@ -8,7 +8,7 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -107,23 +107,23 @@ func (_c *UserRepo_CreateUser_Call) RunAndReturn(run func(ctx context.Context, u
 }
 
 // GetBannedUsers provides a mock function for the type UserRepo
-func (_mock *UserRepo) GetBannedUsers(ctx context.Context) ([]ports.UserWithBanInfo, error) {
+func (_mock *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, error) {
 	ret := _mock.Called(ctx)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetBannedUsers")
 	}
 
-	var r0 []ports.UserWithBanInfo
+	var r0 []port.UserWithBanInfo
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]ports.UserWithBanInfo, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]port.UserWithBanInfo, error)); ok {
 		return returnFunc(ctx)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []ports.UserWithBanInfo); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []port.UserWithBanInfo); ok {
 		r0 = returnFunc(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.UserWithBanInfo)
+			r0 = ret.Get(0).([]port.UserWithBanInfo)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
@@ -158,12 +158,12 @@ func (_c *UserRepo_GetBannedUsers_Call) Run(run func(ctx context.Context)) *User
 	return _c
 }
 
-func (_c *UserRepo_GetBannedUsers_Call) Return(userWithBanInfos []ports.UserWithBanInfo, err error) *UserRepo_GetBannedUsers_Call {
+func (_c *UserRepo_GetBannedUsers_Call) Return(userWithBanInfos []port.UserWithBanInfo, err error) *UserRepo_GetBannedUsers_Call {
 	_c.Call.Return(userWithBanInfos, err)
 	return _c
 }
 
-func (_c *UserRepo_GetBannedUsers_Call) RunAndReturn(run func(ctx context.Context) ([]ports.UserWithBanInfo, error)) *UserRepo_GetBannedUsers_Call {
+func (_c *UserRepo_GetBannedUsers_Call) RunAndReturn(run func(ctx context.Context) ([]port.UserWithBanInfo, error)) *UserRepo_GetBannedUsers_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -439,23 +439,23 @@ func (_c *UserRepo_GetUsersWithBirthday_Call) RunAndReturn(run func(ctx context.
 }
 
 // GetUsersWithStrikes provides a mock function for the type UserRepo
-func (_mock *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]ports.UserWithStrikes, error) {
+func (_mock *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]port.UserWithStrikes, error) {
 	ret := _mock.Called(ctx)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetUsersWithStrikes")
 	}
 
-	var r0 []ports.UserWithStrikes
+	var r0 []port.UserWithStrikes
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]ports.UserWithStrikes, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]port.UserWithStrikes, error)); ok {
 		return returnFunc(ctx)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []ports.UserWithStrikes); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []port.UserWithStrikes); ok {
 		r0 = returnFunc(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]ports.UserWithStrikes)
+			r0 = ret.Get(0).([]port.UserWithStrikes)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
@@ -490,12 +490,12 @@ func (_c *UserRepo_GetUsersWithStrikes_Call) Run(run func(ctx context.Context)) 
 	return _c
 }
 
-func (_c *UserRepo_GetUsersWithStrikes_Call) Return(userWithStrikess []ports.UserWithStrikes, err error) *UserRepo_GetUsersWithStrikes_Call {
+func (_c *UserRepo_GetUsersWithStrikes_Call) Return(userWithStrikess []port.UserWithStrikes, err error) *UserRepo_GetUsersWithStrikes_Call {
 	_c.Call.Return(userWithStrikess, err)
 	return _c
 }
 
-func (_c *UserRepo_GetUsersWithStrikes_Call) RunAndReturn(run func(ctx context.Context) ([]ports.UserWithStrikes, error)) *UserRepo_GetUsersWithStrikes_Call {
+func (_c *UserRepo_GetUsersWithStrikes_Call) RunAndReturn(run func(ctx context.Context) ([]port.UserWithStrikes, error)) *UserRepo_GetUsersWithStrikes_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"uno/adapters/http/routes/api"
 	"uno/domain/model"
-	"uno/domain/ports/mocks"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 

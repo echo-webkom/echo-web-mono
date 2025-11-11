@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type AccessRequestRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewAccessRequestRepo(db *Database, logger ports.Logger) ports.AccessRequestRepo {
+func NewAccessRequestRepo(db *Database, logger port.Logger) port.AccessRequestRepo {
 	return &AccessRequestRepo{db: db, logger: logger}
 }
 

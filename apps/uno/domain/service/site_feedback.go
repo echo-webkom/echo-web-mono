@@ -1,17 +1,15 @@
 package service
 
-import (
-	"uno/domain/ports"
-)
+import "uno/domain/port"
 
 type SiteFeedbackService struct {
-	siteFeedbackRepo ports.SiteFeedbackRepo
+	siteFeedbackRepo port.SiteFeedbackRepo
 }
 
-func NewSiteFeedbackService(siteFeedbackRepo ports.SiteFeedbackRepo) *SiteFeedbackService {
+func NewSiteFeedbackService(siteFeedbackRepo port.SiteFeedbackRepo) *SiteFeedbackService {
 	return &SiteFeedbackService{siteFeedbackRepo: siteFeedbackRepo}
 }
 
-func (s *SiteFeedbackService) SiteFeedbackRepo() ports.SiteFeedbackRepo {
+func (s *SiteFeedbackService) SiteFeedbackRepo() port.SiteFeedbackRepo {
 	return s.siteFeedbackRepo
 }

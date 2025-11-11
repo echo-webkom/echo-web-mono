@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
-	"uno/domain/ports"
-	"uno/domain/ports/mocks"
+	"uno/domain/port"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -16,7 +16,7 @@ import (
 func TestShoppingListService_GetShoppingList(t *testing.T) {
 	time := time.Now()
 
-	shoppingListItems := []ports.ShoppingListItemWithCreator{
+	shoppingListItems := []port.ShoppingListItemWithCreator{
 		{
 			ShoppingListItem: model.ShoppingListItem{
 				ID:        "1",
@@ -127,10 +127,10 @@ func TestShoppingListService_GetShoppingList_ShoppingListItemRepoError(t *testin
 }
 
 func TestShoppingListService_GetShoppingList_UsersToShoppingListItemRepoError(t *testing.T) {
-	shoppingList := []ports.ShoppingListItemWithCreator{}
+	shoppingList := []port.ShoppingListItemWithCreator{}
 
 	for range 5 {
-		shoppingList = append(shoppingList, testutil.NewFakeStruct[ports.ShoppingListItemWithCreator]())
+		shoppingList = append(shoppingList, testutil.NewFakeStruct[port.ShoppingListItemWithCreator]())
 	}
 
 	mockShoppingListItemRepo := mocks.NewShoppingListItemRepo(t)

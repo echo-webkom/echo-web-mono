@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 	"uno/domain/model"
-	"uno/domain/ports/mocks"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 

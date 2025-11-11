@@ -6,7 +6,7 @@ import (
 	"uno/adapters/http/dto"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 
 	_ "uno/domain/model"
@@ -21,7 +21,7 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
-func GetWhitelistHandler(logger ports.Logger, whitelistService *service.WhitelistService) router.Handler {
+func GetWhitelistHandler(logger port.Logger, whitelistService *service.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		// Get domain models from service
 		whitelistedEmails, err := whitelistService.WhitelistRepo().GetWhitelist(r.Context())
@@ -47,7 +47,7 @@ func GetWhitelistHandler(logger ports.Logger, whitelistService *service.Whitelis
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist/{email} [get]
-func GetWhitelistByEmailHandler(logger ports.Logger, whitelistService *service.WhitelistService) router.Handler {
+func GetWhitelistByEmailHandler(logger port.Logger, whitelistService *service.WhitelistService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		email := r.PathValue("email")
 		if email == "" {

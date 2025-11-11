@@ -2,7 +2,7 @@ package service_test
 
 import (
 	"testing"
-	"uno/domain/ports/mocks"
+	"uno/domain/port/mocks"
 	"uno/domain/service"
 
 	"github.com/stretchr/testify/assert"

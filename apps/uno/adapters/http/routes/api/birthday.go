@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"uno/adapters/http/router"
 	"uno/adapters/http/util"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/domain/service"
 )
 
@@ -15,7 +15,7 @@ import (
 // @Produce      json
 // @Success      200  {array}  string  "OK"
 // @Router       /birthdays [get]
-func BirthdaysTodayHandler(logger ports.Logger, userService *service.UserService) router.Handler {
+func BirthdaysTodayHandler(logger port.Logger, userService *service.UserService) router.Handler {
 	return func(w http.ResponseWriter, r *http.Request) (int, error) {
 		users, err := userService.GetUsersWithBirthdayToday(r.Context())
 		if err != nil {

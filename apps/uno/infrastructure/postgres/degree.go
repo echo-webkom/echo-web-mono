@@ -3,16 +3,16 @@ package postgres
 import (
 	"context"
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
 )
 
 type DegreeRepo struct {
 	db     *Database
-	logger ports.Logger
+	logger port.Logger
 }
 
-func NewDegreeRepo(db *Database, logger ports.Logger) ports.DegreeRepo {
+func NewDegreeRepo(db *Database, logger port.Logger) port.DegreeRepo {
 	return &DegreeRepo{db: db, logger: logger}
 }
 

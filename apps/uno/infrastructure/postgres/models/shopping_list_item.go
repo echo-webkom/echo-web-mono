@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"uno/domain/model"
-	"uno/domain/ports"
+	"uno/domain/port"
 )
 
 // ShoppingListItemDB represents the database schema for shopping_list_item table
@@ -35,8 +35,8 @@ func (db *ShoppingListItemDB) ToDomain() *model.ShoppingListItem {
 }
 
 // ToDomain converts database model to ports model
-func (db *ShoppingListItemWithCreatorDB) ToDomain() *ports.ShoppingListItemWithCreator {
-	return &ports.ShoppingListItemWithCreator{
+func (db *ShoppingListItemWithCreatorDB) ToDomain() *port.ShoppingListItemWithCreator {
+	return &port.ShoppingListItemWithCreator{
 		ShoppingListItem: model.ShoppingListItem{
 			ID:        db.ID,
 			UserID:    db.UserID,
