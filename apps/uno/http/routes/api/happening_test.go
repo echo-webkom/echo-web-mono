@@ -13,6 +13,7 @@ import (
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/dto"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -70,19 +71,20 @@ func TestGetHappeningsHandler(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			handler := api.GetHappeningsHandler(testutil.NewTestLogger(), happeningService)
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-			req := httptest.NewRequest(http.MethodGet, "/happenings", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -147,20 +149,21 @@ func TestGetHappeningById(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			handler := api.GetHappeningById(testutil.NewTestLogger(), happeningService)
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-			req := httptest.NewRequest(http.MethodGet, "/happenings/"+tt.happeningID, nil)
-			req.SetPathValue("id", tt.happeningID)
+			r := httptest.NewRequest(http.MethodGet, "/"+tt.happeningID, nil)
+			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -225,20 +228,21 @@ func TestGetHappeningQuestions(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			handler := api.GetHappeningQuestions(testutil.NewTestLogger(), happeningService)
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-			req := httptest.NewRequest(http.MethodGet, "/happenings/"+tt.happeningID+"/questions", nil)
-			req.SetPathValue("id", tt.happeningID)
+			r := httptest.NewRequest(http.MethodGet, "/happenings/"+tt.happeningID+"/questions", nil)
+			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -383,26 +387,27 @@ func TestRegisterForHappening(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			handler := api.RegisterForHappening(testutil.NewTestLogger(), happeningService)
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-			var req *http.Request
+			var r *http.Request
 			if tt.name == "invalid json" {
-				req = httptest.NewRequest(http.MethodPost, "/happenings/"+tt.happeningID+"/register", nil)
+				r = httptest.NewRequest(http.MethodPost, "/"+tt.happeningID+"/register", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				req = httptest.NewRequest(http.MethodPost, "/happenings/"+tt.happeningID+"/register", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/"+tt.happeningID+"/register", bytes.NewReader(body))
 			}
-			req.SetPathValue("id", tt.happeningID)
+			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -436,16 +441,17 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	handler := api.GetHappeningRegistrationsCount(testutil.NewTestLogger(), happeningService)
+	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-	req := httptest.NewRequest(http.MethodGet, "/happenings/happening123/registrations/count", nil)
-	req.SetPathValue("id", "happening123")
+	r := httptest.NewRequest(http.MethodGet, "/happening123/registrations/count", nil)
+	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	status, err := handler(w, req)
+	ctx := handler.NewContext(w, r)
+	err := mux.ServeHTTPContext(ctx)
 
 	assert.NoError(t, err)
-	assert.Equal(t, http.StatusOK, status)
+	assert.Equal(t, http.StatusOK, ctx.Status())
 }
 
 func TestGetHappeningRegistrationsCountMany(t *testing.T) {
@@ -467,15 +473,16 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	handler := api.GetHappeningRegistrationsCountMany(testutil.NewTestLogger(), happeningService)
+	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-	req := httptest.NewRequest(http.MethodGet, "/happenings/registrations/count?id=happening123&id=happening456", nil)
+	r := httptest.NewRequest(http.MethodGet, "/registrations/count?id=happening123&id=happening456", nil)
 	w := httptest.NewRecorder()
 
-	status, err := handler(w, req)
+	ctx := handler.NewContext(w, r)
+	err := mux.ServeHTTPContext(ctx)
 
 	assert.NoError(t, err)
-	assert.Equal(t, http.StatusOK, status)
+	assert.Equal(t, http.StatusOK, ctx.Status())
 }
 
 func TestGetHappeningRegistrations(t *testing.T) {
@@ -497,16 +504,17 @@ func TestGetHappeningRegistrations(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	handler := api.GetHappeningRegistrations(testutil.NewTestLogger(), happeningService)
+	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-	req := httptest.NewRequest(http.MethodGet, "/happenings/happening123/registrations", nil)
-	req.SetPathValue("id", "happening123")
+	r := httptest.NewRequest(http.MethodGet, "/happening123/registrations", nil)
+	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	status, err := handler(w, req)
+	ctx := handler.NewContext(w, r)
+	err := mux.ServeHTTPContext(ctx)
 
 	assert.NoError(t, err)
-	assert.Equal(t, http.StatusOK, status)
+	assert.Equal(t, http.StatusOK, ctx.Status())
 }
 
 func TestGetHappeningSpotRanges(t *testing.T) {
@@ -530,14 +538,15 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	handler := api.GetHappeningSpotRanges(testutil.NewTestLogger(), happeningService)
+	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService)
 
-	req := httptest.NewRequest(http.MethodGet, "/happenings/happening123/spot-ranges", nil)
-	req.SetPathValue("id", "happening123")
+	r := httptest.NewRequest(http.MethodGet, "/happening123/spot-ranges", nil)
+	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	status, err := handler(w, req)
+	ctx := handler.NewContext(w, r)
+	err := mux.ServeHTTPContext(ctx)
 
 	assert.NoError(t, err)
-	assert.Equal(t, http.StatusOK, status)
+	assert.Equal(t, http.StatusOK, ctx.Status())
 }

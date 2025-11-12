@@ -7,11 +7,32 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
+	"uno/http/handler"
 	"uno/http/router"
-	"uno/http/util"
 
 	_ "uno/domain/model"
 )
+
+type happenings struct {
+	logger           port.Logger
+	happeningService *service.HappeningService
+}
+
+func NewHappeningMux(logger port.Logger, happeningService *service.HappeningService) *router.Mux {
+	mux := router.NewMux()
+	h := happenings{logger, happeningService}
+
+	mux.Handle("GET", "/", h.GetHappeningsHandler)
+	mux.Handle("GET", "/{id}", h.GetHappeningById)
+	mux.Handle("GET", "/{id}/registrations", h.GetHappeningRegistrations)
+	mux.Handle("GET", "/{id}/registrations/count", h.GetHappeningRegistrationsCount)
+	mux.Handle("GET", "/{id}/spot-ranges", h.GetHappeningSpotRanges)
+	mux.Handle("GET", "/registrations/count", h.GetHappeningRegistrationsCountMany)
+	mux.Handle("GET", "/{id}/questions", h.GetHappeningQuestions)
+	mux.Handle("POST", "/{id}/register", h.RegisterForHappening)
+
+	return mux
+}
 
 // GetHappeningsHandler returns all happenings
 // @Summary	     Get all happenings
@@ -20,21 +41,16 @@ import (
 // @Produce      json
 // @Success      200  {array}  dto.HappeningResponse  "OK"
 // @Router       /happenings [get]
-func GetHappeningsHandler(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Fetch all happenings from the repository
-		haps, err := happeningService.HappeningRepo().GetAllHappenings(ctx)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Convert domain models to DTOs
-		response := dto.HappeningListFromDomain(haps)
-
-		return util.JsonOk(w, response)
+func (h *happenings) GetHappeningsHandler(ctx *handler.Context) error {
+	// Fetch all happenings from the repository
+	haps, err := h.happeningService.HappeningRepo().GetAllHappenings(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+
+	// Convert domain models to DTOs
+	response := dto.HappeningListFromDomain(haps)
+	return ctx.JSON(response)
 }
 
 // GetHappeningById returns a happening by its ID
@@ -47,27 +63,22 @@ func GetHappeningsHandler(logger port.Logger, happeningService *service.Happenin
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
-func GetHappeningById(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Fetch the happening from the repository
-		hap, err := happeningService.HappeningRepo().GetHappeningById(ctx, id)
-		if err != nil {
-			return http.StatusNotFound, err
-		}
-
-		// Convert domain model to DTO
-		response := new(dto.HappeningResponse).FromDomain(&hap)
-
-		return util.JsonOk(w, response)
+func (h *happenings) GetHappeningById(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Fetch the happening from the repository
+	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(errors.New("happening not found"), http.StatusNotFound)
+	}
+
+	// Convert domain model to DTO
+	response := new(dto.HappeningResponse).FromDomain(&hap)
+	return ctx.JSON(response)
 }
 
 // GetHappeningRegistrationsCount returns the count of registrations for a happening
@@ -81,58 +92,54 @@ func GetHappeningById(logger port.Logger, happeningService *service.HappeningSer
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
 // @deprecated
-func GetHappeningRegistrationsCount(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Fetch the happening from the repository
-		hap, err := happeningService.HappeningRepo().GetHappeningById(ctx, id)
-		if err != nil {
-			return http.StatusNotFound, ErrInternalServer
-		}
-
-		// Fetch spot ranges
-		spotRanges, err := happeningService.HappeningRepo().GetHappeningSpotRanges(ctx, hap.ID)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Fetch registrations
-		// TODO: Aggregate directly in SQL query
-		regs, err := happeningService.HappeningRepo().GetHappeningRegistrations(ctx, hap.ID)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Aggregate registration counts
-		// - Max spots from spot ranges
-		// - Count of registered and waiting registrations
-		grp := dto.GroupedRegistration{}
-		if len(spotRanges) > 0 {
-			count := 0
-			for _, spot := range spotRanges {
-				count += spot.Spots
-			}
-			grp.Max = &count
-		}
-
-		for _, reg := range regs {
-			switch reg.Status {
-			case "waiting":
-				grp.Waiting++
-			case "registered":
-				grp.Registered++
-			}
-		}
-
-		return util.JsonOk(w, grp)
+func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Fetch the happening from the repository
+	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(errors.New("happening not found"), http.StatusNotFound)
+	}
+
+	// Fetch spot ranges
+	spotRanges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), hap.ID)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Fetch registrations
+	// TODO: Aggregate directly in SQL query
+	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), hap.ID)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Aggregate registration counts
+	// - Max spots from spot ranges
+	// - Count of registered and waiting registrations
+	grp := dto.GroupedRegistration{}
+	if len(spotRanges) > 0 {
+		count := 0
+		for _, spot := range spotRanges {
+			count += spot.Spots
+		}
+		grp.Max = &count
+	}
+
+	for _, reg := range regs {
+		switch reg.Status {
+		case "waiting":
+			grp.Waiting++
+		case "registered":
+			grp.Registered++
+		}
+	}
+
+	return ctx.JSON(grp)
 }
 
 // GetHappeningRegistrationsCountMany returns the count of registrations for a happenings
@@ -145,27 +152,23 @@ func GetHappeningRegistrationsCount(logger port.Logger, happeningService *servic
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
-func GetHappeningRegistrationsCountMany(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
+func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) error {
+	// Extract the happening IDs from the URL query parameters
+	queryParams := ctx.R.URL.Query()
+	ids := queryParams["id"]
 
-		// Extract the happening IDs from the URL query parameters
-		queryParams := r.URL.Query()
-		ids := queryParams["id"]
-
-		// If no IDs are provided, return bad request
-		if len(ids) == 0 {
-			return http.StatusBadRequest, fmt.Errorf("missing happening ids")
-		}
-
-		// Fetch the registration counts from the repository
-		counts, err := happeningService.HappeningRepo().GetHappeningRegistrationCounts(ctx, ids)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		return util.JsonOk(w, counts)
+	// If no IDs are provided, return bad request
+	if len(ids) == 0 {
+		return ctx.Error(fmt.Errorf("missing happening ids"), http.StatusBadRequest)
 	}
+
+	// Fetch the registration counts from the repository
+	counts, err := h.happeningService.HappeningRepo().GetHappeningRegistrationCounts(ctx.Context(), ids)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(counts)
 }
 
 // GetHappeningRegistrations returns all registrations for a happening
@@ -179,27 +182,22 @@ func GetHappeningRegistrationsCountMany(logger port.Logger, happeningService *se
 // @Failure      404  {string}  string   "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
-func GetHappeningRegistrations(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Fetch the registrations from the repository
-		regs, err := happeningService.HappeningRepo().GetHappeningRegistrations(ctx, id)
-		if err != nil {
-			return http.StatusNotFound, ErrInternalServer
-		}
-
-		// Convert ports models to DTOs
-		response := dto.HappeningRegistrationListFromPorts(regs)
-
-		return util.JsonOk(w, response)
+func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Fetch the registrations from the repository
+	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert ports models to DTOs
+	response := dto.HappeningRegistrationListFromPorts(regs)
+	return ctx.JSON(response)
 }
 
 // GetHappeningSpotRanges returns all spot ranges for a happening
@@ -213,27 +211,22 @@ func GetHappeningRegistrations(logger port.Logger, happeningService *service.Hap
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
-func GetHappeningSpotRanges(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Fetch the spot ranges from the repository
-		ranges, err := happeningService.HappeningRepo().GetHappeningSpotRanges(ctx, id)
-		if err != nil {
-			return http.StatusNotFound, ErrInternalServer
-		}
-
-		// Convert domain models to DTOs
-		response := dto.SpotRangeListFromDomain(ranges)
-
-		return util.JsonOk(w, response)
+func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Fetch the spot ranges from the repository
+	ranges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert domain models to DTOs
+	response := dto.SpotRangeListFromDomain(ranges)
+	return ctx.JSON(response)
 }
 
 // GetHappeningQuestions returns all questions for a happening
@@ -246,27 +239,22 @@ func GetHappeningSpotRanges(logger port.Logger, happeningService *service.Happen
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
-func GetHappeningQuestions(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		id := r.PathValue("id")
-		if id == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Fetch the questions from the repository
-		qs, err := happeningService.HappeningRepo().GetHappeningQuestions(ctx, id)
-		if err != nil {
-			return http.StatusNotFound, ErrInternalServer
-		}
-
-		// Convert domain models to DTOs
-		response := dto.QuestionListFromDomain(qs)
-
-		return util.JsonOk(w, response)
+func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Fetch the questions from the repository
+	qs, err := h.happeningService.HappeningRepo().GetHappeningQuestions(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert domain models to DTOs
+	response := dto.QuestionListFromDomain(qs)
+	return ctx.JSON(response)
 }
 
 // RegisterForHappening handles user registration for a happening
@@ -282,44 +270,40 @@ func GetHappeningQuestions(logger port.Logger, happeningService *service.Happeni
 // @Failure      500   {object}  dto.RegisterForHappeningResponse     "Internal Server Error"
 // @Security     BearerAuth
 // @Router       /happenings/{id}/register [post]
-func RegisterForHappening(logger port.Logger, happeningService *service.HappeningService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		ctx := r.Context()
-
-		// Extract the happening ID from the URL path
-		happeningID := r.PathValue("id")
-		if happeningID == "" {
-			return http.StatusBadRequest, fmt.Errorf("missing happening id")
-		}
-
-		// Parse request DTO
-		var req dto.RegisterForHappeningRequest
-		if err := util.ReadJson(r, &req); err != nil {
-			return http.StatusBadRequest, errors.New("failed to read json")
-		}
-
-		// Convert DTO to domain models
-		questions := dto.QuestionAnswerListToDomain(req.Questions)
-
-		// Call service with domain models
-		result, err := happeningService.Register(
-			ctx,
-			req.UserID,
-			happeningID,
-			questions,
-		)
-
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Convert domain result to DTO response
-		response := dto.RegisterForHappeningResponse{
-			Success:      result.Success,
-			Message:      result.Message,
-			IsWaitlisted: result.IsWaitlisted,
-		}
-
-		return util.JsonOk(w, response)
+func (h *happenings) RegisterForHappening(ctx *handler.Context) error {
+	// Extract the happening ID from the URL path
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
 	}
+
+	// Parse request DTO
+	var req dto.RegisterForHappeningRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(fmt.Errorf("bad json data"), http.StatusBadRequest)
+	}
+
+	// Convert DTO to domain models
+	questions := dto.QuestionAnswerListToDomain(req.Questions)
+
+	// Call service with domain models
+	result, err := h.happeningService.Register(
+		ctx.Context(),
+		req.UserID,
+		happeningID,
+		questions,
+	)
+
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert domain result to DTO response
+	response := dto.RegisterForHappeningResponse{
+		Success:      result.Success,
+		Message:      result.Message,
+		IsWaitlisted: result.IsWaitlisted,
+	}
+
+	return ctx.JSON(response)
 }
