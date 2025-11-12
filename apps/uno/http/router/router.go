@@ -37,29 +37,18 @@ func New(serviceName string, logger port.Logger) *Router {
 
 func (rt *Router) Handle(method string, pattern string, h handler.Handler, middleware ...handler.Middleware) {
 	rt.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
-		rctx := r.Context()
-
 		for _, m := range middleware {
 			h = m(h)
 		}
 
 		ctx := handler.NewContext(w, r)
-		err := h(ctx)
-		status := ctx.Status()
-
-		if err != nil {
-			rt.logger.Error(rctx, "request error",
+		if err := h(ctx); err != nil {
+			rt.logger.Error(r.Context(), "request error",
 				"method", method,
 				"pattern", pattern,
-				"status", status,
+				"status", ctx.Status(),
 				"error", err.Error(),
 			)
-			http.Error(w, err.Error(), status)
-			return
-		}
-
-		if status != http.StatusOK {
-			w.WriteHeader(status)
 		}
 	})
 }
