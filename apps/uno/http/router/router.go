@@ -4,18 +4,12 @@ import (
 	"context"
 	"net/http"
 	"uno/domain/port"
+	"uno/http/handler"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/jesperkha/notifier"
 )
-
-// Custom Router handler. Returns reuqests status code and error. Handlers
-// should not write status codes on their own as it is handled by Router.
-// The returned error is written to the response with http.Error.
-type Handler func(w http.ResponseWriter, r *http.Request) (int, error)
-
-type Middleware func(Handler) Handler
 
 // Router wraps chi.Mux and provides a simplified API. Routes use the internal
 // Handler function. It also implements http.Handler.
@@ -41,17 +35,20 @@ func New(serviceName string, logger port.Logger) *Router {
 	return &Router{mux, logger, func() {}}
 }
 
-func (r *Router) Handle(method string, pattern string, handler Handler, middleware ...Middleware) {
-	r.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, req *http.Request) {
-		ctx := req.Context()
+func (rt *Router) Handle(method string, pattern string, h handler.Handler, middleware ...handler.Middleware) {
+	rt.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
+		rctx := r.Context()
 
 		for _, m := range middleware {
-			handler = m(handler)
+			h = m(h)
 		}
 
-		status, err := handler(w, req)
+		ctx := handler.NewContext(w, r)
+		err := h(ctx)
+		status := ctx.Status()
+
 		if err != nil {
-			r.logger.Error(ctx, "request error",
+			rt.logger.Error(rctx, "request error",
 				"method", method,
 				"pattern", pattern,
 				"status", status,

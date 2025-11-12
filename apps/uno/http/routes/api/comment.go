@@ -19,13 +19,15 @@ type comments struct {
 	commentService *service.CommentService
 }
 
-func NewCommentMux(logger port.Logger, commentService *service.CommentService) *router.Mux {
+func NewCommentMux(logger port.Logger, commentService *service.CommentService, admin handler.Middleware) *router.Mux {
 	c := comments{logger, commentService}
 	mux := router.NewMux()
 
 	mux.Handle("POST", "/", c.CreateCommentHandler)
-	mux.Handle("GET", "/{id}", c.GetCommentsByIDHandler)
-	mux.Handle("GET", "/{id}/reaction", c.ReactToCommentHandler)
+
+	// Admin
+	mux.Handle("GET", "/{id}", c.GetCommentsByIDHandler, admin)
+	mux.Handle("GET", "/{id}/reaction", c.ReactToCommentHandler, admin)
 
 	return mux
 }

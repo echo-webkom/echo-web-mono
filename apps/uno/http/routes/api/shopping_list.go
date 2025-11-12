@@ -4,8 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/router"
-	"uno/http/util"
+	"uno/http/handler"
 )
 
 // GetShoppingList returns a list of shopping list items
@@ -16,12 +15,12 @@ import (
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func GetShoppingList(logger port.Logger, shoppingListService *service.ShoppingListService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		shoppingList, err := shoppingListService.GetShoppingList(r.Context())
+func GetShoppingList(logger port.Logger, shoppingListService *service.ShoppingListService) handler.Handler {
+	return func(ctx *handler.Context) error {
+		shoppingList, err := shoppingListService.GetShoppingList(ctx.Context())
 		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
+			return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 		}
-		return util.JsonOk(w, shoppingList)
+		return ctx.JSON(shoppingList)
 	}
 }

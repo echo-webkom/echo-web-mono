@@ -15,14 +15,16 @@ type degrees struct {
 	degreeService *service.DegreeService
 }
 
-func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService) *router.Mux {
+func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService, admin handler.Middleware) *router.Mux {
 	mux := router.NewMux()
 	d := degrees{logger, degreeService}
 
 	mux.Handle("GET", "/", d.GetDegreesHandler)
-	mux.Handle("POST", "/", d.CreateDegreeHandler)
-	mux.Handle("POST", "/{id}", d.UpdateDegreeHandler)
-	mux.Handle("DELETE", "/{id}", d.DeleteDegreeHandler)
+
+	// Admin
+	mux.Handle("POST", "/", d.CreateDegreeHandler, admin)
+	mux.Handle("POST", "/{id}", d.UpdateDegreeHandler, admin)
+	mux.Handle("DELETE", "/{id}", d.DeleteDegreeHandler, admin)
 
 	return mux
 }

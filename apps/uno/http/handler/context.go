@@ -78,3 +78,7 @@ func (c *Context) QueryParam(key string) string {
 func (c *Context) Status() int {
 	return c.status
 }
+
+func (c *Context) HeaderValue(key string) string {
+	return c.R.Header.Get(key)
+}

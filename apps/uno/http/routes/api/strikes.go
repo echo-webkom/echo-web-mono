@@ -4,9 +4,25 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/router"
-	"uno/http/util"
 )
+
+type strikes struct {
+	logger        port.Logger
+	strikeService *service.StrikeService
+}
+
+func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, admin handler.Middleware) *router.Mux {
+	mux := router.NewMux()
+	s := strikes{logger, strikesService}
+
+	mux.Handle("POST", "/unban", s.UnbanUsersWithExpiredStrikesHandler, admin)
+	mux.Handle("GET", "/banned", s.GetBannedUsers, admin)
+	mux.Handle("GET", "/users", s.GetUsersWithStrikesHandler, admin)
+
+	return mux
+}
 
 // UnbanUsersWithExpiredStrikesHandler bans users with expired strikes and bans
 // @Summary	     Unban users with expired strikes and bans
@@ -16,13 +32,11 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/unban [post]
-func UnbanUsersWithExpiredStrikesHandler(logger port.Logger, strikeService *service.StrikeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		if err := strikeService.UnbanUsersWithExpiredStrikes(r.Context()); err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return http.StatusOK, nil
+func (s *strikes) UnbanUsersWithExpiredStrikesHandler(ctx *handler.Context) error {
+	if err := s.strikeService.UnbanUsersWithExpiredStrikes(ctx.Context()); err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+	return ctx.Ok()
 }
 
 // GetUsersWithStrikesHandler returns all users with strikes and bans
@@ -33,14 +47,12 @@ func UnbanUsersWithExpiredStrikesHandler(logger port.Logger, strikeService *serv
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/users [get]
-func GetUsersWithStrikesHandler(logger port.Logger, strikeService *service.StrikeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		users, err := strikeService.GetUsersWithStrikes(r.Context())
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return util.JsonOk(w, users)
+func (s *strikes) GetUsersWithStrikesHandler(ctx *handler.Context) error {
+	users, err := s.strikeService.GetUsersWithStrikes(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+	return ctx.JSON(users)
 }
 
 // GetBannedUsers returns all banned users
@@ -51,12 +63,10 @@ func GetUsersWithStrikesHandler(logger port.Logger, strikeService *service.Strik
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/banned [get]
-func GetBannedUsers(logger port.Logger, strikeService *service.StrikeService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		users, err := strikeService.GetBannedUsers(r.Context())
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-		return util.JsonOk(w, users)
+func (s *strikes) GetBannedUsers(ctx *handler.Context) error {
+	users, err := s.strikeService.GetBannedUsers(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+	return ctx.JSON(users)
 }

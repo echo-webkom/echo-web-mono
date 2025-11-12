@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"uno/http/handler"
 	"uno/http/router"
 
 	"github.com/stretchr/testify/assert"
@@ -15,18 +16,19 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 
 	middleware := router.NewAdminMiddleware(adminKey)
 
-	handler := middleware(func(w http.ResponseWriter, r *http.Request) (int, error) {
-		return 200, nil
+	h := middleware(func(ctx *handler.Context) error {
+		return ctx.Ok()
 	})
 
-	req := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
+	r := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
 	w := httptest.NewRecorder()
 
 	// No admin key
-	req.Header.Set("X-Admin-Key", "")
+	r.Header.Set("X-Admin-Key", "")
 
-	status, _ := handler(w, req)
-	assert.Equal(t, 401, status)
+	ctx := handler.NewContext(w, r)
+	h(ctx)
+	assert.Equal(t, 401, ctx.Status())
 }
 
 // Test that it allows requests with valid admin API key
@@ -35,20 +37,21 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 
 	middleware := router.NewAdminMiddleware(adminKey)
 
-	handler := middleware(func(w http.ResponseWriter, r *http.Request) (int, error) {
-		return 200, nil
+	h := middleware(func(ctx *handler.Context) error {
+		return ctx.Ok()
 	})
 
-	req := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
+	r := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
 	w := httptest.NewRecorder()
 
 	// Valid admin key
-	req.Header.Set("X-Admin-Key", adminKey)
+	r.Header.Set("X-Admin-Key", adminKey)
 
-	status, err := handler(w, req)
+	ctx := handler.NewContext(w, r)
+	err := h(ctx)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	assert.Equal(t, 200, status)
+	assert.Equal(t, 200, ctx.Status())
 }
