@@ -67,7 +67,7 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.commentID, nil)
 			r.SetPathValue("id", tt.commentID)
@@ -143,7 +143,7 @@ func TestCreateCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -236,7 +236,7 @@ func TestReactToCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {

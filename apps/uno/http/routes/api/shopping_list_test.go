@@ -9,6 +9,7 @@ import (
 	"uno/domain/port"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -80,19 +81,20 @@ func TestGetShoppingList(t *testing.T) {
 				mockShoppingListRepo,
 				mockUsersToShoppingListRepo,
 			)
-			handler := api.GetShoppingList(testutil.NewTestLogger(), shoppingListService)
 
-			req := httptest.NewRequest(http.MethodGet, "/shopping", nil)
+			r := httptest.NewRequest(http.MethodGet, "/shopping", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			h := api.GetShoppingList(testutil.NewTestLogger(), shoppingListService)
+			ctx := handler.NewContext(w, r)
+			err := h(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }

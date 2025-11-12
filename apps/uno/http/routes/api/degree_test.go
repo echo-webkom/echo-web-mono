@@ -58,7 +58,7 @@ func TestGetDegreesHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
@@ -124,7 +124,7 @@ func TestCreateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -196,7 +196,7 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -267,7 +267,7 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService)
+			mux := api.NewDegreeMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.degreeID, nil)
 			r.SetPathValue("id", tt.degreeID)
