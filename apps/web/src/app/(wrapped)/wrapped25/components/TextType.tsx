@@ -2,12 +2,12 @@
 
 import {
   createElement,
-  ElementType,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
+  type ElementType,
 } from "react";
 import { gsap } from "gsap";
 
@@ -18,14 +18,14 @@ interface TextTypeProps {
   cursorCharacter?: string | React.ReactNode;
   cursorBlinkDuration?: number;
   cursorClassName?: string;
-  text: string | string[];
+  text: string | Array<string>;
   as?: ElementType;
   typingSpeed?: number;
   initialDelay?: number;
   pauseDuration?: number;
   deletingSpeed?: number;
   loop?: boolean;
-  textColors?: string[];
+  textColors?: Array<string>;
   variableSpeed?: { min: number; max: number };
   onSentenceComplete?: (sentence: string, index: number) => void;
   startOnVisible?: boolean;
@@ -172,6 +172,7 @@ const TextType = ({
     reverseMode,
     variableSpeed,
     onSentenceComplete,
+    getRandomSpeed,
   ]);
 
   const shouldHideCursor =
