@@ -132,7 +132,12 @@ export const RegisterButton = ({
             <span className="ml-2">Vroom...</span>
           </>
         ) : (
-          <span>One-click påmelding</span>
+          <DialogFooter>
+            <Activity mode={canSubmit ? "visible" : "hidden"}>One-click påmelding</Activity>
+            <Activity mode={canSubmit ? "hidden" : "visible"}>
+              <Countdown toDate={userRegistrationStart} />
+            </Activity>
+          </DialogFooter>
         )}
       </Button>
     );
