@@ -18,18 +18,20 @@ type happenings struct {
 	happeningService *service.HappeningService
 }
 
-func NewHappeningMux(logger port.Logger, happeningService *service.HappeningService) *router.Mux {
+func NewHappeningMux(logger port.Logger, happeningService *service.HappeningService, admin handler.Middleware) *router.Mux {
 	mux := router.NewMux()
 	h := happenings{logger, happeningService}
 
 	mux.Handle("GET", "/", h.GetHappeningsHandler)
 	mux.Handle("GET", "/{id}", h.GetHappeningById)
-	mux.Handle("GET", "/{id}/registrations", h.GetHappeningRegistrations)
 	mux.Handle("GET", "/{id}/registrations/count", h.GetHappeningRegistrationsCount)
-	mux.Handle("GET", "/{id}/spot-ranges", h.GetHappeningSpotRanges)
 	mux.Handle("GET", "/registrations/count", h.GetHappeningRegistrationsCountMany)
 	mux.Handle("GET", "/{id}/questions", h.GetHappeningQuestions)
-	mux.Handle("POST", "/{id}/register", h.RegisterForHappening)
+
+	// Admin
+	mux.Handle("GET", "/{id}/spot-ranges", h.GetHappeningSpotRanges, admin)
+	mux.Handle("GET", "/{id}/registrations", h.GetHappeningRegistrations, admin)
+	mux.Handle("POST", "/{id}/register", h.RegisterForHappening, admin)
 
 	return mux
 }

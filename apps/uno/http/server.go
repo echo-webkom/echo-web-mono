@@ -50,50 +50,34 @@ func RunServer(
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)
 
 	// Health check route
-	r.Handle("GET", "/", api.HealthHandler())
+	r.Handle("GET", "/", api.HealthHandler)
 
 	// Happening routes
-	// r.Handle("GET", "/happenings", api.GetHappeningsHandler(logger, happeningService))
-	// r.Handle("GET", "/happenings/{id}", api.GetHappeningById(logger, happeningService))
-	// r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(logger, happeningService))
-	// r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(logger, happeningService))
-	// r.Handle("GET", "/happenings/registrations/count", api.GetHappeningRegistrationsCountMany(logger, happeningService))
-	// r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(logger, happeningService), admin)
-	// r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(logger, happeningService), admin)
-	// r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService), admin)
+	r.Mount("/happenings", api.NewHappeningMux(logger, happeningService, admin))
 
 	// Degree routes
-	// r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))
-	// r.Handle("POST", "/degrees", api.CreateDegreeHandler(logger, degreeService), admin)
-	// r.Handle("POST", "/degrees/{id}", api.UpdateDegreeHandler(logger, degreeService), admin)
-	// r.Handle("DELETE", "/degrees/{id}", api.DeleteDegreeHandler(logger, degreeService), admin)
+	r.Mount("/degrees", api.NewDegreeMux(logger, degreeService, admin))
 
 	// Site feedback routes
-	r.Handle("GET", "/feedbacks", api.GetSiteFeedbacksHandler(logger, siteFeedbackService), admin)
-	r.Handle("GET", "/feedbacks/{id}", api.GetSiteFeedbackByIDHandler(logger, siteFeedbackService), admin)
+	r.Mount("/feedbacks", api.NewSiteFeedbackMux(logger, siteFeedbackService, admin))
 
 	// Shopping list routes
 	r.Handle("GET", "/shopping", api.GetShoppingList(logger, shoppingListService), admin)
 
 	// Birthday routes
-	//r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
+	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
 
 	// Strike routes
-	r.Handle("POST", "/strikes/unban", api.UnbanUsersWithExpiredStrikesHandler(logger, strikeSerivce), admin)
-	r.Handle("GET", "/strikes/users", api.GetUsersWithStrikesHandler(logger, strikeSerivce), admin)
-	r.Handle("GET", "/strikes/banned", api.GetBannedUsers(logger, strikeSerivce), admin)
+	r.Mount("/strikes", api.NewStrikesMux(logger, strikeSerivce, admin))
 
 	// Access request routes
-	//r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
+	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
 
 	// Whitelist routes
-	r.Handle("GET", "/whitelist", api.GetWhitelistHandler(logger, whitelistService), admin)
-	r.Handle("GET", "/whitelist/{email}", api.GetWhitelistByEmailHandler(logger, whitelistService), admin)
+	r.Mount("/whitelist", api.NewWhitelistMux(logger, whitelistService, admin))
 
 	// Comment routes
-	// r.Handle("GET", "/comments/{id}", api.GetCommentsByIDHandler(logger, commentService))
-	// r.Handle("POST", "/comments", api.CreateCommentHandler(logger, commentService), admin)
-	//r.Handle("POST", "/comments/{id}/reaction", api.ReactToCommentHandler(logger, commentService), admin)
+	r.Mount("/comments", api.NewCommentMux(logger, commentService, admin))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
