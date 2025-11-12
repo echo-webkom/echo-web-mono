@@ -8,6 +8,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -55,19 +56,20 @@ func TestGetWhitelistHandler(t *testing.T) {
 			tt.setupMocks(mockWhitelistRepo)
 
 			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
-			handler := api.GetWhitelistHandler(testutil.NewTestLogger(), whitelistService)
+			mux := api.NewWhitelistMux(testutil.NewTestLogger(), whitelistService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/whitelist", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -122,20 +124,21 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 			tt.setupMocks(mockWhitelistRepo)
 
 			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
-			handler := api.GetWhitelistByEmailHandler(testutil.NewTestLogger(), whitelistService)
+			mux := api.NewWhitelistMux(testutil.NewTestLogger(), whitelistService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/whitelist/"+tt.email, nil)
-			req.SetPathValue("email", tt.email)
+			r := httptest.NewRequest(http.MethodGet, "/"+tt.email, nil)
+			r.SetPathValue("email", tt.email)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }

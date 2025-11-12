@@ -8,6 +8,7 @@ import (
 	"uno/domain/port"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -74,19 +75,20 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 			tt.setupMocks(mockDotRepo, mockBanInfoRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			handler := api.UnbanUsersWithExpiredStrikesHandler(testutil.NewTestLogger(), strikeService)
+			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodPost, "/strikes/unban", nil)
+			r := httptest.NewRequest(http.MethodPost, "/unban", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -134,19 +136,20 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			handler := api.GetUsersWithStrikesHandler(testutil.NewTestLogger(), strikeService)
+			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/strikes/users", nil)
+			r := httptest.NewRequest(http.MethodGet, "/users", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -194,19 +197,20 @@ func TestGetBannedUsers(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			handler := api.GetBannedUsers(testutil.NewTestLogger(), strikeService)
+			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/strikes/banned", nil)
+			r := httptest.NewRequest(http.MethodGet, "/banned", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }

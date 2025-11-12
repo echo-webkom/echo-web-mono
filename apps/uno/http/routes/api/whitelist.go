@@ -6,11 +6,26 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
+	"uno/http/handler"
 	"uno/http/router"
-	"uno/http/util"
 
 	_ "uno/domain/model"
 )
+
+type whitelist struct {
+	logger           port.Logger
+	whitelistService *service.WhitelistService
+}
+
+func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistService, admin handler.Middleware) *router.Mux {
+	mux := router.NewMux()
+	w := whitelist{logger, whitelistService}
+
+	mux.Handle("GET", "/", w.GetWhitelistHandler, admin)
+	mux.Handle("GET", "/{email}", w.GetWhitelistByEmailHandler, admin)
+
+	return mux
+}
 
 // GetWhitelistHandler returns a list of whitelisted emails
 // @Summary	     Get whitelisted emails
@@ -21,19 +36,16 @@ import (
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
-func GetWhitelistHandler(logger port.Logger, whitelistService *service.WhitelistService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		// Get domain models from service
-		whitelistedEmails, err := whitelistService.WhitelistRepo().GetWhitelist(r.Context())
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Convert to DTOs
-		response := dto.FromWhitelistDomainList(whitelistedEmails)
-
-		return util.JsonOk(w, response)
+func (w *whitelist) GetWhitelistHandler(ctx *handler.Context) error {
+	// Get domain models from service
+	whitelistedEmails, err := w.whitelistService.WhitelistRepo().GetWhitelist(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+
+	// Convert to DTOs
+	response := dto.FromWhitelistDomainList(whitelistedEmails)
+	return ctx.JSON(response)
 }
 
 // GetWhitelistByEmailHandler returns whitelist info for a specific email
@@ -47,21 +59,18 @@ func GetWhitelistHandler(logger port.Logger, whitelistService *service.Whitelist
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist/{email} [get]
-func GetWhitelistByEmailHandler(logger port.Logger, whitelistService *service.WhitelistService) router.Handler {
-	return func(w http.ResponseWriter, r *http.Request) (int, error) {
-		email := r.PathValue("email")
-		if email == "" {
-			return http.StatusBadRequest, errors.New("missing email")
-		}
-		// Get domain model from service
-		whitelistInfo, err := whitelistService.WhitelistRepo().GetWhitelistByEmail(r.Context(), email)
-		if err != nil {
-			return http.StatusInternalServerError, ErrInternalServer
-		}
-
-		// Convert to DTO
-		response := new(dto.WhitelistResponse).FromDomain(&whitelistInfo)
-
-		return util.JsonOk(w, response)
+func (w *whitelist) GetWhitelistByEmailHandler(ctx *handler.Context) error {
+	email := ctx.PathValue("email")
+	if email == "" {
+		return ctx.Error(errors.New("missing email"), http.StatusBadRequest)
 	}
+	// Get domain model from service
+	whitelistInfo, err := w.whitelistService.WhitelistRepo().GetWhitelistByEmail(ctx.Context(), email)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert to DTO
+	response := new(dto.WhitelistResponse).FromDomain(&whitelistInfo)
+	return ctx.JSON(response)
 }

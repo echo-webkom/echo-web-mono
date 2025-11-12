@@ -8,6 +8,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -55,19 +56,20 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			handler := api.GetSiteFeedbacksHandler(testutil.NewTestLogger(), siteFeedbackService)
+			mux := api.NewSiteFeedbackMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/feedbacks", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
@@ -122,20 +124,21 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			handler := api.GetSiteFeedbackByIDHandler(testutil.NewTestLogger(), siteFeedbackService)
+			mux := api.NewSiteFeedbackMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
 
-			req := httptest.NewRequest(http.MethodGet, "/feedbacks/"+tt.feedbackID, nil)
-			req.SetPathValue("id", tt.feedbackID)
+			r := httptest.NewRequest(http.MethodGet, "/"+tt.feedbackID, nil)
+			r.SetPathValue("id", tt.feedbackID)
 			w := httptest.NewRecorder()
 
-			status, err := handler(w, req)
+			ctx := handler.NewContext(w, r)
+			err := mux.ServeHTTPContext(ctx)
 
 			if tt.expectError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, tt.expectedStatus, status)
+			assert.Equal(t, tt.expectedStatus, ctx.Status())
 		})
 	}
 }
