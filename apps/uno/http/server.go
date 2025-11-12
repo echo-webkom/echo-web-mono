@@ -53,14 +53,14 @@ func RunServer(
 	r.Handle("GET", "/", api.HealthHandler())
 
 	// Happening routes
-	r.Handle("GET", "/happenings", api.GetHappeningsHandler(logger, happeningService))
-	r.Handle("GET", "/happenings/{id}", api.GetHappeningById(logger, happeningService))
-	r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(logger, happeningService))
-	r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(logger, happeningService))
-	r.Handle("GET", "/happenings/registrations/count", api.GetHappeningRegistrationsCountMany(logger, happeningService))
-	r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(logger, happeningService), admin)
-	r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(logger, happeningService), admin)
-	r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService), admin)
+	// r.Handle("GET", "/happenings", api.GetHappeningsHandler(logger, happeningService))
+	// r.Handle("GET", "/happenings/{id}", api.GetHappeningById(logger, happeningService))
+	// r.Handle("GET", "/happenings/{id}/questions", api.GetHappeningQuestions(logger, happeningService))
+	// r.Handle("GET", "/happenings/{id}/registrations/count", api.GetHappeningRegistrationsCount(logger, happeningService))
+	// r.Handle("GET", "/happenings/registrations/count", api.GetHappeningRegistrationsCountMany(logger, happeningService))
+	// r.Handle("GET", "/happenings/{id}/registrations", api.GetHappeningRegistrations(logger, happeningService), admin)
+	// r.Handle("GET", "/happenings/{id}/spot-ranges", api.GetHappeningSpotRanges(logger, happeningService), admin)
+	// r.Handle("POST", "/happenings/{id}/register", api.RegisterForHappening(logger, happeningService), admin)
 
 	// Degree routes
 	// r.Handle("GET", "/degrees", api.GetDegreesHandler(logger, degreeService))
