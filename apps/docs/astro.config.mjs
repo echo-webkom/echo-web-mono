@@ -49,6 +49,7 @@ export default defineConfig({
         {
           label: "Guider",
           items: [
+            { label: "Ordbok", slug: "guides/ordbok" },
             { label: "Homebrew Oppsett", slug: "guides/homebrew-oppsett" },
             { label: "WSL Oppsett", slug: "guides/wsl-oppsett" },
             { label: "Sette opp Git", slug: "guides/sette-opp-git" },
