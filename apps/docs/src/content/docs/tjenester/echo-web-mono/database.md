@@ -46,11 +46,6 @@ Alle schemas ligger i `packages/db/src/schemas/`:
 - **happenings** - Arrangementer
 - **registrations** - Påmeldinger til arrangementer
 - **groups** - Grupper og undergrupper
-- **users-to-groups** - Medlemskap i grupper
-- **comments** - Kommentarer på arrangementer
-- **reactions** - Reaksjoner og emoji-responser
-- **questions** og **answers** - Spørsmål i påmeldingsskjema
-- **site-feedback** - Tilbakemeldinger fra brukere
 - Og flere...
 
 ## Bruke database-pakken

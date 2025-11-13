@@ -28,7 +28,7 @@ Alle tilgjenglige kommander kan man se ved å kjøre `cat ~/README.md` på Pi-en
 ### Frontend
 
 - **React 19**
-- **Vite** buildtool
+- **Vite** build tool
 - **Tailwind CSS** for styling
 - **TypeScript** med strict type checking
 

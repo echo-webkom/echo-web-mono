@@ -25,7 +25,6 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 - **lib** - Felles utilities og business logic
 - **email** - E-post templates og sending
 - **seeder** - Database seeding utilities
-- **config/eslint** - Delt ESLint konfigurasjon
 
 ## Teknologi-stack
 
@@ -79,7 +78,7 @@ pnpm db:setup    # Full database reset
 pnpm db:migrate  # Kjør migrasjoner
 pnpm db:generate # Generer nye migrasjoner
 pnpm seed        # Seed database med testdata
-pnpm seed database --mode <prod || dev || test> # Mogleg å velge modus til seed, modus til høgre inneholder modus til venstre
+pnpm seed database --mode <prod | dev | test>
 ```
 
 ### Testing og kvalitet

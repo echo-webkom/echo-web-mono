@@ -29,12 +29,7 @@ apps/cms/
 │   ├── happening.tsx       # Arrangementer
 │   ├── post.tsx           # Innlegg/nyheter
 │   ├── job-ad.tsx         # Stillingsannonser
-│   ├── student-group.tsx  # Studentgrupper
-│   ├── banner.tsx         # Bannere
-│   ├── company.tsx        # Bedrifter
-│   ├── merch.tsx          # Merchandise
-│   ├── movies.tsx         # Filmklubb filmer
-│   └── objects/           # Gjenbrukbare objekter
+│   ├── ...                 # Resten av schemas
 ├── src/
 │   └── desk-structure.ts  # Studio navigation struktur
 ├── migrations/            # Schema migrasjoner
@@ -83,7 +78,7 @@ apps/cms/
 - **Kontakt** - E-post, sosiale medier
 - **Profilbilde** - Avatar
 
-### Marketing og design
+### Generell informasjon
 
 #### Bannere (`banner`)
 
@@ -101,6 +96,8 @@ apps/cms/
 ## Studio-miljøer
 
 Miljøer som `develop` og `testing` er bare tilgjengelig når du kjører Sanity lokalt på PCen din. Et annet Studio-miljø vil si hvilke data du har tilgjengelig når du kjører Sanity.
+
+Når man driver å utvikle i Sanity er det anbefalt å bruke `develop` miljøet. Dette fordi det er et miljø man kan endre data fritt i uten at det påvirker produksjos-miljøet, som der igjen gjør at nettsiden endrer seg.
 
 ### Produksjon
 
@@ -188,21 +185,20 @@ pnpm deploy
 sanity deploy --dataset production
 ```
 
-### Schema migrasjoner
+### Schema extraction og typegen
+
+Etter man har gjort endringer til noen av schemas, må man kjøre `pnpm extract` for å generere en `.json`-fil vi der igjen kan bruke for å autogenere typer på queries.
 
 ```bash
-# Generer types
-pnpm typegen
-
 # Extract schema for validation
 pnpm extract
 ```
 
-### GraphQL endpoint
+Etter man har laget nye queries i `packages/sanity/src/queries`, må man kjøre `pnpm typegen` for å generere nye types. Denne er avhengig av at `pnpm extract` har blitt kjørt før eller er up-to-date.
 
 ```bash
-# Deploy GraphQL API
-pnpm deploy-graphql
+# Generer types
+pnpm typegen
 ```
 
 ## Best practices
@@ -223,17 +219,7 @@ pnpm deploy-graphql
 
 ## Troubleshooting
 
-### Schema errors
-
-```bash
-# Sjekk schema validity
-pnpm extract
-
-# Restart development server
-pnpm dev
-```
-
-### Type generation issues
+### Type generation problemer
 
 ```bash
 # Regenerer types
@@ -249,7 +235,3 @@ pnpm typegen
 - [Schema types reference](https://www.sanity.io/docs/schema-types)
 - [Sanity Studio](https://www.sanity.io/docs/sanity-studio)
 - [Plugins oversikt](https://www.sanity.io/plugins)
-
-```
-
-```

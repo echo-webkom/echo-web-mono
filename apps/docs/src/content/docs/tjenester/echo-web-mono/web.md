@@ -172,7 +172,6 @@ export default function NySide() {
 }
 
 // 2. Legg til i navigasjon hvis nødvendig
-// 3. Oppdater sitemap.ts
 ```
 
 ### Opprette ny komponent
