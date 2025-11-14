@@ -27,7 +27,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 	r.Header.Set("X-Admin-Key", "")
 
 	ctx := handler.NewContext(w, r)
-	h(ctx)
+	_ = h(ctx)
 	assert.Equal(t, 401, ctx.Status())
 }
 
