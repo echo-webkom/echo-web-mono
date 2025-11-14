@@ -4,8 +4,10 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"time"
 	"uno/domain/port"
 
+	"github.com/lmittmann/tint"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -28,7 +30,12 @@ func NewWithConfig(env string) port.Logger {
 	if env == "production" {
 		handler = slog.NewJSONHandler(os.Stdout, opts)
 	} else {
-		handler = slog.NewTextHandler(os.Stdout, opts)
+		// Pretty console logging for development with colors and formatting
+		handler = tint.NewHandler(os.Stdout, &tint.Options{
+			Level:      slog.LevelInfo,
+			TimeFormat: time.Kitchen,
+			AddSource:  false,
+		})
 	}
 
 	logger := slog.New(handler)
