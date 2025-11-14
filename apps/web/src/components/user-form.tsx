@@ -96,7 +96,8 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
     },
   );
 
-  const isAlternativeEmailVerified = user.alternativeEmail && !!user.alternativeEmailVerifiedAt;
+  // TODO: fix alternative email verification status display
+  // const isAlternativeEmailVerified = user.alternativeEmail && !!user.alternativeEmailVerifiedAt;
 
   return (
     <Form {...form}>
@@ -108,11 +109,11 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
             <FormItem>
               <FormLabel htmlFor="alternativeEmail">
                 Alternativ e-post
-                {user.alternativeEmail && isAlternativeEmailVerified ? (
+                {/* {user.alternativeEmail && isAlternativeEmailVerified ? (
                   <span className="text-green-500"> (Bekreftet)</span>
                 ) : user.alternativeEmail ? (
                   <span className="text-red-500"> (Ubekreftet)</span>
-                ) : null}
+                ) : null} */}
               </FormLabel>
               <FormControl>
                 <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
