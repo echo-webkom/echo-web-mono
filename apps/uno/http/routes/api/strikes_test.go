@@ -80,15 +80,9 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodPost, "/unban", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -141,15 +135,9 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodGet, "/users", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -202,15 +190,9 @@ func TestGetBannedUsers(t *testing.T) {
 			r := httptest.NewRequest(http.MethodGet, "/banned", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
