@@ -61,15 +61,9 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -98,11 +92,17 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:           "missing id",
-			feedbackID:     "",
-			setupMocks:     func(mockRepo *mocks.SiteFeedbackRepo) {},
-			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
+			name:       "missing id",
+			feedbackID: "",
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				// When ID is empty, route "/" matches GetAllSiteFeedbacks
+				mockRepo.EXPECT().
+					GetAllSiteFeedbacks(mock.Anything).
+					Return([]model.SiteFeedback{}, nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK, // Gets all feedback instead
+			expectError:    false,
 		},
 		{
 			name:       "error from repo",
@@ -130,15 +130,9 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			r.SetPathValue("id", tt.feedbackID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }

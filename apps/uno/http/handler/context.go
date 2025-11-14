@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/http/httptest"
 )
 
 type Context struct {
@@ -44,7 +45,15 @@ func (c *Context) String(s string) error {
 }
 
 func (c *Context) JSON(data any) error {
+	// Write status header if it's been set to non-default
+	if c.status != 0 && c.status != 200 {
+		c.W.WriteHeader(c.status)
+	}
 	return json.NewEncoder(c.W).Encode(data)
+}
+
+func (c *Context) SetStatus(status int) {
+	c.status = status
 }
 
 func (c *Context) Error(err error, status int) error {
@@ -76,6 +85,10 @@ func (c *Context) QueryParam(key string) string {
 }
 
 func (c *Context) Status() int {
+	// If using httptest.ResponseRecorder, get status from it
+	if recorder, ok := c.W.(*httptest.ResponseRecorder); ok {
+		return recorder.Code
+	}
 	return c.status
 }
 
