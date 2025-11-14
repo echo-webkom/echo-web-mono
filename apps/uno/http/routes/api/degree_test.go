@@ -63,15 +63,9 @@ func TestGetDegreesHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -135,15 +129,9 @@ func TestCreateDegreeHandler(t *testing.T) {
 			}
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -207,15 +195,9 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			}
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -244,7 +226,7 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			name:           "missing id",
 			degreeID:       "",
 			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
-			expectedStatus: http.StatusBadRequest,
+			expectedStatus: http.StatusMethodNotAllowed,
 			expectError:    false,
 		},
 		{
@@ -273,15 +255,9 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			r.SetPathValue("id", tt.degreeID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }

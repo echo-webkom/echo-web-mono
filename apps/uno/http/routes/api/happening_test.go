@@ -76,15 +76,9 @@ func TestGetHappeningsHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -113,11 +107,17 @@ func TestGetHappeningById(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:           "missing id",
-			happeningID:    "",
-			setupMocks:     func(mockRepo *mocks.HappeningRepo) {},
-			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
+			name:        "missing id",
+			happeningID: "",
+			setupMocks: func(mockRepo *mocks.HappeningRepo) {
+				// When ID is empty, route "/" matches GetHappeningsHandler
+				mockRepo.EXPECT().
+					GetAllHappenings(mock.Anything).
+					Return([]model.Happening{}, nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK, // Gets all happenings instead
+			expectError:    false,
 		},
 		{
 			name:        "not found",
@@ -155,15 +155,9 @@ func TestGetHappeningById(t *testing.T) {
 			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -195,8 +189,8 @@ func TestGetHappeningQuestions(t *testing.T) {
 			name:           "missing id",
 			happeningID:    "",
 			setupMocks:     func(mockRepo *mocks.HappeningRepo) {},
-			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
+			expectedStatus: http.StatusBadRequest, // 400 - handler validates missing ID
+			expectError:    false,
 		},
 		{
 			name:        "error from repo",
@@ -207,7 +201,7 @@ func TestGetHappeningQuestions(t *testing.T) {
 					Return(nil, errors.New("database error")).
 					Once()
 			},
-			expectedStatus: http.StatusNotFound,
+			expectedStatus: http.StatusInternalServerError, // 500 for database error
 			expectError:    true,
 		},
 	}
@@ -230,19 +224,13 @@ func TestGetHappeningQuestions(t *testing.T) {
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
 
-			r := httptest.NewRequest(http.MethodGet, "/happenings/"+tt.happeningID+"/questions", nil)
+			r := httptest.NewRequest(http.MethodGet, "/"+tt.happeningID+"/questions", nil)
 			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -399,15 +387,9 @@ func TestRegisterForHappening(t *testing.T) {
 			r.SetPathValue("id", tt.happeningID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }

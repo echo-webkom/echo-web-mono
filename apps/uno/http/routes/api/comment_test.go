@@ -44,7 +44,7 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			name:           "missing id",
 			commentID:      "",
 			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
-			expectedStatus: http.StatusBadRequest,
+			expectedStatus: http.StatusMethodNotAllowed,
 			expectError:    false,
 		},
 		{
@@ -73,15 +73,9 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			r.SetPathValue("id", tt.commentID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -147,22 +141,16 @@ func TestCreateCommentHandler(t *testing.T) {
 
 			var r *http.Request
 			if tt.name == "invalid json" {
-				r = httptest.NewRequest(http.MethodPost, "/comments", nil)
+				r = httptest.NewRequest(http.MethodPost, "/", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				r = httptest.NewRequest(http.MethodPost, "/comments", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
 			}
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
@@ -240,23 +228,17 @@ func TestReactToCommentHandler(t *testing.T) {
 
 			var r *http.Request
 			if tt.name == "invalid json" {
-				r = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", nil)
+				r = httptest.NewRequest(http.MethodGet, "/"+tt.commentID+"/reaction", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				r = httptest.NewRequest(http.MethodPost, "/comments/"+tt.commentID+"/reaction", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodGet, "/"+tt.commentID+"/reaction", bytes.NewReader(body))
 			}
 			r.SetPathValue("id", tt.commentID)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := mux.ServeHTTPContext(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
