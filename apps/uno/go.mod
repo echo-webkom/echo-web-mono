@@ -11,6 +11,7 @@ require (
 	github.com/jesperkha/notifier v1.0.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
+	github.com/lmittmann/tint v1.1.2
 	github.com/stretchr/testify v1.11.1
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.6
