@@ -81,20 +81,14 @@ func TestGetShoppingList(t *testing.T) {
 				mockShoppingListRepo,
 				mockUsersToShoppingListRepo,
 			)
+			mux := api.NewShoppingListMux(testutil.NewTestLogger(), shoppingListService, handler.NoMiddleware)
 
-			r := httptest.NewRequest(http.MethodGet, "/shopping", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			h := api.GetShoppingList(testutil.NewTestLogger(), shoppingListService)
-			ctx := handler.NewContext(w, r)
-			err := h(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }

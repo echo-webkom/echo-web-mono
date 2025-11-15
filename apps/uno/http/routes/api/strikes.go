@@ -17,6 +17,7 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 	mux := router.NewMux()
 	s := strikes{logger, strikesService}
 
+	// Admin
 	mux.Handle("POST", "/unban", s.UnbanUsersWithExpiredStrikesHandler, admin)
 	mux.Handle("GET", "/banned", s.GetBannedUsers, admin)
 	mux.Handle("GET", "/users", s.GetUsersWithStrikesHandler, admin)

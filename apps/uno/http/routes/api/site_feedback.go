@@ -19,6 +19,7 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 	mux := router.NewMux()
 	f := feedbacks{logger, feedbackService}
 
+	// Admin
 	mux.Handle("GET", "/", f.GetSiteFeedbacksHandler, admin)
 	mux.Handle("GET", "/{id}", f.GetSiteFeedbackByIDHandler, admin)
 

@@ -8,7 +8,6 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -79,20 +78,14 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			userService := service.NewUserService(mockUserRepo)
-			h := api.BirthdaysTodayHandler(testutil.NewTestLogger(), userService)
+			mux := api.NewBirthdayMux(testutil.NewTestLogger(), userService)
 
-			r := httptest.NewRequest(http.MethodGet, "/birthdays", nil)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
 
-			ctx := handler.NewContext(w, r)
-			err := h(ctx)
+			mux.ServeHTTP(w, r)
 
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectedStatus, ctx.Status())
+			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
 }
