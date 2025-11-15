@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -31,6 +32,7 @@ type DeregisterButtonProps = {
 export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<DeregistrationForm>({
@@ -57,6 +59,7 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
 
     form.reset();
     setIsOpen(false);
+    router.refresh();
   });
 
   return (

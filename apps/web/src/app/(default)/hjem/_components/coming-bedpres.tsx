@@ -2,6 +2,7 @@ import { LuClock10 } from "react-icons/lu";
 
 import { type HappeningType } from "@echo-webkom/lib";
 
+import { getRegistrationCountByHappeningIds } from "@/data/registrations/queries";
 import { fetchHomeHappenings } from "@/sanity/happening";
 import { BentoBox } from "./bento-box";
 import { HappeningPreview } from "./happening-preview";
@@ -22,16 +23,24 @@ export const ComingHappenings = async ({
   className,
 }: ComingHappeningsProps) => {
   const happenings = await fetchHomeHappenings(types, n);
+  const registrationCounts = await getRegistrationCountByHappeningIds(
+    happenings.map((happening) => happening._id),
+  );
 
   return (
     <BentoBox title={title} href={href} className={className}>
       {happenings.length > 0 ? (
         <ul className="grid grid-cols-1 gap-x-3">
-          {happenings.map((happening) => (
-            <li key={happening._id}>
-              <HappeningPreview happening={happening} />
-            </li>
-          ))}
+          {happenings.map((happening) => {
+            const registrationCount =
+              registrationCounts.find((count) => count.happeningId === happening._id) ?? null;
+
+            return (
+              <li key={happening._id}>
+                <HappeningPreview happening={happening} registrationCount={registrationCount} />
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center py-6 text-center text-gray-500">
