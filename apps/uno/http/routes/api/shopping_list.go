@@ -5,7 +5,23 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/handler"
+	"uno/http/router"
 )
+
+type shoppingList struct {
+	logger              port.Logger
+	shoppingListService *service.ShoppingListService
+}
+
+func NewShoppingListMux(logger port.Logger, shoppingListService *service.ShoppingListService, admin handler.Middleware) *router.Mux {
+	mux := router.NewMux()
+	s := shoppingList{logger, shoppingListService}
+
+	// Admin
+	mux.Handle("GET", "/", s.GetShoppingListHandler, admin)
+
+	return mux
+}
 
 // GetShoppingList returns a list of shopping list items
 // @Summary	     Get shopping list
@@ -15,12 +31,10 @@ import (
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func GetShoppingList(logger port.Logger, shoppingListService *service.ShoppingListService) handler.Handler {
-	return func(ctx *handler.Context) error {
-		shoppingList, err := shoppingListService.GetShoppingList(ctx.Context())
-		if err != nil {
-			return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
-		}
-		return ctx.JSON(shoppingList)
+func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
+	shoppingList, err := s.shoppingListService.GetShoppingList(ctx.Context())
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
+	return ctx.JSON(shoppingList)
 }
