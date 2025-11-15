@@ -2,9 +2,11 @@ package postgres
 
 import (
 	"context"
+	"sort"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/postgres/models"
 )
 
 var (
@@ -65,7 +67,7 @@ func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID 
 	return err
 }
 
-func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]port.CommentWithReactionsAndUser, error) {
+func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.CommentAggregate, error) {
 	c.logger.Info(ctx, "getting comments by post id",
 		"post_id", id,
 	)
@@ -92,17 +94,11 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]port.Co
 	}
 	defer func() { _ = rows.Close() }()
 
-	commentMap := map[string]*port.CommentWithReactionsAndUser{}
+	commentMap := map[string]*model.CommentAggregate{}
 
 	for rows.Next() {
 		var (
-			commentID         string
-			content           string
-			postID            string
-			userID            string
-			parentCommentID   *string
-			createdAt         time.Time
-			updatedAt         time.Time
+			commentDB         models.CommentDB
 			uID               *string
 			uName             *string
 			uImage            *string
@@ -112,52 +108,53 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]port.Co
 			reactionCreatedAt *time.Time
 		)
 
-		err := rows.Scan(&commentID, &content, &postID, &userID, &parentCommentID, &createdAt, &updatedAt,
+		err := rows.Scan(&commentDB.ID, &commentDB.Content, &commentDB.PostID, &commentDB.UserID, &commentDB.ParentCommentID, &commentDB.CreatedAt, &commentDB.UpdatedAt,
 			&uID, &uName, &uImage,
 			&reactionCommentID, &reactionUserID, &reactionType, &reactionCreatedAt)
 		if err != nil {
 			return nil, err
 		}
 
-		comment, exists := commentMap[commentID]
+		comment, exists := commentMap[commentDB.ID]
 		if !exists {
-			comment = &port.CommentWithReactionsAndUser{
-				Comment: model.Comment{
-					ID:              commentID,
-					Content:         content,
-					PostID:          postID,
-					UserID:          &userID,
-					ParentCommentID: parentCommentID,
-					CreatedAt:       createdAt,
-					UpdatedAt:       updatedAt,
-				},
+			comment = &model.CommentAggregate{
+				Comment:   *commentDB.ToDomain(),
 				Reactions: []model.CommentsReaction{},
 			}
 			if uID != nil {
-				comment.User = &port.User{
+				comment.User = &model.UserSummary{
 					ID:    *uID,
 					Name:  uName,
 					Image: uImage,
 				}
 			}
-			commentMap[commentID] = comment
+			commentMap[commentDB.ID] = comment
 		}
 
 		if reactionCommentID != nil && reactionUserID != nil && reactionType != nil && reactionCreatedAt != nil {
-			reaction := model.CommentsReaction{
+			reactionDB := &models.CommentsReactionDB{
 				CommentID: *reactionCommentID,
 				UserID:    *reactionUserID,
 				Type:      *reactionType,
 				CreatedAt: *reactionCreatedAt,
 			}
-			comment.Reactions = append(comment.Reactions, reaction)
+			comment.Reactions = append(comment.Reactions, *reactionDB.ToDomain())
 		}
 	}
 
-	comments := []port.CommentWithReactionsAndUser{}
+	comments := make([]model.CommentAggregate, 0, len(commentMap))
 	for _, comment := range commentMap {
+		// Sort reactions by created_at ASC (oldest first) for consistent ordering
+		sort.Slice(comment.Reactions, func(i, j int) bool {
+			return comment.Reactions[i].CreatedAt.Before(comment.Reactions[j].CreatedAt)
+		})
 		comments = append(comments, *comment)
 	}
+
+	// Sort comments by created_at DESC (newest first) to ensure consistent ordering
+	sort.Slice(comments, func(i, j int) bool {
+		return comments[i].CreatedAt.After(comments[j].CreatedAt)
+	})
 
 	return comments, nil
 }
