@@ -1,16 +1,5 @@
 basePath: /
 definitions:
-  uno_domain_model.CommentsReaction:
-    properties:
-      commentId:
-        type: string
-      createdAt:
-        type: string
-      type:
-        type: string
-      userId:
-        type: string
-    type: object
   uno_domain_port.BanInfo:
     properties:
       bannedById:
@@ -25,29 +14,6 @@ definitions:
         type: integer
       reason:
         type: string
-      userId:
-        type: string
-    type: object
-  uno_domain_port.CommentWithReactionsAndUser:
-    properties:
-      content:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      parentCommentId:
-        type: string
-      postId:
-        type: string
-      reactions:
-        items:
-          $ref: '#/definitions/uno_domain_model.CommentsReaction'
-        type: array
-      updatedAt:
-        type: string
-      user:
-        $ref: '#/definitions/uno_domain_port.User'
       userId:
         type: string
     type: object
@@ -80,15 +46,6 @@ definitions:
         type: integer
       waiting:
         type: integer
-    type: object
-  uno_domain_port.User:
-    properties:
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
     type: object
   uno_domain_port.UserWithBanInfo:
     properties:
@@ -144,6 +101,40 @@ definitions:
       id:
         type: string
       reason:
+        type: string
+    type: object
+  uno_http_dto.CommentResponse:
+    properties:
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      reactions:
+        items:
+          $ref: '#/definitions/uno_http_dto.CommentsReactionResponse'
+        type: array
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/uno_http_dto.UserSummaryResponse'
+      userId:
+        type: string
+    type: object
+  uno_http_dto.CommentsReactionResponse:
+    properties:
+      commentId:
+        type: string
+      createdAt:
+        type: string
+      type:
+        type: string
+      userId:
         type: string
     type: object
   uno_http_dto.CreateCommentRequest:
@@ -321,6 +312,15 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.UserSummaryResponse:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
   uno_http_dto.WhitelistResponse:
     properties:
       email:
@@ -441,7 +441,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_port.CommentWithReactionsAndUser'
+              $ref: '#/definitions/uno_http_dto.CommentResponse'
             type: array
         "400":
           description: Bad Request
