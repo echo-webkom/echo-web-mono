@@ -23,9 +23,8 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	c := comments{logger, commentService}
 	mux := router.NewMux()
 
-	mux.Handle("POST", "/", c.CreateCommentHandler)
-
 	// Admin
+	mux.Handle("POST", "/", c.CreateCommentHandler, admin)
 	mux.Handle("GET", "/{id}", c.GetCommentsByIDHandler, admin)
 	mux.Handle("GET", "/{id}/reaction", c.ReactToCommentHandler, admin)
 
@@ -37,7 +36,7 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 // @Tags         comments
 // @Produce      json
 // @Param        id   path      string  true  "Comment ID"
-// @Success      200  {array}   port.CommentWithReactionsAndUser  "OK"
+// @Success      200  {array}   dto.CommentResponse  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
@@ -54,7 +53,8 @@ func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	return ctx.JSON(comments)
+	response := dto.CommentsFromDomainList(comments)
+	return ctx.JSON(response)
 }
 
 // CreateCommentHandler creates a new comment
