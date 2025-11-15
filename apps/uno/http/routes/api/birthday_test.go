@@ -26,11 +26,11 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 			name: "success",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
 				users := []model.User{
-					testutil.NewFakeStruct[model.User](func(u *model.User) {
+					testutil.NewFakeStruct(func(u *model.User) {
 						name := "John Doe"
 						u.Name = &name
 					}),
-					testutil.NewFakeStruct[model.User](func(u *model.User) {
+					testutil.NewFakeStruct(func(u *model.User) {
 						name := "Jane Doe"
 						u.Name = &name
 					}),
@@ -58,7 +58,7 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 			name: "users without names",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
 				users := []model.User{
-					testutil.NewFakeStruct[model.User](func(u *model.User) {
+					testutil.NewFakeStruct(func(u *model.User) {
 						u.Name = nil
 					}),
 				}

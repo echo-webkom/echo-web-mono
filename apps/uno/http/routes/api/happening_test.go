@@ -95,7 +95,7 @@ func TestGetHappeningById(t *testing.T) {
 			name:        "success",
 			happeningID: "happening123",
 			setupMocks: func(mockRepo *mocks.HappeningRepo) {
-				happening := testutil.NewFakeStruct[model.Happening](func(h *model.Happening) {
+				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = "happening123"
 				})
 				mockRepo.EXPECT().
@@ -232,7 +232,7 @@ func TestRegisterForHappening(t *testing.T) {
 				Questions: []dto.QuestionAnswerDTO{},
 			},
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-				user := testutil.NewFakeStruct[model.User](func(u *model.User) {
+				user := testutil.NewFakeStruct(func(u *model.User) {
 					u.ID = "user123"
 					degreeID := "degree123"
 					year := 2
@@ -240,7 +240,7 @@ func TestRegisterForHappening(t *testing.T) {
 					u.Year = &year
 					u.HasReadTerms = true
 				})
-				happening := testutil.NewFakeStruct[model.Happening](func(h *model.Happening) {
+				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = "happening123"
 					h.Type = "event"                      // Set type to avoid bedpres ban check
 					now := time.Now().Add(-1 * time.Hour) // Set to 1 hour ago to ensure registration is open
@@ -271,7 +271,7 @@ func TestRegisterForHappening(t *testing.T) {
 					GetHappeningHostGroups(mock.Anything, "happening123").
 					Return([]string{}, nil).
 					Once()
-				spotRange := testutil.NewFakeStruct[model.SpotRange](func(sr *model.SpotRange) {
+				spotRange := testutil.NewFakeStruct(func(sr *model.SpotRange) {
 					sr.MinYear = 1
 					sr.MaxYear = 5
 					sr.Spots = 10
@@ -308,7 +308,7 @@ func TestRegisterForHappening(t *testing.T) {
 				Questions: []dto.QuestionAnswerDTO{},
 			},
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-				user := testutil.NewFakeStruct[model.User](func(u *model.User) {
+				user := testutil.NewFakeStruct(func(u *model.User) {
 					u.ID = "user123"
 					// User without complete profile - will fail validation
 					// Explicitly set to nil to ensure IsProfileComplete() returns false
@@ -368,7 +368,7 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 
-	happening := testutil.NewFakeStruct[model.Happening](func(h *model.Happening) {
+	happening := testutil.NewFakeStruct(func(h *model.Happening) {
 		h.ID = "happening123"
 	})
 	mockHappeningRepo.EXPECT().
