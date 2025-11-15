@@ -21,6 +21,7 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 	mux := router.NewMux()
 	w := whitelist{logger, whitelistService}
 
+	// Admin
 	mux.Handle("GET", "/", w.GetWhitelistHandler, admin)
 	mux.Handle("GET", "/{email}", w.GetWhitelistByEmailHandler, admin)
 
