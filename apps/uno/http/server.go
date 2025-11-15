@@ -62,16 +62,16 @@ func RunServer(
 	r.Mount("/feedbacks", api.NewSiteFeedbackMux(logger, siteFeedbackService, admin))
 
 	// Shopping list routes
-	r.Handle("GET", "/shopping", api.GetShoppingList(logger, shoppingListService), admin)
+	r.Mount("/shopping", api.NewShoppingListMux(logger, shoppingListService, admin))
 
 	// Birthday routes
-	r.Handle("GET", "/birthdays", api.BirthdaysTodayHandler(logger, userService))
+	r.Mount("/birthdays", api.NewBirthdayMux(logger, userService))
 
 	// Strike routes
 	r.Mount("/strikes", api.NewStrikesMux(logger, strikeSerivce, admin))
 
 	// Access request routes
-	r.Handle("GET", "/access-requests", api.GetAccessRequestsHandler(logger, accessRequestService), admin)
+	r.Mount("/access-requests", api.NewAccessRequestMux(logger, accessRequestService, admin))
 
 	// Whitelist routes
 	r.Mount("/whitelist", api.NewWhitelistMux(logger, whitelistService, admin))
