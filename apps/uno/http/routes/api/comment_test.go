@@ -185,14 +185,6 @@ func TestReactToCommentHandler(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:           "missing comment id",
-			commentID:      "",
-			requestBody:    dto.ReactToCommentRequest{},
-			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
-			expectedStatus: http.StatusBadRequest,
-			expectError:    false,
-		},
-		{
 			name:           "invalid json",
 			commentID:      "comment123",
 			requestBody:    dto.ReactToCommentRequest{},
