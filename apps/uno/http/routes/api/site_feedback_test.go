@@ -80,7 +80,7 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			name:       "success",
 			feedbackID: "feedback123",
 			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
-				feedback := testutil.NewFakeStruct[model.SiteFeedback](func(f *model.SiteFeedback) {
+				feedback := testutil.NewFakeStruct(func(f *model.SiteFeedback) {
 					f.ID = "feedback123"
 				})
 				mockRepo.EXPECT().
