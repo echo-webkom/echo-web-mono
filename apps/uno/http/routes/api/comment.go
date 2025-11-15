@@ -10,10 +10,6 @@ import (
 	"uno/http/router"
 )
 
-var (
-	errMissingId = errors.New("missing id parameter")
-)
-
 type comments struct {
 	logger         port.Logger
 	commentService *service.CommentService
@@ -44,9 +40,6 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 // @Router       /comments/{id} [get]
 func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(errMissingId, http.StatusBadRequest)
-	}
 
 	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
 	if err != nil {
@@ -98,9 +91,6 @@ func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
 // @Router       /comments/{id}/reaction [post]
 func (c *comments) ReactToCommentHandler(ctx *handler.Context) error {
 	commentID := ctx.PathValue("id")
-	if commentID == "" {
-		return ctx.Error(errMissingId, http.StatusBadRequest)
-	}
 
 	var req dto.ReactToCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {

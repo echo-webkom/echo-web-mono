@@ -125,9 +125,6 @@ func (d *degrees) UpdateDegreeHandler(ctx *handler.Context) error {
 // @Router       /degrees/{id} [delete]
 func (d *degrees) DeleteDegreeHandler(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(errors.New("missing id parameter"), http.StatusBadRequest)
-	}
 
 	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)

@@ -68,9 +68,6 @@ func (h *happenings) GetHappeningsHandler(ctx *handler.Context) error {
 func (h *happenings) GetHappeningById(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Fetch the happening from the repository
 	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
@@ -97,9 +94,6 @@ func (h *happenings) GetHappeningById(ctx *handler.Context) error {
 func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Fetch the happening from the repository
 	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
@@ -187,9 +181,6 @@ func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) er
 func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Fetch the registrations from the repository
 	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), id)
@@ -216,9 +207,6 @@ func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
 func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Fetch the spot ranges from the repository
 	ranges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), id)
@@ -244,9 +232,6 @@ func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
 func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
-	if id == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Fetch the questions from the repository
 	qs, err := h.happeningService.HappeningRepo().GetHappeningQuestions(ctx.Context(), id)
@@ -275,9 +260,6 @@ func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
 func (h *happenings) RegisterForHappening(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	happeningID := ctx.PathValue("id")
-	if happeningID == "" {
-		return ctx.Error(fmt.Errorf("missing happening id"), http.StatusBadRequest)
-	}
 
 	// Parse request DTO
 	var req dto.RegisterForHappeningRequest

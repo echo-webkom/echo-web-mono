@@ -1,7 +1,6 @@
 package api
 
 import (
-	"errors"
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -62,9 +61,7 @@ func (w *whitelist) GetWhitelistHandler(ctx *handler.Context) error {
 // @Router       /whitelist/{email} [get]
 func (w *whitelist) GetWhitelistByEmailHandler(ctx *handler.Context) error {
 	email := ctx.PathValue("email")
-	if email == "" {
-		return ctx.Error(errors.New("missing email"), http.StatusBadRequest)
-	}
+
 	// Get domain model from service
 	whitelistInfo, err := w.whitelistService.WhitelistRepo().GetWhitelistByEmail(ctx.Context(), email)
 	if err != nil {

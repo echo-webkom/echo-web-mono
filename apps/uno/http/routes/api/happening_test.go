@@ -107,19 +107,6 @@ func TestGetHappeningById(t *testing.T) {
 			expectError:    false,
 		},
 		{
-			name:        "missing id",
-			happeningID: "",
-			setupMocks: func(mockRepo *mocks.HappeningRepo) {
-				// When ID is empty, route "/" matches GetHappeningsHandler
-				mockRepo.EXPECT().
-					GetAllHappenings(mock.Anything).
-					Return([]model.Happening{}, nil).
-					Once()
-			},
-			expectedStatus: http.StatusOK, // Gets all happenings instead
-			expectError:    false,
-		},
-		{
 			name:        "not found",
 			happeningID: "happening123",
 			setupMocks: func(mockRepo *mocks.HappeningRepo) {
@@ -183,13 +170,6 @@ func TestGetHappeningQuestions(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
-		},
-		{
-			name:           "missing id",
-			happeningID:    "",
-			setupMocks:     func(mockRepo *mocks.HappeningRepo) {},
-			expectedStatus: http.StatusBadRequest, // 400 - handler validates missing ID
 			expectError:    false,
 		},
 		{
@@ -310,18 +290,6 @@ func TestRegisterForHappening(t *testing.T) {
 			},
 			expectedStatus: http.StatusOK,
 			expectError:    false,
-		},
-		{
-			name:        "missing happening id",
-			happeningID: "",
-			requestBody: dto.RegisterForHappeningRequest{
-				UserID:    "user123",
-				Questions: []dto.QuestionAnswerDTO{},
-			},
-			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-			},
-			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name:        "invalid json",
