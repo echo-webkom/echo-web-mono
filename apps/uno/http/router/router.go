@@ -7,6 +7,7 @@ import (
 	"uno/http/handler"
 
 	"github.com/go-chi/chi/v5"
+	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/jesperkha/notifier"
 )
@@ -22,6 +23,7 @@ type Router struct {
 func New(serviceName string, logger port.Logger) *Router {
 	mux := chi.NewMux()
 
+	mux.Use(chiMiddleware.StripSlashes)
 	mux.Use(Telemetry(serviceName))
 	mux.Use(RequestLogger(logger))
 	mux.Use(cors.Handler(cors.Options{
