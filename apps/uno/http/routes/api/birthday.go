@@ -35,7 +35,7 @@ func (b *birthdays) BirthdaysTodayHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	var names []string
+	names := []string{}
 	for _, user := range users {
 		if user.Name != nil {
 			names = append(names, *user.Name)
