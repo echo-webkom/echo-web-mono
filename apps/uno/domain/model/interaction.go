@@ -2,7 +2,8 @@ package model
 
 import "time"
 
-// SiteFeedback represents a site feedback entry in the domain
+// SiteFeedback represents a user's feedback about the website.
+// This is a domain entity that encapsulates feedback data and behavior.
 type SiteFeedback struct {
 	ID        string
 	Name      *string
@@ -13,7 +14,7 @@ type SiteFeedback struct {
 	CreatedAt time.Time
 }
 
-// NewSiteFeedback represents the data required to create a new site feedback entry.
+// NewSiteFeedback is a value object representing the data required to create new feedback.
 type NewSiteFeedback struct {
 	Name     *string
 	Email    *string
@@ -21,7 +22,8 @@ type NewSiteFeedback struct {
 	Category string
 }
 
-// Reaction represents a generic reaction in the domain
+// Reaction represents a user's emotional response to content.
+// This is a domain entity that tracks reactions to various content types.
 type Reaction struct {
 	ReactToKey string
 	EmojiID    int
@@ -29,36 +31,56 @@ type Reaction struct {
 	CreatedAt  time.Time
 }
 
-// NewReaction represents the data required to create a new reaction.
+// NewReaction is a value object containing the data needed to create a new reaction.
 type NewReaction struct {
-	// The hash of the entity being reacted to.
-	// A post for example could have a reactToKey of "post_<postID>"
-	// while a happening/event could have "event_<happeningID>"
+	// ReactToKey is the unique identifier of the entity being reacted to.
+	// Format: "<entity_type>_<entity_id>" (e.g., "post_123", "event_456")
 	ReactToKey string
-	// The ID of the emoji being used for the reaction.
+	// EmojiID is the identifier of the emoji used for this reaction.
 	EmojiID int
 	UserID  string
 }
 
-// IsValid checks if the NewReaction has valid fields.
-// Returns true if ReactToKey is not empty, EmojiID is between 0 and 4, and UserID is not empty.
+// IsValid validates the NewReaction value object.
+// Returns true if all required fields are present and within valid ranges.
 func (r NewReaction) IsValid() bool {
 	return r.ReactToKey != "" && r.EmojiID >= 0 && r.EmojiID <= 4 && r.UserID != ""
 }
 
+// Comment represents a user's comment on a post.
+// This is a domain entity that can be part of a threaded discussion.
 type Comment struct {
-	ID              string    `db:"id" json:"id"`
-	PostID          string    `db:"post_id" json:"postId"`
-	ParentCommentID *string   `db:"parent_comment_id" json:"parentCommentId"`
-	UserID          *string   `db:"user_id" json:"userId"`
-	Content         string    `db:"content" json:"content"`
-	CreatedAt       time.Time `db:"created_at" json:"createdAt"`
-	UpdatedAt       time.Time `db:"updated_at" json:"updatedAt"`
+	ID              string
+	PostID          string
+	ParentCommentID *string
+	UserID          *string
+	Content         string
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }
 
+// CommentsReaction represents a user's reaction to a comment.
+// This is a domain entity that tracks engagement with comments.
 type CommentsReaction struct {
-	CommentID string    `db:"comment_id" json:"commentId"`
-	UserID    string    `db:"user_id" json:"userId"`
-	Type      string    `db:"type" json:"type"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	CommentID string
+	UserID    string
+	Type      string
+	CreatedAt time.Time
+}
+
+// UserSummary is a value object containing minimal user information
+// for display purposes in aggregates like comments.
+type UserSummary struct {
+	ID    string
+	Name  *string
+	Image *string
+}
+
+// CommentAggregate is an aggregate root that combines a comment with its
+// associated reactions and user information. This represents a complete
+// view of a comment as needed by the application layer.
+type CommentAggregate struct {
+	Comment
+	Reactions []CommentsReaction
+	User      *UserSummary
 }

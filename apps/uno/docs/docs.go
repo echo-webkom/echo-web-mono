@@ -187,7 +187,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_port.CommentWithReactionsAndUser"
+                                "$ref": "#/definitions/uno_http_dto.CommentResponse"
                             }
                         }
                     },
@@ -1090,23 +1090,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "uno_domain_model.CommentsReaction": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_port.BanInfo": {
             "type": "object",
             "properties": {
@@ -1127,41 +1110,6 @@ const docTemplate = `{
                 },
                 "reason": {
                     "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_port.CommentWithReactionsAndUser": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "reactions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.CommentsReaction"
-                    }
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/uno_domain_port.User"
                 },
                 "userId": {
                     "type": "string"
@@ -1211,20 +1159,6 @@ const docTemplate = `{
                 },
                 "waiting": {
                     "type": "integer"
-                }
-            }
-        },
-        "uno_domain_port.User": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
                 }
             }
         },
@@ -1310,6 +1244,58 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CommentResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "parentCommentId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                },
+                "reactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.CommentsReactionResponse"
+                    }
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/uno_http_dto.UserSummaryResponse"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CommentsReactionResponse": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }
@@ -1577,6 +1563,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
                     "type": "string"
                 },
                 "name": {

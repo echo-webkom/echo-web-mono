@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"uno/domain/port"
+	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -31,7 +31,7 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			name:      "success",
 			commentID: "comment123",
 			setupMocks: func(mockRepo *mocks.CommentRepo) {
-				comments := []port.CommentWithReactionsAndUser{}
+				comments := []model.CommentAggregate{}
 				mockRepo.EXPECT().
 					GetCommentsByID(mock.Anything, "comment123").
 					Return(comments, nil).
