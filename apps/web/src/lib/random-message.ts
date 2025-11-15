@@ -72,7 +72,9 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Godt nyttår! ✨", when: () => getMonth(new Date()) === 0 && getDate(new Date()) === 1 }, // New Year's Day
   { text: "New week, new me?", when: () => isMonday(new Date()) },
   { text: "JavaScript™", link: "https://javascript.tm" },
-  { text: "Jeg er ikke bare konsulent. Jeg er den typen konsulent som blir tilkalt når noen sier at ‘dette egentlig ikke lar seg gjøre’. Jeg er løsningsorientert helt ned på cellenivå, designer rammeverk ingen ba om, og leverer PowerPoints tyngre enn selve strategien. Jeg fakturerer før du rekker å si ‘arbeidsprosess’, og jeg elsker prosjekter som allerede står i full fyr. Uklare roller? Perfekt. Urealistiske forventninger? Enda bedre. Jeg er her for å skape verdi for kundene – ofte på måter de ikke forstår før de får fakturaen. Jeg er konsulent. Jeg fikser ikke bare problemer. Jeg produktifiserer dem." },
+  { 
+    text: "Jeg er ikke bare konsulent. Jeg er den typen konsulent som blir tilkalt når noen sier at ‘dette egentlig ikke lar seg gjøre’. Jeg er løsningsorientert helt ned på cellenivå, designer rammeverk ingen ba om, og leverer PowerPoints tyngre enn selve strategien. Jeg fakturerer før du rekker å si ‘arbeidsprosess’, og jeg elsker prosjekter som allerede står i full fyr. Uklare roller? Perfekt. Urealistiske forventninger? Enda bedre. Jeg er her for å skape verdi for kundene – ofte på måter de ikke forstår før de får fakturaen. Jeg er konsulent. Jeg fikser ikke bare problemer. Jeg produktifiserer dem."
+  },
 ];
 
 export const getRandomMessage = (): MessageItem => {
