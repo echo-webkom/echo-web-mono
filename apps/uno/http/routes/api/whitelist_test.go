@@ -80,7 +80,7 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 			name:  "success",
 			email: "test@example.com",
 			setupMocks: func(mockRepo *mocks.WhitelistRepo) {
-				whitelist := testutil.NewFakeStruct[model.Whitelist](func(w *model.Whitelist) {
+				whitelist := testutil.NewFakeStruct(func(w *model.Whitelist) {
 					w.Email = "test@example.com"
 				})
 				mockRepo.EXPECT().
