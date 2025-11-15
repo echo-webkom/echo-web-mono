@@ -59,9 +59,6 @@ func (f *feedbacks) GetSiteFeedbacksHandler(ctx *handler.Context) error {
 func (f *feedbacks) GetSiteFeedbackByIDHandler(ctx *handler.Context) error {
 	// Get the feedback ID from the path
 	feedbackID := ctx.PathValue("id")
-	if feedbackID == "" {
-		return ctx.Error(errors.New("missing site feedback id"), http.StatusBadRequest)
-	}
 
 	// Fetch feedback with the given ID from the repository
 	feedback, err := f.feedbackService.SiteFeedbackRepo().GetSiteFeedbackByID(ctx.Context(), feedbackID)
