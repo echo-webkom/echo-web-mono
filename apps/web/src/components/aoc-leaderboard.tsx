@@ -41,7 +41,10 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
       )}
     >
       <div className="relative h-full min-h-[400px]">
-        <AocCountdownOverlay joinUrl={`https://adventofcode.com/${YEAR}/leaderboard/private`} />
+        <AocCountdownOverlay
+          joinUrl={`https://adventofcode.com/${YEAR}/leaderboard/private`}
+          leaderboardId={LEADERBOARD_ID}
+        />
         <p className="mb-4 text-gray-400">
           Bli med ved å joine {LEADERBOARD_ID} her:{" "}
           <a href="https://adventofcode.com/2025/leaderboard/private" className="underline">

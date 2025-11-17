@@ -20,9 +20,10 @@ const TARGET_DATE = getTargetDate();
 
 type AocCountdownOverlayProps = {
   joinUrl: string;
+  leaderboardId: string;
 };
 
-export const AocCountdownOverlay = ({ joinUrl }: AocCountdownOverlayProps) => {
+export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOverlayProps) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -111,6 +112,7 @@ export const AocCountdownOverlay = ({ joinUrl }: AocCountdownOverlayProps) => {
         >
           Bli med ved å trykke her
         </a>
+        <p className="mt-2 font-mono text-sm text-gray-400">Kode: {leaderboardId}</p>
       </div>
     </div>
   );
