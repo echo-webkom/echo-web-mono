@@ -34,19 +34,21 @@ type MappedMember = {
 };
 
 export const fetchAocLeaderboard = async () => {
-  const response = await fetch(`${LEADERBOARD_URL}.json`, {
-    credentials: "include",
-    headers: {
-      Cookie: `${SESSION_COOKIE_NAME}=${SESSION_COOKIE_VALUE}`,
-    },
-    next: {
-      revalidate: 900,
-    },
-  });
-
   try {
+    const response = await fetch(`${LEADERBOARD_URL}.json`, {
+      credentials: "include",
+      headers: {
+        Cookie: `${SESSION_COOKIE_NAME}=${SESSION_COOKIE_VALUE}`,
+        "User-Agent": "echo-web (https://echo.uib.no)",
+      },
+      next: {
+        revalidate: 900,
+      },
+    });
+
     return (await response.json()) as Leaderboard;
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch AOC leaderboard", error);
     return null;
   }
 };
