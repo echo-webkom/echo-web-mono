@@ -1,8 +1,8 @@
-const LEADERBOARD_ID = "3293269";
-const YEAR = "2024";
-const SESSION_COOKIE_NAME = "session";
-const LEADERBOARD_URL = `https://adventofcode.com/${YEAR}/leaderboard/private/view/${LEADERBOARD_ID}.json`;
-const SESSION_COOKIE_VALUE = process.env.AOC_SESSION_COOKIE;
+export const LEADERBOARD_ID = "3293269";
+export const YEAR = "2024"; // TODO: Update year
+export const SESSION_COOKIE_NAME = "session";
+export const LEADERBOARD_URL = `https://adventofcode.com/${YEAR}/leaderboard/private/view/${LEADERBOARD_ID}`;
+export const SESSION_COOKIE_VALUE = process.env.AOC_SESSION_COOKIE;
 
 type StarInfo = {
   star_index: number;
@@ -26,13 +26,19 @@ type Leaderboard = {
   event: string;
 };
 
-export const fetchAocLeaderboard = async () => {
-  const headers = new Headers();
-  headers.append("cookie", `${SESSION_COOKIE_NAME}=${SESSION_COOKIE_VALUE}`);
+type MappedMember = {
+  id: number;
+  name: string;
+  localScore: number;
+  days: Record<string, 0 | 1 | 2>;
+};
 
-  const response = await fetch(LEADERBOARD_URL, {
+export const fetchAocLeaderboard = async () => {
+  const response = await fetch(`${LEADERBOARD_URL}.json`, {
     credentials: "include",
-    headers: headers,
+    headers: {
+      Cookie: `${SESSION_COOKIE_NAME}=${SESSION_COOKIE_VALUE}`,
+    },
     next: {
       revalidate: 900,
     },
@@ -45,14 +51,7 @@ export const fetchAocLeaderboard = async () => {
   }
 };
 
-type MappedLeaderboard = Array<{
-  id: number;
-  name: string;
-  localScore: number;
-  days: Record<string, 0 | 1 | 2>;
-}>;
-
-export const mapAocLeaderboard = (leaderboard: Leaderboard): MappedLeaderboard => {
+export const mapAocLeaderboard = (leaderboard: Leaderboard): Array<MappedMember> => {
   const { members } = leaderboard;
 
   return Object.values(members)
