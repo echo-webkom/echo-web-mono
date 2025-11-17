@@ -72,6 +72,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Godt nyttår! ✨", when: () => getMonth(new Date()) === 0 && getDate(new Date()) === 1 }, // New Year's Day
   { text: "New week, new me?", when: () => isMonday(new Date()) },
   { text: "JavaScript™", link: "https://javascript.tm" },
+  { text: "Norge skal til VM 🇳🇴" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
