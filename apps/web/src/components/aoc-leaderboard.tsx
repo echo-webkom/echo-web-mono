@@ -30,6 +30,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
   }
 
   const list = mapAocLeaderboard(leaderboard).slice(0, 13);
+  const userCount = Object.keys(leaderboard.members).length;
 
   return (
     <BentoBox
@@ -44,6 +45,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
         <AocCountdownOverlay
           joinUrl={`https://adventofcode.com/${YEAR}/leaderboard/private`}
           leaderboardId={LEADERBOARD_ID}
+          userCount={userCount}
         />
         <p className="mb-4 text-gray-400">
           Bli med ved å joine {LEADERBOARD_ID} her:{" "}

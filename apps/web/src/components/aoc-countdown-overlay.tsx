@@ -21,9 +21,14 @@ const TARGET_DATE = getTargetDate();
 type AocCountdownOverlayProps = {
   joinUrl: string;
   leaderboardId: string;
+  userCount: number;
 };
 
-export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOverlayProps) => {
+export const AocCountdownOverlay = ({
+  joinUrl,
+  leaderboardId,
+  userCount,
+}: AocCountdownOverlayProps) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -80,6 +85,9 @@ export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOver
         <h3 className="mb-4 text-xl font-bold text-white sm:text-2xl">
           Bli med på Advent of Code!
         </h3>
+        <p className="mb-4 text-sm text-gray-300 sm:text-base">
+          {userCount} {userCount === 1 ? "person" : "personer"} har allerede blitt med!
+        </p>
         <div className="mb-4 flex items-center justify-center gap-2 font-mono text-2xl font-bold text-[#298a08] sm:text-3xl">
           <div className="flex flex-col items-center">
             <span>{String(timeLeft?.days ?? 0).padStart(2, "0")}</span>
