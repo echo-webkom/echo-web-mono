@@ -3,11 +3,13 @@ type SnowFlakeProps = {
 };
 
 export const Snowflake = ({ color }: SnowFlakeProps) => {
+  // eslint-disable-next-line react-hooks/purity
+  const size = Math.floor(Math.random() * 20) + 10;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="50px"
-      height="50px"
+      width={size}
+      height="75px"
       viewBox="0 0 24 24"
       fill="none"
     >
