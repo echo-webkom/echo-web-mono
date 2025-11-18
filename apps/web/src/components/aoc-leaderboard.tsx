@@ -62,7 +62,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
                 <span className="block w-[60px] shrink-0 sm:hidden">{name}</span>
                 <span className="w-[40px] shrink-0">{user.localScore}</span>
                 <div className="flex shrink-0 items-center">
-                  {Array.from({ length: 25 }).map((_, i) => {
+                  {Array.from({ length: 12 }).map((_, i) => {
                     const completed = user.days[i + 1];
                     return (
                       <span
