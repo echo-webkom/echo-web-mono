@@ -66,7 +66,7 @@ export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOver
   // Show loading state while calculating
   if (!isCalculated) {
     return (
-      <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-lg bg-[#0f0f23]/95">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-[#0f0f23]/95">
         <div className="text-center">
           <p className="text-sm text-gray-300">Laster...</p>
         </div>
@@ -75,7 +75,7 @@ export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOver
   }
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-lg bg-[#0f0f23]/95">
+    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-[#0f0f23]/95">
       <div className="text-center">
         <h3 className="mb-4 text-xl font-bold text-white sm:text-2xl">
           Bli med på Advent of Code!
@@ -112,7 +112,7 @@ export const AocCountdownOverlay = ({ joinUrl, leaderboardId }: AocCountdownOver
         >
           Bli med ved å trykke her
         </a>
-        <p className="mt-2 font-mono text-sm text-gray-400">Kode: {leaderboardId}</p>
+        <p className="mt-2 font-mono text-sm text-gray-400">Kode: {leaderboardId}-fc78f7d2</p>
       </div>
     </div>
   );

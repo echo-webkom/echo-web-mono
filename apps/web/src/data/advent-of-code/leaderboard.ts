@@ -1,5 +1,5 @@
 export const LEADERBOARD_ID = "3293269";
-export const YEAR = "2024"; // TODO: Update year
+export const YEAR = "2025"; // TODO: Update year
 export const SESSION_COOKIE_NAME = "session";
 export const LEADERBOARD_URL = `https://adventofcode.com/${YEAR}/leaderboard/private/view/${LEADERBOARD_ID}`;
 export const SESSION_COOKIE_VALUE = process.env.AOC_SESSION_COOKIE;
