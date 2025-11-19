@@ -114,16 +114,18 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
           {keys.map((key) => {
             // eslint-disable-next-line react-hooks/purity
             const offset = Math.floor(Math.random() * 95);
-
             // eslint-disable-next-line react-hooks/purity
             const color = colors[Math.floor(Math.random() * colors.length)]!;
+            // eslint-disable-next-line react-hooks/purity
+            const speed = Math.floor(Math.random() * 10) + 10;
             return (
               <AnimatedSnowFlake
                 delay={key * 0.5}
-                repeatDelay={15}
+                repeatDelay={20}
                 offset={`${offset}%`}
                 key={key}
                 color={color}
+                speed={speed}
               />
             );
           })}
@@ -138,6 +140,7 @@ type AnimatedSnowFlakeProps = {
   delay: number;
   repeatDelay: number;
   color: string;
+  speed: number;
 };
 
 export const AnimatedSnowFlake = ({
@@ -145,6 +148,7 @@ export const AnimatedSnowFlake = ({
   delay,
   repeatDelay,
   color,
+  speed,
 }: AnimatedSnowFlakeProps) => (
   <motion.div
     style={{
@@ -155,13 +159,13 @@ export const AnimatedSnowFlake = ({
     initial={{ opacity: 0, y: "-10%" }}
     animate={{
       y: "500%",
-      opacity: [0, 1, 1, 1, 1, 1, 0],
+      opacity: [0, 1, 1, 1, 1, 0, 0],
       rotate: [0, 10, -10, 0],
     }}
     transition={{
       delay: delay,
       repeatDelay: repeatDelay,
-      duration: 10,
+      duration: speed,
       repeat: Number.POSITIVE_INFINITY,
     }}
   >
