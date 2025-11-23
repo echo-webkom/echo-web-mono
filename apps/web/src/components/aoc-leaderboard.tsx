@@ -48,7 +48,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
           userCount={userCount}
         />
         <p className="mb-4 text-gray-400">
-          Bli med ved å joine {LEADERBOARD_ID} her:{" "}
+          Bli med ved å joine {LEADERBOARD_ID}-fc78f7d2 her:{" "}
           <a href="https://adventofcode.com/2025/leaderboard/private" className="underline">
             https://adventofcode.com/2025/leaderboard/private
           </a>
