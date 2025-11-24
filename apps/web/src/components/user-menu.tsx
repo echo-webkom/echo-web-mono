@@ -44,12 +44,12 @@ export const UserMenu = ({ user }: UserMenuProps) => {
             <Image
               src={user.image}
               alt="User image"
-              className="h-7 w-7 rounded-full"
+              className="h-7 w-7 cursor-pointer rounded-full"
               width={64}
               height={64}
             />
           ) : (
-            <Avatar className="h-7 w-7" />
+            <Avatar className="h-7 w-7 cursor-pointer" />
           )}
         </button>
       </DropdownMenuTrigger>
