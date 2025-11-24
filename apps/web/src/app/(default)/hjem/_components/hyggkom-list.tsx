@@ -18,7 +18,7 @@ export const HyggkomList = async ({ className }: { className?: string }) => {
       name: item.name,
       user: null,
       likes: item.likes.length,
-      hasLiked: item.likes.some((like) => user?.id && like.userId === user.id),
+      hasLiked: user ? item.likes.includes(user.id) : false,
     }))
     .sort((a, b) => b.likes - a.likes)
     .slice(0, 6);
