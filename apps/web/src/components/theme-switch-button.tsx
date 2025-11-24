@@ -26,7 +26,7 @@ export const ThemeSwitchButton = () => {
   return (
     <button
       onClick={toggleTheme}
-      className={cn("h-8 w-8 transition", {
+      className={cn("h-8 w-8 cursor-pointer transition", {
         "opacity-20": isTransitioning,
       })}
       style={{ transition: "opacity 0.5s ease" }}
