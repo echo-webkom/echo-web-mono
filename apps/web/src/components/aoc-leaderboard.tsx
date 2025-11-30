@@ -7,7 +7,6 @@ import {
   YEAR,
 } from "@/data/advent-of-code/leaderboard";
 import { cn } from "@/utils/cn";
-import { AocCountdownOverlay } from "./aoc-countdown-overlay";
 
 /**
  * Display the leaderboard for echo's private Advent of Code leaderboard.
@@ -30,7 +29,6 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
   }
 
   const list = mapAocLeaderboard(leaderboard).slice(0, 13);
-  const userCount = Object.keys(leaderboard.members).length;
 
   return (
     <BentoBox
@@ -42,11 +40,6 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
       )}
     >
       <div className="relative h-full min-h-[400px]">
-        <AocCountdownOverlay
-          joinUrl={`https://adventofcode.com/${YEAR}/leaderboard/private`}
-          leaderboardId={LEADERBOARD_ID}
-          userCount={userCount}
-        />
         <p className="mb-4 text-gray-400">
           Bli med ved å joine {LEADERBOARD_ID}-fc78f7d2 her:{" "}
           <a href="https://adventofcode.com/2025/leaderboard/private" className="underline">
@@ -62,7 +55,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
               <li key={user.id} className="line-clamp-1 flex items-center gap-4 text-nowrap">
                 <span className="w-[30px] shrink-0 text-gray-500">{i + 1})</span>
                 <span className="block w-[60px] shrink-0 sm:hidden">{name}</span>
-                <span className="w-[40px] shrink-0">{user.localScore}</span>
+                <span className="w-10 shrink-0">{user.localScore}</span>
                 <div className="flex shrink-0 items-center">
                   {Array.from({ length: 12 }).map((_, i) => {
                     const completed = user.days[i + 1];
