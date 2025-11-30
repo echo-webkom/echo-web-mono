@@ -40,9 +40,12 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
       )}
     >
       <div className="relative h-full min-h-[400px]">
-        <p className="mb-4 text-gray-400">
+        <p className="wrap-break-words mb-4 text-gray-400">
           Bli med ved å joine {LEADERBOARD_ID}-fc78f7d2 her:{" "}
-          <a href="https://adventofcode.com/2025/leaderboard/private" className="underline">
+          <a
+            href="https://adventofcode.com/2025/leaderboard/private"
+            className="break-all underline"
+          >
             https://adventofcode.com/2025/leaderboard/private
           </a>
         </p>
@@ -52,11 +55,11 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
             const isLongName = user.name.length > 12;
             const name = isLongName ? user.name.slice(0, 9) + "..." : user.name;
             return (
-              <li key={user.id} className="line-clamp-1 flex items-center gap-4 text-nowrap">
-                <span className="w-[30px] shrink-0 text-gray-500">{i + 1})</span>
-                <span className="block w-[60px] shrink-0 sm:hidden">{name}</span>
-                <span className="w-10 shrink-0">{user.localScore}</span>
-                <div className="flex shrink-0 items-center">
+              <li key={user.id} className="flex items-center gap-2 sm:gap-4">
+                <span className="w-[25px] shrink-0 text-gray-500 sm:w-[30px]">{i + 1})</span>
+                <span className="block min-w-0 flex-1 truncate sm:hidden">{name}</span>
+                <span className="w-8 shrink-0 text-right sm:w-10">{user.localScore}</span>
+                <div className="flex shrink-0 items-center text-[10px] sm:text-xs lg:text-base">
                   {Array.from({ length: 12 }).map((_, i) => {
                     const completed = user.days[i + 1];
                     return (
@@ -72,7 +75,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
                     );
                   })}
                 </div>
-                <span className="hidden shrink sm:block">{user.name}</span>
+                <span className="hidden min-w-0 flex-1 truncate sm:block">{user.name}</span>
               </li>
             );
           })}
