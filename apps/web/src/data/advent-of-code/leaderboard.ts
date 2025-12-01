@@ -26,11 +26,17 @@ type Leaderboard = {
   event: string;
 };
 
+type DayInfo = {
+  stars: 0 | 1 | 2;
+  star1Ts?: number;
+  star2Ts?: number;
+};
+
 type MappedMember = {
   id: number;
   name: string;
   localScore: number;
-  days: Record<string, 0 | 1 | 2>;
+  days: Record<string, DayInfo>;
 };
 
 export const fetchAocLeaderboard = async () => {
@@ -63,11 +69,15 @@ export const mapAocLeaderboard = (leaderboard: Leaderboard): Array<MappedMember>
           const hasDay1 = !!dayInfo["1"];
           const hasDay2 = !!dayInfo["2"];
 
-          acc[day] = !hasDay1 ? 0 : hasDay2 ? 2 : 1;
+          acc[day] = {
+            stars: !hasDay1 ? 0 : hasDay2 ? 2 : 1,
+            star1Ts: dayInfo["1"]?.get_star_ts,
+            star2Ts: dayInfo["2"]?.get_star_ts,
+          };
 
           return acc;
         },
-        {} as Record<string, 0 | 1 | 2>,
+        {} as Record<string, DayInfo>,
       );
 
       return {

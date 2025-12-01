@@ -8,6 +8,17 @@ import {
 } from "@/data/advent-of-code/leaderboard";
 import { cn } from "@/utils/cn";
 
+const formatStarTimestamp = (timestamp: number) => {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleString("no-NO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 /**
  * Display the leaderboard for echo's private Advent of Code leaderboard.
  * Make sure that the environment variable `AOC_SESSION_COOKIE` is set, or
@@ -61,7 +72,16 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
                 <span className="w-8 shrink-0 text-right sm:w-10">{user.localScore}</span>
                 <div className="flex shrink-0 items-center text-[10px] sm:text-xs lg:text-base">
                   {Array.from({ length: 12 }).map((_, i) => {
-                    const completed = user.days[i + 1];
+                    const dayInfo = user.days[i + 1];
+                    const completed = dayInfo?.stars ?? 0;
+
+                    let tooltipText = "";
+                    if (completed === 2 && dayInfo?.star1Ts && dayInfo?.star2Ts) {
+                      tooltipText = `⭐ ${formatStarTimestamp(dayInfo.star1Ts)}\n⭐⭐ ${formatStarTimestamp(dayInfo.star2Ts)}`;
+                    } else if (completed === 1 && dayInfo?.star1Ts) {
+                      tooltipText = `⭐ ${formatStarTimestamp(dayInfo.star1Ts)}`;
+                    }
+
                     return (
                       <span
                         key={i}
@@ -69,6 +89,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
                           "text-yellow-400": completed === 2,
                           "text-blue-700": completed === 1,
                         })}
+                        title={tooltipText}
                       >
                         *
                       </span>
