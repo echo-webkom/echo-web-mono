@@ -20,6 +20,8 @@ const formatStarTimestamp = (timestamp: number) => {
   });
 };
 
+const MAX_ITEMS = 10;
+
 /**
  * Display the leaderboard for echo's private Advent of Code leaderboard.
  * Make sure that the environment variable `AOC_SESSION_COOKIE` is set, or
@@ -40,18 +42,18 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
     );
   }
 
-  const list = mapAocLeaderboard(leaderboard).slice(0, 13);
+  const list = mapAocLeaderboard(leaderboard).slice(0, MAX_ITEMS);
 
   return (
     <BentoBox
       title={`Advent of Code ${YEAR}`}
       href={LEADERBOARD_URL}
       className={cn(
-        "relative h-full rounded-lg border-2 border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
+        "relative max-h-[400px] overflow-hidden rounded-lg border-2 border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
         className,
       )}
     >
-      <div className="relative h-full min-h-[400px]">
+      <div className="relative h-full overflow-hidden">
         <p className="wrap-break-words mb-4 text-gray-400">
           Bli med ved å joine {LEADERBOARD_ID}-fc78f7d2 her:{" "}
           <a
@@ -64,16 +66,20 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
 
         <ol>
           {list.map((user, i) => {
-            const isLongName = user.name.length > 12;
-            const name = isLongName ? user.name.slice(0, 9) + "..." : user.name;
+            // Calculate rank: same score as previous = same rank (omit number)
+            const prevUser = i > 0 ? list[i - 1] : undefined;
+            const isTied = prevUser !== undefined && user.localScore === prevUser.localScore;
+            const rank = isTied ? null : i + 1;
+
             return (
-              <li key={user.id} className="flex items-center gap-2 sm:gap-4">
-                <span className="w-[25px] shrink-0 text-gray-500 sm:w-[30px]">{i + 1})</span>
-                <span className="block min-w-0 flex-1 truncate sm:hidden">{name}</span>
-                <span className="w-8 shrink-0 text-right sm:w-10">{user.localScore}</span>
-                <div className="flex shrink-0 items-center text-[10px] sm:text-xs lg:text-base">
-                  {Array.from({ length: 12 }).map((_, i) => {
-                    const dayInfo = user.days[i + 1];
+              <li key={user.id} className="flex items-center gap-4">
+                <span className="w-[30px] shrink-0 text-gray-500">
+                  {rank !== null ? `${rank})` : ""}
+                </span>
+                <span className="w-10 shrink-0 text-right">{user.localScore}</span>
+                <div className="flex shrink-0 items-center text-base">
+                  {Array.from({ length: 12 }).map((_, j) => {
+                    const dayInfo = user.days[j + 1];
                     const completed = dayInfo?.stars ?? 0;
 
                     let tooltipText = "";
@@ -85,7 +91,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
 
                     return (
                       <span
-                        key={i}
+                        key={j}
                         className={cn("text-[#0f0f23]", {
                           "text-yellow-400": completed === 2,
                           "text-blue-700": completed === 1,
@@ -97,7 +103,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
                     );
                   })}
                 </div>
-                <span className="hidden min-w-0 flex-1 truncate sm:block">{user.name}</span>
+                <span className="min-w-0 flex-1 truncate">{user.name}</span>
               </li>
             );
           })}

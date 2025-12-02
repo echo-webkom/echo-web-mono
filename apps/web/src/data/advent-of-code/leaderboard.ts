@@ -1,5 +1,5 @@
 export const LEADERBOARD_ID = "3293269";
-export const YEAR = "2025"; // TODO: Update year
+export const YEAR = "2025";
 export const SESSION_COOKIE_NAME = "session";
 export const LEADERBOARD_URL = `https://adventofcode.com/${YEAR}/leaderboard/private/view/${LEADERBOARD_ID}`;
 export const SESSION_COOKIE_VALUE = process.env.AOC_SESSION_COOKIE;
@@ -82,7 +82,7 @@ export const mapAocLeaderboard = (leaderboard: Leaderboard): Array<MappedMember>
 
       return {
         id: info.id,
-        name: info.name,
+        name: info.name ?? `Ukjent bruker #${info.id}`,
         localScore: info.local_score,
         days,
       };
