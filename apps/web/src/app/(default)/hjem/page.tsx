@@ -1,4 +1,3 @@
-import { AocLeaderboard } from "@/components/aoc-leaderboard";
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
 import { Banner } from "./_components/banner";
@@ -34,9 +33,15 @@ export default async function Home() {
             href="/for-studenter/arrangementer?type=event"
             types={["external", "event"]}
             n={11}
-            className="col-span-1 row-span-2"
+            className="col-span-2 row-span-2"
           />
-          <AocLeaderboard className="col-span-2 row-span-1" />
+          <ComingHappenings
+            title="Bedriftpresentasjoner"
+            href="/for-studenter/arrangementer?type=bedpres"
+            types={["bedpres"]}
+            n={3}
+            className="col-span-1 row-span-1"
+          />
           <Posts className="col-span-2 row-span-1" />
         </Container>
 
