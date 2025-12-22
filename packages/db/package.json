@@ -33,7 +33,7 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@types/node": "22.19.0",
+    "@types/node": "22.19.3",
     "@types/pg": "8.15.6",
     "dotenv-cli": "10.0.0",
     "drizzle-kit": "0.31.5",
