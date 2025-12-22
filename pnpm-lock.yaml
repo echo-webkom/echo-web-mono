@@ -27,8 +27,8 @@ importers:
         specifier: 0.3.11
         version: 0.3.11
       '@hono/node-server':
-        specifier: 1.19.5
-        version: 1.19.5(hono@4.10.2)
+        specifier: 1.19.7
+        version: 1.19.7(hono@4.10.2)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -2418,8 +2418,8 @@ packages:
   '@formatjs/intl-localematcher@0.6.2':
     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
 
-  '@hono/node-server@1.19.5':
-    resolution: {integrity: sha512-iBuhh+uaaggeAuf+TftcjZyWh2GEgZcVGXkNtskLVoWaXhnJtC5HLHrU8W1KHDoucqO1MswwglmkWLFyiDn4WQ==}
+  '@hono/node-server@1.19.7':
+    resolution: {integrity: sha512-vUcD0uauS7EU2caukW8z5lJKtoGMokxNbJtBiwHgpqxEXokaHCBkQUmCHhjFB1VUTWdqj25QoMkMKzgjq+uhrw==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
@@ -8848,6 +8848,7 @@ packages:
   next@16.0.7:
     resolution: {integrity: sha512-3mBRJyPxT4LOxAJI6IsXeFtKfiJUbjCLgvXO02fV8Wy/lIhPvP94Fe7dGhUgHXcQy4sSuYwQNcOLhIfOm0rL0A==}
     engines: {node: '>=20.9.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -13537,7 +13538,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@hono/node-server@1.19.5(hono@4.10.2)':
+  '@hono/node-server@1.19.7(hono@4.10.2)':
     dependencies:
       hono: 4.10.2
 
