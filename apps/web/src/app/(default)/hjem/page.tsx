@@ -40,7 +40,7 @@ export default async function Home() {
             href="/for-studenter/arrangementer?type=bedpres"
             types={["bedpres"]}
             n={3}
-            className="col-span-1 row-span-1"
+            className="col-span-2 row-span-1"
           />
           <Posts className="col-span-2 row-span-1" />
         </Container>
