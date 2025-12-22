@@ -2,7 +2,7 @@
   "name": "echo-web",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.26.1",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/api --filter=@echo-webkom/db",
