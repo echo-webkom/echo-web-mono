@@ -19,25 +19,25 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@react-email/components": "0.5.7",
-    "@react-email/render": "1.4.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "resend": "6.2.2",
+    "@react-email/components": "1.0.2",
+    "@react-email/render": "2.0.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "resend": "6.6.0",
     "server-only": "0.0.1"
   },
   "devDependencies": {
-    "@react-email/preview-server": "^4.3.2",
+    "@react-email/preview-server": "^5.1.0",
     "@types/node": "22.19.0",
-    "@types/react": "19.2.2",
-    "dotenv-cli": "10.0.0",
-    "eslint": "9.38.0",
+    "@types/react": "19.2.7",
+    "dotenv-cli": "11.0.0",
+    "eslint": "9.39.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "7.0.0",
-    "globals": "^16.4.0",
-    "react-email": "4.3.1",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "globals": "^16.5.0",
+    "react-email": "5.1.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.50.1"
   }
 }
