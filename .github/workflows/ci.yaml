@@ -97,7 +97,7 @@ jobs:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.56.1-jammy
+      image: mcr.microsoft.com/playwright:v1.57.0-jammy
 
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright

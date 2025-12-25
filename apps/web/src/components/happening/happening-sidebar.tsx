@@ -64,14 +64,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const isNormalRegistrationOpen = Boolean(
     event?.registrationStart &&
-      event?.registrationEnd &&
-      isBetween(event.registrationStart, event.registrationEnd),
+    event?.registrationEnd &&
+    isBetween(event.registrationStart, event.registrationEnd),
   );
 
   const isGroupRegistrationOpen = Boolean(
     event?.registrationStartGroups &&
-      event?.registrationEnd &&
-      isBetween(event.registrationStartGroups, event.registrationEnd),
+    event?.registrationEnd &&
+    isBetween(event.registrationStartGroups, event.registrationEnd),
   );
 
   const hostGroups = event?.organizers?.map((organizer) => organizer.slug) ?? [];
@@ -81,11 +81,11 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const canEarlyRegister = Boolean(
     user &&
-      event &&
-      doesIntersect(
-        event.registrationGroups ?? [],
-        user.memberships.map((membership) => membership.group.id),
-      ),
+    event &&
+    doesIntersect(
+      event.registrationGroups ?? [],
+      user.memberships.map((membership) => membership.group.id),
+    ),
   );
 
   const isRegistrationOpen = canEarlyRegister ? isGroupRegistrationOpen : isNormalRegistrationOpen;
