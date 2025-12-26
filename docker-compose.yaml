@@ -1,7 +1,7 @@
 services:
   db:
     profiles: ["dev"]
-    image: postgres:17.6
+    image: postgres:17.7
     restart: always
     container_name: echo-web-db
     environment:
@@ -15,7 +15,7 @@ services:
 
   db-test:
     profiles: ["test"]
-    image: postgres:17.6
+    image: postgres:17.7
     container_name: echo-web-test-db
     environment:
       POSTGRES_USER: postgres
