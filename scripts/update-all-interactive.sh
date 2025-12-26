@@ -5,8 +5,8 @@ set -e
 # Get all folder names from apps directory
 apps_folders=$(ls apps 2>/dev/null || echo "")
 
-# Get all folder names from packages directory, excluding config
-packages_folders=$(ls packages 2>/dev/null | grep -v "^config$" || echo "")
+# Get all folder names from packages directory
+packages_folders=$(ls packages 2>/dev/null || echo "")
 
 # Combine all folders into one list and add playwright
 all_folders=($apps_folders $packages_folders "playwright")
