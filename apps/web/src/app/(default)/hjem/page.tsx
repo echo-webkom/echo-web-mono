@@ -26,14 +26,14 @@ export default async function Home() {
 
         <Container
           layout="larger"
-          className="flex space-y-8 md:grid md:grid-cols-3 md:grid-rows-2 md:gap-8 md:space-y-0"
+          className="space-y-8 md:grid md:grid-cols-3 md:grid-rows-2 md:gap-8 md:space-y-0"
         >
           <ComingHappenings
             title="Arrangementer"
             href="/for-studenter/arrangementer?type=event"
             types={["external", "event"]}
             n={11}
-            className="col-span-2 row-span-2"
+            className="col-span-1 row-span-2"
           />
           <ComingHappenings
             title="Bedriftpresentasjoner"
