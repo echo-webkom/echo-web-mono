@@ -1,7 +1,7 @@
 # check=skip=SecretsUsedInArgOrEnv
 # Skip because this is a test environment, no secrets are used here.
 
-FROM mcr.microsoft.com/playwright:v1.56.1-noble AS base
+FROM mcr.microsoft.com/playwright:v1.57.0-noble AS base
 
 RUN corepack enable && corepack prepare pnpm@10.18.3 --activate
 
