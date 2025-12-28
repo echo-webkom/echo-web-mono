@@ -21,8 +21,21 @@ pnpm db:migrate
 echo "🌱 Seeding database..."
 pnpm seed database --mode test
 
+echo "🚀 Starting uno backend..."
+cd /app/apps/uno/build
+./main &
+UNO_PID=$!
+
+# Wait for API to be ready
+echo "⏳ Waiting for API to be ready..."
+sleep 5
+
 echo "🎭 Running E2E tests..."
 cd /app/playwright
 pnpm test:e2e
+
+# Cleanup
+echo "🧹 Stopping uno backend..."
+kill $UNO_PID || true
 
 echo "✅ E2E tests completed!"

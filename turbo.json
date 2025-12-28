@@ -7,7 +7,9 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": [
         ".next/**",
         ".sanity/**",
@@ -18,7 +20,9 @@
       ]
     },
     "start": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true,
       "cache": false
     },
@@ -53,8 +57,12 @@
       "cache": false
     }
   },
-  "globalDependencies": [".env"],
-  "globalPassThroughEnv": ["PLAYWRIGHT_*"],
+  "globalDependencies": [
+    ".env"
+  ],
+  "globalPassThroughEnv": [
+    "PLAYWRIGHT_*"
+  ],
   "globalEnv": [
     "CI",
     "NODE_ENV",
@@ -75,7 +83,7 @@
     "DATABASE_LOG",
     "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA",
     "NEXT_PUBLIC_API_URL",
-    "API_PORT",
+    "UNO_API_PORT",
     "AOC_SESSION_COOKIE",
     "AUTH_SECRET"
   ]

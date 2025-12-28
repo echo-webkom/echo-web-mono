@@ -4,7 +4,6 @@ import { isFuture, isToday } from "date-fns";
 
 import { urlFor } from "@echo-webkom/sanity";
 
-import { apiServer } from "@/api/server";
 import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
@@ -14,8 +13,14 @@ import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 
 export const HappeningPreview = ({
   happening,
+  registrationCount,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
+  registrationCount: {
+    waiting: number;
+    registered: number;
+    max: number | null;
+  } | null;
 }) => {
   const href = createHappeningLink(happening);
 
@@ -64,7 +69,10 @@ export const HappeningPreview = ({
               <time>{shortDateNoTimeNoYear(happening.date)}</time>
             </li>
             <li className="text-muted-foreground">
-              <HappeningRegistrationInfo happening={happening} />
+              <HappeningRegistrationInfo
+                happening={happening}
+                registrationCount={registrationCount}
+              />
             </li>
           </ul>
         </div>
@@ -73,24 +81,26 @@ export const HappeningPreview = ({
   );
 };
 
-const HappeningRegistrationInfo = async ({
+const HappeningRegistrationInfo = ({
   happening,
+  registrationCount,
 }: {
   happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
+  registrationCount: {
+    waiting: number;
+    registered: number;
+    max: number | null;
+  } | null;
 }) => {
-  const { waiting, registered, max } = await apiServer
-    .get(`happening/${happening._id}/registrations/count`)
-    .json<{
-      waiting: number;
-      registered: number;
-      max: number | null;
-    }>();
+  if (!registrationCount) {
+    return null;
+  }
 
   const info = getSpotRangeInfo({
     registrationStart: happening.registrationStart,
-    waiting,
-    registered,
-    max,
+    waiting: registrationCount.waiting,
+    registered: registrationCount.registered,
+    max: registrationCount.max,
   });
 
   if (!info) {
