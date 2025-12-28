@@ -1,0 +1,24 @@
+{
+  "name": "@echo-webkom/uno",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm with-env air",
+    "start": "pnpm with-env ./build/main",
+    "build": "go build -o build/main cmd/main.go",
+    "test": "pnpm with-env go test ./...",
+    "test:verbose": "pnpm with-env go test ./... -v",
+    "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",
+    "test:coverage:view": "pnpm with-env go tool cover -html=coverage.out",
+    "format": "pnpm with-env go fmt ./...",
+    "format:check": "pnpm with-env gofmt -l .",
+    "lint": "pnpm with-env golangci-lint run ./...",
+    "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
+    "tidy": "pnpm with-env go mod tidy",
+    "swag:init": "swag init --dir ./ --generalInfo adapters/http/server.go --output ./docs --parseDependency --parseInternal",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "dotenv-cli": "10.0.0"
+  }
+}
