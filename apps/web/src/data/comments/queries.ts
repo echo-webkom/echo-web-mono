@@ -3,7 +3,7 @@ import { type Comment } from "@echo-webkom/db/schemas";
 import { apiServer } from "@/api/server";
 
 export const getCommentsById = (id: string) => {
-  return apiServer.get(`admin/comments/${id}`).json<
+  return apiServer.get(`comments/${id}`).json<
     Array<
       Comment & {
         user: {
@@ -15,7 +15,7 @@ export const getCommentsById = (id: string) => {
         reactions: Array<{
           commentId: string;
           userId: string;
-          type: "like" | "dislike";
+          type: "like";
           createdAt: string;
         }>;
       }

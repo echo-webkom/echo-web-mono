@@ -25,9 +25,8 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
 
   try {
     const resp = await apiServer
-      .post("admin/register", {
+      .post(`happenings/${happeningId}/register`, {
         json: {
-          happeningId,
           userId,
           questions,
         },

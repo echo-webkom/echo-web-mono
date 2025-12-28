@@ -10,7 +10,8 @@ env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web
 
-  API_PORT: 8000
+  UNO_API_PORT: 8000
+  TELEMENTRY_ENABLED: false
   NEXT_PUBLIC_API_URL: http://localhost:8000
 
   NEXT_PUBLIC_SANITY_DATASET: "testing"
@@ -45,6 +46,18 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 🔎 Install golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          working-directory: apps/uno
+          version: v2.1
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -62,6 +75,21 @@ jobs:
 
       - name: 🛫 Type check
         run: pnpm typecheck
+
+      - name: 🐹 Lint Go code
+        working-directory: apps/uno
+        run: golangci-lint run
+
+      - name: 📦 Install swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+
+      - name: 📚 Check Swagger docs are generated
+        run: |
+          pnpm --filter=uno swag:init
+          if ! git diff --exit-code apps/uno/docs/; then
+            echo "Error: Swagger docs are out of sync. Please run 'pnpm --filter=uno swag:init' and commit the changes."
+            exit 1
+          fi
 
   test-unit:
     name: 🧪 Unit Tests
@@ -128,6 +156,12 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -141,7 +175,7 @@ jobs:
         run: pnpm seed database --mode test
 
       - name: 👷🏻‍♂️ Build
-        run: pnpm build
+        run: pnpm build --filter=@echo-webkom/web --filter=@echo-webkom/uno
 
       - name: 🎭 Run playwright tests
         run: pnpm test:e2e
