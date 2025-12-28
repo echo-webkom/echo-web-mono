@@ -10,7 +10,7 @@ export const likeComment = async (commentId: string) => {
     return { success: false };
   }
 
-  const resp = await apiServer.post(`admin/comments/${commentId}/reaction`, {
+  const resp = await apiServer.post(`comments/${commentId}/reaction`, {
     json: {
       commentId,
       userId: user.id,
