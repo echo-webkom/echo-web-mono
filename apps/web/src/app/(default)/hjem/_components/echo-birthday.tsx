@@ -8,6 +8,7 @@ import ConfettiForBDay from "./confetti";
 export default function EchoBirthdayBanner() {
   const today = new Date();
   const echoBirthday = new Date(today.getFullYear(), 10, 7);
+  const countDownStart = new Date(today.getFullYear(), 10, 1);
   const [timeDifference, setTimeDifference] = useState(0);
   const afterBirthday = new Date(today.getFullYear(), 10, 8);
 
@@ -49,7 +50,7 @@ export default function EchoBirthdayBanner() {
     return null;
   }
 
-  if (echoBirthday > new Date()) {
+  if (echoBirthday > today && countDownStart < today) {
     return (
       <div className="mt-10 -mb-20">
         <div className="mx-auto w-full px-3 sm:w-[50vw]">
