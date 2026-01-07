@@ -6,6 +6,8 @@ import (
 	"uno/domain/model"
 )
 
+// TODO: /port should not contain any models
+
 type HappeningRegistration struct {
 	UserID           string                   `json:"userId"`
 	HappeningID      string                   `json:"happeningId"`

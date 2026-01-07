@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// TODO: remove json and db tags, replace with /postgres/models and /api/dto models
+
 type Happening struct {
 	ID                      string           `db:"id" json:"id"`
 	Slug                    string           `db:"slug" json:"slug"`
