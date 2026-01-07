@@ -128,12 +128,13 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []port.UserWi
 		) b ON u.id = b.user_id;
 	`
 
-	err = u.db.SelectContext(ctx, &users, query)
-	if err != nil {
+	if err := u.db.SelectContext(ctx, &users, query); err != nil {
 		u.logger.Error(ctx, "failed to get users with strikes",
 			"error", err,
 		)
+		return users, err
 	}
+
 	return users, nil
 }
 
@@ -225,12 +226,12 @@ func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (group
 		FROM users_to_groups
 		WHERE user_id = $1
 	`
-	err = u.db.SelectContext(ctx, &groupIDs, query, userID)
-	if err != nil {
+	if err := u.db.SelectContext(ctx, &groupIDs, query, userID); err != nil {
 		u.logger.Error(ctx, "failed to get user memberships",
 			"error", err,
 			"user_id", userID,
 		)
+		return nil, err
 	}
 	return groupIDs, nil
 }

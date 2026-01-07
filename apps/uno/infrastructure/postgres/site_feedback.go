@@ -53,8 +53,9 @@ func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback mode
 		p.logger.Error(ctx, "failed to create site feedback",
 			"error", err,
 		)
+		return model.SiteFeedback{}, err
 	}
-	return *dbModel.ToDomain(), err
+	return *dbModel.ToDomain(), nil
 }
 
 func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.SiteFeedback, error) {

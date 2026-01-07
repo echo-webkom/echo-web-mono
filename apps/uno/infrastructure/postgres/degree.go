@@ -92,12 +92,13 @@ func (p *DegreeRepo) DeleteDegree(ctx context.Context, id string) error {
 		DELETE FROM degree
 		WHERE id = $1
 	`
-	_, err := p.db.ExecContext(ctx, query, id)
-	if err != nil {
+	if _, err := p.db.ExecContext(ctx, query, id); err != nil {
 		p.logger.Error(ctx, "failed to delete degree",
 			"error", err,
 			"id", id,
 		)
+		return err
 	}
+
 	return nil
 }
