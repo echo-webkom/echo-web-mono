@@ -52,15 +52,15 @@ func (p *UsersToShoppingListItemRepo) AddUserToShoppingListItem(ctx context.Cont
 	query := `--sql
 		INSERT INTO users_to_shopping_list_items (user_id, item_id) VALUES ($1, $2)
 	`
-	_, err := p.db.ExecContext(ctx, query, userID, itemID)
-	if err != nil {
+	if _, err := p.db.ExecContext(ctx, query, userID, itemID); err != nil {
 		p.logger.Error(ctx, "failed to add user to shopping list item",
 			"error", err,
 			"user_id", userID,
 			"item_id", itemID,
 		)
+		return err
 	}
-	return err
+	return nil
 }
 
 func (p *UsersToShoppingListItemRepo) DeleteUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {
@@ -72,13 +72,14 @@ func (p *UsersToShoppingListItemRepo) DeleteUserToShoppingListItem(ctx context.C
 	query := `--sql
 		DELETE FROM users_to_shopping_list_items WHERE user_id = $1 AND item_id = $2
 	`
-	_, err := p.db.ExecContext(ctx, query, userID, itemID)
-	if err != nil {
+	if _, err := p.db.ExecContext(ctx, query, userID, itemID); err != nil {
 		p.logger.Error(ctx, "failed to delete user to shopping list item",
 			"error", err,
 			"user_id", userID,
 			"item_id", itemID,
 		)
+		return err
 	}
-	return err
+
+	return nil
 }
