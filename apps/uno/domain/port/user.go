@@ -16,6 +16,8 @@ type UserRepo interface {
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
 }
 
+// TODO: move to dto and postgres models, not domain/port
+
 type UserWithStrikes struct {
 	ID       string  `json:"id"`
 	Name     *string `json:"name"`
