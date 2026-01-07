@@ -23,11 +23,11 @@ func (p *DotRepo) DeleteExpired(ctx context.Context) error {
 		DELETE FROM dot
 		WHERE expires_at IS NOT NULL AND expires_at <= NOW()
 	`
-	_, err := p.db.ExecContext(ctx, query)
-	if err != nil {
+	if _, err := p.db.ExecContext(ctx, query); err != nil {
 		p.logger.Error(ctx, "failed to delete expired dots",
 			"error", err,
 		)
+		return err
 	}
 	return nil
 }

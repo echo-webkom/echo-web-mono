@@ -69,14 +69,14 @@ func (p *WhitelistRepo) IsWhitelisted(ctx context.Context, email string) (bool, 
 		WHERE email = $1
 	`
 	var count int
-	err := p.db.GetContext(ctx, &count, query, email)
-	if err != nil {
+	if err := p.db.GetContext(ctx, &count, query, email); err != nil {
 		p.logger.Error(ctx, "failed to check if email is whitelisted",
 			"error", err,
 			"email", email,
 		)
+		return false, err
 	}
-	return count > 0, err
+	return count > 0, nil
 }
 
 func (p *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error) {

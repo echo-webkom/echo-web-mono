@@ -28,12 +28,13 @@ func (h *HappeningRepo) GetAllHappenings(ctx context.Context) (res []model.Happe
 			registration_start_groups, registration_start, registration_end
 		FROM happening
 	`
-	err = h.db.SelectContext(ctx, &res, query)
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &res, query); err != nil {
 		h.logger.Error(ctx, "failed to get all happenings",
 			"error", err,
 		)
+		return nil, err
 	}
+
 	return res, nil
 }
 
@@ -49,13 +50,14 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (hap mo
 		FROM happening
 		WHERE id = $1
 	`
-	err = h.db.GetContext(ctx, &hap, query, id)
-	if err != nil {
+	if err := h.db.GetContext(ctx, &hap, query, id); err != nil {
 		h.logger.Error(ctx, "failed to get happening by ID",
 			"error", err,
 			"id", id,
 		)
+		return hap, err
 	}
+
 	return hap, nil
 }
 
@@ -72,8 +74,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 		LEFT JOIN "user" u ON r.user_id = u.id
 		WHERE r.happening_id = $1
 	`
-	err = h.db.SelectContext(ctx, &dbRegs, query, happeningID)
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &dbRegs, query, happeningID); err != nil {
 		h.logger.Error(ctx, "failed to get happening registrations",
 			"error", err,
 			"happening_id", happeningID,
@@ -97,13 +98,14 @@ func (h *HappeningRepo) GetHappeningSpotRanges(ctx context.Context, happeningID 
 		FROM spot_range
 		WHERE happening_id = $1
 	`
-	err = h.db.SelectContext(ctx, &ranges, query, happeningID)
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &ranges, query, happeningID); err != nil {
 		h.logger.Error(ctx, "failed to get happening spot ranges",
 			"error", err,
 			"happening_id", happeningID,
 		)
+		return ranges, err
 	}
+
 	return ranges, nil
 }
 
@@ -119,13 +121,14 @@ func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID s
 		FROM question
 		WHERE happening_id = $1
 	`
-	err = h.db.SelectContext(ctx, &qs, query, happeningID)
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &qs, query, happeningID); err != nil {
 		h.logger.Error(ctx, "failed to get happening questions",
 			"error", err,
 			"happening_id", happeningID,
 		)
+		return qs, err
 	}
+
 	return qs, nil
 }
 
@@ -140,13 +143,14 @@ func (h *HappeningRepo) GetHappeningHostGroups(ctx context.Context, happeningID 
 		FROM happenings_to_groups
 		WHERE happening_id = $1
 	`
-	err = h.db.SelectContext(ctx, &groupIDs, query, happeningID)
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &groupIDs, query, happeningID); err != nil {
 		h.logger.Error(ctx, "failed to get happening host groups",
 			"error", err,
 			"happening_id", happeningID,
 		)
+		return groupIDs, err
 	}
+
 	return groupIDs, nil
 }
 
@@ -184,7 +188,9 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 			"slug", happening.Slug,
 			"title", happening.Title,
 		)
+		return result, err
 	}
+
 	return result, nil
 }
 
@@ -209,12 +215,13 @@ func (h *HappeningRepo) GetHappeningRegistrationCounts(
 		WHERE h.id = ANY($1)
 		GROUP BY h.id
 	`
-	err := h.db.SelectContext(ctx, &counts, query, pq.Array(happeningIDs))
-	if err != nil {
+	if err := h.db.SelectContext(ctx, &counts, query, pq.Array(happeningIDs)); err != nil {
 		h.logger.Error(ctx, "failed to get happening registration counts",
 			"error", err,
 			"happening_ids", happeningIDs,
 		)
+		return nil, err
 	}
+
 	return counts, nil
 }

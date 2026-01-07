@@ -33,14 +33,15 @@ func (c *CommentRepo) AddReactionToComment(ctx context.Context, commentID string
 		VALUES ($1, $2, $3)
 		ON CONFLICT DO NOTHING;
 	`
-	_, err := c.db.ExecContext(ctx, query, commentID, userID, ReactionTypeLike)
-	if err != nil {
+	if _, err := c.db.ExecContext(ctx, query, commentID, userID, ReactionTypeLike); err != nil {
 		c.logger.Error(ctx, "failed to add reaction to comment",
 			"error", err,
 			"comment_id", commentID,
 			"user_id", userID,
 		)
+		return err
 	}
+
 	return nil
 }
 
@@ -55,16 +56,17 @@ func (c *CommentRepo) CreateComment(ctx context.Context, content string, postID 
 		INSERT INTO comment (id, content, post_id, user_id, parent_comment_id, created_at, updated_at)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), NOW());
 	`
-	_, err := c.db.ExecContext(ctx, query, content, postID, userID, parentCommentID)
-	if err != nil {
+	if _, err := c.db.ExecContext(ctx, query, content, postID, userID, parentCommentID); err != nil {
 		c.logger.Error(ctx, "failed to create comment",
 			"error", err,
 			"post_id", postID,
 			"user_id", userID,
 			"parent_comment_id", parentCommentID,
 		)
+		return err
 	}
-	return err
+
+	return nil
 }
 
 func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.CommentAggregate, error) {
@@ -193,13 +195,14 @@ func (c *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID s
 		DELETE FROM comments_reactions
 		WHERE comment_id = $1 AND user_id = $2;
 	`
-	_, err := c.db.ExecContext(ctx, query, commentID, userID)
-	if err != nil {
+	if _, err := c.db.ExecContext(ctx, query, commentID, userID); err != nil {
 		c.logger.Error(ctx, "failed to delete reaction from comment",
 			"error", err,
 			"comment_id", commentID,
 			"user_id", userID,
 		)
+		return err
 	}
+
 	return nil
 }
