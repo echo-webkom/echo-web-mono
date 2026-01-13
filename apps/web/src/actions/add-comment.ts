@@ -14,7 +14,7 @@ export const addCommentAction = async (id: string, content: string) => {
     return null;
   }
 
-  await apiServer.post("admin/comments", {
+  await apiServer.post("comments", {
     json: {
       content,
       postId: id,
@@ -34,7 +34,7 @@ export const addReplyAction = async (id: string, content: string, parentId: stri
     return null;
   }
 
-  await apiServer.post("admin/comments", {
+  await apiServer.post("comments", {
     json: {
       content,
       postId: id,

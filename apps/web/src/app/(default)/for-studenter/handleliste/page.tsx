@@ -12,9 +12,9 @@ export default async function HyggkomHandleliste() {
   const mappedItems = items.map((item) => ({
     id: item.id,
     name: item.name,
-    user: item.user.name,
+    user: item.userName,
     likes: item.likes.length,
-    hasLiked: item.likes.some((like) => (user?.id ? like.userId === user.id : false)),
+    hasLiked: user ? item.likes.includes(user.id) : false,
   }));
 
   const isAdmin = (user && isMemberOf(user, ["webkom", "hyggkom"])) ?? false;
