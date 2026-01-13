@@ -13,7 +13,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@types/node": "22.19.3",
+    "@types/node": "24.10.6",
     "dotenv-cli": "11.0.0",
     "eslint": "9.39.2",
     "globals": "^16.5.0",

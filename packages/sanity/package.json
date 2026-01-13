@@ -20,7 +20,7 @@
     "groq": "5.1.0"
   },
   "devDependencies": {
-    "@types/node": "22.19.3",
+    "@types/node": "24.10.6",
     "eslint": "9.39.2",
     "globals": "^16.5.0",
     "typescript": "5.9.3",
