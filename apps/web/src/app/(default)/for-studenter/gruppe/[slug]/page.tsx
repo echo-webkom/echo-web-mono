@@ -53,10 +53,24 @@ export const generateMetadata = async (props: Props) => {
   const { slug } = params;
   const group = await getData(slug);
 
-  return {
-    title: group.name,
-    description: `Infosiden til echo sin undergruppe ${group.name}.`,
-  } satisfies Metadata;
+  if (group.groupType === "intgroup") {
+    return {
+      title: group.name,
+      description: `Infosiden til echo sin interessegruppe ${group.name}.`,
+    } satisfies Metadata;
+  }
+
+  if (group.groupType === "subgroup") {
+    return {
+      title: group.name,
+      description: `Infosiden til echo sin undergruppe ${group.name}.`,
+    } satisfies Metadata;
+  } else {
+    return {
+      title: group.name,
+      description: `Infosiden til echo sin gruppe ${group.name}.`,
+    } satisfies Metadata;
+  }
 };
 
 export default async function GroupPage(props: Props) {
