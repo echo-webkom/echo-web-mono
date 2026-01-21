@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 interface ScrollerProps {
-  slides: Array<React.ReactNode>;
+  slides: Array<React.ReactElement>;
   desktopWidth?: number;
 }
 
-const Scroller: React.FC<ScrollerProps> = ({ slides, desktopWidth = 520 }) => {
+const Scroller: React.FC<ScrollerProps> = ({ slides = [], desktopWidth = 520 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAnimating = useRef(false);
@@ -81,7 +81,7 @@ const Scroller: React.FC<ScrollerProps> = ({ slides, desktopWidth = 520 }) => {
 
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
-  });
+  }, []);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-black">
@@ -97,9 +97,9 @@ const Scroller: React.FC<ScrollerProps> = ({ slides, desktopWidth = 520 }) => {
           scrollBehavior: "smooth",
         }}
       >
-        {slides.map((Slide, index) => (
+        {slides.map((slide, index) => (
           <div key={index} className="flex h-screen w-full snap-start items-center justify-center">
-            {React.cloneElement(Slide as React.ReactElement, {
+            {React.cloneElement(slide, {
               goToNext: () => scrollToSlide(index + 1),
               goToSlide: scrollToSlide,
               isActive: currentIndex === index,
