@@ -17,8 +17,6 @@ type Router struct {
 	cleanup func()
 }
 
-// TODO: add back telemetry middleware
-
 func New(logger port.Logger, middleware ...func(http.Handler) http.Handler) *Router {
 	mux := NewMux(middleware...)
 	return &Router{mux, logger, func() {}}

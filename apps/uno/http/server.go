@@ -45,7 +45,7 @@ func RunServer(
 	whitelistService *service.WhitelistService,
 	commentService *service.CommentService,
 ) {
-	r := router.New(logger, handler.Logger(logger))
+	r := router.New(logger, handler.Logger(logger), router.Telemetry(config.ServiceName))
 
 	// withAuth := router.NewWithAuthHandler(authService)
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)
