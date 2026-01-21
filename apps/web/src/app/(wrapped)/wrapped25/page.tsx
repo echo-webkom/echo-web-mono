@@ -14,7 +14,22 @@ import ShinyText from "./components/ShinyText";
 import TextType from "./components/TextType";
 import Scroller from "./Scroller";
 import { Slide } from "./Slide";
-import { EVENTS_PER_GROUP, REGISTRATIONS, TOP_10_EVENTS } from "./stats";
+import {
+  BEER,
+  BEST_COMMENT,
+  COFFEE,
+  COMMENTS,
+  EVENTS_PER_GROUP,
+  JOBS,
+  NEW_USERS,
+  POSTS,
+  REACTIONS,
+  REGISTRATIONS,
+  REPLIES,
+  RU_MONEY,
+  TOP_10_EVENTS,
+  TOTAL_USERS,
+} from "./stats";
 
 function Velkommen({ goToNext }) {
   return (
@@ -58,40 +73,27 @@ function Welcome() {
   );
 }
 
-function Events() {
+function Registrations() {
   return (
     <Slide>
-      <div className="relative min-h-screen w-full">
-        <Image
-          src={Background2}
-          alt="bakgrunn"
-          fill
-          className="object-cover object-center"
-          priority
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-blue-400 via-teal-400 to-green-400 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={[`Registreringer 2025`, `Se hvor mange som registrerte seg!`]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
         />
-        <div className="relative z-10 -mt-15 flex min-h-screen w-full flex-col items-center justify-center gap-6 p-8 text-white">
-          <AnimatedContent direction="vertical" distance={40} delay={0.2} duration={1.2}>
-            <p className="bg-red-300 text-center text-2xl font-semibold md:text-4xl">
-              Det var vilt mange påmeldinger totalt i år
-              <br />
-              det var hele:
-            </p>
-          </AnimatedContent>
-          <AnimatedContent direction="vertical" distance={40} delay={0.1} duration={0.5}>
-            <CountUp
-              from={0}
-              to={REGISTRATIONS}
-              separator=","
-              direction="up"
-              duration={0.2}
-              className="bg-red-300 text-5xl font-bold"
-            />
-          </AnimatedContent>
-          <AnimatedContent direction="vertical" distance={40} delay={0.5} duration={1.2}>
-            <p className="bg-red-300 text-center text-2xl font-semibold md:text-4xl">
-              påmeldinger i år!!
-            </p>
-          </AnimatedContent>
+        <div className="text-2xl font-medium text-white">
+          {" "}
+          <CountUp
+            from={0}
+            to={REGISTRATIONS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-5xl font-bold"
+          />
         </div>
       </div>
     </Slide>
@@ -179,15 +181,311 @@ function EventsPerGroup() {
   );
 }
 
+function Beer() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Skål for echo 2026"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl">
+          <p>Dette er så mange liter øl som ble solgt</p>
+        </div>
+        <div className="text-6xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={BEER}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-5xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function BestComment() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-green-500 via-teal-400 to-cyan-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Beste kommentarene i år!"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-center text-2xl font-medium text-white">
+          {BEST_COMMENT.name} <span className="text-lg">({BEST_COMMENT.replies} replies)</span>
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Coffee() {
+  return (
+    <Slide>
+      <div className="to-brown-500 flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-yellow-700 via-orange-600 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Dette er uheldigvis så mye penger vi brukte på kaffe gjennom 2025"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-4xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={COFFEE}
+            separator=","
+            suffix=" kr"
+            direction="up"
+            duration={0.2}
+            className="text-4xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Comments() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Antall kommentarer gjennom hele 2025"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-4xl font-medium text-white">
+          {" "}
+          <CountUp
+            from={0}
+            to={COMMENTS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Jobs() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-gray-700 via-gray-600 to-gray-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Antall jobber lagt ut i 2025"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          {" "}
+          <CountUp
+            from={0}
+            to={JOBS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Posts() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Antall innlegg gjennom 2025"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={POSTS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Reactions() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-red-500 via-pink-500 to-purple-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Antall reaksjoner på arrangement i 2024"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          {" "}
+          <CountUp
+            from={0}
+            to={REACTIONS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function Replies() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Antall svar på kommentarer"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          {" "}
+          <CountUp
+            from={0}
+            to={REPLIES}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function RuMoney() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Dette er hvor mye penger vi har fått fra RU"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={RU_MONEY}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+function NewUsers() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-green-400 via-lime-400 to-yellow-400 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Nye brukere 2025", "Velkommen til alle nye medlemmer!"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={NEW_USERS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+function TotalUsers() {
+  return (
+    <Slide>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-teal-400 via-green-400 to-lime-400 p-8">
+        <TextType
+          className="text-5xl font-extrabold text-white drop-shadow-lg"
+          text={["Totalt antall brukere", "Se hvor mange som er med inn i 2026"]}
+          typingSpeed={100}
+          pauseDuration={1500}
+          showCursor={true}
+        />
+        <div className="text-2xl font-medium text-white">
+          <CountUp
+            from={0}
+            to={TOTAL_USERS}
+            separator=","
+            direction="up"
+            duration={0.2}
+            className="text-3xl font-bold"
+          />
+        </div>
+      </div>
+    </Slide>
+  );
+}
 export default function Wrapped() {
   return (
     <Scroller
-      slides={(goToNext) => [
-        <Velkommen goToNext={goToNext} />,
+      slides={[
+        <Velkommen />,
         <Welcome />,
-        <Events />,
-        <TopEventsStack goToNext={goToNext} />,
+        <Registrations />,
+        <TopEventsStack />,
         <EventsPerGroup />,
+        <Beer />,
+        <BestComment />,
+        <Coffee />,
+        <Comments />,
+        <Jobs />,
+        <Posts />,
+        <Reactions />,
+        <Replies />,
+        <RuMoney />,
+        <NewUsers />,
+        <TotalUsers />,
       ]}
     />
   );
