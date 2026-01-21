@@ -8,7 +8,6 @@ import (
 	"uno/domain/port"
 
 	"github.com/lmittmann/tint"
-	"go.opentelemetry.io/otel/trace"
 )
 
 type SlogAdapter struct {
@@ -22,56 +21,57 @@ func New(logger *slog.Logger) port.Logger {
 }
 
 func NewWithConfig(env string) port.Logger {
-	var handler slog.Handler
-	opts := &slog.HandlerOptions{
-		Level: slog.LevelInfo,
-	}
+	var baseHandler slog.Handler
 
 	if env == "production" {
-		handler = slog.NewJSONHandler(os.Stdout, opts)
+		baseHandler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+			Level: slog.LevelInfo,
+		})
 	} else {
-		// Pretty console logging for development with colors and formatting
-		handler = tint.NewHandler(os.Stdout, &tint.Options{
-			Level:      slog.LevelInfo,
+		baseHandler = tint.NewHandler(os.Stdout, &tint.Options{
+			Level:      slog.LevelDebug,
 			TimeFormat: time.Kitchen,
 			AddSource:  false,
 		})
 	}
 
+	handler := &TraceHandler{next: baseHandler}
+
 	logger := slog.New(handler)
 	slog.SetDefault(logger)
 
-	return &SlogAdapter{
-		logger: logger,
-	}
+	return &SlogAdapter{logger: logger}
 }
 
 // Debug logs a debug message with trace context if available
 // Should be used for information that could be helpful in diagnosing issues
 func (s *SlogAdapter) Debug(ctx context.Context, msg string, args ...any) {
-	args = s.withTraceContext(ctx, args...)
 	s.logger.DebugContext(ctx, msg, args...)
 }
 
 // Info logs an info message with trace context if available
 // Should be used for general operational entries about the application
 func (s *SlogAdapter) Info(ctx context.Context, msg string, args ...any) {
-	args = s.withTraceContext(ctx, args...)
 	s.logger.InfoContext(ctx, msg, args...)
 }
 
 // Warn logs a warning message with trace context if available
 // Should be used for events that might indicate a potential issue
 func (s *SlogAdapter) Warn(ctx context.Context, msg string, args ...any) {
-	args = s.withTraceContext(ctx, args...)
 	s.logger.WarnContext(ctx, msg, args...)
 }
 
 // Error logs an error message with trace context if available
 // Should be used for errors that need immediate attention
 func (s *SlogAdapter) Error(ctx context.Context, msg string, args ...any) {
-	args = s.withTraceContext(ctx, args...)
 	s.logger.ErrorContext(ctx, msg, args...)
+}
+
+// Fatal logs an error message with trace context if available and exits with status 1.
+// Should be used for errors that are fatal
+func (s *SlogAdapter) Fatal(ctx context.Context, msg string, args ...any) {
+	s.logger.ErrorContext(ctx, msg, args...)
+	os.Exit(1)
 }
 
 // With creates a new logger with additional context
@@ -84,20 +84,4 @@ func (s *SlogAdapter) With(args ...any) port.Logger {
 // Unwraps the underlying slog.Logger
 func (s *SlogAdapter) Slog() *slog.Logger {
 	return s.logger
-}
-
-// withTraceContext adds OpenTelemetry trace context to log arguments
-func (s *SlogAdapter) withTraceContext(ctx context.Context, args ...any) []any {
-	span := trace.SpanFromContext(ctx)
-	if !span.IsRecording() {
-		return args
-	}
-
-	spanCtx := span.SpanContext()
-	traceArgs := []any{
-		"trace_id", spanCtx.TraceID().String(),
-		"span_id", spanCtx.SpanID().String(),
-	}
-
-	return append(traceArgs, args...)
 }
