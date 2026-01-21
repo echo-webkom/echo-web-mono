@@ -1,7 +1,10 @@
 package config
 
 import (
+	"log"
 	"os"
+
+	"github.com/echo-webkom/cenv"
 )
 
 type Config struct {
@@ -19,15 +22,15 @@ type Config struct {
 func Load() *Config {
 	environment := getEnvOrDefault("ENVIRONMENT", "development")
 
-	// if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
-	// 	if environment != "production" {
-	// 		log.Fatalf("Error loading .env file: %v", err)
-	// 	}
-	// }
+	if environment != "production" {
+		if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		ApiPort:          ":" + getEnvOrDefault("UNO_API_PORT", "8080"),
+		ApiPort:          os.Getenv("UNO_API_PORT"),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),

@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2025-11-02T13:57:39.655073+01:00",
+	"lastUpdated": "2026-01-21T17:47:46.867721402+01:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -35,21 +35,24 @@
 		},
 		"NEXT_PUBLIC_API_URL": {
 			"public": true,
-			"key": "NEXT_PUBLIC_API_URL"
+			"key": "NEXT_PUBLIC_API_URL",
+			"value": "http://localhost:8000"
 		},
 		"NEXT_PUBLIC_ECHOGRAM_URL": {
 			"public": true,
-			"key": "NEXT_PUBLIC_ECHOGRAM_URL"
+			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
+			"value": "http://localhost:8001"
 		},
 		"NEXT_PUBLIC_SANITY_DATASET": {
 			"public": true,
-			"key": "NEXT_PUBLIC_SANITY_DATASET"
+			"key": "NEXT_PUBLIC_SANITY_DATASET",
+			"value": "production"
 		},
 		"UNO_API_PORT": {
-			"public": true,
+			"required": true,
 			"format": ":{number}",
 			"key": "UNO_API_PORT",
-			"value": ":8080"
+			"default": ":8080"
 		}
 	}
 }
