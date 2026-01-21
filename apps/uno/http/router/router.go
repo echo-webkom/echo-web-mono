@@ -6,58 +6,30 @@ import (
 	"uno/domain/port"
 	"uno/http/handler"
 
-	"github.com/go-chi/chi/v5"
-	chiMiddleware "github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
 	"github.com/jesperkha/notifier"
 )
 
 // Router wraps chi.Mux and provides a simplified API. Routes use the internal
-// Handler function. It also implements http.Handler.
+// Handler type. It also implements http.Handler.
 type Router struct {
-	mux     *chi.Mux
+	mux     *Mux
 	logger  port.Logger
 	cleanup func()
 }
 
-func New(serviceName string, logger port.Logger) *Router {
-	mux := chi.NewMux()
+// TODO: add back telemetry middleware
 
-	mux.Use(chiMiddleware.StripSlashes)
-	mux.Use(Telemetry(serviceName))
-	mux.Use(RequestLogger(logger))
-	mux.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"https://*", "http://*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Admin-Key"},
-		ExposedHeaders:   []string{"Content-Length", "Content-Type"},
-		AllowCredentials: true,
-	}))
-
+func New(logger port.Logger, middleware ...func(http.Handler) http.Handler) *Router {
+	mux := NewMux(middleware...)
 	return &Router{mux, logger, func() {}}
 }
 
 func (rt *Router) Handle(method string, pattern string, h handler.Handler, middleware ...handler.Middleware) {
-	rt.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
-		for _, m := range middleware {
-			h = m(h)
-		}
-
-		ctx := handler.NewContext(w, r)
-		if err := h(ctx); err != nil {
-			rt.logger.Error(r.Context(), "request error",
-				"method", method,
-				"pattern", pattern,
-				"status", ctx.Status(),
-				"error", err.Error(),
-			)
-		}
-	})
+	rt.mux.Handle(method, pattern, h, middleware...)
 }
 
-// Mount allows mounting a standard http.Handler (useful for swagger, pprof, etc.)
-func (r *Router) Mount(pattern string, handler http.Handler) {
-	r.mux.Mount(pattern, handler)
+func (r *Router) Mount(pattern string, handler http.Handler, middleware ...handler.Middleware) {
+	r.mux.Mount(pattern, handler, middleware...)
 }
 
 func (r *Router) OnCleanup(f func()) {
@@ -86,7 +58,7 @@ func (r *Router) Serve(notif *notifier.Notifier, port string) {
 		finish()
 	}()
 
-	r.logger.Info(ctx, "listening on http://localhost"+port)
+	r.logger.Info(ctx, "server running at http://localhost"+port)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		r.logger.Error(ctx, "error starting http server",
 			"error", err,
