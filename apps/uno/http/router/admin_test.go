@@ -16,9 +16,9 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 
 	middleware := router.NewAdminMiddleware(adminKey)
 
-	h := middleware(func(ctx *handler.Context) error {
+	h := middleware(handler.Handler(func(ctx *handler.Context) error {
 		return ctx.Ok()
-	})
+	}))
 
 	r := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
 	w := httptest.NewRecorder()
@@ -27,7 +27,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 	r.Header.Set("X-Admin-Key", "")
 
 	ctx := handler.NewContext(w, r)
-	_ = h(ctx)
+	h.ServeHTTP(ctx, ctx.R)
 	assert.Equal(t, 401, ctx.Status())
 }
 
@@ -37,9 +37,9 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 
 	middleware := router.NewAdminMiddleware(adminKey)
 
-	h := middleware(func(ctx *handler.Context) error {
+	h := middleware(handler.Handler(func(ctx *handler.Context) error {
 		return ctx.Ok()
-	})
+	}))
 
 	r := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
 	w := httptest.NewRecorder()
@@ -48,7 +48,9 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 	r.Header.Set("X-Admin-Key", adminKey)
 
 	ctx := handler.NewContext(w, r)
-	err := h(ctx)
+	h.ServeHTTP(ctx, ctx.R)
+	err := ctx.GetError()
+
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

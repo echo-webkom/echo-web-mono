@@ -398,7 +398,8 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	ctx := handler.NewContext(w, r)
-	err := mux.ServeHTTPContext(ctx)
+	mux.ServeHTTP(ctx, r)
+	err := ctx.GetError()
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, ctx.Status())
@@ -429,7 +430,8 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	ctx := handler.NewContext(w, r)
-	err := mux.ServeHTTPContext(ctx)
+	mux.ServeHTTP(ctx, r)
+	err := ctx.GetError()
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, ctx.Status())
@@ -461,7 +463,8 @@ func TestGetHappeningRegistrations(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	ctx := handler.NewContext(w, r)
-	err := mux.ServeHTTPContext(ctx)
+	mux.ServeHTTP(ctx, r)
+	err := ctx.GetError()
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, ctx.Status())
@@ -495,7 +498,8 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	ctx := handler.NewContext(w, r)
-	err := mux.ServeHTTPContext(ctx)
+	mux.ServeHTTP(ctx, r)
+	err := ctx.GetError()
 
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, ctx.Status())

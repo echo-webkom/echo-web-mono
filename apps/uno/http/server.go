@@ -4,6 +4,7 @@ import (
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/handler"
 	"uno/http/router"
 	"uno/http/routes/api"
 
@@ -44,7 +45,7 @@ func RunServer(
 	whitelistService *service.WhitelistService,
 	commentService *service.CommentService,
 ) {
-	r := router.New(config.ServiceName, logger)
+	r := router.New(logger, handler.Logger(logger))
 
 	// withAuth := router.NewWithAuthHandler(authService)
 	admin := router.NewAdminMiddleware(config.AdminAPIKey)

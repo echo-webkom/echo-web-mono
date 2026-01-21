@@ -130,6 +130,6 @@ func (d *degrees) DeleteDegreeHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	ctx.W.WriteHeader(http.StatusNoContent)
+	ctx.WriteHeader(http.StatusNoContent)
 	return nil
 }
