@@ -31,7 +31,11 @@ export default async function HomePage() {
         "https://www4.uib.no/studier/program/informatikk-matematikk-okonomi-bachelor",
       Bioinformatikk: "https://www4.uib.no/studier/program/informatikk-bioinformatikk-bachelor",
     },
-    Master: { Informatikk: "https://www4.uib.no/studier/program/informatikk-master" },
+    Master: {
+      Informatikk: "https://www4.uib.no/studier/program/informatikk-master",
+      Programvareutvikling:
+        "https://www4.uib.no/studier/program/felles-masterprogram-i-programvareutvikling-master",
+    },
     Årsstudium: { Informatikk: "https://www4.uib.no/studier/program/informatikk-arsstudium" },
   };
 
