@@ -16,19 +16,28 @@ import "@sanity/client";
  */
 
 // Source: schema.json
+export type ProfileReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "profile";
+};
+
 export type HungerGames = {
   _id: string;
   _type: "hungerGames";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  profile: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "profile";
-  };
+  profile: ProfileReference;
   isDead?: boolean;
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
 export type Merch = {
@@ -41,319 +50,37 @@ export type Merch = {
   slug: Slug;
   price: number;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-  body?: string;
+  body?: Markdown;
 };
 
-export type HsApplication = {
-  _id: string;
-  _type: "hs-application";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  profile: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "profile";
-  };
-  poster: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
+export type Markdown = string;
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
-export type Banner = {
-  _id: string;
-  _type: "banner";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  text: string;
-  expiringDate: string;
-  backgroundColor?: Color;
-  textColor?: Color;
-  linkTo?: string;
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
-export type Movie = {
-  _id: string;
-  _type: "movie";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  date: string;
-  image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  link?: string;
-};
-
-export type Question = {
-  _type: "question";
-  id: string;
-  title: string;
-  required: boolean;
-  type: "text" | "textarea" | "checkbox" | "radio";
-  isSensitive?: boolean;
-  options?: Array<string>;
-};
-
-export type ContactProfile = {
-  _type: "contactProfile";
-  profile: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "profile";
-  };
-  email: string;
-};
-
-export type SpotRange = {
-  _type: "spotRange";
-  minYear: number;
-  maxYear: number;
-  spots: number;
-};
-
-export type MeetingMinute = {
-  _id: string;
-  _type: "meetingMinute";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  date: string;
-  isAllMeeting: boolean;
-  document: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
-};
-
-export type StudentGroup = {
-  _id: string;
-  _type: "studentGroup";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  slug: Slug;
-  groupType: "board" | "subgroup" | "suborg" | "intgroup" | "sport" | "hidden";
-  isActive: boolean;
-  socials?: {
-    email?: string;
-    facebook?: string;
-    instagram?: string;
-    linkedin?: string;
-  };
-  description?: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  members?: Array<{
-    profile?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "profile";
-    };
-    role?: string;
-    _type: "member";
-    _key: string;
-  }>;
-};
-
-export type StaticInfo = {
-  _id: string;
-  _type: "staticInfo";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  pageType: "for-students" | "for-companies" | "about";
-  body: string;
-};
-
-export type Profile = {
-  _id: string;
-  _type: "profile";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  picture?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  socials?: {
-    email?: string;
-    linkedin?: string;
-  };
-};
-
-export type Job = {
-  _id: string;
-  _type: "job";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  company: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "company";
-  };
-  expiresAt: string;
-  weight: number;
-  locations: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "location";
-  }>;
-  jobType: "fulltime" | "parttime" | "internship" | "summerjob" | "event" | "ad";
-  link: string;
-  deadline?: string;
-  degreeYears?: {
-    FIRST?: boolean;
-    SECOND?: boolean;
-    THIRD?: boolean;
-    FOURTH?: boolean;
-    FIFTH?: boolean;
-    PHD?: boolean;
-  };
-  body: string;
-};
-
-export type Post = {
-  _id: string;
-  _type: "post";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  authors?: Array<
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "studentGroup";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "profile";
-      }
-  >;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  body: string;
-};
-
-export type RepeatingHappening = {
-  _id: string;
-  _type: "repeatingHappening";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  happeningType: "event" | "external";
-  organizers?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "studentGroup";
-  }>;
-  location?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "location";
-  };
-  cost?: number;
-  dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 0;
-  startTime: Ttime;
-  endTime: Ttime;
-  startDate: string;
-  endDate: string;
-  interval: "weekly" | "bi-weekly" | "monthly";
-  ignoredDates?: Array<string>;
-  contacts?: Array<
-    {
-      _key: string;
-    } & ContactProfile
-  >;
-  externalLink?: string;
-  body?: string;
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
 };
 
 export type Ttime = {
@@ -446,6 +173,259 @@ export type Ttime = {
     | 59;
 };
 
+export type Banner = {
+  _id: string;
+  _type: "banner";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  text: string;
+  isActive?: boolean;
+  expiringDate: string;
+  backgroundColor?: Color;
+  textColor?: Color;
+  linkTo?: string;
+};
+
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type Movie = {
+  _id: string;
+  _type: "movie";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  date: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  link?: string;
+};
+
+export type Question = {
+  _type: "question";
+  id: string;
+  title: string;
+  required: boolean;
+  type: "text" | "textarea" | "checkbox" | "radio";
+  isSensitive?: boolean;
+  options?: Array<string>;
+};
+
+export type ContactProfile = {
+  _type: "contactProfile";
+  profile: ProfileReference;
+  email: string;
+};
+
+export type SpotRange = {
+  _type: "spotRange";
+  minYear: number;
+  maxYear: number;
+  spots: number;
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type MeetingMinute = {
+  _id: string;
+  _type: "meetingMinute";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  date: string;
+  isAllMeeting: boolean;
+  document: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+};
+
+export type StudentGroup = {
+  _id: string;
+  _type: "studentGroup";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  slug: Slug;
+  groupType: "board" | "subgroup" | "suborg" | "intgroup" | "sport" | "hidden";
+  isActive: boolean;
+  socials?: {
+    email?: string;
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+  };
+  description?: Markdown;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  members?: Array<{
+    profile?: ProfileReference;
+    role?: string;
+    _type: "member";
+    _key: string;
+  }>;
+};
+
+export type StaticInfo = {
+  _id: string;
+  _type: "staticInfo";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  pageType: "for-students" | "for-companies" | "about";
+  body: Markdown;
+};
+
+export type Profile = {
+  _id: string;
+  _type: "profile";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  picture?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  socials?: {
+    email?: string;
+    linkedin?: string;
+  };
+};
+
+export type CompanyReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "company";
+};
+
+export type LocationReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "location";
+};
+
+export type Job = {
+  _id: string;
+  _type: "job";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  company: CompanyReference;
+  expiresAt: string;
+  weight: number;
+  locations: Array<
+    {
+      _key: string;
+    } & LocationReference
+  >;
+  jobType: "fulltime" | "parttime" | "internship" | "summerjob" | "event" | "ad";
+  link: string;
+  deadline?: string;
+  degreeYears?: {
+    FIRST?: boolean;
+    SECOND?: boolean;
+    THIRD?: boolean;
+    FOURTH?: boolean;
+    FIFTH?: boolean;
+    PHD?: boolean;
+  };
+  body: Markdown;
+};
+
+export type StudentGroupReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "studentGroup";
+};
+
+export type Post = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  authors?: ArrayOf<StudentGroupReference | ProfileReference>;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  body: Markdown;
+};
+
+export type RepeatingHappening = {
+  _id: string;
+  _type: "repeatingHappening";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  happeningType: "event" | "external";
+  organizers?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
+  location?: LocationReference;
+  cost?: number;
+  dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 0;
+  startTime: Ttime;
+  endTime: Ttime;
+  startDate: string;
+  endDate: string;
+  interval: "weekly" | "bi-weekly" | "monthly";
+  ignoredDates?: Array<string>;
+  contacts?: Array<
+    {
+      _key: string;
+    } & ContactProfile
+  >;
+  externalLink?: string;
+  body?: Markdown;
+};
+
 export type Happening = {
   _id: string;
   _type: "happening";
@@ -456,37 +436,23 @@ export type Happening = {
   slug: Slug;
   isPinned?: boolean;
   happeningType: "event" | "bedpres" | "external";
-  organizers?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "studentGroup";
-  }>;
-  company?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "company";
-  };
-  location?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "location";
-  };
+  organizers?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
+  company?: CompanyReference;
+  location?: LocationReference;
   cost?: number;
   hideRegistrations?: boolean;
   date: string;
   endDate?: string;
   registrationStartGroups?: string;
-  registrationGroups?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "studentGroup";
-  }>;
+  registrationGroups?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
   registrationStart?: string;
   registrationEnd?: string;
   contacts?: Array<
@@ -505,7 +471,7 @@ export type Happening = {
     } & Question
   >;
   externalLink?: string;
-  body?: string;
+  body?: Markdown;
 };
 
 export type Location = {
@@ -527,26 +493,12 @@ export type Company = {
   name: string;
   website: string;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type Color = {
-  _type: "color";
-  hex?: string;
-  alpha?: number;
-  hsl?: HslaColor;
-  hsv?: HsvaColor;
-  rgb?: RgbaColor;
 };
 
 export type RgbaColor = {
@@ -572,8 +524,6 @@ export type HslaColor = {
   l?: number;
   a?: number;
 };
-
-export type Markdown = string;
 
 export type MediaTag = {
   _id: string;
@@ -605,25 +555,21 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  thumbHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -646,6 +592,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -671,17 +624,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -689,56 +631,48 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type AllSanitySchemaTypes =
+  | ProfileReference
   | HungerGames
+  | SanityImageAssetReference
   | Merch
-  | HsApplication
+  | Markdown
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
+  | Ttime
   | Banner
+  | Color
   | Movie
   | Question
   | ContactProfile
   | SpotRange
+  | SanityFileAssetReference
   | MeetingMinute
   | StudentGroup
   | StaticInfo
   | Profile
+  | CompanyReference
+  | LocationReference
   | Job
+  | StudentGroupReference
   | Post
   | RepeatingHappening
-  | Ttime
   | Happening
   | Location
   | Company
-  | Color
   | RgbaColor
   | HsvaColor
   | HslaColor
-  | Markdown
   | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
-  | SanityImageHotspot
-  | SanityImageCrop
-  | SanityFileAsset
-  | SanityImageAsset
   | SanityImageMetadata
-  | Geopoint
-  | Slug
-  | SanityAssetSourceData;
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
@@ -755,7 +689,7 @@ export type BannerQueryResult = {
   backgroundColor: Color | null;
   textColor: Color | null;
   text: string;
-  isActive: null;
+  isActive: boolean | null;
   expiringDate: string;
   linkTo: string | null;
   isExternal: null;
@@ -788,12 +722,7 @@ export type AllHappeningsQueryResult = Array<{
     name: string;
     website: string;
     image: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -836,7 +765,7 @@ export type AllHappeningsQueryResult = Array<{
     options: Array<string> | null;
   }> | null;
   externalLink: string | null;
-  body: string | null;
+  body: Markdown | null;
 }>;
 
 // Source: ../../packages/sanity/src/queries/happening.ts
@@ -857,12 +786,7 @@ export type HappeningQueryResult = {
     name: string;
     website: string;
     image: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -904,7 +828,7 @@ export type HappeningQueryResult = {
     options: Array<string> | null;
   }> | null;
   externalLink: string | null;
-  body: string | null;
+  body: Markdown | null;
 } | null;
 
 // Source: ../../packages/sanity/src/queries/happening.ts
@@ -919,12 +843,7 @@ export type HomeHappeningsQueryResult = Array<{
   registrationStart: string | null;
   slug: string;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -954,18 +873,13 @@ export type AllMerchQueryResult = Array<{
   slug: string;
   price: number;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-  body: string | null;
+  body: Markdown | null;
 }>;
 
 // Source: ../../packages/sanity/src/queries/minutes.ts
@@ -988,12 +902,7 @@ export type MoviesQueryResult = Array<{
   date: string;
   link: string | null;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1020,12 +929,7 @@ export type AllPostsQueryResult = Array<{
         _id: string;
         name: string;
         image: {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
+          asset?: SanityImageAssetReference;
           media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
@@ -1034,18 +938,13 @@ export type AllPostsQueryResult = Array<{
       }
   > | null;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  body: string;
+  body: Markdown;
 }>;
 
 // Source: ../../packages/sanity/src/queries/repeating-happening.ts
@@ -1082,7 +981,7 @@ export type AllRepeatingHappeningsQueryResult = Array<{
   cost: number | null;
   ignoredDates: Array<string> | null;
   externalLink: string | null;
-  body: string | null;
+  body: Markdown | null;
 }>;
 
 // Source: ../../packages/sanity/src/queries/static-info.ts
@@ -1092,7 +991,7 @@ export type StaticInfoQueryResult = Array<{
   title: string;
   slug: string;
   pageType: "about" | "for-companies" | "for-students";
-  body: string;
+  body: Markdown;
 }>;
 
 // Source: ../../packages/sanity/src/queries/student-group.ts
@@ -1106,14 +1005,9 @@ export type StudentGroupsByTypeQueryResult = Array<{
   isActive: boolean;
   groupType: "board" | "hidden" | "intgroup" | "sport" | "subgroup" | "suborg";
   slug: string;
-  description: string | null;
+  description: Markdown | null;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1125,12 +1019,7 @@ export type StudentGroupsByTypeQueryResult = Array<{
       _id: string;
       name: string;
       picture: {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
+        asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
@@ -1161,14 +1050,9 @@ export type StudentGroupBySlugQueryResult = {
   isActive: boolean;
   groupType: "board" | "hidden" | "intgroup" | "sport" | "subgroup" | "suborg";
   slug: string;
-  description: string | null;
+  description: Markdown | null;
   image: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1180,12 +1064,7 @@ export type StudentGroupBySlugQueryResult = {
       _id: string;
       name: string;
       picture: {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
+        asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
