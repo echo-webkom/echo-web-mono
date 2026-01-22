@@ -9,7 +9,7 @@ export const Banner = async () => {
   const backgroundColor = bannerInfo?.backgroundColor?.hex ?? "var(--primary)";
   const color = bannerInfo?.textColor?.hex ?? "white";
 
-  if (!bannerInfo?.text) {
+  if (!bannerInfo?.text || !bannerInfo.isActive) {
     return null;
   }
 

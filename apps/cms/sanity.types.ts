@@ -739,14 +739,23 @@ export type AllSanitySchemaTypes =
   | Geopoint
   | Slug
   | SanityAssetSourceData;
+
 export declare const internalGroqTypeReferenceTo: unique symbol;
+
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
+
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
-// Query: *[_type == "banner" && _id == "banner" && !(_id in path('drafts.**'))] {  backgroundColor,  textColor,  text,  expiringDate,  linkTo,  isExternal,}[0]
+// Query: *[_type == "banner" && _id == "banner" && !(_id in path('drafts.**'))] {  backgroundColor,  textColor,  text,  isActive,  expiringDate,  linkTo,  isExternal,}[0]
 export type BannerQueryResult = {
   backgroundColor: Color | null;
   textColor: Color | null;
   text: string;
+  isActive: null;
   expiringDate: string;
   linkTo: string | null;
   isExternal: null;
@@ -829,6 +838,8 @@ export type AllHappeningsQueryResult = Array<{
   externalLink: string | null;
   body: string | null;
 }>;
+
+// Source: ../../packages/sanity/src/queries/happening.ts
 // Variable: happeningQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug][0] {  _id,  _createdAt,  _updatedAt,  _type,  title,  "slug": slug.current,  isPinned,  happeningType,  hideRegistrations,  "company": company->{    _id,    name,    website,    image,  },  "organizers": organizers[]->{    _id,    name,    "slug": slug.current  },  "contacts": contacts[] {    email,    "profile": profile->{      _id,      name,    },  },  "date": date,  "endDate": endDate,  cost,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "location": location->{    name,    link  },  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "additionalQuestions": additionalQuestions[] {    title,    required,    type,    options,  },  externalLink,  body}
 export type HappeningQueryResult = {
@@ -895,6 +906,8 @@ export type HappeningQueryResult = {
   externalLink: string | null;
   body: string | null;
 } | null;
+
+// Source: ../../packages/sanity/src/queries/happening.ts
 // Variable: homeHappeningsQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && (isPinned || date >= now())  && happeningType in $happeningTypes]| order(coalesce(isPinned, false) desc, date asc) {  _id,  title,  isPinned,  happeningType,  date,  registrationStart,  "slug": slug.current,  "image": company->image,  "organizers": organizers[]->{    name  }.name}[0...$n]
 export type HomeHappeningsQueryResult = Array<{
@@ -919,6 +932,8 @@ export type HomeHappeningsQueryResult = Array<{
   } | null;
   organizers: Array<string> | null;
 }>;
+
+// Source: ../../packages/sanity/src/queries/happening.ts
 // Variable: happeningTypeQuery
 // Query: *[_type == "happening"  && !(_id in path('drafts.**'))  && slug.current == $slug ] {  happeningType,}[0].happeningType
 export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
@@ -926,48 +941,7 @@ export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
 // Source: ../../packages/sanity/src/queries/job-ad.ts
 // Variable: jobAdsQuery
 // Query: *[_type == "job"  && !(_id in path('drafts.**'))  && expiresAt > now()]  | order(weight desc, deadline desc) {  _id,  _createdAt,  _updatedAt,  weight,  title,  "slug": slug.current,  "company": company->{    _id,    name,    website,    image,  },  expiresAt,  "locations": locations[]->{    _id,    name,  },  jobType,  link,  deadline,  degreeYears,  body}
-export type JobAdsQueryResult = Array<{
-  _id: string;
-  _createdAt: string;
-  _updatedAt: string;
-  weight: number;
-  title: string;
-  slug: string;
-  company: {
-    _id: string;
-    name: string;
-    website: string;
-    image: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-  };
-  expiresAt: string;
-  locations: Array<{
-    _id: string;
-    name: string;
-  }>;
-  jobType: "ad" | "event" | "fulltime" | "internship" | "parttime" | "summerjob";
-  link: string;
-  deadline: string | null;
-  degreeYears: {
-    FIRST?: boolean;
-    SECOND?: boolean;
-    THIRD?: boolean;
-    FOURTH?: boolean;
-    FIFTH?: boolean;
-    PHD?: boolean;
-  } | null;
-  body: string;
-}>;
+export type JobAdsQueryResult = Array<never>;
 
 // Source: ../../packages/sanity/src/queries/merch.ts
 // Variable: allMerchQuery
@@ -1175,6 +1149,8 @@ export type StudentGroupsByTypeQueryResult = Array<{
     email: string | null;
   } | null;
 }>;
+
+// Source: ../../packages/sanity/src/queries/student-group.ts
 // Variable: studentGroupBySlugQuery
 // Query: *[_type == "studentGroup"  && slug.current == $slug  && !(_id in path('drafts.**'))] {  _id,  _createdAt,  _updatedAt,  name,  isActive,  groupType,  "slug": slug.current,  description,  image,  "members": members[] {    role,    "profile": profile->{      _id,      name,      picture,      socials,    },  },  "socials": socials {    facebook,    instagram,    linkedin,    email,  }}[0]
 export type StudentGroupBySlugQueryResult = {
@@ -1260,7 +1236,7 @@ export type HappeningQueryListResult = Array<{
 
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n*[_type == "banner" && _id == "banner" && !(_id in path(\'drafts.**\'))] {\n  backgroundColor,\n  textColor,\n  text,\n  expiringDate,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
+    '\n*[_type == "banner" && _id == "banner" && !(_id in path(\'drafts.**\'))] {\n  backgroundColor,\n  textColor,\n  text,\n  isActive,\n  expiringDate,\n  linkTo,\n  isExternal,\n}[0]\n': BannerQueryResult;
     '\n*[_type == "happening" && slug.current == $slug] {\n"contacts": contacts[] {\nemail,\n"profile": profile->{\n  _id,\n  name,\n},\n},\n}[0].contacts\n': HappeningContactsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))]\n  | order(date asc) {\n    _id,\n  _createdAt,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n    link\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    id,\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': AllHappeningsQueryResult;
     '\n*[_type == "happening"\n  && !(_id in path(\'drafts.**\'))\n  && slug.current == $slug\n][0] {\n  _id,\n  _createdAt,\n  _updatedAt,\n  _type,\n  title,\n  "slug": slug.current,\n  isPinned,\n  happeningType,\n  hideRegistrations,\n  "company": company->{\n    _id,\n    name,\n    website,\n    image,\n  },\n  "organizers": organizers[]->{\n    _id,\n    name,\n    "slug": slug.current\n  },\n  "contacts": contacts[] {\n    email,\n    "profile": profile->{\n      _id,\n      name,\n    },\n  },\n  "date": date,\n  "endDate": endDate,\n  cost,\n  "registrationStartGroups": registrationStartGroups,\n  "registrationGroups": registrationGroups[]->slug.current,\n  "registrationStart": registrationStart,\n  "registrationEnd": registrationEnd,\n  "location": location->{\n    name,\n    link\n  },\n  "spotRanges": spotRanges[] {\n    spots,\n    minYear,\n    maxYear,\n  },\n  "additionalQuestions": additionalQuestions[] {\n    title,\n    required,\n    type,\n    options,\n  },\n  externalLink,\n  body\n}\n': HappeningQueryResult;
