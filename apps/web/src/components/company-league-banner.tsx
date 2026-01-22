@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { format } from "date-fns";
 import ky from "ky";
 import Marquee from "react-fast-marquee";
@@ -13,7 +14,7 @@ export interface Match {
   id: string;
   homeTeam: string;
   awayTeam: string;
-  datetime: Date;
+  datetime: string;
   homeScore: string | null;
   awayScore: string | null;
 }
@@ -80,12 +81,18 @@ const getOutcome = (home: string | null, away: string | null) => {
   return "draw";
 };
 
-export const CompanyLeagueBanner = async () => {
+type CompanyLeagueBannerProps = {
+  linkToDatabrusPage?: boolean;
+};
+
+export const CompanyLeagueBanner = async ({
+  linkToDatabrusPage = false,
+}: CompanyLeagueBannerProps) => {
   const matches = await fetchCompanyLeagueTableMatches().then((ms) =>
     ms.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()),
   );
 
-  return (
+  const content = (
     <div className="relative pb-8">
       <Marquee gradient gradientColor="var(--background)">
         {matches.map((match) => {
@@ -109,4 +116,14 @@ export const CompanyLeagueBanner = async () => {
       </Marquee>
     </div>
   );
+
+  if (linkToDatabrusPage) {
+    return (
+      <Link href="/databrus" className="block transition-opacity hover:opacity-80">
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 };

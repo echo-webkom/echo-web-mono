@@ -33,7 +33,7 @@ export const EventPage = ({ event }: EventPageProps) => {
     <div>
       {isCompanyLeague && (
         <div className="pt-6">
-          <CompanyLeagueBanner />
+          <CompanyLeagueBanner linkToDatabrusPage />
         </div>
       )}
 
