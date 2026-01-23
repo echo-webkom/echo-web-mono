@@ -54,7 +54,7 @@ export default async function HomePage() {
       {/* Prevents scrolling on the body when the blur logo is outside the viewport // No idea why
       this works, but it does */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 left-1/2 -z-10 h-full min-h-screen w-[1200px] -translate-x-1/2">
+        <div className="absolute inset-0 left-1/2 -z-10 h-full min-h-screen w-300 -translate-x-1/2">
           <BlurLogo
             className="animate-float-rotate-reverse-[-8]"
             width={400}
