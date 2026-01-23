@@ -35,6 +35,8 @@ export default async function HomePage() {
       Informatikk: "https://www4.uib.no/studier/program/informatikk-master",
       Programvareutvikling:
         "https://www4.uib.no/studier/program/felles-masterprogram-i-programvareutvikling-master",
+      "Data Science":
+        "https://www4.uib.no/studier/program/data-science-integrert-masterprogram-sivilingenior",
     },
     Årsstudium: { Informatikk: "https://www4.uib.no/studier/program/informatikk-arsstudium" },
   };
