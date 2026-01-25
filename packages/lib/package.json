@@ -16,9 +16,9 @@
   "devDependencies": {
     "@types/node": "22.19.3",
     "eslint": "9.39.2",
-    "globals": "^16.5.0",
+    "globals": "^17.1.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.50.1",
-    "vitest": "4.0.16"
+    "typescript-eslint": "^8.53.1",
+    "vitest": "4.0.18"
   }
 }

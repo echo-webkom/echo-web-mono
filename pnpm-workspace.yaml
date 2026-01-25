@@ -4,9 +4,10 @@ packages:
   - playwright
 
 onlyBuiltDependencies:
+  - '@swc/core'
+  - '@tailwindcss/oxide'
   - core-js
   - esbuild
   - sharp
   - unrs-resolver
   - workerd
-  - "@tailwindcss/oxide"
