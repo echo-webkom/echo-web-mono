@@ -68,7 +68,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
           {list.map((user, i) => {
             // Calculate rank: same score as previous = same rank (omit number)
             const prevUser = i > 0 ? list[i - 1] : undefined;
-            const isTied = prevUser !== undefined && user.localScore === prevUser.localScore;
+            const isTied = prevUser?.localScore === user.localScore;
             const rank = isTied ? null : i + 1;
 
             return (

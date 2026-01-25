@@ -87,7 +87,7 @@ export default defineType({
           type: "string",
         }),
       ],
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       hidden: ({ parent }) => ["text", "textarea"].includes(parent?.type),
       validation: (Rule) =>
         Rule.custom((value, context) => {
