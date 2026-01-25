@@ -5,6 +5,7 @@ export const bannerQuery = groq`
   backgroundColor,
   textColor,
   text,
+  isActive,
   expiringDate,
   linkTo,
   isExternal,

@@ -24,6 +24,12 @@ export default defineType({
       type: "string",
     }),
     defineField({
+      name: "isActive",
+      title: "Aktiv",
+      type: "boolean",
+      initialValue: true,
+    }),
+    defineField({
       name: "expiringDate",
       title: "Utløpsdato",
       validation: (Rule) => Rule.required(),
