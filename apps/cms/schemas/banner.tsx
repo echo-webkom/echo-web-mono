@@ -26,6 +26,8 @@ export default defineType({
     defineField({
       name: "expiringDate",
       title: "Utløpsdato",
+      description:
+        'Datoen banneret slutter å vises, dersom du vil "unpublishe" banneret sett datoen tilbake i tid',
       validation: (Rule) => Rule.required(),
       type: "datetime",
     }),
