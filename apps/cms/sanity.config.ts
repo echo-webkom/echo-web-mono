@@ -1,7 +1,7 @@
 import { colorInput } from "@sanity/color-input";
 import { RobotIcon, RocketIcon, TerminalIcon } from "@sanity/icons";
 import { visionTool } from "@sanity/vision";
-import { type Config } from "sanity";
+import { defineConfig } from "sanity";
 import { markdownSchema } from "sanity-plugin-markdown";
 import { media } from "sanity-plugin-media";
 import { singletonTools } from "sanity-plugin-singleton-tools";
@@ -10,9 +10,9 @@ import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./schemas";
 import { deskStructure } from "./src/desk-structure";
 
-// TODO: Type configs using `Config` and or `defineConfig()`
+const IS_DEV = process.env.NODE_ENV === "development";
 
-const defaultConfig = {
+const baseConfig = {
   plugins: [
     structureTool({
       structure: deskStructure,
@@ -29,8 +29,8 @@ const defaultConfig = {
   projectId: "pgq2pd26",
 };
 
-const prodConfig = {
-  ...defaultConfig,
+const prodConfig = defineConfig({
+  ...baseConfig,
 
   name: "production",
   title: "echo web",
@@ -38,10 +38,10 @@ const prodConfig = {
 
   basePath: "/prod",
   dataset: "production",
-};
+});
 
-const devConfig = {
-  ...defaultConfig,
+const devConfig = defineConfig({
+  ...baseConfig,
 
   name: "develop",
   title: "echo web – Utvikling",
@@ -49,10 +49,10 @@ const devConfig = {
 
   basePath: "/dev",
   dataset: "develop",
-};
+});
 
-const testConfig = {
-  ...defaultConfig,
+const testConfig = defineConfig({
+  ...baseConfig,
 
   name: "testing",
   title: "echo web – Testing",
@@ -60,14 +60,14 @@ const testConfig = {
 
   basePath: "/test",
   dataset: "testing",
-};
+});
 
 const getConfig = () => {
-  if (process.env.NODE_ENV === "development") {
+  if (IS_DEV) {
     return [prodConfig, devConfig, testConfig];
   }
 
   return [prodConfig];
 };
 
-export default getConfig() as Array<Config>;
+export default defineConfig(getConfig());
