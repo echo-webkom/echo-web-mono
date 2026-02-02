@@ -9,6 +9,7 @@ import { db } from "@echo-webkom/db/serverless";
 import { auth } from "@/auth/session";
 import { sendVerificationEmail } from "@/lib/email-verification";
 import { isWebkom } from "@/lib/memberships";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const updateSelfPayloadSchema = insertUserSchema.pick({
   alternativeEmail: true,
@@ -60,6 +61,23 @@ export const updateSelf = async (payload: z.infer<typeof updateSelfPayloadSchema
 
     // Send verification email if alternativeEmail was updated and is not null
     if (isEmailChanging && newAlternativeEmail) {
+      // Rate limit: 3 attempts per hour per user
+      const rateLimit = await checkRateLimit({
+        key: `email-update-verification:${user.id}`,
+        maxAttempts: 3,
+        windowSeconds: 60 * 60, // 1 hour
+      });
+
+      if (!rateLimit.success) {
+        const minutesUntilReset = Math.ceil(
+          (rateLimit.resetAt.getTime() - Date.now()) / (1000 * 60),
+        );
+        return {
+          success: false,
+          message: `For mange forsøk på å endre e-post. Prøv igjen om ${minutesUntilReset} ${minutesUntilReset === 1 ? "minutt" : "minutter"}`,
+        };
+      }
+
       try {
         await sendVerificationEmail(newAlternativeEmail, user.name?.split(" ")[0]);
       } catch (emailError) {

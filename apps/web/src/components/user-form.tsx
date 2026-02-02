@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
+import { resendVerificationEmail } from "@/actions/resend-verification-email";
 import { updateSelf } from "@/actions/user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
@@ -51,6 +52,7 @@ type UserFormProps = {
 
 export const UserForm = ({ user, degrees }: UserFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -96,8 +98,20 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
     },
   );
 
-  // TODO: fix alternative email verification status display
-  // const isAlternativeEmailVerified = user.alternativeEmail && !!user.alternativeEmailVerifiedAt;
+  const isAlternativeEmailVerified = user.alternativeEmail && !!user.alternativeEmailVerifiedAt;
+
+  const handleResendVerification = async () => {
+    setIsResending(true);
+
+    const result = await resendVerificationEmail();
+
+    setIsResending(false);
+
+    toast({
+      title: result.success ? result.message : result.error,
+      variant: result.success ? "success" : "warning",
+    });
+  };
 
   return (
     <Form {...form}>
@@ -109,15 +123,26 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
             <FormItem>
               <FormLabel htmlFor="alternativeEmail">
                 Alternativ e-post
-                {/* {user.alternativeEmail && isAlternativeEmailVerified ? (
-                  <span className="text-green-500"> (Bekreftet)</span>
+                {user.alternativeEmail && isAlternativeEmailVerified ? (
+                  <span className="text-green-600"> (Bekreftet)</span>
                 ) : user.alternativeEmail ? (
-                  <span className="text-red-500"> (Ubekreftet)</span>
-                ) : null} */}
+                  <span className="text-amber-600"> (Ubekreftet)</span>
+                ) : null}
               </FormLabel>
               <FormControl>
                 <Input id="alternativeEmail" placeholder="Din e-post" {...field} />
               </FormControl>
+              {user.alternativeEmail && !isAlternativeEmailVerified && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleResendVerification}
+                  disabled={isResending}
+                >
+                  {isResending ? "Sender..." : "Send verifiseringsepost på nytt"}
+                </Button>
+              )}
               <FormDescription>
                 Om du ønsker å få e-post tilsendt en annen mail.
                 {user.alternativeEmail && !user.alternativeEmailVerifiedAt && (

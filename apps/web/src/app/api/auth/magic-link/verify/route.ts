@@ -47,6 +47,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/logg-inn?error=user-not-found", request.url));
     }
 
+    // If logging in with alternative email, verify that it's been verified
+    if (user.alternativeEmail === email && !user.alternativeEmailVerifiedAt) {
+      return NextResponse.redirect(
+        new URL("/auth/logg-inn?error=unverified-alternative-email", request.url),
+      );
+    }
+
     // Clean up the used token
     await db
       .delete(verificationTokens)
