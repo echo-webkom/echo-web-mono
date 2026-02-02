@@ -41,7 +41,7 @@ export const SignInButtons = () => {
   };
 
   return (
-    <div className="border-muted-dark bg-muted mx-auto flex w-full max-w-[380px] flex-col rounded-xl border-2 p-8">
+    <div className="border-muted-dark bg-muted mx-auto flex w-full max-w-95 flex-col rounded-xl border-2 p-8">
       <Image src={EchoLogo} alt="echo logo" width={100} height={100} className="mx-auto" />
 
       <Heading level={3} className="mx-auto mb-8">
@@ -83,6 +83,10 @@ export const SignInButtons = () => {
             </Text>
           )}
         </form>
+        <Text size="sm" className="text-muted-foreground mt-2 text-xs">
+          Du kan bruke hoved-e-posten din fra Feide, eller din alternativ e-post om den er
+          bekreftet.
+        </Text>
       </div>
 
       <Text size="sm" className="text-muted-foreground">

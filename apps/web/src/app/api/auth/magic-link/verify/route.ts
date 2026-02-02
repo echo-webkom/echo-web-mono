@@ -8,9 +8,12 @@ import { sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
 import { createSessionCookie, SESSION_COOKIE_NAME } from "@/auth/session";
+import { cleanupExpiredTokens } from "@/lib/cleanup-tokens";
 
 export async function GET(request: NextRequest) {
   try {
+    await cleanupExpiredTokens();
+
     const searchParams = request.nextUrl.searchParams;
     const token = searchParams.get("token");
     const email = searchParams.get("email");
@@ -28,9 +31,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/logg-inn?error=invalid-token", request.url));
     }
 
-    // Check if token has expired
+    // Check if expired
     if (verificationToken.expires < new Date()) {
-      // Clean up expired token
       await db
         .delete(verificationTokens)
         .where(and(eq(verificationTokens.identifier, email), eq(verificationTokens.token, token)));
@@ -38,7 +40,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/logg-inn?error=expired-token", request.url));
     }
 
-    // Find the user
     const user = await db.query.users.findFirst({
       where: (user, { eq, or }) => or(eq(user.email, email), eq(user.alternativeEmail, email)),
     });
@@ -47,22 +48,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/logg-inn?error=user-not-found", request.url));
     }
 
-    // If logging in with alternative email, verify that it's been verified
+    // Check if email is verified
     if (user.alternativeEmail === email && !user.alternativeEmailVerifiedAt) {
       return NextResponse.redirect(
         new URL("/auth/logg-inn?error=unverified-alternative-email", request.url),
       );
     }
 
-    // Clean up the used token
     await db
       .delete(verificationTokens)
       .where(and(eq(verificationTokens.identifier, email), eq(verificationTokens.token, token)));
 
-    // Update user's last sign in time
     await db.update(users).set({ lastSignInAt: new Date() }).where(eq(users.id, user.id));
 
-    // Create or find existing session
     let existingSession = await db.query.sessions.findFirst({
       where: (row, { eq, and, gt }) => and(eq(row.userId, user.id), gt(row.expires, new Date())),
     });

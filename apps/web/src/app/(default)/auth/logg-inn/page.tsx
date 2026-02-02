@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
+import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
 import { Text } from "@/components/typography/text";
 import { signInAttempt } from "@/data/kv/namespaces";
@@ -13,6 +15,12 @@ type Props = {
 };
 
 export default async function SignInPage(props: Props) {
+  const user = await auth();
+
+  if (user) {
+    redirect("/");
+  }
+
   const { attemptId, error } = await props.searchParams;
 
   const attempt = attemptId && (await signInAttempt.get(attemptId));

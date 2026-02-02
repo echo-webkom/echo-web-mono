@@ -5,8 +5,12 @@ import { and, eq, gt } from "drizzle-orm";
 import { users, verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
+import { cleanupExpiredTokens } from "@/lib/cleanup-tokens";
+
 export async function verifyEmail(token: string) {
   try {
+    await cleanupExpiredTokens();
+
     if (!token) {
       return {
         success: false,

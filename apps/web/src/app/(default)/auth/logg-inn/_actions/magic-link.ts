@@ -8,7 +8,8 @@ import { db } from "@echo-webkom/db/serverless";
 import { MagicLinkEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { BASE_URL } from "@/config";
+import { BASE_URL, DEV } from "@/config";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { isValidEmail } from "@/utils/string";
 
 type MagicLinkResult = { success: true; message: string } | { success: false; error: string };
@@ -19,6 +20,23 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       return {
         success: false,
         error: "Ugyldig e-postadresse",
+      };
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Rate limit: 3 attempts per 15 minutes per email
+    const rateLimit = await checkRateLimit({
+      key: `magic-link:${normalizedEmail}`,
+      maxAttempts: 3,
+      windowSeconds: 15 * 60, // 15 minutes
+    });
+
+    if (!rateLimit.success) {
+      const minutesUntilReset = Math.ceil((rateLimit.resetAt.getTime() - Date.now()) / (1000 * 60));
+      return {
+        success: false,
+        error: `For mange forsøk. Prøv igjen om ${minutesUntilReset} ${minutesUntilReset === 1 ? "minutt" : "minutter"}`,
       };
     }
 
@@ -35,26 +53,53 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       };
     }
 
-    // Generate secure token
+    // Determine which email to send to and validate
+    let targetEmail: string;
+
+    if (existingUser.email.toLowerCase() === normalizedEmail) {
+      targetEmail = existingUser.email;
+    } else if (existingUser.alternativeEmail?.toLowerCase() === normalizedEmail) {
+      if (!existingUser.alternativeEmailVerifiedAt) {
+        return {
+          success: false,
+          error:
+            "Den alternative e-postadressen må bekreftes før den kan brukes til innlogging. Sjekk din innboks for verifiseringsepost, eller logg inn med hoved-e-posten din.",
+        };
+      }
+      targetEmail = existingUser.alternativeEmail;
+    } else {
+      // Should never happen
+      return {
+        success: false,
+        error: "En feil oppstod. Vennligst prøv igjen.",
+      };
+    }
+
     const token = crypto.randomBytes(32).toString("hex");
     const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
-
-    // Delete any existing tokens for this email
-    await db.delete(verificationTokens).where(eq(verificationTokens.identifier, email));
-
-    // Store the new token
+    await db.delete(verificationTokens).where(eq(verificationTokens.identifier, targetEmail));
     await db.insert(verificationTokens).values({
-      identifier: email,
+      identifier: targetEmail,
       token,
       expires,
     });
 
-    // Generate magic link URL
-    const magicLinkUrl = `${BASE_URL}/api/auth/magic-link/verify?token=${token}&email=${encodeURIComponent(email)}`;
+    const magicLinkUrl = `${BASE_URL}/api/auth/magic-link/verify?token=${token}&email=${encodeURIComponent(targetEmail)}`;
 
-    // Send email
+    // Console log magic link in development
+    if (DEV) {
+      // eslint-disable-next-line no-console
+      console.log("================================");
+      // eslint-disable-next-line no-console
+      console.log("Development mode - magic link URL:");
+      // eslint-disable-next-line no-console
+      console.log(`Magic link URL for ${targetEmail}: ${magicLinkUrl}`);
+      // eslint-disable-next-line no-console
+      console.log("================================");
+    }
+
     await emailClient.sendEmail(
-      [email],
+      [targetEmail],
       "Logg inn på echo",
       MagicLinkEmail({
         magicLinkUrl,
@@ -64,7 +109,7 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
 
     return {
       success: true,
-      message: "Magic link sendt! Sjekk din e-post for å logge inn.",
+      message: `Magic link sendt til ${targetEmail}. Sjekk innboksen din for å logge inn.`,
     };
   } catch {
     return {
