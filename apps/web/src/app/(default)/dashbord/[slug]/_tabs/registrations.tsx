@@ -13,21 +13,6 @@ type RegistrationsTabProps = {
 export const RegistrationsTab = async ({ happening, registrations }: RegistrationsTabProps) => {
   const groups = await unoWithAdmin.groups.all();
 
-  if (registrations.length < 1) {
-    return (
-      <div className="mx-auto mt-8 flex w-fit flex-col gap-8 p-5">
-        <h3 className="text-center text-xl font-medium">Ingen registrerte!</h3>
-        <Image
-          className="rounded-lg"
-          src="/gif/empty-shelves-john-travolta.gif"
-          alt="Travolta looking around in an empty store"
-          width={600}
-          height={600}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="mt-8 flex flex-col gap-3">
       <h2 className="text-3xl font-semibold">Registrerte</h2>
