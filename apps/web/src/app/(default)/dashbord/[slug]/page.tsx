@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
@@ -37,6 +38,24 @@ export default async function EventDashboard(props: Props) {
 
   const registrations = await getRegistrations(happening.id);
 
+  if (registrations.length < 1) {
+    return (
+      <Container layout="larger" className="flex flex-col gap-10 py-10">
+        <div className="mx-auto mt-8 flex w-fit flex-col gap-8 p-5">
+          <BackButton link={createBackLink(happening)} />
+          <h3 className="text-center text-xl font-medium">Ingen registrerte!</h3>
+          <Image
+            className="rounded-lg"
+            src="/gif/empty-shelves-john-travolta.gif"
+            alt="Travolta looking around in an empty store"
+            width={600}
+            height={600}
+          />
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <Container layout="larger" className="flex flex-col gap-10 py-10">
       <BackButton link={createBackLink(happening)} />
@@ -58,7 +77,7 @@ export default async function EventDashboard(props: Props) {
           <UtilitiesTab happening={happening} registrations={registrations} />
         </TabsContent>
         <TabsContent value="Attendance">
-          <AttendanceTab />
+          <AttendanceTab happening={happening} registrations={registrations} />
         </TabsContent>
       </Tabs>
     </Container>
