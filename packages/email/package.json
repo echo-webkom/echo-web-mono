@@ -21,15 +21,15 @@
   "dependencies": {
     "@react-email/components": "1.0.6",
     "@react-email/render": "2.0.4",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "resend": "6.8.0",
     "server-only": "0.0.1"
   },
   "devDependencies": {
     "@react-email/preview-server": "^5.2.5",
     "@types/node": "22.19.7",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.10",
     "dotenv-cli": "11.0.0",
     "eslint": "9.39.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
