@@ -38,6 +38,6 @@
     "globals": "^17.1.0",
     "react-email": "5.2.5",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.53.1"
+    "typescript-eslint": "^8.54.0"
   }
 }
