@@ -38,7 +38,8 @@
     "typegen": "pnpm --filter=cms typegen"
   },
   "dependencies": {
-    "turbo": "2.7.6",
+    "react-cookie-consent": "^9.0.0",
+    "turbo": "2.5.8",
     "typescript": "5.9.3"
   }
 }
