@@ -16,10 +16,10 @@
     "@types/node": "22.19.7",
     "dotenv-cli": "11.0.0",
     "eslint": "9.39.2",
-    "globals": "^17.1.0",
+    "globals": "^17.3.0",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.53.1"
+    "typescript-eslint": "^8.54.0"
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
@@ -28,8 +28,8 @@
     "@faker-js/faker": "10.2.0",
     "@sanity/client": "7.14.1",
     "chalk": "5.6.2",
-    "commander": "14.0.2",
+    "commander": "14.0.3",
     "drizzle-orm": "0.45.1",
-    "groq": "5.6.0"
+    "groq": "5.7.0"
   }
 }
