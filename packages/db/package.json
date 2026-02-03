@@ -28,7 +28,7 @@
     "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
     "nanoid": "5.1.6",
-    "pg": "8.17.2",
+    "pg": "8.18.0",
     "postgres": "3.4.8",
     "zod": "4.3.6"
   },
@@ -39,9 +39,9 @@
     "drizzle-kit": "0.31.8",
     "drizzle-seed": "^0.3.1",
     "eslint": "9.39.2",
-    "globals": "^17.1.0",
+    "globals": "^17.3.0",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.53.1"
+    "typescript-eslint": "^8.54.0"
   }
 }
