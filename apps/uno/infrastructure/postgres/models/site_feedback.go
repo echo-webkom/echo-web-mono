@@ -5,8 +5,8 @@ import (
 	"uno/domain/model"
 )
 
-// SiteFeedbackDB represents the database schema for site_feedback table
-type SiteFeedbackDB struct {
+// SiteFeedback represents the database schema for site_feedback table
+type SiteFeedback struct {
 	ID        string    `db:"id"`
 	Name      *string   `db:"name"`
 	Email     *string   `db:"email"`
@@ -17,7 +17,7 @@ type SiteFeedbackDB struct {
 }
 
 // ToDomain converts database model to domain model
-func (db *SiteFeedbackDB) ToDomain() *model.SiteFeedback {
+func (db *SiteFeedback) ToDomain() *model.SiteFeedback {
 	return &model.SiteFeedback{
 		ID:        db.ID,
 		Name:      db.Name,
@@ -27,4 +27,12 @@ func (db *SiteFeedbackDB) ToDomain() *model.SiteFeedback {
 		IsRead:    db.IsRead,
 		CreatedAt: db.CreatedAt,
 	}
+}
+
+func SiteFeedbacksToDomainList(dbModels []SiteFeedback) []model.SiteFeedback {
+	domainModels := make([]model.SiteFeedback, len(dbModels))
+	for i, dbModel := range dbModels {
+		domainModels[i] = *dbModel.ToDomain()
+	}
+	return domainModels
 }

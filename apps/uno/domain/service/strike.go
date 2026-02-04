@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"uno/domain/model"
 	"uno/domain/port"
 )
 
@@ -35,11 +36,11 @@ func (s *StrikeService) UnbanUsersWithExpiredStrikes(ctx context.Context) error 
 
 }
 
-func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]port.UserWithStrikes, error) {
+func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
 	return s.userRepo.GetUsersWithStrikes(ctx)
 }
 
-func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, error) {
+func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
 	return s.userRepo.GetBannedUsers(ctx)
 }
 

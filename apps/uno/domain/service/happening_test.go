@@ -108,7 +108,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 					h.ID = happeningID
 					h.Type = "bedpres"
 				})
-				banInfo := testutil.NewFakeStruct(func(b *model.BanInfo) {
+				banInfo := testutil.NewFakeStruct(func(b *model.ModBanInfo) {
 					expiresAt := time.Now().Add(24 * time.Hour)
 					b.ExpiresAt = expiresAt
 				})

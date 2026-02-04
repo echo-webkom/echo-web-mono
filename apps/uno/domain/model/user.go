@@ -124,3 +124,40 @@ func (v *VerificationToken) IsExpired(now time.Time) bool {
 func (v *VerificationToken) IsValid(now time.Time) bool {
 	return !v.IsExpired(now)
 }
+
+type UserWithStrikes struct {
+	ID       string
+	Name     *string
+	Image    *string
+	IsBanned bool
+	Strikes  int
+}
+
+type BanInfo struct {
+	ID           int
+	Reason       string
+	UserID       string
+	BannedByID   string
+	BannedByName *string
+	CreatedAt    time.Time
+	ExpiresAt    time.Time
+}
+
+type DotInfo struct {
+	ID            int
+	UserID        string
+	Count         int
+	Reason        string
+	CreatedAt     time.Time
+	ExpiresAt     time.Time
+	StrikedByID   string
+	StrikedByName *string
+}
+
+type UserWithBanInfo struct {
+	ID      string
+	Name    *string
+	Image   *string
+	BanInfo BanInfo
+	Dots    []DotInfo
+}

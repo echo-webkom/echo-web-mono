@@ -19,7 +19,7 @@ func NewUserRepo(db *Database, logger port.Logger) port.UserRepo {
 	return &UserRepo{db: db, logger: logger}
 }
 
-func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, error) {
+func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
 	u.logger.Info(ctx, "getting banned users")
 
 	// First, get all banned users with their ban info
@@ -43,11 +43,11 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, 
 	}
 	defer func() { _ = rows.Close() }()
 
-	var users []port.UserWithBanInfo
-	userMap := make(map[string]*port.UserWithBanInfo)
+	var users []models.UserWithBanInfo
+	userMap := make(map[string]*models.UserWithBanInfo)
 
 	for rows.Next() { // Fix n+1 queyr
-		var user port.UserWithBanInfo
+		var user models.UserWithBanInfo
 		err := rows.Scan(
 			&user.ID,
 			&user.Name,
@@ -63,13 +63,13 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, 
 		if err != nil {
 			return nil, err
 		}
-		user.Dots = []port.DotInfo{}
+		user.Dots = []models.DotInfo{}
 		users = append(users, user)
 		userMap[user.ID] = &users[len(users)-1]
 	}
 
 	if len(users) == 0 {
-		return users, nil
+		return []model.UserWithBanInfo{}, nil
 	}
 
 	// Now get all dots for these banned users
@@ -88,7 +88,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, 
 		ORDER BY d.user_id, d.created_at DESC;
 	`
 
-	var dots []port.DotInfo
+	var dots []models.DotInfo
 	err = u.db.SelectContext(ctx, &dots, dotQuery, pq.Array(userIDs))
 	if err != nil {
 		u.logger.Error(ctx, "failed to get dots for banned users",
@@ -104,13 +104,13 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]port.UserWithBanInfo, 
 		}
 	}
 
-	return users, nil
+	return models.UserWithBanInfoList(users), nil
 }
 
-func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []port.UserWithStrikes, err error) {
+func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
 	u.logger.Info(ctx, "getting users with strikes")
 
-	users = []port.UserWithStrikes{}
+	users := []models.UserWithStrikes{}
 	query := `--sql
 		SELECT
 			u.id, u.name, u.image,
@@ -132,10 +132,10 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) (users []port.UserWi
 		u.logger.Error(ctx, "failed to get users with strikes",
 			"error", err,
 		)
-		return users, err
+		return nil, err
 	}
 
-	return users, nil
+	return models.UserWithStrikesList(users), nil
 }
 
 func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, error) {

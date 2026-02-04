@@ -5,18 +5,23 @@ import (
 	"time"
 )
 
-// TODO: remove json and db tags, replace with /postgres/models and /api/dto models
+type GroupedRegistrationCount struct {
+	HappeningID string
+	Max         *int
+	Waiting     int
+	Registered  int
+}
 
 type Happening struct {
-	ID                      string           `db:"id" json:"id"`
-	Slug                    string           `db:"slug" json:"slug"`
-	Title                   string           `db:"title" json:"title"`
-	Type                    string           `db:"type" json:"type"`
-	Date                    *time.Time       `db:"date" json:"date"`
-	RegistrationGroups      *json.RawMessage `db:"registration_groups" json:"registrationGroups"`
-	RegistrationStartGroups *time.Time       `db:"registration_start_groups" json:"registrationStartGroups"`
-	RegistrationStart       *time.Time       `db:"registration_start" json:"registrationStart"`
-	RegistrationEnd         *time.Time       `db:"registration_end" json:"registrationEnd"`
+	ID                      string
+	Slug                    string
+	Title                   string
+	Type                    string
+	Date                    *time.Time
+	RegistrationGroups      *json.RawMessage
+	RegistrationStartGroups *time.Time
+	RegistrationStart       *time.Time
+	RegistrationEnd         *time.Time
 }
 
 func (h *Happening) IsBedpres() bool {
@@ -24,37 +29,50 @@ func (h *Happening) IsBedpres() bool {
 }
 
 type HappeningsToGroups struct {
-	HappeningID string `db:"happening_id" json:"happeningId"`
-	GroupID     string `db:"group_id" json:"groupId"`
+	HappeningID string
+	GroupID     string
 }
 
 type SpotRange struct {
-	ID          string `db:"id" json:"id"`
-	HappeningID string `db:"happening_id" json:"happeningId"`
-	Spots       int    `db:"spots" json:"spots"`
-	MinYear     int    `db:"min_year" json:"minYear"`
-	MaxYear     int    `db:"max_year" json:"maxYear"`
+	ID          string
+	HappeningID string
+	Spots       int
+	MinYear     int
+	MaxYear     int
 }
 
 type Question struct {
-	ID          string           `db:"id" json:"id"`
-	Title       string           `db:"title" json:"title"`
-	Required    bool             `db:"required" json:"required"`
-	Type        string           `db:"type" json:"type"`
-	IsSensitive bool             `db:"is_sensitive" json:"isSensitive"`
-	Options     *json.RawMessage `db:"options" json:"options"`
-	HappeningID string           `db:"happening_id" json:"happeningId"`
+	ID          string
+	Title       string
+	Required    bool
+	Type        string
+	IsSensitive bool
+	Options     *json.RawMessage
+	HappeningID string
 }
 
 type Answer struct {
-	UserID      string           `db:"user_id" json:"userId"`
-	HappeningID string           `db:"happening_id" json:"happeningId"`
-	QuestionID  string           `db:"question_id" json:"questionId"`
-	Answer      *json.RawMessage `db:"answer" json:"answer"`
+	UserID      string
+	HappeningID string
+	QuestionID  string
+	Answer      *json.RawMessage
 }
 
 // QuestionAnswer represents an answer to a question in a registration request
 type QuestionAnswer struct {
-	QuestionID string          `json:"questionId"`
-	Answer     json.RawMessage `json:"answer"` // Can be string or []string
+	QuestionID string
+	Answer     json.RawMessage // Can be string or []string
+}
+
+type HappeningRegistration struct {
+	UserID           string
+	HappeningID      string
+	Status           RegistrationStatus
+	UnregisterReason *string
+	CreatedAt        time.Time
+	PrevStatus       *string
+	ChangedAt        *time.Time
+	ChangedBy        *string
+	UserName         *string
+	UserImage        *string
 }

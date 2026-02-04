@@ -56,5 +56,4 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 	}
 
 	return models.ToDomainList(dbModels), nil
-
 }
