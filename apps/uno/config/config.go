@@ -23,7 +23,7 @@ func Load() *Config {
 	environment := getEnvOrDefault("ENVIRONMENT", "development")
 
 	if environment != "production" {
-		if err := cenv.LoadEx("../../.env", "../../cenv.schema.json"); err != nil {
+		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
 			log.Fatal(err)
 		}
 	}
