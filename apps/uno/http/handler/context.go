@@ -160,7 +160,7 @@ func (c *Context) HeaderValue(key string) string {
 
 // Lifetime returns the duration since creation.
 func (c *Context) Lifetime() time.Duration {
-	return time.Now().Sub(c.createdAt)
+	return time.Since(c.createdAt)
 }
 
 func (c *Context) Bytes() int {
