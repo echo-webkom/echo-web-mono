@@ -3,7 +3,7 @@ module uno
 go 1.25
 
 require (
-	github.com/air-verse/air v1.63.0
+	github.com/air-verse/air v1.64.5
 	github.com/brianvoe/gofakeit/v7 v7.8.2
 	github.com/echo-webkom/cenv v1.15.0
 	github.com/go-chi/chi/v5 v5.2.3
@@ -20,7 +20,7 @@ require (
 	github.com/testcontainers/testcontainers-go v0.39.0
 	github.com/testcontainers/testcontainers-go/modules/postgres v0.39.0
 	github.com/uptrace/opentelemetry-go-extra/otelsqlx v0.3.2
-	github.com/vektra/mockery/v3 v3.5.5
+	github.com/vektra/mockery/v3 v3.6.3
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.63.0
 	go.opentelemetry.io/otel v1.38.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.38.0
@@ -34,12 +34,15 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
+	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/bep/godartsass/v2 v2.5.0 // indirect
 	github.com/bep/golibsass v1.2.0 // indirect
+	github.com/bits-and-blooms/bitset v1.24.4 // indirect
 	github.com/brunoga/deep v1.2.5 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/clipperhouse/stringish v0.1.1 // indirect
-	github.com/clipperhouse/uax29/v2 v2.3.0 // indirect
+	github.com/clipperhouse/uax29/v2 v2.5.0 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
@@ -60,34 +63,35 @@ require (
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
-	github.com/go-openapi/jsonpointer v0.22.1 // indirect
-	github.com/go-openapi/jsonreference v0.21.2 // indirect
-	github.com/go-openapi/spec v0.22.0 // indirect
-	github.com/go-openapi/swag/conv v0.25.1 // indirect
-	github.com/go-openapi/swag/jsonname v0.25.1 // indirect
-	github.com/go-openapi/swag/jsonutils v0.25.1 // indirect
-	github.com/go-openapi/swag/loading v0.25.1 // indirect
-	github.com/go-openapi/swag/stringutils v0.25.1 // indirect
-	github.com/go-openapi/swag/typeutils v0.25.1 // indirect
-	github.com/go-openapi/swag/yamlutils v0.25.1 // indirect
-	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
+	github.com/go-openapi/jsonpointer v0.22.4 // indirect
+	github.com/go-openapi/jsonreference v0.21.4 // indirect
+	github.com/go-openapi/spec v0.22.3 // indirect
+	github.com/go-openapi/swag/conv v0.25.4 // indirect
+	github.com/go-openapi/swag/jsonname v0.25.4 // indirect
+	github.com/go-openapi/swag/jsonutils v0.25.4 // indirect
+	github.com/go-openapi/swag/loading v0.25.4 // indirect
+	github.com/go-openapi/swag/stringutils v0.25.4 // indirect
+	github.com/go-openapi/swag/typeutils v0.25.4 // indirect
+	github.com/go-openapi/swag/yamlutils v0.25.4 // indirect
+	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/gohugoio/hugo v0.152.2 // indirect
+	github.com/gohugoio/hashstructure v0.6.0 // indirect
+	github.com/gohugoio/hugo v0.155.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jedib0t/go-pretty/v6 v6.6.9 // indirect
+	github.com/jedib0t/go-pretty/v6 v6.7.8 // indirect
 	github.com/jesperkha/gokenizer v1.1.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
 	github.com/knadh/koanf/parsers/yaml v1.1.0 // indirect
 	github.com/knadh/koanf/providers/env v1.1.0 // indirect
-	github.com/knadh/koanf/providers/file v1.2.0 // indirect
+	github.com/knadh/koanf/providers/file v1.2.1 // indirect
 	github.com/knadh/koanf/providers/posflag v1.0.1 // indirect
 	github.com/knadh/koanf/providers/structs v1.0.0 // indirect
-	github.com/knadh/koanf/v2 v2.3.0 // indirect
+	github.com/knadh/koanf/v2 v2.3.2 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.10 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
@@ -116,7 +120,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
-	github.com/spf13/cobra v1.10.1 // indirect
+	github.com/spf13/cobra v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
@@ -135,19 +139,19 @@ require (
 	go.opentelemetry.io/proto/otlp v1.7.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
-	golang.org/x/mod v0.29.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
-	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/term v0.36.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
-	golang.org/x/tools v0.38.0 // indirect
+	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
+	golang.org/x/mod v0.32.0 // indirect
+	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/term v0.39.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/tools v0.41.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250825161204-c5933d9347a5 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250929231259-57b25ae835d4 // indirect
-	google.golang.org/grpc v1.75.1 // indirect
-	google.golang.org/protobuf v1.36.10 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251029180050-ab9386a59fda // indirect
+	google.golang.org/grpc v1.76.0 // indirect
+	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
