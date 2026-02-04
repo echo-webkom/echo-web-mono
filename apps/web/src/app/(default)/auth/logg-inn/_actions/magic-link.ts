@@ -14,6 +14,8 @@ import { isValidEmail } from "@/utils/string";
 
 type MagicLinkResult = { success: true; message: string } | { success: false; error: string };
 
+const EXPIRY_MINUTES = 5;
+
 export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
   try {
     if (!email || !isValidEmail(email)) {
@@ -76,12 +78,15 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(Date.now() + EXPIRY_MINUTES * 60 * 1000);
     await db.delete(verificationTokens).where(eq(verificationTokens.identifier, targetEmail));
     await db.insert(verificationTokens).values({
       identifier: targetEmail,
       token,
+      code,
       expires,
+      used: false,
     });
 
     const magicLinkUrl = `${BASE_URL}/api/auth/magic-link/verify?token=${token}&email=${encodeURIComponent(targetEmail)}`;
@@ -95,6 +100,8 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       // eslint-disable-next-line no-console
       console.log(`Magic link URL for ${targetEmail}: ${magicLinkUrl}`);
       // eslint-disable-next-line no-console
+      console.log(`Login code: ${code}`);
+      // eslint-disable-next-line no-console
       console.log("================================");
     }
 
@@ -103,6 +110,7 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       "Logg inn på echo",
       MagicLinkEmail({
         magicLinkUrl,
+        code,
         firstName: existingUser.name?.split(" ")[0] ?? "der",
       }),
     );
