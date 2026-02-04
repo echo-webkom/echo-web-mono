@@ -6,7 +6,7 @@ import { db } from "@echo-webkom/db/serverless";
 import { EmailVerificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { BASE_URL } from "@/config";
+import { BASE_URL, DEV } from "@/config";
 
 const TOKEN_EXPIRY_HOURS = 24;
 
@@ -31,9 +31,20 @@ export async function sendVerificationEmail(email: string, firstName?: string): 
   const token = await generateVerificationToken(email);
   const verificationUrl = createVerificationUrl(token);
 
+  if (DEV) {
+    // eslint-disable-next-line no-console
+    console.log("================================");
+    // eslint-disable-next-line no-console
+    console.log("Development mode - email verification link:");
+    // eslint-disable-next-line no-console
+    console.log(`Verification URL for ${email}: ${verificationUrl}`);
+    // eslint-disable-next-line no-console
+    console.log("================================");
+  }
+
   await emailClient.sendEmail(
     [email],
     "Bekreft e-postadressen din - echo",
-    <EmailVerificationEmail verificationUrl={verificationUrl} firstName={firstName} />,
+    EmailVerificationEmail({ verificationUrl, firstName }),
   );
 }

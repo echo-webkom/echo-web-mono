@@ -176,6 +176,10 @@ export default async function ProfilePage({ params }: Props) {
                 "alternativeEmail" in profileOwner
                   ? (profileOwner.alternativeEmail ?? undefined)
                   : undefined,
+              alternativeEmailVerifiedAt:
+                "alternativeEmailVerifiedAt" in profileOwner
+                  ? (profileOwner.alternativeEmailVerifiedAt ?? undefined)
+                  : undefined,
               hasReadTerms: !!profileOwner.hasReadTerms,
               isPublic:
                 "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,

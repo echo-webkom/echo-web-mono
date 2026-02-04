@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import "server-only";
 
-import { render } from "@react-email/render";
 import { Resend } from "resend";
 
 const API_KEY = process.env.RESEND_API_KEY;
@@ -19,13 +18,16 @@ export const emailClient = {
    */
   sendEmail: async (to: Array<string>, subject: string, component: React.ReactElement) => {
     if (process.env.NODE_ENV !== "production" || !API_KEY) {
-      const text = await render(component);
-
-      console.log("SENDING EMAIL");
-      console.log("TO:", to);
-      console.log("SUBJECT:", subject);
-      console.log("EMAIL", text);
-      return;
+      try {
+        console.log("\n========== EMAIL SENT (DEV MODE) ==========");
+        console.log("TO:", to.join(", "));
+        console.log("SUBJECT:", subject);
+        console.log("==========================================\n");
+        return { success: true };
+      } catch (error) {
+        console.error("Error rendering email in dev mode:", error);
+        throw error;
+      }
     }
 
     const resend = new Resend(API_KEY);
