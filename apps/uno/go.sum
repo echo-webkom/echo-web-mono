@@ -104,6 +104,8 @@ github.com/ebitengine/purego v0.8.4 h1:CF7LEKg5FFOsASUj0+QwaXf8Ht6TlFxg09+S9wz0o
 github.com/ebitengine/purego v0.8.4/go.mod h1:iIjxzd6CiRiOG0UyXP+V1+jWqUXVjPKLAI0mRfJZTmQ=
 github.com/echo-webkom/cenv v1.15.0 h1:fcdmWKuhfxvg5VRwHB82UFqlNTiFgsFhqrp/iNImZBg=
 github.com/echo-webkom/cenv v1.15.0/go.mod h1:qCDFjnypg03McDVq+xBfQKnAAa5FAOI9F4RuTPau7sA=
+github.com/echo-webkom/cenv v1.16.0 h1:Y5rnBKYvZn6QKLZm9xAkgOQPbiEryO9qED0dhnkwvPE=
+github.com/echo-webkom/cenv v1.16.0/go.mod h1:qCDFjnypg03McDVq+xBfQKnAAa5FAOI9F4RuTPau7sA=
 github.com/evanw/esbuild v0.27.2 h1:3xBEws9y/JosfewXMM2qIyHAi+xRo8hVx475hVkJfNg=
 github.com/evanw/esbuild v0.27.2/go.mod h1:D2vIQZqV/vIf/VRHtViaUtViZmG7o+kKmlBfVQuRi48=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
