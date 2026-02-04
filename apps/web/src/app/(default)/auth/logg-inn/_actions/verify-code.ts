@@ -1,5 +1,6 @@
+"use server";
+
 import { cookies } from "next/headers";
-import { NextResponse, type NextRequest } from "next/server";
 import { addDays } from "date-fns";
 import { and, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -9,60 +10,88 @@ import { db } from "@echo-webkom/db/serverless";
 
 import { createSessionCookie, SESSION_COOKIE_NAME } from "@/auth/session";
 import { cleanupExpiredTokens } from "@/lib/cleanup-tokens";
+import { isValidEmail } from "@/utils/string";
 
-export async function GET(request: NextRequest) {
+type VerifyCodeResult = { success: true } | { success: false; error: string };
+
+export async function verifyCode(email: string, code: string): Promise<VerifyCodeResult> {
   try {
-    await cleanupExpiredTokens();
-
-    const searchParams = request.nextUrl.searchParams;
-    const token = searchParams.get("token");
-    const email = searchParams.get("email");
-
-    if (!token || !email) {
-      return NextResponse.redirect(new URL("/auth/logg-inn?error=invalid-token", request.url));
+    if (!email || !isValidEmail(email)) {
+      return {
+        success: false,
+        error: "Ugyldig e-postadresse",
+      };
     }
 
-    // Find and verify the token
+    if (code?.length !== 6 || !/^\d{6}$/.test(code)) {
+      return {
+        success: false,
+        error: "Ugyldig kode. Koden må være 6 siffer.",
+      };
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Clean up expired tokens
+    await cleanupExpiredTokens();
+
     const verificationToken = await db.query.verificationTokens.findFirst({
       where: and(
-        eq(verificationTokens.identifier, email),
-        eq(verificationTokens.token, token),
+        eq(verificationTokens.identifier, normalizedEmail),
+        eq(verificationTokens.code, code),
         eq(verificationTokens.used, false),
       ),
     });
 
     if (!verificationToken) {
-      return NextResponse.redirect(new URL("/auth/logg-inn?error=invalid-token", request.url));
+      return {
+        success: false,
+        error: "Ugyldig kode eller e-postadresse",
+      };
     }
 
     // Check if expired
     if (verificationToken.expires < new Date()) {
-      return NextResponse.redirect(new URL("/auth/logg-inn?error=expired-token", request.url));
+      return {
+        success: false,
+        error: "Koden har utløpt. Vennligst be om en ny.",
+      };
     }
 
+    // Find the user
     const user = await db.query.users.findFirst({
-      where: (user, { eq, or }) => or(eq(user.email, email), eq(user.alternativeEmail, email)),
+      where: (user, { eq, or }) =>
+        or(eq(user.email, normalizedEmail), eq(user.alternativeEmail, normalizedEmail)),
     });
 
     if (!user) {
-      return NextResponse.redirect(new URL("/auth/logg-inn?error=user-not-found", request.url));
+      return {
+        success: false,
+        error: "Ingen bruker funnet med denne e-postadressen",
+      };
     }
 
     // Check if email is verified
-    if (user.alternativeEmail === email && !user.alternativeEmailVerifiedAt) {
-      return NextResponse.redirect(
-        new URL("/auth/logg-inn?error=unverified-alternative-email", request.url),
-      );
+    if (user.alternativeEmail === normalizedEmail && !user.alternativeEmailVerifiedAt) {
+      return {
+        success: false,
+        error:
+          "Den alternative e-postadressen må bekreftes før den kan brukes til innlogging. Logg inn med hoved-e-posten din.",
+      };
     }
 
-    // Mark the token as used instead of deleting it
+    // Mark the token as used
     await db
       .update(verificationTokens)
       .set({ used: true })
-      .where(and(eq(verificationTokens.identifier, email), eq(verificationTokens.token, token)));
+      .where(
+        and(eq(verificationTokens.identifier, normalizedEmail), eq(verificationTokens.code, code)),
+      );
 
+    // Update last sign in
     await db.update(users).set({ lastSignInAt: new Date() }).where(eq(users.id, user.id));
 
+    // Create or reuse existing session
     let existingSession = await db.query.sessions.findFirst({
       where: (row, { eq, and, gt }) => and(eq(row.userId, user.id), gt(row.expires, new Date())),
     });
@@ -93,9 +122,12 @@ export async function GET(request: NextRequest) {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return NextResponse.redirect(new URL("/", request.url));
+    return { success: true };
   } catch (error) {
-    console.error("Error verifying magic link:", error);
-    return NextResponse.redirect(new URL("/auth/logg-inn?error=verification-failed", request.url));
+    console.error("Error verifying code:", error);
+    return {
+      success: false,
+      error: "En feil oppstod. Vennligst prøv igjen.",
+    };
   }
 }

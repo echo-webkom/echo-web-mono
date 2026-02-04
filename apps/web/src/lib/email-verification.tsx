@@ -13,11 +13,15 @@ const TOKEN_EXPIRY_HOURS = 24;
 export async function generateVerificationToken(email: string): Promise<string> {
   const token = nanoid();
   const expires = addHours(new Date(), TOKEN_EXPIRY_HOURS);
+  // Generate a 6-digit code (even though it's not used for email verification currently)
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
 
   await db.insert(verificationTokens).values({
     identifier: email,
     token,
+    code,
     expires,
+    used: false,
   });
 
   return token;

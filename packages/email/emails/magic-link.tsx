@@ -15,10 +15,11 @@ import {
 
 type MagicLinkProps = {
   magicLinkUrl: string;
+  code: string;
   firstName?: string;
 };
 
-export default function MagicLinkEmail({ magicLinkUrl, firstName = "der" }: MagicLinkProps) {
+export default function MagicLinkEmail({ magicLinkUrl, code, firstName = "der" }: MagicLinkProps) {
   return (
     <Html>
       <Head />
@@ -39,8 +40,8 @@ export default function MagicLinkEmail({ magicLinkUrl, firstName = "der" }: Magi
               <Text className="text-gray-600">Hei {firstName}!</Text>
 
               <Text className="text-gray-600">
-                Klikk på knappen under for å logge inn på echo. Denne lenken er gyldig i 10
-                minutter.
+                Klikk på knappen under for å logge inn på echo, eller bruk koden nedenfor. Denne
+                lenken er gyldig i 5 minutter.
               </Text>
 
               <Section className="my-8">
@@ -50,6 +51,17 @@ export default function MagicLinkEmail({ magicLinkUrl, firstName = "der" }: Magi
                 >
                   Logg inn
                 </Button>
+              </Section>
+
+              <Text className="text-gray-600">Eller bruk denne koden:</Text>
+
+              <Section className="my-6">
+                <Text
+                  className="text-4xl font-bold tracking-widest"
+                  style={{ fontFamily: "monospace", letterSpacing: "0.5em" }}
+                >
+                  {code}
+                </Text>
               </Section>
 
               <Text className="text-sm text-gray-500">
@@ -64,7 +76,7 @@ export default function MagicLinkEmail({ magicLinkUrl, firstName = "der" }: Magi
               </Text>
 
               <Text className="text-xs text-gray-400">
-                Denne lenken utløper automatisk etter 10 minutter av sikkerhetshensyn.
+                Denne lenken og koden utløper automatisk etter 5 minutter av sikkerhetshensyn.
               </Text>
             </Section>
           </Container>
