@@ -30,13 +30,20 @@ func Load() *Config {
 
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		ApiPort:          os.Getenv("UNO_API_PORT"),
+		ApiPort:          toGoPort(os.Getenv("UNO_API_PORT")),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "true") == "true",
 		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
 	}
+}
+
+func toGoPort(port string) string {
+	if len(port) > 0 && port[0] == ':' {
+		return port
+	}
+	return ":" + port
 }
 
 func getEnvOrDefault(key, defaultValue string) string {
