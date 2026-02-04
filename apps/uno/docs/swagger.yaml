@@ -1,8 +1,8 @@
 basePath: /
 definitions:
-  uno_domain_port.BanInfo:
+  uno_domain_model.BanInfo:
     properties:
-      bannedById:
+      bannedByID:
         type: string
       bannedByName:
         type: string
@@ -14,10 +14,10 @@ definitions:
         type: integer
       reason:
         type: string
-      userId:
+      userID:
         type: string
     type: object
-  uno_domain_port.DotInfo:
+  uno_domain_model.DotInfo:
     properties:
       count:
         type: integer
@@ -29,16 +29,16 @@ definitions:
         type: integer
       reason:
         type: string
-      strikedById:
+      strikedByID:
         type: string
       strikedByName:
         type: string
-      userId:
+      userID:
         type: string
     type: object
-  uno_domain_port.GroupedRegistrationCount:
+  uno_domain_model.GroupedRegistrationCount:
     properties:
-      happeningId:
+      happeningID:
         type: string
       max:
         type: integer
@@ -47,13 +47,13 @@ definitions:
       waiting:
         type: integer
     type: object
-  uno_domain_port.UserWithBanInfo:
+  uno_domain_model.UserWithBanInfo:
     properties:
       banInfo:
-        $ref: '#/definitions/uno_domain_port.BanInfo'
+        $ref: '#/definitions/uno_domain_model.BanInfo'
       dots:
         items:
-          $ref: '#/definitions/uno_domain_port.DotInfo'
+          $ref: '#/definitions/uno_domain_model.DotInfo'
         type: array
       id:
         type: string
@@ -62,7 +62,7 @@ definitions:
       name:
         type: string
     type: object
-  uno_domain_port.UserWithStrikes:
+  uno_domain_model.UserWithStrikes:
     properties:
       id:
         type: string
@@ -862,7 +862,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_port.GroupedRegistrationCount'
+              $ref: '#/definitions/uno_domain_model.GroupedRegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -902,7 +902,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_port.UserWithBanInfo'
+              $ref: '#/definitions/uno_domain_model.UserWithBanInfo'
             type: array
         "401":
           description: Unauthorized
@@ -942,7 +942,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_port.UserWithStrikes'
+              $ref: '#/definitions/uno_domain_model.UserWithStrikes'
             type: array
         "401":
           description: Unauthorized

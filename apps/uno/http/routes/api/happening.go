@@ -144,7 +144,7 @@ func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error 
 // @Tags         happenings
 // @Produce      json
 // @Param        id   query     string  true  "Happening ID"
-// @Success      200  {array}  port.GroupedRegistrationCount  "OK"
+// @Success      200  {array}  model.GroupedRegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
