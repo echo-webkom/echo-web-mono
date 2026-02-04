@@ -208,7 +208,7 @@ type UserWithStrikes struct {
 	ID       string  `db:"id"`
 	Name     *string `db:"name"`
 	Image    *string `db:"image"`
-	IsBanned bool    `db:"is_banned"`
+	IsBanned bool    `db:"isbanned"`
 	Strikes  int     `db:"strikes"`
 }
 
