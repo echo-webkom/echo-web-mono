@@ -561,7 +561,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_port.GroupedRegistrationCount"
+                                "$ref": "#/definitions/uno_domain_model.GroupedRegistrationCount"
                             }
                         }
                     },
@@ -913,7 +913,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_port.UserWithBanInfo"
+                                "$ref": "#/definitions/uno_domain_model.UserWithBanInfo"
                             }
                         }
                     },
@@ -979,7 +979,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_port.UserWithStrikes"
+                                "$ref": "#/definitions/uno_domain_model.UserWithStrikes"
                             }
                         }
                     },
@@ -1090,10 +1090,10 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "uno_domain_port.BanInfo": {
+        "uno_domain_model.BanInfo": {
             "type": "object",
             "properties": {
-                "bannedById": {
+                "bannedByID": {
                     "type": "string"
                 },
                 "bannedByName": {
@@ -1111,12 +1111,12 @@ const docTemplate = `{
                 "reason": {
                     "type": "string"
                 },
-                "userId": {
+                "userID": {
                     "type": "string"
                 }
             }
         },
-        "uno_domain_port.DotInfo": {
+        "uno_domain_model.DotInfo": {
             "type": "object",
             "properties": {
                 "count": {
@@ -1134,21 +1134,21 @@ const docTemplate = `{
                 "reason": {
                     "type": "string"
                 },
-                "strikedById": {
+                "strikedByID": {
                     "type": "string"
                 },
                 "strikedByName": {
                     "type": "string"
                 },
-                "userId": {
+                "userID": {
                     "type": "string"
                 }
             }
         },
-        "uno_domain_port.GroupedRegistrationCount": {
+        "uno_domain_model.GroupedRegistrationCount": {
             "type": "object",
             "properties": {
-                "happeningId": {
+                "happeningID": {
                     "type": "string"
                 },
                 "max": {
@@ -1162,16 +1162,16 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_port.UserWithBanInfo": {
+        "uno_domain_model.UserWithBanInfo": {
             "type": "object",
             "properties": {
                 "banInfo": {
-                    "$ref": "#/definitions/uno_domain_port.BanInfo"
+                    "$ref": "#/definitions/uno_domain_model.BanInfo"
                 },
                 "dots": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/uno_domain_port.DotInfo"
+                        "$ref": "#/definitions/uno_domain_model.DotInfo"
                     }
                 },
                 "id": {
@@ -1185,7 +1185,7 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_port.UserWithStrikes": {
+        "uno_domain_model.UserWithStrikes": {
             "type": "object",
             "properties": {
                 "id": {

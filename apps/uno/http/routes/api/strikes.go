@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	_ "uno/domain/model" // swagger
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/handler"
@@ -43,7 +44,7 @@ func (s *strikes) UnbanUsersWithExpiredStrikesHandler(ctx *handler.Context) erro
 // GetUsersWithStrikesHandler returns all users with strikes and bans
 // @Summary	     Gets users with strikes and bans
 // @Tags         strikes
-// @Success      200  {array}  port.UserWithStrikes  "OK"
+// @Success      200  {array}  model.UserWithStrikes  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
@@ -59,7 +60,7 @@ func (s *strikes) GetUsersWithStrikesHandler(ctx *handler.Context) error {
 // GetBannedUsers returns all banned users
 // @Summary	     Gets all users that are banned
 // @Tags         strikes
-// @Success      200  {array}  port.UserWithBanInfo  "OK"
+// @Success      200  {array}  model.UserWithBanInfo  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
