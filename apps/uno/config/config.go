@@ -24,7 +24,7 @@ func Load() *Config {
 
 	if environment != "production" {
 		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}
 
