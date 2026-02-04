@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2026-01-21T17:47:46.867721402+01:00",
+	"lastUpdated": "2026-02-04T17:56:55.029216878+01:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -9,9 +9,8 @@
 			"key": "AOC_SESSION_COOKIE"
 		},
 		"API_PORT": {
-			"public": true,
 			"key": "API_PORT",
-			"value": "8000"
+			"default": "8000"
 		},
 		"AUTH_SECRET": {
 			"required": true,
@@ -34,19 +33,16 @@
 			"key": "FEIDE_CLIENT_SECRET"
 		},
 		"NEXT_PUBLIC_API_URL": {
-			"public": true,
 			"key": "NEXT_PUBLIC_API_URL",
-			"value": "http://localhost:8000"
+			"default": "http://localhost:8000"
 		},
 		"NEXT_PUBLIC_ECHOGRAM_URL": {
-			"public": true,
 			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
-			"value": "http://localhost:8001"
+			"default": "http://localhost:8001"
 		},
 		"NEXT_PUBLIC_SANITY_DATASET": {
-			"public": true,
 			"key": "NEXT_PUBLIC_SANITY_DATASET",
-			"value": "production"
+			"default": "production"
 		},
 		"UNO_API_PORT": {
 			"required": true,
