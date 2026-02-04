@@ -203,3 +203,29 @@ func (db *VerificationTokenDB) ToDomain() *model.VerificationToken {
 		ExpiresAt:  db.ExpiresAt,
 	}
 }
+
+type UserWithStrikes struct {
+	ID       string  `db:"id"`
+	Name     *string `db:"name"`
+	Image    *string `db:"image"`
+	IsBanned bool    `db:"is_banned"`
+	Strikes  int     `db:"strikes"`
+}
+
+func (u *UserWithStrikes) ToDomain() *model.UserWithStrikes {
+	return &model.UserWithStrikes{
+		ID:       u.ID,
+		Name:     u.Name,
+		Image:    u.Image,
+		IsBanned: u.IsBanned,
+		Strikes:  u.Strikes,
+	}
+}
+
+func UserWithStrikesList(dbList []UserWithStrikes) []model.UserWithStrikes {
+	var domainList []model.UserWithStrikes
+	for _, dbItem := range dbList {
+		domainList = append(domainList, *dbItem.ToDomain())
+	}
+	return domainList
+}

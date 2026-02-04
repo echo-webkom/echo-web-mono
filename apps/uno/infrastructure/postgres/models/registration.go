@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"uno/domain/model"
-	"uno/domain/port"
 )
 
 // RegistrationDB represents the database schema for the registration table.
@@ -65,8 +64,8 @@ type HappeningRegistrationDB struct {
 }
 
 // ToPorts converts a HappeningRegistrationDB to a port.HappeningRegistration.
-func (db *HappeningRegistrationDB) ToPorts() *port.HappeningRegistration {
-	return &port.HappeningRegistration{
+func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
+	return &model.HappeningRegistration{
 		UserID:           db.UserID,
 		HappeningID:      db.HappeningID,
 		Status:           model.RegistrationStatus(db.Status),
@@ -81,8 +80,8 @@ func (db *HappeningRegistrationDB) ToPorts() *port.HappeningRegistration {
 }
 
 // HappeningRegistrationToPortsList converts a slice of HappeningRegistrationDB to port.HappeningRegistration.
-func HappeningRegistrationToPortsList(dbRegs []HappeningRegistrationDB) []port.HappeningRegistration {
-	regs := make([]port.HappeningRegistration, len(dbRegs))
+func HappeningRegistrationToPortsList(dbRegs []HappeningRegistrationDB) []model.HappeningRegistration {
+	regs := make([]model.HappeningRegistration, len(dbRegs))
 	for i, dbReg := range dbRegs {
 		regs[i] = *dbReg.ToPorts()
 	}

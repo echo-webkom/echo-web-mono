@@ -26,7 +26,7 @@ func (p *SiteFeedbackRepo) GetSiteFeedbackByID(ctx context.Context, feedbackID s
 		FROM site_feedback
 		WHERE id = $1
 	`
-	var dbModel models.SiteFeedbackDB
+	var dbModel models.SiteFeedback
 	err := p.db.GetContext(ctx, &dbModel, query, feedbackID)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback mode
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5)
 		RETURNING id, name, email, message, category, created_at, is_read
 	`
-	var dbModel models.SiteFeedbackDB
+	var dbModel models.SiteFeedback
 	err := p.db.GetContext(ctx, &dbModel, query, feedback.Name, feedback.Email, feedback.Message, feedback.Category, false)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create site feedback",
@@ -75,9 +75,9 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 		}
 	}()
 
-	feedbacks := []model.SiteFeedback{}
+	feedbacks := []models.SiteFeedback{}
 	for rows.Next() {
-		var feedback model.SiteFeedback
+		var feedback models.SiteFeedback
 		if err := rows.Scan(&feedback.ID, &feedback.Name, &feedback.Email, &feedback.Message, &feedback.Category, &feedback.CreatedAt, &feedback.IsRead); err != nil {
 			return nil, err
 		}
@@ -89,7 +89,7 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 		)
 		return nil, err
 	}
-	return feedbacks, nil
+	return models.SiteFeedbacksToDomainList(feedbacks), nil
 }
 
 func (p *SiteFeedbackRepo) MarkSiteFeedbackAsRead(ctx context.Context, feedbackID string) error {

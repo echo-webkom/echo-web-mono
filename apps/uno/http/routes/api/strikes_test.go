@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"uno/domain/port"
+	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/handler"
@@ -97,7 +97,7 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 		{
 			name: "success",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
-				users := []port.UserWithStrikes{
+				users := []model.UserWithStrikes{
 					{},
 				}
 				mockRepo.EXPECT().
@@ -152,7 +152,7 @@ func TestGetBannedUsers(t *testing.T) {
 		{
 			name: "success",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
-				users := []port.UserWithBanInfo{
+				users := []model.UserWithBanInfo{
 					{},
 				}
 				mockRepo.EXPECT().

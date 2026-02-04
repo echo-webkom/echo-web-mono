@@ -39,22 +39,22 @@ func (_m *BanInfoRepo) EXPECT() *BanInfoRepo_Expecter {
 }
 
 // CreateBan provides a mock function for the type BanInfoRepo
-func (_mock *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error) {
+func (_mock *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.ModBanInfo, error) {
 	ret := _mock.Called(ctx, ban)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateBan")
 	}
 
-	var r0 model.BanInfo
+	var r0 model.ModBanInfo
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) (model.BanInfo, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) (model.ModBanInfo, error)); ok {
 		return returnFunc(ctx, ban)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) model.BanInfo); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewBanInfo) model.ModBanInfo); ok {
 		r0 = returnFunc(ctx, ban)
 	} else {
-		r0 = ret.Get(0).(model.BanInfo)
+		r0 = ret.Get(0).(model.ModBanInfo)
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewBanInfo) error); ok {
 		r1 = returnFunc(ctx, ban)
@@ -94,12 +94,12 @@ func (_c *BanInfoRepo_CreateBan_Call) Run(run func(ctx context.Context, ban mode
 	return _c
 }
 
-func (_c *BanInfoRepo_CreateBan_Call) Return(banInfo model.BanInfo, err error) *BanInfoRepo_CreateBan_Call {
-	_c.Call.Return(banInfo, err)
+func (_c *BanInfoRepo_CreateBan_Call) Return(modBanInfo model.ModBanInfo, err error) *BanInfoRepo_CreateBan_Call {
+	_c.Call.Return(modBanInfo, err)
 	return _c
 }
 
-func (_c *BanInfoRepo_CreateBan_Call) RunAndReturn(run func(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error)) *BanInfoRepo_CreateBan_Call {
+func (_c *BanInfoRepo_CreateBan_Call) RunAndReturn(run func(ctx context.Context, ban model.NewBanInfo) (model.ModBanInfo, error)) *BanInfoRepo_CreateBan_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -156,23 +156,23 @@ func (_c *BanInfoRepo_DeleteExpired_Call) RunAndReturn(run func(ctx context.Cont
 }
 
 // GetBanInfoByUserID provides a mock function for the type BanInfoRepo
-func (_mock *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*model.BanInfo, error) {
+func (_mock *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*model.ModBanInfo, error) {
 	ret := _mock.Called(ctx, userID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetBanInfoByUserID")
 	}
 
-	var r0 *model.BanInfo
+	var r0 *model.ModBanInfo
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.BanInfo, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.ModBanInfo, error)); ok {
 		return returnFunc(ctx, userID)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.BanInfo); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.ModBanInfo); ok {
 		r0 = returnFunc(ctx, userID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*model.BanInfo)
+			r0 = ret.Get(0).(*model.ModBanInfo)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
@@ -213,12 +213,12 @@ func (_c *BanInfoRepo_GetBanInfoByUserID_Call) Run(run func(ctx context.Context,
 	return _c
 }
 
-func (_c *BanInfoRepo_GetBanInfoByUserID_Call) Return(banInfo *model.BanInfo, err error) *BanInfoRepo_GetBanInfoByUserID_Call {
-	_c.Call.Return(banInfo, err)
+func (_c *BanInfoRepo_GetBanInfoByUserID_Call) Return(modBanInfo *model.ModBanInfo, err error) *BanInfoRepo_GetBanInfoByUserID_Call {
+	_c.Call.Return(modBanInfo, err)
 	return _c
 }
 
-func (_c *BanInfoRepo_GetBanInfoByUserID_Call) RunAndReturn(run func(ctx context.Context, userID string) (*model.BanInfo, error)) *BanInfoRepo_GetBanInfoByUserID_Call {
+func (_c *BanInfoRepo_GetBanInfoByUserID_Call) RunAndReturn(run func(ctx context.Context, userID string) (*model.ModBanInfo, error)) *BanInfoRepo_GetBanInfoByUserID_Call {
 	_c.Call.Return(run)
 	return _c
 }

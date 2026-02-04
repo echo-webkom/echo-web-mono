@@ -34,12 +34,12 @@ func (p *BanInfoRepo) DeleteExpired(ctx context.Context) error {
 	return nil
 }
 
-func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*model.BanInfo, error) {
+func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*model.ModBanInfo, error) {
 	p.logger.Info(ctx, "getting ban info by user ID",
 		"user_id", userID,
 	)
 
-	var dbModel models.BanInfoDB
+	var dbModel models.ModBanInfo
 	query := `--sql
 		SELECT
 			id, user_id, banned_by, reason, created_at, expires_at
@@ -62,7 +62,7 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 	return dbModel.ToDomain(), nil
 }
 
-func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.BanInfo, error) {
+func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.ModBanInfo, error) {
 	p.logger.Info(ctx, "creating ban info",
 		"user_id", ban.UserID,
 		"banned_by", ban.BannedBy,
@@ -73,14 +73,14 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (mode
 		VALUES ($1, $2, $3, $4, NOW())
 		RETURNING id, user_id, banned_by, reason, created_at, expires_at
 	`
-	var dbModel models.BanInfoDB
+	var dbModel models.ModBanInfo
 	err := p.db.GetContext(ctx, &dbModel, query, ban.UserID, ban.BannedBy, ban.Reason, ban.ExpiresAt)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create ban info",
 			"error", err,
 			"user_id", ban.UserID,
 		)
-		return model.BanInfo{}, err
+		return model.ModBanInfo{}, err
 	}
 	return *dbModel.ToDomain(), nil
 }

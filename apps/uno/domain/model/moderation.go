@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type BanInfo struct {
+type ModBanInfo struct {
 	ID        int
 	UserID    string
 	BannedBy  string
