@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  api:
+  uno:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: 🚀 Deploy
-        run: flyctl deploy --config apps/api/fly.toml --dockerfile apps/api/Dockerfile --remote-only
+        run: flyctl deploy --config apps/uno/fly.toml --dockerfile apps/uno/Dockerfile --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 

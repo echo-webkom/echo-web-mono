@@ -1,0 +1,34 @@
+set dotenv-load := true
+
+# Install:
+#   cargo install just
+#
+# Run:
+#   just [command]
+#   just -l
+
+# Run the application in dev mode
+dev:
+    air
+
+# Run all Uno tests
+test:
+    go test ./... -v
+
+# Run all tests except repo tests using testcontainers
+quicktest:
+    go test $(go list ./... | grep -Ev '/(infrastructure)')
+
+# Generate mocks for testing
+mocks:
+    mockery
+
+# Generate swagger docs
+docs:
+    swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal
+
+# Install tools used in this project
+install-tools:
+    go install github.com/air-verse/air@latest
+    go install github.com/swaggo/swag/cmd/swag@latest
+    go install github.com/vektra/mockery/v3@latest
