@@ -190,12 +190,34 @@ export default defineType({
       title: "Påmeldingsdato",
       description: "Dato og tid for påmelding til hendelsen.",
       type: "datetime",
+      validation: (Rule) =>
+        Rule.custom((registrationStart, context) => {
+          const registrationEnd = context.document?.registrationEnd;
+          if (registrationStart && !registrationEnd) {
+            return "Påmeldingsfrist må settes hvis påmeldingsdato er satt.";
+          }
+          if (!registrationStart && registrationEnd) {
+            return "Påmeldingsdato må settes hvis påmeldingsfrist er satt.";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "registrationEnd",
       title: "Påmeldingsfrist",
       description: "Dato og tid for påmeldingsfrist til hendelsen.",
       type: "datetime",
+      validation: (Rule) =>
+        Rule.custom((registrationEnd, context) => {
+          const registrationStart = context.document?.registrationStart;
+          if (registrationStart && !registrationEnd) {
+            return "Påmeldingsfrist må settes hvis påmeldingsdato er satt.";
+          }
+          if (!registrationStart && registrationEnd) {
+            return "Påmeldingsdato må settes hvis påmeldingsfrist er satt.";
+          }
+          return true;
+        }).min(Rule.valueOfField("registrationStart")),
     }),
     defineField({
       name: "contacts",
