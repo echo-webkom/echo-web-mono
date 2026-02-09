@@ -56,10 +56,13 @@ export default async function SignInPage(props: Props) {
         <Callout className="mx-auto max-w-2xl" type="warning">
           <Text size="sm">
             Noe gikk galt. Dette kan være grunnet til at vi ikke automatisk får til å finne ut om du
-            er medlem. Om du mener dette er feil vennligst{" "}
-            <Link href={`/auth/tilgang/${attemptId}`} className="underline hover:no-underline">
-              be om tilgang her.
-            </Link>
+            er medlem.{" "}
+            <span className="font-bold">
+              Om du mener dette er feil vennligst{" "}
+              <Link href={`/auth/tilgang/${attemptId}`} className="underline hover:no-underline">
+                be om tilgang her.
+              </Link>
+            </span>
           </Text>
           <Text size="sm">
             Du kan også sjekke om du har tilgang ved å logge inn på{" "}
