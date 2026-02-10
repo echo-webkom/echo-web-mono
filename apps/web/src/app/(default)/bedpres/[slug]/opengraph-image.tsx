@@ -33,70 +33,72 @@ export default async function Image({ params }: ImageProps) {
   const logoUrl = urlFor(event.company!.image).width(300).url();
 
   return new ImageResponse(
-    <div
-      style={{
-        color: "black",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        background: "linear-gradient(45deg, #008094 0%, #a6cfd9 50%, #fcbf00 100%)",
-      }}
-    >
+    (
       <div
         style={{
-          position: "relative",
-          width: "90%",
-          height: "90%",
+          color: "black",
+          width: "100%",
+          height: "100%",
           display: "flex",
-          background: "white",
-          borderRadius: 30,
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          background: "linear-gradient(45deg, #008094 0%, #a6cfd9 50%, #fcbf00 100%)",
         }}
       >
         <div
           style={{
-            position: "absolute",
-            top: "35%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            position: "relative",
+            width: "90%",
+            height: "90%",
             display: "flex",
-            flexDirection: "row",
-            gap: 50,
-            alignItems: "center",
+            background: "white",
+            borderRadius: 30,
           }}
         >
-          <img alt="echo" src="https://echo.uib.no/android-chrome-512x512.png" width={300} />
-          <p style={{ fontSize: 120 }}>🤝</p>
-          <img alt="company logo" src={logoUrl} width={300} />
+          <div
+            style={{
+              position: "absolute",
+              top: "35%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              flexDirection: "row",
+              gap: 50,
+              alignItems: "center",
+            }}
+          >
+            <img alt="echo" src="https://echo.uib.no/android-chrome-512x512.png" width={300} />
+            <p style={{ fontSize: 120 }}>🤝</p>
+            <img alt="company logo" src={logoUrl} width={300} />
+          </div>
+          <p
+            style={{
+              position: "absolute",
+              bottom: "25%",
+              left: "5%",
+              fontSize: 50,
+              fontFamily: '"Bebas Neue"',
+            }}
+          >
+            Bedpres med
+          </p>
+          <p
+            style={{
+              position: "absolute",
+              bottom: "5%",
+              left: "5%",
+              fontSize: 80,
+              fontFamily: '"Bebas Neue"',
+              strokeWidth: 3,
+            }}
+          >
+            {event.company?.name}
+          </p>
         </div>
-        <p
-          style={{
-            position: "absolute",
-            bottom: "25%",
-            left: "5%",
-            fontSize: 50,
-            fontFamily: '"Bebas Neue"',
-          }}
-        >
-          Bedpres med
-        </p>
-        <p
-          style={{
-            position: "absolute",
-            bottom: "5%",
-            left: "5%",
-            fontSize: 80,
-            fontFamily: '"Bebas Neue"',
-            strokeWidth: 3,
-          }}
-        >
-          {event.company?.name}
-        </p>
       </div>
-    </div>,
+    ),
     {
       emoji: "twemoji",
       ...size,

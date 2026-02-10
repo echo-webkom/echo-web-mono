@@ -1,22 +1,21 @@
 packages:
-    uno/domain/port:
-        config:
-            dir: "{{.InterfaceDir}}/mocks"
-            pkgname: mocks
-            filename: "{{.InterfaceName}}.go"
-            structname: "{{.InterfaceName}}"
-        interfaces:
-            UserRepo:
-            WhitelistRepo:
-            DotRepo:
-            BanInfoRepo:
-            SiteFeedbackRepo:
-            ShoppingListItemRepo:
-            UsersToShoppingListItemRepo:
-            DegreeRepo:
-            CommentRepo:
-            AccessRequestRepo:
-            SessionRepo:
-            HappeningRepo:
-            RegistrationRepo:
-
+  uno/domain/port:
+    config:
+      dir: "{{.InterfaceDir}}/mocks"
+      pkgname: mocks
+      filename: "{{.InterfaceName}}.go"
+      structname: "{{.InterfaceName}}"
+    interfaces:
+      UserRepo:
+      WhitelistRepo:
+      DotRepo:
+      BanInfoRepo:
+      SiteFeedbackRepo:
+      ShoppingListItemRepo:
+      UsersToShoppingListItemRepo:
+      DegreeRepo:
+      CommentRepo:
+      AccessRequestRepo:
+      SessionRepo:
+      HappeningRepo:
+      RegistrationRepo:

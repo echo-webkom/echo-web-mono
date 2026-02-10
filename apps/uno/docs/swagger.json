@@ -1,1609 +1,1503 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "HTTP REST API for echo Webkom Uno backend",
-        "title": "Uno API",
-        "contact": {
-            "name": "echo Webkom",
-            "email": "webkom@echo.uib.no"
-        },
-        "version": "1.0"
+  "swagger": "2.0",
+  "info": {
+    "description": "HTTP REST API for echo Webkom Uno backend",
+    "title": "Uno API",
+    "contact": {
+      "name": "echo Webkom",
+      "email": "webkom@echo.uib.no"
     },
-    "basePath": "/",
-    "paths": {
-        "/": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "health"
-                ],
-                "summary": "Get health status",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.HealthCheckResponse"
-                        }
-                    }
-                }
+    "version": "1.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "get": {
+        "produces": ["application/json"],
+        "tags": ["health"],
+        "summary": "Get health status",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.HealthCheckResponse"
             }
-        },
-        "/access-requests": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "access-request"
-                ],
-                "summary": "Get access requests",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.AccessRequestResponse"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/birthdays": {
-            "get": {
-                "description": "Gets all the users who have birthday today",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "birthdays"
-                ],
-                "summary": "Get users with birthdays",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/comments": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "comments"
-                ],
-                "summary": "Create a new comment",
-                "parameters": [
-                    {
-                        "description": "Comment to create",
-                        "name": "comment",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateCommentRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/comments/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "comments"
-                ],
-                "summary": "Get comments by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Comment ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.CommentResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/comments/{id}/reaction": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "comments"
-                ],
-                "summary": "React to a comment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Comment ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Reaction to add or remove",
-                        "name": "reaction",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.ReactToCommentRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "boolean"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/degrees": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "degrees"
-                ],
-                "summary": "Get degrees",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.DegreeResponse"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "degrees"
-                ],
-                "summary": "Create degree",
-                "parameters": [
-                    {
-                        "description": "Degree to create",
-                        "name": "degree",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateDegreeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/degrees/{id}": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "degrees"
-                ],
-                "summary": "Update degree",
-                "parameters": [
-                    {
-                        "description": "Degree to update",
-                        "name": "degree",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.UpdateDegreeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "degrees"
-                ],
-                "summary": "Delete degree",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Degree ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/feedbacks": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "feedbacks"
-                ],
-                "summary": "Get site feedbacks",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/feedbacks/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "feedbacks"
-                ],
-                "summary": "Get site feedback by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Feedback ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings": {
-            "get": {
-                "description": "Retrives a list of all happenings and returns them in a JSON array.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get all happenings",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.HappeningResponse"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/registrations/count": {
-            "get": {
-                "description": "Retrieves the count of registrations for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happenings registrations count",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_domain_model.GroupedRegistrationCount"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}": {
-            "get": {
-                "description": "Retrieves a specific happening by its unique identifier.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.HappeningResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}/questions": {
-            "get": {
-                "description": "Retrieves all questions for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening questions",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.QuestionResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}/register": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Registers a user for a specific happening with business logic validation",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Register for happening",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Registration request",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}/registrations": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "description": "Retrieves all registrations for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening registrations",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.HappeningRegistrationResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}/registrations/count": {
-            "get": {
-                "description": "Retrieves the count of registrations for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening registrations count",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.GroupedRegistration"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/happenings/{id}/spot-ranges": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "description": "Retrieves all spot ranges for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening spot ranges",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.SpotRangeResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/shopping": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "shopping_list"
-                ],
-                "summary": "Get shopping list",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_domain_service.ShoppingList"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/banned": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Gets all users that are banned",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithBanInfo"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/unban": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Unban users with expired strikes and bans",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/users": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Gets users with strikes and bans",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithStrikes"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/whitelist": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "whitelist"
-                ],
-                "summary": "Get whitelisted emails",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/whitelist/{email}": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "whitelist"
-                ],
-                "summary": "Get whitelist info by email",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Email",
-                        "name": "email",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     },
-    "definitions": {
-        "uno_domain_model.BanInfo": {
-            "type": "object",
-            "properties": {
-                "bannedByID": {
-                    "type": "string"
-                },
-                "bannedByName": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
+    "/access-requests": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["access-request"],
+        "summary": "Get access requests",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.AccessRequestResponse"
+              }
             }
-        },
-        "uno_domain_model.DotInfo": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "strikedByID": {
-                    "type": "string"
-                },
-                "strikedByName": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
             }
-        },
-        "uno_domain_model.GroupedRegistrationCount": {
-            "type": "object",
-            "properties": {
-                "happeningID": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
             }
-        },
-        "uno_domain_model.UserWithBanInfo": {
-            "type": "object",
-            "properties": {
-                "banInfo": {
-                    "$ref": "#/definitions/uno_domain_model.BanInfo"
-                },
-                "dots": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.DotInfo"
-                    }
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.UserWithStrikes": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "isBanned": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "strikes": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_domain_service.ShoppingList": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "likes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userName": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.AccessRequestResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CommentResponse": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "reactions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_http_dto.CommentsReactionResponse"
-                    }
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/uno_http_dto.UserSummaryResponse"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CommentsReactionResponse": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateCommentRequest": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.DegreeResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.GroupedRegistration": {
-            "type": "object",
-            "properties": {
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.HappeningRegistrationResponse": {
-            "type": "object",
-            "properties": {
-                "changedAt": {
-                    "type": "string"
-                },
-                "changedBy": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "happeningId": {
-                    "type": "string"
-                },
-                "prevStatus": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "unregisterReason": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userImage": {
-                    "type": "string"
-                },
-                "userName": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.HappeningResponse": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "registrationEnd": {
-                    "type": "string"
-                },
-                "registrationGroups": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "registrationStart": {
-                    "type": "string"
-                },
-                "registrationStartGroups": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.HealthCheckResponse": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.QuestionAnswerDTO": {
-            "type": "object",
-            "properties": {
-                "answer": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "questionId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.QuestionResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isSensitive": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "required": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.ReactToCommentRequest": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.RegisterForHappeningRequest": {
-            "type": "object",
-            "properties": {
-                "questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_http_dto.QuestionAnswerDTO"
-                    }
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.RegisterForHappeningResponse": {
-            "type": "object",
-            "properties": {
-                "isWaitlisted": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "uno_http_dto.SiteFeedbackResponse": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isRead": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.SpotRangeResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "maxYear": {
-                    "type": "integer"
-                },
-                "minYear": {
-                    "type": "integer"
-                },
-                "spots": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.UpdateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.UserSummaryResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.WhitelistResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                }
-            }
+          }
         }
+      }
     },
-    "securityDefinitions": {
-        "AdminAPIKey": {
-            "description": "Admin API Key for protected endpoints",
-            "type": "apiKey",
-            "name": "X-Admin-Key",
-            "in": "header"
-        },
-        "BearerAuth": {
-            "description": "Enter your bearer token in the format: Bearer {token}",
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+    "/birthdays": {
+      "get": {
+        "description": "Gets all the users who have birthday today",
+        "produces": ["application/json"],
+        "tags": ["birthdays"],
+        "summary": "Get users with birthdays",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
+      }
+    },
+    "/comments": {
+      "post": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["comments"],
+        "summary": "Create a new comment",
+        "parameters": [
+          {
+            "description": "Comment to create",
+            "name": "comment",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.CreateCommentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/comments/{id}": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["comments"],
+        "summary": "Get comments by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Comment ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.CommentResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/comments/{id}/reaction": {
+      "post": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["comments"],
+        "summary": "React to a comment",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Comment ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Reaction to add or remove",
+            "name": "reaction",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.ReactToCommentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/degrees": {
+      "get": {
+        "produces": ["application/json"],
+        "tags": ["degrees"],
+        "summary": "Get degrees",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["degrees"],
+        "summary": "Create degree",
+        "parameters": [
+          {
+            "description": "Degree to create",
+            "name": "degree",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.CreateDegreeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/degrees/{id}": {
+      "post": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["degrees"],
+        "summary": "Update degree",
+        "parameters": [
+          {
+            "description": "Degree to update",
+            "name": "degree",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.UpdateDegreeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "tags": ["degrees"],
+        "summary": "Delete degree",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Degree ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/feedbacks": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["feedbacks"],
+        "summary": "Get site feedbacks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/feedbacks/{id}": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["feedbacks"],
+        "summary": "Get site feedback by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Feedback ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings": {
+      "get": {
+        "description": "Retrives a list of all happenings and returns them in a JSON array.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get all happenings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.HappeningResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/happenings/registrations/count": {
+      "get": {
+        "description": "Retrieves the count of registrations for a specific happening.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happenings registrations count",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_domain_model.GroupedRegistrationCount"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}": {
+      "get": {
+        "description": "Retrieves a specific happening by its unique identifier.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happening by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.HappeningResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}/questions": {
+      "get": {
+        "description": "Retrieves all questions for a specific happening.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happening questions",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.QuestionResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}/register": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Registers a user for a specific happening with business logic validation",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Register for happening",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Registration request",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.RegisterForHappeningRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}/registrations": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "description": "Retrieves all registrations for a specific happening.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happening registrations",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.HappeningRegistrationResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}/registrations/count": {
+      "get": {
+        "description": "Retrieves the count of registrations for a specific happening.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happening registrations count",
+        "deprecated": true,
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.GroupedRegistration"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/happenings/{id}/spot-ranges": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "description": "Retrieves all spot ranges for a specific happening.",
+        "produces": ["application/json"],
+        "tags": ["happenings"],
+        "summary": "Get happening spot ranges",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Happening ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.SpotRangeResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/shopping": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["shopping_list"],
+        "summary": "Get shopping list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_domain_service.ShoppingList"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/strikes/banned": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "tags": ["strikes"],
+        "summary": "Gets all users that are banned",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_domain_model.UserWithBanInfo"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/strikes/unban": {
+      "post": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "tags": ["strikes"],
+        "summary": "Unban users with expired strikes and bans",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/strikes/users": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "tags": ["strikes"],
+        "summary": "Gets users with strikes and bans",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_domain_model.UserWithStrikes"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/whitelist": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["whitelist"],
+        "summary": "Get whitelisted emails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/whitelist/{email}": {
+      "get": {
+        "security": [
+          {
+            "AdminAPIKey": []
+          }
+        ],
+        "produces": ["application/json"],
+        "tags": ["whitelist"],
+        "summary": "Get whitelist info by email",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Email",
+            "name": "email",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "uno_domain_model.BanInfo": {
+      "type": "object",
+      "properties": {
+        "bannedByID": {
+          "type": "string"
+        },
+        "bannedByName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_domain_model.DotInfo": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "strikedByID": {
+          "type": "string"
+        },
+        "strikedByName": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_domain_model.GroupedRegistrationCount": {
+      "type": "object",
+      "properties": {
+        "happeningID": {
+          "type": "string"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "registered": {
+          "type": "integer"
+        },
+        "waiting": {
+          "type": "integer"
+        }
+      }
+    },
+    "uno_domain_model.UserWithBanInfo": {
+      "type": "object",
+      "properties": {
+        "banInfo": {
+          "$ref": "#/definitions/uno_domain_model.BanInfo"
+        },
+        "dots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/uno_domain_model.DotInfo"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_domain_model.UserWithStrikes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "isBanned": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "strikes": {
+          "type": "integer"
+        }
+      }
+    },
+    "uno_domain_service.ShoppingList": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "likes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.AccessRequestResponse": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.CommentResponse": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "parentCommentId": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string"
+        },
+        "reactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/uno_http_dto.CommentsReactionResponse"
+          }
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/uno_http_dto.UserSummaryResponse"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.CommentsReactionResponse": {
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.CreateCommentRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "parentCommentId": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.CreateDegreeRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.DegreeResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.GroupedRegistration": {
+      "type": "object",
+      "properties": {
+        "max": {
+          "type": "integer"
+        },
+        "registered": {
+          "type": "integer"
+        },
+        "waiting": {
+          "type": "integer"
+        }
+      }
+    },
+    "uno_http_dto.HappeningRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "changedAt": {
+          "type": "string"
+        },
+        "changedBy": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "happeningId": {
+          "type": "string"
+        },
+        "prevStatus": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "unregisterReason": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userImage": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.HappeningResponse": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "registrationEnd": {
+          "type": "string"
+        },
+        "registrationGroups": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "registrationStart": {
+          "type": "string"
+        },
+        "registrationStartGroups": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.HealthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.QuestionAnswerDTO": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "questionId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.QuestionResponse": {
+      "type": "object",
+      "properties": {
+        "happeningId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isSensitive": {
+          "type": "boolean"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.ReactToCommentRequest": {
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.RegisterForHappeningRequest": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/uno_http_dto.QuestionAnswerDTO"
+          }
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.RegisterForHappeningResponse": {
+      "type": "object",
+      "properties": {
+        "isWaitlisted": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "uno_http_dto.SiteFeedbackResponse": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isRead": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.SpotRangeResponse": {
+      "type": "object",
+      "properties": {
+        "happeningId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "maxYear": {
+          "type": "integer"
+        },
+        "minYear": {
+          "type": "integer"
+        },
+        "spots": {
+          "type": "integer"
+        }
+      }
+    },
+    "uno_http_dto.UpdateDegreeRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.UserSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "uno_http_dto.WhitelistResponse": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "AdminAPIKey": {
+      "description": "Admin API Key for protected endpoints",
+      "type": "apiKey",
+      "name": "X-Admin-Key",
+      "in": "header"
+    },
+    "BearerAuth": {
+      "description": "Enter your bearer token in the format: Bearer {token}",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
 }

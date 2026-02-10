@@ -1,28 +1,27 @@
 {
-    "name": "@echo-webkom/uno",
-    "version": "1.0.0",
-    "scripts": {
-        "dev": "pnpm with-env air",
-        "start": "./build/web",
-        "build": "go build -o build/web cmd/web/main.go",
-        "test": "pnpm with-env go test ./... -v",
-        "test:verbose": "pnpm with-env go test ./... -v",
-        "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",
-        "test:coverage:view": "pnpm with-env go tool cover -html=coverage.out",
-        "format": "pnpm with-env go fmt ./...",
-        "format:check": "pnpm with-env gofmt -l .",
-        "lint": "pnpm with-env golangci-lint run ./...",
-        "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
-        "tidy": "pnpm with-env go mod tidy",
-        "tools:install": "./scripts/install-tools.sh",
-        "tools:update": "./scripts/update-tools.sh",
-        "swag:init": "swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal",
-        "mocks:generate": "mockery",
-        "with-env": "dotenv -e ../../.env --"
-    },
-    "packageManager": "pnpm@10.18.3",
-    "devDependencies": {
-        "dotenv-cli": "10.0.0"
-    }
+  "name": "@echo-webkom/uno",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm with-env air",
+    "start": "./build/web",
+    "build": "go build -o build/web cmd/web/main.go",
+    "test": "pnpm with-env go test ./... -v",
+    "test:verbose": "pnpm with-env go test ./... -v",
+    "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",
+    "test:coverage:view": "pnpm with-env go tool cover -html=coverage.out",
+    "format": "pnpm with-env go fmt ./...",
+    "format:check": "pnpm with-env gofmt -l .",
+    "lint": "pnpm with-env golangci-lint run ./...",
+    "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
+    "tidy": "pnpm with-env go mod tidy",
+    "tools:install": "./scripts/install-tools.sh",
+    "tools:update": "./scripts/update-tools.sh",
+    "swag:init": "swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal",
+    "mocks:generate": "mockery",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "dotenv-cli": "10.0.0"
+  }
 }
-
