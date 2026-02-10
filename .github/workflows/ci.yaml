@@ -10,8 +10,7 @@ env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web
 
-  API_PORT: 8000
-  UNO_API_PORT: ":8000"
+  UNO_API_PORT: 8000
   TELEMENTRY_ENABLED: false
   NEXT_PUBLIC_API_URL: http://localhost:8000
 
