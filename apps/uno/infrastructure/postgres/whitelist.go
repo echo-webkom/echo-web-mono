@@ -2,6 +2,8 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/models"
@@ -49,10 +51,12 @@ func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (
 	`
 	err = p.db.GetContext(ctx, &dbModel, query, email)
 	if err != nil {
-		p.logger.Error(ctx, "failed to get whitelist by email",
-			"error", err,
-			"email", email,
-		)
+		if !errors.Is(err, sql.ErrNoRows) {
+			p.logger.Error(ctx, "failed to get whitelist by email",
+				"error", err,
+				"email", email,
+			)
+		}
 		return model.Whitelist{}, err
 	}
 	return *dbModel.ToDomain(), nil

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"database/sql"
+	"errors"
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -65,6 +67,10 @@ func (w *whitelist) GetWhitelistByEmailHandler(ctx *handler.Context) error {
 	// Get domain model from service
 	whitelistInfo, err := w.whitelistService.WhitelistRepo().GetWhitelistByEmail(ctx.Context(), email)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			ctx.SetStatus(404)
+			return ctx.JSON(nil)
+		}
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 

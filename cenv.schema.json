@@ -46,9 +46,9 @@
     },
     "UNO_API_PORT": {
       "required": true,
-      "format": ":{number}",
+      "format": "{number}",
       "key": "UNO_API_PORT",
-      "default": ":8080"
+      "default": "8080"
     }
   }
 }
