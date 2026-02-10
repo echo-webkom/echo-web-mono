@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder, { type SanityImageSource } from "@sanity/image-url";
+import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
 
 /**
  * Project ID: "pgq2pd26",
@@ -51,7 +51,7 @@ export const clientWith = (dataset: Dataset) =>
     useCdn: false,
   });
 
-const builder = imageUrlBuilder(cdnClient);
+const builder = createImageUrlBuilder(cdnClient);
 export const urlFor = (source: SanityImageSource) => {
   return builder.image(source);
 };
