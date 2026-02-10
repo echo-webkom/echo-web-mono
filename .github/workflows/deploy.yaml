@@ -6,34 +6,6 @@ on:
       - main
 
 jobs:
-  uno:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🔍 Checkout
-        uses: actions/checkout@v6
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: 🐢 Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22.22.0
-          cache: pnpm
-          cache-dependency-path: ./pnpm-lock.yaml
-
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: 🪰 Setup Fly
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: 🚀 Deploy
-        run: flyctl deploy --config apps/uno/fly.toml --dockerfile apps/uno/Dockerfile --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
   docs:
     runs-on: ubuntu-latest
 
