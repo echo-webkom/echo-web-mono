@@ -50,10 +50,10 @@ definitions:
   uno_domain_model.UserWithBanInfo:
     properties:
       banInfo:
-        $ref: "#/definitions/uno_domain_model.BanInfo"
+        $ref: '#/definitions/uno_domain_model.BanInfo'
       dots:
         items:
-          $ref: "#/definitions/uno_domain_model.DotInfo"
+          $ref: '#/definitions/uno_domain_model.DotInfo'
         type: array
       id:
         type: string
@@ -117,12 +117,12 @@ definitions:
         type: string
       reactions:
         items:
-          $ref: "#/definitions/uno_http_dto.CommentsReactionResponse"
+          $ref: '#/definitions/uno_http_dto.CommentsReactionResponse'
         type: array
       updatedAt:
         type: string
       user:
-        $ref: "#/definitions/uno_http_dto.UserSummaryResponse"
+        $ref: '#/definitions/uno_http_dto.UserSummaryResponse'
       userId:
         type: string
     type: object
@@ -261,7 +261,7 @@ definitions:
     properties:
       questions:
         items:
-          $ref: "#/definitions/uno_http_dto.QuestionAnswerDTO"
+          $ref: '#/definitions/uno_http_dto.QuestionAnswerDTO'
         type: array
       userId:
         type: string
@@ -341,25 +341,25 @@ paths:
   /:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.HealthCheckResponse"
+            $ref: '#/definitions/uno_http_dto.HealthCheckResponse'
       summary: Get health status
       tags:
-        - health
+      - health
   /access-requests:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.AccessRequestResponse"
+              $ref: '#/definitions/uno_http_dto.AccessRequestResponse'
             type: array
         "401":
           description: Unauthorized
@@ -370,15 +370,15 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get access requests
       tags:
-        - access-request
+      - access-request
   /birthdays:
     get:
       description: Gets all the users who have birthday today
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
@@ -388,20 +388,20 @@ paths:
             type: array
       summary: Get users with birthdays
       tags:
-        - birthdays
+      - birthdays
   /comments:
     post:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Comment to create
-          in: body
-          name: comment
-          required: true
-          schema:
-            $ref: "#/definitions/uno_http_dto.CreateCommentRequest"
+      - description: Comment to create
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateCommentRequest'
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
@@ -422,26 +422,26 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Create a new comment
       tags:
-        - comments
+      - comments
   /comments/{id}:
     get:
       parameters:
-        - description: Comment ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.CommentResponse"
+              $ref: '#/definitions/uno_http_dto.CommentResponse'
             type: array
         "400":
           description: Bad Request
@@ -456,28 +456,28 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get comments by ID
       tags:
-        - comments
+      - comments
   /comments/{id}/reaction:
     post:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Comment ID
-          in: path
-          name: id
-          required: true
-          type: string
-        - description: Reaction to add or remove
-          in: body
-          name: reaction
-          required: true
-          schema:
-            $ref: "#/definitions/uno_http_dto.ReactToCommentRequest"
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Reaction to add or remove
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.ReactToCommentRequest'
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
@@ -498,41 +498,41 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: React to a comment
       tags:
-        - comments
+      - comments
   /degrees:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.DegreeResponse"
+              $ref: '#/definitions/uno_http_dto.DegreeResponse'
             type: array
       summary: Get degrees
       tags:
-        - degrees
+      - degrees
     post:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Degree to create
-          in: body
-          name: degree
-          required: true
-          schema:
-            $ref: "#/definitions/uno_http_dto.CreateDegreeRequest"
+      - description: Degree to create
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateDegreeRequest'
       produces:
-        - application/json
+      - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: "#/definitions/uno_http_dto.DegreeResponse"
+            $ref: '#/definitions/uno_http_dto.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -542,18 +542,18 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Create degree
       tags:
-        - degrees
+      - degrees
   /degrees/{id}:
     delete:
       parameters:
-        - description: Degree ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Degree ID
+        in: path
+        name: id
+        required: true
+        type: string
       responses:
         "204":
           description: No Content
@@ -566,27 +566,27 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Delete degree
       tags:
-        - degrees
+      - degrees
     post:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Degree to update
-          in: body
-          name: degree
-          required: true
-          schema:
-            $ref: "#/definitions/uno_http_dto.UpdateDegreeRequest"
+      - description: Degree to update
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UpdateDegreeRequest'
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.DegreeResponse"
+            $ref: '#/definitions/uno_http_dto.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -596,45 +596,45 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Update degree
       tags:
-        - degrees
+      - degrees
   /feedbacks:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.SiteFeedbackResponse"
+              $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
             type: array
         "401":
           description: Unauthorized
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get site feedbacks
       tags:
-        - feedbacks
+      - feedbacks
   /feedbacks/{id}:
     get:
       parameters:
-        - description: Feedback ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Feedback ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.SiteFeedbackResponse"
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
         "401":
           description: Unauthorized
           schema:
@@ -644,41 +644,41 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get site feedback by ID
       tags:
-        - feedbacks
+      - feedbacks
   /happenings:
     get:
       description: Retrives a list of all happenings and returns them in a JSON array.
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.HappeningResponse"
+              $ref: '#/definitions/uno_http_dto.HappeningResponse'
             type: array
       summary: Get all happenings
       tags:
-        - happenings
+      - happenings
   /happenings/{id}:
     get:
       description: Retrieves a specific happening by its unique identifier.
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.HappeningResponse"
+            $ref: '#/definitions/uno_http_dto.HappeningResponse'
         "400":
           description: Bad Request
           schema:
@@ -689,24 +689,24 @@ paths:
             type: string
       summary: Get happening by ID
       tags:
-        - happenings
+      - happenings
   /happenings/{id}/questions:
     get:
       description: Retrieves all questions for a specific happening.
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.QuestionResponse"
+              $ref: '#/definitions/uno_http_dto.QuestionResponse'
             type: array
         "400":
           description: Bad Request
@@ -718,61 +718,61 @@ paths:
             type: string
       summary: Get happening questions
       tags:
-        - happenings
+      - happenings
   /happenings/{id}/register:
     post:
       consumes:
-        - application/json
+      - application/json
       description: Registers a user for a specific happening with business logic validation
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
-        - description: Registration request
-          in: body
-          name: body
-          required: true
-          schema:
-            $ref: "#/definitions/uno_http_dto.RegisterForHappeningRequest"
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Registration request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.RegisterForHappeningRequest'
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       summary: Register for happening
       tags:
-        - happenings
+      - happenings
   /happenings/{id}/registrations:
     get:
       description: Retrieves all registrations for a specific happening.
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.HappeningRegistrationResponse"
+              $ref: '#/definitions/uno_http_dto.HappeningRegistrationResponse'
             type: array
         "400":
           description: Bad Request
@@ -783,27 +783,27 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get happening registrations
       tags:
-        - happenings
+      - happenings
   /happenings/{id}/registrations/count:
     get:
       deprecated: true
       description: Retrieves the count of registrations for a specific happening.
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.GroupedRegistration"
+            $ref: '#/definitions/uno_http_dto.GroupedRegistration'
         "400":
           description: Bad Request
           schema:
@@ -814,24 +814,24 @@ paths:
             type: string
       summary: Get happening registrations count
       tags:
-        - happenings
+      - happenings
   /happenings/{id}/spot-ranges:
     get:
       description: Retrieves all spot ranges for a specific happening.
       parameters:
-        - description: Happening ID
-          in: path
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.SpotRangeResponse"
+              $ref: '#/definitions/uno_http_dto.SpotRangeResponse'
             type: array
         "400":
           description: Bad Request
@@ -842,27 +842,27 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get happening spot ranges
       tags:
-        - happenings
+      - happenings
   /happenings/registrations/count:
     get:
       description: Retrieves the count of registrations for a specific happening.
       parameters:
-        - description: Happening ID
-          in: query
-          name: id
-          required: true
-          type: string
+      - description: Happening ID
+        in: query
+        name: id
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_domain_model.GroupedRegistrationCount"
+              $ref: '#/definitions/uno_domain_model.GroupedRegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -874,27 +874,27 @@ paths:
             type: string
       summary: Get happenings registrations count
       tags:
-        - happenings
+      - happenings
   /shopping:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_domain_service.ShoppingList"
+              $ref: '#/definitions/uno_domain_service.ShoppingList'
             type: array
         "401":
           description: Unauthorized
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get shopping list
       tags:
-        - shopping_list
+      - shopping_list
   /strikes/banned:
     get:
       responses:
@@ -902,7 +902,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_domain_model.UserWithBanInfo"
+              $ref: '#/definitions/uno_domain_model.UserWithBanInfo'
             type: array
         "401":
           description: Unauthorized
@@ -913,10 +913,10 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Gets all users that are banned
       tags:
-        - strikes
+      - strikes
   /strikes/unban:
     post:
       responses:
@@ -931,10 +931,10 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Unban users with expired strikes and bans
       tags:
-        - strikes
+      - strikes
   /strikes/users:
     get:
       responses:
@@ -942,7 +942,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_domain_model.UserWithStrikes"
+              $ref: '#/definitions/uno_domain_model.UserWithStrikes'
             type: array
         "401":
           description: Unauthorized
@@ -953,20 +953,20 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Gets users with strikes and bans
       tags:
-        - strikes
+      - strikes
   /whitelist:
     get:
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/uno_http_dto.WhitelistResponse"
+              $ref: '#/definitions/uno_http_dto.WhitelistResponse'
             type: array
         "401":
           description: Unauthorized
@@ -977,25 +977,25 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get whitelisted emails
       tags:
-        - whitelist
+      - whitelist
   /whitelist/{email}:
     get:
       parameters:
-        - description: Email
-          in: path
-          name: email
-          required: true
-          type: string
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/uno_http_dto.WhitelistResponse"
+            $ref: '#/definitions/uno_http_dto.WhitelistResponse'
         "401":
           description: Unauthorized
           schema:
@@ -1009,10 +1009,10 @@ paths:
           schema:
             type: string
       security:
-        - AdminAPIKey: []
+      - AdminAPIKey: []
       summary: Get whitelist info by email
       tags:
-        - whitelist
+      - whitelist
 securityDefinitions:
   AdminAPIKey:
     description: Admin API Key for protected endpoints
@@ -1020,7 +1020,7 @@ securityDefinitions:
     name: X-Admin-Key
     type: apiKey
   BearerAuth:
-    description: "Enter your bearer token in the format: Bearer {token}"
+    description: 'Enter your bearer token in the format: Bearer {token}'
     in: header
     name: Authorization
     type: apiKey
