@@ -32,17 +32,14 @@ code --install-extension esbenp.prettier-vscode
 **Obligatoriske extensions:**
 
 1. **TypeScript Importer** (`pmneo.tsimporter`)
-
    - Automatisk import av TypeScript moduler
    - Intelligent code completion
 
 2. **Tailwind CSS IntelliSense** (`bradlc.vscode-tailwindcss`)
-
    - Autocomplete for Tailwind klasser
    - Hover-forhåndsvisning av CSS
 
 3. **ESLint** (`ms-vscode.eslint`)
-
    - Lint og feildeteksjon i koden
    - Automatisk fixing av vanlige problemer
 
@@ -64,7 +61,6 @@ code --install-extension github.vscode-pull-request-github
 ```
 
 8. **GitLens** (`eamodio.gitlens`)
-
    - Forbedret Git-integrasjon
    - Blame annotations og commit historikk
 
