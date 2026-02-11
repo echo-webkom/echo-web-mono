@@ -7,5 +7,5 @@ export const getAllFeedback = async () => {
 };
 
 export const getFeedbackById = async (id: string) => {
-  return await apiServer.get(`feedback/${id}`).json<SiteFeedback>();
+  return await apiServer.get(`feedbacks/${id}`).json<SiteFeedback>();
 };

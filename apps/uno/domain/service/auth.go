@@ -1,0 +1,41 @@
+package service
+
+import (
+	"context"
+	"uno/domain/model"
+	"uno/domain/port"
+)
+
+type AuthService struct {
+	sessionRepo port.SessionRepo
+	userRepo    port.UserRepo
+}
+
+func NewAuthService(sessionRepo port.SessionRepo, userRepo port.UserRepo) *AuthService {
+	return &AuthService{
+		sessionRepo: sessionRepo,
+		userRepo:    userRepo,
+	}
+}
+
+func (as *AuthService) ValidateToken(ctx context.Context, token string) (model.User, model.Session, error) {
+	session, err := as.sessionRepo.GetSessionByToken(ctx, token)
+	if err != nil {
+		return model.User{}, model.Session{}, err
+	}
+
+	user, err := as.userRepo.GetUserByID(ctx, session.UserID)
+	if err != nil {
+		return model.User{}, model.Session{}, err
+	}
+
+	return user, session, nil
+}
+
+func (as *AuthService) SessionRepo() port.SessionRepo {
+	return as.sessionRepo
+}
+
+func (as *AuthService) UserRepo() port.UserRepo {
+	return as.userRepo
+}

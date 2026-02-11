@@ -48,7 +48,7 @@ services:
       ADMIN_KEY: foobar
 
       # API
-      API_PORT: 8000
+      UNO_API_PORT: 8000
       NEXT_PUBLIC_API_URL: http://localhost:8000
 
       # Sanity
@@ -62,11 +62,26 @@ services:
 
       AUTH_SECRET: foobar
 
-      CI: "true"
+      # Playwright
+      HEADLESS: "true"
+
+    ports:
+      - 9323:9323
+
     volumes:
       # Mount test results and reports back to host
       - ./playwright/playwright-report:/app/playwright/playwright-report
       - ./playwright/test-results:/app/playwright/test-results
+
+  jaeger:
+    profiles: ["dev"]
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4317:4317" # gRPC receiver
+      - "4318:4318" # HTTP receiver
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
 
 volumes:
   db:

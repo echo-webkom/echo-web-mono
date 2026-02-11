@@ -4,8 +4,8 @@ packages:
   - playwright
 
 onlyBuiltDependencies:
-  - '@swc/core'
-  - '@tailwindcss/oxide'
+  - "@swc/core"
+  - "@tailwindcss/oxide"
   - core-js
   - esbuild
   - sharp

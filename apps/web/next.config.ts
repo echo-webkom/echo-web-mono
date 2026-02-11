@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
+let NEXT_OUTPUT = process.env.NEXT_OUTPUT as "export" | "standalone" | undefined;
+
+if (NEXT_OUTPUT && !["export", "standalone"]?.includes(NEXT_OUTPUT)) {
+  NEXT_OUTPUT = undefined;
+}
+
 const config = {
   reactCompiler: true,
+  output: NEXT_OUTPUT,
 
   transpilePackages: [
     "@echo-webkom/db",

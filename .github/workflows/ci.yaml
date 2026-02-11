@@ -10,7 +10,8 @@ env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web
 
-  API_PORT: 8000
+  UNO_API_PORT: 8000
+  TELEMENTRY_ENABLED: false
   NEXT_PUBLIC_API_URL: http://localhost:8000
 
   NEXT_PUBLIC_SANITY_DATASET: "testing"
@@ -19,9 +20,6 @@ env:
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
 
   AUTH_SECRET: "test-secret-for-ci-e2e-tests-only"
-
-  # remove
-  NEXT_PUBLIC_DISABLE_POPUP: "true"
 
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -45,6 +43,17 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 🔎 Install golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          working-directory: apps/uno
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -63,8 +72,47 @@ jobs:
       - name: 🛫 Type check
         run: pnpm typecheck
 
-  test-unit:
-    name: 🧪 Unit Tests
+      - name: 🐹 Lint Go code
+        working-directory: apps/uno
+        run: golangci-lint run
+
+  check-docs:
+    name: 📚 Check Backend Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 📦 Install swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+
+      - name: 📚 Check Swagger docs are generated
+        run: |
+          pnpm --filter=uno swag:init
+          if ! git diff --exit-code apps/uno/docs/; then
+            echo "Error: Swagger docs are out of sync. Please run 'pnpm --filter=uno swag:init' and commit the changes."
+            exit 1
+          fi
+
+  test-unit-frontend:
+    name: 🧪 Unit Tests (Frontend)
     runs-on: ubuntu-latest
 
     steps:
@@ -84,14 +132,30 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🔃 Sync docs
-        run: pnpm --filter=docs sync
+      - name: 🧪 Run frontend unit tests
+        run: pnpm --filter=web test:unit
 
-      - name: 🆎 Typegen
-        run: pnpm --filter=web typegen
+  test-unit-backend:
+    name: 🧪 Unit Tests (Backend)
+    runs-on: ubuntu-latest
 
-      - name: 🧪 Run unit tests
-        run: pnpm test:unit
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v5
+
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 🧪 Run backend unit tests with coverage
+        working-directory: apps/uno
+        run: go test ./... -v -coverprofile=coverage.out
+
+      - name: 📊 Show coverage summary
+        working-directory: apps/uno
+        run: go tool cover -func=coverage.out | tail -1
 
   test-e2e:
     name: 🎭 E2E Tests
@@ -128,6 +192,12 @@ jobs:
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -141,7 +211,7 @@ jobs:
         run: pnpm seed database --mode test
 
       - name: 👷🏻‍♂️ Build
-        run: pnpm build
+        run: pnpm build --filter=@echo-webkom/web --filter=@echo-webkom/uno
 
       - name: 🎭 Run playwright tests
         run: pnpm test:e2e

@@ -53,6 +53,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ## Hvordan kjøre?
 
 1. **Før du starter må du passe på at det følgende er installert:**
+
    - [pnpm](https://pnpm.io/installation)
    - [docker](https://docs.docker.com/engine/install/)
    - [cenv](https://github.com/echo-webkom/cenv)

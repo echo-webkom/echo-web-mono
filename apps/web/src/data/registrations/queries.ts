@@ -1,19 +1,26 @@
 import { unstable_cache as cache } from "next/cache";
 import { eq } from "drizzle-orm";
 
-import { type Registration, type User } from "@echo-webkom/db/schemas";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
 import { apiServer } from "@/api/server";
 import { cacheKeyFactory } from "./revalidate";
 
 export const getRegistrationsByHappeningId = async (happeningId: string) => {
-  return await apiServer.get(`happening/${happeningId}/registrations`).json<
-    Array<
-      Registration & {
-        user: User;
-      }
-    >
+  return await apiServer.get(`happenings/${happeningId}/registrations`).json<
+    Array<{
+      changedAt: Date;
+      changedBy: Date;
+      createdAt: Date;
+      happeningId: string;
+      prevStatus: string;
+      status: RegistrationStatus;
+      unregisterReason: string;
+      userId: string;
+      userName: string | null;
+      userImage: string | null;
+    }>
   >();
 };
 
@@ -40,4 +47,19 @@ export const getRegistrationsByUserId = async (userId: string) => {
       tags: [cacheKeyFactory.registrationsUser(userId)],
     },
   )();
+};
+
+export const getRegistrationCountByHappeningIds = async (happeningIds: Array<string>) => {
+  if (happeningIds.length === 0) {
+    return [];
+  }
+
+  return await apiServer.get(`happenings/registrations/count?id=${happeningIds.join("&id=")}`).json<
+    Array<{
+      happeningId: string;
+      waiting: number;
+      registered: number;
+      max: number | null;
+    }>
+  >();
 };
