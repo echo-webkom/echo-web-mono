@@ -16,6 +16,18 @@ func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 			ctx.SetContext(logging.ContextWithTrace(ctx.Context(), span))
 
 			start := time.Now()
+
+			defer func() {
+				if rec := recover(); rec != nil {
+					portLogger.Error(ctx.Context(), "panic recovered",
+						"panic", rec,
+						"method", ctx.R.Method,
+						"path", ctx.R.URL.Path,
+					)
+					http.Error(ctx, "Internal Server Error", http.StatusInternalServerError)
+				}
+			}()
+
 			err := ctx.Next(h)
 
 			if err != nil {
