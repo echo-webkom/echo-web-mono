@@ -4,17 +4,12 @@ import (
 	"net/http"
 	"time"
 	"uno/domain/port"
-	"uno/infrastructure/logging"
 )
 
 // Middleware logging requests and their outcome.
 func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		return Handler(func(ctx *Context) error {
-			// Set logger trace context
-			span := ctx.R.Method + " " + ctx.R.URL.String()
-			ctx.SetContext(logging.ContextWithTrace(ctx.Context(), span))
-
 			start := time.Now()
 
 			defer func() {
