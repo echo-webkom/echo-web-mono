@@ -1,70 +1,71 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
-interface ScrollerProps {
-  slides: Array<React.ReactElement>;
-  desktopWidth?: number;
+interface ScrolledSlideProps {
+  index?: number;
+  isActive?: boolean;
+  scrollToSlide?: (index: number, instant?: boolean) => void;
+  goToNext?: () => void;
 }
 
-const Scroller: React.FC<ScrollerProps> = ({ slides = [], desktopWidth = 520 }) => {
+const Scroller: React.FC<ScrollerProps> = ({ slides = [], desktopWidth = 520, onSlideChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isAnimating = useRef(false);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // 🌊 Smooth scroll-funksjon med easing
-  const scrollToSlide = (index: number) => {
-    const container = containerRef.current;
-    if (!container || isAnimating.current) return;
-
-    const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
-    const target = targetIndex * container.clientHeight;
-    const start = container.scrollTop;
-    const distance = target - start;
-    const duration = 700;
-    let startTime: number | null = null;
-
-    isAnimating.current = true;
-
-    function animateScroll(timestamp: number) {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Easing: easeOutCubic
-      const ease = 1 - Math.pow(1 - progress, 3);
-      container.scrollTop = start + distance * ease;
-
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      } else {
-        isAnimating.current = false;
-        setCurrentIndex(targetIndex);
-      }
+  useEffect(() => {
+    if (onSlideChange) {
+      onSlideChange(currentIndex);
     }
+  }, [currentIndex, onSlideChange]);
 
-    requestAnimationFrame(animateScroll);
-  };
+  const scrollToSlide = useCallback(
+    (index: number, instant = false) => {
+      const container = containerRef.current;
+      if (!container) return;
 
-  // 📦 Scroll listener — oppdager bevegelse og snapper etterpå
+      const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
+      const target = targetIndex * container.clientHeight;
+
+      if (instant) {
+        container.scrollTop = target;
+        setCurrentIndex(targetIndex);
+        return;
+      }
+
+      container.scrollTo({
+        top: target,
+        behavior: "smooth",
+      });
+
+      setCurrentIndex(targetIndex);
+    },
+    [slides.length],
+  );
+
+  const isThrottled = useRef(false);
+
   const handleScroll = () => {
-    if (isAnimating.current) return;
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || isThrottled.current) return;
 
-    // Tøm forrige timeout
-    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    const scrollTop = container.scrollTop;
+    const viewportHeight = container.clientHeight;
 
-    // Når scroll stopper (ingen endring i 100ms)
-    scrollTimeout.current = setTimeout(() => {
-      const scrollTop = container.scrollTop;
-      const viewportHeight = container.clientHeight;
-      const newIndex = Math.round(scrollTop / viewportHeight);
+    const newIndex = Math.round(scrollTop / viewportHeight);
 
-      scrollToSlide(newIndex);
-    }, 100);
+    if (newIndex !== currentIndex) {
+      isThrottled.current = true;
+      setCurrentIndex(newIndex);
+
+      if (onSlideChange) onSlideChange(newIndex);
+
+      setTimeout(() => {
+        isThrottled.current = false;
+      }, 600);
+    }
   };
 
-  // 🎹 Pil opp/ned for navigasjon
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") scrollToSlide(currentIndex + 1);
@@ -74,14 +75,13 @@ const Scroller: React.FC<ScrollerProps> = ({ slides = [], desktopWidth = 520 }) 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex]);
 
-  // 📜 Koble scroll listener
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [currentIndex]);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-black">
@@ -94,18 +94,25 @@ const Scroller: React.FC<ScrollerProps> = ({ slides = [], desktopWidth = 520 }) 
           scrollSnapType: "y mandatory",
           overscrollBehavior: "contain",
           WebkitOverflowScrolling: "touch",
-          scrollBehavior: "smooth",
         }}
       >
-        {slides.map((slide, index) => (
-          <div key={index} className="flex h-screen w-full snap-start items-center justify-center">
-            {React.cloneElement(slide, {
-              goToNext: () => scrollToSlide(index + 1),
-              goToSlide: scrollToSlide,
-              isActive: currentIndex === index,
-            })}
-          </div>
-        ))}
+        {slides.map((slide, index) => {
+          if (!React.isValidElement(slide)) return null;
+
+          return (
+            <div
+              key={index}
+              className="flex h-screen w-full snap-start items-center justify-center"
+            >
+              {React.cloneElement(slide as React.ReactElement<ScrolledSlideProps>, {
+                index,
+                scrollToSlide,
+                isActive: currentIndex === index,
+                goToNext: () => scrollToSlide(index + 1),
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
