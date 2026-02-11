@@ -10,16 +10,16 @@ import { cacheKeyFactory } from "./revalidate";
 export const getRegistrationsByHappeningId = async (happeningId: string) => {
   return await apiServer.get(`happenings/${happeningId}/registrations`).json<
     Array<{
-      changedAt: Date;
-      changedBy: Date;
-      createdAt: Date;
-      happeningId: string;
-      prevStatus: string;
-      status: RegistrationStatus;
-      unregisterReason: string;
       userId: string;
       userName: string | null;
       userImage: string | null;
+      happeningId: string;
+      changedAt: Date;
+      changedBy: Date;
+      createdAt: Date;
+      prevStatus: string;
+      status: RegistrationStatus;
+      unregisterReason: string;
     }>
   >();
 };

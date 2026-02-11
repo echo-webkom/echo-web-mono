@@ -122,13 +122,13 @@ type HappeningRegistrationResponse struct {
 	UserID           string     `json:"userId"`
 	HappeningID      string     `json:"happeningId"`
 	Status           string     `json:"status"`
-	UnregisterReason *string    `json:"unregisterReason,omitempty"`
+	UnregisterReason *string    `json:"unregisterReason"`
 	CreatedAt        time.Time  `json:"createdAt"`
-	PrevStatus       *string    `json:"prevStatus,omitempty"`
-	ChangedAt        *time.Time `json:"changedAt,omitempty"`
-	ChangedBy        *string    `json:"changedBy,omitempty"`
-	UserName         *string    `json:"userName,omitempty"`
-	UserImage        *string    `json:"userImage,omitempty"`
+	PrevStatus       *string    `json:"prevStatus"`
+	ChangedAt        *time.Time `json:"changedAt"`
+	ChangedBy        *string    `json:"changedBy"`
+	UserName         *string    `json:"userName"`
+	UserImage        *string    `json:"userImage"`
 }
 
 // HappeningRegistrationListFromPorts converts a slice of port.HappeningRegistration to DTOs.
