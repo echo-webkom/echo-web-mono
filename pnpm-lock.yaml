@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      gsap:
+        specifier: ^3.14.2
+        version: 3.14.2
+      lenis:
+        specifier: ^1.3.17
+        version: 1.3.17(react@19.2.3)
       turbo:
         specifier: 2.7.2
         version: 2.7.2
@@ -306,16 +312,8 @@ importers:
         specifier: 0.45.1
         version: 0.45.1(@cloudflare/workers-types@4.20251225.0)(@electric-sql/pglite@0.3.14)(@types/pg@8.16.0)(pg@8.16.3)(postgres@3.4.7)
       groq:
-<<<<<<< HEAD
         specifier: 5.1.0
         version: 5.1.0
-=======
-        specifier: 4.11.0
-        version: 4.11.0
-      gsap:
-        specifier: ^3.13.0
-        version: 3.13.0
->>>>>>> d495f73c (La til TextTyped komponent)
       ics:
         specifier: 3.8.1
         version: 3.8.1
@@ -323,16 +321,8 @@ importers:
         specifier: ^6.1.3
         version: 6.1.3
       ky:
-<<<<<<< HEAD
         specifier: 1.14.2
         version: 1.14.2
-=======
-        specifier: 1.13.0
-        version: 1.13.0
-      lenis:
-        specifier: ^1.3.15
-        version: 1.3.15(react@19.2.0)
->>>>>>> 68e5e811 (add components in wrapped 25)
       lucide-react:
         specifier: 0.562.0
         version: 0.562.0(react@19.2.3)
@@ -572,7 +562,7 @@ importers:
     devDependencies:
       '@react-email/preview-server':
         specifier: ^5.1.0
-        version: 5.1.0(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 5.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/node':
         specifier: 22.19.3
         version: 22.19.3
@@ -7912,8 +7902,8 @@ packages:
     resolution: {integrity: sha512-ayFz6MxyEPBi16z0jrM/gUSUAXaTqiwEMRCGpkUSAdrcfVVR4GcfD8+kSe36zZvXEC9h3xvPDtIopF/T/5AhTA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
-  gsap@3.13.0:
-    resolution: {integrity: sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==}
+  gsap@3.14.2:
+    resolution: {integrity: sha512-P8/mMxVLU7o4+55+1TCnQrPmgjPKnwkzkXOK1asnR9Jg2lna4tEY5qBJjMmAaOBDDZWtlRjBXjLa0w53G/uBLA==}
 
   gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
@@ -8550,8 +8540,8 @@ packages:
   leac@0.6.0:
     resolution: {integrity: sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg==}
 
-  lenis@1.3.15:
-    resolution: {integrity: sha512-zSYOFs0ydafX70uygFoipaHHQouPeE4DpZZhdOUyLJxVf2ZVvBCBBaolDDaQztTRsa6+stBlxq2GmFGJPAVryQ==}
+  lenis@1.3.17:
+    resolution: {integrity: sha512-k9T9rgcxne49ggJOvXCraWn5dt7u2mO+BNkhyu6yxuEnm9c092kAW5Bus5SO211zUvx7aCCEtzy9UWr0RB+oJw==}
     peerDependencies:
       '@nuxt/kit': '>=3.0.0'
       react: '>=17.0.0'
@@ -10320,6 +10310,7 @@ packages:
   sanity-plugin-singleton-tools@1.1.0:
     resolution: {integrity: sha512-Z/AXCVBJ/Gc8RgwKX2GzfaKMSWJ7d9ycWfNSFTduhiBMFyJdjwLIK2Zh6eyl3Ctl7y6LiIEwJ/4VD9rx3F2WAw==}
     engines: {node: '>=14'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:
       react: ^18
       sanity: ^3
@@ -15915,9 +15906,9 @@ snapshots:
       marked: 15.0.12
       react: 19.2.3
 
-  '@react-email/preview-server@5.1.0(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@react-email/preview-server@5.1.0(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      next: 16.0.10(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      next: 16.0.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -19351,19 +19342,11 @@ snapshots:
       '@next/eslint-plugin-next': 16.1.1
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-<<<<<<< HEAD
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.2(jiti@2.6.1))
-=======
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1))
-      eslint-plugin-jsx-a11y: 6.10.2(eslint@9.38.0(jiti@2.6.1))
-      eslint-plugin-react: 7.37.5(eslint@9.38.0(jiti@2.6.1))
-      eslint-plugin-react-hooks: 7.0.0(eslint@9.38.0(jiti@2.6.1))
->>>>>>> d495f73c (La til TextTyped komponent)
       globals: 16.4.0
       typescript-eslint: 8.50.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
     optionalDependencies:
@@ -19397,11 +19380,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-<<<<<<< HEAD
       eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
-=======
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1))
->>>>>>> d495f73c (La til TextTyped komponent)
     transitivePeerDependencies:
       - supports-color
 
@@ -19429,11 +19408,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-<<<<<<< HEAD
   eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1)):
-=======
-  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1)))(eslint@9.38.0(jiti@2.6.1)):
->>>>>>> d495f73c (La til TextTyped komponent)
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -19990,7 +19965,7 @@ snapshots:
 
   groq@5.1.0: {}
 
-  gsap@3.13.0: {}
+  gsap@3.14.2: {}
 
   gunzip-maybe@1.4.2:
     dependencies:
@@ -20746,9 +20721,9 @@ snapshots:
 
   leac@0.6.0: {}
 
-  lenis@1.3.15(react@19.2.0):
+  lenis@1.3.17(react@19.2.3):
     optionalDependencies:
-      react: 19.2.0
+      react: 19.2.3
 
   leven@3.1.0: {}
 
@@ -21561,7 +21536,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  next@16.0.10(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  next@16.0.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
