@@ -275,7 +275,7 @@ function BestComment() {
       <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#1c1c1c] p-10">
         <div className="z-10 flex max-w-4xl flex-col items-center text-center">
           <p className="mb-14 text-[10px] font-bold tracking-[0.7em] text-white/30 uppercase">
-            Ufiltrert fra diskusjonen
+            Kommentaren med flest replies
           </p>
 
           <div className="relative px-8">
@@ -295,7 +295,7 @@ function BestComment() {
           <div className="mt-20 flex items-center gap-6">
             <div className="h-[1px] w-6 bg-white/10" />
             <p className="font-mono text-[11px] tracking-[0.2em] text-white/40">
-              {BEST_COMMENT.replies} folk hadde mye på hjertet
+              {BEST_COMMENT.replies} folk var spesielt interessert i denne kommentaren
             </p>
             <div className="h-[1px] w-6 bg-white/10" />
           </div>
