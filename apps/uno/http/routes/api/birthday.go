@@ -35,6 +35,7 @@ func (b *birthdays) BirthdaysTodayHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
+	// Convert to DTO
 	names := []string{}
 	for _, user := range users {
 		if user.Name != nil {

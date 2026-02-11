@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
 )
@@ -36,5 +37,9 @@ func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
-	return ctx.JSON(shoppingList)
+
+	// Convert to DTO
+	response := dto.ShoppingListFromDomainList(shoppingList)
+
+	return ctx.JSON(response)
 }

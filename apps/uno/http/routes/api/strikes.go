@@ -5,6 +5,7 @@ import (
 	_ "uno/domain/model" // swagger
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
 )
@@ -54,7 +55,11 @@ func (s *strikes) GetUsersWithStrikesHandler(ctx *handler.Context) error {
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
-	return ctx.JSON(users)
+
+	// Convert to DTO
+	response := dto.UsersWithStrikesFromDomainList(users)
+
+	return ctx.JSON(response)
 }
 
 // GetBannedUsers returns all banned users
@@ -70,5 +75,9 @@ func (s *strikes) GetBannedUsers(ctx *handler.Context) error {
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
-	return ctx.JSON(users)
+
+	// Convert to DTO
+	response := dto.BannedUsersFromDomainList(users)
+
+	return ctx.JSON(response)
 }
