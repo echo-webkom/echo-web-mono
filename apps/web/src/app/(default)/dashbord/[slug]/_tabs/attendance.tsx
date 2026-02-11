@@ -14,15 +14,7 @@ export const AttendanceTab = ({ happening, registrations }: RegistrationsTabProp
   return (
     <div>
       <h1>qr scanner</h1>
-      <QrScanner />
-      <RegistrationTable
-        questions={happening.questions}
-        registrations={registrations}
-        studentGroups={groups}
-        slug={happening.slug}
-        isBedpres={happening.type === "bedpres"}
-        happeningDate={happening.date}
-      />
+      <QrScanner registrations={registrations} happening={happening} studentGroups={groups} />
     </div>
   );
 };

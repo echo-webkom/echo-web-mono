@@ -21,6 +21,7 @@ type RegistrationTableProps = {
   questions: Array<Question>;
   isBedpres: boolean;
   happeningDate: Date | null;
+  hideHeader?: boolean;
 };
 
 export const RegistrationTable = ({
@@ -28,6 +29,7 @@ export const RegistrationTable = ({
   studentGroups,
   isBedpres,
   happeningDate,
+  hideHeader = false,
 }: RegistrationTableProps) => {
   const [showIndex, setShowIndex] = useState(false);
   const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
