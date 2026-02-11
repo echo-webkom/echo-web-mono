@@ -1,7 +1,10 @@
-FROM node:22.21.1-alpine AS base
+FROM node:24.13.0-alpine AS base
 
 RUN apk update && apk add --no-cache libc6-compat
-RUN npm install -g turbo@2.5.8 pnpm@10.20.0
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN pnpm add -g turbo@2.5.8
 
 FROM base AS builder
 
@@ -26,13 +29,13 @@ COPY --from=builder /app/out/full/ .
 # Build with cache mount (only web, skip dependencies)
 ENV NEXT_OUTPUT=standalone
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm turbo build --filter=@echo-webkom/web
+    pnpm turbo build --filter=@echo-webkom/web --only
 
-FROM base AS runner
+FROM node:24.13.0-alpine AS runner
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 USER nextjs
 
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
