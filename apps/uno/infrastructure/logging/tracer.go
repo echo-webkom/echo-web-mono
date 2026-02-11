@@ -29,6 +29,7 @@ func (h *TraceHandler) Enabled(ctx context.Context, level slog.Level) bool {
 
 func (h *TraceHandler) Handle(ctx context.Context, r slog.Record) error {
 	if tracer, ok := ctx.Value(tracer{}).(tracer); ok {
+		r = r.Clone()
 		r.AddAttrs(
 			slog.String("trace_id", tracer.traceId),
 			slog.String("span_id", tracer.spanId),
