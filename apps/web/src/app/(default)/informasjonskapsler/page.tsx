@@ -11,7 +11,6 @@ Vi bruker ingen informasjonskapsler for å spore deg eller lagre personlig infor
 
 Informasjonskapslene vi bruker er:
 
-- \`cookie-banner\` - brukes til å lagre om du har lukket cookie-banneret eller ikke. (Ikke i bruk)
 - \`session-token\` - brukes til å lagre innloggingsstatusen din.
 `;
 
