@@ -54,12 +54,16 @@ export const getRegistrationCountByHappeningIds = async (happeningIds: Array<str
     return [];
   }
 
-  return await apiServer.get(`happenings/registrations/count?id=${happeningIds.join("&id=")}`).json<
-    Array<{
-      happeningId: string;
-      waiting: number;
-      registered: number;
-      max: number | null;
-    }>
-  >();
+  const json = await apiServer
+    .get(`happenings/registrations/count?id=${happeningIds.join("&id=")}`)
+    .json<
+      Array<{
+        happeningId: string;
+        waiting: number;
+        registered: number;
+        max: number | null;
+      }>
+    >();
+
+  return json;
 };
