@@ -164,7 +164,9 @@ func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) er
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	return ctx.JSON(counts)
+	// Convert domain models to DTOs
+	response := dto.GroupedRegistrationCountFromDomain(counts)
+	return ctx.JSON(response)
 }
 
 // GetHappeningRegistrations returns all registrations for a happening

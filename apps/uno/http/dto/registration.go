@@ -96,6 +96,18 @@ type GroupedRegistration struct {
 	Max        *int `json:"max"`
 }
 
+func GroupedRegistrationCountFromDomain(grs []model.GroupedRegistrationCount) []GroupedRegistration {
+	dtos := make([]GroupedRegistration, len(grs))
+	for i, gr := range grs {
+		dtos[i] = GroupedRegistration{
+			Waiting:    gr.Waiting,
+			Registered: gr.Registered,
+			Max:        gr.Max,
+		}
+	}
+	return dtos
+}
+
 // RegistrationStatusResponse represents a simple registration status check response.
 type RegistrationStatusResponse struct {
 	IsRegistered bool   `json:"isRegistered"`
