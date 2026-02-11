@@ -164,6 +164,8 @@ definitions:
     type: object
   uno_http_dto.GroupedRegistration:
     properties:
+      happeningId:
+        type: string
       max:
         type: integer
       registered:

@@ -1342,6 +1342,9 @@ const docTemplate = `{
         "uno_http_dto.GroupedRegistration": {
             "type": "object",
             "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
                 "max": {
                     "type": "integer"
                 },
