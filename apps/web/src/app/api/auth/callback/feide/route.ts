@@ -169,7 +169,7 @@ export async function GET(request: Request) {
 
   await db
     .update(users)
-    .set({ lastSignInAt: new Date() })
+    .set({ lastSignInAt: new Date(), name: userInfo.name, email: userInfo.email })
     .where(eq(users.id, existingAccount.userId));
 
   const sessionCookie = await createSessionCookie(existingSession.sessionToken);
