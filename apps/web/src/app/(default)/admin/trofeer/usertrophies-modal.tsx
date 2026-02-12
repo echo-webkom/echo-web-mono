@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { CheckIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,37 +14,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { type AllUsers } from "../brukere/page";
 
-export const UserTrophiesModal = () => {
-  const users = [
-    { id: 1, name: "j" },
-    { id: 2, name: "o" },
-  ];
+export const UserTrophiesModal = ({ users }: { users: AllUsers }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button
-          className="border-none bg-gray-300 text-black hover:cursor-pointer hover:bg-gray-400"
-          size="sm"
-        >
-          Rediger personer
-        </Button>
+      <DialogTrigger className="hover:bg-muted rounded-lg border-2 px-2 py-1">
+        Rediger personer
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Personer</DialogTitle>
         </DialogHeader>
+
         <DialogBody>
-          <div>
-            {users.length === 0 ? (
-              <p className="text-center text-xl">Ingen medlemmer</p>
-            ) : (
-              <ul>
-                {users.map((user) => (
-                  <li key={user.id}>{user.name}</li>
-                ))}
-              </ul>
-            )}
+          <div className="mb-4 flex flex-col gap-2">
+            <Label>Søk:</Label>
+            <Input
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
+              placeholder="Søk..."
+            />
+          </div>
+          <div className="space-y-2">
+            {users.map((user) => (
+              <div key={user.id}>
+                <LineForGivingTrophyToUser user={user} />
+              </div>
+            ))}
           </div>
         </DialogBody>
         <DialogFooter>
@@ -54,5 +58,26 @@ export const UserTrophiesModal = () => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+};
+
+type User = AllUsers[number];
+
+const LineForGivingTrophyToUser = ({ user }: { user: User }) => {
+  return (
+    <div key={user.id} className="flex justify-between">
+      <p>{user.name}</p>
+      <GiveTrophyButton hasTrophy={false} />
+    </div>
+  );
+};
+
+const GiveTrophyButton = ({ hasTrophy }: { hasTrophy: boolean }) => {
+  return (
+    <div
+      className={`${hasTrophy ? "bg-green-500" : "bg-primary"} px-auto flex w-fit justify-center rounded-md px-4 py-1`}
+    >
+      {hasTrophy ? <CheckIcon /> : <p>Gi</p>}
+    </div>
   );
 };
