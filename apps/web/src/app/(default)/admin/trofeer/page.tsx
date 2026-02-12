@@ -5,15 +5,16 @@ import { urlFor } from "@echo-webkom/sanity";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { Button } from "@/components/ui/button";
+import { getAllUsers } from "@/data/users/queries";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
 import { fetchAllTrophies } from "@/sanity/trophies";
 import { UserTrophiesModal } from "./usertrophies-modal";
 
-export default async function WhitelistPage() {
+export default async function TrophyPage() {
   await ensureWebkomOrHovedstyret();
 
   const trophies = await fetchAllTrophies();
+  const [users] = await Promise.all([getAllUsers()]);
 
   if (!trophies) {
     return <p>Kunne ikke hente troféer.</p>;
@@ -38,7 +39,7 @@ export default async function WhitelistPage() {
                       width={150}
                       height={150}
                     />
-                    <UserTrophiesModal />
+                    <UserTrophiesModal users={users} />
                   </div>
                 ))}
               </div>
