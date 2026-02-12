@@ -998,6 +998,31 @@ const docTemplate = `{
                 }
             }
         },
+        "/weather/yr": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "weather"
+                ],
+                "summary": "Gets the current weather from yr.no",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.WeatherResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/whitelist": {
             "get": {
                 "security": [
@@ -1584,6 +1609,20 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.WeatherResponse": {
+            "type": "object",
+            "properties": {
+                "condition": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "number"
+                },
+                "wind_speed": {
+                    "type": "number"
                 }
             }
         },
