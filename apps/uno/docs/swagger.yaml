@@ -155,6 +155,44 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.DatabrusMatchDTO:
+    properties:
+      away_score:
+        type: string
+      away_team:
+        type: string
+      date_time:
+        type: string
+      home_score:
+        type: string
+      home_team:
+        type: string
+      id:
+        type: string
+    type: object
+  uno_http_dto.DatabrusTableRow:
+    properties:
+      draws:
+        type: integer
+      goal_difference:
+        type: integer
+      goals_against:
+        type: integer
+      goals_for:
+        type: integer
+      losses:
+        type: integer
+      matches_played:
+        type: integer
+      points:
+        type: integer
+      position:
+        type: integer
+      team:
+        type: string
+      wins:
+        type: integer
+    type: object
   uno_http_dto.DegreeResponse:
     properties:
       id:
@@ -513,6 +551,42 @@ paths:
       summary: React to a comment
       tags:
       - comments
+  /databrus/matches:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.DatabrusMatchDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get upcoming matches from Databrus
+      tags:
+      - databrus
+  /databrus/table:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.DatabrusTableRow'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get current table from Databrus
+      tags:
+      - databrus
   /degrees:
     get:
       produces:

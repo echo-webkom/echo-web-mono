@@ -271,6 +271,62 @@
                 }
             }
         },
+        "/databrus/matches": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "databrus"
+                ],
+                "summary": "Get upcoming matches from Databrus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.DatabrusMatchDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/databrus/table": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "databrus"
+                ],
+                "summary": "Get current table from Databrus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.DatabrusTableRow"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/degrees": {
             "get": {
                 "produces": [
@@ -1343,6 +1399,64 @@
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.DatabrusMatchDTO": {
+            "type": "object",
+            "properties": {
+                "away_score": {
+                    "type": "string"
+                },
+                "away_team": {
+                    "type": "string"
+                },
+                "date_time": {
+                    "type": "string"
+                },
+                "home_score": {
+                    "type": "string"
+                },
+                "home_team": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.DatabrusTableRow": {
+            "type": "object",
+            "properties": {
+                "draws": {
+                    "type": "integer"
+                },
+                "goal_difference": {
+                    "type": "integer"
+                },
+                "goals_against": {
+                    "type": "integer"
+                },
+                "goals_for": {
+                    "type": "integer"
+                },
+                "losses": {
+                    "type": "integer"
+                },
+                "matches_played": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "integer"
+                },
+                "position": {
+                    "type": "integer"
+                },
+                "team": {
+                    "type": "string"
+                },
+                "wins": {
+                    "type": "integer"
                 }
             }
         },

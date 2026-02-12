@@ -68,6 +68,7 @@ func RunApi() {
 	commentRepo := postgres.NewCommentRepo(db, logger)
 	registrationRepo := postgres.NewRegistrationRepo(db, logger)
 	weatherRepo := external.NewYrRepo(logger)
+	databrusRepo := external.NewDatabrusRepo(logger)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -81,6 +82,7 @@ func RunApi() {
 	whitelistService := service.NewWhitelistService(whitelistRepo)
 	commentService := service.NewCommentService(commentRepo)
 	weatherService := service.NewWeatherService(weatherRepo)
+	databrusService := service.NewDatabrusService(logger, databrusRepo)
 
 	go http.RunServer(
 		notif,
@@ -97,6 +99,7 @@ func RunApi() {
 		whitelistService,
 		commentService,
 		weatherService,
+		databrusService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
