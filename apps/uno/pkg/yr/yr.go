@@ -55,7 +55,7 @@ func (s *Client) GetCurrentWeather(ctx context.Context, lat float64, lon float64
 		return CompactResponse{}, fmt.Errorf("%s: %w", ErrFailedToFetchData, err)
 	}
 
-	return jsonBody, nil
+	return jsonBody, err
 }
 
 type CompactResponse struct {
