@@ -11,6 +11,11 @@ import (
 	"github.com/jesperkha/notifier"
 )
 
+// TODO: raffle test: create a registration and poll its state for 15 seconds for a 10 second window
+// TODO: add ID field to all Registration models (dto, model)
+// TODO: make regRepo.BatchUpdateStatus() and insert the pending regs immediately as pending and batch update later
+// TODO: make /happenings/{id}/registrations/{id}/status endpoint
+
 const (
 	// How long the raffle period lasts at the start of a bedpres registration period
 	RAFFLE_DURATION = time.Minute * 1
