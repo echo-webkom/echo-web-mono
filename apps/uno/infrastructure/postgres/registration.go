@@ -55,7 +55,6 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 // An error here could be because of an issue with locking the table or a DB error.
 func (r *RegistrationRepo) CreateRegistration(
 	ctx context.Context,
-
 	userID, happeningID string,
 	spotRanges []model.SpotRange,
 	hostGroups []string,
@@ -182,6 +181,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		return nil, false, sql.ErrNoRows
 	}
 
+	// TODO: rar import-cycle hvor service bruker dette repo, men dette repo bruker service
 	isRegistered := service.IsAvailableSpot(
 		spotRanges,
 		existingRegs,
