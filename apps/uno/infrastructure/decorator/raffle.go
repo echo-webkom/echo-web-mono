@@ -58,12 +58,12 @@ func (r *RaffleDecorator) start(notif *notifier.Notifier) {
 func (r *RaffleDecorator) CreateRegistration(
 	ctx context.Context,
 	userID string,
-	happeningID string,
+	happening model.Happening,
 	spotRanges []model.SpotRange,
 	hostGroups []string,
 	canSkipSpotRange bool,
 ) (*model.Registration, bool, error) {
-	return r.repo.CreateRegistration(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+	return r.repo.CreateRegistration(ctx, userID, happening, spotRanges, hostGroups, canSkipSpotRange)
 }
 
 // GetByUserAndHappening implements port.RegistrationRepo.
