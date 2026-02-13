@@ -323,6 +323,15 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.WeatherResponse:
+    properties:
+      condition:
+        type: string
+      temperature:
+        type: number
+      wind_speed:
+        type: number
+    type: object
   uno_http_dto.WhitelistResponse:
     properties:
       email:
@@ -959,6 +968,22 @@ paths:
       summary: Gets users with strikes and bans
       tags:
       - strikes
+  /weather/yr:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.WeatherResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets the current weather from yr.no
+      tags:
+      - weather
   /whitelist:
     get:
       produces:

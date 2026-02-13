@@ -8,6 +8,7 @@ import (
 	"uno/config"
 	"uno/domain/service"
 	"uno/http"
+	"uno/infrastructure/external"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -66,6 +67,7 @@ func RunApi() {
 	whitelistRepo := postgres.NewWhitelistRepo(db, logger)
 	commentRepo := postgres.NewCommentRepo(db, logger)
 	registrationRepo := postgres.NewRegistrationRepo(db, logger)
+	weatherRepo := external.NewYrRepo(logger)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -78,6 +80,7 @@ func RunApi() {
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)
 	commentService := service.NewCommentService(commentRepo)
+	weatherService := service.NewWeatherService(weatherRepo)
 
 	go http.RunServer(
 		notif,
@@ -93,6 +96,7 @@ func RunApi() {
 		accessRequestService,
 		whitelistService,
 		commentService,
+		weatherService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
