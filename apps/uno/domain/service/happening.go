@@ -371,7 +371,7 @@ func (hs *HappeningService) Register(
 	_, isWaitlisted, err := hs.registrationRepo.CreateRegistration(
 		ctx,
 		userID,
-		happeningID,
+		happening,
 		spotRanges,
 		hostGroups,
 		canSkipSpotRange,

@@ -9,7 +9,8 @@ type RegistrationRepo interface {
 	GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error)
 	CreateRegistration(
 		ctx context.Context,
-		userID, happeningID string,
+		userID string,
+		happening model.Happening,
 		spotRanges []model.SpotRange,
 		hostGroups []string,
 		canSkipSpotRange bool,
