@@ -8,6 +8,7 @@ import (
 	"uno/config"
 	"uno/domain/service"
 	"uno/http"
+	"uno/infrastructure/decorator"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -66,6 +67,9 @@ func RunApi() {
 	whitelistRepo := postgres.NewWhitelistRepo(db, logger)
 	commentRepo := postgres.NewCommentRepo(db, logger)
 	registrationRepo := postgres.NewRegistrationRepo(db, logger)
+
+	// Initialize decorators
+	registrationRepo = decorator.NewRaffleDecorator(registrationRepo, notif)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
