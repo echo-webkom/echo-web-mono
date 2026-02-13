@@ -27,3 +27,7 @@ func (s *UserService) GetUsersWithBirthdayToday(ctx context.Context) ([]model.Us
 	norway, _ := time.LoadLocation("Europe/Oslo")
 	return s.userRepo.GetUsersWithBirthday(ctx, time.Now().In(norway))
 }
+
+func (s *UserService) ResetUserYears(ctx context.Context) (int64, error) {
+	return s.userRepo.ResetUserYears(ctx)
+}
