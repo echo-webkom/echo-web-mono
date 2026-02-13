@@ -55,14 +55,15 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 // An error here could be because of an issue with locking the table or a DB error.
 func (r *RegistrationRepo) CreateRegistration(
 	ctx context.Context,
-	userID, happeningID string,
+	userID string,
+	happening model.Happening,
 	spotRanges []model.SpotRange,
 	hostGroups []string,
 	canSkipSpotRange bool,
 ) (*model.Registration, bool, error) {
 	r.logger.Info(ctx, "creating registration",
 		"user_id", userID,
-		"happening_id", happeningID,
+		"happening_id", happening.ID,
 	)
 
 	tx, err := r.db.BeginTxx(ctx, &sql.TxOptions{
@@ -93,11 +94,11 @@ func (r *RegistrationRepo) CreateRegistration(
 		WHERE happening_id = $1
 			AND (status = 'registered' OR status = 'waiting')
 	`
-	err = tx.SelectContext(ctx, &existingRegsDB, query, happeningID)
+	err = tx.SelectContext(ctx, &existingRegsDB, query, happening.ID)
 	if err != nil {
 		r.logger.Error(ctx, "failed to get existing registrations for happening",
 			"error", err,
-			"happening_id", happeningID,
+			"happening_id", happening.ID,
 		)
 		return nil, false, err
 	}
@@ -209,12 +210,12 @@ func (r *RegistrationRepo) CreateRegistration(
 		RETURNING user_id, happening_id, status, unregister_reason,
 			created_at, prev_status, changed_at, changed_by
 	`
-	err = tx.GetContext(ctx, &registrationDB, upsertQuery, userID, happeningID, string(status))
+	err = tx.GetContext(ctx, &registrationDB, upsertQuery, userID, happening.ID, string(status))
 	if err != nil {
 		r.logger.Error(ctx, "failed to upsert registration",
 			"error", err,
 			"user_id", userID,
-			"happening_id", happeningID,
+			"happening_id", happening.ID,
 		)
 		return nil, false, err
 	}
