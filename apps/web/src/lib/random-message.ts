@@ -73,6 +73,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "New week, new me?", when: (date) => isMonday(date) },
   { text: "JavaScript™", link: "https://javascript.tm" },
   { text: "Norge skal til VM 🇳🇴" },
+  { text: "Natürlich" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
