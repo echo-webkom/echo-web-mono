@@ -13,18 +13,15 @@ import (
 )
 
 type TelemetryConfig struct {
-	ServiceName    string
-	ServiceVersion string
-	Environment    string
-	Enabled        bool
+	ServiceName string
+	Environment string
+	Enabled     bool
 }
 
 func New(cfg TelemetryConfig) (func(context.Context) error, error) {
-	// Create resource with service information
 	res, err := resource.New(context.Background(),
 		resource.WithAttributes(
 			semconv.ServiceName(cfg.ServiceName),
-			semconv.ServiceVersion(cfg.ServiceVersion),
 			semconv.DeploymentEnvironment(cfg.Environment),
 		),
 	)
