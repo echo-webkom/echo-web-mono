@@ -73,9 +73,6 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
   - Uses App Router with route groups: `(default)`, `(redirects)`, `(wrapped)`
   - Server Actions organized in `_actions` directories co-located with routes
   - Authentication handled via custom session management (`src/auth/session.ts`) with JWT cookies and Feide integration
-- **api** - Hono.js backend API built with Node.js and esbuild
-  - Lightweight REST API for specific endpoints
-  - Uses shared database schemas from `@echo-webkom/db`
 - **uno** - Go backend API using Chi router with clean architecture
   - Hexagonal architecture with domain/ports/adapters pattern
   - PostgreSQL database with sqlx
@@ -105,7 +102,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 - **Monorepo**: Managed with Turbo, pnpm workspaces
 - **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS
-- **Backend**: Hono.js (Node.js)
+- **Backend**: Go (Chi router)
 - **Database**: PostgreSQL with Drizzle ORM
 - **CMS**: Sanity.io
 - **Auth**: Custom session-based authentication with Feide (Norwegian academic federation) OAuth integration
@@ -128,7 +125,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 ### Database Access
 
-- Web app and API share database schemas from `@echo-webkom/db`
+- Web app and Uno share database schemas from `@echo-webkom/db`
 - Use Drizzle's relational query API: `db.query.<table>.findFirst/findMany`
 - Import from `@echo-webkom/db/serverless` in serverless environments (Next.js, Vercel)
 - Import from `@echo-webkom/db` for standard Node.js environments

@@ -15,7 +15,7 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 | -------- | --------------------------------- | -------------------- | ---- |
 | **web**  | Hovednettsiden til echo           | Next.js 16, React 19 | 3000 |
 | **cms**  | Sanity Studio for innholdsstyring | Sanity.io            | 3333 |
-| **api**  | Backend API for webapplikasjoner  | Hono.js, Node.js     | 8000 |
+| **uno**  | Backend API for webapplikasjoner  | Go, Chi              | 8000 |
 | **docs** | Denne dokumentasjonssiden         | Astro, Starlight     | 4321 |
 
 ### Delte pakker (`/packages`)
@@ -37,9 +37,10 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 
 ### Backend
 
-- **Hono** (Node.js) for hovedbackend
+- **Uno** (Go + Chi) for hovedbackend
 - **PostgreSQL** database
-- **Drizzle ORM** for database operasjoner
+- **sqlx** for databaseoperasjoner i Uno
+- **Drizzle ORM** i TypeScript-delene av monorepoet
 
 ### CMS og innhold
 

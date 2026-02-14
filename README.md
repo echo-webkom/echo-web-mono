@@ -35,7 +35,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ### Applikasjoner (`/apps`)
 
 - **web** - Hovednettsiden bygget med Next.js 16, React 19, Tailwind CSS og NextAuth.js
-- **api** - Backend API bygget med Hono.js, Node.js og esbuild
+- **uno** - Backend API bygget i Go med Chi-router og hexagonal arkitektur
 - **cms** - Sanity Studio for innholdsadministrasjon
 
 ### Delte pakker (`/packages`)
@@ -94,7 +94,7 @@ Sidene som starter er:
 
 - [http://localhost:3000](http://localhost:3000) for nettsiden
 - [http://localhost:3333](http://localhost:3333) for Sanity Studio
-- [http://localhost:8000](http://localhost:8000) for API-et våres
+- [http://localhost:8000](http://localhost:8000) for `uno` API-et vårt
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 > NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
