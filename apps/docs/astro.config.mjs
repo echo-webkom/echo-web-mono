@@ -34,6 +34,10 @@ export default defineConfig({
               label: "echo-web-mono",
               items: [
                 { label: "Oversikt", slug: "tjenester/echo-web-mono/oversikt" },
+                {
+                  label: "Ubiquitous Language",
+                  slug: "tjenester/echo-web-mono/ubiquitous-language",
+                },
                 { label: "Web", slug: "tjenester/echo-web-mono/web" },
                 { label: "CMS", slug: "tjenester/echo-web-mono/cms" },
                 {
