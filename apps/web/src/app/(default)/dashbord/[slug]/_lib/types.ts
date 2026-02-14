@@ -1,23 +1,3 @@
-import {
-  type Answer,
-  type Group,
-  type Question,
-  type Registration,
-  type User,
-} from "@echo-webkom/db/schemas";
+import { type getRegistrations } from "./get-registrations";
 
-type Membership = {
-  group: Group | null;
-};
-
-export type RegistrationWithUser = Omit<Registration, "userId"> & {
-  user: User & {
-    memberships: Array<Membership>;
-  };
-  changedByUser: User | null;
-  answers?: Array<
-    Answer & {
-      question: Question;
-    }
-  >;
-};
+export type RegistrationWithUser = Awaited<ReturnType<typeof getRegistrations>>[0];

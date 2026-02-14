@@ -173,7 +173,9 @@ export const RegistrationRow = ({
                   {registration.answers?.map((answer) => {
                     const ans = Array.isArray(answer.answer?.answer)
                       ? answer.answer.answer.join(", ")
-                      : answer.answer?.answer;
+                      : typeof answer.answer === "string"
+                        ? answer.answer
+                        : null;
 
                     return (
                       <span key={answer.questionId}>
@@ -181,7 +183,7 @@ export const RegistrationRow = ({
                         <span className="text-muted-foreground font-semibold">
                           {answer.question.title}:
                         </span>{" "}
-                        {ans}
+                        <span className="text-muted-foreground">{ans}</span>
                       </span>
                     );
                   })}
