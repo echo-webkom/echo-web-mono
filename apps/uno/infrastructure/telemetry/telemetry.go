@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -21,15 +20,6 @@ type TelemetryConfig struct {
 }
 
 func New(cfg TelemetryConfig) (func(context.Context) error, error) {
-	if !cfg.Enabled {
-		return func(context.Context) error { return nil }, nil
-	}
-
-	exporter, err := otlptrace.New(context.Background(), otlptracehttp.NewClient())
-	if err != nil {
-		return nil, err
-	}
-
 	// Create resource with service information
 	res, err := resource.New(context.Background(),
 		resource.WithAttributes(
@@ -39,14 +29,23 @@ func New(cfg TelemetryConfig) (func(context.Context) error, error) {
 		),
 	)
 	if err != nil {
-		return nil, err
+		return func(context.Context) error { return nil }, err
 	}
 
-	tp := sdktrace.NewTracerProvider(
+	opts := []sdktrace.TracerProviderOption{
 		sdktrace.WithSampler(sdktrace.AlwaysSample()),
-		sdktrace.WithBatcher(exporter),
 		sdktrace.WithResource(res),
-	)
+	}
+
+	if cfg.Enabled {
+		exporter, err := otlptracehttp.New(context.Background())
+		if err != nil {
+			return func(context.Context) error { return nil }, err
+		}
+		opts = append(opts, sdktrace.WithBatcher(exporter))
+	}
+
+	tp := sdktrace.NewTracerProvider(opts...)
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(
 		propagation.NewCompositeTextMapPropagator(
@@ -55,7 +54,7 @@ func New(cfg TelemetryConfig) (func(context.Context) error, error) {
 		),
 	)
 
-	return tp.Shutdown, err
+	return tp.Shutdown, nil
 }
 
 func Tracer(name string) trace.Tracer {
