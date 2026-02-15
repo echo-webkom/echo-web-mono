@@ -3,12 +3,14 @@ module uno
 go 1.25
 
 require (
+	github.com/PuerkitoBio/goquery v1.11.0
 	github.com/air-verse/air v1.64.5
 	github.com/brianvoe/gofakeit/v7 v7.8.2
 	github.com/echo-webkom/cenv v1.16.0
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-chi/cors v1.2.2
 	github.com/go-chi/httplog/v3 v3.3.0
+	github.com/gocolly/colly/v2 v2.3.0
 	github.com/jesperkha/notifier v1.0.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
@@ -33,6 +35,10 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
+	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/antchfx/htmlquery v1.3.5 // indirect
+	github.com/antchfx/xmlquery v1.5.0 // indirect
+	github.com/antchfx/xpath v1.3.5 // indirect
 	github.com/bep/godartsass/v2 v2.5.0 // indirect
 	github.com/bep/golibsass v1.2.0 // indirect
 	github.com/bits-and-blooms/bitset v1.24.4 // indirect
@@ -77,6 +83,8 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/gohugoio/hashstructure v0.6.0 // indirect
 	github.com/gohugoio/hugo v0.155.2 // indirect
+	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
@@ -84,6 +92,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.7.8 // indirect
 	github.com/jesperkha/gokenizer v1.1.1 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
+	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
 	github.com/knadh/koanf/parsers/yaml v1.1.0 // indirect
@@ -107,6 +116,7 @@ require (
 	github.com/moby/sys/userns v0.1.0 // indirect
 	github.com/moby/term v0.5.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/nlnwa/whatwg-url v0.6.2 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
@@ -116,6 +126,7 @@ require (
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
 	github.com/shirou/gopsutil/v4 v4.25.6 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/afero v1.15.0 // indirect
@@ -125,6 +136,7 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
 	github.com/tdewolff/parse/v2 v2.8.5 // indirect
+	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2 // indirect
@@ -149,6 +161,7 @@ require (
 	golang.org/x/term v0.39.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
+	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250825161204-c5933d9347a5 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251029180050-ab9386a59fda // indirect
 	google.golang.org/grpc v1.76.0 // indirect

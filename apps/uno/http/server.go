@@ -45,6 +45,7 @@ func RunServer(
 	whitelistService *service.WhitelistService,
 	commentService *service.CommentService,
 	weatherService *service.WeatherService,
+	databrusService *service.DatabrusService,
 ) {
 	r := router.New(logger, handler.Logger(logger), router.Telemetry(config.ServiceName))
 
@@ -83,6 +84,9 @@ func RunServer(
 
 	// Weather routes
 	r.Mount("/weather", api.NewWeatherMux(logger, weatherService))
+
+	// Databrus routes
+	r.Mount("/databrus", api.NewDatabrusMux(logger, databrusService))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

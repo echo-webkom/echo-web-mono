@@ -2,43 +2,39 @@ package service
 
 import (
 	"context"
-	"sync"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/cache"
 )
 
-const weatherCacheTTL = 30 * time.Minute
+const (
+	weatherCacheTTL = 15 * time.Minute
+	cacheKey        = "weather"
+)
 
 type WeatherService struct {
 	weatherRepo port.WeatherRepo
 
-	mu              sync.RWMutex
-	cachedWeather   *model.Weather
-	cacheExpiration time.Time
+	weatherCache port.Cache[model.Weather]
 }
 
 func NewWeatherService(weatherRepo port.WeatherRepo) *WeatherService {
-	return &WeatherService{weatherRepo: weatherRepo}
+	weatherCache := cache.NewInMemoryCache[model.Weather]()
+	return &WeatherService{weatherRepo: weatherRepo, weatherCache: weatherCache}
 }
 
 func (s *WeatherService) GetCurrentWeather(ctx context.Context) (model.Weather, error) {
-	s.mu.RLock()
-	if s.cachedWeather != nil && time.Now().Before(s.cacheExpiration) {
-		defer s.mu.RUnlock()
-		return *s.cachedWeather, nil
+	weather, ok := s.weatherCache.Get(cacheKey)
+	if ok {
+		return weather, nil
 	}
-	s.mu.RUnlock()
 
 	weather, err := s.weatherRepo.GetCurrentWeather(ctx)
 	if err != nil {
 		return model.Weather{}, err
 	}
 
-	s.mu.Lock()
-	s.cachedWeather = &weather
-	s.cacheExpiration = time.Now().Add(weatherCacheTTL)
-	s.mu.Unlock()
-
+	s.weatherCache.Set(cacheKey, weather, weatherCacheTTL)
 	return weather, nil
 }
