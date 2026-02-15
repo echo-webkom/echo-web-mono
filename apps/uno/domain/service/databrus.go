@@ -16,8 +16,8 @@ const (
 
 var (
 	upcomingUrl = "https://www.profixio.com/app/bergen-innefotball-5-side-futsal-2025-2026/category/1173209/group/3385837?segment=kommende"
-	// previousUrl = "https://www.profixio.com/app/bergen-innefotball-5-side-futsal-2025-2026/category/1173209/group/3385837?segment=historikk"
-	tableUrl = "https://www.profixio.com/app/bergen-innefotball-5-side-futsal-2025-2026/category/1173209/group/3385837"
+	previousUrl = "https://www.profixio.com/app/bergen-innefotball-5-side-futsal-2025-2026/category/1173209/group/3385837?segment=historikk"
+	tableUrl    = "https://www.profixio.com/app/bergen-innefotball-5-side-futsal-2025-2026/category/1173209/group/3385837"
 )
 
 type DatabrusService struct {
@@ -46,10 +46,18 @@ func (s *DatabrusService) GetMatches(ctx context.Context) ([]model.Match, error)
 		return matches, nil
 	}
 
-	matches, err := s.databrusRepo.GetDatabrusMatches(ctx, upcomingUrl, model.Upcoming)
+	// Get the matches from the repository
+	previousMatches, err := s.databrusRepo.GetDatabrusMatches(ctx, previousUrl, model.Previous)
 	if err != nil {
 		return nil, err
 	}
+	upcomingMatches, err := s.databrusRepo.GetDatabrusMatches(ctx, upcomingUrl, model.Upcoming)
+	if err != nil {
+		return nil, err
+	}
+
+	// Combine previous and upcoming matches
+	matches = append(previousMatches, upcomingMatches...)
 
 	s.matchesCache.Set(matchesKey, matches, cacheTTL)
 	return matches, nil
