@@ -3,6 +3,7 @@ module uno
 go 1.25
 
 require (
+	github.com/PuerkitoBio/goquery v1.11.0
 	github.com/air-verse/air v1.64.5
 	github.com/brianvoe/gofakeit/v7 v7.8.2
 	github.com/echo-webkom/cenv v1.16.0
@@ -33,7 +34,6 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/PuerkitoBio/goquery v1.11.0 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/antchfx/htmlquery v1.3.5 // indirect
