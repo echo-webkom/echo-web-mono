@@ -6,7 +6,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 var (
@@ -100,7 +100,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.C
 
 	for rows.Next() {
 		var (
-			commentDB         models.CommentDB
+			commentDB         record.CommentDB
 			uID               *string
 			uName             *string
 			uImage            *string
@@ -134,7 +134,7 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.C
 		}
 
 		if reactionCommentID != nil && reactionUserID != nil && reactionType != nil && reactionCreatedAt != nil {
-			reactionDB := &models.CommentsReactionDB{
+			reactionDB := &record.CommentsReactionDB{
 				CommentID: *reactionCommentID,
 				UserID:    *reactionUserID,
 				Type:      *reactionType,

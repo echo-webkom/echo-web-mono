@@ -4,7 +4,7 @@ import (
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
+	"uno/http/middleware"
 	"uno/http/router"
 	"uno/http/routes/api"
 
@@ -47,10 +47,10 @@ func RunServer(
 	weatherService *service.WeatherService,
 	databrusService *service.DatabrusService,
 ) {
-	r := router.New(logger, handler.Logger(logger), router.Telemetry(config.ServiceName))
+	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
 
 	// withAuth := router.NewWithAuthHandler(authService)
-	admin := router.NewAdminMiddleware(authService, config.AdminAPIKey)
+	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)

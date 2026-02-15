@@ -5,7 +5,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 
 	"github.com/lib/pq"
 )
@@ -43,11 +43,11 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 	}
 	defer func() { _ = rows.Close() }()
 
-	var users []models.UserWithBanInfo
-	userMap := make(map[string]*models.UserWithBanInfo)
+	var users []record.UserWithBanInfo
+	userMap := make(map[string]*record.UserWithBanInfo)
 
 	for rows.Next() { // Fix n+1 queyr
-		var user models.UserWithBanInfo
+		var user record.UserWithBanInfo
 		err := rows.Scan(
 			&user.ID,
 			&user.Name,
@@ -63,7 +63,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 		if err != nil {
 			return nil, err
 		}
-		user.Dots = []models.DotInfo{}
+		user.Dots = []record.DotInfo{}
 		users = append(users, user)
 		userMap[user.ID] = &users[len(users)-1]
 	}
@@ -88,7 +88,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 		ORDER BY d.user_id, d.created_at DESC;
 	`
 
-	var dots []models.DotInfo
+	var dots []record.DotInfo
 	err = u.db.SelectContext(ctx, &dots, dotQuery, pq.Array(userIDs))
 	if err != nil {
 		u.logger.Error(ctx, "failed to get dots for banned users",
@@ -104,13 +104,13 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 		}
 	}
 
-	return models.UserWithBanInfoList(users), nil
+	return record.UserWithBanInfoList(users), nil
 }
 
 func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
 	u.logger.Info(ctx, "getting users with strikes")
 
-	users := []models.UserWithStrikes{}
+	users := []record.UserWithStrikes{}
 	query := `--sql
 		SELECT
 			u.id, u.name, u.image,
@@ -135,7 +135,7 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStr
 		return nil, err
 	}
 
-	return models.UserWithStrikesList(users), nil
+	return record.UserWithStrikesList(users), nil
 }
 
 func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, error) {
@@ -151,7 +151,7 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, erro
 		FROM "user"
 		WHERE id = $1
 	`
-	var userDB models.UserDB
+	var userDB record.UserDB
 	err := u.db.GetContext(ctx, &userDB, query, id)
 	if err != nil {
 		u.logger.Error(ctx, "failed to get user by ID",
@@ -168,7 +168,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 		"user_ids", ids,
 	)
 
-	var usersDB []models.UserDB
+	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -185,7 +185,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 		)
 		return []model.User{}, err
 	}
-	return models.UserToDomainList(usersDB), nil
+	return record.UserToDomainList(usersDB), nil
 }
 
 func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]model.User, error) {
@@ -193,7 +193,7 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 		"date", date,
 	)
 
-	var usersDB []models.UserDB
+	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -212,7 +212,7 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 		)
 		return []model.User{}, err
 	}
-	return models.UserToDomainList(usersDB), nil
+	return record.UserToDomainList(usersDB), nil
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
@@ -247,7 +247,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
 	`
-	var resultDB models.UserDB
+	var resultDB record.UserDB
 	err := u.db.GetContext(ctx, &resultDB, query,
 		user.Email,
 		user.Name,

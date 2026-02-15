@@ -1,4 +1,4 @@
-package router_test
+package middleware_test
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/handler"
-	"uno/http/router"
+	"uno/http/middleware"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -19,7 +19,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 	authService := &service.AuthService{}
 	adminKey := "some-secret-key"
 
-	middleware := router.NewAdminMiddleware(authService, adminKey)
+	middleware := middleware.NewAdminMiddleware(authService, adminKey)
 
 	h := middleware(handler.Handler(func(ctx *handler.Context) error {
 		return ctx.Ok()
@@ -41,7 +41,7 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 	authService := &service.AuthService{}
 	adminKey := "some-secret-key"
 
-	middleware := router.NewAdminMiddleware(authService, adminKey)
+	middleware := middleware.NewAdminMiddleware(authService, adminKey)
 
 	h := middleware(handler.Handler(func(ctx *handler.Context) error {
 		return ctx.Ok()
@@ -83,7 +83,7 @@ func TestAdminMiddleware_WebkomUser(t *testing.T) {
 		UserID: "user-123",
 	}, nil)
 
-	middleware := router.NewAdminMiddleware(authService, "")
+	middleware := middleware.NewAdminMiddleware(authService, "")
 
 	h := middleware(handler.Handler(func(ctx *handler.Context) error {
 		return ctx.Ok()

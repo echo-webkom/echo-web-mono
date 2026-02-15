@@ -13,7 +13,6 @@ import (
 type Context struct {
 	R *http.Request
 
-	info      *RequestInfo
 	w         http.ResponseWriter
 	status    int
 	err       error
@@ -25,7 +24,6 @@ type Context struct {
 func NewContext(w http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
 		R:         r,
-		info:      &RequestInfo{},
 		w:         w,
 		status:    200,
 		err:       nil,
@@ -171,8 +169,4 @@ func (c *Context) Bytes() int {
 func (c *Context) Next(h http.Handler) error {
 	h.ServeHTTP(c, c.R)
 	return c.GetError()
-}
-
-func (c *Context) Info() *RequestInfo {
-	return c.info
 }

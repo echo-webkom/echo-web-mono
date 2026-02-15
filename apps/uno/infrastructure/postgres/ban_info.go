@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type BanInfoRepo struct {
@@ -39,7 +39,7 @@ func (p *BanInfoRepo) GetBanInfoByUserID(ctx context.Context, userID string) (*m
 		"user_id", userID,
 	)
 
-	var dbModel models.ModBanInfo
+	var dbModel record.ModBanInfo
 	query := `--sql
 		SELECT
 			id, user_id, banned_by, reason, created_at, expires_at
@@ -73,7 +73,7 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (mode
 		VALUES ($1, $2, $3, $4, NOW())
 		RETURNING id, user_id, banned_by, reason, created_at, expires_at
 	`
-	var dbModel models.ModBanInfo
+	var dbModel record.ModBanInfo
 	err := p.db.GetContext(ctx, &dbModel, query, ban.UserID, ban.BannedBy, ban.Reason, ban.ExpiresAt)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create ban info",
