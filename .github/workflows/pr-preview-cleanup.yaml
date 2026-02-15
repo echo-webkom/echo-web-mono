@@ -1,0 +1,24 @@
+name: PR Preview Cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+      DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_API_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+
+    steps:
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/scripts
+
+      - name: 🗑️ Remove preview environment
+        run: node .github/scripts/dokploy-preview.mjs cleanup

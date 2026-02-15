@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: 🔍 Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 🔐 Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -97,3 +97,74 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
+
+  deploy-preview:
+    if: github.event_name == 'pull_request'
+    needs: [build-and-push-uno, build-and-push-web]
+    name: 🚀 Deploy PR Preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+      DOKPLOY_API_TOKEN: ${{ secrets.DOKPLOY_API_TOKEN }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+      FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+      FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+      PREVIEW_ADMIN_KEY: ${{ secrets.PREVIEW_ADMIN_KEY }}
+      PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
+      PREVIEW_DATABASE_PASSWORD: ${{ secrets.PREVIEW_DATABASE_PASSWORD }}
+
+    steps:
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/scripts
+
+      - name: 🚀 Deploy PR Preview to Dokploy
+        id: deploy
+        run: node .github/scripts/dokploy-preview.mjs deploy
+
+      - name: 💬 Comment on PR
+        if: steps.deploy.outcome == 'success'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const marker = '<!-- dokploy-preview -->';
+            const body = [
+              marker,
+              '## Preview Environment',
+              '',
+              '| Service | URL |',
+              '|---------|-----|',
+              `| Frontend | ${{ steps.deploy.outputs.web_url }} |`,
+              `| Backend | ${{ steps.deploy.outputs.api_url }} |`,
+              '',
+              `_Deployed from \`${context.sha.slice(0, 7)}\`_`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: ${{ github.event.pull_request.number }},
+                body,
+              });
+            }
