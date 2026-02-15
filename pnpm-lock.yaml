@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       react-cookie-consent:
-        specifier: ^9.0.0
-        version: 9.0.0(react@19.2.4)
+        specifier: ^10.0.1
+        version: 10.0.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       turbo:
         specifier: 2.5.8
         version: 2.5.8
@@ -519,7 +519,7 @@ importers:
     devDependencies:
       '@react-email/preview-server':
         specifier: ^5.2.5
-        version: 5.2.5(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 5.2.5(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@types/node':
         specifier: 22.19.7
         version: 22.19.7
@@ -8976,8 +8976,9 @@ packages:
   jose@6.1.3:
     resolution: {integrity: sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==}
 
-  js-cookie@2.2.1:
-    resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
+  js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -10478,11 +10479,12 @@ packages:
     peerDependencies:
       react: ^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
 
-  react-cookie-consent@9.0.0:
-    resolution: {integrity: sha512-Blyj+m+Zz7SFHYqT18p16EANgnSg2sIyU6Yp3vk83AnOnSW7qnehPkUe4+8+qxztJrNmCH5GP+VHsWzAKVOoZA==}
-    engines: {node: '>=10'}
+  react-cookie-consent@10.0.1:
+    resolution: {integrity: sha512-qgU7Kr+x9/feKZxaIJbMT+R/xD1lnAQy9MzD4yLooVrkhoUR7XFc8Xv8M+GDQYcjoYh6uszslLGo1k+eU2VLtw==}
+    engines: {node: '>=20.16'}
     peerDependencies:
-      react: '>=16'
+      react: '>=18'
+      react-dom: '>=18'
 
   react-day-picker@8.10.1:
     resolution: {integrity: sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA==}
@@ -16707,9 +16709,9 @@ snapshots:
       marked: 15.0.12
       react: 19.2.4
 
-  '@react-email/preview-server@5.2.5(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@react-email/preview-server@5.2.5(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      next: 16.0.10(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      next: 16.0.10(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -22052,7 +22054,7 @@ snapshots:
 
   jose@6.1.3: {}
 
-  js-cookie@2.2.1: {}
+  js-cookie@3.0.5: {}
 
   js-tokens@4.0.0: {}
 
@@ -23143,7 +23145,7 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  next@16.0.10(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  next@16.0.10(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -23151,7 +23153,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.4)
+      styled-jsx: 5.1.6(@babel/core@7.29.0)(react@19.2.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.10
       '@next/swc-darwin-x64': 16.0.10
@@ -23900,10 +23902,11 @@ snapshots:
       react: 19.2.4
       tween-functions: 1.2.0
 
-  react-cookie-consent@9.0.0(react@19.2.4):
+  react-cookie-consent@10.0.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
-      js-cookie: 2.2.1
+      js-cookie: 3.0.5
       react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
   react-day-picker@8.10.1(date-fns@4.1.0)(react@19.2.4):
     dependencies:
@@ -25334,13 +25337,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       react-dom: 19.2.4(react@19.2.4)
-
-  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.4):
-    dependencies:
-      client-only: 0.0.1
-      react: 19.2.4
-    optionalDependencies:
-      '@babel/core': 7.28.5
 
   styled-jsx@5.1.6(@babel/core@7.29.0)(react@19.2.4):
     dependencies:
