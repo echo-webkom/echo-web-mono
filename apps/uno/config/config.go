@@ -22,7 +22,7 @@ type Config struct {
 func Load() *Config {
 	environment := getEnvOrDefault("ENVIRONMENT", "development")
 
-	if environment != "production" {
+	if environment == "development" {
 		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
 			log.Println(err)
 		}
