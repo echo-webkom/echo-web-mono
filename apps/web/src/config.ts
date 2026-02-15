@@ -1,4 +1,4 @@
-export const PRODUCTION_DOMAIN = "echo.uib.no";
+export const PRODUCTION_DOMAIN = process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN ?? "echo.uib.no";
 
 export const ENVIRONMENT = (process.env.ENVIRONMENT ?? "").toLowerCase();
 
