@@ -5,22 +5,23 @@ import ky from "ky";
 import { CompanyLeagueBanner, type Match } from "@/components/company-league-banner";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
+import { UNO_BASE_URL } from "@/config";
 import { cn } from "@/utils/cn";
 
-const LEAGUE_TABLE_URL = "https://databrus.echo-webkom.no/table";
-const MATCHES_URL = "https://databrus.echo-webkom.no/matches";
+const LEAGUE_TABLE_URL = `${UNO_BASE_URL}/databrus/table`;
+const MATCHES_URL = `${UNO_BASE_URL}/databrus/matches`;
 const DATABRUS_FC = "Databrus FC";
 
 export interface TableEntry {
   position: number;
   team: string;
-  matchesPlayed: number;
+  matches_played: number;
   wins: number;
   draws: number;
   losses: number;
-  goalsFor: number;
-  goalsAgainst: number;
-  goalDifference: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
   points: number;
 }
 
@@ -54,9 +55,9 @@ export default async function DatabrusPage() {
   const [table, matches] = await Promise.all([fetchLeagueTable(), fetchMatches()]);
 
   const upcomingMatches = matches
-    .filter((match) => match.type === "upcoming")
-    .filter((match) => match.homeTeam === DATABRUS_FC || match.awayTeam === DATABRUS_FC)
-    .sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime());
+    .filter((match) => new Date(match.date_time) > new Date())
+    .filter((match) => match.home_team === DATABRUS_FC || match.away_team === DATABRUS_FC)
+    .sort((a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime());
 
   return (
     <Container className="py-10">
@@ -92,20 +93,20 @@ export default async function DatabrusPage() {
                 >
                   <td className="px-4 py-2 text-sm">{entry.position}</td>
                   <td className="px-4 py-2 text-sm">{entry.team}</td>
-                  <td className="px-4 py-2 text-center text-sm">{entry.matchesPlayed}</td>
+                  <td className="px-4 py-2 text-center text-sm">{entry.matches_played}</td>
                   <td className="px-4 py-2 text-center text-sm">{entry.wins}</td>
                   <td className="px-4 py-2 text-center text-sm">{entry.draws}</td>
                   <td className="px-4 py-2 text-center text-sm">{entry.losses}</td>
-                  <td className="px-4 py-2 text-center text-sm">{entry.goalsFor}</td>
-                  <td className="px-4 py-2 text-center text-sm">{entry.goalsAgainst}</td>
+                  <td className="px-4 py-2 text-center text-sm">{entry.goals_for}</td>
+                  <td className="px-4 py-2 text-center text-sm">{entry.goals_against}</td>
                   <td
                     className={cn("px-4 py-2 text-center text-sm", {
-                      "text-green-600": entry.goalDifference > 0,
-                      "text-red-600": entry.goalDifference < 0,
+                      "text-green-600": entry.goal_difference > 0,
+                      "text-red-600": entry.goal_difference < 0,
                     })}
                   >
-                    {entry.goalDifference > 0 ? "+" : ""}
-                    {entry.goalDifference}
+                    {entry.goal_difference > 0 ? "+" : ""}
+                    {entry.goal_difference}
                   </td>
                   <td className="px-4 py-2 text-center text-sm font-medium">{entry.points}</td>
                 </tr>
@@ -120,9 +121,9 @@ export default async function DatabrusPage() {
           <h2 className="mb-4 text-xl font-semibold">Kommende kamper</h2>
           <div className="space-y-3">
             {upcomingMatches.map((match) => {
-              const isDatabrusHome = match.homeTeam === DATABRUS_FC;
-              const opponent = isDatabrusHome ? match.awayTeam : match.homeTeam;
-              const matchDate = parseISO(match.datetime);
+              const isDatabrusHome = match.home_team === DATABRUS_FC;
+              const opponent = isDatabrusHome ? match.away_team : match.home_team;
+              const matchDate = parseISO(match.date_time);
 
               return (
                 <div

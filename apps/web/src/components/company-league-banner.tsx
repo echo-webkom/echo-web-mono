@@ -4,6 +4,7 @@ import ky from "ky";
 import Marquee from "react-fast-marquee";
 
 import { cn } from "@/utils/cn";
+import { UNO_BASE_URL } from "../config";
 
 const DATABRUS_FC = "Databrus FC";
 
@@ -12,16 +13,16 @@ export type MatchType = "upcoming" | "previous";
 export interface Match {
   type: MatchType;
   id: string;
-  homeTeam: string;
-  awayTeam: string;
-  datetime: string;
-  homeScore: string | null;
-  awayScore: string | null;
+  home_team: string;
+  away_team: string;
+  date_time: string;
+  home_score: string | null;
+  away_score: string | null;
 }
 
 const fetchCompanyLeagueTableMatches = async () => {
   return await ky
-    .get("https://databrus.echo-webkom.no/matches", {
+    .get(`${UNO_BASE_URL}/databrus/matches`, {
       headers: {
         accept: "application/json",
       },
@@ -89,25 +90,25 @@ export const CompanyLeagueBanner = async ({
   linkToDatabrusPage = false,
 }: CompanyLeagueBannerProps) => {
   const matches = await fetchCompanyLeagueTableMatches().then((ms) =>
-    ms.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()),
+    ms.sort((a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()),
   );
 
   const content = (
     <div className="relative pb-8">
       <Marquee gradient gradientColor="var(--background)">
         {matches.map((match) => {
-          const homeOutcome = getOutcome(match.homeScore, match.awayScore);
-          const awayOutcome = getOutcome(match.awayScore, match.homeScore);
+          const homeOutcome = getOutcome(match.home_score, match.away_score);
+          const awayOutcome = getOutcome(match.away_score, match.home_score);
 
           return (
             <div className="relative flex flex-col px-8" key={match.id}>
-              <p className="mb-1 text-xs">{format(new Date(match.datetime), "dd.MM.yyyy")}</p>
+              <p className="mb-1 text-xs">{format(new Date(match.date_time), "dd.MM.yyyy")}</p>
 
               <div className="flex-center flex gap-8">
                 <div className="flex flex-col">
-                  <Team name={match.homeTeam} score={match.homeScore} outcome={homeOutcome} />
+                  <Team name={match.home_team} score={match.home_score} outcome={homeOutcome} />
 
-                  <Team name={match.awayTeam} score={match.awayScore} outcome={awayOutcome} />
+                  <Team name={match.away_team} score={match.away_score} outcome={awayOutcome} />
                 </div>
               </div>
             </div>
