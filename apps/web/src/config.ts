@@ -1,6 +1,8 @@
 export const PRODUCTION_DOMAIN = "echo.uib.no";
 
-export const DEV = process.env.NODE_ENV !== "production";
+export const ENVIRONMENT = (process.env.ENVIRONMENT ?? "").toLowerCase();
+
+export const DEV = ENVIRONMENT === "development";
 
 export const HTTP = DEV ? "http" : "https";
 
