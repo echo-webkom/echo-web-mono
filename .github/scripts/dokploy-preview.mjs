@@ -164,13 +164,44 @@ async function createPreviewEnvironment(client) {
   }
   console.log(`PostgreSQL created: ${db.postgresId}`);
 
+  const pgDetails = await client.postgres.one(db.postgresId);
+  const dbHost = pgDetails.appName;
+  console.log(`PostgreSQL hostname: ${dbHost}`);
+
   await client.postgres.deploy(db.postgresId);
   console.log("Waiting for PostgreSQL to be ready...");
   await sleep(20_000);
 
-  const databaseUrl = `postgres://postgres:${dbPassword}@pr-${PR_NUMBER}-db:5432/echo_web?sslmode=disable`;
+  const databaseUrl = `postgres://postgres:${dbPassword}@${dbHost}:5432/echo_web?sslmode=disable`;
 
-  // 4. Create and configure uno (backend)
+  // 4. Deploy migrator to run migrations and seeding
+  const migrator = await client.application.create(
+    `pr-${PR_NUMBER}-migrator`,
+    `pr-${PR_NUMBER}-migrator`,
+    environmentId,
+  );
+  if (!migrator?.applicationId) {
+    throw new Error(
+      `application.create did not return an applicationId for migrator. Response: ${JSON.stringify(migrator)}`,
+    );
+  }
+  console.log(`Migrator created: ${migrator.applicationId}`);
+
+  await client.application.update(
+    migrator.applicationId,
+    "docker",
+    `${REGISTRY}/${OWNER}/migrator:pr-${PR_NUMBER}`,
+    [
+      `DATABASE_URL=${databaseUrl}`,
+      `NEXT_PUBLIC_SANITY_DATASET=develop`,
+      `NEXT_PUBLIC_SANITY_PROJECT_ID=pgq2pd26`,
+    ].join("\n"),
+  );
+
+  await client.application.deploy(migrator.applicationId);
+  console.log("Migrator deployed (will run in background).");
+
+  // 5. Create and configure uno (backend)
   const uno = await client.application.create(
     `pr-${PR_NUMBER}-uno`,
     `pr-${PR_NUMBER}-uno`,
@@ -204,7 +235,7 @@ async function createPreviewEnvironment(client) {
   await client.application.deploy(uno.applicationId);
   console.log("Uno deployed!");
 
-  // 5. Create and configure web (frontend)
+  // 6. Create and configure web (frontend)
   const web = await client.application.create(
     `pr-${PR_NUMBER}-web`,
     `pr-${PR_NUMBER}-web`,
@@ -224,7 +255,7 @@ async function createPreviewEnvironment(client) {
     [
       `DATABASE_URL=${databaseUrl}`,
       `NEXT_PUBLIC_API_URL=https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}`,
-      `NEXT_PUBLIC_SANITY_DATASET=development`,
+      `NEXT_PUBLIC_SANITY_DATASET=develop`,
       `NEXT_PUBLIC_SANITY_PROJECT_ID=pgq2pd26`,
       `FEIDE_CLIENT_ID=${FEIDE_CLIENT_ID}`,
       `FEIDE_CLIENT_SECRET=${FEIDE_CLIENT_SECRET}`,
@@ -284,6 +315,8 @@ async function cleanup() {
 }
 
 /**
+ * Sleeps for the given number of milliseconds.
+ *
  * @param {number} ms
  * @returns {Promise<void>}
  */

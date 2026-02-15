@@ -115,6 +115,16 @@ class DokployApplicationClient {
       env,
     });
   }
+
+  /**
+   * @param {string} applicationId
+   * @returns {Promise<any>}
+   */
+  async remove(applicationId) {
+    return await this.dokployClient.post("application.delete", {
+      applicationId,
+    });
+  }
 }
 
 class DokployProjectClient {
@@ -217,9 +227,28 @@ class DokployPostgresClient {
 
   /**
    * @param {string} postgresId
+   * @returns {Promise<any>}
+   */
+  async one(postgresId) {
+    return await this.dokployClient.get(`postgres.one?postgresId=${postgresId}`);
+  }
+
+  /**
+   * @param {string} postgresId
    */
   async deploy(postgresId) {
     await this.dokployClient.post("postgres.deploy", { postgresId });
+  }
+
+  /**
+   * @param {string} postgresId
+   * @param {object} data
+   */
+  async update(postgresId, data) {
+    return await this.dokployClient.post("postgres.update", {
+      postgresId,
+      ...data,
+    });
   }
 }
 
