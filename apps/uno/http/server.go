@@ -49,7 +49,7 @@ func RunServer(
 	r := router.New(logger, handler.Logger(logger), router.Telemetry(config.ServiceName))
 
 	// withAuth := router.NewWithAuthHandler(authService)
-	admin := router.NewAdminMiddleware(config.AdminAPIKey)
+	admin := router.NewAdminMiddleware(authService, config.AdminAPIKey)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
