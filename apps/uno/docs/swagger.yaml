@@ -566,7 +566,7 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Get upcoming matches from Databrus
+      summary: Get matches for Databrus
       tags:
       - databrus
   /databrus/table:
@@ -584,7 +584,7 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Get current table from Databrus
+      summary: Get current table for Databrus
       tags:
       - databrus
   /degrees:

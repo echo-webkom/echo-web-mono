@@ -23,8 +23,8 @@ func NewDatabrusMux(logger port.Logger, databrusService *service.DatabrusService
 	return mux
 }
 
-// GetMatchesHandler returns the upcoming matches from Databrus
-// @Summary      Get upcoming matches from Databrus
+// GetMatchesHandler returns the upcoming matches for Databrus
+// @Summary      Get matches for Databrus
 // @Tags         databrus
 // @Produce      json
 // @Success      200  {array}   dto.DatabrusMatchDTO  "OK"
@@ -41,8 +41,8 @@ func (d *databrus) GetMatchesHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetTableHandler returns the current table from Databrus
-// @Summary      Get current table from Databrus
+// GetTableHandler returns the current table for Databrus
+// @Summary      Get current table for Databrus
 // @Tags         databrus
 // @Produce      json
 // @Success      200  {object}  dto.DatabrusTableResponse   "OK"

@@ -286,7 +286,7 @@ const docTemplate = `{
                 "tags": [
                     "databrus"
                 ],
-                "summary": "Get upcoming matches from Databrus",
+                "summary": "Get matches for Databrus",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -314,7 +314,7 @@ const docTemplate = `{
                 "tags": [
                     "databrus"
                 ],
-                "summary": "Get current table from Databrus",
+                "summary": "Get current table for Databrus",
                 "responses": {
                     "200": {
                         "description": "OK",
