@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type DotRepo struct {
@@ -45,7 +45,7 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.NewDot) (model.Dot, e
 		VALUES ($1, $2, $3, $4, $5, NOW())
 		RETURNING id, user_id, count, reason, striked_by, expires_at, created_at
 	`
-	var dbModel models.DotDB
+	var dbModel record.DotDB
 	err := p.db.GetContext(ctx, &dbModel, query, dot.UserID, dot.Count, dot.Reason, dot.StrikedBy, dot.ExpiresAt)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create dot",

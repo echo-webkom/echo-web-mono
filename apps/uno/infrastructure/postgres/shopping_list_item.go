@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type ShoppingListRepo struct {
@@ -27,7 +27,7 @@ func (p *ShoppingListRepo) CreateShoppingListItem(ctx context.Context, item mode
 		VALUES (gen_random_uuid(), $1, $2)
 		RETURNING id, user_id, name, created_at
 	`
-	var dbModel models.ShoppingListItemDB
+	var dbModel record.ShoppingListItemDB
 	err := p.db.GetContext(ctx, &dbModel, query, item.UserID, item.Name)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create shopping list item",
@@ -70,7 +70,7 @@ func (p *ShoppingListRepo) GetAllShoppingListItems(ctx context.Context) ([]port.
 		JOIN "user" u ON sli.user_id = u.id
 	`
 
-	var dbModels []models.ShoppingListItemWithCreatorDB
+	var dbModels []record.ShoppingListItemWithCreatorDB
 	err := p.db.SelectContext(ctx, &dbModels, query)
 	if err != nil {
 		p.logger.Error(ctx, "failed to get all shopping list items",

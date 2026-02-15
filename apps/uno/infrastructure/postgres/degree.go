@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type DegreeRepo struct {
@@ -23,7 +23,7 @@ func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) 
 		SELECT id, name
 		FROM degree
 	`
-	var degreesDB []models.DegreeDB
+	var degreesDB []record.DegreeDB
 	err := p.db.SelectContext(ctx, &degreesDB, query)
 	if err != nil {
 		p.logger.Error(ctx, "failed to get all degrees",
@@ -31,7 +31,7 @@ func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) 
 		)
 		return []model.Degree{}, err
 	}
-	return models.DegreeToDomainList(degreesDB), nil
+	return record.DegreeToDomainList(degreesDB), nil
 }
 
 func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
@@ -45,7 +45,7 @@ func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (mod
 		VALUES ($1, $2)
 		RETURNING id, name
 	`
-	var degreeDB models.DegreeDB
+	var degreeDB record.DegreeDB
 	err := p.db.GetContext(ctx, &degreeDB, query, degree.ID, degree.Name)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create degree",
@@ -70,7 +70,7 @@ func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (mod
 		WHERE id = $1
 		RETURNING id, name
 	`
-	var degreeDB models.DegreeDB
+	var degreeDB record.DegreeDB
 	err := p.db.GetContext(ctx, &degreeDB, query, degree.ID, degree.Name)
 	if err != nil {
 		p.logger.Error(ctx, "failed to update degree",

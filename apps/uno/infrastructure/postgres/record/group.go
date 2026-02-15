@@ -1,4 +1,4 @@
-package models
+package record
 
 import (
 	"uno/domain/model"

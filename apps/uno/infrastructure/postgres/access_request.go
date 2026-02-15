@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type AccessRequestRepo struct {
@@ -26,7 +26,7 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ne
 		VALUES (gen_random_uuid(), $1, $2)
 		RETURNING id, email, reason, created_at
 	`
-	var dbModel models.AccessRequestDB
+	var dbModel record.AccessRequestDB
 	err := a.db.GetContext(ctx, &dbModel, query, ar.Email, ar.Reason)
 	if err != nil {
 		a.logger.Error(ctx, "failed to create access request",
@@ -41,7 +41,7 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ne
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
 	a.logger.Info(ctx, "getting access requests")
 
-	var dbModels []models.AccessRequestDB
+	var dbModels []record.AccessRequestDB
 	query := `--sql
 		SELECT id, email, reason, created_at
 		FROM access_request
@@ -55,5 +55,5 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 		return nil, err
 	}
 
-	return models.ToDomainList(dbModels), nil
+	return record.ToDomainList(dbModels), nil
 }

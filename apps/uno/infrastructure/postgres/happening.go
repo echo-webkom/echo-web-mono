@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 
 	"github.com/lib/pq"
 )
@@ -21,7 +21,7 @@ func NewHappeningRepo(db *Database, logger port.Logger) port.HappeningRepo {
 func (h *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.Happening, error) {
 	h.logger.Info(ctx, "getting all happenings")
 
-	dbRes := []models.Happening{}
+	dbRes := []record.Happening{}
 	query := `--sql
 		SELECT
 			id, slug, title, type, date, registration_groups,
@@ -35,7 +35,7 @@ func (h *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.Happening
 		return nil, err
 	}
 
-	return models.HappeningsToDomainList(dbRes), nil
+	return record.HappeningsToDomainList(dbRes), nil
 }
 
 func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (model.Happening, error) {
@@ -50,7 +50,7 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (model.
 		FROM happening
 		WHERE id = $1
 	`
-	dbHap := models.Happening{}
+	dbHap := record.Happening{}
 	if err := h.db.GetContext(ctx, &dbHap, query, id); err != nil {
 		h.logger.Error(ctx, "failed to get happening by ID",
 			"error", err,
@@ -67,7 +67,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 		"happening_id", happeningID,
 	)
 
-	var dbRegs []models.HappeningRegistrationDB
+	var dbRegs []record.HappeningRegistrationDB
 	query := `--sql
 		SELECT
 			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.image AS user_image
@@ -83,7 +83,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 		return nil, err
 	}
 
-	regs = models.HappeningRegistrationToPortsList(dbRegs)
+	regs = record.HappeningRegistrationToPortsList(dbRegs)
 	return regs, nil
 }
 
@@ -92,7 +92,7 @@ func (h *HappeningRepo) GetHappeningSpotRanges(ctx context.Context, happeningID 
 		"happening_id", happeningID,
 	)
 
-	dbRanges := []models.SpotRange{}
+	dbRanges := []record.SpotRange{}
 	query := `--sql
 		SELECT
 			id, happening_id, spots, min_year, max_year
@@ -107,7 +107,7 @@ func (h *HappeningRepo) GetHappeningSpotRanges(ctx context.Context, happeningID 
 		return nil, err
 	}
 
-	return models.SpotRangesToDomainList(dbRanges), nil
+	return record.SpotRangesToDomainList(dbRanges), nil
 }
 
 func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID string) ([]model.Question, error) {
@@ -115,7 +115,7 @@ func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID s
 		"happening_id", happeningID,
 	)
 
-	dbQs := []models.Question{}
+	dbQs := []record.Question{}
 	query := `--sql
 		SELECT
 			id, title, required, type, is_sensitive, options, happening_id
@@ -130,7 +130,7 @@ func (h *HappeningRepo) GetHappeningQuestions(ctx context.Context, happeningID s
 		return nil, err
 	}
 
-	return models.QuestionsToDomainList(dbQs), nil
+	return record.QuestionsToDomainList(dbQs), nil
 }
 
 func (h *HappeningRepo) GetHappeningHostGroups(ctx context.Context, happeningID string) (groupIDs []string, err error) {
@@ -172,7 +172,7 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8)
 		RETURNING id, slug, title, type, date, registration_groups, registration_start_groups, registration_start, registration_end
 	`
-	var result models.Happening
+	var result record.Happening
 	err := h.db.GetContext(ctx, &result, query,
 		happening.Slug,
 		happening.Title,
@@ -203,7 +203,7 @@ func (h *HappeningRepo) GetHappeningRegistrationCounts(
 		"happening_ids", happeningIDs,
 	)
 
-	counts := []models.GroupedRegistrationCount{}
+	counts := []record.GroupedRegistrationCount{}
 	query := `--sql
 		SELECT
 		    h.id AS happening_id,
@@ -224,5 +224,5 @@ func (h *HappeningRepo) GetHappeningRegistrationCounts(
 		return nil, err
 	}
 
-	return models.GroupedRegistrationCountsToDomainList(counts), nil
+	return record.GroupedRegistrationCountsToDomainList(counts), nil
 }

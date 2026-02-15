@@ -4,7 +4,7 @@ import (
 	"context"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type SiteFeedbackRepo struct {
@@ -26,7 +26,7 @@ func (p *SiteFeedbackRepo) GetSiteFeedbackByID(ctx context.Context, feedbackID s
 		FROM site_feedback
 		WHERE id = $1
 	`
-	var dbModel models.SiteFeedback
+	var dbModel record.SiteFeedback
 	err := p.db.GetContext(ctx, &dbModel, query, feedbackID)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback mode
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5)
 		RETURNING id, name, email, message, category, created_at, is_read
 	`
-	var dbModel models.SiteFeedback
+	var dbModel record.SiteFeedback
 	err := p.db.GetContext(ctx, &dbModel, query, feedback.Name, feedback.Email, feedback.Message, feedback.Category, false)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create site feedback",
@@ -75,9 +75,9 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 		}
 	}()
 
-	feedbacks := []models.SiteFeedback{}
+	feedbacks := []record.SiteFeedback{}
 	for rows.Next() {
-		var feedback models.SiteFeedback
+		var feedback record.SiteFeedback
 		if err := rows.Scan(&feedback.ID, &feedback.Name, &feedback.Email, &feedback.Message, &feedback.Category, &feedback.CreatedAt, &feedback.IsRead); err != nil {
 			return nil, err
 		}
@@ -89,7 +89,7 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 		)
 		return nil, err
 	}
-	return models.SiteFeedbacksToDomainList(feedbacks), nil
+	return record.SiteFeedbacksToDomainList(feedbacks), nil
 }
 
 func (p *SiteFeedbackRepo) MarkSiteFeedbackAsRead(ctx context.Context, feedbackID string) error {

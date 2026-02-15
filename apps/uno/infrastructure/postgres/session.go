@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type PostgresSessionImpl struct {
@@ -28,7 +28,7 @@ func (r *PostgresSessionImpl) GetSessionByToken(ctx context.Context, token strin
 		WHERE session_token = $1
 		AND expires > NOW()
 	`
-	var sessionDB models.SessionDB
+	var sessionDB record.SessionDB
 	err := r.db.GetContext(ctx, &sessionDB, query, token)
 	if err == sql.ErrNoRows {
 		r.logger.Info(ctx, "no session found for token",

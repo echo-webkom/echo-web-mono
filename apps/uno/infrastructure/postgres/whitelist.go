@@ -6,7 +6,7 @@ import (
 	"errors"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 )
 
 type WhitelistRepo struct {
@@ -21,7 +21,7 @@ func NewWhitelistRepo(db *Database, logger port.Logger) port.WhitelistRepo {
 func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whitelist, err error) {
 	p.logger.Info(ctx, "getting whitelist")
 
-	var dbModels []models.WhitelistDB
+	var dbModels []record.WhitelistDB
 	query := `--sql
 		SELECT email, expires_at, reason
 		FROM whitelist
@@ -35,7 +35,7 @@ func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whi
 		)
 		return nil, err
 	}
-	return models.ToWhitelistDomainList(dbModels), nil
+	return record.ToWhitelistDomainList(dbModels), nil
 }
 
 func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (wl model.Whitelist, err error) {
@@ -43,7 +43,7 @@ func (p *WhitelistRepo) GetWhitelistByEmail(ctx context.Context, email string) (
 		"email", email,
 	)
 
-	var dbModel models.WhitelistDB
+	var dbModel record.WhitelistDB
 	query := `--sql
 		SELECT email, expires_at, reason
 		FROM whitelist
@@ -94,7 +94,7 @@ func (p *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.New
 		VALUES ($1, $2, $3)
 		RETURNING email, expires_at, reason
 	`
-	var dbModel models.WhitelistDB
+	var dbModel record.WhitelistDB
 	err := p.db.GetContext(ctx, &dbModel, query, whitelist.Email, whitelist.ExpiresAt, whitelist.Reason)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create whitelist entry",

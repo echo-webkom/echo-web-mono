@@ -6,7 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/infrastructure/postgres/models"
+	"uno/infrastructure/postgres/record"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -27,7 +27,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 		"happening_id", happeningID,
 	)
 
-	var regDB models.RegistrationDB
+	var regDB record.RegistrationDB
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
@@ -85,7 +85,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Get all existing registrations for this happening
-	var existingRegsDB []models.RegistrationDB
+	var existingRegsDB []record.RegistrationDB
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
@@ -102,7 +102,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		)
 		return nil, false, err
 	}
-	existingRegs := models.RegistrationToDomainList(existingRegsDB)
+	existingRegs := record.RegistrationToDomainList(existingRegsDB)
 
 	// Get user IDs for membership lookup
 	userIDs := []string{userID}
@@ -115,7 +115,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	membershipsByUserID := make(map[string][]string)
 
 	// Bulk fetch all users
-	var usersDB []models.UserDB
+	var usersDB []record.UserDB
 	userQuery, userArgs, err := sqlx.In(`--sql
 		SELECT
 			id, name, email, image, alternative_email, degree_id, year, type,
@@ -137,7 +137,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Convert to domain models and map users by ID
-	users := models.UserToDomainList(usersDB)
+	users := record.UserToDomainList(usersDB)
 	for i := range users {
 		usersByID[users[i].ID] = &users[i]
 	}
@@ -198,7 +198,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	}
 
 	// Insert or update registration
-	var registrationDB models.RegistrationDB
+	var registrationDB record.RegistrationDB
 	upsertQuery := `--sql
 		INSERT INTO registration (user_id, happening_id, status, created_at)
 		VALUES ($1, $2, $3, NOW())
