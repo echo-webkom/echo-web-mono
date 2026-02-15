@@ -103,5 +103,5 @@ func RunApi() {
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
-	logger.Info(context.Background(), "received shutdown signal, gracefully shutting down")
+	logger.Info(context.Background(), "received shutdown signal, gracefully shutting down uno")
 }
