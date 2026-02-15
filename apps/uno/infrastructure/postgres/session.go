@@ -17,6 +17,8 @@ func NewSessionRepo(db *Database, logger port.Logger) port.SessionRepo {
 	return &PostgresSessionImpl{db: db, logger: logger}
 }
 
+// GetSessionByToken retrieves a session from the database using the provided session token.
+// The method checks if the session exists and has not expired.
 func (r *PostgresSessionImpl) GetSessionByToken(ctx context.Context, token string) (model.Session, error) {
 	r.logger.Info(ctx, "getting session by token")
 
@@ -24,6 +26,7 @@ func (r *PostgresSessionImpl) GetSessionByToken(ctx context.Context, token strin
 		SELECT session_token, user_id, expires
 		FROM "session"
 		WHERE session_token = $1
+		AND expires > NOW()
 	`
 	var sessionDB models.SessionDB
 	err := r.db.GetContext(ctx, &sessionDB, query, token)
