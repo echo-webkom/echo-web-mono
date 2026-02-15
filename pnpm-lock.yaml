@@ -266,8 +266,8 @@ importers:
         specifier: 0.45.1
         version: 0.45.1(@cloudflare/workers-types@4.20251225.0)(@electric-sql/pglite@0.3.15)(@types/pg@8.16.0)(pg@8.18.0)(postgres@3.4.8)
       groq:
-        specifier: 5.7.0
-        version: 5.7.0
+        specifier: 5.9.0
+        version: 5.9.0
       ics:
         specifier: 3.8.1
         version: 3.8.1
@@ -519,7 +519,7 @@ importers:
     devDependencies:
       '@react-email/preview-server':
         specifier: ^5.2.5
-        version: 5.2.5(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 5.2.5(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@types/node':
         specifier: 22.19.7
         version: 22.19.7
@@ -588,8 +588,8 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       groq:
-        specifier: 5.7.0
-        version: 5.7.0
+        specifier: 5.9.0
+        version: 5.9.0
     devDependencies:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: 4.7.0
@@ -637,8 +637,8 @@ importers:
         specifier: 0.45.1
         version: 0.45.1(@cloudflare/workers-types@4.20251225.0)(@electric-sql/pglite@0.3.15)(@types/pg@8.16.0)(pg@8.18.0)(postgres@3.4.8)
       groq:
-        specifier: 5.7.0
-        version: 5.7.0
+        specifier: 5.9.0
+        version: 5.9.0
     devDependencies:
       '@types/node':
         specifier: 22.19.7
@@ -8459,10 +8459,6 @@ packages:
   groq@3.99.0:
     resolution: {integrity: sha512-ZwKAWzvVCw51yjmIf5484KgsAzZAlGTM4uy9lki4PjAYxcEME2Xf93d31LhHzgUAr2JI79H+cNKoRjDHdv1BXQ==}
     engines: {node: '>=18'}
-
-  groq@5.7.0:
-    resolution: {integrity: sha512-6xyVq9nA4TSOFLzpW6oLAmrfYyLs5sC4/Pa4mGuIb+6alhjeZ3aIbKt8pyHFKG0bpJ+BYhXyoarm5H+zoP0CGw==}
-    engines: {node: '>=20.19 <22 || >=22.12'}
 
   groq@5.9.0:
     resolution: {integrity: sha512-pwd8ZowCZEJesJtJ/pwGRCsLb00hCAgxmP7kQ0vBR1edDHqVxw7lZSGTXsz6TijWZGhQ6o0/vSJ1JChDNalyvA==}
@@ -16707,9 +16703,9 @@ snapshots:
       marked: 15.0.12
       react: 19.2.4
 
-  '@react-email/preview-server@5.2.5(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@react-email/preview-server@5.2.5(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      next: 16.0.10(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      next: 16.0.10(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -21431,8 +21427,6 @@ snapshots:
 
   groq@3.99.0: {}
 
-  groq@5.7.0: {}
-
   groq@5.9.0: {}
 
   gunzip-maybe@1.4.2:
@@ -23143,7 +23137,7 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  next@16.0.10(@babel/core@7.28.5)(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  next@16.0.10(@playwright/test@1.58.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -23151,7 +23145,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.4)
+      styled-jsx: 5.1.6(@babel/core@7.29.0)(react@19.2.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.10
       '@next/swc-darwin-x64': 16.0.10
@@ -25334,13 +25328,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       react-dom: 19.2.4(react@19.2.4)
-
-  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.4):
-    dependencies:
-      client-only: 0.0.1
-      react: 19.2.4
-    optionalDependencies:
-      '@babel/core': 7.28.5
 
   styled-jsx@5.1.6(@babel/core@7.29.0)(react@19.2.4):
     dependencies:
