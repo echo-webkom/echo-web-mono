@@ -1,0 +1,18 @@
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy-data:/data
+    networks: [caddy]
+
+volumes:
+  caddy-data:
+
+networks:
+  caddy:
+    name: caddy

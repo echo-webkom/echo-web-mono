@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:17.7
+    environment:
+      POSTGRES_DB: echo-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  migrator:
+    image: ghcr.io/echo-webkom/migrator:pr-${PR_NUMBER}
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
+      NEXT_PUBLIC_SANITY_DATASET: develop
+      NEXT_PUBLIC_SANITY_PROJECT_ID: pgq2pd26
+    networks: [internal]
+
+  uno:
+    image: ghcr.io/echo-webkom/uno:pr-${PR_NUMBER}
+    depends_on:
+      migrator: { condition: service_completed_successfully }
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
+      UNO_API_PORT: "8000"
+      ADMIN_KEY: ${ADMIN_KEY}
+      ENVIRONMENT: staging
+      GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
+    labels:
+      caddy: pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+    networks: [internal, caddy]
+
+  web:
+    image: ghcr.io/echo-webkom/web:pr-${PR_NUMBER}
+    depends_on:
+      migrator: { condition: service_completed_successfully }
+    environment:
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
+      NEXT_PUBLIC_API_URL: https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
+      NEXT_PUBLIC_SANITY_DATASET: develop
+      NEXT_PUBLIC_SANITY_PROJECT_ID: pgq2pd26
+      FEIDE_CLIENT_ID: ${FEIDE_CLIENT_ID}
+      FEIDE_CLIENT_SECRET: ${FEIDE_CLIENT_SECRET}
+      AUTH_SECRET: ${AUTH_SECRET}
+      ADMIN_KEY: ${ADMIN_KEY}
+      ENVIRONMENT: staging
+      PORT: "3000"
+      NEXT_PUBLIC_GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
+    labels:
+      caddy: pr-${PR_NUMBER}.web.${PREVIEW_DOMAIN}
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+    networks: [internal, caddy]
+
+volumes:
+  db-data:
+
+networks:
+  internal:
+  caddy:
+    external: true

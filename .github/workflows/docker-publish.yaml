@@ -24,7 +24,7 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const marker = '<!-- dokploy-preview -->';
+            const marker = '<!-- preview-env -->';
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -142,7 +142,7 @@ jobs:
   # Migrator that only runs on PRs, since it is used to seed and migrate the preview environment, and is not needed for production deployments.
   build-and-push-migrator:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
-    name: 🐳 Build dokploy migrator
+    name: 🐳 Build migrator
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -192,43 +192,57 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env:
-      PR_NUMBER: ${{ github.event.pull_request.number }}
-
-      DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
-      DOKPLOY_API_TOKEN: ${{ secrets.DOKPLOY_API_TOKEN }}
-      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-      FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
-      FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
-      PREVIEW_ADMIN_KEY: ${{ secrets.PREVIEW_ADMIN_KEY }}
-      PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
-      PREVIEW_DATABASE_PASSWORD: ${{ secrets.PREVIEW_DATABASE_PASSWORD }}
-      GIT_COMMIT_SHA: ${{ github.sha }}
 
     steps:
       - name: 🔍 Checkout repository
         uses: actions/checkout@v6
         with:
-          sparse-checkout: .github/scripts
+          sparse-checkout: preview
 
-      - name: 🚀 Deploy PR Preview to Dokploy
-        id: deploy
-        run: node .github/scripts/dokploy-preview.mjs deploy
+      - name: 🔑 Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: 🔒 Add VPS to known hosts
+        run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🔐 Log in to GitHub Container Registry on VPS
+        env:
+          DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: 🚀 Deploy preview stack
+        env:
+          DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          DB_PASSWORD: ${{ secrets.PREVIEW_DATABASE_PASSWORD }}
+          ADMIN_KEY: ${{ secrets.PREVIEW_ADMIN_KEY }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+          FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+          PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+        run: docker compose -p pr-${PR_NUMBER} -f preview/docker-compose.yaml up -d --pull always --wait
 
       - name: 💬 Comment on PR
-        if: steps.deploy.outcome == 'success'
         uses: actions/github-script@v8
+        env:
+          PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         with:
           script: |
-            const marker = '<!-- dokploy-preview -->';
+            const marker = '<!-- preview-env -->';
+            const domain = process.env.PREVIEW_DOMAIN;
+            const prNumber = process.env.PR_NUMBER;
             const body = [
               marker,
               '## Preview Environment',
               '',
               '| Project | URL |',
               '|---------|-----|',
-              `| Frontend | ${{ steps.deploy.outputs.web_url }} |`,
-              `| Backend | ${{ steps.deploy.outputs.api_url }} |`,
+              `| Frontend | https://pr-${prNumber}.web.${domain} |`,
+              `| Backend | https://pr-${prNumber}.uno.${domain} |`,
               `| Status | 🟢 Deployed |`,
               '',
               `_Deployed from \`${context.sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`,

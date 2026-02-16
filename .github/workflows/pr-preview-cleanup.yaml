@@ -7,18 +7,18 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
-      DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_API_TOKEN }}
-      PR_NUMBER: ${{ github.event.pull_request.number }}
 
     steps:
-      - name: 🔍 Checkout repository
-        uses: actions/checkout@v6
+      - name: 🔑 Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          sparse-checkout: .github/scripts
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
-      - name: 🗑️ Remove preview environment
-        run: node .github/scripts/dokploy-preview.mjs cleanup
+      - name: 🔒 Add VPS to known hosts
+        run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🗑️ Destroy preview environment
+        env:
+          DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: docker compose -p pr-${PR_NUMBER} down -v --remove-orphans
