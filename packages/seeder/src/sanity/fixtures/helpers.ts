@@ -5,4 +5,4 @@ export const futureDate = (daysFromNow: number) =>
 
 export const pastDate = (daysAgo: number) => new Date(Date.now() - days(daysAgo)).toISOString();
 
-export const ref = (id: string) => ({ _type: "reference" as const, _ref: id });
+export const ref = (id: string, _key?: string) => ({ _type: "reference" as const, _ref: id, _key });
