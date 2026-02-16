@@ -73,7 +73,7 @@ const EnvironmentWarning = () => {
 
   if (isStaging) {
     return (
-      <div className="bg-yellow-400 p-2 text-center text-sm font-medium">
+      <div className="bg-yellow-400 p-2 text-center text-sm font-medium text-black">
         <p>Du kjører i stagingmiljø.</p>
       </div>
     );

@@ -19,6 +19,7 @@ const OUTPUT = env("GITHUB_OUTPUT", false);
 const REGISTRY = env("REGISTRY");
 const OWNER = env("GITHUB_REPOSITORY_OWNER");
 const PR_NUMBER = env("PR_NUMBER");
+const GIT_COMMIT_SHA = env("GIT_COMMIT_SHA");
 
 /**
  * @param {string} name
@@ -223,6 +224,7 @@ async function createPreviewEnvironment(client) {
       `UNO_API_PORT=8000`,
       `ADMIN_KEY=${ADMIN_KEY}`,
       `ENVIRONMENT=staging`,
+      `GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
     ].join("\n"),
   );
 
@@ -263,6 +265,7 @@ async function createPreviewEnvironment(client) {
       `ADMIN_KEY=${ADMIN_KEY}`,
       `ENVIRONMENT=staging`,
       `PORT=3000`,
+      `GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
     ].join("\n"),
   );
 

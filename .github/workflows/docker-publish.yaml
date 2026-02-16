@@ -51,6 +51,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GIT_COMMIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -94,6 +95,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GIT_COMMIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -160,6 +162,7 @@ jobs:
       PREVIEW_ADMIN_KEY: ${{ secrets.PREVIEW_ADMIN_KEY }}
       PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
       PREVIEW_DATABASE_PASSWORD: ${{ secrets.PREVIEW_DATABASE_PASSWORD }}
+      GIT_COMMIT_SHA: ${{ github.sha }}
 
     steps:
       - name: 🔍 Checkout repository
