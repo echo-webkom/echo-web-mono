@@ -268,6 +268,12 @@ async function createPreviewEnvironment(client) {
   );
   await client.application.deploy(web.applicationId);
   console.log("Web deployed!");
+
+  // 7. Wait for migrator to finish, then remove it
+  console.log("Waiting for migrator to finish...");
+  await sleep(60_000);
+  await client.application.delete(migrator.applicationId);
+  console.log("Migrator removed.");
 }
 
 async function deploy() {

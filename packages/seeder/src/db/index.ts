@@ -70,17 +70,23 @@ const seedTest = async () => {
 
   await Promise.all(defaultUsers.map(User.create));
 
-  await db.insert(usersToGroups).values({
-    userId: "admin",
-    groupId: "webkom",
-    isLeader: true,
-  });
+  await db
+    .insert(usersToGroups)
+    .values({
+      userId: "admin",
+      groupId: "webkom",
+      isLeader: true,
+    })
+    .onConflictDoNothing();
 
-  await db.insert(usersToGroups).values({
-    userId: "admin",
-    groupId: "bedkom",
-    isLeader: true,
-  });
+  await db
+    .insert(usersToGroups)
+    .values({
+      userId: "admin",
+      groupId: "bedkom",
+      isLeader: true,
+    })
+    .onConflictDoNothing();
 
   await Happening.create({
     id: "5cbb5337-a6e6-4eff-a821-a73722594f47",

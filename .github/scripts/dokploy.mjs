@@ -120,7 +120,7 @@ class DokployApplicationClient {
    * @param {string} applicationId
    * @returns {Promise<any>}
    */
-  async remove(applicationId) {
+  async delete(applicationId) {
     return await this.dokployClient.post("application.delete", {
       applicationId,
     });
