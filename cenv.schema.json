@@ -44,8 +44,7 @@
 		},
 		"NEXT_PUBLIC_SANITY_DATASET": {
 			"public": true,
-			"key": "NEXT_PUBLIC_SANITY_DATASET",
-			"value": "production"
+			"key": "NEXT_PUBLIC_SANITY_DATASET"
 		},
 		"OTEL_EXPORTER_OTLP_ENDPOINT": {
 			"key": "OTEL_EXPORTER_OTLP_ENDPOINT"

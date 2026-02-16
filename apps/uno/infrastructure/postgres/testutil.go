@@ -51,7 +51,7 @@ func SetupTestDB(t *testing.T) *Database {
 		t.Fatalf("failed to get mapped port: %v", err)
 	}
 
-	connStr := fmt.Sprintf("postgres://test:test@127.0.0.1:%s/uno_test", port.Port())
+	connStr := fmt.Sprintf("postgres://test:test@127.0.0.1:%s/uno_test?sslmode=disable", port.Port())
 
 	// Connect to database with retry logic
 	var db *Database

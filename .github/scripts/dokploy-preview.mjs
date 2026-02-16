@@ -173,7 +173,7 @@ async function createPreviewEnvironment(client) {
   console.log("Waiting for PostgreSQL to be ready...");
   await sleep(20_000);
 
-  const databaseUrl = `postgres://postgres:${dbPassword}@${dbHost}:5432/echo-db?sslmode=disable`;
+  const databaseUrl = `postgresql://postgres:${dbPassword}@${dbHost}:5432/echo-db?sslmode=disable`;
 
   // 4. Deploy migrator to run migrations and seeding
   const migrator = await client.application.create(
@@ -220,7 +220,7 @@ async function createPreviewEnvironment(client) {
       `UNO_API_PORT=8000`,
       `ADMIN_KEY=${ADMIN_KEY}`,
       `ENVIRONMENT=staging`,
-      `GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
+      `NEXT_PUBLIC_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
     ].join("\n"),
   );
 
@@ -257,7 +257,7 @@ async function createPreviewEnvironment(client) {
       `ADMIN_KEY=${ADMIN_KEY}`,
       `ENVIRONMENT=staging`,
       `PORT=3000`,
-      `GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
+      `NEXT_PUBLIC_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}`,
     ].join("\n"),
   );
 
