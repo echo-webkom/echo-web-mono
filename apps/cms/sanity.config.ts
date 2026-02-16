@@ -64,7 +64,7 @@ const testConfig = defineConfig({
 
 const getConfig = () => {
   if (IS_DEV) {
-    return [prodConfig, devConfig, testConfig];
+    return [devConfig, testConfig, prodConfig];
   }
 
   return [prodConfig];

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth/session";
 import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
+import { ENVIRONMENT } from "../config";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
@@ -18,7 +19,7 @@ export const SiteHeader = async () => {
 
   return (
     <div className="sticky top-0 z-20">
-      <VercelPreviewNotify />
+      <EnvironmentWarning />
 
       <div className="bg-background border-b-2">
         <NavigationRoot>
@@ -58,13 +59,22 @@ export const SiteHeader = async () => {
   );
 };
 
-const VercelPreviewNotify = () => {
-  const isVercelPreview = process.env.VERCEL_ENV === "preview";
+const EnvironmentWarning = () => {
+  const isStaging = ENVIRONMENT === "staging";
+  const isDevelopment = ENVIRONMENT === "development";
 
-  if (isVercelPreview) {
+  if (isDevelopment) {
     return (
       <div className="bg-red-400 p-2 text-center text-sm font-medium">
-        <p>Dette er en forhåndsvisning av nettsiden. Databasen er ikke tilgjengelig.</p>
+        <p>Du kjører i utviklingsmiljø.</p>
+      </div>
+    );
+  }
+
+  if (isStaging) {
+    return (
+      <div className="bg-yellow-400 p-2 text-center text-sm font-medium text-black">
+        <p>Du kjører i stagingmiljø.</p>
       </div>
     );
   }

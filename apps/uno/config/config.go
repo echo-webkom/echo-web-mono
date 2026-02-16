@@ -34,7 +34,7 @@ func Load() *Config {
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
-		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "true") == "true",
+		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
 		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
 	}
 }

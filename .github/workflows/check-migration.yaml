@@ -9,7 +9,7 @@ on:
       - packages/db/**
 
 env:
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/echo-web?sslmode=disable
   NEXT_PUBLIC_SANITY_DATASET: "develop"
   FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
   FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}

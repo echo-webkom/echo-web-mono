@@ -11,8 +11,6 @@ type Database struct {
 }
 
 func New(databaseUrl string) (*Database, error) {
-	databaseUrl += "?sslmode=disable"
-
 	db, err := otelsqlx.Open("postgres", databaseUrl)
 	db.SetMaxOpenConns(10)
 	if err != nil {

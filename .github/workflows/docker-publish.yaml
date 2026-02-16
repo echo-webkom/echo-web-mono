@@ -1,4 +1,4 @@
-name: 🐳 Build and Publish Docker Image
+name: 🐳 Build and deploy
 
 on:
   push:
@@ -12,7 +12,44 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  create-pending-status:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    name: 🟠 Set PR status to redeploying
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: 🟠 Update PR comment with redeploying status
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const marker = '<!-- preview-env -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+
+            if (existing) {
+              let body = existing.body;
+              if (body.includes('| Status |')) {
+                body = body.replace(/\| Status \|.*\|/, '| Status | 🟠 Redeploying... |');
+              } else {
+                body = body.replace(/(\|.*\|.*\|\n)(\n)/, '$1| Status | 🟠 Redeploying... |\n$2');
+              }
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            }
+
   build-and-push-uno:
+    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build uno
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,7 +59,7 @@ jobs:
 
     steps:
       - name: 🔍 Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 🔐 Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -51,11 +88,14 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GIT_COMMIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
   build-and-push-web:
+    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build web
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -94,6 +134,139 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GIT_COMMIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
+
+  # Migrator that only runs on PRs, since it is used to seed and migrate the preview environment, and is not needed for production deployments.
+  build-and-push-migrator:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build migrator
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_NAME: migrator
+
+    steps:
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🔐 Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏷️ Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=pr,prefix=pr-
+
+      - name: 🏗️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🐳 Build and push migrator
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./packages/seeder/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+  deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    needs: [build-and-push-uno, build-and-push-web, build-and-push-migrator]
+    name: 🚀 Deploy PR Preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: preview
+
+      - name: 🔑 Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: 🔒 Add VPS to known hosts
+        run: ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🔐 Log in to GitHub Container Registry on VPS
+        env:
+          DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: 🚀 Deploy preview stack
+        env:
+          DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          DB_PASSWORD: ${{ secrets.PREVIEW_DATABASE_PASSWORD }}
+          ADMIN_KEY: ${{ secrets.PREVIEW_ADMIN_KEY }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          FEIDE_CLIENT_ID: ${{ secrets.FEIDE_CLIENT_ID }}
+          FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
+          PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
+          GIT_COMMIT_SHA: ${{ github.sha }}
+        run: docker compose -p pr-${PR_NUMBER} -f preview/docker-compose.yaml up -d --pull always --wait
+
+      - name: 💬 Comment on PR
+        uses: actions/github-script@v8
+        env:
+          PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        with:
+          script: |
+            const marker = '<!-- preview-env -->';
+            const domain = process.env.PREVIEW_DOMAIN;
+            const prNumber = process.env.PR_NUMBER;
+            const body = [
+              marker,
+              '## Preview Environment',
+              '',
+              '| Project | URL |',
+              '|---------|-----|',
+              `| Frontend | https://pr-${prNumber}.web.${domain} |`,
+              `| Backend | https://pr-${prNumber}.uno.${domain} |`,
+              `| Status | 🟢 Deployed |`,
+              '',
+              `_Deployed from \`${context.sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: ${{ github.event.pull_request.number }},
+                body,
+              });
+            }

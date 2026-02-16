@@ -51,6 +51,19 @@ export const clientWith = (dataset: Dataset) =>
     useCdn: false,
   });
 
+// NEVER USE THIS FOR PRODUCTION!
+// UNLESS YOU KNOW EXACTLY WHAT YOU ARE DOING.
+// IF YOU MESS UP THE PRODUCTION DATASET, YOU WILL LOSE DATA AND CAUSE OUTAGES.
+// YES THIS IS SUPPOSED TO SCARE YOU BECAUSE IT IS DANGEROUS.
+// NEVER EVER PLEASE
+export const writeClientWith = (dataset: "develop" | "testing", token: string) =>
+  createClient({
+    ...options,
+    dataset,
+    useCdn: false,
+    token,
+  });
+
 const builder = createImageUrlBuilder(cdnClient);
 export const urlFor = (source: SanityImageSource) => {
   return builder.image(source);

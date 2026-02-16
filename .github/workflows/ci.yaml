@@ -8,7 +8,7 @@ on:
 
 env:
   ADMIN_KEY: foobar
-  DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web
+  DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web?sslmode=disable
 
   UNO_API_PORT: 8000
   TELEMENTRY_ENABLED: false
