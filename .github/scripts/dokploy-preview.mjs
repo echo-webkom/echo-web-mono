@@ -71,9 +71,9 @@ async function findAppsInProject(client, projectId) {
   const apps = project.environments?.flatMap((e) => e.applications ?? []) ?? [];
 
   // @ts-expect-error Not typed
-  const uno = apps.find((a) => a.appName === `pr-${PR_NUMBER}-uno`);
+  const uno = apps.find((a) => a.appName === `uno`);
   // @ts-expect-error Not typed
-  const web = apps.find((a) => a.appName === `pr-${PR_NUMBER}-web`);
+  const web = apps.find((a) => a.appName === `web`);
 
   return { uno, web };
 }
@@ -150,9 +150,9 @@ async function createPreviewEnvironment(client) {
 
   // 3. Create and deploy PostgreSQL
   const db = await client.postgres.create({
-    name: `pr-${PR_NUMBER}-db`,
-    appName: `pr-${PR_NUMBER}-db`,
-    databaseName: "echo_web",
+    name: "db",
+    appName: "db",
+    databaseName: "echo-db",
     databaseUser: "postgres",
     databasePassword: dbPassword,
     dockerImage: "postgres:17.7",
@@ -173,12 +173,12 @@ async function createPreviewEnvironment(client) {
   console.log("Waiting for PostgreSQL to be ready...");
   await sleep(20_000);
 
-  const databaseUrl = `postgres://postgres:${dbPassword}@${dbHost}:5432/echo_web?sslmode=disable`;
+  const databaseUrl = `postgres://postgres:${dbPassword}@${dbHost}:5432/echo-db?sslmode=disable`;
 
   // 4. Deploy migrator to run migrations and seeding
   const migrator = await client.application.create(
-    `pr-${PR_NUMBER}-migrator`,
-    `pr-${PR_NUMBER}-migrator`,
+    `migrator`,
+    `migrator`,
     environmentId,
   );
   if (!migrator?.applicationId) {
@@ -200,14 +200,10 @@ async function createPreviewEnvironment(client) {
   );
 
   await client.application.deploy(migrator.applicationId);
-  console.log("Migrator deployed (will run in background).");
+  console.log("Migrator deployed (running in the background).");
 
   // 5. Create and configure uno (backend)
-  const uno = await client.application.create(
-    `pr-${PR_NUMBER}-uno`,
-    `pr-${PR_NUMBER}-uno`,
-    environmentId,
-  );
+  const uno = await client.application.create(`uno`, `uno`, environmentId);
   if (!uno?.applicationId) {
     throw new Error(
       `application.create did not return an applicationId for uno. Response: ${JSON.stringify(uno)}`,
@@ -238,11 +234,7 @@ async function createPreviewEnvironment(client) {
   console.log("Uno deployed!");
 
   // 6. Create and configure web (frontend)
-  const web = await client.application.create(
-    `pr-${PR_NUMBER}-web`,
-    `pr-${PR_NUMBER}-web`,
-    environmentId,
-  );
+  const web = await client.application.create("web", "web", environmentId);
   if (!web?.applicationId) {
     throw new Error(
       `application.create did not return an applicationId for web. Response: ${JSON.stringify(web)}`,
