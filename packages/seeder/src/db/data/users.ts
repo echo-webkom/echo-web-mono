@@ -36,7 +36,7 @@ export const users = [
   {
     id: "alum",
     name: "Andreas Aanes",
-    email: "alum@echo.uib.on",
+    email: "alum@echo.uib.no",
     type: "alum",
     token: "alum",
     isPublic: true,
@@ -45,7 +45,7 @@ export const users = [
   {
     id: "admin",
     name: "Bo Salhus",
-    email: "admin@echo.uib.on",
+    email: "admin@echo.uib.no",
     type: "student",
     token: "admin",
     isPublic: true,
@@ -53,7 +53,7 @@ export const users = [
   {
     id: "unethical",
     name: "Unethical",
-    email: "unethical@echo.uib.on",
+    email: "unethical@echo.uib.no",
     type: "student",
     token: "unethical",
     year: 2,
