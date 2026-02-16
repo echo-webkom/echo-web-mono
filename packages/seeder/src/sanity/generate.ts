@@ -84,25 +84,37 @@ export const generate = async ({ dataset }: Options) => {
 
   const productionDocs = await fetchProductionDocuments();
 
-  // Combine production documents with our fixtures
-  const allDocuments: Array<IdentifiedSanityDocumentStub> = [
-    ...productionDocs,
+  // Fixture documents get refreshed every run (dates change)
+  const fixtureDocuments: Array<IdentifiedSanityDocumentStub> = [
     ...locations,
     ...companies,
     ...makeHappenings(),
     ...makeJobAds(),
   ];
 
+  const allDocuments: Array<IdentifiedSanityDocumentStub> = [
+    ...productionDocs,
+    ...fixtureDocuments,
+  ];
+
   const knownIds = new Set(allDocuments.map((doc) => doc._id));
   // Strip any references to documents not in our set, to avoid dangling refs
-  const cleanedDocuments = allDocuments.map((doc) => stripDanglingRefs(doc, knownIds));
+  const cleanedProdDocs = productionDocs.map((doc) => stripDanglingRefs(doc, knownIds));
+  const cleanedFixtureDocs = fixtureDocuments.map((doc) => stripDanglingRefs(doc, knownIds));
 
   const tx = client.transaction();
-  for (const doc of cleanedDocuments) {
+
+  // Production docs: createIfNotExists so we don't overwrite manual changes (e.g. uploaded images)
+  for (const doc of cleanedProdDocs) {
+    tx.createIfNotExists(doc);
+  }
+
+  // Fixture docs: createOrReplace to keep dates fresh
+  for (const doc of cleanedFixtureDocs) {
     tx.createOrReplace(doc);
   }
 
   await tx.commit({ visibility: "async" });
 
-  console.log(`✅ Generated ${cleanedDocuments.length} documents in "${dataset}" dataset`);
+  console.log(`✅ Generated ${allDocuments.length} documents in "${dataset}" dataset`);
 };
