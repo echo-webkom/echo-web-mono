@@ -6,12 +6,14 @@ import { db } from "@echo-webkom/db/serverless";
 import * as message from "../utils";
 import { degrees as defaultDegrees } from "./data/degrees";
 import { groups as defaultGroups } from "./data/groups";
+import { createRegistrations } from "./data/registrations";
 import { createFakeUsers, users as defaultUsers } from "./data/users";
 import { type SeedMode } from "./mode";
 import * as Happening from "./repo/happening";
 import * as User from "./repo/user";
 
 const NOW = new Date();
+const FAKE_USER_COUNT = 50;
 
 export type Options = {
   /**
@@ -58,16 +60,6 @@ const seedDev = async () => {
   console.log(chalk.blue.underline(`🌱 Seeding dev data...`));
   message.lines();
 
-  console.log("No dev data to seed");
-};
-
-const seedTest = async () => {
-  await seedDev();
-
-  message.lines();
-  console.log(chalk.blue.underline(`🌱 Seeding test data...`));
-  message.lines();
-
   await Promise.all(defaultUsers.map(User.create));
 
   await db
@@ -87,6 +79,25 @@ const seedTest = async () => {
       isLeader: true,
     })
     .onConflictDoNothing();
+
+  await createFakeUsers(FAKE_USER_COUNT);
+};
+
+/**
+ * Seed registrations for fake users.
+ * Must be called after Sanity happenings have been synced to the DB.
+ */
+export const seedRegistrations = async () => {
+  console.log(chalk.blue.underline(`🌱 Seeding registrations...`));
+  await createRegistrations(FAKE_USER_COUNT);
+};
+
+const seedTest = async () => {
+  await seedDev();
+
+  message.lines();
+  console.log(chalk.blue.underline(`🌱 Seeding test data...`));
+  message.lines();
 
   await Happening.create({
     id: "5cbb5337-a6e6-4eff-a821-a73722594f47",
@@ -120,7 +131,4 @@ const seedTest = async () => {
     .onConflictDoNothing();
 
   console.log("Inserted spot range for Test i prod med Webkom");
-
-  // Uncomment to add 100 fake students
-  await createFakeUsers(100);
 };

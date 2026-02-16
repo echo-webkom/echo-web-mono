@@ -10,6 +10,6 @@ done
 
 cd /app/packages/seeder
 echo "Seeding database..."
-pnpm tsx ./src/index.ts all --mode test --dataset "$NEXT_PUBLIC_SANITY_DATASET"
+pnpm tsx ./src/index.ts all --mode dev --dataset "$NEXT_PUBLIC_SANITY_DATASET"
 
 echo "Migrations and seeding complete!"

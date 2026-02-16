@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { fakerNB_NO as faker } from "@faker-js/faker";
 
 import { pickRandom } from "../../utils";
 import * as User from "../repo/user";
@@ -63,16 +63,18 @@ export const users = [
 ] as const;
 
 export const createFakeUsers = async (n: number) => {
+  faker.seed(42);
+
   await Promise.all(
     Array.from({ length: n }, (_, i) =>
       User.create({
-        id: `student${i}`,
+        id: `fake-user-${i}`,
         name: faker.person.fullName(),
         email: faker.internet.email(),
         type: "student",
-        token: `student${i}`,
+        token: `fake-user-${i}`,
         hasReadTerms: true,
-        isPublic: false,
+        isPublic: pickRandom([true, false]),
         degreeId: pickRandom(["dtek", "dsik", "prog", "inf", "dsc", "dvit"]),
         year: pickRandom([1, 2, 3, 4, 5]),
       }),
