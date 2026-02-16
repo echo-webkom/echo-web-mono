@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import type { IdentifiedSanityDocumentStub } from "@sanity/client";
+import { createReadStream } from "node:fs";
+import type { IdentifiedSanityDocumentStub, SanityClient } from "@sanity/client";
 import groq from "groq";
 
 import { clientWith, writeClientWith, type Dataset } from "@echo-webkom/sanity";
@@ -36,8 +37,12 @@ const stripDanglingRefs = (obj: any, knownIds: Set<string>): any => {
     return undefined;
   }
 
-  // Drop image/file objects with asset references (assets are never in our set)
-  if ((obj._type === "image" || obj._type === "file") && obj.asset?._ref) {
+  // Drop image/file objects whose asset is not in our known set
+  if (
+    (obj._type === "image" || obj._type === "file") &&
+    obj.asset?._ref &&
+    !knownIds.has(obj.asset._ref)
+  ) {
     return undefined;
   }
 
@@ -66,6 +71,32 @@ const fetchProductionDocuments = async () => {
   return docs;
 };
 
+const uploadCompanyImages = async (client: SanityClient) => {
+  const docs: Array<IdentifiedSanityDocumentStub> = [];
+  const assetIds: Array<string> = [];
+
+  for (const company of companies) {
+    const { imagePath, ...doc } = company;
+
+    const asset = await client.assets.upload("image", createReadStream(imagePath), {
+      filename: `${doc.name.toLowerCase()}.png`,
+    });
+
+    assetIds.push(asset._id);
+    docs.push({
+      ...doc,
+      image: {
+        _type: "image",
+        asset: { _type: "reference", _ref: asset._id },
+      },
+    });
+
+    console.log(`📸 Uploaded image for ${doc.name}`);
+  }
+
+  return { docs, assetIds };
+};
+
 /**
  * Insert and generate test data in Sanity, based on production data and our fixtures.
  * Strips any references to documents not included in our set, to avoid dangling refs.
@@ -84,10 +115,13 @@ export const generate = async ({ dataset }: Options) => {
 
   const productionDocs = await fetchProductionDocuments();
 
+  // Upload company images and build company documents with image references
+  const { docs: companyDocs, assetIds } = await uploadCompanyImages(client);
+
   // Fixture documents get refreshed every run (dates change)
   const fixtureDocuments: Array<IdentifiedSanityDocumentStub> = [
     ...locations,
-    ...companies,
+    ...companyDocs,
     ...makeHappenings(),
     ...makeJobAds(),
   ];
@@ -97,7 +131,7 @@ export const generate = async ({ dataset }: Options) => {
     ...fixtureDocuments,
   ];
 
-  const knownIds = new Set(allDocuments.map((doc) => doc._id));
+  const knownIds = new Set([...allDocuments.map((doc) => doc._id), ...assetIds]);
   // Strip any references to documents not in our set, to avoid dangling refs
   const cleanedProdDocs = productionDocs.map((doc) => stripDanglingRefs(doc, knownIds));
   const cleanedFixtureDocs = fixtureDocuments.map((doc) => stripDanglingRefs(doc, knownIds));

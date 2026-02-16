@@ -3,7 +3,6 @@ import chalk from "chalk";
 import { degrees, groups, spotRanges, usersToGroups } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import * as message from "../utils";
 import { degrees as defaultDegrees } from "./data/degrees";
 import { groups as defaultGroups } from "./data/groups";
 import { createRegistrations } from "./data/registrations";
@@ -45,9 +44,7 @@ export const seed = async ({ mode }: Options) => {
 };
 
 const seedProd = async () => {
-  message.lines();
   console.log(chalk.blue.underline(`🌱 Seeding prod data...`));
-  message.lines();
 
   await db.insert(degrees).values(defaultDegrees).onConflictDoNothing();
   await db.insert(groups).values(defaultGroups).onConflictDoNothing();
@@ -56,9 +53,7 @@ const seedProd = async () => {
 const seedDev = async () => {
   await seedProd();
 
-  message.lines();
   console.log(chalk.blue.underline(`🌱 Seeding dev data...`));
-  message.lines();
 
   await Promise.all(defaultUsers.map(User.create));
 
@@ -95,9 +90,7 @@ export const seedRegistrations = async () => {
 const seedTest = async () => {
   await seedDev();
 
-  message.lines();
   console.log(chalk.blue.underline(`🌱 Seeding test data...`));
-  message.lines();
 
   await Happening.create({
     id: "5cbb5337-a6e6-4eff-a821-a73722594f47",
