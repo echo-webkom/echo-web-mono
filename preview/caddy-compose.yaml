@@ -10,6 +10,19 @@ services:
       - caddy-data:/data
     networks: [caddy]
 
+  dozzle:
+    image: amir20/dozzle:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/deploy/dozzle/users.yaml:/data/users.yaml
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
+    labels:
+      caddy: ${PREVIEW_DOMAIN}
+      caddy.reverse_proxy: "{{upstreams 8080}}"
+    networks: [caddy]
+
 volumes:
   caddy-data:
 
