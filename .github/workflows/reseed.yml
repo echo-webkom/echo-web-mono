@@ -1,0 +1,33 @@
+name: 🌱 Reseed
+
+on:
+  schedule:
+    - cron: "0 14 * * *" # 15:00 CET (14:00 UTC)
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v6
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.22.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🌱 Reseed development database
+        run: pnpm tsx ./src/index.ts generate --dataset "$NEXT_PUBLIC_SANITY_DATASET"
+        working-directory: packages/seeder
+        env:
+          NEXT_PUBLIC_SANITY_DATASET: develop # NEVER EVER EVER USE PRODUCTION HERE NEVER EVER
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
