@@ -13,6 +13,7 @@ env:
 
 jobs:
   build-and-push-uno:
+    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,6 +58,7 @@ jobs:
           platforms: linux/amd64
 
   build-and-push-web:
+    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -101,7 +103,7 @@ jobs:
           platforms: linux/amd64
 
   build-and-push-migrator:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -144,7 +146,7 @@ jobs:
           platforms: linux/amd64
 
   deploy-preview:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
     needs: [build-and-push-uno, build-and-push-web, build-and-push-migrator]
     name: 🚀 Deploy PR Preview
     runs-on: ubuntu-latest
