@@ -104,10 +104,10 @@ class DokployApplicationClient {
    * @param {string} applicationId
    * @param {string} sourceType
    * @param {string} dockerImage
-   * @param {string} env
+   * @param {string=} env
    * @returns {Promise<any>}
    */
-  async update(applicationId, sourceType, dockerImage, env) {
+  async update(applicationId, sourceType, dockerImage, env = undefined) {
     return await this.dokployClient.post("application.update", {
       applicationId,
       sourceType,
@@ -230,7 +230,9 @@ class DokployPostgresClient {
    * @returns {Promise<any>}
    */
   async one(postgresId) {
-    return await this.dokployClient.get(`postgres.one?postgresId=${postgresId}`);
+    return await this.dokployClient.get(
+      `postgres.one?postgresId=${postgresId}`,
+    );
   }
 
   /**

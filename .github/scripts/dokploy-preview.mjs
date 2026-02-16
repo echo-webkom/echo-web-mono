@@ -71,9 +71,9 @@ async function findAppsInProject(client, projectId) {
   const apps = project.environments?.flatMap((e) => e.applications ?? []) ?? [];
 
   // @ts-expect-error Not typed
-  const uno = apps.find((a) => a.appName === `uno`);
+  const uno = apps.find((a) => a.name === "uno");
   // @ts-expect-error Not typed
-  const web = apps.find((a) => a.appName === `web`);
+  const web = apps.find((a) => a.name === "web");
 
   return { uno, web };
 }
@@ -200,7 +200,10 @@ async function createPreviewEnvironment(client) {
   );
 
   await client.application.deploy(migrator.applicationId);
-  console.log("Migrator deployed (running in the background).");
+  console.log("Migrator deployed, waiting for it to finish...");
+  await sleep(60_000);
+  await client.application.delete(migrator.applicationId);
+  console.log("Migrator finished and removed.");
 
   // 5. Create and configure uno (backend)
   const uno = await client.application.create(`uno`, `uno`, environmentId);
@@ -268,12 +271,6 @@ async function createPreviewEnvironment(client) {
   );
   await client.application.deploy(web.applicationId);
   console.log("Web deployed!");
-
-  // 7. Wait for migrator to finish, then remove it
-  console.log("Waiting for migrator to finish...");
-  await sleep(60_000);
-  await client.application.delete(migrator.applicationId);
-  console.log("Migrator removed.");
 }
 
 async function deploy() {
