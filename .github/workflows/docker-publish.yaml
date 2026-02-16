@@ -1,4 +1,4 @@
-name: 🐳 Build and Publish Docker Image
+name: 🐳 Build and deploy
 
 on:
   push:
@@ -12,8 +12,44 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  create-pending-status:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    name: 🟠 Set PR status to redeploying
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: 🟠 Update PR comment with redeploying status
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const marker = '<!-- dokploy-preview -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+
+            if (existing) {
+              let body = existing.body;
+              if (body.includes('| Status |')) {
+                body = body.replace(/\| Status \|.*\|/, '| Status | 🟠 Redeploying... |');
+              } else {
+                body = body.replace(/(\|.*\|.*\|\n)(\n)/, '$1| Status | 🟠 Redeploying... |\n$2');
+              }
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            }
+
   build-and-push-uno:
     if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build uno
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,6 +95,7 @@ jobs:
 
   build-and-push-web:
     if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build web
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -102,8 +139,10 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
+  # Migrator that only runs on PRs, since it is used to seed and migrate the preview environment, and is not needed for production deployments.
   build-and-push-migrator:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    name: 🐳 Build dokploy migrator
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -190,8 +229,9 @@ jobs:
               '|---------|-----|',
               `| Frontend | ${{ steps.deploy.outputs.web_url }} |`,
               `| Backend | ${{ steps.deploy.outputs.api_url }} |`,
+              `| Status | 🟢 Deployed |`,
               '',
-              `_Deployed from \`${context.sha.slice(0, 7)}\`_`,
+              `_Deployed from \`${context.sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`,
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
