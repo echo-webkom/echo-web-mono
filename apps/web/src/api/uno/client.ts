@@ -16,6 +16,8 @@ function dateReviver(key: string, value: unknown): unknown {
   return value;
 }
 
+export type UnoClientType = (typeof UnoClient)["prototype"];
+
 export class UnoClient {
   private api: KyInstance;
 
@@ -209,6 +211,10 @@ class HappeningApi {
   }
 
   async registrationCount(happeningIds: Array<string>) {
+    if (happeningIds.length === 0) {
+      return [];
+    }
+
     const query = happeningIds.map((id) => `id=${id}`).join("&");
 
     return await this.client.request<Array<RegistrationCount>>(

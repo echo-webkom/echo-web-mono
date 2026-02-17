@@ -6,8 +6,8 @@ import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
 
 import { auth } from "@/auth/session";
 import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
-import { getFeedbackById } from "@/data/site-feedbacks/queries";
 import { isWebkom } from "@/lib/memberships";
+import { unoWithAdmin } from "../api/server";
 
 const sendFeedbackPayloadSchema = insertSiteFeedbackSchema.pick({
   email: true,
@@ -59,7 +59,7 @@ export const toggleReadFeedback = async (id: string) => {
   }
 
   try {
-    const feedback = await getFeedbackById(id);
+    const feedback = await unoWithAdmin.siteFeedbacks.getById(id);
 
     if (!feedback) {
       return {

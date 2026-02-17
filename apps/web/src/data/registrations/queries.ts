@@ -3,12 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
-import { unoWithAdmin } from "@/api/server";
 import { cacheKeyFactory } from "./revalidate";
-
-export const getRegistrationsByHappeningId = async (happeningId: string) => {
-  return await unoWithAdmin.happenings.registrations(happeningId);
-};
 
 export const getRegistrationsByUserId = async (userId: string) => {
   return cache(
@@ -33,12 +28,4 @@ export const getRegistrationsByUserId = async (userId: string) => {
       tags: [cacheKeyFactory.registrationsUser(userId)],
     },
   )();
-};
-
-export const getRegistrationCountByHappeningIds = async (happeningIds: Array<string>) => {
-  if (happeningIds.length === 0) {
-    return [];
-  }
-
-  return await unoWithAdmin.happenings.registrationCount(happeningIds);
 };

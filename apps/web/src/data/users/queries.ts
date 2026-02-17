@@ -4,8 +4,6 @@ import { eq } from "drizzle-orm";
 import { type User } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { unoWithAdmin } from "../../api/server";
-
 export const getUserById = async (id: User["id"]) => {
   return await db.query.users.findFirst({
     where: (user) => eq(user.id, id),
@@ -31,12 +29,4 @@ export const getAllUsers = async () => {
       revalidate: 60,
     },
   )();
-};
-
-export const getBannedUsers = async () => {
-  return await unoWithAdmin.strikes.listBanned();
-};
-
-export const getUsersWithStrikes = async () => {
-  return await unoWithAdmin.strikes.listStriked();
 };
