@@ -155,6 +155,20 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.CreateSiteFeedbackRequest:
+    properties:
+      category:
+        type: string
+      email:
+        type: string
+      message:
+        type: string
+      name:
+        type: string
+    required:
+    - category
+    - message
+    type: object
   uno_http_dto.DatabrusMatchDTO:
     properties:
       away_score:
@@ -705,6 +719,34 @@ paths:
       summary: Get site feedbacks
       tags:
       - feedbacks
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Site Feedback
+        in: body
+        name: feedback
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateSiteFeedbackRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: Create site feedback
+      tags:
+      - feedbacks
   /feedbacks/{id}:
     get:
       parameters:
@@ -731,6 +773,36 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Get site feedback by ID
+      tags:
+      - feedbacks
+  /feedbacks/{id}/seen:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Feedback ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Update site feedback
       tags:
       - feedbacks
   /happenings:

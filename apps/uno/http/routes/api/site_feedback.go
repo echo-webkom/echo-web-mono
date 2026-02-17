@@ -22,6 +22,8 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 	// Admin
 	mux.Handle("GET", "/", f.GetSiteFeedbacksHandler, admin)
 	mux.Handle("GET", "/{id}", f.GetSiteFeedbackByIDHandler, admin)
+	mux.Handle("POST", "/", f.CreateSiteFeedbackHandler, admin)
+	mux.Handle("PUT", "/{id}/seen", f.MarkSiteFeedbackAsSeen, admin)
 
 	return mux
 }
@@ -67,6 +69,62 @@ func (f *feedbacks) GetSiteFeedbackByIDHandler(ctx *handler.Context) error {
 	}
 
 	// Convert to DTO
-	response := new(dto.SiteFeedbackResponse).FromDomain(&feedback)
+	response := dto.NewSiteFeedbackResponseFromDomain(&feedback)
 	return ctx.JSON(response)
+}
+
+// CreateSiteFeedbackHandler creates a new site feedback
+// @Summary	     Create site feedback
+// @Tags         feedbacks
+// @Accept       json
+// @Produce      json
+// @Param        feedback  body  dto.CreateSiteFeedbackRequest  true  "Site Feedback"
+// @Success      201  {object}  dto.SiteFeedbackResponse  "Created"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Router       /feedbacks [post]
+func (f *feedbacks) CreateSiteFeedbackHandler(ctx *handler.Context) error {
+	var req dto.CreateSiteFeedbackRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
+	}
+
+	newFeedback, err := req.ToNewSiteFeedback()
+	if err != nil {
+		return ctx.Error(err, http.StatusBadRequest)
+	}
+
+	// Create a new site feedback in the repository
+	feedback, err := f.feedbackService.SiteFeedbackRepo().CreateSiteFeedback(ctx.Context(), newFeedback)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Convert to DTO
+	response := dto.NewSiteFeedbackResponseFromDomain(&feedback)
+	return ctx.JSON(response)
+}
+
+// MarkSiteFeedbackAsSeen updates an existing site feedback
+// @Summary	     Update site feedback
+// @Tags         feedbacks
+// @Accept       json
+// @Param        id        path  string  true  "Feedback ID"
+// @Success      200  {object}  dto.SiteFeedbackResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "Not Found"
+// @Router       /feedbacks/{id}/seen [put]
+func (f *feedbacks) MarkSiteFeedbackAsSeen(ctx *handler.Context) error {
+	feedbackID := ctx.PathValue("id")
+	if feedbackID == "" {
+		return ctx.Error(errors.New("feedback ID is required"), http.StatusBadRequest)
+	}
+
+	err := f.feedbackService.SiteFeedbackRepo().MarkSiteFeedbackAsRead(ctx.Context(), feedbackID)
+	if err != nil {
+		return ctx.Error(errors.New("site feedback not found"), http.StatusNotFound)
+	}
+
+	return nil
 }

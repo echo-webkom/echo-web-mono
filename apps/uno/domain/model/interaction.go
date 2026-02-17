@@ -1,15 +1,54 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var (
+	ErrInvalidSiteFeedbackCategory = errors.New("invalid site feedback category")
+)
+
+// SiteFeedbackCategory defines the category of site feedback.
+type SiteFeedbackCategory string
+
+// Possible values for SiteFeedbackCategory
+const (
+	CategoryBug     SiteFeedbackCategory = "bug"
+	CategoryFeature SiteFeedbackCategory = "feature"
+	CategoryLogin   SiteFeedbackCategory = "login"
+	CategoryOther   SiteFeedbackCategory = "other"
+)
+
+func NewSiteFeedbackCategory(value string) (SiteFeedbackCategory, error) {
+	c := SiteFeedbackCategory(value)
+	if !c.IsValid() {
+		return "", ErrInvalidSiteFeedbackCategory
+	}
+	return c, nil
+}
+
+func (c SiteFeedbackCategory) String() string {
+	return string(c)
+}
+
+func (c SiteFeedbackCategory) IsValid() bool {
+	switch c {
+	case CategoryBug, CategoryFeature, CategoryLogin, CategoryOther:
+		return true
+	default:
+		return false
+	}
+}
 
 // SiteFeedback represents a user's feedback about the website.
 // This is a domain entity that encapsulates feedback data and behavior.
 type SiteFeedback struct {
 	ID        string
 	Name      *string
-	Email     *string
+	Email     *Email
 	Message   string
-	Category  string
+	Category  SiteFeedbackCategory
 	IsRead    bool
 	CreatedAt time.Time
 }
@@ -17,9 +56,9 @@ type SiteFeedback struct {
 // NewSiteFeedback is a value object representing the data required to create new feedback.
 type NewSiteFeedback struct {
 	Name     *string
-	Email    *string
+	Email    *Email
 	Message  string
-	Category string
+	Category SiteFeedbackCategory
 }
 
 // Reaction represents a user's emotional response to content.

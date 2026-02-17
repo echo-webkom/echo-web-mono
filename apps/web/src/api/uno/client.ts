@@ -336,6 +336,14 @@ class SiteFeedbackApi {
   async getById(id: string) {
     return await this.client.request<SiteFeedback>("GET", `feedbacks/${id}`);
   }
+
+  async create() {
+    return await this.client.request("POST", "feedbacks");
+  }
+
+  async markAsSeen(id: string) {
+    return await this.client.request("PUT", `feedbacks/${id}/seen`);
+  }
 }
 
 export interface WhitelistEntry {

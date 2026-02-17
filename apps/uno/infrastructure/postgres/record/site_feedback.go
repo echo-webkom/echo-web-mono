@@ -18,12 +18,20 @@ type SiteFeedback struct {
 
 // ToDomain converts database model to domain model
 func (db *SiteFeedback) ToDomain() *model.SiteFeedback {
+	var email *model.Email
+	if db.Email != nil {
+		e, _ := model.NewEmail(*db.Email)
+		email = &e
+	}
+
+	category, _ := model.NewSiteFeedbackCategory(db.Category)
+
 	return &model.SiteFeedback{
 		ID:        db.ID,
 		Name:      db.Name,
-		Email:     db.Email,
+		Email:     email,
 		Message:   db.Message,
-		Category:  db.Category,
+		Category:  category,
 		IsRead:    db.IsRead,
 		CreatedAt: db.CreatedAt,
 	}
