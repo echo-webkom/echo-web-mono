@@ -42,6 +42,7 @@ export class UnoClient {
       },
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       parseJson: (text) => JSON.parse(text, dateReviver),
+      throwHttpErrors: false,
     });
 
     this.comments = new CommentsApi(this);
@@ -355,7 +356,11 @@ class WhitelistApi {
   }
 
   async getByEmail(email: string) {
-    return await this.client.request<WhitelistEntry | null>("GET", `whitelist/${email}`);
+    try {
+      return await this.client.request<WhitelistEntry | null>("GET", `whitelist/${email}`);
+    } catch {
+      return null;
+    }
   }
 }
 class StrikesApi {
