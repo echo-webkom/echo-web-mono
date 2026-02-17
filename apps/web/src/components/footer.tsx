@@ -104,7 +104,10 @@ export const Footer = ({ className }: FooterProps) => {
   );
 };
 
-const COMMIT_SHA = process.env.NEXT_PUBLIC_GIT_COMMIT_SHA ?? "AAAAAAAAAAAAAAAAAAAAA";
+const COMMIT_SHA =
+  process.env.VERCEL_GIT_COMMIT_SHA ??
+  process.env.NEXT_PUBLIC_GIT_COMMIT_SHA ??
+  "AAAAAAAAAAAAAAAAAAAAA";
 const humanSha = COMMIT_SHA.slice(0, 7);
 
 const CommitLabel = () => {
