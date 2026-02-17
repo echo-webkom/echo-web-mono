@@ -89,6 +89,9 @@ func RunServer(
 	// Databrus routes
 	r.Mount("/databrus", api.NewDatabrusMux(logger, databrusService))
 
+	// Advent of Code routes
+	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(logger, adventOfCodeService), admin)
+
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
 

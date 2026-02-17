@@ -55,7 +55,7 @@ func RunApi() {
 	logger.Info(context.Background(), "database connected")
 
 	// Initialize Advent of Code client
-	aocToken := os.Getenv("AOC_SESSION_TOKEN")
+	aocToken := os.Getenv("AOC_SESSION_COOKIE")
 	aocClient := adventofcode.New(aocToken)
 	if aocToken == "" {
 		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")

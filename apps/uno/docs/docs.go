@@ -76,6 +76,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/advent-of-code/leaderboard": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "advent_of_code"
+                ],
+                "summary": "Get Advent of Code leaderboard",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.AdventOfCodeMemberResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/birthdays": {
             "get": {
                 "description": "Gets all the users who have birthday today",
@@ -1575,6 +1609,40 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.AdventOfCodeDayResponse": {
+            "type": "object",
+            "properties": {
+                "star1_time": {
+                    "type": "integer"
+                },
+                "star2_time": {
+                    "type": "integer"
+                },
+                "stars": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_http_dto.AdventOfCodeMemberResponse": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/uno_http_dto.AdventOfCodeDayResponse"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "local_score": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 }
             }

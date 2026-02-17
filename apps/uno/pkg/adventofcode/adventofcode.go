@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	leaderboardURL    = "https://adventofcode.com/%d/leaderboard/private/view/%s"
+	leaderboardURL    = "https://adventofcode.com/%d/leaderboard/private/view/%s.json"
 	sessionCookieName = "session"
 )
 
@@ -50,7 +50,7 @@ func (a *Client) GetLeaderboard(year int, leaderboardID string) (Leaderboard, er
 		return Leaderboard{}, err
 	}
 	req.AddCookie(&http.Cookie{Name: sessionCookieName, Value: a.sessionToken})
-	req.Header.Set("User-Agent", "echo-yr-client/1.0 (+https://echo.uib.no/)")
+	req.Header.Set("User-Agent", "github.com/echo-webkom/echo-web-mono by webkom@echo.uib.no")
 	req.Header.Set("Accept", "application/json")
 
 	resp, err := HttpClient.Do(req)
