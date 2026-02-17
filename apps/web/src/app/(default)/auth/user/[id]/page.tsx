@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
-import { getAllDegrees } from "@/data/degrees/queries";
+import { uno } from "../../../../../api/client";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -40,7 +40,7 @@ export default async function ProfilePage({ params }: Props) {
   const hasAccess = profileOwner?.isPublic ?? isProfileOwner;
 
   const [degrees, memberships] = await Promise.all([
-    getAllDegrees(),
+    uno.degrees.all(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, ownerId),
       with: {
