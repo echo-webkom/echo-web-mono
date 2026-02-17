@@ -3,13 +3,8 @@
 import { z } from "zod";
 
 import { auth } from "@/auth/session";
-import {
-  addShoppinglistLike,
-  createShoppinglistItem,
-  deleteShoppinglistItems,
-  removeShoppinglistLike,
-} from "@/data/shopping-list-item/mutations";
 import { isMemberOf } from "@/lib/memberships";
+import { unoWithAdmin } from "../api/server";
 
 const shoppingListSchema = z.object({
   name: z.string(),
@@ -27,17 +22,12 @@ export const hyggkomSubmit = async (payload: z.infer<typeof shoppingListSchema>)
         message: "Du er ikke logget inn",
       };
     }
-    const itemId = await createShoppinglistItem({
+
+    // Creates item and likes it for the creator.
+    await unoWithAdmin.shopping.createItem({
       name: data.name,
       userId: user.id,
     });
-
-    if (itemId) {
-      await addShoppinglistLike({
-        userId: user.id,
-        itemId: itemId.id,
-      });
-    }
 
     return {
       success: true,
@@ -67,7 +57,9 @@ export const hyggkomRemoveSubmit = async (id: string) => {
       message: "Du kan ikke fjerne forslag.",
     };
   }
-  await deleteShoppinglistItems(id);
+
+  await unoWithAdmin.shopping.removeItem(id);
+
   return {
     success: true,
     message: "Forslaget ble fjernet.",
@@ -84,20 +76,13 @@ export const hyggkomLikeSubmit = async (itemId: string) => {
     };
   }
 
-  try {
-    await addShoppinglistLike({
-      itemId: itemId,
-      userId: user.id,
-    });
-    return {
-      success: true,
-      message: "Forslaget ble liket.",
-    };
-  } catch {
-    await removeShoppinglistLike(itemId, user.id);
-  }
+  await unoWithAdmin.shopping.toggleLike({
+    itemId: itemId,
+    userId: user.id,
+  });
+
   return {
     success: true,
-    message: "Din like er blitt fjernet.",
+    message: "Suksess",
   };
 };

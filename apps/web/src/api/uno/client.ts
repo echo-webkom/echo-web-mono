@@ -308,6 +308,18 @@ class ShoppingApi {
   async items() {
     return await this.client.request<Array<ShoppingListItem>>("GET", "shopping");
   }
+
+  async createItem(item: { name: string; userId: string }) {
+    await this.client.request("POST", "shopping", item);
+  }
+
+  async toggleLike(data: { itemId: string; userId: string }) {
+    await this.client.request("POST", "shopping/like", data);
+  }
+
+  async removeItem(id: string) {
+    await this.client.request("DELETE", `shopping/${id}`);
+  }
 }
 
 export type SiteFeedbackCategory = "bug" | "feature" | "login" | "other";

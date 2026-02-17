@@ -43,6 +43,32 @@ func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.
 	return result, nil
 }
 
+// GetUserToShoppingListItem retrieves a specific user to shopping list item relationship by user ID and item ID.
+func (p *UsersToShoppingListItemRepo) GetUserToShoppingListItem(ctx context.Context, userID string, itemID string) (*model.UsersToShoppingListItems, error) {
+	p.logger.Info(ctx, "getting user to shopping list item",
+		"user_id", userID,
+		"item_id", itemID,
+	)
+
+	var dbModel record.UsersToShoppingListItemsDB
+	query := `--sql
+		SELECT user_id, item_id, created_at FROM users_to_shopping_list_items WHERE user_id = $1 AND item_id = $2
+	`
+	err := p.db.GetContext(ctx, &dbModel, query, userID, itemID)
+	if err != nil {
+		p.logger.Error(ctx, "failed to get user to shopping list item",
+			"error", err,
+			"user_id", userID,
+			"item_id", itemID,
+		)
+		return nil, err
+	}
+
+	domainModel := dbModel.ToDomain()
+	return domainModel, nil
+}
+
+// AddUserToShoppingListItem adds a user to a shopping list item, indicating that the user likes the item.
 func (p *UsersToShoppingListItemRepo) AddUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {
 	p.logger.Info(ctx, "adding user to shopping list item",
 		"user_id", userID,
@@ -63,6 +89,7 @@ func (p *UsersToShoppingListItemRepo) AddUserToShoppingListItem(ctx context.Cont
 	return nil
 }
 
+// DeleteUserToShoppingListItem removes a user from a shopping list item, indicating that the user no longer likes the item.
 func (p *UsersToShoppingListItemRepo) DeleteUserToShoppingListItem(ctx context.Context, userID string, itemID string) error {
 	p.logger.Info(ctx, "deleting user to shopping list item",
 		"user_id", userID,
