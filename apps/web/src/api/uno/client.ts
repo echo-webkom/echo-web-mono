@@ -63,6 +63,10 @@ export class UnoClient {
       json: body,
     }).json<T>();
   }
+
+  async health() {
+    return await this.api("health").json<{ status: string }>();
+  }
 }
 
 export interface CommentAuthor {

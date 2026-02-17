@@ -8,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllDegrees } from "@/data/degrees/queries";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+import { uno } from "../../../../api/client";
 import { AddDegreeButton } from "./_components/add-degree-button";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminDegreePage() {
   await ensureWebkomOrHovedstyret();
 
-  const degrees = await getAllDegrees();
+  const degrees = await uno.degrees.all();
 
   return (
     <Container>
