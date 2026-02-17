@@ -1,13 +1,7 @@
 import "server-only";
 
-import ky from "ky";
+import { UnoClient } from "./uno/client";
 
-export const apiServer = ky.extend({
-  prefixUrl: process.env.NEXT_PUBLIC_API_URL,
-  throwHttpErrors: false,
-  credentials: "include",
-  cache: "no-store",
-  headers: {
-    "X-Admin-Key": process.env.ADMIN_KEY,
-  },
+export const unoWithAdmin = new UnoClient({
+  adminToken: process.env.ADMIN_KEY,
 });
