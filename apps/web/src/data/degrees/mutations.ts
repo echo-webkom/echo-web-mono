@@ -1,19 +1,14 @@
-import { type Degree, type DegreeInsert } from "@echo-webkom/db/schemas";
-
-import { apiServer } from "@/api/server";
+import { unoWithAdmin } from "@/api/server";
+import { type Degree, type DegreeInsert } from "@/api/uno/client";
 
 export const createDegree = async (newDegree: DegreeInsert) => {
-  await apiServer.post("degrees", {
-    json: newDegree,
-  });
+  await unoWithAdmin.degrees.create(newDegree);
 };
 
 export const deleteDegree = async (id: string) => {
-  await apiServer.delete(`degree/${id}`);
+  await unoWithAdmin.degrees.delete(id);
 };
 
 export const updateDegree = async (updatedDegree: Degree) => {
-  await apiServer.post(`degree/${updatedDegree.id}`, {
-    json: updatedDegree,
-  });
+  await unoWithAdmin.degrees.update(updatedDegree);
 };

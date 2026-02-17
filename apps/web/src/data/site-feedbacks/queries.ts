@@ -1,11 +1,9 @@
-import { type SiteFeedback } from "@echo-webkom/db/schemas";
-
-import { apiServer } from "@/api/server";
+import { unoWithAdmin } from "@/api/server";
 
 export const getAllFeedback = async () => {
-  return await apiServer.get("feedbacks").json<Array<SiteFeedback>>();
+  return await unoWithAdmin.siteFeedbacks.all();
 };
 
 export const getFeedbackById = async (id: string) => {
-  return await apiServer.get(`feedbacks/${id}`).json<SiteFeedback>();
+  return await unoWithAdmin.siteFeedbacks.getById(id);
 };

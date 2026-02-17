@@ -1,6 +1,6 @@
 "use server";
 
-import { apiServer } from "@/api/server";
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
 export const likeComment = async (commentId: string) => {
@@ -10,12 +10,9 @@ export const likeComment = async (commentId: string) => {
     return { success: false };
   }
 
-  const resp = await apiServer.post(`comments/${commentId}/reaction`, {
-    json: {
-      commentId,
-      userId: user.id,
-    },
-  });
+  await unoWithAdmin.comments.like(commentId, user.id);
 
-  return await resp.json();
+  return {
+    success: true,
+  };
 };

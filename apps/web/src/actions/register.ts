@@ -2,7 +2,7 @@
 
 import { type z } from "zod";
 
-import { apiServer } from "@/api/server";
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { type registrationFormSchema } from "@/lib/schemas/registration";
 
@@ -24,15 +24,7 @@ export const register = async (id: string, payload: z.infer<typeof registrationF
   const questions = payload.questions;
 
   try {
-    const resp = await apiServer
-      .post(`happenings/${happeningId}/register`, {
-        json: {
-          userId,
-          questions,
-        },
-      })
-      .json<{ success: boolean; message: string }>();
-
+    const resp = await unoWithAdmin.happenings.register(happeningId, userId, questions);
     return resp;
   } catch {
     console.error("Failed to register");

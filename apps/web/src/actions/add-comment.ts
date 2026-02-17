@@ -1,6 +1,6 @@
 "use server";
 
-import { apiServer } from "@/api/server";
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
 export const addCommentAction = async (id: string, content: string) => {
@@ -14,13 +14,7 @@ export const addCommentAction = async (id: string, content: string) => {
     return null;
   }
 
-  await apiServer.post("comments", {
-    json: {
-      content,
-      postId: id,
-      userId: user.id,
-    },
-  });
+  await unoWithAdmin.comments.comment(id, user.id, content);
 
   return {
     success: true,
@@ -34,14 +28,7 @@ export const addReplyAction = async (id: string, content: string, parentId: stri
     return null;
   }
 
-  await apiServer.post("comments", {
-    json: {
-      content,
-      postId: id,
-      userId: user.id,
-      parentCommentId: parentId,
-    },
-  });
+  await unoWithAdmin.comments.reply(id, user.id, content, parentId);
 
   return {
     success: true,
