@@ -5,7 +5,6 @@ import { z } from "zod";
 import { insertSiteFeedbackSchema } from "@echo-webkom/db/schemas";
 
 import { auth } from "@/auth/session";
-import { createFeedback, updateFeedback } from "@/data/site-feedbacks/mutations";
 import { isWebkom } from "@/lib/memberships";
 import { unoWithAdmin } from "../api/server";
 
@@ -20,7 +19,7 @@ export const sendFeedback = async (payload: z.infer<typeof sendFeedbackPayloadSc
   try {
     const data = await sendFeedbackPayloadSchema.parseAsync(payload);
 
-    await createFeedback(data);
+    await unoWithAdmin.siteFeedbacks.create(data);
 
     return {
       success: true,
@@ -68,9 +67,7 @@ export const toggleReadFeedback = async (id: string) => {
       };
     }
 
-    await updateFeedback(id, {
-      isRead: !feedback.isRead,
-    });
+    await unoWithAdmin.siteFeedbacks.markAsSeen(id);
 
     return {
       success: true,
