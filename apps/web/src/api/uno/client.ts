@@ -65,7 +65,7 @@ export class UnoClient {
   }
 
   async health() {
-    return await this.api("health").json<{ status: string }>();
+    return await this.api("").json<{ status: string }>();
   }
 }
 
