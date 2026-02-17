@@ -65,6 +65,20 @@ func (s *ShoppingListService) GetShoppingList(ctx context.Context) ([]ShoppingLi
 	return shoppingLists, nil
 }
 
+func (s *ShoppingListService) ToggleLike(ctx context.Context, itemID string, userID string) error {
+	// Check if the like already exists
+	// This returns an error if the like does not exist, so we ignore the error and check if the result is nil
+	existingLike, _ := s.usersToShoppingListItemRepo.GetUserToShoppingListItem(ctx, userID, itemID)
+
+	// Like exists, so we remove it (unlike)
+	if existingLike != nil {
+		return s.usersToShoppingListItemRepo.DeleteUserToShoppingListItem(ctx, userID, itemID)
+	}
+
+	// Like does not exist, so we add it
+	return s.usersToShoppingListItemRepo.AddUserToShoppingListItem(ctx, userID, itemID)
+}
+
 func (s *ShoppingListService) ShoppingListItemRepo() port.ShoppingListItemRepo {
 	return s.shoppingListeItemRepo
 }

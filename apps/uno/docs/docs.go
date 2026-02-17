@@ -1039,6 +1039,167 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shopping_list"
+                ],
+                "summary": "Create shopping list item",
+                "parameters": [
+                    {
+                        "description": "Create Shopping List Item Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.CreateShoppingListItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/like": {
+            "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shopping_list"
+                ],
+                "summary": "Toggle like on shopping list item",
+                "parameters": [
+                    {
+                        "description": "User to Shopping List Item Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UserToShoppingListItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shopping_list"
+                ],
+                "summary": "Remove item from shopping list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/strikes/banned": {
@@ -1498,6 +1659,21 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.CreateShoppingListItemRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "userId"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.CreateSiteFeedbackRequest": {
             "type": "object",
             "required": [
@@ -1832,6 +2008,21 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserToShoppingListItemRequest": {
+            "type": "object",
+            "required": [
+                "itemId",
+                "userId"
+            ],
+            "properties": {
+                "itemId": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }

@@ -28,3 +28,13 @@ func ShoppingListFromDomainList(items []service.ShoppingList) []ShoppingListItem
 
 	return response
 }
+
+type UserToShoppingListItemRequest struct {
+	UserID string `json:"userId" validate:"required"`
+	ItemID string `json:"itemId" validate:"required"`
+}
+
+type CreateShoppingListItemRequest struct {
+	Name   string `json:"name" validate:"required"`
+	UserID string `json:"userId" validate:"required"`
+}

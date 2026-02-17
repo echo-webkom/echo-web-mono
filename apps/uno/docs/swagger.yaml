@@ -155,6 +155,16 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.CreateShoppingListItemRequest:
+    properties:
+      name:
+        type: string
+      userId:
+        type: string
+    required:
+    - name
+    - userId
+    type: object
   uno_http_dto.CreateSiteFeedbackRequest:
     properties:
       category:
@@ -374,6 +384,16 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  uno_http_dto.UserToShoppingListItemRequest:
+    properties:
+      itemId:
+        type: string
+      userId:
+        type: string
+    required:
+    - itemId
+    - userId
     type: object
   uno_http_dto.WeatherResponse:
     properties:
@@ -1050,6 +1070,107 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Get shopping list
+      tags:
+      - shopping_list
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Shopping List Item Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateShoppingListItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create shopping list item
+      tags:
+      - shopping_list
+  /shopping/{id}:
+    delete:
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove item from shopping list
+      tags:
+      - shopping_list
+  /shopping/like:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User to Shopping List Item Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UserToShoppingListItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Toggle like on shopping list item
       tags:
       - shopping_list
   /strikes/banned:
