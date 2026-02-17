@@ -15,6 +15,9 @@ RUN turbo prune @echo-webkom/web --docker
 FROM base AS installer
 WORKDIR /app
 
+ARG GIT_COMMIT_SHA
+ENV NEXT_PUBLIC_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+
 # Copy lockfile and package.json files
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
