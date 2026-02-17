@@ -53,6 +53,7 @@ services:
       AUTH_SECRET: ${AUTH_SECRET}
       ADMIN_KEY: ${ADMIN_KEY}
       ENVIRONMENT: staging
+      HOSTNAME: "0.0.0.0"
       PORT: "3000"
       NEXT_PUBLIC_GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
     labels:
