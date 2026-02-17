@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 
 import type { AuthSessionUser } from "@/auth/session";
-import { AuthProvider } from "@/provides/auth";
+import { AuthProvider } from "@/providers/auth";
 
 export const Providers = ({
   user,
