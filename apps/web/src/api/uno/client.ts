@@ -18,6 +18,19 @@ function dateReviver(key: string, value: unknown): unknown {
 
 export type UnoClientType = (typeof UnoClient)["prototype"];
 
+type HttpMethod =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "PATCH"
+  | "get"
+  | "post"
+  | "put"
+  | "delete"
+  | "patch"
+  | (string & {});
+
 export class UnoClient {
   private api: KyInstance;
 
@@ -56,7 +69,7 @@ export class UnoClient {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async request<T>(method: string, path: string, body?: any): Promise<T> {
+  async request<T>(method: HttpMethod, path: string, body?: any): Promise<T> {
     const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
 
     return await this.api(normalizedPath, {
