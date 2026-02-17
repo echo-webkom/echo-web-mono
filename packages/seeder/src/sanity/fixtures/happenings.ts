@@ -1,4 +1,4 @@
-import { futureDate, pastDate, ref } from "./helpers";
+import { futureDate, futureMinutes, pastDate, ref } from "./helpers";
 
 // Real production IDs for organizer references
 const WEBKOM_ID = "S3ru67Qp680fK1XfNRvRG";
@@ -264,7 +264,7 @@ export const makeHappenings = () => [
     slug: { _type: "slug", current: "seed-workshop-computas" },
     happeningType: "bedpres",
     date: futureDate(10),
-    registrationStart: futureDate(2),
+    registrationStart: futureMinutes(1),
     registrationEnd: futureDate(9),
     organizers: [ref(BEDKOM_ID, "org1")],
     company: ref("seed-company-computas"),
