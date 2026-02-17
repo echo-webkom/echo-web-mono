@@ -1,6 +1,8 @@
 package api_test
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -127,6 +129,129 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			mux := api.NewSiteFeedbackMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.feedbackID, nil)
+			r.SetPathValue("id", tt.feedbackID)
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}
+
+func TestCreateSiteFeedbackHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		requestBody    any
+		useInvalidJSON bool
+		setupMocks     func(*mocks.SiteFeedbackRepo)
+		expectedStatus int
+	}{
+		{
+			name: "success",
+			requestBody: map[string]any{
+				"name":     "Bob",
+				"email":    "bob@example.com",
+				"message":  "This is a test feedback",
+				"category": "bug",
+			},
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				mockRepo.EXPECT().
+					CreateSiteFeedback(mock.Anything, mock.AnythingOfType("model.NewSiteFeedback")).
+					Return(testutil.NewFakeStruct[model.SiteFeedback](), nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "invalid json",
+			useInvalidJSON: true,
+			setupMocks:     func(mockRepo *mocks.SiteFeedbackRepo) {},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name: "error from repo",
+			requestBody: map[string]any{
+				"message":  "This is a test feedback",
+				"category": "bug",
+			},
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				mockRepo.EXPECT().
+					CreateSiteFeedback(mock.Anything, mock.AnythingOfType("model.NewSiteFeedback")).
+					Return(model.SiteFeedback{}, errors.New("database error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockSiteFeedbackRepo := mocks.NewSiteFeedbackRepo(t)
+			tt.setupMocks(mockSiteFeedbackRepo)
+
+			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
+			mux := api.NewSiteFeedbackMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+
+			var r *http.Request
+			if tt.useInvalidJSON {
+				r = httptest.NewRequest(http.MethodPost, "/", nil)
+			} else {
+				body, _ := json.Marshal(tt.requestBody)
+				r = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
+			}
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}
+
+func TestMarkSiteFeedbackAsSeen(t *testing.T) {
+	tests := []struct {
+		name           string
+		feedbackID     string
+		setupMocks     func(*mocks.SiteFeedbackRepo)
+		expectedStatus int
+		expectError    bool
+	}{
+		{
+			name:       "success",
+			feedbackID: "feedback123",
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				mockRepo.EXPECT().
+					MarkSiteFeedbackAsRead(mock.Anything, "feedback123").
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+			expectError:    false,
+		},
+		{
+			name:       "feedback not found",
+			feedbackID: "nonexistent",
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				mockRepo.EXPECT().
+					MarkSiteFeedbackAsRead(mock.Anything, "nonexistent").
+					Return(errors.New("not found")).
+					Once()
+			},
+			expectedStatus: http.StatusNotFound,
+			expectError:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockSiteFeedbackRepo := mocks.NewSiteFeedbackRepo(t)
+			tt.setupMocks(mockSiteFeedbackRepo)
+
+			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
+			mux := api.NewSiteFeedbackMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+
+			r := httptest.NewRequest(http.MethodPut, "/"+tt.feedbackID+"/seen", nil)
 			r.SetPathValue("id", tt.feedbackID)
 			w := httptest.NewRecorder()
 

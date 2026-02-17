@@ -48,7 +48,7 @@ func (p *SiteFeedbackRepo) CreateSiteFeedback(ctx context.Context, feedback mode
 		RETURNING id, name, email, message, category, created_at, is_read
 	`
 	var dbModel record.SiteFeedback
-	err := p.db.GetContext(ctx, &dbModel, query, feedback.Name, feedback.Email, feedback.Message, feedback.Category, false)
+	err := p.db.GetContext(ctx, &dbModel, query, feedback.Name, feedback.Email.StringPtr(), feedback.Message, feedback.Category, false)
 	if err != nil {
 		p.logger.Error(ctx, "failed to create site feedback",
 			"error", err,

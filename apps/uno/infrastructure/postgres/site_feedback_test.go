@@ -19,7 +19,7 @@ func TestSiteFeedbackRepo_CreateSiteFeedback(t *testing.T) {
 	ctx := context.Background()
 
 	name := "John Doe"
-	email := "john@example.com"
+	email, _ := model.NewEmail("john@example.com")
 	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,
@@ -47,7 +47,7 @@ func TestSiteFeedbackRepo_GetSiteFeedbackByID(t *testing.T) {
 	ctx := context.Background()
 
 	name := "John Doe"
-	email := "john@example.com"
+	email, _ := model.NewEmail("john@example.com")
 	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,
@@ -76,7 +76,7 @@ func TestSiteFeedbackRepo_GetAllSiteFeedbacks(t *testing.T) {
 	ctx := context.Background()
 
 	name1 := "John Doe"
-	email1 := "john@example.com"
+	email1, _ := model.NewEmail("john@example.com")
 	feedback1 := model.NewSiteFeedback{
 		Name:     &name1,
 		Email:    &email1,
@@ -85,7 +85,7 @@ func TestSiteFeedbackRepo_GetAllSiteFeedbacks(t *testing.T) {
 	}
 
 	name2 := "Jane Doe"
-	email2 := "jane@example.com"
+	email2, _ := model.NewEmail("jane@example.com")
 	feedback2 := model.NewSiteFeedback{
 		Name:     &name2,
 		Email:    &email2,
@@ -119,7 +119,7 @@ func TestSiteFeedbackRepo_MarkSiteFeedbackAsRead(t *testing.T) {
 	ctx := context.Background()
 
 	name := "John Doe"
-	email := "john@example.com"
+	email, _ := model.NewEmail("john@example.com")
 	feedback := model.NewSiteFeedback{
 		Name:     &name,
 		Email:    &email,

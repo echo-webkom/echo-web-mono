@@ -322,6 +322,13 @@ export interface SiteFeedback {
   createdAt: Date;
 }
 
+export interface SiteFeedbackInsert {
+  name?: string | null;
+  email?: string | null;
+  message: string;
+  category: SiteFeedbackCategory;
+}
+
 class SiteFeedbackApi {
   private client: UnoClient;
 
@@ -335,6 +342,14 @@ class SiteFeedbackApi {
 
   async getById(id: string) {
     return await this.client.request<SiteFeedback>("GET", `feedbacks/${id}`);
+  }
+
+  async create(feedback: SiteFeedbackInsert) {
+    return await this.client.request("POST", "feedbacks", feedback);
+  }
+
+  async markAsSeen(id: string) {
+    return await this.client.request("PUT", `feedbacks/${id}/seen`);
   }
 }
 
