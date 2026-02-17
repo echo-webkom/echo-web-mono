@@ -1,7 +1,7 @@
 import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
-import { getWhitelistByEmail } from "@/data/whitelist/queries";
 import { shortDateNoTime } from "@/utils/date";
+import { unoWithAdmin } from "../../../../../../api/server";
 
 export default async function WhitelistNotification() {
   const user = await auth();
@@ -10,7 +10,7 @@ export default async function WhitelistNotification() {
     return null;
   }
 
-  const whitelist = await getWhitelistByEmail(user.email);
+  const whitelist = await unoWithAdmin.whitelist.getByEmail(user.email);
 
   if (!whitelist) {
     return null;

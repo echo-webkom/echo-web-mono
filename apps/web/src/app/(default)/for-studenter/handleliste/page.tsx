@@ -2,12 +2,12 @@ import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
 import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
-import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
 import { isMemberOf } from "@/lib/memberships";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+import { unoWithAdmin } from "../../../../api/server";
 
 export default async function HyggkomHandleliste() {
-  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+  const [user, items] = await Promise.all([auth(), unoWithAdmin.shopping.items()]);
 
   const mappedItems = items.map((item) => ({
     id: item.id,

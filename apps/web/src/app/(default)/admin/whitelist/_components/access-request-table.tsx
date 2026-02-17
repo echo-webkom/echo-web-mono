@@ -11,12 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAccessRequests } from "@/data/access-requests/queries";
+import { unoWithAdmin } from "../../../../../api/server";
 import { DenyAccessModal } from "./deny-access-modal";
 import { GrantAccessButton } from "./grant-access-button";
 
 export const AccessRequestTable = async () => {
-  const accessRequests = await getAccessRequests();
+  const accessRequests = await unoWithAdmin.accessRequests.all();
 
   if (accessRequests.length === 0) {
     return (

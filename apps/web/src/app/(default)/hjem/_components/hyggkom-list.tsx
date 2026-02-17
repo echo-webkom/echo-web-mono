@@ -1,10 +1,10 @@
 import { auth } from "@/auth/session";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
-import { getAllShoppinglistItems } from "@/data/shopping-list-item/queries";
+import { unoWithAdmin } from "../../../../api/server";
 import { BentoBox } from "./bento-box";
 
 export const HyggkomList = async ({ className }: { className?: string }) => {
-  const [user, items] = await Promise.all([auth(), getAllShoppinglistItems()]);
+  const [user, items] = await Promise.all([auth(), unoWithAdmin.shopping.items()]);
 
   if (!items.length) {
     return null;

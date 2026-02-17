@@ -10,8 +10,8 @@ import {
 } from "@echo-webkom/db/schemas";
 
 import { auth } from "@/auth/session";
-import { createDegree, deleteDegree, updateDegree } from "@/data/degrees/mutations";
 import { isMemberOf, isWebkom } from "@/lib/memberships";
+import { unoWithAdmin } from "../api/server";
 
 export const addDegree = async (payload: DegreeInsert) => {
   const user = await auth();
@@ -33,7 +33,7 @@ export const addDegree = async (payload: DegreeInsert) => {
   try {
     const parsedPayload = insertDegreeSchema.parse(payload);
 
-    await createDegree(parsedPayload);
+    await unoWithAdmin.degrees.create(parsedPayload);
 
     return {
       success: true,
@@ -74,7 +74,7 @@ export const removeDegree = async (id: string) => {
   }
 
   try {
-    await deleteDegree(id);
+    await unoWithAdmin.degrees.delete(id);
 
     return {
       success: true,
@@ -110,7 +110,7 @@ export const editDegree = async (payload: Degree) => {
   try {
     const parsedPayload = selectDegreeSchema.parse(payload);
 
-    await updateDegree(parsedPayload);
+    await unoWithAdmin.degrees.update(parsedPayload);
 
     return {
       success: true,

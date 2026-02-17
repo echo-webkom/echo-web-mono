@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 
 import { Text } from "@/components/typography/text";
 import { Input } from "@/components/ui/input";
-import { type getBannedUsers } from "@/data/users/queries";
+import { type UnoClientType } from "../../../../../api/uno/client";
 import { StrikeRow } from "./strike-row";
 
-type Users = Awaited<ReturnType<typeof getBannedUsers>>;
+type Users = Awaited<ReturnType<UnoClientType["strikes"]["listBanned"]>>;
 
 type StrikesListProps = {
   users: Users;

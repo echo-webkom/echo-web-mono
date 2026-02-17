@@ -1,13 +1,13 @@
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
-import { getBannedUsers } from "@/data/users/queries";
 import { ensureBedkom } from "@/lib/ensure";
+import { unoWithAdmin } from "../../../../api/server";
 import { StrikesList } from "./_components/strikes-list";
 
 export default async function StrikesDashboard() {
   await ensureBedkom();
 
-  const bannedUsers = await getBannedUsers();
+  const bannedUsers = await unoWithAdmin.strikes.listBanned();
 
   return (
     <Container>

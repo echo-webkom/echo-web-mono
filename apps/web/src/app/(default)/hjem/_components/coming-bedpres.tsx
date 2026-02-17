@@ -2,8 +2,8 @@ import { LuClock10 } from "react-icons/lu";
 
 import { type HappeningType } from "@echo-webkom/lib";
 
-import { getRegistrationCountByHappeningIds } from "@/data/registrations/queries";
 import { fetchHomeHappenings } from "@/sanity/happening";
+import { unoWithAdmin } from "../../../../api/server";
 import { BentoBox } from "./bento-box";
 import { HappeningPreview } from "./happening-preview";
 
@@ -23,7 +23,7 @@ export const ComingHappenings = async ({
   className,
 }: ComingHappeningsProps) => {
   const happenings = await fetchHomeHappenings(types, n);
-  const registrationCounts = await getRegistrationCountByHappeningIds(
+  const registrationCounts = await unoWithAdmin.happenings.registrationCount(
     happenings.map((happening) => happening._id),
   );
 
