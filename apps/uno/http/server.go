@@ -46,6 +46,7 @@ func RunServer(
 	commentService *service.CommentService,
 	weatherService *service.WeatherService,
 	databrusService *service.DatabrusService,
+	adventOfCodeService *service.AdventOfCodeService,
 ) {
 	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
 

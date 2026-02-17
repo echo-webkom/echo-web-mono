@@ -8,14 +8,14 @@ import (
 )
 
 type AdventOfCodeClient struct {
-	logger port.Logger
 	aoc    *adventofcode.Client
+	logger port.Logger
 }
 
-func NewAdventOfCodeClient(logger port.Logger, aoc *adventofcode.Client) port.AdventOfCodeRepo {
+func NewAdventOfCodeClient(aoc *adventofcode.Client, logger port.Logger) port.AdventOfCodeRepo {
 	return &AdventOfCodeClient{
-		logger: logger,
 		aoc:    aoc,
+		logger: logger,
 	}
 }
 
