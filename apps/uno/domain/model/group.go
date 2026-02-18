@@ -8,7 +8,7 @@ type Group struct {
 
 // NewGroup represents the input for creating a new group
 type NewGroup struct {
-	ID   string
+	ID   *string
 	Name string
 }
 
