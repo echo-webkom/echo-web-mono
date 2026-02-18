@@ -78,6 +78,7 @@ func RunApi() {
 	weatherRepo := external.NewYrRepo(logger)
 	databrusRepo := external.NewDatabrusRepo(logger)
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
+	groupRepo := postgres.NewGroupRepo(db, logger)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -93,6 +94,7 @@ func RunApi() {
 	weatherService := service.NewWeatherService(weatherRepo)
 	databrusService := service.NewDatabrusService(logger, databrusRepo)
 	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo)
+	groupService := service.NewGroupService(groupRepo)
 
 	go http.RunServer(
 		notif,
@@ -111,6 +113,7 @@ func RunApi() {
 		weatherService,
 		databrusService,
 		adventOfCodeService,
+		groupService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
