@@ -19,6 +19,29 @@ func NewGroupRepo(db *Database, logger port.Logger) port.GroupRepo {
 	}
 }
 
+// GetGroupByID retrieves a group by its ID from the database.
+func (g *GroupRepo) GetGroupByID(ctx context.Context, id string) (model.Group, error) {
+	g.logger.Info(ctx, "fetching group by ID",
+		"id", id,
+	)
+
+	query := `--sql
+		SELECT id, name
+		FROM "group"
+		WHERE id = $1
+	`
+	var dbModel record.GroupDB
+	err := g.db.GetContext(ctx, &dbModel, query, id)
+	if err != nil {
+		g.logger.Error(ctx, "failed to fetch group by ID",
+			"error", err,
+			"id", id,
+		)
+		return model.Group{}, err
+	}
+	return *dbModel.ToDomain(), nil
+}
+
 // CreateGroup creates a new group in the database.
 func (g *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (model.Group, error) {
 	g.logger.Info(ctx, "creating group",
