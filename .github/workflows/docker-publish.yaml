@@ -14,13 +14,13 @@ env:
 jobs:
   create-pending-status:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
-    name: 🟠 Set PR status to redeploying
+    name: 🟠 Set PR status to deploying
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
 
     steps:
-      - name: 🟠 Update PR comment with redeploying status
+      - name: 🟠 Update PR comment with deploying status
         uses: actions/github-script@v8
         with:
           script: |
@@ -43,6 +43,22 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: existing.id,
+                body,
+              });
+            } else {
+              const body = [
+                marker,
+                '## Preview Environment',
+                '',
+                '| Project | URL |',
+                '|---------|-----|',
+                '| Status | 🟠 Deploying... |',
+                '',
+              ].join('\n');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: ${{ github.event.pull_request.number }},
                 body,
               });
             }
@@ -267,6 +283,43 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: ${{ github.event.pull_request.number }},
+                body,
+              });
+            }
+
+  preview-failed:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot' && failure()
+    needs: [build-and-push-uno, build-and-push-web, build-and-push-migrator, deploy-preview]
+    name: 🔴 Update PR comment on failure
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: 🔴 Update PR comment with failure status
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const marker = '<!-- preview-env -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.pull_request.number }},
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+
+            if (existing) {
+              let body = existing.body;
+              if (body.includes('| Status |')) {
+                body = body.replace(/\| Status \|.*\|/, `| Status | 🔴 [Failed](${runUrl}) |`);
+              } else {
+                body = body.replace(/(\|.*\|.*\|\n)(\n)/, `$1| Status | 🔴 [Failed](${runUrl}) |\n$2`);
+              }
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
                 body,
               });
             }
