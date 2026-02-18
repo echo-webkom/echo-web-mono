@@ -103,6 +103,28 @@ definitions:
       reason:
         type: string
     type: object
+  uno_http_dto.AdventOfCodeDayResponse:
+    properties:
+      star1_time:
+        type: integer
+      star2_time:
+        type: integer
+      stars:
+        type: integer
+    type: object
+  uno_http_dto.AdventOfCodeMemberResponse:
+    properties:
+      days:
+        additionalProperties:
+          $ref: '#/definitions/uno_http_dto.AdventOfCodeDayResponse'
+        type: object
+      id:
+        type: integer
+      local_score:
+        type: integer
+      name:
+        type: string
+    type: object
   uno_http_dto.CommentResponse:
     properties:
       content:
@@ -457,6 +479,28 @@ paths:
       summary: Get access requests
       tags:
       - access-request
+  /advent-of-code/leaderboard:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.AdventOfCodeMemberResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Advent of Code leaderboard
+      tags:
+      - advent_of_code
   /birthdays:
     get:
       description: Gets all the users who have birthday today

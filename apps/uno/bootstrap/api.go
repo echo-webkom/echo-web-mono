@@ -12,6 +12,7 @@ import (
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
+	"uno/pkg/adventofcode"
 
 	"github.com/jesperkha/notifier"
 )
@@ -53,6 +54,13 @@ func RunApi() {
 	}
 	logger.Info(context.Background(), "database connected")
 
+	// Initialize Advent of Code client
+	aocToken := os.Getenv("AOC_SESSION_COOKIE")
+	aocClient := adventofcode.New(aocToken)
+	if aocToken == "" {
+		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
+	}
+
 	// Initialize repositories
 	happeningRepo := postgres.NewHappeningRepo(db, logger)
 	userRepo := postgres.NewUserRepo(db, logger)
@@ -69,6 +77,7 @@ func RunApi() {
 	registrationRepo := postgres.NewRegistrationRepo(db, logger)
 	weatherRepo := external.NewYrRepo(logger)
 	databrusRepo := external.NewDatabrusRepo(logger)
+	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -83,6 +92,7 @@ func RunApi() {
 	commentService := service.NewCommentService(commentRepo)
 	weatherService := service.NewWeatherService(weatherRepo)
 	databrusService := service.NewDatabrusService(logger, databrusRepo)
+	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo)
 
 	go http.RunServer(
 		notif,
@@ -100,6 +110,7 @@ func RunApi() {
 		commentService,
 		weatherService,
 		databrusService,
+		adventOfCodeService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

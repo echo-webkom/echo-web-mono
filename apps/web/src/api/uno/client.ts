@@ -42,6 +42,7 @@ export class UnoClient {
   siteFeedbacks: SiteFeedbackApi;
   whitelist: WhitelistApi;
   strikes: StrikesApi;
+  adventOfCode: AdventOfCodeApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -66,6 +67,7 @@ export class UnoClient {
     this.siteFeedbacks = new SiteFeedbackApi(this);
     this.whitelist = new WhitelistApi(this);
     this.strikes = new StrikesApi(this);
+    this.adventOfCode = new AdventOfCodeApi(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -453,5 +455,30 @@ class StrikesApi {
         strikes: number;
       }>
     >("GET", "strikes/users");
+  }
+}
+
+export interface AdventOfCodeDay {
+  stars: 0 | 1 | 2;
+  star1Ts?: number;
+  star2Ts?: number;
+}
+
+export interface AdventOfCodeRow {
+  id: number;
+  name: string;
+  localScore: number;
+  days: Record<string, AdventOfCodeDay>;
+}
+
+class AdventOfCodeApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async leaderboard() {
+    return await this.client.request<Array<AdventOfCodeRow>>("GET", `advent-of-code/leaderboard`);
   }
 }
