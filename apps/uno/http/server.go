@@ -47,6 +47,7 @@ func RunServer(
 	weatherService *service.WeatherService,
 	databrusService *service.DatabrusService,
 	adventOfCodeService *service.AdventOfCodeService,
+	groupService *service.GroupService,
 ) {
 	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
 
@@ -91,6 +92,9 @@ func RunServer(
 
 	// Advent of Code routes
 	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(logger, adventOfCodeService), admin)
+
+	// Group routes
+	r.Mount("/groups", api.NewGroupMux(logger, groupService, admin))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
