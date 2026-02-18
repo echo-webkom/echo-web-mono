@@ -43,6 +43,7 @@ export class UnoClient {
   whitelist: WhitelistApi;
   strikes: StrikesApi;
   adventOfCode: AdventOfCodeApi;
+  groups: GroupsApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -68,6 +69,7 @@ export class UnoClient {
     this.whitelist = new WhitelistApi(this);
     this.strikes = new StrikesApi(this);
     this.adventOfCode = new AdventOfCodeApi(this);
+    this.groups = new GroupsApi(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -480,5 +482,40 @@ class AdventOfCodeApi {
 
   async leaderboard() {
     return await this.client.request<Array<AdventOfCodeRow>>("GET", `advent-of-code/leaderboard`);
+  }
+}
+
+interface Group {
+  id: string;
+  name: string;
+}
+
+interface GroupInsert {
+  id: string | null;
+  name: string;
+}
+
+class GroupsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async remove(id: string) {
+    try {
+      await this.client.request("DELETE", `groups/${id}`);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async create(group: GroupInsert) {
+    return await this.client.request<Group>("POST", "groups", group);
+  }
+
+  async update(group: Group) {
+    return await this.client.request<Group>("POST", `groups/${group.id}`, group);
   }
 }
