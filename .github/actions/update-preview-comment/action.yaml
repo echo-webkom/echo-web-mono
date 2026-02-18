@@ -1,0 +1,130 @@
+name: Update Preview Comment
+description: Creates or updates the preview environment comment on a PR.
+
+inputs:
+  status:
+    description: |
+      One of:
+        - deploying
+        - redeploying
+        - deployed
+        - failed
+    required: true
+  pr-number:
+    description: PR number to comment on
+    required: true
+  preview-domain:
+    description: Domain used to build preview URLs (required for 'deployed' status)
+    required: false
+  sha:
+    description: Git commit SHA (required for 'deployed' status)
+    required: false
+  run-url:
+    description: Workflow run URL (required for 'failed' status)
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/github-script@v8
+      env:
+        STATUS: ${{ inputs.status }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        PREVIEW_DOMAIN: ${{ inputs.preview-domain }}
+        SHA: ${{ inputs.sha }}
+        RUN_URL: ${{ inputs.run-url }}
+      with:
+        script: |
+          const marker = '<!-- preview-env -->';
+          const status = process.env.STATUS;
+          const prNumber = process.env.PR_NUMBER;
+          const domain = process.env.PREVIEW_DOMAIN;
+          const sha = process.env.SHA;
+          const runUrl = process.env.RUN_URL;
+
+          const statusLabel = {
+            deploying:   '🟠 Deploying...',
+            redeploying: '🟠 Redeploying...',
+            deployed:    '🟢 Deployed',
+            failed:      runUrl ? `🔴 [Failed](${runUrl})` : '🔴 Failed',
+          }[status];
+
+          if (!statusLabel) {
+            core.setFailed(`Unknown status: ${status}`);
+            return;
+          }
+
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+          });
+          const existing = comments.find((c) => c.body.includes(marker));
+
+          if (existing) {
+            let body = existing.body;
+            if (body.includes('| Status |')) {
+              body = body.replace(/\| Status \|.*\|/, `| Status | ${statusLabel} |`);
+            } else {
+              body = body.replace(/(\|.*\|.*\|\n)(\n)/, `$1| Status | ${statusLabel} |\n$2`);
+            }
+            if (status === 'deployed' && sha) {
+              const footer = `_Deployed from \`${sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`;
+              if (body.match(/_Deployed from/)) {
+                body = body.replace(/_Deployed from.*_/, footer);
+              } else {
+                body = body.trimEnd() + '\n\n' + footer + '\n';
+              }
+            }
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existing.id,
+              body,
+            });
+          } else if (status === 'deploying') {
+            const rows = domain
+              ? [
+                  `| Frontend | https://pr-${prNumber}.web.${domain} |`,
+                  `| Backend | https://pr-${prNumber}.uno.${domain} |`,
+                  `| Status | ${statusLabel} |`,
+                ]
+              : [`| Status | ${statusLabel} |`];
+            const body = [
+              marker,
+              '## Preview Environment',
+              '',
+              '| Project | URL |',
+              '|---------|-----|',
+              ...rows,
+              '',
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+          } else if (status === 'deployed' && domain) {
+            const footer = sha
+              ? `_Deployed from \`${sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`
+              : '';
+            const body = [
+              marker,
+              '## Preview Environment',
+              '',
+              '| Project | URL |',
+              '|---------|-----|',
+              `| Frontend | https://pr-${prNumber}.web.${domain} |`,
+              `| Backend | https://pr-${prNumber}.uno.${domain} |`,
+              `| Status | ${statusLabel} |`,
+              '',
+              footer,
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+          }

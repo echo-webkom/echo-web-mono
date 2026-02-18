@@ -20,48 +20,15 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: 🟠 Update PR comment with deploying status
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const marker = '<!-- preview-env -->';
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.pull_request.number }},
-            });
-            const existing = comments.find((c) => c.body.includes(marker));
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
 
-            if (existing) {
-              let body = existing.body;
-              if (body.includes('| Status |')) {
-                body = body.replace(/\| Status \|.*\|/, '| Status | 🟠 Redeploying... |');
-              } else {
-                body = body.replace(/(\|.*\|.*\|\n)(\n)/, '$1| Status | 🟠 Redeploying... |\n$2');
-              }
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              const body = [
-                marker,
-                '## Preview Environment',
-                '',
-                '| Project | URL |',
-                '|---------|-----|',
-                '| Status | 🟠 Deploying... |',
-                '',
-              ].join('\n');
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: ${{ github.event.pull_request.number }},
-                body,
-              });
-            }
+      - name: 🟠 Update PR comment with deploying status
+        uses: ./.github/actions/update-preview-comment
+        with:
+          status: deploying
+          pr-number: ${{ github.event.pull_request.number }}
+          preview-domain: ${{ secrets.PREVIEW_DOMAIN }}
 
   build-and-push-uno:
     if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
@@ -213,7 +180,9 @@ jobs:
       - name: 🔍 Checkout repository
         uses: actions/checkout@v6
         with:
-          sparse-checkout: preview
+          sparse-checkout: |
+            preview
+            .github/actions
 
       - name: 🔑 Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
@@ -241,51 +210,13 @@ jobs:
           GIT_COMMIT_SHA: ${{ github.sha }}
         run: docker compose -p pr-${PR_NUMBER} -f preview/docker-compose.yaml up -d --pull always --wait
 
-      - name: 💬 Comment on PR
-        uses: actions/github-script@v8
-        env:
-          PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: 💬 Update PR comment with deployed status
+        uses: ./.github/actions/update-preview-comment
         with:
-          script: |
-            const marker = '<!-- preview-env -->';
-            const domain = process.env.PREVIEW_DOMAIN;
-            const prNumber = process.env.PR_NUMBER;
-            const body = [
-              marker,
-              '## Preview Environment',
-              '',
-              '| Project | URL |',
-              '|---------|-----|',
-              `| Frontend | https://pr-${prNumber}.web.${domain} |`,
-              `| Backend | https://pr-${prNumber}.uno.${domain} |`,
-              `| Status | 🟢 Deployed |`,
-              '',
-              `_Deployed from \`${context.sha.slice(0, 7)}\` at ${new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Oslo' })}_`,
-            ].join('\n');
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.pull_request.number }},
-            });
-            const existing = comments.find((c) => c.body.includes(marker));
-
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: ${{ github.event.pull_request.number }},
-                body,
-              });
-            }
+          status: deployed
+          pr-number: ${{ github.event.pull_request.number }}
+          preview-domain: ${{ secrets.PREVIEW_DOMAIN }}
+          sha: ${{ github.sha }}
 
   preview-failed:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot' && failure()
@@ -296,30 +227,12 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: 🔴 Update PR comment with failure status
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const marker = '<!-- preview-env -->';
-            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.pull_request.number }},
-            });
-            const existing = comments.find((c) => c.body.includes(marker));
+      - name: 🔍 Checkout repository
+        uses: actions/checkout@v6
 
-            if (existing) {
-              let body = existing.body;
-              if (body.includes('| Status |')) {
-                body = body.replace(/\| Status \|.*\|/, `| Status | 🔴 [Failed](${runUrl}) |`);
-              } else {
-                body = body.replace(/(\|.*\|.*\|\n)(\n)/, `$1| Status | 🔴 [Failed](${runUrl}) |\n$2`);
-              }
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            }
+      - name: 🔴 Update PR comment with failure status
+        uses: ./.github/actions/update-preview-comment
+        with:
+          status: failed
+          pr-number: ${{ github.event.pull_request.number }}
+          run-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
