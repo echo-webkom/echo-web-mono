@@ -1,6 +1,6 @@
-import { type getCommentsById } from "@/data/comments/queries";
+import { type UnoClientType } from "../api/uno/client";
 
-type Comment = Awaited<ReturnType<typeof getCommentsById>>[number];
+type Comment = Awaited<ReturnType<UnoClientType["comments"]["all"]>>[number];
 
 export type CommentTree = Array<
   Comment & {

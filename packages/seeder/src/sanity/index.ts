@@ -12,7 +12,6 @@ import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
 import { clientWith, type Dataset } from "@echo-webkom/sanity";
 
-import * as message from "../utils";
 import { happeningQueryList, type SanityHappening } from "./query";
 
 export type Options = {
@@ -20,9 +19,7 @@ export type Options = {
 };
 
 export const seed = async ({ dataset }: Options) => {
-  message.lines();
   console.log(`🌱 Seeding Sanity data...`);
-  message.lines();
 
   const res = await clientWith(dataset).fetch<Array<SanityHappening>>(happeningQueryList);
 

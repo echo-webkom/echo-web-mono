@@ -225,6 +225,13 @@
       "when": 1756895439760,
       "tag": "0031_sturdy_red_skull",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1770290262270,
+      "tag": "0032_loving_justice",
+      "breakpoints": true
     }
   ]
 }

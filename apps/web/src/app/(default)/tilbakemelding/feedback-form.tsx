@@ -43,7 +43,15 @@ export const FeedbackForm = () => {
         return;
       }
 
-      const { success, message } = await sendFeedback(data);
+      const { success, message } = await sendFeedback({
+        ...data,
+        // The API expects null for empty values, but the form uses empty strings, so we convert them here.
+        // Using ?? would not work. As it only checks for null or undefined, but we want to include empty strings as well.
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        email: data.email || null,
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        name: data.name || null,
+      });
 
       toast({
         title: message,

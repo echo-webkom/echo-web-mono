@@ -2,7 +2,7 @@ import type postgres from "postgres";
 
 import { createDatabase, createPool } from "./create";
 
-const MAX_POOL = 1;
+const MAX_POOL = 10;
 const IDLE_TIMEOUT = 10000; // 10 seconds
 const CONNECT_TIMEOUT = 1000; // 1 seconds
 

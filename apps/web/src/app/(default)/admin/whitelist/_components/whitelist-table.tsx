@@ -7,12 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getWhitelist } from "@/data/whitelist/queries";
 import { shortDateNoTime } from "@/utils/date";
+import { unoWithAdmin } from "../../../../../api/server";
 import { WhitelistButton } from "./whitelist-button";
 
 export const WhitelistTable = async () => {
-  const whitelisted = await getWhitelist();
+  const whitelisted = await unoWithAdmin.whitelist.all();
 
   return (
     <div>

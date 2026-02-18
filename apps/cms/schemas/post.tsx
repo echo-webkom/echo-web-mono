@@ -52,19 +52,7 @@ export default defineType({
       author2: "authors.2.name",
       author3: "authors.3.name",
     },
-    prepare: ({
-      title,
-      author0,
-      author1,
-      author2,
-      author3,
-    }: {
-      title: string;
-      author0: string;
-      author1: string;
-      author2: string;
-      author3: string;
-    }) => {
+    prepare: ({ title, author0, author1, author2, author3 }: Record<string, string>) => {
       const authors = [author0, author1, author2].filter(Boolean);
       const subtitle = authors.length > 0 ? `av ${authors.join(", ")}` : "";
       const hasMoreAuthors = Boolean(author3);

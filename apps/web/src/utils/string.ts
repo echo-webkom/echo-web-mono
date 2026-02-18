@@ -1,3 +1,5 @@
+import z from "zod";
+
 /**
  * Capitalizes the first letter of a string.
  *
@@ -92,10 +94,28 @@ export const initials = (name: string): string => {
   return `${first![0]}${second![0]}`.toUpperCase();
 };
 
+/**
+ * Truncates a string to a maximum length and adds an ellipsis if it exceeds that length.
+ * If the string is shorter than or equal to the maximum length, it is returned unchanged.
+ *
+ * @param str the string to truncate
+ * @param maxLength the maximum length of the string
+ * @returns the truncated string with an ellipsis if it exceeds the maximum length
+ */
 export const ellipsis = (str: string, maxLength: number) => {
   if (str.length <= maxLength) {
     return str;
   }
 
   return `${str.slice(0, maxLength)}...`;
+};
+
+/**
+ * Checks if a string is a valid email address.
+ *
+ * @param email the string to check
+ * @returns true if the string is a valid email address, false otherwise
+ */
+export const isValidEmail = (email: string): boolean => {
+  return z.string().email().safeParse(email).success;
 };

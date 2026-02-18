@@ -1,4 +1,3 @@
-import { getAllDegrees } from "@/data/degrees/queries";
 import { getStudentGroups } from "@/data/groups/queries";
 import { type getFullHappening } from "@/data/happenings/queries";
 import { Box } from "../_components/box";
@@ -9,6 +8,7 @@ import { PieChartGroups } from "../_components/charts/pie-chart-group-registrati
 import { FastestRegistrations } from "../_components/fastest-registrations";
 import { Heading } from "../_components/heading";
 import { type RegistrationWithUser } from "../_lib/types";
+import { uno } from "../../../../../api/client";
 import { PizzaFormel } from "../../../../../components/pizza-formel";
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
@@ -24,7 +24,7 @@ type StatisticsTabProps = {
 };
 
 export const StatisticsTab = async ({ happening, registrations }: StatisticsTabProps) => {
-  const [groups, degrees] = await Promise.all([getStudentGroups(), getAllDegrees()]);
+  const [groups, degrees] = await Promise.all([getStudentGroups(), uno.degrees.all()]);
 
   const registered = registrations.filter((registration) => registration.status === "registered");
   const waitlist = registrations.filter((registration) => registration.status === "waiting");

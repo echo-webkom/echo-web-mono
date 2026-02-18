@@ -2,12 +2,17 @@
 import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
 import starlight from "@astrojs/starlight";
+import mermaid from "astro-mermaid";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://docs.echo-webkom.no",
 
   integrations: [
+    mermaid({
+      theme: "forest",
+      autoTheme: true,
+    }),
     starlight({
       title: "Webkom Docs",
       logo: {
@@ -29,9 +34,19 @@ export default defineConfig({
               label: "echo-web-mono",
               items: [
                 { label: "Oversikt", slug: "tjenester/echo-web-mono/oversikt" },
+                {
+                  label: "Ubiquitous Language",
+                  slug: "tjenester/echo-web-mono/ubiquitous-language",
+                },
                 { label: "Web", slug: "tjenester/echo-web-mono/web" },
                 { label: "CMS", slug: "tjenester/echo-web-mono/cms" },
-                { label: "API", slug: "tjenester/echo-web-mono/api" },
+                {
+                  label: "API",
+                  items: [
+                    { label: "Oversikt", slug: "tjenester/echo-web-mono/api" },
+                    { label: "Arkitektur", slug: "tjenester/echo-web-mono/api/arkitektur" },
+                  ],
+                },
                 { label: "Database", slug: "tjenester/echo-web-mono/database" },
                 { label: "Testing", slug: "tjenester/echo-web-mono/testing" },
               ],

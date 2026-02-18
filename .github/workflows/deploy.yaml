@@ -6,33 +6,18 @@ on:
       - main
 
 jobs:
-  api:
+  check_changes:
     runs-on: ubuntu-latest
-
+    outputs:
+      cms: ${{ steps.filter.outputs.cms }}
     steps:
-      - name: 🔍 Checkout
-        uses: actions/checkout@v6
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: 🐢 Setup node
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
-          node-version: 22.21.1
-          cache: pnpm
-          cache-dependency-path: ./pnpm-lock.yaml
-
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: 🪰 Setup Fly
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: 🚀 Deploy
-        run: flyctl deploy --config apps/api/fly.toml --dockerfile apps/api/Dockerfile --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          filters: |
+            cms:
+              - 'apps/cms/**'
 
   docs:
     runs-on: ubuntu-latest
@@ -47,7 +32,7 @@ jobs:
       - name: 🐢 Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22.21.1
+          node-version: 22.22.0
           cache: pnpm
           cache-dependency-path: ./pnpm-lock.yaml
 
@@ -59,3 +44,30 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  cms:
+    needs: check_changes
+    if: needs.check_changes.outputs.cms == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v6
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.22.0
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🚀 Deploy Sanity Studio
+        run: pnpm --filter=@echo-webkom/cms run deploy
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}

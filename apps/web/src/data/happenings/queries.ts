@@ -3,8 +3,6 @@ import { and, asc, eq, gt, lt } from "drizzle-orm";
 import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { isErrorMessage } from "@/utils/error";
-
 export const getFullHappening = async (slug: Happening["slug"]) => {
   return await db.query.happenings.findFirst({
     where: (happening) => eq(happening.slug, slug),
@@ -50,10 +48,9 @@ export const getHappeningById = async (id: string) => {
         groups: true,
       },
     })
-    .catch((error) => {
+    .catch(() => {
       console.error("Failed to fetch happening", {
         id,
-        error: isErrorMessage(error) ? error.message : "Unknown error",
       });
 
       return null;

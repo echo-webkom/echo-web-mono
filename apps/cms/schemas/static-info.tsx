@@ -50,7 +50,7 @@ export default defineField({
       title: "title",
       subtitle: "pageType",
     },
-    prepare({ title, subtitle }: { title: string; subtitle: string }) {
+    prepare({ title, subtitle }: Record<string, string>) {
       return {
         title,
         subtitle: PAGE_TYPES.find((type) => type.value === subtitle)?.title,

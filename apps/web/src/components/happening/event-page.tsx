@@ -5,11 +5,14 @@ import { BedpresJobAds } from "@/app/(default)/hjem/_components/job-ads";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
 import { CommentSection } from "../comments/comment-section";
+import { CompanyLeagueBanner } from "../company-league-banner";
 import { Container } from "../container";
 import { Markdown } from "../markdown";
 import { RepeatingHappeningSidebar } from "../repeating-happening-sidebar";
 import { Heading } from "../typography/heading";
 import { HappeningSidebar } from "./happening-sidebar";
+
+const FOOTBALL_KEYWORDS = ["fotball", "databrus fc", "futsal", "bedriftsliga", "innefotball"];
 
 type EventPageProps = {
   // The awaited return type of fetchHappeningBySlug or fetchRepeatingHappening with null excluded from the type
@@ -20,8 +23,20 @@ type EventPageProps = {
 };
 
 export const EventPage = ({ event }: EventPageProps) => {
+  const isCompanyLeague =
+    FOOTBALL_KEYWORDS.some(
+      (keyword) =>
+        event.title.toLowerCase().includes(keyword) || event.body?.toLowerCase().includes(keyword),
+    ) && event.happeningType === "event";
+
   return (
     <div>
+      {isCompanyLeague && (
+        <div className="pt-6">
+          <CompanyLeagueBanner linkToDatabrusPage />
+        </div>
+      )}
+
       <Container className="relative flex w-full gap-24 py-10 lg:max-w-[1500px] lg:flex-row">
         {event?._type === "happening" && <HappeningSidebar event={event} />}
         {event?._type === "repeatingHappening" && <RepeatingHappeningSidebar event={event} />}

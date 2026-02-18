@@ -1,0 +1,1494 @@
+basePath: /
+definitions:
+  http_routes_api.CreateGroupRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  http_routes_api.GroupResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api.UpdateGroupRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  uno_domain_model.BanInfo:
+    properties:
+      bannedByID:
+        type: string
+      bannedByName:
+        type: string
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      userID:
+        type: string
+    type: object
+  uno_domain_model.DotInfo:
+    properties:
+      count:
+        type: integer
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      strikedByID:
+        type: string
+      strikedByName:
+        type: string
+      userID:
+        type: string
+    type: object
+  uno_domain_model.GroupedRegistrationCount:
+    properties:
+      happeningID:
+        type: string
+      max:
+        type: integer
+      registered:
+        type: integer
+      waiting:
+        type: integer
+    type: object
+  uno_domain_model.UserWithBanInfo:
+    properties:
+      banInfo:
+        $ref: '#/definitions/uno_domain_model.BanInfo'
+      dots:
+        items:
+          $ref: '#/definitions/uno_domain_model.DotInfo'
+        type: array
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_domain_model.UserWithStrikes:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      isBanned:
+        type: boolean
+      name:
+        type: string
+      strikes:
+        type: integer
+    type: object
+  uno_domain_service.ShoppingList:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      likes:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      userId:
+        type: string
+      userName:
+        type: string
+    type: object
+  uno_http_dto.AccessRequestResponse:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      reason:
+        type: string
+    type: object
+  uno_http_dto.AdventOfCodeDayResponse:
+    properties:
+      star1_time:
+        type: integer
+      star2_time:
+        type: integer
+      stars:
+        type: integer
+    type: object
+  uno_http_dto.AdventOfCodeMemberResponse:
+    properties:
+      days:
+        additionalProperties:
+          $ref: '#/definitions/uno_http_dto.AdventOfCodeDayResponse'
+        type: object
+      id:
+        type: integer
+      local_score:
+        type: integer
+      name:
+        type: string
+    type: object
+  uno_http_dto.CommentResponse:
+    properties:
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      reactions:
+        items:
+          $ref: '#/definitions/uno_http_dto.CommentsReactionResponse'
+        type: array
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/uno_http_dto.UserSummaryResponse'
+      userId:
+        type: string
+    type: object
+  uno_http_dto.CommentsReactionResponse:
+    properties:
+      commentId:
+        type: string
+      createdAt:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_http_dto.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_http_dto.CreateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.CreateShoppingListItemRequest:
+    properties:
+      name:
+        type: string
+      userId:
+        type: string
+    required:
+    - name
+    - userId
+    type: object
+  uno_http_dto.CreateSiteFeedbackRequest:
+    properties:
+      category:
+        type: string
+      email:
+        type: string
+      message:
+        type: string
+      name:
+        type: string
+    required:
+    - category
+    - message
+    type: object
+  uno_http_dto.DatabrusMatchDTO:
+    properties:
+      away_score:
+        type: string
+      away_team:
+        type: string
+      date_time:
+        type: string
+      home_score:
+        type: string
+      home_team:
+        type: string
+      id:
+        type: string
+    type: object
+  uno_http_dto.DatabrusTableRow:
+    properties:
+      draws:
+        type: integer
+      goal_difference:
+        type: integer
+      goals_against:
+        type: integer
+      goals_for:
+        type: integer
+      losses:
+        type: integer
+      matches_played:
+        type: integer
+      points:
+        type: integer
+      position:
+        type: integer
+      team:
+        type: string
+      wins:
+        type: integer
+    type: object
+  uno_http_dto.DegreeResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.GroupedRegistration:
+    properties:
+      happeningId:
+        type: string
+      max:
+        type: integer
+      registered:
+        type: integer
+      waiting:
+        type: integer
+    type: object
+  uno_http_dto.HappeningRegistrationResponse:
+    properties:
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      userId:
+        type: string
+      userImage:
+        type: string
+      userName:
+        type: string
+    type: object
+  uno_http_dto.HappeningResponse:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      registrationEnd:
+        type: string
+      registrationGroups:
+        items:
+          type: integer
+        type: array
+      registrationStart:
+        type: string
+      registrationStartGroups:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_http_dto.HealthCheckResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  uno_http_dto.QuestionAnswerDTO:
+    properties:
+      answer:
+        items:
+          type: integer
+        type: array
+      questionId:
+        type: string
+    type: object
+  uno_http_dto.QuestionResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      isSensitive:
+        type: boolean
+      options:
+        items:
+          type: integer
+        type: array
+      required:
+        type: boolean
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_http_dto.ReactToCommentRequest:
+    properties:
+      commentId:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_http_dto.RegisterForHappeningRequest:
+    properties:
+      questions:
+        items:
+          $ref: '#/definitions/uno_http_dto.QuestionAnswerDTO'
+        type: array
+      userId:
+        type: string
+    type: object
+  uno_http_dto.RegisterForHappeningResponse:
+    properties:
+      isWaitlisted:
+        type: boolean
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  uno_http_dto.SiteFeedbackResponse:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      isRead:
+        type: boolean
+      message:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.SpotRangeResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      maxYear:
+        type: integer
+      minYear:
+        type: integer
+      spots:
+        type: integer
+    type: object
+  uno_http_dto.UpdateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.UserSummaryResponse:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.UserToShoppingListItemRequest:
+    properties:
+      itemId:
+        type: string
+      userId:
+        type: string
+    required:
+    - itemId
+    - userId
+    type: object
+  uno_http_dto.WeatherResponse:
+    properties:
+      condition:
+        type: string
+      temperature:
+        type: number
+      wind_speed:
+        type: number
+    type: object
+  uno_http_dto.WhitelistResponse:
+    properties:
+      email:
+        type: string
+      expiresAt:
+        type: string
+      reason:
+        type: string
+    type: object
+info:
+  contact:
+    email: webkom@echo.uib.no
+    name: echo Webkom
+  description: HTTP REST API for echo Webkom Uno backend
+  title: Uno API
+  version: "1.0"
+paths:
+  /:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.HealthCheckResponse'
+      summary: Get health status
+      tags:
+      - health
+  /access-requests:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.AccessRequestResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get access requests
+      tags:
+      - access-request
+  /advent-of-code/leaderboard:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.AdventOfCodeMemberResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Advent of Code leaderboard
+      tags:
+      - advent_of_code
+  /birthdays:
+    get:
+      description: Gets all the users who have birthday today
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get users with birthdays
+      tags:
+      - birthdays
+  /comments:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Comment to create
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create a new comment
+      tags:
+      - comments
+  /comments/{id}:
+    get:
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CommentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get comments by ID
+      tags:
+      - comments
+  /comments/{id}/reaction:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Reaction to add or remove
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.ReactToCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: React to a comment
+      tags:
+      - comments
+  /databrus/matches:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.DatabrusMatchDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get matches for Databrus
+      tags:
+      - databrus
+  /databrus/table:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.DatabrusTableRow'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get current table for Databrus
+      tags:
+      - databrus
+  /degrees:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.DegreeResponse'
+            type: array
+      summary: Get degrees
+      tags:
+      - degrees
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Degree to create
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateDegreeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/uno_http_dto.DegreeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create degree
+      tags:
+      - degrees
+  /degrees/{id}:
+    delete:
+      parameters:
+      - description: Degree ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Delete degree
+      tags:
+      - degrees
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Degree to update
+        in: body
+        name: degree
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UpdateDegreeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.DegreeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Update degree
+      tags:
+      - degrees
+  /feedbacks:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get site feedbacks
+      tags:
+      - feedbacks
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Site Feedback
+        in: body
+        name: feedback
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateSiteFeedbackRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: Create site feedback
+      tags:
+      - feedbacks
+  /feedbacks/{id}:
+    get:
+      parameters:
+      - description: Feedback ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get site feedback by ID
+      tags:
+      - feedbacks
+  /feedbacks/{id}/seen:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Feedback ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Update site feedback
+      tags:
+      - feedbacks
+  /group:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Group data
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/http_routes_api.CreateGroupRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/http_routes_api.GroupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new group
+      tags:
+      - groups
+  /group/{id}:
+    delete:
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a group by ID
+      tags:
+      - groups
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Group data
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/http_routes_api.UpdateGroupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http_routes_api.GroupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update a group by ID
+      tags:
+      - groups
+  /happenings:
+    get:
+      description: Retrives a list of all happenings and returns them in a JSON array.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.HappeningResponse'
+            type: array
+      summary: Get all happenings
+      tags:
+      - happenings
+  /happenings/{id}:
+    get:
+      description: Retrieves a specific happening by its unique identifier.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.HappeningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get happening by ID
+      tags:
+      - happenings
+  /happenings/{id}/questions:
+    get:
+      description: Retrieves all questions for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.QuestionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get happening questions
+      tags:
+      - happenings
+  /happenings/{id}/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a user for a specific happening with business logic validation
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Registration request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.RegisterForHappeningRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+      security:
+      - BearerAuth: []
+      summary: Register for happening
+      tags:
+      - happenings
+  /happenings/{id}/registrations:
+    get:
+      description: Retrieves all registrations for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.HappeningRegistrationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get happening registrations
+      tags:
+      - happenings
+  /happenings/{id}/registrations/count:
+    get:
+      deprecated: true
+      description: Retrieves the count of registrations for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.GroupedRegistration'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get happening registrations count
+      tags:
+      - happenings
+  /happenings/{id}/spot-ranges:
+    get:
+      description: Retrieves all spot ranges for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.SpotRangeResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get happening spot ranges
+      tags:
+      - happenings
+  /happenings/registrations/count:
+    get:
+      description: Retrieves the count of registrations for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.GroupedRegistrationCount'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get happenings registrations count
+      tags:
+      - happenings
+  /shopping:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_service.ShoppingList'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get shopping list
+      tags:
+      - shopping_list
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Shopping List Item Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateShoppingListItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create shopping list item
+      tags:
+      - shopping_list
+  /shopping/{id}:
+    delete:
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove item from shopping list
+      tags:
+      - shopping_list
+  /shopping/like:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User to Shopping List Item Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UserToShoppingListItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Toggle like on shopping list item
+      tags:
+      - shopping_list
+  /strikes/banned:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.UserWithBanInfo'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Gets all users that are banned
+      tags:
+      - strikes
+  /strikes/unban:
+    post:
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Unban users with expired strikes and bans
+      tags:
+      - strikes
+  /strikes/users:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_domain_model.UserWithStrikes'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Gets users with strikes and bans
+      tags:
+      - strikes
+  /weather/yr:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.WeatherResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets the current weather from yr.no
+      tags:
+      - weather
+  /whitelist:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.WhitelistResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get whitelisted emails
+      tags:
+      - whitelist
+  /whitelist/{email}:
+    get:
+      parameters:
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.WhitelistResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get whitelist info by email
+      tags:
+      - whitelist
+securityDefinitions:
+  AdminAPIKey:
+    description: Admin API Key for protected endpoints
+    in: header
+    name: X-Admin-Key
+    type: apiKey
+  BearerAuth:
+    description: 'Enter your bearer token in the format: Bearer {token}'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

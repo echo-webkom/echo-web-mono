@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.20.0",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/api --filter=@echo-webkom/db",
+    "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db",
     "dev:all": "turbo run dev",
     "web:dev": "pnpm run --filter=web dev",
     "cms:dev": "pnpm run --filter=cms dev",
@@ -41,6 +41,8 @@
     "gsap": "^3.14.2",
     "lenis": "^1.3.17",
     "turbo": "2.7.2",
+    "react-cookie-consent": "^9.0.0",
+    "turbo": "2.5.8",
     "typescript": "5.9.3"
   }
 }

@@ -44,11 +44,11 @@ export default defineType({
       title: "title",
       isAllMeeting: "isAllMeeting",
     },
-    prepare({ title, isAllMeeting }: { title: string; isAllMeeting: boolean }) {
-      const subtitle = isAllMeeting ? "Allmøte" : "Styremøte";
+    prepare({ title, isAllMeeting }: Record<string, unknown>) {
+      const subtitle = isAllMeeting === true ? "Allmøte" : "Styremøte";
 
       return {
-        title,
+        title: title as string,
         subtitle,
         media: <span style={{ fontSize: "1.5rem" }}>{isAllMeeting ? "👔" : "📝"}</span>,
       };

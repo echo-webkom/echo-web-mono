@@ -1,8 +1,5 @@
-import ky from "ky";
+import { UnoClient } from "./uno/client";
 
-export const apiClient = ky.extend({
-  prefixUrl: process.env.NEXT_PUBLIC_API_URL,
-  throwHttpErrors: false,
-  credentials: "include",
-  cache: "no-store",
+export const uno = new UnoClient({
+  baseUrl: process.env.NEXT_PUBLIC_UNO_URL,
 });

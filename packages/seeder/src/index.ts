@@ -3,6 +3,7 @@ import { Command } from "commander";
 import * as Database from "./db";
 import { isSeedMode } from "./db/mode";
 import * as Sanity from "./sanity";
+import * as SanityGenerate from "./sanity/generate";
 import { parseEnv } from "./sanity/utils";
 import * as message from "./utils";
 
@@ -35,9 +36,17 @@ program
       mode: options.mode,
     });
 
+    if (process.env.SANITY_TOKEN) {
+      await SanityGenerate.generate({
+        dataset: options.dataset,
+      });
+    }
+
     await Sanity.seed({
       dataset: options.dataset,
     });
+
+    await Database.seedRegistrations();
 
     message.complete();
     process.exit(0);
@@ -54,6 +63,26 @@ program
     message.start();
 
     await Sanity.seed(options);
+
+    message.complete();
+    process.exit(0);
+  });
+
+/**
+ * Generate test data in Sanity
+ */
+program
+  .command("generate")
+  .description("Generate test data in Sanity dataset")
+  .option(
+    "-d, --dataset <dataset>",
+    "Sanity dataset",
+    parseEnv(process.env.NEXT_PUBLIC_SANITY_DATASET),
+  )
+  .action(async (options: SanityGenerate.Options) => {
+    message.start();
+
+    await SanityGenerate.generate(options);
 
     message.complete();
     process.exit(0);

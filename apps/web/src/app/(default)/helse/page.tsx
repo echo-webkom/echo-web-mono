@@ -1,8 +1,8 @@
-import { apiClient } from "@/api/client";
+import { uno } from "@/api/client";
 
 export default async function Health() {
-  const resp = await apiClient.get("").text();
-  const isOK = resp === "OK";
+  const resp = await uno.health();
+  const isOK = resp.status === "ok";
 
   return (
     <div>

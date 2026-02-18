@@ -23,7 +23,7 @@ module.exports = ts.config(
         React: "writable",
       },
       parserOptions: {
-        projectService: true,
+        project: true,
         tsconfigRootDir: __dirname,
         ecmaFeatures: {
           jsx: true,
@@ -61,6 +61,10 @@ module.exports = ts.config(
       ],
       "@typescript-eslint/array-type": ["error", { default: "generic", readonly: "generic" }],
       "@typescript-eslint/consistent-type-definitions": ["off"],
+      // Disable unsafe type checking rules for Sanity CMS schemas
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
       // React rules
       "react/prop-types": "off",
       ...reactHooks.configs.recommended.rules,

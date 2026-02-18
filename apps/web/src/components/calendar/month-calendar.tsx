@@ -21,6 +21,7 @@ import { Heading } from "@/components/typography/heading";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
+import { dateIsBetween } from "@/utils/date";
 
 const CalendarDay = ({
   children,
@@ -146,7 +147,11 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
             })()}
 
             {events
-              .filter((event) => isSameDay(event.date, day))
+              .filter((event) => {
+                return event.endDate
+                  ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                  : isSameDay(event.date, day);
+              })
               .map((event, _) => (
                 <HoverCard key={event.id} openDelay={300} closeDelay={100}>
                   <HoverCardTrigger asChild>

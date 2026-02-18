@@ -38,6 +38,7 @@ export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
     defaultValues: {
       email,
       reason: "",
+      quiz: "",
     },
   });
 
@@ -114,6 +115,30 @@ export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
                   <Input readOnly id="email" placeholder="Din e-post" {...field} />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="quiz"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="quiz">Hva er navnet på linjeforeningen?</FormLabel>
+                <FormControl>
+                  <Input id="quiz" placeholder="Skriv navnet her" {...field} />
+                </FormControl>
+                {form.formState.errors.quiz && field.value.startsWith("E") ? (
+                  <p className="text-destructive text-sm">
+                    Nesten! Les{" "}
+                    <Link className="underline" href="/liten-e" target="_blank">
+                      denne siden
+                    </Link>{" "}
+                    for et hint.
+                  </p>
+                ) : (
+                  <FormMessage />
+                )}
               </FormItem>
             )}
           />

@@ -3,7 +3,7 @@ import { getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday } 
 interface MessageItem {
   text: string;
   link?: string;
-  when?: () => boolean;
+  when?: (date: Date) => boolean;
 }
 
 export const baseMessages: Array<MessageItem> = [
@@ -53,36 +53,39 @@ export const baseMessages: Array<MessageItem> = [
   { text: "MEME101", link: "https://www4.uib.no/studier/emner/meme101" },
   { text: "Lean, mean, fighting machine", link: "https://lean-lang.org/" },
   { text: "Prove it!", link: "https://wiki.portal.chalmers.se/agda/pmwiki.php" },
-  { text: "Vaffeltorsdag 🧇", when: () => isThursday(new Date()) },
-  { text: "Tacofredag 🌯", when: () => isFriday(new Date()) },
-  { text: "New semester, new me?", when: () => [34, 35].includes(getWeek(new Date())) },
-  { text: "BØ! UuUuuUuuUuUu", when: () => getMonth(new Date()) === 9 }, // October
-  { text: "Ho, ho, ho!", when: () => getMonth(new Date()) === 11 }, // December
-  { text: "Gralla 🇳🇴", when: () => getMonth(new Date()) === 4 && getDate(new Date()) === 17 }, // May 17
-  { text: "God sommer 🌞", when: () => [5, 6].includes(getMonth(new Date())) }, // June and July
+  { text: "Vaffeltorsdag 🧇", when: (date) => isThursday(date) },
+  { text: "Tacofredag 🌯", when: (date) => isFriday(date) },
+  { text: "New semester, new me?", when: (date) => [34, 35].includes(getWeek(date)) },
+  { text: "BØ! UuUuuUuuUuUu", when: (date) => getMonth(date) === 9 }, // October
+  { text: "Ho, ho, ho!", when: (date) => getMonth(date) === 11 }, // December
+  { text: "Gralla 🇳🇴", when: (date) => getMonth(date) === 4 && getDate(date) === 17 }, // May 17
+  { text: "God sommer 🌞", when: (date) => [5, 6].includes(getMonth(date)) }, // June and July
   {
     text: "🥰💕💞💓💏💗💖💘💝",
-    when: () => getMonth(new Date()) === 1 && getDate(new Date()) === 14,
+    when: (date) => getMonth(date) === 1 && getDate(date) === 14,
   }, // Valentine's Day
   {
     text: "Husk bedpres kl. 12:00!",
-    when: () => isThursday(new Date()) && getHours(new Date()) < 12,
+    when: (date) => isThursday(date) && getHours(date) < 12,
   },
-  { text: "God jul! 🎅", when: () => getMonth(new Date()) === 11 && getDate(new Date()) >= 24 }, // Christmas
-  { text: "Godt nyttår! ✨", when: () => getMonth(new Date()) === 0 && getDate(new Date()) === 1 }, // New Year's Day
-  { text: "New week, new me?", when: () => isMonday(new Date()) },
+  { text: "God jul! 🎅", when: (date) => getMonth(date) === 11 && getDate(date) >= 24 }, // Christmas
+  { text: "Godt nyttår! ✨", when: (date) => getMonth(date) === 0 && getDate(date) === 1 }, // New Year's Day
+  { text: "New week, new me?", when: (date) => isMonday(date) },
   { text: "JavaScript™", link: "https://javascript.tm" },
   { text: "Norge skal til VM 🇳🇴" },
+  { text: "Natürlich" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
+  const today = new Date();
+
   // First, check for date-specific messages (higher priority)
   const dateSpecificMessages = baseMessages.filter((message) => {
     if (!message.when) return false;
 
     // Check if this is a date-specific message (uses getDate and getMonth)
     const whenString = message.when.toString();
-    return whenString.includes("getDate") && whenString.includes("getMonth") && message.when();
+    return whenString.includes("getDate") && whenString.includes("getMonth") && message.when(today);
   });
 
   if (dateSpecificMessages.length > 0) {
@@ -92,7 +95,7 @@ export const getRandomMessage = (): MessageItem => {
 
   // If no date-specific messages, fall back to all applicable messages
   const filteredMessages = baseMessages.filter((message) => {
-    return !message.when || message.when();
+    return !message.when || message.when(today);
   });
 
   const randomIndex = Math.floor(Math.random() * filteredMessages.length);

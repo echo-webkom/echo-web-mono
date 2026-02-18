@@ -1,6 +1,6 @@
 import { auth } from "@/auth/session";
-import { getCommentsById } from "@/data/comments/queries";
 import { buildCommentTreeFrom } from "@/lib/comment-tree";
+import { unoWithAdmin } from "../../api/server";
 import { ReplyTree } from "./comment-reply-tree";
 
 type CommentsProps = {
@@ -8,7 +8,7 @@ type CommentsProps = {
 };
 
 export const Comments = async ({ id }: CommentsProps) => {
-  const [user, comments] = await Promise.all([auth(), getCommentsById(id)]);
+  const [user, comments] = await Promise.all([auth(), unoWithAdmin.comments.all(id)]);
 
   if (!comments.length) {
     return (

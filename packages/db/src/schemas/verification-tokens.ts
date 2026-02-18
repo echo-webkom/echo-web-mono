@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const verificationTokens = pgTable(
@@ -7,7 +7,9 @@ export const verificationTokens = pgTable(
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
+    code: text("code"),
     expires: timestamp("expires", { mode: "date" }).notNull(),
+    used: boolean("used").notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 ).enableRLS();

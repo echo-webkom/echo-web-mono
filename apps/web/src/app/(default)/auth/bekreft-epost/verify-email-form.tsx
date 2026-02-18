@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { verifyEmail } from "@/actions/verify-email";
 import { Button } from "@/components/ui/button";
 
 export default function VerifyEmailForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const token = searchParams.get("token");
   const [isVerifying, setIsVerifying] = useState(false);
   const [result, setResult] = useState<{
@@ -29,6 +30,10 @@ export default function VerifyEmailForm() {
     try {
       const response = await verifyEmail(token);
       setResult(response);
+
+      if (response.success) {
+        router.refresh();
+      }
     } catch {
       setResult({
         success: false,
@@ -56,7 +61,6 @@ export default function VerifyEmailForm() {
           <div>
             <div className="mb-4 text-6xl">✅</div>
             <h2 className="mb-2 text-xl font-semibold text-green-600">E-post bekreftet!</h2>
-            <p className="text-gray-600">{result.message}</p>
             {result.email && (
               <p className="mt-2 text-sm text-gray-500">E-postadresse: {result.email}</p>
             )}

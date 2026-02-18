@@ -5,8 +5,8 @@ import { z } from "zod";
 import { insertGroupSchema, type GroupInsert } from "@echo-webkom/db/schemas";
 
 import { auth } from "@/auth/session";
-import { createGroup } from "@/data/groups/mutations";
 import { isMemberOf } from "@/lib/memberships";
+import { unoWithAdmin } from "../api/server";
 
 export const addGroup = async (group: GroupInsert) => {
   const user = await auth();
@@ -28,7 +28,10 @@ export const addGroup = async (group: GroupInsert) => {
   try {
     const data = insertGroupSchema.parse(group);
 
-    await createGroup(data);
+    await unoWithAdmin.groups.create({
+      id: data.id ?? null,
+      name: data.name,
+    });
 
     return {
       success: true,

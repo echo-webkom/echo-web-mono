@@ -14,13 +14,13 @@ export const size = {
 export const contentType = "image/png";
 
 type ImageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export default async function Image({ params }: ImageProps) {
-  const slug = params.slug;
+  const slug = (await params).slug;
 
   const event = await fetchHappeningBySlug(slug);
 

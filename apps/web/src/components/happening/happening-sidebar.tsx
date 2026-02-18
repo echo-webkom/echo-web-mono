@@ -13,9 +13,6 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { getQuestionsByHappeningId } from "@/data/questions/queries";
-import { getRegistrationsByHappeningId } from "@/data/registrations/queries";
-import { getSpotRangeByHappeningId } from "@/data/spotrange/queries";
 import { isHost } from "@/lib/memberships";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
@@ -29,6 +26,7 @@ import {
 } from "@/utils/date";
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
+import { unoWithAdmin } from "../../api/server";
 import { ReactionButtonGroup } from "../reaction-button-group";
 import { RegistrationCount } from "../registration-count";
 import { RegistrationsPreview } from "./registrations-preview";
@@ -43,14 +41,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const [user, spotRanges, registrations, questions] = await Promise.all([
     auth(),
-    getSpotRangeByHappeningId(event._id),
-    getRegistrationsByHappeningId(event._id),
-    getQuestionsByHappeningId(event._id),
+    unoWithAdmin.happenings.spotRanges(event._id),
+    unoWithAdmin.happenings.registrations(event._id),
+    unoWithAdmin.happenings.questions(event._id),
   ]);
 
   const isRegistered = registrations.some(
     (registration) =>
-      registration.user.id === user?.id &&
+      registration.userId === user?.id &&
       (registration.status === "registered" || registration.status === "waiting"),
   );
 
@@ -511,8 +509,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {Boolean(user) && !hideRegistrations && (
         <RegistrationsPreview
           registrations={registrations.map((registration) => ({
-            image: registration.user.image,
-            name: registration.user.name,
+            image: registration.userImage,
+            name: registration.userName,
             userId: registration.userId,
             status: registration.status,
           }))}

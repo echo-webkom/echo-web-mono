@@ -12,8 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
-import { getAllDegrees } from "@/data/degrees/queries";
-import { UploadProfilePicture } from "../../profil/_components/upload-profile-picture";
+import { uno } from "../../../../../api/client";
+import { UploadProfilePicture } from "./_components/upload-profile-picture";
+import WhitelistNotification from "./_components/whitelist-notification";
 
 type Props = {
   params: Promise<{
@@ -39,7 +40,7 @@ export default async function ProfilePage({ params }: Props) {
   const hasAccess = profileOwner?.isPublic ?? isProfileOwner;
 
   const [degrees, memberships] = await Promise.all([
-    getAllDegrees(),
+    uno.degrees.all(),
     db.query.usersToGroups.findMany({
       where: (usersToGroup) => eq(usersToGroup.userId, ownerId),
       with: {
@@ -127,6 +128,7 @@ export default async function ProfilePage({ params }: Props) {
   } else if (isProfileOwner) {
     return (
       <div className="max-w-2xl space-y-4">
+        <WhitelistNotification />
         <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-6 md:flex-row">
@@ -175,6 +177,10 @@ export default async function ProfilePage({ params }: Props) {
               alternativeEmail:
                 "alternativeEmail" in profileOwner
                   ? (profileOwner.alternativeEmail ?? undefined)
+                  : undefined,
+              alternativeEmailVerifiedAt:
+                "alternativeEmailVerifiedAt" in profileOwner
+                  ? (profileOwner.alternativeEmailVerifiedAt ?? undefined)
                   : undefined,
               hasReadTerms: !!profileOwner.hasReadTerms,
               isPublic:
