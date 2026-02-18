@@ -26,7 +26,7 @@ func (dto *HappeningResponse) FromDomain(h *model.Happening) *HappeningResponse 
 		ID:                      h.ID,
 		Slug:                    h.Slug,
 		Title:                   h.Title,
-		Type:                    h.Type,
+		Type:                    h.Type.String(),
 		Date:                    h.Date,
 		RegistrationGroups:      h.RegistrationGroups,
 		RegistrationStartGroups: h.RegistrationStartGroups,

@@ -7,15 +7,15 @@ import (
 )
 
 type Happening struct {
-	ID                      string           `db:"id"`
-	Slug                    string           `db:"slug"`
-	Title                   string           `db:"title"`
-	Type                    string           `db:"type"`
-	Date                    *time.Time       `db:"date"`
-	RegistrationGroups      *json.RawMessage `db:"registration_groups"`
-	RegistrationStartGroups *time.Time       `db:"registration_start_groups"`
-	RegistrationStart       *time.Time       `db:"registration_start"`
-	RegistrationEnd         *time.Time       `db:"registration_end"`
+	ID                      string              `db:"id"`
+	Slug                    string              `db:"slug"`
+	Title                   string              `db:"title"`
+	Type                    model.HappeningType `db:"type"`
+	Date                    *time.Time          `db:"date"`
+	RegistrationGroups      *json.RawMessage    `db:"registration_groups"`
+	RegistrationStartGroups *time.Time          `db:"registration_start_groups"`
+	RegistrationStart       *time.Time          `db:"registration_start"`
+	RegistrationEnd         *time.Time          `db:"registration_end"`
 }
 
 func (h Happening) ToDomain() model.Happening {

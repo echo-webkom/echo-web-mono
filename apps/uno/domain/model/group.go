@@ -2,8 +2,9 @@ package model
 
 // Group represents a user group in the domain
 type Group struct {
-	ID   string
-	Name string
+	ID       string
+	Name     string
+	IsLeader bool
 }
 
 // NewGroup represents the input for creating a new group

@@ -3,8 +3,6 @@ import { and, eq } from "drizzle-orm";
 import { reactions, type ReactionInsert } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-import { revalidateReactions } from "./revalidate";
-
 export const registerReaction = async (newReaction: Omit<ReactionInsert, "createdAt">) => {
   try {
     await db
@@ -25,6 +23,4 @@ export const registerReaction = async (newReaction: Omit<ReactionInsert, "create
         ),
       );
   }
-
-  revalidateReactions(newReaction.reactToKey);
 };
