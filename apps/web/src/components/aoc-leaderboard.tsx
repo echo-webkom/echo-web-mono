@@ -1,12 +1,10 @@
 import { BentoBox } from "@/app/(default)/hjem/_components/bento-box";
-import {
-  fetchAocLeaderboard,
-  LEADERBOARD_ID,
-  LEADERBOARD_URL,
-  mapAocLeaderboard,
-  YEAR,
-} from "@/data/advent-of-code/leaderboard";
 import { cn } from "@/utils/cn";
+import { unoWithAdmin } from "../api/server";
+
+export const LEADERBOARD_ID = "3293269";
+export const YEAR = "2025";
+export const LEADERBOARD_URL = `https://adventofcode.com/${YEAR}/leaderboard/private/view/${LEADERBOARD_ID}`;
 
 const formatStarTimestamp = (timestamp: number) => {
   const date = new Date(timestamp * 1000);
@@ -32,9 +30,9 @@ type AocLeaderboardProps = {
 };
 
 export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
-  const leaderboard = await fetchAocLeaderboard();
+  const rows = (await unoWithAdmin.adventOfCode.leaderboard()).slice(0, MAX_ITEMS);
 
-  if (!leaderboard) {
+  if (!rows) {
     return (
       <div>
         <h1>Failed to fetch leaderboard</h1>
@@ -42,14 +40,12 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
     );
   }
 
-  const list = mapAocLeaderboard(leaderboard).slice(0, MAX_ITEMS);
-
   return (
     <BentoBox
       title={`Advent of Code ${YEAR}`}
       href={LEADERBOARD_URL}
       className={cn(
-        "relative max-h-[400px] overflow-hidden rounded-lg border-2 border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
+        "relative max-h-100 overflow-hidden rounded-lg border-2 border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
         className,
       )}
     >
@@ -65,15 +61,15 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
         </p>
 
         <ol>
-          {list.map((user, i) => {
+          {rows.map((user, i) => {
             // Calculate rank: same score as previous = same rank (omit number)
-            const prevUser = i > 0 ? list[i - 1] : undefined;
+            const prevUser = i > 0 ? rows[i - 1] : undefined;
             const isTied = prevUser?.localScore === user.localScore;
             const rank = isTied ? null : i + 1;
 
             return (
               <li key={user.id} className="flex items-center gap-4">
-                <span className="w-[30px] shrink-0 text-gray-500">
+                <span className="w-7.5 shrink-0 text-gray-500">
                   {rank !== null ? `${rank})` : ""}
                 </span>
                 <span className="w-10 shrink-0 text-right">{user.localScore}</span>
