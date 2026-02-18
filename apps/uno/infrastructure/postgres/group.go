@@ -5,6 +5,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/record"
+	"uno/pkg/unsafeid"
 )
 
 type GroupRepo struct {
@@ -48,13 +49,25 @@ func (g *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (mode
 		"name", group.Name,
 	)
 
+	// Generate an ID if not provided
+	var err error
+	var id string
+	if group.ID != nil {
+		id = *group.ID
+	} else {
+		id, err = unsafeid.Generate(21)
+		if err != nil {
+			return model.Group{}, err
+		}
+	}
+
 	query := `--sql
 		INSERT INTO "group" (id, name)
-		VALUES (COALESCE($1, gen_random_uuid()), $2)
+		VALUES ($1, $2)
 		RETURNING id, name
 	`
 	var dbModel record.GroupDB
-	err := g.db.GetContext(ctx, &dbModel, query, group.ID, group.Name)
+	err = g.db.GetContext(ctx, &dbModel, query, id, group.Name)
 	if err != nil {
 		g.logger.Error(ctx, "failed to create group",
 			"error", err,
