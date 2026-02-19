@@ -100,6 +100,9 @@ func RunServer(
 	// Reaction routes
 	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
 
+	// User routes
+	r.Mount("/users", api.NewUsersMux(logger, userService, admin))
+
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
 

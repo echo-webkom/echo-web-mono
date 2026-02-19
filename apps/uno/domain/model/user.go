@@ -68,8 +68,11 @@ func (dy DegreeYear) Int() int {
 	return int(dy)
 }
 
-func (dy DegreeYear) IntPtr() *int {
-	year := int(dy)
+func (dy *DegreeYear) IntPtr() *int {
+	if dy == nil {
+		return nil
+	}
+	year := int(*dy)
 	return &year
 }
 

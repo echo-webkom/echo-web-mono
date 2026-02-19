@@ -20,6 +20,31 @@ func NewGroupRepo(db *Database, logger port.Logger) port.GroupRepo {
 	}
 }
 
+// GetAllGroups retrieves all groups from the database.
+func (g *GroupRepo) GetAllGroups(ctx context.Context) ([]model.Group, error) {
+	g.logger.Info(ctx, "fetching all groups")
+
+	query := `--sql
+		SELECT id, name
+		FROM "group"
+		ORDER BY name ASC
+	`
+	var dbModels []record.GroupDB
+	err := g.db.SelectContext(ctx, &dbModels, query)
+	if err != nil {
+		g.logger.Error(ctx, "failed to fetch all groups",
+			"error", err,
+		)
+		return nil, err
+	}
+
+	groups := make([]model.Group, len(dbModels))
+	for i, dbModel := range dbModels {
+		groups[i] = *dbModel.ToDomain()
+	}
+	return groups, nil
+}
+
 // GetGroupByID retrieves a group by its ID from the database.
 func (g *GroupRepo) GetGroupByID(ctx context.Context, id string) (model.Group, error) {
 	g.logger.Info(ctx, "fetching group by ID",

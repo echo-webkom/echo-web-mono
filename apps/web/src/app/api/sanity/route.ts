@@ -16,6 +16,7 @@ import { isBoard } from "@echo-webkom/lib";
 import { withBasicAuth } from "@/lib/checks/with-basic-auth";
 import { toDateOrNull } from "@/utils/date";
 import { makeListUnique } from "@/utils/list";
+import { unoWithAdmin } from "../../../api/server";
 
 export const dynamic = "force-dynamic";
 
@@ -363,7 +364,7 @@ const mapHappening = (document: SanityHappening) => {
  * @returns insertable happeningToGroups
  */
 const mapHappeningToGroups = async (groups: Array<string>) => {
-  const validGroups = await db.query.groups.findMany();
+  const validGroups = await unoWithAdmin.groups.all();
 
   return makeListUnique(
     groups

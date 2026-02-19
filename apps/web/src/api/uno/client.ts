@@ -45,6 +45,7 @@ export class UnoClient {
   adventOfCode: AdventOfCodeApi;
   groups: GroupsApi;
   reactions: ReactionsApi;
+  users: UsersApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -72,6 +73,7 @@ export class UnoClient {
     this.adventOfCode = new AdventOfCodeApi(this);
     this.groups = new GroupsApi(this);
     this.reactions = new ReactionsApi(this);
+    this.users = new UsersApi(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -520,6 +522,10 @@ class GroupsApi {
   async update(group: Group) {
     return await this.client.request<Group>("POST", `groups/${group.id}`, group);
   }
+
+  async all() {
+    return await this.client.request<Array<Group>>("GET", "groups");
+  }
 }
 
 export interface Reaction {
@@ -547,5 +553,46 @@ class ReactionsApi {
 
   async toggle(key: string, reaction: ReactionInsert) {
     return await this.client.request<Array<Reaction>>("POST", `reactions/${key}`, reaction);
+  }
+}
+
+export interface User {
+  id: string;
+  name: string | null;
+  email: string;
+  image: string | null;
+  alternativeEmail: string | null;
+  degree: {
+    id: string;
+    name: string;
+  } | null;
+  year: number | null;
+  type: string;
+  lastSignInAt: Date | null;
+  updatedAt: Date | null;
+  createdAt: Date | null;
+  hasReadTerms: boolean;
+  birthday: Date | null;
+  isPublic: boolean;
+  groups: Array<{
+    id: string;
+    isLeader: boolean;
+    name: string;
+  }>;
+}
+
+class UsersApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async getById(id: string) {
+    return await this.client.request<User>("GET", `users/${id}`);
+  }
+
+  async all() {
+    return await this.client.request<Array<User>>("GET", "users");
   }
 }

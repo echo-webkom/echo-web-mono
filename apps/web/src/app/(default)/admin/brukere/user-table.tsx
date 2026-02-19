@@ -94,7 +94,7 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex max-w-[75px] flex-col gap-2">
+            <div className="flex max-w-18.75 flex-col gap-2">
               <Label>Antall:</Label>
               <Input
                 type="number"
