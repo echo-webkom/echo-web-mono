@@ -8,10 +8,51 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
 
 jobs:
+  check_changes:
+    name: 🔍 Detect changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      uno: ${{ steps.set.outputs.uno }}
+      web: ${{ steps.set.outputs.web }}
+      migrator: ${{ steps.set.outputs.migrator }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            uno:
+              - 'apps/uno/**'
+            web:
+              - 'apps/web/**'
+              - 'packages/**'
+            migrator:
+              - 'packages/seeder/**'
+      - id: set
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "uno=true" >> $GITHUB_OUTPUT
+            echo "web=true" >> $GITHUB_OUTPUT
+            echo "migrator=false" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.pull_request.user.type }}" == "Bot" ]]; then
+            echo "uno=false" >> $GITHUB_OUTPUT
+            echo "web=false" >> $GITHUB_OUTPUT
+            echo "migrator=false" >> $GITHUB_OUTPUT
+          else
+            echo "uno=${{ steps.filter.outputs.uno }}" >> $GITHUB_OUTPUT
+            echo "web=${{ steps.filter.outputs.web }}" >> $GITHUB_OUTPUT
+            echo "migrator=${{ steps.filter.outputs.migrator }}" >> $GITHUB_OUTPUT
+          fi
+
   create-pending-status:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
     name: 🟠 Set PR status to redeploying
@@ -48,7 +89,8 @@ jobs:
             }
 
   build-and-push-uno:
-    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    needs: [check_changes]
+    if: needs.check_changes.outputs.uno == 'true'
     name: 🐳 Build uno
     runs-on: ubuntu-latest
     permissions:
@@ -94,7 +136,8 @@ jobs:
           platforms: linux/amd64
 
   build-and-push-web:
-    if: github.event_name == 'push' || github.event.pull_request.user.type != 'Bot'
+    needs: [check_changes]
+    if: needs.check_changes.outputs.web == 'true'
     name: 🐳 Build web
     runs-on: ubuntu-latest
     permissions:
@@ -141,7 +184,8 @@ jobs:
 
   # Migrator that only runs on PRs, since it is used to seed and migrate the preview environment, and is not needed for production deployments.
   build-and-push-migrator:
-    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    needs: [check_changes]
+    if: needs.check_changes.outputs.migrator == 'true'
     name: 🐳 Build migrator
     runs-on: ubuntu-latest
     permissions:
@@ -185,8 +229,12 @@ jobs:
           platforms: linux/amd64
 
   deploy-preview:
-    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
-    needs: [build-and-push-uno, build-and-push-web, build-and-push-migrator]
+    needs: [check_changes, build-and-push-uno, build-and-push-web, build-and-push-migrator]
+    if: |
+      always() &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.user.type != 'Bot' &&
+      !contains(needs.*.result, 'failure')
     name: 🚀 Deploy PR Preview
     runs-on: ubuntu-latest
     permissions:

@@ -6,6 +6,10 @@ on:
       - opened
       - synchronize
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   ADMIN_KEY: foobar
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/echo-web?sslmode=disable
@@ -25,6 +29,24 @@ env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
+  check_changes:
+    name: 🔍 Detect changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+      uno: ${{ steps.filter.outputs.uno }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            web:
+              - 'apps/web/**'
+              - 'packages/**'
+            uno:
+              - 'apps/uno/**'
+
   lint:
     name: 📝 Lint, Format & Type Check
     runs-on: ubuntu-latest
@@ -78,6 +100,8 @@ jobs:
 
   check-docs:
     name: 📚 Check Backend Docs
+    needs: [check_changes]
+    if: needs.check_changes.outputs.uno == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -104,6 +128,8 @@ jobs:
 
   test-unit-frontend:
     name: 🧪 Unit Tests (Frontend)
+    needs: [check_changes]
+    if: needs.check_changes.outputs.web == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -128,6 +154,8 @@ jobs:
 
   test-unit-backend:
     name: 🧪 Unit Tests (Backend)
+    needs: [check_changes]
+    if: needs.check_changes.outputs.uno == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -150,6 +178,8 @@ jobs:
 
   test-e2e:
     name: 🎭 E2E Tests
+    needs: [check_changes]
+    if: needs.check_changes.outputs.web == 'true' || needs.check_changes.outputs.uno == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     container:

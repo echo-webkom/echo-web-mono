@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       cms: ${{ steps.filter.outputs.cms }}
+      docs: ${{ steps.filter.outputs.docs }}
     steps:
       - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v3
@@ -18,8 +19,12 @@ jobs:
           filters: |
             cms:
               - 'apps/cms/**'
+            docs:
+              - 'apps/docs/**'
 
   docs:
+    needs: check_changes
+    if: needs.check_changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
 
     steps:
