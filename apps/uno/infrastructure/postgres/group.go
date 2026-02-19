@@ -27,6 +27,7 @@ func (g *GroupRepo) GetAllGroups(ctx context.Context) ([]model.Group, error) {
 	query := `--sql
 		SELECT id, name
 		FROM "group"
+		ORDER BY name ASC
 	`
 	var dbModels []record.GroupDB
 	err := g.db.SelectContext(ctx, &dbModels, query)
