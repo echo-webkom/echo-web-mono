@@ -25,6 +25,7 @@ export const ReactionButtonGroup = async ({ reactToKey }: ReactionButtonGroupPro
             hasReacted={hasReacted}
             emojiId={Number(key)}
             count={count ?? 0}
+            userId={user?.id}
           >
             {value}
           </ReactionButton>

@@ -529,6 +529,11 @@ export interface Reaction {
   emojiId: number;
 }
 
+export interface ReactionInsert {
+  userId: string;
+  emojiId: number;
+}
+
 class ReactionsApi {
   private client: UnoClient;
 
@@ -538,5 +543,9 @@ class ReactionsApi {
 
   async byId(key: string) {
     return await this.client.request<Array<Reaction>>("GET", `reactions/${key}`);
+  }
+
+  async toggle(key: string, reaction: ReactionInsert) {
+    return await this.client.request<Array<Reaction>>("POST", `reactions/${key}`, reaction);
   }
 }
