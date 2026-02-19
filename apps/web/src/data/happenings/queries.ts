@@ -1,6 +1,6 @@
-import { and, asc, eq, gt, lt } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
-import { type Happening, type HappeningType } from "@echo-webkom/db/schemas";
+import { type Happening } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
 export const getFullHappening = async (slug: Happening["slug"]) => {
@@ -27,74 +27,5 @@ export const getFullHappenings = async () => {
       spotRanges: true,
       groups: true,
     },
-  });
-};
-
-export const getHappeningBySlug = async (slug: Happening["slug"]) => {
-  return await db.query.happenings.findFirst({
-    where: (happening) => eq(happening.slug, slug),
-    with: {
-      questions: true,
-    },
-  });
-};
-
-export const getHappeningById = async (id: string) => {
-  return await db.query.happenings
-    .findFirst({
-      where: (happening) => eq(happening.id, id),
-      with: {
-        questions: true,
-        groups: true,
-      },
-    })
-    .catch(() => {
-      console.error("Failed to fetch happening", {
-        id,
-      });
-
-      return null;
-    });
-};
-
-export const getHappeningSpotRangeAndRegistrations = async (happeningId: string) => {
-  return await db.query.happenings
-    .findFirst({
-      where: (happening) => eq(happening.id, happeningId),
-      with: {
-        registrations: true,
-        spotRanges: true,
-      },
-    })
-    .then((result) => {
-      return {
-        registrations: result?.registrations ?? [],
-        spotRanges: result?.spotRanges ?? [],
-      };
-    });
-};
-
-export const getHappeningsFromDate = async (date: Date, type: HappeningType) => {
-  return await db.query.happenings.findMany({
-    where: (happening) => and(eq(happening.type, type), gt(happening.date, date)),
-    with: {
-      spotRanges: true,
-    },
-    orderBy: (happening) => [asc(happening.date)],
-  });
-};
-
-export const getHappeningsFromDateToDate = async (
-  fromDate: Date,
-  toDate: Date,
-  type: HappeningType,
-) => {
-  return await db.query.happenings.findMany({
-    where: (happening) =>
-      and(eq(happening.type, type), gt(happening.date, fromDate), lt(happening.date, toDate)),
-    with: {
-      spotRanges: true,
-    },
-    orderBy: (happening) => [asc(happening.date)],
   });
 };
