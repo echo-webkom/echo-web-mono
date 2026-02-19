@@ -97,7 +97,7 @@ jobs:
         working-directory: apps/uno
         run: |
           swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal
-          if ! git diff --exit-code apps/uno/docs/; then
+          if ! git diff --exit-code -- docs/; then
             echo "Error: Swagger docs are out of sync. Please run 'pnpm --filter=uno swag:init' and commit the changes."
             exit 1
           fi
