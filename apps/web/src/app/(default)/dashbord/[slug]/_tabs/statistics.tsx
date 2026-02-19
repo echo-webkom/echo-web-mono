@@ -1,4 +1,5 @@
-import { getStudentGroups } from "@/data/groups/queries";
+import { uno } from "@/api/client";
+import { PizzaFormel } from "@/components/pizza-formel";
 import { type getFullHappening } from "@/data/happenings/queries";
 import { Box } from "../_components/box";
 import { AreaChartRegistrationsOverTime } from "../_components/charts/area-chart-registrations-over-time";
@@ -8,8 +9,7 @@ import { PieChartGroups } from "../_components/charts/pie-chart-group-registrati
 import { FastestRegistrations } from "../_components/fastest-registrations";
 import { Heading } from "../_components/heading";
 import { type RegistrationWithUser } from "../_lib/types";
-import { uno } from "../../../../../api/client";
-import { PizzaFormel } from "../../../../../components/pizza-formel";
+import { unoWithAdmin } from "../../../../../api/server";
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box className="text-center">
@@ -24,7 +24,7 @@ type StatisticsTabProps = {
 };
 
 export const StatisticsTab = async ({ happening, registrations }: StatisticsTabProps) => {
-  const [groups, degrees] = await Promise.all([getStudentGroups(), uno.degrees.all()]);
+  const [groups, degrees] = await Promise.all([unoWithAdmin.groups.all(), uno.degrees.all()]);
 
   const registered = registrations.filter((registration) => registration.status === "registered");
   const waitlist = registrations.filter((registration) => registration.status === "waiting");

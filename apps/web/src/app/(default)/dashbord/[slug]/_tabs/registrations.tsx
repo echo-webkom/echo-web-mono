@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { getStudentGroups } from "@/data/groups/queries";
+import { unoWithAdmin } from "@/api/server";
 import { type getFullHappening } from "@/data/happenings/queries";
 import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
@@ -11,7 +11,7 @@ type RegistrationsTabProps = {
 };
 
 export const RegistrationsTab = async ({ happening, registrations }: RegistrationsTabProps) => {
-  const groups = await getStudentGroups();
+  const groups = await unoWithAdmin.groups.all();
 
   if (registrations.length < 1) {
     return (
