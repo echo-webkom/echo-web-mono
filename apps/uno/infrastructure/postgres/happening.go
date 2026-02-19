@@ -207,7 +207,7 @@ func (h *HappeningRepo) GetHappeningRegistrationCounts(
 	query := `--sql
 		SELECT
 		    h.id AS happening_id,
-		    NULLIF(MAX(sr.spots), 0) AS max,
+		    sr.spots AS max,
 		    COUNT(r.user_id) FILTER (WHERE r.status = 'waiting') AS waiting,
 		    COUNT(r.user_id) FILTER (WHERE r.status = 'registered') AS registered
 		FROM happening h
