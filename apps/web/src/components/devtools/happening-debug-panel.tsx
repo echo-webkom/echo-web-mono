@@ -64,19 +64,24 @@ export function HappeningDebugPanel({
       {open && (
         <div className="divide-y divide-red-100 border-t border-red-200 px-3 pb-3 dark:divide-red-900 dark:border-red-900">
           <div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Happening
             </p>
             <Row label="ID" value={event._id} />
             <Row label="Slug" value={event.slug} />
             <Row label="Type" value={event.happeningType} />
-            <Row label="Pris" value={event.cost !== null && event.cost !== undefined ? `${event.cost} kr` : "Gratis"} />
+            <Row
+              label="Pris"
+              value={
+                event.cost !== null && event.cost !== undefined ? `${event.cost} kr` : "Gratis"
+              }
+            />
             <Row label="Ekstern lenke" value={event.externalLink ?? "—"} />
             <Row label="Spørsmål" value={questionsCount} />
           </div>
 
           <div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Registrations
             </p>
             <Row label="Registered" value={`${registeredCount} / ${totalCapacity}`} />
@@ -85,7 +90,7 @@ export function HappeningDebugPanel({
           </div>
 
           <div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Spot ranges
             </p>
             {spotRanges.length === 0 ? (
@@ -102,26 +107,36 @@ export function HappeningDebugPanel({
           </div>
 
           <div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Datoer
             </p>
             <Row
               label="Reg. start"
-              value={event.registrationStart ? new Date(event.registrationStart).toLocaleString("no") : "—"}
+              value={
+                event.registrationStart
+                  ? new Date(event.registrationStart).toLocaleString("no")
+                  : "—"
+              }
             />
             <Row
               label="Tidlig reg. start"
-              value={event.registrationStartGroups ? new Date(event.registrationStartGroups).toLocaleString("no") : "—"}
+              value={
+                event.registrationStartGroups
+                  ? new Date(event.registrationStartGroups).toLocaleString("no")
+                  : "—"
+              }
             />
             <Row
               label="Reg. slutt"
-              value={event.registrationEnd ? new Date(event.registrationEnd).toLocaleString("no") : "—"}
+              value={
+                event.registrationEnd ? new Date(event.registrationEnd).toLocaleString("no") : "—"
+              }
             />
           </div>
 
           {event.registrationGroups && event.registrationGroups.length > 0 && (
             <div className="pt-2">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+              <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
                 Tidlig reg. grupper
               </p>
               {event.registrationGroups.map((g) => (
@@ -131,7 +146,7 @@ export function HappeningDebugPanel({
           )}
 
           <div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Påmeldingstilstand
             </p>
             <Row label="Åpen" value={isRegistrationOpen ? "Ja" : "Nei"} />
@@ -142,8 +157,8 @@ export function HappeningDebugPanel({
             <Row label="Skjul påmeldinger" value={hideRegistrations ? "Ja" : "Nei"} />
           </div>
 
-<div className="pt-2">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+          <div className="pt-2">
+            <p className="mb-1 text-xs font-semibold tracking-wide text-red-600 uppercase dark:text-red-400">
               Tilganger
             </p>
             <Row

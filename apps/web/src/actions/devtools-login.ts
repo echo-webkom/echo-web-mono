@@ -11,9 +11,7 @@ import { db } from "@echo-webkom/db/serverless";
 import { createSessionCookie, SESSION_COOKIE_NAME } from "@/auth/session";
 import { IS_DEVTOOLS_ENABLED } from "@/config";
 
-type DevtoolsLoginResult =
-  | { success: true; message: string }
-  | { success: false; error: string };
+type DevtoolsLoginResult = { success: true; message: string } | { success: false; error: string };
 
 export async function devtoolsLogin(userId: string): Promise<DevtoolsLoginResult> {
   if (!IS_DEVTOOLS_ENABLED) {

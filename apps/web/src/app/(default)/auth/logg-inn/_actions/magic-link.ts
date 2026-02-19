@@ -12,9 +12,7 @@ import { BASE_URL, DEV } from "@/config";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { isValidEmail } from "@/utils/string";
 
-type MagicLinkResult =
-  | { success: true; message: string }
-  | { success: false; error: string };
+type MagicLinkResult = { success: true; message: string } | { success: false; error: string };
 
 const EXPIRY_MINUTES = 5;
 

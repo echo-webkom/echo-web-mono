@@ -165,7 +165,6 @@ export const SignInButtons = () => {
           Les mer her.
         </Link>
       </Text>
-
     </div>
   );
 };
