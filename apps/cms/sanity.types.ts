@@ -82,8 +82,92 @@ export type Slug = {
 
 export type Ttime = {
   _type: "ttime";
-  hour: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23;
-  minute: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59;
+  hour:
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23;
+  minute:
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23
+    | 24
+    | 25
+    | 26
+    | 27
+    | 28
+    | 29
+    | 30
+    | 31
+    | 32
+    | 33
+    | 34
+    | 35
+    | 36
+    | 37
+    | 38
+    | 39
+    | 40
+    | 41
+    | 42
+    | 43
+    | 44
+    | 45
+    | 46
+    | 47
+    | 48
+    | 49
+    | 50
+    | 51
+    | 52
+    | 53
+    | 54
+    | 55
+    | 56
+    | 57
+    | 58
+    | 59;
 };
 
 export type Banner = {
@@ -261,9 +345,11 @@ export type Job = {
   company: CompanyReference;
   expiresAt: string;
   weight: number;
-  locations: Array<{
-    _key: string;
-  } & LocationReference>;
+  locations: Array<
+    {
+      _key: string;
+    } & LocationReference
+  >;
   jobType: "fulltime" | "parttime" | "internship" | "summerjob" | "event" | "ad";
   link: string;
   deadline?: string;
@@ -313,9 +399,11 @@ export type RepeatingHappening = {
   title: string;
   slug: Slug;
   happeningType: "event" | "external";
-  organizers?: Array<{
-    _key: string;
-  } & StudentGroupReference>;
+  organizers?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
   location?: LocationReference;
   cost?: number;
   dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 0;
@@ -325,9 +413,11 @@ export type RepeatingHappening = {
   endDate: string;
   interval: "weekly" | "bi-weekly" | "monthly";
   ignoredDates?: Array<string>;
-  contacts?: Array<{
-    _key: string;
-  } & ContactProfile>;
+  contacts?: Array<
+    {
+      _key: string;
+    } & ContactProfile
+  >;
   externalLink?: string;
   body?: Markdown;
 };
@@ -342,9 +432,11 @@ export type Happening = {
   slug: Slug;
   isPinned?: boolean;
   happeningType: "event" | "bedpres" | "external";
-  organizers?: Array<{
-    _key: string;
-  } & StudentGroupReference>;
+  organizers?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
   company?: CompanyReference;
   location?: LocationReference;
   cost?: number;
@@ -352,20 +444,28 @@ export type Happening = {
   date: string;
   endDate?: string;
   registrationStartGroups?: string;
-  registrationGroups?: Array<{
-    _key: string;
-  } & StudentGroupReference>;
+  registrationGroups?: Array<
+    {
+      _key: string;
+    } & StudentGroupReference
+  >;
   registrationStart?: string;
   registrationEnd?: string;
-  contacts?: Array<{
-    _key: string;
-  } & ContactProfile>;
-  spotRanges?: Array<{
-    _key: string;
-  } & SpotRange>;
-  additionalQuestions?: Array<{
-    _key: string;
-  } & Question>;
+  contacts?: Array<
+    {
+      _key: string;
+    } & ContactProfile
+  >;
+  spotRanges?: Array<
+    {
+      _key: string;
+    } & SpotRange
+  >;
+  additionalQuestions?: Array<
+    {
+      _key: string;
+    } & Question
+  >;
   externalLink?: string;
   body?: Markdown;
 };
@@ -527,13 +627,56 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = ProfileReference | HungerGames | SanityImageAssetReference | Merch | Markdown | SanityImageCrop | SanityImageHotspot | Slug | Ttime | Banner | Color | Movie | Question | ContactProfile | SpotRange | SanityFileAssetReference | MeetingMinute | StudentGroup | StaticInfo | Profile | CompanyReference | LocationReference | Job | StudentGroupReference | Post | RepeatingHappening | Happening | Location | Company | RgbaColor | HsvaColor | HslaColor | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes =
+  | ProfileReference
+  | HungerGames
+  | SanityImageAssetReference
+  | Merch
+  | Markdown
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
+  | Ttime
+  | Banner
+  | Color
+  | Movie
+  | Question
+  | ContactProfile
+  | SpotRange
+  | SanityFileAssetReference
+  | MeetingMinute
+  | StudentGroup
+  | StaticInfo
+  | Profile
+  | CompanyReference
+  | LocationReference
+  | Job
+  | StudentGroupReference
+  | Post
+  | RepeatingHappening
+  | Happening
+  | Location
+  | Company
+  | RgbaColor
+  | HsvaColor
+  | HslaColor
+  | MediaTag
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
-type ArrayOf<T> = Array<T & {
-  _key: string;
-}>;
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
 
 // Source: ../../packages/sanity/src/queries/banner.ts
 // Variable: bannerQuery
@@ -807,21 +950,24 @@ export type AllPostsQueryResult = Array<{
   _updatedAt: string;
   title: string;
   slug: string;
-  authors: Array<{
-    _id: string;
-    name: string;
-    image: null;
-  } | {
-    _id: string;
-    name: string;
-    image: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-  }> | null;
+  authors: Array<
+    | {
+        _id: string;
+        name: string;
+        image: null;
+      }
+    | {
+        _id: string;
+        name: string;
+        image: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        } | null;
+      }
+  > | null;
   image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -997,4 +1143,3 @@ export type HappeningQueryListResult = Array<{
     options: Array<string> | null;
   }> | null;
 }>;
-

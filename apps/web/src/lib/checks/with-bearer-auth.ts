@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 
-import { type HandlerFunction } from "./utils";
+export type HandlerFunction = (request: NextRequest) => Promise<Response> | Response;
 
 /**
  * Checks if the user has the correct bearer auth credentials.

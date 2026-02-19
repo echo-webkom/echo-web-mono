@@ -12,18 +12,3 @@
 export const mailTo = (email: string) => {
   return `mailto:${email}`;
 };
-
-/**
- * Prefixds a phone number with the `tel:` protocol for use in an anchor tag.
- *
- * @example
- * ```ts
- * telTo('12345678'); // 'tel:12345678'
- * ```
- *
- * @param phone The phone number to prefix.
- * @returns The phone number prefixed with the `tel:` protocol.
- */
-export const telTo = (phone: string) => {
-  return `tel:${phone}`;
-};
