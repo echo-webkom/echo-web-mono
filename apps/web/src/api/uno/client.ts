@@ -522,6 +522,10 @@ class GroupsApi {
   async update(group: Group) {
     return await this.client.request<Group>("POST", `groups/${group.id}`, group);
   }
+
+  async all() {
+    return await this.client.request<Array<Group>>("GET", "groups");
+  }
 }
 
 export interface Reaction {
