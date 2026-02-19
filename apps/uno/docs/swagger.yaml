@@ -965,6 +965,21 @@ paths:
       tags:
       - feedbacks
   /group:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/http_routes_api.GroupResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a list of all groups
+      tags:
+      - groups
     post:
       consumes:
       - application/json

@@ -23,6 +23,7 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	}
 
 	mux := router.NewMux()
+	mux.Handle("GET", "/", gh.GetGroupsHandler)
 
 	mux.Handle("DELETE", "/:id", gh.DeleteGroupByIDHandler, admin)
 	mux.Handle("POST", "/", gh.CreateGroupHandler, admin)
@@ -35,6 +36,29 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 type GroupResponse struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+}
+
+// GetGroupsHandler returns a list of all groups.
+// @Summary Get a list of all groups
+// @Tags groups
+// @Success 200 {array} GroupResponse "OK"
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /group [get]
+func (gh *group) GetGroupsHandler(ctx *handler.Context) error {
+	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
+	if err != nil {
+		return ctx.Error(err, http.StatusInternalServerError)
+	}
+
+	response := make([]GroupResponse, len(groups))
+	for i, group := range groups {
+		response[i] = GroupResponse{
+			ID:   group.ID,
+			Name: group.Name,
+		}
+	}
+
+	return ctx.JSON(response)
 }
 
 // DeleteGroupByIDHandler deletes a group by ID.

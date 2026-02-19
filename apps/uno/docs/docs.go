@@ -693,6 +693,29 @@ const docTemplate = `{
             }
         },
         "/group": {
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get a list of all groups",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
