@@ -13,3 +13,5 @@ export const BASE_URL = DEV
   : `https://${PRODUCTION_DOMAIN}`;
 
 export const UNO_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
+export const IS_DEVTOOLS_ENABLED = ["development", "testing", "staging"].includes(ENVIRONMENT);

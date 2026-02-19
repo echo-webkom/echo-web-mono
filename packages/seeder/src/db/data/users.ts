@@ -50,6 +50,15 @@ export const users = [
     token: "admin",
     isPublic: true,
   },
+
+  {
+    id: "hyggkom",
+    name: "Hyggkom",
+    email: "hyggkom@echo.uib.no",
+    type: "student",
+    token: "hyggkom",
+    isPublic: true,
+  },
   {
     id: "unethical",
     name: "Unethical",

@@ -18,11 +18,12 @@ import NextTopLoader from "nextjs-toploader";
 
 import { auth } from "@/auth/session";
 import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
+import { DevtoolsLoginDialog } from "@/components/devtools/devtools-login-dialog";
+import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/toaster";
-import { BASE_URL } from "@/config";
+import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
 
@@ -188,6 +189,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <FeedbackBlob />
             <TailwindIndicator />
             <EasterEgg />
+            {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
           </ThemeWrapper>
         </Providers>
         <Analytics />
