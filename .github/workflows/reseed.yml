@@ -23,7 +23,7 @@ jobs:
           cache-dependency-path: ./pnpm-lock.yaml
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --filter=seeder
 
       - name: 🌱 Reseed development database
         run: pnpm tsx ./src/index.ts generate --dataset "$NEXT_PUBLIC_SANITY_DATASET"
