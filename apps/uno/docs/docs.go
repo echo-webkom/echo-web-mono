@@ -1774,15 +1774,11 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "emojiId",
-                "reactToKey",
                 "userId"
             ],
             "properties": {
                 "emojiId": {
                     "type": "integer"
-                },
-                "reactToKey": {
-                    "type": "string"
                 },
                 "userId": {
                     "type": "string"

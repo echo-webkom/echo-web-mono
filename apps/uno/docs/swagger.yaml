@@ -31,13 +31,10 @@ definitions:
     properties:
       emojiId:
         type: integer
-      reactToKey:
-        type: string
       userId:
         type: string
     required:
     - emojiId
-    - reactToKey
     - userId
     type: object
   http_routes_api.UpdateGroupRequest:
