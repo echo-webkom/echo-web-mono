@@ -22,13 +22,13 @@ export const TailwindIndicator = () => {
 
   return (
     <div className="bg-primary fixed top-0 left-0 z-50 flex items-center justify-center rounded-br-lg font-mono text-xs text-white">
-      <div className="px-[4px] py-[2px]">
+      <div className="px-1 py-0.5">
         <span>{String(w)}</span>
         <span>x</span>
         <span>{String(h)}</span>
       </div>
       <p>-</p>
-      <div className="px-[4px] py-[2px]">
+      <div className="px-1 py-0.5">
         <p className="block sm:hidden">xs</p>
         <p className="hidden sm:block md:hidden lg:hidden xl:hidden 2xl:hidden">sm</p>
         <p className="hidden md:block lg:hidden xl:hidden 2xl:hidden">md</p>

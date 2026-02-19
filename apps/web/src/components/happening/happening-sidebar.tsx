@@ -13,7 +13,7 @@ import { RegisterButton } from "@/components/register-button";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { isHost } from "@/lib/memberships";
+import { isHost, isWebkom } from "@/lib/memberships";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import {
@@ -27,6 +27,7 @@ import {
 import { doesIntersect } from "@/utils/list";
 import { mailTo } from "@/utils/prefixes";
 import { unoWithAdmin } from "../../api/server";
+import { HappeningDebugPanel } from "../devtools/happening-debug-panel";
 import { ReactionButtonGroup } from "../reaction-button-group";
 import { RegistrationCount } from "../registration-count";
 import { RegistrationsPreview } from "./registrations-preview";
@@ -113,10 +114,28 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
     ? isFuture(new Date(user.banInfo.expiresAt)) && event.happeningType === "bedpres"
     : false;
 
-  const hideRegistrations = (event.hideRegistrations ?? false) === true;
+  const hideRegistrations = event.hideRegistrations === true;
+
+  const isWebkomUser = user ? isWebkom(user) : false;
 
   return (
     <div className="flex w-full shrink-0 flex-col gap-4 lg:max-w-[320px]">
+      {isWebkomUser && (
+        <HappeningDebugPanel
+          event={event}
+          spotRanges={spotRanges}
+          registrations={registrations}
+          questionsCount={questions.length}
+          hostGroups={hostGroups}
+          hideRegistrations={hideRegistrations}
+          isRegistrationOpen={isRegistrationOpen}
+          isNormalRegistrationOpen={isNormalRegistrationOpen}
+          isGroupRegistrationOpen={isGroupRegistrationOpen}
+          isClosed={isClosed}
+          registrationOpensIn24Hours={Boolean(registrationOpensIn24Hours)}
+        />
+      )}
+
       {/**
        * Show warning if:
        * - Event is not happening
