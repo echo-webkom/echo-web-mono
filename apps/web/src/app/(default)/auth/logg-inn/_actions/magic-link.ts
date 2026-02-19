@@ -1,31 +1,22 @@
 "use server";
 
 import crypto from "crypto";
-import { cookies } from "next/headers";
-import { addDays } from "date-fns";
 import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
 
-import { sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
+import { verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 import { MagicLinkEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
-import { createSessionCookie, SESSION_COOKIE_NAME } from "@/auth/session";
-import { BASE_URL, DEV, ENVIRONMENT } from "@/config";
+import { BASE_URL, DEV } from "@/config";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { isValidEmail } from "@/utils/string";
 
 type MagicLinkResult =
-  | { success: true; message: string; immediateLogin?: boolean }
+  | { success: true; message: string }
   | { success: false; error: string };
 
 const EXPIRY_MINUTES = 5;
-const ALLOW_FIXTURE_EMAIL_LOGIN = ["development", "testing", "staging"].includes(ENVIRONMENT);
-const FIXTURE_EMAIL_TO_USER_ID: Record<string, string> = {
-  "student@echo.uib.no": "student",
-  "webkom@echo.uib.no": "admin",
-};
 
 export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
   try {
@@ -37,64 +28,6 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
-
-    if (ALLOW_FIXTURE_EMAIL_LOGIN && normalizedEmail in FIXTURE_EMAIL_TO_USER_ID) {
-      const fixtureUserId = FIXTURE_EMAIL_TO_USER_ID[normalizedEmail];
-      if (!fixtureUserId) {
-        return {
-          success: false,
-          error: "Ugyldig fixture-bruker.",
-        };
-      }
-      const fixtureUser = await db.query.users.findFirst({
-        where: (user, { eq }) => eq(user.id, fixtureUserId),
-      });
-
-      if (!fixtureUser) {
-        return {
-          success: false,
-          error: "Bruker finnes ikke i databasen.",
-        };
-      }
-
-      await db.update(users).set({ lastSignInAt: new Date() }).where(eq(users.id, fixtureUser.id));
-
-      let existingSession = await db.query.sessions.findFirst({
-        where: (row, { eq, and, gt }) =>
-          and(eq(row.userId, fixtureUser.id), gt(row.expires, new Date())),
-      });
-
-      if (!existingSession) {
-        const sessionId = nanoid(40);
-        const expiresAt = addDays(new Date(), 30);
-        await db.insert(sessions).values({
-          sessionToken: sessionId,
-          userId: fixtureUser.id,
-          expires: expiresAt,
-        });
-        existingSession = {
-          sessionToken: sessionId,
-          expires: expiresAt,
-          userId: fixtureUser.id,
-        };
-      }
-
-      const cookieStore = await cookies();
-      const sessionCookie = await createSessionCookie(existingSession.sessionToken);
-
-      cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
-        path: "/",
-        expires: existingSession.expires,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-      });
-
-      return {
-        success: true,
-        immediateLogin: true,
-        message: "Innlogging vellykket!",
-      };
-    }
 
     // Rate limit: 3 attempts per 15 minutes per email
     const rateLimit = await checkRateLimit({

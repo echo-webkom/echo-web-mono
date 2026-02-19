@@ -35,11 +35,6 @@ export const SignInButtons = () => {
 
       if (result.success) {
         setMessage({ text: result.message, isError: false });
-        if (result.immediateLogin) {
-          router.push("/");
-          router.refresh();
-          return;
-        }
         setShowCodeInput(true);
       } else {
         setMessage({ text: result.error, isError: true });
@@ -170,6 +165,7 @@ export const SignInButtons = () => {
           Les mer her.
         </Link>
       </Text>
+
     </div>
   );
 };
