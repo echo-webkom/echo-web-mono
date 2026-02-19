@@ -48,6 +48,7 @@ func RunServer(
 	databrusService *service.DatabrusService,
 	adventOfCodeService *service.AdventOfCodeService,
 	groupService *service.GroupService,
+	reactionService *service.ReactionService,
 ) {
 	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
 
@@ -95,6 +96,9 @@ func RunServer(
 
 	// Group routes
 	r.Mount("/groups", api.NewGroupMux(logger, groupService, admin))
+
+	// Reaction routes
+	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

@@ -1,8 +1,8 @@
 "use server";
 
 import { auth } from "@/auth/session";
-import { registerReaction } from "@/data/reactions/mutations";
 import { idToEmoji } from "@/lib/emojis";
+import { unoWithAdmin } from "../api/server";
 
 export const handleReact = async (reactToKey: string, emojiId: number) => {
   const user = await auth();
@@ -21,13 +21,10 @@ export const handleReact = async (reactToKey: string, emojiId: number) => {
     };
   }
 
-  const reactionId = await registerReaction({
-    reactToKey: reactToKey,
+  const newReactions = await unoWithAdmin.reactions.toggle(reactToKey, {
     emojiId: emojiId,
     userId: user.id,
   });
 
-  return {
-    reactionId,
-  };
+  return newReactions;
 };

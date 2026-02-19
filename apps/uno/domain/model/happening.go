@@ -16,7 +16,7 @@ type Happening struct {
 	ID                      string
 	Slug                    string
 	Title                   string
-	Type                    string
+	Type                    HappeningType
 	Date                    *time.Time
 	RegistrationGroups      *json.RawMessage
 	RegistrationStartGroups *time.Time
@@ -25,7 +25,18 @@ type Happening struct {
 }
 
 func (h *Happening) IsBedpres() bool {
-	return h.Type == "bedpres"
+	return h.Type == HappeningTypeBedpres
+}
+
+type HappeningType string
+
+const (
+	HappeningTypeEvent   HappeningType = "event"
+	HappeningTypeBedpres HappeningType = "bedpres"
+)
+
+func (h HappeningType) String() string {
+	return string(h)
 }
 
 type HappeningsToGroups struct {

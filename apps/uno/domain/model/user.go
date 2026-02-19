@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 // User represents a user in the system with their profile information.
 // This is a domain model focused on business logic and rules.
@@ -10,8 +13,8 @@ type User struct {
 	Email            string
 	Image            *string
 	AlternativeEmail *string
-	DegreeID         *string
-	Year             *int
+	Degree           *Degree
+	Year             *DegreeYear
 	Type             UserType
 	LastSignInAt     *time.Time
 	UpdatedAt        *time.Time
@@ -19,6 +22,55 @@ type User struct {
 	HasReadTerms     bool
 	Birthday         *time.Time
 	IsPublic         bool
+	Groups           []Group
+}
+
+// DegreeYear represents the year of study for a user.
+type DegreeYear int
+
+var ErrInvalidDegreeYear = errors.New("invalid degree year")
+
+const (
+	FirstYear  DegreeYear = 1
+	SecondYear DegreeYear = 2
+	ThirdYear  DegreeYear = 3
+	FourthYear DegreeYear = 4
+	FifthYear  DegreeYear = 5
+	PhDYear    DegreeYear = 6
+)
+
+func NewDegreeYear(year int) (*DegreeYear, error) {
+	switch year {
+	case 1:
+		dy := FirstYear
+		return &dy, nil
+	case 2:
+		dy := SecondYear
+		return &dy, nil
+	case 3:
+		dy := ThirdYear
+		return &dy, nil
+	case 4:
+		dy := FourthYear
+		return &dy, nil
+	case 5:
+		dy := FifthYear
+		return &dy, nil
+	case 6:
+		dy := PhDYear
+		return &dy, nil
+	default:
+		return nil, ErrInvalidDegreeYear
+	}
+}
+
+func (dy DegreeYear) Int() int {
+	return int(dy)
+}
+
+func (dy DegreeYear) IntPtr() *int {
+	year := int(dy)
+	return &year
 }
 
 // UserType represents the type of user account
@@ -30,10 +82,14 @@ const (
 	// Add other user types as needed
 )
 
+func (u UserType) String() string {
+	return string(u)
+}
+
 // IsProfileComplete checks if the user has completed their profile
 // by filling in required fields.
 func (u *User) IsProfileComplete() bool {
-	return u.DegreeID != nil && u.Year != nil && u.HasReadTerms
+	return u.Degree != nil && u.Year != nil && u.HasReadTerms
 }
 
 // CanAccessPrivateInfo checks if the user's profile information

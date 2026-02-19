@@ -22,7 +22,6 @@ func NewUserRepo(db *Database, logger port.Logger) port.UserRepo {
 func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
 	u.logger.Info(ctx, "getting banned users")
 
-	// First, get all banned users with their ban info
 	banQuery := `--sql
 		SELECT
 			u.id, u.name, u.image,
@@ -145,22 +144,42 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, erro
 
 	query := `--sql
 		SELECT
-			id, name, email, image, alternative_email, degree_id, year, type,
-			last_sign_in_at, updated_at, created_at, has_read_terms,
-			birthday, is_public
-		FROM "user"
-		WHERE id = $1
+			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
+			u.birthday, u.is_public,
+			d.id AS degree_id, d.name AS degree_name
+		FROM "user" u
+		LEFT JOIN degree d ON u.degree_id = d.id
+		WHERE u.id = $1
 	`
 	var userDB record.UserDB
-	err := u.db.GetContext(ctx, &userDB, query, id)
-	if err != nil {
+	if err := u.db.GetContext(ctx, &userDB, query, id); err != nil {
 		u.logger.Error(ctx, "failed to get user by ID",
 			"error", err,
 			"user_id", id,
 		)
 		return model.User{}, err
 	}
-	return *userDB.ToDomain(), nil
+
+	groupsQuery := `--sql
+		SELECT g.id, g.name, utg.is_leader
+		FROM users_to_groups utg
+		JOIN "group" g ON utg.group_id = g.id
+		WHERE utg.user_id = $1
+	`
+	if err := u.db.SelectContext(ctx, &userDB.Groups, groupsQuery, id); err != nil {
+		u.logger.Error(ctx, "failed to get user groups",
+			"error", err,
+			"user_id", id,
+		)
+		return model.User{}, err
+	}
+
+	user, err := userDB.ToDomain()
+	if err != nil {
+		return model.User{}, err
+	}
+	return user, nil
 }
 
 func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.User, error) {
@@ -247,15 +266,26 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
 	`
+	var degreeID *string
+	if user.Degree != nil {
+		degreeID = &user.Degree.ID
+	}
+
+	var year *int
+	if user.Year != nil {
+		y := user.Year.Int()
+		year = &y
+	}
+
 	var resultDB record.UserDB
 	err := u.db.GetContext(ctx, &resultDB, query,
 		user.Email,
 		user.Name,
 		user.Image,
 		user.AlternativeEmail,
-		user.DegreeID,
-		user.Year,
-		string(user.Type),
+		degreeID,
+		year,
+		user.Type.String(),
 		user.HasReadTerms,
 		user.Birthday,
 		user.IsPublic,
@@ -266,5 +296,9 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		)
 		return model.User{}, err
 	}
-	return *resultDB.ToDomain(), nil
+	result, err := resultDB.ToDomain()
+	if err != nil {
+		return model.User{}, err
+	}
+	return result, nil
 }

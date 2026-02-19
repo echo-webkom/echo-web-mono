@@ -48,7 +48,7 @@ func fitsInSpotrange(user *model.User, spotRange *model.SpotRange) bool {
 	if user.Year == nil {
 		return false
 	}
-	return *user.Year >= spotRange.MinYear && *user.Year <= spotRange.MaxYear
+	return user.Year.Int() >= spotRange.MinYear && user.Year.Int() <= spotRange.MaxYear
 }
 
 // Checks if there is an available spot for a user in the given spot ranges considering existing registrations

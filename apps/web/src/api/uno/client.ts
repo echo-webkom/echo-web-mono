@@ -44,6 +44,7 @@ export class UnoClient {
   strikes: StrikesApi;
   adventOfCode: AdventOfCodeApi;
   groups: GroupsApi;
+  reactions: ReactionsApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -70,6 +71,7 @@ export class UnoClient {
     this.strikes = new StrikesApi(this);
     this.adventOfCode = new AdventOfCodeApi(this);
     this.groups = new GroupsApi(this);
+    this.reactions = new ReactionsApi(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -517,5 +519,33 @@ class GroupsApi {
 
   async update(group: Group) {
     return await this.client.request<Group>("POST", `groups/${group.id}`, group);
+  }
+}
+
+export interface Reaction {
+  createdAt: Date;
+  userId: string;
+  reactToKey: string;
+  emojiId: number;
+}
+
+export interface ReactionInsert {
+  userId: string;
+  emojiId: number;
+}
+
+class ReactionsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async byId(key: string) {
+    return await this.client.request<Array<Reaction>>("GET", `reactions/${key}`);
+  }
+
+  async toggle(key: string, reaction: ReactionInsert) {
+    return await this.client.request<Array<Reaction>>("POST", `reactions/${key}`, reaction);
   }
 }

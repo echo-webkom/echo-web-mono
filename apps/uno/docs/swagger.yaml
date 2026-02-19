@@ -16,6 +16,27 @@ definitions:
       name:
         type: string
     type: object
+  http_routes_api.ReactionResponse:
+    properties:
+      createdAt:
+        type: string
+      emojiId:
+        type: integer
+      reactToKey:
+        type: string
+      userId:
+        type: string
+    type: object
+  http_routes_api.ToggleReactionRequest:
+    properties:
+      emojiId:
+        type: integer
+      userId:
+        type: string
+    required:
+    - emojiId
+    - userId
+    type: object
   http_routes_api.UpdateGroupRequest:
     properties:
       name:
@@ -1225,6 +1246,79 @@ paths:
       summary: Get happenings registrations count
       tags:
       - happenings
+  /reactions/{key}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Key to get reactions for
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/http_routes_api.ReactionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get reactions for a given key
+      tags:
+      - reactions
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Key to toggle reaction for
+        in: path
+        name: key
+        required: true
+        type: string
+      - description: Toggle Reaction Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http_routes_api.ToggleReactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/http_routes_api.ReactionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Toggle a reaction for a given key and user
+      tags:
+      - reactions
   /shopping:
     get:
       produces:

@@ -40,9 +40,8 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 	completeUser := testutil.NewFakeStruct(func(u *model.User) {
 		u.ID = userID
 		degreeID := "degree123"
-		year := 2
-		u.DegreeID = &degreeID
-		u.Year = &year
+		u.Degree = &model.Degree{ID: degreeID}
+		u.Year = degreeYearPtr(2)
 		u.HasReadTerms = true
 	})
 
@@ -67,7 +66,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				incompleteUser := testutil.NewFakeStruct(func(u *model.User) {
 					u.ID = userID
-					u.DegreeID = nil
+					u.Degree = nil
 					u.Year = nil
 					u.HasReadTerms = false
 				})
@@ -91,7 +90,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 				})
 				ur.EXPECT().GetUserByID(mock.Anything, userID).Return(completeUser, nil).Once()
 				hr.EXPECT().GetHappeningById(mock.Anything, happeningID).Return(happening, nil).Once()
@@ -106,7 +105,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "bedpres"
+					h.Type = model.HappeningTypeBedpres
 				})
 				banInfo := testutil.NewFakeStruct(func(b *model.ModBanInfo) {
 					expiresAt := time.Now().Add(24 * time.Hour)
@@ -125,7 +124,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 				})
 				existingReg := testutil.NewFakeStruct(func(r *model.Registration) {
 					r.Status = model.RegistrationStatusRegistered
@@ -143,7 +142,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 				})
 				existingReg := testutil.NewFakeStruct(func(r *model.Registration) {
 					r.Status = model.RegistrationStatusWaitlisted
@@ -161,7 +160,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 					registrationStart := time.Now().Add(-1 * time.Hour)
 					h.RegistrationStart = &registrationStart
 					h.RegistrationEnd = nil
@@ -183,14 +182,13 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 				userNotEligible := testutil.NewFakeStruct(func(u *model.User) {
 					u.ID = userID
 					degreeID := "degree123"
-					year := 5
-					u.DegreeID = &degreeID
-					u.Year = &year
+					u.Degree = &model.Degree{ID: degreeID}
+					u.Year = degreeYearPtr(5)
 					u.HasReadTerms = true
 				})
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 					registrationStart := time.Now().Add(-1 * time.Hour)
 					h.RegistrationStart = &registrationStart
 					h.RegistrationEnd = nil
@@ -220,7 +218,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			setupMocks: func(hr *mocks.HappeningRepo, ur *mocks.UserRepo, rr *mocks.RegistrationRepo, br *mocks.BanInfoRepo) {
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = happeningID
-					h.Type = "event"
+					h.Type = model.HappeningTypeEvent
 					registrationStart := time.Now().Add(-1 * time.Hour)
 					h.RegistrationStart = &registrationStart
 					h.RegistrationEnd = nil
@@ -289,9 +287,8 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 	completeUser := testutil.NewFakeStruct(func(u *model.User) {
 		u.ID = userID
 		degreeID := "degree123"
-		year := 2
-		u.DegreeID = &degreeID
-		u.Year = &year
+		u.Degree = &model.Degree{ID: degreeID}
+		u.Year = degreeYearPtr(2)
 		u.HasReadTerms = true
 	})
 
@@ -331,7 +328,7 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			happening := testutil.NewFakeStruct(func(h *model.Happening) {
 				h.ID = happeningID
-				h.Type = "event"
+				h.Type = model.HappeningTypeEvent
 				tt.setupHappening(h)
 			})
 
@@ -372,15 +369,14 @@ func TestHappeningService_Register_QuestionValidation(t *testing.T) {
 	completeUser := testutil.NewFakeStruct(func(u *model.User) {
 		u.ID = userID
 		degreeID := "degree123"
-		year := 2
-		u.DegreeID = &degreeID
-		u.Year = &year
+		u.Degree = &model.Degree{ID: degreeID}
+		u.Year = degreeYearPtr(2)
 		u.HasReadTerms = true
 	})
 
 	happening := testutil.NewFakeStruct(func(h *model.Happening) {
 		h.ID = happeningID
-		h.Type = "event"
+		h.Type = model.HappeningTypeEvent
 		registrationStart := time.Now().Add(-1 * time.Hour)
 		h.RegistrationStart = &registrationStart
 		h.RegistrationEnd = nil
@@ -509,7 +505,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 		registrationStart  *time.Time
 		registrationGroups *json.RawMessage
 		hostGroups         []string
-		userYear           *int
+		userYear           *model.DegreeYear
 		spotRanges         []model.SpotRange
 		canSkipExpected    bool
 	}{
@@ -522,7 +518,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			registrationStart:  nil,
 			registrationGroups: nil,
 			hostGroups:         []string{},
-			userYear:           intPtr(2),
+			userYear:           degreeYearPtr(2),
 			spotRanges:         spotRanges,
 			canSkipExpected:    false,
 		},
@@ -535,7 +531,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			registrationStart:  nil,
 			registrationGroups: nil,
 			hostGroups:         []string{},
-			userYear:           intPtr(2),
+			userYear:           degreeYearPtr(2),
 			spotRanges:         spotRanges,
 			canSkipExpected:    false,
 		},
@@ -552,7 +548,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 				return &groupsJSON
 			}(),
 			hostGroups:      []string{},
-			userYear:        intPtr(2),
+			userYear:        degreeYearPtr(2),
 			spotRanges:      spotRanges,
 			canSkipExpected: false,
 		},
@@ -565,7 +561,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			registrationStart:  nil,
 			registrationGroups: nil,
 			hostGroups:         []string{"hostGroup"},
-			userYear:           intPtr(5), // User doesn't fit in spot range (1-3)
+			userYear:           degreeYearPtr(5), // User doesn't fit in spot range (1-3)
 			spotRanges: []model.SpotRange{
 				{
 					ID:          "spot1",
@@ -584,14 +580,14 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			testUser := testutil.NewFakeStruct(func(u *model.User) {
 				u.ID = userID
 				degreeID := "degree123"
-				u.DegreeID = &degreeID
+				u.Degree = &model.Degree{ID: degreeID}
 				u.Year = tt.userYear
 				u.HasReadTerms = true
 			})
 
 			testHappening := testutil.NewFakeStruct(func(h *model.Happening) {
 				h.ID = happeningID
-				h.Type = "event"
+				h.Type = model.HappeningTypeEvent
 				if tt.registrationStart != nil {
 					h.RegistrationStart = tt.registrationStart
 				} else {
@@ -671,7 +667,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -684,7 +680,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -697,11 +693,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "user1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"user1": {ID: "user1", Year: intPtr(2)},
+				"user1": {ID: "user1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -714,11 +710,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "user1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"user1": {ID: "user1", Year: intPtr(2)},
+				"user1": {ID: "user1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -731,7 +727,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(5)},
+			user:                &model.User{Year: degreeYearPtr(5)},
 			canSkip:             true,
 			expected:            true,
 		},
@@ -744,7 +740,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -757,7 +753,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(5)},
+			user:                &model.User{Year: degreeYearPtr(5)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -770,11 +766,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "waitlist1", Status: model.RegistrationStatusWaitlisted},
 			},
 			usersByID: map[string]*model.User{
-				"waitlist1": {ID: "waitlist1", Year: intPtr(2)},
+				"waitlist1": {ID: "waitlist1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -787,11 +783,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "reg1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"reg1": {ID: "reg1", Year: intPtr(2)},
+				"reg1": {ID: "reg1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -804,13 +800,13 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "host1", Status: model.RegistrationStatusWaitlisted},
 			},
 			usersByID: map[string]*model.User{
-				"host1": {ID: "host1", Year: intPtr(5)},
+				"host1": {ID: "host1", Year: degreeYearPtr(5)},
 			},
 			membershipsByUserID: map[string][]string{
 				"host1": {"group1"},
 			},
 			hostGroups: []string{"group1"},
-			user:       &model.User{Year: intPtr(2)},
+			user:       &model.User{Year: degreeYearPtr(2)},
 			canSkip:    false,
 			expected:   false,
 		},
@@ -824,7 +820,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -838,12 +834,12 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "user2", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"user1": {ID: "user1", Year: intPtr(2)},
-				"user2": {ID: "user2", Year: intPtr(2)},
+				"user1": {ID: "user1", Year: degreeYearPtr(2)},
+				"user2": {ID: "user2", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -858,7 +854,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -871,11 +867,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "waitlist1", Status: model.RegistrationStatusWaitlisted},
 			},
 			usersByID: map[string]*model.User{
-				"waitlist1": {ID: "waitlist1", Year: intPtr(5)},
+				"waitlist1": {ID: "waitlist1", Year: degreeYearPtr(5)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -890,7 +886,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -905,12 +901,12 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "waitlist2", Status: model.RegistrationStatusWaitlisted},
 			},
 			usersByID: map[string]*model.User{
-				"waitlist1": {ID: "waitlist1", Year: intPtr(2)},
-				"waitlist2": {ID: "waitlist2", Year: intPtr(4)},
+				"waitlist1": {ID: "waitlist1", Year: degreeYearPtr(2)},
+				"waitlist2": {ID: "waitlist2", Year: degreeYearPtr(4)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -923,7 +919,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             true,
 			expected:            true,
 		},
@@ -936,7 +932,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            true,
 		},
@@ -949,7 +945,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			usersByID:           map[string]*model.User{},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(5)},
+			user:                &model.User{Year: degreeYearPtr(5)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -962,13 +958,13 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "host1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"host1": {ID: "host1", Year: intPtr(5)},
+				"host1": {ID: "host1", Year: degreeYearPtr(5)},
 			},
 			membershipsByUserID: map[string][]string{
 				"host1": {"hostGroup"},
 			},
 			hostGroups: []string{"hostGroup"},
-			user:       &model.User{Year: intPtr(2)},
+			user:       &model.User{Year: degreeYearPtr(2)},
 			canSkip:    false,
 			expected:   true,
 		},
@@ -981,11 +977,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "user1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"user1": {ID: "user1", Year: intPtr(2)},
+				"user1": {ID: "user1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(2)},
+			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
 			expected:            false,
 		},
@@ -998,11 +994,11 @@ func TestIsAvailableSpot(t *testing.T) {
 				{UserID: "user1", Status: model.RegistrationStatusRegistered},
 			},
 			usersByID: map[string]*model.User{
-				"user1": {ID: "user1", Year: intPtr(2)},
+				"user1": {ID: "user1", Year: degreeYearPtr(2)},
 			},
 			membershipsByUserID: map[string][]string{},
 			hostGroups:          []string{},
-			user:                &model.User{Year: intPtr(5)},
+			user:                &model.User{Year: degreeYearPtr(5)},
 			canSkip:             true,
 			expected:            false,
 		},
@@ -1024,8 +1020,9 @@ func TestIsAvailableSpot(t *testing.T) {
 	}
 }
 
-func intPtr(i int) *int {
-	return &i
+func degreeYearPtr(i int) *model.DegreeYear {
+	y, _ := model.NewDegreeYear(i)
+	return y
 }
 
 func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
@@ -1037,15 +1034,14 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 	hostUser := testutil.NewFakeStruct(func(u *model.User) {
 		u.ID = userID
 		degreeID := "degree123"
-		year := 5
-		u.DegreeID = &degreeID
-		u.Year = &year
+		u.Degree = &model.Degree{ID: degreeID}
+		u.Year = degreeYearPtr(5)
 		u.HasReadTerms = true
 	})
 
 	happening := testutil.NewFakeStruct(func(h *model.Happening) {
 		h.ID = happeningID
-		h.Type = "event"
+		h.Type = model.HappeningTypeEvent
 		registrationStart := time.Now().Add(-1 * time.Hour)
 		h.RegistrationStart = &registrationStart
 		h.RegistrationEnd = nil

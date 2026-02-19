@@ -233,15 +233,15 @@ func TestRegisterForHappening(t *testing.T) {
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
 				user := testutil.NewFakeStruct(func(u *model.User) {
 					u.ID = "user123"
-					degreeID := "degree123"
-					year := 2
-					u.DegreeID = &degreeID
-					u.Year = &year
+					degree := model.Degree{ID: "degree123", Name: "Computer Science"}
+					year, _ := model.NewDegreeYear(2)
+					u.Degree = &degree
+					u.Year = year
 					u.HasReadTerms = true
 				})
 				happening := testutil.NewFakeStruct(func(h *model.Happening) {
 					h.ID = "happening123"
-					h.Type = "event"                      // Set type to avoid bedpres ban check
+					h.Type = model.HappeningTypeEvent     // Set type to avoid bedpres ban check
 					now := time.Now().Add(-1 * time.Hour) // Set to 1 hour ago to ensure registration is open
 					h.RegistrationStart = &now
 					h.RegistrationEnd = nil // Ensure registration is not closed
@@ -311,7 +311,7 @@ func TestRegisterForHappening(t *testing.T) {
 					u.ID = "user123"
 					// User without complete profile - will fail validation
 					// Explicitly set to nil to ensure IsProfileComplete() returns false
-					u.DegreeID = nil
+					u.Degree = nil
 					u.Year = nil
 					u.HasReadTerms = false
 				})

@@ -27,7 +27,7 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 	user := model.User{
 		Name:         &name,
 		Email:        email,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
 	}
@@ -39,7 +39,7 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 
@@ -48,7 +48,7 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 
 	// Create registration
 	query := `INSERT INTO registration (user_id, happening_id, status, created_at) VALUES ($1, $2, $3, NOW())`
-	_, err = db.ExecContext(ctx, query, createdUser.ID, createdHappening.ID, "registered")
+	_, err = db.ExecContext(ctx, query, createdUser.ID, createdHappening.ID, model.RegistrationStatusRegistered.String())
 	assert.NoError(t, err)
 
 	registration, err := repo.GetByUserAndHappening(ctx, createdUser.ID, createdHappening.ID)
@@ -57,7 +57,7 @@ func TestRegistrationRepo_GetByUserAndHappening(t *testing.T) {
 	assert.NotNil(t, registration)
 	assert.Equal(t, createdUser.ID, registration.UserID)
 	assert.Equal(t, createdHappening.ID, registration.HappeningID)
-	assert.Equal(t, "registered", string(registration.Status))
+	assert.Equal(t, model.RegistrationStatusRegistered, registration.Status)
 }
 
 func TestRegistrationRepo_GetByUserAndHappeningNotFound(t *testing.T) {
@@ -76,7 +76,7 @@ func TestRegistrationRepo_GetByUserAndHappeningNotFound(t *testing.T) {
 	user := model.User{
 		Name:         &name,
 		Email:        email,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
 	}
@@ -88,7 +88,7 @@ func TestRegistrationRepo_GetByUserAndHappeningNotFound(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 
@@ -117,7 +117,7 @@ func TestRegistrationRepo_InsertAnswers(t *testing.T) {
 	user := model.User{
 		Name:         &name,
 		Email:        email,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
 	}
@@ -129,7 +129,7 @@ func TestRegistrationRepo_InsertAnswers(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 
@@ -178,7 +178,7 @@ func TestRegistrationRepo_InsertAnswersEmpty(t *testing.T) {
 	user := model.User{
 		Name:         &name,
 		Email:        email,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
 	}
@@ -190,7 +190,7 @@ func TestRegistrationRepo_InsertAnswersEmpty(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 
@@ -215,14 +215,14 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 	userRepo := NewUserRepo(db, testutil.NewTestLogger())
 	name := "John Doe"
 	email := "john@example.com"
-	year := 2
+	year, _ := model.NewDegreeYear(2)
 	user := model.User{
 		Name:         &name,
 		Email:        email,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
-		Year:         &year,
+		Year:         year,
 	}
 	createdUser, err := userRepo.CreateUser(ctx, user)
 	assert.NoError(t, err)
@@ -233,7 +233,7 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 
@@ -268,7 +268,7 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 	assert.Equal(t, createdUser.ID, registration.UserID)
 	assert.Equal(t, createdHappening.ID, registration.HappeningID)
 	assert.False(t, isWaitlisted) // Should be registered since spot is available
-	assert.Equal(t, "registered", string(registration.Status))
+	assert.Equal(t, model.RegistrationStatusRegistered, registration.Status)
 }
 
 func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
@@ -282,30 +282,30 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 
 	// Create users with year
 	userRepo := NewUserRepo(db, testutil.NewTestLogger())
-	year1 := 2
+	year1, _ := model.NewDegreeYear(2)
 	name1 := "John Doe"
 	email1 := "john@example.com"
 	user1 := model.User{
 		Name:         &name1,
 		Email:        email1,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
-		Year:         &year1,
+		Year:         year1,
 	}
 	createdUser1, err := userRepo.CreateUser(ctx, user1)
 	assert.NoError(t, err)
 
-	year2 := 2
+	year2, _ := model.NewDegreeYear(2)
 	name2 := "Jane Doe"
 	email2 := "jane@example.com"
 	user2 := model.User{
 		Name:         &name2,
 		Email:        email2,
-		Type:         "student",
+		Type:         model.UserTypeStudent,
 		HasReadTerms: false,
 		IsPublic:     false,
-		Year:         &year2,
+		Year:         year2,
 	}
 	createdUser2, err := userRepo.CreateUser(ctx, user2)
 	assert.NoError(t, err)
@@ -316,7 +316,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 	happening := model.Happening{
 		Slug:  "test-happening",
 		Title: "Test Happening",
-		Type:  "event",
+		Type:  model.HappeningTypeEvent,
 		Date:  &date,
 	}
 

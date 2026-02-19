@@ -14,8 +14,8 @@ type ReactionDB struct {
 }
 
 // ToDomain converts database model to domain model
-func (db *ReactionDB) ToDomain() *model.Reaction {
-	return &model.Reaction{
+func (db ReactionDB) ToDomain() model.Reaction {
+	return model.Reaction{
 		ReactToKey: db.ReactToKey,
 		EmojiID:    db.EmojiID,
 		UserID:     db.UserID,
