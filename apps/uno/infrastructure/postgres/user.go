@@ -19,6 +19,67 @@ func NewUserRepo(db *Database, logger port.Logger) port.UserRepo {
 	return &UserRepo{db: db, logger: logger}
 }
 
+func (u *UserRepo) GetAllUsers(ctx context.Context) ([]model.User, error) {
+	u.logger.Info(ctx, "getting all users")
+
+	var usersDB []record.UserDB
+	query := `--sql
+		SELECT
+			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
+			u.birthday, u.is_public,
+			d.id AS degree_id, d.name AS degree_name
+		FROM "user" u
+		LEFT JOIN degree d ON u.degree_id = d.id
+	`
+	err := u.db.SelectContext(ctx, &usersDB, query)
+	if err != nil {
+		u.logger.Error(ctx, "failed to get all users",
+			"error", err,
+		)
+		return []model.User{}, err
+	}
+
+	if len(usersDB) == 0 {
+		return []model.User{}, nil
+	}
+
+	userIDs := make([]string, len(usersDB))
+	for i, user := range usersDB {
+		userIDs[i] = user.ID
+	}
+
+	type groupWithUserID struct {
+		UserID string `db:"user_id"`
+		record.GroupDB
+	}
+
+	groupsQuery := `--sql
+		SELECT utg.user_id, g.id, g.name, utg.is_leader
+		FROM users_to_groups utg
+		JOIN "group" g ON utg.group_id = g.id
+		WHERE utg.user_id = ANY($1)
+	`
+	var groups []groupWithUserID
+	if err := u.db.SelectContext(ctx, &groups, groupsQuery, pq.Array(userIDs)); err != nil {
+		u.logger.Error(ctx, "failed to get groups for all users",
+			"error", err,
+		)
+		return []model.User{}, err
+	}
+
+	groupsByUser := make(map[string][]record.GroupDB)
+	for _, g := range groups {
+		groupsByUser[g.UserID] = append(groupsByUser[g.UserID], g.GroupDB)
+	}
+
+	for i := range usersDB {
+		usersDB[i].Groups = groupsByUser[usersDB[i].ID]
+	}
+
+	return record.UserToDomainList(usersDB), nil
+}
+
 func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
 	u.logger.Info(ctx, "getting banned users")
 
@@ -190,11 +251,13 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			id, name, email, image, alternative_email, degree_id, year, type,
-			last_sign_in_at, updated_at, created_at, has_read_terms,
-			birthday, is_public
-		FROM "user"
-		WHERE id = ANY($1)
+			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
+			u.birthday, u.is_public,
+			d.id AS degree_id, d.name AS degree_name
+		FROM "user" u
+		LEFT JOIN degree d ON u.degree_id = d.id
+		WHERE u.id = ANY($1)
 	`
 	err := u.db.SelectContext(ctx, &usersDB, query, pq.Array(ids))
 	if err != nil {
@@ -204,6 +267,40 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 		)
 		return []model.User{}, err
 	}
+
+	if len(usersDB) == 0 {
+		return []model.User{}, nil
+	}
+
+	type groupWithUserID struct {
+		UserID string `db:"user_id"`
+		record.GroupDB
+	}
+
+	groupsQuery := `--sql
+		SELECT utg.user_id, g.id, g.name, utg.is_leader
+		FROM users_to_groups utg
+		JOIN "group" g ON utg.group_id = g.id
+		WHERE utg.user_id = ANY($1)
+	`
+	var groups []groupWithUserID
+	if err := u.db.SelectContext(ctx, &groups, groupsQuery, pq.Array(ids)); err != nil {
+		u.logger.Error(ctx, "failed to get groups for users by IDs",
+			"error", err,
+			"user_ids", ids,
+		)
+		return []model.User{}, err
+	}
+
+	groupsByUser := make(map[string][]record.GroupDB)
+	for _, g := range groups {
+		groupsByUser[g.UserID] = append(groupsByUser[g.UserID], g.GroupDB)
+	}
+
+	for i := range usersDB {
+		usersDB[i].Groups = groupsByUser[usersDB[i].ID]
+	}
+
 	return record.UserToDomainList(usersDB), nil
 }
 
