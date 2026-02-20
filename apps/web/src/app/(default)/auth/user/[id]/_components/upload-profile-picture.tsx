@@ -2,10 +2,13 @@
 
 import { useRef, useState } from "react";
 
-import { deleteProfilePictureAction, uploadProfilePictureAction } from "@/actions/images";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
+import {
+  deleteProfilePictureAction,
+  uploadProfilePictureAction,
+} from "../_actions/profile-picture";
 
 type UploadProfilePictureProps = {
   name: string;
@@ -44,20 +47,21 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
     const formData = new FormData();
     formData.append("file", file);
 
-    const { success, message } = await uploadProfilePictureAction(formData);
+    const { ok, url } = await uploadProfilePictureAction(formData);
 
-    if (!success) {
-      toast({ title: message });
+    if (!ok) {
+      toast({ title: "Noe gikk galt" });
       return;
     }
 
-    setImageUrl(message);
+    // Set "t" query param to bust the cache and ensure the new image is displayed immediately
+    setImageUrl(`${url}?t=${Date.now()}`);
   };
 
   const handleRemoveImage = async () => {
-    const { success, message } = await deleteProfilePictureAction();
-    if (!success) {
-      toast({ title: message });
+    const ok = await deleteProfilePictureAction();
+    if (!ok) {
+      toast({ title: "Noe gikk galt" });
       return;
     }
     setImageUrl(null);
