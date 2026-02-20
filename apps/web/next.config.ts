@@ -39,6 +39,15 @@ const config = {
         protocol: "https",
         hostname: "echogram.echo-webkom.no",
       },
+      {
+        protocol: "https",
+        hostname: "uno.echo-webkom.no",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+      },
     ],
   },
 

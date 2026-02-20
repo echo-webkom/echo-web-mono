@@ -1,4 +1,4 @@
-import ky, { type KyInstance } from "ky";
+import ky, { type KyInstance, type Options } from "ky";
 
 const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 
@@ -46,6 +46,7 @@ export class UnoClient {
   groups: GroupsApi;
   reactions: ReactionsApi;
   users: UsersApi;
+  files: FilesApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -53,7 +54,6 @@ export class UnoClient {
       credentials: "include",
       cache: "no-store",
       headers: {
-        "Content-Type": "application/json",
         ...(options.adminToken ? { "X-Admin-Key": options.adminToken } : {}),
         ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
       },
@@ -74,16 +74,33 @@ export class UnoClient {
     this.groups = new GroupsApi(this);
     this.reactions = new ReactionsApi(this);
     this.users = new UsersApi(this);
+    this.files = new FilesApi(this);
+  }
+
+  normalizePath(path: string) {
+    return path.startsWith("/") ? path.slice(1) : path;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async request<T>(method: HttpMethod, path: string, body?: any): Promise<T> {
-    const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
-
-    return await this.api(normalizedPath, {
+  async requestJson<T>(method: HttpMethod, path: string, body?: any): Promise<T> {
+    return await this.api(this.normalizePath(path), {
       method,
       json: body,
     }).json<T>();
+  }
+
+  async requestFormData(method: HttpMethod, path: string, formData: FormData) {
+    return await this.api(this.normalizePath(path), {
+      method,
+      body: formData,
+    });
+  }
+
+  async request(method: HttpMethod, path: string, options: Options) {
+    return await this.api(this.normalizePath(path), {
+      method,
+      ...options,
+    });
   }
 
   async health() {
@@ -127,11 +144,11 @@ class CommentsApi {
   }
 
   async all(postId: string) {
-    return await this.client.request<Array<CommentWithReactions>>("GET", `/comments/${postId}`);
+    return await this.client.requestJson<Array<CommentWithReactions>>("GET", `/comments/${postId}`);
   }
 
   async comment(postId: string, userId: string, content: string) {
-    await this.client.request("POST", "/comments", {
+    await this.client.requestJson("POST", "/comments", {
       postId,
       userId,
       content,
@@ -139,7 +156,7 @@ class CommentsApi {
   }
 
   async reply(postId: string, userId: string, content: string, parentCommentId: string) {
-    await this.client.request("POST", "/comments", {
+    await this.client.requestJson("POST", "/comments", {
       postId,
       userId,
       content,
@@ -148,7 +165,7 @@ class CommentsApi {
   }
 
   async like(commentId: string, userId: string) {
-    await this.client.request("POST", `/comments/${commentId}/reaction`, {
+    await this.client.requestJson("POST", `/comments/${commentId}/reaction`, {
       commentId,
       userId,
     });
@@ -215,7 +232,7 @@ class HappeningApi {
   }
 
   async register(happeningId: string, userId: string, questions: Array<Answer>) {
-    return await this.client.request<{ success: boolean; message: string }>(
+    return await this.client.requestJson<{ success: boolean; message: string }>(
       "POST",
       `happenings/${happeningId}/register`,
       {
@@ -226,11 +243,14 @@ class HappeningApi {
   }
 
   async questions(happeningId: string) {
-    return await this.client.request<Array<Question>>("GET", `happenings/${happeningId}/questions`);
+    return await this.client.requestJson<Array<Question>>(
+      "GET",
+      `happenings/${happeningId}/questions`,
+    );
   }
 
   async registrations(happeningId: string) {
-    return await this.client.request<Array<Registration>>(
+    return await this.client.requestJson<Array<Registration>>(
       "GET",
       `happenings/${happeningId}/registrations`,
     );
@@ -243,14 +263,14 @@ class HappeningApi {
 
     const query = happeningIds.map((id) => `id=${id}`).join("&");
 
-    return await this.client.request<Array<RegistrationCount>>(
+    return await this.client.requestJson<Array<RegistrationCount>>(
       "GET",
       `happenings/registrations/count?${query}`,
     );
   }
 
   async spotRanges(happeningId: string) {
-    return await this.client.request<Array<SpotRange>>(
+    return await this.client.requestJson<Array<SpotRange>>(
       "GET",
       `happenings/${happeningId}/spot-ranges`,
     );
@@ -272,7 +292,7 @@ class AccessRequestApi {
   }
 
   async all() {
-    return await this.client.request<Array<AccessRequest>>("GET", "/access-requests");
+    return await this.client.requestJson<Array<AccessRequest>>("GET", "/access-requests");
   }
 }
 
@@ -294,19 +314,19 @@ class DegreesApi {
   }
 
   async all() {
-    return await this.client.request<Array<{ id: string; name: string }>>("GET", "/degrees");
+    return await this.client.requestJson<Array<{ id: string; name: string }>>("GET", "/degrees");
   }
 
   async create(newDegree: DegreeInsert) {
-    await this.client.request("POST", "/degrees", newDegree);
+    await this.client.requestJson("POST", "/degrees", newDegree);
   }
 
   async delete(id: string) {
-    await this.client.request("DELETE", `/degrees/${id}`);
+    await this.client.requestJson("DELETE", `/degrees/${id}`);
   }
 
   async update(updatedDegree: Degree) {
-    await this.client.request("POST", `/degrees/${updatedDegree.id}`, updatedDegree);
+    await this.client.requestJson("POST", `/degrees/${updatedDegree.id}`, updatedDegree);
   }
 }
 
@@ -327,19 +347,19 @@ class ShoppingApi {
   }
 
   async items() {
-    return await this.client.request<Array<ShoppingListItem>>("GET", "shopping");
+    return await this.client.requestJson<Array<ShoppingListItem>>("GET", "shopping");
   }
 
   async createItem(item: { name: string; userId: string }) {
-    await this.client.request("POST", "shopping", item);
+    await this.client.requestJson("POST", "shopping", item);
   }
 
   async toggleLike(data: { itemId: string; userId: string }) {
-    await this.client.request("POST", "shopping/like", data);
+    await this.client.requestJson("POST", "shopping/like", data);
   }
 
   async removeItem(id: string) {
-    await this.client.request("DELETE", `shopping/${id}`);
+    await this.client.requestJson("DELETE", `shopping/${id}`);
   }
 }
 
@@ -370,19 +390,19 @@ class SiteFeedbackApi {
   }
 
   async all() {
-    return await this.client.request<Array<SiteFeedback>>("GET", "feedbacks");
+    return await this.client.requestJson<Array<SiteFeedback>>("GET", "feedbacks");
   }
 
   async getById(id: string) {
-    return await this.client.request<SiteFeedback>("GET", `feedbacks/${id}`);
+    return await this.client.requestJson<SiteFeedback>("GET", `feedbacks/${id}`);
   }
 
   async create(feedback: SiteFeedbackInsert) {
-    return await this.client.request("POST", "feedbacks", feedback);
+    return await this.client.requestJson("POST", "feedbacks", feedback);
   }
 
   async markAsSeen(id: string) {
-    return await this.client.request("PUT", `feedbacks/${id}/seen`);
+    return await this.client.requestJson("PUT", `feedbacks/${id}/seen`);
   }
 }
 
@@ -400,12 +420,12 @@ class WhitelistApi {
   }
 
   async all() {
-    return await this.client.request<Array<WhitelistEntry>>("GET", "whitelist");
+    return await this.client.requestJson<Array<WhitelistEntry>>("GET", "whitelist");
   }
 
   async getByEmail(email: string) {
     try {
-      return await this.client.request<WhitelistEntry | null>("GET", `whitelist/${email}`);
+      return await this.client.requestJson<WhitelistEntry | null>("GET", `whitelist/${email}`);
     } catch {
       return null;
     }
@@ -419,7 +439,7 @@ class StrikesApi {
   }
 
   async listBanned() {
-    return await this.client.request<
+    return await this.client.requestJson<
       Array<{
         id: string;
         name: string | null;
@@ -452,7 +472,7 @@ class StrikesApi {
   }
 
   async listStriked() {
-    return await this.client.request<
+    return await this.client.requestJson<
       Array<{
         id: string;
         name: string;
@@ -485,7 +505,10 @@ class AdventOfCodeApi {
   }
 
   async leaderboard() {
-    return await this.client.request<Array<AdventOfCodeRow>>("GET", `advent-of-code/leaderboard`);
+    return await this.client.requestJson<Array<AdventOfCodeRow>>(
+      "GET",
+      `advent-of-code/leaderboard`,
+    );
   }
 }
 
@@ -508,7 +531,7 @@ class GroupsApi {
 
   async remove(id: string) {
     try {
-      await this.client.request("DELETE", `groups/${id}`);
+      await this.client.requestJson("DELETE", `groups/${id}`);
       return true;
     } catch {
       return false;
@@ -516,15 +539,15 @@ class GroupsApi {
   }
 
   async create(group: GroupInsert) {
-    return await this.client.request<Group>("POST", "groups", group);
+    return await this.client.requestJson<Group>("POST", "groups", group);
   }
 
   async update(group: Group) {
-    return await this.client.request<Group>("POST", `groups/${group.id}`, group);
+    return await this.client.requestJson<Group>("POST", `groups/${group.id}`, group);
   }
 
   async all() {
-    return await this.client.request<Array<Group>>("GET", "groups");
+    return await this.client.requestJson<Array<Group>>("GET", "groups");
   }
 }
 
@@ -548,11 +571,11 @@ class ReactionsApi {
   }
 
   async byId(key: string) {
-    return await this.client.request<Array<Reaction>>("GET", `reactions/${key}`);
+    return await this.client.requestJson<Array<Reaction>>("GET", `reactions/${key}`);
   }
 
   async toggle(key: string, reaction: ReactionInsert) {
-    return await this.client.request<Array<Reaction>>("POST", `reactions/${key}`, reaction);
+    return await this.client.requestJson<Array<Reaction>>("POST", `reactions/${key}`, reaction);
   }
 }
 
@@ -589,10 +612,38 @@ class UsersApi {
   }
 
   async getById(id: string) {
-    return await this.client.request<User>("GET", `users/${id}`);
+    return await this.client.requestJson<User>("GET", `users/${id}`);
   }
 
   async all() {
-    return await this.client.request<Array<User>>("GET", "users");
+    return await this.client.requestJson<Array<User>>("GET", "users");
+  }
+}
+
+class FilesApi {
+  profilePictures: ProfilePicturesApi;
+
+  constructor(client: UnoClient) {
+    this.profilePictures = new ProfilePicturesApi(client);
+  }
+}
+
+class ProfilePicturesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async upload(userId: string, file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await this.client.requestFormData("POST", `users/${userId}/image`, formData);
+    return await response.text();
+  }
+
+  async delete(userId: string) {
+    await this.client.requestJson("DELETE", `users/${userId}/image`);
   }
 }
