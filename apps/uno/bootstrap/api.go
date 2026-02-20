@@ -6,6 +6,7 @@ import (
 	"os"
 	"syscall"
 	"uno/config"
+	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http"
 	"uno/infrastructure/external"
@@ -88,9 +89,14 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
-	profilePictureStore, err := filestorage.NewProfilePictureStore(context.Background(), fileStorage, logger)
-	if err != nil {
-		logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+	var profilePictureStore port.ProfilePictureRepo
+	if fileStorage != nil {
+		profilePictureStore, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, logger)
+		if err != nil {
+			logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+		}
+	} else {
+		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
 	}
 
 	// Initialize services
