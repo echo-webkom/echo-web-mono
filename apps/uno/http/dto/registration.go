@@ -89,23 +89,27 @@ type ChangeRegistrationStatusRequest struct {
 	Status string `json:"status" validate:"required"`
 }
 
-// GroupedRegistration represents aggregated registration counts for a happening.
-type GroupedRegistration struct {
+// RegistrationCount represents aggregated registration counts for a happening.
+type RegistrationCount struct {
 	HappeningID string `json:"happeningId"`
 	Waiting     int    `json:"waiting"`
 	Registered  int    `json:"registered"`
 	Max         *int   `json:"max"`
 }
 
-func GroupedRegistrationCountFromDomain(grs []model.GroupedRegistrationCount) []GroupedRegistration {
-	dtos := make([]GroupedRegistration, len(grs))
+func (RegistrationCount) FromDomain(grp model.RegistrationCount) RegistrationCount {
+	return RegistrationCount{
+		HappeningID: grp.HappeningID,
+		Waiting:     grp.Waiting,
+		Registered:  grp.Registered,
+		Max:         grp.Max,
+	}
+}
+
+func RegistrationCountsFromDomain(grs []model.RegistrationCount) []RegistrationCount {
+	dtos := make([]RegistrationCount, len(grs))
 	for i, gr := range grs {
-		dtos[i] = GroupedRegistration{
-			HappeningID: gr.HappeningID,
-			Waiting:     gr.Waiting,
-			Registered:  gr.Registered,
-			Max:         gr.Max,
-		}
+		dtos[i] = (RegistrationCount{}).FromDomain(gr)
 	}
 	return dtos
 }

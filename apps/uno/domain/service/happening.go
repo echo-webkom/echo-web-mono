@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"slices"
 	"time"
 	"uno/domain/model"
@@ -399,4 +400,48 @@ func (hs *HappeningService) Register(
 		Message:      message,
 		IsWaitlisted: isWaitlisted,
 	}, nil
+}
+
+func (hs *HappeningService) GetRegisterCount(ctx context.Context, happeningID string) (model.RegistrationCount, error) {
+	// Fetch the happening from the repository
+	hap, err := hs.happeningRepo.GetHappeningById(ctx, happeningID)
+	if err != nil {
+		return model.RegistrationCount{}, errors.New("could not fetch happening")
+	}
+
+	// Fetch spot ranges
+	spotRanges, err := hs.happeningRepo.GetHappeningSpotRanges(ctx, hap.ID)
+	if err != nil {
+		return model.RegistrationCount{}, errors.New("could not fetch spot ranges")
+	}
+
+	// Fetch registrations
+	// TODO: Aggregate directly in SQL query
+	regs, err := hs.happeningRepo.GetHappeningRegistrations(ctx, hap.ID)
+	if err != nil {
+		return model.RegistrationCount{}, errors.New("could not fetch registrations")
+	}
+
+	// Aggregate registration counts
+	// - Max spots from spot ranges
+	// - Count of registered and waiting registrations
+	grp := model.RegistrationCount{}
+	if len(spotRanges) > 0 {
+		count := 0
+		for _, spot := range spotRanges {
+			count += spot.Spots
+		}
+		grp.Max = &count
+	}
+
+	for _, reg := range regs {
+		switch reg.Status {
+		case "waiting":
+			grp.Waiting++
+		case "registered":
+			grp.Registered++
+		}
+	}
+
+	return grp, nil
 }

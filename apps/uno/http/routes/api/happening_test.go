@@ -410,7 +410,7 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 
-	counts := []model.GroupedRegistrationCount{}
+	counts := []model.RegistrationCount{}
 	mockHappeningRepo.EXPECT().
 		GetHappeningRegistrationCounts(mock.Anything, []string{"happening123", "happening456"}).
 		Return(counts, nil).

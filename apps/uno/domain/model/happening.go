@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type GroupedRegistrationCount struct {
+type RegistrationCount struct {
 	HappeningID string
 	Max         *int
 	Waiting     int

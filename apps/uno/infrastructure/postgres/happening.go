@@ -198,7 +198,7 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 func (h *HappeningRepo) GetHappeningRegistrationCounts(
 	ctx context.Context,
 	happeningIDs []string,
-) ([]model.GroupedRegistrationCount, error) {
+) ([]model.RegistrationCount, error) {
 	h.logger.Info(ctx, "getting happening registration counts",
 		"happening_ids", happeningIDs,
 	)

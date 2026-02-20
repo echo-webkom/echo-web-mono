@@ -925,7 +925,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.GroupedRegistrationCount"
+                                "$ref": "#/definitions/uno_http_dto.RegistrationCount"
                             }
                         }
                     },
@@ -1160,7 +1160,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.GroupedRegistration"
+                            "$ref": "#/definitions/uno_http_dto.RegistrationCount"
                         }
                     },
                     "400": {
@@ -1254,7 +1254,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http_routes_api.ReactionResponse"
+                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
                             }
                         }
                     },
@@ -1303,7 +1303,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.ToggleReactionRequest"
+                            "$ref": "#/definitions/uno_http_dto.ToggleReactionRequest"
                         }
                     }
                 ],
@@ -1313,7 +1313,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http_routes_api.ReactionResponse"
+                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
                             }
                         }
                     },
@@ -1649,7 +1649,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http_routes_api.UserResponse"
+                                "$ref": "#/definitions/uno_http_dto.UserResponse"
                             }
                         }
                     },
@@ -1690,7 +1690,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.UserResponse"
+                            "$ref": "#/definitions/uno_http_dto.UserResponse"
                         }
                     },
                     "401": {
@@ -1845,17 +1845,6 @@ const docTemplate = `{
                 }
             }
         },
-        "http_routes_api.DegreeResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "http_routes_api.GroupResponse": {
             "type": "object",
             "properties": {
@@ -1863,38 +1852,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.ReactionResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "emojiId": {
-                    "type": "integer"
-                },
-                "reactToKey": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.ToggleReactionRequest": {
-            "type": "object",
-            "required": [
-                "emojiId",
-                "userId"
-            ],
-            "properties": {
-                "emojiId": {
-                    "type": "integer"
-                },
-                "userId": {
                     "type": "string"
                 }
             }
@@ -1907,73 +1864,6 @@ const docTemplate = `{
             "properties": {
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "http_routes_api.UserGroupResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "isLeader": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.UserResponse": {
-            "type": "object",
-            "properties": {
-                "alternativeEmail": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "degree": {
-                    "$ref": "#/definitions/http_routes_api.DegreeResponse"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "groups": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/http_routes_api.UserGroupResponse"
-                    }
-                },
-                "hasReadTerms": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "isPublic": {
-                    "type": "boolean"
-                },
-                "lastSignInAt": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "year": {
-                    "type": "integer"
                 }
             }
         },
@@ -2029,23 +1919,6 @@ const docTemplate = `{
                 },
                 "userID": {
                     "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.GroupedRegistrationCount": {
-            "type": "object",
-            "properties": {
-                "happeningID": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
                 }
             }
         },
@@ -2354,23 +2227,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_http_dto.GroupedRegistration": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
-            }
-        },
         "uno_http_dto.HappeningRegistrationResponse": {
             "type": "object",
             "properties": {
@@ -2503,6 +2359,23 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.ReactionResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "emojiId": {
+                    "type": "integer"
+                },
+                "reactToKey": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.RegisterForHappeningRequest": {
             "type": "object",
             "properties": {
@@ -2528,6 +2401,23 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "uno_http_dto.RegistrationCount": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "max": {
+                    "type": "integer"
+                },
+                "registered": {
+                    "type": "integer"
+                },
+                "waiting": {
+                    "type": "integer"
                 }
             }
         },
@@ -2577,6 +2467,21 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.ToggleReactionRequest": {
+            "type": "object",
+            "required": [
+                "emojiId",
+                "userId"
+            ],
+            "properties": {
+                "emojiId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.UpdateDegreeRequest": {
             "type": "object",
             "properties": {
@@ -2585,6 +2490,73 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserGroupResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isLeader": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserResponse": {
+            "type": "object",
+            "properties": {
+                "alternativeEmail": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "degree": {
+                    "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
+                    }
+                },
+                "hasReadTerms": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "lastSignInAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
                 }
             }
         },

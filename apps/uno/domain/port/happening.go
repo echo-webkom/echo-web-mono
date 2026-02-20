@@ -9,7 +9,7 @@ type HappeningRepo interface {
 	GetAllHappenings(ctx context.Context) ([]model.Happening, error)
 	GetHappeningById(ctx context.Context, id string) (model.Happening, error)
 	GetHappeningRegistrations(ctx context.Context, happeningID string) ([]model.HappeningRegistration, error)
-	GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]model.GroupedRegistrationCount, error)
+	GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]model.RegistrationCount, error)
 	GetHappeningSpotRanges(ctx context.Context, happeningID string) ([]model.SpotRange, error)
 	GetHappeningQuestions(ctx context.Context, happeningID string) ([]model.Question, error)
 	GetHappeningHostGroups(ctx context.Context, happeningID string) ([]string, error)
