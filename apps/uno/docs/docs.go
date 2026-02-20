@@ -693,6 +693,29 @@ const docTemplate = `{
             }
         },
         "/group": {
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get a list of all groups",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -902,7 +925,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.GroupedRegistrationCount"
+                                "$ref": "#/definitions/uno_http_dto.RegistrationCount"
                             }
                         }
                     },
@@ -1137,7 +1160,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.GroupedRegistration"
+                            "$ref": "#/definitions/uno_http_dto.RegistrationCount"
                         }
                     },
                     "400": {
@@ -1197,6 +1220,117 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/reactions/{key}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reactions"
+                ],
+                "summary": "Get reactions for a given key",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Key to get reactions for",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reactions"
+                ],
+                "summary": "Toggle a reaction for a given key and user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Key to toggle reaction for",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Toggle Reaction Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.ToggleReactionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -1500,6 +1634,86 @@ const docTemplate = `{
                 }
             }
         },
+        "/users": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets a list of all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.UserResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets a user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UserResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/weather/yr": {
             "get": {
                 "produces": [
@@ -1705,23 +1919,6 @@ const docTemplate = `{
                 },
                 "userID": {
                     "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.GroupedRegistrationCount": {
-            "type": "object",
-            "properties": {
-                "happeningID": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
                 }
             }
         },
@@ -2030,23 +2227,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_http_dto.GroupedRegistration": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
-            }
-        },
         "uno_http_dto.HappeningRegistrationResponse": {
             "type": "object",
             "properties": {
@@ -2179,6 +2359,23 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.ReactionResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "emojiId": {
+                    "type": "integer"
+                },
+                "reactToKey": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.RegisterForHappeningRequest": {
             "type": "object",
             "properties": {
@@ -2204,6 +2401,23 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "uno_http_dto.RegistrationCount": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "max": {
+                    "type": "integer"
+                },
+                "registered": {
+                    "type": "integer"
+                },
+                "waiting": {
+                    "type": "integer"
                 }
             }
         },
@@ -2253,6 +2467,21 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.ToggleReactionRequest": {
+            "type": "object",
+            "required": [
+                "emojiId",
+                "userId"
+            ],
+            "properties": {
+                "emojiId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.UpdateDegreeRequest": {
             "type": "object",
             "properties": {
@@ -2261,6 +2490,73 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserGroupResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isLeader": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserResponse": {
+            "type": "object",
+            "properties": {
+                "alternativeEmail": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "degree": {
+                    "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
+                    }
+                },
+                "hasReadTerms": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "lastSignInAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
                 }
             }
         },

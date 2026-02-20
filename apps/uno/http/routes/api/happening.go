@@ -22,28 +22,28 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux := router.NewMux()
 	h := happenings{logger, happeningService}
 
-	mux.Handle("GET", "/", h.GetHappeningsHandler)
-	mux.Handle("GET", "/{id}", h.GetHappeningById)
-	mux.Handle("GET", "/{id}/registrations/count", h.GetHappeningRegistrationsCount)
-	mux.Handle("GET", "/registrations/count", h.GetHappeningRegistrationsCountMany)
-	mux.Handle("GET", "/{id}/questions", h.GetHappeningQuestions)
+	mux.Handle("GET", "/", h.getHappenings)
+	mux.Handle("GET", "/{id}", h.getHappeningById)
+	mux.Handle("GET", "/{id}/registrations/count", h.getHappeningRegistrationsCount)
+	mux.Handle("GET", "/registrations/count", h.getHappeningRegistrationsCountMany)
+	mux.Handle("GET", "/{id}/questions", h.getHappeningQuestions)
 
 	// Admin
-	mux.Handle("GET", "/{id}/spot-ranges", h.GetHappeningSpotRanges, admin)
-	mux.Handle("GET", "/{id}/registrations", h.GetHappeningRegistrations, admin)
-	mux.Handle("POST", "/{id}/register", h.RegisterForHappening, admin)
+	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges, admin)
+	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
 
 	return mux
 }
 
-// GetHappeningsHandler returns all happenings
+// getHappenings returns all happenings
 // @Summary	     Get all happenings
 // @Description  Retrives a list of all happenings and returns them in a JSON array.
 // @Tags         happenings
 // @Produce      json
 // @Success      200  {array}  dto.HappeningResponse  "OK"
 // @Router       /happenings [get]
-func (h *happenings) GetHappeningsHandler(ctx *handler.Context) error {
+func (h *happenings) getHappenings(ctx *handler.Context) error {
 	// Fetch all happenings from the repository
 	haps, err := h.happeningService.HappeningRepo().GetAllHappenings(ctx.Context())
 	if err != nil {
@@ -55,7 +55,7 @@ func (h *happenings) GetHappeningsHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetHappeningById returns a happening by its ID
+// getHappeningById returns a happening by its ID
 // @Summary	     Get happening by ID
 // @Description  Retrieves a specific happening by its unique identifier.
 // @Tags         happenings
@@ -65,7 +65,7 @@ func (h *happenings) GetHappeningsHandler(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
-func (h *happenings) GetHappeningById(ctx *handler.Context) error {
+func (h *happenings) getHappeningById(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -80,75 +80,41 @@ func (h *happenings) GetHappeningById(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetHappeningRegistrationsCount returns the count of registrations for a happening
+// getHappeningRegistrationsCount returns the count of registrations for a happening
 // @Summary	     Get happening registrations count
 // @Description  Retrieves the count of registrations for a specific happening.
 // @Tags         happenings
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
-// @Success      200  {object}  dto.GroupedRegistration  "OK"
+// @Success      200  {object}  dto.RegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
 // @deprecated
-func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrationsCount(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
-	// Fetch the happening from the repository
-	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	grp, err := h.happeningService.GetRegisterCount(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(errors.New("happening not found"), http.StatusNotFound)
+		return ctx.Error(err, http.StatusInternalServerError)
 	}
 
-	// Fetch spot ranges
-	spotRanges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), hap.ID)
-	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
-	}
-
-	// Fetch registrations
-	// TODO: Aggregate directly in SQL query
-	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), hap.ID)
-	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
-	}
-
-	// Aggregate registration counts
-	// - Max spots from spot ranges
-	// - Count of registered and waiting registrations
-	grp := dto.GroupedRegistration{}
-	if len(spotRanges) > 0 {
-		count := 0
-		for _, spot := range spotRanges {
-			count += spot.Spots
-		}
-		grp.Max = &count
-	}
-
-	for _, reg := range regs {
-		switch reg.Status {
-		case "waiting":
-			grp.Waiting++
-		case "registered":
-			grp.Registered++
-		}
-	}
-
-	return ctx.JSON(grp)
+	dtoGrp := (dto.RegistrationCount{}).FromDomain(grp)
+	return ctx.JSON(dtoGrp)
 }
 
-// GetHappeningRegistrationsCountMany returns the count of registrations for a happenings
+// getHappeningRegistrationsCountMany returns the count of registrations for a happenings
 // @Summary	     Get happenings registrations count
 // @Description  Retrieves the count of registrations for a specific happening.
 // @Tags         happenings
 // @Produce      json
 // @Param        id   query     string  true  "Happening ID"
-// @Success      200  {array}  model.GroupedRegistrationCount  "OK"
+// @Success      200  {array}  dto.RegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
-func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrationsCountMany(ctx *handler.Context) error {
 	// Extract the happening IDs from the URL query parameters
 	queryParams := ctx.R.URL.Query()
 	ids := queryParams["id"]
@@ -165,11 +131,11 @@ func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) er
 	}
 
 	// Convert domain models to DTOs
-	response := dto.GroupedRegistrationCountFromDomain(counts)
+	response := dto.RegistrationCountsFromDomain(counts)
 	return ctx.JSON(response)
 }
 
-// GetHappeningRegistrations returns all registrations for a happening
+// getHappeningRegistrations returns all registrations for a happening
 // @Summary	     Get happening registrations
 // @Description  Retrieves all registrations for a specific happening.
 // @Tags         happenings
@@ -180,7 +146,7 @@ func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) er
 // @Failure      404  {string}  string   "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
-func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -195,7 +161,7 @@ func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetHappeningSpotRanges returns all spot ranges for a happening
+// getHappeningSpotRanges returns all spot ranges for a happening
 // @Summary	     Get happening spot ranges
 // @Description  Retrieves all spot ranges for a specific happening.
 // @Tags         happenings
@@ -206,7 +172,7 @@ func (h *happenings) GetHappeningRegistrations(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
-func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
+func (h *happenings) getHappeningSpotRanges(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -221,7 +187,7 @@ func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetHappeningQuestions returns all questions for a happening
+// getHappeningQuestions returns all questions for a happening
 // @Summary	     Get happening questions
 // @Description  Retrieves all questions for a specific happening.
 // @Tags         happenings
@@ -231,7 +197,7 @@ func (h *happenings) GetHappeningSpotRanges(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
-func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
+func (h *happenings) getHappeningQuestions(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -246,7 +212,7 @@ func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// RegisterForHappening handles user registration for a happening
+// registerForHappening handles user registration for a happening
 // @Summary	     Register for happening
 // @Description  Registers a user for a specific happening with business logic validation
 // @Tags         happenings
@@ -259,7 +225,7 @@ func (h *happenings) GetHappeningQuestions(ctx *handler.Context) error {
 // @Failure      500   {object}  dto.RegisterForHappeningResponse     "Internal Server Error"
 // @Security     BearerAuth
 // @Router       /happenings/{id}/register [post]
-func (h *happenings) RegisterForHappening(ctx *handler.Context) error {
+func (h *happenings) registerForHappening(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path
 	happeningID := ctx.PathValue("id")
 

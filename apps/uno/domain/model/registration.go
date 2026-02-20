@@ -16,6 +16,10 @@ const (
 	RegistrationStatusRemoved      RegistrationStatus = "removed"
 )
 
+func (s RegistrationStatus) String() string {
+	return string(s)
+}
+
 // Registration represents a user's registration for a happening.
 // This is a domain model focused on business logic and rules.
 type Registration struct {

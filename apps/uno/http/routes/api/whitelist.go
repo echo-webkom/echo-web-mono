@@ -23,13 +23,13 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 	w := whitelist{logger, whitelistService}
 
 	// Admin
-	mux.Handle("GET", "/", w.GetWhitelistHandler, admin)
-	mux.Handle("GET", "/{email}", w.GetWhitelistByEmailHandler, admin)
+	mux.Handle("GET", "/", w.getWhitelist, admin)
+	mux.Handle("GET", "/{email}", w.getWhitelistByEmail, admin)
 
 	return mux
 }
 
-// GetWhitelistHandler returns a list of whitelisted emails
+// getWhitelist returns a list of whitelisted emails
 // @Summary	     Get whitelisted emails
 // @Tags         whitelist
 // @Produce      json
@@ -38,7 +38,7 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
-func (w *whitelist) GetWhitelistHandler(ctx *handler.Context) error {
+func (w *whitelist) getWhitelist(ctx *handler.Context) error {
 	// Get domain models from service
 	whitelistedEmails, err := w.whitelistService.WhitelistRepo().GetWhitelist(ctx.Context())
 	if err != nil {
@@ -50,7 +50,7 @@ func (w *whitelist) GetWhitelistHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetWhitelistByEmailHandler returns whitelist info for a specific email
+// getWhitelistByEmail returns whitelist info for a specific email
 // @Summary	     Get whitelist info by email
 // @Tags         whitelist
 // @Produce      json
@@ -61,7 +61,7 @@ func (w *whitelist) GetWhitelistHandler(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist/{email} [get]
-func (w *whitelist) GetWhitelistByEmailHandler(ctx *handler.Context) error {
+func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
 	email := ctx.PathValue("email")
 
 	// Get domain model from service

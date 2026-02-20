@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useOptimistic } from "react";
+import React, { useState } from "react";
 
 import { handleReact } from "@/actions/reactions";
 import { cn } from "@/utils/cn";
@@ -16,6 +16,7 @@ type ReactionButtonProps = {
   hasReacted: boolean;
   count: number;
   emojiId: number;
+  userId: string | undefined;
   children: React.ReactNode;
 };
 
@@ -24,24 +25,29 @@ export const ReactionButton = ({
   hasReacted,
   count,
   emojiId,
+  userId,
   children,
 }: ReactionButtonProps) => {
-  const [reactionState, setOptimisticReaction] = useOptimistic<Reaction, Reaction>(
-    {
-      count,
-      hasReacted,
-    },
-    (_, optimisticValue) => {
-      return optimisticValue;
-    },
-  );
+  const [state, setState] = useState<Reaction>({ count, hasReacted });
+  const [isPending, setIsPending] = useState(false);
 
   const formAction = async () => {
-    setOptimisticReaction({
-      hasReacted: !reactionState.hasReacted,
-      count: !reactionState.hasReacted ? reactionState.count + 1 : reactionState.count - 1,
-    });
-    await handleReact(reactToKey, emojiId);
+    if (isPending) return;
+    setIsPending(true);
+    const toggled = !state.hasReacted;
+    setState((s) => ({
+      hasReacted: toggled,
+      count: toggled ? s.count + 1 : s.count - 1,
+    }));
+    const result = await handleReact(reactToKey, emojiId);
+    if (Array.isArray(result)) {
+      const forThisEmoji = result.filter((r) => r.emojiId === emojiId);
+      setState({
+        count: forThisEmoji.length,
+        hasReacted: forThisEmoji.some((r) => r.userId === userId),
+      });
+    }
+    setIsPending(false);
   };
 
   return (
@@ -49,14 +55,15 @@ export const ReactionButton = ({
       <Button
         type="submit"
         variant="ghost"
+        disabled={isPending}
         className={cn("h-8 w-14 rounded-full", {
-          "bg-reaction text-foreground hover:bg-reaction": reactionState.hasReacted,
-          "bg-muted text-foreground hover:bg-muted sm:hover:bg-reaction": !reactionState.hasReacted,
+          "bg-reaction text-foreground hover:bg-reaction": state.hasReacted,
+          "bg-muted text-foreground hover:bg-muted sm:hover:bg-reaction": !state.hasReacted,
         })}
       >
         <div className="flex gap-1 font-normal">
           <p>{children}</p>
-          <p>{reactionState.count ?? 0}</p>
+          <p>{state.count}</p>
         </div>
       </Button>
     </form>

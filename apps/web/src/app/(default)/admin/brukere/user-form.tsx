@@ -48,7 +48,7 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: standardSchemaResolver(userFormSchema),
     defaultValues: {
-      memberships: user.memberships.map((membership) => membership.groupId),
+      memberships: user.groups.map((group) => group.id),
     },
   });
 

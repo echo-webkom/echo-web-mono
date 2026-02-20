@@ -59,17 +59,6 @@ definitions:
       userID:
         type: string
     type: object
-  uno_domain_model.GroupedRegistrationCount:
-    properties:
-      happeningID:
-        type: string
-      max:
-        type: integer
-      registered:
-        type: integer
-      waiting:
-        type: integer
-    type: object
   uno_domain_model.UserWithBanInfo:
     properties:
       banInfo:
@@ -269,17 +258,6 @@ definitions:
       name:
         type: string
     type: object
-  uno_http_dto.GroupedRegistration:
-    properties:
-      happeningId:
-        type: string
-      max:
-        type: integer
-      registered:
-        type: integer
-      waiting:
-        type: integer
-    type: object
   uno_http_dto.HappeningRegistrationResponse:
     properties:
       changedAt:
@@ -366,6 +344,17 @@ definitions:
       userId:
         type: string
     type: object
+  uno_http_dto.ReactionResponse:
+    properties:
+      createdAt:
+        type: string
+      emojiId:
+        type: integer
+      reactToKey:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.RegisterForHappeningRequest:
     properties:
       questions:
@@ -383,6 +372,17 @@ definitions:
         type: string
       success:
         type: boolean
+    type: object
+  uno_http_dto.RegistrationCount:
+    properties:
+      happeningId:
+        type: string
+      max:
+        type: integer
+      registered:
+        type: integer
+      waiting:
+        type: integer
     type: object
   uno_http_dto.SiteFeedbackResponse:
     properties:
@@ -414,12 +414,66 @@ definitions:
       spots:
         type: integer
     type: object
+  uno_http_dto.ToggleReactionRequest:
+    properties:
+      emojiId:
+        type: integer
+      userId:
+        type: string
+    required:
+    - emojiId
+    - userId
+    type: object
   uno_http_dto.UpdateDegreeRequest:
     properties:
       id:
         type: string
       name:
         type: string
+    type: object
+  uno_http_dto.UserGroupResponse:
+    properties:
+      id:
+        type: string
+      isLeader:
+        type: boolean
+      name:
+        type: string
+    type: object
+  uno_http_dto.UserResponse:
+    properties:
+      alternativeEmail:
+        type: string
+      birthday:
+        type: string
+      createdAt:
+        type: string
+      degree:
+        $ref: '#/definitions/uno_http_dto.DegreeResponse'
+      email:
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/uno_http_dto.UserGroupResponse'
+        type: array
+      hasReadTerms:
+        type: boolean
+      id:
+        type: string
+      image:
+        type: string
+      isPublic:
+        type: boolean
+      lastSignInAt:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+      year:
+        type: integer
     type: object
   uno_http_dto.UserSummaryResponse:
     properties:
@@ -893,6 +947,21 @@ paths:
       tags:
       - feedbacks
   /group:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/http_routes_api.GroupResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a list of all groups
+      tags:
+      - groups
     post:
       consumes:
       - application/json
@@ -1153,7 +1222,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.GroupedRegistration'
+            $ref: '#/definitions/uno_http_dto.RegistrationCount'
         "400":
           description: Bad Request
           schema:
@@ -1212,7 +1281,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.GroupedRegistrationCount'
+              $ref: '#/definitions/uno_http_dto.RegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -1225,6 +1294,79 @@ paths:
       summary: Get happenings registrations count
       tags:
       - happenings
+  /reactions/{key}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Key to get reactions for
+        in: path
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.ReactionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get reactions for a given key
+      tags:
+      - reactions
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Key to toggle reaction for
+        in: path
+        name: key
+        required: true
+        type: string
+      - description: Toggle Reaction Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.ToggleReactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.ReactionResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Toggle a reaction for a given key and user
+      tags:
+      - reactions
   /shopping:
     get:
       produces:
@@ -1408,6 +1550,58 @@ paths:
       summary: Gets users with strikes and bans
       tags:
       - strikes
+  /users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets a list of all users
+      tags:
+      - users
+  /users/{id}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets a user by ID
+      tags:
+      - users
   /weather/yr:
     get:
       produces:

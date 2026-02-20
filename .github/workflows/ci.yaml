@@ -82,17 +82,7 @@ jobs:
 
     steps:
       - name: 🔍 Checkout
-        uses: actions/checkout@v5
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: 🐢 Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22.20.0
-          cache: pnpm
-          cache-dependency-path: ./pnpm-lock.yaml
+        uses: actions/checkout@v6
 
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
@@ -104,9 +94,10 @@ jobs:
         run: go install github.com/swaggo/swag/cmd/swag@latest
 
       - name: 📚 Check Swagger docs are generated
+        working-directory: apps/uno
         run: |
-          pnpm --filter=uno swag:init
-          if ! git diff --exit-code apps/uno/docs/; then
+          swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal
+          if ! git diff --exit-code -- docs/; then
             echo "Error: Swagger docs are out of sync. Please run 'pnpm --filter=uno swag:init' and commit the changes."
             exit 1
           fi

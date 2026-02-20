@@ -34,7 +34,7 @@ const VALID_UNIT_IDS = [
   "121200", // NT-II
 ];
 
-export type IsMemberOfechoFn = (accessToken: string) => Promise<
+type IsMemberOfechoFn = (accessToken: string) => Promise<
   | {
       success: true;
       error: undefined;

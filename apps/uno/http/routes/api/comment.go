@@ -20,14 +20,14 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("POST", "/", c.CreateCommentHandler, admin)
-	mux.Handle("GET", "/{id}", c.GetCommentsByIDHandler, admin)
-	mux.Handle("GET", "/{id}/reaction", c.ReactToCommentHandler, admin)
+	mux.Handle("POST", "/", c.createComment, admin)
+	mux.Handle("GET", "/{id}", c.getCommentsByID, admin)
+	mux.Handle("GET", "/{id}/reaction", c.reactToComment, admin)
 
 	return mux
 }
 
-// GetCommentsByIDHandler returns a comment by its ID
+// getCommentsByID returns a comment by its ID
 // @Summary      Get comments by ID
 // @Tags         comments
 // @Produce      json
@@ -38,7 +38,7 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id} [get]
-func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
+func (c *comments) getCommentsByID(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
 
 	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
@@ -50,7 +50,7 @@ func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// CreateCommentHandler creates a new comment
+// createComment creates a new comment
 // @Summary      Create a new comment
 // @Tags         comments
 // @Accept       json
@@ -62,7 +62,7 @@ func (c *comments) GetCommentsByIDHandler(ctx *handler.Context) error {
 // @Failure      500      {string}  string                      "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments [post]
-func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
+func (c *comments) createComment(ctx *handler.Context) error {
 	var req dto.CreateCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
@@ -76,7 +76,7 @@ func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
 	return ctx.JSON(map[string]bool{"success": true})
 }
 
-// ReactToCommentHandler adds or removes a reaction to a comment
+// reactToComment adds or removes a reaction to a comment
 // @Summary      React to a comment
 // @Tags         comments
 // @Accept       json
@@ -89,7 +89,7 @@ func (c *comments) CreateCommentHandler(ctx *handler.Context) error {
 // @Failure      500       {string}  string                       "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id}/reaction [post]
-func (c *comments) ReactToCommentHandler(ctx *handler.Context) error {
+func (c *comments) reactToComment(ctx *handler.Context) error {
 	commentID := ctx.PathValue("id")
 
 	var req dto.ReactToCommentRequest

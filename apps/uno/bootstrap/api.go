@@ -79,6 +79,7 @@ func RunApi() {
 	databrusRepo := external.NewDatabrusRepo(logger)
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
+	reactionRepo := postgres.NewReactionRepo(db, logger)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -95,6 +96,7 @@ func RunApi() {
 	databrusService := service.NewDatabrusService(logger, databrusRepo)
 	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo)
 	groupService := service.NewGroupService(groupRepo)
+	reactionService := service.NewReactionService(reactionRepo)
 
 	go http.RunServer(
 		notif,
@@ -114,6 +116,7 @@ func RunApi() {
 		databrusService,
 		adventOfCodeService,
 		groupService,
+		reactionService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

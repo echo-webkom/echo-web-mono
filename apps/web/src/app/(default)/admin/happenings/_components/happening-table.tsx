@@ -14,12 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { type getStudentGroups } from "@/data/groups/queries";
 import { type getFullHappenings } from "@/data/happenings/queries";
+import { type UnoClientType } from "../../../../../api/uno/client";
 
 type HappeningTableProps = {
   happenings: Awaited<ReturnType<typeof getFullHappenings>>;
-  groups: Awaited<ReturnType<typeof getStudentGroups>>;
+  groups: Awaited<ReturnType<UnoClientType["groups"]["all"]>>;
 };
 
 export const HappeningTable = ({ happenings }: HappeningTableProps) => {

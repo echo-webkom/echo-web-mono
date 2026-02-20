@@ -23,10 +23,11 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	}
 
 	mux := router.NewMux()
+	mux.Handle("GET", "/", gh.getGroups)
 
-	mux.Handle("DELETE", "/:id", gh.DeleteGroupByIDHandler, admin)
-	mux.Handle("POST", "/", gh.CreateGroupHandler, admin)
-	mux.Handle("POST", "/:id", gh.UpdateGroupByIDHandler, admin)
+	mux.Handle("DELETE", "/{id}", gh.deleteGroupByID, admin)
+	mux.Handle("POST", "/", gh.createGroup, admin)
+	mux.Handle("POST", "/{id}", gh.updateGroupByID, admin)
 
 	return mux
 }
@@ -37,7 +38,30 @@ type GroupResponse struct {
 	Name string `json:"name"`
 }
 
-// DeleteGroupByIDHandler deletes a group by ID.
+// getGroups returns a list of all groups.
+// @Summary Get a list of all groups
+// @Tags groups
+// @Success 200 {array} GroupResponse "OK"
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /group [get]
+func (gh *group) getGroups(ctx *handler.Context) error {
+	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
+	if err != nil {
+		return ctx.Error(err, http.StatusInternalServerError)
+	}
+
+	response := make([]GroupResponse, len(groups))
+	for i, group := range groups {
+		response[i] = GroupResponse{
+			ID:   group.ID,
+			Name: group.Name,
+		}
+	}
+
+	return ctx.JSON(response)
+}
+
+// deleteGroupByID deletes a group by ID.
 // @Summary Delete a group by ID
 // @Tags groups
 // @Param id path string true "Group ID"
@@ -47,7 +71,7 @@ type GroupResponse struct {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group/{id} [delete]
-func (gh *group) DeleteGroupByIDHandler(ctx *handler.Context) error {
+func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
 		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)
@@ -79,7 +103,7 @@ func (r *CreateGroupRequest) ToNewGroupDomain() model.NewGroup {
 	}
 }
 
-// CreateGroupHandler creates a new group.
+// createGroup creates a new group.
 // @Summary Create a new group
 // @Tags groups
 // @Accept json
@@ -90,7 +114,7 @@ func (r *CreateGroupRequest) ToNewGroupDomain() model.NewGroup {
 // @Failure 401 {object} string "Unauthorized"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group [post]
-func (gh *group) CreateGroupHandler(ctx *handler.Context) error {
+func (gh *group) createGroup(ctx *handler.Context) error {
 	var req CreateGroupRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(err, http.StatusBadRequest)
@@ -115,7 +139,7 @@ type UpdateGroupRequest struct {
 	Name string `json:"name" validate:"required"`
 }
 
-// UpdateGroupByIDHandler updates a group by ID.
+// updateGroupByID updates a group by ID.
 // @Summary Update a group by ID
 // @Tags groups
 // @Accept json
@@ -128,7 +152,7 @@ type UpdateGroupRequest struct {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group/{id} [post]
-func (gh *group) UpdateGroupByIDHandler(ctx *handler.Context) error {
+func (gh *group) updateGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
 		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)

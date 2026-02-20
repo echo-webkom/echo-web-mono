@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest } from "next/server";
 
-import { type HandlerFunction } from "./utils";
+type HandlerFunction = (request: NextRequest) => Promise<Response> | Response;
 
 /**
  * Checks if the user has the correct basic auth credentials.

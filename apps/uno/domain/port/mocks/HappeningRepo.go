@@ -369,23 +369,23 @@ func (_c *HappeningRepo_GetHappeningQuestions_Call) RunAndReturn(run func(ctx co
 }
 
 // GetHappeningRegistrationCounts provides a mock function for the type HappeningRepo
-func (_mock *HappeningRepo) GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]model.GroupedRegistrationCount, error) {
+func (_mock *HappeningRepo) GetHappeningRegistrationCounts(ctx context.Context, happeningIDs []string) ([]model.RegistrationCount, error) {
 	ret := _mock.Called(ctx, happeningIDs)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetHappeningRegistrationCounts")
 	}
 
-	var r0 []model.GroupedRegistrationCount
+	var r0 []model.RegistrationCount
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) ([]model.GroupedRegistrationCount, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) ([]model.RegistrationCount, error)); ok {
 		return returnFunc(ctx, happeningIDs)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) []model.GroupedRegistrationCount); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) []model.RegistrationCount); ok {
 		r0 = returnFunc(ctx, happeningIDs)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]model.GroupedRegistrationCount)
+			r0 = ret.Get(0).([]model.RegistrationCount)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, []string) error); ok {
@@ -426,12 +426,12 @@ func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Run(run func(ctx co
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(groupedRegistrationCounts []model.GroupedRegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(groupedRegistrationCounts []model.RegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
 	_c.Call.Return(groupedRegistrationCounts, err)
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) RunAndReturn(run func(ctx context.Context, happeningIDs []string) ([]model.GroupedRegistrationCount, error)) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) RunAndReturn(run func(ctx context.Context, happeningIDs []string) ([]model.RegistrationCount, error)) *HappeningRepo_GetHappeningRegistrationCounts_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -20,15 +20,15 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 	f := feedbacks{logger, feedbackService}
 
 	// Admin
-	mux.Handle("GET", "/", f.GetSiteFeedbacksHandler, admin)
-	mux.Handle("GET", "/{id}", f.GetSiteFeedbackByIDHandler, admin)
-	mux.Handle("POST", "/", f.CreateSiteFeedbackHandler, admin)
-	mux.Handle("PUT", "/{id}/seen", f.MarkSiteFeedbackAsSeen, admin)
+	mux.Handle("GET", "/", f.getSiteFeedbacks, admin)
+	mux.Handle("GET", "/{id}", f.getSiteFeedbackByID, admin)
+	mux.Handle("POST", "/", f.createSiteFeedback, admin)
+	mux.Handle("PUT", "/{id}/seen", f.markSiteFeedbackAsSeen, admin)
 
 	return mux
 }
 
-// GetSiteFeedbacksHandler returns a list of site feedbacks
+// getSiteFeedbacks returns a list of site feedbacks
 // @Summary	     Get site feedbacks
 // @Tags         feedbacks
 // @Produce      json
@@ -36,7 +36,7 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /feedbacks [get]
-func (f *feedbacks) GetSiteFeedbacksHandler(ctx *handler.Context) error {
+func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
 	// Fetch feedbacks from the repository
 	feedbacks, err := f.feedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(ctx.Context())
 	if err != nil {
@@ -48,7 +48,7 @@ func (f *feedbacks) GetSiteFeedbacksHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// GetSiteFeedbackByIDHandler returns a site feedback by ID
+// getSiteFeedbackByID returns a site feedback by ID
 // @Summary	     Get site feedback by ID
 // @Tags         feedbacks
 // @Produce      json
@@ -58,7 +58,7 @@ func (f *feedbacks) GetSiteFeedbacksHandler(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /feedbacks/{id} [get]
-func (f *feedbacks) GetSiteFeedbackByIDHandler(ctx *handler.Context) error {
+func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 	// Get the feedback ID from the path
 	feedbackID := ctx.PathValue("id")
 
@@ -73,7 +73,7 @@ func (f *feedbacks) GetSiteFeedbackByIDHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// CreateSiteFeedbackHandler creates a new site feedback
+// createSiteFeedback creates a new site feedback
 // @Summary	     Create site feedback
 // @Tags         feedbacks
 // @Accept       json
@@ -83,7 +83,7 @@ func (f *feedbacks) GetSiteFeedbackByIDHandler(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Router       /feedbacks [post]
-func (f *feedbacks) CreateSiteFeedbackHandler(ctx *handler.Context) error {
+func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 	var req dto.CreateSiteFeedbackRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
@@ -105,7 +105,7 @@ func (f *feedbacks) CreateSiteFeedbackHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// MarkSiteFeedbackAsSeen updates an existing site feedback
+// markSiteFeedbackAsSeen updates an existing site feedback
 // @Summary	     Update site feedback
 // @Tags         feedbacks
 // @Accept       json
@@ -115,7 +115,7 @@ func (f *feedbacks) CreateSiteFeedbackHandler(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /feedbacks/{id}/seen [put]
-func (f *feedbacks) MarkSiteFeedbackAsSeen(ctx *handler.Context) error {
+func (f *feedbacks) markSiteFeedbackAsSeen(ctx *handler.Context) error {
 	feedbackID := ctx.PathValue("id")
 	if feedbackID == "" {
 		return ctx.Error(errors.New("feedback ID is required"), http.StatusBadRequest)

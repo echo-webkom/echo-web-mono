@@ -7,15 +7,15 @@ import (
 )
 
 type Happening struct {
-	ID                      string           `db:"id"`
-	Slug                    string           `db:"slug"`
-	Title                   string           `db:"title"`
-	Type                    string           `db:"type"`
-	Date                    *time.Time       `db:"date"`
-	RegistrationGroups      *json.RawMessage `db:"registration_groups"`
-	RegistrationStartGroups *time.Time       `db:"registration_start_groups"`
-	RegistrationStart       *time.Time       `db:"registration_start"`
-	RegistrationEnd         *time.Time       `db:"registration_end"`
+	ID                      string              `db:"id"`
+	Slug                    string              `db:"slug"`
+	Title                   string              `db:"title"`
+	Type                    model.HappeningType `db:"type"`
+	Date                    *time.Time          `db:"date"`
+	RegistrationGroups      *json.RawMessage    `db:"registration_groups"`
+	RegistrationStartGroups *time.Time          `db:"registration_start_groups"`
+	RegistrationStart       *time.Time          `db:"registration_start"`
+	RegistrationEnd         *time.Time          `db:"registration_end"`
 }
 
 func (h Happening) ToDomain() model.Happening {
@@ -103,8 +103,8 @@ type GroupedRegistrationCount struct {
 	Registered  int    `db:"registered"`
 }
 
-func (grc GroupedRegistrationCount) ToDomain() model.GroupedRegistrationCount {
-	return model.GroupedRegistrationCount{
+func (grc GroupedRegistrationCount) ToDomain() model.RegistrationCount {
+	return model.RegistrationCount{
 		HappeningID: grc.HappeningID,
 		Max:         grc.Max,
 		Waiting:     grc.Waiting,
@@ -112,8 +112,8 @@ func (grc GroupedRegistrationCount) ToDomain() model.GroupedRegistrationCount {
 	}
 }
 
-func GroupedRegistrationCountsToDomainList(counts []GroupedRegistrationCount) []model.GroupedRegistrationCount {
-	domainCounts := make([]model.GroupedRegistrationCount, len(counts))
+func GroupedRegistrationCountsToDomainList(counts []GroupedRegistrationCount) []model.RegistrationCount {
+	domainCounts := make([]model.RegistrationCount, len(counts))
 	for i, c := range counts {
 		domainCounts[i] = c.ToDomain()
 	}

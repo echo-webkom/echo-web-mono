@@ -70,4 +70,4 @@ jobs:
       - name: 🚀 Deploy Sanity Studio
         run: pnpm --filter=@echo-webkom/cms run deploy
         env:
-          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}

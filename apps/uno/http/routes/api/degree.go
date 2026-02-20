@@ -19,23 +19,23 @@ func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService, admi
 	mux := router.NewMux()
 	d := degrees{logger, degreeService}
 
-	mux.Handle("GET", "/", d.GetDegreesHandler)
+	mux.Handle("GET", "/", d.getDegrees)
 
 	// Admin
-	mux.Handle("POST", "/", d.CreateDegreeHandler, admin)
-	mux.Handle("POST", "/{id}", d.UpdateDegreeHandler, admin)
-	mux.Handle("DELETE", "/{id}", d.DeleteDegreeHandler, admin)
+	mux.Handle("POST", "/", d.createDegree, admin)
+	mux.Handle("POST", "/{id}", d.updateDegree, admin)
+	mux.Handle("DELETE", "/{id}", d.deleteDegree, admin)
 
 	return mux
 }
 
-// GetDegreesHandler returns a list of degrees
+// getDegrees returns a list of degrees
 // @Summary	     Get degrees
 // @Tags         degrees
 // @Produce      json
 // @Success      200  {array}  dto.DegreeResponse  "OK"
 // @Router       /degrees [get]
-func (d *degrees) GetDegreesHandler(ctx *handler.Context) error {
+func (d *degrees) getDegrees(ctx *handler.Context) error {
 	// Fetch degrees from the service
 	degrees, err := d.degreeService.DegreeRepo().GetAllDegrees(ctx.Context())
 	if err != nil {
@@ -47,7 +47,7 @@ func (d *degrees) GetDegreesHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// CreateDegreeHandler creates a new degree
+// createDegree creates a new degree
 // @Summary	     Create degree
 // @Tags         degrees
 // @Accept       json
@@ -58,7 +58,7 @@ func (d *degrees) GetDegreesHandler(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
-func (d *degrees) CreateDegreeHandler(ctx *handler.Context) error {
+func (d *degrees) createDegree(ctx *handler.Context) error {
 	// Read and parse the request body
 	var degree dto.CreateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
@@ -77,11 +77,10 @@ func (d *degrees) CreateDegreeHandler(ctx *handler.Context) error {
 		Name: createdDegree.Name,
 	}
 
-	ctx.SetStatus(http.StatusCreated)
-	return ctx.JSON(response)
+	return ctx.JSONWithStatus(response, http.StatusCreated)
 }
 
-// UpdateDegreeHandler updates an existing degree
+// updateDegree updates an existing degree
 // @Summary	     Update degree
 // @Tags         degrees
 // @Accept       json
@@ -92,7 +91,7 @@ func (d *degrees) CreateDegreeHandler(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
-func (d *degrees) UpdateDegreeHandler(ctx *handler.Context) error {
+func (d *degrees) updateDegree(ctx *handler.Context) error {
 	// Read and parse the request body
 	var degree dto.UpdateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
@@ -114,7 +113,7 @@ func (d *degrees) UpdateDegreeHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// DeleteDegreeHandler deletes a degree
+// deleteDegree deletes a degree
 // @Summary	     Delete degree
 // @Tags         degrees
 // @Param        id   path      string  true  "Degree ID"
@@ -123,13 +122,13 @@ func (d *degrees) UpdateDegreeHandler(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
-func (d *degrees) DeleteDegreeHandler(ctx *handler.Context) error {
+func (d *degrees) deleteDegree(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
 
 	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	ctx.WriteHeader(http.StatusNoContent)
-	return nil
+	ctx.SetStatus(http.StatusNoContent)
+	return ctx.Ok()
 }

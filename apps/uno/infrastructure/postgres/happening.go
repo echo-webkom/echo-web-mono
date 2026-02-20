@@ -198,23 +198,28 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 func (h *HappeningRepo) GetHappeningRegistrationCounts(
 	ctx context.Context,
 	happeningIDs []string,
-) ([]model.GroupedRegistrationCount, error) {
+) ([]model.RegistrationCount, error) {
 	h.logger.Info(ctx, "getting happening registration counts",
 		"happening_ids", happeningIDs,
 	)
 
 	counts := []record.GroupedRegistrationCount{}
 	query := `--sql
+		WITH spot_totals AS (
+		    SELECT happening_id, SUM(spots) AS max
+		    FROM spot_range
+		    GROUP BY happening_id
+		)
 		SELECT
 		    h.id AS happening_id,
-		    NULLIF(MAX(sr.spots), 0) AS max,
+		    st.max,
 		    COUNT(r.user_id) FILTER (WHERE r.status = 'waiting') AS waiting,
 		    COUNT(r.user_id) FILTER (WHERE r.status = 'registered') AS registered
 		FROM happening h
 		LEFT JOIN registration r ON h.id = r.happening_id
-		LEFT JOIN spot_range sr ON h.id = sr.happening_id
+		LEFT JOIN spot_totals st ON h.id = st.happening_id
 		WHERE h.id = ANY($1)
-		GROUP BY h.id
+		GROUP BY h.id, st.max
 	`
 	if err := h.db.SelectContext(ctx, &counts, query, pq.Array(happeningIDs)); err != nil {
 		h.logger.Error(ctx, "failed to get happening registration counts",

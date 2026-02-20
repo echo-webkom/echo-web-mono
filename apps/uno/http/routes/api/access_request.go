@@ -19,12 +19,12 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("GET", "/", a.GetAccessRequestsHandler, admin)
+	mux.Handle("GET", "/", a.getAccessRequests, admin)
 
 	return mux
 }
 
-// GetAccessRequestsHandler returns a list of access requests
+// getAccessRequests returns a list of access requests
 // @Summary	     Get access requests
 // @Tags         access-request
 // @Produce      json
@@ -33,7 +33,7 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /access-requests [get]
-func (a *accessRequests) GetAccessRequestsHandler(ctx *handler.Context) error {
+func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
 	// Get domain models from service
 	accessRequests, err := a.accessRequestService.AccessRequestRepo().GetAccessRequests(ctx.Context())
 	if err != nil {

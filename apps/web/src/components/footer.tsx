@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useEffectEvent, useState } from "react";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +18,16 @@ type FooterProps = {
 };
 
 export const Footer = ({ className }: FooterProps) => {
+  const [shuffledSponsors, setShuffledSponsors] = useState(sponsors);
+
+  const onRender = useEffectEvent(() => {
+    setShuffledSponsors(shuffle(sponsors));
+  });
+
+  useEffect(() => {
+    onRender();
+  }, []);
+
   return (
     <div className={cn("selection:bg-primary mt-32", className)}>
       <footer className="border-footer-border bg-footer text-footer-foreground relative border-2 px-10 py-24">
@@ -61,7 +72,7 @@ export const Footer = ({ className }: FooterProps) => {
             <div>
               <ul className="space-y-5">
                 <h3 className="mb-4 py-2 text-xl font-bold">Samarbeidspartnere ❤️</h3>
-                {shuffle(sponsors).map(({ label, href, image }) => (
+                {shuffledSponsors.map(({ label, href, image }) => (
                   <li key={label}>
                     <Link href={href} target="_blank" rel="noreferrer">
                       {/* <Image

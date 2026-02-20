@@ -9,33 +9,37 @@ import (
 // UserDB represents the database schema for the user table.
 // It contains database-specific tags and structure.
 type UserDB struct {
-	ID               string     `db:"id"`
-	Name             *string    `db:"name"`
-	Email            string     `db:"email"`
-	Image            *string    `db:"image"`
-	AlternativeEmail *string    `db:"alternative_email"`
-	DegreeID         *string    `db:"degree_id"`
-	Year             *int       `db:"year"`
-	Type             string     `db:"type"`
-	LastSignInAt     *time.Time `db:"last_sign_in_at"`
-	UpdatedAt        *time.Time `db:"updated_at"`
-	CreatedAt        *time.Time `db:"created_at"`
-	HasReadTerms     bool       `db:"has_read_terms"`
-	Birthday         *time.Time `db:"birthday"`
-	IsPublic         bool       `db:"is_public"`
+	ID               string         `db:"id"`
+	Name             *string        `db:"name"`
+	Email            string         `db:"email"`
+	Image            *string        `db:"image"`
+	AlternativeEmail *string        `db:"alternative_email"`
+	Year             *int           `db:"year"`
+	Type             model.UserType `db:"type"`
+	LastSignInAt     *time.Time     `db:"last_sign_in_at"`
+	UpdatedAt        *time.Time     `db:"updated_at"`
+	CreatedAt        *time.Time     `db:"created_at"`
+	HasReadTerms     bool           `db:"has_read_terms"`
+	Birthday         *time.Time     `db:"birthday"`
+	IsPublic         bool           `db:"is_public"`
+	DegreeID         *string        `db:"degree_id"`
+	DegreeName       *string        `db:"degree_name"`
+	Groups           []GroupDB      `db:"groups"`
 }
 
 // FromDomain converts a domain User model to a database UserDB model.
-func (db *UserDB) FromDomain(u *model.User) *UserDB {
-	return &UserDB{
+func (db *UserDB) FromDomain(u model.User) UserDB {
+	degreeID := &u.Degree.ID
+
+	return UserDB{
 		ID:               u.ID,
 		Name:             u.Name,
 		Email:            u.Email,
 		Image:            u.Image,
 		AlternativeEmail: u.AlternativeEmail,
-		DegreeID:         u.DegreeID,
-		Year:             u.Year,
-		Type:             string(u.Type),
+		DegreeID:         degreeID,
+		Year:             u.Year.IntPtr(),
+		Type:             u.Type,
 		LastSignInAt:     u.LastSignInAt,
 		UpdatedAt:        u.UpdatedAt,
 		CreatedAt:        u.CreatedAt,
@@ -46,30 +50,51 @@ func (db *UserDB) FromDomain(u *model.User) *UserDB {
 }
 
 // ToDomain converts a database UserDB model to a domain User model.
-func (db *UserDB) ToDomain() *model.User {
-	return &model.User{
+func (db *UserDB) ToDomain() (model.User, error) {
+	var year *model.DegreeYear
+	if db.Year != nil {
+		y, err := model.NewDegreeYear(*db.Year)
+		if err != nil {
+			return model.User{}, err
+		}
+		year = y
+	}
+
+	var degree *model.Degree
+	if db.DegreeID != nil && db.DegreeName != nil {
+		degree = &model.Degree{ID: *db.DegreeID, Name: *db.DegreeName}
+	}
+
+	groups := make([]model.Group, len(db.Groups))
+	for i, g := range db.Groups {
+		groups[i] = *g.ToDomain()
+	}
+
+	return model.User{
 		ID:               db.ID,
 		Name:             db.Name,
 		Email:            db.Email,
 		Image:            db.Image,
 		AlternativeEmail: db.AlternativeEmail,
-		DegreeID:         db.DegreeID,
-		Year:             db.Year,
-		Type:             model.UserType(db.Type),
+		Degree:           degree,
+		Year:             year,
+		Type:             db.Type,
 		LastSignInAt:     db.LastSignInAt,
 		UpdatedAt:        db.UpdatedAt,
 		CreatedAt:        db.CreatedAt,
 		HasReadTerms:     db.HasReadTerms,
 		Birthday:         db.Birthday,
 		IsPublic:         db.IsPublic,
-	}
+		Groups:           groups,
+	}, nil
 }
 
 // UserToDomainList converts a slice of database UserDB models to domain User models.
 func UserToDomainList(dbUsers []UserDB) []model.User {
 	users := make([]model.User, len(dbUsers))
 	for i, dbUser := range dbUsers {
-		users[i] = *dbUser.ToDomain()
+		user, _ := dbUser.ToDomain()
+		users[i] = user
 	}
 	return users
 }

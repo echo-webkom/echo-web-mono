@@ -75,6 +75,15 @@ const seedDev = async () => {
     })
     .onConflictDoNothing();
 
+  await db
+    .insert(usersToGroups)
+    .values({
+      userId: "hyggkom",
+      groupId: "hyggkom",
+      isLeader: true,
+    })
+    .onConflictDoNothing();
+
   await createFakeUsers(FAKE_USER_COUNT);
 };
 
