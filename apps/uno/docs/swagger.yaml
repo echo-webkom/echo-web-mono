@@ -9,13 +9,6 @@ definitions:
     required:
     - name
     type: object
-  http_routes_api.DegreeResponse:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
   http_routes_api.GroupResponse:
     properties:
       id:
@@ -23,77 +16,12 @@ definitions:
       name:
         type: string
     type: object
-  http_routes_api.ReactionResponse:
-    properties:
-      createdAt:
-        type: string
-      emojiId:
-        type: integer
-      reactToKey:
-        type: string
-      userId:
-        type: string
-    type: object
-  http_routes_api.ToggleReactionRequest:
-    properties:
-      emojiId:
-        type: integer
-      userId:
-        type: string
-    required:
-    - emojiId
-    - userId
-    type: object
   http_routes_api.UpdateGroupRequest:
     properties:
       name:
         type: string
     required:
     - name
-    type: object
-  http_routes_api.UserGroupResponse:
-    properties:
-      id:
-        type: string
-      isLeader:
-        type: boolean
-      name:
-        type: string
-    type: object
-  http_routes_api.UserResponse:
-    properties:
-      alternativeEmail:
-        type: string
-      birthday:
-        type: string
-      createdAt:
-        type: string
-      degree:
-        $ref: '#/definitions/http_routes_api.DegreeResponse'
-      email:
-        type: string
-      groups:
-        items:
-          $ref: '#/definitions/http_routes_api.UserGroupResponse'
-        type: array
-      hasReadTerms:
-        type: boolean
-      id:
-        type: string
-      image:
-        type: string
-      isPublic:
-        type: boolean
-      lastSignInAt:
-        type: string
-      name:
-        type: string
-      type:
-        type: string
-      updatedAt:
-        type: string
-      year:
-        type: integer
     type: object
   uno_domain_model.BanInfo:
     properties:
@@ -130,17 +58,6 @@ definitions:
         type: string
       userID:
         type: string
-    type: object
-  uno_domain_model.GroupedRegistrationCount:
-    properties:
-      happeningID:
-        type: string
-      max:
-        type: integer
-      registered:
-        type: integer
-      waiting:
-        type: integer
     type: object
   uno_domain_model.UserWithBanInfo:
     properties:
@@ -341,17 +258,6 @@ definitions:
       name:
         type: string
     type: object
-  uno_http_dto.GroupedRegistration:
-    properties:
-      happeningId:
-        type: string
-      max:
-        type: integer
-      registered:
-        type: integer
-      waiting:
-        type: integer
-    type: object
   uno_http_dto.HappeningRegistrationResponse:
     properties:
       changedAt:
@@ -438,6 +344,17 @@ definitions:
       userId:
         type: string
     type: object
+  uno_http_dto.ReactionResponse:
+    properties:
+      createdAt:
+        type: string
+      emojiId:
+        type: integer
+      reactToKey:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.RegisterForHappeningRequest:
     properties:
       questions:
@@ -455,6 +372,17 @@ definitions:
         type: string
       success:
         type: boolean
+    type: object
+  uno_http_dto.RegistrationCount:
+    properties:
+      happeningId:
+        type: string
+      max:
+        type: integer
+      registered:
+        type: integer
+      waiting:
+        type: integer
     type: object
   uno_http_dto.SiteFeedbackResponse:
     properties:
@@ -486,12 +414,66 @@ definitions:
       spots:
         type: integer
     type: object
+  uno_http_dto.ToggleReactionRequest:
+    properties:
+      emojiId:
+        type: integer
+      userId:
+        type: string
+    required:
+    - emojiId
+    - userId
+    type: object
   uno_http_dto.UpdateDegreeRequest:
     properties:
       id:
         type: string
       name:
         type: string
+    type: object
+  uno_http_dto.UserGroupResponse:
+    properties:
+      id:
+        type: string
+      isLeader:
+        type: boolean
+      name:
+        type: string
+    type: object
+  uno_http_dto.UserResponse:
+    properties:
+      alternativeEmail:
+        type: string
+      birthday:
+        type: string
+      createdAt:
+        type: string
+      degree:
+        $ref: '#/definitions/uno_http_dto.DegreeResponse'
+      email:
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/uno_http_dto.UserGroupResponse'
+        type: array
+      hasReadTerms:
+        type: boolean
+      id:
+        type: string
+      image:
+        type: string
+      isPublic:
+        type: boolean
+      lastSignInAt:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+      year:
+        type: integer
     type: object
   uno_http_dto.UserSummaryResponse:
     properties:
@@ -1240,7 +1222,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.GroupedRegistration'
+            $ref: '#/definitions/uno_http_dto.RegistrationCount'
         "400":
           description: Bad Request
           schema:
@@ -1299,7 +1281,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.GroupedRegistrationCount'
+              $ref: '#/definitions/uno_http_dto.RegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -1329,7 +1311,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.ReactionResponse'
+              $ref: '#/definitions/uno_http_dto.ReactionResponse'
             type: array
         "400":
           description: Bad Request
@@ -1360,7 +1342,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.ToggleReactionRequest'
+          $ref: '#/definitions/uno_http_dto.ToggleReactionRequest'
       produces:
       - application/json
       responses:
@@ -1368,7 +1350,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.ReactionResponse'
+              $ref: '#/definitions/uno_http_dto.ReactionResponse'
             type: array
         "400":
           description: Bad Request
@@ -1577,7 +1559,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.UserResponse'
+              $ref: '#/definitions/uno_http_dto.UserResponse'
             type: array
         "401":
           description: Unauthorized
@@ -1604,7 +1586,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http_routes_api.UserResponse'
+            $ref: '#/definitions/uno_http_dto.UserResponse'
         "401":
           description: Unauthorized
           schema:

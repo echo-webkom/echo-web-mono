@@ -86,7 +86,7 @@ func (h *happenings) getHappeningById(ctx *handler.Context) error {
 // @Tags         happenings
 // @Produce      json
 // @Param        id   path      string  true  "Happening ID"
-// @Success      200  {object}  dto.GroupedRegistration  "OK"
+// @Success      200  {object}  dto.RegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
@@ -110,7 +110,7 @@ func (h *happenings) getHappeningRegistrationsCount(ctx *handler.Context) error 
 // @Tags         happenings
 // @Produce      json
 // @Param        id   query     string  true  "Happening ID"
-// @Success      200  {array}  model.GroupedRegistrationCount  "OK"
+// @Success      200  {array}  dto.RegistrationCount  "OK"
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
