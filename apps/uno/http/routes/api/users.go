@@ -31,7 +31,7 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 // GetUsersHandler returns a list of all users
 // @Summary	     Gets a list of all users
 // @Tags         users
-// @Success      200  {array}   UserResponse  "OK"
+// @Success      200  {array}   dto.UserResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
@@ -52,8 +52,8 @@ func (u *users) GetUsersHandler(ctx *handler.Context) error {
 // @Summary	     Gets a user by ID
 // @Tags         users
 // @Param        id   path      string  true  "User ID"
-// @Produces      json
-// @Success      200  {object}  UserResponse  "OK"
+// @Produces     json
+// @Success      200  {object}  dto.UserResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      404  {string}  string  "User Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
