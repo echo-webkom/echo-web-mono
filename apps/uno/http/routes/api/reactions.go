@@ -21,13 +21,13 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/{key}", r.GetReactions, admin)
-	mux.Handle("POST", "/{key}", r.ToggleReaction, admin)
+	mux.Handle("GET", "/{key}", r.getReactions, admin)
+	mux.Handle("POST", "/{key}", r.toggleReaction, admin)
 
 	return mux
 }
 
-// GetReactions returns a list of reactions for a given key
+// getReactions returns a list of reactions for a given key
 // @Summary	     Get reactions for a given key
 // @Tags         reactions
 // @Accept       json
@@ -38,7 +38,7 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [get]
-func (r *reactions) GetReactions(ctx *handler.Context) error {
+func (r *reactions) getReactions(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
 		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)
@@ -53,7 +53,7 @@ func (r *reactions) GetReactions(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// ToggleReaction toggles a reaction for a given key and user
+// toggleReaction toggles a reaction for a given key and user
 // @Summary	     Toggle a reaction for a given key and user
 // @Tags         reactions
 // @Accept       json
@@ -65,7 +65,7 @@ func (r *reactions) GetReactions(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [post]
-func (r *reactions) ToggleReaction(ctx *handler.Context) error {
+func (r *reactions) toggleReaction(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
 		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)

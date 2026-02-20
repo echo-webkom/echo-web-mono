@@ -19,12 +19,12 @@ func NewAdventOfCodeMux(logger port.Logger, aocService *service.AdventOfCodeServ
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("GET", "/leaderboard", aoc.GetLeaderboardHandler)
+	mux.Handle("GET", "/leaderboard", aoc.getLeaderboard)
 
 	return mux
 }
 
-// GetLeaderboardHandler returns the Advent of Code leaderboard
+// getLeaderboard returns the Advent of Code leaderboard
 // @Summary	     Get Advent of Code leaderboard
 // @Tags         advent_of_code
 // @Produce      json
@@ -32,7 +32,7 @@ func NewAdventOfCodeMux(logger port.Logger, aocService *service.AdventOfCodeServ
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /advent-of-code/leaderboard [get]
-func (a *adventOfCode) GetLeaderboardHandler(ctx *handler.Context) error {
+func (a *adventOfCode) getLeaderboard(ctx *handler.Context) error {
 	leaderboard, err := a.aocService.GetAdventOfCodeLeaderboard(ctx.Context(), 2025)
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)

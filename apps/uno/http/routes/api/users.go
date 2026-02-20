@@ -22,13 +22,13 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/", u.GetUsersHandler, admin)
-	mux.Handle("GET", "/{id}", u.GetUserByIDHandler, admin)
+	mux.Handle("GET", "/", u.getUsers, admin)
+	mux.Handle("GET", "/{id}", u.getUserByID, admin)
 
 	return mux
 }
 
-// GetUsersHandler returns a list of all users
+// getUsers returns a list of all users
 // @Summary	     Gets a list of all users
 // @Tags         users
 // @Success      200  {array}   dto.UserResponse  "OK"
@@ -36,7 +36,7 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
 // @Router       /users [get]
-func (u *users) GetUsersHandler(ctx *handler.Context) error {
+func (u *users) getUsers(ctx *handler.Context) error {
 	// Get all users from the database
 	users, err := u.userService.UserRepo().GetAllUsers(ctx.Context())
 	if err != nil {
@@ -48,7 +48,7 @@ func (u *users) GetUsersHandler(ctx *handler.Context) error {
 	return ctx.JSON(userResponses)
 }
 
-// GetUserByIDHandler returns a user by ID
+// getUserByID returns a user by ID
 // @Summary	     Gets a user by ID
 // @Tags         users
 // @Param        id   path      string  true  "User ID"
@@ -59,7 +59,7 @@ func (u *users) GetUsersHandler(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
 // @Router       /users/{id} [get]
-func (u *users) GetUserByIDHandler(ctx *handler.Context) error {
+func (u *users) getUserByID(ctx *handler.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {

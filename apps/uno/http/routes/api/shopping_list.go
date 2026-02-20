@@ -21,10 +21,10 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 	s := shoppingList{logger, shoppingListService}
 
 	// Admin
-	mux.Handle("GET", "/", s.GetShoppingListHandler, admin)
-	mux.Handle("POST", "/", s.CreateShoppingListItemHandler, admin)
-	mux.Handle("POST", "/like", s.ToggleLikeHandler, admin)
-	mux.Handle("DELETE", "/{id}", s.RemoveShoppingListItemHandler, admin)
+	mux.Handle("GET", "/", s.getShoppingList, admin)
+	mux.Handle("POST", "/", s.createShoppingListItem, admin)
+	mux.Handle("POST", "/like", s.toggleLike, admin)
+	mux.Handle("DELETE", "/{id}", s.removeShoppingListItem, admin)
 
 	return mux
 }
@@ -37,7 +37,7 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
+func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
 	shoppingList, err := s.shoppingListService.GetShoppingList(ctx.Context())
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
@@ -48,7 +48,7 @@ func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-// CreateShoppingListItemHandler creates a new shopping list item
+// createShoppingListItem creates a new shopping list item
 // @Summary	     Create shopping list item
 // @Tags         shopping_list
 // @Accept       json
@@ -60,7 +60,7 @@ func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping [post]
-func (s *shoppingList) CreateShoppingListItemHandler(ctx *handler.Context) error {
+func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 	var req dto.CreateShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
@@ -86,7 +86,7 @@ func (s *shoppingList) CreateShoppingListItemHandler(ctx *handler.Context) error
 	return ctx.Ok()
 }
 
-// ToggleLikeHandler toggles the like status of a shopping list item
+// toggleLike toggles the like status of a shopping list item
 // @Summary	     Toggle like on shopping list item
 // @Tags         shopping_list
 // @Accept       json
@@ -98,7 +98,7 @@ func (s *shoppingList) CreateShoppingListItemHandler(ctx *handler.Context) error
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping/like [post]
-func (s *shoppingList) ToggleLikeHandler(ctx *handler.Context) error {
+func (s *shoppingList) toggleLike(ctx *handler.Context) error {
 	var req dto.UserToShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
@@ -112,7 +112,7 @@ func (s *shoppingList) ToggleLikeHandler(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
-// RemoveShoppingListItemHandler removes an item from the shopping list
+// removeShoppingListItem removes an item from the shopping list
 // @Summary	     Remove item from shopping list
 // @Tags         shopping_list
 // @Produce      json
@@ -123,7 +123,7 @@ func (s *shoppingList) ToggleLikeHandler(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping/{id} [delete]
-func (s *shoppingList) RemoveShoppingListItemHandler(ctx *handler.Context) error {
+func (s *shoppingList) removeShoppingListItem(ctx *handler.Context) error {
 	itemID := ctx.PathValue("id")
 	if itemID == "" {
 		return ctx.Error(errors.New("item ID is required"), http.StatusBadRequest)
