@@ -103,8 +103,8 @@ type GroupedRegistrationCount struct {
 	Registered  int    `db:"registered"`
 }
 
-func (grc GroupedRegistrationCount) ToDomain() model.GroupedRegistrationCount {
-	return model.GroupedRegistrationCount{
+func (grc GroupedRegistrationCount) ToDomain() model.RegistrationCount {
+	return model.RegistrationCount{
 		HappeningID: grc.HappeningID,
 		Max:         grc.Max,
 		Waiting:     grc.Waiting,
@@ -112,8 +112,8 @@ func (grc GroupedRegistrationCount) ToDomain() model.GroupedRegistrationCount {
 	}
 }
 
-func GroupedRegistrationCountsToDomainList(counts []GroupedRegistrationCount) []model.GroupedRegistrationCount {
-	domainCounts := make([]model.GroupedRegistrationCount, len(counts))
+func GroupedRegistrationCountsToDomainList(counts []GroupedRegistrationCount) []model.RegistrationCount {
+	domainCounts := make([]model.RegistrationCount, len(counts))
 	for i, c := range counts {
 		domainCounts[i] = c.ToDomain()
 	}

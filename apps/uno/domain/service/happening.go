@@ -402,30 +402,30 @@ func (hs *HappeningService) Register(
 	}, nil
 }
 
-func (hs *HappeningService) GetRegisterCount(ctx context.Context, happeningID string) (model.GroupedRegistrationCount, error) {
+func (hs *HappeningService) GetRegisterCount(ctx context.Context, happeningID string) (model.RegistrationCount, error) {
 	// Fetch the happening from the repository
 	hap, err := hs.happeningRepo.GetHappeningById(ctx, happeningID)
 	if err != nil {
-		return model.GroupedRegistrationCount{}, errors.New("could not fetch happening")
+		return model.RegistrationCount{}, errors.New("could not fetch happening")
 	}
 
 	// Fetch spot ranges
 	spotRanges, err := hs.happeningRepo.GetHappeningSpotRanges(ctx, hap.ID)
 	if err != nil {
-		return model.GroupedRegistrationCount{}, errors.New("could not fetch spot ranges")
+		return model.RegistrationCount{}, errors.New("could not fetch spot ranges")
 	}
 
 	// Fetch registrations
 	// TODO: Aggregate directly in SQL query
 	regs, err := hs.happeningRepo.GetHappeningRegistrations(ctx, hap.ID)
 	if err != nil {
-		return model.GroupedRegistrationCount{}, errors.New("could not fetch registrations")
+		return model.RegistrationCount{}, errors.New("could not fetch registrations")
 	}
 
 	// Aggregate registration counts
 	// - Max spots from spot ranges
 	// - Count of registered and waiting registrations
-	grp := model.GroupedRegistrationCount{}
+	grp := model.RegistrationCount{}
 	if len(spotRanges) > 0 {
 		count := 0
 		for _, spot := range spotRanges {

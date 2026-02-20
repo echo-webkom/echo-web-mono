@@ -100,7 +100,7 @@ func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error 
 		return ctx.Error(err, http.StatusInternalServerError)
 	}
 
-	dtoGrp := (dto.GroupedRegistration{}).FromDomain(grp)
+	dtoGrp := (dto.RegistrationCount{}).FromDomain(grp)
 	return ctx.JSON(dtoGrp)
 }
 
@@ -131,7 +131,7 @@ func (h *happenings) GetHappeningRegistrationsCountMany(ctx *handler.Context) er
 	}
 
 	// Convert domain models to DTOs
-	response := dto.GroupedRegistrationCountFromDomain(counts)
+	response := dto.RegistrationCountsFromDomain(counts)
 	return ctx.JSON(response)
 }
 
