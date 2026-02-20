@@ -77,8 +77,7 @@ func (d *degrees) CreateDegreeHandler(ctx *handler.Context) error {
 		Name: createdDegree.Name,
 	}
 
-	ctx.SetStatus(http.StatusCreated)
-	return ctx.JSON(response)
+	return ctx.JSONWithStatus(response, http.StatusCreated)
 }
 
 // UpdateDegreeHandler updates an existing degree
@@ -130,6 +129,6 @@ func (d *degrees) DeleteDegreeHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	ctx.WriteHeader(http.StatusNoContent)
-	return nil
+	ctx.SetStatus(http.StatusNoContent)
+	return ctx.Ok()
 }

@@ -45,7 +45,6 @@ func (s *shoppingList) GetShoppingListHandler(ctx *handler.Context) error {
 
 	// Convert to DTO
 	response := dto.ShoppingListFromDomainList(shoppingList)
-
 	return ctx.JSON(response)
 }
 
@@ -84,7 +83,7 @@ func (s *shoppingList) CreateShoppingListItemHandler(ctx *handler.Context) error
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	return nil
+	return ctx.Ok()
 }
 
 // ToggleLikeHandler toggles the like status of a shopping list item
@@ -110,7 +109,7 @@ func (s *shoppingList) ToggleLikeHandler(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	return nil
+	return ctx.Ok()
 }
 
 // RemoveShoppingListItemHandler removes an item from the shopping list
@@ -135,5 +134,5 @@ func (s *shoppingList) RemoveShoppingListItemHandler(ctx *handler.Context) error
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	return nil
+	return ctx.Ok()
 }

@@ -39,6 +39,5 @@ func (a *adventOfCode) GetLeaderboardHandler(ctx *handler.Context) error {
 	}
 
 	response := dto.AdventOfCodeLeaderboardFromDomain(leaderboard)
-
 	return ctx.JSON(response)
 }

@@ -58,7 +58,6 @@ func (s *strikes) GetUsersWithStrikesHandler(ctx *handler.Context) error {
 
 	// Convert to DTO
 	response := dto.UsersWithStrikesFromDomainList(users)
-
 	return ctx.JSON(response)
 }
 
@@ -78,6 +77,5 @@ func (s *strikes) GetBannedUsers(ctx *handler.Context) error {
 
 	// Convert to DTO
 	response := dto.BannedUsersFromDomainList(users)
-
 	return ctx.JSON(response)
 }

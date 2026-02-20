@@ -37,7 +37,6 @@ func (d *databrus) GetMatchesHandler(ctx *handler.Context) error {
 	}
 
 	response := dto.DatabrusMatchesFromDomain(matches)
-
 	return ctx.JSON(response)
 }
 
@@ -55,6 +54,5 @@ func (d *databrus) GetTableHandler(ctx *handler.Context) error {
 	}
 
 	response := dto.DatabrusTableFromDomain(table)
-
 	return ctx.JSON(response)
 }

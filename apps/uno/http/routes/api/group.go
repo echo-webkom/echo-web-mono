@@ -25,9 +25,9 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	mux := router.NewMux()
 	mux.Handle("GET", "/", gh.GetGroupsHandler)
 
-	mux.Handle("DELETE", "/:id", gh.DeleteGroupByIDHandler, admin)
+	mux.Handle("DELETE", "/{id}", gh.DeleteGroupByIDHandler, admin)
 	mux.Handle("POST", "/", gh.CreateGroupHandler, admin)
-	mux.Handle("POST", "/:id", gh.UpdateGroupByIDHandler, admin)
+	mux.Handle("POST", "/{id}", gh.UpdateGroupByIDHandler, admin)
 
 	return mux
 }
