@@ -617,6 +617,10 @@ func (_c *UserRepo_ResetUserYears_Call) Return(n int64, err error) *UserRepo_Res
 }
 
 func (_c *UserRepo_ResetUserYears_Call) RunAndReturn(run func(ctx context.Context) (int64, error)) *UserRepo_ResetUserYears_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UpdateUserImageURL provides a mock function for the type UserRepo
 func (_mock *UserRepo) UpdateUserImageURL(ctx context.Context, userID string, imageURL *string) error {
 	ret := _mock.Called(ctx, userID, imageURL)
