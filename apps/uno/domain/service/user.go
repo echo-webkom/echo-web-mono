@@ -2,11 +2,14 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 )
+
+var ErrFileStorageNotConfigured = errors.New("file storage not configured")
 
 type UserService struct {
 	apiURL             string
@@ -43,7 +46,18 @@ func (s *UserService) ResetUserYears(ctx context.Context) (int64, error) {
 	return s.userRepo.ResetUserYears(ctx)
 }
 
+func (s *UserService) GetProfilePicture(ctx context.Context, userID string) (*model.ProfilePicture, error) {
+	if s.profilePictureRepo == nil {
+		return nil, ErrFileStorageNotConfigured
+	}
+	return s.profilePictureRepo.GetProfilePicture(ctx, userID)
+}
+
 func (s *UserService) DeleteUserImage(ctx context.Context, userID string) error {
+	if s.profilePictureRepo == nil {
+		return ErrFileStorageNotConfigured
+	}
+
 	user, err := s.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
 		return err
@@ -57,6 +71,10 @@ func (s *UserService) DeleteUserImage(ctx context.Context, userID string) error 
 }
 
 func (s *UserService) UploadProfileImage(ctx context.Context, userID string, profilePicture *model.ProfilePictureUpload) (string, error) {
+	if s.profilePictureRepo == nil {
+		return "", ErrFileStorageNotConfigured
+	}
+
 	err := profilePicture.Validate()
 	if err != nil {
 		return "", err
