@@ -73,6 +73,25 @@ services:
       - ./playwright/playwright-report:/app/playwright/playwright-report
       - ./playwright/test-results:/app/playwright/test-results
 
+  minio:
+    profiles: ["dev"]
+    image: minio/minio
+    container_name: echo-web-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   jaeger:
     profiles: ["dev"]
     image: jaegertracing/all-in-one:latest
@@ -87,4 +106,6 @@ volumes:
   db:
     driver: local
   db-test:
+    driver: local
+  minio:
     driver: local
