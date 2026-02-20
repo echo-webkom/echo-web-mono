@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"io"
 	"time"
 )
 
@@ -219,4 +220,49 @@ type UserWithBanInfo struct {
 	Image   *string
 	BanInfo BanInfo
 	Dots    []DotInfo
+}
+
+var (
+	ErrProfilePictureTooLarge        = errors.New("profile picture exceeds the maximum allowed size of 5 MB")
+	ErrUnsupportedProfilePictureType = errors.New("unsupported profile picture type")
+)
+
+type ProfilePictureImageType string
+
+const (
+	ProfilePictureTypeJPEG ProfilePictureImageType = "image/jpeg"
+	ProfilePictureTypePNG  ProfilePictureImageType = "image/png"
+	ProfilePictureTypeGIF  ProfilePictureImageType = "image/gif"
+	ProfilePictureTypeWEBP ProfilePictureImageType = "image/webp"
+)
+
+const (
+	ProfilePictureMaxSize = 5 * 1024 * 1024 // 5 MB
+)
+
+type ProfilePictureUpload struct {
+	io.Reader
+	ImageType ProfilePictureImageType
+	Size      int64
+}
+
+func (p *ProfilePictureUpload) Validate() error {
+	if p.Size > ProfilePictureMaxSize {
+		return ErrProfilePictureTooLarge
+	}
+
+	switch p.ImageType {
+	case ProfilePictureTypeJPEG, ProfilePictureTypePNG, ProfilePictureTypeGIF, ProfilePictureTypeWEBP:
+		return nil
+	default:
+		return ErrUnsupportedProfilePictureType
+	}
+}
+
+type ProfilePicture struct {
+	io.ReadCloser
+	ContentType  string
+	ETag         string
+	LastModified time.Time
+	Size         int64
 }
