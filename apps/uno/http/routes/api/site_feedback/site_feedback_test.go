@@ -10,8 +10,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	sitefeedback "uno/http/routes/api/site_feedback"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -58,7 +58,7 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
@@ -126,7 +126,7 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.feedbackID, nil)
 			r.SetPathValue("id", tt.feedbackID)
@@ -191,7 +191,7 @@ func TestCreateSiteFeedbackHandler(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.useInvalidJSON {
@@ -249,7 +249,7 @@ func TestMarkSiteFeedbackAsSeen(t *testing.T) {
 			tt.setupMocks(mockSiteFeedbackRepo)
 
 			siteFeedbackService := service.NewSiteFeedbackService(mockSiteFeedbackRepo)
-			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, handler.NoMiddleware)
+			mux := sitefeedback.NewMux(testutil.NewTestLogger(), siteFeedbackService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodPut, "/"+tt.feedbackID+"/seen", nil)
 			r.SetPathValue("id", tt.feedbackID)

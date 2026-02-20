@@ -4,9 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type birthdays struct {
@@ -14,9 +12,9 @@ type birthdays struct {
 	userService *service.UserService
 }
 
-func NewMux(logger port.Logger, userService *service.UserService) *router.Mux {
+func NewMux(logger port.Logger, userService *service.UserService) *uno.Mux {
 	b := birthdays{logger, userService}
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	mux.Handle("GET", "/", b.birthdaysToday)
 
@@ -30,10 +28,10 @@ func NewMux(logger port.Logger, userService *service.UserService) *router.Mux {
 // @Produce      json
 // @Success      200  {array}  string  "OK"
 // @Router       /birthdays [get]
-func (b *birthdays) birthdaysToday(ctx *handler.Context) error {
+func (b *birthdays) birthdaysToday(ctx *uno.Context) error {
 	users, err := b.userService.GetUsersWithBirthdayToday(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO

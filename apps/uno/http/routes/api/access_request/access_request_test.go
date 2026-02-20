@@ -8,8 +8,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	accessrequest "uno/http/routes/api/access_request"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -56,7 +56,7 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 			tt.setupMocks(mockAccessRequestRepo)
 
 			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo)
-			mux := accessrequest.NewMux(testutil.NewTestLogger(), accessRequestService, handler.NoMiddleware)
+			mux := accessrequest.NewMux(testutil.NewTestLogger(), accessRequestService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()

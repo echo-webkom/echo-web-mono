@@ -9,8 +9,8 @@ import (
 	"uno/domain/port"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	shoppinglist "uno/http/routes/api/shopping_list"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -81,7 +81,7 @@ func TestGetShoppingList(t *testing.T) {
 				mockShoppingListRepo,
 				mockUsersToShoppingListRepo,
 			)
-			mux := shoppinglist.NewMux(testutil.NewTestLogger(), shoppingListService, handler.NoMiddleware)
+			mux := shoppinglist.NewMux(testutil.NewTestLogger(), shoppingListService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()

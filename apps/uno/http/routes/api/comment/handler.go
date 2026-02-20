@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type comments struct {
@@ -15,9 +13,9 @@ type comments struct {
 	commentService *service.CommentService
 }
 
-func NewMux(logger port.Logger, commentService *service.CommentService, admin handler.Middleware) *router.Mux {
+func NewMux(logger port.Logger, commentService *service.CommentService, admin uno.Middleware) *uno.Mux {
 	c := comments{logger, commentService}
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	// Admin
 	mux.Handle("POST", "/", c.createComment, admin)
@@ -38,12 +36,12 @@ func NewMux(logger port.Logger, commentService *service.CommentService, admin ha
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id} [get]
-func (c *comments) getCommentsByID(ctx *handler.Context) error {
+func (c *comments) getCommentsByID(ctx *uno.Context) error {
 	id := ctx.PathValue("id")
 
 	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	response := CommentsFromDomainList(comments)
@@ -62,7 +60,7 @@ func (c *comments) getCommentsByID(ctx *handler.Context) error {
 // @Failure      500      {string}  string                      "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments [post]
-func (c *comments) createComment(ctx *handler.Context) error {
+func (c *comments) createComment(ctx *uno.Context) error {
 	var req CreateCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
@@ -70,7 +68,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 
 	err := c.commentService.CommentRepo().CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	return ctx.JSON(map[string]bool{"success": true})
@@ -89,7 +87,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 // @Failure      500       {string}  string                       "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /comments/{id}/reaction [post]
-func (c *comments) reactToComment(ctx *handler.Context) error {
+func (c *comments) reactToComment(ctx *uno.Context) error {
 	commentID := ctx.PathValue("id")
 
 	var req ReactToCommentRequest
@@ -99,7 +97,7 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 
 	err := c.commentService.ReactToComment(ctx.Context(), commentID, req.UserID)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	return ctx.JSON(map[string]bool{"success": true})

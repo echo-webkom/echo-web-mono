@@ -1,8 +1,6 @@
-package api
+package uno
 
-import (
-	"errors"
-)
+import "errors"
 
 var (
 	ErrInternalServer = errors.New("internal server error")

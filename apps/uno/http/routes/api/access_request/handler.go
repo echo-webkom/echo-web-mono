@@ -4,9 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type accessRequests struct {
@@ -14,9 +12,9 @@ type accessRequests struct {
 	accessRequestService *service.AccessRequestService
 }
 
-func NewMux(logger port.Logger, accessRequestService *service.AccessRequestService, admin handler.Middleware) *router.Mux {
+func NewMux(logger port.Logger, accessRequestService *service.AccessRequestService, admin uno.Middleware) *uno.Mux {
 	a := accessRequests{logger, accessRequestService}
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	// Admin
 	mux.Handle("GET", "/", a.getAccessRequests, admin)
@@ -33,11 +31,11 @@ func NewMux(logger port.Logger, accessRequestService *service.AccessRequestServi
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /access-requests [get]
-func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
+func (a *accessRequests) getAccessRequests(ctx *uno.Context) error {
 	// Get domain models from service
 	accessRequests, err := a.accessRequestService.AccessRequestRepo().GetAccessRequests(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTOs

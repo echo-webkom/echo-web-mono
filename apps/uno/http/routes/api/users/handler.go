@@ -7,9 +7,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type users struct {
@@ -17,10 +15,10 @@ type users struct {
 	userService *service.UserService
 }
 
-func NewMux(logger port.Logger, userService *service.UserService, admin handler.Middleware) *router.Mux {
+func NewMux(logger port.Logger, userService *service.UserService, admin uno.Middleware) *uno.Mux {
 	u := users{logger, userService}
 
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	mux.Handle("GET", "/", u.getUsers, admin)
 	mux.Handle("GET", "/{id}", u.getUserByID, admin)
@@ -36,11 +34,11 @@ func NewMux(logger port.Logger, userService *service.UserService, admin handler.
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
 // @Router       /users [get]
-func (u *users) getUsers(ctx *handler.Context) error {
+func (u *users) getUsers(ctx *uno.Context) error {
 	// Get all users from the database
 	users, err := u.userService.UserRepo().GetAllUsers(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Map users to user responses
@@ -59,7 +57,7 @@ func (u *users) getUsers(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
 // @Router       /users/{id} [get]
-func (u *users) getUserByID(ctx *handler.Context) error {
+func (u *users) getUserByID(ctx *uno.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {
@@ -72,13 +70,13 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
 		}
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Map user to user response
 	userResponses := UsersToUserResponses([]model.User{user})
 	if len(userResponses) == 0 {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 	return ctx.JSON(userResponses[0])
 }

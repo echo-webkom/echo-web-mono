@@ -10,8 +10,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api/degree"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -58,7 +58,7 @@ func TestGetDegreesHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
+			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
@@ -118,7 +118,7 @@ func TestCreateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
+			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -184,7 +184,7 @@ func TestUpdateDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
+			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -249,7 +249,7 @@ func TestDeleteDegreeHandler(t *testing.T) {
 			tt.setupMocks(mockDegreeRepo)
 
 			degreeService := service.NewDegreeService(mockDegreeRepo)
-			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, handler.NoMiddleware)
+			mux := degree.NewMux(testutil.NewTestLogger(), degreeService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.degreeID, nil)
 			r.SetPathValue("id", tt.degreeID)

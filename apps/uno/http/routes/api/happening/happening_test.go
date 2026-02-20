@@ -11,8 +11,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api/happening"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -69,7 +69,7 @@ func TestGetHappeningsHandler(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
@@ -134,7 +134,7 @@ func TestGetHappeningById(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.happeningID, nil)
 			r.SetPathValue("id", tt.happeningID)
@@ -200,7 +200,7 @@ func TestGetHappeningQuestions(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.happeningID+"/questions", nil)
 			r.SetPathValue("id", tt.happeningID)
@@ -341,7 +341,7 @@ func TestRegisterForHappening(t *testing.T) {
 				mockBanInfoRepo,
 			)
 
-			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+			mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -389,13 +389,13 @@ func TestGetHappeningRegistrationsCount(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 	r := httptest.NewRequest(http.MethodGet, "/happening123/registrations/count", nil)
 	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	mux.ServeHTTP(ctx, r)
 	err := ctx.GetError()
 
@@ -422,12 +422,12 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 	r := httptest.NewRequest(http.MethodGet, "/registrations/count?id=happening123&id=happening456", nil)
 	w := httptest.NewRecorder()
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	mux.ServeHTTP(ctx, r)
 	err := ctx.GetError()
 
@@ -454,13 +454,13 @@ func TestGetHappeningRegistrations(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 	r := httptest.NewRequest(http.MethodGet, "/happening123/registrations", nil)
 	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	mux.ServeHTTP(ctx, r)
 	err := ctx.GetError()
 
@@ -489,13 +489,13 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 		mockBanInfoRepo,
 	)
 
-	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+	mux := happening.NewMux(testutil.NewTestLogger(), happeningService, uno.NoMiddleware)
 
 	r := httptest.NewRequest(http.MethodGet, "/happening123/spot-ranges", nil)
 	r.SetPathValue("id", "happening123")
 	w := httptest.NewRecorder()
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	mux.ServeHTTP(ctx, r)
 	err := ctx.GetError()
 

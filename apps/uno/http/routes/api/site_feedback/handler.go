@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type feedbacks struct {
@@ -15,8 +13,8 @@ type feedbacks struct {
 	feedbackService *service.SiteFeedbackService
 }
 
-func NewMux(logger port.Logger, feedbackService *service.SiteFeedbackService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, feedbackService *service.SiteFeedbackService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	f := feedbacks{logger, feedbackService}
 
 	// Admin
@@ -36,11 +34,11 @@ func NewMux(logger port.Logger, feedbackService *service.SiteFeedbackService, ad
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /feedbacks [get]
-func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
+func (f *feedbacks) getSiteFeedbacks(ctx *uno.Context) error {
 	// Fetch feedbacks from the repository
 	feedbacks, err := f.feedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTOs
@@ -58,7 +56,7 @@ func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /feedbacks/{id} [get]
-func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
+func (f *feedbacks) getSiteFeedbackByID(ctx *uno.Context) error {
 	// Get the feedback ID from the path
 	feedbackID := ctx.PathValue("id")
 
@@ -83,7 +81,7 @@ func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Router       /feedbacks [post]
-func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
+func (f *feedbacks) createSiteFeedback(ctx *uno.Context) error {
 	var req CreateSiteFeedbackRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
@@ -97,7 +95,7 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 	// Create a new site feedback in the repository
 	feedback, err := f.feedbackService.SiteFeedbackRepo().CreateSiteFeedback(ctx.Context(), newFeedback)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO
@@ -115,7 +113,7 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /feedbacks/{id}/seen [put]
-func (f *feedbacks) markSiteFeedbackAsSeen(ctx *handler.Context) error {
+func (f *feedbacks) markSiteFeedbackAsSeen(ctx *uno.Context) error {
 	feedbackID := ctx.PathValue("id")
 	if feedbackID == "" {
 		return ctx.Error(errors.New("feedback ID is required"), http.StatusBadRequest)

@@ -3,9 +3,7 @@ package databrus
 import (
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type databrus struct {
@@ -13,9 +11,9 @@ type databrus struct {
 	databrusService *service.DatabrusService
 }
 
-func NewMux(logger port.Logger, databrusService *service.DatabrusService) *router.Mux {
+func NewMux(logger port.Logger, databrusService *service.DatabrusService) *uno.Mux {
 	d := databrus{logger, databrusService}
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	mux.Handle("GET", "/matches", d.getMatches)
 	mux.Handle("GET", "/table", d.getTable)
@@ -30,10 +28,10 @@ func NewMux(logger port.Logger, databrusService *service.DatabrusService) *route
 // @Success      200  {array}   DatabrusMatchDTO  "OK"
 // @Failure      500  {string}  string       "Internal Server Error"
 // @Router       /databrus/matches [get]
-func (d *databrus) getMatches(ctx *handler.Context) error {
+func (d *databrus) getMatches(ctx *uno.Context) error {
 	matches, err := d.databrusService.GetMatches(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, 500)
+		return ctx.Error(uno.ErrInternalServer, 500)
 	}
 
 	response := DatabrusMatchesFromDomain(matches)
@@ -47,10 +45,10 @@ func (d *databrus) getMatches(ctx *handler.Context) error {
 // @Success      200  {object}  DatabrusTableResponse   "OK"
 // @Failure      500  {string}  string        "Internal Server Error"
 // @Router       /databrus/table [get]
-func (d *databrus) getTable(ctx *handler.Context) error {
+func (d *databrus) getTable(ctx *uno.Context) error {
 	table, err := d.databrusService.GetTable(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, 500)
+		return ctx.Error(uno.ErrInternalServer, 500)
 	}
 
 	response := DatabrusTableFromDomain(table)

@@ -1,4 +1,4 @@
-package handler
+package uno
 
 const (
 	AuthorizationHeader = "Authorization"

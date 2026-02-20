@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"uno/http/handler"
 	"uno/http/routes/api/health"
+	"uno/pkg/uno"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +16,7 @@ func TestHealthHandler(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	err := health.HealthHandler(ctx)
 
 	assert.NoError(t, err)

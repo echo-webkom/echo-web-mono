@@ -1,8 +1,7 @@
-package router
+package uno
 
 import (
 	"net/http"
-	"uno/http/handler"
 
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
@@ -32,7 +31,7 @@ func NewMux(middlewares ...func(http.Handler) http.Handler) *Mux {
 	}
 }
 
-func (m *Mux) applyMiddlewares(h http.Handler, middlewares ...handler.Middleware) http.Handler {
+func (m *Mux) applyMiddlewares(h http.Handler, middlewares ...Middleware) http.Handler {
 	for _, m := range middlewares {
 		h = m(h)
 	}
@@ -42,7 +41,7 @@ func (m *Mux) applyMiddlewares(h http.Handler, middlewares ...handler.Middleware
 	return h
 }
 
-func (m *Mux) Handle(method string, pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+func (m *Mux) Handle(method string, pattern string, h Handler, middlewares ...Middleware) {
 	m.mux.MethodFunc(method, pattern, func(w http.ResponseWriter, r *http.Request) {
 		httpH := m.applyMiddlewares(h, middlewares...)
 		httpH.ServeHTTP(w, r)
@@ -50,11 +49,11 @@ func (m *Mux) Handle(method string, pattern string, h handler.Handler, middlewar
 }
 
 // Mount allows mounting a standard http.Handler (useful for swagger, pprof, etc.)
-func (m *Mux) Mount(pattern string, h http.Handler, middleware ...handler.Middleware) {
+func (m *Mux) Mount(pattern string, h http.Handler, middleware ...Middleware) {
 	h = m.applyMiddlewares(h, middleware...)
 	m.mux.Mount(pattern, h)
 }
 
 func (m Mux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	m.mux.ServeHTTP(handler.ReuseOrNewContext(w, r), r)
+	m.mux.ServeHTTP(ReuseOrNewContext(w, r), r)
 }

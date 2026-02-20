@@ -7,8 +7,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/middleware"
+	"uno/pkg/uno"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -21,7 +21,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
 
-	h := middleware(handler.Handler(func(ctx *handler.Context) error {
+	h := middleware(uno.Handler(func(ctx *uno.Context) error {
 		return ctx.Ok()
 	}))
 
@@ -31,7 +31,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 	// No admin key
 	r.Header.Set("X-Admin-Key", "")
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	h.ServeHTTP(ctx, ctx.R)
 	assert.Equal(t, 401, ctx.Status())
 }
@@ -43,7 +43,7 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
 
-	h := middleware(handler.Handler(func(ctx *handler.Context) error {
+	h := middleware(uno.Handler(func(ctx *uno.Context) error {
 		return ctx.Ok()
 	}))
 
@@ -53,7 +53,7 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 	// Valid admin key
 	r.Header.Set("X-Admin-Key", adminKey)
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	h.ServeHTTP(ctx, ctx.R)
 	err := ctx.GetError()
 
@@ -85,7 +85,7 @@ func TestAdminMiddleware_WebkomUser(t *testing.T) {
 
 	middleware := middleware.NewAdminMiddleware(authService, "")
 
-	h := middleware(handler.Handler(func(ctx *handler.Context) error {
+	h := middleware(uno.Handler(func(ctx *uno.Context) error {
 		return ctx.Ok()
 	}))
 
@@ -94,7 +94,7 @@ func TestAdminMiddleware_WebkomUser(t *testing.T) {
 
 	r.Header.Set("Authorization", "Bearer valid-token")
 
-	ctx := handler.NewContext(w, r)
+	ctx := uno.NewContext(w, r)
 	h.ServeHTTP(ctx, ctx.R)
 	err := ctx.GetError()
 

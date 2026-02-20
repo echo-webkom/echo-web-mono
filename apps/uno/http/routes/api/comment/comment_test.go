@@ -10,8 +10,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api/comment"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -66,7 +66,7 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := comment.NewMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
+			mux := comment.NewMux(testutil.NewTestLogger(), commentService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.commentID, nil)
 			r.SetPathValue("id", tt.commentID)
@@ -136,7 +136,7 @@ func TestCreateCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := comment.NewMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
+			mux := comment.NewMux(testutil.NewTestLogger(), commentService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {
@@ -215,7 +215,7 @@ func TestReactToCommentHandler(t *testing.T) {
 			tt.setupMocks(mockCommentRepo)
 
 			commentService := service.NewCommentService(mockCommentRepo)
-			mux := comment.NewMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
+			mux := comment.NewMux(testutil.NewTestLogger(), commentService, uno.NoMiddleware)
 
 			var r *http.Request
 			if tt.name == "invalid json" {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 	"uno/domain/port"
-	"uno/http/handler"
+	"uno/pkg/uno"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -13,7 +13,7 @@ import (
 // Middleware logging requests and their outcome.
 func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
-		return handler.Handler(func(ctx *handler.Context) error {
+		return uno.Handler(func(ctx *uno.Context) error {
 			start := time.Now()
 
 			defer func() {

@@ -6,9 +6,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 
 	_ "uno/domain/model"
 )
@@ -18,8 +16,8 @@ type happenings struct {
 	happeningService *service.HappeningService
 }
 
-func NewMux(logger port.Logger, happeningService *service.HappeningService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, happeningService *service.HappeningService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	h := happenings{logger, happeningService}
 
 	mux.Handle("GET", "/", h.getHappenings)
@@ -43,11 +41,11 @@ func NewMux(logger port.Logger, happeningService *service.HappeningService, admi
 // @Produce      json
 // @Success      200  {array}  HappeningResponse  "OK"
 // @Router       /happenings [get]
-func (h *happenings) getHappenings(ctx *handler.Context) error {
+func (h *happenings) getHappenings(ctx *uno.Context) error {
 	// Fetch all happenings from the repository
 	haps, err := h.happeningService.HappeningRepo().GetAllHappenings(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert domain models to DTOs
@@ -65,7 +63,7 @@ func (h *happenings) getHappenings(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id} [get]
-func (h *happenings) getHappeningById(ctx *handler.Context) error {
+func (h *happenings) getHappeningById(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -91,7 +89,7 @@ func (h *happenings) getHappeningById(ctx *handler.Context) error {
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/{id}/registrations/count [get]
 // @deprecated
-func (h *happenings) getHappeningRegistrationsCount(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrationsCount(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
@@ -114,7 +112,7 @@ func (h *happenings) getHappeningRegistrationsCount(ctx *handler.Context) error 
 // @Failure      400  {string}  string "Bad Request"
 // @Failure      404  {string}  string "Not Found"
 // @Router       /happenings/registrations/count [get]
-func (h *happenings) getHappeningRegistrationsCountMany(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrationsCountMany(ctx *uno.Context) error {
 	// Extract the happening IDs from the URL query parameters
 	queryParams := ctx.R.URL.Query()
 	ids := queryParams["id"]
@@ -127,7 +125,7 @@ func (h *happenings) getHappeningRegistrationsCountMany(ctx *handler.Context) er
 	// Fetch the registration counts from the repository
 	counts, err := h.happeningService.HappeningRepo().GetHappeningRegistrationCounts(ctx.Context(), ids)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert domain models to DTOs
@@ -146,14 +144,14 @@ func (h *happenings) getHappeningRegistrationsCountMany(ctx *handler.Context) er
 // @Failure      404  {string}  string   "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/registrations [get]
-func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
+func (h *happenings) getHappeningRegistrations(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
 	// Fetch the registrations from the repository
 	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert ports models to DTOs
@@ -172,14 +170,14 @@ func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "Not Found"
 // @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
-func (h *happenings) getHappeningSpotRanges(ctx *handler.Context) error {
+func (h *happenings) getHappeningSpotRanges(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
 	// Fetch the spot ranges from the repository
 	ranges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert domain models to DTOs
@@ -197,14 +195,14 @@ func (h *happenings) getHappeningSpotRanges(ctx *handler.Context) error {
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /happenings/{id}/questions [get]
-func (h *happenings) getHappeningQuestions(ctx *handler.Context) error {
+func (h *happenings) getHappeningQuestions(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
 	// Fetch the questions from the repository
 	qs, err := h.happeningService.HappeningRepo().GetHappeningQuestions(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert domain models to DTOs
@@ -225,7 +223,7 @@ func (h *happenings) getHappeningQuestions(ctx *handler.Context) error {
 // @Failure      500   {object}  RegisterForHappeningResponse     "Internal Server Error"
 // @Security     BearerAuth
 // @Router       /happenings/{id}/register [post]
-func (h *happenings) registerForHappening(ctx *handler.Context) error {
+func (h *happenings) registerForHappening(ctx *uno.Context) error {
 	// Extract the happening ID from the URL path
 	happeningID := ctx.PathValue("id")
 
@@ -247,7 +245,7 @@ func (h *happenings) registerForHappening(ctx *handler.Context) error {
 	)
 
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert domain result to DTO response

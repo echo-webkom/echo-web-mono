@@ -4,9 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type weather struct {
@@ -14,8 +12,8 @@ type weather struct {
 	weatherService *service.WeatherService
 }
 
-func NewMux(logger port.Logger, weatherService *service.WeatherService) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, weatherService *service.WeatherService) *uno.Mux {
+	mux := uno.NewMux()
 	s := weather{logger, weatherService}
 
 	mux.Handle("GET", "/yr", s.getCurrentWeather)
@@ -30,10 +28,10 @@ func NewMux(logger port.Logger, weatherService *service.WeatherService) *router.
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
 // @Router       /weather/yr [get]
-func (s *weather) getCurrentWeather(ctx *handler.Context) error {
+func (s *weather) getCurrentWeather(ctx *uno.Context) error {
 	weather, err := s.weatherService.GetCurrentWeather(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO

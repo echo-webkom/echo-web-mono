@@ -6,8 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
+	"uno/pkg/uno"
 )
 
 type reactions struct {
@@ -15,10 +14,10 @@ type reactions struct {
 	reactionService *service.ReactionService
 }
 
-func NewMux(logger port.Logger, reactionService *service.ReactionService, admin handler.Middleware) *router.Mux {
+func NewMux(logger port.Logger, reactionService *service.ReactionService, admin uno.Middleware) *uno.Mux {
 	r := reactions{logger, reactionService}
 
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	mux.Handle("GET", "/{key}", r.getReactions, admin)
 	mux.Handle("POST", "/{key}", r.toggleReaction, admin)
@@ -37,7 +36,7 @@ func NewMux(logger port.Logger, reactionService *service.ReactionService, admin 
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [get]
-func (r *reactions) getReactions(ctx *handler.Context) error {
+func (r *reactions) getReactions(ctx *uno.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
 		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)
@@ -64,7 +63,7 @@ func (r *reactions) getReactions(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [post]
-func (r *reactions) toggleReaction(ctx *handler.Context) error {
+func (r *reactions) toggleReaction(ctx *uno.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
 		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)

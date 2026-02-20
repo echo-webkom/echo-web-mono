@@ -8,8 +8,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api/whitelist"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -56,7 +56,7 @@ func TestGetWhitelistHandler(t *testing.T) {
 			tt.setupMocks(mockWhitelistRepo)
 
 			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
-			mux := whitelist.NewMux(testutil.NewTestLogger(), whitelistService, handler.NoMiddleware)
+			mux := whitelist.NewMux(testutil.NewTestLogger(), whitelistService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
 			w := httptest.NewRecorder()
@@ -124,7 +124,7 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 			tt.setupMocks(mockWhitelistRepo)
 
 			whitelistService := service.NewWhitelistService(mockWhitelistRepo)
-			mux := whitelist.NewMux(testutil.NewTestLogger(), whitelistService, handler.NoMiddleware)
+			mux := whitelist.NewMux(testutil.NewTestLogger(), whitelistService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.email, nil)
 			r.SetPathValue("email", tt.email)

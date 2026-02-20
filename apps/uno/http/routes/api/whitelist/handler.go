@@ -6,9 +6,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 
 	_ "uno/domain/model"
 )
@@ -18,8 +16,8 @@ type whitelist struct {
 	whitelistService *service.WhitelistService
 }
 
-func NewMux(logger port.Logger, whitelistService *service.WhitelistService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, whitelistService *service.WhitelistService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	w := whitelist{logger, whitelistService}
 
 	// Admin
@@ -38,11 +36,11 @@ func NewMux(logger port.Logger, whitelistService *service.WhitelistService, admi
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist [get]
-func (w *whitelist) getWhitelist(ctx *handler.Context) error {
+func (w *whitelist) getWhitelist(ctx *uno.Context) error {
 	// Get domain models from service
 	whitelistedEmails, err := w.whitelistService.WhitelistRepo().GetWhitelist(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTOs
@@ -61,7 +59,7 @@ func (w *whitelist) getWhitelist(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /whitelist/{email} [get]
-func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
+func (w *whitelist) getWhitelistByEmail(ctx *uno.Context) error {
 	email := ctx.PathValue("email")
 
 	// Get domain model from service
@@ -71,7 +69,7 @@ func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
 			ctx.SetStatus(404)
 			return ctx.JSON(nil)
 		}
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO

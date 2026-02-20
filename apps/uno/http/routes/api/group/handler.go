@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
+	"uno/pkg/uno"
 )
 
 type group struct {
@@ -15,13 +14,13 @@ type group struct {
 	groupService *service.GroupService
 }
 
-func NewMux(logger port.Logger, groupService *service.GroupService, admin handler.Middleware) *router.Mux {
+func NewMux(logger port.Logger, groupService *service.GroupService, admin uno.Middleware) *uno.Mux {
 	gh := &group{
 		logger:       logger,
 		groupService: groupService,
 	}
 
-	mux := router.NewMux()
+	mux := uno.NewMux()
 	mux.Handle("GET", "/", gh.getGroups)
 
 	mux.Handle("DELETE", "/{id}", gh.deleteGroupByID, admin)
@@ -37,7 +36,7 @@ func NewMux(logger port.Logger, groupService *service.GroupService, admin handle
 // @Success 200 {array} GroupResponse "OK"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group [get]
-func (gh *group) getGroups(ctx *handler.Context) error {
+func (gh *group) getGroups(ctx *uno.Context) error {
 	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
 	if err != nil {
 		return ctx.Error(err, http.StatusInternalServerError)
@@ -64,7 +63,7 @@ func (gh *group) getGroups(ctx *handler.Context) error {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group/{id} [delete]
-func (gh *group) deleteGroupByID(ctx *handler.Context) error {
+func (gh *group) deleteGroupByID(ctx *uno.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
 		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)
@@ -93,7 +92,7 @@ func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 // @Failure 401 {object} string "Unauthorized"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group [post]
-func (gh *group) createGroup(ctx *handler.Context) error {
+func (gh *group) createGroup(ctx *uno.Context) error {
 	var req CreateGroupRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(err, http.StatusBadRequest)
@@ -127,7 +126,7 @@ func (gh *group) createGroup(ctx *handler.Context) error {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /group/{id} [post]
-func (gh *group) updateGroupByID(ctx *handler.Context) error {
+func (gh *group) updateGroupByID(ctx *uno.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
 		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)

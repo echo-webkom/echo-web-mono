@@ -4,9 +4,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type adventOfCode struct {
@@ -14,9 +12,9 @@ type adventOfCode struct {
 	aocService *service.AdventOfCodeService
 }
 
-func NewMux(logger port.Logger, aocService *service.AdventOfCodeService) *router.Mux {
+func NewMux(logger port.Logger, aocService *service.AdventOfCodeService) *uno.Mux {
 	aoc := adventOfCode{logger, aocService}
-	mux := router.NewMux()
+	mux := uno.NewMux()
 
 	// Admin
 	mux.Handle("GET", "/leaderboard", aoc.getLeaderboard)
@@ -32,10 +30,10 @@ func NewMux(logger port.Logger, aocService *service.AdventOfCodeService) *router
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /advent-of-code/leaderboard [get]
-func (a *adventOfCode) getLeaderboard(ctx *handler.Context) error {
+func (a *adventOfCode) getLeaderboard(ctx *uno.Context) error {
 	leaderboard, err := a.aocService.GetAdventOfCodeLeaderboard(ctx.Context(), 2025)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	response := AdventOfCodeLeaderboardFromDomain(leaderboard)

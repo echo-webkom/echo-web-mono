@@ -5,7 +5,6 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/middleware"
-	"uno/http/router"
 	"uno/http/routes/api"
 	accessrequest "uno/http/routes/api/access_request"
 	"uno/http/routes/api/adventofcode"
@@ -23,6 +22,7 @@ import (
 	"uno/http/routes/api/users"
 	"uno/http/routes/api/weather"
 	"uno/http/routes/api/whitelist"
+	"uno/pkg/uno"
 
 	"github.com/jesperkha/notifier"
 )
@@ -66,7 +66,7 @@ func RunServer(
 	groupService *service.GroupService,
 	reactionService *service.ReactionService,
 ) {
-	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
+	r := uno.NewRouter(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
 
 	// withAuth := router.NewWithAuthHandler(authService)
 	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)

@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type degrees struct {
@@ -15,8 +13,8 @@ type degrees struct {
 	degreeService *service.DegreeService
 }
 
-func NewMux(logger port.Logger, degreeService *service.DegreeService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, degreeService *service.DegreeService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	d := degrees{logger, degreeService}
 
 	mux.Handle("GET", "/", d.getDegrees)
@@ -35,11 +33,11 @@ func NewMux(logger port.Logger, degreeService *service.DegreeService, admin hand
 // @Produce      json
 // @Success      200  {array}  DegreeResponse  "OK"
 // @Router       /degrees [get]
-func (d *degrees) getDegrees(ctx *handler.Context) error {
+func (d *degrees) getDegrees(ctx *uno.Context) error {
 	// Fetch degrees from the service
 	degrees, err := d.degreeService.DegreeRepo().GetAllDegrees(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Map domain models to DTOs
@@ -58,7 +56,7 @@ func (d *degrees) getDegrees(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees [post]
-func (d *degrees) createDegree(ctx *handler.Context) error {
+func (d *degrees) createDegree(ctx *uno.Context) error {
 	// Read and parse the request body
 	var degree CreateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
@@ -68,7 +66,7 @@ func (d *degrees) createDegree(ctx *handler.Context) error {
 	// Create the degree in the database
 	createdDegree, err := d.degreeService.DegreeRepo().CreateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Map domain model to DTO
@@ -91,7 +89,7 @@ func (d *degrees) createDegree(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [post]
-func (d *degrees) updateDegree(ctx *handler.Context) error {
+func (d *degrees) updateDegree(ctx *uno.Context) error {
 	// Read and parse the request body
 	var degree UpdateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
@@ -101,7 +99,7 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 	// Update the degree in the database
 	updatedDegree, err := d.degreeService.DegreeRepo().UpdateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Map domain model to DTO
@@ -122,11 +120,11 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /degrees/{id} [delete]
-func (d *degrees) deleteDegree(ctx *handler.Context) error {
+func (d *degrees) deleteDegree(ctx *uno.Context) error {
 	id := ctx.PathValue("id")
 
 	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	ctx.SetStatus(http.StatusNoContent)

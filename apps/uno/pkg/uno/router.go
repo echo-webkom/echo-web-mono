@@ -1,10 +1,9 @@
-package router
+package uno
 
 import (
 	"context"
 	"net/http"
 	"uno/domain/port"
-	"uno/http/handler"
 
 	"github.com/jesperkha/notifier"
 )
@@ -17,16 +16,16 @@ type Router struct {
 	cleanup func()
 }
 
-func New(logger port.Logger, middleware ...func(http.Handler) http.Handler) *Router {
+func NewRouter(logger port.Logger, middleware ...func(http.Handler) http.Handler) *Router {
 	mux := NewMux(middleware...)
 	return &Router{mux, logger, func() {}}
 }
 
-func (rt *Router) Handle(method string, pattern string, h handler.Handler, middleware ...handler.Middleware) {
+func (rt *Router) Handle(method string, pattern string, h Handler, middleware ...Middleware) {
 	rt.mux.Handle(method, pattern, h, middleware...)
 }
 
-func (r *Router) Mount(pattern string, handler http.Handler, middleware ...handler.Middleware) {
+func (r *Router) Mount(pattern string, handler http.Handler, middleware ...Middleware) {
 	r.mux.Mount(pattern, handler, middleware...)
 }
 

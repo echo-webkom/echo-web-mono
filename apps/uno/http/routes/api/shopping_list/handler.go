@@ -6,9 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type shoppingList struct {
@@ -16,8 +14,8 @@ type shoppingList struct {
 	shoppingListService *service.ShoppingListService
 }
 
-func NewMux(logger port.Logger, shoppingListService *service.ShoppingListService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, shoppingListService *service.ShoppingListService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	s := shoppingList{logger, shoppingListService}
 
 	// Admin
@@ -37,10 +35,10 @@ func NewMux(logger port.Logger, shoppingListService *service.ShoppingListService
 // @Failure      401  {string}  string  "Unauthorized"
 // @Security     AdminAPIKey
 // @Router       /shopping [get]
-func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
+func (s *shoppingList) getShoppingList(ctx *uno.Context) error {
 	shoppingList, err := s.shoppingListService.GetShoppingList(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO
@@ -60,7 +58,7 @@ func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping [post]
-func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
+func (s *shoppingList) createShoppingListItem(ctx *uno.Context) error {
 	var req CreateShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
@@ -74,13 +72,13 @@ func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 	// Insert the new shopping list item
 	item, err := s.shoppingListService.ShoppingListItemRepo().CreateShoppingListItem(ctx.Context(), newItem)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Add a like for the creator of the item
 	err = s.shoppingListService.ToggleLike(ctx.Context(), item.ID, req.UserID)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	return ctx.Ok()
@@ -98,7 +96,7 @@ func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping/like [post]
-func (s *shoppingList) toggleLike(ctx *handler.Context) error {
+func (s *shoppingList) toggleLike(ctx *uno.Context) error {
 	var req UserToShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
@@ -106,7 +104,7 @@ func (s *shoppingList) toggleLike(ctx *handler.Context) error {
 
 	err := s.shoppingListService.ToggleLike(ctx.Context(), req.ItemID, req.UserID)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	return ctx.Ok()
@@ -123,7 +121,7 @@ func (s *shoppingList) toggleLike(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /shopping/{id} [delete]
-func (s *shoppingList) removeShoppingListItem(ctx *handler.Context) error {
+func (s *shoppingList) removeShoppingListItem(ctx *uno.Context) error {
 	itemID := ctx.PathValue("id")
 	if itemID == "" {
 		return ctx.Error(errors.New("item ID is required"), http.StatusBadRequest)
@@ -131,7 +129,7 @@ func (s *shoppingList) removeShoppingListItem(ctx *handler.Context) error {
 
 	err := s.shoppingListService.ShoppingListItemRepo().DeleteShoppingListItem(ctx.Context(), itemID)
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	return ctx.Ok()

@@ -8,8 +8,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/http/handler"
 	"uno/http/routes/api/strikes"
+	"uno/pkg/uno"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -75,7 +75,7 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 			tt.setupMocks(mockDotRepo, mockBanInfoRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodPost, "/unban", nil)
 			w := httptest.NewRecorder()
@@ -130,7 +130,7 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/users", nil)
 			w := httptest.NewRecorder()
@@ -185,7 +185,7 @@ func TestGetBannedUsers(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := strikes.NewMux(testutil.NewTestLogger(), strikeService, uno.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/banned", nil)
 			w := httptest.NewRecorder()

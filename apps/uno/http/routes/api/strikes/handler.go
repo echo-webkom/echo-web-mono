@@ -5,9 +5,7 @@ import (
 	_ "uno/domain/model" // swagger
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/handler"
-	"uno/http/router"
-	"uno/http/routes/api"
+	"uno/pkg/uno"
 )
 
 type strikes struct {
@@ -15,8 +13,8 @@ type strikes struct {
 	strikeService *service.StrikeService
 }
 
-func NewMux(logger port.Logger, strikesService *service.StrikeService, admin handler.Middleware) *router.Mux {
-	mux := router.NewMux()
+func NewMux(logger port.Logger, strikesService *service.StrikeService, admin uno.Middleware) *uno.Mux {
+	mux := uno.NewMux()
 	s := strikes{logger, strikesService}
 
 	// Admin
@@ -35,9 +33,9 @@ func NewMux(logger port.Logger, strikesService *service.StrikeService, admin han
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/unban [post]
-func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
+func (s *strikes) unbanUsersWithExpiredStrikes(ctx *uno.Context) error {
 	if err := s.strikeService.UnbanUsersWithExpiredStrikes(ctx.Context()); err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 	return ctx.Ok()
 }
@@ -50,10 +48,10 @@ func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/users [get]
-func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
+func (s *strikes) getUsersWithStrikes(ctx *uno.Context) error {
 	users, err := s.strikeService.GetUsersWithStrikes(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO
@@ -69,10 +67,10 @@ func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
 // @Router       /strikes/banned [get]
-func (s *strikes) getBannedUsers(ctx *handler.Context) error {
+func (s *strikes) getBannedUsers(ctx *uno.Context) error {
 	users, err := s.strikeService.GetBannedUsers(ctx.Context())
 	if err != nil {
-		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+		return ctx.Error(uno.ErrInternalServer, http.StatusInternalServerError)
 	}
 
 	// Convert to DTO
