@@ -1,6 +1,159 @@
 basePath: /
 definitions:
-  http_routes_api.CreateGroupRequest:
+  http_routes_api_access_request.AccessRequestResponse:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      reason:
+        type: string
+    type: object
+  http_routes_api_adventofcode.AdventOfCodeDayResponse:
+    properties:
+      star1_time:
+        type: integer
+      star2_time:
+        type: integer
+      stars:
+        type: integer
+    type: object
+  http_routes_api_adventofcode.AdventOfCodeMemberResponse:
+    properties:
+      days:
+        additionalProperties:
+          $ref: '#/definitions/http_routes_api_adventofcode.AdventOfCodeDayResponse'
+        type: object
+      id:
+        type: integer
+      local_score:
+        type: integer
+      name:
+        type: string
+    type: object
+  http_routes_api_comment.CommentResponse:
+    properties:
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      reactions:
+        items:
+          $ref: '#/definitions/http_routes_api_comment.CommentsReactionResponse'
+        type: array
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/http_routes_api_comment.UserSummaryResponse'
+      userId:
+        type: string
+    type: object
+  http_routes_api_comment.CommentsReactionResponse:
+    properties:
+      commentId:
+        type: string
+      createdAt:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+    type: object
+  http_routes_api_comment.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+      parentCommentId:
+        type: string
+      postId:
+        type: string
+      userId:
+        type: string
+    type: object
+  http_routes_api_comment.ReactToCommentRequest:
+    properties:
+      commentId:
+        type: string
+      userId:
+        type: string
+    type: object
+  http_routes_api_comment.UserSummaryResponse:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_databrus.DatabrusMatchDTO:
+    properties:
+      away_score:
+        type: string
+      away_team:
+        type: string
+      date_time:
+        type: string
+      home_score:
+        type: string
+      home_team:
+        type: string
+      id:
+        type: string
+    type: object
+  http_routes_api_databrus.DatabrusTableRow:
+    properties:
+      draws:
+        type: integer
+      goal_difference:
+        type: integer
+      goals_against:
+        type: integer
+      goals_for:
+        type: integer
+      losses:
+        type: integer
+      matches_played:
+        type: integer
+      points:
+        type: integer
+      position:
+        type: integer
+      team:
+        type: string
+      wins:
+        type: integer
+    type: object
+  http_routes_api_degree.CreateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_degree.DegreeResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_degree.UpdateDegreeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_group.CreateGroupRequest:
     properties:
       id:
         type: string
@@ -9,19 +162,281 @@ definitions:
     required:
     - name
     type: object
-  http_routes_api.GroupResponse:
+  http_routes_api_group.GroupResponse:
     properties:
       id:
         type: string
       name:
         type: string
     type: object
-  http_routes_api.UpdateGroupRequest:
+  http_routes_api_group.UpdateGroupRequest:
     properties:
       name:
         type: string
     required:
     - name
+    type: object
+  http_routes_api_happening.HappeningRegistrationResponse:
+    properties:
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      userId:
+        type: string
+      userImage:
+        type: string
+      userName:
+        type: string
+    type: object
+  http_routes_api_happening.HappeningResponse:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      registrationEnd:
+        type: string
+      registrationGroups:
+        items:
+          type: integer
+        type: array
+      registrationStart:
+        type: string
+      registrationStartGroups:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  http_routes_api_happening.QuestionAnswerDTO:
+    properties:
+      answer:
+        items:
+          type: integer
+        type: array
+      questionId:
+        type: string
+    type: object
+  http_routes_api_happening.QuestionResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      isSensitive:
+        type: boolean
+      options:
+        items:
+          type: integer
+        type: array
+      required:
+        type: boolean
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  http_routes_api_happening.RegisterForHappeningRequest:
+    properties:
+      questions:
+        items:
+          $ref: '#/definitions/http_routes_api_happening.QuestionAnswerDTO'
+        type: array
+      userId:
+        type: string
+    type: object
+  http_routes_api_happening.RegisterForHappeningResponse:
+    properties:
+      isWaitlisted:
+        type: boolean
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  http_routes_api_happening.RegistrationCount:
+    properties:
+      happeningId:
+        type: string
+      max:
+        type: integer
+      registered:
+        type: integer
+      waiting:
+        type: integer
+    type: object
+  http_routes_api_happening.SpotRangeResponse:
+    properties:
+      happeningId:
+        type: string
+      id:
+        type: string
+      maxYear:
+        type: integer
+      minYear:
+        type: integer
+      spots:
+        type: integer
+    type: object
+  http_routes_api_health.HealthCheckResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  http_routes_api_reactions.ReactionResponse:
+    properties:
+      createdAt:
+        type: string
+      emojiId:
+        type: integer
+      reactToKey:
+        type: string
+      userId:
+        type: string
+    type: object
+  http_routes_api_reactions.ToggleReactionRequest:
+    properties:
+      emojiId:
+        type: integer
+      userId:
+        type: string
+    required:
+    - emojiId
+    - userId
+    type: object
+  http_routes_api_shopping_list.CreateShoppingListItemRequest:
+    properties:
+      name:
+        type: string
+      userId:
+        type: string
+    required:
+    - name
+    - userId
+    type: object
+  http_routes_api_shopping_list.UserToShoppingListItemRequest:
+    properties:
+      itemId:
+        type: string
+      userId:
+        type: string
+    required:
+    - itemId
+    - userId
+    type: object
+  http_routes_api_site_feedback.CreateSiteFeedbackRequest:
+    properties:
+      category:
+        type: string
+      email:
+        type: string
+      message:
+        type: string
+      name:
+        type: string
+    required:
+    - category
+    - message
+    type: object
+  http_routes_api_site_feedback.SiteFeedbackResponse:
+    properties:
+      category:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      isRead:
+        type: boolean
+      message:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_users.DegreeResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  http_routes_api_users.UserGroupResponse:
+    properties:
+      id:
+        type: string
+      isLeader:
+        type: boolean
+      name:
+        type: string
+    type: object
+  http_routes_api_users.UserResponse:
+    properties:
+      alternativeEmail:
+        type: string
+      birthday:
+        type: string
+      createdAt:
+        type: string
+      degree:
+        $ref: '#/definitions/http_routes_api_users.DegreeResponse'
+      email:
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/http_routes_api_users.UserGroupResponse'
+        type: array
+      hasReadTerms:
+        type: boolean
+      id:
+        type: string
+      image:
+        type: string
+      isPublic:
+        type: boolean
+      lastSignInAt:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+      year:
+        type: integer
+    type: object
+  http_routes_api_weather.WeatherResponse:
+    properties:
+      condition:
+        type: string
+      temperature:
+        type: number
+      wind_speed:
+        type: number
+    type: object
+  http_routes_api_whitelist.WhitelistResponse:
+    properties:
+      email:
+        type: string
+      expiresAt:
+        type: string
+      reason:
+        type: string
     type: object
   uno_domain_model.BanInfo:
     properties:
@@ -104,414 +519,6 @@ definitions:
       userName:
         type: string
     type: object
-  uno_http_dto.AccessRequestResponse:
-    properties:
-      createdAt:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      reason:
-        type: string
-    type: object
-  uno_http_dto.AdventOfCodeDayResponse:
-    properties:
-      star1_time:
-        type: integer
-      star2_time:
-        type: integer
-      stars:
-        type: integer
-    type: object
-  uno_http_dto.AdventOfCodeMemberResponse:
-    properties:
-      days:
-        additionalProperties:
-          $ref: '#/definitions/uno_http_dto.AdventOfCodeDayResponse'
-        type: object
-      id:
-        type: integer
-      local_score:
-        type: integer
-      name:
-        type: string
-    type: object
-  uno_http_dto.CommentResponse:
-    properties:
-      content:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      parentCommentId:
-        type: string
-      postId:
-        type: string
-      reactions:
-        items:
-          $ref: '#/definitions/uno_http_dto.CommentsReactionResponse'
-        type: array
-      updatedAt:
-        type: string
-      user:
-        $ref: '#/definitions/uno_http_dto.UserSummaryResponse'
-      userId:
-        type: string
-    type: object
-  uno_http_dto.CommentsReactionResponse:
-    properties:
-      commentId:
-        type: string
-      createdAt:
-        type: string
-      type:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_http_dto.CreateCommentRequest:
-    properties:
-      content:
-        type: string
-      parentCommentId:
-        type: string
-      postId:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_http_dto.CreateDegreeRequest:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_http_dto.CreateShoppingListItemRequest:
-    properties:
-      name:
-        type: string
-      userId:
-        type: string
-    required:
-    - name
-    - userId
-    type: object
-  uno_http_dto.CreateSiteFeedbackRequest:
-    properties:
-      category:
-        type: string
-      email:
-        type: string
-      message:
-        type: string
-      name:
-        type: string
-    required:
-    - category
-    - message
-    type: object
-  uno_http_dto.DatabrusMatchDTO:
-    properties:
-      away_score:
-        type: string
-      away_team:
-        type: string
-      date_time:
-        type: string
-      home_score:
-        type: string
-      home_team:
-        type: string
-      id:
-        type: string
-    type: object
-  uno_http_dto.DatabrusTableRow:
-    properties:
-      draws:
-        type: integer
-      goal_difference:
-        type: integer
-      goals_against:
-        type: integer
-      goals_for:
-        type: integer
-      losses:
-        type: integer
-      matches_played:
-        type: integer
-      points:
-        type: integer
-      position:
-        type: integer
-      team:
-        type: string
-      wins:
-        type: integer
-    type: object
-  uno_http_dto.DegreeResponse:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_http_dto.HappeningRegistrationResponse:
-    properties:
-      changedAt:
-        type: string
-      changedBy:
-        type: string
-      createdAt:
-        type: string
-      happeningId:
-        type: string
-      prevStatus:
-        type: string
-      status:
-        type: string
-      unregisterReason:
-        type: string
-      userId:
-        type: string
-      userImage:
-        type: string
-      userName:
-        type: string
-    type: object
-  uno_http_dto.HappeningResponse:
-    properties:
-      date:
-        type: string
-      id:
-        type: string
-      registrationEnd:
-        type: string
-      registrationGroups:
-        items:
-          type: integer
-        type: array
-      registrationStart:
-        type: string
-      registrationStartGroups:
-        type: string
-      slug:
-        type: string
-      title:
-        type: string
-      type:
-        type: string
-    type: object
-  uno_http_dto.HealthCheckResponse:
-    properties:
-      status:
-        type: string
-    type: object
-  uno_http_dto.QuestionAnswerDTO:
-    properties:
-      answer:
-        items:
-          type: integer
-        type: array
-      questionId:
-        type: string
-    type: object
-  uno_http_dto.QuestionResponse:
-    properties:
-      happeningId:
-        type: string
-      id:
-        type: string
-      isSensitive:
-        type: boolean
-      options:
-        items:
-          type: integer
-        type: array
-      required:
-        type: boolean
-      title:
-        type: string
-      type:
-        type: string
-    type: object
-  uno_http_dto.ReactToCommentRequest:
-    properties:
-      commentId:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_http_dto.ReactionResponse:
-    properties:
-      createdAt:
-        type: string
-      emojiId:
-        type: integer
-      reactToKey:
-        type: string
-      userId:
-        type: string
-    type: object
-  uno_http_dto.RegisterForHappeningRequest:
-    properties:
-      questions:
-        items:
-          $ref: '#/definitions/uno_http_dto.QuestionAnswerDTO'
-        type: array
-      userId:
-        type: string
-    type: object
-  uno_http_dto.RegisterForHappeningResponse:
-    properties:
-      isWaitlisted:
-        type: boolean
-      message:
-        type: string
-      success:
-        type: boolean
-    type: object
-  uno_http_dto.RegistrationCount:
-    properties:
-      happeningId:
-        type: string
-      max:
-        type: integer
-      registered:
-        type: integer
-      waiting:
-        type: integer
-    type: object
-  uno_http_dto.SiteFeedbackResponse:
-    properties:
-      category:
-        type: string
-      createdAt:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      isRead:
-        type: boolean
-      message:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_http_dto.SpotRangeResponse:
-    properties:
-      happeningId:
-        type: string
-      id:
-        type: string
-      maxYear:
-        type: integer
-      minYear:
-        type: integer
-      spots:
-        type: integer
-    type: object
-  uno_http_dto.ToggleReactionRequest:
-    properties:
-      emojiId:
-        type: integer
-      userId:
-        type: string
-    required:
-    - emojiId
-    - userId
-    type: object
-  uno_http_dto.UpdateDegreeRequest:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_http_dto.UserGroupResponse:
-    properties:
-      id:
-        type: string
-      isLeader:
-        type: boolean
-      name:
-        type: string
-    type: object
-  uno_http_dto.UserResponse:
-    properties:
-      alternativeEmail:
-        type: string
-      birthday:
-        type: string
-      createdAt:
-        type: string
-      degree:
-        $ref: '#/definitions/uno_http_dto.DegreeResponse'
-      email:
-        type: string
-      groups:
-        items:
-          $ref: '#/definitions/uno_http_dto.UserGroupResponse'
-        type: array
-      hasReadTerms:
-        type: boolean
-      id:
-        type: string
-      image:
-        type: string
-      isPublic:
-        type: boolean
-      lastSignInAt:
-        type: string
-      name:
-        type: string
-      type:
-        type: string
-      updatedAt:
-        type: string
-      year:
-        type: integer
-    type: object
-  uno_http_dto.UserSummaryResponse:
-    properties:
-      id:
-        type: string
-      image:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_http_dto.UserToShoppingListItemRequest:
-    properties:
-      itemId:
-        type: string
-      userId:
-        type: string
-    required:
-    - itemId
-    - userId
-    type: object
-  uno_http_dto.WeatherResponse:
-    properties:
-      condition:
-        type: string
-      temperature:
-        type: number
-      wind_speed:
-        type: number
-    type: object
-  uno_http_dto.WhitelistResponse:
-    properties:
-      email:
-        type: string
-      expiresAt:
-        type: string
-      reason:
-        type: string
-    type: object
 info:
   contact:
     email: webkom@echo.uib.no
@@ -528,7 +535,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.HealthCheckResponse'
+            $ref: '#/definitions/http_routes_api_health.HealthCheckResponse'
       summary: Get health status
       tags:
       - health
@@ -541,7 +548,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.AccessRequestResponse'
+              $ref: '#/definitions/http_routes_api_access_request.AccessRequestResponse'
             type: array
         "401":
           description: Unauthorized
@@ -565,7 +572,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.AdventOfCodeMemberResponse'
+              $ref: '#/definitions/http_routes_api_adventofcode.AdventOfCodeMemberResponse'
             type: array
         "401":
           description: Unauthorized
@@ -603,7 +610,7 @@ paths:
         name: comment
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.CreateCommentRequest'
+          $ref: '#/definitions/http_routes_api_comment.CreateCommentRequest'
       produces:
       - application/json
       responses:
@@ -645,7 +652,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.CommentResponse'
+              $ref: '#/definitions/http_routes_api_comment.CommentResponse'
             type: array
         "400":
           description: Bad Request
@@ -679,7 +686,7 @@ paths:
         name: reaction
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.ReactToCommentRequest'
+          $ref: '#/definitions/http_routes_api_comment.ReactToCommentRequest'
       produces:
       - application/json
       responses:
@@ -715,7 +722,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.DatabrusMatchDTO'
+              $ref: '#/definitions/http_routes_api_databrus.DatabrusMatchDTO'
             type: array
         "500":
           description: Internal Server Error
@@ -733,7 +740,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.DatabrusTableRow'
+              $ref: '#/definitions/http_routes_api_databrus.DatabrusTableRow'
             type: array
         "500":
           description: Internal Server Error
@@ -751,7 +758,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.DegreeResponse'
+              $ref: '#/definitions/http_routes_api_degree.DegreeResponse'
             type: array
       summary: Get degrees
       tags:
@@ -765,14 +772,14 @@ paths:
         name: degree
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.CreateDegreeRequest'
+          $ref: '#/definitions/http_routes_api_degree.CreateDegreeRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/uno_http_dto.DegreeResponse'
+            $ref: '#/definitions/http_routes_api_degree.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -819,14 +826,14 @@ paths:
         name: degree
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.UpdateDegreeRequest'
+          $ref: '#/definitions/http_routes_api_degree.UpdateDegreeRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.DegreeResponse'
+            $ref: '#/definitions/http_routes_api_degree.DegreeResponse'
         "400":
           description: Bad Request
           schema:
@@ -849,7 +856,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+              $ref: '#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse'
             type: array
         "401":
           description: Unauthorized
@@ -869,14 +876,14 @@ paths:
         name: feedback
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.CreateSiteFeedbackRequest'
+          $ref: '#/definitions/http_routes_api_site_feedback.CreateSiteFeedbackRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+            $ref: '#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse'
         "400":
           description: Bad Request
           schema:
@@ -902,7 +909,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+            $ref: '#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse'
         "401":
           description: Unauthorized
           schema:
@@ -930,7 +937,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.SiteFeedbackResponse'
+            $ref: '#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse'
         "400":
           description: Bad Request
           schema:
@@ -953,7 +960,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.GroupResponse'
+              $ref: '#/definitions/http_routes_api_group.GroupResponse'
             type: array
         "500":
           description: Internal Server Error
@@ -971,14 +978,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.CreateGroupRequest'
+          $ref: '#/definitions/http_routes_api_group.CreateGroupRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/http_routes_api_group.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -1040,14 +1047,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.UpdateGroupRequest'
+          $ref: '#/definitions/http_routes_api_group.UpdateGroupRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/http_routes_api_group.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -1077,7 +1084,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.HappeningResponse'
+              $ref: '#/definitions/http_routes_api_happening.HappeningResponse'
             type: array
       summary: Get all happenings
       tags:
@@ -1097,7 +1104,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.HappeningResponse'
+            $ref: '#/definitions/http_routes_api_happening.HappeningResponse'
         "400":
           description: Bad Request
           schema:
@@ -1125,7 +1132,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.QuestionResponse'
+              $ref: '#/definitions/http_routes_api_happening.QuestionResponse'
             type: array
         "400":
           description: Bad Request
@@ -1154,22 +1161,22 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.RegisterForHappeningRequest'
+          $ref: '#/definitions/http_routes_api_happening.RegisterForHappeningRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+            $ref: '#/definitions/http_routes_api_happening.RegisterForHappeningResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+            $ref: '#/definitions/http_routes_api_happening.RegisterForHappeningResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/uno_http_dto.RegisterForHappeningResponse'
+            $ref: '#/definitions/http_routes_api_happening.RegisterForHappeningResponse'
       security:
       - BearerAuth: []
       summary: Register for happening
@@ -1191,7 +1198,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.HappeningRegistrationResponse'
+              $ref: '#/definitions/http_routes_api_happening.HappeningRegistrationResponse'
             type: array
         "400":
           description: Bad Request
@@ -1222,7 +1229,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.RegistrationCount'
+            $ref: '#/definitions/http_routes_api_happening.RegistrationCount'
         "400":
           description: Bad Request
           schema:
@@ -1250,7 +1257,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.SpotRangeResponse'
+              $ref: '#/definitions/http_routes_api_happening.SpotRangeResponse'
             type: array
         "400":
           description: Bad Request
@@ -1281,7 +1288,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.RegistrationCount'
+              $ref: '#/definitions/http_routes_api_happening.RegistrationCount'
             type: array
         "400":
           description: Bad Request
@@ -1311,7 +1318,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.ReactionResponse'
+              $ref: '#/definitions/http_routes_api_reactions.ReactionResponse'
             type: array
         "400":
           description: Bad Request
@@ -1342,7 +1349,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.ToggleReactionRequest'
+          $ref: '#/definitions/http_routes_api_reactions.ToggleReactionRequest'
       produces:
       - application/json
       responses:
@@ -1350,7 +1357,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.ReactionResponse'
+              $ref: '#/definitions/http_routes_api_reactions.ReactionResponse'
             type: array
         "400":
           description: Bad Request
@@ -1396,7 +1403,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.CreateShoppingListItemRequest'
+          $ref: '#/definitions/http_routes_api_shopping_list.CreateShoppingListItemRequest'
       produces:
       - application/json
       responses:
@@ -1463,7 +1470,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/uno_http_dto.UserToShoppingListItemRequest'
+          $ref: '#/definitions/http_routes_api_shopping_list.UserToShoppingListItemRequest'
       produces:
       - application/json
       responses:
@@ -1559,7 +1566,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.UserResponse'
+              $ref: '#/definitions/http_routes_api_users.UserResponse'
             type: array
         "401":
           description: Unauthorized
@@ -1586,7 +1593,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.UserResponse'
+            $ref: '#/definitions/http_routes_api_users.UserResponse'
         "401":
           description: Unauthorized
           schema:
@@ -1610,7 +1617,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.WeatherResponse'
+            $ref: '#/definitions/http_routes_api_weather.WeatherResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -1627,7 +1634,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_http_dto.WhitelistResponse'
+              $ref: '#/definitions/http_routes_api_whitelist.WhitelistResponse'
             type: array
         "401":
           description: Unauthorized
@@ -1656,7 +1663,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/uno_http_dto.WhitelistResponse'
+            $ref: '#/definitions/http_routes_api_whitelist.WhitelistResponse'
         "401":
           description: Unauthorized
           schema:

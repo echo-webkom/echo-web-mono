@@ -1,0 +1,106 @@
+package comment
+
+import (
+	"errors"
+	"net/http"
+	"uno/domain/port"
+	"uno/domain/service"
+	"uno/http/handler"
+	"uno/http/router"
+	"uno/http/routes/api"
+)
+
+type comments struct {
+	logger         port.Logger
+	commentService *service.CommentService
+}
+
+func NewMux(logger port.Logger, commentService *service.CommentService, admin handler.Middleware) *router.Mux {
+	c := comments{logger, commentService}
+	mux := router.NewMux()
+
+	// Admin
+	mux.Handle("POST", "/", c.createComment, admin)
+	mux.Handle("GET", "/{id}", c.getCommentsByID, admin)
+	mux.Handle("GET", "/{id}/reaction", c.reactToComment, admin)
+
+	return mux
+}
+
+// getCommentsByID returns a comment by its ID
+// @Summary      Get comments by ID
+// @Tags         comments
+// @Produce      json
+// @Param        id   path      string  true  "Comment ID"
+// @Success      200  {array}   CommentResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /comments/{id} [get]
+func (c *comments) getCommentsByID(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+
+	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
+	if err != nil {
+		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	response := CommentsFromDomainList(comments)
+	return ctx.JSON(response)
+}
+
+// createComment creates a new comment
+// @Summary      Create a new comment
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        comment  body  CreateCommentRequest  true  "Comment to create"
+// @Success      200      {object}  map[string]bool             "OK"
+// @Failure      400      {string}  string                      "Bad Request"
+// @Failure      401      {string}  string                      "Unauthorized"
+// @Failure      500      {string}  string                      "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /comments [post]
+func (c *comments) createComment(ctx *handler.Context) error {
+	var req CreateCommentRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
+	}
+
+	err := c.commentService.CommentRepo().CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
+	if err != nil {
+		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(map[string]bool{"success": true})
+}
+
+// reactToComment adds or removes a reaction to a comment
+// @Summary      React to a comment
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        id        path      string                 true  "Comment ID"
+// @Param        reaction  body      ReactToCommentRequest  true  "Reaction to add or remove"
+// @Success      200       {object}  map[string]bool              "OK"
+// @Failure      400       {string}  string                       "Bad Request"
+// @Failure      401       {string}  string                       "Unauthorized"
+// @Failure      500       {string}  string                       "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /comments/{id}/reaction [post]
+func (c *comments) reactToComment(ctx *handler.Context) error {
+	commentID := ctx.PathValue("id")
+
+	var req ReactToCommentRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
+	}
+
+	err := c.commentService.ReactToComment(ctx.Context(), commentID, req.UserID)
+	if err != nil {
+		return ctx.Error(api.ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(map[string]bool{"success": true})
+}

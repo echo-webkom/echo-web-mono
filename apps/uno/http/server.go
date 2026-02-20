@@ -7,6 +7,22 @@ import (
 	"uno/http/middleware"
 	"uno/http/router"
 	"uno/http/routes/api"
+	accessrequest "uno/http/routes/api/access_request"
+	"uno/http/routes/api/adventofcode"
+	"uno/http/routes/api/birthday"
+	"uno/http/routes/api/comment"
+	"uno/http/routes/api/databrus"
+	"uno/http/routes/api/degree"
+	"uno/http/routes/api/group"
+	"uno/http/routes/api/happening"
+	"uno/http/routes/api/health"
+	"uno/http/routes/api/reactions"
+	shoppinglist "uno/http/routes/api/shopping_list"
+	sitefeedback "uno/http/routes/api/site_feedback"
+	"uno/http/routes/api/strikes"
+	"uno/http/routes/api/users"
+	"uno/http/routes/api/weather"
+	"uno/http/routes/api/whitelist"
 
 	"github.com/jesperkha/notifier"
 )
@@ -56,52 +72,52 @@ func RunServer(
 	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)
 
 	// Health check route
-	r.Handle("GET", "/", api.HealthHandler)
+	r.Handle("GET", "/", health.HealthHandler)
 
 	// Happening routes
-	r.Mount("/happenings", api.NewHappeningMux(logger, happeningService, admin))
+	r.Mount("/happenings", happening.NewMux(logger, happeningService, admin))
 
 	// Degree routes
-	r.Mount("/degrees", api.NewDegreeMux(logger, degreeService, admin))
+	r.Mount("/degrees", degree.NewMux(logger, degreeService, admin))
 
 	// Site feedback routes
-	r.Mount("/feedbacks", api.NewSiteFeedbackMux(logger, siteFeedbackService, admin))
+	r.Mount("/feedbacks", sitefeedback.NewMux(logger, siteFeedbackService, admin))
 
 	// Shopping list routes
-	r.Mount("/shopping", api.NewShoppingListMux(logger, shoppingListService, admin))
+	r.Mount("/shopping", shoppinglist.NewMux(logger, shoppingListService, admin))
 
 	// Birthday routes
-	r.Mount("/birthdays", api.NewBirthdayMux(logger, userService))
+	r.Mount("/birthdays", birthday.NewMux(logger, userService))
 
 	// Strike routes
-	r.Mount("/strikes", api.NewStrikesMux(logger, strikeSerivce, admin))
+	r.Mount("/strikes", strikes.NewMux(logger, strikeSerivce, admin))
 
 	// Access request routes
-	r.Mount("/access-requests", api.NewAccessRequestMux(logger, accessRequestService, admin))
+	r.Mount("/access-requests", accessrequest.NewMux(logger, accessRequestService, admin))
 
 	// Whitelist routes
-	r.Mount("/whitelist", api.NewWhitelistMux(logger, whitelistService, admin))
+	r.Mount("/whitelist", whitelist.NewMux(logger, whitelistService, admin))
 
 	// Comment routes
-	r.Mount("/comments", api.NewCommentMux(logger, commentService, admin))
+	r.Mount("/comments", comment.NewMux(logger, commentService, admin))
 
 	// Weather routes
-	r.Mount("/weather", api.NewWeatherMux(logger, weatherService))
+	r.Mount("/weather", weather.NewMux(logger, weatherService))
 
 	// Databrus routes
-	r.Mount("/databrus", api.NewDatabrusMux(logger, databrusService))
+	r.Mount("/databrus", databrus.NewMux(logger, databrusService))
 
 	// Advent of Code routes
-	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(logger, adventOfCodeService), admin)
+	r.Mount("/advent-of-code", adventofcode.NewMux(logger, adventOfCodeService), admin)
 
 	// Group routes
-	r.Mount("/groups", api.NewGroupMux(logger, groupService, admin))
+	r.Mount("/groups", group.NewMux(logger, groupService, admin))
 
 	// Reaction routes
-	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
+	r.Mount("/reactions", reactions.NewMux(logger, reactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(logger, userService, admin))
+	r.Mount("/users", users.NewMux(logger, userService, admin))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

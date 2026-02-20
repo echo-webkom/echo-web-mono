@@ -31,7 +31,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.HealthCheckResponse"
+                            "$ref": "#/definitions/http_routes_api_health.HealthCheckResponse"
                         }
                     }
                 }
@@ -57,7 +57,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.AccessRequestResponse"
+                                "$ref": "#/definitions/http_routes_api_access_request.AccessRequestResponse"
                             }
                         }
                     },
@@ -91,7 +91,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.AdventOfCodeMemberResponse"
+                                "$ref": "#/definitions/http_routes_api_adventofcode.AdventOfCodeMemberResponse"
                             }
                         }
                     },
@@ -157,7 +157,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateCommentRequest"
+                            "$ref": "#/definitions/http_routes_api_comment.CreateCommentRequest"
                         }
                     }
                 ],
@@ -221,7 +221,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.CommentResponse"
+                                "$ref": "#/definitions/http_routes_api_comment.CommentResponse"
                             }
                         }
                     },
@@ -277,7 +277,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.ReactToCommentRequest"
+                            "$ref": "#/definitions/http_routes_api_comment.ReactToCommentRequest"
                         }
                     }
                 ],
@@ -327,7 +327,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.DatabrusMatchDTO"
+                                "$ref": "#/definitions/http_routes_api_databrus.DatabrusMatchDTO"
                             }
                         }
                     },
@@ -355,7 +355,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.DatabrusTableRow"
+                                "$ref": "#/definitions/http_routes_api_databrus.DatabrusTableRow"
                             }
                         }
                     },
@@ -383,7 +383,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+                                "$ref": "#/definitions/http_routes_api_degree.DegreeResponse"
                             }
                         }
                     }
@@ -412,7 +412,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateDegreeRequest"
+                            "$ref": "#/definitions/http_routes_api_degree.CreateDegreeRequest"
                         }
                     }
                 ],
@@ -420,7 +420,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+                            "$ref": "#/definitions/http_routes_api_degree.DegreeResponse"
                         }
                     },
                     "400": {
@@ -462,7 +462,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.UpdateDegreeRequest"
+                            "$ref": "#/definitions/http_routes_api_degree.UpdateDegreeRequest"
                         }
                     }
                 ],
@@ -470,7 +470,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.DegreeResponse"
+                            "$ref": "#/definitions/http_routes_api_degree.DegreeResponse"
                         }
                     },
                     "400": {
@@ -545,7 +545,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+                                "$ref": "#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse"
                             }
                         }
                     },
@@ -575,7 +575,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateSiteFeedbackRequest"
+                            "$ref": "#/definitions/http_routes_api_site_feedback.CreateSiteFeedbackRequest"
                         }
                     }
                 ],
@@ -583,7 +583,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+                            "$ref": "#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse"
                         }
                     },
                     "400": {
@@ -628,7 +628,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+                            "$ref": "#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse"
                         }
                     },
                     "401": {
@@ -668,7 +668,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.SiteFeedbackResponse"
+                            "$ref": "#/definitions/http_routes_api_site_feedback.SiteFeedbackResponse"
                         }
                     },
                     "400": {
@@ -704,7 +704,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http_routes_api.GroupResponse"
+                                "$ref": "#/definitions/http_routes_api_group.GroupResponse"
                             }
                         }
                     },
@@ -734,7 +734,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.CreateGroupRequest"
+                            "$ref": "#/definitions/http_routes_api_group.CreateGroupRequest"
                         }
                     }
                 ],
@@ -742,7 +742,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            "$ref": "#/definitions/http_routes_api_group.GroupResponse"
                         }
                     },
                     "400": {
@@ -792,7 +792,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.UpdateGroupRequest"
+                            "$ref": "#/definitions/http_routes_api_group.UpdateGroupRequest"
                         }
                     }
                 ],
@@ -800,7 +800,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            "$ref": "#/definitions/http_routes_api_group.GroupResponse"
                         }
                     },
                     "400": {
@@ -893,7 +893,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.HappeningResponse"
+                                "$ref": "#/definitions/http_routes_api_happening.HappeningResponse"
                             }
                         }
                     }
@@ -925,7 +925,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.RegistrationCount"
+                                "$ref": "#/definitions/http_routes_api_happening.RegistrationCount"
                             }
                         }
                     },
@@ -967,7 +967,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.HappeningResponse"
+                            "$ref": "#/definitions/http_routes_api_happening.HappeningResponse"
                         }
                     },
                     "400": {
@@ -1010,7 +1010,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.QuestionResponse"
+                                "$ref": "#/definitions/http_routes_api_happening.QuestionResponse"
                             }
                         }
                     },
@@ -1061,7 +1061,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningRequest"
+                            "$ref": "#/definitions/http_routes_api_happening.RegisterForHappeningRequest"
                         }
                     }
                 ],
@@ -1069,19 +1069,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/http_routes_api_happening.RegisterForHappeningResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/http_routes_api_happening.RegisterForHappeningResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegisterForHappeningResponse"
+                            "$ref": "#/definitions/http_routes_api_happening.RegisterForHappeningResponse"
                         }
                     }
                 }
@@ -1117,7 +1117,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.HappeningRegistrationResponse"
+                                "$ref": "#/definitions/http_routes_api_happening.HappeningRegistrationResponse"
                             }
                         }
                     },
@@ -1160,7 +1160,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegistrationCount"
+                            "$ref": "#/definitions/http_routes_api_happening.RegistrationCount"
                         }
                     },
                     "400": {
@@ -1208,7 +1208,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.SpotRangeResponse"
+                                "$ref": "#/definitions/http_routes_api_happening.SpotRangeResponse"
                             }
                         }
                     },
@@ -1254,7 +1254,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
+                                "$ref": "#/definitions/http_routes_api_reactions.ReactionResponse"
                             }
                         }
                     },
@@ -1303,7 +1303,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.ToggleReactionRequest"
+                            "$ref": "#/definitions/http_routes_api_reactions.ToggleReactionRequest"
                         }
                     }
                 ],
@@ -1313,7 +1313,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.ReactionResponse"
+                                "$ref": "#/definitions/http_routes_api_reactions.ReactionResponse"
                             }
                         }
                     },
@@ -1393,7 +1393,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CreateShoppingListItemRequest"
+                            "$ref": "#/definitions/http_routes_api_shopping_list.CreateShoppingListItemRequest"
                         }
                     }
                 ],
@@ -1449,7 +1449,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.UserToShoppingListItemRequest"
+                            "$ref": "#/definitions/http_routes_api_shopping_list.UserToShoppingListItemRequest"
                         }
                     }
                 ],
@@ -1649,7 +1649,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.UserResponse"
+                                "$ref": "#/definitions/http_routes_api_users.UserResponse"
                             }
                         }
                     },
@@ -1690,7 +1690,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.UserResponse"
+                            "$ref": "#/definitions/http_routes_api_users.UserResponse"
                         }
                     },
                     "401": {
@@ -1727,7 +1727,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.WeatherResponse"
+                            "$ref": "#/definitions/http_routes_api_weather.WeatherResponse"
                         }
                     },
                     "500": {
@@ -1759,7 +1759,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
+                                "$ref": "#/definitions/http_routes_api_whitelist.WhitelistResponse"
                             }
                         }
                     },
@@ -1805,7 +1805,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/uno_http_dto.WhitelistResponse"
+                            "$ref": "#/definitions/http_routes_api_whitelist.WhitelistResponse"
                         }
                     },
                     "401": {
@@ -1831,7 +1831,243 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "http_routes_api.CreateGroupRequest": {
+        "http_routes_api_access_request.AccessRequestResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_adventofcode.AdventOfCodeDayResponse": {
+            "type": "object",
+            "properties": {
+                "star1_time": {
+                    "type": "integer"
+                },
+                "star2_time": {
+                    "type": "integer"
+                },
+                "stars": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http_routes_api_adventofcode.AdventOfCodeMemberResponse": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/http_routes_api_adventofcode.AdventOfCodeDayResponse"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "local_score": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_comment.CommentResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "parentCommentId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                },
+                "reactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/http_routes_api_comment.CommentsReactionResponse"
+                    }
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/http_routes_api_comment.UserSummaryResponse"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_comment.CommentsReactionResponse": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_comment.CreateCommentRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "parentCommentId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_comment.ReactToCommentRequest": {
+            "type": "object",
+            "properties": {
+                "commentId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_comment.UserSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_databrus.DatabrusMatchDTO": {
+            "type": "object",
+            "properties": {
+                "away_score": {
+                    "type": "string"
+                },
+                "away_team": {
+                    "type": "string"
+                },
+                "date_time": {
+                    "type": "string"
+                },
+                "home_score": {
+                    "type": "string"
+                },
+                "home_team": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_databrus.DatabrusTableRow": {
+            "type": "object",
+            "properties": {
+                "draws": {
+                    "type": "integer"
+                },
+                "goal_difference": {
+                    "type": "integer"
+                },
+                "goals_against": {
+                    "type": "integer"
+                },
+                "goals_for": {
+                    "type": "integer"
+                },
+                "losses": {
+                    "type": "integer"
+                },
+                "matches_played": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "integer"
+                },
+                "position": {
+                    "type": "integer"
+                },
+                "team": {
+                    "type": "string"
+                },
+                "wins": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http_routes_api_degree.CreateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_degree.DegreeResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_degree.UpdateDegreeRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_group.CreateGroupRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -1845,7 +2081,7 @@ const docTemplate = `{
                 }
             }
         },
-        "http_routes_api.GroupResponse": {
+        "http_routes_api_group.GroupResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1856,13 +2092,414 @@ const docTemplate = `{
                 }
             }
         },
-        "http_routes_api.UpdateGroupRequest": {
+        "http_routes_api_group.UpdateGroupRequest": {
             "type": "object",
             "required": [
                 "name"
             ],
             "properties": {
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.HappeningRegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "changedAt": {
+                    "type": "string"
+                },
+                "changedBy": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "prevStatus": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unregisterReason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userImage": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.HappeningResponse": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "registrationEnd": {
+                    "type": "string"
+                },
+                "registrationGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "registrationStartGroups": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.QuestionAnswerDTO": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "questionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.QuestionResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isSensitive": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.RegisterForHappeningRequest": {
+            "type": "object",
+            "properties": {
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/http_routes_api_happening.QuestionAnswerDTO"
+                    }
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_happening.RegisterForHappeningResponse": {
+            "type": "object",
+            "properties": {
+                "isWaitlisted": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "http_routes_api_happening.RegistrationCount": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "max": {
+                    "type": "integer"
+                },
+                "registered": {
+                    "type": "integer"
+                },
+                "waiting": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http_routes_api_happening.SpotRangeResponse": {
+            "type": "object",
+            "properties": {
+                "happeningId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "maxYear": {
+                    "type": "integer"
+                },
+                "minYear": {
+                    "type": "integer"
+                },
+                "spots": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http_routes_api_health.HealthCheckResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_reactions.ReactionResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "emojiId": {
+                    "type": "integer"
+                },
+                "reactToKey": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_reactions.ToggleReactionRequest": {
+            "type": "object",
+            "required": [
+                "emojiId",
+                "userId"
+            ],
+            "properties": {
+                "emojiId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_shopping_list.CreateShoppingListItemRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "userId"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_shopping_list.UserToShoppingListItemRequest": {
+            "type": "object",
+            "required": [
+                "itemId",
+                "userId"
+            ],
+            "properties": {
+                "itemId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_site_feedback.CreateSiteFeedbackRequest": {
+            "type": "object",
+            "required": [
+                "category",
+                "message"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_site_feedback.SiteFeedbackResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isRead": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_users.DegreeResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_users.UserGroupResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isLeader": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "http_routes_api_users.UserResponse": {
+            "type": "object",
+            "properties": {
+                "alternativeEmail": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "degree": {
+                    "$ref": "#/definitions/http_routes_api_users.DegreeResponse"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/http_routes_api_users.UserGroupResponse"
+                    }
+                },
+                "hasReadTerms": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "lastSignInAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http_routes_api_weather.WeatherResponse": {
+            "type": "object",
+            "properties": {
+                "condition": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "number"
+                },
+                "wind_speed": {
+                    "type": "number"
+                }
+            }
+        },
+        "http_routes_api_whitelist.WhitelistResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "reason": {
                     "type": "string"
                 }
             }
@@ -1987,632 +2624,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.AccessRequestResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.AdventOfCodeDayResponse": {
-            "type": "object",
-            "properties": {
-                "star1_time": {
-                    "type": "integer"
-                },
-                "star2_time": {
-                    "type": "integer"
-                },
-                "stars": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.AdventOfCodeMemberResponse": {
-            "type": "object",
-            "properties": {
-                "days": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/uno_http_dto.AdventOfCodeDayResponse"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "local_score": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CommentResponse": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "reactions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_http_dto.CommentsReactionResponse"
-                    }
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/uno_http_dto.UserSummaryResponse"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CommentsReactionResponse": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateCommentRequest": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "parentCommentId": {
-                    "type": "string"
-                },
-                "postId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateShoppingListItemRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "userId"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CreateSiteFeedbackRequest": {
-            "type": "object",
-            "required": [
-                "category",
-                "message"
-            ],
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.DatabrusMatchDTO": {
-            "type": "object",
-            "properties": {
-                "away_score": {
-                    "type": "string"
-                },
-                "away_team": {
-                    "type": "string"
-                },
-                "date_time": {
-                    "type": "string"
-                },
-                "home_score": {
-                    "type": "string"
-                },
-                "home_team": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.DatabrusTableRow": {
-            "type": "object",
-            "properties": {
-                "draws": {
-                    "type": "integer"
-                },
-                "goal_difference": {
-                    "type": "integer"
-                },
-                "goals_against": {
-                    "type": "integer"
-                },
-                "goals_for": {
-                    "type": "integer"
-                },
-                "losses": {
-                    "type": "integer"
-                },
-                "matches_played": {
-                    "type": "integer"
-                },
-                "points": {
-                    "type": "integer"
-                },
-                "position": {
-                    "type": "integer"
-                },
-                "team": {
-                    "type": "string"
-                },
-                "wins": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.DegreeResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.HappeningRegistrationResponse": {
-            "type": "object",
-            "properties": {
-                "changedAt": {
-                    "type": "string"
-                },
-                "changedBy": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "happeningId": {
-                    "type": "string"
-                },
-                "prevStatus": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "unregisterReason": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userImage": {
-                    "type": "string"
-                },
-                "userName": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.HappeningResponse": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "registrationEnd": {
-                    "type": "string"
-                },
-                "registrationGroups": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "registrationStart": {
-                    "type": "string"
-                },
-                "registrationStartGroups": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.HealthCheckResponse": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.QuestionAnswerDTO": {
-            "type": "object",
-            "properties": {
-                "answer": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "questionId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.QuestionResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isSensitive": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "required": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.ReactToCommentRequest": {
-            "type": "object",
-            "properties": {
-                "commentId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.ReactionResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "emojiId": {
-                    "type": "integer"
-                },
-                "reactToKey": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.RegisterForHappeningRequest": {
-            "type": "object",
-            "properties": {
-                "questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_http_dto.QuestionAnswerDTO"
-                    }
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.RegisterForHappeningResponse": {
-            "type": "object",
-            "properties": {
-                "isWaitlisted": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "uno_http_dto.RegistrationCount": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "integer"
-                },
-                "registered": {
-                    "type": "integer"
-                },
-                "waiting": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.SiteFeedbackResponse": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isRead": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.SpotRangeResponse": {
-            "type": "object",
-            "properties": {
-                "happeningId": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "maxYear": {
-                    "type": "integer"
-                },
-                "minYear": {
-                    "type": "integer"
-                },
-                "spots": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.ToggleReactionRequest": {
-            "type": "object",
-            "required": [
-                "emojiId",
-                "userId"
-            ],
-            "properties": {
-                "emojiId": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.UpdateDegreeRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.UserGroupResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "isLeader": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.UserResponse": {
-            "type": "object",
-            "properties": {
-                "alternativeEmail": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "degree": {
-                    "$ref": "#/definitions/uno_http_dto.DegreeResponse"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "groups": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
-                    }
-                },
-                "hasReadTerms": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "isPublic": {
-                    "type": "boolean"
-                },
-                "lastSignInAt": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "year": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_http_dto.UserSummaryResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.UserToShoppingListItemRequest": {
-            "type": "object",
-            "required": [
-                "itemId",
-                "userId"
-            ],
-            "properties": {
-                "itemId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.WeatherResponse": {
-            "type": "object",
-            "properties": {
-                "condition": {
-                    "type": "string"
-                },
-                "temperature": {
-                    "type": "number"
-                },
-                "wind_speed": {
-                    "type": "number"
-                }
-            }
-        },
-        "uno_http_dto.WhitelistResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "reason": {
                     "type": "string"
                 }
             }
