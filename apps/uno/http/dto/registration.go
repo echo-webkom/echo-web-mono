@@ -97,15 +97,19 @@ type GroupedRegistration struct {
 	Max         *int   `json:"max"`
 }
 
+func (GroupedRegistration) FromDomain(grp model.GroupedRegistrationCount) GroupedRegistration {
+	return GroupedRegistration{
+		HappeningID: grp.HappeningID,
+		Waiting:     grp.Waiting,
+		Registered:  grp.Registered,
+		Max:         grp.Max,
+	}
+}
+
 func GroupedRegistrationCountFromDomain(grs []model.GroupedRegistrationCount) []GroupedRegistration {
 	dtos := make([]GroupedRegistration, len(grs))
 	for i, gr := range grs {
-		dtos[i] = GroupedRegistration{
-			HappeningID: gr.HappeningID,
-			Waiting:     gr.Waiting,
-			Registered:  gr.Registered,
-			Max:         gr.Max,
-		}
+		dtos[i] = (GroupedRegistration{}).FromDomain(gr)
 	}
 	return dtos
 }

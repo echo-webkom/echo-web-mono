@@ -95,47 +95,13 @@ func (h *happenings) GetHappeningRegistrationsCount(ctx *handler.Context) error 
 	// Extract the happening ID from the URL path
 	id := ctx.PathValue("id")
 
-	// Fetch the happening from the repository
-	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	grp, err := h.happeningService.GetRegisterCount(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(errors.New("happening not found"), http.StatusNotFound)
+		return ctx.Error(err, http.StatusInternalServerError)
 	}
 
-	// Fetch spot ranges
-	spotRanges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), hap.ID)
-	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
-	}
-
-	// Fetch registrations
-	// TODO: Aggregate directly in SQL query
-	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), hap.ID)
-	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
-	}
-
-	// Aggregate registration counts
-	// - Max spots from spot ranges
-	// - Count of registered and waiting registrations
-	grp := dto.GroupedRegistration{}
-	if len(spotRanges) > 0 {
-		count := 0
-		for _, spot := range spotRanges {
-			count += spot.Spots
-		}
-		grp.Max = &count
-	}
-
-	for _, reg := range regs {
-		switch reg.Status {
-		case "waiting":
-			grp.Waiting++
-		case "registered":
-			grp.Registered++
-		}
-	}
-
-	return ctx.JSON(grp)
+	dtoGrp := (dto.GroupedRegistration{}).FromDomain(grp)
+	return ctx.JSON(dtoGrp)
 }
 
 // GetHappeningRegistrationsCountMany returns the count of registrations for a happenings
