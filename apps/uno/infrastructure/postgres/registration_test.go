@@ -257,7 +257,7 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 	registration, isWaitlisted, err := repo.CreateRegistration(
 		ctx,
 		createdUser.ID,
-		createdHappening.ID,
+		createdHappening,
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
@@ -340,7 +340,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 	_, isWaitlisted1, err := repo.CreateRegistration(
 		ctx,
 		createdUser1.ID,
-		createdHappening.ID,
+		createdHappening,
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
@@ -352,7 +352,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 	registration2, isWaitlisted2, err := repo.CreateRegistration(
 		ctx,
 		createdUser2.ID,
-		createdHappening.ID,
+		createdHappening,
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
