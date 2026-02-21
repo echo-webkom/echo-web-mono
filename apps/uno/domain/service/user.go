@@ -9,6 +9,7 @@ import (
 	"uno/domain/port"
 )
 
+
 var ErrFileStorageNotConfigured = errors.New("file storage not configured")
 
 type UserService struct {
@@ -90,7 +91,7 @@ func (s *UserService) UploadProfileImage(ctx context.Context, userID string, pro
 		return "", err
 	}
 
-	imageURL := fmt.Sprintf("%s/users/%s/image", s.apiURL, userID)
+	imageURL := fmt.Sprintf("%s/users/%s/image?t=%d", s.apiURL, userID, time.Now().UnixMilli())
 	err = s.userRepo.UpdateUserImageURL(ctx, userID, &imageURL)
 	if err != nil {
 		return "", err
