@@ -16,7 +16,8 @@ import (
 
 func TestUserService_UserRepo(t *testing.T) {
 	mockRepo := mocks.NewUserRepo(t)
-	userService := service.NewUserService(mockRepo)
+	mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
+	userService := service.NewUserService(testutil.FakeApiURL, mockRepo, mockProfilePictureStore)
 
 	userRepo := userService.UserRepo()
 	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
@@ -44,7 +45,8 @@ func TestUserService_GetUsersWithBirthdayToday_Success(t *testing.T) {
 		Return(expectedUsers, nil).
 		Once()
 
-	userService := service.NewUserService(mockRepo)
+	mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
+	userService := service.NewUserService(testutil.FakeApiURL, mockRepo, mockProfilePictureStore)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.NoError(t, err)
@@ -62,7 +64,8 @@ func TestUserService_GetUsersWithBirthdayToday_Empty(t *testing.T) {
 		Return([]model.User{}, nil).
 		Once()
 
-	userService := service.NewUserService(mockRepo)
+	mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
+	userService := service.NewUserService(testutil.FakeApiURL, mockRepo, mockProfilePictureStore)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.NoError(t, err)
@@ -79,7 +82,8 @@ func TestUserService_GetUsersWithBirthdayToday_Error(t *testing.T) {
 		Return(nil, expectedErr).
 		Once()
 
-	userService := service.NewUserService(mockRepo)
+	mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
+	userService := service.NewUserService(testutil.FakeApiURL, mockRepo, mockProfilePictureStore)
 	users, err := userService.GetUsersWithBirthdayToday(ctx)
 
 	assert.Error(t, err)

@@ -28,12 +28,17 @@ services:
     image: ghcr.io/echo-webkom/uno:pr-${PR_NUMBER}
     depends_on:
       migrator: { condition: service_completed_successfully }
+      minio: { condition: service_healthy }
     environment:
       DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
       UNO_API_PORT: "8000"
       ADMIN_KEY: ${ADMIN_KEY}
       ENVIRONMENT: staging
       GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      UNO_API_URL: https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
     labels:
       caddy: pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
       caddy.reverse_proxy: "{{upstreams 8000}}"
@@ -61,8 +66,24 @@ services:
       caddy.reverse_proxy: "{{upstreams 3000}}"
     networks: [internal, caddy]
 
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   db-data:
+  minio-data:
 
 networks:
   internal:

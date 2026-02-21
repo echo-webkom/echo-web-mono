@@ -36,8 +36,13 @@ const config = {
         hostname: "cdn.sanity.io",
       },
       {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+      },
+      {
         protocol: "https",
-        hostname: "echogram.echo-webkom.no",
+        hostname: "*.echo-webkom.no",
       },
     ],
   },

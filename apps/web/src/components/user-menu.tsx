@@ -14,6 +14,7 @@ import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schem
 
 import { useSignOut } from "@/auth/client";
 import { isBedkom, isMemberOf } from "@/lib/memberships";
+import { createProfilePictureUrl } from "../api/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,11 +43,12 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         <button data-testid="user-menu">
           {user.image ? (
             <Image
-              src={user.image}
+              src={createProfilePictureUrl(user.image) ?? ""}
               alt="User image"
               className="h-7 w-7 rounded-full"
               width={64}
               height={64}
+              unoptimized
             />
           ) : (
             <Avatar className="h-7 w-7" />
