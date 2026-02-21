@@ -54,8 +54,7 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
       return;
     }
 
-    // Set "t" query param to bust the cache and ensure the new image is displayed immediately
-    setImageUrl(`${url}?t=${Date.now()}`);
+    setImageUrl(url);
   };
 
   const handleRemoveImage = async () => {
