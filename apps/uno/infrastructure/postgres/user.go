@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
@@ -329,6 +330,28 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 		return []model.User{}, err
 	}
 	return record.UserToDomainList(usersDB), nil
+}
+
+func (u *UserRepo) ResetUserYears(ctx context.Context) (int64, error) {
+	u.logger.Info(ctx, "resetting user years")
+
+	query := `--sql
+		UPDATE "user"
+		SET year = NULL
+		WHERE year IS NOT NULL
+	`
+	result, err := u.db.ExecContext(ctx, query)
+	if err != nil {
+		u.logger.Error(ctx, "failed to reset user years", "error", err)
+		return 0, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("reset user years rows affected: %w", err)
+	}
+
+	return rowsAffected, nil
 }
 
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
