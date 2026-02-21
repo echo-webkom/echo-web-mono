@@ -96,7 +96,7 @@ export class UnoClient {
     });
   }
 
-  async request(method: HttpMethod, path: string, options: Options) {
+  async request(method: HttpMethod, path: string, options?: Options) {
     return await this.api(this.normalizePath(path), {
       method,
       ...options,
@@ -640,10 +640,22 @@ class ProfilePicturesApi {
     formData.append("file", file);
 
     const response = await this.client.requestFormData("POST", `users/${userId}/image`, formData);
-    return await response.text();
+    const text = await response.text();
+    const ok = response.status === 200;
+    if (!ok) {
+      return {
+        ok: false,
+        message: text,
+      };
+    }
+    return {
+      ok: true,
+      url: text,
+    };
   }
 
   async delete(userId: string) {
-    await this.client.requestJson("DELETE", `users/${userId}/image`);
+    const response = await this.client.request("DELETE", `users/${userId}/image`);
+    return response.status === 200;
   }
 }

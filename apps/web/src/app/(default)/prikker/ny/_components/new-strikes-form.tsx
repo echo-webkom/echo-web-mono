@@ -32,6 +32,7 @@ import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
 import { addStrikesAction } from "../_actions/add-strike";
 import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from "../_lib/schema";
+import { createProfilePictureUrl } from "../../../../../api/client";
 
 type User = {
   id: string;
@@ -383,7 +384,7 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
                   return (
                     <>
                       <Avatar className="size-12 md:size-14">
-                        <AvatarImage src={user.imageUrl ?? ""} />
+                        <AvatarImage src={createProfilePictureUrl(user.imageUrl)} />
                         <AvatarFallback className="bg-background text-foreground">
                           {initials(user.name)}
                         </AvatarFallback>

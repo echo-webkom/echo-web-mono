@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"strconv"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -90,6 +91,7 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 // @Summary	     Gets a user's profile image
 // @Tags         users
 // @Param        id   path      string  true  "User ID"
+// @Query        size  query     int     false "Image size (1=small, 2=medium)"
 // @Success      200  {string}  string  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
@@ -104,19 +106,23 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
 	}
 
+	size, _ := strconv.Atoi(ctx.R.URL.Query().Get("size"))
+
 	// Get user image from the database
-	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID)
+	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID, size)
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	// no-cache forces the browser to revalidate on every request using If-None-Match.
-	// This ensures uploaded images are reflected immediately — the browser gets a 304
-	// (no body) if the ETag matches, or the new image if it has changed.
-	// We avoid max-age here because it would prevent revalidation until expiry, breaking
-	// cache busting when a user uploads a new profile picture.
+	// Requests with the "t" query parameter are versioned URLs from UploadProfileImage.
+	// They can be cached for a long time because a new upload generates a new URL.
+	// Non-versioned requests keep no-cache semantics and rely on ETag revalidation.
 	ctx.SetHeader("ETag", pic.ETag)
-	ctx.SetHeader("Cache-Control", "no-cache")
+	if ctx.R.URL.Query().Get("t") != "" {
+		ctx.SetHeader("Cache-Control", "public, max-age=31536000, immutable")
+	} else {
+		ctx.SetHeader("Cache-Control", "no-cache")
+	}
 	ctx.SetHeader("Last-Modified", pic.LastModified.UTC().Format(http.TimeFormat))
 	if ctx.R.Header.Get("If-None-Match") == pic.ETag {
 		ctx.SetStatus(http.StatusNotModified)
