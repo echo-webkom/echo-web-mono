@@ -1,5 +1,7 @@
 import ky, { type KyInstance } from "ky";
 
+import { internal as _ } from "./generated/client";
+
 const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 
 export type UnoClientOptions = {
