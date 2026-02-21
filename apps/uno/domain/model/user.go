@@ -1,8 +1,11 @@
 package model
 
 import (
+	"bytes"
 	"errors"
+	"image"
 	"io"
+	"strings"
 	"time"
 )
 
@@ -223,8 +226,9 @@ type UserWithBanInfo struct {
 }
 
 var (
-	ErrProfilePictureTooLarge        = errors.New("profile picture exceeds the maximum allowed size of 5 MB")
-	ErrUnsupportedProfilePictureType = errors.New("unsupported profile picture type")
+	ErrProfilePictureTooLarge           = errors.New("profile picture exceeds the maximum allowed size of 5 MB")
+	ErrUnsupportedProfilePictureType    = errors.New("unsupported profile picture type")
+	ErrProfilePictureDimensionsTooLarge = errors.New("profile picture dimensions exceed the maximum allowed size of 3000x3000 pixels")
 )
 
 type ProfilePictureImageType string
@@ -241,22 +245,56 @@ const (
 )
 
 type ProfilePictureUpload struct {
-	io.Reader
+	data      []byte
 	ImageType ProfilePictureImageType
 	Size      int64
+}
+
+func NewProfilePictureUpload(r io.Reader, imageType ProfilePictureImageType) (*ProfilePictureUpload, error) {
+	data, err := io.ReadAll(io.LimitReader(r, ProfilePictureMaxSize+1))
+	if err != nil {
+		return nil, err
+	}
+	return &ProfilePictureUpload{
+		data:      data,
+		ImageType: imageType,
+		Size:      int64(len(data)),
+	}, nil
+}
+
+func (p *ProfilePictureUpload) Reader() io.Reader {
+	return bytes.NewReader(p.data)
+}
+
+func (p *ProfilePictureUpload) Bytes() []byte {
+	return p.data
 }
 
 func (p *ProfilePictureUpload) Validate() error {
 	if p.Size > ProfilePictureMaxSize {
 		return ErrProfilePictureTooLarge
 	}
-
 	switch p.ImageType {
 	case ProfilePictureTypeJPEG, ProfilePictureTypePNG, ProfilePictureTypeGIF, ProfilePictureTypeWEBP:
-		return nil
 	default:
 		return ErrUnsupportedProfilePictureType
 	}
+	cfg, format, err := image.DecodeConfig(p.Reader())
+	if err != nil {
+		return ErrUnsupportedProfilePictureType
+	}
+	if cfg.Width > 3000 || cfg.Height > 3000 {
+		return ErrProfilePictureDimensionsTooLarge
+	}
+	// strip "image/" prefix
+	declaredFormat := strings.TrimPrefix(string(p.ImageType), "image/")
+	if declaredFormat == "jpg" {
+		declaredFormat = "jpeg"
+	}
+	if format != declaredFormat {
+		p.ImageType = ProfilePictureImageType("image/" + format)
+	}
+	return nil
 }
 
 type ProfilePicture struct {

@@ -96,8 +96,8 @@ func (_c *ProfilePictureRepo_DeleteProfilePicture_Call) RunAndReturn(run func(ct
 }
 
 // GetProfilePicture provides a mock function for the type ProfilePictureRepo
-func (_mock *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID string) (*model.ProfilePicture, error) {
-	ret := _mock.Called(ctx, userID)
+func (_mock *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID string, size int) (*model.ProfilePicture, error) {
+	ret := _mock.Called(ctx, userID, size)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetProfilePicture")
@@ -105,18 +105,18 @@ func (_mock *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID s
 
 	var r0 *model.ProfilePicture
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.ProfilePicture, error)); ok {
-		return returnFunc(ctx, userID)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) (*model.ProfilePicture, error)); ok {
+		return returnFunc(ctx, userID, size)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.ProfilePicture); ok {
-		r0 = returnFunc(ctx, userID)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) *model.ProfilePicture); ok {
+		r0 = returnFunc(ctx, userID, size)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.ProfilePicture)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
-		r1 = returnFunc(ctx, userID)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, int) error); ok {
+		r1 = returnFunc(ctx, userID, size)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -131,11 +131,12 @@ type ProfilePictureRepo_GetProfilePicture_Call struct {
 // GetProfilePicture is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *ProfilePictureRepo_Expecter) GetProfilePicture(ctx interface{}, userID interface{}) *ProfilePictureRepo_GetProfilePicture_Call {
-	return &ProfilePictureRepo_GetProfilePicture_Call{Call: _e.mock.On("GetProfilePicture", ctx, userID)}
+//   - size int
+func (_e *ProfilePictureRepo_Expecter) GetProfilePicture(ctx interface{}, userID interface{}, size interface{}) *ProfilePictureRepo_GetProfilePicture_Call {
+	return &ProfilePictureRepo_GetProfilePicture_Call{Call: _e.mock.On("GetProfilePicture", ctx, userID, size)}
 }
 
-func (_c *ProfilePictureRepo_GetProfilePicture_Call) Run(run func(ctx context.Context, userID string)) *ProfilePictureRepo_GetProfilePicture_Call {
+func (_c *ProfilePictureRepo_GetProfilePicture_Call) Run(run func(ctx context.Context, userID string, size int)) *ProfilePictureRepo_GetProfilePicture_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -145,9 +146,14 @@ func (_c *ProfilePictureRepo_GetProfilePicture_Call) Run(run func(ctx context.Co
 		if args[1] != nil {
 			arg1 = args[1].(string)
 		}
+		var arg2 int
+		if args[2] != nil {
+			arg2 = args[2].(int)
+		}
 		run(
 			arg0,
 			arg1,
+			arg2,
 		)
 	})
 	return _c
@@ -158,7 +164,7 @@ func (_c *ProfilePictureRepo_GetProfilePicture_Call) Return(profilePicture *mode
 	return _c
 }
 
-func (_c *ProfilePictureRepo_GetProfilePicture_Call) RunAndReturn(run func(ctx context.Context, userID string) (*model.ProfilePicture, error)) *ProfilePictureRepo_GetProfilePicture_Call {
+func (_c *ProfilePictureRepo_GetProfilePicture_Call) RunAndReturn(run func(ctx context.Context, userID string, size int) (*model.ProfilePicture, error)) *ProfilePictureRepo_GetProfilePicture_Call {
 	_c.Call.Return(run)
 	return _c
 }

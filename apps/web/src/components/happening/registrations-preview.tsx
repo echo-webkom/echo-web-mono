@@ -1,6 +1,7 @@
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { initials } from "@/utils/string";
+import { createProfilePictureUrl } from "../../api/client";
 import { Text } from "../typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
@@ -29,7 +30,7 @@ const ProfilePreview = ({ registration }: ProfilePreviewProps) => {
 
   return (
     <Avatar className="size-8">
-      <AvatarImage src={registration.image ?? ""} />
+      <AvatarImage src={createProfilePictureUrl(registration.image)} />
       <AvatarFallback className="text-xs">{fallback}</AvatarFallback>
     </Avatar>
   );

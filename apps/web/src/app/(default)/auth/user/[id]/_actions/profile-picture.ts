@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
@@ -20,12 +22,11 @@ export async function uploadProfilePictureAction(formData: FormData) {
     };
   }
 
-  const imageUrl = await unoWithAdmin.files.profilePictures.upload(user.id, file);
+  const response = await unoWithAdmin.files.profilePictures.upload(user.id, file);
 
-  return {
-    ok: true,
-    url: imageUrl,
-  };
+  revalidatePath("/", "layout");
+
+  return response;
 }
 
 export async function deleteProfilePictureAction() {
@@ -34,7 +35,9 @@ export async function deleteProfilePictureAction() {
     return false;
   }
 
-  await unoWithAdmin.files.profilePictures.delete(user.id);
+  const ok = await unoWithAdmin.files.profilePictures.delete(user.id);
 
-  return true;
+  revalidatePath("/", "layout");
+
+  return ok;
 }

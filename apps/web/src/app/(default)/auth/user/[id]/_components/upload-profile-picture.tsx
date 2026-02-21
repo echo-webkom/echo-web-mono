@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +10,7 @@ import {
   deleteProfilePictureAction,
   uploadProfilePictureAction,
 } from "../_actions/profile-picture";
+import { createProfilePictureUrl } from "../../../../../../api/client";
 
 type UploadProfilePictureProps = {
   name: string;
@@ -21,6 +23,7 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(image);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleChooseFile = () => {
     inputRef.current?.click();
@@ -54,7 +57,8 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
       return;
     }
 
-    setImageUrl(url);
+    setImageUrl(createProfilePictureUrl(url, 2) ?? null);
+    router.refresh();
   };
 
   const handleRemoveImage = async () => {
@@ -64,12 +68,13 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
       return;
     }
     setImageUrl(null);
+    router.refresh();
   };
 
   return (
     <div className="space-y-2">
       <Avatar>
-        <AvatarImage src={imageUrl ?? ""} />
+        <AvatarImage src={createProfilePictureUrl(imageUrl)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>
 

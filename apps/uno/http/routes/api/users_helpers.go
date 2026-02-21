@@ -12,9 +12,5 @@ func profilePictureUploadFromContext(ctx *handler.Context) (*model.ProfilePictur
 		return nil, errors.New("file is required")
 	}
 
-	return &model.ProfilePictureUpload{
-		Reader:    file,
-		ImageType: model.ProfilePictureImageType(header.Header.Get("Content-Type")),
-		Size:      header.Size,
-	}, nil
+	return model.NewProfilePictureUpload(file, model.ProfilePictureImageType(header.Header.Get("Content-Type")))
 }
