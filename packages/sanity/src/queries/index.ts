@@ -9,3 +9,4 @@ export * from "./static-info";
 export * from "./banner";
 export * from "./repeating-happening";
 export * from "./merch";
+export * from "./trophies";

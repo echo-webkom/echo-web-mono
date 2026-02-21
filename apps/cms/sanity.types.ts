@@ -924,6 +924,46 @@ export type AllMeetingMinuteQueryResult = Array<{
   document: string | null;
 }>;
 
+// Source: ../../packages/sanity/src/queries/trophies.ts
+// Variable: allTrophiesQuery
+// Query: *[_type == "trophies"] | order(title asc) {  _id,  title,  "slug": slug.current,  baseImage,  baseDescription,  trophies[]{    _key,    title,    description,    level,    image  },}
+export type AllTrophiesQueryResult = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  baseImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  baseDescription?: string | null;
+  trophies?: Array<{
+    _key: string;
+    title?: string | null;
+    description?: string | null;
+    level?: number | null;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  }> | null;
+}>;
+
 // Source: ../../packages/sanity/src/queries/movies.ts
 // Variable: moviesQuery
 // Query: *[_type == "movie"  && !(_id in path('drafts.**'))]  | order(_createdAt desc) {  _id,  title,  date,  link,  image,}
