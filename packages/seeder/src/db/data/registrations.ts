@@ -1,3 +1,4 @@
+import { inArray } from "drizzle-orm";
 import { registrations } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
@@ -19,6 +20,11 @@ const FULL_HAPPENING_ID = "seed-happening-event-full";
 const FULL_HAPPENING_SPOTS = 5;
 
 export const createRegistrations = async (userCount: number) => {
+  const fakeUserIds = Array.from({ length: userCount }, (_, i) => `fake-user-${i}`);
+
+  await db.delete(registrations).where(inArray(registrations.userId, fakeUserIds));
+  console.log(`Deleted existing registrations for ${fakeUserIds.length} fake users`);
+
   const values = [];
 
   // Fill the full event with the first N users
