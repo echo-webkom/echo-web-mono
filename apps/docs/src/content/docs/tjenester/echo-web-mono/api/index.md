@@ -11,15 +11,15 @@ For et mer detaljert arkitekturdypdykk, se [Uno Arkitektur](/tjenester/echo-web-
 
 ### Hovedteknologier
 
-- **Go** - hovedspråk for backend
+- **Go** - programmeringsspråk for backend
 - **Chi** - HTTP routing
-- **PostgreSQL** - vedvarende datalagring
-- **sqlx** - databaseaksess
+- **PostgreSQL** - database
+- **sqlx** - utvidelse av `database/sql` for enklere databaseinteraksjon
 - **Swag** - Swagger/OpenAPI-generering
 
 ### Arkitektur
 
-Uno følger en domeneorientert/hexagonal struktur:
+Uno følger en DDD/hexagonal struktur:
 
 - `domain/` - kjernelogikk, modeller og porter
 - `http/` - router, routes, DTO-er og handlers
@@ -31,7 +31,7 @@ Uno følger en domeneorientert/hexagonal struktur:
 
 ```text
 apps/uno/
-├── bootstrap/           # Avhengighetsoppsett
+├── bootstrap/           # Sette opp applikasjoner
 ├── cmd/
 │   ├── web/             # HTTP API entrypoint
 │   ├── cron/            # Cron jobs
@@ -51,20 +51,20 @@ Kjør fra rotmappen:
 
 ```bash
 # Start uno i dev-modus
-pnpm --filter=@echo-webkom/uno dev
+pnpm --filter=uno dev
 
 # Kjør tester
-pnpm --filter=@echo-webkom/uno test
+pnpm --filter=uno test
 
 # Tester med coverage
-pnpm --filter=@echo-webkom/uno test:coverage
+pnpm --filter=uno test:coverage
 
 # Installer Go-verktøy (air, swag, mockery)
-pnpm --filter=@echo-webkom/uno tools:install
+pnpm --filter=uno tools:install
 
 # Generer swagger og mocks
-pnpm --filter=@echo-webkom/uno swag:init
-pnpm --filter=@echo-webkom/uno mocks:generate
+pnpm --filter=uno swag:init
+pnpm --filter=uno mocks:generate
 ```
 
 ## API og miljø
