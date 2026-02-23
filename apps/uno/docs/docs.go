@@ -1340,11 +1340,6 @@ const docTemplate = `{
         },
         "/shopping": {
             "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1362,8 +1357,8 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }

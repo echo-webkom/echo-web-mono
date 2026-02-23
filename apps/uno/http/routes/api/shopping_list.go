@@ -21,7 +21,7 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 	s := shoppingList{logger, shoppingListService}
 
 	// Admin
-	mux.Handle("GET", "/", s.getShoppingList, admin)
+	mux.Handle("GET", "/", s.getShoppingList)
 	mux.Handle("POST", "/", s.createShoppingListItem, admin)
 	mux.Handle("POST", "/like", s.toggleLike, admin)
 	mux.Handle("DELETE", "/{id}", s.removeShoppingListItem, admin)
@@ -34,8 +34,7 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 // @Tags         shopping_list
 // @Produce      json
 // @Success      200  {array}  service.ShoppingList  "OK"
-// @Failure      401  {string}  string  "Unauthorized"
-// @Security     AdminAPIKey
+// @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /shopping [get]
 func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
 	shoppingList, err := s.shoppingListService.GetShoppingList(ctx.Context())

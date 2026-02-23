@@ -1378,12 +1378,10 @@ paths:
             items:
               $ref: '#/definitions/uno_domain_service.ShoppingList'
             type: array
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
           schema:
             type: string
-      security:
-      - AdminAPIKey: []
       summary: Get shopping list
       tags:
       - shopping_list
