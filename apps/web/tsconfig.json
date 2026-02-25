@@ -12,18 +12,12 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "lib": [
-      "es2022",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "moduleResolution": "bundler",
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {
@@ -42,7 +36,5 @@
     "./src/env.mjs",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
