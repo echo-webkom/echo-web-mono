@@ -1,13 +1,7 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 
 interface ScrollerContextType {
   scrollToSlide: (index: number, instant?: boolean) => void;
@@ -40,17 +34,16 @@ const Scroller: React.FC<ScrollerProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartY = useRef<number | null>(null);
   const scrollEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Track whether scrollend is natively supported
-  const supportsScrollEnd = useRef(
-    typeof window !== "undefined" && "onscrollend" in window
-  );
+  const isProgrammaticScroll = useRef(false);
+
+  const supportsScrollEnd = useRef(typeof window !== "undefined" && "onscrollend" in window);
 
   const updateIndex = useCallback(
     (newIndex: number) => {
       setCurrentIndex(newIndex);
       onSlideChange?.(newIndex);
     },
-    [onSlideChange]
+    [onSlideChange],
   );
 
   const scrollToSlide = useCallback(
@@ -61,36 +54,46 @@ const Scroller: React.FC<ScrollerProps> = ({
       const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
       const target = targetIndex * container.clientHeight;
 
+      isProgrammaticScroll.current = true;
+      container.style.scrollSnapType = "none";
+
       if (instant) {
         container.scrollTop = target;
         updateIndex(targetIndex);
+        container.style.scrollSnapType = "y mandatory";
+        isProgrammaticScroll.current = false;
         return;
       }
 
-      container.scrollTo({ top: target, behavior: "smooth" });
-      // Update immediately so the footer dots respond right away,
-      // even before the scroll animation finishes.
+      gsap.to(container, {
+        scrollTop: target,
+        duration: 0.4,
+        ease: "power2.out",
+        onComplete: () => {
+          if (container) {
+            container.style.scrollSnapType = "y mandatory";
+            isProgrammaticScroll.current = false;
+          }
+        },
+      });
+
       updateIndex(targetIndex);
     },
-    [slides.length, updateIndex]
+    [slides.length, updateIndex],
   );
 
-  // Derive the current slide from scroll position — this is the single
-  // source of truth for manual scrolling.
   const syncIndexFromScroll = useCallback(() => {
+    if (isProgrammaticScroll.current) return;
+
     const container = containerRef.current;
     if (!container) return;
 
-    const newIndex = Math.round(
-      container.scrollTop / container.clientHeight
-    );
-
+    const newIndex = Math.round(container.scrollTop / container.clientHeight);
     if (newIndex >= 0 && newIndex < slides.length) {
       updateIndex(newIndex);
     }
   }, [slides.length, updateIndex]);
 
-  // Use scrollend when available; fall back to a debounced scroll handler.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -99,11 +102,9 @@ const Scroller: React.FC<ScrollerProps> = ({
       container.addEventListener("scrollend", syncIndexFromScroll, {
         passive: true,
       });
-      return () =>
-        container.removeEventListener("scrollend", syncIndexFromScroll);
+      return () => container.removeEventListener("scrollend", syncIndexFromScroll);
     }
 
-    // Fallback: debounce the scroll event to fire ~150 ms after scrolling stops.
     const handleScroll = () => {
       if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
       scrollEndTimer.current = setTimeout(syncIndexFromScroll, 150);
@@ -116,17 +117,21 @@ const Scroller: React.FC<ScrollerProps> = ({
     };
   }, [syncIndexFromScroll]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowDown") scrollToSlide(currentIndex + 1);
-      if (e.key === "ArrowUp") scrollToSlide(currentIndex - 1);
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        scrollToSlide(currentIndex + 1);
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        scrollToSlide(currentIndex - 1);
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, scrollToSlide]);
 
-  // Touch swipe navigation
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0]!.clientY;
   }, []);
@@ -137,7 +142,6 @@ const Scroller: React.FC<ScrollerProps> = ({
       const delta = touchStartY.current - e.changedTouches[0]!.clientY;
       touchStartY.current = null;
 
-      // Require at least 50 px of intentional swipe
       if (Math.abs(delta) < 50) return;
 
       if (delta > 0) {
@@ -146,7 +150,7 @@ const Scroller: React.FC<ScrollerProps> = ({
         scrollToSlide(currentIndex - 1);
       }
     },
-    [currentIndex, scrollToSlide]
+    [currentIndex, scrollToSlide],
   );
 
   const contextValue: ScrollerContextType = {
@@ -180,7 +184,7 @@ const Scroller: React.FC<ScrollerProps> = ({
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} of ${slides.length}`}
               className="flex w-full flex-shrink-0 snap-start items-center justify-center"
-              style={{ height: `min(${desktopHeight}px, 100vh)` }}
+              style={{ height: `min(${desktopHeight}px, 100dvh)` }}
             >
               {slide}
             </div>

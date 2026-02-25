@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import AnimatedContent from "./components/AnimatedContent";
 import CountUp from "./components/CountUp";
@@ -24,8 +24,6 @@ import {
   TOP_10_EVENTS,
   TOTAL_USERS,
 } from "./stats";
-
-const SLIDE_COUNT = 16;
 
 interface BackgroundBlobProps {
   color: string;
@@ -130,7 +128,7 @@ function Welcome() {
         onClick={goToNext}
         className="flex h-full w-full flex-col items-center justify-center bg-[#1ed760] p-8 text-center text-black"
       >
-        <h1 className="text-[clamp(3rem,12vw,5rem)] leading-tight font-black tracking-tighter">
+        <h1 className="text-[clamp(3rem,12vw,5rem)] leading-tight font-black tracking-tighter text-balance">
           Det har vært et <br />
           <span className="italic">hektisk</span> <br />
           år.
@@ -147,6 +145,7 @@ interface StatSlideProps {
   unit?: string;
   subtext?: string;
   unitColor?: string;
+  decimals?: number;
 }
 
 const StatSlide = ({
@@ -156,6 +155,7 @@ const StatSlide = ({
   unit = "",
   subtext = "",
   unitColor = "text-white/80",
+  decimals = 0,
 }: StatSlideProps) => (
   <Slide>
     <div
@@ -176,6 +176,7 @@ const StatSlide = ({
           <CountUp
             from={0}
             to={number}
+            decimals={decimals}
             separator=" "
             duration={2}
             className="text-[clamp(4rem,12vh,8rem)] leading-none font-black tracking-tighter whitespace-nowrap text-white drop-shadow-2xl"
@@ -198,13 +199,13 @@ const StatSlide = ({
 );
 
 function Registrations() {
-  const registrationsPerDay = (REGISTRATIONS / 200).toFixed(1);
+  const registrationsPerDay = REGISTRATIONS / 200;
   return (
     <StatSlide
       gradient="from-blue-600 to-indigo-900"
       label="Antall påmeldinger på arrangement i 2025"
       number={REGISTRATIONS}
-      subtext={`Det tilsvarer ca. ${registrationsPerDay} påmeldinger per skoledag!`}
+      subtext={`Det tilsvarer ca. ${registrationsPerDay.toFixed(1)} påmeldinger per skoledag!`}
     />
   );
 }
@@ -262,44 +263,37 @@ function TopEventsStack() {
 }
 
 function EventsPerGroup() {
-  const topGroups = EVENTS_PER_GROUP.slice(0, 7);
+  const topGroups = EVENTS_PER_GROUP.slice(0, 10);
 
   return (
     <Slide>
-      <div className="flex h-full w-full flex-col items-center overflow-hidden bg-[#121212] p-8 pt-14 text-white">
+      <div className="flex h-full w-full flex-col items-center overflow-hidden bg-[#121212] p-6 pt-12 text-white">
         <div className="z-10 w-full">
-          <p className="mb-3 text-center text-sm font-bold tracking-[0.3em] text-[#1ed760] uppercase">
+          <p className="mb-2 text-center text-[10px] font-bold tracking-[0.3em] text-[#1ed760] uppercase">
             Produktivitets-indeks
           </p>
-
-          <h2 className="mb-10 text-center text-3xl font-black tracking-tight uppercase">
-            Hvem arrangerte <br />
-            <span className="text-gray-500">mest i 2025?</span>
+          <h2 className="mb-10 text-center text-2xl font-black tracking-tight uppercase">
+            Hvem arrangerte <br /> <span className="text-gray-500">mest i 2025?</span>
           </h2>
         </div>
 
-        <div className="flex w-full flex-col gap-6 px-4">
+        <div className="flex w-full flex-col gap-4 px-2">
           {topGroups.map((event, index) => (
-            <div key={index} className="group flex items-center gap-4">
-              {/* Rank number */}
-              <span className="w-8 font-mono text-lg text-gray-500">
+            <div key={index} className="group flex items-center gap-3">
+              <span className="w-5 font-mono text-xs text-gray-500">
                 {(index + 1).toString().padStart(2, "0")}
               </span>
 
               <div className="min-w-0 flex-1">
-                {/* Name and count */}
-                <div className="mb-2 flex items-end justify-between gap-4">
-                  <span className="truncate text-xl font-bold transition-colors group-hover:text-[#1ed760]">
+                <div className="mb-1 flex items-end justify-between gap-2">
+                  <span className="truncate text-base font-bold transition-colors group-hover:text-[#1ed760]">
                     {event.name}
                   </span>
-
-                  <span className="font-mono text-sm font-medium text-gray-400">
-                    {event.events} <span className="text-xs uppercase opacity-50">stk</span>
+                  <span className="font-mono text-xs font-medium text-gray-400">
+                    {event.events} <span className="text-[10px] uppercase opacity-50">stk</span>
                   </span>
                 </div>
-
-                {/* Progress bar */}
-                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-800">
+                <div className="h-1 w-full overflow-hidden rounded-full bg-gray-800">
                   <div
                     className="h-full bg-gradient-to-r from-white to-[#1ed760] transition-all duration-1000 ease-out"
                     style={{
@@ -334,7 +328,7 @@ function BestComment() {
     <Slide>
       <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#1c1c1c] p-10">
         <div className="z-10 flex max-w-4xl flex-col items-center text-center">
-          <p className="mb-14 text-[10px] font-bold tracking-[0.7em] text-white/30 uppercase">
+          <p className="mb-14 text-[10px] font-bold tracking-[0.7em] text-balance text-white/30 uppercase">
             Kommentaren med flest replies
           </p>
 
@@ -343,7 +337,7 @@ function BestComment() {
               &ldquo;
             </span>
 
-            <h2 className="relative z-10 text-3xl leading-[1.4] font-light tracking-tight text-white/85 italic md:text-5xl lg:text-6xl">
+            <h2 className="relative z-10 text-3xl leading-[1.4] font-light tracking-tight text-balance text-white/85 italic md:text-5xl lg:text-6xl">
               {BEST_COMMENT.name}
             </h2>
 
@@ -503,8 +497,7 @@ function TotalUsers() {
   );
 }
 
-function TakkForNaa() {
-  const { scrollToSlide } = useScroller();
+function TakkForNaa({ onRestart }: { onRestart: () => void }) {
   return (
     <Slide>
       <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-black p-8 text-center text-white">
@@ -530,7 +523,7 @@ function TakkForNaa() {
             Klar for mer?
           </GradientText>
 
-          <div className="max-w-md">
+          <div className="h-12 max-w-md">
             <TextType
               className="text-lg font-medium text-white/70 md:text-xl"
               text={["Lykke til i 2026. 👋", "Gjør deg klar for et nytt år med echo!"]}
@@ -548,7 +541,7 @@ function TakkForNaa() {
           </div>
 
           <button
-            onClick={() => scrollToSlide(0, true)}
+            onClick={onRestart}
             className="mt-8 cursor-pointer text-xs font-bold tracking-widest text-white/40 uppercase underline-offset-4 transition-colors hover:text-white hover:underline"
           >
             Se echo wrapped på nytt
@@ -561,33 +554,43 @@ function TakkForNaa() {
 
 export default function Wrapped() {
   const [index, setIndex] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
+
+  const handleRestart = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setIndex(0);
+  }, []);
 
   const slides = useMemo(
     () => [
-      <Velkommen key="v" />,
-      <Welcome key="w" />,
-      <NewUsers key="nu" />,
-      <Registrations key="r" />,
-      <TopEventsStack key="t" />,
-      <EventsPerGroup key="e" />,
-      <Posts key="p" />,
-      <Comments key="com" />,
-      <Replies key="rep" />,
-      <Reactions key="re" />,
-      <BestComment key="bc" />,
-      <Beer key="b" />,
-      <Coffee key="c" />,
-      <Jobs key="j" />,
-      <TotalUsers key="tu" />,
-      <TakkForNaa key="takk" />,
+      <Velkommen key={`v-${resetKey}`} />,
+      <Welcome key={`w-${resetKey}`} />,
+      <NewUsers key={`nu-${resetKey}`} />,
+      <Registrations key={`r-${resetKey}`} />,
+      <TopEventsStack key={`t-${resetKey}`} />,
+      <EventsPerGroup key={`e-${resetKey}`} />,
+      <Posts key={`p-${resetKey}`} />,
+      <Comments key={`com-${resetKey}`} />,
+      <Replies key={`rep-${resetKey}`} />,
+      <Reactions key={`re-${resetKey}`} />,
+      <BestComment key={`bc-${resetKey}`} />,
+      <Beer key={`b-${resetKey}`} />,
+      <Coffee key={`c-${resetKey}`} />,
+      <Jobs key={`j-${resetKey}`} />,
+      <TotalUsers key={`tu-${resetKey}`} />,
+      <TakkForNaa key={`takk-${resetKey}`} onRestart={handleRestart} />,
     ],
-    [],
+    [resetKey, handleRestart],
   );
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <Scroller slides={slides} onSlideChange={(newIndex: number) => setIndex(newIndex)} />
-      <NavigationFooter current={index} total={SLIDE_COUNT} />
+      <Scroller
+        key={resetKey}
+        slides={slides}
+        onSlideChange={(newIndex: number) => setIndex(newIndex)}
+      />
+      <NavigationFooter current={index} total={slides.length} />
     </div>
   );
 }

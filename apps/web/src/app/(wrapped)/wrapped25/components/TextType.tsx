@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  createElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ElementType,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ElementType } from "react";
 import { gsap } from "gsap";
 
 interface TextTypeProps {
@@ -110,34 +102,32 @@ const TextType = ({
 
     let timeout: NodeJS.Timeout;
 
-    const currentText = textArray[currentTextIndex];
+    const currentText = textArray[currentTextIndex] ?? "";
     const processedText = reverseMode ? currentText.split("").reverse().join("") : currentText;
 
     const executeTypingAnimation = () => {
       if (isDeleting) {
         if (displayedText === "") {
           setIsDeleting(false);
+
           if (currentTextIndex === textArray.length - 1 && !loop) {
             return;
           }
 
-          if (onSentenceComplete) {
-            onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
-          }
-
-          setCurrentTextIndex((prev) => (prev + 1) % textArray.length);
-          setCurrentCharIndex(0);
-          timeout = setTimeout(() => {}, pauseDuration);
-        } else {
           timeout = setTimeout(() => {
-            setDisplayedText((prev) => prev.slice(0, -1));
-          }, deletingSpeed);
+            if (onSentenceComplete) {
+              onSentenceComplete(currentText, currentTextIndex);
+            }
+            setCurrentTextIndex((prev) => (prev + 1) % textArray.length);
+            setCurrentCharIndex(0);
+          }, pauseDuration);
         }
       } else {
         if (currentCharIndex < processedText.length) {
           timeout = setTimeout(
             () => {
-              setDisplayedText((prev) => prev + processedText[currentCharIndex]);
+              const nextChar = processedText[currentCharIndex] ?? "";
+              setDisplayedText((prev) => prev + nextChar);
               setCurrentCharIndex((prev) => prev + 1);
             },
             variableSpeed ? getRandomSpeed() : typingSpeed,
@@ -155,7 +145,6 @@ const TextType = ({
     } else {
       executeTypingAnimation();
     }
-
     return () => clearTimeout(timeout);
   }, [
     currentCharIndex,
@@ -175,27 +164,33 @@ const TextType = ({
     getRandomSpeed,
   ]);
 
+  const currentSentence = textArray[currentTextIndex] ?? "";
   const shouldHideCursor =
-    hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
+    hideCursorWhileTyping && (currentCharIndex < currentSentence.length || isDeleting);
 
-  return createElement(
-    Component,
-    {
-      ref: containerRef,
-      className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
-      ...props,
-    },
-    <span className="inline" style={{ color: getCurrentTextColor() }}>
-      {displayedText}
-    </span>,
-    showCursor && (
-      <span
-        ref={cursorRef}
-        className={`ml-1 inline-block opacity-100 ${shouldHideCursor ? "hidden" : ""} ${cursorClassName}`}
-      >
-        {cursorCharacter}
+  const Tag = Component;
+
+  return (
+    <Tag
+      ref={containerRef}
+      className={`inline-block tracking-tight whitespace-pre-wrap ${className}`}
+      {...props}
+    >
+      <span className="inline" style={{ color: getCurrentTextColor() }}>
+        {displayedText}
       </span>
-    ),
+
+      {showCursor && (
+        <span
+          ref={cursorRef}
+          className={`ml-1 inline-block opacity-100 ${
+            shouldHideCursor ? "hidden" : ""
+          } ${cursorClassName}`}
+        >
+          {cursorCharacter}
+        </span>
+      )}
+    </Tag>
   );
 };
 

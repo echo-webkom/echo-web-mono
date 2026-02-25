@@ -12,6 +12,7 @@ interface CountUpProps {
   className?: string;
   startWhen?: boolean;
   separator?: string;
+  decimals?: number;
   onStart?: () => void;
   onEnd?: () => void;
 }
@@ -25,6 +26,7 @@ export default function CountUp({
   className = "",
   startWhen = true,
   separator = "",
+  decimals,
   onStart,
   onEnd,
 }: CountUpProps) {
@@ -42,23 +44,32 @@ export default function CountUp({
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
   const getDecimalPlaces = (num: number): number => {
+    if (!isFinite(num)) return 0;
+
     const str = num.toString();
-    if (str.includes(".")) {
-      const decimals = str.split(".")[1];
-      if (parseInt(decimals) !== 0) {
-        return decimals.length;
-      }
+
+    if (str.includes("e")) {
+      const parts = str.split("e");
+      const base = parts[0];
+      const exponent = parts[1];
+
+      const decimals = base ? (base.split(".")[1]?.length ?? 0) : 0;
+      const expValue = exponent ? parseInt(exponent) : 0;
+
+      const count = decimals - expValue;
+      return count > 0 ? count : 0;
     }
-    return 0;
+
+    return str.split(".")[1]?.length ?? 0;
   };
 
-  const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
+  const finalDecimals = decimals ?? Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = String(direction === "down" ? to : from);
+      ref.current.textContent = (direction === "down" ? to : from).toFixed(finalDecimals);
     }
-  }, [from, to, direction]);
+  }, [from, to, direction, finalDecimals]);
 
   useEffect(() => {
     if (isInView && startWhen) {
@@ -89,12 +100,10 @@ export default function CountUp({
   useEffect(() => {
     const unsubscribe = springValue.on("change", (latest) => {
       if (ref.current) {
-        const hasDecimals = maxDecimals > 0;
-
         const options: Intl.NumberFormatOptions = {
           useGrouping: !!separator,
-          minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-          maximumFractionDigits: hasDecimals ? maxDecimals : 0,
+          minimumFractionDigits: finalDecimals,
+          maximumFractionDigits: finalDecimals,
         };
 
         const formattedNumber = Intl.NumberFormat("en-US", options).format(latest);
@@ -106,7 +115,7 @@ export default function CountUp({
     });
 
     return () => unsubscribe();
-  }, [springValue, separator, maxDecimals]);
+  }, [springValue, separator, finalDecimals]);
 
   return <span className={className} ref={ref} />;
 }
