@@ -39,7 +39,13 @@
     "tools:install": "pnpm --filter=uno tools:install"
   },
   "dependencies": {
+<<<<<<< HEAD
     "turbo": "2.8.12",
+=======
+    "html5-qrcode": "^2.3.8",
+    "react-qr-code": "^2.0.18",
+    "turbo": "2.5.8",
+>>>>>>> bbe9d4a2 (installing)
     "typescript": "5.9.3"
   }
 }
