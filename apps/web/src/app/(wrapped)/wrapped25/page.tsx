@@ -7,8 +7,7 @@ import CountUp from "./components/CountUp";
 import GradientText from "./components/GradientText";
 import ShinyText from "./components/ShinyText";
 import TextType from "./components/TextType";
-import Scroller from "./Scroller";
-import { useScroller } from "./Scroller";
+import Scroller, { useScroller } from "./Scroller";
 import { Slide } from "./Slide";
 import {
   BEER,
@@ -59,9 +58,7 @@ const NavigationFooter = ({ current, total }: NavigationFooterProps) => (
         <div
           key={i}
           className={`h-1 rounded-full transition-all duration-200 ease-out ${
-            i === current
-              ? "w-8 bg-white opacity-100"
-              : "w-1.5 bg-white opacity-40"
+            i === current ? "w-8 bg-white opacity-100" : "w-1.5 bg-white opacity-40"
           }`}
         />
       ))}
@@ -89,17 +86,17 @@ function Velkommen() {
           </p>
 
           <div className="relative mb-8">
-          <GradientText
-            colors={["#d946ef", "#8b5cf6", "#3b82f6", "#d946ef"]}
-            animationSpeed={4}
-            showBorder={true}
-            className="px-4 py-2 text-center text-[clamp(2.5rem,12vw,4.5rem)] leading-[0.9] font-black tracking-tighter uppercase"
-          >
-            echo <br /> wrapped
-          </GradientText>
-          <div className="absolute right-2 -bottom-2 rotate-12 rounded border border-white/20 bg-purple-950 px-3 py-1 text-xl font-black text-white shadow-2xl backdrop-blur-md">
-            2025
-          </div>
+            <GradientText
+              colors={["#d946ef", "#8b5cf6", "#3b82f6", "#d946ef"]}
+              animationSpeed={4}
+              showBorder={true}
+              className="px-4 py-2 text-center text-[clamp(2.5rem,12vw,4.5rem)] leading-[0.9] font-black tracking-tighter uppercase"
+            >
+              echo <br /> wrapped
+            </GradientText>
+            <div className="absolute right-2 -bottom-2 rotate-12 rounded border border-white/20 bg-purple-950 px-3 py-1 text-xl font-black text-white shadow-2xl backdrop-blur-md">
+              2025
+            </div>
           </div>
 
           <div className="mt-4 h-12">
@@ -117,9 +114,7 @@ function Velkommen() {
             className="group mt-12 flex items-center gap-3 rounded-full border border-white/10 bg-white px-8 py-3 text-base font-bold text-black transition-all hover:scale-105 hover:bg-purple-500 hover:text-white"
           >
             Start reisen
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
         </div>
       </div>
@@ -174,11 +169,7 @@ const StatSlide = ({
         </p>
 
         <div className="mb-6 flex h-12 items-center">
-          <ShinyText
-            text={label}
-            speed={3}
-            className="text-lg font-bold text-white"
-          />
+          <ShinyText text={label} speed={3} className="text-lg font-bold text-white" />
         </div>
 
         <div className="flex w-full flex-col items-center transition-transform duration-700 hover:scale-105">
@@ -190,9 +181,7 @@ const StatSlide = ({
             className="text-[clamp(4rem,12vh,8rem)] leading-none font-black tracking-tighter whitespace-nowrap text-white drop-shadow-2xl"
           />
           {unit && (
-            <span
-              className={`mt-2 text-xl font-black tracking-widest uppercase ${unitColor}`}
-            >
+            <span className={`mt-2 text-xl font-black tracking-widest uppercase ${unitColor}`}>
               {unit}
             </span>
           )}
@@ -231,18 +220,14 @@ function TopEventsStack() {
   return (
     <Slide>
       <div className="relative flex h-full w-full flex-col overflow-hidden bg-black p-6 text-white md:p-12">
-        <BackgroundBlob
-          color="bg-purple-900"
-          className="-top-20 -right-20 h-96 w-96 opacity-20"
-        />
+        <BackgroundBlob color="bg-purple-900" className="-top-20 -right-20 h-96 w-96 opacity-20" />
         <div className="z-10 mt-4 mb-8">
           <p className="mb-2 text-sm font-bold tracking-[0.3em] text-[#1ed760] uppercase">
             Topplisten
           </p>
-        <h2 className="text-[clamp(1.8rem,8vw,3.2rem)] leading-[0.9] font-black tracking-tighter uppercase break-words">
-          Mest populære <br />{" "}
-          <span className="text-gray-500 italic">arrangementer</span>
-        </h2>
+          <h2 className="text-[clamp(1.8rem,8vw,3.2rem)] leading-[0.9] font-black tracking-tighter break-words uppercase">
+            Mest populære <br /> <span className="text-gray-500 italic">arrangementer</span>
+          </h2>
         </div>
         <div className="z-10 flex flex-grow flex-col justify-center gap-2 md:gap-4">
           {TOP_10_EVENTS.slice(0, 5).map((event, index) => (
@@ -264,10 +249,7 @@ function TopEventsStack() {
                     {event.name}
                   </h3>
                   <p className="font-mono text-sm text-gray-400">
-                    <span className="font-bold text-white">
-                      {event.registrations}
-                    </span>{" "}
-                    påmeldinger
+                    <span className="font-bold text-white">{event.registrations}</span> påmeldinger
                   </p>
                 </div>
               </div>
@@ -280,38 +262,44 @@ function TopEventsStack() {
 }
 
 function EventsPerGroup() {
-  const topGroups = EVENTS_PER_GROUP.slice(0, 10);
+  const topGroups = EVENTS_PER_GROUP.slice(0, 7);
 
   return (
     <Slide>
-      <div className="flex h-full w-full flex-col items-center bg-[#121212] p-6 pt-12 text-white overflow-hidden">
+      <div className="flex h-full w-full flex-col items-center overflow-hidden bg-[#121212] p-8 pt-14 text-white">
         <div className="z-10 w-full">
-          <p className="mb-2 text-center text-[10px] font-bold tracking-[0.3em] text-[#1ed760] uppercase">
+          <p className="mb-3 text-center text-sm font-bold tracking-[0.3em] text-[#1ed760] uppercase">
             Produktivitets-indeks
           </p>
-          <h2 className="mb-10 text-center text-2xl font-black uppercase tracking-tight">
-            Hvem arrangerte <br /> <span className="text-gray-500">mest i 2025?</span>
+
+          <h2 className="mb-10 text-center text-3xl font-black tracking-tight uppercase">
+            Hvem arrangerte <br />
+            <span className="text-gray-500">mest i 2025?</span>
           </h2>
         </div>
 
-        <div className="flex w-full flex-col gap-4 px-2">
+        <div className="flex w-full flex-col gap-6 px-4">
           {topGroups.map((event, index) => (
-            <div key={index} className="group flex items-center gap-3">
-              <span className="w-5 font-mono text-xs text-gray-500">
+            <div key={index} className="group flex items-center gap-4">
+              {/* Rank number */}
+              <span className="w-8 font-mono text-lg text-gray-500">
                 {(index + 1).toString().padStart(2, "0")}
               </span>
 
-              <div className="flex-1 min-w-0">
-                <div className="mb-1 flex items-end justify-between gap-2">
-                  <span className="truncate text-base font-bold transition-colors group-hover:text-[#1ed760]">
+              <div className="min-w-0 flex-1">
+                {/* Name and count */}
+                <div className="mb-2 flex items-end justify-between gap-4">
+                  <span className="truncate text-xl font-bold transition-colors group-hover:text-[#1ed760]">
                     {event.name}
                   </span>
-                  <span className="font-mono text-xs font-medium text-gray-400">
-                    {event.events} <span className="text-[10px] opacity-50 uppercase">stk</span>
+
+                  <span className="font-mono text-sm font-medium text-gray-400">
+                    {event.events} <span className="text-xs uppercase opacity-50">stk</span>
                   </span>
                 </div>
 
-                <div className="h-1 w-full overflow-hidden rounded-full bg-gray-800">
+                {/* Progress bar */}
+                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-800">
                   <div
                     className="h-full bg-gradient-to-r from-white to-[#1ed760] transition-all duration-1000 ease-out"
                     style={{
@@ -360,15 +348,14 @@ function BestComment() {
             </h2>
 
             <span className="absolute -right-2 -bottom-24 font-serif text-[100px] text-white/5 italic">
-             &rdquo;
+              &rdquo;
             </span>
           </div>
 
           <div className="mt-20 flex items-center gap-6">
             <div className="h-[1px] w-6 bg-white/10" />
             <p className="font-mono text-[11px] tracking-[0.2em] text-white/40">
-              {BEST_COMMENT.replies} folk var spesielt interessert i denne
-              kommentaren
+              {BEST_COMMENT.replies} folk var spesielt interessert i denne kommentaren
             </p>
             <div className="h-[1px] w-6 bg-white/10" />
           </div>
@@ -400,9 +387,7 @@ function Coffee() {
               onEnd={() => setDone(true)}
               className="text-[clamp(4rem,14vh,9rem)] leading-none font-black tracking-tighter whitespace-nowrap text-[#d4a574] drop-shadow-lg"
             />
-            <span className="mt-2 text-2xl font-bold tracking-widest uppercase">
-              kopper
-            </span>
+            <span className="mt-2 text-2xl font-bold tracking-widest uppercase">kopper</span>
           </div>
         </div>
       </div>
@@ -504,9 +489,7 @@ function TotalUsers() {
   return (
     <Slide>
       <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-black p-8 text-center text-white">
-        <h2 className="mb-8 text-lg font-bold text-gray-400">
-          echo-familien teller nå...
-        </h2>
+        <h2 className="mb-8 text-lg font-bold text-gray-400">echo-familien teller nå...</h2>
         <CountUp
           from={0}
           to={TOTAL_USERS}
@@ -550,10 +533,7 @@ function TakkForNaa() {
           <div className="max-w-md">
             <TextType
               className="text-lg font-medium text-white/70 md:text-xl"
-              text={[
-                "Lykke til i 2026. 👋",
-                "Gjør deg klar for et nytt år med echo!",
-              ]}
+              text={["Lykke til i 2026. 👋", "Gjør deg klar for et nytt år med echo!"]}
               typingSpeed={60}
               pauseDuration={2000}
               showCursor={true}
@@ -601,7 +581,7 @@ export default function Wrapped() {
       <TotalUsers key="tu" />,
       <TakkForNaa key="takk" />,
     ],
-    []
+    [],
   );
 
   return (
