@@ -224,7 +224,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             Du må fylle ut brukeren din og akkseptere de etiske retningslinjene for å melde deg på.
           </p>
           <div className="group flex items-center">
-            <Link href="/auth/profil" className="hover:underline">
+            <Link href={`/auth/user/${user.id}`} className="hover:underline">
               Klikk her for å fullføre
               <ArrowRight className="ml-2 inline h-4 w-4 transition-transform group-hover:translate-x-2" />
             </Link>
