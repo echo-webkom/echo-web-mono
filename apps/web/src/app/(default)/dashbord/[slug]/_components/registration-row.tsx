@@ -147,7 +147,7 @@ export const RegistrationRow = ({
               <p className="text-muted-foreground text-sm">
                 <span className="font-semibold">Forrige status:</span>{" "}
                 {getRegistrationStatus(
-                  { ...registration, status: registration.prevStatus },
+                  { ...registration, status: registration.prevStatus, prevStatus: null },
                   happeningDate,
                 )}
               </p>
