@@ -1180,11 +1180,6 @@ const docTemplate = `{
         },
         "/happenings/{id}/spot-ranges": {
             "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
                 "description": "Retrieves all spot ranges for a specific happening.",
                 "produces": [
                     "application/json"

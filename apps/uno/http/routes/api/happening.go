@@ -170,7 +170,6 @@ func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 // @Success      200  {array}  dto.SpotRangeResponse  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      404  {string}  string  "Not Found"
-// @Security     AdminAPIKey
 // @Router       /happenings/{id}/spot-ranges [get]
 func (h *happenings) getHappeningSpotRanges(ctx *handler.Context) error {
 	// Extract the happening ID from the URL path

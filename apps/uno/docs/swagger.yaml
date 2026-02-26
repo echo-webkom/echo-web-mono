@@ -1260,8 +1260,6 @@ paths:
           description: Not Found
           schema:
             type: string
-      security:
-      - AdminAPIKey: []
       summary: Get happening spot ranges
       tags:
       - happenings
