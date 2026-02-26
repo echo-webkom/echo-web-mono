@@ -4,6 +4,8 @@ package postgres
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/record"
@@ -27,7 +29,7 @@ func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.
 	`
 
 	err := p.db.SelectContext(ctx, &dbModels, query)
-	if err != nil {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		p.logger.Error(ctx, "failed to get all users to shopping list items",
 			"error", err,
 		)
