@@ -27,9 +27,9 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux.Handle("GET", "/{id}/registrations/count", h.getHappeningRegistrationsCount)
 	mux.Handle("GET", "/registrations/count", h.getHappeningRegistrationsCountMany)
 	mux.Handle("GET", "/{id}/questions", h.getHappeningQuestions)
+	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges)
 
 	// Admin
-	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges, admin)
 	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
 	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
 
