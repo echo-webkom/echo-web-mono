@@ -34,16 +34,16 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
 ### Applikasjoner (`/apps`)
 
-- **web** - Hovednettsiden bygget med Next.js 16, React 19, Tailwind CSS og NextAuth.js
+- **web** - Hovednettsiden bygget med Next.js 16, React 19 og Tailwind CSS
 - **uno** - Backend API bygget i Go med Chi-router og hexagonal arkitektur
-- **cms** - Sanity Studio for innholdsadministrasjon
+- **cms** - Sanity Studio for administrering av innhold på nettsiden
 
 ### Delte pakker (`/packages`)
 
 - **db** - Databaseskjemaer, migrasjoner og verktøy med Drizzle ORM og PostgreSQL
 - **sanity** - Delte Sanity-spørringer og verktøy
-- **lib** - Felles verktøy og forretningslogikk
-- **email** - E-postmaler og sending-funksjonalitet
+- **lib** - Felles funksjoner og variabler for **web** og **cms**.
+- **email** - E-postmaler med `react-email`
 - **seeder** - Database seeding-verktøy
 
 ### Testing (`/playwright`)
@@ -57,6 +57,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
    - [pnpm](https://pnpm.io/installation)
    - [docker](https://docs.docker.com/engine/install/)
    - [cenv](https://github.com/echo-webkom/cenv)
+   - [go](https://go.dev/doc/install)
 
 2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
 
@@ -87,7 +88,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 6. **Start utviklingsmiljøet**
 
    ```sh
-    pnpm dev
+   pnpm dev
    ```
 
 Sidene som starter er:
