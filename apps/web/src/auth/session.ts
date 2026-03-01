@@ -6,7 +6,13 @@ import { jwtVerify, SignJWT } from "jose";
 import { sessions } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
-const secret = new TextEncoder().encode(process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET);
+const rawSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+
+if (!rawSecret) {
+  console.error("AUTH_SECRET environment variable is not set");
+}
+
+const secret = new TextEncoder().encode(rawSecret);
 
 export const SESSION_COOKIE_NAME = "session-token";
 
@@ -107,29 +113,38 @@ export const getProfileOwner = cache(async (userId: string) => {
 });
 
 export const auth = cache(async () => {
-  const session = await getSession();
+  const sessionId = await getSessionCookie();
 
-  if (!session) {
+  if (!sessionId) {
     return null;
   }
 
-  const user = await db.query.users.findFirst({
-    where: (user) => eq(user.id, session.user.id),
+  const session = await db.query.sessions.findFirst({
+    where: (session) => eq(session.sessionToken, sessionId),
     with: {
-      degree: true,
-      banInfo: true,
-      memberships: {
+      user: {
         with: {
-          group: true,
+          degree: true,
+          banInfo: true,
+          memberships: {
+            with: {
+              group: true,
+            },
+          },
         },
       },
     },
   });
 
-  if (!user) {
-    console.error(`User ${session.user.id} not found in database`);
+  if (!session) {
     return null;
   }
 
-  return user;
+  if (session.expires && session.expires < new Date()) {
+    console.warn(`Session ${sessionId} has expired`);
+    await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+    return null;
+  }
+
+  return session.user;
 });

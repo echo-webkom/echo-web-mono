@@ -15,6 +15,9 @@ export async function GET() {
   cookieStore.set("feide_oauth_state", state, {
     path: "/",
     maxAge: 60 * 10, // 10 minutes
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
   return NextResponse.redirect(url, {

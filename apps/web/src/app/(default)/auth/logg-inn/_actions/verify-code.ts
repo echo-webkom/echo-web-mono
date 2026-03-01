@@ -120,6 +120,7 @@ export async function verifyCode(email: string, code: string): Promise<VerifyCod
       expires: existingSession.expires,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     });
 
     return { success: true };
