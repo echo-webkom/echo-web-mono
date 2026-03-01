@@ -1136,48 +1136,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/happenings/{id}/registrations/count": {
-            "get": {
-                "description": "Retrieves the count of registrations for a specific happening.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "happenings"
-                ],
-                "summary": "Get happening registrations count",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.RegistrationCount"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/happenings/{id}/spot-ranges": {
             "get": {
                 "description": "Retrieves all spot ranges for a specific happening.",

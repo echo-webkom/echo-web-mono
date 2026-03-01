@@ -361,49 +361,6 @@ func TestRegisterForHappening(t *testing.T) {
 	}
 }
 
-func TestGetHappeningRegistrationsCount(t *testing.T) {
-	mockHappeningRepo := mocks.NewHappeningRepo(t)
-	mockUserRepo := mocks.NewUserRepo(t)
-	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
-	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
-
-	happening := testutil.NewFakeStruct(func(h *model.Happening) {
-		h.ID = "happening123"
-	})
-	mockHappeningRepo.EXPECT().
-		GetHappeningById(mock.Anything, "happening123").
-		Return(happening, nil).
-		Once()
-	mockHappeningRepo.EXPECT().
-		GetHappeningSpotRanges(mock.Anything, "happening123").
-		Return([]model.SpotRange{}, nil).
-		Once()
-	mockHappeningRepo.EXPECT().
-		GetHappeningRegistrations(mock.Anything, "happening123").
-		Return([]model.HappeningRegistration{}, nil).
-		Once()
-
-	happeningService := service.NewHappeningService(
-		mockHappeningRepo,
-		mockUserRepo,
-		mockRegistrationRepo,
-		mockBanInfoRepo,
-	)
-
-	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
-
-	r := httptest.NewRequest(http.MethodGet, "/happening123/registrations/count", nil)
-	r.SetPathValue("id", "happening123")
-	w := httptest.NewRecorder()
-
-	ctx := handler.NewContext(w, r)
-	mux.ServeHTTP(ctx, r)
-	err := ctx.GetError()
-
-	assert.NoError(t, err)
-	assert.Equal(t, http.StatusOK, ctx.Status())
-}
-
 func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 	mockHappeningRepo := mocks.NewHappeningRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)

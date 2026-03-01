@@ -1206,34 +1206,6 @@ paths:
       summary: Get happening registrations
       tags:
       - happenings
-  /happenings/{id}/registrations/count:
-    get:
-      deprecated: true
-      description: Retrieves the count of registrations for a specific happening.
-      parameters:
-      - description: Happening ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/uno_http_dto.RegistrationCount'
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "404":
-          description: Not Found
-          schema:
-            type: string
-      summary: Get happening registrations count
-      tags:
-      - happenings
   /happenings/{id}/spot-ranges:
     get:
       description: Retrieves all spot ranges for a specific happening.

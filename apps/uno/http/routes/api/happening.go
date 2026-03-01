@@ -24,7 +24,6 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 
 	mux.Handle("GET", "/", h.getHappenings)
 	mux.Handle("GET", "/{id}", h.getHappeningById)
-	mux.Handle("GET", "/{id}/registrations/count", h.getHappeningRegistrationsCount)
 	mux.Handle("GET", "/registrations/count", h.getHappeningRegistrationsCountMany)
 	mux.Handle("GET", "/{id}/questions", h.getHappeningQuestions)
 	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges)
@@ -78,30 +77,6 @@ func (h *happenings) getHappeningById(ctx *handler.Context) error {
 	// Convert domain model to DTO
 	response := new(dto.HappeningResponse).FromDomain(&hap)
 	return ctx.JSON(response)
-}
-
-// getHappeningRegistrationsCount returns the count of registrations for a happening
-// @Summary	     Get happening registrations count
-// @Description  Retrieves the count of registrations for a specific happening.
-// @Tags         happenings
-// @Produce      json
-// @Param        id   path      string  true  "Happening ID"
-// @Success      200  {object}  dto.RegistrationCount  "OK"
-// @Failure      400  {string}  string "Bad Request"
-// @Failure      404  {string}  string "Not Found"
-// @Router       /happenings/{id}/registrations/count [get]
-// @deprecated
-func (h *happenings) getHappeningRegistrationsCount(ctx *handler.Context) error {
-	// Extract the happening ID from the URL path
-	id := ctx.PathValue("id")
-
-	grp, err := h.happeningService.GetRegisterCount(ctx.Context(), id)
-	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
-	}
-
-	dtoGrp := (dto.RegistrationCount{}).FromDomain(grp)
-	return ctx.JSON(dtoGrp)
 }
 
 // getHappeningRegistrationsCountMany returns the count of registrations for a happenings
