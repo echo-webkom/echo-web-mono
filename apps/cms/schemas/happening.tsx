@@ -145,7 +145,7 @@ export default defineType({
       name: "hideRegistrations",
       title: "Skjul påmelding",
       type: "boolean",
-      description: "Skjul påmeldingsknappen for arrangementet.",
+      description: "Skjul hvem som er påmeldt for arrangementet.",
       initialValue: false,
       options: {
         layout: "switch",
