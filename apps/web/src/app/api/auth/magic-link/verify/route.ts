@@ -91,6 +91,7 @@ export async function GET(request: NextRequest) {
       expires: existingSession.expires,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     });
 
     return NextResponse.redirect(new URL("/", request.url));

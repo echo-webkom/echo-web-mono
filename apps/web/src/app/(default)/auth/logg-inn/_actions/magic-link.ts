@@ -44,7 +44,8 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
 
     // Check if user exists with this email or alternative email
     const existingUser = await db.query.users.findFirst({
-      where: (user, { eq, or }) => or(eq(user.email, email), eq(user.alternativeEmail, email)),
+      where: (user, { eq, or }) =>
+        or(eq(user.email, normalizedEmail), eq(user.alternativeEmail, normalizedEmail)),
     });
 
     if (!existingUser) {
@@ -78,7 +79,7 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = crypto.randomInt(100000, 1000000).toString();
     const expires = new Date(Date.now() + EXPIRY_MINUTES * 60 * 1000);
     await db.delete(verificationTokens).where(eq(verificationTokens.identifier, targetEmail));
     await db.insert(verificationTokens).values({

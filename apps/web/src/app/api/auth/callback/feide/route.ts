@@ -47,10 +47,7 @@ async function isAllowedToSignIn(
   );
 
   const id = nanoid();
-  await signInAttempt.set(id, {
-    email,
-    error,
-  });
+  await signInAttempt.set(id, { email, error }, addDays(new Date(), 7));
 
   const url = new URL(BASE_URL);
   url.pathname = "/auth/logg-inn";
@@ -78,9 +75,18 @@ export async function GET(request: Request) {
     });
   }
 
-  const tokens = await feide.validateAuthorizationCode(code);
+  let tokens;
+  let userInfo;
+  try {
+    tokens = await feide.validateAuthorizationCode(code);
+    userInfo = await feide.getUserInfo(tokens.accessToken());
+  } catch (e) {
+    console.error("Feide token exchange failed:", e);
+    return NextResponse.redirect(`${BASE_URL}/auth/logg-inn?error=token_exchange_failed`, {
+      status: 302,
+    });
+  }
 
-  const userInfo = await feide.getUserInfo(tokens.accessToken());
   const allowedToSignIn = await isAllowedToSignIn(userInfo, tokens.accessToken());
   if (typeof allowedToSignIn === "string") {
     // If allowToSignIn is a string, it means we should redirect to a relative URL
@@ -140,6 +146,7 @@ export async function GET(request: Request) {
       expires: expiresAt,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     });
 
     return NextResponse.redirect(BASE_URL, {
@@ -179,6 +186,7 @@ export async function GET(request: Request) {
     expires: existingSession.expires,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
   });
 
   return NextResponse.redirect(BASE_URL, {

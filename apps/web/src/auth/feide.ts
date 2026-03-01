@@ -59,4 +59,11 @@ class Feide {
   }
 }
 
-export const feide = new Feide(process.env.FEIDE_CLIENT_ID!, process.env.FEIDE_CLIENT_SECRET!);
+const feideClientId = process.env.FEIDE_CLIENT_ID;
+const feideClientSecret = process.env.FEIDE_CLIENT_SECRET;
+
+if (!feideClientId || !feideClientSecret) {
+  console.error("FEIDE_CLIENT_ID and FEIDE_CLIENT_SECRET environment variables must be set");
+}
+
+export const feide = new Feide(feideClientId!, feideClientSecret!);

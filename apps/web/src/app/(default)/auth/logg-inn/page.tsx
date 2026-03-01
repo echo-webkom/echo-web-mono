@@ -37,6 +37,8 @@ export default async function SignInPage(props: Props) {
         return "Du må bekrefte din alternative e-post før du kan logge inn med den. Sjekk din innboks for verifiseringsepost.";
       case "verification-failed":
         return "Innlogging feilet. Vennligst prøv igjen.";
+      case "token_exchange_failed":
+        return "Kunne ikke fullføre innlogging med Feide. Vennligst prøv igjen.";
       default:
         return null;
     }
