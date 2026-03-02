@@ -9,6 +9,7 @@ import (
 	"uno/domain/service"
 	"uno/http"
 	"uno/infrastructure/external"
+	"uno/infrastructure/decorator"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -80,6 +81,9 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
+
+	// Initialize decorators
+	registrationRepo = decorator.NewRaffleDecorator(registrationRepo, notif)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
