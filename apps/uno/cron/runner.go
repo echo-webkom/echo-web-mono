@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 	"uno/domain/port"
+	"uno/infrastructure/logging"
 
 	gocron "github.com/robfig/cron/v3"
 )
@@ -29,11 +30,12 @@ type Runner struct {
 }
 
 func New(logger port.Logger, location *time.Location) *Runner {
-	cronLogger := &loggerAdapter{logger: logger.With("component", "cron")}
+	cronLogger := logging.NewCronLogger(logger.With("component", "cron"))
 	return &Runner{
 		logger: logger,
 		cron: gocron.New(
 			gocron.WithLocation(location),
+			gocron.WithLogger(cronLogger),
 			gocron.WithChain(
 				gocron.Recover(cronLogger),
 				gocron.SkipIfStillRunning(cronLogger),
@@ -110,16 +112,4 @@ func (j scheduledJob) Run() {
 		return
 	}
 	j.logger.Info(ctx, "cron job completed", "name", j.name, "duration", time.Since(start))
-}
-
-type loggerAdapter struct {
-	logger port.Logger
-}
-
-func (l *loggerAdapter) Info(msg string, keysAndValues ...any) {
-	l.logger.Info(context.Background(), msg, keysAndValues...)
-}
-
-func (l *loggerAdapter) Error(err error, msg string, keysAndValues ...any) {
-	l.logger.Error(context.Background(), msg, append(keysAndValues, "error", err)...)
 }
