@@ -117,14 +117,9 @@ type loggerAdapter struct {
 }
 
 func (l *loggerAdapter) Info(msg string, keysAndValues ...any) {
-	args := make([]any, 0, len(keysAndValues))
-	args = append(args, keysAndValues...)
-	l.logger.Info(context.Background(), msg, args...)
+	l.logger.Info(context.Background(), msg, keysAndValues...)
 }
 
 func (l *loggerAdapter) Error(err error, msg string, keysAndValues ...any) {
-	args := make([]any, 0, len(keysAndValues)+2)
-	args = append(args, keysAndValues...)
-	args = append(args, "error", err)
-	l.logger.Error(context.Background(), msg, args...)
+	l.logger.Error(context.Background(), msg, append(keysAndValues, "error", err)...)
 }

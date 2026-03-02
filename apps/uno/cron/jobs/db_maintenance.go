@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/infrastructure/postgres"
 )
 
 type CleanupSensitiveQuestionsJob struct {
@@ -72,33 +71,23 @@ func (j *ResetUserYearsJob) Run(ctx context.Context) error {
 }
 
 type KVCleanupJob struct {
-	db     *postgres.Database
+	kvRepo port.KVRepo
 	logger port.Logger
 }
 
 func (j *KVCleanupJob) Run(ctx context.Context) error {
-	query := `--sql
-		DELETE FROM kv
-		WHERE ttl < NOW()
-	`
-
-	result, err := j.db.ExecContext(ctx, query)
+	rowsAffected, err := j.kvRepo.DeleteExpired(ctx)
 	if err != nil {
-		return fmt.Errorf("job kv cleanup: execute query: %w", err)
-	}
-
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return fmt.Errorf("job kv cleanup: get rows affected: %w", err)
+		return fmt.Errorf("job kv cleanup: %w", err)
 	}
 
 	j.logger.Info(ctx, fmt.Sprintf("Deleted %d expired key-value pairs", rowsAffected))
 	return nil
 }
 
-func NewCleanupExpiredKV(db *postgres.Database, logger port.Logger) *KVCleanupJob {
+func NewCleanupExpiredKV(kvRepo port.KVRepo, logger port.Logger) *KVCleanupJob {
 	return &KVCleanupJob{
-		db:     db,
+		kvRepo: kvRepo,
 		logger: logger,
 	}
 }

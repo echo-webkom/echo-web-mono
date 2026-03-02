@@ -42,6 +42,10 @@ func (j *CloseProgrammerBarJob) Run(ctx context.Context) error {
 	}()
 	_, _ = io.Copy(io.Discard, resp.Body)
 
-	j.logger.Info(ctx, "Attempted to close bar", "status", resp.StatusCode)
+	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
+		j.logger.Warn(ctx, "unexpected status when closing bar", "status", resp.StatusCode)
+	} else {
+		j.logger.Info(ctx, "closed bar", "status", resp.StatusCode)
+	}
 	return nil
 }

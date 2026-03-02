@@ -18,7 +18,7 @@ import (
 )
 
 func RunCron() {
-	cfg := config.Load()
+	cfg := config.LoadCronConfig()
 	notif := notifier.New()
 
 	logger := logging.NewWithConfig(cfg.Environment)
@@ -31,7 +31,6 @@ func RunCron() {
 	})
 	if err != nil {
 		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
-		return
 	}
 	defer func() {
 		if err := shutdownTelemetry(context.Background()); err != nil {
@@ -50,11 +49,6 @@ func RunCron() {
 		}
 	}()
 
-	if !cfg.CronEnabled {
-		logger.Info(context.Background(), "cron worker disabled via config")
-		return
-	}
-
 	location, err := time.LoadLocation(cfg.CronTimezone)
 	if err != nil {
 		logger.Error(context.Background(), "invalid cron timezone", "timezone", cfg.CronTimezone, "error", err)
@@ -70,6 +64,7 @@ func RunCron() {
 	dotRepo := postgres.NewDotRepo(db, logger)
 	banInfoRepo := postgres.NewBanInfoRepo(db, logger)
 	userRepo := postgres.NewUserRepo(db, logger)
+	kvRepo := postgres.NewKVRepo(db, logger)
 	questionService := service.NewQuestionService(questionRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	userService := service.NewUserService(userRepo)
@@ -96,7 +91,7 @@ func RunCron() {
 	runner.AddSchedule(cronrunner.Schedule{
 		Name: "cleanup_expired_kv",
 		Spec: "0 0 * * *",
-		Job:  jobs.NewCleanupExpiredKV(db, logger),
+		Job:  jobs.NewCleanupExpiredKV(kvRepo, logger),
 	})
 	// Job to close programmer bar every day at 2am.
 	runner.AddSchedule(cronrunner.Schedule{

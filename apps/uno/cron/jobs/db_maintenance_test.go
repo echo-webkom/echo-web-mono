@@ -5,7 +5,6 @@ import (
 	"testing"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
-	"uno/infrastructure/postgres"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -121,6 +120,7 @@ func TestResetUserYearsRunError(t *testing.T) {
 }
 
 func TestNewCleanupExpiredKV(t *testing.T) {
-	job := NewCleanupExpiredKV(&postgres.Database{}, &testutil.NoOpLogger{})
+	kvRepo := mocks.NewKVRepo(t)
+	job := NewCleanupExpiredKV(kvRepo, &testutil.NoOpLogger{})
 	assert.NotNil(t, job)
 }

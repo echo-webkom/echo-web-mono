@@ -11,13 +11,19 @@ type Config struct {
 	DatabaseURL      string
 	ApiPort          string
 	AdminAPIKey      string
-	CronTimezone     string
-	CronEnabled      bool
 	OTLPEndpoint     string
 	OTLPHeaders      string
 	Environment      string
 	ServiceName      string
 	ServiceVersion   string
+	TelemetryEnabled bool
+}
+
+type CronConfig struct {
+	DatabaseURL      string
+	CronTimezone     string
+	Environment      string
+	ServiceName      string
 	TelemetryEnabled bool
 }
 
@@ -34,12 +40,28 @@ func Load() *Config {
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
 		ApiPort:          toGoPort(os.Getenv("UNO_API_PORT")),
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
-		CronTimezone:     getEnvOrDefault("CRON_TIMEZONE", "UTC"),
-		CronEnabled:      getEnvOrDefault("CRON_ENABLED", "true") == "true",
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
 		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
+	}
+}
+
+func LoadCronConfig() *CronConfig {
+	environment := getEnvOrDefault("ENVIRONMENT", "development")
+
+	if environment == "development" {
+		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
+			log.Println(err)
+		}
+	}
+
+	return &CronConfig{
+		DatabaseURL:      os.Getenv("DATABASE_URL"),
+		CronTimezone:     getEnvOrDefault("CRON_TIMEZONE", "UTC"),
+		Environment:      environment,
+		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
+		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
 	}
 }
 

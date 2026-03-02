@@ -20,3 +20,4 @@ packages:
       HappeningRepo:
       RegistrationRepo:
       QuestionRepo:
+      KVRepo:
