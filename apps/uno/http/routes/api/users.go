@@ -24,10 +24,10 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 	mux := router.NewMux()
 
 	// Public routes
-	mux.Handle("GET", "/", u.getUsers, admin)
 	mux.Handle("GET", "/{id}/image", u.getUserImage)
 
 	// Admin routes
+	mux.Handle("GET", "/", u.getUsers, admin)
 	mux.Handle("GET", "/{id}", u.getUserByID, admin)
 	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
 	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
@@ -47,7 +47,7 @@ func (u *users) getUsers(ctx *handler.Context) error {
 	// Get all users from the database
 	users, err := u.userService.UserRepo().GetAllUsers(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Map users to user responses
@@ -70,22 +70,22 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {
-		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
 	// Get user from the database
 	user, err := u.userService.UserRepo().GetUserByID(ctx.Context(), userID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
+			return ctx.NotFound(errors.New("user not found"))
 		}
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Map user to user response
 	userResponses := dto.UsersToUserResponses([]model.User{user})
 	if len(userResponses) == 0 {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 	return ctx.JSON(userResponses[0])
 }
@@ -106,7 +106,7 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {
-		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
 	size, _ := strconv.Atoi(ctx.R.URL.Query().Get("size"))
@@ -115,7 +115,7 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID, size)
 	if err != nil {
 		if errors.Is(err, port.ErrNoProfilePicture) || errors.Is(err, service.ErrFileStorageNotConfigured) {
-			return ctx.Error(port.ErrNoProfilePicture, http.StatusNotFound)
+			return ctx.NotFound(port.ErrNoProfilePicture)
 		}
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
@@ -146,29 +146,29 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {
-		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
 	// Get the profile picture from the form data
 	pic, err := profilePictureUploadFromContext(ctx)
 	if err != nil {
-		return ctx.Error(err, http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("failed to read form body"))
 	}
 
 	// Upload the user image
 	err = u.userService.UploadProfileImage(ctx.Context(), userID, pic)
 	if err != nil {
 		if errors.Is(err, model.ErrProfilePictureTooLarge) {
-			return ctx.Error(model.ErrProfilePictureTooLarge, http.StatusBadRequest)
+			return ctx.BadRequest(model.ErrProfilePictureTooLarge)
 		}
 		if errors.Is(err, model.ErrUnsupportedProfilePictureType) {
-			return ctx.Error(model.ErrUnsupportedProfilePictureType, http.StatusBadRequest)
+			return ctx.BadRequest(model.ErrUnsupportedProfilePictureType)
 		}
 		if errors.Is(err, model.ErrProfilePictureDimensionsTooLarge) {
-			return ctx.Error(model.ErrProfilePictureDimensionsTooLarge, http.StatusBadRequest)
+			return ctx.BadRequest(model.ErrProfilePictureDimensionsTooLarge)
 		}
 		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
+			return ctx.NotFound(errors.New("user not found"))
 		}
 		u.logger.Error(ctx.Context(), "failed to upload profile picture", "userID", userID, "error", err)
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
@@ -192,14 +192,14 @@ func (u *users) deleteUserImage(ctx *handler.Context) error {
 	// Get user ID from path parameters
 	userID := ctx.PathValue("id")
 	if userID == "" {
-		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
 	// Delete the user image from the database
 	err := u.userService.DeleteUserImage(ctx.Context(), userID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
+			return ctx.BadRequest(errors.New("user not found"))
 		}
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}

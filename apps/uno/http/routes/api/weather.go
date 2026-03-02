@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -33,7 +32,7 @@ func NewWeatherMux(logger port.Logger, weatherService *service.WeatherService) *
 func (s *weather) getCurrentWeather(ctx *handler.Context) error {
 	weather, err := s.weatherService.GetCurrentWeather(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO

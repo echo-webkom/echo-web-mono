@@ -22,7 +22,6 @@ func TestGetShoppingList(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.ShoppingListItemRepo, *mocks.UsersToShoppingListItemRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -39,7 +38,6 @@ func TestGetShoppingList(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from shopping list repo",
@@ -50,7 +48,6 @@ func TestGetShoppingList(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 		{
 			name: "error from users to shopping list repo",
@@ -66,7 +63,6 @@ func TestGetShoppingList(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

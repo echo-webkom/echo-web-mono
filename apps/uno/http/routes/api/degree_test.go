@@ -23,7 +23,6 @@ func TestGetDegreesHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.DegreeRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -37,7 +36,6 @@ func TestGetDegreesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -48,7 +46,6 @@ func TestGetDegreesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -76,7 +73,6 @@ func TestCreateDegreeHandler(t *testing.T) {
 		requestBody    model.Degree
 		setupMocks     func(*mocks.DegreeRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:        "success",
@@ -89,14 +85,12 @@ func TestCreateDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusCreated,
-			expectError:    false,
 		},
 		{
 			name:           "invalid json",
 			requestBody:    model.Degree{},
 			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name:        "error from repo",
@@ -108,7 +102,6 @@ func TestCreateDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -142,7 +135,6 @@ func TestUpdateDegreeHandler(t *testing.T) {
 		requestBody    model.Degree
 		setupMocks     func(*mocks.DegreeRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:        "success",
@@ -155,14 +147,12 @@ func TestUpdateDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:           "invalid json",
 			requestBody:    model.Degree{},
 			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name:        "error from repo",
@@ -174,7 +164,6 @@ func TestUpdateDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -208,7 +197,6 @@ func TestDeleteDegreeHandler(t *testing.T) {
 		degreeID       string
 		setupMocks     func(*mocks.DegreeRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:     "success",
@@ -220,14 +208,12 @@ func TestDeleteDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusNoContent,
-			expectError:    false,
 		},
 		{
 			name:           "missing id",
 			degreeID:       "",
 			setupMocks:     func(mockRepo *mocks.DegreeRepo) {},
 			expectedStatus: http.StatusMethodNotAllowed,
-			expectError:    false,
 		},
 		{
 			name:     "error from repo",
@@ -239,7 +225,6 @@ func TestDeleteDegreeHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

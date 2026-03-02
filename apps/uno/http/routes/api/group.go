@@ -47,7 +47,7 @@ type GroupResponse struct {
 func (gh *group) getGroups(ctx *handler.Context) error {
 	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := make([]GroupResponse, len(groups))
@@ -74,13 +74,13 @@ func (gh *group) getGroups(ctx *handler.Context) error {
 func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
-		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
 	err := gh.groupService.GroupRepo().DeleteGroup(ctx.Context(), groupID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.Error(errors.New("group not found"), http.StatusNotFound)
+			return ctx.NotFound(errors.New("group not found"))
 		}
 
 		return ctx.Error(err, http.StatusInternalServerError)
@@ -117,14 +117,14 @@ func (r *CreateGroupRequest) ToNewGroupDomain() model.NewGroup {
 func (gh *group) createGroup(ctx *handler.Context) error {
 	var req CreateGroupRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(err, http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	newGroup := req.ToNewGroupDomain()
 
 	group, err := gh.groupService.GroupRepo().CreateGroup(ctx.Context(), newGroup)
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := GroupResponse{
@@ -155,18 +155,18 @@ type UpdateGroupRequest struct {
 func (gh *group) updateGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
-		return ctx.Error(errors.New("group ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
 	var req UpdateGroupRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(err, http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	group, err := gh.groupService.GroupRepo().GetGroupByID(ctx.Context(), groupID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.Error(errors.New("group not found"), http.StatusNotFound)
+			return ctx.NotFound(errors.New("group not found"))
 		}
 
 		return ctx.Error(err, http.StatusInternalServerError)
@@ -176,7 +176,7 @@ func (gh *group) updateGroupByID(ctx *handler.Context) error {
 
 	updatedGroup, err := gh.groupService.GroupRepo().UpdateGroup(ctx.Context(), group)
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := GroupResponse{

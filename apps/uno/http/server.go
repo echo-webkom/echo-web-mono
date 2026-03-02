@@ -50,7 +50,7 @@ func RunServer(
 	groupService *service.GroupService,
 	reactionService *service.ReactionService,
 ) {
-	r := router.New(logger, middleware.Logger(logger), middleware.Telemetry(config.ServiceName))
+	r := router.New(logger, middleware.Logger(logger))
 
 	// withAuth := router.NewWithAuthHandler(authService)
 	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)

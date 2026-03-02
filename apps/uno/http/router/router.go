@@ -56,6 +56,7 @@ func (r *Router) Serve(notif *notifier.Notifier, port string) {
 		finish()
 	}()
 
+	// But actually it is 0.0.0.0 + port, but this is more user-friendly.
 	r.logger.Info(ctx, "server running at http://localhost"+port)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		r.logger.Error(ctx, "error starting http server",

@@ -5,5 +5,6 @@ import (
 )
 
 var (
-	ErrInternalServer = errors.New("internal server error")
+	ErrInternalServer   = errors.New("internal server error")
+	ErrFailedToReadJSON = errors.New("failed to read json data")
 )

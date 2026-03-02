@@ -2,22 +2,13 @@ package middleware
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
 	"slices"
 	"strings"
 	"uno/domain/model"
 	"uno/domain/service"
 	"uno/http/handler"
-
-	"github.com/go-chi/httplog/v3"
-)
-
-type slogKey string
-
-const (
-	slogKeyIsAdmin slogKey = "is_admin"
-	slogKeyUserID  slogKey = "user_id"
+	"uno/infrastructure/logging"
 )
 
 var bearerTokenPrefix = "Bearer "
@@ -131,7 +122,7 @@ func validateSessionRequest(ctx *handler.Context, authService *service.AuthServi
 // setAdminAttributes sets logging attributes to indicate that the request is
 // authenticated as an admin.
 func setAdminAttributes(ctx *handler.Context) {
-	httplog.SetAttrs(ctx.Context(), slog.String(string(slogKeyIsAdmin), "true"))
+	ctx.SetContext(logging.WithIsAdmin(ctx.Context()))
 }
 
 // setSessionContext sets the user and session information in the context and adds
@@ -139,7 +130,6 @@ func setAdminAttributes(ctx *handler.Context) {
 func setSessionContext(ctx *handler.Context, user model.User, session model.Session) {
 	nextCtx := handler.WithUser(ctx.Context(), user)
 	nextCtx = handler.WithSession(nextCtx, session)
+	nextCtx = logging.WithUserID(nextCtx, user.ID)
 	ctx.SetContext(nextCtx)
-
-	httplog.SetAttrs(ctx.Context(), slog.String(string(slogKeyUserID), user.ID))
 }

@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"net/http"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -20,8 +19,10 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 	mux := router.NewMux()
 	s := shoppingList{logger, shoppingListService}
 
-	// Admin
+	// Public
 	mux.Handle("GET", "/", s.getShoppingList)
+
+	// Admin
 	mux.Handle("POST", "/", s.createShoppingListItem, admin)
 	mux.Handle("POST", "/like", s.toggleLike, admin)
 	mux.Handle("DELETE", "/{id}", s.removeShoppingListItem, admin)
@@ -39,7 +40,7 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
 	shoppingList, err := s.shoppingListService.GetShoppingList(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO
@@ -62,7 +63,7 @@ func (s *shoppingList) getShoppingList(ctx *handler.Context) error {
 func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 	var req dto.CreateShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	newItem := model.NewShoppingListItem{
@@ -73,13 +74,13 @@ func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 	// Insert the new shopping list item
 	item, err := s.shoppingListService.ShoppingListItemRepo().CreateShoppingListItem(ctx.Context(), newItem)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Add a like for the creator of the item
 	err = s.shoppingListService.ToggleLike(ctx.Context(), item.ID, req.UserID)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	return ctx.Ok()
@@ -100,12 +101,12 @@ func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 func (s *shoppingList) toggleLike(ctx *handler.Context) error {
 	var req dto.UserToShoppingListItemRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	err := s.shoppingListService.ToggleLike(ctx.Context(), req.ItemID, req.UserID)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	return ctx.Ok()
@@ -125,12 +126,12 @@ func (s *shoppingList) toggleLike(ctx *handler.Context) error {
 func (s *shoppingList) removeShoppingListItem(ctx *handler.Context) error {
 	itemID := ctx.PathValue("id")
 	if itemID == "" {
-		return ctx.Error(errors.New("item ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing shopping item ID"))
 	}
 
 	err := s.shoppingListService.ShoppingListItemRepo().DeleteShoppingListItem(ctx.Context(), itemID)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	return ctx.Ok()

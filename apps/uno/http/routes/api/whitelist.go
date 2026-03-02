@@ -3,7 +3,6 @@ package api
 import (
 	"database/sql"
 	"errors"
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -42,7 +41,7 @@ func (w *whitelist) getWhitelist(ctx *handler.Context) error {
 	// Get domain models from service
 	whitelistedEmails, err := w.whitelistService.WhitelistRepo().GetWhitelist(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTOs
@@ -68,13 +67,12 @@ func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
 	whitelistInfo, err := w.whitelistService.WhitelistRepo().GetWhitelistByEmail(ctx.Context(), email)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			ctx.SetStatus(404)
-			return ctx.JSON(nil)
+			return ctx.JSONWithStatus(nil, 404)
 		}
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO
-	response := new(dto.WhitelistResponse).FromDomain(&whitelistInfo)
+	response := dto.WhitelistResponseFromDomain(whitelistInfo)
 	return ctx.JSON(response)
 }

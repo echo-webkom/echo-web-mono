@@ -39,7 +39,7 @@ func (d *degrees) getDegrees(ctx *handler.Context) error {
 	// Fetch degrees from the service
 	degrees, err := d.degreeService.DegreeRepo().GetAllDegrees(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Map domain models to DTOs
@@ -62,13 +62,13 @@ func (d *degrees) createDegree(ctx *handler.Context) error {
 	// Read and parse the request body
 	var degree dto.CreateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
-		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	// Create the degree in the database
 	createdDegree, err := d.degreeService.DegreeRepo().CreateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Map domain model to DTO
@@ -95,13 +95,13 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 	// Read and parse the request body
 	var degree dto.UpdateDegreeRequest
 	if err := ctx.ReadJSON(&degree); err != nil {
-		return ctx.Error(errors.New("failed to read json"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	// Update the degree in the database
 	updatedDegree, err := d.degreeService.DegreeRepo().UpdateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Map domain model to DTO
@@ -124,9 +124,12 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 // @Router       /degrees/{id} [delete]
 func (d *degrees) deleteDegree(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing degree ID"))
+	}
 
 	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	ctx.SetStatus(http.StatusNoContent)

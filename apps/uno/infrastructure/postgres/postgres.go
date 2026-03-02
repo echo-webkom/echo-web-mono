@@ -3,7 +3,6 @@ package postgres
 import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/uptrace/opentelemetry-go-extra/otelsqlx"
 )
 
 type Database struct {
@@ -11,7 +10,7 @@ type Database struct {
 }
 
 func New(databaseUrl string) (*Database, error) {
-	db, err := otelsqlx.Open("postgres", databaseUrl)
+	db, err := sqlx.Open("postgres", databaseUrl)
 	db.SetMaxOpenConns(10)
 	if err != nil {
 		return nil, err

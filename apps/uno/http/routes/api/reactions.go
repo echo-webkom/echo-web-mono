@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"net/http"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -41,12 +40,12 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 func (r *reactions) getReactions(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
-		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing reaction key"))
 	}
 
 	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.ReactionResponsesFromDomain(reactions)
@@ -68,12 +67,12 @@ func (r *reactions) getReactions(ctx *handler.Context) error {
 func (r *reactions) toggleReaction(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
-		return ctx.Error(errors.New("no key provided"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing reaction key"))
 	}
 
 	var req dto.ToggleReactionRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("invalid request body"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	reaction := model.NewReaction{
@@ -84,12 +83,12 @@ func (r *reactions) toggleReaction(ctx *handler.Context) error {
 
 	err := r.reactionService.ToggleReaction(ctx.Context(), reaction)
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
 	if err != nil {
-		return ctx.Error(err, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.ReactionResponsesFromDomain(reactions)

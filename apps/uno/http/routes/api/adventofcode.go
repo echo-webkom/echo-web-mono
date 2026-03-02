@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -35,7 +34,7 @@ func NewAdventOfCodeMux(logger port.Logger, aocService *service.AdventOfCodeServ
 func (a *adventOfCode) getLeaderboard(ctx *handler.Context) error {
 	leaderboard, err := a.aocService.GetAdventOfCodeLeaderboard(ctx.Context(), 2025)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.AdventOfCodeLeaderboardFromDomain(leaderboard)

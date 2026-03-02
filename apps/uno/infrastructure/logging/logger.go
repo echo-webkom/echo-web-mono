@@ -23,6 +23,8 @@ func New(logger *slog.Logger) port.Logger {
 func NewWithConfig(env string) port.Logger {
 	var baseHandler slog.Handler
 
+	// In production we want to use a structured JSON handler for better integration with log aggregation tools.
+	// While in development we just want a more human-friendly console output.
 	if env == "production" {
 		baseHandler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 			Level: slog.LevelInfo,

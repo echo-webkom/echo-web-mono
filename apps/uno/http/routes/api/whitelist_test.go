@@ -21,7 +21,6 @@ func TestGetWhitelistHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.WhitelistRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -35,7 +34,6 @@ func TestGetWhitelistHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -46,7 +44,6 @@ func TestGetWhitelistHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -74,7 +71,6 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 		email          string
 		setupMocks     func(*mocks.WhitelistRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:  "success",
@@ -89,7 +85,6 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:  "missing email",
@@ -102,7 +97,6 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK, // Gets all whitelist instead
-			expectError:    false,
 		},
 		{
 			name:  "error from repo",
@@ -114,7 +108,6 @@ func TestGetWhitelistByEmailHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

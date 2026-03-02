@@ -25,7 +25,6 @@ func TestGetHappeningsHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.HappeningRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -39,7 +38,6 @@ func TestGetHappeningsHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -50,7 +48,6 @@ func TestGetHappeningsHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -88,7 +85,6 @@ func TestGetHappeningById(t *testing.T) {
 		happeningID    string
 		setupMocks     func(*mocks.HappeningRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:        "success",
@@ -103,7 +99,6 @@ func TestGetHappeningById(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:        "not found",
@@ -115,7 +110,6 @@ func TestGetHappeningById(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusNotFound,
-			expectError:    true,
 		},
 	}
 
@@ -154,7 +148,6 @@ func TestGetHappeningQuestions(t *testing.T) {
 		happeningID    string
 		setupMocks     func(*mocks.HappeningRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:        "success",
@@ -169,7 +162,6 @@ func TestGetHappeningQuestions(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:        "error from repo",
@@ -181,7 +173,6 @@ func TestGetHappeningQuestions(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError, // 500 for database error
-			expectError:    true,
 		},
 	}
 
@@ -221,7 +212,6 @@ func TestRegisterForHappening(t *testing.T) {
 		requestBody    dto.RegisterForHappeningRequest
 		setupMocks     func(*mocks.HappeningRepo, *mocks.UserRepo, *mocks.RegistrationRepo, *mocks.BanInfoRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:        "success",
@@ -288,7 +278,6 @@ func TestRegisterForHappening(t *testing.T) {
 				// Since we have no questions, it won't be called
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:        "invalid json",
@@ -297,7 +286,6 @@ func TestRegisterForHappening(t *testing.T) {
 			setupMocks: func(mockHappeningRepo *mocks.HappeningRepo, mockUserRepo *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
 			},
 			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name:        "validation failure returns 200",
@@ -322,7 +310,6 @@ func TestRegisterForHappening(t *testing.T) {
 				// Service returns early after IsProfileComplete check, so no other mocks needed
 			},
 			expectedStatus: http.StatusOK, // Handler returns 200 even when Success: false
-			expectError:    false,
 		},
 	}
 

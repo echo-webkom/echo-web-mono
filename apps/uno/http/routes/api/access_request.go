@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -37,7 +36,7 @@ func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
 	// Get domain models from service
 	accessRequests, err := a.accessRequestService.AccessRequestRepo().GetAccessRequests(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTOs
