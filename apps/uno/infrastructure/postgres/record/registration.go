@@ -63,6 +63,10 @@ type HappeningRegistrationDB struct {
 	UserImage *string `db:"user_image"`
 }
 
+func (db *HappeningRegistrationDB) UserHasImage() bool {
+	return db.UserImage != nil
+}
+
 // ToPorts converts a HappeningRegistrationDB to a port.HappeningRegistration.
 func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
 	return &model.HappeningRegistration{
@@ -75,7 +79,7 @@ func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
 		ChangedAt:        db.ChangedAt,
 		ChangedBy:        db.ChangedBy,
 		UserName:         db.UserName,
-		UserImage:        db.UserImage,
+		UserHasImage:     db.UserHasImage(),
 	}
 }
 

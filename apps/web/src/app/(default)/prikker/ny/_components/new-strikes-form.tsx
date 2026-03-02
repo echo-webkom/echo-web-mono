@@ -37,7 +37,7 @@ import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from 
 type User = {
   id: string;
   name: string;
-  imageUrl: string | null;
+  hasImage: boolean;
   isBanned: boolean;
   strikes: number;
 };
@@ -381,10 +381,11 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
                 textValue={user.name}
               >
                 {() => {
+                  const imageUrl = user.hasImage ? createProfilePictureUrl(user.id) : undefined;
                   return (
                     <>
                       <Avatar className="size-12 md:size-14">
-                        <AvatarImage src={createProfilePictureUrl(user.id)} />
+                        <AvatarImage src={imageUrl} />
                         <AvatarFallback className="bg-background text-foreground">
                           {initials(user.name)}
                         </AvatarFallback>

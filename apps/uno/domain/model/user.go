@@ -15,7 +15,7 @@ type User struct {
 	ID               string
 	Name             *string
 	Email            string
-	Image            *string
+	HasImage         bool
 	AlternativeEmail *string
 	Degree           *Degree
 	Year             *DegreeYear
@@ -191,7 +191,7 @@ func (v *VerificationToken) IsValid(now time.Time) bool {
 type UserWithStrikes struct {
 	ID       string
 	Name     *string
-	Image    *string
+	HasImage bool
 	IsBanned bool
 	Strikes  int
 }
@@ -218,11 +218,11 @@ type DotInfo struct {
 }
 
 type UserWithBanInfo struct {
-	ID      string
-	Name    *string
-	Image   *string
-	BanInfo BanInfo
-	Dots    []DotInfo
+	ID       string
+	Name     *string
+	HasImage bool
+	BanInfo  BanInfo
+	Dots     []DotInfo
 }
 
 var (

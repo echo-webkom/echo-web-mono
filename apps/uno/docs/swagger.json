@@ -2028,10 +2028,10 @@
                         "$ref": "#/definitions/uno_domain_model.DotInfo"
                     }
                 },
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
@@ -2042,10 +2042,10 @@
         "uno_domain_model.UserWithStrikes": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "isBanned": {
@@ -2345,10 +2345,10 @@
                 "unregisterReason": {
                     "type": "string"
                 },
-                "userId": {
-                    "type": "string"
+                "userHasImage": {
+                    "type": "boolean"
                 },
-                "userImage": {
+                "userId": {
                     "type": "string"
                 },
                 "userName": {
@@ -2625,13 +2625,13 @@
                         "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
                     }
                 },
+                "hasImage": {
+                    "type": "boolean"
+                },
                 "hasReadTerms": {
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "isPublic": {
@@ -2657,10 +2657,10 @@
         "uno_http_dto.UserSummaryResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "name": {

@@ -15,7 +15,7 @@ type UserResponse struct {
 	ID               string              `json:"id"`
 	Name             *string             `json:"name"`
 	Email            string              `json:"email"`
-	Image            *string             `json:"image"`
+	HasImage         bool                `json:"hasImage"`
 	AlternativeEmail *string             `json:"alternativeEmail"`
 	Degree           *DegreeResponse     `json:"degree"`
 	Year             *int                `json:"year"`
@@ -53,7 +53,7 @@ func UsersToUserResponses(users []model.User) []UserResponse {
 			ID:               user.ID,
 			Name:             user.Name,
 			Email:            user.Email,
-			Image:            user.Image,
+			HasImage:         user.HasImage,
 			AlternativeEmail: user.AlternativeEmail,
 			Degree:           degreeResponse,
 			Year:             user.Year.IntPtr(),

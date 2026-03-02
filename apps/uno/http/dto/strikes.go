@@ -7,7 +7,7 @@ import (
 type UserWithStrikesResponse struct {
 	ID       string  `json:"id"`
 	Name     *string `json:"name"`
-	ImageURL *string `json:"imageUrl,omitempty"`
+	HasImage bool    `json:"hasImage"`
 	IsBanned bool    `json:"isBanned"`
 	Strikes  int     `json:"strikes"`
 }
@@ -18,7 +18,7 @@ func UsersWithStrikesFromDomainList(users []model.UserWithStrikes) []UserWithStr
 		resp[i] = UserWithStrikesResponse{
 			ID:       user.ID,
 			Name:     user.Name,
-			ImageURL: user.Image,
+			HasImage: user.HasImage,
 			IsBanned: user.IsBanned,
 			Strikes:  user.Strikes,
 		}
@@ -84,7 +84,7 @@ type DotInfo struct {
 type UserWithBanInfoResponse struct {
 	ID      string    `json:"id"`
 	Name    *string   `json:"name"`
-	Image   *string   `json:"image"`
+	HasImage bool      `json:"hasImage"`
 	BanInfo *BanInfo  `json:"banInfo"`
 	Dots    []DotInfo `json:"dots"`
 }
@@ -123,7 +123,7 @@ func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoR
 		resp[i] = UserWithBanInfoResponse{
 			ID:      user.ID,
 			Name:    user.Name,
-			Image:   user.Image,
+			HasImage: user.HasImage,
 			BanInfo: banInfo,
 			Dots:    dots,
 		}

@@ -125,9 +125,9 @@ func (c *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.C
 			}
 			if uID != nil {
 				comment.User = &model.UserSummary{
-					ID:    *uID,
-					Name:  uName,
-					Image: uImage,
+					ID:       *uID,
+					Name:     uName,
+					HasImage: uImage != nil,
 				}
 			}
 			commentMap[commentDB.ID] = comment

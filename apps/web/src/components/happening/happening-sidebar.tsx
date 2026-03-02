@@ -528,7 +528,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       {Boolean(user) && !hideRegistrations && (
         <RegistrationsPreview
           registrations={registrations.map((registration) => ({
-            image: registration.userImage,
+            hasImage: registration.userHasImage,
             name: registration.userName,
             userId: registration.userId,
             status: registration.status,

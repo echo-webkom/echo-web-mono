@@ -63,13 +63,12 @@ func (s *UserService) DeleteUserImage(ctx context.Context, userID string) error 
 	}
 
 	// If the user doesn't have an image, there's nothing to delete
-	if user.Image == nil {
+	if !user.HasImage {
 		return nil
 	}
 
 	// Clear the image marker in the database
-	err = s.userRepo.UpdateUserImage(ctx, userID, nil)
-	if err != nil {
+	if err = s.userRepo.UpdateUserImage(ctx, userID, false); err != nil {
 		return err
 	}
 
@@ -98,6 +97,5 @@ func (s *UserService) UploadProfileImage(ctx context.Context, userID string, pro
 	}
 
 	// Mark that the user has a profile picture
-	marker := "1"
-	return s.userRepo.UpdateUserImage(ctx, userID, &marker)
+	return s.userRepo.UpdateUserImage(ctx, userID, true)
 }

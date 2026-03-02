@@ -19,17 +19,17 @@ type ReactToCommentRequest struct {
 
 // UserSummaryResponse represents minimal user information in API responses
 type UserSummaryResponse struct {
-	ID    string  `json:"id"`
-	Name  *string `json:"name"`
-	Image *string `json:"image"`
+	ID       string  `json:"id"`
+	Name     *string `json:"name"`
+	HasImage bool    `json:"hasImage"`
 }
 
 // FromDomain converts domain UserSummary to DTO
 func (u *UserSummaryResponse) FromDomain(user *model.UserSummary) *UserSummaryResponse {
 	return &UserSummaryResponse{
-		ID:    user.ID,
-		Name:  user.Name,
-		Image: user.Image,
+		ID:       user.ID,
+		Name:     user.Name,
+		HasImage: user.HasImage,
 	}
 }
 
