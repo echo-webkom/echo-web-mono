@@ -84,6 +84,9 @@ func (p *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID strin
 	// Check that the object exists
 	stat, err := object.Stat()
 	if err != nil {
+		if minio.ToErrorResponse(err).Code == "NoSuchKey" {
+			return nil, port.ErrNoProfilePicture
+		}
 		p.logger.Error(ctx, "failed to stat profile picture", "key", key, "error", err)
 		return nil, err
 	}

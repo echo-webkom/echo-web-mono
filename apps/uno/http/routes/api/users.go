@@ -114,6 +114,9 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 	// Get user image from the database
 	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID, size)
 	if err != nil {
+		if errors.Is(err, port.ErrNoProfilePicture) || errors.Is(err, service.ErrFileStorageNotConfigured) {
+			return ctx.Error(port.ErrNoProfilePicture, http.StatusNotFound)
+		}
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 

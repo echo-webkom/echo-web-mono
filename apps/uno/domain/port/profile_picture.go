@@ -2,8 +2,11 @@ package port
 
 import (
 	"context"
+	"errors"
 	"uno/domain/model"
 )
+
+var ErrNoProfilePicture = errors.New("user has no profile picture")
 
 type ProfilePictureRepo interface {
 	UploadProfilePicture(ctx context.Context, userID string, picture *model.ProfilePictureUpload) error
