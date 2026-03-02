@@ -5,20 +5,4 @@ packages:
       pkgname: mocks
       filename: "{{.InterfaceName}}.go"
       structname: "{{.InterfaceName}}"
-    interfaces:
-      UserRepo:
-      WhitelistRepo:
-      DotRepo:
-      BanInfoRepo:
-      SiteFeedbackRepo:
-      ShoppingListItemRepo:
-      UsersToShoppingListItemRepo:
-      DegreeRepo:
-      CommentRepo:
-      AccessRequestRepo:
-      SessionRepo:
-      HappeningRepo:
-      RegistrationRepo:
-      QuestionRepo:
-      KVRepo:
-      ProfilePictureRepo:
+      all: true
