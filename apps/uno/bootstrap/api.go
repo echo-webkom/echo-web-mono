@@ -20,18 +20,18 @@ import (
 )
 
 func RunApi() {
-	config := config.Load()
+	cfg := config.Load()
 	notif := notifier.New()
 
 	// Initialize structured logging
-	logger := logging.NewWithConfig(config.Environment)
+	logger := logging.NewWithConfig(cfg.Environment)
 	logger.Info(context.Background(), "starting uno-api")
 
 	// Initialize OpenTelemetry
 	shutdown, err := telemetry.New(telemetry.TelemetryConfig{
-		ServiceName: config.ServiceName,
-		Environment: config.Environment,
-		Enabled:     config.TelemetryEnabled,
+		ServiceName: cfg.ServiceName,
+		Environment: cfg.Environment,
+		Enabled:     cfg.TelemetryEnabled,
 	})
 	if err != nil {
 		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
@@ -42,14 +42,14 @@ func RunApi() {
 		}
 	}()
 
-	if config.TelemetryEnabled {
-		logger.Info(context.Background(), "telemetry enabled", "endpoint", config.OTLPEndpoint)
+	if cfg.TelemetryEnabled {
+		logger.Info(context.Background(), "telemetry enabled", "endpoint", cfg.OTLPEndpoint)
 	} else {
 		logger.Info(context.Background(), "telemetry disabled")
 	}
 
 	// Initialize database connection
-	db, err := postgres.New(config.DatabaseURL)
+	db, err := postgres.New(cfg.DatabaseURL)
 	if err != nil {
 		logger.Error(context.Background(), "failed to connect to database", "error", err)
 		log.Fatal(err)
@@ -63,7 +63,7 @@ func RunApi() {
 		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
 	}
 
-	fileStorage, err := filestorage.New(config.MinioEndpoint, config.MinioAccessKey, config.MinioSecretKey)
+	fileStorage, err := filestorage.New(cfg.ProfilePictureEndpointURL, cfg.ProfilePictureAccessKeyID, cfg.ProfilePictureSecretAccessKey)
 	if err != nil {
 		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
 	} else {
@@ -89,9 +89,9 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
-	var profilePictureStore port.ProfilePictureRepo
+	var profilePictureRepo port.ProfilePictureRepo
 	if fileStorage != nil {
-		profilePictureStore, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, logger)
+		profilePictureRepo, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, cfg.ProfilePictureBucketName, logger)
 		if err != nil {
 			logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
 		}
@@ -105,7 +105,7 @@ func RunApi() {
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
 	shoppingListService := service.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
-	userService := service.NewUserService(config.ApiURL, userRepo, profilePictureStore)
+	userService := service.NewUserService(userRepo, profilePictureRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)
@@ -119,7 +119,7 @@ func RunApi() {
 	go http.RunServer(
 		notif,
 		logger,
-		config,
+		cfg,
 		authService,
 		happeningService,
 		degreeService,

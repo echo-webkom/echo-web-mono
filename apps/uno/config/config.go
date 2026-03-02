@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -9,27 +8,31 @@ import (
 )
 
 type Config struct {
-	DatabaseURL      string
-	ApiPort          string
-	ApiURL           string
-	AdminAPIKey      string
-	OTLPEndpoint     string
-	OTLPHeaders      string
-	Environment      string
-	ServiceName      string
-	ServiceVersion   string
-	TelemetryEnabled bool
-	MinioEndpoint    string
-	MinioAccessKey   string
-	MinioSecretKey   string
+	DatabaseURL                   string
+	ApiPort                       string
+	AdminAPIKey                   string
+	OTLPEndpoint                  string
+	OTLPHeaders                   string
+	Environment                   string
+	ServiceName                   string
+	ServiceVersion                string
+	TelemetryEnabled              bool
+	ProfilePictureEndpointURL     string
+	ProfilePictureBucketName      string
+	ProfilePictureAccessKeyID     string
+	ProfilePictureSecretAccessKey string
 }
 
 type CronConfig struct {
-	DatabaseURL      string
-	CronTimezone     string
-	Environment      string
-	ServiceName      string
-	TelemetryEnabled bool
+	DatabaseURL                   string
+	CronTimezone                  string
+	Environment                   string
+	ServiceName                   string
+	TelemetryEnabled              bool
+	ProfilePictureEndpointURL     string
+	ProfilePictureBucketName      string
+	ProfilePictureAccessKeyID     string
+	ProfilePictureSecretAccessKey string
 }
 
 func Load() *Config {
@@ -43,27 +46,23 @@ func Load() *Config {
 
 	apiPort := toGoPort(getEnvOrDefault("UNO_API_PORT", "8000"))
 
-	apiURL := os.Getenv("UNO_API_URL")
-	if apiURL == "" {
-		if environment == "production" {
-			apiURL = "https://uno.echo-webkom.no"
-		} else {
-			apiURL = fmt.Sprintf("http://localhost%s", apiPort)
-		}
-	}
-
 	return &Config{
+		// General configuration
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		ApiPort:          apiPort,
-		ApiURL:           apiURL,
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
 		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
-		MinioEndpoint:    os.Getenv("MINIO_ENDPOINT"),
-		MinioAccessKey:   os.Getenv("MINIO_ACCESS_KEY"),
-		MinioSecretKey:   os.Getenv("MINIO_SECRET_KEY"),
+
+		// API configuration
+		ApiPort: apiPort,
+
+		// Profile picture configuration
+		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),
+		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
+		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
+		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
 	}
 }
 
@@ -77,11 +76,20 @@ func LoadCronConfig() *CronConfig {
 	}
 
 	return &CronConfig{
+		// General configuration
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		CronTimezone:     getEnvOrDefault("CRON_TIMEZONE", "Europe/Oslo"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
+
+		// Cron configuration
+		CronTimezone: getEnvOrDefault("CRON_TIMEZONE", "Europe/Oslo"),
+
+		// Profile picture configuration
+		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),
+		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
+		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
+		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
 	}
 }
 
