@@ -36,7 +36,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
     <ThemeWrapper theme={theme}>
       <div className="flex min-h-screen flex-col">
         <SiteHeader />
-        <div className="flex w-full flex-grow flex-col">{children}</div>
+        <div className="flex w-full grow flex-col">{children}</div>
         <Footer />
       </div>
     </ThemeWrapper>

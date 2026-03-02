@@ -134,23 +134,6 @@ export const viewport: Viewport = {
   initialScale: 1.0,
 };
 
-const ThemeWrapper = ({
-  children,
-  theme,
-}: {
-  children: React.ReactNode;
-  theme?: "christmas" | "halloween" | "default";
-}) => {
-  const InnerWrapper =
-    theme === "halloween" ? AnimatedIcons : theme === "christmas" ? AnimatedSnowfall : Fragment;
-  const n = theme === "halloween" ? 40 : theme === "christmas" ? 40 : undefined;
-  if (!n) {
-    return <>{children}</>;
-  }
-
-  return <InnerWrapper n={n}>{children}</InnerWrapper>;
-};
-
 export default async function RootLayout({ children }: RootLayoutProps) {
   const user = await auth();
   const date = new Date();
