@@ -10,6 +10,7 @@ import (
 	cronrunner "uno/cron"
 	"uno/cron/jobs"
 	"uno/domain/service"
+	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -55,6 +56,13 @@ func RunCron() {
 		return
 	}
 
+	fileStorage, err := filestorage.New(cfg.MinioEndpoint, cfg.MinioAccessKey, cfg.MinioSecretKey)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
+	} else {
+		logger.Info(context.Background(), "file storage connected")
+	}
+
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 	}
@@ -65,9 +73,14 @@ func RunCron() {
 	banInfoRepo := postgres.NewBanInfoRepo(db, logger)
 	userRepo := postgres.NewUserRepo(db, logger)
 	kvRepo := postgres.NewKVRepo(db, logger)
+	profilePictureRepo, err := filestorage.NewProfilePictureStore(context.Background(), fileStorage, logger)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+		return
+	}
 	questionService := service.NewQuestionService(questionRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
-	userService := service.NewUserService(userRepo)
+	userService := service.NewUserService("", userRepo, profilePictureRepo)
 
 	// Job to clean up sensitive questions and strikes every 6 months.
 	runner.AddSchedule(cronrunner.Schedule{

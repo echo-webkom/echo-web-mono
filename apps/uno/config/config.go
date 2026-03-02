@@ -30,6 +30,9 @@ type CronConfig struct {
 	Environment      string
 	ServiceName      string
 	TelemetryEnabled bool
+	MinioEndpoint    string
+	MinioAccessKey   string
+	MinioSecretKey   string
 }
 
 func Load() *Config {
@@ -82,6 +85,9 @@ func LoadCronConfig() *CronConfig {
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
+		MinioEndpoint:    os.Getenv("MINIO_ENDPOINT"),
+		MinioAccessKey:   os.Getenv("MINIO_ACCESS_KEY"),
+		MinioSecretKey:   os.Getenv("MINIO_SECRET_KEY"),
 	}
 }
 
