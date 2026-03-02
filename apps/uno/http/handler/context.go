@@ -138,6 +138,59 @@ func (c *Context) SetStatus(status int) {
 	c.WriteHeader(status)
 }
 
+// BadRequest returns a 400 Bad Request error response with the given error message.
+// This does not mark the context as having an error, since we consider 400 as a normal response for invalid client input.
+// If you want to mark the context as having an error, use c.Error() instead.
+func (c *Context) BadRequest(err error) {
+	c.status = http.StatusBadRequest
+	http.Error(c, err.Error(), http.StatusBadRequest)
+}
+
+// Unauthorized returns a 401 Unauthorized error response with the given error message.
+// This does not mark the context as having an error, since we consider 401 as a normal response for unauthenticated access.
+// If you want to mark the context as having an error, use c.Error() instead.
+func (c *Context) Unauthorized(err error) {
+	c.status = http.StatusUnauthorized
+	http.Error(c, err.Error(), http.StatusUnauthorized)
+}
+
+// Forbidden returns a 403 Forbidden error response with the given error message.
+// This does not mark the context as having an error, since we consider 403 as a normal response for unauthorized access.
+// If you want to mark the context as having an error, use c.Error() instead.
+func (c *Context) Forbidden(err error) {
+	c.status = http.StatusForbidden
+	http.Error(c, err.Error(), http.StatusForbidden)
+}
+
+// NotFound returns a 404 Not Found error response with the given error message.
+// This does not mark the context as having an error, since we consider 404 as a normal response.
+// If you want to mark the context as having an error, use c.Error() instead.
+func (c *Context) NotFound(err error) {
+	c.status = http.StatusNotFound
+	http.Error(c, err.Error(), http.StatusNotFound)
+}
+
+// MethodNotAllowed returns a 405 Method Not Allowed error response with the given error message.
+func (c *Context) MethodNotAllowed(err error) error {
+	return c.Error(err, http.StatusMethodNotAllowed)
+}
+
+// TooManyRequests returns a 429 Too Many Requests error response with the given error message.
+func (c *Context) TooManyRequests(err error) error {
+	return c.Error(err, http.StatusTooManyRequests)
+}
+
+// InternalServerError returns a 500 Internal Server Error response with the given error message.
+func (c *Context) InternalServerError(err error) error {
+	return c.Error(err, http.StatusInternalServerError)
+}
+
+// NotImplemented returns a 501 Not Implemented error response with the given error message.
+func (c *Context) NotImplemented(err error) error {
+	return c.Error(err, http.StatusNotImplemented)
+}
+
+// Error sets the error and status code in the context and writes the error response.
 func (c *Context) Error(err error, status int) error {
 	c.status = status
 	c.err = err
