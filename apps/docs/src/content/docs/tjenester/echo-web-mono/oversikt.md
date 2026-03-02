@@ -51,7 +51,7 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 
 - **Docker** for containerisering
 - **Vercel** for frontend deployment
-- **Fly.io** for backend deployment
+- **Railway** for backend deployment
 - **Turbo** for monorepo management
 - **pnpm** for package management
 
@@ -98,7 +98,7 @@ Se [Testing](/tjenester/echo-web-mono/testing) for detaljert guide om unit testi
 
 ### Krever
 
-- Node.js 22+ (anbefalt: bruk fnm/nvm)
+- Node.js 24+ (anbefalt: bruk fnm/nvm)
 - pnpm 9+
 - Docker (for database)
 - cenv (echo's miljø-verktøy)
