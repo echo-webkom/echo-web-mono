@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "6.0.0",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.14",
     "@types/styled-components": "5.1.36",
     "dotenv": "17.2.3",
     "eslint": "9.39.2",
