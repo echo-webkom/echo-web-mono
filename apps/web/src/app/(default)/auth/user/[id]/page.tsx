@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@echo-webkom/db/serverless";
 
+import { createProfilePictureUrl, uno } from "@/api/client";
 import { auth, getProfileOwner } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -12,7 +13,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
-import { uno } from "../../../../../api/client";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -66,7 +66,10 @@ export default async function ProfilePage({ params }: Props) {
                 <div className="flex flex-col items-center space-y-2">
                   <Avatar className="h-28 w-28">
                     {profileOwner.image ? (
-                      <AvatarImage src={profileOwner.image} alt={profileOwner.name ?? ""} />
+                      <AvatarImage
+                        src={createProfilePictureUrl(profileOwner.id, 2)}
+                        alt={profileOwner.name ?? ""}
+                      />
                     ) : (
                       <AvatarFallback className="text-2xl">
                         {profileOwner.name?.slice(0, 1) ?? "?"}
@@ -133,6 +136,7 @@ export default async function ProfilePage({ params }: Props) {
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-6 md:flex-row">
             <UploadProfilePicture
+              userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
               image={profileOwner.image}
             />

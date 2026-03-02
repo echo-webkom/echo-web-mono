@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { type User } from "@echo-webkom/db/schemas";
 
+import { createProfilePictureUrl } from "@/api/client";
 import { type CommentTree } from "@/lib/comment-tree";
 import { cn } from "@/utils/cn";
 import { shortDate } from "@/utils/date";
@@ -49,7 +50,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
               reactions={comment.reactions}
             >
               <Avatar className="hidden h-14 w-14 sm:block">
-                <AvatarImage src={comment.user?.image ?? ""} />
+                <AvatarImage src={createProfilePictureUrl(comment.user?.id)} />
                 <AvatarFallback title={comment.user?.name ?? "Andreas Aanes"}>
                   {initials(comment.user?.name ?? "AA")}
                 </AvatarFallback>

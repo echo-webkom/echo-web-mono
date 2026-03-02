@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"strconv"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -22,9 +23,12 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 
 	mux := router.NewMux()
 
+	// Public routes
 	mux.Handle("GET", "/", u.getUsers, admin)
-	mux.Handle("GET", "/{id}", u.getUserByID, admin)
 	mux.Handle("GET", "/{id}/image", u.getUserImage)
+
+	// Admin routes
+	mux.Handle("GET", "/{id}", u.getUserByID, admin)
 	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
 	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
 
@@ -90,6 +94,7 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 // @Summary	     Gets a user's profile image
 // @Tags         users
 // @Param        id   path      string  true  "User ID"
+// @Query        size  query     int     false "Image size (1=small, 2=medium)"
 // @Success      200  {string}  string  "OK"
 // @Failure      400  {string}  string  "Bad Request"
 // @Failure      401  {string}  string  "Unauthorized"
@@ -104,17 +109,14 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
 	}
 
+	size, _ := strconv.Atoi(ctx.R.URL.Query().Get("size"))
+
 	// Get user image from the database
-	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID)
+	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID, size)
 	if err != nil {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	// no-cache forces the browser to revalidate on every request using If-None-Match.
-	// This ensures uploaded images are reflected immediately — the browser gets a 304
-	// (no body) if the ETag matches, or the new image if it has changed.
-	// We avoid max-age here because it would prevent revalidation until expiry, breaking
-	// cache busting when a user uploads a new profile picture.
 	ctx.SetHeader("ETag", pic.ETag)
 	ctx.SetHeader("Cache-Control", "no-cache")
 	ctx.SetHeader("Last-Modified", pic.LastModified.UTC().Format(http.TimeFormat))
@@ -150,8 +152,8 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 		return ctx.Error(err, http.StatusBadRequest)
 	}
 
-	// Upload the user image to the database
-	imageURL, err := u.userService.UploadProfileImage(ctx.Context(), userID, pic)
+	// Upload the user image
+	err = u.userService.UploadProfileImage(ctx.Context(), userID, pic)
 	if err != nil {
 		if errors.Is(err, model.ErrProfilePictureTooLarge) {
 			return ctx.Error(model.ErrProfilePictureTooLarge, http.StatusBadRequest)
@@ -159,14 +161,17 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 		if errors.Is(err, model.ErrUnsupportedProfilePictureType) {
 			return ctx.Error(model.ErrUnsupportedProfilePictureType, http.StatusBadRequest)
 		}
+		if errors.Is(err, model.ErrProfilePictureDimensionsTooLarge) {
+			return ctx.Error(model.ErrProfilePictureDimensionsTooLarge, http.StatusBadRequest)
+		}
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
 		}
+		u.logger.Error(ctx.Context(), "failed to upload profile picture", "userID", userID, "error", err)
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
-	// Return 200 OK
-	return ctx.Text(imageURL)
+	return ctx.Ok()
 }
 
 // deleteUserImage deletes a user's profile image

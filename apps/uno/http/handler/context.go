@@ -59,6 +59,7 @@ func (c *Context) Write(b []byte) (int, error) {
 	if c.status == 0 {
 		c.status = http.StatusOK
 	}
+	c.wroteHeader = true
 	c.bytes += len(b)
 	return c.w.Write(b)
 }

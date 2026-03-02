@@ -35,10 +35,10 @@ services:
       ADMIN_KEY: ${ADMIN_KEY}
       ENVIRONMENT: staging
       GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
-      MINIO_ENDPOINT: minio:9000
-      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
-      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-      UNO_API_URL: https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
+      PROFILE_PICTURE_ENDPOINT_URL: minio:9000
+      PROFILE_PICTURE_BUCKET_NAME: profile-pictures
+      PROFILE_PICTURE_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      PROFILE_PICTURE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
     labels:
       caddy: pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
       caddy.reverse_proxy: "{{upstreams 8000}}"

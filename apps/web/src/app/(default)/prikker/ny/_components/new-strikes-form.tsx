@@ -15,6 +15,7 @@ import {
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
+import { createProfilePictureUrl } from "@/api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -383,7 +384,7 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
                   return (
                     <>
                       <Avatar className="size-12 md:size-14">
-                        <AvatarImage src={user.imageUrl ?? ""} />
+                        <AvatarImage src={createProfilePictureUrl(user.id)} />
                         <AvatarFallback className="bg-background text-foreground">
                           {initials(user.name)}
                         </AvatarFallback>

@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
+import { createProfilePictureUrl } from "@/api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
@@ -11,16 +13,18 @@ import {
 } from "../_actions/profile-picture";
 
 type UploadProfilePictureProps = {
+  userId: string;
   name: string;
   image: string | null;
 };
 
 const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
 
-export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps) => {
+export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictureProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(image);
+  const [hasImage, setHasImage] = useState(image !== null);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleChooseFile = () => {
     inputRef.current?.click();
@@ -47,15 +51,20 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
     const formData = new FormData();
     formData.append("file", file);
 
-    const { ok, url } = await uploadProfilePictureAction(formData);
+    try {
+      const result = await uploadProfilePictureAction(formData);
 
-    if (!ok) {
+      if (!result.ok) {
+        toast({ title: result.message ?? "Noe gikk galt", variant: "destructive" });
+        return;
+      }
+
+      setHasImage(true);
+      router.refresh();
+    } catch (err) {
+      console.error("Upload threw an exception:", err);
       toast({ title: "Noe gikk galt" });
-      return;
     }
-
-    // Set "t" query param to bust the cache and ensure the new image is displayed immediately
-    setImageUrl(`${url}?t=${Date.now()}`);
   };
 
   const handleRemoveImage = async () => {
@@ -64,13 +73,14 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
       toast({ title: "Noe gikk galt" });
       return;
     }
-    setImageUrl(null);
+    setHasImage(false);
+    router.refresh();
   };
 
   return (
     <div className="space-y-2">
       <Avatar>
-        <AvatarImage src={imageUrl ?? ""} />
+        <AvatarImage src={hasImage ? createProfilePictureUrl(userId, 2) : undefined} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>
 
@@ -82,7 +92,7 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
           accept={ACCEPTED_FILE_TYPES.join(",")}
           hidden
         />
-        {!imageUrl ? (
+        {!hasImage ? (
           <button
             onClick={handleChooseFile}
             type="button"
