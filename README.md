@@ -96,13 +96,13 @@ Sidene som starter er:
 - [http://localhost:3000](http://localhost:3000) for nettsiden
 - [http://localhost:3333](http://localhost:3333) for Sanity Studio
 - [http://localhost:8000](http://localhost:8000) for `uno` API-et vårt
+- [http://localhost:9001](http://localhost:9001) for MinIO Studioet. Brukernavn og passord er, minioadmin / minioadmin.
 - [https://local.drizzle.studio](https://local.drizzle.studio) for Drizzle Studio
 
 > NB: "Backenden" til Drizzle vil kjøre på [http://localhost:4983](http://localhost:4983).
 
 ## Relaterte prosjekter
 
-- [nano](https://github.com/echo-webkom/nano) - Nano-services for siden.
 - [cenv](https://github.com/echo-webkom/cenv) - Environment fil skjekker
 - [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
 - [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
