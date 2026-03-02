@@ -36,6 +36,10 @@ func (s *StrikeService) UnbanUsersWithExpiredStrikes(ctx context.Context) error 
 
 }
 
+func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
+	return s.dotRepo.CleanupOldStrikes(ctx)
+}
+
 func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
 	return s.userRepo.GetUsersWithStrikes(ctx)
 }

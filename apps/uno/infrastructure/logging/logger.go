@@ -85,3 +85,20 @@ func (s *SlogAdapter) With(args ...any) port.Logger {
 func (s *SlogAdapter) Slog() *slog.Logger {
 	return s.logger
 }
+
+// CronLogger adapts port.Logger to the interface expected by robfig/cron.
+type CronLogger struct {
+	logger port.Logger
+}
+
+func NewCronLogger(logger port.Logger) *CronLogger {
+	return &CronLogger{logger: logger}
+}
+
+func (c *CronLogger) Info(msg string, keysAndValues ...any) {
+	c.logger.Info(context.Background(), msg, keysAndValues...)
+}
+
+func (c *CronLogger) Error(err error, msg string, keysAndValues ...any) {
+	c.logger.Error(context.Background(), msg, append(keysAndValues, "error", err)...)
+}

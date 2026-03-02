@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "pnpm with-env air",
     "start": "./build/web",
+    "start:cron": "./build/cron",
     "build": "go build -o build/web cmd/web/main.go",
+    "build:cron": "go build -o build/cron cmd/cron/main.go",
     "test": "pnpm with-env go test ./... -v",
     "test:verbose": "pnpm with-env go test ./... -v",
     "test:coverage": "pnpm with-env go test ./... -coverprofile=coverage.out",

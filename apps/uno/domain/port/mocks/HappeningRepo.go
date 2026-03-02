@@ -426,8 +426,8 @@ func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Run(run func(ctx co
 	return _c
 }
 
-func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(groupedRegistrationCounts []model.RegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
-	_c.Call.Return(groupedRegistrationCounts, err)
+func (_c *HappeningRepo_GetHappeningRegistrationCounts_Call) Return(registrationCounts []model.RegistrationCount, err error) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+	_c.Call.Return(registrationCounts, err)
 	return _c
 }
 

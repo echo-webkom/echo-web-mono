@@ -38,6 +38,66 @@ func (_m *DotRepo) EXPECT() *DotRepo_Expecter {
 	return &DotRepo_Expecter{mock: &_m.Mock}
 }
 
+// CleanupOldStrikes provides a mock function for the type DotRepo
+func (_mock *DotRepo) CleanupOldStrikes(ctx context.Context) (int64, error) {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CleanupOldStrikes")
+	}
+
+	var r0 int64
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) (int64, error)); ok {
+		return returnFunc(ctx)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context) int64); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Get(0).(int64)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = returnFunc(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// DotRepo_CleanupOldStrikes_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CleanupOldStrikes'
+type DotRepo_CleanupOldStrikes_Call struct {
+	*mock.Call
+}
+
+// CleanupOldStrikes is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *DotRepo_Expecter) CleanupOldStrikes(ctx interface{}) *DotRepo_CleanupOldStrikes_Call {
+	return &DotRepo_CleanupOldStrikes_Call{Call: _e.mock.On("CleanupOldStrikes", ctx)}
+}
+
+func (_c *DotRepo_CleanupOldStrikes_Call) Run(run func(ctx context.Context)) *DotRepo_CleanupOldStrikes_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *DotRepo_CleanupOldStrikes_Call) Return(n int64, err error) *DotRepo_CleanupOldStrikes_Call {
+	_c.Call.Return(n, err)
+	return _c
+}
+
+func (_c *DotRepo_CleanupOldStrikes_Call) RunAndReturn(run func(ctx context.Context) (int64, error)) *DotRepo_CleanupOldStrikes_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateDot provides a mock function for the type DotRepo
 func (_mock *DotRepo) CreateDot(ctx context.Context, dot model.NewDot) (model.Dot, error) {
 	ret := _mock.Called(ctx, dot)
