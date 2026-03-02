@@ -13,7 +13,6 @@ import (
 	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
-	"uno/infrastructure/telemetry"
 	"uno/pkg/adventofcode"
 
 	"github.com/jesperkha/notifier"
@@ -26,27 +25,6 @@ func RunApi() {
 	// Initialize structured logging
 	logger := logging.NewWithConfig(cfg.Environment)
 	logger.Info(context.Background(), "starting uno-api")
-
-	// Initialize OpenTelemetry
-	shutdown, err := telemetry.New(telemetry.TelemetryConfig{
-		ServiceName: cfg.ServiceName,
-		Environment: cfg.Environment,
-		Enabled:     cfg.TelemetryEnabled,
-	})
-	if err != nil {
-		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
-	}
-	defer func() {
-		if err := shutdown(context.Background()); err != nil {
-			logger.Error(context.Background(), "failed to shutdown telemetry", "error", err)
-		}
-	}()
-
-	if cfg.TelemetryEnabled {
-		logger.Info(context.Background(), "telemetry enabled", "endpoint", cfg.OTLPEndpoint)
-	} else {
-		logger.Info(context.Background(), "telemetry disabled")
-	}
 
 	// Initialize database connection
 	db, err := postgres.New(cfg.DatabaseURL)

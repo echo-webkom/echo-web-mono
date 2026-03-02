@@ -82,11 +82,11 @@ type DotInfo struct {
 }
 
 type UserWithBanInfoResponse struct {
-	ID      string    `json:"id"`
-	Name    *string   `json:"name"`
+	ID       string    `json:"id"`
+	Name     *string   `json:"name"`
 	HasImage bool      `json:"hasImage"`
-	BanInfo *BanInfo  `json:"banInfo"`
-	Dots    []DotInfo `json:"dots"`
+	BanInfo  *BanInfo  `json:"banInfo"`
+	Dots     []DotInfo `json:"dots"`
 }
 
 func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoResponse {
@@ -121,11 +121,11 @@ func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoR
 		}
 
 		resp[i] = UserWithBanInfoResponse{
-			ID:      user.ID,
-			Name:    user.Name,
+			ID:       user.ID,
+			Name:     user.Name,
 			HasImage: user.HasImage,
-			BanInfo: banInfo,
-			Dots:    dots,
+			BanInfo:  banInfo,
+			Dots:     dots,
 		}
 	}
 

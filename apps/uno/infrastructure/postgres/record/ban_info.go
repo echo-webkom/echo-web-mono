@@ -71,8 +71,8 @@ func (u *UserWithBanInfo) ToDomain() *model.UserWithBanInfo {
 	}
 
 	return &model.UserWithBanInfo{
-		ID:    u.ID,
-		Name:  u.Name,
+		ID:       u.ID,
+		Name:     u.Name,
 		HasImage: u.HasImage(),
 		BanInfo: model.BanInfo{
 			ID:           u.BanInfo.ID,

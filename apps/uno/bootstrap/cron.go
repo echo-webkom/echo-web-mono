@@ -14,7 +14,6 @@ import (
 	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
-	"uno/infrastructure/telemetry"
 
 	"github.com/jesperkha/notifier"
 )
@@ -25,20 +24,6 @@ func RunCron() {
 
 	logger := logging.NewWithConfig(cfg.Environment)
 	logger.Info(context.Background(), "starting uno-cron")
-
-	shutdownTelemetry, err := telemetry.New(telemetry.TelemetryConfig{
-		ServiceName: cfg.ServiceName,
-		Environment: cfg.Environment,
-		Enabled:     cfg.TelemetryEnabled,
-	})
-	if err != nil {
-		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
-	}
-	defer func() {
-		if err := shutdownTelemetry(context.Background()); err != nil {
-			logger.Error(context.Background(), "failed to shutdown telemetry", "error", err)
-		}
-	}()
 
 	db, err := postgres.New(cfg.DatabaseURL)
 	if err != nil {

@@ -8,15 +8,11 @@ import (
 )
 
 type Config struct {
-	DatabaseURL                   string
-	ApiPort                       string
-	AdminAPIKey                   string
-	OTLPEndpoint                  string
-	OTLPHeaders                   string
-	Environment                   string
-	ServiceName                   string
-	ServiceVersion                string
-	TelemetryEnabled              bool
+	DatabaseURL string
+	ApiPort     string
+	AdminAPIKey string
+	Environment string
+
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
@@ -24,11 +20,10 @@ type Config struct {
 }
 
 type CronConfig struct {
-	DatabaseURL                   string
-	CronTimezone                  string
-	Environment                   string
-	ServiceName                   string
-	TelemetryEnabled              bool
+	DatabaseURL  string
+	CronTimezone string
+	Environment  string
+
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
@@ -48,12 +43,9 @@ func Load() *Config {
 
 	return &Config{
 		// General configuration
-		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
-		Environment:      environment,
-		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
-		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
-		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		AdminAPIKey: os.Getenv("ADMIN_KEY"),
+		Environment: environment,
 
 		// API configuration
 		ApiPort: apiPort,
@@ -77,10 +69,8 @@ func LoadCronConfig() *CronConfig {
 
 	return &CronConfig{
 		// General configuration
-		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		Environment:      environment,
-		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
-		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		Environment: environment,
 
 		// Cron configuration
 		CronTimezone: getEnvOrDefault("CRON_TIMEZONE", "Europe/Oslo"),
