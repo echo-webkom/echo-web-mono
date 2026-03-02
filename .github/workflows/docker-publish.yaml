@@ -268,6 +268,8 @@ jobs:
           FEIDE_CLIENT_SECRET: ${{ secrets.FEIDE_CLIENT_SECRET }}
           PREVIEW_DOMAIN: ${{ secrets.PREVIEW_DOMAIN }}
           GIT_COMMIT_SHA: ${{ github.sha }}
+          MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
         run: docker compose -p pr-${PR_NUMBER} -f preview/docker-compose.yaml up -d --pull always --wait
 
       - name: 💬 Comment on PR

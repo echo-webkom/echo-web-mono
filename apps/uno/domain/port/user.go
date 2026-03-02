@@ -16,4 +16,5 @@ type UserRepo interface {
 	GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error)
 	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
+	UpdateUserImageURL(ctx context.Context, userID string, imageURL *string) error
 }

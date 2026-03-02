@@ -1,11 +1,16 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { deleteProfilePictureAction, uploadProfilePictureAction } from "@/actions/images";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
+import {
+  deleteProfilePictureAction,
+  uploadProfilePictureAction,
+} from "../_actions/profile-picture";
+import { createProfilePictureUrl } from "../../../../../../api/client";
 
 type UploadProfilePictureProps = {
   name: string;
@@ -18,6 +23,7 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(image);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleChooseFile = () => {
     inputRef.current?.click();
@@ -44,29 +50,31 @@ export const UploadProfilePicture = ({ name, image }: UploadProfilePictureProps)
     const formData = new FormData();
     formData.append("file", file);
 
-    const { success, message } = await uploadProfilePictureAction(formData);
+    const { ok, url } = await uploadProfilePictureAction(formData);
 
-    if (!success) {
-      toast({ title: message });
+    if (!ok) {
+      toast({ title: "Noe gikk galt" });
       return;
     }
 
-    setImageUrl(message);
+    setImageUrl(createProfilePictureUrl(url, 2) ?? null);
+    router.refresh();
   };
 
   const handleRemoveImage = async () => {
-    const { success, message } = await deleteProfilePictureAction();
-    if (!success) {
-      toast({ title: message });
+    const ok = await deleteProfilePictureAction();
+    if (!ok) {
+      toast({ title: "Noe gikk galt" });
       return;
     }
     setImageUrl(null);
+    router.refresh();
   };
 
   return (
     <div className="space-y-2">
       <Avatar>
-        <AvatarImage src={imageUrl ?? ""} />
+        <AvatarImage src={createProfilePictureUrl(imageUrl)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>
 

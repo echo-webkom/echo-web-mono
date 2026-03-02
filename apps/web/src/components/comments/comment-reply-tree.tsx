@@ -8,6 +8,7 @@ import { type CommentTree } from "@/lib/comment-tree";
 import { cn } from "@/utils/cn";
 import { shortDate } from "@/utils/date";
 import { initials } from "@/utils/string";
+import { createProfilePictureUrl } from "../../api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { CommentCollapseButton } from "./comment-collapse-button";
 import { CommentDeleteButton } from "./comment-delete-button";
@@ -49,7 +50,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
               reactions={comment.reactions}
             >
               <Avatar className="hidden h-14 w-14 sm:block">
-                <AvatarImage src={comment.user?.image ?? ""} />
+                <AvatarImage src={createProfilePictureUrl(comment.user?.image)} />
                 <AvatarFallback title={comment.user?.name ?? "Andreas Aanes"}>
                   {initials(comment.user?.name ?? "AA")}
                 </AvatarFallback>

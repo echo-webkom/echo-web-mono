@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -13,12 +16,13 @@ import (
 type Context struct {
 	R *http.Request
 
-	w         http.ResponseWriter
-	status    int
-	err       error
-	bytes     int
-	readBody  bool // indicate to close body
-	createdAt time.Time
+	w           http.ResponseWriter
+	status      int
+	err         error
+	bytes       int
+	readBody    bool // indicate to close body
+	wroteHeader bool
+	createdAt   time.Time
 }
 
 func NewContext(w http.ResponseWriter, r *http.Request) *Context {
@@ -42,7 +46,11 @@ func ReuseOrNewContext(w http.ResponseWriter, r *http.Request) *Context {
 }
 
 func (c *Context) WriteHeader(code int) {
+	if c.wroteHeader {
+		return
+	}
 	c.status = code
+	c.wroteHeader = true
 	c.w.WriteHeader(code)
 }
 
@@ -57,6 +65,21 @@ func (c *Context) Write(b []byte) (int, error) {
 
 func (c *Context) Header() http.Header {
 	return c.w.Header()
+}
+
+func (c *Context) SetHeader(key, value string) {
+	c.w.Header().Set(key, value)
+}
+
+func (c *Context) FormFile(key string) (multipart.File, error) {
+	if err := c.R.ParseMultipartForm(32 << 20); err != nil {
+		return nil, c.Error(fmt.Errorf("failed to parse multipart form: %w", err), http.StatusBadRequest)
+	}
+	file, _, err := c.R.FormFile(key)
+	if err != nil {
+		return nil, c.Error(fmt.Errorf("failed to get form file: %w", err), http.StatusBadRequest)
+	}
+	return file, nil
 }
 
 func (c *Context) Destroy() {
@@ -156,6 +179,23 @@ func (c *Context) HeaderValue(key string) string {
 	return c.R.Header.Get(key)
 }
 
+func (c *Context) Stream(r io.ReadCloser) error {
+	var err error
+	defer func() {
+		err = r.Close()
+	}()
+
+	buf := make([]byte, 512)
+	n, err := r.Read(buf)
+	if err != nil && err != io.EOF {
+		return err
+	}
+
+	c.SetHeader("Content-Type", http.DetectContentType(buf[:n]))
+	_, err = io.Copy(c, io.MultiReader(bytes.NewReader(buf[:n]), r))
+	return err
+}
+
 // Lifetime returns the duration since creation.
 func (c *Context) Lifetime() time.Duration {
 	return time.Since(c.createdAt)
@@ -169,4 +209,11 @@ func (c *Context) Bytes() int {
 func (c *Context) Next(h http.Handler) error {
 	h.ServeHTTP(c, c.R)
 	return c.GetError()
+}
+
+// Text returns a plain text response with the given string.
+func (c *Context) Text(s string) error {
+	c.SetHeader("Content-Type", "text/plain; charset=utf-8")
+	_, err := c.Write([]byte(s))
+	return err
 }

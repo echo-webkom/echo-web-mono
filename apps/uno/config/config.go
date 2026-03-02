@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -10,6 +11,7 @@ import (
 type Config struct {
 	DatabaseURL      string
 	ApiPort          string
+	ApiURL           string
 	AdminAPIKey      string
 	OTLPEndpoint     string
 	OTLPHeaders      string
@@ -17,6 +19,9 @@ type Config struct {
 	ServiceName      string
 	ServiceVersion   string
 	TelemetryEnabled bool
+	MinioEndpoint    string
+	MinioAccessKey   string
+	MinioSecretKey   string
 }
 
 type CronConfig struct {
@@ -25,6 +30,9 @@ type CronConfig struct {
 	Environment      string
 	ServiceName      string
 	TelemetryEnabled bool
+	MinioEndpoint    string
+	MinioAccessKey   string
+	MinioSecretKey   string
 }
 
 func Load() *Config {
@@ -36,14 +44,29 @@ func Load() *Config {
 		}
 	}
 
+	apiPort := toGoPort(getEnvOrDefault("UNO_API_PORT", "8000"))
+
+	apiURL := os.Getenv("UNO_API_URL")
+	if apiURL == "" {
+		if environment == "production" {
+			apiURL = "https://uno.echo-webkom.no"
+		} else {
+			apiURL = fmt.Sprintf("http://localhost%s", apiPort)
+		}
+	}
+
 	return &Config{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		ApiPort:          toGoPort(os.Getenv("UNO_API_PORT")),
+		ApiPort:          apiPort,
+		ApiURL:           apiURL,
 		AdminAPIKey:      os.Getenv("ADMIN_KEY"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-api"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
 		OTLPEndpoint:     os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT"),
+		MinioEndpoint:    os.Getenv("MINIO_ENDPOINT"),
+		MinioAccessKey:   os.Getenv("MINIO_ACCESS_KEY"),
+		MinioSecretKey:   os.Getenv("MINIO_SECRET_KEY"),
 	}
 }
 
@@ -62,6 +85,9 @@ func LoadCronConfig() *CronConfig {
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
+		MinioEndpoint:    os.Getenv("MINIO_ENDPOINT"),
+		MinioAccessKey:   os.Getenv("MINIO_ACCESS_KEY"),
+		MinioSecretKey:   os.Getenv("MINIO_SECRET_KEY"),
 	}
 }
 

@@ -6,9 +6,11 @@ import (
 	"os"
 	"syscall"
 	"uno/config"
+	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http"
 	"uno/infrastructure/external"
+	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -61,6 +63,13 @@ func RunApi() {
 		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
 	}
 
+	fileStorage, err := filestorage.New(config.MinioEndpoint, config.MinioAccessKey, config.MinioSecretKey)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
+	} else {
+		logger.Info(context.Background(), "file storage connected")
+	}
+
 	// Initialize repositories
 	happeningRepo := postgres.NewHappeningRepo(db, logger)
 	userRepo := postgres.NewUserRepo(db, logger)
@@ -80,6 +89,15 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
+	var profilePictureStore port.ProfilePictureRepo
+	if fileStorage != nil {
+		profilePictureStore, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, logger)
+		if err != nil {
+			logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+		}
+	} else {
+		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
+	}
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -87,7 +105,7 @@ func RunApi() {
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
 	shoppingListService := service.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
-	userService := service.NewUserService(userRepo)
+	userService := service.NewUserService(config.ApiURL, userRepo, profilePictureStore)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)

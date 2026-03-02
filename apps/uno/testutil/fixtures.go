@@ -8,6 +8,10 @@ import (
 	"github.com/brianvoe/gofakeit/v7"
 )
 
+const (
+	FakeApiURL = "http://test"
+)
+
 func NewFakeStruct[T any](overrides ...func(*T)) T {
 	var obj T
 	_ = gofakeit.Struct(&obj)
