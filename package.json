@@ -38,7 +38,7 @@
     "typegen": "pnpm --filter=cms typegen"
   },
   "dependencies": {
-    "turbo": "2.5.8",
+    "turbo": "2.8.12",
     "typescript": "5.9.3"
   }
 }
