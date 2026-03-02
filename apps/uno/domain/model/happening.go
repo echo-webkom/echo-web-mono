@@ -85,5 +85,5 @@ type HappeningRegistration struct {
 	ChangedAt        *time.Time
 	ChangedBy        *string
 	UserName         *string
-	UserImage        *string
+	UserHasImage     bool
 }

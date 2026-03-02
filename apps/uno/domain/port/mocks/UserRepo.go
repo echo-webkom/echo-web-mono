@@ -622,16 +622,16 @@ func (_c *UserRepo_ResetUserYears_Call) RunAndReturn(run func(ctx context.Contex
 }
 
 // UpdateUserImage provides a mock function for the type UserRepo
-func (_mock *UserRepo) UpdateUserImage(ctx context.Context, userID string, imageID *string) error {
-	ret := _mock.Called(ctx, userID, imageID)
+func (_mock *UserRepo) UpdateUserImage(ctx context.Context, userID string, hasImage bool) error {
+	ret := _mock.Called(ctx, userID, hasImage)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateUserImage")
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, *string) error); ok {
-		r0 = returnFunc(ctx, userID, imageID)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, bool) error); ok {
+		r0 = returnFunc(ctx, userID, hasImage)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -646,12 +646,12 @@ type UserRepo_UpdateUserImage_Call struct {
 // UpdateUserImage is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-//   - imageID *string
-func (_e *UserRepo_Expecter) UpdateUserImage(ctx interface{}, userID interface{}, imageID interface{}) *UserRepo_UpdateUserImage_Call {
-	return &UserRepo_UpdateUserImage_Call{Call: _e.mock.On("UpdateUserImage", ctx, userID, imageID)}
+//   - hasImage bool
+func (_e *UserRepo_Expecter) UpdateUserImage(ctx interface{}, userID interface{}, hasImage interface{}) *UserRepo_UpdateUserImage_Call {
+	return &UserRepo_UpdateUserImage_Call{Call: _e.mock.On("UpdateUserImage", ctx, userID, hasImage)}
 }
 
-func (_c *UserRepo_UpdateUserImage_Call) Run(run func(ctx context.Context, userID string, imageID *string)) *UserRepo_UpdateUserImage_Call {
+func (_c *UserRepo_UpdateUserImage_Call) Run(run func(ctx context.Context, userID string, hasImage bool)) *UserRepo_UpdateUserImage_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -661,9 +661,9 @@ func (_c *UserRepo_UpdateUserImage_Call) Run(run func(ctx context.Context, userI
 		if args[1] != nil {
 			arg1 = args[1].(string)
 		}
-		var arg2 *string
+		var arg2 bool
 		if args[2] != nil {
-			arg2 = args[2].(*string)
+			arg2 = args[2].(bool)
 		}
 		run(
 			arg0,
@@ -679,7 +679,7 @@ func (_c *UserRepo_UpdateUserImage_Call) Return(err error) *UserRepo_UpdateUserI
 	return _c
 }
 
-func (_c *UserRepo_UpdateUserImage_Call) RunAndReturn(run func(ctx context.Context, userID string, imageID *string) error) *UserRepo_UpdateUserImage_Call {
+func (_c *UserRepo_UpdateUserImage_Call) RunAndReturn(run func(ctx context.Context, userID string, hasImage bool) error) *UserRepo_UpdateUserImage_Call {
 	_c.Call.Return(run)
 	return _c
 }

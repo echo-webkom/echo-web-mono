@@ -132,7 +132,7 @@ type HappeningRegistrationResponse struct {
 	ChangedAt        *time.Time `json:"changedAt"`
 	ChangedBy        *string    `json:"changedBy"`
 	UserName         *string    `json:"userName"`
-	UserImage        *string    `json:"userImage"`
+	UserHasImage     bool       `json:"userHasImage"`
 }
 
 // HappeningRegistrationListFromPorts converts a slice of port.HappeningRegistration to DTOs.
@@ -149,7 +149,7 @@ func HappeningRegistrationListFromPorts(registrations []model.HappeningRegistrat
 			ChangedAt:        reg.ChangedAt,
 			ChangedBy:        reg.ChangedBy,
 			UserName:         reg.UserName,
-			UserImage:        reg.UserImage,
+			UserHasImage:     reg.UserHasImage,
 		}
 	}
 	return dtos

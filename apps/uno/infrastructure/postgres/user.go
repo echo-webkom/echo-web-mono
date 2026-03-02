@@ -401,7 +401,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	err := u.db.GetContext(ctx, &resultDB, query,
 		user.Email,
 		user.Name,
-		user.Image,
+		nil, // image — always null on creation
 		user.AlternativeEmail,
 		degreeID,
 		year,
@@ -423,17 +423,24 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	return result, nil
 }
 
-func (u *UserRepo) UpdateUserImage(ctx context.Context, userID string, imageID *string) error {
-	u.logger.Info(ctx, "updating user image URL",
+func (u *UserRepo) UpdateUserImage(ctx context.Context, userID string, hasImage bool) error {
+	u.logger.Info(ctx, "updating user image",
 		"user_id", userID,
+		"has_image", hasImage,
 	)
+
+	var image *string
+	if hasImage {
+		marker := "1"
+		image = &marker
+	}
 
 	query := `--sql
 		UPDATE "user"
 		SET image = $1, updated_at = NOW()
 		WHERE id = $2
 	`
-	_, err := u.db.ExecContext(ctx, query, imageID, userID)
+	_, err := u.db.ExecContext(ctx, query, image, userID)
 	if err != nil {
 		u.logger.Error(ctx, "failed to update user image URL",
 			"error", err,

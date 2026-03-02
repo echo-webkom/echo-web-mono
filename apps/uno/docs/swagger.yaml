@@ -67,18 +67,18 @@ definitions:
         items:
           $ref: '#/definitions/uno_domain_model.DotInfo'
         type: array
+      hasImage:
+        type: boolean
       id:
-        type: string
-      image:
         type: string
       name:
         type: string
     type: object
   uno_domain_model.UserWithStrikes:
     properties:
+      hasImage:
+        type: boolean
       id:
-        type: string
-      image:
         type: string
       isBanned:
         type: boolean
@@ -274,9 +274,9 @@ definitions:
         type: string
       unregisterReason:
         type: string
+      userHasImage:
+        type: boolean
       userId:
-        type: string
-      userImage:
         type: string
       userName:
         type: string
@@ -456,11 +456,11 @@ definitions:
         items:
           $ref: '#/definitions/uno_http_dto.UserGroupResponse'
         type: array
+      hasImage:
+        type: boolean
       hasReadTerms:
         type: boolean
       id:
-        type: string
-      image:
         type: string
       isPublic:
         type: boolean
@@ -477,9 +477,9 @@ definitions:
     type: object
   uno_http_dto.UserSummaryResponse:
     properties:
+      hasImage:
+        type: boolean
       id:
-        type: string
-      image:
         type: string
       name:
         type: string

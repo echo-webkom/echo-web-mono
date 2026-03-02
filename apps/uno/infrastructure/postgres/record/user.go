@@ -27,6 +27,10 @@ type UserDB struct {
 	Groups           []GroupDB      `db:"groups"`
 }
 
+func (db *UserDB) HasImage() bool {
+	return db.Image != nil
+}
+
 // FromDomain converts a domain User model to a database UserDB model.
 func (db *UserDB) FromDomain(u model.User) UserDB {
 	degreeID := &u.Degree.ID
@@ -35,7 +39,6 @@ func (db *UserDB) FromDomain(u model.User) UserDB {
 		ID:               u.ID,
 		Name:             u.Name,
 		Email:            u.Email,
-		Image:            u.Image,
 		AlternativeEmail: u.AlternativeEmail,
 		DegreeID:         degreeID,
 		Year:             u.Year.IntPtr(),
@@ -74,7 +77,7 @@ func (db *UserDB) ToDomain() (model.User, error) {
 		ID:               db.ID,
 		Name:             db.Name,
 		Email:            db.Email,
-		Image:            db.Image,
+		HasImage:         db.HasImage(),
 		AlternativeEmail: db.AlternativeEmail,
 		Degree:           degree,
 		Year:             year,
@@ -237,11 +240,15 @@ type UserWithStrikes struct {
 	Strikes  int     `db:"strikes"`
 }
 
+func (u *UserWithStrikes) HasImage() bool {
+	return u.Image != nil
+}
+
 func (u *UserWithStrikes) ToDomain() *model.UserWithStrikes {
 	return &model.UserWithStrikes{
 		ID:       u.ID,
 		Name:     u.Name,
-		Image:    u.Image,
+		HasImage: u.HasImage(),
 		IsBanned: u.IsBanned,
 		Strikes:  u.Strikes,
 	}

@@ -15,7 +15,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type Registration = {
-  image: string | null;
+  hasImage: boolean;
   name: string | null;
   userId: string;
   status: RegistrationStatus;
@@ -27,10 +27,11 @@ type ProfilePreviewProps = {
 
 const ProfilePreview = ({ registration }: ProfilePreviewProps) => {
   const fallback = initials(registration.name ?? "BO");
+  const imageUrl = registration.hasImage ? createProfilePictureUrl(registration.userId) : undefined;
 
   return (
     <Avatar className="size-8">
-      <AvatarImage src={createProfilePictureUrl(registration.userId)} />
+      <AvatarImage src={imageUrl} />
       <AvatarFallback className="text-xs">{fallback}</AvatarFallback>
     </Avatar>
   );
@@ -46,12 +47,7 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
   const sorted = registrations
     .filter((registration) => registration.status === "registered")
     .sort((a, b) => {
-      if (a.image && !b.image) {
-        return -1;
-      } else if (!a.image && b.image) {
-        return 1;
-      }
-      return 0;
+      return a.hasImage === b.hasImage ? 0 : a.hasImage ? -1 : 1;
     })
     .slice(0, MAX);
 

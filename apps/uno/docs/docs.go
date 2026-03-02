@@ -2035,10 +2035,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_domain_model.DotInfo"
                     }
                 },
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
@@ -2049,10 +2049,10 @@ const docTemplate = `{
         "uno_domain_model.UserWithStrikes": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "isBanned": {
@@ -2352,10 +2352,10 @@ const docTemplate = `{
                 "unregisterReason": {
                     "type": "string"
                 },
-                "userId": {
-                    "type": "string"
+                "userHasImage": {
+                    "type": "boolean"
                 },
-                "userImage": {
+                "userId": {
                     "type": "string"
                 },
                 "userName": {
@@ -2632,13 +2632,13 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
                     }
                 },
+                "hasImage": {
+                    "type": "boolean"
+                },
                 "hasReadTerms": {
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "isPublic": {
@@ -2664,10 +2664,10 @@ const docTemplate = `{
         "uno_http_dto.UserSummaryResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "name": {

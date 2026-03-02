@@ -110,9 +110,9 @@ type CommentsReaction struct {
 // UserSummary is a value object containing minimal user information
 // for display purposes in aggregates like comments.
 type UserSummary struct {
-	ID    string
-	Name  *string
-	Image *string
+	ID       string
+	Name     *string
+	HasImage bool
 }
 
 // CommentAggregate is an aggregate root that combines a comment with its

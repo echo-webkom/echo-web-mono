@@ -111,7 +111,7 @@ export class UnoClient {
 export interface CommentAuthor {
   id: string;
   name: string;
-  image: string;
+  hasImage: boolean;
 }
 
 export interface CommentReaction {
@@ -199,7 +199,7 @@ export type RegistrationStatus = "registered" | "unregistered" | "removed" | "wa
 export interface Registration {
   userId: string;
   userName: string | null;
-  userImage: string | null;
+  userHasImage: boolean;
   happeningId: string;
   changedAt: Date;
   changedBy: Date;
@@ -443,7 +443,7 @@ class StrikesApi {
       Array<{
         id: string;
         name: string | null;
-        image: string | null;
+        hasImage: boolean;
         banInfo: {
           id: number;
           reason: string;
@@ -476,7 +476,7 @@ class StrikesApi {
       Array<{
         id: string;
         name: string;
-        imageUrl: string | null;
+        hasImage: boolean;
         isBanned: boolean;
         strikes: number;
       }>
@@ -583,7 +583,7 @@ export interface User {
   id: string;
   name: string | null;
   email: string;
-  image: string | null;
+  hasImage: boolean;
   alternativeEmail: string | null;
   degree: {
     id: string;
