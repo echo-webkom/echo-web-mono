@@ -58,7 +58,7 @@ func LoadCronConfig() *CronConfig {
 
 	return &CronConfig{
 		DatabaseURL:      os.Getenv("DATABASE_URL"),
-		CronTimezone:     getEnvOrDefault("CRON_TIMEZONE", "UTC"),
+		CronTimezone:     getEnvOrDefault("CRON_TIMEZONE", "Europe/Oslo"),
 		Environment:      environment,
 		ServiceName:      getEnvOrDefault("SERVICE_NAME", "uno-cron"),
 		TelemetryEnabled: getEnvOrDefault("TELEMETRY_ENABLED", "false") == "true",
