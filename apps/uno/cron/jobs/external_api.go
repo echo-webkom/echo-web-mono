@@ -38,7 +38,9 @@ func (j *CloseProgrammerBarJob) Run(ctx context.Context) error {
 		return err
 	}
 	defer func() {
-		err = resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			j.logger.Error(ctx, "failed to close response body", "error", err)
+		}
 	}()
 	_, _ = io.Copy(io.Discard, resp.Body)
 

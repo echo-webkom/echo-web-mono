@@ -24,7 +24,7 @@ func (j *CleanupSensitiveQuestionsJob) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	j.logger.Info(ctx, fmt.Sprintf("Deleted %d sensitive questions", rowsAffected))
+	j.logger.Info(ctx, "deleted sensitive questions", "count", rowsAffected)
 	return nil
 }
 
