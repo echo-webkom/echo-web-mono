@@ -25,7 +25,6 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 		commentID      string
 		setupMocks     func(*mocks.CommentRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:      "success",
@@ -38,14 +37,12 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:           "missing id",
 			commentID:      "",
 			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusMethodNotAllowed,
-			expectError:    false,
 		},
 		{
 			name:      "error from repo",
@@ -57,7 +54,6 @@ func TestGetCommentsByIDHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -86,7 +82,6 @@ func TestCreateCommentHandler(t *testing.T) {
 		requestBody    dto.CreateCommentRequest
 		setupMocks     func(*mocks.CommentRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -103,14 +98,12 @@ func TestCreateCommentHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:           "invalid json",
 			requestBody:    dto.CreateCommentRequest{},
 			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name: "error from repo",
@@ -127,7 +120,6 @@ func TestCreateCommentHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -162,7 +154,6 @@ func TestReactToCommentHandler(t *testing.T) {
 		requestBody    dto.ReactToCommentRequest
 		setupMocks     func(*mocks.CommentRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:      "success",
@@ -182,7 +173,6 @@ func TestReactToCommentHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:           "invalid json",
@@ -190,7 +180,6 @@ func TestReactToCommentHandler(t *testing.T) {
 			requestBody:    dto.ReactToCommentRequest{},
 			setupMocks:     func(mockRepo *mocks.CommentRepo) {},
 			expectedStatus: http.StatusBadRequest,
-			expectError:    true,
 		},
 		{
 			name:      "error from service",
@@ -206,7 +195,6 @@ func TestReactToCommentHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

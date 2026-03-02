@@ -40,10 +40,13 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 // @Router       /comments/{id} [get]
 func (c *comments) getCommentsByID(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.Error(errors.New("missing comment ID"), http.StatusBadRequest)
+	}
 
 	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.CommentsFromDomainList(comments)
@@ -65,15 +68,16 @@ func (c *comments) getCommentsByID(ctx *handler.Context) error {
 func (c *comments) createComment(ctx *handler.Context) error {
 	var req dto.CreateCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	err := c.commentService.CommentRepo().CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	response := map[string]bool{"success": true}
+	return ctx.JSON(response)
 }
 
 // reactToComment adds or removes a reaction to a comment
@@ -91,15 +95,18 @@ func (c *comments) createComment(ctx *handler.Context) error {
 // @Router       /comments/{id}/reaction [post]
 func (c *comments) reactToComment(ctx *handler.Context) error {
 	commentID := ctx.PathValue("id")
+	if commentID == "" {
+		return ctx.Error(errors.New("missing comment ID"), http.StatusBadRequest)
+	}
 
 	var req dto.ReactToCommentRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("bad json data"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	err := c.commentService.ReactToComment(ctx.Context(), commentID, req.UserID)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	return ctx.JSON(map[string]bool{"success": true})

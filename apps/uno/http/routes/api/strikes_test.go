@@ -21,7 +21,6 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.DotRepo, *mocks.BanInfoRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -36,7 +35,6 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from dot repo",
@@ -47,7 +45,6 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 		{
 			name: "error from ban info repo",
@@ -62,7 +59,6 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -92,7 +88,6 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.UserRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -106,7 +101,6 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -117,7 +111,6 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -147,7 +140,6 @@ func TestGetBannedUsers(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.UserRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -161,7 +153,6 @@ func TestGetBannedUsers(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -172,7 +163,6 @@ func TestGetBannedUsers(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

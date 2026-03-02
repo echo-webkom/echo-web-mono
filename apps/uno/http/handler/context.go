@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -141,33 +142,37 @@ func (c *Context) SetStatus(status int) {
 // BadRequest returns a 400 Bad Request error response with the given error message.
 // This does not mark the context as having an error, since we consider 400 as a normal response for invalid client input.
 // If you want to mark the context as having an error, use c.Error() instead.
-func (c *Context) BadRequest(err error) {
+func (c *Context) BadRequest(err error) error {
 	c.status = http.StatusBadRequest
 	http.Error(c, err.Error(), http.StatusBadRequest)
+	return nil
 }
 
 // Unauthorized returns a 401 Unauthorized error response with the given error message.
 // This does not mark the context as having an error, since we consider 401 as a normal response for unauthenticated access.
 // If you want to mark the context as having an error, use c.Error() instead.
-func (c *Context) Unauthorized(err error) {
+func (c *Context) Unauthorized(err error) error {
 	c.status = http.StatusUnauthorized
 	http.Error(c, err.Error(), http.StatusUnauthorized)
+	return nil
 }
 
 // Forbidden returns a 403 Forbidden error response with the given error message.
 // This does not mark the context as having an error, since we consider 403 as a normal response for unauthorized access.
 // If you want to mark the context as having an error, use c.Error() instead.
-func (c *Context) Forbidden(err error) {
+func (c *Context) Forbidden(err error) error {
 	c.status = http.StatusForbidden
 	http.Error(c, err.Error(), http.StatusForbidden)
+	return nil
 }
 
 // NotFound returns a 404 Not Found error response with the given error message.
 // This does not mark the context as having an error, since we consider 404 as a normal response.
 // If you want to mark the context as having an error, use c.Error() instead.
-func (c *Context) NotFound(err error) {
+func (c *Context) NotFound(err error) error {
 	c.status = http.StatusNotFound
 	http.Error(c, err.Error(), http.StatusNotFound)
+	return nil
 }
 
 // MethodNotAllowed returns a 405 Method Not Allowed error response with the given error message.
@@ -181,7 +186,9 @@ func (c *Context) TooManyRequests(err error) error {
 }
 
 // InternalServerError returns a 500 Internal Server Error response with the given error message.
-func (c *Context) InternalServerError(err error) error {
+// If err is nil, it will use a default error message "internal server error".
+func (c *Context) InternalServerError() error {
+	err := errors.New("internal server error")
 	return c.Error(err, http.StatusInternalServerError)
 }
 

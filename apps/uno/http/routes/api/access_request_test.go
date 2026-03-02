@@ -21,7 +21,6 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.AccessRequestRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -35,7 +34,6 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -46,7 +44,6 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 

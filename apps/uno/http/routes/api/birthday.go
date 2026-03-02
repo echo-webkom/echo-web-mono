@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/handler"
@@ -32,7 +31,7 @@ func NewBirthdayMux(logger port.Logger, userService *service.UserService) *route
 func (b *birthdays) birthdaysToday(ctx *handler.Context) error {
 	users, err := b.userService.GetUsersWithBirthdayToday(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO

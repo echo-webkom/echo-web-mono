@@ -20,7 +20,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.UserRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -41,7 +40,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from service",
@@ -52,7 +50,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 		{
 			name: "users without names",
@@ -68,7 +65,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 	}
 
