@@ -6,9 +6,11 @@ import (
 	"os"
 	"syscall"
 	"uno/config"
+	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http"
 	"uno/infrastructure/external"
+	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/infrastructure/telemetry"
@@ -18,18 +20,18 @@ import (
 )
 
 func RunApi() {
-	config := config.Load()
+	cfg := config.Load()
 	notif := notifier.New()
 
 	// Initialize structured logging
-	logger := logging.NewWithConfig(config.Environment)
+	logger := logging.NewWithConfig(cfg.Environment)
 	logger.Info(context.Background(), "starting uno-api")
 
 	// Initialize OpenTelemetry
 	shutdown, err := telemetry.New(telemetry.TelemetryConfig{
-		ServiceName: config.ServiceName,
-		Environment: config.Environment,
-		Enabled:     config.TelemetryEnabled,
+		ServiceName: cfg.ServiceName,
+		Environment: cfg.Environment,
+		Enabled:     cfg.TelemetryEnabled,
 	})
 	if err != nil {
 		logger.Error(context.Background(), "failed to initialize telemetry", "error", err)
@@ -40,14 +42,14 @@ func RunApi() {
 		}
 	}()
 
-	if config.TelemetryEnabled {
-		logger.Info(context.Background(), "telemetry enabled", "endpoint", config.OTLPEndpoint)
+	if cfg.TelemetryEnabled {
+		logger.Info(context.Background(), "telemetry enabled", "endpoint", cfg.OTLPEndpoint)
 	} else {
 		logger.Info(context.Background(), "telemetry disabled")
 	}
 
 	// Initialize database connection
-	db, err := postgres.New(config.DatabaseURL)
+	db, err := postgres.New(cfg.DatabaseURL)
 	if err != nil {
 		logger.Error(context.Background(), "failed to connect to database", "error", err)
 		log.Fatal(err)
@@ -59,6 +61,13 @@ func RunApi() {
 	aocClient := adventofcode.New(aocToken)
 	if aocToken == "" {
 		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
+	}
+
+	fileStorage, err := filestorage.New(cfg.ProfilePictureEndpointURL, cfg.ProfilePictureAccessKeyID, cfg.ProfilePictureSecretAccessKey)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
+	} else {
+		logger.Info(context.Background(), "file storage connected")
 	}
 
 	// Initialize repositories
@@ -80,6 +89,15 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
+	var profilePictureRepo port.ProfilePictureRepo
+	if fileStorage != nil {
+		profilePictureRepo, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, cfg.ProfilePictureBucketName, logger)
+		if err != nil {
+			logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+		}
+	} else {
+		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
+	}
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo)
@@ -87,7 +105,7 @@ func RunApi() {
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
 	shoppingListService := service.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
-	userService := service.NewUserService(userRepo)
+	userService := service.NewUserService(userRepo, profilePictureRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)
@@ -101,7 +119,7 @@ func RunApi() {
 	go http.RunServer(
 		notif,
 		logger,
-		config,
+		cfg,
 		authService,
 		happeningService,
 		degreeService,

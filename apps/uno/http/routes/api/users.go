@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"strconv"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -22,8 +23,14 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 
 	mux := router.NewMux()
 
+	// Public routes
 	mux.Handle("GET", "/", u.getUsers, admin)
+	mux.Handle("GET", "/{id}/image", u.getUserImage)
+
+	// Admin routes
 	mux.Handle("GET", "/{id}", u.getUserByID, admin)
+	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
+	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
 
 	return mux
 }
@@ -81,4 +88,119 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 	return ctx.JSON(userResponses[0])
+}
+
+// getUserImage returns a user's profile image
+// @Summary	     Gets a user's profile image
+// @Tags         users
+// @Param        id   path      string  true  "User ID"
+// @Query        size  query     int     false "Image size (1=small, 2=medium)"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "User Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Produce	     octet-stream
+// @Router       /users/{id}/image [get]
+func (u *users) getUserImage(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+	}
+
+	size, _ := strconv.Atoi(ctx.R.URL.Query().Get("size"))
+
+	// Get user image from the database
+	pic, err := u.userService.GetProfilePicture(ctx.Context(), userID, size)
+	if err != nil {
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	ctx.SetHeader("ETag", pic.ETag)
+	ctx.SetHeader("Cache-Control", "no-cache")
+	ctx.SetHeader("Last-Modified", pic.LastModified.UTC().Format(http.TimeFormat))
+	if ctx.R.Header.Get("If-None-Match") == pic.ETag {
+		ctx.SetStatus(http.StatusNotModified)
+		return nil
+	}
+
+	return ctx.Stream(pic)
+}
+
+// uploadUserImage uploads a user's profile image
+// @Summary	     Uploads a user's profile image
+// @Tags         users
+// @Param        id   path      string  true  "User ID"
+// @Param        file  formData  file    true  "Profile Image"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "User Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Router	   /users/{id}/image [post]
+func (u *users) uploadUserImage(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+	}
+
+	// Get the profile picture from the form data
+	pic, err := profilePictureUploadFromContext(ctx)
+	if err != nil {
+		return ctx.Error(err, http.StatusBadRequest)
+	}
+
+	// Upload the user image
+	err = u.userService.UploadProfileImage(ctx.Context(), userID, pic)
+	if err != nil {
+		if errors.Is(err, model.ErrProfilePictureTooLarge) {
+			return ctx.Error(model.ErrProfilePictureTooLarge, http.StatusBadRequest)
+		}
+		if errors.Is(err, model.ErrUnsupportedProfilePictureType) {
+			return ctx.Error(model.ErrUnsupportedProfilePictureType, http.StatusBadRequest)
+		}
+		if errors.Is(err, model.ErrProfilePictureDimensionsTooLarge) {
+			return ctx.Error(model.ErrProfilePictureDimensionsTooLarge, http.StatusBadRequest)
+		}
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
+		}
+		u.logger.Error(ctx.Context(), "failed to upload profile picture", "userID", userID, "error", err)
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	return ctx.Ok()
+}
+
+// deleteUserImage deletes a user's profile image
+// @Summary	     Deletes a user's profile image
+// @Tags         users
+// @Param        id   path      string  true  "User ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "User Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Router	   /users/{id}/image [delete]
+func (u *users) deleteUserImage(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.Error(errors.New("user ID is required"), http.StatusBadRequest)
+	}
+
+	// Delete the user image from the database
+	err := u.userService.DeleteUserImage(ctx.Context(), userID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.Error(errors.New("user not found"), http.StatusNotFound)
+		}
+		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+	}
+
+	// Return 200 OK
+	return nil
 }
