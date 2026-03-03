@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { deleteAccessRequestAction } from "../_actions/delete-access-request";
 
 type DenyAccessModalProps = {
@@ -27,7 +27,6 @@ export const DenyAccessModal = ({ accessRequestId, children }: DenyAccessModalPr
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState("");
   const [isPending, startTransition] = useTransition();
-  const { toast } = useToast();
   const router = useRouter();
 
   const close = () => {
@@ -37,10 +36,8 @@ export const DenyAccessModal = ({ accessRequestId, children }: DenyAccessModalPr
 
   const handleDenyAccess = () => {
     if (!reason.trim()) {
-      toast({
-        title: "Begrunnelse påkrevd",
+      toast.error("Begrunnelse påkrev", {
         description: "Du må oppgi en begrunnelse for å avslå tilgang",
-        variant: "destructive",
       });
       return;
     }
@@ -49,19 +46,15 @@ export const DenyAccessModal = ({ accessRequestId, children }: DenyAccessModalPr
       try {
         await deleteAccessRequestAction(accessRequestId, reason.trim());
 
-        toast({
-          title: "Tilgang avslått",
+        toast.success("Tilgang avslått", {
           description: "Forespørselen har blitt avslått og brukeren har fått beskjed",
-          variant: "success",
         });
 
         router.refresh();
         close();
       } catch {
-        toast({
-          title: "Feil",
+        toast.error("Feil", {
           description: "Kunne ikke avslå tilgang. Prøv igjen.",
-          variant: "destructive",
         });
       }
     });

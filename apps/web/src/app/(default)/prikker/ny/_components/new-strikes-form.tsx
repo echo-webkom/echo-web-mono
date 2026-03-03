@@ -13,6 +13,7 @@ import {
   Popover,
 } from "react-aria-components";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { type z } from "zod";
 
 import { createProfilePictureUrl } from "@/api/client";
@@ -29,7 +30,6 @@ import {
 } from "@/components/ui/form";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
 import { addStrikesAction } from "../_actions/add-strike";
 import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from "../_lib/schema";
@@ -47,7 +47,6 @@ type StrikeButton = {
 };
 
 export const NewStrikesForm = ({ users }: StrikeButton) => {
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof addStrikesSchema>>({
     resolver: standardSchemaResolver(addStrikesSchema),
@@ -89,19 +88,13 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
     async (data) => {
       const { success, message } = await addStrikesAction(data);
       if (!success) {
-        toast({
-          title: message,
-          variant: "destructive",
-        });
+        toast.error(message);
         return;
       }
 
       router.refresh();
       reset();
-      toast({
-        title: message,
-        variant: "success",
-      });
+      toast.success(message);
     },
     (error) => {
       console.error(error);

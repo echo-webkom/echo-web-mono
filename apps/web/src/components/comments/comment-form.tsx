@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuArrowRight as ArrowRight } from "react-icons/lu";
+import { toast } from "sonner";
 
 import { addCommentAction } from "@/actions/add-comment";
-import { useToast } from "@/hooks/use-toast";
 import { CommentTextarea } from "./comment-textarea";
 
 type CommentFormProps = {
@@ -13,7 +13,6 @@ type CommentFormProps = {
 };
 
 export const CommentForm = ({ id }: CommentFormProps) => {
-  const { toast } = useToast();
   const router = useRouter();
   const [content, setContent] = useState("");
 
@@ -27,10 +26,8 @@ export const CommentForm = ({ id }: CommentFormProps) => {
     const result = await addCommentAction(id, content);
 
     if (!result) {
-      toast({
-        title: "Noe gikk galt",
+      toast.warning("Noe gikk galt", {
         description: "Kunne ikke legge til kommentar",
-        variant: "warning",
       });
 
       return;
@@ -38,14 +35,11 @@ export const CommentForm = ({ id }: CommentFormProps) => {
 
     setContent("");
     router.refresh();
-    toast({
-      title: "Kommentar lagt til",
-      variant: "success",
-    });
+    toast.success("Kommentar lagt til");
   };
 
   return (
-    <form onSubmit={handleSumbit} className="flex w-full max-w-[500px] flex-col gap-4">
+    <form onSubmit={handleSumbit} className="flex w-full max-w-125 flex-col gap-4">
       <CommentTextarea
         id="content"
         name="content"

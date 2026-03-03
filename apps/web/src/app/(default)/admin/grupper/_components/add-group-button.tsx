@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { addGroup } from "@/actions/groups";
 import { Button, type ButtonProps } from "@/components/ui/button";
@@ -25,12 +26,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { groupFormSchema, type GroupForm } from "@/lib/schemas/add-group";
 import { slugify } from "@/utils/string";
 
 export const AddGroupButton = ({ ...props }: ButtonProps) => {
-  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<GroupForm>({
@@ -44,10 +43,11 @@ export const AddGroupButton = ({ ...props }: ButtonProps) => {
   const onSubmit = form.handleSubmit(async (data) => {
     const { success, message } = await addGroup(data);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   });
 
   const generateGroupSlug = () => {

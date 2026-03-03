@@ -2,10 +2,10 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { createProfilePictureUrl } from "@/api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
 import {
   deleteProfilePictureAction,
@@ -23,7 +23,6 @@ const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/gif"
 export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictureProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasImage, setHasImage] = useState(image !== null);
-  const { toast } = useToast();
   const router = useRouter();
 
   const handleChooseFile = () => {
@@ -38,13 +37,13 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
     }
 
     if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-      toast({ title: "Bare bilder er tillatt" });
+      toast.error("Bare bilder er tillatt");
       return;
     }
 
     const size = file.size / 1024 / 1024;
     if (size > 5) {
-      toast({ title: "Bildet er for stort. Maks 5MB" });
+      toast.error("Bildet er for stort. Maks 5MB");
       return;
     }
 
@@ -55,7 +54,7 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
       const result = await uploadProfilePictureAction(formData);
 
       if (!result.ok) {
-        toast({ title: result.message ?? "Noe gikk galt", variant: "destructive" });
+        toast.error(result.message ?? "Noe gikk galt");
         return;
       }
 
@@ -63,14 +62,14 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
       router.refresh();
     } catch (err) {
       console.error("Upload threw an exception:", err);
-      toast({ title: "Noe gikk galt" });
+      toast.error("Noe gikk galt");
     }
   };
 
   const handleRemoveImage = async () => {
     const ok = await deleteProfilePictureAction();
     if (!ok) {
-      toast({ title: "Noe gikk galt" });
+      toast.error("Noe gikk galt");
       return;
     }
     setHasImage(false);

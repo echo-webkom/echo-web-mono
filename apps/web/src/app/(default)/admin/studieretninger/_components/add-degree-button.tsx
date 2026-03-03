@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
@@ -28,7 +29,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { degreeFormSchema, type DegreeForm } from "@/lib/schemas/add-degree";
 
 type AddDegreeButtonProps = ButtonProps & {
@@ -38,7 +38,6 @@ type AddDegreeButtonProps = ButtonProps & {
 export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProps) => {
   const isEditing = !!initialDegree?.id;
 
-  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -56,27 +55,22 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
     if (action === "create") {
       const result = await addDegree(degreeData);
 
-      toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
-      });
-
       if (result.success) {
+        toast.success(result.message);
         form.reset();
+      } else {
+        toast.info(result.message);
       }
-
-      return;
     }
 
     if (action === "update") {
       const result = await editDegree(degreeData);
 
-      toast({
-        title: result.message,
-        variant: result.success ? "success" : "info",
-      });
-
-      return;
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.info(result.message);
+      }
     }
   });
 
@@ -85,10 +79,11 @@ export const AddDegreeButton = ({ initialDegree, ...props }: AddDegreeButtonProp
 
     const result = await removeDegree(initialDegree.id);
 
-    toast({
-      title: result.message,
-      variant: result.success ? "success" : "info",
-    });
+    if (result.success) {
+      toast.success(result.message);
+    } else {
+      toast.info(result.message);
+    }
   };
 
   const actionTitle = isEditing ? "Endre" : "Legg til";

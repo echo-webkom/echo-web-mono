@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoHeartOutline, IoHeartSharp, IoTrashBinOutline } from "react-icons/io5";
 import { RxDotsHorizontal } from "react-icons/rx";
+import { toast } from "sonner";
 
 import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/utils/cn";
 import { Text } from "./typography/text";
 import { Button } from "./ui/button";
@@ -26,16 +26,13 @@ type HyggkomShoppingListProps = {
 };
 
 export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppingListProps) => {
-  const { toast } = useToast();
   const [showConfirmRemove, setShowConfirmRemove] = useState<string | null>(null);
   const router = useRouter();
 
   const handleLikeButtonClick = (item: string) => {
     handleLikeClick(item).catch((error) => {
-      toast({
-        title: "Noe gikk galt",
+      toast.error("Noe gikk galt", {
         description: `Error: ${error}`,
-        variant: "destructive",
       });
     });
   };
@@ -50,10 +47,8 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
 
   const confirmRemove = (item: string) => {
     handleRemoveClick(item).catch((error) => {
-      toast({
-        title: "Noe gikk galt",
+      toast.error("Noe gikk galt", {
         description: `Error: ${error}`,
-        variant: "destructive",
       });
     });
   };
@@ -62,16 +57,12 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
     const response = await hyggkomLikeSubmit(item);
 
     if (response.success) {
-      toast({
-        title: "Takk for din tilbakemelding!",
+      toast.success("Takk for din tilbakemelding!", {
         description: response.message,
-        variant: "success",
       });
     } else {
-      toast({
-        title: "Din like ble ikke registrert.",
+      toast.error("Din like ble ikke registrert.", {
         description: response.message,
-        variant: "warning",
       });
     }
 
@@ -83,10 +74,8 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
 
     router.refresh();
 
-    toast({
-      title: "Takk for din tilbakemelding!",
+    toast.success("Takk for din tilbakemelding!", {
       description: response.message,
-      variant: "success",
     });
   };
 

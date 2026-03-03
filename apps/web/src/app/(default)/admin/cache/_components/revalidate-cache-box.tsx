@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { revalidateCacheAction } from "../_actions/revalidate-cache";
 
 const commonTags = [
@@ -21,34 +21,31 @@ const commonTags = [
 ];
 
 export const RevalidateCacheInput = () => {
-  const { toast } = useToast();
   const [text, setText] = useState("");
 
   const onSubmit = async () => {
     const { success, message } = await revalidateCacheAction(text);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
-
     if (success) {
+      toast.success(message);
       setText("");
+    } else {
+      toast.error(message);
     }
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex max-w-[400px] items-center gap-2">
+      <div className="flex max-w-100 items-center gap-2">
         <Input value={text} onChange={(e) => setText(e.currentTarget.value)} placeholder="Tag..." />
-        <Button onClick={onSubmit} className="w-full max-w-[170px]">
+        <Button onClick={onSubmit} className="w-full max-w-42.5">
           Revalidate cache
         </Button>
       </div>
 
       <Text>Vanlige tags:</Text>
 
-      <div className="flex max-w-[600px] flex-wrap items-center gap-2">
+      <div className="flex max-w-150 flex-wrap items-center gap-2">
         {commonTags.map((tag) => (
           <Button variant="outline" key={tag} onClick={() => setText(tag)} className="px-2">
             {tag}

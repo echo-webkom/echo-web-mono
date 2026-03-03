@@ -4,6 +4,7 @@ import { useState, type PropsWithChildren } from "react";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { removeWhitelist, upsertWhitelist } from "@/actions/whitelist";
@@ -27,7 +28,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 
 const whitelistFormSchema = z.object({
   email: z.email("Ugyldig e-post"),
@@ -48,7 +48,6 @@ export const WhitelistButton = ({
   whitelistEntry,
   ...buttonProps
 }: PropsWithChildren<Props>) => {
-  const { toast } = useToast();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -64,10 +63,11 @@ export const WhitelistButton = ({
   const onSubmit = form.handleSubmit(async (data) => {
     const { success, message } = await upsertWhitelist(data.email, data.reason, data.days);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.warning(message);
+    }
 
     setIsOpen(false);
     router.refresh();
@@ -75,19 +75,17 @@ export const WhitelistButton = ({
 
   const handleDelete = async () => {
     if (!whitelistEntry) {
-      toast({
-        title: "Denne personen er kanskje ikke i whitelist",
-        variant: "warning",
-      });
+      toast.warning("Denne personen er kanskje ikke i whitelist");
       return;
     }
 
     const { success, message } = await removeWhitelist(whitelistEntry.email);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.warning(message);
+    }
 
     setIsOpen(false);
     router.refresh();

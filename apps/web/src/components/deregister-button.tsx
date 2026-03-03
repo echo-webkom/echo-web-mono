@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "sonner";
 
 import { deregister } from "@/actions/deregister";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { deregistrationSchema, type DeregistrationForm } from "@/lib/schemas/deregistration";
 
 type DeregisterButtonProps = {
@@ -33,7 +33,6 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
 
   const form = useForm<DeregistrationForm>({
     resolver: standardSchemaResolver(deregistrationSchema),
@@ -52,10 +51,11 @@ export const DeregisterButton = ({ id, children }: DeregisterButtonProps) => {
 
     setIsLoading(false);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
 
     form.reset();
     setIsOpen(false);

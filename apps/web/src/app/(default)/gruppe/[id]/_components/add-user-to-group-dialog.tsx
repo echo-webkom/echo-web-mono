@@ -14,6 +14,7 @@ import {
 } from "react-aria-components";
 import { useForm } from "react-hook-form";
 import { RxPlus as Plus } from "react-icons/rx";
+import { toast } from "sonner";
 import { type z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { addUserToGroupSchema } from "@/lib/schemas/add-user-to-group";
 import { addUserToGroup } from "../actions";
 
@@ -54,7 +54,6 @@ type AddUserToGroupDialogProps = {
 
 export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
   const router = useRouter();
-  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<Array<User>>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,15 +100,12 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
   const onSubmit = form.handleSubmit(async (data) => {
     const { success, message } = await addUserToGroup(data.userId, group.id);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
-
     if (!success) {
+      toast.warning(message);
       return;
     }
 
+    toast.success(message);
     form.reset();
     setSearchQuery("");
     setUsers([]);

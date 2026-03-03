@@ -3,17 +3,16 @@
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { type z } from "zod";
 
 import { hyggkomSubmit } from "@/actions/shopping-list";
-import { useToast } from "@/hooks/use-toast";
 import { hyggkomListSchema } from "@/lib/schemas/shoppinglist";
 import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 
 export const HyggkomShoppingForm = () => {
-  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof hyggkomListSchema>>({
@@ -27,18 +26,14 @@ export const HyggkomShoppingForm = () => {
     router.refresh();
 
     if (response.success) {
-      toast({
-        title: "Takk for forslaget!",
+      toast.success("Takk for forslaget!", {
         description: "Ditt forslag er lagt til i listen.",
-        variant: "success",
       });
 
       form.reset();
     } else {
-      toast({
-        title: "Noe gikk galt",
+      toast.error("Noe gikk galt", {
         description: "Kunne ikke legge til forslaget.",
-        variant: "warning",
       });
     }
   });
