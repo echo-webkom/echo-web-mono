@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabled": false,
   "extends": [
     "config:base",
     ":semanticCommitTypeAll(deps)",
@@ -20,8 +21,8 @@
       "enabled": false
     }
   ],
-  "prConcurrentLimit": 10,
-  "stabilityDays": 3,
+  "prConcurrentLimit": 2,
+  "stabilityDays": 7,
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 4am on thursday"]
