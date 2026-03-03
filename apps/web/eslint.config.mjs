@@ -20,6 +20,7 @@ export default defineConfig([
   globalIgnores([
     ".next/**",
     "node_modules/**",
+    "src/api/uno/generated/types.d.ts",
     "eslint.config.*",
     "next-env.d.ts",
     "postcss.config.*",
