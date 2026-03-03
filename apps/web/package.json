@@ -36,7 +36,7 @@
     "@radix-ui/react-tabs": "1.1.13",
     "@radix-ui/react-tooltip": "1.2.8",
     "@sanity/client": "7.14.1",
-    "@tanstack/react-query": "5.90.20",
+    "@tanstack/react-query": "5.90.21",
     "@vercel/analytics": "^1.6.1",
     "arctic": "^3.7.0",
     "babel-plugin-react-compiler": "^1.0.0",
