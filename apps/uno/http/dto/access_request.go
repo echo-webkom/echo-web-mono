@@ -14,10 +14,10 @@ type CreateAccessRequestRequest struct {
 
 // AccessRequestResponse represents the HTTP response for an access request
 type AccessRequestResponse struct {
-	ID        string    `json:"id"`
-	Email     string    `json:"email"`
-	Reason    string    `json:"reason"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID        string    `json:"id" validate:"required"`
+	Email     string    `json:"email" validate:"required"`
+	Reason    string    `json:"reason" validate:"required"`
+	CreatedAt time.Time `json:"createdAt" validate:"required"`
 }
 
 // ToDomain converts CreateAccessRequestRequest DTO to domain model

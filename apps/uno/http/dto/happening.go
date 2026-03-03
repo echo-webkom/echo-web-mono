@@ -9,15 +9,15 @@ import (
 
 // HappeningResponse represents the happening data returned in API responses.
 type HappeningResponse struct {
-	ID                      string           `json:"id"`
-	Slug                    string           `json:"slug"`
-	Title                   string           `json:"title"`
-	Type                    string           `json:"type"`
-	Date                    *time.Time       `json:"date"`
-	RegistrationGroups      *json.RawMessage `json:"registrationGroups"`
-	RegistrationStartGroups *time.Time       `json:"registrationStartGroups"`
-	RegistrationStart       *time.Time       `json:"registrationStart"`
-	RegistrationEnd         *time.Time       `json:"registrationEnd"`
+	ID                      string           `json:"id" validate:"required"`
+	Slug                    string           `json:"slug" validate:"required"`
+	Title                   string           `json:"title" validate:"required"`
+	Type                    string           `json:"type" validate:"required"`
+	Date                    *time.Time       `json:"date" validate:"required"`
+	RegistrationGroups      *json.RawMessage `json:"registrationGroups" validate:"required"`
+	RegistrationStartGroups *time.Time       `json:"registrationStartGroups" validate:"required"`
+	RegistrationStart       *time.Time       `json:"registrationStart" validate:"required"`
+	RegistrationEnd         *time.Time       `json:"registrationEnd" validate:"required"`
 }
 
 // FromDomain converts a domain Happening model to a HappeningResponse DTO.
@@ -46,11 +46,11 @@ func HappeningListFromDomain(happenings []model.Happening) []HappeningResponse {
 
 // SpotRangeResponse represents the spot range data returned in API responses.
 type SpotRangeResponse struct {
-	ID          string `json:"id"`
-	HappeningID string `json:"happeningId"`
-	Spots       int    `json:"spots"`
-	MinYear     int    `json:"minYear"`
-	MaxYear     int    `json:"maxYear"`
+	ID          string `json:"id" validate:"required"`
+	HappeningID string `json:"happeningId" validate:"required"`
+	Spots       int    `json:"spots" validate:"required"`
+	MinYear     int    `json:"minYear" validate:"required"`
+	MaxYear     int    `json:"maxYear" validate:"required"`
 }
 
 // FromDomain converts a domain SpotRange model to a SpotRangeResponse DTO.
@@ -75,13 +75,13 @@ func SpotRangeListFromDomain(spotRanges []model.SpotRange) []SpotRangeResponse {
 
 // QuestionResponse represents the question data returned in API responses.
 type QuestionResponse struct {
-	ID          string           `json:"id"`
-	Title       string           `json:"title"`
-	Required    bool             `json:"required"`
-	Type        string           `json:"type"`
-	IsSensitive bool             `json:"isSensitive"`
-	Options     *json.RawMessage `json:"options"`
-	HappeningID string           `json:"happeningId"`
+	ID          string           `json:"id" validate:"required"`
+	Title       string           `json:"title" validate:"required"`
+	Required    bool             `json:"required" validate:"required"`
+	Type        string           `json:"type" validate:"required"`
+	IsSensitive bool             `json:"isSensitive" validate:"required"`
+	Options     *json.RawMessage `json:"options" validate:"required"`
+	HappeningID string           `json:"happeningId" validate:"required"`
 }
 
 // FromDomain converts a domain Question model to a QuestionResponse DTO.

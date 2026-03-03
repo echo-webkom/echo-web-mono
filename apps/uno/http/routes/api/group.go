@@ -34,8 +34,8 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 
 // GroupResponse represents a generic response for group-related operations.
 type GroupResponse struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string `json:"id" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // getGroups returns a list of all groups.

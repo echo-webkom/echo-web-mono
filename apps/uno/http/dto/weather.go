@@ -6,9 +6,9 @@ import (
 )
 
 type WeatherResponse struct {
-	Temperature float64 `json:"temperature"`
-	Condition   *string `json:"condition"`
-	WindSpeed   float64 `json:"wind_speed"`
+	Temperature float64 `json:"temperature" validate:"required"`
+	Condition   *string `json:"condition" validate:"required"`
+	WindSpeed   float64 `json:"wind_speed" validate:"required"`
 }
 
 func WeatherResponseFromDomain(weather *model.Weather) *WeatherResponse {

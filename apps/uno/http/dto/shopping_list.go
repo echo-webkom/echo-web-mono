@@ -5,12 +5,12 @@ import (
 )
 
 type ShoppingListItemResponse struct {
-	ID        string   `json:"id"`
-	Name      string   `json:"name"`
-	UserID    string   `json:"userId"`
-	UserName  *string  `json:"userName"`
-	CreatedAt string   `json:"createdAt"`
-	Likes     []string `json:"likes"`
+	ID        string   `json:"id" validate:"required"`
+	Name      string   `json:"name" validate:"required"`
+	UserID    string   `json:"userId" validate:"required"`
+	UserName  *string  `json:"userName" validate:"required"`
+	CreatedAt string   `json:"createdAt" validate:"required"`
+	Likes     []string `json:"likes" validate:"required"`
 }
 
 func ShoppingListFromDomainList(items []service.ShoppingList) []ShoppingListItemResponse {

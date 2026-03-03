@@ -9,14 +9,14 @@ import (
 
 // RegistrationResponse represents the registration data returned in API responses.
 type RegistrationResponse struct {
-	UserID           string     `json:"userId"`
-	HappeningID      string     `json:"happeningId"`
-	Status           string     `json:"status"`
-	UnregisterReason *string    `json:"unregisterReason,omitempty"`
-	CreatedAt        time.Time  `json:"createdAt"`
-	PrevStatus       *string    `json:"prevStatus,omitempty"`
-	ChangedAt        *time.Time `json:"changedAt,omitempty"`
-	ChangedBy        *string    `json:"changedBy,omitempty"`
+	UserID           string     `json:"userId" validate:"required"`
+	HappeningID      string     `json:"happeningId" validate:"required"`
+	Status           string     `json:"status" validate:"required"`
+	UnregisterReason *string    `json:"unregisterReason" validate:"required"`
+	CreatedAt        time.Time  `json:"createdAt" validate:"required"`
+	PrevStatus       *string    `json:"prevStatus" validate:"required"`
+	ChangedAt        *time.Time `json:"changedAt" validate:"required"`
+	ChangedBy        *string    `json:"changedBy" validate:"required"`
 }
 
 // FromDomain converts a domain Registration model to a RegistrationResponse DTO.
@@ -45,14 +45,14 @@ func RegistrationListFromDomain(registrations []model.Registration) []Registrati
 // RegisterForHappeningRequest represents the request body for registering for a happening.
 // This is used in the API endpoint where the happening ID comes from the URL path.
 type RegisterForHappeningRequest struct {
-	UserID    string              `json:"userId"`
-	Questions []QuestionAnswerDTO `json:"questions"`
+	UserID    string              `json:"userId" validate:"required"`
+	Questions []QuestionAnswerDTO `json:"questions" validate:"required"`
 }
 
 // QuestionAnswerDTO represents a question answer in the HTTP request/response.
 type QuestionAnswerDTO struct {
-	QuestionID string          `json:"questionId"`
-	Answer     json.RawMessage `json:"answer"`
+	QuestionID string          `json:"questionId" validate:"required"`
+	Answer     json.RawMessage `json:"answer" validate:"required"`
 }
 
 // ToDomain converts a QuestionAnswerDTO to a domain QuestionAnswer model.
@@ -74,9 +74,9 @@ func QuestionAnswerListToDomain(dtos []QuestionAnswerDTO) []model.QuestionAnswer
 
 // RegisterForHappeningResponse represents the response for a registration request.
 type RegisterForHappeningResponse struct {
-	Success      bool   `json:"success"`
-	Message      string `json:"message"`
-	IsWaitlisted bool   `json:"isWaitlisted"`
+	Success      bool   `json:"success" validate:"required"`
+	Message      string `json:"message" validate:"required"`
+	IsWaitlisted bool   `json:"isWaitlisted" validate:"required"`
 }
 
 // UnregisterRequest represents the request body for unregistering from a happening.
@@ -91,10 +91,10 @@ type ChangeRegistrationStatusRequest struct {
 
 // RegistrationCount represents aggregated registration counts for a happening.
 type RegistrationCount struct {
-	HappeningID string `json:"happeningId"`
-	Waiting     int    `json:"waiting"`
-	Registered  int    `json:"registered"`
-	Max         *int   `json:"max"`
+	HappeningID string `json:"happeningId" validate:"required"`
+	Waiting     int    `json:"waiting" validate:"required"`
+	Registered  int    `json:"registered" validate:"required"`
+	Max         *int   `json:"max" validate:"required"`
 }
 
 func (RegistrationCount) FromDomain(grp model.RegistrationCount) RegistrationCount {
@@ -116,23 +116,23 @@ func RegistrationCountsFromDomain(grs []model.RegistrationCount) []RegistrationC
 
 // RegistrationStatusResponse represents a simple registration status check response.
 type RegistrationStatusResponse struct {
-	IsRegistered bool   `json:"isRegistered"`
-	IsWaitlisted bool   `json:"isWaitlisted"`
-	Status       string `json:"status"`
+	IsRegistered bool   `json:"isRegistered" validate:"required"`
+	IsWaitlisted bool   `json:"isWaitlisted" validate:"required"`
+	Status       string `json:"status" validate:"required"`
 }
 
 // HappeningRegistrationResponse represents the registration data with user info returned in API responses.
 type HappeningRegistrationResponse struct {
-	UserID           string     `json:"userId"`
-	HappeningID      string     `json:"happeningId"`
-	Status           string     `json:"status"`
-	UnregisterReason *string    `json:"unregisterReason"`
-	CreatedAt        time.Time  `json:"createdAt"`
-	PrevStatus       *string    `json:"prevStatus"`
-	ChangedAt        *time.Time `json:"changedAt"`
-	ChangedBy        *string    `json:"changedBy"`
-	UserName         *string    `json:"userName"`
-	UserHasImage     bool       `json:"userHasImage"`
+	UserID           string     `json:"userId" validate:"required"`
+	HappeningID      string     `json:"happeningId" validate:"required"`
+	Status           string     `json:"status" validate:"required"`
+	UnregisterReason *string    `json:"unregisterReason" validate:"required"`
+	CreatedAt        time.Time  `json:"createdAt" validate:"required"`
+	PrevStatus       *string    `json:"prevStatus" validate:"required"`
+	ChangedAt        *time.Time `json:"changedAt" validate:"required"`
+	ChangedBy        *string    `json:"changedBy" validate:"required"`
+	UserName         *string    `json:"userName" validate:"required"`
+	UserHasImage     bool       `json:"userHasImage" validate:"required"`
 }
 
 // HappeningRegistrationListFromPorts converts a slice of port.HappeningRegistration to DTOs.

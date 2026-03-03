@@ -10,10 +10,10 @@ type ToggleReactionRequest struct {
 }
 
 type ReactionResponse struct {
-	CreatedAt  string `json:"createdAt"`
-	UserID     string `json:"userId"`
-	ReactToKey string `json:"reactToKey"`
-	EmojiID    int    `json:"emojiId"`
+	CreatedAt  string `json:"createdAt" validate:"required"`
+	UserID     string `json:"userId" validate:"required"`
+	ReactToKey string `json:"reactToKey" validate:"required"`
+	EmojiID    int    `json:"emojiId" validate:"required"`
 }
 
 func ReactionResponsesFromDomain(reactions []model.Reaction) []ReactionResponse {

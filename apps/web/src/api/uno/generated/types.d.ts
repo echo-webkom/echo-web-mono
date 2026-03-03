@@ -787,7 +787,32 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /** Get a list of all groups */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "*/*": Array<components["schemas"]["http_routes_api.GroupResponse"]>;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "*/*": string;
+          };
+        };
+      };
+    };
     put?: never;
     /** Create a new group */
     post: {
@@ -1023,9 +1048,7 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "application/json": Array<
-              components["schemas"]["uno_domain_model.GroupedRegistrationCount"]
-            >;
+            "application/json": Array<components["schemas"]["uno_http_dto.RegistrationCount"]>;
           };
         };
         /** @description Bad Request */
@@ -1275,61 +1298,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/happenings/{id}/registrations/count": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get happening registrations count
-     * @deprecated
-     * @description Retrieves the count of registrations for a specific happening.
-     */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Happening ID */
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description OK */
-        200: {
-          headers: Record<string, unknown>;
-          content: {
-            "application/json": components["schemas"]["uno_http_dto.GroupedRegistration"];
-          };
-        };
-        /** @description Bad Request */
-        400: {
-          headers: Record<string, unknown>;
-          content: {
-            "application/json": string;
-          };
-        };
-        /** @description Not Found */
-        404: {
-          headers: Record<string, unknown>;
-          content: {
-            "application/json": string;
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/happenings/{id}/spot-ranges": {
     parameters: {
       query?: never;
@@ -1408,7 +1376,7 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "application/json": Array<components["schemas"]["http_routes_api.ReactionResponse"]>;
+            "application/json": Array<components["schemas"]["uno_http_dto.ReactionResponse"]>;
           };
         };
         /** @description Bad Request */
@@ -1449,7 +1417,7 @@ export interface paths {
       /** @description Toggle Reaction Request */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["http_routes_api.ToggleReactionRequest"];
+          "application/json": components["schemas"]["uno_http_dto.ToggleReactionRequest"];
         };
       };
       responses: {
@@ -1457,7 +1425,7 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "application/json": Array<components["schemas"]["http_routes_api.ReactionResponse"]>;
+            "application/json": Array<components["schemas"]["uno_http_dto.ReactionResponse"]>;
           };
         };
         /** @description Bad Request */
@@ -1510,11 +1478,13 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "application/json": Array<components["schemas"]["uno_domain_service.ShoppingList"]>;
+            "application/json": Array<
+              components["schemas"]["uno_http_dto.ShoppingListItemResponse"]
+            >;
           };
         };
-        /** @description Unauthorized */
-        401: {
+        /** @description Internal Server Error */
+        500: {
           headers: Record<string, unknown>;
           content: {
             "application/json": string;
@@ -1713,7 +1683,7 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "*/*": Array<components["schemas"]["uno_domain_model.UserWithBanInfo"]>;
+            "*/*": Array<components["schemas"]["uno_http_dto.UserWithBanInfoResponse"]>;
           };
         };
         /** @description Unauthorized */
@@ -1807,7 +1777,7 @@ export interface paths {
         200: {
           headers: Record<string, unknown>;
           content: {
-            "*/*": Array<components["schemas"]["uno_domain_model.UserWithStrikes"]>;
+            "*/*": Array<components["schemas"]["uno_http_dto.UserWithStrikesResponse"]>;
           };
         };
         /** @description Unauthorized */
@@ -1829,6 +1799,278 @@ export interface paths {
     put?: never;
     post?: never;
     delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Gets a list of all users */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": Array<components["schemas"]["uno_http_dto.UserResponse"]>;
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Gets a user by ID */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description User ID */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": components["schemas"]["uno_http_dto.UserResponse"];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description User Not Found */
+        404: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{id}/image": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Gets a user's profile image */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description User ID */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/octet-stream": string;
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/octet-stream": string;
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/octet-stream": string;
+          };
+        };
+        /** @description User Not Found */
+        404: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/octet-stream": string;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/octet-stream": string;
+          };
+        };
+      };
+    };
+    put?: never;
+    /** Uploads a user's profile image */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description User ID */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/x-www-form-urlencoded": {
+            /**
+             * Format: binary
+             * @description Profile Image
+             */
+            file: string;
+          };
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description User Not Found */
+        404: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+      };
+    };
+    /** Deletes a user's profile image */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description User ID */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description User Not Found */
+        404: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: Record<string, unknown>;
+          content: {
+            "application/json": string;
+          };
+        };
+      };
+    };
     options?: never;
     head?: never;
     patch?: never;
@@ -1990,112 +2232,67 @@ export interface components {
       name: string;
     };
     "http_routes_api.GroupResponse": {
-      id?: string;
-      name?: string;
-    };
-    "http_routes_api.ReactionResponse": {
-      createdAt?: string;
-      emojiId?: number;
-      reactToKey?: string;
-      userId?: string;
-    };
-    "http_routes_api.ToggleReactionRequest": {
-      emojiId: number;
-      userId: string;
+      id: string;
+      name: string;
     };
     "http_routes_api.UpdateGroupRequest": {
       name: string;
     };
-    "uno_domain_model.BanInfo": {
-      bannedByID?: string;
-      bannedByName?: string;
-      createdAt?: string;
-      expiresAt?: string;
-      id?: number;
-      reason?: string;
-      userID?: string;
-    };
-    "uno_domain_model.DotInfo": {
-      count?: number;
-      createdAt?: string;
-      expiresAt?: string;
-      id?: number;
-      reason?: string;
-      strikedByID?: string;
-      strikedByName?: string;
-      userID?: string;
-    };
-    "uno_domain_model.GroupedRegistrationCount": {
-      happeningID?: string;
-      max?: number;
-      registered?: number;
-      waiting?: number;
-    };
-    "uno_domain_model.UserWithBanInfo": {
-      banInfo?: components["schemas"]["uno_domain_model.BanInfo"];
-      dots?: Array<components["schemas"]["uno_domain_model.DotInfo"]>;
-      id?: string;
-      image?: string;
-      name?: string;
-    };
-    "uno_domain_model.UserWithStrikes": {
-      id?: string;
-      image?: string;
-      isBanned?: boolean;
-      name?: string;
-      strikes?: number;
-    };
-    "uno_domain_service.ShoppingList": {
-      createdAt?: string;
-      id?: string;
-      likes?: Array<string>;
-      name?: string;
-      userId?: string;
-      userName?: string;
-    };
     "uno_http_dto.AccessRequestResponse": {
-      createdAt?: string;
-      email?: string;
-      id?: string;
-      reason?: string;
+      createdAt: string;
+      email: string;
+      id: string;
+      reason: string;
     };
     "uno_http_dto.AdventOfCodeDayResponse": {
-      star1_time?: number;
-      star2_time?: number;
-      stars?: number;
+      star1_time: number;
+      star2_time: number;
+      stars: number;
     };
     "uno_http_dto.AdventOfCodeMemberResponse": {
-      days?: Record<string, components["schemas"]["uno_http_dto.AdventOfCodeDayResponse"]>;
-      id?: number;
-      local_score?: number;
+      days: Record<string, components["schemas"]["uno_http_dto.AdventOfCodeDayResponse"]>;
+      id: number;
+      local_score: number;
+      name: string;
+    };
+    "uno_http_dto.BanInfo": {
+      bannedBy: string;
+      bannedByUser: components["schemas"]["uno_http_dto.BannedStrikedByUser"];
+      createdAt: string;
+      expiresAt: string;
+      id: number;
+      reason: string;
+      userId: string;
+    };
+    "uno_http_dto.BannedStrikedByUser": {
       name?: string;
     };
     "uno_http_dto.CommentResponse": {
-      content?: string;
-      createdAt?: string;
-      id?: string;
-      parentCommentId?: string;
-      postId?: string;
-      reactions?: Array<components["schemas"]["uno_http_dto.CommentsReactionResponse"]>;
-      updatedAt?: string;
-      user?: components["schemas"]["uno_http_dto.UserSummaryResponse"];
-      userId?: string;
+      content: string;
+      createdAt: string;
+      id: string;
+      parentCommentId: string;
+      postId: string;
+      reactions: Array<components["schemas"]["uno_http_dto.CommentsReactionResponse"]>;
+      updatedAt: string;
+      user: components["schemas"]["uno_http_dto.UserSummaryResponse"];
+      userId: string;
     };
     "uno_http_dto.CommentsReactionResponse": {
-      commentId?: string;
-      createdAt?: string;
-      type?: string;
-      userId?: string;
+      commentId: string;
+      createdAt: string;
+      type: string;
+      userId: string;
     };
     "uno_http_dto.CreateCommentRequest": {
-      content?: string;
-      parentCommentId?: string;
-      postId?: string;
-      userId?: string;
+      content: string;
+      parentCommentId: string;
+      postId: string;
+      userId: string;
     };
     "uno_http_dto.CreateDegreeRequest": {
-      id?: string;
-      name?: string;
+      id: string;
+      name: string;
     };
     "uno_http_dto.CreateShoppingListItemRequest": {
       name: string;
@@ -2108,125 +2305,189 @@ export interface components {
       name?: string;
     };
     "uno_http_dto.DatabrusMatchDTO": {
-      away_score?: string;
-      away_team?: string;
-      date_time?: string;
-      home_score?: string;
-      home_team?: string;
-      id?: string;
+      away_score: string;
+      away_team: string;
+      date_time: string;
+      home_score: string;
+      home_team: string;
+      id: string;
     };
     "uno_http_dto.DatabrusTableRow": {
-      draws?: number;
-      goal_difference?: number;
-      goals_against?: number;
-      goals_for?: number;
-      losses?: number;
-      matches_played?: number;
-      points?: number;
-      position?: number;
-      team?: string;
-      wins?: number;
+      draws: number;
+      goal_difference: number;
+      goals_against: number;
+      goals_for: number;
+      losses: number;
+      matches_played: number;
+      points: number;
+      position: number;
+      team: string;
+      wins: number;
     };
     "uno_http_dto.DegreeResponse": {
-      id?: string;
-      name?: string;
+      id: string;
+      name: string;
     };
-    "uno_http_dto.GroupedRegistration": {
-      happeningId?: string;
-      max?: number;
-      registered?: number;
-      waiting?: number;
+    "uno_http_dto.DotInfo": {
+      count: number;
+      createdAt: string;
+      expiresAt: string;
+      id: number;
+      reason: string;
+      strikedBy: string;
+      strikedByUser: components["schemas"]["uno_http_dto.BannedStrikedByUser"];
+      userId: string;
     };
     "uno_http_dto.HappeningRegistrationResponse": {
-      changedAt?: string;
-      changedBy?: string;
-      createdAt?: string;
-      happeningId?: string;
-      prevStatus?: string;
-      status?: string;
-      unregisterReason?: string;
-      userId?: string;
-      userImage?: string;
-      userName?: string;
+      changedAt: string;
+      changedBy: string;
+      createdAt: string;
+      happeningId: string;
+      prevStatus: string;
+      status: string;
+      unregisterReason: string;
+      userHasImage: boolean;
+      userId: string;
+      userName: string;
     };
     "uno_http_dto.HappeningResponse": {
-      date?: string;
-      id?: string;
-      registrationEnd?: string;
-      registrationGroups?: Array<number>;
-      registrationStart?: string;
-      registrationStartGroups?: string;
-      slug?: string;
-      title?: string;
-      type?: string;
+      date: string;
+      id: string;
+      registrationEnd: string;
+      registrationGroups: Array<number>;
+      registrationStart: string;
+      registrationStartGroups: string;
+      slug: string;
+      title: string;
+      type: string;
     };
     "uno_http_dto.HealthCheckResponse": {
-      status?: string;
+      status: string;
     };
     "uno_http_dto.QuestionAnswerDTO": {
-      answer?: Array<number>;
-      questionId?: string;
+      answer: Array<number>;
+      questionId: string;
     };
     "uno_http_dto.QuestionResponse": {
-      happeningId?: string;
-      id?: string;
-      isSensitive?: boolean;
-      options?: Array<number>;
-      required?: boolean;
-      title?: string;
-      type?: string;
+      happeningId: string;
+      id: string;
+      isSensitive: boolean;
+      options: Array<number>;
+      required: boolean;
+      title: string;
+      type: string;
     };
     "uno_http_dto.ReactToCommentRequest": {
-      commentId?: string;
-      userId?: string;
+      commentId: string;
+      userId: string;
+    };
+    "uno_http_dto.ReactionResponse": {
+      createdAt: string;
+      emojiId: number;
+      reactToKey: string;
+      userId: string;
     };
     "uno_http_dto.RegisterForHappeningRequest": {
-      questions?: Array<components["schemas"]["uno_http_dto.QuestionAnswerDTO"]>;
-      userId?: string;
+      questions: Array<components["schemas"]["uno_http_dto.QuestionAnswerDTO"]>;
+      userId: string;
     };
     "uno_http_dto.RegisterForHappeningResponse": {
-      isWaitlisted?: boolean;
-      message?: string;
-      success?: boolean;
+      isWaitlisted: boolean;
+      message: string;
+      success: boolean;
+    };
+    "uno_http_dto.RegistrationCount": {
+      happeningId: string;
+      max: number;
+      registered: number;
+      waiting: number;
+    };
+    "uno_http_dto.ShoppingListItemResponse": {
+      createdAt: string;
+      id: string;
+      likes: Array<string>;
+      name: string;
+      userId: string;
+      userName: string;
     };
     "uno_http_dto.SiteFeedbackResponse": {
-      category?: string;
-      createdAt?: string;
-      email?: string;
-      id?: string;
-      isRead?: boolean;
-      message?: string;
-      name?: string;
+      category: string;
+      createdAt: string;
+      email: string;
+      id: string;
+      isRead: boolean;
+      message: string;
+      name: string;
     };
     "uno_http_dto.SpotRangeResponse": {
-      happeningId?: string;
-      id?: string;
-      maxYear?: number;
-      minYear?: number;
-      spots?: number;
+      happeningId: string;
+      id: string;
+      maxYear: number;
+      minYear: number;
+      spots: number;
+    };
+    "uno_http_dto.ToggleReactionRequest": {
+      emojiId: number;
+      userId: string;
     };
     "uno_http_dto.UpdateDegreeRequest": {
-      id?: string;
-      name?: string;
+      id: string;
+      name: string;
+    };
+    "uno_http_dto.UserGroupResponse": {
+      id: string;
+      isLeader: boolean;
+      name: string;
+    };
+    "uno_http_dto.UserResponse": {
+      alternativeEmail: string;
+      birthday: string;
+      createdAt: string;
+      degree: components["schemas"]["uno_http_dto.DegreeResponse"];
+      email: string;
+      groups: Array<components["schemas"]["uno_http_dto.UserGroupResponse"]>;
+      hasImage: boolean;
+      hasReadTerms: boolean;
+      id: string;
+      isPublic: boolean;
+      lastSignInAt: string;
+      name: string;
+      type: string;
+      updatedAt: string;
+      year: number;
     };
     "uno_http_dto.UserSummaryResponse": {
-      id?: string;
-      image?: string;
-      name?: string;
+      hasImage: boolean;
+      id: string;
+      name: string;
     };
     "uno_http_dto.UserToShoppingListItemRequest": {
       itemId: string;
       userId: string;
     };
+    "uno_http_dto.UserWithBanInfoResponse": {
+      banInfo: components["schemas"]["uno_http_dto.BanInfo"];
+      dots: Array<components["schemas"]["uno_http_dto.DotInfo"]>;
+      hasImage: boolean;
+      id: string;
+      name: string;
+    };
+    "uno_http_dto.UserWithStrikesResponse": {
+      hasImage: boolean;
+      id: string;
+      isBanned: boolean;
+      name: string;
+      strikes: number;
+    };
     "uno_http_dto.WeatherResponse": {
-      condition?: string;
-      temperature?: number;
-      wind_speed?: number;
+      condition: string;
+      temperature: number;
+      wind_speed: number;
     };
     "uno_http_dto.WhitelistResponse": {
-      email?: string;
-      expiresAt?: string;
-      reason?: string;
+      email: string;
+      expiresAt: string;
+      reason: string;
     };
   };
   responses: never;

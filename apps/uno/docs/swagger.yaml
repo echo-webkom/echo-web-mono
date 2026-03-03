@@ -15,6 +15,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   http_routes_api.UpdateGroupRequest:
     properties:
@@ -22,87 +25,6 @@ definitions:
         type: string
     required:
     - name
-    type: object
-  uno_domain_model.BanInfo:
-    properties:
-      bannedByID:
-        type: string
-      bannedByName:
-        type: string
-      createdAt:
-        type: string
-      expiresAt:
-        type: string
-      id:
-        type: integer
-      reason:
-        type: string
-      userID:
-        type: string
-    type: object
-  uno_domain_model.DotInfo:
-    properties:
-      count:
-        type: integer
-      createdAt:
-        type: string
-      expiresAt:
-        type: string
-      id:
-        type: integer
-      reason:
-        type: string
-      strikedByID:
-        type: string
-      strikedByName:
-        type: string
-      userID:
-        type: string
-    type: object
-  uno_domain_model.UserWithBanInfo:
-    properties:
-      banInfo:
-        $ref: '#/definitions/uno_domain_model.BanInfo'
-      dots:
-        items:
-          $ref: '#/definitions/uno_domain_model.DotInfo'
-        type: array
-      hasImage:
-        type: boolean
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_domain_model.UserWithStrikes:
-    properties:
-      hasImage:
-        type: boolean
-      id:
-        type: string
-      isBanned:
-        type: boolean
-      name:
-        type: string
-      strikes:
-        type: integer
-    type: object
-  uno_domain_service.ShoppingList:
-    properties:
-      createdAt:
-        type: string
-      id:
-        type: string
-      likes:
-        items:
-          type: string
-        type: array
-      name:
-        type: string
-      userId:
-        type: string
-      userName:
-        type: string
     type: object
   uno_http_dto.AccessRequestResponse:
     properties:
@@ -114,6 +36,11 @@ definitions:
         type: string
       reason:
         type: string
+    required:
+    - createdAt
+    - email
+    - id
+    - reason
     type: object
   uno_http_dto.AdventOfCodeDayResponse:
     properties:
@@ -123,6 +50,10 @@ definitions:
         type: integer
       stars:
         type: integer
+    required:
+    - star1_time
+    - star2_time
+    - stars
     type: object
   uno_http_dto.AdventOfCodeMemberResponse:
     properties:
@@ -134,6 +65,41 @@ definitions:
         type: integer
       local_score:
         type: integer
+      name:
+        type: string
+    required:
+    - days
+    - id
+    - local_score
+    - name
+    type: object
+  uno_http_dto.BanInfo:
+    properties:
+      bannedBy:
+        type: string
+      bannedByUser:
+        $ref: '#/definitions/uno_http_dto.BannedStrikedByUser'
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      userId:
+        type: string
+    required:
+    - bannedBy
+    - bannedByUser
+    - createdAt
+    - expiresAt
+    - id
+    - reason
+    - userId
+    type: object
+  uno_http_dto.BannedStrikedByUser:
+    properties:
       name:
         type: string
     type: object
@@ -159,6 +125,16 @@ definitions:
         $ref: '#/definitions/uno_http_dto.UserSummaryResponse'
       userId:
         type: string
+    required:
+    - content
+    - createdAt
+    - id
+    - parentCommentId
+    - postId
+    - reactions
+    - updatedAt
+    - user
+    - userId
     type: object
   uno_http_dto.CommentsReactionResponse:
     properties:
@@ -170,6 +146,11 @@ definitions:
         type: string
       userId:
         type: string
+    required:
+    - commentId
+    - createdAt
+    - type
+    - userId
     type: object
   uno_http_dto.CreateCommentRequest:
     properties:
@@ -181,6 +162,11 @@ definitions:
         type: string
       userId:
         type: string
+    required:
+    - content
+    - parentCommentId
+    - postId
+    - userId
     type: object
   uno_http_dto.CreateDegreeRequest:
     properties:
@@ -188,6 +174,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   uno_http_dto.CreateShoppingListItemRequest:
     properties:
@@ -227,6 +216,13 @@ definitions:
         type: string
       id:
         type: string
+    required:
+    - away_score
+    - away_team
+    - date_time
+    - home_score
+    - home_team
+    - id
     type: object
   uno_http_dto.DatabrusTableRow:
     properties:
@@ -250,6 +246,17 @@ definitions:
         type: string
       wins:
         type: integer
+    required:
+    - draws
+    - goal_difference
+    - goals_against
+    - goals_for
+    - losses
+    - matches_played
+    - points
+    - position
+    - team
+    - wins
     type: object
   uno_http_dto.DegreeResponse:
     properties:
@@ -257,6 +264,37 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
+    type: object
+  uno_http_dto.DotInfo:
+    properties:
+      count:
+        type: integer
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      strikedBy:
+        type: string
+      strikedByUser:
+        $ref: '#/definitions/uno_http_dto.BannedStrikedByUser'
+      userId:
+        type: string
+    required:
+    - count
+    - createdAt
+    - expiresAt
+    - id
+    - reason
+    - strikedBy
+    - strikedByUser
+    - userId
     type: object
   uno_http_dto.HappeningRegistrationResponse:
     properties:
@@ -280,6 +318,17 @@ definitions:
         type: string
       userName:
         type: string
+    required:
+    - changedAt
+    - changedBy
+    - createdAt
+    - happeningId
+    - prevStatus
+    - status
+    - unregisterReason
+    - userHasImage
+    - userId
+    - userName
     type: object
   uno_http_dto.HappeningResponse:
     properties:
@@ -303,11 +352,23 @@ definitions:
         type: string
       type:
         type: string
+    required:
+    - date
+    - id
+    - registrationEnd
+    - registrationGroups
+    - registrationStart
+    - registrationStartGroups
+    - slug
+    - title
+    - type
     type: object
   uno_http_dto.HealthCheckResponse:
     properties:
       status:
         type: string
+    required:
+    - status
     type: object
   uno_http_dto.QuestionAnswerDTO:
     properties:
@@ -317,6 +378,9 @@ definitions:
         type: array
       questionId:
         type: string
+    required:
+    - answer
+    - questionId
     type: object
   uno_http_dto.QuestionResponse:
     properties:
@@ -336,6 +400,14 @@ definitions:
         type: string
       type:
         type: string
+    required:
+    - happeningId
+    - id
+    - isSensitive
+    - options
+    - required
+    - title
+    - type
     type: object
   uno_http_dto.ReactToCommentRequest:
     properties:
@@ -343,6 +415,9 @@ definitions:
         type: string
       userId:
         type: string
+    required:
+    - commentId
+    - userId
     type: object
   uno_http_dto.ReactionResponse:
     properties:
@@ -354,6 +429,11 @@ definitions:
         type: string
       userId:
         type: string
+    required:
+    - createdAt
+    - emojiId
+    - reactToKey
+    - userId
     type: object
   uno_http_dto.RegisterForHappeningRequest:
     properties:
@@ -363,6 +443,9 @@ definitions:
         type: array
       userId:
         type: string
+    required:
+    - questions
+    - userId
     type: object
   uno_http_dto.RegisterForHappeningResponse:
     properties:
@@ -372,6 +455,10 @@ definitions:
         type: string
       success:
         type: boolean
+    required:
+    - isWaitlisted
+    - message
+    - success
     type: object
   uno_http_dto.RegistrationCount:
     properties:
@@ -383,6 +470,35 @@ definitions:
         type: integer
       waiting:
         type: integer
+    required:
+    - happeningId
+    - max
+    - registered
+    - waiting
+    type: object
+  uno_http_dto.ShoppingListItemResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      likes:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      userId:
+        type: string
+      userName:
+        type: string
+    required:
+    - createdAt
+    - id
+    - likes
+    - name
+    - userId
+    - userName
     type: object
   uno_http_dto.SiteFeedbackResponse:
     properties:
@@ -400,6 +516,14 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - category
+    - createdAt
+    - email
+    - id
+    - isRead
+    - message
+    - name
     type: object
   uno_http_dto.SpotRangeResponse:
     properties:
@@ -413,6 +537,12 @@ definitions:
         type: integer
       spots:
         type: integer
+    required:
+    - happeningId
+    - id
+    - maxYear
+    - minYear
+    - spots
     type: object
   uno_http_dto.ToggleReactionRequest:
     properties:
@@ -430,6 +560,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - id
+    - name
     type: object
   uno_http_dto.UserGroupResponse:
     properties:
@@ -439,6 +572,10 @@ definitions:
         type: boolean
       name:
         type: string
+    required:
+    - id
+    - isLeader
+    - name
     type: object
   uno_http_dto.UserResponse:
     properties:
@@ -474,6 +611,22 @@ definitions:
         type: string
       year:
         type: integer
+    required:
+    - alternativeEmail
+    - birthday
+    - createdAt
+    - degree
+    - email
+    - groups
+    - hasImage
+    - hasReadTerms
+    - id
+    - isPublic
+    - lastSignInAt
+    - name
+    - type
+    - updatedAt
+    - year
     type: object
   uno_http_dto.UserSummaryResponse:
     properties:
@@ -483,6 +636,10 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - hasImage
+    - id
+    - name
     type: object
   uno_http_dto.UserToShoppingListItemRequest:
     properties:
@@ -494,6 +651,46 @@ definitions:
     - itemId
     - userId
     type: object
+  uno_http_dto.UserWithBanInfoResponse:
+    properties:
+      banInfo:
+        $ref: '#/definitions/uno_http_dto.BanInfo'
+      dots:
+        items:
+          $ref: '#/definitions/uno_http_dto.DotInfo'
+        type: array
+      hasImage:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - banInfo
+    - dots
+    - hasImage
+    - id
+    - name
+    type: object
+  uno_http_dto.UserWithStrikesResponse:
+    properties:
+      hasImage:
+        type: boolean
+      id:
+        type: string
+      isBanned:
+        type: boolean
+      name:
+        type: string
+      strikes:
+        type: integer
+    required:
+    - hasImage
+    - id
+    - isBanned
+    - name
+    - strikes
+    type: object
   uno_http_dto.WeatherResponse:
     properties:
       condition:
@@ -502,6 +699,10 @@ definitions:
         type: number
       wind_speed:
         type: number
+    required:
+    - condition
+    - temperature
+    - wind_speed
     type: object
   uno_http_dto.WhitelistResponse:
     properties:
@@ -511,6 +712,10 @@ definitions:
         type: string
       reason:
         type: string
+    required:
+    - email
+    - expiresAt
+    - reason
     type: object
 info:
   contact:
@@ -1346,7 +1551,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_service.ShoppingList'
+              $ref: '#/definitions/uno_http_dto.ShoppingListItemResponse'
             type: array
         "500":
           description: Internal Server Error
@@ -1463,7 +1668,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.UserWithBanInfo'
+              $ref: '#/definitions/uno_http_dto.UserWithBanInfoResponse'
             type: array
         "401":
           description: Unauthorized
@@ -1503,7 +1708,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.UserWithStrikes'
+              $ref: '#/definitions/uno_http_dto.UserWithStrikesResponse'
             type: array
         "401":
           description: Unauthorized
