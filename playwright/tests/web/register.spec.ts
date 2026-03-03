@@ -25,7 +25,9 @@ test.describe("Register", () => {
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
-    await expect(page.locator("[data-sonner-toast]")).toContainText("Du er nå påmeldt arrangementet");
+    await expect(page.locator("[data-sonner-toast]")).toContainText(
+      "Du er nå påmeldt arrangementet",
+    );
 
     await page.getByRole("button", { name: "Meld av" }).click();
 

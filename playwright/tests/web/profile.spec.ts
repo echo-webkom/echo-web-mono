@@ -15,7 +15,9 @@ test("update profile", async ({ page }) => {
 
   await page.getByRole("button", { name: "Lagre" }).nth(0).click();
 
-  await expect(page.locator("[data-sonner-toast]").getByText("Brukeren ble oppdatert")).toBeVisible();
+  await expect(
+    page.locator("[data-sonner-toast]").getByText("Brukeren ble oppdatert"),
+  ).toBeVisible();
 });
 
 test("see admin dashboard", async ({ page }) => {
