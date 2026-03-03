@@ -78,7 +78,7 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
 
   return (
     <div className="space-y-2">
-      <Avatar>
+      <Avatar size="xl">
         <AvatarImage src={createProfilePictureUrl(userId, 2)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>

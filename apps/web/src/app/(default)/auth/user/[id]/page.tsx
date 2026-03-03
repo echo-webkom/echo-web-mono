@@ -64,7 +64,7 @@ export default async function ProfilePage({ params }: Props) {
             <CardContent>
               <div className="flex flex-col gap-6 md:flex-row">
                 <div className="flex flex-col items-center space-y-2">
-                  <Avatar className="h-28 w-28">
+                  <Avatar size="xl">
                     {profileOwner.image ? (
                       <AvatarImage
                         src={createProfilePictureUrl(profileOwner.id, 2)}
