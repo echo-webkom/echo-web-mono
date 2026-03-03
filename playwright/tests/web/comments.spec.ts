@@ -27,7 +27,7 @@ test.describe("Comments", () => {
     await page.getByPlaceholder("Skriv din kommentar her...").fill("Dette er en testkommentar");
     await page.getByRole("button", { name: "Legg til kommentar" }).click();
 
-    await expect(page.getByTestId("toast")).toContainText("Kommentar lagt til");
+    await expect(page.locator("[data-sonner-toast]")).toContainText("Kommentar lagt til");
     await expect(page.getByText("Dette er en testkommentar")).toBeVisible();
   });
 
@@ -39,7 +39,7 @@ test.describe("Comments", () => {
     // Create the initial comment
     await page.getByPlaceholder("Skriv din kommentar her...").fill("Første kommentar");
     await page.getByRole("button", { name: "Legg til kommentar" }).click();
-    await expect(page.getByTestId("toast")).toContainText("Kommentar lagt til");
+    await expect(page.locator("[data-sonner-toast]")).toContainText("Kommentar lagt til");
     await expect(page.getByText("Første kommentar")).toBeVisible();
 
     // Reply to the comment
@@ -63,7 +63,7 @@ test.describe("Comments", () => {
     // Create a comment first
     await page.getByPlaceholder("Skriv din kommentar her...").fill("Lik denne kommentaren");
     await page.getByRole("button", { name: "Legg til kommentar" }).click();
-    await expect(page.getByTestId("toast")).toContainText("Kommentar lagt til");
+    await expect(page.locator("[data-sonner-toast]")).toContainText("Kommentar lagt til");
     await expect(page.getByText("Lik denne kommentaren")).toBeVisible();
 
     // The like button shows "0" initially

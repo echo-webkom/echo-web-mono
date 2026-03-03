@@ -25,7 +25,7 @@ test.describe("Register", () => {
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
-    await expect(page.getByTestId("toast")).toContainText("Du er nå påmeldt arrangementet");
+    await expect(page.locator("[data-sonner-toast]")).toContainText("Du er nå påmeldt arrangementet");
 
     await page.getByRole("button", { name: "Meld av" }).click();
 
@@ -33,7 +33,7 @@ test.describe("Register", () => {
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Send" }).click();
 
-    await expect(page.getByTestId("toast")).toContainText("Du er nå avmeldt");
+    await expect(page.locator("[data-sonner-toast]")).toContainText("Du er nå avmeldt");
   });
 
   test("only one should be able to register", async ({ browser }) => {
@@ -83,8 +83,8 @@ test.describe("Register", () => {
       ),
     );
 
-    const resp1 = await page1.getByTestId("toast").textContent();
-    const resp2 = await page2.getByTestId("toast").textContent();
+    const resp1 = await page1.locator("[data-sonner-toast]").textContent();
+    const resp2 = await page2.locator("[data-sonner-toast]").textContent();
 
     if (resp1 === resp2) {
       throw new Error("Both users got the same response");
@@ -114,7 +114,7 @@ test.describe("Register", () => {
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
-    await expect(page.getByTestId("toast")).toContainText(
+    await expect(page.locator("[data-sonner-toast]")).toContainText(
       "Du kan ikke melde deg på dette arrangementet",
     );
   });
