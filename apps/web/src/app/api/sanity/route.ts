@@ -228,7 +228,10 @@ export const POST = withBasicAuth(async (req) => {
   if (operation === "update") {
     const happening = mapHappening(data);
 
-    await db.update(happenings).set(happening).where(eq(happenings.id, happening.id));
+    await db.insert(happenings).values(happening).onConflictDoUpdate({
+      target: happenings.id,
+      set: happening,
+    });
 
     await db.delete(happeningsToGroups).where(eq(happeningsToGroups.happeningId, happening.id));
 
