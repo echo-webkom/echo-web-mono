@@ -46,6 +46,10 @@ func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 				"user_agent", ctx.R.UserAgent(),
 			}
 
+			for k, v := range extractPathParams(ctx.R) {
+				attrs = append(attrs, k, v)
+			}
+
 			if size := ctx.R.ContentLength; size > 0 {
 				attrs = append(attrs, "bytes_in", size)
 			}
@@ -63,6 +67,33 @@ func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 			return err
 		})
 	}
+}
+
+// sensitivePathParam reports whether a path param name should be redacted from logs.
+func sensitivePathParam(name string) bool {
+	lower := strings.ToLower(name)
+	for _, word := range []string{"secret", "token", "key", "password", "pass"} {
+		if strings.Contains(lower, word) {
+			return true
+		}
+	}
+	return false
+}
+
+// extractPathParams returns non-sensitive chi URL path parameters as a map.
+func extractPathParams(r *http.Request) map[string]string {
+	rctx := chi.RouteContext(r.Context())
+	if rctx == nil {
+		return nil
+	}
+	params := rctx.URLParams
+	result := make(map[string]string, len(params.Keys))
+	for i, key := range params.Keys {
+		if !sensitivePathParam(key) {
+			result[key] = params.Values[i]
+		}
+	}
+	return result
 }
 
 // extractRoute returns the matched chi route pattern for the request
