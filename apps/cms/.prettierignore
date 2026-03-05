@@ -4,4 +4,4 @@ node_modules
 dist
 package.json
 sanity.types.ts
-
+schema.json
