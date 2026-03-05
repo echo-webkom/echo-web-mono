@@ -5,6 +5,11 @@ import (
 	"uno/domain/model"
 )
 
+type UserSearchResult struct {
+	ID   string  `json:"id"`
+	Name *string `json:"name"`
+}
+
 type UserGroupResponse struct {
 	Name     string `json:"name"`
 	ID       string `json:"id"`

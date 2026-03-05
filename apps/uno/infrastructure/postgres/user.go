@@ -423,6 +423,28 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	return result, nil
 }
 
+func (u *UserRepo) SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error) {
+	u.logger.Info(ctx, "searching users by name", "query", query)
+
+	var usersDB []record.UserDB
+	sqlQuery := `--sql
+		SELECT id, name, email, image, alternative_email, year, type,
+			last_sign_in_at, updated_at, created_at, has_read_terms,
+			birthday, is_public
+		FROM "user"
+		WHERE name ILIKE $1
+		ORDER BY name ASC
+		LIMIT $2
+	`
+	err := u.db.SelectContext(ctx, &usersDB, sqlQuery, "%"+query+"%", limit)
+	if err != nil {
+		u.logger.Error(ctx, "failed to search users by name", "error", err)
+		return nil, err
+	}
+
+	return record.UserToDomainList(usersDB), nil
+}
+
 func (u *UserRepo) UpdateUserImage(ctx context.Context, userID string, hasImage bool) error {
 	u.logger.Info(ctx, "updating user image",
 		"user_id", userID,

@@ -52,8 +52,8 @@ func RunServer(
 ) {
 	r := router.New(logger, middleware.Logger(logger))
 
-	// withAuth := router.NewWithAuthHandler(authService)
 	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)
+	session := middleware.NewSessionMiddleware(authService)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
@@ -101,7 +101,7 @@ func RunServer(
 	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(logger, userService, admin))
+	r.Mount("/users", api.NewUsersMux(logger, userService, admin, session))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
