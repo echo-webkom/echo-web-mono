@@ -17,4 +17,5 @@ type UserRepo interface {
 	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
 	UpdateUserImage(ctx context.Context, userID string, hasImage bool) error
+	SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error)
 }

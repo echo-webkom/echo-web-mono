@@ -475,6 +475,13 @@ definitions:
       year:
         type: integer
     type: object
+  uno_http_dto.UserSearchResult:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   uno_http_dto.UserSummaryResponse:
     properties:
       hasImage:
@@ -1669,6 +1676,36 @@ paths:
           schema:
             type: string
       summary: Uploads a user's profile image
+      tags:
+      - users
+  /users/search:
+    get:
+      parameters:
+      - description: Search query (minimum 2 characters)
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserSearchResult'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Searches for users by name
       tags:
       - users
   /weather/yr:

@@ -618,6 +618,15 @@ class UsersApi {
   async all() {
     return await this.client.requestJson<Array<User>>("GET", "users");
   }
+
+  async search(name: string) {
+    if (name.length < 3) return [];
+    const query = encodeURIComponent(name);
+    return await this.client.requestJson<Array<{ id: string; name: string }>>(
+      "GET",
+      `users/search?q=${query}`,
+    );
+  }
 }
 
 class FilesApi {

@@ -18,13 +18,16 @@ type users struct {
 	userService *service.UserService
 }
 
-func NewUsersMux(logger port.Logger, userService *service.UserService, admin handler.Middleware) *router.Mux {
+func NewUsersMux(logger port.Logger, userService *service.UserService, admin handler.Middleware, session handler.Middleware) *router.Mux {
 	u := users{logger, userService}
 
 	mux := router.NewMux()
 
 	// Public routes
 	mux.Handle("GET", "/{id}/image", u.getUserImage)
+
+	// Session routes
+	mux.Handle("GET", "/search", u.searchUsers, session)
 
 	// Admin routes
 	mux.Handle("GET", "/", u.getUsers, admin)
@@ -33,6 +36,38 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
 
 	return mux
+}
+
+// searchUsers searches for users by name
+// @Summary	     Searches for users by name
+// @Tags         users
+// @Param        q   query     string  true  "Search query (minimum 2 characters)"
+// @Success      200  {array}   dto.UserSearchResult  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Security     BearerAuth
+// @Router       /users/search [get]
+func (u *users) searchUsers(ctx *handler.Context) error {
+	query, _ := ctx.QueryParam("q")
+	if len(query) < 2 {
+		return ctx.JSON([]dto.UserSearchResult{})
+	}
+
+	users, err := u.userService.UserRepo().SearchUsersByName(ctx.Context(), query, 20)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	results := make([]dto.UserSearchResult, 0, len(users))
+	for _, user := range users {
+		results = append(results, dto.UserSearchResult{
+			ID:   user.ID,
+			Name: user.Name,
+		})
+	}
+
+	return ctx.JSON(results)
 }
 
 // getUsers returns a list of all users
