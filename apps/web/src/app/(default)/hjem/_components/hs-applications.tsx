@@ -69,7 +69,7 @@ const ApplyNow = () => {
   return (
     <div>
       <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLScOOWOl2leWB_128L3M92dM4gyV8d2PMg6-GfLuJ53qwOV4SQ/viewform"
+        href="https://forms.gle/q2E24r5pjksaGNer7"
         className="group flex items-center text-lg font-medium hover:underline"
       >
         ...kanskje deg? <LuArrowRight className="ml-2 transition-all group-hover:ml-3" />
