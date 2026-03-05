@@ -34,8 +34,39 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 	mux.Handle("GET", "/{id}", u.getUserByID, admin)
 	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
 	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
+	mux.Handle("GET", "/feide/{feideId}/groups", u.getUserGroups, admin)
 
 	return mux
+}
+
+// geUserGroups  gets the group IDs for a user based on the feide ID
+// @Summary      Gets the group IDs for a user based on the feide ID
+// @Tags         users
+// @Param        feideId  path      string  true  "Feide ID"
+// @Success      200      {array}   string  "OK"
+// @Failure      400      {string}  string  "Bad Request"
+// @Failure      401      {string}  string  "Unauthorized"
+// @Failure      404      {string}  string  "User Not Found"
+// @Failure      500      {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Router       /users/feide/{feideId}/groups [get]
+func (u *users) getUserGroups(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	feideID := ctx.PathValue("feideId")
+	if feideID == "" {
+		return ctx.BadRequest(errors.New("missing feide ID"))
+	}
+
+	// Get group IDs for the user from the database
+	groupIDs, err := u.userService.UserRepo().GetUserGroupIDs(ctx.Context(), feideID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("user not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(groupIDs)
 }
 
 // searchUsers searches for users by name
