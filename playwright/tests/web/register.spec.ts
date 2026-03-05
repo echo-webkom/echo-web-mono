@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 
 import { getUserCookie, loginAs } from "../../helpers/sessionTest";
+import { getToasterText, iExpectToasterToHaveText } from "./helpers";
 
 const SLUG = "test-i-prod-med-webkom";
 const ID = "5cbb5337-a6e6-4eff-a821-a73722594f47";
@@ -25,9 +26,7 @@ test.describe("Register", () => {
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
-    await expect(page.locator("[data-sonner-toast]")).toContainText(
-      "Du er nå påmeldt arrangementet",
-    );
+    await iExpectToasterToHaveText(page, "Du er nå påmeldt arrangementet");
 
     await page.getByRole("button", { name: "Meld av" }).click();
 
@@ -35,7 +34,7 @@ test.describe("Register", () => {
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Send" }).click();
 
-    await expect(page.locator("[data-sonner-toast]")).toContainText("Du er nå avmeldt");
+    await iExpectToasterToHaveText(page, "Du er nå avmeldt");
   });
 
   test("only one should be able to register", async ({ browser }) => {
@@ -85,8 +84,8 @@ test.describe("Register", () => {
       ),
     );
 
-    const resp1 = await page1.locator("[data-sonner-toast]").textContent();
-    const resp2 = await page2.locator("[data-sonner-toast]").textContent();
+    const resp1 = await getToasterText(page1);
+    const resp2 = await getToasterText(page2);
 
     if (resp1 === resp2) {
       throw new Error("Both users got the same response");
@@ -116,9 +115,7 @@ test.describe("Register", () => {
 
     await page.getByRole("button", { name: "One-click påmelding" }).click();
 
-    await expect(page.locator("[data-sonner-toast]")).toContainText(
-      "Du kan ikke melde deg på dette arrangementet",
-    );
+    await iExpectToasterToHaveText(page, "Du kan ikke melde deg på dette arrangementet");
   });
 
   test("should not be able to register to event with unethical user", async ({ page }) => {

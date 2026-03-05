@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { loginAs } from "../../helpers/sessionTest";
+import { iExpectToasterToHaveText } from "./helpers";
 
 test("update profile", async ({ page }) => {
   await loginAs(page, "Student");
@@ -15,9 +16,7 @@ test("update profile", async ({ page }) => {
 
   await page.getByRole("button", { name: "Lagre" }).nth(0).click();
 
-  await expect(
-    page.locator("[data-sonner-toast]").getByText("Brukeren ble oppdatert"),
-  ).toBeVisible();
+  await iExpectToasterToHaveText(page, "Brukeren ble oppdatert");
 });
 
 test("see admin dashboard", async ({ page }) => {
