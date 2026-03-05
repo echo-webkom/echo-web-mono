@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { type User } from "@echo-webkom/db/schemas";
 
+import { createProfilePictureUrl } from "@/api/client";
 import { type CommentTree } from "@/lib/comment-tree";
 import { cn } from "@/utils/cn";
 import { shortDate } from "@/utils/date";
@@ -19,7 +20,9 @@ import { CommentReplyTextarea } from "./comment-reply-textarea";
 /**
  * Restrict information about a user to the bare minimum.
  */
-type BasicUser = Pick<User, "id" | "name" | "image">;
+type BasicUser = Pick<User, "id" | "name"> & {
+  hasImage: boolean;
+};
 
 type ReplyTreeProps = {
   comments: CommentTree;
@@ -39,6 +42,9 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
       {comments.map((comment) => {
         const showDelete = comment.user && user?.id === comment.user.id;
         const hasReplies = comment.children.length > 0;
+        const imageUrl = comment.user?.hasImage
+          ? createProfilePictureUrl(comment.user.id)
+          : undefined;
 
         return (
           <li className="flex gap-4 py-4" key={comment.id}>
@@ -49,7 +55,7 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
               reactions={comment.reactions}
             >
               <Avatar className="hidden h-14 w-14 sm:block">
-                <AvatarImage src={comment.user?.image ?? ""} />
+                <AvatarImage src={imageUrl} />
                 <AvatarFallback title={comment.user?.name ?? "Andreas Aanes"}>
                   {initials(comment.user?.name ?? "AA")}
                 </AvatarFallback>

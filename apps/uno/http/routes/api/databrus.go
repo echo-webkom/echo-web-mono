@@ -33,7 +33,7 @@ func NewDatabrusMux(logger port.Logger, databrusService *service.DatabrusService
 func (d *databrus) getMatches(ctx *handler.Context) error {
 	matches, err := d.databrusService.GetMatches(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, 500)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.DatabrusMatchesFromDomain(matches)
@@ -50,7 +50,7 @@ func (d *databrus) getMatches(ctx *handler.Context) error {
 func (d *databrus) getTable(ctx *handler.Context) error {
 	table, err := d.databrusService.GetTable(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, 500)
+		return ctx.InternalServerError()
 	}
 
 	response := dto.DatabrusTableFromDomain(table)

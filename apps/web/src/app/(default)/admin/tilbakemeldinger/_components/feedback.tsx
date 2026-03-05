@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { RxEnvelopeClosed, RxEnvelopeOpen } from "react-icons/rx";
+import { toast } from "sonner";
 
 import { type SiteFeedback } from "@echo-webkom/db/schemas";
 
 import { toggleReadFeedback } from "@/actions/feedback";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { shortDate } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 
@@ -22,15 +22,15 @@ const parseDate = (date: Date) => {
 
 export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
   const router = useRouter();
-  const { toast } = useToast();
 
   const handleToggleRead = async () => {
     const { success, message } = await toggleReadFeedback(feedback.id);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
 
     router.refresh();
   };
@@ -64,7 +64,7 @@ export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
       <hr />
 
       <div>
-        <p className="text-card-foreground text-sm break-words">
+        <p className="text-card-foreground text-sm wrap-break-word">
           {/* Show line breaks */}
           {feedback.message.split("\n").map((line, index) => (
             <span key={index}>

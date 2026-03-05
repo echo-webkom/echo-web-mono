@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
@@ -331,6 +332,28 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 	return record.UserToDomainList(usersDB), nil
 }
 
+func (u *UserRepo) ResetUserYears(ctx context.Context) (int64, error) {
+	u.logger.Info(ctx, "resetting user years")
+
+	query := `--sql
+		UPDATE "user"
+		SET year = NULL
+		WHERE year IS NOT NULL
+	`
+	result, err := u.db.ExecContext(ctx, query)
+	if err != nil {
+		u.logger.Error(ctx, "failed to reset user years", "error", err)
+		return 0, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("reset user years rows affected: %w", err)
+	}
+
+	return rowsAffected, nil
+}
+
 func (u *UserRepo) GetUserMemberships(ctx context.Context, userID string) (groupIDs []string, err error) {
 	u.logger.Info(ctx, "getting user memberships",
 		"user_id", userID,
@@ -378,7 +401,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	err := u.db.GetContext(ctx, &resultDB, query,
 		user.Email,
 		user.Name,
-		user.Image,
+		nil, // image — always null on creation
 		user.AlternativeEmail,
 		degreeID,
 		year,
@@ -398,4 +421,54 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		return model.User{}, err
 	}
 	return result, nil
+}
+
+func (u *UserRepo) SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error) {
+	u.logger.Info(ctx, "searching users by name", "query", query)
+
+	var usersDB []record.UserDB
+	sqlQuery := `--sql
+		SELECT id, name, email, image, alternative_email, year, type,
+			last_sign_in_at, updated_at, created_at, has_read_terms,
+			birthday, is_public
+		FROM "user"
+		WHERE name ILIKE $1
+		ORDER BY name ASC
+		LIMIT $2
+	`
+	err := u.db.SelectContext(ctx, &usersDB, sqlQuery, "%"+query+"%", limit)
+	if err != nil {
+		u.logger.Error(ctx, "failed to search users by name", "error", err)
+		return nil, err
+	}
+
+	return record.UserToDomainList(usersDB), nil
+}
+
+func (u *UserRepo) UpdateUserImage(ctx context.Context, userID string, hasImage bool) error {
+	u.logger.Info(ctx, "updating user image",
+		"user_id", userID,
+		"has_image", hasImage,
+	)
+
+	var image *string
+	if hasImage {
+		marker := "1"
+		image = &marker
+	}
+
+	query := `--sql
+		UPDATE "user"
+		SET image = $1, updated_at = NOW()
+		WHERE id = $2
+	`
+	_, err := u.db.ExecContext(ctx, query, image, userID)
+	if err != nil {
+		u.logger.Error(ctx, "failed to update user image URL",
+			"error", err,
+			"user_id", userID,
+		)
+		return err
+	}
+	return nil
 }

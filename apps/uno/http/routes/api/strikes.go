@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	_ "uno/domain/model" // swagger
 	"uno/domain/port"
 	"uno/domain/service"
@@ -37,7 +36,7 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 // @Router       /strikes/unban [post]
 func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
 	if err := s.strikeService.UnbanUsersWithExpiredStrikes(ctx.Context()); err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 	return ctx.Ok()
 }
@@ -53,7 +52,7 @@ func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
 func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
 	users, err := s.strikeService.GetUsersWithStrikes(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO
@@ -72,7 +71,7 @@ func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
 func (s *strikes) getBannedUsers(ctx *handler.Context) error {
 	users, err := s.strikeService.GetBannedUsers(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO

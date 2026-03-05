@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { type z } from "zod";
 
 import { type Group } from "@echo-webkom/db/schemas";
@@ -31,7 +32,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { type AllUsers } from "./page";
 import { userFormSchema } from "./schemas";
 
@@ -42,7 +42,6 @@ type UserFormProps = {
 
 export const UserForm = ({ user, groups }: UserFormProps) => {
   const router = useRouter();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof userFormSchema>>({
@@ -59,10 +58,11 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
 
     setIsLoading(false);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
 
     router.refresh();
   });

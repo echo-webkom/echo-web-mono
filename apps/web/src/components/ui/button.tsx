@@ -26,6 +26,7 @@ export const buttonVariants = cva(
         lg: "h-11 px-8",
         icon: "h-9 w-9",
         "icon-lg": "h-12 w-12",
+        "icon-sm": "h-6 w-6",
       },
       fullWidth: {
         true: "w-full",

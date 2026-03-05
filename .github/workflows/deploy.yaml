@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+
 jobs:
   check_changes:
     runs-on: ubuntu-latest
@@ -18,8 +22,12 @@ jobs:
           filters: |
             cms:
               - 'apps/cms/**'
+            docs:
+              - 'apps/docs/**'
 
   docs:
+    needs: check_changes
+    if: needs.check_changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
 
     steps:

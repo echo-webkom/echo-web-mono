@@ -14,7 +14,7 @@ import {
 } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
-import { auth } from "@/auth/session";
+import { auth, getSessionToken } from "@/auth/session";
 import { DevtoolsLoginDialog } from "@/components/devtools/devtools-login-dialog";
 import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
 import { EasterEgg } from "@/components/easter-egg";
@@ -135,7 +135,7 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const user = await auth();
+  const [user, sessionToken] = await Promise.all([auth(), getSessionToken()]);
   const date = new Date();
   const month = date.getMonth();
   const isOctober = month === 9;
@@ -160,7 +160,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           pacifico.variable,
         )}
       >
-        <Providers user={user}>
+        <Providers user={user} sessionToken={sessionToken}>
           <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
           {children}
           <Toaster />

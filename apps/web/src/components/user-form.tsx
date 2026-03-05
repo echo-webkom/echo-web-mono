@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { type Degree } from "@echo-webkom/db/schemas";
 
 import { resendVerificationEmail } from "@/actions/resend-verification-email";
 import { updateSelf } from "@/actions/user";
-import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
@@ -54,7 +54,6 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
 
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: standardSchemaResolver(userSchema),
@@ -83,18 +82,16 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
       setIsLoading(false);
 
-      toast({
-        title: message,
-        variant: success ? "success" : "warning",
-      });
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
 
       router.refresh();
     },
     () => {
-      toast({
-        title: "Noe gikk galt",
-        variant: "warning",
-      });
+      toast.warning("Noe gikk galt");
     },
   );
 
@@ -107,10 +104,11 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
     setIsResending(false);
 
-    toast({
-      title: result.success ? result.message : result.error,
-      variant: result.success ? "success" : "warning",
-    });
+    if (result.success) {
+      toast.success(result.message);
+    } else {
+      toast.error(result.error);
+    }
   };
 
   return (

@@ -1,8 +1,8 @@
 package api
 
 import (
+	"database/sql"
 	"errors"
-	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -40,7 +40,7 @@ func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
 	// Fetch feedbacks from the repository
 	feedbacks, err := f.feedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(ctx.Context())
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTOs
@@ -61,11 +61,18 @@ func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
 func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 	// Get the feedback ID from the path
 	feedbackID := ctx.PathValue("id")
+	if feedbackID == "" {
+		return ctx.BadRequest(errors.New("missing feedback ID"))
+	}
 
 	// Fetch feedback with the given ID from the repository
 	feedback, err := f.feedbackService.SiteFeedbackRepo().GetSiteFeedbackByID(ctx.Context(), feedbackID)
 	if err != nil {
-		return ctx.Error(errors.New("site feedback not found"), http.StatusNotFound)
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("feedback not found"))
+		}
+
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO
@@ -86,18 +93,18 @@ func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 	var req dto.CreateSiteFeedbackRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		return ctx.Error(errors.New("bad request data"), http.StatusBadRequest)
+		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
 	newFeedback, err := req.ToNewSiteFeedback()
 	if err != nil {
-		return ctx.Error(err, http.StatusBadRequest)
+		return ctx.BadRequest(err)
 	}
 
 	// Create a new site feedback in the repository
 	feedback, err := f.feedbackService.SiteFeedbackRepo().CreateSiteFeedback(ctx.Context(), newFeedback)
 	if err != nil {
-		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
+		return ctx.InternalServerError()
 	}
 
 	// Convert to DTO
@@ -118,12 +125,15 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 func (f *feedbacks) markSiteFeedbackAsSeen(ctx *handler.Context) error {
 	feedbackID := ctx.PathValue("id")
 	if feedbackID == "" {
-		return ctx.Error(errors.New("feedback ID is required"), http.StatusBadRequest)
+		return ctx.BadRequest(errors.New("missing feedback ID"))
 	}
 
 	err := f.feedbackService.SiteFeedbackRepo().MarkSiteFeedbackAsRead(ctx.Context(), feedbackID)
 	if err != nil {
-		return ctx.Error(errors.New("site feedback not found"), http.StatusNotFound)
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("feedback not found"))
+		}
+		return ctx.InternalServerError()
 	}
 
 	return nil

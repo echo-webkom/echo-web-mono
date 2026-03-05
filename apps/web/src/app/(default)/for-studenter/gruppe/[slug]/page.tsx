@@ -171,7 +171,7 @@ export default async function GroupPage(props: Props) {
                   className="group flex flex-col gap-2 p-5 text-center"
                   key={member.profile?._id}
                 >
-                  <Avatar className="mx-auto">
+                  <Avatar size="xl" className="mx-auto">
                     <AvatarImage src={image ? urlFor(image).url() : undefined} />
                     <AvatarFallback>{initials}</AvatarFallback>
                   </Avatar>

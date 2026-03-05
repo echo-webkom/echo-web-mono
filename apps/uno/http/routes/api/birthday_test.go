@@ -20,7 +20,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.UserRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -41,7 +40,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from service",
@@ -52,7 +50,6 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 		{
 			name: "users without names",
@@ -68,16 +65,16 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
+			mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
 			tt.setupMocks(mockUserRepo)
 
-			userService := service.NewUserService(mockUserRepo)
+			userService := service.NewUserService(mockUserRepo, mockProfilePictureStore)
 			mux := api.NewBirthdayMux(testutil.NewTestLogger(), userService)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)

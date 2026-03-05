@@ -13,8 +13,10 @@ import {
   Popover,
 } from "react-aria-components";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { type z } from "zod";
 
+import { createProfilePictureUrl } from "@/api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +30,6 @@ import {
 } from "@/components/ui/form";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { initials } from "@/utils/string";
 import { addStrikesAction } from "../_actions/add-strike";
 import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from "../_lib/schema";
@@ -36,7 +37,7 @@ import { addStrikesSchema, StrikeType, StrikeTypeCount, StrikeTypeLabels } from 
 type User = {
   id: string;
   name: string;
-  imageUrl: string | null;
+  hasImage: boolean;
   isBanned: boolean;
   strikes: number;
 };
@@ -46,7 +47,6 @@ type StrikeButton = {
 };
 
 export const NewStrikesForm = ({ users }: StrikeButton) => {
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof addStrikesSchema>>({
     resolver: standardSchemaResolver(addStrikesSchema),
@@ -88,19 +88,13 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
     async (data) => {
       const { success, message } = await addStrikesAction(data);
       if (!success) {
-        toast({
-          title: message,
-          variant: "destructive",
-        });
+        toast.error(message);
         return;
       }
 
       router.refresh();
       reset();
-      toast({
-        title: message,
-        variant: "success",
-      });
+      toast.success(message);
     },
     (error) => {
       console.error(error);
@@ -380,10 +374,11 @@ const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) 
                 textValue={user.name}
               >
                 {() => {
+                  const imageUrl = user.hasImage ? createProfilePictureUrl(user.id) : undefined;
                   return (
                     <>
                       <Avatar className="size-12 md:size-14">
-                        <AvatarImage src={user.imageUrl ?? ""} />
+                        <AvatarImage src={imageUrl} />
                         <AvatarFallback className="bg-background text-foreground">
                           {initials(user.name)}
                         </AvatarFallback>

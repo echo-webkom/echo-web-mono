@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Confetti from "react-confetti";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "sonner";
 
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
 import { useWindowSize } from "@/hooks/use-window-size";
 
 type RandomPersonButtonProps = {
@@ -19,7 +19,6 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
   const { height, width } = useWindowSize();
   const [randomUserName, setRandomUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const pickRandomRegisteredUser = () => {
     setIsLoading(true);
@@ -27,10 +26,8 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
     const name = registrations[i];
 
     if (!name) {
-      toast({
-        title: "Ingen registrerte brukere",
+      toast.warning("Ingen registrerte brukere", {
         description: "Det er ingen som er påmeldt arrangementet.",
-        variant: "warning",
       });
       setIsLoading(false);
       return;

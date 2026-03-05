@@ -2,6 +2,7 @@
 
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { sendFeedback } from "@/actions/feedback";
@@ -17,12 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { feedbackSchema } from "@/lib/schemas/feedback";
 
 export const FeedbackForm = () => {
-  const { toast } = useToast();
-
   const form = useForm<z.infer<typeof feedbackSchema>>({
     resolver: standardSchemaResolver(feedbackSchema),
     defaultValues: {
@@ -36,10 +34,7 @@ export const FeedbackForm = () => {
   const onSubmit = form.handleSubmit(
     async (data) => {
       if (!data.category) {
-        toast({
-          title: "Vennligst velg en kategori for tilbakemeldingen.",
-          variant: "destructive",
-        });
+        toast.error("Vennligst velg en kategori for tilbakemeldingen.");
         return;
       }
 
@@ -53,11 +48,12 @@ export const FeedbackForm = () => {
         name: data.name || null,
       });
 
-      toast({
-        title: message,
-        variant: success ? "success" : "destructive",
-      });
+      if (!success) {
+        toast.error(message);
+        return;
+      }
 
+      toast.success(message);
       form.reset();
     },
     (error) => {

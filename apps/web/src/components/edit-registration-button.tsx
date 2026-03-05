@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "sonner";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
@@ -23,7 +24,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 import { cn } from "@/utils/cn";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
@@ -37,7 +37,6 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
 
   const form = useForm<editRegistrationForm>({
     resolver: standardSchemaResolver(editRegistrationSchema),
@@ -58,11 +57,13 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
 
     setIsLoading(false);
 
-    toast({
-      title: "Påmeldingen er endret",
-      description: message,
-      variant: success ? "success" : "destructive",
-    });
+    if (success) {
+      toast("Påmeldingen er endret", {
+        description: message,
+      });
+    } else {
+      toast.error(message);
+    }
 
     router.refresh();
     form.reset();

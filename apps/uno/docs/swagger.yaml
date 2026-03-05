@@ -67,18 +67,18 @@ definitions:
         items:
           $ref: '#/definitions/uno_domain_model.DotInfo'
         type: array
+      hasImage:
+        type: boolean
       id:
-        type: string
-      image:
         type: string
       name:
         type: string
     type: object
   uno_domain_model.UserWithStrikes:
     properties:
+      hasImage:
+        type: boolean
       id:
-        type: string
-      image:
         type: string
       isBanned:
         type: boolean
@@ -274,9 +274,9 @@ definitions:
         type: string
       unregisterReason:
         type: string
+      userHasImage:
+        type: boolean
       userId:
-        type: string
-      userImage:
         type: string
       userName:
         type: string
@@ -456,11 +456,11 @@ definitions:
         items:
           $ref: '#/definitions/uno_http_dto.UserGroupResponse'
         type: array
+      hasImage:
+        type: boolean
       hasReadTerms:
         type: boolean
       id:
-        type: string
-      image:
         type: string
       isPublic:
         type: boolean
@@ -475,11 +475,18 @@ definitions:
       year:
         type: integer
     type: object
-  uno_http_dto.UserSummaryResponse:
+  uno_http_dto.UserSearchResult:
     properties:
       id:
         type: string
-      image:
+      name:
+        type: string
+    type: object
+  uno_http_dto.UserSummaryResponse:
+    properties:
+      hasImage:
+        type: boolean
+      id:
         type: string
       name:
         type: string
@@ -1568,6 +1575,137 @@ paths:
           schema:
             type: string
       summary: Gets a user by ID
+      tags:
+      - users
+  /users/{id}/image:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Deletes a user's profile image
+      tags:
+      - users
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets a user's profile image
+      tags:
+      - users
+    post:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Profile Image
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Uploads a user's profile image
+      tags:
+      - users
+  /users/search:
+    get:
+      parameters:
+      - description: Search query (minimum 2 characters)
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserSearchResult'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Searches for users by name
       tags:
       - users
   /weather/yr:

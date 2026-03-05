@@ -4,19 +4,32 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/handler"
 	"uno/http/middleware"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
+const testSecret = "test-secret-key"
+
+func createTestJWT(sessionToken string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sessionId": sessionToken,
+		"exp":       time.Now().Add(30 * 24 * time.Hour).Unix(),
+	})
+	signed, _ := token.SignedString([]byte(testSecret))
+	return signed
+}
+
 // Test that it rejects requests with missing or invalid admin API key
 func TestAdminMiddleware_Unauthorized(t *testing.T) {
-	authService := &service.AuthService{}
+	authService := service.NewAuthService(nil, nil, testSecret)
 	adminKey := "some-secret-key"
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
@@ -38,7 +51,7 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 
 // Test that it allows requests with valid admin API key
 func TestAdminMiddleware_Authorized(t *testing.T) {
-	authService := &service.AuthService{}
+	authService := service.NewAuthService(nil, nil, testSecret)
 	adminKey := "some-secret-key"
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
@@ -68,7 +81,7 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 func TestAdminMiddleware_WebkomUser(t *testing.T) {
 	userRepo := mocks.NewUserRepo(t)
 	sessionRepo := mocks.NewSessionRepo(t)
-	authService := service.NewAuthService(sessionRepo, userRepo)
+	authService := service.NewAuthService(sessionRepo, userRepo, testSecret)
 
 	// Mock a valid session for a webkom user
 	userRepo.On("GetUserByID", mock.Anything, "user-123").Return(model.User{
@@ -92,7 +105,7 @@ func TestAdminMiddleware_WebkomUser(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/some-endpoint", nil)
 	w := httptest.NewRecorder()
 
-	r.Header.Set("Authorization", "Bearer valid-token")
+	r.Header.Set("Authorization", "Bearer "+createTestJWT("valid-token"))
 
 	ctx := handler.NewContext(w, r)
 	h.ServeHTTP(ctx, ctx.R)

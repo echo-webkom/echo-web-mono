@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "sonner";
 import { type z } from "zod";
 
 import { type Question } from "@echo-webkom/db/schemas";
@@ -22,7 +23,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
 import { registrationFormSchema } from "@/lib/schemas/registration";
 import { Countdown } from "./countdown";
 import { Checkbox } from "./ui/checkbox";
@@ -45,7 +45,6 @@ export const RegisterButton = ({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registrationFormSchema>>({
     resolver: standardSchemaResolver(registrationFormSchema),
@@ -99,10 +98,11 @@ export const RegisterButton = ({
       router.refresh();
     }
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   });
 
   const handleOneClickRegister = async () => {
@@ -110,14 +110,12 @@ export const RegisterButton = ({
 
     const { success, message } = await register(id, { questions: [] });
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
-
     setIsLoading(false);
     if (success) {
       router.refresh();
+      toast.success(message);
+    } else {
+      toast.error(message);
     }
   };
 

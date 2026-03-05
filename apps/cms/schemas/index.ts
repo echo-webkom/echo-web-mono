@@ -1,6 +1,7 @@
 import banner from "./banner";
 import company from "./company";
 import happening from "./happening";
+import hsApplication from "./hs-application";
 import hungerGames from "./hunger-games";
 import job from "./job-ad";
 import location from "./location";
@@ -18,6 +19,7 @@ import staticInfo from "./static-info";
 import studentGroup from "./student-group";
 
 export const schemaTypes = [
+  hsApplication,
   happening,
   repeatingHappening,
   post,

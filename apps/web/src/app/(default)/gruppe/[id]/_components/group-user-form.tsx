@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuTrash as Trash } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
 import { removeFromGroup, setGroupLeader } from "../actions";
 
 type GroupUserFormProps = {
@@ -36,33 +36,25 @@ type GroupUserFormProps = {
 
 export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => {
   const router = useRouter();
-  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSetIsLeader = async (checked: boolean) => {
     const { message } = await setGroupLeader(group.id, user.id, checked);
 
-    toast({
-      title: message,
-    });
-
+    toast.success(message);
     router.refresh();
   };
 
   const handleRemoveUser = async () => {
     const { success, message } = await removeFromGroup(user.id, group.id);
 
-    toast({
-      title: message,
-      variant: success ? "success" : "warning",
-    });
-
     if (!success) {
+      toast.warning(message);
       return;
     }
 
+    toast.success(message);
     setIsOpen(false);
-
     router.refresh();
   };
 

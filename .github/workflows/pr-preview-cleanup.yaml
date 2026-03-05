@@ -21,4 +21,7 @@ jobs:
         env:
           DOCKER_HOST: ssh://deploy@${{ secrets.VPS_HOST }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: docker compose -p pr-${PR_NUMBER} down -v --remove-orphans
+        run: |
+          echo "Destroying preview environment for PR #${PR_NUMBER}..."
+          docker compose -p pr-${PR_NUMBER} down -v --rmi all --remove-orphans
+          docker system prune -f

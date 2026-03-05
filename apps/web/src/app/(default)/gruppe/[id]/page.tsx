@@ -89,16 +89,6 @@ export default async function ManageGroup(props: Props) {
       </Text>
 
       <div className="space-y-2">
-        <Heading level={3}>Generell informasjon</Heading>
-        <p>
-          <span className="font-medium">Database ID:</span> {group.id}
-        </p>
-        <p>
-          <span className="font-medium">Navn:</span> {group.name}
-        </p>
-      </div>
-
-      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Heading level={3}>Medlemmer</Heading>
 

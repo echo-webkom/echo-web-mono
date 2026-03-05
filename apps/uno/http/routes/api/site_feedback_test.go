@@ -2,6 +2,7 @@ package api_test
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -23,7 +24,6 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 		name           string
 		setupMocks     func(*mocks.SiteFeedbackRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name: "success",
@@ -37,7 +37,6 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name: "error from repo",
@@ -48,7 +47,6 @@ func TestGetSiteFeedbacksHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusInternalServerError,
-			expectError:    true,
 		},
 	}
 
@@ -76,7 +74,6 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 		feedbackID     string
 		setupMocks     func(*mocks.SiteFeedbackRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:       "success",
@@ -91,7 +88,6 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:       "missing id",
@@ -104,7 +100,6 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK, // Gets all feedback instead
-			expectError:    false,
 		},
 		{
 			name:       "error from repo",
@@ -115,8 +110,18 @@ func TestGetSiteFeedbackByIDHandler(t *testing.T) {
 					Return(model.SiteFeedback{}, errors.New("not found")).
 					Once()
 			},
+			expectedStatus: http.StatusInternalServerError,
+		},
+		{
+			name:       "feedback not found",
+			feedbackID: "feedback123",
+			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
+				mockRepo.EXPECT().
+					GetSiteFeedbackByID(mock.Anything, "feedback123").
+					Return(model.SiteFeedback{}, sql.ErrNoRows).
+					Once()
+			},
 			expectedStatus: http.StatusNotFound,
-			expectError:    true,
 		},
 	}
 
@@ -215,7 +220,6 @@ func TestMarkSiteFeedbackAsSeen(t *testing.T) {
 		feedbackID     string
 		setupMocks     func(*mocks.SiteFeedbackRepo)
 		expectedStatus int
-		expectError    bool
 	}{
 		{
 			name:       "success",
@@ -227,7 +231,6 @@ func TestMarkSiteFeedbackAsSeen(t *testing.T) {
 					Once()
 			},
 			expectedStatus: http.StatusOK,
-			expectError:    false,
 		},
 		{
 			name:       "feedback not found",
@@ -235,11 +238,10 @@ func TestMarkSiteFeedbackAsSeen(t *testing.T) {
 			setupMocks: func(mockRepo *mocks.SiteFeedbackRepo) {
 				mockRepo.EXPECT().
 					MarkSiteFeedbackAsRead(mock.Anything, "nonexistent").
-					Return(errors.New("not found")).
+					Return(sql.ErrNoRows).
 					Once()
 			},
 			expectedStatus: http.StatusNotFound,
-			expectError:    true,
 		},
 	}
 

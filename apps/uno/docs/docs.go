@@ -1616,6 +1616,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/search": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Searches for users by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search query (minimum 2 characters)",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.UserSearchResult"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "produces": [
@@ -1639,6 +1687,159 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/uno_http_dto.UserResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/image": {
+            "get": {
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets a user's profile image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Uploads a user's profile image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Profile Image",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Deletes a user's profile image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "401": {
@@ -1882,10 +2083,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_domain_model.DotInfo"
                     }
                 },
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
@@ -1896,10 +2097,10 @@ const docTemplate = `{
         "uno_domain_model.UserWithStrikes": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
+                "hasImage": {
+                    "type": "boolean"
                 },
-                "image": {
+                "id": {
                     "type": "string"
                 },
                 "isBanned": {
@@ -2199,10 +2400,10 @@ const docTemplate = `{
                 "unregisterReason": {
                     "type": "string"
                 },
-                "userId": {
-                    "type": "string"
+                "userHasImage": {
+                    "type": "boolean"
                 },
-                "userImage": {
+                "userId": {
                     "type": "string"
                 },
                 "userName": {
@@ -2479,13 +2680,13 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_http_dto.UserGroupResponse"
                     }
                 },
+                "hasImage": {
+                    "type": "boolean"
+                },
                 "hasReadTerms": {
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "isPublic": {
@@ -2508,13 +2709,24 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_http_dto.UserSummaryResponse": {
+        "uno_http_dto.UserSearchResult": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
                 },
-                "image": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "hasImage": {
+                    "type": "boolean"
+                },
+                "id": {
                     "type": "string"
                 },
                 "name": {

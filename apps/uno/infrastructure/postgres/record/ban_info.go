@@ -51,6 +51,10 @@ type UserWithBanInfo struct {
 	Dots    []DotInfo `db:"dots"`
 }
 
+func (u *UserWithBanInfo) HasImage() bool {
+	return u.Image != nil
+}
+
 func (u *UserWithBanInfo) ToDomain() *model.UserWithBanInfo {
 	var dots []model.DotInfo
 	for _, d := range u.Dots {
@@ -67,9 +71,9 @@ func (u *UserWithBanInfo) ToDomain() *model.UserWithBanInfo {
 	}
 
 	return &model.UserWithBanInfo{
-		ID:    u.ID,
-		Name:  u.Name,
-		Image: u.Image,
+		ID:       u.ID,
+		Name:     u.Name,
+		HasImage: u.HasImage(),
 		BanInfo: model.BanInfo{
 			ID:           u.BanInfo.ID,
 			UserID:       u.BanInfo.UserID,

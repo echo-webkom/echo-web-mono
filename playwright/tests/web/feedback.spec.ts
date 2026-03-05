@@ -1,4 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
+
+import { iExpectToasterToHaveText } from "./helpers";
 
 test("sending feedback", async ({ page }) => {
   await page.goto("/tilbakemelding");
@@ -10,5 +12,5 @@ test("sending feedback", async ({ page }) => {
 
   await page.getByRole("button", { name: "Send" }).click();
 
-  await expect(page.getByTestId("toast")).toContainText("Takk for tilbakemeldingen!");
+  await iExpectToasterToHaveText(page, "Takk for tilbakemeldingen!");
 });

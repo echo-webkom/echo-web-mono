@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { BiCheckCircle } from "react-icons/bi";
+import { toast } from "sonner";
 
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { requestAccess } from "../_actions/request-access";
 import { requestAccessSchema, type IRequestAccessForm } from "../_lib/request-access";
 
@@ -28,7 +28,6 @@ type RequestAccessFormProps = {
 };
 
 export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
-  const { toast } = useToast();
   const [id, setId] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const router = useRouter();
@@ -47,10 +46,7 @@ export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
       const resp = await requestAccess(data);
 
       if (!resp.success) {
-        toast({
-          title: resp.message,
-          variant: "destructive",
-        });
+        toast.error(resp.message);
         return;
       }
 

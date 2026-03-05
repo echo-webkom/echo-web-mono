@@ -29,9 +29,9 @@ func (r *CreateWhitelistRequest) ToDomain() *model.NewWhitelist {
 	}
 }
 
-// FromDomain converts domain model to WhitelistResponse DTO
-func (r *WhitelistResponse) FromDomain(wl *model.Whitelist) *WhitelistResponse {
-	return &WhitelistResponse{
+// WhitelistResponseFromDomain converts model.Whitelist to a WhitelistResponse
+func WhitelistResponseFromDomain(wl model.Whitelist) WhitelistResponse {
+	return WhitelistResponse{
 		Email:     wl.Email,
 		ExpiresAt: wl.ExpiresAt,
 		Reason:    wl.Reason,
@@ -42,7 +42,7 @@ func (r *WhitelistResponse) FromDomain(wl *model.Whitelist) *WhitelistResponse {
 func FromWhitelistDomainList(whitelists []model.Whitelist) []WhitelistResponse {
 	response := make([]WhitelistResponse, len(whitelists))
 	for i, wl := range whitelists {
-		response[i] = *new(WhitelistResponse).FromDomain(&wl)
+		response[i] = WhitelistResponseFromDomain(wl)
 	}
 	return response
 }
