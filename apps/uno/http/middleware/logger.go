@@ -20,7 +20,6 @@ func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 
 			// Attach trace and span IDs to the request context for structured logging.
 			reqCtx := logging.WithTraceID(ctx.Context(), logging.GenerateTraceID())
-			reqCtx = logging.WithSpanID(reqCtx, logging.GenerateSpanID())
 			ctx.SetContext(reqCtx)
 
 			defer func() {
@@ -89,6 +88,9 @@ func extractPathParams(r *http.Request) map[string]string {
 	params := rctx.URLParams
 	result := make(map[string]string, len(params.Keys))
 	for i, key := range params.Keys {
+		if key == "*" {
+			continue
+		}
 		if !sensitivePathParam(key) {
 			result[key] = params.Values[i]
 		}

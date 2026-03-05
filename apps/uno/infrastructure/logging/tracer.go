@@ -59,9 +59,6 @@ func (h *TraceHandler) Handle(ctx context.Context, r slog.Record) error {
 	if traceID, ok := ctx.Value(traceIDKey).(string); ok && traceID != "" {
 		r.AddAttrs(slog.String("trace_id", traceID))
 	}
-	if spanID, ok := ctx.Value(spanIDKey).(string); ok && spanID != "" {
-		r.AddAttrs(slog.String("span_id", spanID))
-	}
 	if userID, ok := ctx.Value(userIDKey).(string); ok && userID != "" {
 		r.AddAttrs(slog.String("user_id", userID))
 	}
