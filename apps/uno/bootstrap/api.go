@@ -78,7 +78,7 @@ func RunApi() {
 	}
 
 	// Initialize services
-	authService := service.NewAuthService(sessionRepo, userRepo)
+	authService := service.NewAuthService(sessionRepo, userRepo, cfg.AuthSecret)
 	happeningService := service.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo)
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)

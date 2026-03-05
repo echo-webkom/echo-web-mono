@@ -11,6 +11,7 @@ type Config struct {
 	DatabaseURL string
 	ApiPort     string
 	AdminAPIKey string
+	AuthSecret  string
 	Environment string
 
 	ProfilePictureEndpointURL     string
@@ -45,6 +46,7 @@ func Load() *Config {
 		// General configuration
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		AdminAPIKey: os.Getenv("ADMIN_KEY"),
+		AuthSecret:  os.Getenv("AUTH_SECRET"),
 		Environment: environment,
 
 		// API configuration

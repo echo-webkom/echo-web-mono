@@ -4,19 +4,32 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/testutil"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
+const testSecret = "test-secret-key"
+
+func createTestJWT(sessionToken string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sessionId": sessionToken,
+		"exp":       time.Now().Add(30 * 24 * time.Hour).Unix(),
+	})
+	signed, _ := token.SignedString([]byte(testSecret))
+	return signed
+}
+
 func TestAuthService_SessionRepo(t *testing.T) {
 	mockSessionRepo := mocks.NewSessionRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
 
 	sessionRepo := authService.SessionRepo()
 	assert.NotNil(t, sessionRepo, "Expected SessionRepo to be non-nil")
@@ -25,7 +38,7 @@ func TestAuthService_SessionRepo(t *testing.T) {
 func TestAuthService_UserRepo(t *testing.T) {
 	mockSessionRepo := mocks.NewSessionRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
 
 	userRepo := authService.UserRepo()
 	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
@@ -34,6 +47,7 @@ func TestAuthService_UserRepo(t *testing.T) {
 func TestAuthService_ValidateToken_Success(t *testing.T) {
 	ctx := context.Background()
 	token := "valid-token"
+	jwtToken := createTestJWT(token)
 	userID := "user123"
 
 	expectedSession := testutil.NewFakeStruct(func(s *model.Session) {
@@ -59,8 +73,8 @@ func TestAuthService_ValidateToken_Success(t *testing.T) {
 		Return(expectedUser, nil).
 		Once()
 
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
-	user, session, err := authService.ValidateToken(ctx, token)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	user, session, err := authService.ValidateToken(ctx, jwtToken)
 
 	assert.NoError(t, err, "Expected ValidateToken to not return an error")
 	assert.Equal(t, userID, user.ID)
@@ -68,9 +82,45 @@ func TestAuthService_ValidateToken_Success(t *testing.T) {
 	assert.Equal(t, token, session.SessionToken)
 }
 
+func TestAuthService_ValidateToken_InvalidJWT(t *testing.T) {
+	ctx := context.Background()
+
+	mockSessionRepo := mocks.NewSessionRepo(t)
+	mockUserRepo := mocks.NewUserRepo(t)
+
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	user, session, err := authService.ValidateToken(ctx, "not-a-jwt")
+
+	assert.Error(t, err, "Expected ValidateToken to return an error")
+	assert.Equal(t, model.User{}, user)
+	assert.Equal(t, model.Session{}, session)
+}
+
+func TestAuthService_ValidateToken_WrongSecret(t *testing.T) {
+	ctx := context.Background()
+
+	// Create JWT with a different secret
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sessionId": "some-session",
+		"exp":       time.Now().Add(time.Hour).Unix(),
+	})
+	signed, _ := token.SignedString([]byte("wrong-secret"))
+
+	mockSessionRepo := mocks.NewSessionRepo(t)
+	mockUserRepo := mocks.NewUserRepo(t)
+
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	user, session, err := authService.ValidateToken(ctx, signed)
+
+	assert.Error(t, err, "Expected ValidateToken to return an error")
+	assert.Equal(t, model.User{}, user)
+	assert.Equal(t, model.Session{}, session)
+}
+
 func TestAuthService_ValidateToken_SessionError(t *testing.T) {
 	ctx := context.Background()
 	token := "invalid-token"
+	jwtToken := createTestJWT(token)
 	expectedErr := errors.New("session not found")
 
 	mockSessionRepo := mocks.NewSessionRepo(t)
@@ -81,8 +131,8 @@ func TestAuthService_ValidateToken_SessionError(t *testing.T) {
 
 	mockUserRepo := mocks.NewUserRepo(t)
 
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
-	user, session, err := authService.ValidateToken(ctx, token)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	user, session, err := authService.ValidateToken(ctx, jwtToken)
 
 	assert.Error(t, err, "Expected ValidateToken to return an error")
 	assert.Equal(t, expectedErr, err)
@@ -93,6 +143,7 @@ func TestAuthService_ValidateToken_SessionError(t *testing.T) {
 func TestAuthService_ValidateToken_UserError(t *testing.T) {
 	ctx := context.Background()
 	token := "valid-token"
+	jwtToken := createTestJWT(token)
 	userID := "user123"
 
 	expectedSession := testutil.NewFakeStruct(func(s *model.Session) {
@@ -114,11 +165,37 @@ func TestAuthService_ValidateToken_UserError(t *testing.T) {
 		Return(model.User{}, expectedErr).
 		Once()
 
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo)
-	user, session, err := authService.ValidateToken(ctx, token)
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	user, session, err := authService.ValidateToken(ctx, jwtToken)
 
 	assert.Error(t, err, "Expected ValidateToken to return an error")
 	assert.Equal(t, expectedErr, err)
 	assert.Equal(t, model.User{}, user)
 	assert.Equal(t, model.Session{}, session)
+}
+
+func TestAuthService_DecodeSessionJWT_ExpiredToken(t *testing.T) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sessionId": "some-session",
+		"exp":       time.Now().Add(-time.Hour).Unix(),
+	})
+	signed, _ := token.SignedString([]byte(testSecret))
+
+	mockSessionRepo := mocks.NewSessionRepo(t)
+	mockUserRepo := mocks.NewUserRepo(t)
+
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
+	_, err := authService.DecodeSessionJWT(signed)
+
+	assert.Error(t, err, "Expected expired JWT to return an error")
+}
+
+func TestAuthService_DecodeSessionJWT_NoSecret(t *testing.T) {
+	mockSessionRepo := mocks.NewSessionRepo(t)
+	mockUserRepo := mocks.NewUserRepo(t)
+
+	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, "")
+	_, err := authService.DecodeSessionJWT("some-token")
+
+	assert.Error(t, err, "Expected error when auth secret is not configured")
 }
