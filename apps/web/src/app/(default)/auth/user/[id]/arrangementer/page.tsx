@@ -14,12 +14,25 @@ import { Heading } from "@/components/typography/heading";
 import { getRegistrationsByUserId } from "@/data/registrations/queries";
 import { shortDateNoTime } from "@/utils/date";
 
-export default async function UserHappenings() {
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function UserHappenings({ params }: Props) {
   const user = await auth();
 
   if (!user) {
     return redirect("/auth/logg-inn");
   }
+
+  const pageUserId = (await params).id;
+
+  if (user.id !== pageUserId) {
+    return redirect("/hjem");
+  }
+
   const registrations = await getRegistrationsByUserId(user.id);
 
   const pastRegistrations = registrations
