@@ -33,6 +33,7 @@ services:
       DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
       UNO_API_PORT: "8000"
       ADMIN_KEY: ${ADMIN_KEY}
+      AUTH_SECRET: ${AUTH_SECRET}
       ENVIRONMENT: staging
       GIT_COMMIT_SHA: ${GIT_COMMIT_SHA}
       PROFILE_PICTURE_ENDPOINT_URL: minio:9000
