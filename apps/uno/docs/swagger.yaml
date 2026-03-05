@@ -440,6 +440,32 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.UserRegistrationHappening:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_http_dto.UserRegistrationResponse:
+    properties:
+      createdAt:
+        type: string
+      happening:
+        $ref: '#/definitions/uno_http_dto.UserRegistrationHappening'
+      happeningId:
+        type: string
+      status:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.UserResponse:
     properties:
       alternativeEmail:
@@ -1544,6 +1570,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Gets a list of all users
       tags:
       - users
@@ -1574,6 +1602,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Gets a user by ID
       tags:
       - users
@@ -1608,6 +1638,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Deletes a user's profile image
       tags:
       - users
@@ -1675,7 +1707,43 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Uploads a user's profile image
+      tags:
+      - users
+  /users/{id}/registrations:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserRegistrationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminApiKey: []
+      summary: Gets all registrations for a user
       tags:
       - users
   /users/search:

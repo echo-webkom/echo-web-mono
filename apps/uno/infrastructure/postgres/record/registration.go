@@ -56,6 +56,36 @@ func RegistrationToDomainList(dbRegistrations []RegistrationDB) []model.Registra
 	return registrations
 }
 
+// UserRegistrationDB represents the database schema for a registration joined with its happening.
+type UserRegistrationDB struct {
+	RegistrationDB
+	HappeningSlug  string              `db:"happening_slug"`
+	HappeningTitle string              `db:"happening_title"`
+	HappeningType  model.HappeningType `db:"happening_type"`
+	HappeningDate  *time.Time          `db:"happening_date"`
+}
+
+func (db *UserRegistrationDB) ToDomain() model.RegistrationWithHappening {
+	return model.RegistrationWithHappening{
+		Registration: *db.RegistrationDB.ToDomain(),
+		Happening: model.Happening{
+			ID:    db.HappeningID,
+			Slug:  db.HappeningSlug,
+			Title: db.HappeningTitle,
+			Type:  db.HappeningType,
+			Date:  db.HappeningDate,
+		},
+	}
+}
+
+func UserRegistrationToDomainList(dbRegs []UserRegistrationDB) []model.RegistrationWithHappening {
+	regs := make([]model.RegistrationWithHappening, len(dbRegs))
+	for i, dbReg := range dbRegs {
+		regs[i] = dbReg.ToDomain()
+	}
+	return regs
+}
+
 // HappeningRegistrationDB represents the database schema for registration with user info.
 type HappeningRegistrationDB struct {
 	RegistrationDB

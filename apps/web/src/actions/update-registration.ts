@@ -9,7 +9,6 @@ import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
 import { auth } from "@/auth/session";
-import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { isHost } from "@/lib/memberships";
 
 const updateRegistrationPayloadSchema = z.object({
@@ -91,8 +90,6 @@ export const updateRegistration = async (
         }),
       );
     }
-
-    revalidateRegistrations(happeningId, user.id);
 
     return {
       success: true,

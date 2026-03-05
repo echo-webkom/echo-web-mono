@@ -6,6 +6,7 @@ import (
 )
 
 type RegistrationRepo interface {
+	GetByUserID(ctx context.Context, userID string) ([]model.RegistrationWithHappening, error)
 	GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error)
 	CreateRegistration(
 		ctx context.Context,

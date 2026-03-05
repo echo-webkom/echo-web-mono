@@ -604,6 +604,26 @@ export interface User {
   }>;
 }
 
+export interface Happening {
+  date: Date | null;
+  id: string;
+  type: "bedpres" | "event" | "external";
+  slug: string;
+  title: string;
+  registrationGroups: Array<string> | null;
+  registrationStartGroups: Date | null;
+  registrationStart: Date | null;
+  registrationEnd: Date | null;
+}
+
+export interface UserRegistration {
+  userId: string,
+  happeningId: string,
+  status: RegistrationStatus,
+  createdAt: Date
+  happening: Happening;
+}
+
 class UsersApi {
   private client: UnoClient;
 
@@ -626,6 +646,10 @@ class UsersApi {
       "GET",
       `users/search?q=${query}`,
     );
+  }
+
+  async registrationsByUserId(userId: string) {
+    return await this.client.requestJson<Array<UserRegistration>>("GET", `users/${userId}/registrations`);
   }
 }
 
