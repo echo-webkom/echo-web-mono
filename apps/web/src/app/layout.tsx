@@ -16,7 +16,7 @@ import {
 import { Analytics } from "@vercel/analytics/next";
 import NextTopLoader from "nextjs-toploader";
 
-import { auth } from "@/auth/session";
+import { auth, getSessionToken } from "@/auth/session";
 import { AnimatedIcons, AnimatedSnowfall } from "@/components/animations/animated-icons";
 import { DevtoolsLoginDialog } from "@/components/devtools/devtools-login-dialog";
 import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
@@ -155,7 +155,7 @@ const ThemeWrapper = ({
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const user = await auth();
+  const [user, sessionToken] = await Promise.all([auth(), getSessionToken()]);
   const date = new Date();
   const month = date.getMonth();
   const isOctober = month === 9;
@@ -180,7 +180,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           pacifico.variable,
         )}
       >
-        <Providers user={user}>
+        <Providers user={user} sessionToken={sessionToken}>
           <ThemeWrapper theme={theme}>
             <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
 

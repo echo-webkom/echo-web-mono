@@ -16,6 +16,11 @@ const secret = new TextEncoder().encode(rawSecret);
 
 export const SESSION_COOKIE_NAME = "session-token";
 
+export async function getSessionToken(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get(SESSION_COOKIE_NAME)?.value ?? null;
+}
+
 async function getSessionCookie(): Promise<string | null> {
   const cookieStore = await cookies();
 
