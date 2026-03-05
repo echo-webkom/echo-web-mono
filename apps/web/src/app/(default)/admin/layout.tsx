@@ -34,11 +34,6 @@ const adminRoutes = [
     groups: ["webkom"],
   },
   {
-    href: "/admin/happenings",
-    label: "Arrangementer",
-    groups: ["webkom"],
-  },
-  {
     href: "/admin/grupper",
     label: "Grupper",
     groups: ["webkom", "hovedstyret"],
