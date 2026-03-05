@@ -210,6 +210,74 @@ func (_c *RegistrationRepo_GetByUserAndHappening_Call) RunAndReturn(run func(ctx
 	return _c
 }
 
+// GetByUserID provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) GetByUserID(ctx context.Context, userID string) ([]model.RegistrationWithHappening, error) {
+	ret := _mock.Called(ctx, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetByUserID")
+	}
+
+	var r0 []model.RegistrationWithHappening
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]model.RegistrationWithHappening, error)); ok {
+		return returnFunc(ctx, userID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []model.RegistrationWithHappening); ok {
+		r0 = returnFunc(ctx, userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.RegistrationWithHappening)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// RegistrationRepo_GetByUserID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetByUserID'
+type RegistrationRepo_GetByUserID_Call struct {
+	*mock.Call
+}
+
+// GetByUserID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+func (_e *RegistrationRepo_Expecter) GetByUserID(ctx interface{}, userID interface{}) *RegistrationRepo_GetByUserID_Call {
+	return &RegistrationRepo_GetByUserID_Call{Call: _e.mock.On("GetByUserID", ctx, userID)}
+}
+
+func (_c *RegistrationRepo_GetByUserID_Call) Run(run func(ctx context.Context, userID string)) *RegistrationRepo_GetByUserID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_GetByUserID_Call) Return(registrationWithHappenings []model.RegistrationWithHappening, err error) *RegistrationRepo_GetByUserID_Call {
+	_c.Call.Return(registrationWithHappenings, err)
+	return _c
+}
+
+func (_c *RegistrationRepo_GetByUserID_Call) RunAndReturn(run func(ctx context.Context, userID string) ([]model.RegistrationWithHappening, error)) *RegistrationRepo_GetByUserID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // InsertAnswers provides a mock function for the type RegistrationRepo
 func (_mock *RegistrationRepo) InsertAnswers(ctx context.Context, userID string, happeningID string, questions []model.QuestionAnswer) error {
 	ret := _mock.Called(ctx, userID, happeningID, questions)

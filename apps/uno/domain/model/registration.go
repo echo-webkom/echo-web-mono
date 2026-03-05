@@ -100,6 +100,12 @@ func (r *Registration) HasStatusChanged() bool {
 	return r.PrevStatus != nil && r.ChangedAt != nil
 }
 
+// RegistrationWithHappening combines a registration with its associated happening.
+type RegistrationWithHappening struct {
+	Registration
+	Happening Happening
+}
+
 // Helper function to create a string pointer
 func stringPtr(s string) *string {
 	return &s

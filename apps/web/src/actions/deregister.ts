@@ -9,7 +9,6 @@ import { DeregistrationNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
 import { auth } from "@/auth/session";
-import { revalidateRegistrations } from "@/data/registrations/revalidate";
 import { getContactsBySlug } from "@/sanity/utils/contacts";
 
 const deregisterPayloadSchema = z.object({
@@ -69,8 +68,6 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
         }),
       );
     }
-
-    revalidateRegistrations(id, user.id);
 
     return {
       success: true,

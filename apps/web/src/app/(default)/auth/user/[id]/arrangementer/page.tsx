@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import type { Happening } from "@echo-webkom/db/schemas";
 import {
   happeningTypeToPath,
   happeningTypeToString,
@@ -11,8 +10,9 @@ import {
 import { auth } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
-import { getRegistrationsByUserId } from "@/data/registrations/queries";
 import { shortDateNoTime } from "@/utils/date";
+import { unoWithAdmin } from "@/api/server";
+import { type UnoClientType } from "@/api/uno/client";
 
 type Props = {
   params: Promise<{
@@ -33,7 +33,7 @@ export default async function UserHappenings({ params }: Props) {
     return redirect("/hjem");
   }
 
-  const registrations = await getRegistrationsByUserId(user.id);
+  const registrations = await unoWithAdmin.users.registrationsByUserId(user.id);
 
   const pastRegistrations = registrations
     .slice()
@@ -84,12 +84,9 @@ export default async function UserHappenings({ params }: Props) {
   );
 }
 
-function EventCards<
-  TRegistration extends {
-    happening: Happening;
-    status: "registered" | "unregistered" | "removed" | "waiting" | "pending";
-  },
->({ registrations }: { registrations: Array<TRegistration>; children?: React.ReactNode }) {
+type Registrations = Awaited<ReturnType<UnoClientType["users"]["registrationsByUserId"]>>
+
+function EventCards({ registrations }: { registrations: Registrations; children?: React.ReactNode }) {
   return (
     <>
       <div className="flex flex-col">
