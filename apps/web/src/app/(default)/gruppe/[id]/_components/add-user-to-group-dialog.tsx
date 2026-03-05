@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { ChevronDown } from "lucide-react";
-import {
-  Button as AriaButton,
-  Input as AriaInput,
-  ComboBox,
-  ListBox,
-  ListBoxItem,
-  Popover,
-} from "react-aria-components";
 import { useForm } from "react-hook-form";
 import { RxPlus as Plus } from "react-icons/rx";
 import { toast } from "sonner";
@@ -20,7 +11,7 @@ import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogBody,
+  DialogBodyOverflow,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -38,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { addUserToGroupSchema } from "@/lib/schemas/add-user-to-group";
+import { useUnoClient } from "@/providers/uno";
 import { addUserToGroup } from "../actions";
 
 type User = {
@@ -53,10 +45,13 @@ type AddUserToGroupDialogProps = {
 };
 
 export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
+  const unoClient = useUnoClient();
   const router = useRouter();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<Array<User>>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, startSearchTransition] = useTransition();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const form = useForm<z.infer<typeof addUserToGroupSchema>>({
     defaultValues: {
@@ -65,37 +60,36 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
     resolver: standardSchemaResolver(addUserToGroupSchema),
   });
 
-  useEffect(() => {
-    const searchUsers = async () => {
-      if (searchQuery.length < 2) {
-        setUsers([]);
-        return;
-      }
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
 
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/users/search?q=${encodeURIComponent(searchQuery)}`);
-        if (!response.ok) {
-          setUsers([]);
-          return;
-        }
-        const data = (await response.json()) as Array<User>;
-        if (Array.isArray(data)) {
-          setUsers(data);
-        } else {
-          setUsers([]);
-        }
-      } catch (error) {
-        console.error("Error searching users:", error);
-        setUsers([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
 
-    const debounceTimeout = setTimeout(searchUsers, 300);
-    return () => clearTimeout(debounceTimeout);
-  }, [searchQuery]);
+    if (query.length < 2) {
+      setUsers([]);
+      return;
+    }
+
+    debounceRef.current = setTimeout(() => {
+      startSearchTransition(async () => {
+        try {
+          const searchedUsers = await unoClient.users.search(query);
+          setUsers(searchedUsers);
+        } catch (error) {
+          console.error("Error searching users:", error);
+          setUsers([]);
+        }
+      });
+    }, 300);
+  };
+
+  const handleSelectUser = (user: User) => {
+    form.setValue("userId", user.id);
+    setSearchQuery(user.name);
+    setUsers([]);
+  };
 
   const onSubmit = form.handleSubmit(async (data) => {
     const { success, message } = await addUserToGroup(data.userId, group.id);
@@ -127,22 +121,20 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
                 Legg til bruker i {group.name}
               </DialogTitle>
             </DialogHeader>
-            <DialogBody>
+            <DialogBodyOverflow>
               <FormField
                 name="userId"
                 control={form.control}
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel htmlFor="user">Bruker</FormLabel>
                     <FormControl>
                       <UserSearch
                         value={searchQuery}
-                        onInputChange={setSearchQuery}
-                        onChange={(userId) => {
-                          field.onChange(userId);
-                        }}
+                        onInputChange={handleSearchChange}
+                        onSelect={handleSelectUser}
                         users={users}
-                        isLoading={isLoading}
+                        isLoading={isSearching}
                       />
                     </FormControl>
                     <FormDescription>
@@ -152,7 +144,7 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
                   </FormItem>
                 )}
               />
-            </DialogBody>
+            </DialogBodyOverflow>
             <DialogFooter>
               <Button
                 size="sm"
@@ -174,110 +166,56 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
 
 type UserSearchProps = {
   users: Array<User>;
-  onChange?: (userId: string) => void;
-  value?: string;
-  onInputChange?: (query: string) => void;
-  isLoading?: boolean;
+  onSelect: (user: User) => void;
+  value: string;
+  onInputChange: (query: string) => void;
+  isLoading: boolean;
 };
 
-const UserSearch = ({ users, value, onInputChange, onChange, isLoading }: UserSearchProps) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inputWidth, setInputWidth] = useState(300);
-  const displayItems = (() => {
-    if (isLoading) {
-      return [{ id: "loading", name: "Laster...", isSpecial: true }];
-    }
-    const typedLength = value?.length ?? 0;
-    if (typedLength < 2) {
-      return [{ id: "type_more", name: "Skriv minst 2 tegn", isSpecial: true }];
-    }
-    if (users.length === 0) {
-      return [{ id: "empty", name: "Ingen brukere funnet", isSpecial: true }];
-    }
-    return users.map((user) => ({ ...user, isSpecial: false }));
+const UserSearch = ({ users, value, onInputChange, onSelect, isLoading }: UserSearchProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const showDropdown = isFocused && value.length > 0;
+
+  const statusMessage = (() => {
+    if (isLoading) return "Laster...";
+    if (value.length < 3) return "Skriv minst 3 tegn";
+    if (users.length === 0) return "Ingen brukere funnet";
+    return null;
   })();
 
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (ref.current) {
-        setInputWidth(ref.current.offsetWidth);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
-    <ComboBox
-      aria-label="user"
-      name="user"
-      menuTrigger="input"
-      allowsCustomValue
-      allowsEmptyCollection
-      inputValue={value}
-      onInputChange={(val) => {
-        onInputChange?.(val);
-      }}
-      onSelectionChange={(data) => {
-        const selectedId = data?.toString() ?? "";
-        // Keep menu open and ignore non-selectable helper rows
-        if (selectedId === "loading" || selectedId === "empty" || selectedId === "type_more") {
-          return;
-        }
-        if (!selectedId) return;
-
-        onChange?.(selectedId);
-        const selectedUser = users.find((u) => u.id === selectedId);
-        if (selectedUser && onInputChange) {
-          onInputChange(selectedUser.name);
-        }
-      }}
-    >
-      <div
-        ref={ref}
-        className="group border-border bg-input ring-offset-background focus-visible:ring-ring relative flex h-10 w-full rounded-md border-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        <AriaInput
-          placeholder="Søk etter bruker..."
-          className="placeholder:text-muted-foreground h-full w-full border-0 bg-transparent px-3 py-2 ring-0 outline-0 placeholder:text-sm focus:ring-0 focus:outline-hidden"
-        />
-        <AriaButton className="text-muted-foreground absolute inset-y-0 right-0 flex items-center px-2">
-          <ChevronDown className="h-4 w-4" />
-        </AriaButton>
-      </div>
-      <Popover
-        style={{
-          minWidth: "280px",
-          width: inputWidth,
-          maxWidth: "640px",
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Søk etter bruker..."
+        value={value}
+        onChange={(e) => onInputChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => {
+          setTimeout(() => setIsFocused(false), 150);
         }}
-        className="z-100"
-      >
-        <ListBox
-          items={displayItems}
-          className="border-border bg-input text-foreground flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 px-3 py-2"
-        >
-          {(item) => (
-            <ListBoxItem
-              id={item.id}
-              textValue={item.name}
-              className="group focus:border-border focus:bg-muted selected:border-border selected:bg-muted flex cursor-default items-center gap-2 rounded border-2 border-transparent py-2 pr-4 pl-2 text-gray-900 outline-hidden select-none disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <span
-                className={
-                  item.isSpecial ? "text-muted-foreground" : "text-foreground font-semibold"
-                }
+        className="border-border bg-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border-2 px-3 py-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+      />
+      {showDropdown && (
+        <ul className="border-border bg-input text-foreground absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-md border-2 py-1">
+          {statusMessage ? (
+            <li className="text-muted-foreground px-3 py-2 text-sm">{statusMessage}</li>
+          ) : (
+            users.map((user) => (
+              <li
+                key={user.id}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  onSelect(user);
+                }}
+                className="hover:bg-muted cursor-pointer rounded px-3 py-2 text-sm font-semibold"
               >
-                {item.name}
-              </span>
-            </ListBoxItem>
+                {user.name}
+              </li>
+            ))
           )}
-        </ListBox>
-      </Popover>
-    </ComboBox>
+        </ul>
+      )}
+    </div>
   );
 };
