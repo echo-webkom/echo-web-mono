@@ -1,5 +1,5 @@
 {
-	"lastUpdated": "2026-03-05T15:25:55.320384648+01:00",
+	"lastUpdated": "2026-03-05T15:51:52.49906612+01:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
@@ -22,6 +22,10 @@
 		"ENVIRONMENT": {
 			"required": true,
 			"key": "ENVIRONMENT",
+			"enum": [
+				"development",
+				"production"
+			],
 			"default": "development"
 		},
 		"FEIDE_CLIENT_ID": {
@@ -46,6 +50,10 @@
 			"public": true,
 			"key": "NEXT_PUBLIC_SANITY_DATASET",
 			"value": "develop",
+			"enum": [
+				"develop",
+				"production"
+			],
 			"default": "develop"
 		},
 		"PROFILE_PICTURE_ACCESS_KEY_ID": {
