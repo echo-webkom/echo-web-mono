@@ -1,24 +1,32 @@
 {
-	"lastUpdated": "2026-02-15T17:43:16.419402+01:00",
+	"lastUpdated": "2026-03-05T15:51:52.49906612+01:00",
 	"fields": {
 		"ADMIN_KEY": {
 			"required": true,
-			"key": "ADMIN_KEY"
+			"key": "ADMIN_KEY",
+			"default": "foobar"
 		},
 		"AOC_SESSION_COOKIE": {
 			"key": "AOC_SESSION_COOKIE"
 		},
 		"AUTH_SECRET": {
 			"required": true,
-			"key": "AUTH_SECRET"
+			"key": "AUTH_SECRET",
+			"default": "foobar"
 		},
 		"DATABASE_URL": {
 			"required": true,
-			"key": "DATABASE_URL"
+			"key": "DATABASE_URL",
+			"default": "postgres://postgres:postgres@localhost:5432/echo-web?sslmode=disable"
 		},
 		"ENVIRONMENT": {
 			"required": true,
-			"key": "ENVIRONMENT"
+			"key": "ENVIRONMENT",
+			"enum": [
+				"development",
+				"production"
+			],
+			"default": "development"
 		},
 		"FEIDE_CLIENT_ID": {
 			"required": true,
@@ -35,31 +43,45 @@
 		"NEXT_PUBLIC_API_URL": {
 			"public": true,
 			"key": "NEXT_PUBLIC_API_URL",
-			"value": "http://localhost:8000"
-		},
-		"NEXT_PUBLIC_ECHOGRAM_URL": {
-			"public": true,
-			"key": "NEXT_PUBLIC_ECHOGRAM_URL",
-			"value": "http://localhost:8001"
+			"value": "http://localhost:8000",
+			"default": "http://localhost:8000"
 		},
 		"NEXT_PUBLIC_SANITY_DATASET": {
 			"public": true,
-			"key": "NEXT_PUBLIC_SANITY_DATASET"
+			"key": "NEXT_PUBLIC_SANITY_DATASET",
+			"value": "develop",
+			"enum": [
+				"develop",
+				"production"
+			],
+			"default": "develop"
 		},
-		"OTEL_EXPORTER_OTLP_ENDPOINT": {
-			"key": "OTEL_EXPORTER_OTLP_ENDPOINT"
+		"PROFILE_PICTURE_ACCESS_KEY_ID": {
+			"required": true,
+			"key": "PROFILE_PICTURE_ACCESS_KEY_ID",
+			"default": "minioadmin"
 		},
-		"OTEL_EXPORTER_OTLP_INSECURE": {
-			"key": "OTEL_EXPORTER_OTLP_INSECURE"
+		"PROFILE_PICTURE_BUCKET_NAME": {
+			"required": true,
+			"key": "PROFILE_PICTURE_BUCKET_NAME",
+			"default": "profile-pictures"
 		},
-		"OTEL_RESOURCE_ATTRIBUTES": {
-			"key": "OTEL_RESOURCE_ATTRIBUTES"
+		"PROFILE_PICTURE_ENDPOINT_URL": {
+			"required": true,
+			"key": "PROFILE_PICTURE_ENDPOINT_URL",
+			"default": "localhost:9000"
+		},
+		"PROFILE_PICTURE_SECRET_ACCESS_KEY": {
+			"required": true,
+			"key": "PROFILE_PICTURE_SECRET_ACCESS_KEY",
+			"default": "minioadmin"
 		},
 		"UNO_API_PORT": {
 			"public": true,
 			"format": "{number}",
 			"key": "UNO_API_PORT",
-			"value": "8000"
+			"value": "8000",
+			"default": "8000"
 		}
 	}
 }
