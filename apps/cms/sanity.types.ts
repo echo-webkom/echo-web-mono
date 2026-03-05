@@ -86,29 +86,6 @@ export type Ttime = {
   minute: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59;
 };
 
-export type HsApplication = {
-  _id: string;
-  _type: "hs-application";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  profile: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "profile";
-  };
-  poster: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    _type: "file";
-  };
-};
-
 export type Banner = {
   _id: string;
   _type: "banner";
@@ -735,24 +712,7 @@ export type HappeningTypeQueryResult = "bedpres" | "event" | "external" | null;
 // Source: ../../packages/sanity/src/queries/hs-application.ts
 // Variable: allHsApplications
 // Query: *[_type == "hs-application" && !(_id in path('drafts.**'))] {  "profile": profile->{    _id,    name,    picture  },  "poster": poster.asset->url}
-export type AllHsApplicationsResult = Array<{
-  profile: {
-    _id: string;
-    name: string;
-    picture: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-  };
-  poster: string | null;
-}>;
+export type AllHsApplicationsResult = Array<never>;
 
 // Source: ../../packages/sanity/src/queries/job-ad.ts
 // Variable: jobAdsQuery
