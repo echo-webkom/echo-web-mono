@@ -532,6 +532,12 @@ interface GroupInsert {
   name: string;
 }
 
+interface GroupMember {
+  id: string;
+  name: string;
+  isLeader: boolean;
+}
+
 class GroupsApi {
   private client: UnoClient;
 
@@ -558,6 +564,10 @@ class GroupsApi {
 
   async all() {
     return await this.client.requestJson<Array<Group>>("GET", "groups");
+  }
+
+  async members(groupId: string) {
+    return await this.client.requestJson<Array<GroupMember>>("GET", `groups/${groupId}/members`);
   }
 }
 
