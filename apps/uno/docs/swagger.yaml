@@ -1,28 +1,5 @@
 basePath: /
 definitions:
-  http_routes_api.CreateGroupRequest:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    required:
-    - name
-    type: object
-  http_routes_api.GroupResponse:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  http_routes_api.UpdateGroupRequest:
-    properties:
-      name:
-        type: string
-    required:
-    - name
-    type: object
   uno_domain_model.BanInfo:
     properties:
       bannedByID:
@@ -189,6 +166,15 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.CreateGroupRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
   uno_http_dto.CreateShoppingListItemRequest:
     properties:
       name:
@@ -324,6 +310,22 @@ definitions:
       title:
         type: string
       type:
+        type: string
+    type: object
+  uno_http_dto.GroupMemberResponse:
+    properties:
+      id:
+        type: string
+      isLeader:
+        type: boolean
+      name:
+        type: string
+    type: object
+  uno_http_dto.GroupResponse:
+    properties:
+      id:
+        type: string
+      name:
         type: string
     type: object
   uno_http_dto.HappeningRegistrationResponse:
@@ -507,6 +509,13 @@ definitions:
         type: string
       name:
         type: string
+    type: object
+  uno_http_dto.UpdateGroupRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
     type: object
   uno_http_dto.UserGroupResponse:
     properties:
@@ -1063,7 +1072,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.GroupResponse'
+              $ref: '#/definitions/uno_http_dto.GroupResponse'
             type: array
         "500":
           description: Internal Server Error
@@ -1081,14 +1090,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.CreateGroupRequest'
+          $ref: '#/definitions/uno_http_dto.CreateGroupRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/uno_http_dto.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -1101,6 +1110,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Create a new group
       tags:
       - groups
@@ -1113,8 +1124,8 @@ paths:
         required: true
         type: string
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: Deleted
           schema:
             type: string
         "400":
@@ -1133,6 +1144,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Delete a group by ID
       tags:
       - groups
@@ -1150,14 +1163,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.UpdateGroupRequest'
+          $ref: '#/definitions/uno_http_dto.UpdateGroupRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/uno_http_dto.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -1174,7 +1187,37 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Update a group by ID
+      tags:
+      - groups
+  /group/{id}/members:
+    get:
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.GroupMemberResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get members of a group
       tags:
       - groups
   /happenings:

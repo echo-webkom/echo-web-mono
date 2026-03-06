@@ -18,15 +18,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getStudentGroupsWithMembers } from "@/data/groups/queries";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+import { unoWithAdmin } from "../../../../api/server";
 import { AddGroupButton } from "./_components/add-group-button";
 import { MembersModal } from "./members-modal";
 
 export default async function AdminGroupsPage() {
   await ensureWebkomOrHovedstyret();
 
-  const groups = await getStudentGroupsWithMembers();
+  const groups = await unoWithAdmin.groups.all();
 
   return (
     <Container>
@@ -56,6 +56,8 @@ export default async function AdminGroupsPage() {
         </TableHeader>
         <TableBody>
           {groups.map((group) => {
+            const membersPromise = unoWithAdmin.groups.members(group.id);
+
             return (
               <TableRow key={group.id}>
                 <TableCell>{group.name}</TableCell>
@@ -71,13 +73,7 @@ export default async function AdminGroupsPage() {
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Gjør endringer</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <MembersModal
-                        group={group}
-                        users={group.members.map((m) => ({
-                          id: m.user.id,
-                          name: m.user.name ?? m.user.id,
-                        }))}
-                      />
+                      <MembersModal group={group} membersPromise={membersPromise} />
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

@@ -32,7 +32,7 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
       obj.Navn = r.userName ?? "";
       obj.Epost = r.userEmail ?? "";
       obj.Status = r.status;
-      obj.År = r.userYear != null ? String(r.userYear) : "";
+      obj.År = r.userYear !== null ? String(r.userYear) : "";
       obj.Studieretning = r.userDegreeId ?? "";
       obj.Grunn = r.unregisterReason ?? "";
 

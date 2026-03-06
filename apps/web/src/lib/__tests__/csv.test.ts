@@ -27,9 +27,9 @@ const happening = createHappening({
     {
       userId: "1",
       userName: "Petter Kjellberg",
-      userEmail: null,
-      userYear: null,
-      userDegreeId: null,
+      userEmail: "supah@gmail.com",
+      userYear: 2022,
+      userDegreeId: "dtek",
       userHasImage: false,
       happeningId: "1",
       changedAt: fixedDate,
@@ -87,14 +87,14 @@ describe("toCsv", () => {
     const csv = toCsv(happening, selectedHeaders);
 
     expect(csv).toBe(
-      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","","registered","","","yes","no","${fixedDate}"`,
+      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","dtek","yes","no","${fixedDate}"`,
     );
   });
 
   it.each([
     {
       headers: ["Navn", "Studieretning"],
-      expected: `"Navn","Studieretning"\n"Petter Kjellberg",""`,
+      expected: `"Navn","Studieretning"\n"Petter Kjellberg","dtek"`,
     },
     {
       headers: ["Navn", "Status"],

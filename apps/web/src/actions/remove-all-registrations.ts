@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { eq } from "drizzle-orm";
 
 import { registrations } from "@echo-webkom/db/schemas";
