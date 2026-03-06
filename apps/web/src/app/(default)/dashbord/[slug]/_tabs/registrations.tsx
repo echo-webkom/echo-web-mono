@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 import { unoWithAdmin } from "@/api/server";
-import { type getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening } from "@/api/uno/client";
 import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
 
 type RegistrationsTabProps = {
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+  happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
 };
 

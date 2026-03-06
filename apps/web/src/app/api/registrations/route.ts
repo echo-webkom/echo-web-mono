@@ -1,7 +1,7 @@
 import { type NextRequest } from "next/server";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
-import { getFullHappening } from "@/data/happenings/queries";
 import { toCsv } from "@/lib/csv";
 import { isHost } from "@/lib/memberships";
 import { slugify } from "@/utils/string";
@@ -23,13 +23,13 @@ export const GET = async (req: NextRequest) => {
   const encodedHeaders = req.nextUrl.searchParams.getAll("header") ?? [];
   const selectedHeaders = encodedHeaders.map((header) => decodeURIComponent(header));
 
-  const happening = await getFullHappening(slug);
+  const happening = await unoWithAdmin.happenings.full(slug);
 
   if (!happening) {
     return new Response("Happening not found", { status: 404 });
   }
 
-  const hostGroups = happening.groups.map((group) => group.groupId);
+  const hostGroups = happening.groups;
   if (!isHost(user, hostGroups)) {
     return new Response("Unauthorized", { status: 401 });
   }

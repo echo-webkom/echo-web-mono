@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"encoding/json"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/record"
@@ -193,6 +194,105 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 	}
 
 	return result.ToDomain(), nil
+}
+
+func (h *HappeningRepo) GetFullHappeningBySlug(ctx context.Context, slug string) (model.FullHappening, error) {
+	h.logger.Info(ctx, "getting full happening by slug",
+		"slug", slug,
+	)
+
+	// 1. Get happening by slug
+	var dbHap record.Happening
+	query := `--sql
+		SELECT
+			id, slug, title, type, date, registration_groups,
+			registration_start_groups, registration_start, registration_end
+		FROM happening
+		WHERE slug = $1
+	`
+	if err := h.db.GetContext(ctx, &dbHap, query, slug); err != nil {
+		h.logger.Error(ctx, "failed to get happening by slug",
+			"error", err,
+			"slug", slug,
+		)
+		return model.FullHappening{}, err
+	}
+	happening := dbHap.ToDomain()
+
+	// 2. Get registrations with user info
+	var dbRegs []record.HappeningRegistrationDB
+	regsQuery := `--sql
+		SELECT
+			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.email AS user_email, u.year AS user_year, u.degree_id AS user_degree_id, u.image AS user_image
+		FROM registration r
+		LEFT JOIN "user" u ON r.user_id = u.id
+		WHERE r.happening_id = $1
+	`
+	if err := h.db.SelectContext(ctx, &dbRegs, regsQuery, happening.ID); err != nil {
+		h.logger.Error(ctx, "failed to get registrations for full happening",
+			"error", err,
+			"happening_id", happening.ID,
+		)
+		return model.FullHappening{}, err
+	}
+	regs := record.HappeningRegistrationToPortsList(dbRegs)
+
+	// 3. Get answers grouped by user
+	type answerDB struct {
+		UserID     string           `db:"user_id"`
+		QuestionID string           `db:"question_id"`
+		Answer     *json.RawMessage `db:"answer"`
+	}
+	var dbAnswers []answerDB
+	answersQuery := `--sql
+		SELECT user_id, question_id, answer
+		FROM answer
+		WHERE happening_id = $1
+	`
+	if err := h.db.SelectContext(ctx, &dbAnswers, answersQuery, happening.ID); err != nil {
+		h.logger.Error(ctx, "failed to get answers for full happening",
+			"error", err,
+			"happening_id", happening.ID,
+		)
+		return model.FullHappening{}, err
+	}
+	answersByUserID := make(map[string][]model.Answer)
+	for _, a := range dbAnswers {
+		answersByUserID[a.UserID] = append(answersByUserID[a.UserID], model.Answer{
+			UserID:      a.UserID,
+			HappeningID: happening.ID,
+			QuestionID:  a.QuestionID,
+			Answer:      a.Answer,
+		})
+	}
+
+	// 4. Combine registrations with answers
+	fullRegs := make([]model.FullHappeningRegistration, len(regs))
+	for i, reg := range regs {
+		fullRegs[i] = model.FullHappeningRegistration{
+			HappeningRegistration: reg,
+			Answers:               answersByUserID[reg.UserID],
+		}
+	}
+
+	// 5. Get questions
+	questions, err := h.GetHappeningQuestions(ctx, happening.ID)
+	if err != nil {
+		return model.FullHappening{}, err
+	}
+
+	// 6. Get host groups
+	groups, err := h.GetHappeningHostGroups(ctx, happening.ID)
+	if err != nil {
+		groups = []string{}
+	}
+
+	return model.FullHappening{
+		Happening:     happening,
+		Registrations: fullRegs,
+		Questions:     questions,
+		Groups:        groups,
+	}, nil
 }
 
 func (h *HappeningRepo) GetHappeningRegistrationCounts(

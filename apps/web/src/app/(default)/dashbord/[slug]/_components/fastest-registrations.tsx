@@ -1,10 +1,10 @@
-import { type getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening } from "@/api/uno/client";
 import { getFullNorwegianDate } from "@/utils/date";
 import { type RegistrationWithUser } from "../_lib/types";
 import { Box } from "./box";
 
 type FastestRegistrationsProps = {
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+  happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
 };
 

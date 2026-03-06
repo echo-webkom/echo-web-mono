@@ -1,6 +1,6 @@
 import { uno } from "@/api/client";
+import { type FullHappening } from "@/api/uno/client";
 import { PizzaFormel } from "@/components/pizza-formel";
-import { type getFullHappening } from "@/data/happenings/queries";
 import { Box } from "../_components/box";
 import { AreaChartRegistrationsOverTime } from "../_components/charts/area-chart-registrations-over-time";
 import { BarChartYear } from "../_components/charts/bar-chart-year-registrations";
@@ -19,7 +19,7 @@ const Stat = ({ title, value }: { title: string; value: string }) => (
 );
 
 type StatisticsTabProps = {
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+  happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
 };
 
