@@ -89,8 +89,11 @@ func UserRegistrationToDomainList(dbRegs []UserRegistrationDB) []model.Registrat
 // HappeningRegistrationDB represents the database schema for registration with user info.
 type HappeningRegistrationDB struct {
 	RegistrationDB
-	UserName  *string `db:"user_name"`
-	UserImage *string `db:"user_image"`
+	UserName     *string `db:"user_name"`
+	UserEmail    *string `db:"user_email"`
+	UserYear     *int    `db:"user_year"`
+	UserDegreeID *string `db:"user_degree_id"`
+	UserImage    *string `db:"user_image"`
 }
 
 func (db *HappeningRegistrationDB) UserHasImage() bool {
@@ -109,6 +112,9 @@ func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
 		ChangedAt:        db.ChangedAt,
 		ChangedBy:        db.ChangedBy,
 		UserName:         db.UserName,
+		UserEmail:        db.UserEmail,
+		UserYear:         db.UserYear,
+		UserDegreeID:     db.UserDegreeID,
 		UserHasImage:     db.UserHasImage(),
 	}
 }

@@ -85,5 +85,20 @@ type HappeningRegistration struct {
 	ChangedAt        *time.Time
 	ChangedBy        *string
 	UserName         *string
+	UserEmail        *string
+	UserYear         *int
+	UserDegreeID     *string
 	UserHasImage     bool
+}
+
+type FullHappeningRegistration struct {
+	HappeningRegistration
+	Answers []Answer
+}
+
+type FullHappening struct {
+	Happening
+	Registrations []FullHappeningRegistration
+	Questions     []Question
+	Groups        []string
 }
