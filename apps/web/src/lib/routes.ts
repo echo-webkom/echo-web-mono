@@ -15,7 +15,6 @@ import {
   LuScrollText,
   LuShirt,
   LuShoppingCart,
-  LuStickyNote,
   LuUsers,
   LuWallet,
 } from "react-icons/lu";
@@ -199,12 +198,6 @@ export const headerRoutes: Array<Route> = [
         href: "/om/vedtekter",
         description: "Vedtekter",
         icon: LuScale,
-      },
-      {
-        label: "Brosjyre",
-        href: "/om/brosjyre",
-        description: "Brosjyre med informasjon om echo",
-        icon: LuStickyNote,
       },
       {
         label: "Programstyrene",
