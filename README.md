@@ -52,8 +52,9 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ### Applikasjoner (`/apps`)
 
 - **web** - Hovednettsiden bygget med Next.js 16, React 19 og Tailwind CSS
-- **uno** - Backend API bygget i Go med Chi-router og hexagonal arkitektur
-- **uno-cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
+- **uno** - Vår Go backend, som inneholder to applikasjoner. Bygget med DDD og hexagonal arkitektur
+   - **web** - HTTP REST API bygget med Chi-router
+   - **cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
 - **cms** - Sanity Studio for administrering av innhold på nettsiden
 
 ### Delte pakker (`/packages`)
@@ -73,9 +74,11 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 1. **Før du starter må du passe på at det følgende er installert:**
 
    - [pnpm](https://pnpm.io/installation)
+   - [node](https://nodejs.org/https://nodejs.org/en/download) (vi anbefaler siste LTS med `fnm`)
    - [docker](https://docs.docker.com/engine/install/)
-   - [cenv](https://github.com/echo-webkom/cenv)
    - [go](https://go.dev/doc/install)
+
+   - [cenv](https://github.com/echo-webkom/cenv) (valgfritt)
 
 2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
 
@@ -125,9 +128,3 @@ Sidene som starter er:
 - [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
 - [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
 
-<br>
-
-<div align="center">
-  <img width="20%" src="./.github/wetestinprod.png" />
-  <img width="20%" src="./.github/anti-ai.png" />
-</div>
