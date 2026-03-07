@@ -223,7 +223,10 @@ func (h *HappeningRepo) GetFullHappeningBySlug(ctx context.Context, slug string)
 	var dbRegs []record.HappeningRegistrationDB
 	regsQuery := `--sql
 		SELECT
-			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.email AS user_email, u.year AS user_year, u.degree_id AS user_degree_id, u.image AS user_image
+			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at,
+			r.prev_status, r.changed_at, r.changed_by, u.name AS user_name,
+			COALESCE(u.alternative_email, u.email) AS user_email, u.year AS user_year,
+			u.degree_id AS user_degree_id, u.image AS user_image
 		FROM registration r
 		LEFT JOIN "user" u ON r.user_id = u.id
 		WHERE r.happening_id = $1
