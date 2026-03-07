@@ -65,7 +65,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
    cp .env.example .env
    ```
 
-   Kjør `cenv check` for å skjekke om alt er gjort riktig
+   Kjør `cenv check` for å sjekke om alt er gjort riktig
 
 3. **Last ned "dependencies"**
 
@@ -103,7 +103,7 @@ Sidene som starter er:
 
 ## Relaterte prosjekter
 
-- [cenv](https://github.com/echo-webkom/cenv) - Environment fil skjekker
+- [cenv](https://github.com/echo-webkom/cenv) - Environment-fil-sjekker
 - [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
 - [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
 
