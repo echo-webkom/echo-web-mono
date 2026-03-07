@@ -32,10 +32,32 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
+```
++------------+     +--------------------------------------------------+
+| uno-cron   |---->|  Storage                                         |
++------------+     |  +--------------------+  +-------------------+   |
+                   |  | Postgres           |  | ProfilePictures   |   |
+                   |  | (db)               |  | (bucket)          |   |
+                   |  +--------------------+  +-------------------+   |
+                   +--------------------------------------------------+
+                              ^       ^                    ^
+                              |       |                    |
+                              |       +-----------+        |
+                              |                   |        |
+                   +--------------------------------------------------+
+                   |  Client  |                   |                   |
+                   |  +--------------------+  +-------------------+   |
+                   |  | web                |->| uno               |   |
+                   |  +--------------------+  +-------------------+   |
+                   |                                                  |
+                   +--------------------------------------------------+
+```
+
 ### Applikasjoner (`/apps`)
 
 - **web** - Hovednettsiden bygget med Next.js 16, React 19 og Tailwind CSS
 - **uno** - Backend API bygget i Go med Chi-router og hexagonal arkitektur
+- **uno-cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
 - **cms** - Sanity Studio for administrering av innhold på nettsiden
 
 ### Delte pakker (`/packages`)
