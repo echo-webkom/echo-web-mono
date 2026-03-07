@@ -1,8 +1,6 @@
-import { type getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening } from "@/api/uno/client";
 
-export const createBackLink = (
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>,
-) => {
+export const createBackLink = (happening: FullHappening) => {
   const happeningType = happening.type === "event" ? "arrangement" : "bedpres";
   return `/${happeningType}/${happening.slug}`;
 };

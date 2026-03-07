@@ -1,4 +1,4 @@
-import { type getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening } from "@/api/uno/client";
 import { Box } from "../_components/box";
 import { DownloadCsvButton } from "../_components/download-csv-button";
 import { Heading } from "../_components/heading";
@@ -11,7 +11,7 @@ const Text = ({ children }: { children: React.ReactNode }) => (
 );
 
 type UtilitiesTabProps = {
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+  happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
 };
 

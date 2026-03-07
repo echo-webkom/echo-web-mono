@@ -114,6 +114,50 @@ func RegistrationCountsFromDomain(grs []model.RegistrationCount) []RegistrationC
 	return dtos
 }
 
+// UserRegistrationHappening represents the happening data embedded in a user registration response.
+type UserRegistrationHappening struct {
+	ID    string  `json:"id"`
+	Slug  string  `json:"slug"`
+	Title string  `json:"title"`
+	Type  string  `json:"type"`
+	Date  *string `json:"date"`
+}
+
+// UserRegistrationResponse represents a registration with its associated happening for user-facing endpoints.
+type UserRegistrationResponse struct {
+	UserID      string                    `json:"userId"`
+	HappeningID string                    `json:"happeningId"`
+	Status      string                    `json:"status"`
+	CreatedAt   time.Time                 `json:"createdAt"`
+	Happening   UserRegistrationHappening `json:"happening"`
+}
+
+// UserRegistrationsFromDomain converts a slice of domain RegistrationWithHappening to UserRegistrationResponse DTOs.
+func UserRegistrationsFromDomain(regs []model.RegistrationWithHappening) []UserRegistrationResponse {
+	dtos := make([]UserRegistrationResponse, len(regs))
+	for i, reg := range regs {
+		var date *string
+		if reg.Happening.Date != nil {
+			s := reg.Happening.Date.Format(time.RFC3339)
+			date = &s
+		}
+		dtos[i] = UserRegistrationResponse{
+			UserID:      reg.UserID,
+			HappeningID: reg.HappeningID,
+			Status:      string(reg.Status),
+			CreatedAt:   reg.CreatedAt,
+			Happening: UserRegistrationHappening{
+				ID:    reg.Happening.ID,
+				Slug:  reg.Happening.Slug,
+				Title: reg.Happening.Title,
+				Type:  string(reg.Happening.Type),
+				Date:  date,
+			},
+		}
+	}
+	return dtos
+}
+
 // RegistrationStatusResponse represents a simple registration status check response.
 type RegistrationStatusResponse struct {
 	IsRegistered bool   `json:"isRegistered"`

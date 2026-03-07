@@ -1,14 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { happeningTypeEnum } from "@echo-webkom/db/schemas";
-
 import { toCsv, type FullHappening } from "../csv";
 
 const createHappening = (happening: Partial<FullHappening>): FullHappening => {
   return {
     date: null,
     id: "1",
-    type: happeningTypeEnum.enumValues[1],
+    type: "event",
     slug: "",
     title: "",
     registrationGroups: null,
@@ -24,54 +22,30 @@ const createHappening = (happening: Partial<FullHappening>): FullHappening => {
 
 const fixedDate = new Date("2024-01-15T10:30:00.000Z");
 
-const petter = {
-  alternativeEmail: "supah@gmail.com",
-  alternativeEmailVerifiedAt: fixedDate,
-  name: "Petter Kjellberg",
-  year: 2022,
-  degreeId: "Computer Science",
-  hasReadTerms: true,
-  isPublic: true,
-  createdAt: fixedDate,
-  updatedAt: fixedDate,
-  id: "1",
-  email: "supah@gmail.com",
-  image: null,
-  emailVerified: fixedDate,
-  type: "student",
-  lastSignInAt: fixedDate,
-  birthday: null,
-  inactiveEmailSentAt: null,
-} satisfies FullHappening["registrations"][number]["user"];
-
 const happening = createHappening({
   registrations: [
     {
-      user: petter,
-      status: "registered",
-      unregisterReason: "",
-      prevStatus: "waiting",
+      userId: "1",
+      userName: "Petter Kjellberg",
+      userEmail: "supah@gmail.com",
+      userYear: 2022,
+      userDegreeId: "dtek",
+      userHasImage: false,
+      happeningId: "1",
       changedAt: fixedDate,
       changedBy: null,
       createdAt: fixedDate,
-      happeningId: "1",
-      userId: "1",
+      prevStatus: "waiting",
+      status: "registered",
+      unregisterReason: null,
       answers: [
         {
           questionId: "q1",
-          answer: {
-            answer: "yes",
-          },
-          happeningId: "1",
-          userId: "1",
+          answer: "yes",
         },
         {
           questionId: "q2",
-          answer: {
-            answer: "no",
-          },
-          happeningId: "1",
-          userId: "1",
+          answer: "no",
         },
       ],
     },
@@ -113,14 +87,14 @@ describe("toCsv", () => {
     const csv = toCsv(happening, selectedHeaders);
 
     expect(csv).toBe(
-      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","Computer Science","yes","no","${fixedDate}"`,
+      `"Navn","Epost","Status","År","Studieretning","Question 1","Question 2","Tidspunkt"\n"Petter Kjellberg","supah@gmail.com","registered","2022","dtek","yes","no","${fixedDate}"`,
     );
   });
 
   it.each([
     {
       headers: ["Navn", "Studieretning"],
-      expected: `"Navn","Studieretning"\n"Petter Kjellberg","Computer Science"`,
+      expected: `"Navn","Studieretning"\n"Petter Kjellberg","dtek"`,
     },
     {
       headers: ["Navn", "Status"],

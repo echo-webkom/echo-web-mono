@@ -113,6 +113,7 @@ func RunApi() {
 		adventOfCodeService,
 		groupService,
 		reactionService,
+		registrationRepo,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

@@ -56,11 +56,44 @@ func RegistrationToDomainList(dbRegistrations []RegistrationDB) []model.Registra
 	return registrations
 }
 
+// UserRegistrationDB represents the database schema for a registration joined with its happening.
+type UserRegistrationDB struct {
+	RegistrationDB
+	HappeningSlug  string              `db:"happening_slug"`
+	HappeningTitle string              `db:"happening_title"`
+	HappeningType  model.HappeningType `db:"happening_type"`
+	HappeningDate  *time.Time          `db:"happening_date"`
+}
+
+func (db *UserRegistrationDB) ToDomain() model.RegistrationWithHappening {
+	return model.RegistrationWithHappening{
+		Registration: *db.RegistrationDB.ToDomain(),
+		Happening: model.Happening{
+			ID:    db.HappeningID,
+			Slug:  db.HappeningSlug,
+			Title: db.HappeningTitle,
+			Type:  db.HappeningType,
+			Date:  db.HappeningDate,
+		},
+	}
+}
+
+func UserRegistrationToDomainList(dbRegs []UserRegistrationDB) []model.RegistrationWithHappening {
+	regs := make([]model.RegistrationWithHappening, len(dbRegs))
+	for i, dbReg := range dbRegs {
+		regs[i] = dbReg.ToDomain()
+	}
+	return regs
+}
+
 // HappeningRegistrationDB represents the database schema for registration with user info.
 type HappeningRegistrationDB struct {
 	RegistrationDB
-	UserName  *string `db:"user_name"`
-	UserImage *string `db:"user_image"`
+	UserName     *string `db:"user_name"`
+	UserEmail    *string `db:"user_email"`
+	UserYear     *int    `db:"user_year"`
+	UserDegreeID *string `db:"user_degree_id"`
+	UserImage    *string `db:"user_image"`
 }
 
 func (db *HappeningRegistrationDB) UserHasImage() bool {
@@ -79,6 +112,9 @@ func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
 		ChangedAt:        db.ChangedAt,
 		ChangedBy:        db.ChangedBy,
 		UserName:         db.UserName,
+		UserEmail:        db.UserEmail,
+		UserYear:         db.UserYear,
+		UserDegreeID:     db.UserDegreeID,
 		UserHasImage:     db.UserHasImage(),
 	}
 }

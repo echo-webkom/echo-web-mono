@@ -105,3 +105,87 @@ func QuestionListFromDomain(questions []model.Question) []QuestionResponse {
 	}
 	return dtos
 }
+
+// RegistrationAnswerResponse represents an answer to a question in API responses.
+type RegistrationAnswerResponse struct {
+	QuestionID string           `json:"questionId"`
+	Answer     *json.RawMessage `json:"answer"`
+}
+
+// FullHappeningRegistrationResponse represents a registration with user info and answers.
+type FullHappeningRegistrationResponse struct {
+	UserID           string                       `json:"userId"`
+	HappeningID      string                       `json:"happeningId"`
+	Status           string                       `json:"status"`
+	UnregisterReason *string                      `json:"unregisterReason"`
+	CreatedAt        time.Time                    `json:"createdAt"`
+	PrevStatus       *string                      `json:"prevStatus"`
+	ChangedAt        *time.Time                   `json:"changedAt"`
+	ChangedBy        *string                      `json:"changedBy"`
+	UserName         *string                      `json:"userName"`
+	UserEmail        *string                      `json:"userEmail"`
+	UserYear         *int                         `json:"userYear"`
+	UserDegreeID     *string                      `json:"userDegreeId"`
+	UserHasImage     bool                         `json:"userHasImage"`
+	Answers          []RegistrationAnswerResponse `json:"answers"`
+}
+
+// FullHappeningResponse represents a happening with registrations, questions, and host groups.
+type FullHappeningResponse struct {
+	ID                      string                              `json:"id"`
+	Slug                    string                              `json:"slug"`
+	Title                   string                              `json:"title"`
+	Type                    string                              `json:"type"`
+	Date                    *time.Time                          `json:"date"`
+	RegistrationGroups      *json.RawMessage                    `json:"registrationGroups"`
+	RegistrationStartGroups *time.Time                          `json:"registrationStartGroups"`
+	RegistrationStart       *time.Time                          `json:"registrationStart"`
+	RegistrationEnd         *time.Time                          `json:"registrationEnd"`
+	Registrations           []FullHappeningRegistrationResponse `json:"registrations"`
+	Questions               []QuestionResponse                  `json:"questions"`
+	Groups                  []string                            `json:"groups"`
+}
+
+// FullHappeningFromDomain converts a domain FullHappening model to a FullHappeningResponse DTO.
+func FullHappeningFromDomain(h model.FullHappening) FullHappeningResponse {
+	regs := make([]FullHappeningRegistrationResponse, len(h.Registrations))
+	for i, reg := range h.Registrations {
+		answers := make([]RegistrationAnswerResponse, len(reg.Answers))
+		for j, a := range reg.Answers {
+			answers[j] = RegistrationAnswerResponse{
+				QuestionID: a.QuestionID,
+				Answer:     a.Answer,
+			}
+		}
+		regs[i] = FullHappeningRegistrationResponse{
+			UserID:           reg.UserID,
+			HappeningID:      reg.HappeningID,
+			Status:           string(reg.Status),
+			UnregisterReason: reg.UnregisterReason,
+			CreatedAt:        reg.CreatedAt,
+			PrevStatus:       reg.PrevStatus,
+			ChangedAt:        reg.ChangedAt,
+			ChangedBy:        reg.ChangedBy,
+			UserName:         reg.UserName,
+			UserEmail:        reg.UserEmail,
+			UserYear:         reg.UserYear,
+			UserDegreeID:     reg.UserDegreeID,
+			UserHasImage:     reg.UserHasImage,
+			Answers:          answers,
+		}
+	}
+	return FullHappeningResponse{
+		ID:                      h.ID,
+		Slug:                    h.Slug,
+		Title:                   h.Title,
+		Type:                    h.Type.String(),
+		Date:                    h.Date,
+		RegistrationGroups:      h.RegistrationGroups,
+		RegistrationStartGroups: h.RegistrationStartGroups,
+		RegistrationStart:       h.RegistrationStart,
+		RegistrationEnd:         h.RegistrationEnd,
+		Registrations:           regs,
+		Questions:               QuestionListFromDomain(h.Questions),
+		Groups:                  h.Groups,
+	}
+}

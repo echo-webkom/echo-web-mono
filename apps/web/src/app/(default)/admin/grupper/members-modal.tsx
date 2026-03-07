@@ -1,9 +1,11 @@
 "use client";
 
+import { use } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 import { type Group } from "@echo-webkom/db/schemas";
 
+import { type UnoClientType } from "@/api/uno/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,10 +20,12 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type MembersModalProps = {
   group: Group;
-  users: Array<{ id: string; name: string }>;
+  membersPromise: ReturnType<UnoClientType["groups"]["members"]>;
 };
 
-export const MembersModal = ({ group, users }: MembersModalProps) => {
+export const MembersModal = ({ group, membersPromise }: MembersModalProps) => {
+  const members = use(membersPromise);
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -35,11 +39,11 @@ export const MembersModal = ({ group, users }: MembersModalProps) => {
         </DialogHeader>
         <DialogBody>
           <div>
-            {users.length === 0 ? (
+            {members.length === 0 ? (
               <p className="text-center text-xl">Ingen medlemmer</p>
             ) : (
               <ul>
-                {users.map((user) => (
+                {members.map((user) => (
                   <li key={user.id}>{user.name}</li>
                 ))}
               </ul>
