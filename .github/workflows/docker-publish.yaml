@@ -21,6 +21,7 @@ on:
       - 'pnpm-lock.yaml'
       - 'turbo.json'
       - '.github/workflows/docker-publish.yaml'
+      - 'preview/**'
 
 concurrency:
   group: docker-publish-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
