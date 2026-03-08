@@ -16,9 +16,9 @@ type SiteFeedbackResponse struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-// FromDomain converts domain model to SiteFeedbackResponse DTO
-func NewSiteFeedbackResponseFromDomain(feedback *model.SiteFeedback) *SiteFeedbackResponse {
-	return &SiteFeedbackResponse{
+// NewSiteFeedbackResponseFromDomain converts domain model to SiteFeedbackResponse DTO
+func NewSiteFeedbackResponseFromDomain(feedback model.SiteFeedback) SiteFeedbackResponse {
+	return SiteFeedbackResponse{
 		ID:        feedback.ID,
 		Name:      feedback.Name,
 		Email:     feedback.Email.StringPtr(),
@@ -33,7 +33,7 @@ func NewSiteFeedbackResponseFromDomain(feedback *model.SiteFeedback) *SiteFeedba
 func SiteFeedbacksFromDomainList(feedbacks []model.SiteFeedback) []SiteFeedbackResponse {
 	dtos := make([]SiteFeedbackResponse, len(feedbacks))
 	for i, feedback := range feedbacks {
-		dtos[i] = *NewSiteFeedbackResponseFromDomain(&feedback)
+		dtos[i] = NewSiteFeedbackResponseFromDomain(feedback)
 	}
 	return dtos
 }
