@@ -2,3 +2,4 @@
 node_modules
 .turbo
 package.json
+src/api/uno/generated/types.d.ts

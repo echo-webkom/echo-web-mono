@@ -6,22 +6,22 @@ import (
 )
 
 type CreateCommentRequest struct {
-	Content         string  `json:"content"`
-	PostID          string  `json:"postId"`
-	UserID          string  `json:"userId"`
-	ParentCommentID *string `json:"parentCommentId"`
+	Content         string  `json:"content" validate:"required"`
+	PostID          string  `json:"postId" validate:"required"`
+	UserID          string  `json:"userId" validate:"required"`
+	ParentCommentID *string `json:"parentCommentId" validate:"required"`
 }
 
 type ReactToCommentRequest struct {
-	CommentID string `json:"commentId"`
-	UserID    string `json:"userId"`
+	CommentID string `json:"commentId" validate:"required"`
+	UserID    string `json:"userId" validate:"required"`
 }
 
 // UserSummaryResponse represents minimal user information in API responses
 type UserSummaryResponse struct {
-	ID       string  `json:"id"`
-	Name     *string `json:"name"`
-	HasImage bool    `json:"hasImage"`
+	ID       string  `json:"id" validate:"required"`
+	Name     *string `json:"name" validate:"required"`
+	HasImage bool    `json:"hasImage" validate:"required"`
 }
 
 // FromDomain converts domain UserSummary to DTO
@@ -35,10 +35,10 @@ func (u *UserSummaryResponse) FromDomain(user *model.UserSummary) *UserSummaryRe
 
 // CommentsReactionResponse represents a comment reaction in API responses
 type CommentsReactionResponse struct {
-	CommentID string    `json:"commentId"`
-	UserID    string    `json:"userId"`
-	Type      string    `json:"type"`
-	CreatedAt time.Time `json:"createdAt"`
+	CommentID string    `json:"commentId" validate:"required"`
+	UserID    string    `json:"userId" validate:"required"`
+	Type      string    `json:"type" validate:"required"`
+	CreatedAt time.Time `json:"createdAt" validate:"required"`
 }
 
 // FromDomain converts domain CommentsReaction to DTO
@@ -53,15 +53,15 @@ func (r *CommentsReactionResponse) FromDomain(reaction *model.CommentsReaction) 
 
 // CommentResponse represents a comment in API responses
 type CommentResponse struct {
-	ID              string                     `json:"id"`
-	PostID          string                     `json:"postId"`
-	ParentCommentID *string                    `json:"parentCommentId"`
-	UserID          *string                    `json:"userId"`
-	Content         string                     `json:"content"`
-	CreatedAt       time.Time                  `json:"createdAt"`
-	UpdatedAt       time.Time                  `json:"updatedAt"`
-	Reactions       []CommentsReactionResponse `json:"reactions"`
-	User            *UserSummaryResponse       `json:"user"`
+	ID              string                     `json:"id" validate:"required"`
+	PostID          string                     `json:"postId" validate:"required"`
+	ParentCommentID *string                    `json:"parentCommentId" validate:"required"`
+	UserID          *string                    `json:"userId" validate:"required"`
+	Content         string                     `json:"content" validate:"required"`
+	CreatedAt       time.Time                  `json:"createdAt" validate:"required"`
+	UpdatedAt       time.Time                  `json:"updatedAt" validate:"required"`
+	Reactions       []CommentsReactionResponse `json:"reactions" validate:"required"`
+	User            *UserSummaryResponse       `json:"user" validate:"required"`
 }
 
 // FromDomain converts domain CommentAggregate to DTO

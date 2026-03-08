@@ -44,7 +44,7 @@ func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
 // getUsersWithStrikes returns all users with strikes and bans
 // @Summary	     Gets users with strikes and bans
 // @Tags         strikes
-// @Success      200  {array}  model.UserWithStrikes  "OK"
+// @Success      200  {array}  dto.UserWithStrikesResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
@@ -63,7 +63,7 @@ func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
 // getBannedUsers returns all banned users
 // @Summary	     Gets all users that are banned
 // @Tags         strikes
-// @Success      200  {array}  model.UserWithBanInfo  "OK"
+// @Success      200  {array}  dto.UserWithBanInfoResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey

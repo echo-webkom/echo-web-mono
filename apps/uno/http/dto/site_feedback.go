@@ -7,13 +7,13 @@ import (
 )
 
 type SiteFeedbackResponse struct {
-	ID        string    `json:"id"`
-	Name      *string   `json:"name"`
-	Email     *string   `json:"email"`
-	Message   string    `json:"message"`
-	Category  string    `json:"category"`
-	IsRead    bool      `json:"isRead"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID        string    `json:"id" validate:"required"`
+	Name      *string   `json:"name" validate:"required"`
+	Email     *string   `json:"email" validate:"required"`
+	Message   string    `json:"message" validate:"required"`
+	Category  string    `json:"category" validate:"required"`
+	IsRead    bool      `json:"isRead" validate:"required"`
+	CreatedAt time.Time `json:"createdAt" validate:"required"`
 }
 
 // NewSiteFeedbackResponseFromDomain converts domain model to SiteFeedbackResponse DTO
