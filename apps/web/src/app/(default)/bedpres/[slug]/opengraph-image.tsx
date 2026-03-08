@@ -4,8 +4,6 @@ import { urlFor } from "@echo-webkom/sanity";
 
 import { fetchHappeningBySlug } from "@/sanity/happening";
 
-export const runtime = "edge";
-
 export const size = {
   width: 1200,
   height: 630,

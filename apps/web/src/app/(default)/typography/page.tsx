@@ -8,9 +8,10 @@ import { Heading } from "@/components/typography/heading";
 import { OrderedList, UnorderedList } from "@/components/typography/list";
 import { ListItem } from "@/components/typography/list-item";
 import { Text } from "@/components/typography/text";
+import { ENVIRONMENT } from "@/config";
 
 export default function Typography() {
-  if (process.env.VERCEL_ENV === "production") {
+  if (ENVIRONMENT === "production") {
     return notFound();
   }
 
