@@ -76,7 +76,7 @@ func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 	}
 
 	// Convert to DTO
-	response := dto.NewSiteFeedbackResponseFromDomain(&feedback)
+	response := dto.NewSiteFeedbackResponseFromDomain(feedback)
 	return ctx.JSON(response)
 }
 
@@ -108,7 +108,7 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 	}
 
 	// Convert to DTO
-	response := dto.NewSiteFeedbackResponseFromDomain(&feedback)
+	response := dto.NewSiteFeedbackResponseFromDomain(feedback)
 	return ctx.JSON(response)
 }
 
