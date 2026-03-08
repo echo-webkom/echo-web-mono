@@ -14,6 +14,9 @@
 			"key": "AUTH_SECRET",
 			"default": "foobar"
 		},
+		"DATABASE_LOG": {
+			"key": "DATABASE_LOG"
+		},
 		"DATABASE_URL": {
 			"required": true,
 			"key": "DATABASE_URL",
@@ -29,15 +32,9 @@
 			"default": "development"
 		},
 		"FEIDE_CLIENT_ID": {
-			"required": true,
-			"lengthRequired": true,
-			"length": 36,
 			"key": "FEIDE_CLIENT_ID"
 		},
 		"FEIDE_CLIENT_SECRET": {
-			"required": true,
-			"lengthRequired": true,
-			"length": 36,
 			"key": "FEIDE_CLIENT_SECRET"
 		},
 		"NEXT_PUBLIC_API_URL": {
