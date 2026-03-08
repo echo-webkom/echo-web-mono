@@ -80,7 +80,7 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
    - [cenv](https://github.com/echo-webkom/cenv) (valgfritt)
 
-2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
+1. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
 
    ```sh
    cp .env.example .env
@@ -88,25 +88,31 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
    Kjør `cenv check` for å sjekke om alt er gjort riktig
 
-3. **Last ned "dependencies"**
+1. **Last ned "dependencies"**
 
    ```sh
    pnpm install
    ```
 
-4. **Sette opp databasen**
+1. **Last ned go "dependencies"**
+
+   ```sh
+   pnpm tools:install
+   ```
+
+1. **Sette opp databasen**
 
    ```sh
    pnpm db:setup
    ```
 
-5. **Synce og seede databasen**
+1. **Synce og seede databasen**
 
    ```sh
    pnpm seed
    ```
 
-6. **Start utviklingsmiljøet**
+1. **Start utviklingsmiljøet**
 
    ```sh
    pnpm dev
