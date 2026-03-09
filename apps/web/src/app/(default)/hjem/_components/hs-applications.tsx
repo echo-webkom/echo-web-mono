@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { LuArrowRight } from "react-icons/lu";
 
@@ -21,7 +22,13 @@ export const HSApplications = async () => {
     <div>
       <Heading level={3}>Årets søkere til Hovedstyret!</Heading>
 
-      <Text className="text-muted-foreground mb-5">Trykk på en søker for å lese mer om dem.</Text>
+      <Text className="text-muted-foreground mb-5">
+        Trykk på en søker for å lese mer om dem. Eller les se alle{" "}
+        <Link className="underline" href="/sokere">
+          søkere her
+        </Link>
+        .
+      </Text>
 
       <Marquee gradient gradientColor="var(--background)">
         {applications.map((application) => {
