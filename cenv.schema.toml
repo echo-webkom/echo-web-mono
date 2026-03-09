@@ -1,7 +1,7 @@
 # General configuration
 
 # Tells applications if they are running in development or production mode.
-# There are some features that are only enabled in development such as devtools in the frontend.
+# There are some features that are only enabled in development such as dev-tools in the frontend.
 # Used by: all projects
 [[entries]]
 key = "ENVIRONMENT"
@@ -111,7 +111,7 @@ default = "minioadmin"
 # Advent of Code
 # --------------
 # Every year we participate in Advent of Code and have the
-# leaderboard visible on the website. To fetch the leaderboard data websie 
+# leaderboard visible on the website. To fetch the leaderboard data website
 # need to provide a session cookie.
 
 # The token is optional as the leaderboard is only visible in the month of December.
