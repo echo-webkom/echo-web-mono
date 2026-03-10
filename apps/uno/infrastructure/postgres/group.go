@@ -68,6 +68,46 @@ func (g *GroupRepo) GetGroupByID(ctx context.Context, id string) (model.Group, e
 	return *dbModel.ToDomain(), nil
 }
 
+// GetGroupMembers retrieves all members of a group by group ID.
+func (g *GroupRepo) GetGroupMembers(ctx context.Context, groupID string) ([]model.GroupMember, error) {
+	g.logger.Info(ctx, "getting group members",
+		"group_id", groupID,
+	)
+
+	query := `--sql
+		SELECT u.id, u.name, utg.is_leader
+		FROM "users_to_groups" utg
+		JOIN "user" u ON u.id = utg.user_id
+		WHERE utg.group_id = $1
+		ORDER BY utg.is_leader DESC, u.name ASC
+	`
+
+	type memberRow struct {
+		ID       string  `db:"id"`
+		Name     *string `db:"name"`
+		IsLeader bool    `db:"is_leader"`
+	}
+
+	var rows []memberRow
+	if err := g.db.SelectContext(ctx, &rows, query, groupID); err != nil {
+		g.logger.Error(ctx, "failed to fetch group members",
+			"error", err,
+			"group_id", groupID,
+		)
+		return nil, err
+	}
+
+	members := make([]model.GroupMember, len(rows))
+	for i, row := range rows {
+		members[i] = model.GroupMember{
+			ID:       row.ID,
+			Name:     row.Name,
+			IsLeader: row.IsLeader,
+		}
+	}
+	return members, nil
+}
+
 // CreateGroup creates a new group in the database.
 func (g *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (model.Group, error) {
 	g.logger.Info(ctx, "creating group",

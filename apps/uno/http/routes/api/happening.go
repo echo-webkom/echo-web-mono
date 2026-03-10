@@ -28,6 +28,7 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 
 	// Admin
 	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.Handle("GET", "/{slug}/full", h.getFullHappeningBySlug, admin)
 	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
 
 	return mux
@@ -194,6 +195,31 @@ func (h *happenings) getHappeningQuestions(ctx *handler.Context) error {
 	// Convert domain models to DTOs
 	response := dto.QuestionListFromDomain(qs)
 	return ctx.JSON(response)
+}
+
+// getFullHappeningBySlug returns a happening with all related data by slug
+// @Summary      Get full happening by slug
+// @Description  Retrieves a happening by slug with registrations (including answers and user info), questions, and host groups.
+// @Tags         happenings
+// @Produce      json
+// @Param        slug  path      string  true  "Happening slug"
+// @Success      200   {object}  dto.FullHappeningResponse  "OK"
+// @Failure      400   {string}  string  "Bad Request"
+// @Failure      404   {string}  string  "Not Found"
+// @Security     AdminAPIKey
+// @Router       /happenings/{slug}/full [get]
+func (h *happenings) getFullHappeningBySlug(ctx *handler.Context) error {
+	slug := ctx.PathValue("slug")
+	if slug == "" {
+		return ctx.BadRequest(errors.New("missing happening slug"))
+	}
+
+	fullHappening, err := h.happeningService.HappeningRepo().GetFullHappeningBySlug(ctx.Context(), slug)
+	if err != nil {
+		return ctx.NotFound(errors.New("happening not found"))
+	}
+
+	return ctx.JSON(dto.FullHappeningFromDomain(fullHappening))
 }
 
 // registerForHappening handles user registration for a happening

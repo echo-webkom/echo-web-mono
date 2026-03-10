@@ -8,9 +8,11 @@ export type UnoClientOptions = {
   token?: string;
 };
 
-// Convert fields that end with "At" to Date
-function dateReviver(key: string, value: unknown): unknown {
-  if (key.endsWith("At") && typeof value === "string") {
+const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+
+// Convert ISO date strings to Date objects
+function dateReviver(_key: string, value: unknown): unknown {
+  if (typeof value === "string" && isoDateRegex.test(value)) {
     return new Date(value);
   }
   return value;
@@ -201,12 +203,12 @@ export interface Registration {
   userName: string | null;
   userHasImage: boolean;
   happeningId: string;
-  changedAt: Date;
-  changedBy: Date;
+  changedAt: Date | null;
+  changedBy: string | null;
   createdAt: Date;
   prevStatus: string;
   status: RegistrationStatus;
-  unregisterReason: string;
+  unregisterReason: string | null;
 }
 
 export interface RegistrationCount {
@@ -274,6 +276,14 @@ class HappeningApi {
       "GET",
       `happenings/${happeningId}/spot-ranges`,
     );
+  }
+
+  async full(slug: string) {
+    try {
+      return await this.client.requestJson<FullHappening>("GET", `happenings/${slug}/full`);
+    } catch {
+      return null;
+    }
   }
 }
 
@@ -522,6 +532,12 @@ interface GroupInsert {
   name: string;
 }
 
+interface GroupMember {
+  id: string;
+  name: string;
+  isLeader: boolean;
+}
+
 class GroupsApi {
   private client: UnoClient;
 
@@ -548,6 +564,10 @@ class GroupsApi {
 
   async all() {
     return await this.client.requestJson<Array<Group>>("GET", "groups");
+  }
+
+  async members(groupId: string) {
+    return await this.client.requestJson<Array<GroupMember>>("GET", `groups/${groupId}/members`);
   }
 }
 
@@ -604,6 +624,44 @@ export interface User {
   }>;
 }
 
+export interface Happening {
+  date: Date | null;
+  id: string;
+  type: "bedpres" | "event" | "external";
+  slug: string;
+  title: string;
+  registrationGroups: Array<string> | null;
+  registrationStartGroups: Date | null;
+  registrationStart: Date | null;
+  registrationEnd: Date | null;
+}
+
+export interface RegistrationAnswer {
+  questionId: string;
+  answer: string | Array<string> | null;
+}
+
+export interface FullHappeningRegistration extends Registration {
+  userEmail: string | null;
+  userYear: number | null;
+  userDegreeId: string | null;
+  answers: Array<RegistrationAnswer>;
+}
+
+export interface FullHappening extends Happening {
+  registrations: Array<FullHappeningRegistration>;
+  questions: Array<Question>;
+  groups: Array<string>;
+}
+
+export interface UserRegistration {
+  userId: string;
+  happeningId: string;
+  status: RegistrationStatus;
+  createdAt: Date;
+  happening: Happening;
+}
+
 class UsersApi {
   private client: UnoClient;
 
@@ -625,6 +683,13 @@ class UsersApi {
     return await this.client.requestJson<Array<{ id: string; name: string }>>(
       "GET",
       `users/search?q=${query}`,
+    );
+  }
+
+  async registrationsByUserId(userId: string) {
+    return await this.client.requestJson<Array<UserRegistration>>(
+      "GET",
+      `users/${userId}/registrations`,
     );
   }
 }
