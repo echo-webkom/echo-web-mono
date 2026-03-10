@@ -1,8 +1,10 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { answers, happenings, registrationStatusEnum, users } from ".";
+import { registrationStatusEnum } from "./enums";
+import { happenings } from "./happenings";
+import { users } from "./users";
 
 export const registrations = pgTable(
   "registration",
@@ -24,22 +26,6 @@ export const registrations = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.happeningId] })],
 ).enableRLS();
-
-export const registrationsRelations = relations(registrations, ({ one, many }) => ({
-  happening: one(happenings, {
-    fields: [registrations.happeningId],
-    references: [happenings.id],
-  }),
-  user: one(users, {
-    fields: [registrations.userId],
-    references: [users.id],
-  }),
-  answers: many(answers),
-  changedByUser: one(users, {
-    fields: [registrations.changedBy],
-    references: [users.id],
-  }),
-}));
 
 export type Registration = InferSelectModel<typeof registrations>;
 export type RegistrationInsert = InferInsertModel<typeof registrations>;

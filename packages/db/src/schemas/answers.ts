@@ -1,8 +1,10 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { json, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { happenings, questions, registrations, users } from ".";
+import { happenings } from "./happenings";
+import { questions } from "./questions";
+import { users } from "./users";
 
 type AnswerCol = {
   answer: string | Array<string>;
@@ -30,21 +32,6 @@ export const answers = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.happeningId, t.questionId] })],
 ).enableRLS();
-
-export const answersRelations = relations(answers, ({ one }) => ({
-  user: one(registrations, {
-    fields: [answers.userId, answers.happeningId],
-    references: [registrations.userId, registrations.happeningId],
-  }),
-  happening: one(happenings, {
-    fields: [answers.happeningId],
-    references: [happenings.id],
-  }),
-  question: one(questions, {
-    fields: [answers.questionId],
-    references: [questions.id],
-  }),
-}));
 
 export type Answer = InferSelectModel<typeof answers>;
 export type AnswerInsert = InferInsertModel<typeof answers>;

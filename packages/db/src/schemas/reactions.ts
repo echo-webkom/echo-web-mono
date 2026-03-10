@@ -1,4 +1,4 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
@@ -15,13 +15,6 @@ export const reactions = pgTable(
   },
   (t) => [primaryKey({ columns: [t.reactToKey, t.emojiId, t.userId] })],
 ).enableRLS();
-
-export const reactionsRelations = relations(reactions, ({ one }) => ({
-  user: one(users, {
-    fields: [reactions.userId],
-    references: [users.id],
-  }),
-}));
 
 export type Reaction = InferSelectModel<typeof reactions>;
 export type ReactionInsert = InferInsertModel<typeof reactions>;
