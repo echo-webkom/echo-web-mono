@@ -34,7 +34,7 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 // @Summary	     Get shopping list
 // @Tags         shopping_list
 // @Produce      json
-// @Success      200  {array}  service.ShoppingList  "OK"
+// @Success      200  {array}  dto.ShoppingListItemResponse  "OK"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /shopping [get]
 func (s *shoppingList) getShoppingList(ctx *handler.Context) error {

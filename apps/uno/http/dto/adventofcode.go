@@ -3,16 +3,16 @@ package dto
 import "uno/domain/model"
 
 type AdventOfCodeDayResponse struct {
-	Stars     int  `json:"stars"`
-	Star1Time *int `json:"star1_time"`
-	Star2Time *int `json:"star2_time"`
+	Stars     int  `json:"stars" validate:"required"`
+	Star1Time *int `json:"star1_time" validate:"required"`
+	Star2Time *int `json:"star2_time" validate:"required"`
 }
 
 type AdventOfCodeMemberResponse struct {
-	ID         int                                `json:"id"`
-	Name       string                             `json:"name"`
-	LocalScore int                                `json:"local_score"`
-	Days       map[string]AdventOfCodeDayResponse `json:"days"`
+	ID         int                                `json:"id" validate:"required"`
+	Name       string                             `json:"name" validate:"required"`
+	LocalScore int                                `json:"local_score" validate:"required"`
+	Days       map[string]AdventOfCodeDayResponse `json:"days" validate:"required"`
 }
 
 func AdventOfCodeLeaderboardFromDomain(domain model.AdventOfCodeLeaderboard) []AdventOfCodeMemberResponse {

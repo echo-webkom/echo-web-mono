@@ -1,5 +1,5 @@
 package dto
 
 type HealthCheckResponse struct {
-	Status string `json:"status"`
+	Status string `json:"status" validate:"required"`
 }

@@ -5,11 +5,11 @@ import (
 )
 
 type UserWithStrikesResponse struct {
-	ID       string  `json:"id"`
-	Name     *string `json:"name"`
-	HasImage bool    `json:"hasImage"`
-	IsBanned bool    `json:"isBanned"`
-	Strikes  int     `json:"strikes"`
+	ID       string  `json:"id" validate:"required"`
+	Name     *string `json:"name" validate:"required"`
+	HasImage bool    `json:"hasImage" validate:"required"`
+	IsBanned bool    `json:"isBanned" validate:"required"`
+	Strikes  int     `json:"strikes" validate:"required"`
 }
 
 func UsersWithStrikesFromDomainList(users []model.UserWithStrikes) []UserWithStrikesResponse {
@@ -61,32 +61,32 @@ type BannedStrikedByUser struct {
 }
 
 type BanInfo struct {
-	ID           int                 `json:"id"`
-	Reason       string              `json:"reason"`
-	CreatedAt    string              `json:"createdAt"`
-	UserID       string              `json:"userId"`
-	BannedBy     string              `json:"bannedBy"`
-	ExpiresAt    string              `json:"expiresAt"`
-	BannedByUser BannedStrikedByUser `json:"bannedByUser"`
+	ID           int                 `json:"id" validate:"required"`
+	Reason       string              `json:"reason" validate:"required"`
+	CreatedAt    string              `json:"createdAt" validate:"required"`
+	UserID       string              `json:"userId" validate:"required"`
+	BannedBy     string              `json:"bannedBy" validate:"required"`
+	ExpiresAt    string              `json:"expiresAt" validate:"required"`
+	BannedByUser BannedStrikedByUser `json:"bannedByUser" validate:"required"`
 }
 
 type DotInfo struct {
-	ID            int                 `json:"id"`
-	Reason        string              `json:"reason"`
-	CreatedAt     string              `json:"createdAt"`
-	UserID        string              `json:"userId"`
-	ExpiresAt     string              `json:"expiresAt"`
-	Count         int                 `json:"count"`
-	StrikedBy     string              `json:"strikedBy"`
-	StrikedByUser BannedStrikedByUser `json:"strikedByUser"`
+	ID            int                 `json:"id" validate:"required"`
+	Reason        string              `json:"reason" validate:"required"`
+	CreatedAt     string              `json:"createdAt" validate:"required"`
+	UserID        string              `json:"userId" validate:"required"`
+	ExpiresAt     string              `json:"expiresAt" validate:"required"`
+	Count         int                 `json:"count" validate:"required"`
+	StrikedBy     string              `json:"strikedBy" validate:"required"`
+	StrikedByUser BannedStrikedByUser `json:"strikedByUser" validate:"required"`
 }
 
 type UserWithBanInfoResponse struct {
-	ID       string    `json:"id"`
-	Name     *string   `json:"name"`
-	HasImage bool      `json:"hasImage"`
-	BanInfo  *BanInfo  `json:"banInfo"`
-	Dots     []DotInfo `json:"dots"`
+	ID       string    `json:"id" validate:"required"`
+	Name     *string   `json:"name" validate:"required"`
+	HasImage bool      `json:"hasImage" validate:"required"`
+	BanInfo  *BanInfo  `json:"banInfo" validate:"required"`
+	Dots     []DotInfo `json:"dots" validate:"required"`
 }
 
 func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoResponse {

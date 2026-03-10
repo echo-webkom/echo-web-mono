@@ -11,27 +11,27 @@ type UserSearchResult struct {
 }
 
 type UserGroupResponse struct {
-	Name     string `json:"name"`
-	ID       string `json:"id"`
-	IsLeader bool   `json:"isLeader"`
+	Name     string `json:"name" validate:"required"`
+	ID       string `json:"id" validate:"required"`
+	IsLeader bool   `json:"isLeader" validate:"required"`
 }
 
 type UserResponse struct {
-	ID               string              `json:"id"`
-	Name             *string             `json:"name"`
-	Email            string              `json:"email"`
-	HasImage         bool                `json:"hasImage"`
-	AlternativeEmail *string             `json:"alternativeEmail"`
-	Degree           *DegreeResponse     `json:"degree"`
-	Year             *int                `json:"year"`
-	Type             string              `json:"type"`
-	LastSignInAt     *time.Time          `json:"lastSignInAt"`
-	UpdatedAt        *time.Time          `json:"updatedAt"`
-	CreatedAt        *time.Time          `json:"createdAt"`
-	HasReadTerms     bool                `json:"hasReadTerms"`
-	Birthday         *time.Time          `json:"birthday"`
-	IsPublic         bool                `json:"isPublic"`
-	Groups           []UserGroupResponse `json:"groups"`
+	ID               string              `json:"id" validate:"required"`
+	Name             *string             `json:"name" validate:"required"`
+	Email            string              `json:"email" validate:"required"`
+	HasImage         bool                `json:"hasImage" validate:"required"`
+	AlternativeEmail *string             `json:"alternativeEmail" validate:"required"`
+	Degree           *DegreeResponse     `json:"degree" validate:"required"`
+	Year             *int                `json:"year" validate:"required"`
+	Type             string              `json:"type" validate:"required"`
+	LastSignInAt     *time.Time          `json:"lastSignInAt" validate:"required"`
+	UpdatedAt        *time.Time          `json:"updatedAt" validate:"required"`
+	CreatedAt        *time.Time          `json:"createdAt" validate:"required"`
+	HasReadTerms     bool                `json:"hasReadTerms" validate:"required"`
+	Birthday         *time.Time          `json:"birthday" validate:"required"`
+	IsPublic         bool                `json:"isPublic" validate:"required"`
+	Groups           []UserGroupResponse `json:"groups" validate:"required"`
 }
 
 func UsersToUserResponses(users []model.User) []UserResponse {

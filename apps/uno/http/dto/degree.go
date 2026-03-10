@@ -4,8 +4,8 @@ import "uno/domain/model"
 
 // CreateDegreeRequest represents the request payload for creating a new degree.
 type CreateDegreeRequest struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string `json:"id" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // ToDomain converts CreateDegreeRequest DTO to domain model
@@ -18,8 +18,8 @@ func (dto *CreateDegreeRequest) ToDomain() *model.Degree {
 
 // UpdateDegreeRequest represents the request payload for updating a degree.
 type UpdateDegreeRequest struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string `json:"id" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // ToDomain converts UpdateDegreeRequest DTO to domain model
@@ -32,8 +32,8 @@ func (dto *UpdateDegreeRequest) ToDomain() *model.Degree {
 
 // DegreeResponse represents the response payload for a degree.
 type DegreeResponse struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string `json:"id" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // DegreesFromDomainList converts a slice of domain models to DTOs

@@ -15,9 +15,9 @@ type CreateWhitelistRequest struct {
 
 // WhitelistResponse represents the HTTP response for a whitelist entry
 type WhitelistResponse struct {
-	Email     string    `json:"email"`
-	ExpiresAt time.Time `json:"expiresAt"`
-	Reason    string    `json:"reason"`
+	Email     string    `json:"email" validate:"required"`
+	ExpiresAt time.Time `json:"expiresAt" validate:"required"`
+	Reason    string    `json:"reason" validate:"required"`
 }
 
 // ToDomain converts CreateWhitelistRequest DTO to domain model

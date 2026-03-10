@@ -1306,7 +1306,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_service.ShoppingList"
+                                "$ref": "#/definitions/uno_http_dto.ShoppingListItemResponse"
                             }
                         }
                     },
@@ -1497,7 +1497,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithBanInfo"
+                                "$ref": "#/definitions/uno_http_dto.UserWithBanInfoResponse"
                             }
                         }
                     },
@@ -1563,7 +1563,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithStrikes"
+                                "$ref": "#/definitions/uno_http_dto.UserWithStrikesResponse"
                             }
                         }
                     },
@@ -1996,6 +1996,10 @@ const docTemplate = `{
         },
         "http_routes_api.GroupResponse": {
             "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -2016,132 +2020,14 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.BanInfo": {
-            "type": "object",
-            "properties": {
-                "bannedByID": {
-                    "type": "string"
-                },
-                "bannedByName": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.DotInfo": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "strikedByID": {
-                    "type": "string"
-                },
-                "strikedByName": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.UserWithBanInfo": {
-            "type": "object",
-            "properties": {
-                "banInfo": {
-                    "$ref": "#/definitions/uno_domain_model.BanInfo"
-                },
-                "dots": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.DotInfo"
-                    }
-                },
-                "hasImage": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.UserWithStrikes": {
-            "type": "object",
-            "properties": {
-                "hasImage": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isBanned": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "strikes": {
-                    "type": "integer"
-                }
-            }
-        },
-        "uno_domain_service.ShoppingList": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "likes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string"
-                },
-                "userName": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_http_dto.AccessRequestResponse": {
             "type": "object",
+            "required": [
+                "createdAt",
+                "email",
+                "id",
+                "reason"
+            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
@@ -2159,6 +2045,11 @@ const docTemplate = `{
         },
         "uno_http_dto.AdventOfCodeDayResponse": {
             "type": "object",
+            "required": [
+                "star1_time",
+                "star2_time",
+                "stars"
+            ],
             "properties": {
                 "star1_time": {
                     "type": "integer"
@@ -2173,6 +2064,12 @@ const docTemplate = `{
         },
         "uno_http_dto.AdventOfCodeMemberResponse": {
             "type": "object",
+            "required": [
+                "days",
+                "id",
+                "local_score",
+                "name"
+            ],
             "properties": {
                 "days": {
                     "type": "object",
@@ -2191,8 +2088,62 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.BanInfo": {
+            "type": "object",
+            "required": [
+                "bannedBy",
+                "bannedByUser",
+                "createdAt",
+                "expiresAt",
+                "id",
+                "reason",
+                "userId"
+            ],
+            "properties": {
+                "bannedBy": {
+                    "type": "string"
+                },
+                "bannedByUser": {
+                    "$ref": "#/definitions/uno_http_dto.BannedStrikedByUser"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.BannedStrikedByUser": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.CommentResponse": {
             "type": "object",
+            "required": [
+                "content",
+                "createdAt",
+                "id",
+                "parentCommentId",
+                "postId",
+                "reactions",
+                "updatedAt",
+                "user",
+                "userId"
+            ],
             "properties": {
                 "content": {
                     "type": "string"
@@ -2228,6 +2179,12 @@ const docTemplate = `{
         },
         "uno_http_dto.CommentsReactionResponse": {
             "type": "object",
+            "required": [
+                "commentId",
+                "createdAt",
+                "type",
+                "userId"
+            ],
             "properties": {
                 "commentId": {
                     "type": "string"
@@ -2245,6 +2202,12 @@ const docTemplate = `{
         },
         "uno_http_dto.CreateCommentRequest": {
             "type": "object",
+            "required": [
+                "content",
+                "parentCommentId",
+                "postId",
+                "userId"
+            ],
             "properties": {
                 "content": {
                     "type": "string"
@@ -2262,6 +2225,10 @@ const docTemplate = `{
         },
         "uno_http_dto.CreateDegreeRequest": {
             "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -2309,6 +2276,14 @@ const docTemplate = `{
         },
         "uno_http_dto.DatabrusMatchDTO": {
             "type": "object",
+            "required": [
+                "away_score",
+                "away_team",
+                "date_time",
+                "home_score",
+                "home_team",
+                "id"
+            ],
             "properties": {
                 "away_score": {
                     "type": "string"
@@ -2332,6 +2307,18 @@ const docTemplate = `{
         },
         "uno_http_dto.DatabrusTableRow": {
             "type": "object",
+            "required": [
+                "draws",
+                "goal_difference",
+                "goals_against",
+                "goals_for",
+                "losses",
+                "matches_played",
+                "points",
+                "position",
+                "team",
+                "wins"
+            ],
             "properties": {
                 "draws": {
                     "type": "integer"
@@ -2367,6 +2354,10 @@ const docTemplate = `{
         },
         "uno_http_dto.DegreeResponse": {
             "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -2376,8 +2367,59 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.DotInfo": {
+            "type": "object",
+            "required": [
+                "count",
+                "createdAt",
+                "expiresAt",
+                "id",
+                "reason",
+                "strikedBy",
+                "strikedByUser",
+                "userId"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "strikedBy": {
+                    "type": "string"
+                },
+                "strikedByUser": {
+                    "$ref": "#/definitions/uno_http_dto.BannedStrikedByUser"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.HappeningRegistrationResponse": {
             "type": "object",
+            "required": [
+                "changedAt",
+                "changedBy",
+                "createdAt",
+                "happeningId",
+                "prevStatus",
+                "status",
+                "unregisterReason",
+                "userHasImage",
+                "userId",
+                "userName"
+            ],
             "properties": {
                 "changedAt": {
                     "type": "string"
@@ -2413,6 +2455,17 @@ const docTemplate = `{
         },
         "uno_http_dto.HappeningResponse": {
             "type": "object",
+            "required": [
+                "date",
+                "id",
+                "registrationEnd",
+                "registrationGroups",
+                "registrationStart",
+                "registrationStartGroups",
+                "slug",
+                "title",
+                "type"
+            ],
             "properties": {
                 "date": {
                     "type": "string"
@@ -2448,6 +2501,9 @@ const docTemplate = `{
         },
         "uno_http_dto.HealthCheckResponse": {
             "type": "object",
+            "required": [
+                "status"
+            ],
             "properties": {
                 "status": {
                     "type": "string"
@@ -2456,6 +2512,10 @@ const docTemplate = `{
         },
         "uno_http_dto.QuestionAnswerDTO": {
             "type": "object",
+            "required": [
+                "answer",
+                "questionId"
+            ],
             "properties": {
                 "answer": {
                     "type": "array",
@@ -2470,6 +2530,15 @@ const docTemplate = `{
         },
         "uno_http_dto.QuestionResponse": {
             "type": "object",
+            "required": [
+                "happeningId",
+                "id",
+                "isSensitive",
+                "options",
+                "required",
+                "title",
+                "type"
+            ],
             "properties": {
                 "happeningId": {
                     "type": "string"
@@ -2499,6 +2568,10 @@ const docTemplate = `{
         },
         "uno_http_dto.ReactToCommentRequest": {
             "type": "object",
+            "required": [
+                "commentId",
+                "userId"
+            ],
             "properties": {
                 "commentId": {
                     "type": "string"
@@ -2510,6 +2583,12 @@ const docTemplate = `{
         },
         "uno_http_dto.ReactionResponse": {
             "type": "object",
+            "required": [
+                "createdAt",
+                "emojiId",
+                "reactToKey",
+                "userId"
+            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
@@ -2527,6 +2606,10 @@ const docTemplate = `{
         },
         "uno_http_dto.RegisterForHappeningRequest": {
             "type": "object",
+            "required": [
+                "questions",
+                "userId"
+            ],
             "properties": {
                 "questions": {
                     "type": "array",
@@ -2541,6 +2624,11 @@ const docTemplate = `{
         },
         "uno_http_dto.RegisterForHappeningResponse": {
             "type": "object",
+            "required": [
+                "isWaitlisted",
+                "message",
+                "success"
+            ],
             "properties": {
                 "isWaitlisted": {
                     "type": "boolean"
@@ -2555,6 +2643,12 @@ const docTemplate = `{
         },
         "uno_http_dto.RegistrationCount": {
             "type": "object",
+            "required": [
+                "happeningId",
+                "max",
+                "registered",
+                "waiting"
+            ],
             "properties": {
                 "happeningId": {
                     "type": "string"
@@ -2570,8 +2664,51 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.ShoppingListItemResponse": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "id",
+                "likes",
+                "name",
+                "userId",
+                "userName"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.SiteFeedbackResponse": {
             "type": "object",
+            "required": [
+                "category",
+                "createdAt",
+                "email",
+                "id",
+                "isRead",
+                "message",
+                "name"
+            ],
             "properties": {
                 "category": {
                     "type": "string"
@@ -2598,6 +2735,13 @@ const docTemplate = `{
         },
         "uno_http_dto.SpotRangeResponse": {
             "type": "object",
+            "required": [
+                "happeningId",
+                "id",
+                "maxYear",
+                "minYear",
+                "spots"
+            ],
             "properties": {
                 "happeningId": {
                     "type": "string"
@@ -2633,6 +2777,10 @@ const docTemplate = `{
         },
         "uno_http_dto.UpdateDegreeRequest": {
             "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -2644,6 +2792,11 @@ const docTemplate = `{
         },
         "uno_http_dto.UserGroupResponse": {
             "type": "object",
+            "required": [
+                "id",
+                "isLeader",
+                "name"
+            ],
             "properties": {
                 "id": {
                     "type": "string"
@@ -2658,6 +2811,23 @@ const docTemplate = `{
         },
         "uno_http_dto.UserResponse": {
             "type": "object",
+            "required": [
+                "alternativeEmail",
+                "birthday",
+                "createdAt",
+                "degree",
+                "email",
+                "groups",
+                "hasImage",
+                "hasReadTerms",
+                "id",
+                "isPublic",
+                "lastSignInAt",
+                "name",
+                "type",
+                "updatedAt",
+                "year"
+            ],
             "properties": {
                 "alternativeEmail": {
                     "type": "string"
@@ -2722,6 +2892,11 @@ const docTemplate = `{
         },
         "uno_http_dto.UserSummaryResponse": {
             "type": "object",
+            "required": [
+                "hasImage",
+                "id",
+                "name"
+            ],
             "properties": {
                 "hasImage": {
                     "type": "boolean"
@@ -2749,8 +2924,70 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.UserWithBanInfoResponse": {
+            "type": "object",
+            "required": [
+                "banInfo",
+                "dots",
+                "hasImage",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "banInfo": {
+                    "$ref": "#/definitions/uno_http_dto.BanInfo"
+                },
+                "dots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.DotInfo"
+                    }
+                },
+                "hasImage": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserWithStrikesResponse": {
+            "type": "object",
+            "required": [
+                "hasImage",
+                "id",
+                "isBanned",
+                "name",
+                "strikes"
+            ],
+            "properties": {
+                "hasImage": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isBanned": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "strikes": {
+                    "type": "integer"
+                }
+            }
+        },
         "uno_http_dto.WeatherResponse": {
             "type": "object",
+            "required": [
+                "condition",
+                "temperature",
+                "wind_speed"
+            ],
             "properties": {
                 "condition": {
                     "type": "string"
@@ -2765,6 +3002,11 @@ const docTemplate = `{
         },
         "uno_http_dto.WhitelistResponse": {
             "type": "object",
+            "required": [
+                "email",
+                "expiresAt",
+                "reason"
+            ],
             "properties": {
                 "email": {
                     "type": "string"

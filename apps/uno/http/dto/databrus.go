@@ -3,12 +3,12 @@ package dto
 import "uno/domain/model"
 
 type DatabrusMatchDTO struct {
-	ID        string  `json:"id"`
-	HomeTeam  string  `json:"home_team"`
-	AwayTeam  string  `json:"away_team"`
-	DateTime  string  `json:"date_time"`
-	HomeScore *string `json:"home_score"`
-	AwayScore *string `json:"away_score"`
+	ID        string  `json:"id" validate:"required"`
+	HomeTeam  string  `json:"home_team" validate:"required"`
+	AwayTeam  string  `json:"away_team" validate:"required"`
+	DateTime  string  `json:"date_time" validate:"required"`
+	HomeScore *string `json:"home_score" validate:"required"`
+	AwayScore *string `json:"away_score" validate:"required"`
 }
 
 type DatabrusMatchReponse []DatabrusMatchDTO
@@ -29,16 +29,16 @@ func DatabrusMatchesFromDomain(matches []model.Match) DatabrusMatchReponse {
 }
 
 type DatabrusTableRow struct {
-	Position       int    `json:"position"`
-	Team           string `json:"team"`
-	MatchesPlayed  int    `json:"matches_played"`
-	Wins           int    `json:"wins"`
-	Draws          int    `json:"draws"`
-	Losses         int    `json:"losses"`
-	GoalsFor       int    `json:"goals_for"`
-	GoalsAgainst   int    `json:"goals_against"`
-	GoalDifference int    `json:"goal_difference"`
-	Points         int    `json:"points"`
+	Position       int    `json:"position" validate:"required"`
+	Team           string `json:"team" validate:"required"`
+	MatchesPlayed  int    `json:"matches_played" validate:"required"`
+	Wins           int    `json:"wins" validate:"required"`
+	Draws          int    `json:"draws" validate:"required"`
+	Losses         int    `json:"losses" validate:"required"`
+	GoalsFor       int    `json:"goals_for" validate:"required"`
+	GoalsAgainst   int    `json:"goals_against" validate:"required"`
+	GoalDifference int    `json:"goal_difference" validate:"required"`
+	Points         int    `json:"points" validate:"required"`
 }
 
 type DatabrusTableResponse []DatabrusTableRow
