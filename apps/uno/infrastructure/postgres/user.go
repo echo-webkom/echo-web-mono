@@ -109,7 +109,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 
 	for rows.Next() { // Fix n+1 queyr
 		var user record.UserWithBanInfo
-		err := rows.Scan(
+		err = rows.Scan(
 			&user.ID,
 			&user.Name,
 			&user.Image,

@@ -32,10 +32,29 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 
 Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
+```
++------------+     +--------------------------------------------------+
+| uno-cron   |---->|  Storage                                         |
++------------+     |  +--------------------+  +-------------------+   |
+                   |  | Postgres           |  | ProfilePictures   |   |
+                   |  | (db)               |  | (bucket)          |   |
+                   |  +--------------------+  +-------------------+   |
+                   +--------------------------------------------------+
+                              ^       ^                    ^
+                              |       |                    |
+                              |       +-----------+        |
+                              |                   |        |
+                      +--------------------+  +-------------------+
+                      | web                |->| uno               |
+                      +--------------------+  +-------------------+
+```
+
 ### Applikasjoner (`/apps`)
 
 - **web** - Hovednettsiden bygget med Next.js 16, React 19 og Tailwind CSS
-- **uno** - Backend API bygget i Go med Chi-router og hexagonal arkitektur
+- **uno** - Vår Go backend, som inneholder to applikasjoner. Bygget med DDD og hexagonal arkitektur
+   - **web** - HTTP REST API bygget med Chi-router
+   - **cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
 - **cms** - Sanity Studio for administrering av innhold på nettsiden
 
 ### Delte pakker (`/packages`)
@@ -55,37 +74,45 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 1. **Før du starter må du passe på at det følgende er installert:**
 
    - [pnpm](https://pnpm.io/installation)
+   - [node](https://nodejs.org/https://nodejs.org/en/download) (vi anbefaler siste LTS med `fnm`)
    - [docker](https://docs.docker.com/engine/install/)
-   - [cenv](https://github.com/echo-webkom/cenv)
    - [go](https://go.dev/doc/install)
 
-2. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
+   - [cenv](https://github.com/echo-webkom/cenv) (valgfritt)
+
+1. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
 
    ```sh
    cp .env.example .env
    ```
 
-   Kjør `cenv check` for å skjekke om alt er gjort riktig
+   Kjør `cenv check` for å sjekke om alt er gjort riktig
 
-3. **Last ned "dependencies"**
+1. **Last ned "dependencies"**
 
    ```sh
    pnpm install
    ```
 
-4. **Sette opp databasen**
+1. **Last ned go "dependencies"**
+
+   ```sh
+   pnpm tools:install
+   ```
+
+1. **Sette opp databasen**
 
    ```sh
    pnpm db:setup
    ```
 
-5. **Synce og seede databasen**
+1. **Synce og seede databasen**
 
    ```sh
    pnpm seed
    ```
 
-6. **Start utviklingsmiljøet**
+1. **Start utviklingsmiljøet**
 
    ```sh
    pnpm dev
@@ -103,13 +130,7 @@ Sidene som starter er:
 
 ## Relaterte prosjekter
 
-- [cenv](https://github.com/echo-webkom/cenv) - Environment fil skjekker
+- [cenv](https://github.com/echo-webkom/cenv) - Environment-fil-sjekker
 - [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
 - [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
 
-<br>
-
-<div align="center">
-  <img width="20%" src="./.github/wetestinprod.png" />
-  <img width="20%" src="./.github/anti-ai.png" />
-</div>

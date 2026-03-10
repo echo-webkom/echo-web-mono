@@ -1,0 +1,121 @@
+# General configuration
+
+# Tells applications if they are running in development or production mode.
+# There are some features that are only enabled in development such as dev-tools in the frontend.
+# Used by: all projects
+[[entries]]
+key = "ENVIRONMENT"
+required = true
+legal_values = ["development", "production"]
+default = "development"
+
+# What Sanity dataset to connect to.
+# It has to be prefixed with NEXT_PUBLIC_ to be available in the frontend.
+# Used by: web, uno
+[[entries]]
+key = "NEXT_PUBLIC_SANITY_DATASET"
+required = true
+default = "develop"
+legal_values = ["develop", "production"]
+
+# The URL of the Uno API server. This is used in the frontend to make API requests.
+# It has to be prefixed with NEXT_PUBLIC_ to be available in the frontend.
+# Used by: web
+[[entries]]
+key = "NEXT_PUBLIC_API_URL"
+required = true
+default = "http://localhost:8000"
+kind = "Url"
+
+# What port the Uno API server should listen on.
+# Used by: uno
+[[entries]]
+key = "UNO_API_PORT"
+required = true
+default = "8000"
+kind = { Integer = {} }
+
+# A shared secret that can be used for authentication between the Uno API server and other services.
+# Used by: uno, web
+[[entries]]
+key = "ADMIN_KEY"
+required = true
+default = "foobar"
+
+# A shared secret that can be used to sign authentication tokens.
+# Used by: uno, web
+[[entries]]
+key = "AUTH_SECRET"
+required = true
+default = "foobar"
+
+# OAuth2 configuration
+# --------------------
+# We only use Feide as the OAuth2 provider for now.
+# It is not required for local development, but it is required for production.
+# The client ID and client secret can be obtained from the Feide administration portal.
+
+# Used by: web
+[[entries]]
+key = "FEIDE_CLIENT_ID"
+hint = "Feide client id for oauth. Gotten from Feide dashboard."
+required = false
+required_length = 36
+
+# Used by: web
+[[entries]]
+key = "FEIDE_CLIENT_SECRET"
+hint = "Feide client secret for oauth. Gotten from Feide dashboard."
+required = false
+required_length = 36
+
+# PostgreSQL configuration
+# ------------------------
+
+# Used by: uno, web
+[[entries]]
+key = "DATABASE_URL"
+required = true
+default = "postgres://postgres:postgres@localhost:5432/echo-web?sslmode=disable"
+kind = "Url"
+
+# MinIO / S3 configuration
+# ------------------------
+# For local development we use MinIO as the S3 compatible storage solution.
+# To have profile picture uploads working you need to have MinIO running locally.
+
+# Used by: uno
+[[entries]]
+key = "PROFILE_PICTURE_ACCESS_KEY_ID"
+required = true
+default = "minioadmin"
+
+# Used by: uno
+[[entries]]
+key = "PROFILE_PICTURE_BUCKET_NAME"
+required = true
+default = "profile-pictures"
+
+# Used by: uno
+[[entries]]
+key = "PROFILE_PICTURE_ENDPOINT_URL"
+required = true
+default = "localhost:9000"
+
+# Used by: uno
+[[entries]]
+key = "PROFILE_PICTURE_SECRET_ACCESS_KEY"
+required = true
+default = "minioadmin"
+
+# Advent of Code
+# --------------
+# Every year we participate in Advent of Code and have the
+# leaderboard visible on the website. To fetch the leaderboard data website
+# need to provide a session cookie.
+
+# The token is optional as the leaderboard is only visible in the month of December.
+# Used by: uno
+[[entries]]
+key = "AOC_SESSION_COOKIE"
+required = false
