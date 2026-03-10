@@ -20,8 +20,7 @@
     "tools:update": "./scripts/update-tools.sh",
     "swag:init": "swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal",
     "mocks:generate": "mockery",
-    "with-env": "dotenv -e ../../.env --",
-    "postinstall": "pnpm run tools:install"
+    "with-env": "dotenv -e ../../.env --"
   },
   "packageManager": "pnpm@10.18.3",
   "devDependencies": {
