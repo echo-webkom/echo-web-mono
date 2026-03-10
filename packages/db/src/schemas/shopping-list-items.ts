@@ -1,9 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from ".";
-import { usersToShoppingListItems } from "./users-to-shopping-list-items";
+import { users } from "./users";
 
 export const shoppingListItems = pgTable("shopping_list_item", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -15,14 +14,6 @@ export const shoppingListItems = pgTable("shopping_list_item", {
   name: text("name").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }).enableRLS();
-
-export const shoppingListItemsRelations = relations(shoppingListItems, ({ one, many }) => ({
-  user: one(users, {
-    fields: [shoppingListItems.userId],
-    references: [users.id],
-  }),
-  likes: many(usersToShoppingListItems),
-}));
 
 export type ShoppingListItems = InferSelectModel<typeof shoppingListItems>;
 export type ShoppingListItemsInsert = InferInsertModel<typeof shoppingListItems>;

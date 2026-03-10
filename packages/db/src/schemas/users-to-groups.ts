@@ -1,8 +1,9 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { boolean, pgTable, primaryKey, text, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { groups, users } from ".";
+import { groups } from "./groups";
+import { users } from "./users";
 
 export const usersToGroups = pgTable(
   "users_to_groups",
@@ -21,17 +22,6 @@ export const usersToGroups = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.groupId] })],
 ).enableRLS();
-
-export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
-  user: one(users, {
-    fields: [usersToGroups.userId],
-    references: [users.id],
-  }),
-  group: one(groups, {
-    fields: [usersToGroups.groupId],
-    references: [groups.id],
-  }),
-}));
 
 export type UsersToGroups = InferSelectModel<typeof usersToGroups>;
 export type UsersToGroupsInsert = InferInsertModel<typeof usersToGroups>;

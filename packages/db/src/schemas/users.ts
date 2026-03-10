@@ -1,4 +1,4 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -12,15 +12,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import {
-  banInfos,
-  comments,
-  degrees,
-  dots,
-  usersToGroups,
-  usersToShoppingListItems,
-  userTypeEnum,
-} from ".";
+import { degrees } from "./degrees";
+import { userTypeEnum } from "./enums";
 
 export const users = pgTable(
   "user",
@@ -51,24 +44,6 @@ export const users = pgTable(
     index("alternative_email_idx").on(t.alternativeEmail),
   ],
 ).enableRLS();
-
-export const usersRelations = relations(users, ({ one, many }) => ({
-  degree: one(degrees, {
-    fields: [users.degreeId],
-    references: [degrees.id],
-  }),
-  memberships: many(usersToGroups),
-  likes: many(usersToShoppingListItems),
-  dots: many(dots, {
-    relationName: "dots",
-  }),
-  comments: many(comments),
-  banInfo: one(banInfos, {
-    fields: [users.id],
-    references: [banInfos.userId],
-    relationName: "banInfo",
-  }),
-}));
 
 export type User = InferSelectModel<typeof users>;
 export type UserInsert = InferInsertModel<typeof users>;

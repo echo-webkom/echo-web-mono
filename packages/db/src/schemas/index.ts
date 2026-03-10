@@ -1,4 +1,5 @@
 export * from "./access-request";
+export * from "./relations";
 export * from "./accounts";
 export * from "./answers";
 export * from "./ban-info";
