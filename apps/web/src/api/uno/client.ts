@@ -524,7 +524,7 @@ class AdventOfCodeApi {
   }
 }
 
-interface Group {
+export interface Group {
   id: string;
   name: string;
 }

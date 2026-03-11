@@ -1,16 +1,14 @@
-import { getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening, type Group } from "@/api/uno/client";
 import { QrScanner } from "../_components/qr-scanner";
-import { RegistrationTable } from "../_components/registration-table";
 import { RegistrationWithUser } from "../_lib/types";
-import { getStudentGroupsWithMembers } from "../../../../../data/groups/queries";
 
 type RegistrationsTabProps = {
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+  happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
+  groups: Array<Group>;
 };
 
-const groups = await getStudentGroupsWithMembers();
-export const AttendanceTab = ({ happening, registrations }: RegistrationsTabProps) => {
+export const AttendanceTab = ({ happening, registrations, groups }: RegistrationsTabProps) => {
   return (
     <div>
       <h1>qr scanner</h1>
