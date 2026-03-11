@@ -6,4 +6,5 @@ export const statusColor = {
   unregistered: "text-red-600",
   removed: "text-red-600",
   pending: "text-blue-600",
+  attended: "text-purpule-600",
 } satisfies Record<RegistrationStatus, string>;
