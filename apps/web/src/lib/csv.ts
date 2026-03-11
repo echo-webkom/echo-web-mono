@@ -2,10 +2,10 @@ import { Parser } from "@json2csv/plainjs";
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
-import { type getFullHappening } from "@/data/happenings/queries";
+import { type FullHappening } from "@/api/uno/client";
 import { stringify } from "@/utils/string";
 
-export type FullHappening = Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
+export type { FullHappening };
 
 /**
  * Converts a happening to a CSV string.
@@ -25,15 +25,15 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
         questionId: a.questionId,
         question:
           happening.questions.find((q) => q.id === a.questionId)?.title ?? "Unknown question",
-        answer: a.answer?.answer,
+        answer: Array.isArray(a.answer) ? a.answer : (a.answer ?? undefined),
       }));
 
       const obj: Record<string, string> = {};
-      obj.Navn = stringify(r.user.name);
-      obj.Epost = r.user.alternativeEmail ?? r.user.email;
+      obj.Navn = r.userName ?? "";
+      obj.Epost = r.userEmail ?? "";
       obj.Status = r.status;
-      obj.År = stringify(r.user.year);
-      obj.Studieretning = r.user.degreeId ?? "";
+      obj.År = r.userYear !== null ? String(r.userYear) : "";
+      obj.Studieretning = r.userDegreeId ?? "";
       obj.Grunn = r.unregisterReason ?? "";
 
       happening.questions.forEach((question) => {

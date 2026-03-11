@@ -14,4 +14,5 @@ type HappeningRepo interface {
 	GetHappeningQuestions(ctx context.Context, happeningID string) ([]model.Question, error)
 	GetHappeningHostGroups(ctx context.Context, happeningID string) ([]string, error)
 	CreateHappening(ctx context.Context, happening model.Happening) (model.Happening, error)
+	GetFullHappeningBySlug(ctx context.Context, slug string) (model.FullHappening, error)
 }

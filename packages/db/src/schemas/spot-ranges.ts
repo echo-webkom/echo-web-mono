@@ -1,9 +1,9 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { nanoid } from "nanoid";
 
-import { happenings } from ".";
+import { happenings } from "./happenings";
 
 export const spotRanges = pgTable(
   "spot_range",
@@ -22,13 +22,6 @@ export const spotRanges = pgTable(
   },
   (t) => [primaryKey({ columns: [t.id] })],
 ).enableRLS();
-
-export const spotRangesRelations = relations(spotRanges, ({ one }) => ({
-  happening: one(happenings, {
-    fields: [spotRanges.happeningId],
-    references: [happenings.id],
-  }),
-}));
 
 export type SpotRange = InferSelectModel<typeof spotRanges>;
 export type SpotRangeInsert = InferInsertModel<typeof spotRanges>;

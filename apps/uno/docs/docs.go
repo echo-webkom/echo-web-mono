@@ -704,7 +704,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http_routes_api.GroupResponse"
+                                "$ref": "#/definitions/uno_http_dto.GroupResponse"
                             }
                         }
                     },
@@ -717,6 +717,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -734,7 +739,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.CreateGroupRequest"
+                            "$ref": "#/definitions/uno_http_dto.CreateGroupRequest"
                         }
                     }
                 ],
@@ -742,7 +747,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            "$ref": "#/definitions/uno_http_dto.GroupResponse"
                         }
                     },
                     "400": {
@@ -768,6 +773,11 @@ const docTemplate = `{
         },
         "/group/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -792,7 +802,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.UpdateGroupRequest"
+                            "$ref": "#/definitions/uno_http_dto.UpdateGroupRequest"
                         }
                     }
                 ],
@@ -800,7 +810,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/http_routes_api.GroupResponse"
+                            "$ref": "#/definitions/uno_http_dto.GroupResponse"
                         }
                     },
                     "400": {
@@ -830,6 +840,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "tags": [
                     "groups"
                 ],
@@ -844,8 +859,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content",
+                    "200": {
+                        "description": "Deleted",
                         "schema": {
                             "type": "string"
                         }
@@ -864,6 +879,51 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/group/{id}/members": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get members of a group",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Group ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.GroupMemberResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -1163,6 +1223,52 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/uno_http_dto.SpotRangeResponse"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/happenings/{slug}/full": {
+            "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "description": "Retrieves a happening by slug with registrations (including answers and user info), questions, and host groups.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "happenings"
+                ],
+                "summary": "Get full happening by slug",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.FullHappeningResponse"
                         }
                     },
                     "400": {
@@ -1584,6 +1690,11 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "AdminApiKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1603,6 +1714,61 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/feide/{feideId}/groups": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets the group IDs for a user based on the feide ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Feide ID",
+                        "name": "feideId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
                         "schema": {
                             "type": "string"
                         }
@@ -1666,6 +1832,11 @@ const docTemplate = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AdminApiKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1762,6 +1933,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AdminApiKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1813,6 +1989,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AdminApiKey": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1850,6 +2031,60 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/registrations": {
+            "get": {
+                "security": [
+                    {
+                        "AdminApiKey": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets all registrations for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.UserRegistrationResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "type": "string"
                         }
@@ -1980,42 +2215,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "http_routes_api.CreateGroupRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.GroupResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "http_routes_api.UpdateGroupRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.BanInfo": {
             "type": "object",
             "properties": {
@@ -2271,6 +2470,20 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.CreateGroupRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.CreateShoppingListItemRequest": {
             "type": "object",
             "required": [
@@ -2366,6 +2579,134 @@ const docTemplate = `{
             }
         },
         "uno_http_dto.DegreeResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.FullHappeningRegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "answers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.RegistrationAnswerResponse"
+                    }
+                },
+                "changedAt": {
+                    "type": "string"
+                },
+                "changedBy": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "prevStatus": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unregisterReason": {
+                    "type": "string"
+                },
+                "userDegreeId": {
+                    "type": "string"
+                },
+                "userEmail": {
+                    "type": "string"
+                },
+                "userHasImage": {
+                    "type": "boolean"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "userYear": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_http_dto.FullHappeningResponse": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.QuestionResponse"
+                    }
+                },
+                "registrationEnd": {
+                    "type": "string"
+                },
+                "registrationGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "registrationStartGroups": {
+                    "type": "string"
+                },
+                "registrations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.FullHappeningRegistrationResponse"
+                    }
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.GroupMemberResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "isLeader": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.GroupResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -2553,6 +2894,20 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.RegistrationAnswerResponse": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "questionId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.RegistrationCount": {
             "type": "object",
             "properties": {
@@ -2642,6 +2997,17 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.UpdateGroupRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.UserGroupResponse": {
             "type": "object",
             "properties": {
@@ -2652,6 +3018,46 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserRegistrationHappening": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserRegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "happening": {
+                    "$ref": "#/definitions/uno_http_dto.UserRegistrationHappening"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }

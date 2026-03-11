@@ -49,6 +49,7 @@ func RunServer(
 	adventOfCodeService *service.AdventOfCodeService,
 	groupService *service.GroupService,
 	reactionService *service.ReactionService,
+	registrationRepo port.RegistrationRepo,
 ) {
 	r := router.New(logger, middleware.Logger(logger))
 
@@ -101,7 +102,7 @@ func RunServer(
 	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(logger, userService, admin, session))
+	r.Mount("/users", api.NewUsersMux(logger, userService, registrationRepo, admin, session))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

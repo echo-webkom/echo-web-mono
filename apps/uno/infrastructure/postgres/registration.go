@@ -20,6 +20,30 @@ func NewRegistrationRepo(db *Database, logger port.Logger) port.RegistrationRepo
 	return &RegistrationRepo{db: db, logger: logger}
 }
 
+// GetByUserID retrieves all registrations for a user, joined with happening data.
+func (r *RegistrationRepo) GetByUserID(ctx context.Context, userID string) ([]model.RegistrationWithHappening, error) {
+	r.logger.Info(ctx, "getting registrations by user", "user_id", userID)
+
+	var regsDB []record.UserRegistrationDB
+	query := `--sql
+		SELECT
+			r.user_id, r.happening_id, r.status, r.unregister_reason,
+			r.created_at, r.prev_status, r.changed_at, r.changed_by,
+			h.slug AS happening_slug, h.title AS happening_title,
+			h.type AS happening_type, h.date AS happening_date
+		FROM registration r
+		JOIN happening h ON r.happening_id = h.id
+		WHERE r.user_id = $1
+		ORDER BY r.created_at DESC
+	`
+	err := r.db.SelectContext(ctx, &regsDB, query, userID)
+	if err != nil {
+		r.logger.Error(ctx, "failed to get registrations by user", "error", err, "user_id", userID)
+		return nil, err
+	}
+	return record.UserRegistrationToDomainList(regsDB), nil
+}
+
 // GetByUserAndHappening retrieves a registration by user ID and happening ID.
 func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, happeningID string) (*model.Registration, error) {
 	r.logger.Info(ctx, "getting registration by user and happening",

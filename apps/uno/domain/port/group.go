@@ -8,6 +8,7 @@ import (
 type GroupRepo interface {
 	GetAllGroups(ctx context.Context) ([]model.Group, error)
 	GetGroupByID(ctx context.Context, id string) (model.Group, error)
+	GetGroupMembers(ctx context.Context, groupID string) ([]model.GroupMember, error)
 	CreateGroup(ctx context.Context, group model.NewGroup) (model.Group, error)
 	UpdateGroup(ctx context.Context, group model.Group) (model.Group, error)
 	DeleteGroup(ctx context.Context, id string) error

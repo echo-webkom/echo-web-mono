@@ -1,8 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { index, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from ".";
+import { users } from "./users";
 
 export const banInfos = pgTable(
   "ban_info",
@@ -22,18 +22,6 @@ export const banInfos = pgTable(
   },
   (t) => [index("user_id_idx").on(t.userId)],
 ).enableRLS();
-
-export const banInfoRelations = relations(banInfos, ({ one }) => ({
-  user: one(users, {
-    fields: [banInfos.userId],
-    references: [users.id],
-    relationName: "banInfo",
-  }),
-  bannedByUser: one(users, {
-    fields: [banInfos.bannedBy],
-    references: [users.id],
-  }),
-}));
 
 export type BanInfo = InferSelectModel<typeof banInfos>;
 export type BanInfoInsert = InferInsertModel<typeof banInfos>;

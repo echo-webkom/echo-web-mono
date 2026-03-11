@@ -19,3 +19,10 @@ type UsersToGroups struct {
 	GroupID  string
 	IsLeader bool
 }
+
+// GroupMember represents a member of a group with their leadership status
+type GroupMember struct {
+	ID       string
+	Name     *string
+	IsLeader bool
+}

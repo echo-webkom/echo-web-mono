@@ -4,7 +4,7 @@ RUN apk update && apk add --no-cache libc6-compat
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN pnpm add -g turbo@2.5.8
+RUN pnpm add -g turbo@2.8.12
 
 FROM base AS builder
 

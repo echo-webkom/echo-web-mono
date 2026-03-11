@@ -1,8 +1,9 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { groups, happenings } from ".";
+import { groups } from "./groups";
+import { happenings } from "./happenings";
 
 export const happeningsToGroups = pgTable(
   "happenings_to_groups",
@@ -20,17 +21,6 @@ export const happeningsToGroups = pgTable(
   },
   (t) => [primaryKey({ columns: [t.happeningId, t.groupId] })],
 ).enableRLS();
-
-export const happeningsToGroupsRelations = relations(happeningsToGroups, ({ one }) => ({
-  happening: one(happenings, {
-    fields: [happeningsToGroups.happeningId],
-    references: [happenings.id],
-  }),
-  group: one(groups, {
-    fields: [happeningsToGroups.groupId],
-    references: [groups.id],
-  }),
-}));
 
 export type HappeningsToGroups = InferSelectModel<typeof happeningsToGroups>;
 export type HappeningsToGroupsInsert = InferInsertModel<typeof happeningsToGroups>;

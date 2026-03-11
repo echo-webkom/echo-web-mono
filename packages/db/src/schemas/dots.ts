@@ -1,8 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { index, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from ".";
+import { users } from "./users";
 
 export const dots = pgTable(
   "dot",
@@ -19,18 +19,6 @@ export const dots = pgTable(
   },
   (t) => [index("user_strike_idx").on(t.userId, t.id)],
 ).enableRLS();
-
-export const dotsRelations = relations(dots, ({ one }) => ({
-  user: one(users, {
-    fields: [dots.userId],
-    references: [users.id],
-    relationName: "dots",
-  }),
-  strikedByUser: one(users, {
-    fields: [dots.strikedBy],
-    references: [users.id],
-  }),
-}));
 
 export type Dot = InferSelectModel<typeof dots>;
 export type DotInsert = InferInsertModel<typeof dots>;

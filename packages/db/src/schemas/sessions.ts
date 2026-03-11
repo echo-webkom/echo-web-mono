@@ -1,8 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from ".";
+import { users } from "./users";
 
 export const sessions = pgTable(
   "session",
@@ -15,13 +15,6 @@ export const sessions = pgTable(
   },
   (t) => [primaryKey({ columns: [t.sessionToken] })],
 ).enableRLS();
-
-export const sessionsRelations = relations(sessions, ({ one }) => ({
-  user: one(users, {
-    fields: [sessions.userId],
-    references: [users.id],
-  }),
-}));
 
 export type Session = InferSelectModel<typeof sessions>;
 export type SessionInsert = InferInsertModel<typeof sessions>;

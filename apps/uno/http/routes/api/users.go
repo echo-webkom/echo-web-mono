@@ -14,12 +14,13 @@ import (
 )
 
 type users struct {
-	logger      port.Logger
-	userService *service.UserService
+	logger           port.Logger
+	userService      *service.UserService
+	registrationRepo port.RegistrationRepo
 }
 
-func NewUsersMux(logger port.Logger, userService *service.UserService, admin handler.Middleware, session handler.Middleware) *router.Mux {
-	u := users{logger, userService}
+func NewUsersMux(logger port.Logger, userService *service.UserService, registrationRepo port.RegistrationRepo, admin handler.Middleware, session handler.Middleware) *router.Mux {
+	u := users{logger, userService, registrationRepo}
 
 	mux := router.NewMux()
 
@@ -32,10 +33,42 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, admin han
 	// Admin routes
 	mux.Handle("GET", "/", u.getUsers, admin)
 	mux.Handle("GET", "/{id}", u.getUserByID, admin)
+	mux.Handle("GET", "/{id}/registrations", u.getUserRegistrations, admin)
 	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
 	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
+	mux.Handle("GET", "/feide/{feideId}/groups", u.getUserGroups, admin)
 
 	return mux
+}
+
+// geUserGroups  gets the group IDs for a user based on the feide ID
+// @Summary      Gets the group IDs for a user based on the feide ID
+// @Tags         users
+// @Param        feideId  path      string  true  "Feide ID"
+// @Success      200      {array}   string  "OK"
+// @Failure      400      {string}  string  "Bad Request"
+// @Failure      401      {string}  string  "Unauthorized"
+// @Failure      404      {string}  string  "User Not Found"
+// @Failure      500      {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Router       /users/feide/{feideId}/groups [get]
+func (u *users) getUserGroups(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	feideID := ctx.PathValue("feideId")
+	if feideID == "" {
+		return ctx.BadRequest(errors.New("missing feide ID"))
+	}
+
+	// Get group IDs for the user from the database
+	groupIDs, err := u.userService.UserRepo().GetUserGroupIDs(ctx.Context(), feideID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("user not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(groupIDs)
 }
 
 // searchUsers searches for users by name
@@ -77,6 +110,7 @@ func (u *users) searchUsers(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
+// @Security     AdminApiKey
 // @Router       /users [get]
 func (u *users) getUsers(ctx *handler.Context) error {
 	// Get all users from the database
@@ -100,6 +134,7 @@ func (u *users) getUsers(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "User Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
+// @Security     AdminApiKey
 // @Router       /users/{id} [get]
 func (u *users) getUserByID(ctx *handler.Context) error {
 	// Get user ID from path parameters
@@ -176,6 +211,7 @@ func (u *users) getUserImage(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "User Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
+// @Security     AdminApiKey
 // @Router	   /users/{id}/image [post]
 func (u *users) uploadUserImage(ctx *handler.Context) error {
 	// Get user ID from path parameters
@@ -212,6 +248,31 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// getUserRegistrations returns all registrations for a user
+// @Summary	     Gets all registrations for a user
+// @Tags         users
+// @Param        id   path      string  true  "User ID"
+// @Success      200  {array}   dto.UserRegistrationResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Produce	     json
+// @Security     AdminApiKey
+// @Router       /users/{id}/registrations [get]
+func (u *users) getUserRegistrations(ctx *handler.Context) error {
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	registrations, err := u.registrationRepo.GetByUserID(ctx.Context(), userID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.UserRegistrationsFromDomain(registrations))
+}
+
 // deleteUserImage deletes a user's profile image
 // @Summary	     Deletes a user's profile image
 // @Tags         users
@@ -222,6 +283,7 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 // @Failure      404  {string}  string  "User Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Produce	     json
+// @Security     AdminApiKey
 // @Router	   /users/{id}/image [delete]
 func (u *users) deleteUserImage(ctx *handler.Context) error {
 	// Get user ID from path parameters

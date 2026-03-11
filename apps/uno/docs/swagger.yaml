@@ -1,28 +1,5 @@
 basePath: /
 definitions:
-  http_routes_api.CreateGroupRequest:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    required:
-    - name
-    type: object
-  http_routes_api.GroupResponse:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  http_routes_api.UpdateGroupRequest:
-    properties:
-      name:
-        type: string
-    required:
-    - name
-    type: object
   uno_domain_model.BanInfo:
     properties:
       bannedByID:
@@ -189,6 +166,15 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.CreateGroupRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
   uno_http_dto.CreateShoppingListItemRequest:
     properties:
       name:
@@ -252,6 +238,90 @@ definitions:
         type: integer
     type: object
   uno_http_dto.DegreeResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_http_dto.FullHappeningRegistrationResponse:
+    properties:
+      answers:
+        items:
+          $ref: '#/definitions/uno_http_dto.RegistrationAnswerResponse'
+        type: array
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      userDegreeId:
+        type: string
+      userEmail:
+        type: string
+      userHasImage:
+        type: boolean
+      userId:
+        type: string
+      userName:
+        type: string
+      userYear:
+        type: integer
+    type: object
+  uno_http_dto.FullHappeningResponse:
+    properties:
+      date:
+        type: string
+      groups:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/uno_http_dto.QuestionResponse'
+        type: array
+      registrationEnd:
+        type: string
+      registrationGroups:
+        items:
+          type: integer
+        type: array
+      registrationStart:
+        type: string
+      registrationStartGroups:
+        type: string
+      registrations:
+        items:
+          $ref: '#/definitions/uno_http_dto.FullHappeningRegistrationResponse'
+        type: array
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_http_dto.GroupMemberResponse:
+    properties:
+      id:
+        type: string
+      isLeader:
+        type: boolean
+      name:
+        type: string
+    type: object
+  uno_http_dto.GroupResponse:
     properties:
       id:
         type: string
@@ -373,6 +443,15 @@ definitions:
       success:
         type: boolean
     type: object
+  uno_http_dto.RegistrationAnswerResponse:
+    properties:
+      answer:
+        items:
+          type: integer
+        type: array
+      questionId:
+        type: string
+    type: object
   uno_http_dto.RegistrationCount:
     properties:
       happeningId:
@@ -431,6 +510,13 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.UpdateGroupRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   uno_http_dto.UserGroupResponse:
     properties:
       id:
@@ -438,6 +524,32 @@ definitions:
       isLeader:
         type: boolean
       name:
+        type: string
+    type: object
+  uno_http_dto.UserRegistrationHappening:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_http_dto.UserRegistrationResponse:
+    properties:
+      createdAt:
+        type: string
+      happening:
+        $ref: '#/definitions/uno_http_dto.UserRegistrationHappening'
+      happeningId:
+        type: string
+      status:
+        type: string
+      userId:
         type: string
     type: object
   uno_http_dto.UserResponse:
@@ -960,7 +1072,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/http_routes_api.GroupResponse'
+              $ref: '#/definitions/uno_http_dto.GroupResponse'
             type: array
         "500":
           description: Internal Server Error
@@ -978,14 +1090,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.CreateGroupRequest'
+          $ref: '#/definitions/uno_http_dto.CreateGroupRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/uno_http_dto.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -998,6 +1110,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Create a new group
       tags:
       - groups
@@ -1010,8 +1124,8 @@ paths:
         required: true
         type: string
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: Deleted
           schema:
             type: string
         "400":
@@ -1030,6 +1144,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Delete a group by ID
       tags:
       - groups
@@ -1047,14 +1163,14 @@ paths:
         name: group
         required: true
         schema:
-          $ref: '#/definitions/http_routes_api.UpdateGroupRequest'
+          $ref: '#/definitions/uno_http_dto.UpdateGroupRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http_routes_api.GroupResponse'
+            $ref: '#/definitions/uno_http_dto.GroupResponse'
         "400":
           description: Bad Request
           schema:
@@ -1071,7 +1187,37 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Update a group by ID
+      tags:
+      - groups
+  /group/{id}/members:
+    get:
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.GroupMemberResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get members of a group
       tags:
       - groups
   /happenings:
@@ -1240,6 +1386,36 @@ paths:
           schema:
             type: string
       summary: Get happening spot ranges
+      tags:
+      - happenings
+  /happenings/{slug}/full:
+    get:
+      description: Retrieves a happening by slug with registrations (including answers
+        and user info), questions, and host groups.
+      parameters:
+      - description: Happening slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.FullHappeningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get full happening by slug
       tags:
       - happenings
   /happenings/registrations/count:
@@ -1544,6 +1720,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Gets a list of all users
       tags:
       - users
@@ -1574,6 +1752,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Gets a user by ID
       tags:
       - users
@@ -1608,6 +1788,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Deletes a user's profile image
       tags:
       - users
@@ -1675,7 +1857,79 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminApiKey: []
       summary: Uploads a user's profile image
+      tags:
+      - users
+  /users/{id}/registrations:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserRegistrationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminApiKey: []
+      summary: Gets all registrations for a user
+      tags:
+      - users
+  /users/feide/{feideId}/groups:
+    get:
+      parameters:
+      - description: Feide ID
+        in: path
+        name: feideId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets the group IDs for a user based on the feide ID
       tags:
       - users
   /users/search:

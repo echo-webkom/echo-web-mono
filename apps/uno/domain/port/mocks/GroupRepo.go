@@ -289,6 +289,74 @@ func (_c *GroupRepo_GetGroupByID_Call) RunAndReturn(run func(ctx context.Context
 	return _c
 }
 
+// GetGroupMembers provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) GetGroupMembers(ctx context.Context, groupID string) ([]model.GroupMember, error) {
+	ret := _mock.Called(ctx, groupID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetGroupMembers")
+	}
+
+	var r0 []model.GroupMember
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]model.GroupMember, error)); ok {
+		return returnFunc(ctx, groupID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []model.GroupMember); ok {
+		r0 = returnFunc(ctx, groupID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.GroupMember)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, groupID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// GroupRepo_GetGroupMembers_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetGroupMembers'
+type GroupRepo_GetGroupMembers_Call struct {
+	*mock.Call
+}
+
+// GetGroupMembers is a helper method to define mock.On call
+//   - ctx context.Context
+//   - groupID string
+func (_e *GroupRepo_Expecter) GetGroupMembers(ctx interface{}, groupID interface{}) *GroupRepo_GetGroupMembers_Call {
+	return &GroupRepo_GetGroupMembers_Call{Call: _e.mock.On("GetGroupMembers", ctx, groupID)}
+}
+
+func (_c *GroupRepo_GetGroupMembers_Call) Run(run func(ctx context.Context, groupID string)) *GroupRepo_GetGroupMembers_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_GetGroupMembers_Call) Return(groupMembers []model.GroupMember, err error) *GroupRepo_GetGroupMembers_Call {
+	_c.Call.Return(groupMembers, err)
+	return _c
+}
+
+func (_c *GroupRepo_GetGroupMembers_Call) RunAndReturn(run func(ctx context.Context, groupID string) ([]model.GroupMember, error)) *GroupRepo_GetGroupMembers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UpdateGroup provides a mock function for the type GroupRepo
 func (_mock *GroupRepo) UpdateGroup(ctx context.Context, group model.Group) (model.Group, error) {
 	ret := _mock.Called(ctx, group)
