@@ -2,21 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { TableBody, TableHeader } from "react-aria-components";
 
+import { type FullHappening, type Group } from "@/api/uno/client";
 import { filterRegistrations } from "../_lib/filter-registrations";
 import { RegistrationWithUser } from "../_lib/types";
 import { useRegistrationFilter } from "../_lib/use-registration-filter";
-import { Table, TableHead, TableRow } from "../../../../../components/ui/table";
-import { getFullHappening } from "../../../../../data/happenings/queries";
 import { RegistrationList } from "./registration-list";
-import { RegistrationRow } from "./registration-row";
-import { RegistrationTable } from "./registration-table";
 
 type QrScannerProps = {
   registrations: Array<RegistrationWithUser>;
-  happening: Exclude<Awaited<ReturnType<typeof getFullHappening>>, undefined>;
-  studentGroups: { id: string; name: string }[];
+  happening: FullHappening;
+  studentGroups: Array<Group>;
 };
 
 export const QrScanner = ({ registrations, happening, studentGroups }: QrScannerProps) => {

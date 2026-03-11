@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { unoWithAdmin } from "@/api/server";
 import { type FullHappening } from "@/api/uno/client";
 import { RegistrationTable } from "../_components/registration-table";
