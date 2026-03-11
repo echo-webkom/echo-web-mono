@@ -70,6 +70,7 @@ export default defineConfig({
             { label: "Sette opp Git", slug: "guides/sette-opp-git" },
             { label: "VSCode Oppsett", slug: "guides/vscode-oppsett" },
             { label: "Installere Node.js (fnm)", slug: "guides/installere-fnm" },
+            { label: "Installere Go", slug: "guides/installere-go" },
             { label: "Installere pnpm", slug: "guides/installere-pnpm" },
           ],
         },

@@ -7,11 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Before starting development:
 
 1. Install required tools: [pnpm](https://pnpm.io/installation), [docker](https://docs.docker.com/engine/install/), and [cenv](https://github.com/echo-webkom/cenv)
-2. Copy `.env.example` to `.env` and configure environment variables
-3. Run `cenv check` to validate environment setup
-4. Install dependencies: `pnpm install`
-5. Setup database: `pnpm db:setup`
-6. Seed database: `pnpm seed`
+2. Run `cenv fix` to make sure that the `.env` file is setup correctly.
+3. Install dependencies: `pnpm install`
+4. Setup database: `pnpm db:setup`
+5. Seed database: `pnpm seed`
 
 ## Common Development Commands
 

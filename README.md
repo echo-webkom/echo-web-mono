@@ -77,16 +77,13 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
    - [node](https://nodejs.org/https://nodejs.org/en/download) (vi anbefaler siste LTS med `fnm`)
    - [docker](https://docs.docker.com/engine/install/)
    - [go](https://go.dev/doc/install)
+   - [cenv](https://github.com/echo-webkom/cenv)
 
-   - [cenv](https://github.com/echo-webkom/cenv) (valgfritt)
-
-1. **Kopier `.env.example` til `.env` og fyll inn nødvendige verdier.**
+1. **Generer din `.env` med `cenv`**
 
    ```sh
-   cp .env.example .env
+   cenv fix
    ```
-
-   Kjør `cenv check` for å sjekke om alt er gjort riktig
 
 1. **Last ned "dependencies"**
 

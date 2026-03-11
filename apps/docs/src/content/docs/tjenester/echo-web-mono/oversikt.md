@@ -110,14 +110,14 @@ Se [Testing](/tjenester/echo-web-mono/testing) for detaljert guide om unit testi
 git clone git@github.com:echo-webkom/echo-web-mono.git
 cd echo-web-mono
 
-# 2. Kopier environment variabler
-cp .env.example .env
+# 2. Lag .env (vi bruker cenv for å generere en .env)
+cenv fix
 
-# 3. Valider environment
-cenv check
-
-# 4. Installer dependencies
+# 3. Installer dependencies
 pnpm install
+
+# 4. Installer Go tools
+pnpm tools:install
 
 # 5. Sett opp database
 pnpm db:setup
@@ -145,15 +145,48 @@ pnpm dev
 
 ## Arbeidsflyt
 
+Dette er hvordan en typisk arbeidsflyt kan se ut når skal utvikle en ny feature. Noen av disse kommandoene trenger du ikke alltid å kjøre, men om du er usikker, kjør de. De fleste feilene med å kjøre nettsiden kommer av at man har glemt en av stegene.
+
 ### Development
 
-1. Opprett feature branch: `git switch -c fornavn/feature-beskrivelse`
-2. Start utviklingsmiljø: `pnpm dev`
-3. Gjør endringer i relevante apps/packages
-4. Test endringer: `pnpm lint && pnpm typecheck`
-5. Commit og push: `git push origin branch-navn`
-6. Opprett Pull Request på GitHub
+:::note
+Husk å starte Docker-en din!
+:::
+
+1. Hent seneste endringer fra `main`. Dette burde du kjøre daglig.
+
+   ```bash
+   git pull
+   ```
+
+1. Opprett feature branch:
+
+   ```bash
+   git switch -c fornavn/feature-beskrivelse
+   # eksempel:
+   # git switch -c andreas/project-rewrite
+   ```
+
+1. Install alle dependencies. Disse kan ha endret seg fra sist du jobbet med nettsiden.
+
+   ```bash
+   pnpm install
+   ```
+
+1. Start og sett opp databasen. Husk å starte Docker og!
+
+   ```bash
+   pnpm db:setup
+   ```
+
+1. Start utviklingsmiljøet
+
+   ```bash
+   pnpm dev
+   ```
+
+1. Utvikle featuren din!
 
 ### Deployment
 
-Alt blir deployed automatisk ved push til `main`.
+Alt blir deployed automatisk til produksjon når koden er lagt til `main`.
