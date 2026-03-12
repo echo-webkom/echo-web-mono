@@ -11,6 +11,16 @@ import { emailClient } from "@echo-webkom/email/client";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
+function getNextSemesterStart() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  if (month >= 7) {
+    return new Date(year + 1, 0, 1); // January 1st of next year
+  }
+  return new Date(year, 7, 1); // August 1st of current year
+}
+
 export const grantAccessAction = async (accessRequestId: string) => {
   const user = await auth();
 
@@ -32,12 +42,12 @@ export const grantAccessAction = async (accessRequestId: string) => {
     };
   }
 
-  const ONE_YEAR = new Date(1000 * 60 * 60 * 24 * 365 + Date.now());
+  const expiresAt = getNextSemesterStart();
 
   try {
     await db.insert(whitelist).values({
       email: accessRequest.email,
-      expiresAt: ONE_YEAR,
+      expiresAt,
       reason: `Tilgang etter forespørsel: ${accessRequest.reason}`,
     });
 
