@@ -232,6 +232,13 @@
       "when": 1770290262270,
       "tag": "0032_loving_justice",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1773414149674,
+      "tag": "0033_absurd_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

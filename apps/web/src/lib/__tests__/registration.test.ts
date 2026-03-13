@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { getRegistrationStatus } from "../registrations";
 
 export type TRegistration = {
-  status: "registered" | "unregistered" | "removed" | "waiting" | "pending";
-  prevStatus: "registered" | "unregistered" | "removed" | "waiting" | "pending" | null;
+  status: "registered" | "unregistered" | "removed" | "waiting" | "pending" | "attended";
+  prevStatus: "registered" | "unregistered" | "removed" | "waiting" | "pending" | "attended" | null;
   changedAt: Date | null;
   createdAt: Date;
   changedByUser: { name: string } | null;

@@ -32,6 +32,7 @@ export const getRegistrations = async (happeningId: string) => {
       unregistered: 2,
       removed: 3,
       pending: 4,
+      attended: 5,
     };
     if (a.status === b.status) {
       return a.createdAt.getTime() - b.createdAt.getTime();

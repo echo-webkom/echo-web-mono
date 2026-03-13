@@ -14,6 +14,7 @@ const (
 	RegistrationStatusUnregistered RegistrationStatus = "unregistered"
 	RegistrationStatusPending      RegistrationStatus = "pending"
 	RegistrationStatusRemoved      RegistrationStatus = "removed"
+	RegistrationStatusAttended     RegistrationStatus = "attended"
 )
 
 func (s RegistrationStatus) String() string {
@@ -68,6 +69,11 @@ func (r *Registration) IsPending() bool {
 // CanUnregister checks if the user can unregister from the happening.
 func (r *Registration) CanUnregister() bool {
 	return r.IsActive() || r.IsPending()
+}
+
+// Is Attended checks if the user has attended the happening
+func (r *Registration) IsAttended() bool {
+	return r.Status == RegistrationStatusAttended
 }
 
 // Unregister marks the registration as unregistered with a reason.

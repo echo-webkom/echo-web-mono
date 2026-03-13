@@ -25,6 +25,7 @@ export const filterRegistrations = (
       (statusFilter === "venteliste" && registration.status === "waiting") ||
       (statusFilter === "avmeldt" && registration.status === "unregistered") ||
       (statusFilter === "fjernet" && registration.status === "removed") ||
+      (statusFilter === "møtt opp" && registration.status === "attended") ||
       (statusFilter === "under behandling" && registration.status === "pending");
 
     const matchesGroupFilter =

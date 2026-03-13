@@ -1,3 +1,5 @@
+import { registrationStatusEnum } from "@echo-webkom/db/schemas";
+
 import { uno } from "@/api/client";
 import { type FullHappening } from "@/api/uno/client";
 import { PizzaFormel } from "@/components/pizza-formel";
@@ -32,6 +34,7 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
     (registration) => registration.status === "unregistered",
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
+  const attended = registrations.filter((registrations) => registrations.status === "attended");
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -42,6 +45,7 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
         <Stat title="Antall på venteliste" value={waitlist.length.toString()} />
         <Stat title="Antall avmeldt" value={unregistered.length.toString()} />
         <Stat title="Antall fjernet" value={removed.length.toString()} />
+        <Stat title="Antall møtt opp" value={attended.length.toString()} />
       </div>
 
       {happening.registrationStart && (
